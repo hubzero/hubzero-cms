@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 // Push scripts to document
 $this->css()
@@ -50,7 +50,7 @@ $cls = 'even';
 
 $database = JFactory::getDBO();
 
-$topvals = new ResourcesStatsToolsTopvals($database);
+$topvals = new \Components\Resources\Tables\Stats\Tools\Topvals($database);
 
 switch ($this->params->get('defaultDataset', 'cumulative'))
 {
@@ -111,22 +111,22 @@ if ($results)
 
 ?>
 <h3 id="plg-usage-header">
-	<?php echo JText::_('PLG_RESOURCES_USAGE'); ?>
+	<?php echo Lang::txt('PLG_RESOURCES_USAGE'); ?>
 </h3>
-<form method="get" action="<?php echo JRoute::_($url); ?>">
+<form method="get" action="<?php echo Route::url($url); ?>">
 	<?php
 	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
-	if (file_exists(JPATH_ROOT . $tool_map . '.gif')) { ?>
+	if (file_exists(PATH_APP . $tool_map . '.gif')) { ?>
 		<div id="geo-overview-wrap" class="usage-wrap">
 			<div class="grid">
 				<div class="col span3">
-					<h4><?php echo JText::_('World usage'); ?></h4>
-					<p><?php echo JText::sprintf('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
+					<h4><?php echo Lang::txt('World usage'); ?></h4>
+					<p><?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
 					<p>
-						<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
-							<img style="width:100%;max-width:510px;" src="<?php echo $base . $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
+						<a href="<?php echo $tool_map; ?>.png" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
+							<img style="width:100%;max-width:510px;" src="<?php echo $base . $tool_map; ?>.gif" alt="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP'); ?>" />
 						</a>
 					</p>
 				</div><!-- / .col span9 omega -->
@@ -139,34 +139,34 @@ if ($results)
 			<ul class="dataset-controls" id="set-data">
 				<li>
 					<a id="monthly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'monthly') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
-						<?php echo JText::_('PLG_RESOURCES_USAGE_MONTHLY'); ?>
+						<?php echo Lang::txt('PLG_RESOURCES_USAGE_MONTHLY'); ?>
 					</a>
 				</li>
 				<li>
 					<a id="yearly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'yearly') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
-						<?php echo JText::_('PLG_RESOURCES_USAGE_YEARLY'); ?>
+						<?php echo Lang::txt('PLG_RESOURCES_USAGE_YEARLY'); ?>
 					</a>
 				</li>
 				<li>
 					<a id="cumulative" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'cumulative') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
-						<?php echo JText::_('PLG_RESOURCES_USAGE_CUMULATIVE'); ?>
+						<?php echo Lang::txt('PLG_RESOURCES_USAGE_CUMULATIVE'); ?>
 					</a>
 				</li>
 			</ul>
 			<div class="grid">
 			<div class="col span3">
-				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
-					<span><?php echo JText::_('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
+					<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<p class="zoom-controls" id="set-selection-users">
-					<?php echo JText::_('PLG_RESOURCES_USAGE_ZOOM'); ?>
-					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo JText::_('1y'); ?></a>
-					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo JText::_('6m'); ?></a>
-					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo JText::_('3m'); ?></a>
+					<?php echo Lang::txt('PLG_RESOURCES_USAGE_ZOOM'); ?>
+					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo Lang::txt('1y'); ?></a>
+					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo Lang::txt('6m'); ?></a>
+					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo Lang::txt('3m'); ?></a>
 				</p>
 				<div id="users-overview" style="min-width:400px;height:250px;">
 				<?php
@@ -187,7 +187,7 @@ if ($results)
 					{
 						$height = ($highest) ? round(($result->users / $highest)*100) : 0;
 						$sparkline .= "\t" . '<span class="index">';
-						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
+						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, Lang::txt('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
 						$sparkline .= number_format($result->users); //trim($this->_fmt_result($result->value, $result->valfmt));
 						$sparkline .= '</span> ';
 						$sparkline .= '</span>' . "\n";
@@ -204,11 +204,11 @@ if ($results)
 				<div class="grid">
 					<div class="col span-half">
 					<table id="pie-org-data" class="pie-chart">
-						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
+						<caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
 						<thead>
 							<tr>
-								<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
-								<th scope="col" colspan="2" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+								<th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
+								<th scope="col" colspan="2" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -307,7 +307,7 @@ if ($results)
 
 							if ($row->name == '?')
 							{
-								$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+								$row->name = Lang::txt('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 							}
 
 							$cls = ($cls == 'even') ? 'odd' : 'even';
@@ -326,7 +326,7 @@ if ($results)
 					{
 					?>
 							<tr>
-								<td colspan="3" class="textual-data"><?php echo JText::sprintf('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td colspan="3" class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
 							</tr>
 					<?php
 					}
@@ -348,11 +348,11 @@ if ($results)
 				</div>
 				<div class="col span-half omega">
 					<table id="pie-country-data" class="pie-chart">
-						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
+						<caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
 						<thead>
 							<tr>
-								<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
-								<th scope="col" colspan="2" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+								<th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
+								<th scope="col" colspan="2" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -420,7 +420,7 @@ if ($results)
 
 								if ($row->name == '?')
 								{
-									$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+									$row->name = Lang::txt('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 								}
 
 								$cls = ($cls == 'even') ? 'odd' : 'even';
@@ -443,7 +443,7 @@ if ($results)
 						{
 						?>
 							<tr>
-								<td colspan="3" class="textual-data"><?php echo JText::sprintf('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+								<td colspan="3" class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
 							</tr>
 						<?php
 						}
@@ -464,13 +464,13 @@ if ($results)
 					</script>
 					</div>
 					<?php /*<table id="pie-domains-data" class="pie-chart">
-						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
+						<caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
 						<thead>
 							<tr>
-								<!-- <th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
-								<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
-								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
+								<!-- <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
+								<th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -531,7 +531,7 @@ if ($results)
 
 								if ($row->name == '?')
 								{
-									$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+									$row->name = Lang::txt('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 								}
 
 								$cls = ($cls == 'even') ? 'odd' : 'even';
@@ -550,7 +550,7 @@ if ($results)
 						{
 					?>
 							<tr>
-								<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
+								<td colspan="3" class="textual-data"><?php echo Lang::txt('No data found for the month of %s', $datetime); ?></td>
 							</tr>
 					<?php
 						}
@@ -577,18 +577,18 @@ if ($results)
 		<div id="runs-overview-wrap" class="usage-wrap">
 			<div class="grid">
 				<div class="col span3">
-					<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
+					<h4><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 					<p class="total">
 						<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
-						<span><?php echo JText::_('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
+						<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 					</p>
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
 					<p class="zoom-controls" id="set-selection-runs">
-						<?php echo JText::_('Zoom'); ?>
-						<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo JText::_('1y'); ?></a>
-						<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo JText::_('6m'); ?></a>
-						<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo JText::_('3m'); ?></a>
+						<?php echo Lang::txt('Zoom'); ?>
+						<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo Lang::txt('1y'); ?></a>
+						<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo Lang::txt('6m'); ?></a>
+						<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo Lang::txt('3m'); ?></a>
 					</p>
 					<div id="runs-overview" style="min-width:400px;height:250px;">
 					<?php
@@ -607,7 +607,7 @@ if ($results)
 						{
 							$height = ($highest) ? round(($result->jobs / $highest)*100) : 0;
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
+							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
 							$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";
@@ -621,18 +621,18 @@ if ($results)
 					</div>
 
 					<table id="pie-runs-data" class="pie-chart">
-						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
+						<caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
 						<thead>
 							<tr>
 								<th scope="col" class="numerical-data"></th>
-								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_AVERAGE'); ?></th>
-								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TOTAL'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<th>
-									<?php echo JText::_('PLG_RESOURCES_USAGE_WALL_TIME'); ?>
+									<?php echo Lang::txt('PLG_RESOURCES_USAGE_WALL_TIME'); ?>
 								</th>
 								<td>
 									<?php echo plgResourcesUsage::timeUnits($current->avg_wall); ?>
@@ -643,7 +643,7 @@ if ($results)
 							</tr>
 							<tr>
 								<th>
-									<?php echo JText::_('PLG_RESOURCES_USAGE_CPU_TIME'); ?>
+									<?php echo Lang::txt('PLG_RESOURCES_USAGE_CPU_TIME'); ?>
 								</th>
 								<td>
 									<?php echo plgResourcesUsage::timeUnits($current->avg_cpu); ?>
@@ -654,7 +654,7 @@ if ($results)
 							</tr>
 							<tr>
 								<th>
-									<?php echo JText::_('PLG_RESOURCES_USAGE_INTERACTION_TIME'); ?>
+									<?php echo Lang::txt('PLG_RESOURCES_USAGE_INTERACTION_TIME'); ?>
 								</th>
 								<td>
 									<?php echo plgResourcesUsage::timeUnits($current->avg_view); ?>
@@ -736,13 +736,13 @@ if ($results)
 						{
 							lines: { fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)"); ?>' },
 							color: '<?php echo "#656565"; //$this->params->get("chart_color_line", "#999"); ?>', //#93ACCA
-							label: "<?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?>",
+							label: "<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?>",
 							data: [<?php echo implode(',', $users); ?>]
 						},
 						{
 							lines: {fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)"); ?>' },
 							color: '<?php echo "#656565"; //$this->params->get("chart_color_line2", "#CFCFAB"); ?>', //#CFCFAB
-							label: "<?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?>",
+							label: "<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?>",
 							data: [<?php echo implode(',', $runs); ?>]
 						}
 					];
@@ -1049,36 +1049,34 @@ if ($results)
 						plotCharts();
 					});
 
-						$(window).resize(function() {
-							if (this.resizeTO) clearTimeout(this.resizeTO);
-							this.resizeTO = setTimeout(function() {
-								$(this).trigger('resizeEnd');
-							}, 100);
-						});
-						$(window).bind('resizeEnd', function() {
-							//plotCharts();
-							//$('#users-overview div.tickLabel').remove();
-							//$('#runs-overview div.tickLabel').remove();
-							if (typeof(plotU) != 'undefined') {
-								plotU.resize();
-								plotU.setupGrid();
-								plotU.draw();
-							}
-							if (typeof(plotR) != 'undefined') {
-								plotR.resize();
-								plotR.setupGrid();
-								plotR.draw();
-							}
+					$(window).resize(function() {
+						if (this.resizeTO) clearTimeout(this.resizeTO);
+						this.resizeTO = setTimeout(function() {
+							$(this).trigger('resizeEnd');
+						}, 100);
+					});
+					$(window).bind('resizeEnd', function() {
+						//plotCharts();
+						//$('#users-overview div.tickLabel').remove();
+						//$('#runs-overview div.tickLabel').remove();
+						if (typeof(plotU) != 'undefined') {
+							plotU.resize();
+							plotU.setupGrid();
+							plotU.draw();
+						}
+						if (typeof(plotR) != 'undefined') {
+							plotR.resize();
+							plotR.setupGrid();
+							plotR.draw();
+						}
 
-						});
-
-
+					});
 				});
 			}
 		</script>
 	<?php } else { ?>
 		<div id="no-usage">
-			<p class="warning"><?php echo JText::_('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE'); ?></p>
+			<p class="warning"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE'); ?></p>
 		</div>
 	<?php } ?>
 </form>

@@ -56,7 +56,7 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 		if (!$archive && $model->type->params->get('plg_' . $this->_name)
 			&& $model->access('view-all'))
 		{
-			$areas['supportingdocs'] = JText::_('PLG_RESOURCES_SUPPORTINGDOCS');
+			$areas['supportingdocs'] = Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS');
 		}
 
 		return $areas;
@@ -100,7 +100,7 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 		);
 		$view->option    = $option;
 		$view->model     = $model;
-		$view->live_site = rtrim(JURI::base(), '/');
+		$view->live_site = rtrim(Request::base(), '/');
 
 		if ($this->getError())
 		{

@@ -707,7 +707,7 @@ class WikiParser
 				$p->pagename = '';
 				$p->scope = $scope;
 
-				$href = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
+				$href = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
 			break;
 
 			case '@':  // Wiki page linked by title [wiki:"My Title"]
@@ -731,7 +731,7 @@ class WikiParser
 					$href = '';
 				}
 
-				$href = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
+				$href = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename . $href);
 			break;
 
 			case '/':  // Absolute paths
@@ -762,7 +762,7 @@ class WikiParser
 					$p->scope = $scope;
 				}
 
-				$href = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
+				$href = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
 			break;
 		}
 
@@ -859,7 +859,7 @@ class WikiParser
 			$cls .= ' missing';
 		}
 
-		$link = JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $scope . '&pagename=' . $pagename);
+		$link = Route::url('index.php?option=' . $this->get('option') . '&scope=' . $scope . '&pagename=' . $pagename);
 
 		$this->_data['links'][] = array(
 			'link'     => $name,
@@ -1129,7 +1129,7 @@ class WikiParser
 					}
 					else
 					{
-						return '<strong>' . JText::_('PLG_WIKI_PARSERDEFAULT_HTML_NOT_ALLOWED') . '</strong>';
+						return '<strong>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_HTML_NOT_ALLOWED') . '</strong>';
 					}
 				break;
 
@@ -1352,7 +1352,7 @@ class WikiParser
 	 */
 	private function math($text)
 	{
-		$path = dirname(__FILE__);
+		$path = __DIR__;
 		if (is_file($path . DS . 'math.php'))
 		{
 			include_once($path . DS . 'math.php');
@@ -1472,7 +1472,7 @@ class WikiParser
 	 */
 	private function macros($text)
 	{
-		$path = dirname(__FILE__);
+		$path = __DIR__;
 		if (is_file($path . DS . 'macro.php'))
 		{
 			// Include abstract macro class
@@ -1529,7 +1529,7 @@ class WikiParser
 
 			if (!isset($_macros[$matches[1]]))
 			{
-				$path = dirname(__FILE__);
+				$path = __DIR__;
 				if (is_file($path . DS . 'macros' . DS . $matches[1] . '.php'))
 				{
 					include_once($path . DS . 'macros' . DS . $matches[1] . '.php');
@@ -1581,7 +1581,7 @@ class WikiParser
 			}
 			else
 			{
-				$macro->pageid = JRequest::getInt('lid', 0, 'post');
+				$macro->pageid = Request::getInt('lid', 0, 'post');
 			}
 			$macro->filepath   = $this->get('filepath');
 
@@ -3078,7 +3078,7 @@ class WikiParser
 	private function _tocLine($anchor, $tocLine, $tocnumber, $level)
 	{
 		return "\n" . '<li class="toclevel-' . $level . '">' .
-						'<a href="' . JRoute::_('index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename')) . '#' . $anchor . '">' .
+						'<a href="' . Route::url('index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename')) . '#' . $anchor . '">' .
 							'<span class="tocnumber">' . $tocnumber . ' </span>' .
 							'<span class="toctext">' . $tocLine . '</span>' .
 						'</a>';

@@ -31,10 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
 $database = JFactory::getDBO();
 ?>
-<h3><?php echo JText::_('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
+<h3><?php echo Lang::txt('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
 
 <?php if ($this->related) { ?>
 	<table class="related-resources">
@@ -50,10 +49,10 @@ $database = JFactory::getDBO();
 				$resourceEx->getContributors();
 
 				// If the user is logged in, get their rating for this resource
-				if (!$juser->get('guest'))
+				if (!User::isGuest())
 				{
 					$mr = new \Components\Resources\Tables\Review($database);
-					$myrating = $mr->loadUserRating($line->id, $juser->get('id'));
+					$myrating = $mr->loadUserRating($line->id, User::get('id'));
 				}
 				else
 				{
@@ -64,22 +63,22 @@ $database = JFactory::getDBO();
 				// Get the SEF for the resource
 				if ($line->alias)
 				{
-					$sef = JRoute::_('index.php?option=' . $this->option . '&alias='. $line->alias);
+					$sef = Route::url('index.php?option=' . $this->option . '&alias='. $line->alias);
 				}
 				else
 				{
-					$sef = JRoute::_('index.php?option=' . $this->option . '&id='. $line->id);
+					$sef = Route::url('index.php?option=' . $this->option . '&id='. $line->id);
 				}
 			}
 			else
 			{
 				if ($line->group_cn != '' && $line->scope != '')
 				{
-					$sef = JRoute::_('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
+					$sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
 				}
 				else
 				{
-					$sef = JRoute::_('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
+					$sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
 				}
 			}
 
@@ -95,10 +94,10 @@ $database = JFactory::getDBO();
 			}
 		?>
 			<tr>
-				<td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RANKING'); ?></span></td>
+				<td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RANKING'); ?></span></td>
 				<td>
 				<?php if ($line->section != 'Topic') { ?>
-					<?php echo JText::_('PLG_RESOURCES_RELATED_PART_OF'); ?>
+					<?php echo Lang::txt('PLG_RESOURCES_RELATED_PART_OF'); ?>
 					<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
 					<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
 						<h4><?php echo stripslashes($line->title); ?></h4>
@@ -106,32 +105,32 @@ $database = JFactory::getDBO();
 							<table>
 								<tbody>
 									<tr>
-										<th><?php echo JText::_('PLG_RESOURCES_RELATED_TYPE'); ?></th>
+										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_TYPE'); ?></th>
 										<td><?php echo $line->section; ?></td>
 									</tr>
 								<?php if ($resourceEx->contributors) { ?>
 									<tr>
-										<th><?php echo JText::_('PLG_RESOURCES_RELATED_CONTRIBUTORS'); ?></th>
+										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_CONTRIBUTORS'); ?></th>
 										<td><?php echo $resourceEx->contributors; ?></td>
 									</tr>
 								<?php } ?>
 									<tr>
-										<th><?php echo JText::_('PLG_RESOURCES_RELATED_DATE'); ?></th>
-										<td><?php echo JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></td>
+										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
+										<td><?php echo JHTML::_('date', $line->publish_up, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 									</tr>
 									<tr>
-										<th><?php echo JText::_('PLG_RESOURCES_RELATED_AVG_RATING'); ?></th>
-										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo JText::sprintf('OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_AVG_RATING'); ?></th>
+										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
 									</tr>
 									<tr>
-										<th><?php echo JText::_('PLG_RESOURCES_RELATED_RATE_THIS'); ?></th>
+										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATE_THIS'); ?></th>
 										<td>
 											<ul class="starsz<?php echo $myclass; ?>">
-												<li class="str1"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=1#reviewform" title="<?php echo JText::_('PLG_RESOURCES_RELATED_RATING_POOR'); ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RATING_1_STAR'); ?></a></li>
-												<li class="str2"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=2#reviewform" title="<?php echo JText::_('PLG_RESOURCES_RELATED_RATING_FAIR'); ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RATING_2_STARS'); ?></a></li>
-												<li class="str3"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=3#reviewform" title="<?php echo JText::_('PLG_RESOURCES_RELATED_RATING_GOOD'); ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RATING_3_STARS'); ?></a></li>
-												<li class="str4"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=4#reviewform" title="<?php echo JText::_('PLG_RESOURCES_RELATED_RATING_VERY_GOOD'); ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RATING_4_STARS'); ?></a></li>
-												<li class="str5"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=5#reviewform" title="<?php echo JText::_('PLG_RESOURCES_RELATED_RATING_EXCELLENT'); ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RATING_5_STARS'); ?></a></li>
+												<li class="str1"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=1#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_POOR'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_1_STAR'); ?></a></li>
+												<li class="str2"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=2#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_FAIR'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_2_STARS'); ?></a></li>
+												<li class="str3"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=3#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_GOOD'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_3_STARS'); ?></a></li>
+												<li class="str4"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=4#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_VERY_GOOD'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_4_STARS'); ?></a></li>
+												<li class="str5"><a href="<?php echo $sef; ?>/reviews<?php echo $d; ?>action=addreview&amp;myrating=5#reviewform" title="<?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_EXCELLENT'); ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RATING_5_STARS'); ?></a></li>
 											</ul>
 										</td>
 									</tr>
@@ -150,5 +149,5 @@ $database = JFactory::getDBO();
 		</tbody>
 	</table>
 <?php } else { ?>
-	<p><?php echo JText::_('PLG_RESOURCES_RELATED_NO_RESULTS_FOUND'); ?></p>
+	<p><?php echo Lang::txt('PLG_RESOURCES_RELATED_NO_RESULTS_FOUND'); ?></p>
 <?php } ?>

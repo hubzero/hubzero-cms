@@ -150,17 +150,17 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
-		$filters = array();
-		$filters['startdate'] = $period->cStartDate;
-		$filters['enddate']   = $period->cEndDate;
-		$filters['sortby']    = 'date';
+		$filters = array(
+			'startdate' => $period->cStartDate,
+			'enddate'   => $period->cEndDate,
+			'sortby'    => 'date'
+		);
 		if (count($tagids) > 0)
 		{
 			$filters['tags'] = $tagids;
 		}
 
-		$juser = JFactory::getUser();
-		$filters['usergroups'] = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+		$filters['usergroups'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 
 		// Get categories
 		$categories = $this->_cats;
@@ -227,11 +227,11 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 					if ($row->alias)
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
 					}
 					else
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
+						$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
 					}
 					if ($row->itext)
 					{
@@ -296,7 +296,6 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	public static function out($row, $period)
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		// Instantiate a helper object
 		if (!isset($row->authors))
@@ -308,7 +307,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the component params and merge with resource params
-		$config = JComponentHelper::getParams('com_resources');
+		$config = Component::params('com_resources');
 
 		$rparams = new JRegistry($row->params);
 		//$params = $config;
@@ -318,12 +317,10 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		switch ($rparams->get('show_date', $config->get('show_date')))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_HZ1'));   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
+			case 1: $thedate = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_HZ1'));   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1')); break;
 		}
-
-		$juri = JURI::getInstance();
 
 		// Start building HTML
 		$html  = "\t" . '<li class="resource">' . "\n";
@@ -354,9 +351,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			}
 
 			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . JText::_('PLG_WHATSNEW_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . JText::_('PLG_WHATSNEW_RESOURCES_RANKING') . '</dt>' . "\n";
+			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('PLG_WHATSNEW_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . Lang::txt('PLG_WHATSNEW_RESOURCES_RANKING') . '</dt>' . "\n";
 			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . JText::_('PLG_WHATSNEW_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
+			$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('PLG_WHATSNEW_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
 			$html .= "\t\t\t\t\t" . '<div>' . "\n";
 			$html .= $statshtml;
 			$html .= "\t\t\t\t\t" . '</div>' . "\n";
@@ -383,13 +380,13 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			}
 
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . JText::sprintf('PLG_WHATSNEW_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
+			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . Lang::txt('PLG_WHATSNEW_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
 		if ($row->authors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_RESOURCES_CONTRIBUTORS') . ' ' . $row->authors;
+			$html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_RESOURCES_CONTRIBUTORS') . ' ' . $row->authors;
 		}
 		$html .= '</p>' . "\n";
 		if ($row->itext)
@@ -400,7 +397,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

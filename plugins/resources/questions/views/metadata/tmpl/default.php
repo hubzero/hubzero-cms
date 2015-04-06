@@ -33,20 +33,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <p class="answer">
 	<?php if ($this->resource->alias) : ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->resource->alias . '&active=questions'); ?>">
+		<a href="<?php echo Route::url('index.php?option=com_resources&alias=' . $this->resource->alias . '&active=questions'); ?>">
 	<?php else : ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->resource->id . '&active=questions'); ?>">
+		<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->resource->id . '&active=questions'); ?>">
 	<?php endif; ?>
 		<?php
 			if ($this->count == 1)
 			{
-				echo JText::sprintf('PLG_RESOURCES_QUESTIONS_NUM_QUESTION', $this->count);
+				echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_QUESTION', $this->count);
 			}
 			else
 			{
-				echo JText::sprintf('PLG_RESOURCES_QUESTIONS_NUM_QUESTIONS', $this->count);
+				echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_QUESTIONS', $this->count);
 			}
 		?>
-	</a>
-		(<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->resource->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+		</a>
+	(<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->resource->id . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>

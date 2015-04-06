@@ -84,7 +84,7 @@ class GroupEventMacro extends WikiMacro
 		//$num_events = (isset($arg['number']) && is_numeric($arg['number']) && $arg['number'] > 0) ? $arg['number'] : $default_events;
 
 		//get the group
-		$cn = JRequest::getVar('cn');
+		$cn = Request::getVar('cn');
 
 		//get the group object based on gid
 		$group = \Hubzero\User\Group::getInstance($cn);
@@ -166,7 +166,7 @@ class GroupEventMacro extends WikiMacro
 			foreach ($events as $event)
 			{
 				//build link
-				$link = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
+				$link = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
 
 				//build date
 				$date = '';
@@ -204,7 +204,7 @@ class GroupEventMacro extends WikiMacro
 		}
 		else
 		{
-			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
+			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
 		}
 
 		return $content;

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$sef = JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id));
+$sef = Route::url('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id));
 
 // Set the display date
 switch ($this->model->params->get('show_date'))
@@ -110,31 +110,31 @@ $maintext = $this->model->description('parsed');
 			<div class="grid">
 				<div class="col span-half">
 		<?php } ?>
-					<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h4>
+					<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h4>
 					<p class="resource-content">
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
 							<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
 						</a>
 					</p>
 		<?php if ($thedate) { ?>
 				</div>
 				<div class="col span-half omega">
-					<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
+					<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
 					<p class="resource-content">
-						<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')); ?></time>
+						<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					</p>
 				</div>
 			</div>
 		<?php } ?>
 
 		<?php if (!$this->model->access('view-all')) { // Protected - only show the introtext ?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 			<div class="resource-content">
 				<?php echo $maintext; ?>
 			</div>
 		<?php } else { ?>
 			<?php if (trim($maintext)) { ?>
-				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 				<div class="resource-content">
 					<?php echo $maintext; ?>
 				</div>
@@ -174,12 +174,10 @@ $maintext = $this->model->description('parsed');
 				if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2)
 				{
 					// Build our citation object
-					$juri = JURI::getInstance();
-
 					$cite = new stdClass();
 					$cite->title    = $this->model->resource->title;
 					$cite->year     = JHTML::_('date', $thedate, 'Y');
-					$cite->location = $juri->base() . ltrim($sef, DS);
+					$cite->location = Request::base() . ltrim($sef, DS);
 					$cite->date     = JFactory::getDate()->toSql();
 					$cite->url      = '';
 					$cite->type     = '';
@@ -197,7 +195,7 @@ $maintext = $this->model->description('parsed');
 					if ($this->model->isTool())
 					{
 						// Get contribtool params
-						$tconfig = JComponentHelper::getParams( 'com_tools' );
+						$tconfig = Component::params( 'com_tools' );
 						$doi = '';
 
 						if (isset($this->model->resource->doi) && $this->model->resource->doi && $tconfig->get('doi_shoulder'))
@@ -230,7 +228,7 @@ $maintext = $this->model->description('parsed');
 				$citeinstruct  = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
 				$citeinstruct .= \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
 				?>
-				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
 				<div class="resource-content">
 					<?php echo $citeinstruct; ?>
 				</div>
@@ -238,16 +236,16 @@ $maintext = $this->model->description('parsed');
 		<?php } ?>
 
 		<?php if ($this->model->attribs->get('timeof', '')) { ?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
 			<p class="resource-content"><time><?php
 				// If the resource had a specific event date/time
 				if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00')
 				{
-					$exp = JText::_('DATE_FORMAT_HZ1'); //'%B %d %Y';
+					$exp = Lang::txt('DATE_FORMAT_HZ1'); //'%B %d %Y';
 				}
 				else
 				{
-					$exp = JText::_('TIME_FORMAT_HZ1') . ', ' . JText::_('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
+					$exp = Lang::txt('TIME_FORMAT_HZ1') . ', ' . Lang::txt('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
 				}
 				if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-')
 				{
@@ -265,12 +263,12 @@ $maintext = $this->model->description('parsed');
 		<?php } ?>
 
 		<?php if ($this->model->attribs->get('location', '')) { ?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_LOCATION'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_LOCATION'); ?></h4>
 			<p class="resource-content"><?php echo $this->escape($this->model->attribs->get('location', '')); ?></p>
 		<?php } ?>
 
 		<?php if ($this->model->contributors('submitter')) { ?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h4>
 			<div class="resource-content">
 				<div id="submitterlist">
 					<?php
@@ -293,7 +291,7 @@ $maintext = $this->model->description('parsed');
 			<?php
 			$tagger = new \Components\Resources\Helpers\Tags($this->model->resource->id);
 			if ($tags = $tagger->render('cloud', ($this->model->access('edit') ? array() : array('admin' => 0)))) { ?>
-				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
 					<?php
 					echo $tags;

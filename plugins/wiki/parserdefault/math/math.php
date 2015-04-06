@@ -144,7 +144,7 @@ class MathRenderer
 	{
 		$this->tex    = $tex;
 		$this->params = $params;
-		$this->config = JComponentHelper::getParams('com_wiki');
+		$this->config = Component::params('com_wiki');
  	}
 
 	/**
@@ -207,7 +207,7 @@ class MathRenderer
 	 */
 	public function render()
 	{
-		$tmpDirectory = JPATH_ROOT . DS . trim($this->config->get('tmppath', '/site/wiki/tmp'), DS);
+		$tmpDirectory = PATH_APP . DS . trim($this->config->get('tmppath', '/site/wiki/tmp'), DS);
 		$inputEncoding = 'UTF-8';
 
 		// To use inline TeX, you need to compile 'texvc' (in the 'math' subdirectory of
@@ -507,7 +507,7 @@ class MathRenderer
 	 */
 	private function _getHashPath()
 	{
-		$path = JPATH_ROOT . DS . trim($this->config->get('mathpath', '/site/wiki/math'), DS) . DS . substr($this->hash, 0, 1) . DS . substr($this->hash, 1, 1) . DS . substr($this->hash, 2, 1);
+		$path = PATH_APP . DS . trim($this->config->get('mathpath', '/site/wiki/math'), DS) . DS . substr($this->hash, 0, 1) . DS . substr($this->hash, 1, 1) . DS . substr($this->hash, 2, 1);
 		return $path;
 	}
 

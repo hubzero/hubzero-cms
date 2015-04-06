@@ -52,7 +52,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 	public function &onResourcesSubAreas($resource)
 	{
 		$areas = array(
-			'groups' => JText::_('PLG_RESOURCES_GROUPS')
+			'groups' => Lang::txt('PLG_RESOURCES_GROUPS')
 		);
 		return $areas;
 	}

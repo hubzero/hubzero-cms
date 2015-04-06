@@ -104,7 +104,7 @@ class VideoMacro extends WikiMacro
 		$default_width  = 640;
 		$default_height = 380;
 
-		$this->config = JComponentHelper::getParams('com_wiki');
+		$this->config = Component::params('com_wiki');
 		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
@@ -293,7 +293,7 @@ class VideoMacro extends WikiMacro
 	{
 		if (substr($file, 0, 1) == DS)
 		{
-			$path = JPATH_ROOT . $file;
+			$path = PATH_APP . $file;
 		}
 		else
 		{
@@ -316,7 +316,7 @@ class VideoMacro extends WikiMacro
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
 				}
 			}
-			$path  = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
+			$path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}
@@ -510,7 +510,7 @@ class VideoMacro extends WikiMacro
 		$this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
 		if (in_array(strtolower(JFile::getExt($file)), $this->imgs))
 		{
-			if (JRequest::getVar('format') == 'pdf')
+			if (Request::getVar('format') == 'pdf')
 			{
 				return $this->_path($file);
 			}
@@ -518,6 +518,6 @@ class VideoMacro extends WikiMacro
 		}
 		$link .= $this->pagename . DS . $type . ':' . $file;
 
-		return JRoute::_($link);
+		return Route::url($link);
 	}
 }

@@ -99,7 +99,7 @@ class ContributorMacro extends WikiMacro
 			{
 				// No, then we must have a username
 				// Get user's name
-				$cuser = JUser::getInstance($n);
+				$cuser = User::getInstance($n);
 				if (is_object($cuser))
 				{
 					$name = $cuser->get('name');
@@ -138,8 +138,8 @@ class ContributorMacro extends WikiMacro
 		// Did we get a result from the database?
 		if ($name && $id)
 		{
-			return '<a href="' . JRoute::_('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
-			//return '['.JRoute::_('index.php?option=com_members&id='.$id).' '.$name.']';
+			return '<a href="' . Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
+			//return '['.Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
 		}
 		else
 		{

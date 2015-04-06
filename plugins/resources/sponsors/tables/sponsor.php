@@ -58,7 +58,7 @@ class Sponsor extends \JTable
 
 		if (!$this->title)
 		{
-			$this->setError(\JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'));
+			$this->setError(\Lang::txt('PLG_RESOURCES_SPONSORS_MISSING_TITLE'));
 			return false;
 		}
 
@@ -68,16 +68,15 @@ class Sponsor extends \JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
 			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = \User::get('id');
 		}
 		else
 		{
 			$this->modified = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified_by = \User::get('id');
 		}
 
 		return true;

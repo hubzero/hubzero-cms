@@ -56,7 +56,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		if ($model->type->params->get('plg_citations')
 			&& $model->access('view-all'))
 		{
-			$areas['citations'] = JText::_('PLG_RESOURCES_CITATIONS');
+			$areas['citations'] = Lang::txt('PLG_RESOURCES_CITATIONS');
 		}
 
 		return $areas;
@@ -141,7 +141,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->url = JRoute::_('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=citations');
+			$view->url = Route::url('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=citations');
 			$view->citations = $citations;
 
 			$arr['metadata'] = $view->loadTemplate();

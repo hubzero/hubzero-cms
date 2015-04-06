@@ -56,7 +56,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		if ($model->type->params->get('plg_findthistext', 0)
 			&& $model->access('view-all'))
 		{
-			$areas['findthistext'] = JText::_('PLG_RESOURCES_FINDTHISTEXT');
+			$areas['findthistext'] = Lang::txt('PLG_RESOURCES_FINDTHISTEXT');
 		}
 
 		return $areas;
@@ -101,7 +101,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$view->option   = $option;
 			$view->model    = $model;
 			$view->database = JFactory::getDBO();
-			$view->juser    = JFactory::getUser();
+			$view->juser    = User::getRoot();
 			$view->plugin   = $this->params;
 			$view->openurl  = $this->getOpenUrl();
 
@@ -123,7 +123,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		$openUrl = null;
 
 		//get the users id to make lookup
-		$userIp = JRequest::ip();
+		$userIp = Request::ip();
 
 		//get the param for ip regex to use machine ip
 		$ipRegex = array(

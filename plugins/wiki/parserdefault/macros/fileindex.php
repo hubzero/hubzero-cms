@@ -64,12 +64,12 @@ class FileIndexMacro extends WikiMacro
 		{
 			$et = strip_tags($et);
 			// Get pages with a prefix
-			$sql  = "SELECT * FROM #__wiki_attachments WHERE LOWER(filename) LIKE '" . strtolower($et) . "%' AND pageid='" . $this->pageid . "' ORDER BY created ASC";
+			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE '" . strtolower($et) . "%' AND pageid='" . $this->pageid . "' ORDER BY created ASC";
 		}
 		else
 		{
 			// Get all pages
-			$sql  = "SELECT * FROM #__wiki_attachments WHERE pageid='" . $this->pageid . "' ORDER BY created ASC";
+			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE pageid='" . $this->pageid . "' ORDER BY created ASC";
 		}
 
 		// Perform query
@@ -79,7 +79,7 @@ class FileIndexMacro extends WikiMacro
 		// Did we get a result from the database?
 		if ($rows)
 		{
-			$config = JComponentHelper::getParams('com_wiki');
+			$config = Component::params('com_wiki');
 			if ($this->filepath != '')
 			{
 				$config->set('filepath', $this->filepath);
@@ -89,17 +89,17 @@ class FileIndexMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				$link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
-				$fpath = JPATH_ROOT . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
+				$link  = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
+				$fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
 
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+				$html .= '<li><a href="' . Route::url($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = JUser::getInstance($row->created_by);
 				if ($huser->get('id'))
 				{
-					$html .= '- added by <a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
+					$html .= '- added by <a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
 				}
 				if ($row->created && $row->created != '0000-00-00 00:00:00')
 				{

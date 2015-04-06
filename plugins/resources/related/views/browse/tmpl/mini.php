@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="container" id="whatsrelated">
-	<h3><?php echo JText::_('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
+	<h3><?php echo Lang::txt('PLG_RESOURCES_RELATED_HEADER'); ?></h3>
 
 	<?php if ($this->related) { ?>
 		<ul>
@@ -43,11 +43,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				// Get the SEF for the resource
 				if ($line->alias)
 				{
-					$sef = JRoute::_('index.php?option=' . $this->option . '&alias=' . $line->alias);
+					$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $line->alias);
 				}
 				else
 				{
-					$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $line->id);
+					$sef = Route::url('index.php?option=' . $this->option . '&id=' . $line->id);
 				}
 				$class = 'series';
 			}
@@ -55,24 +55,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				if ($line->group_cn != '' && $line->scope != '')
 				{
-					$sef = JRoute::_('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
+					$sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
 				}
 				else
 				{
-					$sef = JRoute::_('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
+					$sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
 				}
 				$class = 'wiki';
 			}
 			?>
 			<li class="<?php echo $class; ?>">
 				<a href="<?php echo $sef; ?>">
-					<?php echo ($line->section == 'Series') ? '<span>' . JText::_('PLG_RESOURCES_RELATED_PART_OF') . '</span> ' : ''; ?>
+					<?php echo ($line->section == 'Series') ? '<span>' . Lang::txt('PLG_RESOURCES_RELATED_PART_OF') . '</span> ' : ''; ?>
 					<?php echo $this->escape(stripslashes($line->title)); ?>
 				</a>
 			</li>
 		<?php } ?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('PLG_RESOURCES_RELATED_NO_RESULTS_FOUND'); ?></p>
+		<p><?php echo Lang::txt('PLG_RESOURCES_RELATED_NO_RESULTS_FOUND'); ?></p>
 	<?php } ?>
 </div>

@@ -51,7 +51,7 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 	public function onWhatsnewAreas()
 	{
 		return array(
-			'events' => JText::_('PLG_WHATSNEW_EVENTS')
+			'events' => Lang::txt('PLG_WHATSNEW_EVENTS')
 		);
 	}
 
@@ -112,7 +112,7 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = JRoute::_($row->href);
+					$rows[$key]->href = Route::url($row->href);
 					$rows[$key]->text = $rows[$key]->itext;
 				}
 			}
@@ -140,8 +140,6 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 	 */
 	public function out($row, $period)
 	{
-		$juri = JURI::getInstance();
-
 		// Start building the HTML
 		$html  = "\t" . '<li class="event">' . "\n";
 		$html .= "\t\t" . '<p class="event-date"><span class="month">' . JHTML::_('date', $row->publish_up, 'M') . '</span>';
@@ -153,7 +151,7 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 			$row->itext = str_replace('[[BR]]', '', $row->itext);
 			$html .= "\t\t".'<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

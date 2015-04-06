@@ -52,7 +52,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 	public function &onResourcesSubAreas($resource)
 	{
 		$areas = array(
-			'recommendations' => JText::_('PLG_RESOURCES_RECOMMENDATIONS')
+			'recommendations' => Lang::txt('PLG_RESOURCES_RECOMMENDATIONS')
 		);
 		return $areas;
 	}

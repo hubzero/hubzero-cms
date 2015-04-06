@@ -39,8 +39,8 @@ $logo = $this->group->getLogo();
 	<div class="group-content">
 		<h3><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></h3>
 		<p class="group-img">
-			<img src="<?php echo $logo; ?>" width="50" alt="<?php echo JText::sprintf('PLG_RESOURCES_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
+			<img src="<?php echo $logo; ?>" width="50" alt="<?php echo Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
 		</p>
-		<p class="group-descripion"><?php echo JText::sprintf('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-descripion"><?php echo Lang::txt('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 	</div>
 </div>

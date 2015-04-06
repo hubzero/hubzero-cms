@@ -37,48 +37,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 class ResourcesRecommendation extends JTable
 {
 	/**
-	 * Description for 'fromID'
-	 *
-	 * @var unknown
-	 */
-	var $fromID       = NULL;  // @var int(11) Primary key
-
-	/**
-	 * Description for 'toID'
-	 *
-	 * @var unknown
-	 */
-	var $toID         = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'contentScore'
-	 *
-	 * @var unknown
-	 */
-	var $contentScore = NULL;  // @var float
-
-	/**
-	 * Description for 'tagScore'
-	 *
-	 * @var unknown
-	 */
-	var $tagScore     = NULL;  // @var float
-
-	/**
-	 * Description for 'titleScore'
-	 *
-	 * @var unknown
-	 */
-	var $titleScore   = NULL;  // @var float
-
-	/**
-	 * Description for 'timestamp'
-	 *
-	 * @var unknown
-	 */
-	var $timestamp    = NULL;  // @var datetime (0000-00-00 00:00:00)
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -98,7 +56,7 @@ class ResourcesRecommendation extends JTable
 	{
 		if (!$this->toID)
 		{
-			$this->setError(JText::_('PLG_RESOURCES_RECOMMENDATIONS_ERROR_NO_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_ERROR_NO_ID'));
 			return false;
 		}
 		return true;

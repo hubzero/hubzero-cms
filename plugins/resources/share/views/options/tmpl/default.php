@@ -34,15 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$jconfig = JFactory::getConfig();
-
 $i = 1;
 $limit = intval($this->_params->get('icons_limit')) ? intval($this->_params->get('icons_limit')) : 8;
 
 $popup = '<ol class="sharelinks">';
 
 $metadata  = '<div class="share">' . "\n";
-$metadata .= "\t" . JText::_('PLG_RESOURCES_SHARE') . ': ';
+$metadata .= "\t" . Lang::txt('PLG_RESOURCES_SHARE') . ': ';
 
 // Available options
 $sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit');
@@ -77,10 +75,10 @@ if (($i+2) > $limit)
 $popup .= '</ol>';
 
 $metadata .= '<dl class="shareinfo">' . "\n";
-$metadata .= "\t" . '<dt>' . JText::_('PLG_RESOURCES_SHARE') . '</dt>' . "\n";
+$metadata .= "\t" . '<dt>' . Lang::txt('PLG_RESOURCES_SHARE') . '</dt>' . "\n";
 $metadata .= "\t" . '<dd>' . "\n";
 $metadata .= "\t\t" . '<p>' . "\n";
-$metadata .= "\t\t\t" . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . "\n";
+$metadata .= "\t\t\t" . Lang::txt('PLG_RESOURCES_SHARE_RESOURCE') . "\n";
 $metadata .= "\t\t" . '</p>' . "\n";
 $metadata .= "\t\t" . '<div>' . "\n";
 $metadata .= $popup;

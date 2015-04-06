@@ -88,7 +88,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	public function onWhatsnewAreas()
 	{
 		return array(
-			'publications' => JText::_('PLG_WHATSNEW_PUBLICATIONS')
+			'publications' => Lang::txt('PLG_WHATSNEW_PUBLICATIONS')
 		);
 	}
 
@@ -125,16 +125,15 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$rr = new \Components\Publications\Tables\Publication($database);
 
 		// Build query
-		$filters = array();
-		$filters['startdate'] = $period->cStartDate;
-		$filters['enddate']   = $period->cEndDate;
-		$filters['sortby']    = 'date';
+		$filters = array(
+			'startdate' => $period->cStartDate,
+			'enddate'   => $period->cEndDate,
+			'sortby'    => 'date'
+		);
 		if (count($tagids) > 0)
 		{
 			$filters['tag'] = $tagids;
 		}
-
-		$juser = JFactory::getUser();
 
 		if ($limit)
 		{
@@ -167,11 +166,11 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 					$rows[$key]->text = NULL;
 					if ($row->alias)
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_publications&alias=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_publications&alias=' . $row->alias);
 					}
 					else
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_publications&id=' . $row->id);
+						$rows[$key]->href = Route::url('index.php?option=com_publications&id=' . $row->id);
 					}
 					if ($row->abstract)
 					{
@@ -191,7 +190,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 			$counts = array();
 
 			// Execute count query
-			$results = $rr->getCount( $filters );
+			$results = $rr->getCount($filters);
 
 			return ($results && is_array($results)) ? count($results) : 0;
 		}
@@ -219,30 +218,28 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	public static function out($row, $period)
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
-		$config = JComponentHelper::getParams( 'com_publications' );
 
-		$juri = JURI::getInstance();
+		$config = Component::params('com_publications');
 
 		// Get version authors
-		$pa = new \Components\Publications\Tables\Author( $database );
+		$pa = new \Components\Publications\Tables\Author($database);
 		$authors = $pa->getAuthors($row->version_id);
 
 		// Start building HTML
 		$html  = "\t" . '<li class="publication">' . "\n";
-		$html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' . '" alt="" /></span>';
+		$html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' . '" alt="" /></span>';
 		$html .= '<span class="pub-details"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>' . "\n";
 		$html .= "\t\t" . '<span class="block details">' . JHTML::_('date', $row->published_up, 'd M Y') . ' <span>|</span> ' . $row->cat_name;
 		if ($authors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . \Components\Publications\Helpers\Html::showContributors( $authors, false, true );
+			$html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
 		}
 		$html .= '</span></span></p>' . "\n";
 		if ($row->text)
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

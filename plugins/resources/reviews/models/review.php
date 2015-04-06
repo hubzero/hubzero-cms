@@ -122,11 +122,11 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -277,7 +277,7 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => $this->get('option', \JRequest::getCmd('option', 'com_resources')),
+						'option'   => $this->get('option', \Request::getCmd('option', 'com_resources')),
 						'scope'    => 'reviews',
 						'pagename' => $this->get('resource_id'),
 						'pageid'   => 0,

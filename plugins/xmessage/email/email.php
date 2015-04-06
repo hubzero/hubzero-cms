@@ -75,21 +75,18 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		// get site config
-		$jconfig = JFactory::getConfig();
-
 		// if we dont have a from set the use site from name and email
 		if (!isset($from['name']) || $from['name'] == '')
 		{
-			$from['name'] = $jconfig->getValue('config.sitename') . ' Administrator';
+			$from['name'] = Config::get('sitename') . ' Administrator';
 		}
 		if (!isset($from['email']) || $from['email'] == '')
 		{
-			$from['email'] = $jconfig->getValue('config.mailfrom');
+			$from['email'] = Config::get('mailfrom');
 		}
 
 		$message = new \Hubzero\Mail\Message();
-		$message->setSubject($jconfig->getValue('config.sitename') . ' ' . $xmessage->subject)
+		$message->setSubject(Config::get('sitename') . ' ' . $xmessage->subject)
 		        ->addFrom($from['email'], $from['name'])
 		        ->addTo($user->get('email'), $user->get('name'));
 

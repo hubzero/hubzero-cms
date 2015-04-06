@@ -73,7 +73,7 @@ class SliderMacro extends WikiMacro
 		$id = uniqid();
 
 		//get the group
-		$gid = JRequest::getVar('cn');
+		$gid = Request::getVar('cn');
 
 		//get the group object based on gid
 		$group = \Hubzero\User\Group::getInstance($gid);
@@ -102,7 +102,7 @@ class SliderMacro extends WikiMacro
 				$slide = trim($slide);
 
 				//check if internal file actually exists
-				if (is_file(JPATH_ROOT . $base_url . DS . $slide))
+				if (is_file(PATH_APP . $base_url . DS . $slide))
 				{
 					$final_slides[] = $base_url . DS . $slide;
 				}

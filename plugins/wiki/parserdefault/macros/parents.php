@@ -146,7 +146,7 @@ class ParentsMacro extends WikiMacro
 
 			// Build the HTML
 			$html .= '<ul>';
-			$html .= '<li><a href="' . JRoute::_($url) . '">';
+			$html .= '<li><a href="' . Route::url($url) . '">';
 			$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
 			$html .= '</a>';
 			$html .= $this->_buildTree($rows);

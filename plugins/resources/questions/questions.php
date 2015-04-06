@@ -65,7 +65,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		if ($model->type->params->get('plg_questions')
 			&& $model->access('view-all'))
 		{
-			$areas['questions'] = JText::_('PLG_RESOURCES_QUESTIONS');
+			$areas['questions'] = Lang::txt('PLG_RESOURCES_QUESTIONS');
 		}
 
 		return $areas;
@@ -105,7 +105,6 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$this->database = JFactory::getDBO();
 		$this->model    = $model;
 		$this->option   = $option;
-		$this->juser     = JFactory::getUser();
 
 		// Get a needed library
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
@@ -114,12 +113,12 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$this->a = new \Components\Answers\Tables\Question($this->database);
 
 		$this->filters = array(
-			'limit'    => JRequest::getInt('limit', 0),
-			'start'    => JRequest::getInt('limitstart', 0),
+			'limit'    => Request::getInt('limit', 0),
+			'start'    => Request::getInt('limitstart', 0),
 			'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id),
-			'q'        => JRequest::getVar('q', ''),
-			'filterby' => JRequest::getVar('filterby', ''),
-			'sortby'   => JRequest::getVar('sortby', 'withinplugin')
+			'q'        => Request::getVar('q', ''),
+			'filterby' => Request::getVar('filterby', ''),
+			'sortby'   => Request::getVar('sortby', 'withinplugin')
 		);
 
 		$this->count = $this->a->getCount($this->filters);
@@ -127,7 +126,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			switch (strtolower(JRequest::getWord('action', 'browse')))
+			switch (strtolower(Request::getWord('action', 'browse')))
 			{
 				case 'save':
 					$arr['html'] = $this->_save();
@@ -181,11 +180,11 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		);
 
 		// Are we banking?
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$view->banking = $upconfig->get('bankAccounts');
 
 		// Info aboit points link
-		$aconfig = JComponentHelper::getParams('com_answers');
+		$aconfig = Component::params('com_answers');
 		$view->infolink = $aconfig->get('infolink', '/kb/points/');
 
 		// Pass the view some info
@@ -214,13 +213,13 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	private function _new($row=null)
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name, false, true), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name, false, true), 'server');
 
-			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('PLG_RESOURCES_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('PLG_RESOURCES_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
 				'warning'
 			);
 			return;
@@ -239,7 +238,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		);
 		$view->option   = $this->option;
 		$view->resource = $this->model->resource;
-		$view->juser    = $this->juser;
+		$view->juser    = User::getRoot();
 		if (is_object($row))
 		{
 			$view->row  = $row;
@@ -251,15 +250,13 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$view->tag      = $this->filters['tag'];
 
 		// Are we banking?
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$view->banking = $upconfig->get('bankAccounts');
 
 		$view->funds = 0;
 		if ($view->banking)
 		{
-			$juser = JFactory::getUser();
-
-			$BTL = new \Hubzero\Bank\Teller($this->database, $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
@@ -280,20 +277,20 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_browse();
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		JFactory::getLanguage()->load('com_answers');
+		Lang::load('com_answers');
 
 		// Incoming
-		$tags   = JRequest::getVar('tags', '');
-		$funds  = JRequest::getInt('funds', 0);
-		$reward = JRequest::getInt('reward', 0);
+		$tags   = Request::getVar('tags', '');
+		$funds  = Request::getInt('funds', 0);
+		$reward = Request::getInt('reward', 0);
 
 		// If offering a reward, do some checks
 		if ($reward)
@@ -301,19 +298,19 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			// Is it an actual number?
 			if (!is_numeric($reward))
 			{
-				JError::raiseError(500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
+				App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 				return;
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds)
 			{
-				JError::raiseError(500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS'));
+				App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 				return;
 			}
 		}
 
 		// Initiate class and bind posted items to database fields
-		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
+		$fields = Request::getVar('question', array(), 'post', 'none', 2);
 
 		$row = new \Components\Answers\Models\Question($fields['id']);
 		if (!$row->bind($fields))
@@ -331,7 +328,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		/*
 		if (!$tags)
 		{
-			$this->setError(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
+			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			return $this->_new($row);
 		}
 		*/
@@ -348,8 +345,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking)
 		{
-			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
-			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
+			$BTL->hold($reward, Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
 		}
 
 		// Add the tags
@@ -357,10 +354,10 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		// Add the tag to link to the resource
 		$tag = ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id);
-		$row->addTag($tag, $this->juser->get('id'), ($this->model->isTool() ? 0 : 1));
+		$row->addTag($tag, User::get('id'), ($this->model->isTool() ? 0 : 1));
 
 		// Get users who need to be notified on every question
-		$config = JComponentHelper::getParams('com_answers');
+		$config = Component::params('com_answers');
 		$apu = $config->get('notify_users', '');
 		$apu = explode(',', $apu);
 		$apu = array_map('trim', $apu);
@@ -400,7 +397,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($apu as $u)
 			{
-				$user = JUser::getInstance($u);
+				$user = User::getInstance($u);
 				if ($user)
 				{
 					$receivers[] = $user->get('id');
@@ -413,28 +410,25 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		if (!empty($receivers))
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
-			$jconfig = JFactory::getConfig();
 			$from = array(
-				'email' => $jconfig->getValue('config.mailfrom'),
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
+				'email'     => Config::get('mailfrom'),
+				'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
 				'multipart' => md5(date('U'))
 			);
 
 			// Build the message subject
-			$subject = JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('new question about content you author or manage');
+			$subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
 
 			// Build the message
-			$juser = JFactory::getUser();
-
 			$eview = new \Hubzero\Mail\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'question_plaintext'
 			));
 			$eview->option   = 'com_answers';
-			$eview->jconfig  = $jconfig;
-			$eview->sitename = $jconfig->getValue('config.sitename');
-			$eview->juser    = $juser;
+			$eview->jconfig  = Config::getRoot();
+			$eview->sitename = Config::get('sitename');
+			$eview->juser    = User::getRoot();
 			$eview->question = $row;
 			$eview->id       = $row->get('id', 0);
 			$eview->boundary = $from['multipart'];
@@ -452,13 +446,13 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers')))
 			{
-				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
+				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
 
 		// Redirect to the question
 		JFactory::getApplication()->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name)
+			Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name)
 		);
 	}
 }

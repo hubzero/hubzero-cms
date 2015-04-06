@@ -51,7 +51,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 	public function onWhatsnewAreas()
 	{
 		return array(
-			'kb' => JText::_('PLG_WHATSNEW_KB')
+			'kb' => Lang::txt('PLG_WHATSNEW_KB')
 		);
 	}
 
@@ -95,7 +95,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 
 		$f_from = " FROM #__faq AS f";
 
-		$f_where = "f.state=1 AND f.created > '$period->cStartDate' AND f.created < '$period->cEndDate' AND f.access IN (" . implode(',', \JFactory::getUser()->getAuthorisedViewLevels()) . ")";
+		$f_where = "f.state=1 AND f.created > '$period->cStartDate' AND f.created < '$period->cEndDate' AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
 
 		$order_by  = " ORDER BY created DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
@@ -114,7 +114,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 
 			foreach ($rows as $key => $row)
 			{
-				$rows[$key]->href = JRoute::_($row->href);
+				$rows[$key]->href = Route::url($row->href);
 			}
 
 			return $rows;

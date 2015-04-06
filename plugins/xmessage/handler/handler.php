@@ -119,7 +119,6 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		// Create the message object
 		$xmessage = new \Hubzero\Message\Message($database);
@@ -130,9 +129,10 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			$daily_limit = intval($this->params->get('daily_limit', 100));
 
 			// First, let's see if they've surpassed their daily limit for sending messages
-			$filters = array();
-			$filters['created_by'] = $juser->get('id');
-			$filters['daily_limit'] = $daily_limit;
+			$filters = array(
+				'created_by'  => User::get('id'),
+				'daily_limit' => $daily_limit
+			);
 
 			$number_sent = $xmessage->getSentMessagesCount($filters);
 
@@ -177,7 +177,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		$xmessage->subject    = $subject;
 		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
 		$xmessage->created    = JFactory::getDate()->toSql();
-		$xmessage->created_by = $juser->get('id');
+		$xmessage->created_by = User::get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
 		$xmessage->group_id   = $group_id;
@@ -198,12 +198,12 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			// Load plugins
 			$dispatcher = JDispatcher::getInstance();
 
-			$mconfig = JComponentHelper::getParams('com_members');
+			$mconfig = Component::params('com_members');
 
 			// Get all the sender's groups
 			if ($mconfig->get('user_messaging', 1) == 1 && !$bypassGroupsCheck)
 			{
-				$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+				$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 				$xgroups = $profile->getGroups('all');
 				$usersgroups = array();
 				if (!empty($xgroups))
@@ -283,7 +283,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						{
 							if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action)))
 							{
-								$this->setError(JText::sprintf('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $action));
+								$this->setError(Lang::txt('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $action));
 							}
 						}
 					}
@@ -309,7 +309,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						// Use the Default in the case the user has no methods
 						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $d)))
 						{
-							$this->setError(JText::sprintf('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $d));
+							$this->setError(Lang::txt('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $d));
 						}
 					}
 				}

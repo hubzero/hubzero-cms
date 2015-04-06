@@ -156,7 +156,7 @@ class TitleIndexMacro extends WikiMacro
 				$url .= '&scope=' . $row->scope;
 				$url .= '&pagename=' . $row->pagename;
 
-				$html .= '<li><a href="' . JRoute::_($url) . '">';
+				$html .= '<li><a href="' . Route::url($url) . '">';
 				$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
 				$html .= '</a></li>' . "\n";
 			}

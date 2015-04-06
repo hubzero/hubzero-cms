@@ -83,12 +83,11 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id);
-		$url = $juri->base() . ltrim($sef, DS);
+		$sef = Route::url('index.php?option=' . $option . '&id=' . $model->resource->id);
+		$url = Request::base() . ltrim($sef, '/');
 
 		// Incoming action
-		$sharewith = JRequest::getVar('sharewith', '');
+		$sharewith = Request::getVar('sharewith', '');
 		if ($sharewith && $sharewith != 'email')
 		{
 			$this->share($sharewith, $url, $model->resource);
@@ -113,12 +112,10 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			$view->resource = $model->resource;
 			$view->_params  = $this->params;
 			$view->url      = $url;
-			if ($this->getError())
+
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			// Return the output
@@ -143,12 +140,10 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			$view->resource = $model->resource;
 			$view->_params  = $this->params;
 			$view->url      = $url;
-			if ($this->getError())
+
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			// Return the output
@@ -168,8 +163,6 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	 */
 	public function share($with, $url, $resource)
 	{
-		$jconfig = JFactory::getConfig();
-
 		$link = '';
 		$description = $resource->introtext
 			? \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250) : '';
@@ -184,8 +177,8 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_RESOURCES_SHARE_VIEWING',
-						$jconfig->getValue('config.sitename'),
+				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_RESOURCES_SHARE_VIEWING',
+						Config::get('sitename'),
 						stripslashes($resource->title)) . ' ' . $url);
 				break;
 
@@ -209,8 +202,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 
 		if ($link)
 		{
-			$app = JFactory::getApplication();
-			$app->redirect($link, '', '');
+			App::redirect($link, '', '');
 		}
 	}
 }

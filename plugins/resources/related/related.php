@@ -52,7 +52,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 	public function &onResourcesSubAreas($resource)
 	{
 		$areas = array(
-			'related' => JText::_('PLG_RESOURCES_RELATED')
+			'related' => Lang::txt('PLG_RESOURCES_RELATED')
 		);
 		return $areas;
 	}
@@ -83,17 +83,16 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				JOIN `#__wiki_page_links` AS wl ON wl.page_id=w.id
 				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->Quote($resource->id);
 
-		$juser = JFactory::getUser();
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			if ($juser->authorize('com_resources', 'manage')
-			 || $juser->authorize('com_groups', 'manage'))
+			if (User::authorize('com_resources', 'manage')
+			 || User::authorize('com_groups', 'manage'))
 			{
 				$sql1 .= '';
 			}
 			else
 			{
-				$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 				$groups = array();
 				if ($ugs && count($ugs) > 0)
 				{
@@ -104,7 +103,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				}
 				$g = "'" . implode("','", $groups) . "'";
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='" . $juser->get('id') . "'))) ";
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='" . User::get('id') . "'))) ";
 			}
 		}
 		else
@@ -120,16 +119,16 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			 . " JOIN #__resource_assoc AS a ON r.id=a.parent_id"
 			 . " LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
 			 . " WHERE r.published=1 AND a.child_id=" . $resource->id . " AND r.type=rt.id AND r.type!=8 ";
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			if ($juser->authorize('com_resources', 'manage')
-			 || $juser->authorize('com_groups', 'manage'))
+			if (User::authorize('com_resources', 'manage')
+			 || User::authorize('com_groups', 'manage'))
 			{
 				$sql2 .= '';
 			}
 			else
 			{
-				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by='" . $juser->get('id') . "'))) ";
+				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by='" . User::get('id') . "'))) ";
 			}
 		}
 		else
@@ -160,12 +159,10 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		$view->option   = $option;
 		$view->resource = $resource;
 		$view->related  = $database->loadObjectList();
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Return the output

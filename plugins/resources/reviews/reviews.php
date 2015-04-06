@@ -55,7 +55,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		$this->infolink = '/kb/points/';
-		$this->banking = Component::params('com_members')->get('bankAccounts');
+		$this->banking  = Component::params('com_members')->get('bankAccounts');
 	}
 
 	/**
@@ -70,7 +70,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		if ($model->type->params->get('plg_reviews') && $model->access('view-all'))
 		{
-			$areas['reviews'] = JText::_('PLG_RESOURCES_REVIEWS');
+			$areas['reviews'] = Lang::txt('PLG_RESOURCES_REVIEWS');
 		}
 
 		return $areas;
@@ -84,7 +84,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function onResourcesRateItem($option)
 	{
-		$id = JRequest::getInt('rid', 0);
+		$id = Request::getInt('rid', 0);
 
 		$arr = array(
 			'area'     => $this->_name,
@@ -168,9 +168,9 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			if (!$h->loggedin)
 			{
 				// Instantiate a view
-				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=' . $this->_name, false, true), 'server');
-				JFactory::getApplication()->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+				$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=' . $this->_name, false, true), 'server');
+				App::redirect(
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
 				return;
 			}
@@ -222,8 +222,8 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			$url  = 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name;
 
 			$view->reviews = $reviews;
-			$view->url     = JRoute::_($url);
-			$view->url2    = JRoute::_($url . '&action=addreview#reviewform');
+			$view->url     = Route::url($url);
+			$view->url2    = Route::url($url . '&action=addreview#reviewform');
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
@@ -297,8 +297,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	{
 		if ($this->_redirect != NULL)
 		{
-			$app = JFactory::getApplication();
-			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
+			App::redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
 
@@ -310,15 +309,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	public function execute()
 	{
 		// Incoming action
-		$action = JRequest::getVar('action', '');
+		$action = Request::getVar('action', '');
 
 		$this->loggedin = true;
 
 		if ($action)
 		{
 			// Check the user's logged-in status
-			$juser = JFactory::getUser();
-			if ($juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->loggedin = false;
 				return;
@@ -346,27 +344,25 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	private function savereply()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$juser = JFactory::getUser();
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Is the user logged in?
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Trim and addslashes all posted items
-		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		if (!$id)
 		{
 			// Cannot proceed
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
@@ -385,7 +381,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created    = ($row->id ? $row->created : JFactory::getDate()->toSql());
 		$row->state      = ($row->id ? $row->state : 0);
-		$row->created_by = ($row->id ? $row->created_by : $juser->get('id'));
+		$row->created_by = ($row->id ? $row->created_by : User::get('id'));
 
 		// Check for missing (required) fields
 		if (!$row->check())
@@ -413,19 +409,19 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource =& $this->resource;
 
 		// Incoming
-		$replyid = JRequest::getInt('comment', 0);
+		$replyid = Request::getInt('comment', 0);
 
 		// Do we have a review ID?
 		if (!$replyid)
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
 		// Do we have a resource ID?
 		if (!$resource->id)
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -434,14 +430,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$reply->load($replyid);
 
 		// Permissions check
-		if ($reply->created_by != JFactory::getUser()->get('id'))
+		if ($reply->created_by != User::get('id'))
 		{
 			return;
 		}
 
 		$reply->setState($replyid, 2);
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
+		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
 		$this->redirect();
 	}
 
@@ -453,14 +449,13 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	public function rateitem()
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
-		$id   = JRequest::getInt('refid', 0);
-		$ajax = JRequest::getInt('no_html', 0);
-		$cat  = JRequest::getVar('category', 'review');
-		$vote = JRequest::getVar('vote', '');
-		$ip   = JRequest::ip();
-		$rid  = JRequest::getInt('id', 0);
+		$id   = Request::getInt('refid', 0);
+		$ajax = Request::getInt('no_html', 0);
+		$cat  = Request::getVar('category', 'review');
+		$vote = Request::getVar('vote', '');
+		$ip   = Request::ip();
+		$rid  = Request::getInt('id', 0);
 
 		if (!$id)
 		{
@@ -469,24 +464,24 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Is the user logged in?
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_VOTE'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_VOTE'));
 			return;
 		}
 
 		// Load answer
 		$rev = new \Components\Resources\Tables\Review($database);
 		$rev->load($id);
-		$voted = $rev->getVote($id, $cat, $juser->get('id'));
+		$voted = $rev->getVote($id, $cat, User::get('id'));
 
-		if (!$voted && $vote) // && $rev->user_id != $juser->get('id'))
+		if (!$voted && $vote) // && $rev->user_id != User::get('id'))
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 			$v = new Vote($database);
 			$v->referenceid = $id;
 			$v->category    = $cat;
-			$v->voter       = $juser->get('id');
+			$v->voter       = User::get('id');
 			$v->ip          = $ip;
 			$v->voted       = JFactory::getDate()->toSql();
 			$v->helpful     = $vote;
@@ -505,7 +500,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		// update display
 		if ($ajax)
 		{
-			$response = $rev->getRating($id, $juser->get('id'));
+			$response = $rev->getRating($id, User::get('id'));
 
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -523,7 +518,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			exit();
 		}
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews');
+		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews');
 	}
 
 	/**
@@ -534,10 +529,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	public function editreview()
 	{
 		// Is the user logged in?
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -547,21 +541,21 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		if (!$resource->id)
 		{
 			// No - fail! Can't do anything else without an ID
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
 		// Incoming
-		$myr = JRequest::getInt('comment', 0);
+		$myr = Request::getInt('comment', 0);
 
 		$database = JFactory::getDBO();
 
 		$review = new \Components\Resources\Tables\Review($database);
-		$review->loadUserReview($resource->id, $juser->get('id'));
+		$review->loadUserReview($resource->id, User::get('id'));
 		if (!$review->id)
 		{
 			// New review, get the user's ID
-			$review->user_id = $juser->get('id');
+			$review->user_id = User::get('id');
 			$review->resource_id = $resource->id;
 			$review->tags = '';
 		}
@@ -589,13 +583,13 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	public function savereview()
 	{
 		// Incoming
-		$resource_id = JRequest::getInt('resource_id', 0);
+		$resource_id = Request::getInt('resource_id', 0);
 
 		// Do we have a resource ID?
 		if (!$resource_id)
 		{
 			// No ID - fail! Can't do anything else without an ID
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -610,7 +604,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Perform some text cleaning, etc.
-		$row->id        = JRequest::getInt('reviewid', 0);
+		$row->id        = Request::getInt('reviewid', 0);
 		if (!$row->id)
 		{
 			$row->state = 1;
@@ -638,7 +632,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource->updateRating();
 
 		// Process tags
-		$tags = trim(JRequest::getVar('review_tags', ''));
+		$tags = trim(Request::getVar('review_tags', ''));
 		if ($tags)
 		{
 			$rt = new \Components\Resources\Helpers\Tags($resource_id);
@@ -650,14 +644,10 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$helper->getContributorIDs();
 		$users = $helper->contributorIDs;
 
-		// Get the HUB configuration
-		$jconfig = JFactory::getConfig();
-
 		// Build the subject
-		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
+		$subject = Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
 
 		// Message
-		$juser = JFactory::getUser();
 		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'resources',
@@ -666,22 +656,23 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			)
 		);
 		$eview->option   = $this->_option;
-		$eview->juser    = $juser;
+		$eview->juser    = User::getRoot();
 		$eview->resource = $resource;
 		$eview->review   = $row;
 		$message = $eview->loadTemplate();
 
 		// Build the "from" data for the e-mail
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from = array(
+			'name'  => Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS'),
+			'email' => Config::get('mailfrom')
+		);
 
 		// Send message
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher = JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option)))
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
 		}
 	}
 
@@ -696,19 +687,19 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource =& $this->resource;
 
 		// Incoming
-		$reviewid = JRequest::getInt('comment', 0);
+		$reviewid = Request::getInt('comment', 0);
 
 		// Do we have a review ID?
 		if (!$reviewid)
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_ID'));
 			return;
 		}
 
 		// Do we have a resource ID?
 		if (!$resource->id)
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -716,7 +707,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$review->load($reviewid);
 
 		// Permissions check
-		if ($review->user_id != JFactory::getUser()->get('id'))
+		if ($review->user_id != User::get('id'))
 		{
 			return;
 		}
@@ -744,7 +735,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource->calculateRating();
 		$resource->updateRating();
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
+		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
 		$this->redirect();
 	}
 }

@@ -54,7 +54,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		if ($model->type->params->get('plg_' . $this->_name) && $model->isTool())
 		{
 			// Only show tab for tools
-			$areas['usage'] = JText::_('PLG_RESOURCES_USAGE');
+			$areas['usage'] = Lang::txt('PLG_RESOURCES_USAGE');
 		}
 
 		return $areas;
@@ -104,18 +104,18 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		$tables = $database->getTableList();
 		$table  = $database->getPrefix() . 'resource_stats_tools';
 
-		$url = JRoute::_('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name);
+		$url = Route::url('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name);
 
 		if (!in_array($table, $tables))
 		{
-			$arr['html'] = '<p class="error">'. JText::_('PLG_RESOURCES_USAGE_MISSING_TABLE') . '</p>';
-			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::_('PLG_RESOURCES_USAGE_DETAILED') . '</a></p>';
+			$arr['html'] = '<p class="error">'. Lang::txt('PLG_RESOURCES_USAGE_MISSING_TABLE') . '</p>';
+			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt('PLG_RESOURCES_USAGE_DETAILED') . '</a></p>';
 			return $arr;
 		}
 
 		// Get/set some variables
-		$dthis = JRequest::getVar('dthis', date('Y') . '-' . date('m'));
-		$period = JRequest::getInt('period', $this->params->get('period', 14));
+		$dthis = Request::getVar('dthis', date('Y') . '-' . date('m'));
+		$period = Request::getInt('period', $this->params->get('period', 14));
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
 		if ($model->isTool())
@@ -134,15 +134,15 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$action = JRequest::getVar('action', '');
+			$action = Request::getVar('action', '');
 			if ($action == 'top')
 			{
-				$this->getTopValues($model->resource->id, JRequest::getVar('datetime', '0000-00-00 00:00:00'));
+				$this->getTopValues($model->resource->id, Request::getVar('datetime', '0000-00-00 00:00:00'));
 				return;
 			}
 			if ($action == 'overview')
 			{
-				$this->getValues($model->resource->id, JRequest::getInt('period', 13));
+				$this->getValues($model->resource->id, Request::getInt('period', 13));
 				return;
 			}
 
@@ -181,15 +181,15 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			}
 			if ($model->isTool())
 			{
-				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $stats->users) . '</a></p>';
+				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $stats->users) . '</a></p>';
 			}
 			else
 			{
-				$arr['metadata'] = '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</p>';
+				$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</p>';
 			}
 			if (isset($clusters->users) && $clusters->users && isset($clusters->classes) && $clusters->classes)
 			{
-				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes) . '</p>';
+				$arr['metadata'] .= '<p class="usage">' . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes) . '</p>';
 			}
 		}
 
@@ -206,19 +206,19 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	{
 		if ($time < 60)
 		{
-			$data = JText::sprintf('PLG_RESOURCES_USAGE_SECONDS', round($time, 2));
+			$data = Lang::txt('PLG_RESOURCES_USAGE_SECONDS', round($time, 2));
 		}
 		else if ($time > 60 && $time < 3600)
 		{
-			$data = JText::sprintf('PLG_RESOURCES_USAGE_MINUTES', round(($time/60), 2));
+			$data = Lang::txt('PLG_RESOURCES_USAGE_MINUTES', round(($time/60), 2));
 		}
 		else if ($time >= 3600 && $time < 86400)
 		{
-			$data = JText::sprintf('PLG_RESOURCES_USAGE_HOURS', round(($time/3600), 2));
+			$data = Lang::txt('PLG_RESOURCES_USAGE_HOURS', round(($time/3600), 2));
 		}
 		else if ($time >= 86400)
 		{
-			$data = JText::sprintf('PLG_RESOURCES_USAGE_DAYS', round(($time/86400), 2));
+			$data = Lang::txt('PLG_RESOURCES_USAGE_DAYS', round(($time/86400), 2));
 		}
 
 		return $data;
@@ -346,7 +346,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public function getTopValues($id, $datetime)
 	{
-		$period = JRequest::getInt('period', 14);
+		$period = Request::getInt('period', 14);
 
 		$colors = array(
 			$this->params->get('pie_chart_color1', '#7c7c7c'),

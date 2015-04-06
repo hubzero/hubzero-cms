@@ -56,7 +56,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		if ($model->type->params->get('plg_' . $this->_name)
 			&& $model->access('view-all'))
 		{
-			$areas['wishlist'] = JText::_('PLG_RESOURCES_WISHLIST');
+			$areas['wishlist'] = Lang::txt('PLG_RESOURCES_WISHLIST');
 		}
 
 		return $areas;
@@ -93,13 +93,11 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$this->config = JComponentHelper::getParams('com_wishlist');
+		$this->config = Component::params('com_wishlist');
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_wishlist');
+		Lang::load('com_wishlist');
 
 		$database = JFactory::getDBO();
-		$juser    = JFactory::getUser();
 
 		$option = 'com_wishlist';
 		$cat    = 'resource';
@@ -134,7 +132,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			 && $model->resource->standalone == 1
 			 && $model->resource->published == 1)
 			{
-				$rtitle = ($model->istool()) ? JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->resource->alias : JText::_('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->resource->id;
+				$rtitle = ($model->istool()) ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->resource->alias : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->resource->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $model->resource->title);
 			}
 		}
@@ -144,7 +142,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 		if (!$wishlist)
 		{
-			$html = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
+			$html = '<p class="error">' . Lang::txt('ERROR_WISHLIST_NOT_FOUND') . '</p>';
 		}
 		else
 		{
@@ -152,25 +150,25 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			$owners = $objOwner->get_owners($id, $this->config->get('group'), $wishlist);
 
 			// Authorize admins & list owners
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
-				if ($juser->authorize($option, 'manage'))
+				if (User::authorize($option, 'manage'))
 				{
 					$admin = 1;
 				}
-				if (isset($owners['individuals']) && in_array($juser->get('id'), $owners['individuals']))
+				if (isset($owners['individuals']) && in_array(User::get('id'), $owners['individuals']))
 				{
 					$admin = 2;
 				}
-				else if (isset($owners['advisory']) && in_array($juser->get('id'), $owners['advisory']))
+				else if (isset($owners['advisory']) && in_array(User::get('id'), $owners['advisory']))
 				{
 					$admin = 3;
 				}
 			}
 			else if (!$wishlist->public && $rtrn != 'metadata')
 			{
-				// not authorizedå
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+				// not authorized
+				App::abort(403, Lang::txt('ALERTNOTAUTH'));
 				return;
 			}
 
@@ -179,12 +177,12 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			if ($rtrn != 'metadata')
 			{
 				// Get wishes
-				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
+				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getRoot());
 
-				$title = ($admin) ?  JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
+				$title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit'])
 				{
-					$title.= ' (<a href="' . JRoute::_('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . JText::_('PLG_RESOURCES_WISHLIST_VIEW_ALL') . '</a>)';
+					$title.= ' (<a href="' . Route::url('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . Lang::txt('PLG_RESOURCES_WISHLIST_VIEW_ALL') . '</a>)';
 				}
 				else
 				{
@@ -208,12 +206,10 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 				$view->filters  = $filters;
 				$view->admin    = $admin;
 				$view->config   = $this->config;
-				if ($this->getError())
+
+				foreach ($this->getErrors() as $error)
 				{
-					foreach ($this->getErrors() as $error)
-					{
-						$view->setError($error);
-					}
+					$view->setError($error);
 				}
 
 				// Return the output

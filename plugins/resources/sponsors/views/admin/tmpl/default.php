@@ -30,13 +30,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::addNew();
-JToolBarHelper::deleteList();
+Toolbar::addNew();
+Toolbar::deleteList();
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=sponsors" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=sponsors'); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
-		<caption><?php echo JText::_('PLG_RESOURCES_SPONSORS'); ?></caption>
+		<caption><?php echo Lang::txt('PLG_RESOURCES_SPONSORS'); ?></caption>
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
@@ -62,18 +62,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		case '2':
 			$task = 'publish';
-			$alt = JText::_('JTRASHED');
+			$alt = Lang::txt('JTRASHED');
 			$cls = 'trashed';
 		break;
 		case '1':
 			$task = 'unpublish';
-			$alt = JText::_('JPUBLISHED');
+			$alt = Lang::txt('JPUBLISHED');
 			$cls = 'publish';
 		break;
 		case '0':
 		default:
 			$task = 'publish';
-			$alt = JText::_('JUNPUBLISHED');
+			$alt = Lang::txt('JUNPUBLISHED');
 			$cls = 'unpublish';
 		break;
 	}
@@ -86,7 +86,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=sponsors&amp;action=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=sponsors&action=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->title); ?>
 					</a>
 				</td>
@@ -94,7 +94,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->alias); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=sponsors&amp;action=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('PLG_RESOURCES_SPONSORS_SET_TO', $task); ?>">
+					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=sponsors&action=' . $task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_SPONSORS_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>

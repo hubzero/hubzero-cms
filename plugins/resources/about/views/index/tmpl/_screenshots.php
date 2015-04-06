@@ -39,7 +39,7 @@ $versionid = (isset($this->versionid) ? $this->versionid : 0);
 $path = \Components\Resources\Helpers\html::build_path($this->created, $this->id, '');
 
 // Get contribtool parameters
-$tconfig = JComponentHelper::getParams('com_tools');
+$tconfig = Component::params('com_tools');
 $allowversions = $tconfig->get('screenshot_edit');
 
 if ($versionid && $allowversions)
@@ -134,7 +134,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 		{
 			$g++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO') . ' #' . $g;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : Lang::txt('DEMO') . ' #' . $g;
 			$els .= $this->slidebar ? '' : '<li>';
 			$els .= ' <a class="popup" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
 			$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
@@ -143,7 +143,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		else
 		{
 			$k++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT') . ' #' . $k;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: Lang::txt('SCREENSHOT') . ' #' . $k;
 			$els .= $this->slidebar ? '' : '<li>';
 			$els .= ' <a rel="lightbox" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
 			$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';

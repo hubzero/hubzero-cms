@@ -51,7 +51,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	public function onWhatsnewAreas()
 	{
 		return array(
-			'content' => JText::_('PLG_WHATSNEW_CONTENT')
+			'content' => Lang::txt('PLG_WHATSNEW_CONTENT')
 		);
 	}
 
@@ -110,7 +110,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($rows as $key => $row)
 				{
-					$path = JRoute::_($row->href);
+					$path = Route::url($row->href);
 
 					preg_match_all("/\{xhub:\s*[^\}]*\}/i", $rows[$key]->text, $matches, PREG_SET_ORDER);
 					if ($matches)
@@ -154,11 +154,9 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row, $period)
 	{
-		$juri = JURI::getInstance();
-
 		if (strstr($row->href, 'index.php'))
 		{
-			$row->href = JRoute::_($row->href);
+			$row->href = Route::url($row->href);
 		}
 		if (substr($row->href,0,1) == '/')
 		{
@@ -171,7 +169,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . $row->href . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . $row->href . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

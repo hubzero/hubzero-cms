@@ -51,7 +51,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 	public function onWhatsnewAreas()
 	{
 		return array(
-			'wiki' => JText::_('PLG_WHATSNEW_WIKI')
+			'wiki' => Lang::txt('PLG_WHATSNEW_WIKI')
 		);
 	}
 
@@ -95,9 +95,8 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 		$filters['enddate']    = $period->cEndDate;
 		$filters['sortby']     = 'date';
 
-		$juser = JFactory::getUser();
 		$filters['authorized'] = false;
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$filters['authorized'] = true;
 		}
@@ -131,11 +130,11 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 				{
 					if ($row->area != '' && $row->category != '')
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
 					}
 					else
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
 					}
 					$rows[$key]->text = strip_tags($rows[$key]->itext);
 					if ($row->title == '')

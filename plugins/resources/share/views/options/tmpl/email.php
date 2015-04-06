@@ -36,13 +36,13 @@ $app = JFactory::getApplication();
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title><?php echo JText::_('Email this resource'); ?></title>
+		<title><?php echo Lang::txt('Email this resource'); ?></title>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo JURI::base(true); ?>/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Request::base(true); ?>/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
 
-		<script type="text/javascript" src="<?php echo JURI::base(true); ?>/media/system/js/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo Request::base(true); ?>/media/system/js/jquery.js"></script>
 	</head>
 	<body id="small-page">
 	</body>

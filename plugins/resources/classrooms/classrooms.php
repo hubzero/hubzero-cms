@@ -53,7 +53,7 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 
 		if ($model->isTool() && self::any($model->resource->alias))
 		{
-			$area['classrooms'] = JText::_('PLG_RESOURCES_CLASSROOMS');
+			$area['classrooms'] = Lang::txt('PLG_RESOURCES_CLASSROOMS');
 		}
 
 		return $area;
@@ -130,7 +130,7 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$arr['html'] = array('<div id="no-usage"><p class="warning">' . JText::_('PLG_RESOURCES_CLASSROOMS_NO_DATA_FOUND') . '</p></div>');
+			$arr['html'] = array('<div id="no-usage"><p class="warning">' . Lang::txt('PLG_RESOURCES_CLASSROOMS_NO_DATA_FOUND') . '</p></div>');
 
 			if (self::any($model->resource->alias))
 			{

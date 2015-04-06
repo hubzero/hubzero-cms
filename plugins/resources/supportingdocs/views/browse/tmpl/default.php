@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
 if ($this->model->isTool())
@@ -46,7 +45,7 @@ else
 }
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_RESOURCES_SUPPORTINGDOCS'); ?>
+	<?php echo Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS'); ?>
 </h3>
 
 <div id="supportingdocs" class="supportingdocs">
@@ -58,7 +57,7 @@ else
 			$base = $this->model->params->get('uploadpath');
 			foreach ($children as $child)
 			{
-				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest')))
+				if ($child->access == 0 || ($child->access == 1 && !User::isGuest()))
 				{
 					$ftype = JFile::getExt($child->path);
 					if (substr($child->path, 0, 4) == 'http')
@@ -194,7 +193,7 @@ else
 					{
 						if (!preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $child->path))
 						{
-							/*JComponentHelper::getParams('com_tools');
+							/*Component::params('com_tools');
 							$base_path = $config->get('uploadpath', '/site/resources');
 							if ($base_path)
 							{
@@ -257,6 +256,6 @@ else
 			?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('PLG_RESOURCES_SUPPORTINGDOCS_NONE'); ?></p>
+		<p><?php echo Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS_NONE'); ?></p>
 	<?php } ?>
 </div><!-- / .supportingdocs -->

@@ -36,16 +36,16 @@ $cls = 'even';
 $this->css();
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_RESOURCES_VERSIONS'); ?>
+	<?php echo Lang::txt('PLG_RESOURCES_VERSIONS'); ?>
 </h3>
 <?php if ($this->rows) { ?>
 	<table class="resource-versions">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_VERSION'); ?></th>
-				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_RELEASED'); ?></th>
-				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_DOI_HANDLE'); ?></th>
-				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_PUBLISHED'); ?></th>
+				<th><?php echo Lang::txt('PLG_RESOURCES_VERSIONS_VERSION'); ?></th>
+				<th><?php echo Lang::txt('PLG_RESOURCES_VERSIONS_RELEASED'); ?></th>
+				<th><?php echo Lang::txt('PLG_RESOURCES_VERSIONS_DOI_HANDLE'); ?></th>
+				<th><?php echo Lang::txt('PLG_RESOURCES_VERSIONS_PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -69,17 +69,17 @@ $this->css();
 		?>
 			<tr class="<?php echo $cls; ?>">
 				<td>
-					<?php echo ($v->version) ? '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev=' . $v->revision) . '">' . $v->version . '</a>' : 'N/A'; ?>
+					<?php echo ($v->version) ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev=' . $v->revision) . '">' . $v->version . '</a>' : 'N/A'; ?>
 				</td>
 				<td>
-					<?php echo ($v->released && $v->released != '0000-00-00 00:00:00') ? JHTML::_('date', $v->released, JText::_('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+					<?php echo ($v->released && $v->released != '0000-00-00 00:00:00') ? JHTML::_('date', $v->released, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
 				</td>
 				<td>
 					<?php echo ($handle) ? $handle : 'N/A'; ?>
 				</td>
 				<td>
 					<span class="version-state <?php echo ($v->state=='1') ? 'toolpublished' : 'toolunpublished'; ?>">
-						<?php echo ($v->state=='1') ? JText::_('PLG_RESOURCES_VERSIONS_YES') : JText::_('PLG_RESOURCES_VERSIONS_NO'); ?>
+						<?php echo ($v->state=='1') ? Lang::txt('PLG_RESOURCES_VERSIONS_YES') : Lang::txt('PLG_RESOURCES_VERSIONS_NO'); ?>
 					</span>
 				</td>
 			</tr>
@@ -87,5 +87,5 @@ $this->css();
 		</tbody>
 	</table>
 <?php } else { ?>
-	<p><?php echo JText::_('PLG_RESOURCES_VERSIONS_NO_VERIONS_FOUND'); ?></p>
+	<p><?php echo Lang::txt('PLG_RESOURCES_VERSIONS_NO_VERIONS_FOUND'); ?></p>
 <?php } ?>

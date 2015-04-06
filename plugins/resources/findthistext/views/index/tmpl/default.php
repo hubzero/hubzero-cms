@@ -45,15 +45,15 @@ if (count($matches) > 0)
 }
 ?>
 
-<h3><?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT'); ?></h3>
-<p><?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_DESC'); ?></p>
+<h3><?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT'); ?></h3>
+<p><?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_DESC'); ?></p>
 
 <table class="find">
 	<tbody>
 		<?php if (isset($resourceFields['doi']) && $resourceFields['doi'] != '') : ?>
 			<tr>
 				<th>
-					<?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_FIELD_DOI_LABEL'); ?>
+					<?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_FIELD_DOI_LABEL'); ?>
 				</th>
 				<td>
 					<?php
@@ -69,10 +69,10 @@ if (count($matches) > 0)
 		<?php if ($this->openurl) : ?>
 			<tr>
 				<th>
-					<?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_FIELD_LOCALLIBRARY_LABEL'); ?>
+					<?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_FIELD_LOCALLIBRARY_LABEL'); ?>
 				</th>
 				<td>
-					<?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_FIELD_LOCALLIBRARY_DESC'); ?>
+					<?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_FIELD_LOCALLIBRARY_DESC'); ?>
 					<?php
 						$text  = $this->openurl->text;
 						$image = "<img src=\"{$this->openurl->icon}\" alt=\"\" />";
@@ -101,7 +101,7 @@ if (count($matches) > 0)
 		<?php endif; ?>
 		<tr>
 			<th>
-				<?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_FIELD_GOOGLESCHOLAR_LABEL'); ?>
+				<?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_FIELD_GOOGLESCHOLAR_LABEL'); ?>
 			</th>
 			<td>
 				<?php
@@ -122,14 +122,14 @@ if (count($matches) > 0)
 		</tr>
 		<tr>
 			<th>
-				<?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_FIELD_OTHERSOURCES_LABEL'); ?>
+				<?php echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_FIELD_OTHERSOURCES_LABEL'); ?>
 			</th>
 			<td>
 				<ul>
 					<li>
 						<?php
 							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+',  $this->model->resource->title);
-							echo JText::sprintf('PLG_RESOURCES_FINDTHISTEXT_SOURCES_DEEPDYVE', $url);
+							echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_SOURCES_DEEPDYVE', $url);
 						?>
 					</li>
 				</ul>

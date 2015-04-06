@@ -56,7 +56,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 		if ($model->type->params->get('plg_about', 0)
 			&& $model->access('view'))
 		{
-			$areas['about'] = JText::_('PLG_RESOURCES_ABOUT');
+			$areas['about'] = Lang::txt('PLG_RESOURCES_ABOUT');
 		}
 
 		return $areas;
@@ -108,7 +108,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 			$view->option   = $option;
 			$view->model    = $model;
 			$view->database = JFactory::getDBO();
-			$view->juser    = JFactory::getUser();
+			$view->juser    = User::getRoot();
 			$view->plugin   = $this->params;
 
 			// Return the output

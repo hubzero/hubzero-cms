@@ -55,7 +55,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 
 		if ($model->isTool() && $model->type->params->get('plg_versions'))
 		{
-			$areas['versions'] = JText::_('PLG_RESOURCES_VERSIONS');
+			$areas['versions'] = Lang::txt('PLG_RESOURCES_VERSIONS');
 		}
 
 		return $areas;
@@ -111,7 +111,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			);
 
 			// Get contribtool params
-			$tconfig = JComponentHelper::getParams('com_tools');
+			$tconfig = Component::params('com_tools');
 			$view->tconfig = $tconfig;
 
 			// Pass the view some info
