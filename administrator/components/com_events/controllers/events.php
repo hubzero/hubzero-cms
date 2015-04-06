@@ -498,11 +498,16 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$params = JRequest::getVar('params', '', 'post');
 		if (is_array($params))
 		{
-			//email is reaquired
+			//email is required
 			$params['show_email'] = 1;
 			$p = new JParameter(null);
 			$p->loadArray($params);
 			$row->params = $p->toString();
+		}
+
+		if ($row->catid == 0)
+		{
+			JError::raiseError(500, 'EVENTS_REQUIRED_CATEGORY');
 		}
 
 		if (!$row->check())

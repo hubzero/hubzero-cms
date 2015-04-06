@@ -41,7 +41,7 @@ var HUB = {};
 			</div>
 
 			<div class="input-wrap">
-				<label for="catid"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:</label><br />
+				<label for="catid"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:<span class="required">required</span></label><br />
 				<?php echo EventsHtml::buildCategorySelect($this->row->catid, '', 0, $this->option);?></td>
 			</div>
 
