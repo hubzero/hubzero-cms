@@ -80,7 +80,7 @@ class StorefrontModelMemberships
 	public function getMembershipInfo($crtId, $pId)
 	{
 		$now = JFactory::getDate()->toSql();
-        $sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
+		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$membershipInfo = $this->_db->loadAssoc();
@@ -179,25 +179,25 @@ class StorefrontModelMemberships
 		}
 	}
 
-    /**
-     * Lookup membership info by user (almost identical as above)
-     *
-     * @param  int			user ID
-     * @param  int			membership product ID
-     * @return array		membership info
-     */
-    public static function getMembershipInfoByUser($uId, $pId)
-    {
-        $db = JFactory::getDBO();
+	/**
+	 * Lookup membership info by user (almost identical as above)
+	 *
+	 * @param  int			user ID
+	 * @param  int			membership product ID
+	 * @return array		membership info
+	 */
+	public static function getMembershipInfoByUser($uId, $pId)
+	{
+		$db = JFactory::getDBO();
 
-        $now = JFactory::getDate()->toSql();
-        $sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
-        $sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
-        $sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);
-        $db->setQuery($sql);
-        $membershipInfo = $db->loadAssoc();
+		$now = JFactory::getDate()->toSql();
+		$sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
+		$sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
+		$sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);
+		$db->setQuery($sql);
+		$membershipInfo = $db->loadAssoc();
 
-        return $membershipInfo;
-    }
+		return $membershipInfo;
+	}
 
 }

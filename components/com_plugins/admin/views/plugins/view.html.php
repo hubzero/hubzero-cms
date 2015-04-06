@@ -29,13 +29,15 @@ class PluginsViewPlugins extends JViewLegacy
 		$this->state		= $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
 			// Check if there are no matching items
-		if(!count($this->items)){
+		if (!count($this->items))
+		{
 			JFactory::getApplication()->enqueueMessage(
 				Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS')
 				, 'warning'
@@ -58,11 +60,13 @@ class PluginsViewPlugins extends JViewLegacy
 
 		Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGINS'), 'plugin');
 
-		if ($canDo->get('core.edit')) {
+		if ($canDo->get('core.edit'))
+		{
 			Toolbar::editList('plugin.edit');
 		}
 
-		if ($canDo->get('core.edit.state')) {
+		if ($canDo->get('core.edit.state'))
+		{
 			Toolbar::divider();
 			Toolbar::publish('plugins.publish', 'JTOOLBAR_ENABLE', true);
 			Toolbar::unpublish('plugins.unpublish', 'JTOOLBAR_DISABLE', true);
@@ -70,7 +74,8 @@ class PluginsViewPlugins extends JViewLegacy
 			Toolbar::checkin('plugins.checkin');
 		}
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			Toolbar::divider();
 			Toolbar::preferences('com_plugins');
 		}

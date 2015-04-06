@@ -73,7 +73,7 @@ class StorefrontModelCoupon
 
 	public function getCode()
 	{
-		if(!empty($this->data->code))
+		if (!empty($this->data->code))
 		{
 			return $this->data->code;
 		}
@@ -94,7 +94,7 @@ class StorefrontModelCoupon
 
 	public function getDescription()
 	{
-		if(!empty($this->data->description))
+		if (!empty($this->data->description))
 		{
 			return $this->data->description;
 		}
@@ -120,7 +120,7 @@ class StorefrontModelCoupon
 
 	public function getUseLimit()
 	{
-		if(!empty($this->data->useLimit))
+		if (!empty($this->data->useLimit))
 		{
 			return $this->data->useLimit;
 		}
@@ -146,7 +146,7 @@ class StorefrontModelCoupon
 
 	public function getObjectLimit()
 	{
-		if(!empty($this->data->objectLimit))
+		if (!empty($this->data->objectLimit))
 		{
 			return $this->data->objectLimit;
 		}
@@ -208,7 +208,7 @@ class StorefrontModelCoupon
 
 	public function getExpiration()
 	{
-		if(!empty($this->data->expires))
+		if (!empty($this->data->expires))
 		{
 			return $this->data->expires;
 		}
@@ -236,7 +236,7 @@ class StorefrontModelCoupon
 
 	public function getObjectType()
 	{
-		if(!empty($this->data->objectType))
+		if (!empty($this->data->objectType))
 		{
 			return $this->data->objectType;
 		}
@@ -278,7 +278,7 @@ class StorefrontModelCoupon
 
 	public function getAction()
 	{
-		if(!empty($this->data->action))
+		if (!empty($this->data->action))
 		{
 			return $this->data->action;
 		}
@@ -308,7 +308,7 @@ class StorefrontModelCoupon
 
 	public function getObjects()
 	{
-		if(!empty($this->data->objects))
+		if (!empty($this->data->objects))
 		{
 			return $this->data->objects;
 		}
