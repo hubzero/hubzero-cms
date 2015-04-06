@@ -34,25 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 class plgAuthenticationFacebook extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 */
-	function plgAuthenticationJoomla(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * Perform logout (not currently used)
 	 *
-	 * @access	public
-	 * @return	void
+	 * @return  void
 	 */
 	public function logout()
 	{
@@ -64,14 +48,12 @@ class plgAuthenticationFacebook extends JPlugin
 	/**
 	 * Check login status of current user with regards to facebook
 	 *
-	 * @access	public
-	 * @return	Array $status
+	 * @return  array  $status
 	 */
 	public function status()
 	{
 		// Get the hub url
-		$juri       = JURI::getInstance();
-		$service    = trim($juri->base(), DS);
+		$service    = trim(Request::base(), DS);
 		$channelUrl = $service . DS . 'channel.phtml';
 
 		// This can only currently be done using the Facebook JS API
@@ -114,18 +96,15 @@ class plgAuthenticationFacebook extends JPlugin
 	 * Method to call when redirected back from facebook after authentication
 	 * Grab the return URL if set and handle denial of app privileges from facebook
 	 *
-	 * @access	public
-	 * @param   object	$credentials
-	 * @param 	object	$options
-	 * @return	void
+	 * @param   object  $credentials
+	 * @param   object  $options
+	 * @return  void
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$app = JFactory::getApplication();
-
 		$return = '';
 		$b64dreturn = '';
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!JURI::isInternal($b64dreturn))
@@ -137,33 +116,34 @@ class plgAuthenticationFacebook extends JPlugin
 		$options['return'] = $b64dreturn;
 
 		// Check to make sure they didn't deny our application permissions
-		if (JRequest::getVar('error', NULL))
+		if (Request::getVar('error', NULL))
 		{
 			// User didn't authorize our app or clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . $return),
-				'To log in via Facebook, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				'To log in via Facebook, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 		}
 	}
 
 	/**
 	 * Method to setup facebook params and redirect to facebook auth URL
 	 *
-	 * @access	public
-	 * @param   object	$view	view object
-	 * @param 	object	$tpl	template object
-	 * @return	void
+	 * @param   object  $view  view object
+	 * @param   object  $tpl   template object
+	 * @return  void
 	 */
 	public function display($view, $tpl)
 	{
-		$app = JFactory::getApplication();
 		$ver = $this->params->get('api_version', 1.0);
 
 		// Set up the config for the facebook sdk instance
-		$config               = array();
-		$config['appId']      = $this->params->get('app_id');
-		$config['secret']     = $this->params->get('app_secret');
-		$config['fileUpload'] = false;
+		$config = array(
+			'appId'      => $this->params->get('app_id'),
+			'secret'     => $this->params->get('app_secret'),
+			'fileUpload' => false
+		);
 
 		// Set up params for the login call
 		$params = array(
@@ -191,17 +171,16 @@ class plgAuthenticationFacebook extends JPlugin
 		}
 
 		// Redirect to the login URL
-		$app->redirect($loginUrl);
+		App::redirect($loginUrl);
 	}
 
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
 	public function onAuthenticate($credentials, $options, &$response)
 	{
@@ -211,11 +190,10 @@ class plgAuthenticationFacebook extends JPlugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
@@ -223,9 +201,10 @@ class plgAuthenticationFacebook extends JPlugin
 		$ver = $this->params->get('api_version', 1.0);
 
 		// Set up the config for the sdk instance
-		$config           = array();
-		$config['appId']  = $this->params->get('app_id');
-		$config['secret'] = $this->params->get('app_secret');
+		$config = array(
+			'appId'  => $this->params->get('app_id'),
+			'secret' => $this->params->get('app_secret')
+		);
 
 		switch ($ver)
 		{
@@ -295,7 +274,7 @@ class plgAuthenticationFacebook extends JPlugin
 			}
 
 			// Create the hubzero auth link
-			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'facebook', null, $id);
 
 			if ($hzal === false)
@@ -315,7 +294,7 @@ class plgAuthenticationFacebook extends JPlugin
 
 			if (!empty($hzal->user_id))
 			{
-				$user = JUser::getInstance($hzal->user_id);
+				$user = User::getInstance($hzal->user_id);
 
 				$response->username = $user->username;
 				$response->email    = $user->email;
@@ -329,7 +308,7 @@ class plgAuthenticationFacebook extends JPlugin
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $email, 2);
 				$tmp_username = (!empty($username)) ? $username : $sub_email[0];
-				JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
+				\JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -338,10 +317,11 @@ class plgAuthenticationFacebook extends JPlugin
 			if (isset($user) && is_object($user))
 			{
 				// Set cookie with login preference info
-				$prefs                  = array();
-				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = 'https://graph.facebook.com/v2.0/'.$id.'/picture?type=normal';
-				$prefs['authenticator'] = 'facebook';
+				$prefs = array(
+					'user_id'       => $user->get('id'),
+					'user_img'      => 'https://graph.facebook.com/v2.0/' . $id . '/picture?type=normal',
+					'authenticator' => 'facebook'
+				);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;
@@ -359,21 +339,19 @@ class plgAuthenticationFacebook extends JPlugin
 	/**
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
-	 * @access	public
-	 * @param   array - $options
-	 * @return	void
+	 * @param   array  $options
+	 * @return  void
 	 */
 	public function link($options=array())
 	{
 		// Check which version of facebook api should be used
-		$ver   = $this->params->get('api_version', 1.0);
-		$app   = JFactory::getApplication();
-		$juser = JFactory::getUser();
+		$ver = $this->params->get('api_version', 1.0);
 
 		// Set up the config for the sdk instance
-		$config           = array();
-		$config['appId']  = $this->params->get('app_id');
-		$config['secret'] = $this->params->get('app_secret');
+		$config = array(
+			'appId'  => $this->params->get('app_id'),
+			'secret' => $this->params->get('app_secret')
+		);
 
 		switch ($ver)
 		{
@@ -444,14 +422,16 @@ class plgAuthenticationFacebook extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $id))
 			{
 				// This facebook account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This facebook account appears to already be linked to a hub account',
-					'error');
+					'error'
+				);
 			}
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
-				$hzal->user_id = $juser->get('id');
+				$hzal->user_id = User::get('id');
 				$hzal->email   = $email;
 				$hzal->update();
 			}
@@ -459,9 +439,11 @@ class plgAuthenticationFacebook extends JPlugin
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To link the current account with your Facebook account, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				'To link the current account with your Facebook account, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 		}
 	}
 
@@ -470,21 +452,19 @@ class plgAuthenticationFacebook extends JPlugin
 	 *
 	 * We pass params to avoid creating an instance of the plugin and carrying the joomla 'event' bagage with it
 	 *
-	 * @access	public
-	 * @param	object	$params	 Plugin params
-	 * @return	void
+	 * @param   object  $params  Plugin params
+	 * @return  void
 	 */
 	public static function getInfo($params)
 	{
 		// Set up the config for the sdk instance
 		$params = json_decode($params);
 
-		$config           = array();
-		$config['appId']  = $params->app_id;
-		$config['secret'] = $params->app_secret;
-
 		// Create instance and get the facebook user_id
-		$facebook = new Facebook($config);
+		$facebook = new Facebook(array(
+			'appId'  => $params->app_id,
+			'secret' => $params->app_secret
+		));
 		$user_id  = $facebook->getUser();
 
 		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
@@ -504,15 +484,14 @@ class plgAuthenticationFacebook extends JPlugin
 	/**
 	 * Generate return url
 	 *
-	 * @param  (string) return url
-	 * @param  (bool)   whether or not to encode return before using
-	 * @return (string) url
-	 **/
+	 * @param   string  $return  url
+	 * @param   bool    $encode  whether or not to encode return before using
+	 * @return  string  url
+	 */
 	private static function getReturnUrl($return=null, $encode=false)
 	{
 		// Get the hub url
-		$juri    = JURI::getInstance();
-		$service = trim($juri->base(), DS);
+		$service = trim(Request::base(), DS);
 
 		if (empty($service))
 		{
@@ -520,8 +499,7 @@ class plgAuthenticationFacebook extends JPlugin
 		}
 
 		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		$task = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		// Check if a return is specified
 		$rtrn = '';
@@ -531,7 +509,7 @@ class plgAuthenticationFacebook extends JPlugin
 			{
 				$return = base64_encode($return);
 			}
-			$rtrn = "&return=" . $return;
+			$rtrn = '&return=' . $return;
 		}
 
 		$url = $service . '/index.php?option=com_users&task=' . $task . '&authenticator=facebook' . $rtrn;

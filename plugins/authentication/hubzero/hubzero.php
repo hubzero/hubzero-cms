@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
@@ -39,30 +39,14 @@ jimport('joomla.plugin.plugin');
 class plgAuthenticationHubzero extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 */
-	public function plgAuthenticationHubzero(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
-	function onAuthenticate( $credentials, $options, &$response )
+	public function onAuthenticate($credentials, $options, &$response)
 	{
 		return $this->onUserAuthenticate($credentials, $options, $response);
 	}
@@ -70,13 +54,12 @@ class plgAuthenticationHubzero extends JPlugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
-	function onUserAuthenticate( $credentials, $options, &$response )
+	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		jimport('joomla.user.helper');
 
@@ -84,7 +67,8 @@ class plgAuthenticationHubzero extends JPlugin
 		$response->type = 'hubzero';
 
 		// HUBzero does not like blank passwords
-		if (empty($credentials['password'])) {
+		if (empty($credentials['password']))
+		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Empty passwords are not allowed.';
 			return false;
@@ -94,7 +78,7 @@ class plgAuthenticationHubzero extends JPlugin
 		$conditions = '';
 
 		// Get a database object
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		// Determine if attempting to log in via username or email address
 		if (strpos($credentials['username'], '@'))
@@ -130,12 +114,12 @@ class plgAuthenticationHubzero extends JPlugin
 		{
 			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true))
 			{
-				$user = JUser::getInstance($result->id);
+				$user = User::getInstance($result->id);
 
-				$response->username = $user->username;
-				$response->email = $user->email;
-				$response->fullname = $user->name;
-				$response->status = JAUTHENTICATE_STATUS_SUCCESS;
+				$response->username      = $user->username;
+				$response->email         = $user->email;
+				$response->fullname      = $user->name;
+				$response->status        = JAUTHENTICATE_STATUS_SUCCESS;
 				$response->error_message = '';
 
 				// Check validity and age of password
@@ -143,20 +127,21 @@ class plgAuthenticationHubzero extends JPlugin
 				$msg = \Hubzero\Password\Rule::validate($credentials['password'], $password_rules, $result->username);
 				if (is_array($msg) && !empty($msg[0]))
 				{
-					$session = JFactory::getSession();
+					$session = \JFactory::getSession();
 					$session->set('badpassword', '1');
 				}
 				if (\Hubzero\User\Password::isPasswordExpired($result->username))
 				{
-					$session = JFactory::getSession();
+					$session = \JFactory::getSession();
 					$session->set('expiredpassword', '1');
 				}
 
 				// Set cookie with login preference info
-				$prefs                  = array();
-				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false);
-				$prefs['authenticator'] = 'hubzero';
+				$prefs = array(
+					'user_id'       => $user->get('id'),
+					'user_img'      => \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false),
+					'authenticator' => 'hubzero'
+				);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;

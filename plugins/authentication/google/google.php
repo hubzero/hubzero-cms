@@ -36,8 +36,7 @@ class plgAuthenticationGoogle extends JPlugin
 	/**
 	 * Perform logout (handled via JS)
 	 *
-	 * @access	public
-	 * @return	void
+	 * @return  void
 	 */
 	public function logout()
 	{
@@ -49,8 +48,7 @@ class plgAuthenticationGoogle extends JPlugin
 	/**
 	 * Check login status of current user with regards to google
 	 *
-	 * @access	public
-	 * @return	Array $status
+	 * @return  array  $status
 	 */
 	public function status()
 	{
@@ -102,19 +100,16 @@ class plgAuthenticationGoogle extends JPlugin
 	 * Method to call when redirected back from google after authentication
 	 * Grab the return URL if set and handle denial of app privileges from google
 	 *
-	 * @access	public
-	 * @param   object	$credentials
-	 * @param 	object	$options
-	 * @return	void
+	 * @param   object  $credentials
+	 * @param   object  $options
+	 * @return  void
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$app = JFactory::getApplication();
-
 		$b64dreturn = '';
 
 		// Check the state for our return variable
-		if ($return = JRequest::getVar('state', '', 'method', 'base64'))
+		if ($return = Request::getVar('state', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!JURI::isInternal($b64dreturn))
@@ -126,12 +121,10 @@ class plgAuthenticationGoogle extends JPlugin
 		$options['return'] = $b64dreturn;
 
 		// Get the hub url
-		$juri    = JURI::getInstance();
-		$service = trim($juri->base(), DS);
+		$service = trim(Request::base(), DS);
 
 		// If someone is logged in already, then we're linking an account
-		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		$task  = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		// Set up the config for the google api instance
 		$client = new Google_Client();
@@ -140,43 +133,40 @@ class plgAuthenticationGoogle extends JPlugin
 		$client->setRedirectUri($service . '/index.php?option=com_users&task=' . $task . '&authenticator=google');
 
 		// If we have a code comeing back, the user has authorized our app, and we can authenticate
-		if ($code = JRequest::getVar('code', NULL))
+		if ($code = Request::getVar('code', NULL))
 		{
 			// Authenticate the user
 			$client->authenticate($code);
 
 			// Add the access token to the session
-			$jsession = JFactory::getSession();
+			$jsession = \JFactory::getSession();
 			$jsession->set('google.token', $client->getAccessToken());
 		}
 		else
 		{
 			// User didn't authorize our app or clicked cancel
-			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
-				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				'To log in via Google, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 		}
 	}
 
 	/**
 	 * Method to setup google params and redirect to google auth URL
 	 *
-	 * @access	public
-	 * @param   object	$view	view object
-	 * @param 	object	$tpl	template object
-	 * @return	void
+	 * @param   object  $view  view object
+	 * @param   object  $tpl   template object
+	 * @return  void
 	 */
 	public function display($view, $tpl)
 	{
-		$app = JFactory::getApplication();
-
 		// Get the hub url
-		$juri    = JURI::getInstance();
-		$service = trim($juri->base(), DS);
+		$service = trim(Request::base(), DS);
 
 		// If someone is logged in already, then we're linking an account
-		$juser = JFactory::getUser();
-		$task  = ($juser->get('guest')) ? 'user.login' : 'user.link';
+		$task = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		// Set up the config for the google api instance
 		$client = new Google_Client();
@@ -192,20 +182,18 @@ class plgAuthenticationGoogle extends JPlugin
 		$oauth2 = new Google_Auth_OAuth2($client);
 
 		// Create and follow the authorization URL
-		$authUrl = $client->createAuthUrl();
-		$app->redirect($authUrl);
+		App::redirect($client->createAuthUrl());
 	}
 
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
-	public function onAuthenticate( $credentials, $options, &$response )
+	public function onAuthenticate($credentials, $options, &$response)
 	{
 		return $this->onUserAuthenticate($credentials, $options, $response);
 	}
@@ -213,11 +201,10 @@ class plgAuthenticationGoogle extends JPlugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
@@ -230,7 +217,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$oauth2 = new Google_Service_OAuth2($client);
 
 		// Check if there's an active token in the session
-		$jsession = JFactory::getSession();
+		$jsession = \JFactory::getSession();
 		if ($jsession->get('google.token', NULL))
 		{
 			$client->setAccessToken($jsession->get('google.token'));
@@ -247,7 +234,7 @@ class plgAuthenticationGoogle extends JPlugin
 			$username = $user_profile['email'];
 
 			// Create the hubzero auth link
-			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'google', null, $username);
 
 			if ($hzal === false)
@@ -267,7 +254,7 @@ class plgAuthenticationGoogle extends JPlugin
 
 			if (!empty($hzal->user_id))
 			{
-				$user = JUser::getInstance($hzal->user_id);
+				$user = User::getInstance($hzal->user_id);
 
 				$response->username = $user->username;
 				$response->email    = $user->email;
@@ -281,7 +268,7 @@ class plgAuthenticationGoogle extends JPlugin
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $user_profile['email'], 2);
 				$tmp_username = $sub_email[0];
-				JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
+				\JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -290,10 +277,11 @@ class plgAuthenticationGoogle extends JPlugin
 			if (isset($user) && is_object($user))
 			{
 				// Set cookie with login preference info
-				$prefs                  = array();
-				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = $user_profile['picture'] . '?sz=100';
-				$prefs['authenticator'] = 'google';
+				$prefs = array(
+					'user_id'       => $user->get('id'),
+					'user_img'      => $user_profile['picture'] . '?sz=100',
+					'authenticator' => 'google'
+				);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;
@@ -311,18 +299,13 @@ class plgAuthenticationGoogle extends JPlugin
 	/**
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
-	 * @access	public
-	 * @param   array - $options
-	 * @return	void
+	 * @param   array  $options
+	 * @return  void
 	 */
 	public function link($options=array())
 	{
-		$app   = JFactory::getApplication();
-		$juser = JFactory::getUser();
-
 		// Get the hub url
-		$juri    = JURI::getInstance();
-		$service = trim($juri->base(), DS);
+		$service = trim(Request::base(), DS);
 
 		// Set up the config for the google api instance
 		$client = new Google_Client();
@@ -334,7 +317,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$oauth2 = new Google_Auth_OAuth2($client);
 
 		// If we have this code, we know we have a successful return from google
-		if (JRequest::getVar('code', NULL))
+		if (Request::getVar('code', NULL))
 		{
 			// Authenticate the user
 			$client->authenticate();
@@ -355,15 +338,17 @@ class plgAuthenticationGoogle extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This google account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This google account appears to already be linked to a hub account',
-					'error');
+					'error'
+				);
 			}
 			else
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'google', null, $username);
-				$hzal->user_id = $juser->get('id');
+				$hzal->user_id = User::get('id');
 				$hzal->email   = $user_profile['email'];
 				$hzal->update();
 			}
@@ -371,9 +356,11 @@ class plgAuthenticationGoogle extends JPlugin
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel...
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				'To log in via Google, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 		}
 	}
 }

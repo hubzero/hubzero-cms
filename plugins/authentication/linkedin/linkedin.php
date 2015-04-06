@@ -39,8 +39,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	/**
 	 * Perform logout (not currently used)
 	 *
-	 * @access	public
-	 * @return	void
+	 * @return  void
 	 */
 	public function logout()
 	{
@@ -52,8 +51,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 	/**
 	 * Check login status of current user with regards to linkedin
 	 *
-	 * @access	public
-	 * @return	Array $status
+	 * @return  array $status
 	 */
 	public function status()
 	{
@@ -87,28 +85,24 @@ class plgAuthenticationLinkedIn extends JPlugin
 					});
 				});";
 
-		JFactory::getDocument()->addScriptDeclaration($js);
+		\JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	/**
 	 * Method to call when redirected back from linkedin after authentication
 	 * Grab the return URL if set and handle denial of app privileges from linkedin
 	 *
-	 * @access	public
-	 * @param   object	$credentials
-	 * @param 	object	$options
-	 * @return	void
+	 * @param   object  $credentials
+	 * @param   object  $options
+	 * @return  void
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$app  = JFactory::getApplication();
-		$juri = JURI::getInstance();
-
 		$jsession   = JFactory::getSession();
 		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!JURI::isInternal($b64dreturn))
@@ -119,30 +113,33 @@ class plgAuthenticationLinkedIn extends JPlugin
 
 		// Set the return variable
 		$options['return'] = $b64dreturn;
-		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Set up linkedin configuration
 		$linkedin_config['appKey']      = $this->params->get('api_key');
 		$linkedin_config['appSecret']   = $this->params->get('app_secret');
-		$linkedin_config['callbackUrl'] = trim($juri->base(), DS) . DS . "index.php?option={$com_user}&view=login";
+		$linkedin_config['callbackUrl'] = trim(Request::base(), DS) . DS . "index.php?option=com_users&view=login";
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!JRequest::getVar('oauth_verifier', NULL))
+		if (!Request::getVar('oauth_verifier', NULL))
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
-				'To log in via LinkedIn, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				'To log in via LinkedIn, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 		}
 
 		// LinkedIn has sent a response, user has granted permission, take the temp access token,
 		// the user's secret and the verifier to request the user's real secret key
 		$request = $jsession->get('linkedin.oauth.request');
-		$reply = $linkedin_client->retrieveTokenAccess($request['oauth_token'],
-					$request['oauth_token_secret'],
-					JRequest::getVar('oauth_verifier'));
+		$reply = $linkedin_client->retrieveTokenAccess(
+			$request['oauth_token'],
+			$request['oauth_token_secret'],
+			Request::getVar('oauth_verifier')
+		);
 		if ($reply['success'] === TRUE)
 		{
 			// The request went through without an error, gather user's 'access' tokens
@@ -153,7 +150,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		}
 		else
 		{
-			return JError::raiseError(500, JText::_('Something went wrong here...'));
+			return new Exception(Lang::txt('Something went wrong here...'), 500);
 		}
 	}
 
@@ -167,34 +164,23 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		$app = JFactory::getApplication();
-
 		// If someone is logged in already, then we're linking an account
-		$juser = JFactory::getUser();
-		if (version_compare(JVERSION, '2.5', 'ge'))
-		{
-			$com_user = 'com_users';
-			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
-		}
-		else
-		{
-			$com_user = 'com_user';
-			$task     = ($juser->get('guest')) ? 'login' : 'link';
-		}
+		$task = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		// Set up the redirect URL
-		$juri        = JURI::getInstance();
-		$service     = trim($juri->base(), DS);
-		$return      = isset($view->return) ? "&return=".$view->return : '';
-		$redirect_to = "{$service}/index.php?option={$com_user}&task={$task}&authenticator=linkedin{$return}";
+		$service     = trim(Request::base(), DS);
+		$return      = isset($view->return) ? '&return=' . $view->return : '';
+		$redirect_to = "{$service}/index.php?option=com_users&task={$task}&authenticator=linkedin{$return}";
 
 		// User initiated LinkedIn connection, setup linkedin configuration
-		$linkedin_config['callbackUrl'] = $redirect_to . '&' . LINKEDIN::_GET_TYPE . '=initiate&' . LINKEDIN::_GET_RESPONSE . '=1';
-		$linkedin_config['appKey']      = $this->params->get('api_key');
-		$linkedin_config['appSecret']   = $this->params->get('app_secret');
+		$config = array(
+			'callbackUrl' => $redirect_to . '&' . LINKEDIN::_GET_TYPE . '=initiate&' . LINKEDIN::_GET_RESPONSE . '=1',
+			'appKey'      => $this->params->get('api_key'),
+			'appSecret'   => $this->params->get('app_secret')
+		);
 
 		// Create linkedin object
-		$linkedin_client = new LinkedIn($linkedin_config);
+		$client = new LinkedIn($config);
 
 		// Check for a response from LinkedIn
 		$_GET[LINKEDIN::_GET_RESPONSE] = (isset($_GET[LINKEDIN::_GET_RESPONSE])) ? $_GET[LINKEDIN::_GET_RESPONSE] : '';
@@ -202,7 +188,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		{
 			// LinkedIn hasn't sent us a response, the user is initiating the connection
 			// Send a request for a LinkedIn access token
-			$reply = $linkedin_client->retrieveTokenRequest();
+			$reply = $client->retrieveTokenRequest();
 			if ($reply['success'] === TRUE)
 			{
 				// Store the request token
@@ -210,25 +196,24 @@ class plgAuthenticationLinkedIn extends JPlugin
 				$jsession->set('linkedin.oauth.request', $reply['linkedin']);
 
 				// Redirect the user to the LinkedIn authentication/authorization page to initiate validation
-				$app->redirect(LINKEDIN::_URL_AUTH . $reply['linkedin']['oauth_token']);
+				App::redirect(LINKEDIN::_URL_AUTH . $reply['linkedin']['oauth_token']);
 			}
 			return;
 		}
 
 		// Are the already logged on?
-		return JError::raiseError(500, JText::_('Something went wrong here...'));
+		return new Exception(Lang::txt('Something went wrong here...'), 500);
 	}
 
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
-	public function onAuthenticate( $credentials, $options, &$response )
+	public function onAuthenticate($credentials, $options, &$response)
 	{
 		return $this->onUserAuthenticate($credentials, $options, $response);
 	}
@@ -236,27 +221,27 @@ class plgAuthenticationLinkedIn extends JPlugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Make sure we have authorization
-		$jsession = JFactory::getSession();
-		$juri     = JURI::getInstance();
+		$jsession = \JFactory::getSession();
 
 		if ($jsession->get('linkedin.oauth.authorized') == TRUE)
 		{
 			// User initiated LinkedIn connection, set up config
-			$linkedin_config['appKey']      = $this->params->get('api_key');
-			$linkedin_config['appSecret']   = $this->params->get('app_secret');
-			$linkedin_config['callbackUrl'] = trim($juri->base(), DS) . DS . "index.php?option=com_users&view=login";
+			$config = array(
+				'appKey'      => $this->params->get('api_key'),
+				'appSecret'   => $this->params->get('app_secret'),
+				'callbackUrl' => trim(Reuest::base(), DS) . DS . "index.php?option=com_users&view=login"
+			);
 
 			// Create the object
-			$linkedin_client = new LinkedIn($linkedin_config);
+			$linkedin_client = new LinkedIn($config);
 			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
 
 			// Get the linked in profile
@@ -273,7 +258,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$full_name  = $first_name . ' ' . $last_name;
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'linkedin', null, $username);
 
 			if ($hzal === false)
@@ -293,7 +278,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 
 			if (!empty($hzal->user_id))
 			{
-				$user = JUser::getInstance($hzal->user_id);
+				$user = User::getInstance($hzal->user_id);
 
 				$response->username = $user->username;
 				$response->email    = $user->email;
@@ -307,7 +292,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', (string) $profile->{'email-address'}, 2);
 				$tmp_username = $sub_email[0];
-				JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
+				\JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -316,10 +301,11 @@ class plgAuthenticationLinkedIn extends JPlugin
 			if (isset($user) && is_object($user))
 			{
 				// Set cookie with login preference info
-				$prefs                  = array();
-				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = (string) $profile->{'picture-urls'}->{'picture-url'};
-				$prefs['authenticator'] = 'linkedin';
+				$prefs = array(
+					'user_id'       => $user->get('id'),
+					'user_img'      => (string) $profile->{'picture-urls'}->{'picture-url'},
+					'authenticator' => 'linkedin'
+				);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;
@@ -337,15 +323,12 @@ class plgAuthenticationLinkedIn extends JPlugin
 	/**
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
-	 * @access	public
-	 * @param   array - $options
-	 * @return	void
+	 * @param   array  $options
+	 * @return  void
 	 */
 	public function link($options=array())
 	{
-		$app = JFactory::getApplication();
-		$juser    = JFactory::getUser();
-		$jsession = JFactory::getSession();
+		$jsession = \JFactory::getSession();
 
 		// Set up linkedin configuration
 		$linkedin_config['appKey']    = $this->params->get('api_key');
@@ -354,24 +337,28 @@ class plgAuthenticationLinkedIn extends JPlugin
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
 
-		if (!JRequest::getVar('oauth_verifier', NULL))
+		if (!Request::getVar('oauth_verifier', NULL))
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via LinkedIn, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				'To log in via LinkedIn, you must authorize the ' . App::get('sitename') . ' app.',
+				'error'
+			);
 		}
 
 		// LinkedIn has sent a response, user has granted permission, take the temp access token,
 		// the user's secret and the verifier to request the user's real secret key
 		$request = $jsession->get('linkedin.oauth.request');
-		$reply = $linkedin_client->retrieveTokenAccess($request['oauth_token'],
-						$request['oauth_token_secret'],
-						JRequest::getVar('oauth_verifier'));
+		$reply = $linkedin_client->retrieveTokenAccess(
+			$request['oauth_token'],
+			$request['oauth_token_secret'],
+			Request::getVar('oauth_verifier')
+		);
 		if ($reply['success'] === TRUE)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession = JFactory::getSession();
+			$jsession = \JFactory::getSession();
 			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
@@ -379,7 +366,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		}
 		else
 		{
-			return JError::raiseError(500, JText::_('Access token retrieval failed'));
+			return new Exception(Lang::txt('Access token retrieval failed'), 500);
 		}
 
 		if ($jsession->get('linkedin.oauth.authorized') == TRUE)
@@ -403,14 +390,16 @@ class plgAuthenticationLinkedIn extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This linkedin account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This linkedin account appears to already be linked to a hub account',
-					'error');
+					'error'
+				);
 			}
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
-				$hzal->user_id = $juser->get('id');
+				$hzal->user_id = User::get('id');
 				$hzal->email = (string) $profile->{'email-address'};
 				$hzal->update();
 			}
@@ -418,9 +407,11 @@ class plgAuthenticationLinkedIn extends JPlugin
 		else // no authorization
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via LinkedIn, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				'To log in via LinkedIn, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 		}
 	}
 }

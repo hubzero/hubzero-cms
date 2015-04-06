@@ -37,25 +37,9 @@ require_once(join(DS, array( JPATH_ROOT, 'libraries', 'twitteroauth', 'twitteroa
 class plgAuthenticationTwitter extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 */
-	function plgAuthenticationTwitter(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * Perform logout (not currently used)
 	 *
-	 * @access	public
-	 * @return	void
+	 * @return  void
 	 */
 	public function logout()
 	{
@@ -65,8 +49,7 @@ class plgAuthenticationTwitter extends JPlugin
 	/**
 	 * Check login status of current user with regards to twitter
 	 *
-	 * @access	public
-	 * @return	Array $status
+	 * @return  array  $status
 	 */
 	public function status()
 	{
@@ -77,16 +60,13 @@ class plgAuthenticationTwitter extends JPlugin
 	 * Method to call when redirected back from twitter after authentication
 	 * Grab the return URL if set and handle denial of app privileges from twitter
 	 *
-	 * @access	public
-	 * @param   object	$credentials
-	 * @param 	object	$options
-	 * @return	void
+	 * @param   object  $credentials
+	 * @param   object  $options
+	 * @return  void
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$app = JFactory::getApplication();
-
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
 			if (!JURI::isInternal($b64dreturn))
@@ -99,12 +79,14 @@ class plgAuthenticationTwitter extends JPlugin
 		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Check to make sure they didn't deny our application permissions
-		if (JRequest::getWord('denied', false))
+		if (Request::getWord('denied', false))
 		{
 			// User didn't authorize our app or clicked cancel
-			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
-				'To log in via Twitter, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				'To log in via Twitter, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 			return;
 		}
 	}
@@ -112,18 +94,14 @@ class plgAuthenticationTwitter extends JPlugin
 	/**
 	 * Method to setup twitter params and redirect to twitter auth URL
 	 *
-	 * @access	public
-	 * @param   object	$view	view object
-	 * @param 	object	$tpl	template object
-	 * @return	void
+	 * @param   object  $view  view object
+	 * @param   object  $tpl   template object
+	 * @return  void
 	 */
 	public function display($view, $tpl)
 	{
-		$app = JFactory::getApplication();
-
 		// Get the hub url
-		$juri    = JURI::getInstance();
-		$service = trim($juri->base(), DS);
+		$service = trim(Request::base(), DS);
 
 		if (empty($service))
 		{
@@ -133,27 +111,17 @@ class plgAuthenticationTwitter extends JPlugin
 		// Check if a return is specified
 		if ($view->return)
 		{
-			$return = "&return=" . $view->return;
+			$return = '&return=' . $view->return;
 		}
 
 		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$juser = JFactory::getUser();
-		if (version_compare(JVERSION, '2.5', 'ge'))
-		{
-			$com_user = 'com_users';
-			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
-		}
-		else
-		{
-			$com_user = 'com_user';
-			$task     = ($juser->get('guest')) ? 'login' : 'link';
-		}
+		$task = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		// Build twitter object
 		$twitter = new TwitterOAuth($this->params->get('app_id'), $this->params->get('app_secret'));
 
 		// Set callback url and get temp credentials
-		$callback = $service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=twitter' . $return;
+		$callback = $service . '/index.php?option=com_users&task=' . $task . '&authenticator=twitter' . $return;
 		$temporary_credentials = $twitter->getRequestToken($callback);
 
 		// Store temp credentials in session for use after authentication redirect from twitter
@@ -164,20 +132,19 @@ class plgAuthenticationTwitter extends JPlugin
 		$redirect_url = $twitter->getAuthorizeURL($temporary_credentials);
 
 		// Redirect to the login URL
-		$app->redirect($redirect_url);
+		App::redirect($redirect_url);
 		return;
 	}
 
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
-	public function onAuthenticate( $credentials, $options, &$response )
+	public function onAuthenticate($credentials, $options, &$response)
 	{
 		return $this->onUserAuthenticate($credentials, $options, $response);
 	}
@@ -185,11 +152,10 @@ class plgAuthenticationTwitter extends JPlugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @access	public
-	 * @param   array 	$credentials Array holding the user credentials
-	 * @param 	array   $options     Array of extra options
-	 * @param	object	$response	 Authentication response object
-	 * @return	boolean
+	 * @param   array    $credentials  Array holding the user credentials
+	 * @param   array    $options      Array of extra options
+	 * @param   object   $response     Authentication response object
+	 * @return  boolean
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
@@ -197,12 +163,12 @@ class plgAuthenticationTwitter extends JPlugin
 		$twitter = new TwitterOAuth(
 			$this->params->get('app_id'),
 			$this->params->get('app_secret'),
-			JFactory::getSession()->get('twitter.oauth.token'),
-			JFactory::getSession()->get('twitter.oauth.token_secret')
+			\JFactory::getSession()->get('twitter.oauth.token'),
+			\JFactory::getSession()->get('twitter.oauth.token_secret')
 		);
 
 		// Request user specific (longer lasting) credentials
-		$token_credentials = $twitter->getAccessToken(JRequest::getVar('oauth_verifier'));
+		$token_credentials = $twitter->getAccessToken(Request::getVar('oauth_verifier'));
 
 		// Build new twitter object with user credentials
 		$twitter = new TwitterOAuth(
@@ -222,7 +188,7 @@ class plgAuthenticationTwitter extends JPlugin
 			$username = (string) $account->id;
 
 			// Create the hubzero auth link
-			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'twitter', null, $username);
 
 			if ($hzal === false)
@@ -240,7 +206,7 @@ class plgAuthenticationTwitter extends JPlugin
 
 			if (!empty($hzal->user_id))
 			{
-				$user = JUser::getInstance($hzal->user_id);
+				$user = User::getInstance($hzal->user_id);
 
 				$response->username = $user->username;
 				$response->email    = $user->email;
@@ -252,7 +218,7 @@ class plgAuthenticationTwitter extends JPlugin
 				$response->email    = $response->username . '@invalid';
 
 				// Also set a suggested username for their hub account
-				JFactory::getSession()->set('auth_link.tmp_username', $account->screen_name);
+				\JFactory::getSession()->set('auth_link.tmp_username', $account->screen_name);
 			}
 
 			$hzal->update();
@@ -261,10 +227,11 @@ class plgAuthenticationTwitter extends JPlugin
 			if (isset($user) && is_object($user))
 			{
 				// Set cookie with login preference info
-				$prefs                  = array();
-				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = str_replace('_normal', '', $account->profile_image_url_https);
-				$prefs['authenticator'] = 'twitter';
+				$prefs = array(
+					'user_id'       => $user->get('id'),
+					'user_img'      => str_replace('_normal', '', $account->profile_image_url_https),
+					'authenticator' => 'twitter'
+				);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;
@@ -282,26 +249,21 @@ class plgAuthenticationTwitter extends JPlugin
 	/**
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
-	 * @access	public
-	 * @param   array - $options
-	 * @return	void
+	 * @param   array  $options
+	 * @return  void
 	 */
 	public function link($options=array())
 	{
-		$app = JFactory::getApplication();
-
-		$juser = JFactory::getUser();
-
 		// Build twitter object using temp credentials saved in session
 		$twitter = new TwitterOAuth(
 			$this->params->get('app_id'),
 			$this->params->get('app_secret'),
-			JFactory::getSession()->get('twitter.oauth.token'),
-			JFactory::getSession()->get('twitter.oauth.token_secret')
+			\JFactory::getSession()->get('twitter.oauth.token'),
+			\JFactory::getSession()->get('twitter.oauth.token_secret')
 		);
 
 		// Request user specific (longer lasting) credentials
-		$token_credentials = $twitter->getAccessToken(JRequest::getVar('oauth_verifier'));
+		$token_credentials = $twitter->getAccessToken(Request::getVar('oauth_verifier'));
 
 		// Build new twitter object with user credentials
 		$twitter = new TwitterOAuth(
@@ -326,24 +288,28 @@ class plgAuthenticationTwitter extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This twitter account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This Twitter account appears to already be linked to a hub account',
-					'error');
+					'error'
+				);
 				return;
 			}
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
-				$hzal->user_id = $juser->get('id');
+				$hzal->user_id = User::get('id');
 				$hzal->update();
 			}
 		}
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To link the current account with your Twitter account, you must authorize the ' . $app->getCfg('sitename') . ' app.',
-				'error');
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				'To link the current account with your Twitter account, you must authorize the ' . Config::get('sitename') . ' app.',
+				'error'
+			);
 			return;
 		}
 	}

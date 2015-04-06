@@ -39,20 +39,9 @@ jimport('joomla.plugin.plugin');
 class plgAuthenticationCertificate extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 */
-	public function plgAuthenticationCertificate(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * Actions to perform when logging out a user session
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function logout()
 	{
@@ -63,8 +52,7 @@ class plgAuthenticationCertificate extends JPlugin
 	/**
 	 * Check login status of current user with regards to their client certificate
 	 *
-	 * @access	public
-	 * @return	Array $status
+	 * @return  array  $status
 	 */
 	public function status()
 	{
@@ -81,14 +69,14 @@ class plgAuthenticationCertificate extends JPlugin
 	/**
 	 * Actions to perform when logging in a user session
 	 *
-	 * @param  array $credentials login credentials
-	 * @param  array $options     login options
-	 * @return void
+	 * @param   array  $credentials  login credentials
+	 * @param   array  $options      login options
+	 * @return  void
 	 */
 	public function login(&$credentials, &$options)
 	{
 		// Check for return param
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
 			if (!JURI::isInternal($return))
@@ -103,9 +91,9 @@ class plgAuthenticationCertificate extends JPlugin
 	/**
 	 * Method to setup and redirect to certificate auth URL
 	 *
-	 * @param  object $view view object
-	 * @param  object $tpl  template object
-	 * @return void
+	 * @param   object  $view  view object
+	 * @param   object  $tpl   template object
+	 * @return  void
 	 */
 	public function display($view, $tpl)
 	{
@@ -116,19 +104,19 @@ class plgAuthenticationCertificate extends JPlugin
 		}
 
 		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$task  = (\JFactory::getUser()->get('guest')) ? 'user.login' : 'user.link';
+		$task  = (User::isGuest()) ? 'user.login' : 'user.link';
 
-		\JFactory::getApplication()->redirect('/index.php?option=com_users&task=' . $task . '&authenticator=certificate' . $return);
+		App::redirect('/index.php?option=com_users&task=' . $task . '&authenticator=certificate' . $return);
 	}
 
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @param  array  $credentials the user credentials
-	 * @param  array  $options     any extra options
-	 * @param  object $response    authentication response object
-	 * @return void
-	 * @deprecated 1.3.1
+	 * @param   array   $credentials  the user credentials
+	 * @param   array   $options      any extra options
+	 * @param   object  $response     authentication response object
+	 * @return  void
+	 * @deprecated  1.3.1
 	 */
 	public function onAuthenticate($credentials, $options, &$response)
 	{
@@ -138,10 +126,10 @@ class plgAuthenticationCertificate extends JPlugin
 	/**
 	 * This method should handle any authentication and report back to the subject
 	 *
-	 * @param  array  $credentials the user credentials
-	 * @param  array  $options     any extra options
-	 * @param  object $response    authentication response object
-	 * @return void
+	 * @param   array   $credentials  the user credentials
+	 * @param   array   $options      any extra options
+	 * @param   object  $response     authentication response object
+	 * @return  void
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
@@ -151,7 +139,7 @@ class plgAuthenticationCertificate extends JPlugin
 			$domain   = $_SERVER['SSL_CLIENT_I_DN_CN'];
 			$username = $_SERVER['SSL_CLIENT_S_DN_CN'];
 
-			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal   = \Hubzero\Auth\Link::$method('authentication', 'certificate', $domain, $username);
 
 			if ($hzal === false)
@@ -176,7 +164,7 @@ class plgAuthenticationCertificate extends JPlugin
 
 			if (!empty($hzal->user_id))
 			{
-				$user = JUser::getInstance($hzal->user_id);
+				$user = User::getInstance($hzal->user_id);
 
 				$response->username = $user->username;
 				$response->email    = $user->email;
@@ -188,7 +176,7 @@ class plgAuthenticationCertificate extends JPlugin
 				$response->email    = $response->username . '@invalid';
 
 				// Also set a suggested username for their hub account
-				JFactory::getSession()->set('auth_link.tmp_username', $username);
+				\JFactory::getSession()->set('auth_link.tmp_username', $username);
 			}
 
 			$hzal->update();
@@ -197,10 +185,11 @@ class plgAuthenticationCertificate extends JPlugin
 			if (isset($user) && is_object($user))
 			{
 				// Set cookie with login preference info
-				$prefs                  = array();
-				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false);
-				$prefs['authenticator'] = 'certificate';
+				$prefs = array(
+					'user_id'       => $user->get('id'),
+					'user_img'      => \Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false),
+					'authenticator' => 'certificate'
+				);
 
 				$namespace = 'authenticator';
 				$lifetime  = time() + 365*24*60*60;
@@ -218,8 +207,8 @@ class plgAuthenticationCertificate extends JPlugin
 	/**
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
-	 * @param  array $options additional options
-	 * @return void
+	 * @param   array  $options  additional options
+	 * @return  void
 	 */
 	public function link($options=array())
 	{
@@ -228,7 +217,6 @@ class plgAuthenticationCertificate extends JPlugin
 		{
 			$domain   = $_SERVER['SSL_CLIENT_I_DN_CN'];
 			$username = $_SERVER['SSL_CLIENT_S_DN_CN'];
-			$juser    = \JFactory::getUser();
 
 			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'certificate', $domain);
 
@@ -236,14 +224,16 @@ class plgAuthenticationCertificate extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This certificate account is already linked to another hub account
-				\JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This certificate appears to already be linked to a hub account',
-					'error');
+					'error'
+				);
 			}
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'certificate', $domain, $username);
-				$hzal->user_id = $juser->get('id');
+				$hzal->user_id = User::get('id');
 				$hzal->email   = $_SERVER['SSL_CLIENT_S_DN_Email'];
 				$hzal->update();
 			}
@@ -251,17 +241,19 @@ class plgAuthenticationCertificate extends JPlugin
 		else
 		{
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
-			\JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_members&id=' . \JFactory::getUser()->get('id') . '&active=account'),
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 				'There was an error linking your certificate, please try again later.',
-				'error');
+				'error'
+			);
 		}
 	}
 
 	/**
 	 * Encapsulates auth check for internal plugin use
 	 *
-	 * @return bool
-	 **/
+	 * @return  bool
+	 */
 	private function isAuthenticated()
 	{
 		return (isset($_SERVER['SSL_CLIENT_S_DN']) && $_SERVER['SSL_CLIENT_S_DN']);
