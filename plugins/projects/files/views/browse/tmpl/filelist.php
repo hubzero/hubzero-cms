@@ -164,107 +164,43 @@ $min = $this->model->access('content') ? 1 : 0;
 			// Go back one level to parent directory
 			if ($this->subdir)
 			{ ?>
-				<tr>
+				<tr class="updir">
 					<td></td>
 					<td colspan="<?php echo $this->publishing ? 7 - $min : 6 - $min; ?>" class="mini">
 						<a href="<?php echo $this->url . '/?action=browse&amp;subdir=' . $parent; ?>" class="uptoparent"><?php echo Lang::txt('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
 					</td>
 				</tr>
 			<?php
-			}
+			} ?>
 
+<?php
 			// Display contents
 			if (count($this->items) > 0)
 			{
-				$c = 1;
-				foreach ($this->items as $item)
-				{
-					$type = $item['type'];
-
-					if ($type == 'folder')
-					{
-						$dir = $item['item'];
-
-						// Folder view
-						$this->view('folder', 'item')
-						     ->set('subdir', $this->subdir)
-						     ->set('item', $dir)
-						     ->set('option', $this->option)
-						     ->set('model', $this->model)
-						     ->set('c', $c)
-						     ->set('connect', $this->connect)
-						     ->set('publishing', $this->publishing)
-						     ->set('params', $this->fileparams)
-						     ->set('case', $this->case)
-						     ->set('url', $this->url)
-						     ->display();
-					}
-					elseif ($type == 'document')
-					{
-						$file = $item['item'];
-
-						// Hide gitignore file
-						if ($file['name'] == '.gitignore')
-						{
-							if (count($this->items) == 1)
-							{
-								$empty = true;
-							}
-							continue;
-						}
-
-						// Document view
-						$this->view('document', 'item')
-						     ->set('subdir', $this->subdir)
-						     ->set('item', $file)
-						     ->set('option', $this->option)
-						     ->set('model', $this->model)
-						     ->set('c', $c)
-						     ->set('connect', $this->connect)
-						     ->set('publishing', $this->publishing)
-						     ->set('params', $this->fileparams)
-						     ->set('case', $this->case)
-						     ->set('url', $this->url)
-						     ->display();
-					}
-					elseif ($type == 'remote')
-					{
-						// Remote file
-						$this->view($item['remote'], 'item')
-						     ->set('subdir', $this->subdir)
-						     ->set('item', $item['item'])
-						     ->set('option', $this->option)
-						     ->set('model', $this->model)
-						     ->set('c', $c)
-						     ->set('connect', $this->connect)
-						     ->set('publishing', $this->publishing)
-						     ->set('params', $this->fileparams)
-						     ->set('case', $this->case)
-						     ->set('url', $this->url)
-						     ->display();
-					}
-					$c++;
-				}
+				$c = isset($this->c) ? $this->c : 1;
+				$this->view('_list')
+					 ->set('option', $this->option)
+					 ->set('model', $this->model)
+					 ->set('subdir', $this->subdir)
+					 ->set('items', $this->items)
+				     ->set('c', $c)
+				     ->set('connect', $this->connect)
+				     ->set('publishing', $this->publishing)
+				     ->set('fileparams', $this->fileparams)
+				     ->set('case', $this->case)
+				     ->set('url', $this->url)
+					 ->display();
 			}
-
-			// Show directory as empty
-			if (count($this->items) == 0 || $empty == true) { ?>
-				<tr>
-					<td colspan="<?php echo $this->publishing ? 8 - $min : 7 - $min; ?>" class="mini faded">
-						<?php if ($this->subdir)
-							{
-								echo Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY');
-							}
-							else
-							{
-								echo Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES');
-							}
-						?>
-					</td>
-				</tr>
-			<?php } ?>
+?>			
 		</tbody>
 	</table>
+	<?php
+	// Show directory as empty
+	if (count($this->items) == 0 || $empty == true) { ?>
+		<p class="noresults">
+		<?php echo ($this->subdir) ? Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY') : Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?>
+		</p>
+	<?php } ?>
 
 	<p class="extras">
 		<?php if ($this->case == 'files') { ?>

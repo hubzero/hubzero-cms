@@ -351,6 +351,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$arr['html'] 	= $this->select();
 					break;
 
+				case 'data':
+					$arr['html'] 	= $this->data(); // AJAX call
+					break;
+
 				case 'browse':
 				default:
 
@@ -372,18 +376,33 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	//----------------------------------------
 
 	/**
+	 * Load a limited number of files
+	 *
+	 * @return     string
+	 */
+	public function data()
+	{
+		
+	}
+
+	/**
 	 * View of project files
 	 *
 	 * @return     string
 	 */
 	public function display($sync = 0)
 	{
-		// Build query
+		// Build filters
 		$filters = array();
-		$filters['limit'] 	 = Request::getInt('limit', 100);
-		$filters['start']    = Request::getInt( 'limitstart', 0);
-		$filters['sortby']   = Request::getVar( 'sortby', 'filename');
-		$filters['sortdir']  = Request::getVar( 'sortdir', 'ASC');
+		$filters['limit'] 	      = Request::getInt('limit', 100);
+		$filters['start']         = Request::getInt( 'limitstart', 0);
+		$filters['sortby']        = Request::getVar( 'sortby', 'filename');
+		$filters['sortdir']       = Request::getVar( 'sortdir', 'ASC');
+		$filters['showUntracked'] = true;
+		$filters['limited']       = false;
+		$filters['recurse']       = false;
+		$filters['getsorted']     = true;
+		$filters['subdir']        = $this->subdir;
 
 		// Something is wrong
 		if (!$this->_path)
@@ -431,11 +450,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Do we have any changes to report?
 		$this->onAfterUpdate();
 
-		// Get local files and folders
-		$localFiles 		= $this->getFiles($this->_path, $this->subdir,
-								1, 0, 0, 0, $filters['sortby'], $filters['sortdir']);
-		$localDirs 			= $this->getFolders($this->_path, $this->subdir);
-
 		// Sharing with external services setup
 		$view->connect		 = $this->_connect;
 		$view->services 	 = $this->_rServices;
@@ -464,14 +478,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Sort local and remote file info
-		$view->items = $this->_sortItems(
-			$localFiles,
-			$localDirs,
-			$remotes,
-			$filters['sortby'],
-			$filters['sortdir']
-		);
+		// Get local files and folders
+		$localDirs          = $this->getFolders($this->_path, $this->subdir);
+		$view->items        = $this->getFiles($filters, $localDirs, $remotes);
 
 		$view->params 		= $this->model->params;
 		$view->rSync 		= $this->_rSync;
@@ -662,6 +671,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
+		// Build filters
+		$filters = array();
+		$filters['limit'] 	      = Request::getInt('limit', 100);
+		$filters['start']         = Request::getInt( 'limitstart', 0);
+		$filters['sortby']        = Request::getVar( 'sortby', 'filename');
+		$filters['sortdir']       = Request::getVar( 'sortdir', 'ASC');
+		$filters['showUntracked'] = false;
+		$filters['limited']       = true;
+		$filters['recurse']       = false;
+
 		// Get file list
 		if (!$this->model->exists())
 		{
@@ -669,7 +688,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif ($content == 'files')
 		{
-			$view->files = $this->getFiles($this->_path, $this->subdir, 0, 0, 0, 0, '', 'ASC', true);
+			$view->files = $this->getFiles($filters);
 		}
 		else
 		{
@@ -4381,7 +4400,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 								: \Components\Projects\Helpers\Html::convertSize( floatval($config->get('pubQuota', '1')), 'GB', 'b');
 		}
 
-		$view->total  = $this->getFiles($this->_path, '', 0, 1);
+		// Build filters
+		$filters = array();
+		$filters['count'] 	      = 1;
+
+		$view->total  = $this->getFiles($filters);
 		$quota 		  = $view->params->get('quota');
 		$view->quota  = $quota
 			? $quota
@@ -4503,17 +4526,95 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get member files (provisioned project)
+	 *
+	 * @param      string	$path
+	 * @param      string  	$subdir
+	 * @param      boolean  $recurse
+	 *
+	 * @return     array
+	 */
+	public function getMemberFiles($path = '', $subdir = '', $recurse = true)
+	{
+		// Check path format
+		$subdir = trim($subdir, DS);
+		$fullpath = $subdir ? $path. DS . $subdir : $path;
+
+		$files = array();
+
+		$fileSystem = new \Hubzero\Filesystem\Filesystem();
+		$get = $fileSystem->files($fullpath);
+
+		if ($get)
+		{
+			foreach ($get as $file)
+			{
+				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
+				{
+					$entry = array();
+					$entry['name']	= basename($file);
+					$entry['fpath']	= str_replace($path . DS, '', $file);
+					$entry['ext'] = \Components\Projects\Helpers\Html::getFileExtension($entry['name']);
+					$files[] = $entry;
+				}
+			}
+		}
+
+		return $files;
+	}
+
+	/**
+	 * Clean incoming data
+	 *
+	 * @return     array
+	 */
+	public function cleanData()
+	{
+		// Clean up empty values
+		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
+		$folders 	= Request::getVar( 'folder', '', 'request', 'array' );
+
+		foreach ($checked as $key => $value)
+		{
+			$value = trim($value);
+			if ($value == '')
+			{
+				unset($checked[$key]);
+			}
+			else
+			{
+				$checked[$key] = trim($value);
+			}
+		}
+
+		foreach ($folders as $key => $value)
+		{
+			$value = trim($value);
+			if ($value == '')
+			{
+				unset($folders[$key]);
+			}
+			else
+			{
+				$folders[$key] = trim($value);
+			}
+		}
+
+		Request::setVar( 'asset', $checked);
+		Request::setVar( 'folder', $folders);
+	}
+
+	/**
 	 * Get file info
 	 *
 	 * @param      string	$fpath
-	 * @param      string  	$path
 	 * @param      boolean  $fullpath
 	 * @param      boolean 	$count
 	 * @param      boolean  $norecurse
 	 *
 	 * @return     array
 	 */
-	public function getFileInfo($fpath = '', $path = '', $fullpath = '', $count = 0, $norecurse = 1 )
+	public function getFileInfo($fpath = '', $fullpath = '', $count = 0, $norecurse = 1 )
 	{
 		$entry = array();
 		$entry['name']	= basename($fpath);
@@ -4581,38 +4682,169 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get member files (provisioned project)
+	 * Get files from Git repository
 	 *
-	 * @param      string	$path
-	 * @param      string  	$subdir
-	 * @param      boolean  $recurse
+	 * @param      array	$filters
 	 *
 	 * @return     array
 	 */
-	public function getMemberFiles($path = '', $subdir = '', $recurse = true)
+	public function getFiles ($filters = array(), $folders = array(), $remotes = array())
 	{
+		$path            = $this->_path;
+		$subdir          = isset($filters['subdir']) ? $filters['subdir'] : NULL;
+		$sortdir         = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
+		$sortby          = isset($filters['sortby']) ? $filters['sortby'] : '';
+		$count           = isset($filters['count']) ? $filters['count'] : 0;
+		$limit           = isset($filters['limit']) ? $filters['limit'] : 0;
+		$start           = isset($filters['start']) ? $filters['start'] : 0;
+		$rand            = isset($filters['rand']) ? $filters['rand'] : 0;
+		$limited         = isset($filters['limited']) ? $filters['limited'] : false;
+		$norecurse       = empty($filters['recurse']) ? true : false;
+		$showUntracked   = isset($filters['showUntracked']) ? $filters['showUntracked'] : true;
+
 		// Check path format
 		$subdir = trim($subdir, DS);
-		$fullpath = $subdir ? $path. DS . $subdir : $path;
+		$fullpath = $subdir ? $path . DS . $subdir : $path;
 
-		$files = array();
+		$files 		= array();
+		$sorting 	= array();
+		$i			= 0;
 
-		$fileSystem = new \Hubzero\Filesystem\Filesystem();
-		$get = $fileSystem->files($fullpath);
-
-		if ($get)
+		if (!is_dir($path))
 		{
-			foreach ($get as $file)
+			return $count ? 0 : $files;
+		}
+
+		// Make sure Git helper is included
+		$this->_getGitHelper();
+
+		// Get files
+		$out = $this->_git->getFiles($subdir);
+
+		// Show untracked files?
+		$untracked = array();
+		if ($showUntracked)
+		{
+			$untracked = $this->_git->getFiles($subdir, true);
+		}
+
+		// Return count
+		if ($count)
+		{
+			return (count($out) + count($untracked));
+		}
+		$counterStart = count($folders) + count($remotes) + $start;
+
+		// Get pub associations
+		if ($this->_publishing)
+		{
+			$pA = new \Components\Publications\Tables\Attachment( $this->_database );
+			$this->_pubassoc = $pA->getPubAssociations($this->model->get('id'), 'file');
+		}
+
+		$this->_fileinfo = $this->_git->gitLogAll($subdir);
+
+		// Return files
+		if (count($out) > 0)
+		{
+			if ($rand)
 			{
-				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
+				shuffle($out);
+			}
+			foreach ($out as $line)
+			{
+				if ($limit && $i >= $limit)
 				{
-					$entry = array();
-					$entry['name']	= basename($file);
-					$entry['fpath']	= str_replace($path . DS, '', $file);
-					$entry['ext'] = \Components\Projects\Helpers\Html::getFileExtension($entry['name']);
-					$files[] = $entry;
+					break;
+				}
+
+				$arr = explode("\t", $line);
+	            $fpath = $arr[0];
+				$base = basename($fpath);
+
+				// Do not show files in child directories
+				if ($norecurse == true)
+				{
+					$dirname = dirname($fpath);
+					if ($dirname != '.' && $dirname != $subdir)
+					{
+						continue;
+					}
+				}
+				else
+				{
+					$base = $fpath;
+				}
+
+				if (file_exists($fullpath . DS . $base))
+				{
+					if ($limited == true)
+					{
+						// Get only basic file information (for quick browsing)
+						$file = array();
+						$file['name']	= basename($fpath);
+						$file['fpath']	= $fpath;
+						$file['ext']	= \Components\Projects\Helpers\Html::getFileExtension($fpath);
+					}
+					else
+					{
+						$file = $this->getFileInfo($fpath, $fullpath, $count, $norecurse);
+						$file['untracked'] = 0;
+
+						// Skip uncommitted files
+						if (!$file['date'])
+						{
+							continue;
+						}
+					}
+
+					if (!in_array($file, $files))
+					{
+						$files[] =  $file;
+
+						if ($file['name'] != '.gitignore')
+						{
+							$i++;
+						}
+					}
 				}
 			}
+		}
+
+		// Go through untracked files
+		if (count($untracked) > 0)
+		{
+			foreach ($untracked as $ut)
+			{
+				if ($limit && $i >= $limit)
+				{
+					break;
+				}
+
+				$dirname = dirname($ut);
+				if ($dirname != '.' && $dirname != $subdir)
+				{
+					continue;
+				}
+
+				$file = $this->getFileInfo($ut, $path, $count, $norecurse);
+				$file['untracked'] = 1;
+				$files[] =  $file;
+
+				$i++;
+			}
+		}
+
+		if (isset($filters['getsorted']) && $filters['getsorted'] == true)
+		{
+			// Sort local and remote file info
+			return $this->_sortItems(
+				$files,
+				$folders,
+				$remotes,
+				$filters['sortby'],
+				$filters['sortdir']
+			);
 		}
 
 		return $files;
@@ -4740,214 +4972,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		return $combined;
 	}
 
-	/**
-	 * Clean incoming data
-	 *
-	 * @return     array
-	 */
-	public function cleanData()
-	{
-		// Clean up empty values
-		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
-		$folders 	= Request::getVar( 'folder', '', 'request', 'array' );
-
-		foreach ($checked as $key => $value)
-		{
-			$value = trim($value);
-			if ($value == '')
-			{
-				unset($checked[$key]);
-			}
-			else
-			{
-				$checked[$key] = trim($value);
-			}
-		}
-
-		foreach ($folders as $key => $value)
-		{
-			$value = trim($value);
-			if ($value == '')
-			{
-				unset($folders[$key]);
-			}
-			else
-			{
-				$folders[$key] = trim($value);
-			}
-		}
-
-		Request::setVar( 'asset', $checked);
-		Request::setVar( 'folder', $folders);
-	}
-
-	/**
-	 * Get files from Git repository
-	 *
-	 * @param      string	$path
-	 * @param      string  	$subdir
-	 * @param      boolean  $norecurse
-	 * @param      boolean  $get_count
-	 * @param      integer  $limit
-	 * @param      integer  $rand
-	 * @param      string   $sortby
-	 * @param      string 	$sortdir
-	 *
-	 * @return     array
-	 */
-	public function getFiles ($path = '', $subdir = '', $norecurse = true,
-		$get_count = false, $limit = 0, $rand = 0,
-		$sortby = '', $sortdir = 'ASC', $limited = false, $showUntracked = true)
-	{
-		// Check path format
-		$subdir = trim($subdir, DS);
-		$fullpath = $subdir ? $path . DS . $subdir : $path;
-
-		$files 		= array();
-		$sorting 	= array();
-		$i			= 0;
-
-		if (!is_dir($path))
-		{
-			return $get_count ? 0 : $files;
-		}
-
-		// Make sure Git helper is included
-		$this->_getGitHelper();
-
-		// Get files
-		$out = $this->_git->getFiles($subdir);
-
-		// Show untracked files?
-		$untracked = array();
-		if ($showUntracked)
-		{
-			$untracked = $this->_git->getFiles($subdir, true);
-		}
-
-		// Return count
-		if ($get_count)
-		{
-			return (count($out) + count($untracked));
-		}
-
-		// Get pub associations
-		if ($this->_publishing)
-		{
-			$pA = new \Components\Publications\Tables\Attachment( $this->_database );
-			$this->_pubassoc = $pA->getPubAssociations($this->model->get('id'), 'file');
-		}
-
-		$this->_fileinfo = NULL;
-
-		// Return files
-		if (count($out) > 0)
-		{
-			if ($rand)
-			{
-				shuffle($out);
-			}
-			foreach ($out as $line)
-			{
-				if ($limit && $i >= $limit)
-				{
-					break;
-				}
-
-				$arr = explode("\t", $line);
-	            $fpath = $arr[0];
-				$base = basename($fpath);
-
-				// Do not show files in child directories
-				if ($norecurse == true)
-				{
-					$dirname = dirname($fpath);
-					if ($dirname != '.' && $dirname != $subdir)
-					{
-						continue;
-					}
-				}
-				else
-				{
-					$base = $fpath;
-				}
-
-				if (file_exists($fullpath . DS . $base))
-				{
-					if ($limited == true)
-					{
-						// Get only basic file information (for quick browsing)
-						$file = array();
-						$file['name']	= basename($fpath);
-						$file['fpath']	= $fpath;
-						$file['ext']	= \Components\Projects\Helpers\Html::getFileExtension($fpath);
-					}
-					else
-					{
-						$file = $this->getFileInfo($fpath, $path, $fullpath, $get_count, $norecurse);
-						$file['untracked'] = 0;
-
-						// Skip uncommitted files
-						if (!$file['date'])
-						{
-							continue;
-						}
-					}
-
-					if (!in_array($file, $files))
-					{
-						$files[] =  $file;
-
-						if ($file['name'] != '.gitignore')
-						{
-							$i++;
-						}
-					}
-				}
-			}
-		}
-
-		// Go through untracked files
-		if (count($untracked) > 0)
-		{
-			foreach ($untracked as $ut)
-			{
-				if ($limit && $i >= $limit)
-				{
-					break;
-				}
-
-				$dirname = dirname($ut);
-				if ($dirname != '.' && $dirname != $subdir)
-				{
-					continue;
-				}
-
-				$file 						= array();
-				$file['name']				= basename($ut);
-				$file['fpath']				= $ut;
-				$file['ext']				= \Components\Projects\Helpers\Html::getFileExtension($ut);
-				$file['date']  				= NULL;
-				$file['author'] 			= NULL;
-				$file['email'] 				= NULL;
-				$file['bytes']				= filesize($path . DS . $ut);
-				$file['size']				= \Hubzero\Utility\Number::formatBytes($file['bytes']);
-				$file['untracked'] 			= 1;
-				$file['pid'] 				= '';
-				$file['pub_title'] 			= '';
-				$file['pub_version'] 		= '';
-				$file['pub_version_label'] 	= '';
-				$file['pub_num']			= 0;
-
-				$files[] =  $file;
-
-				$i++;
-			}
-		}
-
-		return $files;
-	}
-
 	//----------------------------------------
 	// Misc
 	//----------------------------------------
@@ -5039,7 +5063,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_path = \Components\Projects\Helpers\Html::getProjectRepoPath($obj->alias);
 
 		// Get local file count
-		$count = $this->getFiles($this->_path, '', false, 1);
+		$count = $this->getFiles($filters = array('count' => 1));
 
 		return ($count + $converted);
 	}

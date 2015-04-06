@@ -535,6 +535,55 @@ class Git extends \JObject
 	}
 
 	/**
+	 * Show logs in subdir
+	 *
+	 * @param      string  	$file		file path
+	 * @param      integer  $limit		limit results
+	 *
+	 * @return     string
+	 */
+	public function gitLogAll ($subdir = '', $limit = 500)
+	{
+		if (!$this->_path || !is_dir($this->_path))
+		{
+			return false;
+		}
+
+		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H||%f" --name-only';
+		$exec .= $limit ? ' --max-count=' . $limit : '';
+		$exec .= $subdir ? ' ' . escapeshellarg($subdir) : '';
+
+		// Make Git call
+		$out = $this->callGit($exec);
+
+		$collector = array();
+		$entry 	   = array();
+		$i = 0;
+
+		foreach ($out as $line)
+		{
+			if (substr($line, 0, 3) == '>>>')
+			{
+				$line = str_replace('>>>', '', $line);
+				$data = explode("||", $line);
+
+				$entry = array();
+				$entry['date']  	= $data[0];
+				$entry['author'] 	= $data[1];
+				$entry['email'] 	= $data[2];
+				$entry['hash'] 		= $data[3];
+				$entry['message'] 	= substr($data[4], 0, 100);
+			}
+			elseif ($line != '' && !isset($collector[$line]))
+			{
+				$collector[$line] = $entry;
+			}
+		}
+
+		return $collector;
+	}
+
+	/**
 	 * Parse response
 	 *
 	 * @param      array  	$out		Array of data to parse
@@ -561,7 +610,7 @@ class Git extends \JObject
 				$entry['author'] 	= $data[1];
 				$entry['email'] 	= $data[2];
 				$entry['hash'] 		= $data[3];
-				$entry['message'] 	= $data[4];
+				$entry['message'] 	= substr($data[4], 0, 100);
 				$response = $entry;
 				break;
 
