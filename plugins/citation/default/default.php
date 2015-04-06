@@ -41,27 +41,25 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return file type
 	 *
-	 * @return     string HTML
+	 * @return  string  HTML
 	 */
 	public function onImportAcceptedFiles()
 	{
-		//return '.txt <small>(' . JText::_('PLG_CITATION_DEFAULT_FILE') . ')</small>';
+		//return '.txt <small>(' . Lang::txt('PLG_CITATION_DEFAULT_FILE') . ')</small>';
 	}
 
 	/**
-	 * Short description for 'onImport'
+	 * Import data from a file
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $file Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   array  $file
+	 * @return  array
 	 */
 	public function onImport($file)
 	{
@@ -84,8 +82,8 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 		if (preg_match('/%A|%0|%T/', $raw_contents))
 		{
 			//load citation import plugins
-			JPluginHelper::importPlugin('citation');
-	        $dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin('citation');
+			$dispatcher = \JDispatcher::getInstance();
 
 			//make new file to pass to dispatcher
 			$new_file = array(

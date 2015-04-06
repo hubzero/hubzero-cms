@@ -41,27 +41,25 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return file type
 	 *
-	 * @return     string HTML
+	 * @return  string  HTML
 	 */
 	public function onImportAcceptedFiles()
 	{
-		return '.bib <small>(' . JText::_('PLG_CITATION_BIBTEX_FILE') . ')</small>';
+		return '.bib <small>(' . Lang::txt('PLG_CITATION_BIBTEX_FILE') . ')</small>';
 	}
 
 	/**
-	 * Short description for 'onImport'
+	 * Import data from a file
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $file Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array  $file
+	 * @return  array
 	 */
 	public function onImport($file)
 	{
@@ -135,12 +133,10 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'checkDuplicateCitation'
+	 * Check if a citation is a duplicate
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $citation Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   array    $citation
+	 * @return  integer
 	 */
 	protected function checkDuplicateCitation($citation)
 	{
@@ -163,7 +159,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 
 		//database object
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		//query
 		$sql = "SELECT id, title, doi, isbn FROM `#__citations`";
