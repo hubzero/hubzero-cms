@@ -32,7 +32,7 @@ endif;
 			<?php echo $this->form->getField('articletext')->save(); ?>
 			Joomla.submitform(task);
 		} else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
 	}
 </script>
@@ -43,9 +43,9 @@ endif;
 </h1>
 <?php endif; ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_content&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_content&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	<fieldset>
-		<legend><?php echo JText::_('JEDITOR'); ?></legend>
+		<legend><?php echo Lang::txt('JEDITOR'); ?></legend>
 
 			<div class="formelm">
 			<?php echo $this->form->getLabel('title'); ?>
@@ -61,10 +61,10 @@ endif;
 
 			<div class="formelm-buttons">
 			<button type="button" onclick="Joomla.submitbutton('article.save')">
-				<?php echo JText::_('JSAVE') ?>
+				<?php echo Lang::txt('JSAVE') ?>
 			</button>
 			<button type="button" onclick="Joomla.submitbutton('article.cancel')">
-				<?php echo JText::_('JCANCEL') ?>
+				<?php echo Lang::txt('JCANCEL') ?>
 			</button>
 			</div>
 
@@ -73,7 +73,7 @@ endif;
 	</fieldset>
 	<?php if ($params->get('show_urls_images_frontend')  ): ?>
 	<fieldset>
-		<legend><?php echo JText::_('COM_CONTENT_IMAGES_AND_URLS'); ?></legend>
+		<legend><?php echo Lang::txt('COM_CONTENT_IMAGES_AND_URLS'); ?></legend>
 			<div class="formelm">
 			<?php echo $this->form->getLabel('image_intro', 'images'); ?>
 			<?php echo $this->form->getInput('image_intro', 'images'); ?>
@@ -141,7 +141,7 @@ endif;
 	<?php endif; ?>
 
 	<fieldset>
-		<legend><?php echo JText::_('COM_CONTENT_PUBLISHING'); ?></legend>
+		<legend><?php echo Lang::txt('COM_CONTENT_PUBLISHING'); ?></legend>
 		<div class="formelm">
 		<?php echo $this->form->getLabel('catid'); ?>
 		<span class="category">
@@ -181,13 +181,13 @@ endif;
 		</div>
 		<?php if (is_null($this->item->id)):?>
 			<div class="form-note">
-			<p><?php echo JText::_('COM_CONTENT_ORDERING'); ?></p>
+			<p><?php echo Lang::txt('COM_CONTENT_ORDERING'); ?></p>
 			</div>
 		<?php endif; ?>
 	</fieldset>
 
 	<fieldset>
-		<legend><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></legend>
+		<legend><?php echo Lang::txt('JFIELD_LANGUAGE_LABEL'); ?></legend>
 		<div class="formelm-area">
 		<?php echo $this->form->getLabel('language'); ?>
 		<?php echo $this->form->getInput('language'); ?>
@@ -195,7 +195,7 @@ endif;
 	</fieldset>
 
 	<fieldset>
-		<legend><?php echo JText::_('COM_CONTENT_METADATA'); ?></legend>
+		<legend><?php echo Lang::txt('COM_CONTENT_METADATA'); ?></legend>
 		<div class="formelm-area">
 		<?php echo $this->form->getLabel('metadesc'); ?>
 		<?php echo $this->form->getInput('metadesc'); ?>

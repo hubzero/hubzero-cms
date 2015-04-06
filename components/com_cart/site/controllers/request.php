@@ -44,7 +44,7 @@ class CartControllerRequest extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = JRequest::getVar('task', '');
+		$this->_task  = Request::getVar('task', '');
 
 		parent::execute();
 	}
@@ -58,8 +58,8 @@ class CartControllerRequest extends ComponentController
 		$cart = new CartModelCurrentCart();
 
 		// update cart
-		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
-		$pIds = JRequest::getVar('pId', false, 'post');
+		$updateCartRequest = Request::getVar('updateCart', false, 'post');
+		$pIds = Request::getVar('pId', false, 'post');
 
 		//print_r($pIds); die;
 
@@ -86,7 +86,7 @@ class CartControllerRequest extends ComponentController
 		}
 		else
 		{
-			$skus = JRequest::getVar('skus', false, 'post');
+			$skus = Request::getVar('skus', false, 'post');
 		}
 		//print_r($skus); die;
 
@@ -111,8 +111,8 @@ class CartControllerRequest extends ComponentController
 		}
 
 		// add coupon if needed
-		$addCouponRequest = JRequest::getVar('addCouponCode', false, 'post');
-		$couponCode = JRequest::getVar('couponCode', false, 'post');
+		$addCouponRequest = Request::getVar('addCouponCode', false, 'post');
+		$couponCode = Request::getVar('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{

@@ -48,36 +48,36 @@ class MessagesViewMessages extends JViewLegacy
 		$state	= $this->get('State');
 		$canDo	= MessagesHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_MESSAGES_MANAGER_MESSAGES'), 'inbox.png');
+		Toolbar::title(Lang::txt('COM_MESSAGES_MANAGER_MESSAGES'), 'inbox.png');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('message.add');
+			Toolbar::addNew('message.add');
 		}
 
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('messages.publish', 'COM_MESSAGES_TOOLBAR_MARK_AS_READ');
-			JToolBarHelper::unpublish('messages.unpublish', 'COM_MESSAGES_TOOLBAR_MARK_AS_UNREAD');
+			Toolbar::divider();
+			Toolbar::publish('messages.publish', 'COM_MESSAGES_TOOLBAR_MARK_AS_READ');
+			Toolbar::unpublish('messages.unpublish', 'COM_MESSAGES_TOOLBAR_MARK_AS_UNREAD');
 		}
 
 		if ($state->get('filter.state') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('', 'messages.delete', 'JTOOLBAR_EMPTY_TRASH');
+			Toolbar::divider();
+			Toolbar::deleteList('', 'messages.delete', 'JTOOLBAR_EMPTY_TRASH');
 		} elseif ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::trash('messages.trash');
+			Toolbar::divider();
+			Toolbar::trash('messages.trash');
 		}
 
-		//JToolBarHelper::addNew('module.add');
-		JToolBarHelper::divider();
+		//Toolbar::addNew('module.add');
+		Toolbar::divider();
 		$bar = JToolBar::getInstance('toolbar');
 		$bar->appendButton('Popup', 'options', 'COM_MESSAGES_TOOLBAR_MY_SETTINGS', 'index.php?option=com_messages&amp;view=config&amp;tmpl=component', 850, 400);
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_messages');
+			Toolbar::preferences('com_messages');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('JHELP_COMPONENTS_MESSAGING_INBOX');
+		Toolbar::divider();
+		Toolbar::help('JHELP_COMPONENTS_MESSAGING_INBOX');
 	}
 }

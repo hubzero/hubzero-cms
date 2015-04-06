@@ -21,15 +21,15 @@ JHtml::_('behavior.keepalive');
 		if (task == 'newsfeed.cancel' || document.formvalidator.isValid($('#item-form'))) {
 			Joomla.submitform(task, document.getElementById('newsfeed-form'));
 		} else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_newsfeeds&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_newsfeeds&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo empty($this->item->id) ? JText::_('COM_NEWSFEEDS_NEW_NEWSFEED') : JText::sprintf('COM_NEWSFEEDS_EDIT_NEWSFEED', $this->item->id); ?></legend>
+			<legend><?php echo empty($this->item->id) ? Lang::txt('COM_NEWSFEEDS_NEW_NEWSFEED') : Lang::txt('COM_NEWSFEEDS_EDIT_NEWSFEED', $this->item->id); ?></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('name'); ?>
@@ -81,7 +81,7 @@ JHtml::_('behavior.keepalive');
 	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'newsfeed-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
-			<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+			<?php echo JHtml::_('sliders.panel', Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 
 			<fieldset class="panelform">
 

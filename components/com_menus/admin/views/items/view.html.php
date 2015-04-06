@@ -50,15 +50,15 @@ class MenusViewItems extends JViewLegacy
 			// item type text
 			switch ($item->type) {
 				case 'url':
-					$value = JText::_('COM_MENUS_TYPE_EXTERNAL_URL');
+					$value = Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL');
 					break;
 
 				case 'alias':
-					$value = JText::_('COM_MENUS_TYPE_ALIAS');
+					$value = Lang::txt('COM_MENUS_TYPE_ALIAS');
 					break;
 
 				case 'separator':
-					$value = JText::_('COM_MENUS_TYPE_SEPARATOR');
+					$value = Lang::txt('COM_MENUS_TYPE_SEPARATOR');
 					break;
 
 				case 'component':
@@ -68,7 +68,7 @@ class MenusViewItems extends JViewLegacy
 					||	$lang->load($item->componentname . '.sys', JPATH_ADMINISTRATOR . '/components/' . $item->componentname, null, false, true);
 
 					if (!empty($item->componentname)) {
-						$value	= JText::_($item->componentname);
+						$value	= Lang::txt($item->componentname);
 						$vars	= null;
 
 						parse_str($item->link, $vars);
@@ -102,11 +102,11 @@ class MenusViewItems extends JViewLegacy
 											// Look for the first view node off of the root node.
 											if ($layout = $xml->xpath('layout[1]')) {
 												if (!empty($layout[0]['title'])) {
-													$value .= ' » ' . JText::_(trim((string) $layout[0]['title']));
+													$value .= ' » ' . Lang::txt(trim((string) $layout[0]['title']));
 												}
 											}
 											if (!empty($layout[0]->message[0])) {
-												$item->item_type_desc = JText::_(trim((string) $layout[0]->message[0]));
+												$item->item_type_desc = Lang::txt(trim((string) $layout[0]->message[0]));
 											}
 										}
 									}
@@ -115,16 +115,16 @@ class MenusViewItems extends JViewLegacy
 							}
 							else {
 								// Special case for absent views
-								$value .= ' » ' . JText::_($item->componentname.'_'.$vars['view'].'_VIEW_DEFAULT_TITLE');
+								$value .= ' » ' . Lang::txt($item->componentname.'_'.$vars['view'].'_VIEW_DEFAULT_TITLE');
 							}
 						}
 					}
 					else {
 						if (preg_match("/^index.php\?option=([a-zA-Z\-0-9_]*)/", $item->link, $result)) {
-							$value = JText::sprintf('COM_MENUS_TYPE_UNEXISTING', $result[1]);
+							$value = Lang::txt('COM_MENUS_TYPE_UNEXISTING', $result[1]);
 						}
 						else {
-							$value = JText::_('COM_MENUS_TYPE_UNKNOWN');
+							$value = Lang::txt('COM_MENUS_TYPE_UNKNOWN');
 						}
 					}
 					break;
@@ -134,16 +134,16 @@ class MenusViewItems extends JViewLegacy
 
 		// Levels filter.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '1', JText::_('J1'));
-		$options[]	= JHtml::_('select.option', '2', JText::_('J2'));
-		$options[]	= JHtml::_('select.option', '3', JText::_('J3'));
-		$options[]	= JHtml::_('select.option', '4', JText::_('J4'));
-		$options[]	= JHtml::_('select.option', '5', JText::_('J5'));
-		$options[]	= JHtml::_('select.option', '6', JText::_('J6'));
-		$options[]	= JHtml::_('select.option', '7', JText::_('J7'));
-		$options[]	= JHtml::_('select.option', '8', JText::_('J8'));
-		$options[]	= JHtml::_('select.option', '9', JText::_('J9'));
-		$options[]	= JHtml::_('select.option', '10', JText::_('J10'));
+		$options[]	= JHtml::_('select.option', '1', Lang::txt('J1'));
+		$options[]	= JHtml::_('select.option', '2', Lang::txt('J2'));
+		$options[]	= JHtml::_('select.option', '3', Lang::txt('J3'));
+		$options[]	= JHtml::_('select.option', '4', Lang::txt('J4'));
+		$options[]	= JHtml::_('select.option', '5', Lang::txt('J5'));
+		$options[]	= JHtml::_('select.option', '6', Lang::txt('J6'));
+		$options[]	= JHtml::_('select.option', '7', Lang::txt('J7'));
+		$options[]	= JHtml::_('select.option', '8', Lang::txt('J8'));
+		$options[]	= JHtml::_('select.option', '9', Lang::txt('J9'));
+		$options[]	= JHtml::_('select.option', '10', Lang::txt('J10'));
 
 		$this->f_levels = $options;
 
@@ -162,39 +162,39 @@ class MenusViewItems extends JViewLegacy
 
 		$canDo	= MenusHelper::getActions($this->state->get('filter.parent_id'));
 
-		JToolBarHelper::title(JText::_('COM_MENUS_VIEW_ITEMS_TITLE'), 'menumgr.png');
+		Toolbar::title(Lang::txt('COM_MENUS_VIEW_ITEMS_TITLE'), 'menumgr.png');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('item.add');
+			Toolbar::addNew('item.add');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('item.edit');
+			Toolbar::editList('item.edit');
 		}
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('items.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('items.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			Toolbar::divider();
+			Toolbar::publish('items.publish', 'JTOOLBAR_PUBLISH', true);
+			Toolbar::unpublish('items.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
 		if (JFactory::getUser()->authorise('core.admin')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('items.checkin', 'JTOOLBAR_CHECKIN', true);
+			Toolbar::divider();
+			Toolbar::checkin('items.checkin', 'JTOOLBAR_CHECKIN', true);
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'items.delete', 'JTOOLBAR_EMPTY_TRASH');
+			Toolbar::deleteList('', 'items.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state')) {
-			JToolBarHelper::trash('items.trash');
+			Toolbar::trash('items.trash');
 		}
 
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::makeDefault('items.setDefault', 'COM_MENUS_TOOLBAR_SET_HOME');
-			JToolBarHelper::divider();
+			Toolbar::makeDefault('items.setDefault', 'COM_MENUS_TOOLBAR_SET_HOME');
+			Toolbar::divider();
 		}
 		if (JFactory::getUser()->authorise('core.admin')) {
-			JToolBarHelper::custom('items.rebuild', 'refresh.png', 'refresh_f2.png', 'JToolbar_Rebuild', false);
-			JToolBarHelper::divider();
+			Toolbar::custom('items.rebuild', 'refresh.png', 'refresh_f2.png', 'JToolbar_Rebuild', false);
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('items');
+		Toolbar::help('items');
 	}
 }

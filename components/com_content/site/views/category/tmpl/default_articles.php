@@ -23,7 +23,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 <?php if (empty($this->items)) : ?>
 
 	<?php if ($this->params->get('show_no_articles', 1)) : ?>
-	<p><?php echo JText::_('COM_CONTENT_NO_ARTICLES'); ?></p>
+	<p><?php echo Lang::txt('COM_CONTENT_NO_ARTICLES'); ?></p>
 	<?php endif; ?>
 
 <?php else : ?>
@@ -33,18 +33,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<fieldset class="filters">
 		<?php if ($this->params->get('filter_field') != 'hide') :?>
 		<legend class="hidelabeltxt">
-			<?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
+			<?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?>
 		</legend>
 
 		<div class="filter-search">
-			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
-			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+			<label class="filter-search-lbl" for="filter-search"><?php echo Lang::txt('COM_CONTENT_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
+			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 		</div>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
 		<div class="display-limit">
-			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+			<?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php echo $this->pagination->getLimitBox(); ?>
 		</div>
 		<?php endif; ?>
@@ -102,7 +102,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
 
 					<td class="list-title">
-						<a href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
+						<a href="<?php echo Route::url(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
 							<?php echo $this->escape($article->title); ?></a>
 
 						<?php if ($article->params->get('access-edit')) : ?>
@@ -117,7 +117,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php if ($this->params->get('list_show_date')) : ?>
 					<td class="list-date">
 						<?php echo JHtml::_('date', $article->displayDate, $this->escape(
-						$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>
+						$this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3')))); ?>
 					</td>
 					<?php endif; ?>
 
@@ -130,12 +130,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php if (!empty($article->contactid ) &&  $this->params->get('link_author') == true):?>
 								<?php echo JHtml::_(
 										'link',
-										JRoute::_('index.php?option=com_contact&view=contact&id='.$article->contactid),
+										Route::url('index.php?option=com_contact&view=contact&id='.$article->contactid),
 										$author
 								); ?>
 
 							<?php else :?>
-								<?php echo JText::sprintf('COM_CONTENT_WRITTEN_BY', $author); ?>
+								<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
 							<?php endif; ?>
 						<?php endif; ?>
 					</td>
@@ -154,13 +154,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							$menu		= JFactory::getApplication()->getMenu();
 							$active		= $menu->getActive();
 							$itemId		= $active->id;
-							$link = JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId);
-							$returnURL = JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language));
+							$link = Route::url('index.php?option=com_users&view=login&Itemid='.$itemId);
+							$returnURL = Route::url(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language));
 							$fullURL = new JURI($link);
 							$fullURL->setVar('return', base64_encode(urlencode($returnURL)));
 						?>
 						<a href="<?php echo $fullURL; ?>" class="register">
-							<?php echo JText::_( 'COM_CONTENT_REGISTER_TO_READ_MORE' ); ?></a>
+							<?php echo Lang::txt( 'COM_CONTENT_REGISTER_TO_READ_MORE' ); ?></a>
 					</td>
 				<?php endif; ?>
 				</tr>

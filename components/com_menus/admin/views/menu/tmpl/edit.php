@@ -25,10 +25,10 @@ JHtml::_('behavior.formvalidation');
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_menus&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=com_menus&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
 	<div class="width-40">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_MENUS_MENU_DETAILS');?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_MENUS_MENU_DETAILS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('title'); ?>

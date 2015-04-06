@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $html = '';
 if (!$this->ajax)
 {
-	$html .= '<dl id="diskusage" data-base="' . rtrim(JURI::base(true), '/') . '">'."\n";
+	$html .= '<dl id="diskusage" data-base="' . rtrim(Request::base(true), '/') . '">'."\n";
 }
 if ($this->writelink)
 {

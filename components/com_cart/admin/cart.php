@@ -35,7 +35,7 @@ $option = 'com_cart';
 // Authorization check
 if (!JFactory::getUser()->authorise('core.manage', $option))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-JToolBarHelper::title(JText::_('Cart'));
+Toolbar::title(Lang::txt('Cart'));

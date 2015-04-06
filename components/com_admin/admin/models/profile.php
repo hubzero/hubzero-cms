@@ -49,7 +49,7 @@ class AdminModelProfile extends UsersModelUser
 
 		$this->setState('user.username.compliant', $isUsernameCompliant);
 
-		if (!JComponentHelper::getParams('com_users')->get('change_login_name') && $isUsernameCompliant)
+		if (!Component::params('com_users')->get('change_login_name') && $isUsernameCompliant)
 		{
 			$form->setFieldAttribute('username', 'required', 'false');
 			$form->setFieldAttribute('username', 'readonly', 'true');
@@ -125,7 +125,7 @@ class AdminModelProfile extends UsersModelUser
 		$username = $data['username'];
 		$isUsernameCompliant = $this->getState('user.username.compliant');
 
-		if (!JComponentHelper::getParams('com_users')->get('change_login_name') && $isUsernameCompliant)
+		if (!Component::params('com_users')->get('change_login_name') && $isUsernameCompliant)
 		{
 			unset($data['username']);
 		}

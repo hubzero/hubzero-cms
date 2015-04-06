@@ -57,10 +57,10 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$pId = $this->warehouse->productExists(JRequest::getVar('product', ''));
+		$pId = $this->warehouse->productExists(Request::getVar('product', ''));
 		if (!$pId)
 		{
-			JError::raiseError(404, JText::_('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
+			JError::raiseError(404, Lang::txt('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
 		}
 
 		$this->view->pId = $pId;
@@ -77,9 +77,9 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$cart = new CartModelCurrentCart();
 
 		// POST add to cart request
-		$addToCartRequest = JRequest::getVar('addToCart', false, 'post');
-		$options = JRequest::getVar('og', false, 'post');
-		$qty = JRequest::getInt('qty', 1, 'post');
+		$addToCartRequest = Request::getVar('addToCart', false, 'post');
+		$options = Request::getVar('og', false, 'post');
+		$qty = Request::getInt('qty', 1, 'post');
 
 		if ($addToCartRequest)
 		{
@@ -105,7 +105,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			else {
 				// prevent resubmitting by refresh
 				// If not an ajax call, redirect to cart
-				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
+				$redirect_url  = Route::url('index.php?option=' . 'com_cart');
 				$app = JFactory::getApplication();
 				$app->redirect($redirect_url);
 			}
@@ -138,7 +138,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$data = $this->warehouse->getProductOptions($pId);
 		if ($data)
 		{
-			//JError::raiseError(404 , JText::_('COM_STOREFRONT_PRODUCT_ERROR'));
+			//JError::raiseError(404 , Lang::txt('COM_STOREFRONT_PRODUCT_ERROR'));
 			$this->view->options = $data->options;
 		}
 		//print_r($data); die;
@@ -413,14 +413,14 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			Pathway::append(
-				JText::_($product)
+				Lang::txt($product)
 			);
 		}
 	}

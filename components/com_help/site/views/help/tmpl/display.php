@@ -31,26 +31,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-\JFactory::getDocument()->setTitle(\JText::_('COM_HELP'));
+\JFactory::getDocument()->setTitle(\Lang::txt('COM_HELP'));
 ?>
 <a name="help-top"></a>
 <div class="help-header">
 	<?php if ($this->page != 'index') : ?>
-		<button class="back" onclick="window.history.back();" title="<?php echo JText::_('COM_HELP_GO_BACK'); ?>"><?php echo JText::_('COM_HELP_GO_BACK'); ?></button>
+		<button class="back" onclick="window.history.back();" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
 	<?php endif; ?>
 </div>
 
 <?php echo $this->content; ?>
 
 <div class="help-footer">
-	<a class="top" href="#help-top"><?php echo JText::_('COM_HELP_BACK_TO_TOP'); ?></a>
+	<a class="top" href="#help-top"><?php echo Lang::txt('COM_HELP_BACK_TO_TOP'); ?></a>
 	<?php if ($this->page != 'index') : ?>
-		<a class="index" href="<?php echo JRoute::_('index.php?option=com_help&component=' . str_replace('com_', '', $this->component) . '&page=index'); ?>">
-			<?php echo JText::_('COM_HELP_INDEX'); ?>
+		<a class="index" href="<?php echo Route::url('index.php?option=com_help&component=' . str_replace('com_', '', $this->component) . '&page=index'); ?>">
+			<?php echo Lang::txt('COM_HELP_INDEX'); ?>
 		</a>
 	<?php endif; ?>
 	<p class="modified">
-		<?php echo JText::sprintf('COM_HELP_LAST_MODIFIED', date('l, F d, Y @ g:ia', $this->modified)); ?>
+		<?php echo Lang::txt('COM_HELP_LAST_MODIFIED', date('l, F d, Y @ g:ia', $this->modified)); ?>
 	</p>
 </div>
 

@@ -349,11 +349,11 @@ class CartModelCurrentCart extends CartModelCart
     {
         if ($where == 'home')
         {
-            $redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
+            $redirect_url  = Route::url('index.php?option=' . 'com_cart');
         }
         else
         {
-            $redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . '/checkout/' . $where;
+            $redirect_url  = Route::url('index.php?option=' . 'com_cart') . '/checkout/' . $where;
         }
 
         $app  =  JFactory::getApplication();
@@ -499,18 +499,18 @@ class CartModelCurrentCart extends CartModelCart
 
         foreach ($requiredFields as $field)
         {
-            $fieldValue = JRequest::getVar($field, false, 'post');
+            $fieldValue = Request::getVar($field, false, 'post');
             if (empty($fieldValue))
             {
-                $errors[] = JText::_('COM_CART_FILL_REQUIRED_FIELDS');
+                $errors[] = Lang::txt('COM_CART_FILL_REQUIRED_FIELDS');
                 break;
             }
         }
 
         // Check values
-        if (empty($errors) && !Cart_Helper::validZip(JRequest::getVar('shippingZip', false, 'post', 'string')))
+        if (empty($errors) && !Cart_Helper::validZip(Request::getVar('shippingZip', false, 'post', 'string')))
         {
-            $errors[] = JText::_('COM_CART_INCORRECT_ZIP');
+            $errors[] = Lang::txt('COM_CART_INCORRECT_ZIP');
         }
 
         // Init return object
@@ -519,12 +519,12 @@ class CartModelCurrentCart extends CartModelCart
         if (empty($errors))
         {
             // save shipping info
-            $shippingToFirst = Cart_Helper::escapeDb(JRequest::getVar('shippingToFirst', false, 'post', 'string'));
-            $shippingToLast = Cart_Helper::escapeDb(JRequest::getVar('shippingToLast', false, 'post', 'string'));
-            $shippingAddress = Cart_Helper::escapeDb(JRequest::getVar('shippingAddress', false, 'post', 'string'));
-            $shippingCity = Cart_Helper::escapeDb(JRequest::getVar('shippingCity', false, 'post', 'string'));
-            $shippingState = Cart_Helper::escapeDb(JRequest::getVar('shippingState', false, 'post', 'string'));
-            $shippingZip = Cart_Helper::escapeDb(JRequest::getVar('shippingZip', false, 'post', 'string'));
+            $shippingToFirst = Cart_Helper::escapeDb(Request::getVar('shippingToFirst', false, 'post', 'string'));
+            $shippingToLast = Cart_Helper::escapeDb(Request::getVar('shippingToLast', false, 'post', 'string'));
+            $shippingAddress = Cart_Helper::escapeDb(Request::getVar('shippingAddress', false, 'post', 'string'));
+            $shippingCity = Cart_Helper::escapeDb(Request::getVar('shippingCity', false, 'post', 'string'));
+            $shippingState = Cart_Helper::escapeDb(Request::getVar('shippingState', false, 'post', 'string'));
+            $shippingZip = Cart_Helper::escapeDb(Request::getVar('shippingZip', false, 'post', 'string'));
 
             if ($this->debug)
             {
@@ -541,7 +541,7 @@ class CartModelCurrentCart extends CartModelCart
             $this->_db->setQuery($sql);
             $this->_db->query();
 
-            $saveAddress = Cart_Helper::escapeDb(JRequest::getVar('saveAddress', false, 'post', 'string'));
+            $saveAddress = Cart_Helper::escapeDb(Request::getVar('saveAddress', false, 'post', 'string'));
             // Save the address for future use if requested
             if ($saveAddress)
             {
@@ -581,7 +581,7 @@ class CartModelCurrentCart extends CartModelCart
 
         if (empty($this->tInfo))
         {
-            throw new Exception(JText::_('No transaction info.'));
+            throw new Exception(Lang::txt('No transaction info.'));
         }
 
         $shippingDiscountAmount = 0;
@@ -706,7 +706,7 @@ class CartModelCurrentCart extends CartModelCart
         // check if the address correct
         if (!Cart_Helper::isNonNegativeInt($saId))
         {
-            throw new Exception(JText::_('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
+            throw new Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
         $sql = "SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->_db->quote($saId);
@@ -715,7 +715,7 @@ class CartModelCurrentCart extends CartModelCart
 
         if ($this->_db->getNumRows() < 1)
         {
-            throw new Exception(JText::_('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
+            throw new Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
         $sql = "UPDATE `#__cart_transaction_info` ti, (SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->_db->quote($saId) . ") sa
@@ -744,7 +744,7 @@ class CartModelCurrentCart extends CartModelCart
     {
         if (empty($this->tInfo))
         {
-            throw new Exception(JText::_(COM_CART_NO_TRANSACTION_FOUND));
+            throw new Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
         }
 
         return md5(parent::$securitySalt . $this->tInfo->tId);
@@ -762,7 +762,7 @@ class CartModelCurrentCart extends CartModelCart
         {
             if (empty($this->tInfo))
             {
-                throw new Exception(JText::_(COM_CART_NO_TRANSACTION_FOUND));
+                throw new Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
             }
             $tId = $this->tInfo->tId;
         }
@@ -780,7 +780,7 @@ class CartModelCurrentCart extends CartModelCart
     {
         if (empty($this->tInfo))
         {
-            throw new Exception(JText::_(COM_CART_NO_TRANSACTION_FOUND));
+            throw new Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
         }
 
         $tiTotal = $this->tInfo->tiSubtotal + $this->tInfo->tiShipping - $this->tInfo->tiShippingDiscount - $this->tInfo->tiDiscounts;
@@ -837,7 +837,7 @@ class CartModelCurrentCart extends CartModelCart
 
         // Check if coupon has already been applied
         if($this->isCouponApplied($couponCode)) {
-            throw new Exception(JText::_('COM_CART_COUPON_ALREADY_APPLIED'));
+            throw new Exception(Lang::txt('COM_CART_COUPON_ALREADY_APPLIED'));
         }
 
         $cnId = $coupons->isValid($couponCode);
@@ -930,7 +930,7 @@ class CartModelCurrentCart extends CartModelCart
         }
 
         // Coupon is not applicable
-        throw new Exception(JText::_('COM_CART_CANNOT_APPLY_COUPON'));
+        throw new Exception(Lang::txt('COM_CART_CANNOT_APPLY_COUPON'));
     }
 
     /**
@@ -1069,7 +1069,7 @@ class CartModelCurrentCart extends CartModelCart
                 case 'shipping':
                     break;
                 default:
-                    throw new Exception(JText::_('Invalid coupon. Invalid object type.'));
+                    throw new Exception(Lang::txt('Invalid coupon. Invalid object type.'));
             }
 
             // Get coupon action in case we need to apply it.
@@ -1093,12 +1093,12 @@ class CartModelCurrentCart extends CartModelCart
                 // make sure discount is numeric
                 if (!is_numeric($couponDiscount))
                 {
-                    throw new Exception(JText::_('Invalid coupon. Invalid discount amount ' . $couponDiscount . '.'));
+                    throw new Exception(Lang::txt('Invalid coupon. Invalid discount amount ' . $couponDiscount . '.'));
                 }
 
             }
             else {
-                throw new Exception(JText::_('Invalid coupon. Invalid action type.'));
+                throw new Exception(Lang::txt('Invalid coupon. Invalid action type.'));
             }
 
             // Check if we need to match against the object type to make sure the coupon is applicable
@@ -1107,7 +1107,7 @@ class CartModelCurrentCart extends CartModelCart
                 // check if there are options available
                 if (empty($coupon->objects))
                 {
-                    throw new Exception(JText::_('Invalid coupon. No object found.'));
+                    throw new Exception(Lang::txt('Invalid coupon. No object found.'));
                 }
 
                 // Go through each coupon object and try to find a match in a cart
@@ -1176,7 +1176,7 @@ class CartModelCurrentCart extends CartModelCart
                             }
                             else
                             {
-                                throw new Exception(JText::_('Invalid coupon. Only discounts are available for SKUs and products'));
+                                throw new Exception(Lang::txt('Invalid coupon. Only discounts are available for SKUs and products'));
                             }
 
                             if ($couponObjectType == 'sku')
@@ -1634,7 +1634,7 @@ class CartModelCurrentCart extends CartModelCart
         }
 
         // If cookie exists, check if this is not pointing to a members' cart and load it.
-        $crtId = JRequest::getVar('cartId', '', 'COOKIE');
+        $crtId = Request::getVar('cartId', '', 'COOKIE');
 
         if (!empty($crtId) && !$this->cartIsLinked($crtId))
         {
@@ -1793,7 +1793,7 @@ class CartModelCurrentCart extends CartModelCart
             // If both session and user carts are not empty notify the user that items are being combined
             if (!$this->isEmpty() && !empty($userCartItems))
             {
-                $this->cart->messages[] = array(JText::_('COM_CART_ITEMS_COMBINED'), 'info');
+                $this->cart->messages[] = array(Lang::txt('COM_CART_ITEMS_COMBINED'), 'info');
                 $this->cart->hasMessages = true;
             }
 

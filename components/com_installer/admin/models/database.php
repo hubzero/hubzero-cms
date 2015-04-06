@@ -211,7 +211,7 @@ class InstallerModelDatabase extends InstallerModel
 		if (!$table->params)
 		{
 			// Get filters from com_content and store if you find them
-			$contentParams = JComponentHelper::getParams('com_content');
+			$contentParams = Component::params('com_content');
 			if ($contentParams->get('filters'))
 			{
 				$newParams = new JRegistry();

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css('component.css');
 
-$base = rtrim(JURI::base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 $this->versionlabel = ($this->version == 'current') ? Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') : Lang::txt('COM_TOOLS_DEVELOPMENT');
 if ($this->getError()) { ?>

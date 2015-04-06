@@ -50,18 +50,18 @@ class ComponentController extends \Hubzero\Component\SiteController
 		$params = false;
 
 		// check if there are more parameters than needed
-		$extraParameter = JRequest::getVar('p' . count($varNames), '');
+		$extraParameter = Request::getVar('p' . count($varNames), '');
 		if ($strictProcessing && !empty($extraParameter))
 		{
 			// too many parameters in the URL
 			//throw new Exception('Too many parameters');
-			JError::raiseError(404, JText::_('Page Not Found'));
+			JError::raiseError(404, Lang::txt('Page Not Found'));
 		}
 
 		// Go through each var name and assign a sequential URL parameter's value to it
 		foreach ($varNames as $varName)
 		{
-			$value = JRequest::getVar('p' . $i, '');
+			$value = Request::getVar('p' . $i, '');
 			if (!empty($value))
 			{
 				$params->$varName = $value;
@@ -71,7 +71,7 @@ class ComponentController extends \Hubzero\Component\SiteController
 				{
 					// missing parameter in the URL
 					//throw new Exception('Too few parameters');
-					JError::raiseError(404, JText::_('Page Not Found'));
+					JError::raiseError(404, Lang::txt('Page Not Found'));
 				}
 				break;
 			}

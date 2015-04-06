@@ -30,7 +30,7 @@ class ContentControllerArticle extends JControllerForm
 	{
 		// An article edit form can come from the articles or featured view.
 		// Adjust the redirect view on the value of 'return' in the request.
-		if (JRequest::getCmd('return') == 'featured')
+		if (Request::getCmd('return') == 'featured')
 		{
 			$this->view_list = 'featured';
 			$this->view_item = 'article&return=featured';
@@ -52,7 +52,7 @@ class ContentControllerArticle extends JControllerForm
 	{
 		// Initialise variables.
 		$user = JFactory::getUser();
-		$categoryId = JArrayHelper::getValue($data, 'catid', JRequest::getInt('filter_category_id'), 'int');
+		$categoryId = JArrayHelper::getValue($data, 'catid', Request::getInt('filter_category_id'), 'int');
 		$allow = null;
 
 		if ($categoryId)
@@ -136,13 +136,13 @@ class ContentControllerArticle extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('Article', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_content&view=articles' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::url('index.php?option=com_content&view=articles' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}

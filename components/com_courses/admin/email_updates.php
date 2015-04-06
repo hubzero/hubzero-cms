@@ -107,7 +107,7 @@ if (0) {
 	$mainframe->route();
 
 	// authorization
-	$Itemid = JRequest::getInt( 'Itemid');
+	$Itemid = Request::getInt( 'Itemid');
 	$mainframe->authorize($Itemid);
 
 	// trigger the onAfterRoute events
@@ -115,7 +115,7 @@ if (0) {
 	$mainframe->triggerEvent('onAfterRoute');
 
 	//DISPATCH THE APPLICATION
-	$option = JRequest::getCmd('option');
+	$option = Request::getCmd('option');
 	$mainframe->dispatch($option);
 
 	// trigger the onAfterDispatch events

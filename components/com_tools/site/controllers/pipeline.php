@@ -1805,7 +1805,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			'name'  => $from
 		);
 
-		$live_site = rtrim(JURI::base(),'/');
+		$live_site = rtrim(Request::base(),'/');
 
 		// Compose Message
 		$message  = strtoupper(Lang::txt('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";

@@ -47,46 +47,46 @@ class MenusViewItem extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		Request::setVar('hidemainmenu', true);
 
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$canDo		= MenusHelper::getActions($this->state->get('filter.parent_id'));
 
-		JToolBarHelper::title(JText::_($isNew ? 'COM_MENUS_VIEW_NEW_ITEM_TITLE' : 'COM_MENUS_VIEW_EDIT_ITEM_TITLE'), 'menu-add');
+		Toolbar::title(Lang::txt($isNew ? 'COM_MENUS_VIEW_NEW_ITEM_TITLE' : 'COM_MENUS_VIEW_EDIT_ITEM_TITLE'), 'menu-add');
 
 		// If a new item, can save the item.  Allow users with edit permissions to apply changes to prevent returning to grid.
 		if ($isNew && $canDo->get('core.create')) {
 			if ($canDo->get('core.edit')) {
-				JToolBarHelper::apply('item.apply');
+				Toolbar::apply('item.apply');
 			}
-			JToolBarHelper::save('item.save');
+			Toolbar::save('item.save');
 		}
 
 		// If not checked out, can save the item.
 		if (!$isNew && !$checkedOut && $canDo->get('core.edit')) {
-			JToolBarHelper::apply('item.apply');
-			JToolBarHelper::save('item.save');
+			Toolbar::apply('item.apply');
+			Toolbar::save('item.save');
 		}
 
 		// If the user can create new items, allow them to see Save & New
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::save2new('item.save2new');
+			Toolbar::save2new('item.save2new');
 		}
 
 		// If an existing item, can save to a copy only if we have create rights.
 		if (!$isNew && $canDo->get('core.create')) {
-			JToolBarHelper::save2copy('item.save2copy');
+			Toolbar::save2copy('item.save2copy');
 		}
 
 		if ($isNew)  {
-			JToolBarHelper::cancel('item.cancel');
+			Toolbar::cancel('item.cancel');
 		} else {
-			JToolBarHelper::cancel('item.cancel', 'JTOOLBAR_CLOSE');
+			Toolbar::cancel('item.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
+		Toolbar::divider();
 
 		// Get the help information for the menu item.
 		$lang = JFactory::getLanguage();
@@ -94,12 +94,12 @@ class MenusViewItem extends JViewLegacy
 		$help = $this->get('Help');
 		if ($lang->hasKey($help->url)) {
 			$debug = $lang->setDebug(false);
-			$url = JText::_($help->url);
+			$url = Lang::txt($help->url);
 			$lang->setDebug($debug);
 		}
 		else {
 			$url = $help->url;
 		}
-		JToolBarHelper::help('item'); //$help->key, $help->local, $url);
+		Toolbar::help('item'); //$help->key, $help->local, $url);
 	}
 }

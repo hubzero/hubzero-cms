@@ -51,12 +51,12 @@ class ContentViewCategory extends JViewLegacy
 
 		if ($category == false)
 		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		if ($parent == false)
 		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		// Setup the category parameters.
@@ -68,7 +68,7 @@ class ContentViewCategory extends JViewLegacy
 		$user	= JFactory::getUser();
 		$groups	= $user->getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			return JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// PREPARE THE DATA
@@ -201,7 +201,7 @@ class ContentViewCategory extends JViewLegacy
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
 		else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
 		$id = (int) @$menu->query['id'];
@@ -230,10 +230,10 @@ class ContentViewCategory extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 
 		$this->document->setTitle($title);
@@ -278,9 +278,9 @@ class ContentViewCategory extends JViewLegacy
 		if ($this->params->get('show_feed_link', 1)) {
 			$link = '&format=feed&limitstart=';
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::url($link . '&type=rss'), 'alternate', 'rel', $attribs);
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::url($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		}
 	}
 }

@@ -23,7 +23,7 @@ $class = ' class="first"';
 
 		<li<?php echo $class; ?>>
 			<?php $class = ''; ?>
-			<span class="item-title"><a href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($child->id));?>">
+			<span class="item-title"><a href="<?php echo Route::url(ContentHelperRoute::getCategoryRoute($child->id));?>">
 				<?php echo $this->escape($child->title); ?></a>
 			</span>
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
@@ -36,7 +36,7 @@ $class = ' class="first"';
 			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
 			<dl>
 				<dt>
-					<?php echo JText::_('COM_CONTENT_NUM_ITEMS') ; ?>
+					<?php echo Lang::txt('COM_CONTENT_NUM_ITEMS') ; ?>
 				</dt>
 				<dd>
 					<?php echo $child->getNumItems(true); ?>

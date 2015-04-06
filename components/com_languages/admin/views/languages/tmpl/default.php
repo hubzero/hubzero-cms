@@ -22,24 +22,24 @@ $canOrder	= $user->authorise('core.edit.state', 'com_languages');
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_languages&view=languages'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_languages&view=languages'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 
 		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo JText::_('COM_LANGUAGES_SEARCH_IN_TITLE'); ?>" />
+			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_LANGUAGES_SEARCH_IN_TITLE'); ?>" />
 
-			<button type="submit" class="btn"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
 		<div class="filter-select fltrt">
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('languages.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 			<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 		</div>
@@ -49,10 +49,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<thead>
 			<tr>
 				<th width="5">
-					<?php echo JText::_('JGRID_HEADING_ROW_NUMBER'); ?>
+					<?php echo Lang::txt('JGRID_HEADING_ROW_NUMBER'); ?>
 				</th>
 				<th width="20">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
 					<?php echo JHtml::_('grid.sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
@@ -112,9 +112,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<?php echo JHtml::_('grid.id', $i, $item->lang_id); ?>
 				</td>
 				<td>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('JGLOBAL_EDIT_ITEM');?>::<?php echo $this->escape($item->title); ?>">
+					<span class="editlinktip hasTip" title="<?php echo Lang::txt('JGLOBAL_EDIT_ITEM');?>::<?php echo $this->escape($item->title); ?>">
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_languages&task=language.edit&lang_id='.(int) $item->lang_id); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_languages&task=language.edit&lang_id='.(int) $item->lang_id); ?>">
 							<?php echo $this->escape($item->title); ?></a>
 					<?php else : ?>
 							<?php echo $this->escape($item->title); ?>
@@ -158,9 +158,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 				</td>
 				<td class="center">
 					<?php if ($item->home == '1') : ?>
-						<?php echo JText::_('JYES');?>
+						<?php echo Lang::txt('JYES');?>
 					<?php else:?>
-						<?php echo JText::_('JNO');?>
+						<?php echo Lang::txt('JNO');?>
 					<?php endif;?>
 				</td>
 				<td class="center">

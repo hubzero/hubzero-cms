@@ -33,7 +33,7 @@ class PluginsControllerPlugin extends JControllerForm
 	{
 		$result = parent::edit($key, $urlVar);
 
-		if ($component = JRequest::getVar('component', ''))
+		if ($component = Request::getVar('component', ''))
 		{
 			$this->redirect .= '&component=' . $component;
 		}
@@ -54,7 +54,7 @@ class PluginsControllerPlugin extends JControllerForm
 	 */
 	public function postSaveHook(JModel &$model, $validData = array())
 	{
-		if ($component = JRequest::getVar('component', ''))
+		if ($component = Request::getVar('component', ''))
 		{
 			// Redirect to the list screen.
 			$this->setRedirect(
@@ -76,7 +76,7 @@ class PluginsControllerPlugin extends JControllerForm
 	{
 		$result = parent::cancel($key);
 
-		if ($component = JRequest::getVar('component', ''))
+		if ($component = Request::getVar('component', ''))
 		{
 			// Redirect to the list screen.
 			$this->setRedirect(

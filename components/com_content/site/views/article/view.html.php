@@ -30,7 +30,7 @@ class ContentViewArticle extends JViewLegacy
 		$dispatcher	= JDispatcher::getInstance();
 
 		$this->item		= $this->get('Item');
-		$this->print	= JRequest::getBool('print');
+		$this->print	= Request::getBool('print');
 		$this->state	= $this->get('State');
 		$this->user		= $user;
 
@@ -50,7 +50,7 @@ class ContentViewArticle extends JViewLegacy
 		$item->parent_slug	= $item->category_alias ? ($item->parent_id.':'.$item->parent_alias) : $item->parent_id;
 
 		// TODO: Change based on shownoauth
-		$item->readmore_link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
+		$item->readmore_link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
 
 		// Merge article params. If this is single-article view, menu params override article params
 		// Otherwise, article params override menu item params
@@ -100,7 +100,7 @@ class ContentViewArticle extends JViewLegacy
 		// Check the view access to the article (the model has already computed the values).
 		if ($item->params->get('access-view') == false && ($item->params->get('show_noauth', '0') == '0'))
 		{
-				JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+				JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 				return;
 		}
 
@@ -163,7 +163,7 @@ class ContentViewArticle extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -196,10 +196,10 @@ class ContentViewArticle extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		if (empty($title)) {
 			$title = $this->item->title;
@@ -247,7 +247,7 @@ class ContentViewArticle extends JViewLegacy
 		if (!empty($this->item->page_title))
 		{
 			$this->item->title = $this->item->title . ' - ' . $this->item->page_title;
-			$this->document->setTitle($this->item->page_title . ' - ' . JText::sprintf('PLG_CONTENT_PAGEBREAK_PAGE_NUM', $this->state->get('list.offset') + 1));
+			$this->document->setTitle($this->item->page_title . ' - ' . Lang::txt('PLG_CONTENT_PAGEBREAK_PAGE_NUM', $this->state->get('list.offset') + 1));
 		}
 
 		if ($this->print)

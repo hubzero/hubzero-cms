@@ -22,16 +22,16 @@ JHtml::_('behavior.formvalidation');
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_plugins&layout=edit&extension_id='.(int) $this->item->extension_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_plugins&layout=edit&extension_id='.(int) $this->item->extension_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS') ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS') ?></span></legend>
 
 			<!--
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('name'); ?><br />
 				<?php echo $this->form->getInput('name'); ?>
-				<span class="readonly plg-name"><?php echo JText::_($this->item->name);?></span>
+				<span class="readonly plg-name"><?php echo Lang::txt($this->item->name);?></span>
 			</div>
 		-->
 
@@ -77,7 +77,7 @@ JHtml::_('behavior.formvalidation');
 				<tbody>
 					<tr>
 						<th>
-							<?php echo JText::_('COM_PLUGINS_FIELD_NAME_LABEL'); ?>
+							<?php echo Lang::txt('COM_PLUGINS_FIELD_NAME_LABEL'); ?>
 						</th>
 						<td>
 							<?php echo $this->escape($this->item->name); ?>
@@ -87,7 +87,7 @@ JHtml::_('behavior.formvalidation');
 				<?php if ($this->item->extension_id) : ?>
 					<tr>
 						<th>
-							<?php echo JText::_('JGLOBAL_FIELD_ID_LABEL'); ?>
+							<?php echo Lang::txt('JGLOBAL_FIELD_ID_LABEL'); ?>
 						</th>
 						<td>
 							<?php echo $this->escape($this->item->extension_id); ?>
@@ -97,7 +97,7 @@ JHtml::_('behavior.formvalidation');
 				<?php endif; ?>
 					<tr>
 						<th>
-							<?php echo JText::_('COM_PLUGINS_FIELD_FOLDER_LABEL'); ?>
+							<?php echo Lang::txt('COM_PLUGINS_FIELD_FOLDER_LABEL'); ?>
 						</th>
 						<td>
 							<?php echo $this->escape($this->item->folder); ?>
@@ -106,7 +106,7 @@ JHtml::_('behavior.formvalidation');
 					</tr>
 					<tr>
 						<th>
-							<?php echo JText::_('COM_PLUGINS_FIELD_ELEMENT_LABEL'); ?>
+							<?php echo Lang::txt('COM_PLUGINS_FIELD_ELEMENT_LABEL'); ?>
 						</th>
 						<td>
 							<?php echo $this->escape($this->item->element); ?>
@@ -115,15 +115,15 @@ JHtml::_('behavior.formvalidation');
 					</tr>
 					<tr>
 						<th>
-							<?php echo JText::_('JGLOBAL_DESCRIPTION'); ?>
+							<?php echo Lang::txt('JGLOBAL_DESCRIPTION'); ?>
 						</th>
 						<td>
 							<?php if ($this->item->xml) : ?>
 								<?php if ($text = trim($this->item->xml->description)) : ?>
-									<?php echo JText::_($text); ?>
+									<?php echo Lang::txt($text); ?>
 								<?php endif; ?>
 							<?php else : ?>
-								<p class="error"><?php echo JText::_('COM_PLUGINS_XML_ERR'); ?></p>
+								<p class="error"><?php echo Lang::txt('COM_PLUGINS_XML_ERR'); ?></p>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -144,7 +144,7 @@ JHtml::_('behavior.formvalidation');
 	<?php echo JHtml::_('form.token'); ?>
 	</div>
 
-	<input type="hidden" name="component" value="<?php echo JRequest::getCmd('component', ''); ?>" />
+	<input type="hidden" name="component" value="<?php echo Request::getCmd('component', ''); ?>" />
 
 	<div class="clr"></div>
 </form>

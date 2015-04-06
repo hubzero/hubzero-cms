@@ -47,7 +47,7 @@ class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 		$this->warehouse = new StorefrontModelWarehouse();
 
 		// Get the task
-		$this->_task  = JRequest::getCmd('task', '');
+		$this->_task  = Request::getCmd('task', '');
 
 		if (empty($this->_task))
 		{
@@ -105,7 +105,7 @@ class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 		$view->products = $products;
 
 		// Breadcrumbs
-		Pathway::addItem('Browsing collection', JRoute::_('index.php?id=' . '5'));
+		Pathway::addItem('Browsing collection', Route::url('index.php?id=' . '5'));
 
 		$view->display();
 	}

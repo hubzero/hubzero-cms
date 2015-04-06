@@ -51,7 +51,7 @@ if ($this->page->exists())
 }
 else
 {
-	$lid = JRequest::getInt('lid', (time() . rand(0,10000)), 'post');
+	$lid = Request::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">

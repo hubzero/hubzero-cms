@@ -47,7 +47,7 @@ class CartControllerOrder extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = JRequest::getVar('task', '');
+		$this->_task  = Request::getVar('task', '');
 
 		if (empty($this->_task))
 		{
@@ -76,7 +76,7 @@ class CartControllerOrder extends ComponentController
 	public function completeTask()
 	{
 		// Get payment provider
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  Component::params(Request::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 
 		// Get the transaction ID variable name to pull from URL
@@ -85,7 +85,7 @@ class CartControllerOrder extends ComponentController
 
 		if ($verificationVar) {
 			// Check the GET values passed
-			$customVar = JRequest::getVar($verificationVar, '');
+			$customVar = Request::getVar($verificationVar, '');
 
 			$tId = false;
 			if (strstr($customVar, '-')) {
@@ -109,8 +109,8 @@ class CartControllerOrder extends ComponentController
 
 		if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
 			die('Error processing your order...');
-			//JError::raiseError(404, JText::_('Error processing transaction.'));
-			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
+			//JError::raiseError(404, Lang::txt('Error processing transaction.'));
+			$redirect_url  = Route::url('index.php?option=' . 'com_cart');
 			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}
@@ -139,13 +139,13 @@ class CartControllerOrder extends ComponentController
 
 		if (!$transaction)
 		{
-			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
+			$redirect_url  = Route::url('index.php?option=' . 'com_cart');
 			$app  =  JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}
 
 		// get security token (Parameter 0)
-		$token = JRequest::getVar('p0');
+		$token = Request::getVar('p0');
 
 		if (!$token || !$cart->verifyToken($token))
 		{
@@ -169,7 +169,7 @@ class CartControllerOrder extends ComponentController
 		if ($this->completeOrder($transaction))
 		{
 			// Get the transaction ID variable name to pull from URL
-			$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+			$params =  Component::params(Request::getVar('option'));
 			// Get payment provider
 			$paymentGatewayProivder = $params->get('paymentProvider');
 
@@ -177,7 +177,7 @@ class CartControllerOrder extends ComponentController
 			$verificationVar = PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
 			// redirect to thank you page
-			$redirect_url = JRoute::_('index.php?option=' . 'com_cart') . '/order/complete/' .
+			$redirect_url = Route::url('index.php?option=' . 'com_cart') . '/order/complete/' .
 							'?' . $verificationVar . '=' . $token . '-' . $transaction->info->tId;
 			$app  =  JFactory::getApplication();
 			//echo 'redirect';
@@ -198,11 +198,11 @@ class CartControllerOrder extends ComponentController
 			$postBackTransactionId = 331;
 		}
 
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  Component::params(Request::getVar('option'));
 
 		if (empty($_POST) && !$test)
 		{
-			JError::raiseError(404, JText::_('Page not found'));
+			JError::raiseError(404, Lang::txt('Page not found'));
 		}
 
 		// Initialize logger

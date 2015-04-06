@@ -32,18 +32,18 @@ class ContentController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		// Load the submenu.
-		ContentHelper::addSubmenu(JRequest::getCmd('view', 'articles'));
+		ContentHelper::addSubmenu(Request::getCmd('view', 'articles'));
 
-		$view		= JRequest::getCmd('view', 'articles');
-		$layout 	= JRequest::getCmd('layout', 'articles');
-		$id			= JRequest::getInt('id');
+		$view		= Request::getCmd('view', 'articles');
+		$layout 	= Request::getCmd('layout', 'articles');
+		$id			= Request::getInt('id');
 
 		// Check for edit form.
 		if ($view == 'article' && $layout == 'edit' && !$this->checkEditId('com_content.edit.article', $id)) {
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_content&view=articles', false));
+			$this->setRedirect(Route::url('index.php?option=com_content&view=articles', false));
 
 			return false;
 		}

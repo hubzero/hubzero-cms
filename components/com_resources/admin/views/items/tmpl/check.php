@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PATH_CHECKER'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PATH_CHECKER'), 'resources.png');
 
 $total   = number_format(count($this->good+$this->warning+$this->missing));
 $missing = number_format(count($this->missing));

@@ -23,13 +23,13 @@ $canDo = LanguagesHelper::getActions();
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_languages&layout=edit&lang_id='.(int) $this->item->lang_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_languages&layout=edit&lang_id='.(int) $this->item->lang_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<?php if ($this->item->lang_id) : ?>
-				<legend><span><?php echo JText::sprintf('JGLOBAL_RECORD_NUMBER', $this->item->lang_id); ?></span></legend>
+				<legend><span><?php echo Lang::txt('JGLOBAL_RECORD_NUMBER', $this->item->lang_id); ?></span></legend>
 			<?php else : ?>
-				<legend><span><?php echo JText::_('COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE'); ?></span></legend>
+				<legend><span><?php echo Lang::txt('COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE'); ?></span></legend>
 			<?php endif; ?>
 
 			<div class="input-wrap">
@@ -83,7 +83,7 @@ $canDo = LanguagesHelper::getActions();
 	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'language-sliders-'.$this->item->lang_code, array('useCookie'=>1)); ?>
 
-		<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'metadata'); ?>
+		<?php echo JHtml::_('sliders.panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'metadata'); ?>
 			<fieldset class="panelform">
 				<?php foreach ($this->form->getFieldset('metadata') as $field): ?>
 					<?php if (!$field->hidden): ?>
@@ -97,7 +97,7 @@ $canDo = LanguagesHelper::getActions();
 				<?php endforeach; ?>
 			</fieldset>
 
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_LANGUAGES_FIELDSET_SITE_NAME_LABEL'), 'site_name'); ?>
+		<?php echo JHtml::_('sliders.panel', Lang::txt('COM_LANGUAGES_FIELDSET_SITE_NAME_LABEL'), 'site_name'); ?>
 			<fieldset class="panelform">
 				<?php foreach ($this->form->getFieldset('site_name') as $field): ?>
 					<?php if (!$field->hidden): ?>

@@ -43,11 +43,11 @@ JHtml::_('behavior.modal');
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_menus&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_menus&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_MENUS_ITEM_DETAILS');?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_MENUS_ITEM_DETAILS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('type'); ?>
@@ -162,7 +162,7 @@ JHtml::_('behavior.modal');
 			<div class="clr"></div>
 
 			<?php if (!empty($this->modules)) : ?>
-				<?php echo JHtml::_('sliders.panel', JText::_('COM_MENUS_ITEM_MODULE_ASSIGNMENT'), 'module-options'); ?>
+				<?php echo JHtml::_('sliders.panel', Lang::txt('COM_MENUS_ITEM_MODULE_ASSIGNMENT'), 'module-options'); ?>
 				<fieldset>
 					<?php echo $this->loadTemplate('modules'); ?>
 				</fieldset>

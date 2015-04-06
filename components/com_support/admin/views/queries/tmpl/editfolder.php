@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 				<div class="configuration-options">
 					<button type="button" onclick="Joomla.submitform('applyfolder', this.form);"><?php echo Lang::txt('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('savefolder', this.form);"><?php echo Lang::txt('JSAVE');?></button>
-					<button type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+					<button type="button" onclick="<?php echo Request::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
 				</div>
 
 				<?php echo Lang::txt('COM_SUPPORT_QUERY_FOLDER') . ': ' . $text; ?>

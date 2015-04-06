@@ -33,7 +33,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			<tr width="40%">
 				<td class="key" align="right">
 					<label for="title">
-						<?php echo JText::_( 'COM_CONTENT_PAGEBREAK_TITLE' ); ?>
+						<?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_TITLE' ); ?>
 					</label>
 				</td>
 				<td>
@@ -43,7 +43,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			<tr width="60%">
 				<td class="key" align="right">
 					<label for="alias">
-						<?php echo JText::_( 'COM_CONTENT_PAGEBREAK_TOC' ); ?>
+						<?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_TOC' ); ?>
 					</label>
 				</td>
 				<td>
@@ -52,4 +52,4 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			</tr>
 		</table>
 		</form>
-		<button onclick="insertPagebreak();"><?php echo JText::_( 'COM_CONTENT_PAGEBREAK_INSERT_BUTTON' ); ?></button>
+		<button onclick="insertPagebreak();"><?php echo Lang::txt( 'COM_CONTENT_PAGEBREAK_INSERT_BUTTON' ); ?></button>

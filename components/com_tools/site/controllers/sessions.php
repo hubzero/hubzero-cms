@@ -1218,7 +1218,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		if (!isset($output->archive))
 		{
-			$output->archive =  rtrim(JURI::base(true), '/') . '/components/com_tools/scripts/VncViewer-20150319-01.jar';
+			$output->archive =  rtrim(Request::base(true), '/') . '/components/com_tools/scripts/VncViewer-20150319-01.jar';
 		}
 
 		if (!isset($output->id))

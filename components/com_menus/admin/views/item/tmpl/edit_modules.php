@@ -19,17 +19,17 @@ JHtml::_('behavior.framework', true);
 	});
 	</script>
 
-	<label for="showmods"><?php echo JText::_('COM_MENUS_ITEM_FIELD_HIDE_UNASSIGNED');?></label>
+	<label for="showmods"><?php echo Lang::txt('COM_MENUS_ITEM_FIELD_HIDE_UNASSIGNED');?></label>
 	<input type="checkbox" id="showmods" />
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th class="left">
-					<?php echo JText::_('COM_MENUS_HEADING_ASSIGN_MODULE');?>
+					<?php echo Lang::txt('COM_MENUS_HEADING_ASSIGN_MODULE');?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_MENUS_HEADING_DISPLAY');?>
+					<?php echo Lang::txt('COM_MENUS_HEADING_DISPLAY');?>
 				</th>
 			</tr>
 		</thead>
@@ -46,23 +46,23 @@ JHtml::_('behavior.framework', true);
 			<?php endif; ?>
 				<td>
 					<?php $link = 'index.php?option=com_modules&amp;client_id=0&amp;task=module.edit&amp;id='. $module->id.'&amp;tmpl=component&amp;view=module&amp;layout=modal' ; ?>
-					<a class="modal" href="<?php echo $link;?>" rel="{handler: 'iframe', size: {x: 900, y: 550}}" title="<?php echo JText::_('COM_MENUS_EDIT_MODULE_SETTINGS');?>">
-						<?php echo JText::sprintf('COM_MENUS_MODULE_ACCESS_POSITION', $this->escape($module->title), $this->escape($module->access_title), $this->escape($module->position)); ?>
+					<a class="modal" href="<?php echo $link;?>" rel="{handler: 'iframe', size: {x: 900, y: 550}}" title="<?php echo Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');?>">
+						<?php echo Lang::txt('COM_MENUS_MODULE_ACCESS_POSITION', $this->escape($module->title), $this->escape($module->access_title), $this->escape($module->position)); ?>
 					</a>
 				</td>
 				<td class="center">
 					<?php if (is_null($module->menuid)) : ?>
 						<?php if ($module->except):?>
-							<?php echo JText::_('JYES'); ?>
+							<?php echo Lang::txt('JYES'); ?>
 						<?php else : ?>
-							<?php echo JText::_('JNO'); ?>
+							<?php echo Lang::txt('JNO'); ?>
 						<?php endif;?>
 					<?php elseif ($module->menuid > 0) : ?>
-						<?php echo JText::_('JYES'); ?>
+						<?php echo Lang::txt('JYES'); ?>
 					<?php elseif ($module->menuid < 0) : ?>
-						<?php echo JText::_('JNO'); ?>
+						<?php echo Lang::txt('JNO'); ?>
 					<?php else : ?>
-						<?php echo JText::_('JALL'); ?>
+						<?php echo Lang::txt('JALL'); ?>
 					<?php endif; ?>
 				</td>
 			</tr>

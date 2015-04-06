@@ -38,14 +38,14 @@ class LanguagesControllerOverrides extends JControllerAdmin
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to dlete from the request
-		$cid	= JRequest::getVar('cid', array(), '', 'array');
+		$cid	= Request::getVar('cid', array(), '', 'array');
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
-			$this->setMessage(JText::_($this->text_prefix.'_NO_ITEM_SELECTED'), 'warning');
+			$this->setMessage(Lang::txt($this->text_prefix.'_NO_ITEM_SELECTED'), 'warning');
 		}
 		else
 		{
@@ -63,6 +63,6 @@ class LanguagesControllerOverrides extends JControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+		$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_list, false));
 	}
 }

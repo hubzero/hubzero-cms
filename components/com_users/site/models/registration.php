@@ -181,7 +181,7 @@ class UsersModelRegistration extends JModelForm
 
 			$this->data	= new stdClass();
 			$app	= JFactory::getApplication();
-			$params	= JComponentHelper::getParams('com_users');
+			$params	= Component::params('com_users');
 
 			// Override the base user data with any data in the session.
 			$temp = (array)$app->getUserState('com_users.registration.data', array());
@@ -261,7 +261,7 @@ class UsersModelRegistration extends JModelForm
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'user')
 	{
-		$userParams	= JComponentHelper::getParams('com_users');
+		$userParams	= Component::params('com_users');
 
 		//Add the choice for site language at registration time
 		if ($userParams->get('site_language') == 1 && $userParams->get('frontend_userparams') == 1)
@@ -299,7 +299,7 @@ class UsersModelRegistration extends JModelForm
 	public function register($temp)
 	{
 		$db		= $this->getDbo();
-		$params = JComponentHelper::getParams('com_users');
+		$params = Component::params('com_users');
 
 		// Initialise the table with JUser.
 		$user = new JUser;

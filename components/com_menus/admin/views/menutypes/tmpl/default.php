@@ -16,16 +16,16 @@ defined('_JEXEC') or die;
 	}
 </script>
 
-<h2 class="modal-title"><?php echo JText::_('COM_MENUS_TYPE_CHOOSE'); ?></h2>
+<h2 class="modal-title"><?php echo Lang::txt('COM_MENUS_TYPE_CHOOSE'); ?></h2>
 <ul class="menu_types">
 	<?php foreach ($this->types as $name => $list): ?>
 	<li><dl class="menu_type">
-			<dt><?php echo JText::_($name) ;?></dt>
+			<dt><?php echo Lang::txt($name) ;?></dt>
 			<dd><ul>
 					<?php foreach ($list as $item): ?>
-					<li><a class="choose_type" href="#" title="<?php echo JText::_($item->description); ?>"
+					<li><a class="choose_type" href="#" title="<?php echo Lang::txt($item->description); ?>"
 							onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title' => $item->title, 'request' => $item->request))); ?>')">
-							<?php echo JText::_($item->title);?>
+							<?php echo Lang::txt($item->title);?>
 						</a>
 					</li>
 					<?php endforeach; ?>
@@ -36,22 +36,22 @@ defined('_JEXEC') or die;
 	<?php endforeach; ?>
 
 	<li><dl class="menu_type">
-			<dt><?php echo JText::_('COM_MENUS_TYPE_SYSTEM'); ?></dt>
+			<dt><?php echo Lang::txt('COM_MENUS_TYPE_SYSTEM'); ?></dt>
 			<dd>
 				<ul>
-					<li><a class="choose_type" href="#" title="<?php echo JText::_('COM_MENUS_TYPE_EXTERNAL_URL_DESC'); ?>"
+					<li><a class="choose_type" href="#" title="<?php echo Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL_DESC'); ?>"
 							onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title'=>'url'))); ?>')">
-							<?php echo JText::_('COM_MENUS_TYPE_EXTERNAL_URL'); ?>
+							<?php echo Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL'); ?>
 						</a>
 					</li>
-					<li><a class="choose_type" href="#" title="<?php echo JText::_('COM_MENUS_TYPE_ALIAS_DESC'); ?>"
+					<li><a class="choose_type" href="#" title="<?php echo Lang::txt('COM_MENUS_TYPE_ALIAS_DESC'); ?>"
 							onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title'=>'alias'))); ?>')">
-							<?php echo JText::_('COM_MENUS_TYPE_ALIAS'); ?>
+							<?php echo Lang::txt('COM_MENUS_TYPE_ALIAS'); ?>
 						</a>
 					</li>
-					<li><a class="choose_type" href="#"  title="<?php echo JText::_('COM_MENUS_TYPE_SEPARATOR_DESC'); ?>"
+					<li><a class="choose_type" href="#"  title="<?php echo Lang::txt('COM_MENUS_TYPE_SEPARATOR_DESC'); ?>"
 							onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title'=>'separator'))); ?>')">
-							<?php echo JText::_('COM_MENUS_TYPE_SEPARATOR'); ?>
+							<?php echo Lang::txt('COM_MENUS_TYPE_SEPARATOR'); ?>
 						</a>
 					</li>
 				</ul>

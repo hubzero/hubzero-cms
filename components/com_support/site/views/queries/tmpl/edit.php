@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$tmpl = JRequest::getVar('tmpl', '');
-$no_html = JRequest::getInt('no_html', 0);
+$tmpl = Request::getVar('tmpl', '');
+$no_html = Request::getInt('no_html', 0);
 
 $juser = JFactory::getUser();
 ?>
@@ -126,7 +126,7 @@ if (!$tmpl && !$no_html) {
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : JRequest::getInt('no_html', 0); ?>" />
+		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
 		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 		<input type="hidden" name="task" value="save" />
 
@@ -252,7 +252,7 @@ if (!$tmpl && !$no_html) {
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : JRequest::getInt('no_html', 0); ?>" />
+		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
 		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 		<input type="hidden" name="task" value="save" />
 

@@ -116,7 +116,7 @@ class MenusModelItem extends JModelAdmin
 
 		if (empty($pks))
 		{
-			$this->setError(JText::_('COM_MENUS_NO_ITEM_SELECTED'));
+			$this->setError(Lang::txt('COM_MENUS_NO_ITEM_SELECTED'));
 			return false;
 		}
 
@@ -167,7 +167,7 @@ class MenusModelItem extends JModelAdmin
 
 		if (!$done)
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
 		}
 
@@ -211,7 +211,7 @@ class MenusModelItem extends JModelAdmin
 				else
 				{
 					// Non-fatal error
-					$this->setError(JText::_('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
 					$parentId = 0;
 				}
 			}
@@ -231,7 +231,7 @@ class MenusModelItem extends JModelAdmin
 		$user = JFactory::getUser();
 		if (!$user->authorise('core.create', 'com_menus'))
 		{
-			$this->setError(JText::_('COM_MENUS_BATCH_MENU_ITEM_CANNOT_CREATE'));
+			$this->setError(Lang::txt('COM_MENUS_BATCH_MENU_ITEM_CANNOT_CREATE'));
 			return false;
 		}
 
@@ -270,7 +270,7 @@ class MenusModelItem extends JModelAdmin
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -402,7 +402,7 @@ class MenusModelItem extends JModelAdmin
 				else
 				{
 					// Non-fatal error
-					$this->setError(JText::_('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
 					$parentId = 0;
 				}
 			}
@@ -412,13 +412,13 @@ class MenusModelItem extends JModelAdmin
 		$user = JFactory::getUser();
 		if (!$user->authorise('core.create', 'com_menus'))
 		{
-			$this->setError(JText::_('COM_MENUS_BATCH_MENU_ITEM_CANNOT_CREATE'));
+			$this->setError(Lang::txt('COM_MENUS_BATCH_MENU_ITEM_CANNOT_CREATE'));
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', 'com_menus'))
 		{
-			$this->setError(JText::_('COM_MENUS_BATCH_MENU_ITEM_CANNOT_EDIT'));
+			$this->setError(Lang::txt('COM_MENUS_BATCH_MENU_ITEM_CANNOT_EDIT'));
 			return false;
 		}
 
@@ -440,7 +440,7 @@ class MenusModelItem extends JModelAdmin
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -809,22 +809,22 @@ class MenusModelItem extends JModelAdmin
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		$pk = (int) JRequest::getInt('id');
+		$pk = (int) Request::getInt('id');
 		$this->setState('item.id', $pk);
 
 		if (!($parentId = $app->getUserState('com_menus.edit.item.parent_id'))) {
-			$parentId = JRequest::getInt('parent_id');
+			$parentId = Request::getInt('parent_id');
 		}
 		$this->setState('item.parent_id', $parentId);
 
 		$menuType = $app->getUserState('com_menus.edit.item.menutype');
-		if (JRequest::getCmd('menutype', false)) {
-			$menuType = JRequest::getCmd('menutype', 'mainmenu');
+		if (Request::getCmd('menutype', false)) {
+			$menuType = Request::getCmd('menutype', 'mainmenu');
 		}
 		$this->setState('item.menutype', $menuType);
 
 		if (!($type = $app->getUserState('com_menus.edit.item.type'))){
-			$type = JRequest::getCmd('type');
+			$type = Request::getCmd('type');
 			// Note a new menu item will have no field type.
 			// The field is required so the user has to change it.
 		}
@@ -835,7 +835,7 @@ class MenusModelItem extends JModelAdmin
 		}
 
 		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_menus');
+		$params	= Component::params('com_menus');
 		$this->setState('params', $params);
 	}
 
@@ -932,12 +932,12 @@ class MenusModelItem extends JModelAdmin
 			// We need to qualify the full path to avoid collisions with component file names.
 
 			if ($form->loadFile($formFile, true, '/metadata') == false) {
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 
 			// Attempt to load the xml file.
 			if (!$xml = simplexml_load_file($formFile)) {
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 
 			// Get the help data from the XML file if present.
@@ -957,7 +957,7 @@ class MenusModelItem extends JModelAdmin
 			if ($xmlFile && !$xml = simplexml_load_file($xmlFile))
 			{
 
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 
 			}
 
@@ -999,14 +999,14 @@ class MenusModelItem extends JModelAdmin
 		if (JFile::exists($path)) {
 			// Add the component params last of all to the existing form.
 			if (!$form->load($path, true, '/config')) {
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 		}
 
 
 		// Load the specific type file
 		if (!$form->loadFile('item_'.$type, false, false)) {
-			throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
 		// Association menu items
@@ -1208,7 +1208,7 @@ class MenusModelItem extends JModelAdmin
 			// Detecting all item menus
 			$all_language = $table->language == '*';
 			if ($all_language && !empty($associations)) {
-				JError::raiseNotice(403, JText::_('COM_MENUS_ERROR_ALL_LANGUAGE_ASSOCIATED'));
+				JError::raiseNotice(403, Lang::txt('COM_MENUS_ERROR_ALL_LANGUAGE_ASSOCIATED'));
 			}
 
 			$associations[$table->language]=$table->id;
@@ -1247,7 +1247,7 @@ class MenusModelItem extends JModelAdmin
 		$this->cleanCache();
 
 		if (isset($data['link'])) {
-			$base 	= JURI::base();
+			$base 	= Request::base();
 			$juri 	= JURI::getInstance($base.$data['link']);
 			$option = $juri->getVar('option');
 
@@ -1314,7 +1314,7 @@ class MenusModelItem extends JModelAdmin
 
 					if ($table->home == $value) {
 						unset($pks[$i]);
-						JError::raiseNotice(403, JText::_('COM_MENUS_ERROR_ALREADY_HOME'));
+						JError::raiseNotice(403, Lang::txt('COM_MENUS_ERROR_ALREADY_HOME'));
 					}
 					else {
 						$table->home = $value;
@@ -1325,7 +1325,7 @@ class MenusModelItem extends JModelAdmin
 						if (!$this->canSave($table)) {
 							// Prune items that you can't change.
 							unset($pks[$i]);
-							JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
+							JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
 						}
 						elseif (!$table->check()) {
 							// Prune the items that failed pre-save checks.
@@ -1343,7 +1343,7 @@ class MenusModelItem extends JModelAdmin
 					unset($pks[$i]);
 					if (!$onehome) {
 						$onehome = true;
-						JError::raiseNotice(403, JText::sprintf('COM_MENUS_ERROR_ONE_HOME'));
+						JError::raiseNotice(403, Lang::txt('COM_MENUS_ERROR_ONE_HOME'));
 					}
 				}
 			}
@@ -1376,7 +1376,7 @@ class MenusModelItem extends JModelAdmin
 			{
 				if ($table->load($pk) && $table->home && $table->language == '*') {
 					// Prune items that you can't change.
-					JError::raiseWarning(403, JText::_('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME'));
+					JError::raiseWarning(403, Lang::txt('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME'));
 					unset($pks[$i]);
 					break;
 				}

@@ -35,20 +35,20 @@ class LanguagesController extends JControllerLegacy
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
 		// Load the submenu.
-		LanguagesHelper::addSubmenu(JRequest::getCmd('view', 'installed'));
+		LanguagesHelper::addSubmenu(Request::getCmd('view', 'installed'));
 
-		$view	= JRequest::getCmd('view', 'languages');
-		$layout	= JRequest::getCmd('layout', 'default');
-		$client	= JRequest::getInt('client');
-		$id		= JRequest::getInt('id');
+		$view	= Request::getCmd('view', 'languages');
+		$layout	= Request::getCmd('layout', 'default');
+		$client	= Request::getInt('client');
+		$id		= Request::getInt('id');
 
 		// Check for edit form.
 		if ($view == 'language' && $layout == 'edit' && !$this->checkEditId('com_languages.edit.language', $id)) {
 
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_languages&view=languages', false));
+			$this->setRedirect(Route::url('index.php?option=com_languages&view=languages', false));
 
 			return false;
 		}

@@ -31,10 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('CMS Updater: repository'));
-//JToolBarHelper::custom('rollback', 'back', '', 'Rollback repository', false);
-//JToolBarHelper::spacer();
-JToolBarHelper::custom('update', 'purge', '', 'Update repository', false);
+Toolbar::title(Lang::txt('CMS Updater: repository'));
+//Toolbar::custom('rollback', 'back', '', 'Rollback repository', false);
+//Toolbar::spacer();
+Toolbar::custom('update', 'purge', '', 'Update repository', false);
 
 $this->css();
 ?>

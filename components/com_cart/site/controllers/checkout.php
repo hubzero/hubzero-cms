@@ -46,7 +46,7 @@ class CartControllerCheckout extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = JRequest::getVar('task', '');
+		$this->_task  = Request::getVar('task', '');
 
 		if (empty($this->_task))
 		{
@@ -88,7 +88,7 @@ class CartControllerCheckout extends ComponentController
 		if ($cart->hasMessages())
 		{
 			// redirect back to cart to display all messages
-			$redirect_url = JRoute::_('index.php?option=' . 'com_cart');
+			$redirect_url = Route::url('index.php?option=' . 'com_cart');
 			$app = JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}
@@ -172,7 +172,7 @@ class CartControllerCheckout extends ComponentController
 		}
 
 		// handle non-ajax form submit
-		$shippingInfoSubmitted = JRequest::getVar('submitShippingInfo', false, 'post');
+		$shippingInfoSubmitted = Request::getVar('submitShippingInfo', false, 'post');
 
 		if ($shippingInfoSubmitted)
 		{
@@ -292,7 +292,7 @@ class CartControllerCheckout extends ComponentController
 		CartModelCart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
 
 		// Generate payment code
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+		$params =  Component::params(Request::getVar('option'));
 		$paymentGatewayProivder = $params->get('paymentProvider');
 
 		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
@@ -329,7 +329,7 @@ class CartControllerCheckout extends ComponentController
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . $return),
+			Route::url('index.php?option=com_users&view=login&return=' . $return),
 			$message,
 			'warning'
 		);

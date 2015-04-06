@@ -70,23 +70,23 @@ if (!empty($this->notifications))
 				<form name="cartShippingInfo" class="cartShippingInfo full" method="post" id="hubForm">
 					<fieldset>
 						<label for="shippingToFirst">First name:
-							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
+							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo Request::getVar('shippingToFirst', false, 'post'); ?>" />
 						</label>
 
 						<label for="shippingToLast">Last name:
-							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
+							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo Request::getVar('shippingToLast', false, 'post'); ?>" />
 						</label>
 
 						<label for="shippingAddress">Shipping address:
-							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
+							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo Request::getVar('shippingAddress', false, 'post'); ?>" />
 						</label>
 
 						<label for="shippingCity">City:
-							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
+							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo Request::getVar('shippingCity', false, 'post'); ?>" />
 						</label>
 
 						<label for="shippingZip">Zip:
-							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
+							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo Request::getVar('shippingZip', false, 'post'); ?>" />
 						</label>
 
 						<label for="shippingState">State:
@@ -96,7 +96,7 @@ if (!empty($this->notifications))
 									foreach ($states as $abbr => $state)
 									{
 										echo '<option value="' . $abbr . '"';
-										if (JRequest::getVar('shippingState', false, 'post') == $abbr)
+										if (Request::getVar('shippingState', false, 'post') == $abbr)
 										{
 											echo ' selected';
 										}
@@ -133,7 +133,7 @@ if (!empty($this->notifications))
 						echo '</p>';
 
 						echo '<a href="';
-						echo JRoute::_('index.php?option=com_cart/checkout/shipping/select/' . $address->saId);
+						echo Route::url('index.php?option=com_cart/checkout/shipping/select/' . $address->saId);
 						echo '">';
 						echo 'Ship to this address';
 						echo '</a>';

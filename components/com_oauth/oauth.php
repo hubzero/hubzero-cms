@@ -30,7 +30,7 @@
 
 namespace Components\Oauth;
 
-$controllerName = \JRequest::getCmd('controller', 'authorize');
+$controllerName = \Request::getCmd('controller', 'authorize');
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {

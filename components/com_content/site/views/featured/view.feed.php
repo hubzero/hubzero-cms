@@ -24,10 +24,10 @@ class ContentViewFeatured extends JViewLegacy
 		$feedEmail	= $app->getCfg('feed_email', 'author');
 		$siteEmail	= $app->getCfg('mailfrom');
 
-		$doc->link	= JRoute::_('index.php?option=com_content&view=featured');
+		$doc->link	= Route::url('index.php?option=com_content&view=featured');
 
 		// Get some data from the model
-		JRequest::setVar('limit', $app->getCfg('feed_limit'));
+		Request::setVar('limit', $app->getCfg('feed_limit'));
 		$categories = JCategories::getInstance('Content');
 		$rows		= $this->get('Items');
 		foreach ($rows as $row)
@@ -40,7 +40,7 @@ class ContentViewFeatured extends JViewLegacy
 			$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 
 			// Url link to article
-			$link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language));
+			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language));
 
 			// Get row fulltext
 			$db = JFactory::getDBO();
@@ -58,7 +58,7 @@ class ContentViewFeatured extends JViewLegacy
 			$item->date			= $row->publish_up;
 			$item_category		= $categories->get($row->catid);
 			$item->category		= array();
-			$item->category[]	= JText::_('JFEATURED'); // All featured articles are categorized as "Featured"
+			$item->category[]	= Lang::txt('JFEATURED'); // All featured articles are categorized as "Featured"
 			for ($item_category = $categories->get($row->catid); $item_category !== null; $item_category = $item_category->getParent()) {
 				if ($item_category->id > 1) { // Only add non-root categories
 					$item->category[] = $item_category->title;
@@ -79,7 +79,7 @@ class ContentViewFeatured extends JViewLegacy
 			// Add readmore link to description if introtext is shown, show_readmore is true and fulltext exists
 			if (!$params->get('feed_summary', 0) && $params->get('feed_show_readmore', 0) && $row->fulltext)
 			{
-				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . $item->link . '">'.JText::_('COM_CONTENT_FEED_READMORE').'</a></p>';
+				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . $item->link . '">'.Lang::txt('COM_CONTENT_FEED_READMORE').'</a></p>';
 			}
 
 			// Load item description and add div

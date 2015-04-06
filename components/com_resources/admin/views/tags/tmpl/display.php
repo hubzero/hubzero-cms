@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_TAGS') . ' #' . $this->row->id, 'addedit.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_TAGS') . ' #' . $this->row->id, 'addedit.png');
+Toolbar::save();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

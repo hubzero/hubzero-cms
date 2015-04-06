@@ -57,7 +57,7 @@ class MembersTableOrganization extends JTable
 		$this->organization = trim($this->organization);
 		if (!$this->organization)
 		{
-			$this->setError(JText::_('Organization must contain text'));
+			$this->setError(Lang::txt('Organization must contain text'));
 			return false;
 		}
 		return true;

@@ -114,9 +114,9 @@ $this->css()
 						<?php
 							$i = 0;
 							$filters = array(
-								'limit'    => JRequest::getInt('limit', 3),
-								'start'    => JRequest::getInt('limitstart', 0),
-								'order'    => JRequest::getWord('order', 'recent'),
+								'limit'    => Request::getInt('limit', 3),
+								'start'    => Request::getInt('limitstart', 0),
+								'order'    => Request::getWord('order', 'recent'),
 								'category' => 0,
 								'state'    => 1,
 								'access'   => (JFactory::getUser()->get('guest') ? 0 : -1)

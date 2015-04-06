@@ -48,7 +48,7 @@ class NewsfeedsModelCategories extends JModelList
 		$this->setState('filter.extension', $this->_extension);
 
 		// Get the parent id if defined.
-		$parentId = JRequest::getInt('id');
+		$parentId = Request::getInt('id');
 		$this->setState('filter.parentId', $parentId);
 
 		$params = $app->getParams();

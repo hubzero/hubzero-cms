@@ -50,17 +50,17 @@ require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	Lang::txt('Dashboard'),
 	'index.php?option='.$option.'&controller=dashboard',
 	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Dashboard'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	Lang::txt('Repository'),
 	'index.php?option='.$option.'&controller=repository',
 	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Repository'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	Lang::txt('Database'),
 	'index.php?option='.$option.'&controller=database',
 	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Database'

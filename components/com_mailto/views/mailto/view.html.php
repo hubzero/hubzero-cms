@@ -27,19 +27,19 @@ class MailtoViewMailto extends JViewLegacy
 		$user = JFactory::getUser();
 		$data = new stdClass();
 
-		$data->link = urldecode(JRequest::getVar('link', '', 'method', 'base64'));
+		$data->link = urldecode(Request::getVar('link', '', 'method', 'base64'));
 
 		if ($data->link == '') {
-			JError::raiseError(403, JText::_('COM_MAILTO_LINK_IS_MISSING'));
+			JError::raiseError(403, Lang::txt('COM_MAILTO_LINK_IS_MISSING'));
 			$false = false;
 			return $false;
 		}
 
 		// Load with previous data, if it exists
-		$mailto		= JRequest::getString('mailto', '', 'post');
-		$sender		= JRequest::getString('sender', '', 'post');
-		$from		= JRequest::getString('from', '', 'post');
-		$subject	= JRequest::getString('subject', '', 'post');
+		$mailto		= Request::getString('mailto', '', 'post');
+		$sender		= Request::getString('sender', '', 'post');
+		$from		= Request::getString('from', '', 'post');
+		$subject	= Request::getString('subject', '', 'post');
 
 		if ($user->get('id') > 0) {
 			$data->sender	= $user->get('name');

@@ -51,25 +51,25 @@ class MenusViewMenus extends JViewLegacy
 
 		$canDo	= MenusHelper::getActions($this->state->get('filter.parent_id'));
 
-		JToolBarHelper::title(JText::_('COM_MENUS_VIEW_MENUS_TITLE'), 'menumgr.png');
+		Toolbar::title(Lang::txt('COM_MENUS_VIEW_MENUS_TITLE'), 'menumgr.png');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('menu.add');
+			Toolbar::addNew('menu.add');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('menu.edit');
+			Toolbar::editList('menu.edit');
 		}
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('', 'menus.delete');
+			Toolbar::divider();
+			Toolbar::deleteList('', 'menus.delete');
 		}
 
-		JToolBarHelper::custom('menus.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
+		Toolbar::custom('menus.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::preferences('com_menus');
+			Toolbar::divider();
+			Toolbar::preferences('com_menus');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help('menus');
+		Toolbar::divider();
+		Toolbar::help('menus');
 	}
 }

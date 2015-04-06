@@ -133,7 +133,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$callback_url = JRequest::getVar('oauth_callback','');
+		$callback_url = Request::getVar('oauth_callback','');
 
 		$token = sha1(OAuthProvider::generateToken(20,false));
 		$token_secret = sha1(OAuthProvider::generateToken(20,false));
@@ -185,7 +185,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	{
 		jimport('joomla.environment.request');
 
-		$oauth_token = JRequest::getVar('oauth_token');
+		$oauth_token = Request::getVar('oauth_token');
 
 		if (empty($oauth_token))
 		{
@@ -228,8 +228,8 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			$username = JRequest::get('username');
-			$password = JRequest::get('password');
+			$username = Request::get('username');
+			$password = Request::get('password');
 
 			if (true)
 			{

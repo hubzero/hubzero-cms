@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ADD_CHILD'), 'addedit.png' );
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_ADD_CHILD'), 'addedit.png' );
+Toolbar::cancel();
 
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

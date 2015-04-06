@@ -48,8 +48,8 @@ class LanguagesModelOverride extends JModelAdmin
 			// loaded in backend at the moment, so fall back to the language tag
 			$langName = $language;
 		}
-		$form->setValue('client', null, JText::_('COM_LANGUAGES_VIEW_OVERRIDE_CLIENT_'.strtoupper($client)));
-		$form->setValue('language', null, JText::sprintf('COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE', $langName, $language));
+		$form->setValue('client', null, Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_CLIENT_'.strtoupper($client)));
+		$form->setValue('language', null, Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE', $langName, $language));
 		$form->setValue('file', null, JPath::clean(constant('JPATH_'.strtoupper($client)) . '/language/overrides/' . $language . '.override.ini'));
 
 		return $form;
@@ -88,7 +88,7 @@ class LanguagesModelOverride extends JModelAdmin
 	{
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
-		$pk	= (!empty($pk)) ? $pk : JRequest::getCmd('id');
+		$pk	= (!empty($pk)) ? $pk : Request::getCmd('id');
 		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))) . '/language/overrides/' . $this->getState('filter.language', 'en-GB').'.override.ini';
 		$strings = LanguagesHelper::parseFile($filename);
 

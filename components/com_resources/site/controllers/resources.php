@@ -1298,7 +1298,7 @@ class Resources extends SiteController
 		// Let's get down to business...
 
 		// Get contribtool params
-		$tconfig = \JComponentHelper::getParams('com_tools');
+		$tconfig = \Component::params('com_tools');
 
 		// Get Resources plugins
 		\JPluginHelper::importPlugin('resources');

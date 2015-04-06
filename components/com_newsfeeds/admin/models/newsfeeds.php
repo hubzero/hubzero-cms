@@ -80,7 +80,7 @@ class NewsfeedsModelNewsfeeds extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_newsfeeds');
+		$params = Component::params('com_newsfeeds');
 		$this->setState('params', $params);
 
 		// List state information.

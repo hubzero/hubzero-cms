@@ -65,8 +65,8 @@ $this->css()
 				<p>
 					<strong><?php echo $this->mailinglist->name; ?></strong><br />
 					<span><?php echo $this->mailinglist->description; ?></span>
-					<input type="hidden" name="t" value="<?php echo JRequest::getVar('t', '') ?>" />
-					<input type="hidden" name="e" value="<?php echo JRequest::getVar('e', ''); ?>" />
+					<input type="hidden" name="t" value="<?php echo Request::getVar('t', '') ?>" />
+					<input type="hidden" name="e" value="<?php echo Request::getVar('e', ''); ?>" />
 				</p>
 
 				<?php if ($this->mailinglist->id == '-1' && $this->juser->get('guest') == 1) : ?>

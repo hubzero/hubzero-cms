@@ -32,36 +32,36 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES'), 'resources.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::custom('check', 'scan', '', 'COM_RESOURCES_CHECK_PATHS', false);
-	JToolBarHelper::spacer();
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::custom('check', 'scan', '', 'COM_RESOURCES_CHECK_PATHS', false);
+	Toolbar::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew('addchild', 'COM_RESOURCES_ADD_CHILD');
-	JToolBarHelper::spacer();
+	Toolbar::addNew('addchild', 'COM_RESOURCES_ADD_CHILD');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
 
 JHTML::_('behavior.tooltip');

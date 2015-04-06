@@ -15,13 +15,13 @@ $client	= $this->state->get('filter.client_id', 0);
 		<div class="submenu-pad">
 			<ul id="submenu" class="languages">
 				<li><a href="index.php?option=com_languages&view=installed&client=0" class="<?php echo ($client == "0") ? 'active' : '';?>">
-				<?php echo JText::_('COM_LANGUAGES_SUBMENU_INSTALLED_SITE'); ?></a></li>
+				<?php echo Lang::txt('COM_LANGUAGES_SUBMENU_INSTALLED_SITE'); ?></a></li>
 				<li><a href="index.php?option=com_languages&view=installed&client=1" class="<?php echo ($client == "1") ? 'active' : '';?>">
-				<?php echo JText::_('COM_LANGUAGES_SUBMENU_INSTALLED_ADMINISTRATOR'); ?></a></li>
+				<?php echo Lang::txt('COM_LANGUAGES_SUBMENU_INSTALLED_ADMINISTRATOR'); ?></a></li>
 				<li><a href="index.php?option=com_languages&view=languages">
-				<?php echo JText::_('COM_LANGUAGES_SUBMENU_CONTENT'); ?></a></li>
+				<?php echo Lang::txt('COM_LANGUAGES_SUBMENU_CONTENT'); ?></a></li>
 				<li><a href="index.php?option=com_languages&view=overrides">
-				<?php echo JText::_('COM_LANGUAGES_SUBMENU_OVERRIDES'); ?></a></li>
+				<?php echo Lang::txt('COM_LANGUAGES_SUBMENU_OVERRIDES'); ?></a></li>
 			</ul>
 			<div class="clr"></div>
 		</div>

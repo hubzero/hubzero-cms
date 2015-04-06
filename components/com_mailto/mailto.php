@@ -15,6 +15,6 @@ require_once JPATH_COMPONENT.'/controller.php';
 
 $controller = JControllerLegacy::getInstance('Mailto');
 $controller->registerDefaultTask('mailto');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(Request::getCmd('task'));
 
 //$controller->redirect();

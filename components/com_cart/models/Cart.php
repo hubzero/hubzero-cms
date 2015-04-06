@@ -268,7 +268,7 @@ abstract class CartModelCart
         // Check quantity: must be a positive integer or zero
         if (!Cart_Helper::isNonNegativeInt($qty))
         {
-            throw new Exception(JText::_('COM_CART_INCORRECT_QTY'));
+            throw new Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
         }
         elseif ($qty == 0 && !$retainOldValue)
         {
@@ -279,7 +279,7 @@ abstract class CartModelCart
                 return;
             }
             else {
-                throw new Exception(JText::_('COM_CART_INCORRECT_QTY'));
+                throw new Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
             }
         }
 
@@ -304,7 +304,7 @@ abstract class CartModelCart
 
         if (empty($allSkuInfo))
         {
-            throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
+            throw new Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
         }
 
         $skuInfo = $allSkuInfo[$sId]['info'];
@@ -325,7 +325,7 @@ abstract class CartModelCart
                 // Check this SKU qty to make sure no multiple SKUs are there
                 if ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))
                 {
-                    throw new Exception($skuInfo->pName . JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
+                    throw new Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
                 }
                 // Check if there is this project already in the cart (different SKU)
                 $allSkus = $warehouse->getProductSkus($skuInfo->pId);
@@ -338,7 +338,7 @@ abstract class CartModelCart
                         // Error if there is already another SKU of the same product in the cart
                         if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0)
                         {
-                            throw new Exception($skuInfo->pName . JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
+                            throw new Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
                         }
                     }
 
@@ -346,7 +346,7 @@ abstract class CartModelCart
             }
             // Don't allow purchasing multiple SKUs for those that are not allowed
             if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))) {
-                throw new Exception($skuName . JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
+                throw new Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
             }
 
             // Make sure there is enough inventory
@@ -355,12 +355,12 @@ abstract class CartModelCart
                 // See if qty can be added
                 if ($qty > $skuInfo->sInventory)
                 {
-                    throw new Exception(JText::_('COM_CART_NOT_ENOUGH_INVENTORY'));
+                    throw new Exception(Lang::txt('COM_CART_NOT_ENOUGH_INVENTORY'));
                 }
                 elseif (!empty($skuCartInfo->crtiQty) && ($qty + $skuCartInfo->crtiQty > $skuInfo->sInventory))
                 {
                     // This is how much they can add: $skuInfo->sInventory - $skuCartInfo->crtiQty
-                    throw new Exception(JText::_('COM_CART_ADD_TOO_MANY_CART'));
+                    throw new Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
                 }
             }
         }
@@ -440,7 +440,7 @@ abstract class CartModelCart
     {
         if(!Cart_Helper::isNonNegativeInt($tId, false))
         {
-            throw new Exception(JText::_('COM_CART_NO_TRANSACTION_FOUND'));
+            throw new Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
         return md5(self::$securitySalt . $tId) == $token;
     }

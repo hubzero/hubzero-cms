@@ -40,7 +40,7 @@ class ContentViewForm extends JViewLegacy
 		}
 
 		if ($authorised !== true) {
-			JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return false;
 		}
 
@@ -94,15 +94,15 @@ class ContentViewForm extends JViewLegacy
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('COM_CONTENT_FORM_EDIT_ARTICLE'));
+			$this->params->def('page_heading', Lang::txt('COM_CONTENT_FORM_EDIT_ARTICLE'));
 		}
 
-		$title = $this->params->def('page_title', JText::_('COM_CONTENT_FORM_EDIT_ARTICLE'));
+		$title = $this->params->def('page_title', Lang::txt('COM_CONTENT_FORM_EDIT_ARTICLE'));
 		if ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

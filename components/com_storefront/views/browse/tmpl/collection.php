@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				echo '<li>';
 					echo '<a href="';
-					echo JRoute::_('index.php?option=' . JRequest::getVar('option') . '/product/' . $product->pId);
+					echo Route::url('index.php?option=' . Request::getVar('option') . '/product/' . $product->pId);
 					echo '">';
 					echo $product->pName;
 					echo '</a>';
@@ -58,7 +58,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			echo '</ul>';
 		}
 		else {
-			echo JText::_('COM_STOREFRONT_NO_PRODUCTS');
+			echo Lang::txt('COM_STOREFRONT_NO_PRODUCTS');
 		}
 
 	?>

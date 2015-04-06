@@ -125,7 +125,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 				{
 						if ($options[$i]->level == 0)
 						{
-							$options[$i]->text = JText::_('JGLOBAL_ROOT_PARENT');
+							$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 						}
 				}
 				if ($options[$i]->published == 1)
@@ -200,10 +200,10 @@ class JFormFieldCategoryEdit extends JFormFieldList
 			{
 				if ($row->parent_id == '1') {
 					$parent = new stdClass();
-					$parent->text = JText::_('JGLOBAL_ROOT_PARENT');
+					$parent->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 					array_unshift($options, $parent);
 				}
-				array_unshift($options, JHtml::_('select.option', '0', JText::_('JGLOBAL_ROOT')));
+				array_unshift($options, JHtml::_('select.option', '0', Lang::txt('JGLOBAL_ROOT')));
 			}
 
 

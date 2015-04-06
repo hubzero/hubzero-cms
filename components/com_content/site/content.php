@@ -13,5 +13,5 @@ require_once JPATH_COMPONENT.'/helpers/route.php';
 require_once JPATH_COMPONENT.'/helpers/query.php';
 
 $controller = JControllerLegacy::getInstance('Content');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(Request::getCmd('task'));
 $controller->redirect();

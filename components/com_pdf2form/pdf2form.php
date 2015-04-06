@@ -9,7 +9,7 @@ if ($task == 'index' && preg_match('#^/pdf2form/([-a-zA-Z0-9]{20})(?:$|\?)#', is
 	{
 		$location .= '&' . implode('&', $params);
 	}
-	header('Location: ' . JRoute::_($location));
+	header('Location: ' . Route::url($location));
 	exit();
 }
 
@@ -80,7 +80,7 @@ try
 			}
 			else
 			{
-				header('Location: ' . JRoute::_('index.php?option=com_pdf2form&task=layout&formId=' . $pdf->getId()));
+				header('Location: ' . Route::url('index.php?option=com_pdf2form&task=layout&formId=' . $pdf->getId()));
 				exit();
 			}
 		break;
@@ -119,7 +119,7 @@ try
 			}
 			else
 			{
-				header('Location: ' . JRoute::_('index.php?option=com_pdf2form&task=showDeployment&id=' . $dep->save() . '&formId=' . $pdf->getId()));
+				header('Location: ' . Route::url('index.php?option=com_pdf2form&task=showDeployment&id=' . $dep->save() . '&formId=' . $pdf->getId()));
 				exit();
 			}
 		break;
@@ -137,7 +137,7 @@ try
 			}
 			else
 			{
-				header('Location: ' . JRoute::_('index.php?option=com_pdf2form?task=showDeployment&id=' . $dep->save($_POST['deploymentId']) . '&formId=' . $pdf->getId()));
+				header('Location: ' . Route::url('index.php?option=com_pdf2form?task=showDeployment&id=' . $dep->save($_POST['deploymentId']) . '&formId=' . $pdf->getId()));
 				exit();
 			}
 		break;
@@ -176,7 +176,7 @@ try
 				throw new UnprocessableEntityError();
 			}
 			PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent()->markStart();
-			header('Location: ' . JRoute::_('index.php?option=com_pdf2form?task=complete&crumb='.$_POST['crumb'].(isset($_POST['tmpl']) ? '&tmpl='.$_POST['tmpl'] : '')));
+			header('Location: ' . Route::url('index.php?option=com_pdf2form?task=complete&crumb='.$_POST['crumb'].(isset($_POST['tmpl']) ? '&tmpl='.$_POST['tmpl'] : '')));
 		exit();
 		case 'saveProgress':
 			if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer']))
@@ -199,7 +199,7 @@ try
 				$resp = $dep->getRespondent();
 				$resp->saveAnswers($_POST)->markEnd();
 
-				header('Location: ' . JRoute::_('index.php?option=com_pdf2form?task=complete&crumb='.$_POST['crumb']));
+				header('Location: ' . Route::url('index.php?option=com_pdf2form?task=complete&crumb='.$_POST['crumb']));
 				exit();
 			}
 			else
@@ -217,7 +217,7 @@ try
 }
 catch (NeedLoginError $ex)
 {
-	header('Location: ' . JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])));
+	header('Location: ' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])));
 	exit();
 }
 catch (HttpCodedError $ex)

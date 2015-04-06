@@ -142,12 +142,12 @@ if (!empty($this->notifications))
 		if ($orderTotal > 0)
 		{
 			$buttonLabel = 'Proceed to payment';
-			$buttonLink = JRoute::_('index.php?option=com_cart/checkout/confirm');
+			$buttonLink = Route::url('index.php?option=com_cart/checkout/confirm');
 		}
 		else
 		{
 			$buttonLabel = 'Place order';
-			$buttonLink = JRoute::_('index.php?option=com_cart/order/place/' . $this->token);
+			$buttonLink = Route::url('index.php?option=com_cart/order/place/' . $this->token);
 		}
 		?>
 		<p class="submit">

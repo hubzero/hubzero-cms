@@ -165,7 +165,7 @@ class Wishlists extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
-			\JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				$this->_msg,
 				'warning'
@@ -1009,7 +1009,7 @@ class Wishlists extends SiteController
 
 			// Get URL to page explaining virtual economy
 			$aconfig = Component::params('com_answers');
-			$infolink = $aconfig->get('infolink', \JURI::base(true) . '/kb/points/');
+			$infolink = $aconfig->get('infolink', \Request::base(true) . '/kb/points/');
 
 			$this->view->title    = Lang::txt(strtoupper($this->_name));
 			$this->view->config   = $this->config;

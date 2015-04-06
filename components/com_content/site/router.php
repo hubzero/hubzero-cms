@@ -23,7 +23,7 @@ function ContentBuildRoute(&$query)
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
-	$params		= JComponentHelper::getParams('com_content');
+	$params		= Component::params('com_content');
 	$advanced	= $params->get('sef_advanced_link', 0);
 
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
@@ -204,7 +204,7 @@ function ContentParseRoute($segments)
 	$app	= JFactory::getApplication();
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();
-	$params = JComponentHelper::getParams('com_content');
+	$params = Component::params('com_content');
 	$advanced = $params->get('sef_advanced_link', 0);
 	$db = JFactory::getDBO();
 
@@ -283,7 +283,7 @@ function ContentParseRoute($segments)
 	$category = JCategories::getInstance('Content')->get($id);
 
 	if (!$category) {
-		JError::raiseError(404, JText::_('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+		JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
 		return $vars;
 	}
 

@@ -54,7 +54,7 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		$this->config   = JComponentHelper::getParams('com_blog');
+		$this->config   = Component::params('com_blog');
 		$this->database = JFactory::getDBO();
 
 		switch ($this->segments[0])
@@ -88,7 +88,7 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		//add error to message body
-		$this->setMessageType(JRequest::getWord('format', $format));
+		$this->setMessageType(Request::getWord('format', $format));
 		$this->setMessage($object);
 	}
 
@@ -104,26 +104,26 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'citations';
 		$response->tasks = array(
 			'list' => array(
-				'description' => JText::_('Get a list of citations.'),
+				'description' => Lang::txt('Get a list of citations.'),
 				'parameters'  => array(
 					'sort_Dir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
@@ -131,7 +131,7 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -142,17 +142,17 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function citationsTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$database = JFactory::getDBO();
 
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('search', ''),
-			'sort'       => JRequest::getVar('sort', 'created'),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('search', ''),
+			'sort'       => Request::getVar('sort', 'created'),
 			'state'      => 1,
-			'sort_Dir'   => strtoupper(JRequest::getWord('sortDir', 'DESC'))
+			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
 		);
 
 		//get the earliest year we have citations for
@@ -161,23 +161,23 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		$earliest_year = $database->loadResult();
 		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
 
-		$filters['id']              = JRequest::getInt('id', 0);
-		$filters['tag']             = JRequest::getVar('tag', '', 'request', 'none', 2);
-		$filters['type']            = JRequest::getVar('type', '');
-		$filters['author']          = JRequest::getVar('author', '');
-		$filters['publishedin']     = JRequest::getVar('publishedin', '');
-		$filters['year_start']      = JRequest::getInt('year_start', $earliest_year);
-		$filters['year_end']        = JRequest::getInt('year_end', date("Y"));
-		$filters['filter']          = JRequest::getVar('filter', '');
-		$filters['reftype']         = JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$filters['geo']             = JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$filters['aff']             = JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-		$filters['startuploaddate'] = JRequest::getVar('startuploaddate', '0000-00-00');
-		$filters['enduploaddate']   = JRequest::getVar('enduploaddate', '0000-00-00');
+		$filters['id']              = Request::getInt('id', 0);
+		$filters['tag']             = Request::getVar('tag', '', 'request', 'none', 2);
+		$filters['type']            = Request::getVar('type', '');
+		$filters['author']          = Request::getVar('author', '');
+		$filters['publishedin']     = Request::getVar('publishedin', '');
+		$filters['year_start']      = Request::getInt('year_start', $earliest_year);
+		$filters['year_end']        = Request::getInt('year_end', date("Y"));
+		$filters['filter']          = Request::getVar('filter', '');
+		$filters['reftype']         = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$filters['geo']             = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		$filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
+		$filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
 
 		$filters['sort'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
-		if ($collection = JRequest::getInt('collection', 0))
+		if ($collection = Request::getInt('collection', 0))
 		{
 			$filters['collection_id'] = $collection;
 		}
@@ -201,7 +201,7 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 
 			foreach ($obj->getRecords($filters) as $i => $entry)
 			{
-				$entry->url = $base . DS . ltrim(JRoute::_($href . $entry->id), DS);
+				$entry->url = $base . DS . ltrim(Route::url($href . $entry->id), DS);
 
 				$response->citations[] = $entry;
 			}

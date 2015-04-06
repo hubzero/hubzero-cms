@@ -185,7 +185,7 @@ class PluginsModelPlugin extends JModelAdmin
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		$pk = (int) JRequest::getInt('extension_id');
+		$pk = (int) Request::getInt('extension_id');
 		$this->setState('plugin.id', $pk);
 	}
 
@@ -223,7 +223,7 @@ class PluginsModelPlugin extends JModelAdmin
 
 		if (empty($folder) || empty($element)) {
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_plugins&view=plugins', false));
+			$app->redirect(Route::url('index.php?option=com_plugins&view=plugins', false));
 		}
 		// Try 1.6 format: /plugins/folder/element/element.xml
 		$formFile = JPath::clean(JPATH_PLUGINS.'/'.$folder.'/'.$element.'/'.$element.'.xml');
@@ -231,7 +231,7 @@ class PluginsModelPlugin extends JModelAdmin
 			// Try 1.5 format: /plugins/folder/element/element.xml
 			$formFile = JPath::clean(JPATH_PLUGINS.'/'.$folder.'/'.$element.'.xml');
 			if (!file_exists($formFile)) {
-				throw new Exception(JText::sprintf('COM_PLUGINS_ERROR_FILE_NOT_FOUND', $element.'.xml'));
+				throw new Exception(Lang::txt('COM_PLUGINS_ERROR_FILE_NOT_FOUND', $element.'.xml'));
 				return false;
 			}
 		}
@@ -244,13 +244,13 @@ class PluginsModelPlugin extends JModelAdmin
 		if (file_exists($formFile)) {
 			// Get the plugin form.
 			if (!$form->loadFile($formFile, false, '//config')) {
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 		}
 
 		// Attempt to load the xml file.
 		if (!$xml = simplexml_load_file($formFile)) {
-			throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
 		// Get the help data from the XML file if present.

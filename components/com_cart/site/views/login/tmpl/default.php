@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<p class="warning"><?php echo JText::_('COM_CART_NOT_LOGGEDIN'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_CART_NOT_LOGGEDIN'); ?></p>
 <?php
 \Hubzero\Module\Helper::displayModules('force_mod');
 ?>

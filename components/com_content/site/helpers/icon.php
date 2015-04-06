@@ -26,14 +26,14 @@ class JHtmlIcon
 		$url = 'index.php?option=com_content&task=article.add&return='.base64_encode(urlencode($uri)).'&a_id=0&catid=' . $category->id;
 
 		if ($params->get('show_icons')) {
-			$text = JHtml::_('image', 'system/new.png', JText::_('JNEW'), NULL, true);
+			$text = JHtml::_('image', 'system/new.png', Lang::txt('JNEW'), NULL, true);
 		} else {
-			$text = JText::_('JNEW').'&#160;';
+			$text = Lang::txt('JNEW').'&#160;';
 		}
 
-		$button =  JHtml::_('link', JRoute::_($url), $text);
+		$button =  JHtml::_('link', Route::url($url), $text);
 
-		$output = '<span class="hasTip" title="'.JText::_('COM_CONTENT_CREATE_ARTICLE').'">'.$button.'</span>';
+		$output = '<span class="hasTip" title="'.Lang::txt('COM_CONTENT_CREATE_ARTICLE').'">'.$button.'</span>';
 		return $output;
 	}
 
@@ -43,21 +43,21 @@ class JHtmlIcon
 		$uri	= JURI::getInstance();
 		$base	= $uri->toString(array('scheme', 'host', 'port'));
 		$template = JFactory::getApplication()->getTemplate();
-		$link	= $base.JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language) , false);
+		$link	= $base.Route::url(ContentHelperRoute::getArticleRoute($article->slug, $article->catid, $article->language) , false);
 		$url	= 'index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($link);
 
 		$status = 'width=400,height=350,menubar=yes,resizable=yes';
 
 		if ($params->get('show_icons')) {
-			$text = JHtml::_('image', 'system/emailButton.png', JText::_('JGLOBAL_EMAIL'), NULL, true);
+			$text = JHtml::_('image', 'system/emailButton.png', Lang::txt('JGLOBAL_EMAIL'), NULL, true);
 		} else {
-			$text = '&#160;'.JText::_('JGLOBAL_EMAIL');
+			$text = '&#160;'.Lang::txt('JGLOBAL_EMAIL');
 		}
 
-		$attribs['title']	= JText::_('JGLOBAL_EMAIL');
+		$attribs['title']	= Lang::txt('JGLOBAL_EMAIL');
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
 
-		$output = JHtml::_('link', JRoute::_($url), $text, $attribs);
+		$output = JHtml::_('link', Route::url($url), $text, $attribs);
 		return $output;
 	}
 
@@ -98,7 +98,7 @@ class JHtmlIcon
 			$checkoutUser = JFactory::getUser($article->checked_out);
 			$button = JHtml::_('image', 'system/checked_out.png', NULL, NULL, true);
 			$date = JHtml::_('date', $article->checked_out_time);
-			$tooltip = JText::_('JLIB_HTML_CHECKED_OUT').' :: '.JText::sprintf('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name).' <br /> '.$date;
+			$tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT').' :: '.Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name).' <br /> '.$date;
 			return '<span class="hasTip" title="'.htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8').'">'.$button.'</span>';
 		}
 
@@ -108,13 +108,13 @@ class JHtmlIcon
 		{
 			$icon = 'edit_unpublished.png';
 		}
-		$text	= JHtml::_('image', 'system/'.$icon, JText::_('JGLOBAL_EDIT'), NULL, true);
+		$text	= JHtml::_('image', 'system/'.$icon, Lang::txt('JGLOBAL_EDIT'), NULL, true);
 
 		if ($article->state == 0) {
-			$overlib = JText::_('JUNPUBLISHED');
+			$overlib = Lang::txt('JUNPUBLISHED');
 		}
 		else {
-			$overlib = JText::_('JPUBLISHED');
+			$overlib = Lang::txt('JPUBLISHED');
 		}
 
 		$date = JHtml::_('date', $article->created);
@@ -123,11 +123,11 @@ class JHtmlIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;
 		$overlib .= '&lt;br /&gt;';
-		$overlib .= JText::sprintf('COM_CONTENT_WRITTEN_BY', htmlspecialchars($author, ENT_COMPAT, 'UTF-8'));
+		$overlib .= Lang::txt('COM_CONTENT_WRITTEN_BY', htmlspecialchars($author, ENT_COMPAT, 'UTF-8'));
 
-		$button = JHtml::_('link', JRoute::_($url), $text);
+		$button = JHtml::_('link', Route::url($url), $text);
 
-		$output = '<span class="hasTip" title="'.JText::_('COM_CONTENT_EDIT_ITEM').' :: '.$overlib.'">'.$button.'</span>';
+		$output = '<span class="hasTip" title="'.Lang::txt('COM_CONTENT_EDIT_ITEM').' :: '.$overlib.'">'.$button.'</span>';
 
 		return $output;
 	}
@@ -142,25 +142,25 @@ class JHtmlIcon
 
 		// checks template image directory for image, if non found default are loaded
 		if ($params->get('show_icons')) {
-			$text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), NULL, true);
+			$text = JHtml::_('image', 'system/printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
 		} else {
-			$text = JText::_('JGLOBAL_ICON_SEP') .'&#160;'. JText::_('JGLOBAL_PRINT') .'&#160;'. JText::_('JGLOBAL_ICON_SEP');
+			$text = Lang::txt('JGLOBAL_ICON_SEP') .'&#160;'. Lang::txt('JGLOBAL_PRINT') .'&#160;'. Lang::txt('JGLOBAL_ICON_SEP');
 		}
 
-		$attribs['title']	= JText::_('JGLOBAL_PRINT');
+		$attribs['title']	= Lang::txt('JGLOBAL_PRINT');
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
 		$attribs['rel']		= 'nofollow';
 
-		return JHtml::_('link', JRoute::_($url), $text, $attribs);
+		return JHtml::_('link', Route::url($url), $text, $attribs);
 	}
 
 	static function print_screen($article, $params, $attribs = array())
 	{
 		// checks template image directory for image, if non found default are loaded
 		if ($params->get('show_icons')) {
-			$text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), NULL, true);
+			$text = JHtml::_('image', 'system/printButton.png', Lang::txt('JGLOBAL_PRINT'), NULL, true);
 		} else {
-			$text = JText::_('JGLOBAL_ICON_SEP') .'&#160;'. JText::_('JGLOBAL_PRINT') .'&#160;'. JText::_('JGLOBAL_ICON_SEP');
+			$text = Lang::txt('JGLOBAL_ICON_SEP') .'&#160;'. Lang::txt('JGLOBAL_PRINT') .'&#160;'. Lang::txt('JGLOBAL_ICON_SEP');
 		}
 		return '<a href="#" onclick="window.print();return false;">'.$text.'</a>';
 	}

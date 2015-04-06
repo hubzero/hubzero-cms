@@ -574,7 +574,7 @@ $cc = array();
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_SUPPORT_COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
 					<?php
-					$tmp = JRequest::getVar('tmp_dir', ('-' . time()), 'post');
+					$tmp = Request::getVar('tmp_dir', ('-' . time()), 'post');
 					$this->js('jquery.fileuploader.js', 'system');
 					$jbase = rtrim(JURI::getInstance()->base(true), '/');
 					?>

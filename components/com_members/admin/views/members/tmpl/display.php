@@ -140,7 +140,7 @@ function submitbutton(pressbutton)
 $default = DS . trim($this->config->get('defaultpic'), DS);
 $default = \Hubzero\User\Profile\Helper::thumbit($default);
 
-$base = str_replace('/administrator', '', JURI::base(true));
+$base = str_replace('/administrator', '', Request::base(true));
 
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)

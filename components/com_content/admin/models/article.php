@@ -61,7 +61,7 @@ class ContentModelArticle extends JModelAdmin
 				}
 				else
 				{
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
@@ -69,7 +69,7 @@ class ContentModelArticle extends JModelAdmin
 
 		if (empty($categoryId))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
@@ -78,7 +78,7 @@ class ContentModelArticle extends JModelAdmin
 		$user = JFactory::getUser();
 		if (!$user->authorise('core.create', $extension . '.category.' . $categoryId))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
@@ -102,7 +102,7 @@ class ContentModelArticle extends JModelAdmin
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -376,7 +376,7 @@ class ContentModelArticle extends JModelAdmin
 			// Prime some default values.
 			if ($this->getState('article.id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('catid', JRequest::getInt('catid', $app->getUserState('com_content.articles.filter.category_id')));
+				$data->set('catid', Request::getInt('catid', $app->getUserState('com_content.articles.filter.category_id')));
 			}
 		}
 
@@ -407,7 +407,7 @@ class ContentModelArticle extends JModelAdmin
 
 			}
 		// Alter the title for save as copy
-		if (JRequest::getVar('task') == 'save2copy') {
+		if (Request::getVar('task') == 'save2copy') {
 			list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
 			$data['title']	= $title;
 			$data['alias']	= $alias;
@@ -442,7 +442,7 @@ class ContentModelArticle extends JModelAdmin
 		JArrayHelper::toInteger($pks);
 
 		if (empty($pks)) {
-			$this->setError(JText::_('COM_CONTENT_NO_ITEM_SELECTED'));
+			$this->setError(Lang::txt('COM_CONTENT_NO_ITEM_SELECTED'));
 			return false;
 		}
 

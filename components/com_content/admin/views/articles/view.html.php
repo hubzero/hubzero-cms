@@ -41,16 +41,16 @@ class ContentViewArticles extends JViewLegacy
 
 		// Levels filter.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '1', JText::_('J1'));
-		$options[]	= JHtml::_('select.option', '2', JText::_('J2'));
-		$options[]	= JHtml::_('select.option', '3', JText::_('J3'));
-		$options[]	= JHtml::_('select.option', '4', JText::_('J4'));
-		$options[]	= JHtml::_('select.option', '5', JText::_('J5'));
-		$options[]	= JHtml::_('select.option', '6', JText::_('J6'));
-		$options[]	= JHtml::_('select.option', '7', JText::_('J7'));
-		$options[]	= JHtml::_('select.option', '8', JText::_('J8'));
-		$options[]	= JHtml::_('select.option', '9', JText::_('J9'));
-		$options[]	= JHtml::_('select.option', '10', JText::_('J10'));
+		$options[]	= JHtml::_('select.option', '1', Lang::txt('J1'));
+		$options[]	= JHtml::_('select.option', '2', Lang::txt('J2'));
+		$options[]	= JHtml::_('select.option', '3', Lang::txt('J3'));
+		$options[]	= JHtml::_('select.option', '4', Lang::txt('J4'));
+		$options[]	= JHtml::_('select.option', '5', Lang::txt('J5'));
+		$options[]	= JHtml::_('select.option', '6', Lang::txt('J6'));
+		$options[]	= JHtml::_('select.option', '7', Lang::txt('J7'));
+		$options[]	= JHtml::_('select.option', '8', Lang::txt('J8'));
+		$options[]	= JHtml::_('select.option', '9', Lang::txt('J9'));
+		$options[]	= JHtml::_('select.option', '10', Lang::txt('J10'));
 
 		$this->f_levels = $options;
 
@@ -71,40 +71,40 @@ class ContentViewArticles extends JViewLegacy
 	{
 		$canDo = ContentHelper::getActions($this->state->get('filter.category_id'));
 		$user  = JFactory::getUser();
-		JToolBarHelper::title(JText::_('COM_CONTENT_ARTICLES_TITLE'), 'article.png');
+		Toolbar::title(Lang::txt('COM_CONTENT_ARTICLES_TITLE'), 'article.png');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_content', 'core.create'))) > 0 ) {
-			JToolBarHelper::addNew('article.add');
+			Toolbar::addNew('article.add');
 		}
 
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
-			JToolBarHelper::editList('article.edit');
+			Toolbar::editList('article.edit');
 		}
 
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::archiveList('articles.archive');
-			JToolBarHelper::checkin('articles.checkin');
+			Toolbar::divider();
+			Toolbar::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
+			Toolbar::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			Toolbar::custom('articles.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
+			Toolbar::divider();
+			Toolbar::archiveList('articles.archive');
+			Toolbar::checkin('articles.checkin');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
+			Toolbar::deleteList('', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
+			Toolbar::divider();
 		}
 		elseif ($canDo->get('core.edit.state')) {
-			JToolBarHelper::trash('articles.trash');
-			JToolBarHelper::divider();
+			Toolbar::trash('articles.trash');
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_content');
-			JToolBarHelper::divider();
+			Toolbar::preferences('com_content');
+			Toolbar::divider();
 		}
 
-		JToolBarHelper::help('articles');
+		Toolbar::help('articles');
 	}
 }

@@ -57,14 +57,14 @@ class MembersProfile extends JTable
 		$this->givenName = trim($this->givenName);
 		if ($this->givenName == '')
 		{
-			$this->setError(JText::_('MEMBER_MUST_HAVE_FIRST_NAME'));
+			$this->setError(Lang::txt('MEMBER_MUST_HAVE_FIRST_NAME'));
 			return false;
 		}
 
 		$this->surname = trim($this->surname);
 		if ($this->surname == '')
 		{
-			$this->setError(JText::_('MEMBER_MUST_HAVE_LAST_NAME'));
+			$this->setError(Lang::txt('MEMBER_MUST_HAVE_LAST_NAME'));
 			return false;
 		}
 

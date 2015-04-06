@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'resources.png');
 
 if ($this->html)
 {
@@ -38,7 +38,7 @@ if ($this->html)
 }
 else
 {
-	JToolBarHelper::cancel();
+	Toolbar::cancel();
 ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 		<p class="warning"><?php echo Lang::txt('COM_RESOURCES_ERROR_PLUGIN_NO_INTERFACE'); ?></p>

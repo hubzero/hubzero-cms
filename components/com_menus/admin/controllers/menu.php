@@ -28,7 +28,7 @@ class MenusControllerMenu extends JControllerForm
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menus', false));
+		$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
 	}
 
 	/**
@@ -39,20 +39,20 @@ class MenusControllerMenu extends JControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app		= JFactory::getApplication();
-		$data		= JRequest::getVar('jform', array(), 'post', 'array');
+		$data		= Request::getVar('jform', array(), 'post', 'array');
 		$context	= 'com_menus.edit.menu';
 		$task		= $this->getTask();
-		$recordId	= JRequest::getInt('id');
+		$recordId	= Request::getInt('id');
 
 		if (!$this->checkEditId($context, $recordId)) {
 			// Somehow the person just went to the form and saved it - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
+			$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_list.$this->getRedirectToListAppend(), false));
 
 			return false;
 		}
@@ -61,10 +61,10 @@ class MenusControllerMenu extends JControllerForm
 		if ((isset($data['client_id']) && $data['client_id'] == 1) || strtolower($data['menutype']) == 'menu'
 			|| strtolower($data['menutype']) == 'main')
 		{
-			JError::raiseNotice(0, JText::_('COM_MENUS_MENU_TYPE_NOT_ALLOWED'));
+			JError::raiseNotice(0, Lang::txt('COM_MENUS_MENU_TYPE_NOT_ALLOWED'));
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menu&layout=edit', false));
+			$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
 
 			return false;
 		}
@@ -102,7 +102,7 @@ class MenusControllerMenu extends JControllerForm
 			$app->setUserState('com_menus.edit.menu.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menu&layout=edit', false));
+			$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
 
 			return false;
 		}
@@ -113,13 +113,13 @@ class MenusControllerMenu extends JControllerForm
 			$app->setUserState('com_menus.edit.menu.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setMessage(JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
-			$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menu&layout=edit', false));
+			$this->setMessage(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
+			$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
 
 			return false;
 		}
 
-		$this->setMessage(JText::_('COM_MENUS_MENU_SAVE_SUCCESS'));
+		$this->setMessage(Lang::txt('COM_MENUS_MENU_SAVE_SUCCESS'));
 
 		// Redirect the user and adjust session state based on the chosen task.
 		switch ($task)
@@ -130,7 +130,7 @@ class MenusControllerMenu extends JControllerForm
 				$this->holdEditId($context, $recordId);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menu&layout=edit'.$this->getRedirectToItemAppend($recordId), false));
+				$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit'.$this->getRedirectToItemAppend($recordId), false));
 				break;
 
 			case 'save2new':
@@ -139,7 +139,7 @@ class MenusControllerMenu extends JControllerForm
 				$app->setUserState($context.'.data', null);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menu&layout=edit', false));
+				$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
 				break;
 
 			default:
@@ -148,7 +148,7 @@ class MenusControllerMenu extends JControllerForm
 				$app->setUserState($context.'.data', null);
 
 				// Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menus', false));
+				$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
 				break;
 		}
 	}

@@ -25,19 +25,19 @@ class NewsfeedsHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			JText::_('COM_NEWSFEEDS_SUBMENU_NEWSFEEDS'),
+		Submenu::addEntry(
+			Lang::txt('COM_NEWSFEEDS_SUBMENU_NEWSFEEDS'),
 			'index.php?option=com_newsfeeds&view=newsfeeds',
 			$vName == 'newsfeeds'
 		);
-		JSubMenuHelper::addEntry(
-			JText::_('COM_NEWSFEEDS_SUBMENU_CATEGORIES'),
+		Submenu::addEntry(
+			Lang::txt('COM_NEWSFEEDS_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_newsfeeds',
 			$vName == 'categories'
 		);
 		if ($vName=='categories') {
-			JToolBarHelper::title(
-				JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', JText::_('com_newsfeeds')),
+			Toolbar::title(
+				Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt('com_newsfeeds')),
 				'newsfeeds-categories');
 		}
 	}

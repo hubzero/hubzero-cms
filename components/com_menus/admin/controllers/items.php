@@ -40,7 +40,7 @@ class MenusControllerItems extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$this->setRedirect('index.php?option=com_menus&view=items');
 
@@ -49,22 +49,22 @@ class MenusControllerItems extends JControllerAdmin
 
 		if ($model->rebuild()) {
 			// Reorder succeeded.
-			$this->setMessage(JText::_('COM_MENUS_ITEMS_REBUILD_SUCCESS'));
+			$this->setMessage(Lang::txt('COM_MENUS_ITEMS_REBUILD_SUCCESS'));
 			return true;
 		} else {
 			// Rebuild failed.
-			$this->setMessage(JText::sprintf('COM_MENUS_ITEMS_REBUILD_FAILED'));
+			$this->setMessage(Lang::txt('COM_MENUS_ITEMS_REBUILD_FAILED'));
 			return false;
 		}
 	}
 
 	public function saveorder()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order	= JRequest::getVar('order',	null,	'post',	'array');
-		$originalOrder = explode(',', JRequest::getString('original_order_values'));
+		$order	= Request::getVar('order',	null,	'post',	'array');
+		$originalOrder = explode(',', Request::getString('original_order_values'));
 
 		// Make sure something has changed
 		if (!($order === $originalOrder))
@@ -74,7 +74,7 @@ class MenusControllerItems extends JControllerAdmin
 		else
 		{
 			// Nothing to reorder
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+			$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_list, false));
 			return true;
 		}
 	}
@@ -87,16 +87,16 @@ class MenusControllerItems extends JControllerAdmin
 	function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or die(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid	= JRequest::getVar('cid', array(), '', 'array');
+		$cid	= Request::getVar('cid', array(), '', 'array');
 		$data	= array('setDefault' => 1, 'unsetDefault' => 0);
 		$task 	= $this->getTask();
 		$value	= JArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid)) {
-			JError::raiseWarning(500, JText::_($this->text_prefix.'_NO_ITEM_SELECTED'));
+			JError::raiseWarning(500, Lang::txt($this->text_prefix.'_NO_ITEM_SELECTED'));
 		} else {
 			// Get the model.
 			$model = $this->getModel();
@@ -118,6 +118,6 @@ class MenusControllerItems extends JControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+		$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_list, false));
 	}
 }

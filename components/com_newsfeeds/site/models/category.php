@@ -159,28 +159,28 @@ class NewsfeedsModelCategory extends JModelList
 	{
 		// Initialise variables.
 		$app	= JFactory::getApplication();
-		$params	= JComponentHelper::getParams('com_newsfeeds');
+		$params	= Component::params('com_newsfeeds');
 
 		// List state information
 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
 		$this->setState('list.limit', $limit);
 
-		$limitstart = JRequest::getUInt('limitstart', 0);
+		$limitstart = Request::getUInt('limitstart', 0);
 		$this->setState('list.start', $limitstart);
 
-		$orderCol	= JRequest::getCmd('filter_order', 'ordering');
+		$orderCol	= Request::getCmd('filter_order', 'ordering');
 		if (!in_array($orderCol, $this->filter_fields)) {
 			$orderCol = 'ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'ASC');
+		$listOrder	=  Request::getCmd('filter_order_Dir', 'ASC');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
 
-		$id = JRequest::getVar('id', 0, '', 'int');
+		$id = Request::getVar('id', 0, '', 'int');
 		$this->setState('category.id', $id);
 
 		$user = JFactory::getUser();

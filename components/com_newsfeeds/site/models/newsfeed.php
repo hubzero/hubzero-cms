@@ -39,10 +39,10 @@ class NewsfeedsModelNewsfeed extends JModelItem
 		$app = JFactory::getApplication('site');
 
 		// Load state from the request.
-		$pk = JRequest::getInt('id');
+		$pk = Request::getInt('id');
 		$this->setState('newsfeed.id', $pk);
 
-		$offset = JRequest::getUInt('limitstart', 0);
+		$offset = Request::getUInt('limitstart', 0);
 		$this->setState('list.offset', $offset);
 
 		// Load the parameters.
@@ -119,12 +119,12 @@ class NewsfeedsModelNewsfeed extends JModelItem
 				}
 
 				if (empty($data)) {
-					throw new JException(JText::_('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'), 404);
+					throw new JException(Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'), 404);
 				}
 
 				// Check for published state if filter set.
 				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->published != $published) && ($data->published != $archived))) {
-					JError::raiseError(404, JText::_('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'));
+					JError::raiseError(404, Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'));
 				}
 
 				// Convert parameter fields to objects.

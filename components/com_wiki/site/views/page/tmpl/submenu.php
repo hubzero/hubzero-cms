@@ -32,11 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
-$tmpl = JRequest::getWord('tmpl');
+$tmpl = Request::getWord('tmpl');
 
 if (!isset($this->controller))
 {
-	$this->controller = JRequest::getWord('controller', 'page');
+	$this->controller = Request::getWord('controller', 'page');
 }
 
 if ($tmpl != 'component') { ?>

@@ -46,21 +46,21 @@ class JFormFieldMenutype extends JFormFieldList
 		switch ($this->value)
 		{
 			case 'url':
-				$value = JText::_('COM_MENUS_TYPE_EXTERNAL_URL');
+				$value = Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL');
 				break;
 
 			case 'alias':
-				$value = JText::_('COM_MENUS_TYPE_ALIAS');
+				$value = Lang::txt('COM_MENUS_TYPE_ALIAS');
 				break;
 
 			case 'separator':
-				$value = JText::_('COM_MENUS_TYPE_SEPARATOR');
+				$value = Lang::txt('COM_MENUS_TYPE_SEPARATOR');
 				break;
 
 			default:
 				$link	= $this->form->getValue('link');
 				// Clean the link back to the option, view and layout
-				$value	= JText::_(JArrayHelper::getValue($rlu, MenusHelper::getLinkKey($link)));
+				$value	= Lang::txt(JArrayHelper::getValue($rlu, MenusHelper::getLinkKey($link)));
 				break;
 		}
 		// Load the javascript and css
@@ -76,7 +76,7 @@ class JFormFieldMenutype extends JFormFieldList
 					fitToView: false,
 					width: 600,
 					height: 450,
-					href: '" . JRoute::_('index.php?option=com_menus&view=menutypes&tmpl=component&recordId='.$recordId, false) . "'
+					href: '" . Route::url('index.php?option=com_menus&view=menutypes&tmpl=component&recordId='.$recordId, false) . "'
 				});
 			});
 		");
@@ -85,7 +85,7 @@ class JFormFieldMenutype extends JFormFieldList
 		$html[] = '<span class="input-cell">';
 		$html[] = '<input type="text" id="'.$this->id.'" readonly="readonly" disabled="disabled" value="'.$value.'"'.$size.$class.' />';
 		$html[] = '</span><span class="input-cell">';
-		$html[] = '<input type="button" class="modal" value="'.JText::_('JSELECT').'" />';
+		$html[] = '<input type="button" class="modal" value="'.Lang::txt('JSELECT').'" />';
 		$html[] = '<input type="hidden" name="'.$this->name.'" value="'.htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8').'" />';
 		$html[] = '</span>';
 		$html[] = '</div>';

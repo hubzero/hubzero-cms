@@ -47,7 +47,7 @@ class StorefrontControllerStorefront extends \Hubzero\Component\SiteController
 		$this->warehouse = new StorefrontModelWarehouse();
 
 		// Get the task
-		$this->_task  = JRequest::getVar('task', '');
+		$this->_task  = Request::getVar('task', '');
 
 		if (empty($this->_task))
 		{

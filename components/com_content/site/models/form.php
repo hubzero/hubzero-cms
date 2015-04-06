@@ -33,19 +33,19 @@ class ContentModelForm extends ContentModelArticle
 		$app = JFactory::getApplication();
 
 		// Load state from the request.
-		$pk = JRequest::getInt('a_id');
+		$pk = Request::getInt('a_id');
 		$this->setState('article.id', $pk);
 
-		$this->setState('article.catid', JRequest::getInt('catid'));
+		$this->setState('article.catid', Request::getInt('catid'));
 
-		$return = JRequest::getVar('return', null, 'default', 'base64');
+		$return = Request::getVar('return', null, 'default', 'base64');
 		$this->setState('return_page', urldecode(base64_decode($return)));
 
 		// Load the parameters.
 		$params	= $app->getParams();
 		$this->setState('params', $params);
 
-		$this->setState('layout', JRequest::getCmd('layout'));
+		$this->setState('layout', Request::getCmd('layout'));
 	}
 
 	/**

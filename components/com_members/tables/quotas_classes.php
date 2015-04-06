@@ -57,14 +57,14 @@ class MembersQuotasClasses extends JTable
 		// Make sure they gave an alias
 		if (trim($this->alias) == '')
 		{
-			$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_ALIAS'));
+			$this->setError(Lang::txt('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_ALIAS'));
 			return false;
 		}
 
 		// Make sure the alias isn't 'custom'
 		if (trim($this->alias) == 'custom')
 		{
-			$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_CUSTOM'));
+			$this->setError(Lang::txt('COM_MEMBERS_QUOTA_CLASS_CUSTOM'));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class MembersQuotasClasses extends JTable
 			$this->_db->setQuery($query);
 			if ($this->_db->loadResult())
 			{
-				$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_NON_UNIQUE_ALIAS'));
+				$this->setError(Lang::txt('COM_MEMBERS_QUOTA_CLASS_NON_UNIQUE_ALIAS'));
 				return false;
 			}
 		}

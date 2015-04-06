@@ -12,40 +12,40 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
-$function	= JRequest::getCmd('function', 'jSelectNewsfeed');
+$function	= Request::getCmd('function', 'jSelectNewsfeed');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_newsfeeds&view=newsfeeds&layout=modal&tmpl=component&function='.$function);?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_newsfeeds&view=newsfeeds&layout=modal&tmpl=component&function='.$function);?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="filter clearfix">
 		<div class="left">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo JText::_('COM_NEWSFEEDS_FILTER_SEARCH_DESC'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo Lang::txt('COM_NEWSFEEDS_FILTER_SEARCH_DESC'); ?>" />
 
 			<button type="submit">
-				<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();">
-				<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+				<?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
 		<div class="right">
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 
 			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_newsfeeds'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
@@ -95,7 +95,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL', 'language'); ?>
 					<?php else:?>
-						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
+						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
 				</td>
 				<td align="center">

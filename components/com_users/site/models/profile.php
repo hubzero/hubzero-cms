@@ -164,7 +164,7 @@ class UsersModelProfile extends JModelForm
 
 		$this->setState('user.username.compliant', $isUsernameCompliant);
 
-		if (!JComponentHelper::getParams('com_users')->get('change_login_name') && $isUsernameCompliant)
+		if (!Component::params('com_users')->get('change_login_name') && $isUsernameCompliant)
 		{
 			$form->setFieldAttribute('username', 'class', '');
 			$form->setFieldAttribute('username', 'filter', '');
@@ -199,7 +199,7 @@ class UsersModelProfile extends JModelForm
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'user')
 	{
-		if (JComponentHelper::getParams('com_users')->get('frontend_userparams'))
+		if (Component::params('com_users')->get('frontend_userparams'))
 		{
 			$form->loadFile('frontend', false);
 			if (JFactory::getUser()->authorise('core.login.admin')) {
@@ -253,7 +253,7 @@ class UsersModelProfile extends JModelForm
 		$username = $data['username'];
 		$isUsernameCompliant = $this->getState('user.username.compliant');
 
-		if (!JComponentHelper::getParams('com_users')->get('change_login_name') && $isUsernameCompliant)
+		if (!Component::params('com_users')->get('change_login_name') && $isUsernameCompliant)
 		{
 			unset($data['username']);
 		}

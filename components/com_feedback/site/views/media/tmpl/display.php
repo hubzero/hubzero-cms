@@ -65,7 +65,7 @@ $this->css();
 					<input type="hidden" name="conimg" value="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" />
 					<input type="hidden" name="task" value="delete" />
 					<input type="hidden" name="file" id="file" value="<?php echo $this->file; ?>" />
-					<input type="submit" name="submit" value="<?php echo JText::_('DELETE'); ?>" />
+					<input type="submit" name="submit" value="<?php echo Lang::txt('DELETE'); ?>" />
 				</td>
 			</tr>
 		<?php } else { ?>
@@ -74,7 +74,7 @@ $this->css();
 					<img src="<?php echo $this->default_picture; ?>" alt="" id="oimage" name="oimage" />
 				</td>
 				<td>
-					<p><?php echo JText::_('COM_FEEDBACK_STORY_ADD_PICTURE'); ?><br /><small>(gif/jpg/jpeg/png - 200K max)</small></p>
+					<p><?php echo Lang::txt('COM_FEEDBACK_STORY_ADD_PICTURE'); ?><br /><small>(gif/jpg/jpeg/png - 200K max)</small></p>
 				</td>
 			</tr>
 			<tr>
@@ -82,7 +82,7 @@ $this->css();
 					<input type="hidden" name="conimg" value="" />
 					<input type="hidden" name="task" value="upload" />
 					<input type="hidden" name="currentfile" value="<?php $this->file; ?>" />
-					<input type="file" name="upload" id="upload" size="10" /> <input type="submit" value="<?php echo JText::_('COM_FEEDBACK_UPLOAD'); ?>" />
+					<input type="file" name="upload" id="upload" size="10" /> <input type="submit" value="<?php echo Lang::txt('COM_FEEDBACK_UPLOAD'); ?>" />
 				</td>
 			</tr>
 		<?php } ?>

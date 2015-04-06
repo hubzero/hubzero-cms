@@ -45,38 +45,38 @@ class MenusViewMenu extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		Request::setVar('hidemainmenu', true);
 
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$canDo		= MenusHelper::getActions($this->state->get('filter.parent_id'));
 
-		JToolBarHelper::title(JText::_($isNew ? 'COM_MENUS_VIEW_NEW_MENU_TITLE' : 'COM_MENUS_VIEW_EDIT_MENU_TITLE'), 'menu.png');
+		Toolbar::title(Lang::txt($isNew ? 'COM_MENUS_VIEW_NEW_MENU_TITLE' : 'COM_MENUS_VIEW_EDIT_MENU_TITLE'), 'menu.png');
 
 		// If a new item, can save the item.  Allow users with edit permissions to apply changes to prevent returning to grid.
 		if ($isNew && $canDo->get('core.create')) {
 			if ($canDo->get('core.edit')) {
-				JToolBarHelper::apply('menu.apply');
+				Toolbar::apply('menu.apply');
 			}
-			JToolBarHelper::save('menu.save');
+			Toolbar::save('menu.save');
 		}
 
 		// If user can edit, can save the item.
 		if (!$isNew && $canDo->get('core.edit')) {
-			JToolBarHelper::apply('menu.apply');
-			JToolBarHelper::save('menu.save');
+			Toolbar::apply('menu.apply');
+			Toolbar::save('menu.save');
 		}
 
 		// If the user can create new items, allow them to see Save & New
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::save2new('menu.save2new');
+			Toolbar::save2new('menu.save2new');
 		}
 		if ($isNew) {
-			JToolBarHelper::cancel('menu.cancel');
+			Toolbar::cancel('menu.cancel');
 		} else {
-			JToolBarHelper::cancel('menu.cancel', 'JTOOLBAR_CLOSE');
+			Toolbar::cancel('menu.cancel', 'JTOOLBAR_CLOSE');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help('menu');
+		Toolbar::divider();
+		Toolbar::help('menu');
 	}
 }

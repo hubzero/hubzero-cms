@@ -56,13 +56,13 @@ class MembersQuotasClassesGroups extends JTable
 	{
 		if (!$this->class_id)
 		{
-			$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_CLASS_ID'));
+			$this->setError(Lang::txt('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_CLASS_ID'));
 			return false;
 		}
 
 		if (!$this->class_id)
 		{
-			$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_GROUP_ID'));
+			$this->setError(Lang::txt('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
 
@@ -204,7 +204,7 @@ class MembersQuotasClassesGroups extends JTable
 
 		if (!$class_id)
 		{
-			$this->setError(JText::_('No class ID provided.'));
+			$this->setError(Lang::txt('No class ID provided.'));
 			return false;
 		}
 
@@ -230,7 +230,7 @@ class MembersQuotasClassesGroups extends JTable
 
 		if (!$group_id)
 		{
-			$this->setError(JText::_('No group ID provided.'));
+			$this->setError(Lang::txt('No group ID provided.'));
 			return false;
 		}
 

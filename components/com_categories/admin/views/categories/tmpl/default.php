@@ -22,34 +22,34 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $ordering 	= ($listOrder == 'a.lft');
 $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_categories&view=categories');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_categories&view=categories');?>" method="post" name="adminForm" id="adminForm">
 
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo JText::_('COM_CATEGORIES_ITEMS_SEARCH_FILTER'); ?>" />
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_CATEGORIES_ITEMS_SEARCH_FILTER'); ?>" />
+			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
 		<div class="filter-select fltrt">
 			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_MAX_LEVELS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
 				<?php echo JHtml::_('select.options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'));?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
             <select name="filter_access" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
@@ -60,7 +60,7 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th>
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
@@ -112,7 +112,7 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
 						<?php endif; ?>
 						<?php if ($canEdit || $canEditOwn) : ?>
-							<a href="<?php echo JRoute::_('index.php?option=com_categories&task=category.edit&id='.$item->id.'&extension='.$extension);?>">
+							<a href="<?php echo Route::url('index.php?option=com_categories&task=category.edit&id='.$item->id.'&extension='.$extension);?>">
 								<?php echo $this->escape($item->title); ?></a>
 						<?php else : ?>
 							<?php echo $this->escape($item->title); ?>
@@ -120,9 +120,9 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 						<p class="smallsub" title="<?php echo $this->escape($item->path);?>">
 							<?php echo str_repeat('<span class="gtr">|&mdash;</span>', $item->level-1) ?>
 							<?php if (empty($item->note)) : ?>
-								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+								<?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
 							<?php else : ?>
-								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
+								<?php echo Lang::txt('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
 							<?php endif; ?></p>
 					</td>
 					<td class="priority-2 center">
@@ -148,7 +148,7 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL', 'language'); ?>
 					<?php else:?>
-						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
+						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
 					</td>
 					<td class="priority-4 center">

@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <header id="content-header">
-	<h2><?php echo  JText::_('COM_STOREFRONT'); ?> homepage</h2>
+	<h2><?php echo  Lang::txt('COM_STOREFRONT'); ?> homepage</h2>
 </header>
 
 <section class="section">
@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				echo '<li>';
 				echo '<a href="';
-				echo JRoute::_('index.php?option=' . $this->option . '/browse/' . $category->cId);
+				echo Route::url('index.php?option=' . $this->option . '/browse/' . $category->cId);
 				echo '">' . $category->cName . '</a>';
 				echo '</li>';
 			}

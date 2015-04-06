@@ -44,17 +44,17 @@ class NewsfeedsViewCategory extends JViewLegacy
 		}
 
 		if ($category == false) {
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		if ($parent == false) {
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		// Check whether category access level allows access.
 		$groups	= $user->getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			return JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Prepare the data.
@@ -124,7 +124,7 @@ class NewsfeedsViewCategory extends JViewLegacy
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
 		else {
-			$this->params->def('page_heading', JText::_('COM_NEWSFEEDS_DEFAULT_PAGE_TITLE'));
+			$this->params->def('page_heading', Lang::txt('COM_NEWSFEEDS_DEFAULT_PAGE_TITLE'));
 		}
 
 		$id = (int) @$menu->query['id'];
@@ -153,10 +153,10 @@ class NewsfeedsViewCategory extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 
 		$this->document->setTitle($title);

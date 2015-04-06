@@ -69,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					if ($info->ptId == 20)
 					{
 						$status = 'Registered';
-						$action = '<a href="' . JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId']);
+						$action = '<a href="' . Route::url('index.php?option=com_courses/' . $item['meta']['courseId']);
 						$action .= '">Go to the course page</a>';
 					}
 					else

@@ -128,7 +128,7 @@ class Csv
 
 		header('Content-type: text/comma-separated-values');
 		header('Content-disposition: attachment; filename="eventrsvp.csv"');
-		$fields = array('name', 'registered', 'affiliation', 'email', 'telephone', 'arrival', 'departure', 'disability', 'dietary', 'dinner'); //array_merge($ee->getDefinedFields(JRequest::getVar('id', array())), array('name'));
+		$fields = array('name', 'registered', 'affiliation', 'email', 'telephone', 'arrival', 'departure', 'disability', 'dietary', 'dinner'); //array_merge($ee->getDefinedFields(Request::getVar('id', array())), array('name'));
 
 		// Output header
 		usort($fields, array('\Components\Events\Helpers\Csv', 'fieldSorter'));

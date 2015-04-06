@@ -37,9 +37,9 @@ $this->js('import');
 // set title
 $title  = ($this->import->get('id')) ? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT') : Lang::txt('COM_RESOURCES_IMPORT_TITLE_ADD');
 
-JToolBarHelper::title(Lang::txt($title), 'import.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt($title), 'import.png');
+Toolbar::save();
+Toolbar::cancel();
 ?>
 
 <script type="text/javascript">

@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php
 	if (is_array($this->lines))
 	{
-		$config = JComponentHelper::getParams('com_resources');
+		$config = Component::params('com_resources');
 
 		foreach ($this->lines as $line)
 		{

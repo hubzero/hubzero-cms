@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</a>
 	</p>
 	<p>
-		<a class="home btn" href="<?php echo JURI::base(); ?>">
+		<a class="home btn" href="<?php echo Request::base(); ?>">
 			Leave other <?php echo $this->display_name; ?> account sessions untouched.
 		</a>
 	</p>

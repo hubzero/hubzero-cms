@@ -327,7 +327,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		if (!empty($options) && $totalOptionsRequired > count($options))
 		{
-			throw new Exception(JText::_('COM_STOREFRONT_NOT_ENOUGH_OPTIONS'));
+			throw new Exception(Lang::txt('COM_STOREFRONT_NOT_ENOUGH_OPTIONS'));
 		}
 
 		// find if there is a SKU match
@@ -361,7 +361,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		// no match
-		throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
+		throw new Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
 	}
 
 	/**
@@ -564,7 +564,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		if (!in_array($productType, $allowedProductTypes))
 		{
-			throw new Exception(JText::_('Bad product type.'));
+			throw new Exception(Lang::txt('Bad product type.'));
 		}
 
 		// Create a StorefrontModelProduct
@@ -712,18 +712,18 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// Check if product ID is set
 		if (empty($pId))
 		{
-			throw new Exception(JText::_('Cannot delete product: no product ID set.'));
+			throw new Exception(Lang::txt('Cannot delete product: no product ID set.'));
 		}
 
 		if (!is_numeric($pId))
 		{
-			throw new Exception(JText::_('Cannot delete product: bad product ID.'));
+			throw new Exception(Lang::txt('Cannot delete product: bad product ID.'));
 		}
 
 		// check if product exists
 		if (!$this->productExists($pId, true))
 		{
-			throw new Exception(JText::_('Cannot delete product: product does not exixt.'));
+			throw new Exception(Lang::txt('Cannot delete product: product does not exixt.'));
 		}
 
 		$sql = "UPDATE `#__storefront_products` SET `pActive` = 0 WHERE `pId` = " . $this->_db->quote($pId);
@@ -749,7 +749,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		if (!in_array($action, $allowedActions))
 		{
-			throw new Exception(JText::_('Bad action. Why would you try to do something like that anyway?'));
+			throw new Exception(Lang::txt('Bad action. Why would you try to do something like that anyway?'));
 		}
 
 		$product->verify($action);
@@ -757,7 +757,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// check if this is a product
 		if (!($product instanceof StorefrontModelProduct))
 		{
-			throw new Exception(JText::_('Bad product.'));
+			throw new Exception(Lang::txt('Bad product.'));
 		}
 
 		if ($action == 'update')
@@ -765,20 +765,20 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			// Check if product ID is set
 			if (empty($pId))
 			{
-				throw new Exception(JText::_('Cannot update product: no product ID set.'));
+				throw new Exception(Lang::txt('Cannot update product: no product ID set.'));
 			}
 
 			// check if product exists
 			if (!$this->productExists($pId, true))
 			{
-				throw new Exception(JText::_('Cannot update product: product does not exixt.'));
+				throw new Exception(Lang::txt('Cannot update product: product does not exixt.'));
 			}
 		}
 		elseif ($action == 'add')
 		{
 			if ($this->productExists($pId, true))
 			{
-				throw new Exception(JText::_('Cannot add product: product ID already exists.'));
+				throw new Exception(Lang::txt('Cannot add product: product ID already exists.'));
 			}
 		}
 
@@ -1060,7 +1060,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// Check if code is set
 		if (empty($code))
 		{
-			throw new Exception(JText::_('Cannot delete coupon: no code provided.'));
+			throw new Exception(Lang::txt('Cannot delete coupon: no code provided.'));
 		}
 
 		$cnId = $this->couponExists($code);
@@ -1068,7 +1068,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// check if coupon exists
 		if (!$cnId)
 		{
-			throw new Exception(JText::_('Cannot delete coupon: coupon does not exixt.'));
+			throw new Exception(Lang::txt('Cannot delete coupon: coupon does not exixt.'));
 		}
 
 		// Delete conditions
@@ -1116,13 +1116,13 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 
 		if (!in_array($action, $allowedActions))
 		{
-			throw new Exception(JText::_('Bad action. Why would you try to do something like that anyway?'));
+			throw new Exception(Lang::txt('Bad action. Why would you try to do something like that anyway?'));
 		}
 
 		// check if this is a coupon
 		if (!($coupon instanceof StorefrontModelCoupon))
 		{
-			throw new Exception(JText::_('Bad coupon. Unable to continue.'));
+			throw new Exception(Lang::txt('Bad coupon. Unable to continue.'));
 		}
 
 		if ($action == 'update')
@@ -1130,14 +1130,14 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			// check if product exists
 			if (!$cnId)
 			{
-				throw new Exception(JText::_('Cannot update coupon: coupon does not exixt.'));
+				throw new Exception(Lang::txt('Cannot update coupon: coupon does not exixt.'));
 			}
 		}
 		elseif ($action == 'add')
 		{
 			if ($cnId)
 			{
-				throw new Exception(JText::_('Cannot add coupon: coupon already exists.'));
+				throw new Exception(Lang::txt('Cannot add coupon: coupon already exists.'));
 			}
 		}
 

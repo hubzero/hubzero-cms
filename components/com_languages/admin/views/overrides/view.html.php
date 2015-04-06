@@ -82,7 +82,7 @@ class LanguagesViewOverrides extends JViewLegacy
 		// Get the results for each action
 		$canDo = LanguagesHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_LANGUAGES_VIEW_OVERRIDES_TITLE'), 'langmanager');
+		Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_TITLE'), 'langmanager');
 
 		if ($canDo->get('core.create'))
 		{
@@ -101,9 +101,9 @@ class LanguagesViewOverrides extends JViewLegacy
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_languages');
+			Toolbar::preferences('com_languages');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help('overrides');
+		Toolbar::divider();
+		Toolbar::help('overrides');
 	}
 }

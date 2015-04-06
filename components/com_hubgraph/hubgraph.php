@@ -140,7 +140,7 @@ catch (Exception $ex) {
 	exit();
 	error_log($ex->getMessage());
 	if (!defined('HG_INLINE')) {
-		header('Location: '.JRoute::_('index.php?option=com_search' . (isset($_GET['terms']) ? '&terms='.$_GET['terms'] : '')));
+		header('Location: '.Route::url('index.php?option=com_search' . (isset($_GET['terms']) ? '&terms='.$_GET['terms'] : '')));
 		exit();
 	}
 }

@@ -38,24 +38,24 @@ $content = '';
 foreach ($this->pages as $component)
 {
 	//build content to return
-	$content .= '<h2>' . JText::sprintf('COM_HELP_COMPONENT_HELP', $component['name']) . '</h2>';
+	$content .= '<h2>' . Lang::txt('COM_HELP_COMPONENT_HELP', $component['name']) . '</h2>';
 
 	//make sure we have pages
 	if (count($component['pages']) > 0)
 	{
-		$content .= '<p>' . JText::sprintf('COM_HELP_PAGE_INDEX_EXPLANATION', $component['name']) . '</p>';
+		$content .= '<p>' . Lang::txt('COM_HELP_PAGE_INDEX_EXPLANATION', $component['name']) . '</p>';
 		$content .= '<ul>';
 		foreach ($component['pages'] as $page)
 		{
 			$name = str_replace('.' . $this->layoutExt, '', $page);
 
-			$content .= '<li><a href="' . JRoute::_('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) .'</a></li>';
+			$content .= '<li><a href="' . Route::url('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) .'</a></li>';
 		}
 		$content .= '</ul>';
 	}
 	else
 	{
-		$content .= '<p>' . JText::_('COM_HELP_NO_PAGES_FOUND') . '</p>';
+		$content .= '<p>' . Lang::txt('COM_HELP_NO_PAGES_FOUND') . '</p>';
 	}
 }
 

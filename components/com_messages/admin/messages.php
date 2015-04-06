@@ -10,9 +10,9 @@ defined('_JEXEC') or die;
 
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_messages')) {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 $controller	= JControllerLegacy::getInstance('Messages');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(Request::getCmd('task'));
 $controller->redirect();

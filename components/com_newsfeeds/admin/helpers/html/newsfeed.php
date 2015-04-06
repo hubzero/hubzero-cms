@@ -29,8 +29,8 @@ class JHtmlNewsfeed
 			0	=> array('publish_x.png',	'newsfeeds.publish',		'JUNPUBLISHED',		'COM_NEWSFEEDS_PUBLISH_ITEM')
 		);
 		$state	= JArrayHelper::getValue($states, (int) $value, $states[0]);
-		$html	= '<a href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.JText::_($state[3]).'">'
-				. JHtml::_('image', 'admin/'.$state[0], JText::_($state[2]), NULL, true).'</a>';
+		$html	= '<a href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'
+				. JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true).'</a>';
 
 		return $html;
 	}
@@ -46,9 +46,9 @@ class JHtmlNewsfeed
 	{
 		// Build the active state filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '*', JText::_('JOPTION_ANY'));
-		$options[]	= JHtml::_('select.option', '1', JText::_('JPUBLISHED'));
-		$options[]	= JHtml::_('select.option', '0', JText::_('JUNPUBLISHED'));
+		$options[]	= JHtml::_('select.option', '*', Lang::txt('JOPTION_ANY'));
+		$options[]	= JHtml::_('select.option', '1', Lang::txt('JPUBLISHED'));
+		$options[]	= JHtml::_('select.option', '0', Lang::txt('JUNPUBLISHED'));
 
 
 		return JHtml::_('select.genericlist', $options, 'filter_published',

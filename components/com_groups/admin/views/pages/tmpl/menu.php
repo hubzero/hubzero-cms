@@ -1,11 +1,11 @@
 <?php
-JSubMenuHelper::addEntry(
+Submenu::addEntry(
 	Lang::txt('COM_GROUPS_PAGES'),
 	'index.php?option=com_groups&controller=pages&gid=' . $this->group->get('cn'),
 	Request::getVar('controller', 'pages') == 'pages'
 );
 
-JSubMenuHelper::addEntry(
+Submenu::addEntry(
 	Lang::txt('COM_GROUPS_PAGES_CATEGORIES'),
 	'index.php?option=com_groups&controller=categories&gid=' . $this->group->get('cn'),
 	Request::getVar('controller', 'pages') == 'categories'
@@ -17,7 +17,7 @@ $config = Component::params('com_groups');
 // only show modules if Super group
 if ($this->group->isSuperGroup() || $config->get('page_modules', 0))
 {
-	JSubMenuHelper::addEntry(
+	Submenu::addEntry(
 		Lang::txt('COM_GROUPS_PAGES_MODULES'),
 		'index.php?option=com_groups&controller=modules&gid=' . $this->group->get('cn'),
 		Request::getVar('controller', 'pages') == 'modules'

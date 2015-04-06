@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_HOOKS'), 'import.png');
+Toolbar::title(Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_HOOKS'), 'import.png');
 
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+Toolbar::spacer();
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList();
 ?>
 
 <script type="text/javascript">

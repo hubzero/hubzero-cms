@@ -56,13 +56,13 @@ class MembersAssociation extends JTable
 	{
 		if (!$this->authorid)
 		{
-			$this->setError(JText::_('Must have an author ID.'));
+			$this->setError(Lang::txt('Must have an author ID.'));
 			return false;
 		}
 
 		if (!$this->subid)
 		{
-			$this->setError(JText::_('Must have an item ID.'));
+			$this->setError(Lang::txt('Must have an item ID.'));
 			return false;
 		}
 

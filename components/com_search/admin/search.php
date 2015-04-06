@@ -35,7 +35,7 @@ if (!\JFactory::getUser()->authorise('core.manage', 'com_search'))
 	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'basic'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'basic'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	App::abort(404);

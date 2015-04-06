@@ -33,10 +33,10 @@ class NewsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//get the request vars
-		$limit    = JRequest::getVar('limit', 5);
-		$section  = JRequest::getVar('section', 'news');
-		$category = JRequest::getVar('category', 'latest');
-		$format   = JRequest::getVar('format', 'json');
+		$limit    = Request::getVar('limit', 5);
+		$section  = Request::getVar('section', 'news');
+		$category = Request::getVar('category', 'latest');
+		$format   = Request::getVar('format', 'json');
 
 		//load up the news articles
 		$database = JFactory::getDBO();

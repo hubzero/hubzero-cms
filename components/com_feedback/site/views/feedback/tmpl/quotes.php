@@ -92,7 +92,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 										<p>
 											<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
 											&#8230;
-											<a href="#" id="<?php echo $quote->id; ?>" class="show-more" title="<?php echo JText::sprintf('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
+											<a href="#" id="<?php echo $quote->id; ?>" class="show-more" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
 												<?php echo Lang::txt('COM_FEEDBACK_MORE'); ?>
 											</a>
 										</p>

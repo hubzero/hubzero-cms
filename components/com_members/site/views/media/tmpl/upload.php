@@ -69,7 +69,7 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 			<?php endif; ?>
 		</div><!-- /#ajax-upload-left -->
 		<div id="ajax-upload-right">
-			<div id="ajax-uploader" data-action="<?php echo JURI::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>&amp;task=doajaxupload&amp;no_html=1"></div>
+			<div id="ajax-uploader" data-action="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>&amp;task=doajaxupload&amp;no_html=1"></div>
 			<table>
 				<tbody>
 					<tr>

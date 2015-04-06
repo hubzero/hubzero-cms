@@ -44,7 +44,7 @@ class CartControllerDo extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = JRequest::getVar('task', '');
+		$this->_task  = Request::getVar('task', '');
 
 		if (empty($this->_task))
 		{

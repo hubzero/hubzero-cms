@@ -59,14 +59,14 @@ class UsersQuotas extends JTable
 		// Make sure they gave numeric values
 		if (!is_numeric(trim($this->soft_files)) || !is_numeric(trim($this->hard_files)) || !is_numeric(trim($this->soft_blocks)) || !is_numeric(trim($this->hard_blocks)))
 		{
-			$this->setError( JText::_('COM_MEMBERS_QUOTA_VALUES_MUST_BE_NUMERIC') );
+			$this->setError( Lang::txt('COM_MEMBERS_QUOTA_VALUES_MUST_BE_NUMERIC') );
 			return false;
 		}
 
 		// Make sure they gave values
 		if (is_null($this->soft_files) || is_null($this->hard_files) || is_null($this->soft_blocks) || is_null($this->hard_blocks))
 		{
-			$this->setError( JText::_('COM_MEMBERS_QUOTA_MISSING_VALUES') );
+			$this->setError( Lang::txt('COM_MEMBERS_QUOTA_MISSING_VALUES') );
 			return false;
 		}
 
@@ -79,7 +79,7 @@ class UsersQuotas extends JTable
 			$this->_db->setQuery($query);
 			if ($this->_db->loadResult())
 			{
-				$this->setError( JText::_('COM_MEMBERS_QUOTA_USER_ALREADY_EXISTS') );
+				$this->setError( Lang::txt('COM_MEMBERS_QUOTA_USER_ALREADY_EXISTS') );
 				return false;
 			}
 		}
@@ -118,7 +118,7 @@ class UsersQuotas extends JTable
 			if (!isset($status) || $status != 0)
 			{
 				// Something went wrong
-				$this->setError( JText::_('COM_MEMBERS_QUOTA_USER_FAILED_TO_SAVE_TO_FILESYSTEM') );
+				$this->setError( Lang::txt('COM_MEMBERS_QUOTA_USER_FAILED_TO_SAVE_TO_FILESYSTEM') );
 				return false;
 			}
 

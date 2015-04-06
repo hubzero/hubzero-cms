@@ -31,17 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import.png');
+Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import.png');
 
-JToolBarHelper::custom('run', 'script', 'script', 'COM_RESOURCES_RUN');
-JToolBarHelper::custom('runtest', 'runtest', 'script', 'COM_RESOURCES_TEST_RUN');
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+Toolbar::custom('run', 'script', 'script', 'COM_RESOURCES_RUN');
+Toolbar::custom('runtest', 'runtest', 'script', 'COM_RESOURCES_TEST_RUN');
+Toolbar::spacer();
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList();
 
-JToolBarHelper::spacer();
-JToolBarHelper::help('import');
+Toolbar::spacer();
+Toolbar::help('import');
 
 $this->css('import');
 ?>

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$task = JRequest::getVar('task');
+$task = Request::getVar('task');
 ?>
 
 <div role="navigation" class="sub sub-navigation">

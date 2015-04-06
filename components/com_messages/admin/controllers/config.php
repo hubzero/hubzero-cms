@@ -20,12 +20,12 @@ class MessagesControllerConfig extends JControllerLegacy
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app		= JFactory::getApplication();
 		$model		= $this->getModel('Config', 'MessagesModel');
-		$data		= JRequest::getVar('jform', array(), 'post', 'array');
+		$data		= Request::getVar('jform', array(), 'post', 'array');
 
 		// Validate the posted data.
 		$form	= $model->getForm();
@@ -50,7 +50,7 @@ class MessagesControllerConfig extends JControllerLegacy
 			}
 
 			// Redirect back to the main list.
-			$this->setRedirect(JRoute::_('index.php?option=com_messages&view=messages', false));
+			$this->setRedirect(Route::url('index.php?option=com_messages&view=messages', false));
 			return false;
 		}
 
@@ -58,14 +58,14 @@ class MessagesControllerConfig extends JControllerLegacy
 		if (!$model->save($data))
 		{
 			// Redirect back to the main list.
-			$this->setMessage(JText::sprintf('JERROR_SAVE_FAILED', $model->getError()), 'warning');
-			$this->setRedirect(JRoute::_('index.php?option=com_messages&view=messages', false));
+			$this->setMessage(Lang::txt('JERROR_SAVE_FAILED', $model->getError()), 'warning');
+			$this->setRedirect(Route::url('index.php?option=com_messages&view=messages', false));
 			return false;
 		}
 
 		// Redirect to the list screen.
-		$this->setMessage(JText::_('COM_MESSAGES_CONFIG_SAVED'));
-		$this->setRedirect(JRoute::_('index.php?option=com_messages&view=messages', false));
+		$this->setMessage(Lang::txt('COM_MESSAGES_CONFIG_SAVED'));
+		$this->setRedirect(Route::url('index.php?option=com_messages&view=messages', false));
 
 		return true;
 	}

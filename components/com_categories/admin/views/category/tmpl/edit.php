@@ -25,15 +25,15 @@ JHtml::_('behavior.keepalive');
 			<?php echo $this->form->getField('description')->save(); ?>
 			Joomla.submitform(task, document.getElementById('item-form'));
 		} else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_categories&extension='.JRequest::getCmd('extension', 'com_content').'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_categories&extension='.Request::getCmd('extension', 'com_content').'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_CATEGORIES_FIELDSET_DETAILS');?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_CATEGORIES_FIELDSET_DETAILS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('title'); ?>
@@ -74,11 +74,11 @@ JHtml::_('behavior.keepalive');
 
 				<?php /*if ($this->canDo->get('core.admin')): ?>
 					<div class="input-wrap">
-						<span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
+						<span class="faux-label"><?php echo Lang::txt('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
 						<div class="button2-left">
 							<div class="blank">
 								<button type="button" onclick="document.location.href='#access-rules';">
-									<?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
+									<?php echo Lang::txt('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
 								</button>
 							</div>
 						</div>
@@ -107,7 +107,7 @@ JHtml::_('behavior.keepalive');
 		<?php echo $this->loadTemplate('options'); ?>
 		<div class="clr"></div>
 
-		<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
+		<?php echo JHtml::_('sliders.panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
 		<fieldset class="panelform">
 			<?php echo $this->loadTemplate('metadata'); ?>
 		</fieldset>
@@ -116,9 +116,9 @@ JHtml::_('behavior.keepalive');
 		<?php foreach ($fieldSets as $name => $fieldSet) : ?>
 			<?php $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_CATEGORIES_'.$name.'_FIELDSET_LABEL'; ?>
 			<?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
-				<?php echo JHtml::_('sliders.panel', JText::_($label), $name.'-options'); ?>
+				<?php echo JHtml::_('sliders.panel', Lang::txt($label), $name.'-options'); ?>
 				<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
-					<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description));?></p>
+					<p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description));?></p>
 				<?php endif; ?>
 				<fieldset class="panelform">
 					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
@@ -139,7 +139,7 @@ JHtml::_('behavior.keepalive');
 
 			<?php //echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
-			<?php //echo JHtml::_('sliders.panel', JText::_('COM_CATEGORIES_FIELDSET_RULES'), 'access-rules'); ?>
+			<?php //echo JHtml::_('sliders.panel', Lang::txt('COM_CATEGORIES_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">
 
 				<?php echo $this->form->getLabel('rules'); ?>

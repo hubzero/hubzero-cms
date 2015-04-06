@@ -29,28 +29,28 @@ class MenusController extends JControllerLegacy
 		require_once JPATH_COMPONENT.'/helpers/menus.php';
 
 		// Load the submenu.
-		MenusHelper::addSubmenu(JRequest::getCmd('view'));
+		MenusHelper::addSubmenu(Request::getCmd('view'));
 
-		$view	= JRequest::getCmd('view', 'menus');
-		$layout = JRequest::getCmd('layout', 'default');
-		$id		= JRequest::getInt('id');
+		$view	= Request::getCmd('view', 'menus');
+		$layout = Request::getCmd('layout', 'default');
+		$id		= Request::getInt('id');
 
 		// Check for edit form.
 		if ($view == 'menu' && $layout == 'edit' && !$this->checkEditId('com_menus.edit.menu', $id)) {
 
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_menus&view=menus', false));
+			$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));
 
 			return false;
 		}
 		elseif ($view == 'item' && $layout == 'edit' && !$this->checkEditId('com_menus.edit.item', $id)) {
 
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_menus&view=items', false));
+			$this->setRedirect(Route::url('index.php?option=com_menus&view=items', false));
 
 			return false;
 		}

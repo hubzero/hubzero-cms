@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php }*/ ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
-					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
+					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_KB_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_KB_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_KB_CANCEL'); ?><!--
 				--></a>
@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access');
 			</p>
 
 		<?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
-			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if ($juser->get('guest')) { ?>
 				<p class="warning">
 					<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))); ?>

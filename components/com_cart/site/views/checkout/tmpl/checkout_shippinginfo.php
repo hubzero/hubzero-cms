@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	}
 
 	echo '<a href="';
-	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
+	echo Route::url('index.php?option=com_cart/checkout/shipping');
 	echo '">Change</a>';
 
 ?>

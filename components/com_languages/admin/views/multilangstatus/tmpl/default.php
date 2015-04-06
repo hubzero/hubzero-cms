@@ -16,9 +16,9 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 <div class="mod-multilangstatus">
 	<?php if (!$this->language_filter && $this->switchers == 0) : ?>
 		<?php if ($this->homes == 1) : ?>
-			<p><?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_NONE'); ?></p>
+			<p><?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_NONE'); ?></p>
 		<?php else: ?>
-			<p><?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_USELESS_HOMES'); ?></p>
+			<p><?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_USELESS_HOMES'); ?></p>
 		<?php endif; ?>
 	<?php else: ?>
 	<table class="adminlist">
@@ -26,30 +26,30 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<?php if ($notice_homes) : ?>
 			<tr>
 				<td>
-					<?php echo JHtml::_('image', 'menu/icon-16-alert.png', JText::_('WARNING'), NULL, true); ?>
+					<?php echo JHtml::_('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), NULL, true); ?>
 				</td>
 				<td>
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_HOMES_MISSING'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_HOMES_MISSING'); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
 		<?php if ($notice_disabled) : ?>
 			<tr>
 				<td>
-					<?php echo JHtml::_('image', 'menu/icon-16-alert.png', JText::_('WARNING'), NULL, true); ?>
+					<?php echo JHtml::_('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), NULL, true); ?>
 				</td>
 				<td>
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_LANGUAGEFILTER_DISABLED'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_LANGUAGEFILTER_DISABLED'); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
 		<?php if ($notice_switchers) : ?>
 			<tr>
 				<td>
-					<?php echo JHtml::_('image', 'menu/icon-16-alert.png', JText::_('WARNING'), NULL, true); ?>
+					<?php echo JHtml::_('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), NULL, true); ?>
 				</td>
 				<td>
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_LANGSWITCHER_UNPUBLISHED'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_LANGSWITCHER_UNPUBLISHED'); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
@@ -57,10 +57,10 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 			<?php if (array_key_exists($contentlang->lang_code, $this->homepages) && (!array_key_exists($contentlang->lang_code, $this->site_langs) || !$contentlang->published)) : ?>
 				<tr>
 					<td>
-						<?php echo JHtml::_('image', 'menu/icon-16-alert.png', JText::_('WARNING'), NULL, true); ?>
+						<?php echo JHtml::_('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), NULL, true); ?>
 					</td>
 					<td>
-						<?php echo JText::sprintf('COM_LANGUAGES_MULTILANGSTATUS_ERROR_CONTENT_LANGUAGE', $contentlang->lang_code); ?>
+						<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_ERROR_CONTENT_LANGUAGE', $contentlang->lang_code); ?>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -71,52 +71,52 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<thead>
 			<tr>
 				<th>
-					<?php echo JText::_('JDETAILS'); ?>
+					<?php echo Lang::txt('JDETAILS'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('JSTATUS'); ?>
+					<?php echo Lang::txt('JSTATUS'); ?>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<th scope="row">
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_LANGUAGEFILTER'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_LANGUAGEFILTER'); ?>
 				</th>
 				<td class="center">
 					<?php if ($this->language_filter) : ?>
-						<?php echo JText::_('JENABLED'); ?>
+						<?php echo Lang::txt('JENABLED'); ?>
 					<?php else : ?>
-						<?php echo JText::_('JDISABLED'); ?>
+						<?php echo Lang::txt('JDISABLED'); ?>
 					<?php endif; ?>
 				</td>
 			</tr>
 
 			<tr>
 				<th scope="row">
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_LANGSWITCHER_PUBLISHED'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_LANGSWITCHER_PUBLISHED'); ?>
 				</th>
 				<td class="center">
 					<?php if ($this->switchers != 0) : ?>
 						<?php echo $this->switchers; ?>
 					<?php else : ?>
-						<?php echo JText::_('JNONE'); ?>
+						<?php echo Lang::txt('JNONE'); ?>
 					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>
 				<th scope="row">
 					<?php if ($this->homes > 1) : ?>
-						<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED_INCLUDING_ALL'); ?>
+						<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED_INCLUDING_ALL'); ?>
 					<?php else : ?>
-						<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED'); ?>
+						<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED'); ?>
 					<?php endif; ?>
 				</th>
 				<td class="center">
 					<?php if ($this->homes > 1) : ?>
 						<?php echo $this->homes; ?>
 					<?php else : ?>
-						<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED_ALL'); ?>
+						<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED_ALL'); ?>
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -126,16 +126,16 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<thead>
 			<tr>
 				<th>
-					<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
+					<?php echo Lang::txt('JGRID_HEADING_LANGUAGE'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_SITE_LANG_PUBLISHED'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_SITE_LANG_PUBLISHED'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_CONTENT_LANGUAGE_PUBLISHED'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_CONTENT_LANGUAGE_PUBLISHED'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_HOMES_PUBLISHED'); ?>
 				</th>
 			</tr>
 		</thead>
@@ -149,29 +149,29 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 				<?php endif; ?>
 				<?php if ($status->element) : // Published Site languages ?>
 						<td class="center">
-							<?php echo JHtml::_('image', 'admin/tick.png', JText::_('JON'), NULL, true); ?>
+							<?php echo JHtml::_('image', 'admin/tick.png', Lang::txt('JON'), NULL, true); ?>
 						</td>
 				<?php else : ?>
 						<td class="center">
-							<?php echo JText::_('JNO'); ?>
+							<?php echo Lang::txt('JNO'); ?>
 						</td>
 				<?php endif; ?>
 				<?php if ($status->lang_code && $status->published) : // Published Content languages ?>
 						<td class="center">
-							<?php echo JHtml::_('image', 'admin/tick.png', JText::_('JON'), NULL, true); ?>
+							<?php echo JHtml::_('image', 'admin/tick.png', Lang::txt('JON'), NULL, true); ?>
 						</td>
 				<?php else : ?>
 						<td class="center">
-							<?php echo JHtml::_('image', 'menu/icon-16-notice.png', JText::_('JON'), NULL, true); ?>
+							<?php echo JHtml::_('image', 'menu/icon-16-notice.png', Lang::txt('JON'), NULL, true); ?>
 						</td>
 				<?php endif; ?>
 				<?php if ($status->home_language) : // Published Home pages ?>
 						<td class="center">
-							<?php echo JHtml::_('image', 'admin/tick.png', JText::_('JON'), NULL, true); ?>
+							<?php echo JHtml::_('image', 'admin/tick.png', Lang::txt('JON'), NULL, true); ?>
 						</td>
 				<?php else : ?>
 						<td class="center">
-							<?php echo JHtml::_('image', 'menu/icon-16-deny.png', JText::_('WARNING'), NULL, true); ?>
+							<?php echo JHtml::_('image', 'menu/icon-16-deny.png', Lang::txt('WARNING'), NULL, true); ?>
 						</td>
 				<?php endif; ?>
 				</tr>
@@ -183,22 +183,22 @@ $notice_switchers	= !$this->switchers && ($this->homes > 1 || $this->language_fi
 							<?php echo $contentlang->lang_code; ?>
 						</td>
 						<td class="center">
-							<?php echo JHtml::_('image', 'menu/icon-16-notice.png', JText::_('NOTICE'), NULL, true); ?>
+							<?php echo JHtml::_('image', 'menu/icon-16-notice.png', Lang::txt('NOTICE'), NULL, true); ?>
 						</td>
 						<td class="center">
 							<?php if ($contentlang->published) : ?>
-								<?php echo JHtml::_('image', 'admin/tick.png', JText::_('JON'), NULL, true); ?>
+								<?php echo JHtml::_('image', 'admin/tick.png', Lang::txt('JON'), NULL, true); ?>
 							<?php elseif (!$contentlang->published && array_key_exists($contentlang->lang_code, $this->homepages)) : ?>
-								<?php echo JHtml::_('image', 'menu/icon-16-deny.png', JText::_('WARNING'), NULL, true); ?>
+								<?php echo JHtml::_('image', 'menu/icon-16-deny.png', Lang::txt('WARNING'), NULL, true); ?>
 							<?php elseif (!$contentlang->published) : ?>
-								<?php echo JHtml::_('image', 'menu/icon-16-notice.png', JText::_('NOTICE'), NULL, true); ?>
+								<?php echo JHtml::_('image', 'menu/icon-16-notice.png', Lang::txt('NOTICE'), NULL, true); ?>
 							<?php endif; ?>
 						</td>
 						<td class="center">
 							<?php if (!array_key_exists($contentlang->lang_code, $this->homepages)) : ?>
-								<?php echo JHtml::_('image', 'menu/icon-16-notice.png', JText::_('NOTICE'), NULL, true); ?>
+								<?php echo JHtml::_('image', 'menu/icon-16-notice.png', Lang::txt('NOTICE'), NULL, true); ?>
 							<?php else : ?>
-								<?php echo JHtml::_('image', 'admin/tick.png', JText::_('JON'), NULL, true); ?>
+								<?php echo JHtml::_('image', 'admin/tick.png', Lang::txt('JON'), NULL, true); ?>
 							<?php endif; ?>
 						</td>
 				<?php endif; ?>

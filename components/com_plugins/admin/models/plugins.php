@@ -75,7 +75,7 @@ class PluginsModelPlugins extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_plugins');
+		$params = Component::params('com_plugins');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -170,7 +170,7 @@ class PluginsModelPlugins extends JModelList
 			$extension = 'plg_' . $item->folder . '_' . $item->element;
 				$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, null, false, true)
 			||	$lang->load($extension . '.sys', $source, null, false, true);
-			$item->name = JText::_($item->name);
+			$item->name = Lang::txt($item->name);
 		}
 	}
 	/**

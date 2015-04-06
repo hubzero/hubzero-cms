@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'plugin.png');
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'plugin.png');
+Toolbar::publishList();
+Toolbar::unpublishList();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

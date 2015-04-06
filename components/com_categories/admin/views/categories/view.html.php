@@ -41,16 +41,16 @@ class CategoriesViewCategories extends JViewLegacy
 
 		// Levels filter.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '1', JText::_('J1'));
-		$options[]	= JHtml::_('select.option', '2', JText::_('J2'));
-		$options[]	= JHtml::_('select.option', '3', JText::_('J3'));
-		$options[]	= JHtml::_('select.option', '4', JText::_('J4'));
-		$options[]	= JHtml::_('select.option', '5', JText::_('J5'));
-		$options[]	= JHtml::_('select.option', '6', JText::_('J6'));
-		$options[]	= JHtml::_('select.option', '7', JText::_('J7'));
-		$options[]	= JHtml::_('select.option', '8', JText::_('J8'));
-		$options[]	= JHtml::_('select.option', '9', JText::_('J9'));
-		$options[]	= JHtml::_('select.option', '10', JText::_('J10'));
+		$options[]	= JHtml::_('select.option', '1', Lang::txt('J1'));
+		$options[]	= JHtml::_('select.option', '2', Lang::txt('J2'));
+		$options[]	= JHtml::_('select.option', '3', Lang::txt('J3'));
+		$options[]	= JHtml::_('select.option', '4', Lang::txt('J4'));
+		$options[]	= JHtml::_('select.option', '5', Lang::txt('J5'));
+		$options[]	= JHtml::_('select.option', '6', Lang::txt('J6'));
+		$options[]	= JHtml::_('select.option', '7', Lang::txt('J7'));
+		$options[]	= JHtml::_('select.option', '8', Lang::txt('J8'));
+		$options[]	= JHtml::_('select.option', '9', Lang::txt('J9'));
+		$options[]	= JHtml::_('select.option', '10', Lang::txt('J10'));
 
 		$this->f_levels = $options;
 
@@ -90,55 +90,55 @@ class CategoriesViewCategories extends JViewLegacy
 
 		// If a component categories title string is present, let's use it.
 		if ($lang->hasKey($component_title_key = strtoupper($component.($section?"_$section":'')).'_CATEGORIES_TITLE')) {
-			$title = JText::_($component_title_key);
+			$title = Lang::txt($component_title_key);
 		}
 		// Else if the component section string exits, let's use it
 		elseif ($lang->hasKey($component_section_key = strtoupper($component.($section?"_$section":'')))) {
-			$title = JText::sprintf( 'COM_CATEGORIES_CATEGORIES_TITLE', $this->escape(JText::_($component_section_key)));
+			$title = Lang::txt( 'COM_CATEGORIES_CATEGORIES_TITLE', $this->escape(Lang::txt($component_section_key)));
 		}
 		// Else use the base title
 		else {
-			$title = JText::_('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
+			$title = Lang::txt('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
 		}
 
 		// Load specific css component
 		JHtml::_('stylesheet', $component.'/administrator/categories.css', array(), true);
 
 		// Prepare the toolbar.
-		JToolBarHelper::title($title, 'categories '.substr($component, 4).($section?"-$section":'').'-categories');
+		Toolbar::title($title, 'categories '.substr($component, 4).($section?"-$section":'').'-categories');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories($component, 'core.create'))) > 0 ) {
-			 JToolBarHelper::addNew('category.add');
+			 Toolbar::addNew('category.add');
 		}
 
 		if ($canDo->get('core.edit' ) || $canDo->get('core.edit.own')) {
-			JToolBarHelper::editList('category.edit');
-			JToolBarHelper::divider();
+			Toolbar::editList('category.edit');
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::publish('categories.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('categories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::archiveList('categories.archive');
+			Toolbar::publish('categories.publish', 'JTOOLBAR_PUBLISH', true);
+			Toolbar::unpublish('categories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			Toolbar::divider();
+			Toolbar::archiveList('categories.archive');
 		}
 
 		if (JFactory::getUser()->authorise('core.admin')) {
-			JToolBarHelper::checkin('categories.checkin');
+			Toolbar::checkin('categories.checkin');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete', $component)) {
-			JToolBarHelper::deleteList('', 'categories.delete', 'JTOOLBAR_EMPTY_TRASH');
+			Toolbar::deleteList('', 'categories.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state')) {
-			JToolBarHelper::trash('categories.trash');
-			JToolBarHelper::divider();
+			Toolbar::trash('categories.trash');
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::custom('categories.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
-			JToolBarHelper::preferences($component);
-			JToolBarHelper::divider();
+			Toolbar::custom('categories.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
+			Toolbar::preferences($component);
+			Toolbar::divider();
 		}
 
 		// Compute the ref_key if it does exist in the component
@@ -152,12 +152,12 @@ class CategoriesViewCategories extends JViewLegacy
 		// -remotely searching in a component URL if helpURL param exists in the component and is NOT set to ''
 		if ($lang->hasKey($lang_help_url = strtoupper($component).'_HELP_URL')) {
 			$debug = $lang->setDebug(false);
-			$url = JText::_($lang_help_url);
+			$url = Lang::txt($lang_help_url);
 			$lang->setDebug($debug);
 		}
 		else {
 			$url = null;
 		}
-		JToolBarHelper::help('categories'); //$ref_key, JComponentHelper::getParams( $component )->exists('helpURL'), $url);
+		Toolbar::help('categories'); //$ref_key, Component::params( $component )->exists('helpURL'), $url);
 	}
 }

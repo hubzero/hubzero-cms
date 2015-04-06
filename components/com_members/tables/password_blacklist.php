@@ -58,7 +58,7 @@ class MembersPasswordBlacklist extends JTable
 		$this->word = trim($this->word);
 		if ($this->word == '')
 		{
-			$this->setError(JText::_('PASSWORD_BLACKLIST_MUST_HAVE_WORD'));
+			$this->setError(Lang::txt('PASSWORD_BLACKLIST_MUST_HAVE_WORD'));
 			return false;
 		}
 

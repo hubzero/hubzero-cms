@@ -210,8 +210,8 @@ class Newsletter extends SiteController
 			if (!JFolder::create($newsletterPdfFolder))
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
-					JText::_('Unable to create the filepath.'),
+					Route::url('index.php?option=' . $this->_option . '&id=' . $id),
+					Lang::txt('Unable to create the filepath.'),
 					'error'
 				);
 				return;

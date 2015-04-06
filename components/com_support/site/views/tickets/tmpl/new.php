@@ -70,10 +70,10 @@ $oses = array(
 );
 
 // are we remotely loading ticket form
-$tmpl = (JRequest::getVar('tmpl', '')) ? '&tmpl=component' : '';
+$tmpl = (Request::getVar('tmpl', '')) ? '&tmpl=component' : '';
 
 // are we trying to assign a group
-$group = JRequest::getVar('group', '');
+$group = Request::getVar('group', '');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

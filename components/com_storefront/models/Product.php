@@ -85,7 +85,7 @@ class StorefrontModelProduct
 				break;
 		}
 
-		throw new Exception(JText::_('COM_STOREFRONT_INVALID_PRODUCT_TYPE'));
+		throw new Exception(Lang::txt('COM_STOREFRONT_INVALID_PRODUCT_TYPE'));
 	}
 
 	/**
@@ -126,7 +126,7 @@ class StorefrontModelProduct
 	{
 		if (!($sku instanceof StorefrontModelSku))
 		{
-			throw new Exception(JText::_('Bad SKU. Unable to add.'));
+			throw new Exception(Lang::txt('Bad SKU. Unable to add.'));
 		}
 
 		$sku->verify();
@@ -144,7 +144,7 @@ class StorefrontModelProduct
 	{
 		if (!($sku instanceof StorefrontModelSku))
 		{
-			throw new Exception(JText::_('Bad SKU. Unable to add.'));
+			throw new Exception(Lang::txt('Bad SKU. Unable to add.'));
 		}
 
 		// Overwrite the existing SKU(s)
@@ -306,11 +306,11 @@ class StorefrontModelProduct
 	{
 		if (empty($this->data->name))
 		{
-			throw new Exception(JText::_('No product name set'));
+			throw new Exception(Lang::txt('No product name set'));
 		}
 		if (empty($this->data->description))
 		{
-			//throw new Exception(JText::_('No product description set'));
+			//throw new Exception(Lang::txt('No product description set'));
 		}
 
 		foreach ($this->skus as $sku)

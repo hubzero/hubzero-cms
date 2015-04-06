@@ -28,13 +28,13 @@ class MenusHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			JText::_('COM_MENUS_SUBMENU_MENUS'),
+		Submenu::addEntry(
+			Lang::txt('COM_MENUS_SUBMENU_MENUS'),
 			'index.php?option=com_menus&view=menus',
 			$vName == 'menus'
 		);
-		JSubMenuHelper::addEntry(
-			JText::_('COM_MENUS_SUBMENU_ITEMS'),
+		Submenu::addEntry(
+			Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
 			'index.php?option=com_menus&view=items',
 			$vName == 'items'
 		);

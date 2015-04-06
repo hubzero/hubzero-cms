@@ -28,17 +28,17 @@ class ContentHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_ARTICLES'),
+		Submenu::addEntry(
+			Lang::txt('JGLOBAL_ARTICLES'),
 			'index.php?option=com_content&view=articles',
 			$vName == 'articles'
 		);
-		JSubMenuHelper::addEntry(
-			JText::_('COM_CONTENT_SUBMENU_CATEGORIES'),
+		Submenu::addEntry(
+			Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_content',
 			$vName == 'categories');
-		JSubMenuHelper::addEntry(
-			JText::_('COM_CONTENT_SUBMENU_FEATURED'),
+		Submenu::addEntry(
+			Lang::txt('COM_CONTENT_SUBMENU_FEATURED'),
 			'index.php?option=com_content&view=featured',
 			$vName == 'featured'
 		);
@@ -88,7 +88,7 @@ class ContentHelper
 	public static function filterText($text)
 	{
 		// Filter settings
-		$config		= JComponentHelper::getParams('com_config');
+		$config		= Component::params('com_config');
 		$user		= JFactory::getUser();
 		$userGroups	= JAccess::getGroupsByUser($user->get('id'));
 

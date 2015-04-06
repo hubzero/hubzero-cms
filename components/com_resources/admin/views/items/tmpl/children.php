@@ -32,32 +32,32 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_CHILDREN'), 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_CHILDREN'), 'resources.png');
 if ($this->filters['parent_id'] > 0)
 {
 	if ($canDo->get('core.create'))
 	{
-		JToolBarHelper::addNew('addchild', 'COM_RESOURCES_ADD_CHILD');
+		Toolbar::addNew('addchild', 'COM_RESOURCES_ADD_CHILD');
 	}
 	if ($canDo->get('core.delete'))
 	{
-		JToolBarHelper::deleteList('COM_RESOURCES_REMOVE_CHILD_CONFIRM', 'removechild', 'COM_RESOURCES_REMOVE_CHILD');
+		Toolbar::deleteList('COM_RESOURCES_REMOVE_CHILD_CONFIRM', 'removechild', 'COM_RESOURCES_REMOVE_CHILD');
 	}
-	JToolBarHelper::spacer();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
 
 $this->css();

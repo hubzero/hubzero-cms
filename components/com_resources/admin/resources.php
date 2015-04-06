@@ -65,32 +65,32 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'items';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES'),
 	\Route::url('index.php?option=' . $option),
 	($controllerName == 'items' && $task != 'orphans')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_ORPHANS'),
 	\Route::url('index.php?option=' . $option . '&controller=items&task=orphans'),
 	$task == 'orphans'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_TYPES'),
 	\Route::url('index.php?option=' . $option . '&controller=types'),
 	$controllerName == 'types'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_LICENSES'),
 	\Route::url('index.php?option=' . $option . '&controller=licenses'),
 	$controllerName == 'licenses'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_AUTHORS'),
 	\Route::url('index.php?option=' . $option . '&controller=authors'),
 	$controllerName == 'authors'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_ROLES'),
 	\Route::url('index.php?option=' . $option . '&controller=roles'),
 	$controllerName == 'roles'
@@ -99,18 +99,18 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' 
 $canDo = \PluginsHelper::getActions();
 if ($canDo->get('core.manage'))
 {
-	\JSubMenuHelper::addEntry(
+	\Submenu::addEntry(
 		\Lang::txt('COM_RESOURCES_PLUGINS'),
 		\Route::url('index.php?option=' . $option . '&controller=plugins'),
 		$controllerName == 'plugins'
 	);
 }
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_IMPORT'),
 	\Route::url('index.php?option=' . $option . '&controller=import'),
 	$controllerName == 'import'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_RESOURCES_IMPORTHOOK'),
 	\Route::url('index.php?option=' . $option . '&controller=importhooks'),
 	$controllerName == 'importhooks'

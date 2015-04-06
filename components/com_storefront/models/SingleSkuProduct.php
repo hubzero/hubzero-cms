@@ -118,7 +118,7 @@ class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 		// Must be just one SKU
 		if (sizeof($sku) != 1)
 		{
-			throw new Exception(JText::_('Only one SKU is allowed'));
+			throw new Exception(Lang::txt('Only one SKU is allowed'));
 		}
 
 		$skuId = $sku[0];

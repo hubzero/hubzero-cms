@@ -43,7 +43,7 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getIn
 }
 
 $app         = JFactory::getApplication();
-$usersConfig = JComponentHelper::getParams('com_users');
+$usersConfig = Component::params('com_users');
 $primary     = Request::getWord('primary', false);
 
 // use some reflections to inspect plugins for special behavior (added for shibboleth)
@@ -164,7 +164,7 @@ endforeach;
 	</div>
 <?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
 	<p class="create">
-		<a href="<?php echo JURI::base(true); ?>/register" class="register">
+		<a href="<?php echo Request::base(true); ?>/register" class="register">
 			<?php echo Lang::txt('COM_USERS_LOGIN_CREATE_ACCOUNT'); ?>
 		</a>
 	</p>

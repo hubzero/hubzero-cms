@@ -32,7 +32,7 @@ $this->css();
 
 	<div id="content-header-extra">
 		<p>
-			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<a class="main-page btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 				<?php echo Lang::txt('COM_FEEDBACK_MAIN'); ?>
 			</a>
 		</p>

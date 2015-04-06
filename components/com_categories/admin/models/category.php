@@ -109,14 +109,14 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		$app = JFactory::getApplication('administrator');
 
-		$parentId = JRequest::getInt('parent_id');
+		$parentId = Request::getInt('parent_id');
 		$this->setState('category.parent_id', $parentId);
 
 		// Load the User state.
-		$pk = (int) JRequest::getInt('id');
+		$pk = (int) Request::getInt('id');
 		$this->setState($this->getName() . '.id', $pk);
 
-		$extension = JRequest::getCmd('extension', 'com_content');
+		$extension = Request::getCmd('extension', 'com_content');
 		$this->setState('category.extension', $extension);
 		$parts = explode('.', $extension);
 
@@ -127,7 +127,7 @@ class CategoriesModelCategory extends JModelAdmin
 		$this->setState('category.section', (count($parts) > 1) ? $parts[1] : null);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_categories');
+		$params = Component::params('com_categories');
 		$this->setState('params', $params);
 	}
 
@@ -320,7 +320,7 @@ class CategoriesModelCategory extends JModelAdmin
 
 			if (!$form->loadFile($path, false))
 			{
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 		}
 
@@ -390,7 +390,7 @@ class CategoriesModelCategory extends JModelAdmin
 		}
 
 		// Alter the title for save as copy
-		if (JRequest::getVar('task') == 'save2copy')
+		if (Request::getVar('task') == 'save2copy')
 		{
 			list($title, $alias) = $this->generateNewTitle($data['parent_id'], $data['alias'], $data['title']);
 			$data['title'] = $title;
@@ -473,7 +473,7 @@ class CategoriesModelCategory extends JModelAdmin
 		if (parent::publish($pks, $value)) {
 			// Initialise variables.
 			$dispatcher	= JDispatcher::getInstance();
-			$extension	= JRequest::getCmd('extension');
+			$extension	= Request::getCmd('extension');
 
 			// Include the content plugins for the change of category state event.
 			JPluginHelper::importPlugin('content');
@@ -575,7 +575,7 @@ class CategoriesModelCategory extends JModelAdmin
 				else
 				{
 					// Non-fatal error
-					$this->setError(JText::_('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
 					$parentId = 0;
 				}
 			}
@@ -584,7 +584,7 @@ class CategoriesModelCategory extends JModelAdmin
 			if (!$canCreate)
 			{
 				// Error since user cannot create in parent category
-				$this->setError(JText::_('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
+				$this->setError(Lang::txt('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
 				return false;
 			}
 		}
@@ -600,7 +600,7 @@ class CategoriesModelCategory extends JModelAdmin
 			// Make sure we can create in root
 			elseif (!$user->authorise('core.create', $extension))
 			{
-				$this->setError(JText::_('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
+				$this->setError(Lang::txt('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
 				return false;
 			}
 		}
@@ -641,7 +641,7 @@ class CategoriesModelCategory extends JModelAdmin
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -762,7 +762,7 @@ class CategoriesModelCategory extends JModelAdmin
 				else
 				{
 					// Non-fatal error
-					$this->setError(JText::_('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
 					$parentId = 0;
 				}
 			}
@@ -771,7 +771,7 @@ class CategoriesModelCategory extends JModelAdmin
 			if (!$canCreate)
 			{
 				// Error since user cannot create in parent category
-				$this->setError(JText::_('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
+				$this->setError(Lang::txt('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
 				return false;
 			}
 
@@ -782,7 +782,7 @@ class CategoriesModelCategory extends JModelAdmin
 				if (!$user->authorise('core.edit', $extension . '.category.' . $pk))
 				{
 					// Error since user cannot edit this category
-					$this->setError(JText::_('COM_CATEGORIES_BATCH_CANNOT_EDIT'));
+					$this->setError(Lang::txt('COM_CATEGORIES_BATCH_CANNOT_EDIT'));
 					return false;
 				}
 			}
@@ -806,7 +806,7 @@ class CategoriesModelCategory extends JModelAdmin
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Lang::txt('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -866,7 +866,7 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	protected function cleanCache($group = null, $client_id = 0)
 	{
-		$extension = JRequest::getCmd('extension');
+		$extension = Request::getCmd('extension');
 		switch ($extension)
 		{
 			case 'com_content':

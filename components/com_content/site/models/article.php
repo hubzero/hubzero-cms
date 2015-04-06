@@ -39,10 +39,10 @@ class ContentModelArticle extends JModelItem
 		$app = JFactory::getApplication('site');
 
 		// Load state from the request.
-		$pk = JRequest::getInt('id');
+		$pk = Request::getInt('id');
 		$this->setState('article.id', $pk);
 
-		$offset = JRequest::getUInt('limitstart');
+		$offset = Request::getUInt('limitstart');
 		$this->setState('list.offset', $offset);
 
 		// Load the parameters.
@@ -177,12 +177,12 @@ class ContentModelArticle extends JModelItem
 				}
 
 				if (empty($data)) {
-					return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+					return JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
 				}
 
 				// Check for published state if filter set.
 				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived))) {
-					return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+					return JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
 				}
 
 				// Convert parameter fields to objects.
@@ -259,7 +259,7 @@ class ContentModelArticle extends JModelItem
 	 */
 	public function hit($pk = 0)
 	{
-			$hitcount = JRequest::getInt('hitcount', 1);
+			$hitcount = Request::getInt('hitcount', 1);
 
 			if ($hitcount)
 			{
@@ -327,7 +327,7 @@ class ContentModelArticle extends JModelItem
 			}
 			return true;
 		}
-		JError::raiseWarning( 'SOME_ERROR_CODE', JText::sprintf('COM_CONTENT_INVALID_RATING', $rate), "JModelArticle::storeVote($rate)");
+		JError::raiseWarning( 'SOME_ERROR_CODE', Lang::txt('COM_CONTENT_INVALID_RATING', $rate), "JModelArticle::storeVote($rate)");
 		return false;
 	}
 }

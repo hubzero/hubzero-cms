@@ -13,5 +13,5 @@ require_once JPATH_COMPONENT.'/helpers/route.php';
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 $controller	= JControllerLegacy::getInstance('Newsfeeds');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(Request::getCmd('task'));
 $controller->redirect();

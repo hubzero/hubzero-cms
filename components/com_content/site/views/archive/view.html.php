@@ -45,19 +45,19 @@ class ContentViewArchive extends JViewLegacy
 		$form = new stdClass();
 		// Month Field
 		$months = array(
-			'' => JText::_('COM_CONTENT_MONTH'),
-			'01' => JText::_('JANUARY_SHORT'),
-			'02' => JText::_('FEBRUARY_SHORT'),
-			'03' => JText::_('MARCH_SHORT'),
-			'04' => JText::_('APRIL_SHORT'),
-			'05' => JText::_('MAY_SHORT'),
-			'06' => JText::_('JUNE_SHORT'),
-			'07' => JText::_('JULY_SHORT'),
-			'08' => JText::_('AUGUST_SHORT'),
-			'09' => JText::_('SEPTEMBER_SHORT'),
-			'10' => JText::_('OCTOBER_SHORT'),
-			'11' => JText::_('NOVEMBER_SHORT'),
-			'12' => JText::_('DECEMBER_SHORT')
+			'' => Lang::txt('COM_CONTENT_MONTH'),
+			'01' => Lang::txt('JANUARY_SHORT'),
+			'02' => Lang::txt('FEBRUARY_SHORT'),
+			'03' => Lang::txt('MARCH_SHORT'),
+			'04' => Lang::txt('APRIL_SHORT'),
+			'05' => Lang::txt('MAY_SHORT'),
+			'06' => Lang::txt('JUNE_SHORT'),
+			'07' => Lang::txt('JULY_SHORT'),
+			'08' => Lang::txt('AUGUST_SHORT'),
+			'09' => Lang::txt('SEPTEMBER_SHORT'),
+			'10' => Lang::txt('OCTOBER_SHORT'),
+			'11' => Lang::txt('NOVEMBER_SHORT'),
+			'12' => Lang::txt('DECEMBER_SHORT')
 		);
 		$form->monthField = JHtml::_(
 			'select.genericlist',
@@ -71,7 +71,7 @@ class ContentViewArchive extends JViewLegacy
 		);
 		// Year Field
 		$years = array();
-		$years[] = JHtml::_('select.option', null, JText::_('JYEAR'));
+		$years[] = JHtml::_('select.option', null, Lang::txt('JYEAR'));
 		for ($i = 2000; $i <= 2020; $i++) {
 			$years[] = JHtml::_('select.option', $i, $i);
 		}
@@ -114,7 +114,7 @@ class ContentViewArchive extends JViewLegacy
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -122,10 +122,10 @@ class ContentViewArchive extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

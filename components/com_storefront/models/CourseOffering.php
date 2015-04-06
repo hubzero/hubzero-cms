@@ -68,7 +68,7 @@ class StorefrontModelCourseOffering extends StorefrontModelSku
 		// Each course has to have a course ID
 		if (empty($this->data->courseId))
 		{
-			throw new Exception(JText::_('No course id'));
+			throw new Exception(Lang::txt('No course id'));
 		}
 	}
 

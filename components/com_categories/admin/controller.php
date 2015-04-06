@@ -34,7 +34,7 @@ class CategoriesController extends JControllerLegacy
 
 		// Guess the JText message prefix. Defaults to the option.
 		if (empty($this->extension)) {
-			$this->extension = JRequest::getCmd('extension', 'com_content');
+			$this->extension = Request::getCmd('extension', 'com_content');
 		}
 	}
 
@@ -53,17 +53,17 @@ class CategoriesController extends JControllerLegacy
 		$document = JFactory::getDocument();
 
 		// Set the default view name and format from the Request.
-		$vName		= JRequest::getCmd('view', 'categories');
+		$vName		= Request::getCmd('view', 'categories');
 		$vFormat	= $document->getType();
-		$lName		= JRequest::getCmd('layout', 'default');
-		$id			= JRequest::getInt('id');
+		$lName		= Request::getCmd('layout', 'default');
+		$id			= Request::getInt('id');
 
 		// Check for edit form.
 		if ($vName == 'category' && $lName == 'edit' && !$this->checkEditId('com_categories.edit.category', $id)) {
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_categories&view=categories&extension='.$this->extension, false));
+			$this->setRedirect(Route::url('index.php?option=com_categories&view=categories&extension='.$this->extension, false));
 
 			return false;
 		}

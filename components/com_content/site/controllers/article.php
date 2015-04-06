@@ -51,7 +51,7 @@ class ContentControllerArticle extends JControllerForm
 	{
 		// Initialise variables.
 		$user		= JFactory::getUser();
-		$categoryId	= JArrayHelper::getValue($data, 'catid', JRequest::getInt('catid'), 'int');
+		$categoryId	= JArrayHelper::getValue($data, 'catid', Request::getInt('catid'), 'int');
 		$allow		= null;
 
 		if ($categoryId) {
@@ -178,8 +178,8 @@ class ContentControllerArticle extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'a_id')
 	{
 		// Need to override the parent method completely.
-		$tmpl		= JRequest::getCmd('tmpl');
-		$layout		= JRequest::getCmd('layout', 'edit');
+		$tmpl		= Request::getCmd('tmpl');
+		$layout		= Request::getCmd('layout', 'edit');
 		$append		= '';
 
 		// Setup redirect info.
@@ -197,9 +197,9 @@ class ContentControllerArticle extends JControllerForm
 			$append .= '&'.$urlVar.'='.$recordId;
 		}
 
-		$itemId	= JRequest::getInt('Itemid');
+		$itemId	= Request::getInt('Itemid');
 		$return	= $this->getReturnPage();
-		$catId = JRequest::getInt('catid', null, 'get');
+		$catId = Request::getInt('catid', null, 'get');
 
 		if ($itemId) {
 			$append .= '&Itemid='.$itemId;
@@ -226,10 +226,10 @@ class ContentControllerArticle extends JControllerForm
 	 */
 	protected function getReturnPage()
 	{
-		$return = JRequest::getVar('return', null, 'default', 'base64');
+		$return = Request::getVar('return', null, 'default', 'base64');
 
 		if (empty($return) || !JUri::isInternal(urldecode(base64_decode($return)))) {
-			return JURI::base();
+			return Request::base();
 		}
 		else {
 			return urldecode(base64_decode($return));
@@ -250,7 +250,7 @@ class ContentControllerArticle extends JControllerForm
 		$task = $this->getTask();
 
 		if ($task == 'save') {
-			$this->setRedirect(JRoute::_('index.php?option=com_content&view=category&id='.$validData['catid'], false));
+			$this->setRedirect(Route::url('index.php?option=com_content&view=category&id='.$validData['catid'], false));
 		}
 	}
 
@@ -287,20 +287,20 @@ class ContentControllerArticle extends JControllerForm
 	function vote()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
-		$user_rating = JRequest::getInt('user_rating', -1);
+		$user_rating = Request::getInt('user_rating', -1);
 
 		if ( $user_rating > -1 ) {
-			$url = JRequest::getString('url', '');
-			$id = JRequest::getInt('id', 0);
-			$viewName = JRequest::getString('view', $this->default_view);
+			$url = Request::getString('url', '');
+			$id = Request::getInt('id', 0);
+			$viewName = Request::getString('view', $this->default_view);
 			$model = $this->getModel($viewName);
 
 			if ($model->storeVote($id, $user_rating)) {
-				$this->setRedirect($url, JText::_('COM_CONTENT_ARTICLE_VOTE_SUCCESS'));
+				$this->setRedirect($url, Lang::txt('COM_CONTENT_ARTICLE_VOTE_SUCCESS'));
 			} else {
-				$this->setRedirect($url, JText::_('COM_CONTENT_ARTICLE_VOTE_FAILURE'));
+				$this->setRedirect($url, Lang::txt('COM_CONTENT_ARTICLE_VOTE_FAILURE'));
 			}
 		}
 	}

@@ -31,69 +31,69 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_HELP'), 'help.png');
+Toolbar::title(Lang::txt('COM_HELP'), 'help.png');
 
 $this->css();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="col-row">
 		<div class="col width-25 fltlft">
-			<h3><?php echo JText::_('COM_HELP_USERS'); ?></h3>
+			<h3><?php echo Lang::txt('COM_HELP_USERS'); ?></h3>
 			<ul>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_users'); ?>"><?php echo JText::_('COM_HELP_USER_ACCOUNTS'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_users'); ?>"><?php echo Lang::txt('COM_HELP_USER_ACCOUNTS'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_members'); ?>"><?php echo JText::_('COM_HELP_USER_PROFILES'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_members'); ?>"><?php echo Lang::txt('COM_HELP_USER_PROFILES'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_groups'); ?>"><?php echo JText::_('COM_HELP_USER_GROUPS'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_groups'); ?>"><?php echo Lang::txt('COM_HELP_USER_GROUPS'); ?></a>
 				</li>
 			</ul>
-			<h3><?php echo JText::_('COM_HELP_MENUS'); ?></h3>
+			<h3><?php echo Lang::txt('COM_HELP_MENUS'); ?></h3>
 			<ul>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_menus'); ?>"><?php echo JText::_('COM_HELP_MENU_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_menus'); ?>"><?php echo Lang::txt('COM_HELP_MENU_MANAGER'); ?></a>
 				</li>
 			</ul>
-			<h3><?php echo JText::_('COM_HELP_CONTENT'); ?></h3>
+			<h3><?php echo Lang::txt('COM_HELP_CONTENT'); ?></h3>
 			<ul>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_content'); ?>"><?php echo JText::_('COM_HELP_ARTICLE_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_content'); ?>"><?php echo Lang::txt('COM_HELP_ARTICLE_MANAGER'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_categories'); ?>"><?php echo JText::_('COM_HELP_CATEGORY_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_categories'); ?>"><?php echo Lang::txt('COM_HELP_CATEGORY_MANAGER'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_media'); ?>"><?php echo JText::_('COM_HELP_MEDIA_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_media'); ?>"><?php echo Lang::txt('COM_HELP_MEDIA_MANAGER'); ?></a>
 				</li>
 			</ul>
-			<h3><?php echo JText::_('COM_HELP_EXTENSIONS'); ?></h3>
+			<h3><?php echo Lang::txt('COM_HELP_EXTENSIONS'); ?></h3>
 			<ul>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_modules'); ?>"><?php echo JText::_('COM_HELP_MODULE_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_modules'); ?>"><?php echo Lang::txt('COM_HELP_MODULE_MANAGER'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_plugins'); ?>"><?php echo JText::_('COM_HELP_PLUGIN_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_plugins'); ?>"><?php echo Lang::txt('COM_HELP_PLUGIN_MANAGER'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_templates'); ?>"><?php echo JText::_('COM_HELP_TEMPLATE_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_templates'); ?>"><?php echo Lang::txt('COM_HELP_TEMPLATE_MANAGER'); ?></a>
 				</li>
 				<li>
-					<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_languages'); ?>"><?php echo JText::_('COM_HELP_LANGUAGE_MANAGER'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_languages'); ?>"><?php echo Lang::txt('COM_HELP_LANGUAGE_MANAGER'); ?></a>
 				</li>
 			</ul>
-			<h3><?php echo JText::_('Components'); ?></h3>
+			<h3><?php echo Lang::txt('Components'); ?></h3>
 			<ul>
 				<?php foreach ($this->components as $component) { ?>
 					<li>
-						<a target="help-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=' . $component->element); ?>"><?php echo JText::_($component->text); ?></a>
+						<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=' . $component->element); ?>"><?php echo Lang::txt($component->text); ?></a>
 					</li>
 				<?php } ?>
 			</ul>
 		</div>
 		<div class="col width-75 fltrt">
-			<iframe id="help-page" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=help&component=com_help&page=index'); ?>"></iframe>
+			<iframe id="help-page" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_help&page=index'); ?>"></iframe>
 		</div>
 	</div>
 	<div class="clr"></div>

@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('CMS Updater: database'));
-JToolBarHelper::custom('migrate', 'purge', '', 'Run pending migrations', false);
+Toolbar::title(Lang::txt('CMS Updater: database'));
+Toolbar::custom('migrate', 'purge', '', 'Run pending migrations', false);
 
 $this->css();
 ?>

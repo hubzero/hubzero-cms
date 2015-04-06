@@ -63,7 +63,7 @@ class StorefrontModelSku
 	{
 		if (!is_numeric($productPrice))
 		{
-			throw new Exception(JText::_('Price must be numeric'));
+			throw new Exception(Lang::txt('Price must be numeric'));
 		}
 
 		$this->data->price = $productPrice;
@@ -100,7 +100,7 @@ class StorefrontModelSku
 	{
 		if (empty($this->data->price))
 		{
-			throw new Exception(JText::_('No SKU price'));
+			throw new Exception(Lang::txt('No SKU price'));
 		}
 	}
 
@@ -154,7 +154,7 @@ class StorefrontModelSku
 	{
 		if (!is_numeric($inventoryLevel))
 		{
-			throw new Exception(JText::_('Bad inventory level value'));
+			throw new Exception(Lang::txt('Bad inventory level value'));
 		}
 
 		$this->data->inventoryLevel = $inventoryLevel;

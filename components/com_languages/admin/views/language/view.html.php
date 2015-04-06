@@ -47,36 +47,36 @@ class LanguagesViewLanguage extends JViewLegacy
 	{
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 		$isNew = empty($this->item->lang_id);
 		$canDo	= LanguagesHelper::getActions();
 
-		JToolBarHelper::title(JText::_($isNew ? 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE' : 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_EDIT_TITLE'), 'langmanager.png');
+		Toolbar::title(Lang::txt($isNew ? 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE' : 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_EDIT_TITLE'), 'langmanager.png');
 
 		// If a new item, can save.
 		if ($isNew && $canDo->get('core.create')) {
-			JToolBarHelper::save('language.save');
+			Toolbar::save('language.save');
 		}
 
 		//If an existing item, allow to Apply and Save.
 		if (!$isNew && $canDo->get('core.edit')) {
-			JToolBarHelper::apply('language.apply');
-			JToolBarHelper::save('language.save');
+			Toolbar::apply('language.apply');
+			Toolbar::save('language.save');
 		}
 
 		// If an existing item, can save to a copy only if we have create rights.
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::save2new('language.save2new');
+			Toolbar::save2new('language.save2new');
 		}
 
 		if ($isNew) {
-			JToolBarHelper::cancel('language.cancel');
+			Toolbar::cancel('language.cancel');
 		}
 		else {
-			JToolBarHelper::cancel('language.cancel', 'JTOOLBAR_CLOSE');
+			Toolbar::cancel('language.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('language');
+		Toolbar::divider();
+		Toolbar::help('language');
 	}
 }

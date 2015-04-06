@@ -43,7 +43,7 @@ class CategoriesControllerCategory extends JControllerForm
 		// Guess the JText message prefix. Defaults to the option.
 		if (empty($this->extension))
 		{
-			$this->extension = JRequest::getCmd('extension', 'com_content');
+			$this->extension = Request::getCmd('extension', 'com_content');
 		}
 	}
 
@@ -130,7 +130,7 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('Category');

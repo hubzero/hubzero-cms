@@ -71,9 +71,9 @@ class JFormFieldMenuOrdering extends JFormFieldList
 		}
 
 		$options = array_merge(
-		array(array ('value' =>'-1', 'text'=>JText::_('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
+		array(array ('value' =>'-1', 'text'=>Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
 		$options,
-		array(array( 'value' =>'-2', 'text'=>JText::_('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')))
+		array(array( 'value' =>'-2', 'text'=>Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')))
 		);
 
 		// Merge any additional options in the XML definition.
@@ -91,7 +91,7 @@ class JFormFieldMenuOrdering extends JFormFieldList
 	{
 		if ($this->form->getValue('id', 0) == 0)
 		{
-			return '<span class="readonly">' . JText::_('COM_MENUS_ITEM_FIELD_ORDERING_TEXT') . '</span>';
+			return '<span class="readonly">' . Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_TEXT') . '</span>';
 		}
 		else
 		{

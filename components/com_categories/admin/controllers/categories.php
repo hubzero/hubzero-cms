@@ -40,21 +40,21 @@ class CategoriesControllerCategories extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
-		$extension = JRequest::getCmd('extension');
-		$this->setRedirect(JRoute::_('index.php?option=com_categories&view=categories&extension='.$extension, false));
+		$extension = Request::getCmd('extension');
+		$this->setRedirect(Route::url('index.php?option=com_categories&view=categories&extension='.$extension, false));
 
 		// Initialise variables.
 		$model = $this->getModel();
 
 		if ($model->rebuild()) {
 			// Rebuild succeeded.
-			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_SUCCESS'));
+			$this->setMessage(Lang::txt('COM_CATEGORIES_REBUILD_SUCCESS'));
 			return true;
 		} else {
 			// Rebuild failed.
-			$this->setMessage(JText::_('COM_CATEGORIES_REBUILD_FAILURE'));
+			$this->setMessage(Lang::txt('COM_CATEGORIES_REBUILD_FAILURE'));
 			return false;
 		}
 	}
@@ -67,18 +67,18 @@ class CategoriesControllerCategories extends JControllerAdmin
 	 */
 	public function saveorder()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order	= JRequest::getVar('order',	null, 'post', 'array');
-		$originalOrder = explode(',', JRequest::getString('original_order_values'));
+		$order	= Request::getVar('order',	null, 'post', 'array');
+		$originalOrder = explode(',', Request::getString('original_order_values'));
 
 		// Make sure something has changed
 		if (!($order === $originalOrder)) {
 			parent::saveorder();
 		} else {
 			// Nothing to reorder
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+			$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_list, false));
 			return true;
 		}
 	}
@@ -90,15 +90,15 @@ class CategoriesControllerCategories extends JControllerAdmin
  	 */
 	public function delete()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid = JRequest::getVar('cid', array(), '', 'array');
-		$extension = JRequest::getVar('extension', null);
+		$cid = Request::getVar('cid', array(), '', 'array');
+		$extension = Request::getVar('extension', null);
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
-			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
+			JError::raiseWarning(500, Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'));
 		}
 		else
 		{
@@ -120,6 +120,6 @@ class CategoriesControllerCategories extends JControllerAdmin
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&extension=' . $extension, false));
+		$this->setRedirect(Route::url('index.php?option=' . $this->option . '&extension=' . $extension, false));
 	}
 }

@@ -92,7 +92,7 @@ class ToolLicense extends JTable
 		$this->name = trim($this->name);
 		if ($this->name == '')
 		{
-			$this->setError(JText::_('Your entry must have a name.'));
+			$this->setError(Lang::txt('Your entry must have a name.'));
 			return false;
 		}
 		return true;

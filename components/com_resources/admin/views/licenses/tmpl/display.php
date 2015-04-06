@@ -32,18 +32,18 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('license');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_LICENSES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_LICENSES'), 'addedit.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
 
 ?>

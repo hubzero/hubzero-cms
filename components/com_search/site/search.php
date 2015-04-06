@@ -32,7 +32,7 @@ namespace Components\Search\Site;
 
 $config = \Component::params('com_search');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', $config->get('engine', 'basic')));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', $config->get('engine', 'basic')));
 
 // Are we falling back to the default engine?
 $fallback = \JFactory::getSession()->get('searchfallback');
@@ -43,7 +43,7 @@ if ($fallback && intval($fallback) <= time())
 }
 
 // Are we explicitely forcing the engine?
-if ($force = \JRequest::getCmd('engine'))
+if ($force = \Request::getCmd('engine'))
 {
 	$fallback = null;
 	$controllerName = $force;

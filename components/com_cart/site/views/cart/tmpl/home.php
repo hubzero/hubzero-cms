@@ -38,7 +38,7 @@ $this->css()
 ?>
 
 <header id="content-header">
-	<h2><?php echo  JText::_('COM_CART'); ?></h2>
+	<h2><?php echo  Lang::txt('COM_CART'); ?></h2>
 </header>
 
 <?php
@@ -100,7 +100,7 @@ if (!empty($errors))
 
 						echo '<td>';
 						echo '<a href="';
-						echo JRoute::_('index.php?option=com_storefront/product/' . $info->pId);
+						echo Route::url('index.php?option=com_storefront/product/' . $info->pId);
 						echo '" class="cartItem">';
 						echo $info->pName;
 
@@ -187,7 +187,7 @@ if (!empty($errors))
 				}
 				else
 				{
-					echo '<p>' . JText::_('COM_CART_EMPTY') . '</p>';
+					echo '<p>' . Lang::txt('COM_CART_EMPTY') . '</p>';
 				}
 				?>
 
@@ -250,7 +250,7 @@ if (!empty($errors))
 
 						if ($this->cartInfo->totalItems)
 						{
-							echo '<p><a href="index.php?option=' . JRequest::getVar('option') . '/checkout" class="btn">Checkout</a></p>';
+							echo '<p><a href="index.php?option=' . Request::getVar('option') . '/checkout" class="btn">Checkout</a></p>';
 						}
 
 					echo '</div>';

@@ -12,43 +12,43 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
-$client		= $this->state->get('filter.client_id', 0) ? JText::_('JADMINISTRATOR') : JText::_('JSITE');
+$client		= $this->state->get('filter.client_id', 0) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
 $clientId	= $this->state->get('filter.client_id', 0);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_languages&view=installed&client='.$clientId); ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_languages&view=installed&client='.$clientId); ?>" method="post" id="adminForm" name="adminForm">
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th width="20">
-					<?php echo JText::_('COM_LANGUAGES_HEADING_NUM'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_HEADING_NUM'); ?>
 				</th>
 				<th width="20">
 					&#160;
 				</th>
 				<th width="25%" class="title">
-					<?php echo JText::_('COM_LANGUAGES_HEADING_LANGUAGE'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_HEADING_LANGUAGE'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('JCLIENT'); ?>
+					<?php echo Lang::txt('JCLIENT'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_LANGUAGES_HEADING_DEFAULT'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_HEADING_DEFAULT'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('JVERSION'); ?>
+					<?php echo Lang::txt('JVERSION'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('JDATE'); ?>
+					<?php echo Lang::txt('JDATE'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('JAUTHOR'); ?>
+					<?php echo Lang::txt('JAUTHOR'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_LANGUAGES_HEADING_AUTHOR_EMAIL'); ?>
+					<?php echo Lang::txt('COM_LANGUAGES_HEADING_AUTHOR_EMAIL'); ?>
 				</th>
 			</tr>
 		</thead>

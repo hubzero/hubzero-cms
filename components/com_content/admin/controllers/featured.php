@@ -20,11 +20,11 @@ class ContentControllerFeatured extends ContentControllerArticles
 	function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$user	= JFactory::getUser();
-		$ids	= JRequest::getVar('cid', array(), '', 'array');
+		$ids	= Request::getVar('cid', array(), '', 'array');
 
 		// Access checks.
 		foreach ($ids as $i => $id)
@@ -33,12 +33,12 @@ class ContentControllerFeatured extends ContentControllerArticles
 			{
 				// Prune items that you can't delete.
 				unset($ids[$i]);
-				JError::raiseNotice(403, JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'));
+				JError::raiseNotice(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 			}
 		}
 
 		if (empty($ids)) {
-			JError::raiseWarning(500, JText::_('JERROR_NO_ITEMS_SELECTED'));
+			JError::raiseWarning(500, Lang::txt('JERROR_NO_ITEMS_SELECTED'));
 		}
 		else {
 			// Get the model.

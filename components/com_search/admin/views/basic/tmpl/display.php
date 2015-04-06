@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_SEARCH') . ': ' . Lang::txt('COM_SEARCH_SITEMAP'), 'search.png');
-JToolBarHelper::preferences('com_search', '550');
-JToolBarHelper::spacer();
-JToolBarHelper::help('search');
+Toolbar::title(Lang::txt('COM_SEARCH') . ': ' . Lang::txt('COM_SEARCH_SITEMAP'), 'search.png');
+Toolbar::preferences('com_search', '550');
+Toolbar::spacer();
+Toolbar::help('search');
 
 JHTML::_('behavior.framework');
 

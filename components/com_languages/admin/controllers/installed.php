@@ -22,12 +22,12 @@ class LanguagesControllerInstalled extends JControllerLegacy
 	function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
-		$cid = JRequest::getCmd('cid', '');
+		JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		$cid = Request::getCmd('cid', '');
 		$model = $this->getModel('installed');
 		if ($model->publish($cid))
 		{
-			$msg = JText::_('COM_LANGUAGES_MSG_DEFAULT_LANGUAGE_SAVED');
+			$msg = Lang::txt('COM_LANGUAGES_MSG_DEFAULT_LANGUAGE_SAVED');
 			$type = 'message';
 		}
 		else

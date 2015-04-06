@@ -175,7 +175,7 @@ class StorefrontModelMemberships
 	{
 		if (!preg_match("/^[1-9]+[0-9]* (year|month|day)+$/i", $ttl))
 		{
-			throw new Exception(JText::_('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
+			throw new Exception(Lang::txt('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
 		}
 	}
 

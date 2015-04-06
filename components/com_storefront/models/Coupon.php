@@ -111,7 +111,7 @@ class StorefrontModelCoupon
 	{
 		if (!is_numeric($limit) || $limit <= 0)
 		{
-			throw new Exception(JText::_('Use limit must be a positive number'));
+			throw new Exception(Lang::txt('Use limit must be a positive number'));
 		}
 
 		$this->data->useLimit = floor($limit);
@@ -137,7 +137,7 @@ class StorefrontModelCoupon
 	{
 		if (!is_numeric($limit) || $limit < 0)
 		{
-			throw new Exception(JText::_('Use limit must be a non-negative number'));
+			throw new Exception(Lang::txt('Use limit must be a non-negative number'));
 		}
 
 		$this->data->objectLimit = floor($limit);
@@ -199,7 +199,7 @@ class StorefrontModelCoupon
 		$expires = strtotime($expires);
 		if (!$expires)
 		{
-			throw new Exception(JText::_('Bad expiration date'));
+			throw new Exception(Lang::txt('Bad expiration date'));
 		}
 
 		$this->data->expires = $expires;
@@ -227,7 +227,7 @@ class StorefrontModelCoupon
 
 		if (!in_array($objectType, $allowedObjectsTypes))
 		{
-			throw new Exception(JText::_('Bad coupon object.'));
+			throw new Exception(Lang::txt('Bad coupon object.'));
 		}
 
 		$this->data->objectType = $objectType;
@@ -255,7 +255,7 @@ class StorefrontModelCoupon
 
 		if (!in_array($action, $allowedActions))
 		{
-			throw new Exception(JText::_('Bad coupon action.'));
+			throw new Exception(Lang::txt('Bad coupon action.'));
 		}
 
 		if ($action == 'discount' && !is_numeric($actionValue))
@@ -265,7 +265,7 @@ class StorefrontModelCoupon
 
 			if (!is_numeric($val) || $lastChar != '%')
 			{
-				throw new Exception(JText::_('Bad action value.'));
+				throw new Exception(Lang::txt('Bad action value.'));
 			}
 
 		}
@@ -296,7 +296,7 @@ class StorefrontModelCoupon
 	{
 		if (!is_numeric($objectLimit) || $objectLimit < 0)
 		{
-			throw new Exception(JText::_('Use limit must be a non-negative integer number'));
+			throw new Exception(Lang::txt('Use limit must be a non-negative integer number'));
 		}
 
 		$obj->id = $object;
@@ -335,11 +335,11 @@ class StorefrontModelCoupon
 	{
 		if (empty($this->data->code))
 		{
-			throw new Exception(JText::_('Code must be set'));
+			throw new Exception(Lang::txt('Code must be set'));
 		}
 		if (empty($this->data->description))
 		{
-			throw new Exception(JText::_('Description must be set'));
+			throw new Exception(Lang::txt('Description must be set'));
 		}
 		if (empty($this->data->objectType))
 		{
@@ -347,7 +347,7 @@ class StorefrontModelCoupon
 		}
 		if (empty($this->data->action))
 		{
-			throw new Exception(JText::_('Action must be set'));
+			throw new Exception(Lang::txt('Action must be set'));
 		}
 
 		return true;

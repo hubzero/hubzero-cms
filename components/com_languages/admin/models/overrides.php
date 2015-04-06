@@ -85,7 +85,7 @@ class LanguagesModelOverrides extends JModelList
 		}
 
 		// search strings
-		if ($search = JRequest::getVar('filter_search', null))
+		if ($search = Request::getVar('filter_search', null))
 		{
 			// run callback on each string
 			array_walk($strings, function($value, $key) use (&$strings, $search)
@@ -151,7 +151,7 @@ class LanguagesModelOverrides extends JModelList
 		$app = JFactory::getApplication();
 
 		// Use default language of frontend for default filter
-		$default	= JComponentHelper::getParams('com_languages')->get('site', 'en-GB').'0';
+		$default	= Component::params('com_languages')->get('site', 'en-GB').'0';
 
 		$old_language_client	= $app->getUserState('com_languages.overrides.filter.language_client', '');
 		$language_client			= $this->getUserStateFromRequest('com_languages.overrides.filter.language_client', 'filter_language_client', $default, 'cmd');
@@ -170,7 +170,7 @@ class LanguagesModelOverrides extends JModelList
 		$this->setState('filter.language_client', $language.$client);
 		$this->setState('filter.client', $client ? 'administrator' : 'site');
 		$this->setState('filter.language', $language);
-		$this->setState('filter.search', JRequest::getVar('filter_search', null));
+		$this->setState('filter.search', Request::getVar('filter_search', null));
 
 		// Add filters to the session because they won't be stored there
 		// by 'getUserStateFromRequest' if they aren't in the current request
@@ -207,11 +207,11 @@ class LanguagesModelOverrides extends JModelList
 		// Create a single array of them
 		foreach ($site_languages as $tag => $language)
 		{
-			$languages[$tag.'0'] = JText::sprintf('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], JText::_('JSITE'));
+			$languages[$tag.'0'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JSITE'));
 		}
 		foreach ($admin_languages as $tag => $language)
 		{
-			$languages[$tag.'1'] = JText::sprintf('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], JText::_('JADMINISTRATOR'));
+			$languages[$tag.'1'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JADMINISTRATOR'));
 		}
 
 		// Sort it by language tag and by client after that
@@ -237,7 +237,7 @@ class LanguagesModelOverrides extends JModelList
 		// Check permissions first
 		if (!JFactory::getUser()->authorise('core.delete', 'com_languages'))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 
 			return false;
 		}

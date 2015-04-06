@@ -34,13 +34,13 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('license');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_LICENSES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_LICENSES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
-$live_site = rtrim(JURI::base(),'/');
+$live_site = rtrim(Request::base(),'/');
 $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
 $project_path  = $this->config->get('project_path', '/tools/');
 $dev_suffix    = $this->config->get('dev_suffix', '_dev');

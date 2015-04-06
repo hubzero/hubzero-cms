@@ -51,13 +51,13 @@ class MenusControllerMenus extends JControllerLegacy
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid	= JRequest::getVar('cid', array(), '', 'array');
+		$cid	= Request::getVar('cid', array(), '', 'array');
 
 		if (!is_array($cid) || count($cid) < 1) {
-			JError::raiseWarning(500, JText::_('COM_MENUS_NO_MENUS_SELECTED'));
+			JError::raiseWarning(500, Lang::txt('COM_MENUS_NO_MENUS_SELECTED'));
 		} else {
 			// Get the model.
 			$model = $this->getModel();
@@ -84,7 +84,7 @@ class MenusControllerMenus extends JControllerLegacy
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$this->setRedirect('index.php?option=com_menus&view=menus');
 
@@ -93,11 +93,11 @@ class MenusControllerMenus extends JControllerLegacy
 
 		if ($model->rebuild()) {
 			// Reorder succeeded.
-			$this->setMessage(JText::_('JTOOLBAR_REBUILD_SUCCESS'));
+			$this->setMessage(Lang::txt('JTOOLBAR_REBUILD_SUCCESS'));
 			return true;
 		} else {
 			// Rebuild failed.
-			$this->setMessage(JText::sprintf('JTOOLBAR_REBUILD_FAILED', $model->getMessage()));
+			$this->setMessage(Lang::txt('JTOOLBAR_REBUILD_FAILED', $model->getMessage()));
 			return false;
 		}
 	}

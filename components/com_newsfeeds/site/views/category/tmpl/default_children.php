@@ -22,7 +22,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 	?>
 	<li<?php echo $class; ?>>
 		<?php $class = ''; ?>
-			<span class="item-title"><a href="<?php echo JRoute::_(NewsfeedsHelperRoute::getCategoryRoute($child->id));?>">
+			<span class="item-title"><a href="<?php echo Route::url(NewsfeedsHelperRoute::getCategoryRoute($child->id));?>">
 				<?php echo $this->escape($child->title); ?></a>
 			</span>
 
@@ -36,7 +36,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 
 		<?php if ($this->params->get('show_cat_items') == 1) :?>
 			<dl class="newsfeed-count"><dt>
-				<?php echo JText::_('COM_NEWSFEEDS_CAT_NUM'); ?></dt>
+				<?php echo Lang::txt('COM_NEWSFEEDS_CAT_NUM'); ?></dt>
 				<dd><?php echo $child->numitems; ?></dd>
 			</dl>
 		<?php endif; ?>

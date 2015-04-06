@@ -34,13 +34,13 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . $text, 'resources.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . $text, 'resources.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::spacer();
-	JToolBarHelper::save();
+	Toolbar::spacer();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 if ($this->row->standalone == 1)
 {

@@ -255,7 +255,7 @@ class StorefrontWarehouse extends JTable
 
 		if ($totalOptionsRequired > count($options))
 		{
-			throw new Exception(JText::_('COM_STOREFRONT_NOT_ENOUGH_OPTIONS'));
+			throw new Exception(Lang::txt('COM_STOREFRONT_NOT_ENOUGH_OPTIONS'));
 		}
 
 		// find if there is a SKU match
@@ -287,7 +287,7 @@ class StorefrontWarehouse extends JTable
 		}
 
 		// no match
-		throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
+		throw new Exception(Lang::txt('COM_STOREFRONT_SKU_NOT_FOUND'));
 	}
 
 

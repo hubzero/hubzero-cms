@@ -45,15 +45,15 @@ class ContentModelArchive extends ContentModelArticles
 		$this->setState('filter.published', 2);
 
 		// Filter on month, year
-		$this->setState('filter.month', JRequest::getInt('month'));
-		$this->setState('filter.year', JRequest::getInt('year'));
+		$this->setState('filter.month', Request::getInt('month'));
+		$this->setState('filter.year', Request::getInt('year'));
 
 		// Optional filter text
-		$this->setState('list.filter', JRequest::getString('filter-search'));
+		$this->setState('list.filter', Request::getString('filter-search'));
 
 		// Get list limit
 		$app = JFactory::getApplication();
-		$itemid = JRequest::getInt('Itemid', 0);
+		$itemid = Request::getInt('Itemid', 0);
 		$limit = $app->getUserStateFromRequest('com_content.archive.list' . $itemid . '.limit', 'limit', $params->get('display_num'), 'uint');
 		$this->setState('list.limit', $limit);
 	}
@@ -133,8 +133,8 @@ class ContentModelArchive extends ContentModelArticles
 			$params = $app->getParams();
 
 			// Get the pagination request variables
-			$limit		= JRequest::getUInt('limit', $params->get('display_num', 20));
-			$limitstart	= JRequest::getUInt('limitstart', 0);
+			$limit		= Request::getUInt('limit', $params->get('display_num', 20));
+			$limitstart	= Request::getUInt('limitstart', 0);
 
 			$query = $this->_buildQuery();
 

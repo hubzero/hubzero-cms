@@ -80,7 +80,7 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		// add error to message body
-		$this->setMessageType(JRequest::getWord('format', $format));
+		$this->setMessageType(Request::getWord('format', $format));
 		$this->setMessage($object);
 	}
 
@@ -96,21 +96,21 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'resources';
 		$response->tasks = array(
 			'whatsnew' => array(
-				'description' => JText::_('Get a list of new content for a given time period.'),
+				'description' => Lang::txt('Get a list of new content for a given time period.'),
 				'parameters'  => array(
 					'category' => array(
-						'description' => JText::_('Resource type to filter by.'),
+						'description' => Lang::txt('Resource type to filter by.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'period' => array(
-						'description' => JText::_('Time period to return results for.'),
+						'description' => Lang::txt('Time period to return results for.'),
 						'type'        => 'string',
 						'default'     => 'month',
 						'accepts'     => array('week', 'month', 'quarter', 'year')
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
@@ -118,7 +118,7 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -130,9 +130,9 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 	public function whatsnewTask()
 	{
 		// get request vars
-		$limit    = JRequest::getVar('limit', 25);
-		$period   = JRequest::getVar('period', 'month');
-		$category = JRequest::getVar('category', 'resources');
+		$limit    = Request::getVar('limit', 25);
+		$period   = Request::getVar('period', 'month');
+		$category = Request::getVar('category', 'resources');
 
 		JLoader::import('joomla.plugin.helper');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'finder.php');
@@ -143,7 +143,7 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 		$object = new stdClass();
 		$object->whatsnew = $whatsnew;
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($object);
 	}
 }

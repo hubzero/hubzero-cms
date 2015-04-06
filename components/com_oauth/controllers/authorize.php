@@ -45,7 +45,7 @@ class Authorize extends SiteController
 	 */
 	public function authorizeTask()
 	{
-		$oauth_token = \JRequest::getVar('oauth_token');
+		$oauth_token = \Request::getVar('oauth_token');
 
 		if (empty($oauth_token))
 		{
@@ -67,16 +67,16 @@ class Authorize extends SiteController
 			throw new Exception('Forbidden', 403);
 		}
 
-		if (\JRequest::getMethod() == 'GET')
+		if (\Request::getMethod() == 'GET')
 		{
 			$this->view->oauth_token = $oauth_token;
 			$this->view->display();
 			return;
 		}
 
-		if (\JRequest::getMethod() == 'POST')
+		if (\Request::getMethod() == 'POST')
 		{
-			$token = \JRequest::get('token',''.'post');
+			$token = \Request::get('token',''.'post');
 
 			if ($token != sha1($this->verifier))
 			{

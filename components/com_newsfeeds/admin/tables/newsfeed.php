@@ -58,7 +58,7 @@ class NewsfeedsTableNewsfeed extends JTable
 	{
 		// Check for valid name.
 		if (trim($this->name) == '') {
-			$this->setError(JText::_('COM_NEWSFEEDS_WARNING_PROVIDE_VALID_NAME'));
+			$this->setError(Lang::txt('COM_NEWSFEEDS_WARNING_PROVIDE_VALID_NAME'));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ class NewsfeedsTableNewsfeed extends JTable
 
 		// Check the publish down date is not earlier than publish up.
 		if (intval($this->publish_down) > 0 && $this->publish_down < $this->publish_up) {
-			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+			$this->setError(Lang::txt('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
 			return false;
 		}
 
@@ -129,7 +129,7 @@ class NewsfeedsTableNewsfeed extends JTable
 	// Verify that the alias is unique
 		$table = JTable::getInstance('Newsfeed', 'NewsfeedsTable');
 		if ($table->load(array('alias'=>$this->alias, 'catid'=>$this->catid)) && ($table->id != $this->id || $this->id==0)) {
-			$this->setError(JText::_('COM_NEWSFEEDS_ERROR_UNIQUE_ALIAS'));
+			$this->setError(Lang::txt('COM_NEWSFEEDS_ERROR_UNIQUE_ALIAS'));
 			return false;
 		}
 		return parent::store($updateNulls);

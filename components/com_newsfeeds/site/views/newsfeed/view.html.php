@@ -48,7 +48,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$dispatcher	= JDispatcher::getInstance();
 
 		// Get view related request variables.
-		$print = JRequest::getBool('print');
+		$print = Request::getBool('print');
 
 		// Get model data.
 		$state = $this->get('State');
@@ -80,7 +80,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$cacheDir = JPATH_CACHE . '/';
 
 		if (!is_writable($cacheDir)) {
-			JError::raiseNotice('0', JText::_('COM_NEWSFEEDS_CACHE_DIRECTORY_UNWRITABLE'));
+			JError::raiseNotice('0', Lang::txt('COM_NEWSFEEDS_CACHE_DIRECTORY_UNWRITABLE'));
 			return;
 		}
 
@@ -139,7 +139,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$levels = $user->getAuthorisedViewLevels();
 
 		if (!in_array($item->access, $levels) or ((in_array($item->access, $levels) and (!in_array($item->category_access, $levels))))) {
-			JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
 
@@ -159,7 +159,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$rssDoc = JFactory::getFeedParser($newsfeed->link, $newsfeed->cache_time);
 
 		if ($rssDoc == false) {
-			$msg = JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
+			$msg = Lang::txt('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
 			$app->redirect(NewsFeedsHelperRoute::getCategoryRoute($newsfeed->catslug), $msg);
 			return;
 		}
@@ -224,7 +224,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
 		else {
-			$this->params->def('page_heading', JText::_('COM_NEWSFEEDS_DEFAULT_PAGE_TITLE'));
+			$this->params->def('page_heading', Lang::txt('COM_NEWSFEEDS_DEFAULT_PAGE_TITLE'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -257,10 +257,10 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		if (empty($title)) {
 			$title = $this->item->name;

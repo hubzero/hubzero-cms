@@ -52,7 +52,7 @@ class UsersController extends JControllerLegacy
 					}
 
 					// Check if user registration is enabled
-					if (JComponentHelper::getParams('com_users')->get('allowUserRegistration') == 0) {
+					if (Component::params('com_users')->get('allowUserRegistration') == 0) {
 						// Registration is disabled - Redirect to login page.
 						$this->setRedirect(Route::url('index.php?option=com_users&view=login', false));
 						return;

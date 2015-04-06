@@ -115,7 +115,7 @@ class Sections extends AdminController
 		if (!is_object($edit))
 		{
 			// Incoming
-			$id = JRequest::getInt('id', 0);
+			$id = Request::getInt('id', 0);
 
 			// Initiate database class and load info
 			$row = new SupportSection($this->database);

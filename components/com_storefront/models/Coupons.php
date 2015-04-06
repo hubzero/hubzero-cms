@@ -193,7 +193,7 @@ class StorefrontModelCoupons
 
 		if (!$this->_db->getNumRows())
 		{
-			throw new Exception(JText::_('COM_STOREFRONT_INVALID_COUPON_CODE'));
+			throw new Exception(Lang::txt('COM_STOREFRONT_INVALID_COUPON_CODE'));
 		}
 
 		$row = $this->_db->loadObject();
@@ -201,12 +201,12 @@ class StorefrontModelCoupons
 		// check if expired
 		if ($row->cnValid != 'valid')
 		{
-			throw new Exception(JText::_('COM_STOREFRONT_EXPIRED_COUPON_CODE'));
+			throw new Exception(Lang::txt('COM_STOREFRONT_EXPIRED_COUPON_CODE'));
 		}
 
 		if (!$row->cnUseLimit)
 		{
-			throw new Exception(JText::_('COM_STOREFRONT_COUPON_ALREADY_USED'));
+			throw new Exception(Lang::txt('COM_STOREFRONT_COUPON_ALREADY_USED'));
 		}
 
 		return $row->cnId;

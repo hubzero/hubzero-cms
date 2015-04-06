@@ -39,14 +39,14 @@ jimport('joomla.application.component.view');
 $juser = JFactory::getUser();
 if (!$juser->proEnabled)
 {
-	JError::raiseError(404, JText::_('Component is not available at this time'));
+	JError::raiseError(404, Lang::txt('Component is not available at this time'));
 }
 
 // require base component controller
 require_once(__DIR__ . DS . 'controllers' . DS . 'component.php');
 
 //build controller path and name
-$controllerName = JRequest::getCmd('controller', '');
+$controllerName = Request::getCmd('controller', '');
 
 if (empty($controllerName))
 {
@@ -55,7 +55,7 @@ if (empty($controllerName))
 }
 else if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	JError::raiseError(404, JText::_('Page Not Found'));
+	JError::raiseError(404, Lang::txt('Page Not Found'));
 }
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');

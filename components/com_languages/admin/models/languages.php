@@ -69,7 +69,7 @@ class LanguagesModelLanguages extends JModelList
 		$this->setState('filter.published', $published);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_languages');
+		$params = Component::params('com_languages');
 		$this->setState('params', $params);
 
 		// List state information.

@@ -86,7 +86,7 @@ class UsersModelUser extends JModelAdmin
 			return false;
 		}
 
-		if (JComponentHelper::getParams('com_users')->get('change_login_name'))
+		if (Component::params('com_users')->get('change_login_name'))
 		{
 			$form->setFieldAttribute('username', 'readonly', 'false');
 		}
@@ -841,7 +841,7 @@ class UsersModelUser extends JModelAdmin
 			}
 			else
 			{
-				$config = JComponentHelper::getParams('com_users');
+				$config = Component::params('com_users');
 
 				if ($groupId = $config->get('new_usertype'))
 				{

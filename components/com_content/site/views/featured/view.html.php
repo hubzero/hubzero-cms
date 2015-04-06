@@ -154,7 +154,7 @@ class ContentViewFeatured extends JViewLegacy
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -162,10 +162,10 @@ class ContentViewFeatured extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 
@@ -189,9 +189,9 @@ class ContentViewFeatured extends JViewLegacy
 		{
 			$link = '&format=feed&limitstart=';
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::url($link . '&type=rss'), 'alternate', 'rel', $attribs);
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+			$this->document->addHeadLink(Route::url($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		}
 	}
 }

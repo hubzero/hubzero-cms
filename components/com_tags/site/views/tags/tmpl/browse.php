@@ -62,7 +62,7 @@ $this->css()
 				<ul class="entries-menu sort-options">
 					<li>
 						<?php
-							$filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . JRequest::getInt('limit', 25) . '&limitstart=' . JRequest::getInt('limitstart', 0);
+							$filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
 
 							$cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
 							$url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);

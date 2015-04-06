@@ -12,15 +12,15 @@ defined('_JEXEC') or die;
 $fieldSets = $this->form->getFieldsets('params');
 
 if (!count($fieldSets)) :
-	?><div class="input-wrap"><p class="warning"><?php echo JText::_('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?></p></div><?php
+	?><div class="input-wrap"><p class="warning"><?php echo Lang::txt('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?></p></div><?php
 else :
 	foreach ($fieldSets as $name => $fieldSet) :
 		$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_'.$name.'_FIELDSET_LABEL';
 
-		echo JHtml::_('sliders.panel', JText::_($label), $name.'-options');
+		echo JHtml::_('sliders.panel', Lang::txt($label), $name.'-options');
 
 		if (isset($fieldSet->description) && trim($fieldSet->description)) :
-			echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+			echo '<p class="tip">'.$this->escape(Lang::txt($fieldSet->description)).'</p>';
 		endif;
 		?>
 		<fieldset class="panelform">

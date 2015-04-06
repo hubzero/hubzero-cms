@@ -39,13 +39,13 @@ class ContentViewCategories extends JViewLegacy
 
 		if ($items === false)
 		{
-			JError::raiseError(404, JText::_('COM_CONTENT_ERROR_CATEGORY_NOT_FOUND'));
+			JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
 		if ($parent == false)
 		{
-			JError::raiseError(404, JText::_('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+			JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
@@ -82,17 +82,17 @@ class ContentViewCategories extends JViewLegacy
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 		$title = $this->params->get('page_title', '');
 		if (empty($title)) {
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

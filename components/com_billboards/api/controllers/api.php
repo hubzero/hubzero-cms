@@ -84,8 +84,8 @@ class BillboardsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get the request vars
-		$limit      = JRequest::getVar("limit", 25);
-		$limitstart = JRequest::getVar("limitstart", 0);
+		$limit      = Request::getVar("limit", 25);
+		$limitstart = Request::getVar("limitstart", 0);
 
 		// Load up the entries
 		$collections = Collection::start($limitstart)->limit($limit)->rows();
@@ -113,7 +113,7 @@ class BillboardsControllerApi extends \Hubzero\Component\ApiController
 		{
 			$collection = $this->segments[1];
 		}
-		$collection = JRequest::getVar("collection", $collection);
+		$collection = Request::getVar("collection", $collection);
 
 		// Load up the collection
 		$collection = Collection::oneOrNew($collection);

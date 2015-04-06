@@ -120,17 +120,17 @@ class LanguagesModelStrings extends JModelLegacy
 	{
 		$results = array();
 
-		$limitstart = JRequest::getInt('more');
+		$limitstart = Request::getInt('more');
 
 		try
 		{
-			$searchstring = $this->_db->q('%'.JRequest::getString('searchstring').'%');
+			$searchstring = $this->_db->q('%'.Request::getString('searchstring').'%');
 
 			// Create the search query
 			$query = $this->_db->getQuery(true)
 						->select('constant, string, file')
 						->from($this->_db->qn('#__overrider'));
-			if (JRequest::getCmd('searchtype') == 'constant')
+			if (Request::getCmd('searchtype') == 'constant')
 			{
 				$query->where('constant LIKE '.$searchstring);
 			}

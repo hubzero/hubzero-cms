@@ -204,14 +204,14 @@ class PaymentProvider
 		// Generate error message
 		if ($tAmount > $ppPayment)
 		{
-			$moreLess = JText::_('COM_CART_POSTBACK_INCORRECT_AMOUNT_LESS');
+			$moreLess = Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_LESS');
 		}
 		else
 		{
-			$moreLess = JText::_('COM_CART_POSTBACK_INCORRECT_AMOUNT_MORE');
+			$moreLess = Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_MORE');
 		}
 
-		$errorMessage = sprintf(JText::_('COM_CART_POSTBACK_INCORRECT_AMOUNT_ERROR'), $ppPayment, $moreLess, $tAmount);
+		$errorMessage = sprintf(Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_ERROR'), $ppPayment, $moreLess, $tAmount);
 
 		// Set error
 		$this->error->msg = $errorMessage;

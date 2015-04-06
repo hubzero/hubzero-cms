@@ -72,11 +72,11 @@ class LanguagesModelInstalled extends JModelList
 		$app = JFactory::getApplication('administrator');
 
 		// Load the filter state.
-		$clientId = JRequest::getInt('client');
+		$clientId = Request::getInt('client');
 		$this->setState('filter.client_id', $clientId);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_languages');
+		$params = Component::params('com_languages');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -181,7 +181,7 @@ class LanguagesModelInstalled extends JModelList
 				}
 
 				// if current than set published
-				$params = JComponentHelper::getParams('com_languages');
+				$params = Component::params('com_languages');
 				if ($params->get($client->name, 'en-GB') == $row->language) {
 					$row->published	= 1;
 				}
@@ -285,7 +285,7 @@ class LanguagesModelInstalled extends JModelList
 		if ($cid) {
 			$client	= $this->getClient();
 
-			$params = JComponentHelper::getParams('com_languages');
+			$params = Component::params('com_languages');
 			$params->set($client->name, $cid);
 
 			$table = JTable::getInstance('extension');
@@ -311,7 +311,7 @@ class LanguagesModelInstalled extends JModelList
 			}
 		}
 		else {
-			$this->setError(JText::_('COM_LANGUAGES_ERR_NO_LANGUAGE_SELECTED'));
+			$this->setError(Lang::txt('COM_LANGUAGES_ERR_NO_LANGUAGE_SELECTED'));
 			return false;
 		}
 

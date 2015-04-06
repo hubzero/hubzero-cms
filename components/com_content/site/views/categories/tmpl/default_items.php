@@ -23,7 +23,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 	?>
 	<li<?php echo $class; ?>>
 	<?php $class = ''; ?>
-		<span class="item-title"><a href="<?php echo JRoute::_(ContentHelperRoute::getCategoryRoute($item->id));?>">
+		<span class="item-title"><a href="<?php echo Route::url(ContentHelperRoute::getCategoryRoute($item->id));?>">
 			<?php echo $this->escape($item->title); ?></a>
 		</span>
 		<?php if ($this->params->get('show_subcat_desc_cat') == 1) :?>
@@ -35,7 +35,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 		<?php endif; ?>
 		<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :?>
 			<dl><dt>
-				<?php echo JText::_('COM_CONTENT_NUM_ITEMS'); ?></dt>
+				<?php echo Lang::txt('COM_CONTENT_NUM_ITEMS'); ?></dt>
 				<dd><?php echo $item->numitems; ?></dd>
 			</dl>
 		<?php endif; ?>

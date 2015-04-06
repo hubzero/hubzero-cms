@@ -46,7 +46,7 @@ class CartControllerCart extends ComponentController
 	public function execute()
 	{
 		// Get the task
-		$this->_task  = JRequest::getVar('task', '');
+		$this->_task  = Request::getVar('task', '');
 
 		if (empty($this->_task))
 		{
@@ -70,12 +70,12 @@ class CartControllerCart extends ComponentController
 		$errors = array();
 
 		// Update cart if needed
-		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
+		$updateCartRequest = Request::getVar('updateCart', false, 'post');
 
 		// If pIds are posted, convert them to SKUs
-		$pIds = JRequest::getVar('pId', false, 'post');
+		$pIds = Request::getVar('pId', false, 'post');
 		//print_r($pIds); die;
-		$skus = JRequest::getVar('skus', false, 'post');
+		$skus = Request::getVar('skus', false, 'post');
 
 		if ($updateCartRequest && ($pIds || $skus))
 		{
@@ -160,8 +160,8 @@ class CartControllerCart extends ComponentController
 		}
 
 		// Add coupon if needed
-		$addCouponRequest = JRequest::getVar('addCouponCode', false, 'post');
-		$couponCode = JRequest::getVar('couponCode', false, 'post');
+		$addCouponRequest = Request::getVar('addCouponCode', false, 'post');
+		$couponCode = Request::getVar('couponCode', false, 'post');
 
 		if ($addCouponRequest && $couponCode)
 		{
@@ -191,7 +191,7 @@ class CartControllerCart extends ComponentController
 		{
 			// If this is an express checkout (go to the confirm page right away) there shouldn't be any items in the cart
 			// Since redirect is set, there are no errors
-			$expressCheckout = JRequest::getVar('expressCheckout', false, 'post');
+			$expressCheckout = Request::getVar('expressCheckout', false, 'post');
 
 			// make sure the cart is empty
 			if ($expressCheckout && !empty($skus) && $cart->isEmpty())
@@ -200,14 +200,14 @@ class CartControllerCart extends ComponentController
 				$cart->getCartInfo(true);
 
 				// Redirect directly to checkout, skip the cart page
-				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . DS . 'checkout';
+				$redirect_url  = Route::url('index.php?option=' . 'com_cart') . DS . 'checkout';
 				$app = JFactory::getApplication();
 				$app->redirect($redirect_url);
 			}
 
 			// prevent resubmitting form by refresh
 			// redirect to cart
-			$redirect_url = JRoute::_('index.php?option=' . 'com_cart');
+			$redirect_url = Route::url('index.php?option=' . 'com_cart');
 			$app = JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}

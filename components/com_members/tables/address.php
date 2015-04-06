@@ -56,7 +56,7 @@ class MembersAddress extends JTable
 	{
 		if (!isset($this->uidNumber) || $this->uidNumber == '')
 		{
-			$this->setError( JText::_('You must supply a user id.') );
+			$this->setError( Lang::txt('You must supply a user id.') );
 			return false;
 		}
 
@@ -86,7 +86,7 @@ class MembersAddress extends JTable
 		// Make sure we have a user id
 		if (!isset($uidNumber))
 		{
-			$this->setError(JText::_('You must supply a user id.'));
+			$this->setError(Lang::txt('You must supply a user id.'));
 			return false;
 		}
 

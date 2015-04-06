@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('contributor');
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS'), 'addedit.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 
 ?>

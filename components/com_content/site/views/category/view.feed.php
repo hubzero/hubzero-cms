@@ -24,11 +24,11 @@ class ContentViewCategory extends JViewLegacy
 		$siteEmail	= $app->getCfg('mailfrom');
 
 		// Get some data from the model
-		JRequest::setVar('limit', $app->getCfg('feed_limit'));
+		Request::setVar('limit', $app->getCfg('feed_limit'));
 		$category	= $this->get('Category');
 		$rows		= $this->get('Items');
 
-		$doc->link = JRoute::_(ContentHelperRoute::getCategoryRoute($category->id));
+		$doc->link = Route::url(ContentHelperRoute::getCategoryRoute($category->id));
 
 		foreach ($rows as $row)
 		{
@@ -40,7 +40,7 @@ class ContentViewCategory extends JViewLegacy
 			$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 
 			// Url link to article
-			$link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language));
+			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language));
 
 			// Get row fulltext
 			$db = JFactory::getDBO();
@@ -72,7 +72,7 @@ class ContentViewCategory extends JViewLegacy
 			// Add readmore link to description if introtext is shown, show_readmore is true and fulltext exists
 			if (!$params->get('feed_summary', 0) && $params->get('feed_show_readmore', 0) && $row->fulltext)
 			{
-				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . $item->link . '">'.JText::_('COM_CONTENT_FEED_READMORE').'</a></p>';
+				$description .= '<p class="feed-readmore"><a target="_blank" href ="' . $item->link . '">'.Lang::txt('COM_CONTENT_FEED_READMORE').'</a></p>';
 			}
 
 			// Load item description and add div

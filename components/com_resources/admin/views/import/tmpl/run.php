@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // set title
-JToolBarHelper::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script.png');
+Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script.png');
 
 // add import styles and scripts
 $this->js('import');

@@ -71,14 +71,14 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		}
 
 		if (empty($title)) {
-			$title = JText::_('COM_NEWSFEEDS_SELECT_A_FEED');
+			$title = Lang::txt('COM_NEWSFEEDS_SELECT_A_FEED');
 		}
 
 		$link = 'index.php?option=com_newsfeeds&amp;view=newsfeeds&amp;layout=modal&amp;tmpl=component&amp;function=jSelectChart_'.$this->id;
 
 		JHtml::_('behavior.modal', 'a.modal');
 		$html = "\n".'<div class="fltlft"><input type="text" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
-		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'</a></div></div>'."\n";
+		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.Lang::txt('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.Lang::txt('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'</a></div></div>'."\n";
 		// The active newsfeed id field.
 		if (0 == (int)$this->value) {
 			$value = '';

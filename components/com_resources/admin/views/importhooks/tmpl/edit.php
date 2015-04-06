@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // set title
 $title  = ($this->hook->get('id')) ? Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_EDIT') : Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_ADD');
 
-JToolBarHelper::title(Lang::txt($title), 'import.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt($title), 'import.png');
+Toolbar::save();
+Toolbar::cancel();
 ?>
 
 <script type="text/javascript">

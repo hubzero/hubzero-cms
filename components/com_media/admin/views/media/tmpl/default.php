@@ -60,7 +60,7 @@ defined('_JEXEC') or die;
 
 			<?php if (User::authorise('core.create', 'com_media')):?>
 			<!-- File Upload Form -->
-			<form action="<?php echo JURI::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;format=html" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+			<form action="<?php echo Request::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;format=html" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 				<fieldset id="uploadform">
 					<legend><?php echo $this->config->get('upload_maxsize')=='0' ? Lang::txt('COM_MEDIA_UPLOAD_FILES_NOLIMIT') : Lang::txt('COM_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?></legend>
 					<fieldset id="upload-noflash" class="actions">

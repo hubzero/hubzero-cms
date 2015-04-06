@@ -37,7 +37,7 @@ class PluginsViewPlugins extends JViewLegacy
 			// Check if there are no matching items
 		if(!count($this->items)){
 			JFactory::getApplication()->enqueueMessage(
-				JText::_('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS')
+				Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS')
 				, 'warning'
 			);
 		}
@@ -56,25 +56,25 @@ class PluginsViewPlugins extends JViewLegacy
 		$state	= $this->get('State');
 		$canDo	= PluginsHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PLUGINS_MANAGER_PLUGINS'), 'plugin');
+		Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGINS'), 'plugin');
 
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('plugin.edit');
+			Toolbar::editList('plugin.edit');
 		}
 
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('plugins.publish', 'JTOOLBAR_ENABLE', true);
-			JToolBarHelper::unpublish('plugins.unpublish', 'JTOOLBAR_DISABLE', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('plugins.checkin');
+			Toolbar::divider();
+			Toolbar::publish('plugins.publish', 'JTOOLBAR_ENABLE', true);
+			Toolbar::unpublish('plugins.unpublish', 'JTOOLBAR_DISABLE', true);
+			Toolbar::divider();
+			Toolbar::checkin('plugins.checkin');
 		}
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::preferences('com_plugins');
+			Toolbar::divider();
+			Toolbar::preferences('com_plugins');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help('plugins');
+		Toolbar::divider();
+		Toolbar::help('plugins');
 	}
 }

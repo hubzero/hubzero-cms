@@ -112,7 +112,7 @@ class UsersModelDebugGroup extends JModelList
 		$this->setState('filter.component', $component);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_users');
+		$params = Component::params('com_users');
 		$this->setState('params', $params);
 
 		// List state information.

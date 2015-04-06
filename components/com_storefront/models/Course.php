@@ -110,7 +110,7 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 
 			if ($courseIdExists)
 			{
-				throw new Exception(JText::_('Course with this alias already exists.'));
+				throw new Exception(Lang::txt('Course with this alias already exists.'));
 			}
 		}
 

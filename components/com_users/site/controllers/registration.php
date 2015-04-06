@@ -28,7 +28,7 @@ class UsersControllerRegistration extends UsersController
 	public function activate()
 	{
 		$user    = JFactory::getUser();
-		$uParams = JComponentHelper::getParams('com_users');
+		$uParams = Component::params('com_users');
 
 		// If the user is logged in, return them back to the homepage.
 		if ($user->get('id')) {
@@ -103,7 +103,7 @@ class UsersControllerRegistration extends UsersController
 		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// If registration is disabled - Redirect to login page.
-		if (JComponentHelper::getParams('com_users')->get('allowUserRegistration') == 0) {
+		if (Component::params('com_users')->get('allowUserRegistration') == 0) {
 			$this->setRedirect(Route::url('index.php?option=com_users&view=login', false));
 			return false;
 		}

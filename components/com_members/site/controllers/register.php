@@ -382,10 +382,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if (!$force && $check && Request::getMethod() == 'GET')
 		{
 			$jsession->set('registration.incomplete', false);
-			if ($_SERVER['REQUEST_URI'] == rtrim(JURI::base(true), '/') . '/register/update'
-			 || $_SERVER['REQUEST_URI'] == rtrim(JURI::base(true), '/') . '/members/register/update')
+			if ($_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/register/update'
+			 || $_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/members/register/update')
 			{
-				$this->setRedirect(rtrim(JURI::base(true), '/') . '/');
+				$this->setRedirect(rtrim(Request::base(true), '/') . '/');
 			}
 			else
 			{

@@ -20,7 +20,7 @@ class MenusViewMenutypes extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->recordId = JRequest::getInt('recordId');
+		$this->recordId = Request::getInt('recordId');
 		$this->types 	= $this->get('TypeOptions');
 
 		parent::display($tpl);

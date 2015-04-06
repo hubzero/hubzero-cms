@@ -63,7 +63,7 @@ class JFormFieldModal_Article extends JFormField
 		}
 
 		if (empty($title)) {
-			$title = JText::_('COM_CONTENT_SELECT_AN_ARTICLE');
+			$title = Lang::txt('COM_CONTENT_SELECT_AN_ARTICLE');
 		}
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
@@ -75,7 +75,7 @@ class JFormFieldModal_Article extends JFormField
 
 		// The user select button.
 		$html[] = '  <span class="input-cell">';
-		$html[] = '    <a class="modal button" title="'.JText::_('COM_CONTENT_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_CONTENT_CHANGE_ARTICLE_BUTTON').'</a>';
+		$html[] = '    <a class="modal button" title="'.Lang::txt('COM_CONTENT_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.Lang::txt('COM_CONTENT_CHANGE_ARTICLE_BUTTON').'</a>';
 		$html[] = '  </span>';
 		$html[] = '</div>';
 

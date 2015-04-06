@@ -108,7 +108,7 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 					</div>
 				</div>
 
-				<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
+				<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
 			</fieldset>
 
 			<div class="orcid-section orcid-search">

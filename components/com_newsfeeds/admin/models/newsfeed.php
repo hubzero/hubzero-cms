@@ -56,7 +56,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 				}
 				else
 				{
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 					return false;
 				}
 			}
@@ -64,7 +64,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 
 		if (empty($categoryId))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 		$user = JFactory::getUser();
 		if (!$user->authorise('core.create', 'com_newsfeeds.category.' . $categoryId))
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 				else
 				{
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 					continue;
 				}
 			}
@@ -260,7 +260,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 			// Prime some default values.
 			if ($this->getState('newsfeed.id') == 0) {
 				$app = JFactory::getApplication();
-				$data->set('catid', JRequest::getInt('catid', $app->getUserState('com_newsfeeds.newsfeeds.filter.category_id')));
+				$data->set('catid', Request::getInt('catid', $app->getUserState('com_newsfeeds.newsfeeds.filter.category_id')));
 			}
 		}
 

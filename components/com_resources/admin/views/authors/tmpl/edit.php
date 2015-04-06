@@ -35,12 +35,12 @@ $canDo = \Components\Resources\Helpers\Permissions::getActions('contributor');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS') . ': ' . $text, 'forum.png');
-JToolBarHelper::spacer();
+Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS') . ': ' . $text, 'forum.png');
+Toolbar::spacer();
 if ($canDo->get('core.edit')) {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">
