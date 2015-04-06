@@ -322,9 +322,13 @@ class Events extends AdminController
 		$this->view->times['end_time'] = $end_time;
 		$this->view->times['end_pm'] = $end_pm;
 
-		// Get tags on this event
-		$rt = new Tags($this->view->row->id);
-		$this->view->tags = $rt->render('string');
+		// only load tags if the event exists already
+		if ($this->view->row->id != NULL)
+		{
+			// Get tags on this event
+			$rt = new Tags($this->view->row->id);
+			$this->view->tags = $rt->render('string');
+		}
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

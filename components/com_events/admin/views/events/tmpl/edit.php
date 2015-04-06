@@ -114,7 +114,7 @@ var HUB = {};
 				?>
 			<div class="input-wrap">
 				<label for="field-tags"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TAGS'); ?>:</label><br />
-				<input type="text" name="tags" id="field-tags" value="<?php echo $this->escape($this->tags); ?>" />
+				<input type="text" name="tags" id="field-tags" value="<?php echo (isset($this->tags) ? $this->escape($this->tags) : ''); ?>" />
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
