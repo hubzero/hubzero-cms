@@ -101,7 +101,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 					<li id="logout"><a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('Logout'); ?></span></a></li>
 					<li id="myaccount"><a href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo Lang::txt('My Account'); ?></span></a></li>
 					<li id="username"><a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=profile'); ?>"><?php echo User::get('name'); ?> (<?php echo User::get('username'); ?>)</a></li>
-					<li id="usermessages"><a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=inbox'); ?>"><?php echo <?php echo Lang::txt('%s New Messages', count($rows)); ?></a></li>
+					<li id="usermessages"><a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=inbox'); ?>"><?php echo Lang::txt('%s New Messages', count($rows)); ?></a></li>
 				<?php } else { ?>
 					<li id="login"><a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('Login'); ?>"><?php echo Lang::txt('Sign In'); ?></a></li>
 				<?php } ?>
