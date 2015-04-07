@@ -856,7 +856,7 @@ class Items extends AdminController
 		$params = Request::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
-			$txt = new JRegistry('');
+			$txt = new \JRegistry('');
 			foreach ($params as $k => $v)
 			{
 				$txt->set($k, $v);
