@@ -842,6 +842,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Strip any scripting there may be
 		if (trim($row->fulltxt))
 		{
+			$row->fulltxt   = ResourcesHtml::stripStyles($row->fulltxt);
 			$row->fulltxt   = $this->_txtClean($row->fulltxt);
 			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 			$row->footertext = $this->_txtClean($row->footertext);
