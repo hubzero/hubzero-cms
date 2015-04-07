@@ -576,10 +576,10 @@ class Citation extends \JTable
 		{
 			$stats[$i] = array();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=1 AND scope != 'group' ");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=1 AND (scope != 'group' OR scope IS NULL)");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=0 AND scope != 'group'");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=0 AND (scope != 'group' OR scope IS NULL)");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 
