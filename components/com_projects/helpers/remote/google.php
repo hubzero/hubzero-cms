@@ -297,7 +297,7 @@ class Google extends Object
 			if ($status != false)
 			{
 				$result = $status;
-			}	
+			}
 
 			fclose($handle);
 
@@ -413,7 +413,7 @@ class Google extends Object
 			if ($status != false)
 			{
 				$result = $status;
-			}	
+			}
 
 			fclose($handle);
 
