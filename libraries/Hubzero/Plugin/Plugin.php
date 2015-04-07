@@ -94,7 +94,7 @@ class Plugin extends \JPlugin
 				\JFactory::getSession()->set('plugin.message.queue', $this->pluginMessageQueue);
 			}
 
-			\JFactory::getApplication()->redirect($url, $msg, $msgType);
+			\App::redirect($url, $msg, $msgType);
 		}
 	}
 

@@ -28,20 +28,28 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Facades;
+namespace Hubzero\Language;
+
+use Hubzero\Base\ServiceProvider;
 
 /**
- * Language helper facade
+ * Language translation service provider
  */
-class Lang extends Facade
+class TranslationServiceProvider extends ServiceProvider
 {
 	/**
-	 * Get the registered name of the component.
+	 * Register the service provider.
 	 *
-	 * @return  string
+	 * @return void
 	 */
-	protected static function getAccessor()
+	public function register()
 	{
-		return 'language';
+		$this->app['language'] = function($app)
+		{
+			$locale = $app['config']->get('locale', 'en-GB');
+			$debug  = $app['config']->get('debug_lang', false);
+
+			return new Translator($locale, $debug);
+		};
 	}
 }

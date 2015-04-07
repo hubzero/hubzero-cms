@@ -131,6 +131,15 @@ class JText
 	 */
 	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
+		// [!] HUBzero
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('language'))
+			{
+				return $lang->txt($string, $jsSafe, $interpretBackSlashes);
+			}
+		}
+
 		$lang = JFactory::getLanguage();
 		if (is_array($jsSafe))
 		{
@@ -202,6 +211,15 @@ class JText
 	 */
 	public static function alt($string, $alt, $jsSafe = false, $interpretBackSlashes = true, $script = false)
 	{
+		// [!] HUBzero
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('language'))
+			{
+				return $lang->alt($string, $alt, $jsSafe, $interpretBackSlashes);
+			}
+		}
+
 		$lang = JFactory::getLanguage();
 		if ($lang->hasKey($string . '_' . $alt))
 		{
@@ -241,8 +259,18 @@ class JText
 	 */
 	public static function plural($string, $n)
 	{
-		$lang = JFactory::getLanguage();
 		$args = func_get_args();
+
+		// [!] HUBzero
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('language'))
+			{
+				return call_user_func_array(array($lang, 'txts'), $args);
+			}
+		}
+
+		$lang = JFactory::getLanguage();
 		$count = count($args);
 
 		if ($count > 1)
@@ -317,8 +345,18 @@ class JText
 	 */
 	public static function sprintf($string)
 	{
-		$lang = JFactory::getLanguage();
 		$args = func_get_args();
+
+		// [!] HUBzero
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('language'))
+			{
+				return call_user_func_array(array($lang, 'txt'), $args);
+			}
+		}
+
+		$lang = JFactory::getLanguage();
 		$count = count($args);
 		if ($count > 0)
 		{

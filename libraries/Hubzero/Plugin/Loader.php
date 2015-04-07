@@ -31,124 +31,164 @@
 namespace Hubzero\Plugin;
 
 use Hubzero\Events\LoaderInterface;
-use Hubzero\Plugin\Loader\Legacy;
+use DirectoryIterator;
+use Exception;
+use User;
+use Lang;
 
-/**
- * Plugin loader for the event dispatcher.
- */
-class Loader implements LoaderInterface
+class Loader
 {
 	/**
-	 * The loader name.
-	 *
-	 * @var  string
-	 */
-	protected $name = 'plugin';
-
-	/**
-	 * The default path.
-	 *
-	 * @var  string
-	 */
-	protected $defaultPath;
-
-	/**
-	 * A cache of whether namespaces and groups exists.
+	 * A persistent cache of the loaded plugins.
 	 *
 	 * @var  array
 	 */
-	protected $loaded = array();
+	protected static $plugins = null;
 
 	/**
-	 * A cache of whether namespaces and groups exists.
+	 * Get the plugin data of a specific type if no specific plugin is specified
+	 * otherwise only the specific plugin data is returned.
 	 *
-	 * @var  array
+	 * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
+	 * @param   string  $plugin  The plugin name.
+	 * @return  mixed   An array of plugin data objects, or a plugin data object.
 	 */
-	protected $plugins;
-
-	/**
-	 * Create a new plugin loader.
-	 *
-	 * @param   string  $defaultPath
-	 * @return  void
-	 */
-	public function __construct($defaultPath)
+	public function load($type, $plugin = null)
 	{
-		$this->defaultPath = $defaultPath;
-	}
+		$result = array();
 
-	/**
-	 * Get the event name.
-	 *
-	 * @return  string  The event name.
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	/**
-	 * Get the path for a plugin group
-	 *
-	 * @param  string  $group
-	 * @return string
-	 */
-	protected function getPath($group)
-	{
-		if (is_null($group))
+		foreach ($this->all() as $p)
 		{
-			return $this->defaultPath;
-		}
-
-		return $this->defaultPath . DS . $group;
-	}
-
-	/**
-	 * Load the given configuration group.
-	 *
-	 * @param   string  $group
-	 * @param   string  $name
-	 * @return  array
-	 */
-	public function load($group, $name = null)
-	{
-		$items = array();
-
-		if (isset($this->loaded[$group]))
-		{
-			return $items;
-		}
-
-		// First we'll get the root path to the plugins group which is
-		// where all of the plugin files live for that namespace.
-		$path = $this->getPath($group);
-
-		if (!is_dir($path))
-		{
-			return $items;
-		}
-
-		foreach ($this->plugins() as $plugin)
-		{
-			if ($plugin->type != $group)
+			// Is this the right plugin?
+			if ($p->type == $type)
 			{
-				continue;
-			}
+				if ($plugin && $p->name == $plugin)
+				{
+					$result = $p;
+					break;
+				}
 
-			if ($name && $plugin->name != $name)
-			{
-				continue;
-			}
-
-			if ($obj = $this->getRequire($plugin))
-			{
-				$items[] = $obj;
+				$result[] = $p;
 			}
 		}
 
-		$this->loaded[$group] = true;
+		return $result;
+	}
 
-		return $items;
+	/**
+	 * Checks if a plugin is enabled.
+	 *
+	 * @param   string   $type    The plugin type, relates to the sub-directory in the plugins directory.
+	 * @param   string   $plugin  The plugin name.
+	 * @return  boolean
+	 */
+	public function isEnabled($type, $plugin = null)
+	{
+		$result = $this->load($type, $plugin);
+
+		return (!empty($result));
+	}
+
+	/**
+	 * Loads all the plugin files for a particular type if no specific plugin is specified
+	 * otherwise only the specific plugin is loaded.
+	 *
+	 * @param   string   $type        The plugin type, relates to the sub-directory in the plugins directory.
+	 * @param   string   $plugin      The plugin name.
+	 * @param   boolean  $autocreate  Autocreate the plugin.
+	 * @param   object   $dispatcher  Optionally allows the plugin to use a different dispatcher.
+	 * @return  boolean  True on success.
+	 */
+	public function import($type, $plugin = null, $autocreate = true, $dispatcher = null)
+	{
+		static $loaded = array();
+
+		// check for the default args, if so we can optimise cheaply
+		$defaults = false;
+		if (is_null($plugin) && $autocreate == true && is_null($dispatcher))
+		{
+			$defaults = true;
+		}
+
+		if (!isset($loaded[$type]) || !$defaults)
+		{
+			$results = null;
+
+			// Load the plugins from the database.
+			$plugins = $this->all();
+
+			// Get the specified plugin(s).
+			for ($i = 0, $t = count($plugins); $i < $t; $i++)
+			{
+				if ($plugins[$i]->type == $type && ($plugin === null || $plugins[$i]->name == $plugin))
+				{
+					self::_import($plugins[$i], $autocreate, $dispatcher);
+					$results = true;
+				}
+			}
+
+			// Bail out early if we're not using default args
+			if (!$defaults)
+			{
+				return $results;
+			}
+			$loaded[$type] = $results;
+		}
+
+		return $loaded[$type];
+	}
+
+	/**
+	 * Loads the plugin file.
+	 *
+	 * @param   JPlugin      &$plugin     The plugin.
+	 * @param   boolean      $autocreate  True to autocreate.
+	 * @param   JDispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   11.1
+	 */
+	protected static function _import(&$plugin, $autocreate = true, $dispatcher = null)
+	{
+		static $paths = array();
+
+		$plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
+		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
+
+		$path = JPATH_PLUGINS . '/' . $plugin->type . '/' . $plugin->name . '/' . $plugin->name . '.php';
+
+		if (!isset($paths[$path]))
+		{
+			if (!file_exists($path))
+			{
+				$paths[$path] = false;
+				return;
+			}
+
+			if (!isset($paths[$path]))
+			{
+				require_once $path;
+			}
+
+			$paths[$path] = true;
+
+			if ($autocreate)
+			{
+				// Makes sure we have an event dispatcher
+				if (!is_object($dispatcher))
+				{
+					$dispatcher = Event::getRoot();
+				}
+
+				$className = 'plg' . $plugin->type . $plugin->name;
+				if (class_exists($className))
+				{
+					// Instantiate and register the plugin.
+					$dispatcher->addListener(new $className((array) $plugin));
+				}
+			}
+		}
 	}
 
 	/**
@@ -156,19 +196,18 @@ class Loader implements LoaderInterface
 	 *
 	 * @return  array  An array of published plugins
 	 */
-	protected function plugins()
+	public function all()
 	{
-		if ($this->plugins !== null)
+		if (self::$plugins !== null)
 		{
-			return $this->plugins;
+			return self::$plugins;
 		}
 
-		$user  = \JFactory::getUser();
 		$cache = \JFactory::getCache('com_plugins', '');
 
-		$levels = implode(',', $user->getAuthorisedViewLevels());
+		$levels = implode(',', User::getAuthorisedViewLevels());
 
-		if (!($this->plugins = $cache->get($levels)))
+		if (!(self::$plugins = $cache->get($levels)))
 		{
 			$db = \JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -181,58 +220,28 @@ class Loader implements LoaderInterface
 				->where('access IN (' . $levels . ')')
 				->order('ordering');
 
-			$this->plugins = $db->setQuery($query)->loadObjectList();
+			self::$plugins = $db->setQuery($query)->loadObjectList();
 
 			if ($error = $db->getErrorMsg())
 			{
-				throw new \Exception($error, 500);
+				throw new Exception($error, 500);
 			}
 
-			$cache->store($this->plugins, $levels);
+			$cache->store(self::$plugins, $levels);
 		}
 
-		return $this->plugins;
+		return self::$plugins;
 	}
 
 	/**
-	 * Determine if the given group exists.
+	 * Loads the language file for a plugin
 	 *
-	 * @param   string   $group
-	 * @param   string   $namespace
+	 * @param   string   $extension  Plugin name
+	 * @param   string   $basePath   Path to load from
 	 * @return  boolean
 	 */
-	public function exists($group)
+	public function language($extension, $basePath = PATH_CORE)
 	{
-	}
-
-	/**
-	 * Get a plugin object
-	 *
-	 * @param   object  $plugin
-	 * @return  object
-	 */
-	protected function getRequire($plugin)
-	{
-		$plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
-		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
-
-		$path = $this->getPath($plugin->type) . DS . $plugin->name . DS . $plugin->name . '.php';
-
-		if (!file_exists($path))
-		{
-			return null;
-		}
-
-		require_once $path;
-
-		$className = 'plg' . ucfirst($plugin->type) . ucfirst($plugin->name);
-		if (!class_exists($className))
-		{
-			$className = '\\Plugins\\' . ucfirst($plugin->type) . '\\' . ucfirst($plugin->name);
-		}
-
-		$dispatcher = null;
-
-		return new $className(new Legacy, (array) $plugin);
+		return Lang::load(strtolower($extension), $basePath);
 	}
 }

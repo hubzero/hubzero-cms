@@ -221,10 +221,8 @@ class Loader
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
 		if (empty($module->user) && file_exists($path))
 		{
-			$lang = \JFactory::getLanguage();
-			// 1.5 or Core then 1.6 3PD
-				$lang->load($module->module, JPATH_BASE, null, false, true)
-			||	$lang->load($module->module, dirname($path), null, false, true);
+				\Lang::load($module->module, JPATH_BASE, null, false, true)
+			||	\Lang::load($module->module, dirname($path), null, false, true);
 
 			$content = '';
 			ob_start();

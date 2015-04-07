@@ -64,11 +64,7 @@ $app['app'] = $app;
 |
 */
 
-/*$app['config'] = new Config(
-
-	$app->getConfigLoader(), $client
-
-));*/
+$app['config'] = new \Hubzero\Config\Repository($client);
 
 /*
 |--------------------------------------------------------------------------

@@ -120,6 +120,14 @@ abstract class JFactory
 	 */
 	public static function getConfig($file = null, $type = 'PHP')
 	{
+		if (class_exists('\\App'))
+		{
+			if ($config = \App::get('config'))
+			{
+				return $config;
+			}
+		}
+
 		if (!self::$config)
 		{
 			if ($file === null)
@@ -167,6 +175,14 @@ abstract class JFactory
 	 */
 	public static function getLanguage()
 	{
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('language'))
+			{
+				return $lang;
+			}
+		}
+
 		if (!self::$language)
 		{
 			self::$language = self::createLanguage();
@@ -570,7 +586,15 @@ abstract class JFactory
 	 */
 	public static function getLogger()
 	{
-		/*static $instance;
+		if (class_exists('\\App'))
+		{
+			if ($log = \App::get('log.debug'))
+			{
+				return $log;
+			}
+		}
+
+		static $instance;
 
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
@@ -588,8 +612,7 @@ abstract class JFactory
 			$instance->useFiles($path . '/cmsdebug.log', 'debug', '', 'Y-m-d H:i:s', 0640);
 		}
 
-		return $instance;*/
-		return \App::get('log.debug');
+		return $instance;
 	}
 
 	/**
@@ -601,7 +624,15 @@ abstract class JFactory
 	 */
 	public static function getAuthLogger()
 	{
-		/*static $instance;
+		if (class_exists('\\App'))
+		{
+			if ($log = \App::get('log.auth'))
+			{
+				return $log;
+			}
+		}
+
+		static $instance;
 
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
@@ -619,8 +650,7 @@ abstract class JFactory
 			$instance->useFiles($path . '/cmsauth.log', 'info', "%datetime% %message%\n", 'Y-m-d H:i:s', 0640);
 		}
 
-		return $instance;*/
-		return \App::get('log.auth');
+		return $instance;
 	}
 
 	/**

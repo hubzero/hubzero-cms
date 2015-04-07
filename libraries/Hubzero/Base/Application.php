@@ -55,6 +55,7 @@ class Application extends Container
 	 * @var  array
 	 */
 	private static $baseServices = array(
+		'Hubzero\Language\TranslationServiceProvider',
 		'Hubzero\Events\EventServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
