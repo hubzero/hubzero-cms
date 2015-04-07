@@ -76,6 +76,7 @@ class Application extends Container
 		'User'      => 'Hubzero\Facades\User',
 		'Lang'      => 'Hubzero\Facades\Lang',
 		'Log'       => 'Hubzero\Facades\Log',
+		'Date'      => 'Hubzero\Facades\Date',
 		'Component' => 'Hubzero\Facades\Component',
 	);
 
