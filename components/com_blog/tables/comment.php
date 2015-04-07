@@ -30,6 +30,10 @@
 
 namespace Components\Blog\Tables;
 
+use Lang;
+use Date;
+use User;
+
 /**
  * Blog Comment database class
  */
@@ -76,11 +80,11 @@ class Comment extends \JTable
 		if (!$this->id)
 		{
 			$this->state   = ($this->state !== null ? $this->state : 1);
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 		}
 		else
 		{
-			$this->modified    = \JFactory::getDate()->toSql();
+			$this->modified    = Date::toSql();
 			$this->modified_by = User::get('id');
 		}
 

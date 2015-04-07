@@ -57,7 +57,7 @@ $first = $this->model->entries('first', $filters);
 		{
 			$live_site = rtrim(Request::base(),'/');
 
-			$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+			$feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
 		}
 		$feed = str_replace('https:://','http://', $feed);
 		?>
@@ -94,11 +94,11 @@ $first = $this->model->entries('first', $filters);
 					$archiveDate .= '-01 00:00:00';
 					if ($this->filters['month'])
 					{
-						echo JFactory::getDate($archiveDate)->format('M Y');
+						echo Date::of($archiveDate)->format('M Y');
 					}
 					else
 					{
-						echo JFactory::getDate($archiveDate)->format('Y');
+						echo Date::of($archiveDate)->format('Y');
 					}
 				} ?>
 				</h3>
@@ -223,54 +223,58 @@ $first = $this->model->entries('first', $filters);
 				<h4><?php echo Lang::txt('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
 				<?php
-			if ($first->exists()) {
-				$start = intval(substr($first->get('publish_up'), 0, 4));
-				$now = JFactory::getDate()->format("Y");
-
-				for ($i=$now, $n=$start; $i >= $n; $i--)
+				if ($first->exists())
 				{
-				?>
-					<li>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&year='.$i); ?>"><?php echo $i; ?></a>
-					<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) { ?>
-						<ol>
-						<?php
-						$m = array(
-							'COM_BLOG_JANUARY',
-							'COM_BLOG_FEBRUARY',
-							'COM_BLOG_MARCH',
-							'COM_BLOG_APRIL',
-							'COM_BLOG_MAY',
-							'COM_BLOG_JUNE',
-							'COM_BLOG_JULY',
-							'COM_BLOG_AUGUST',
-							'COM_BLOG_SEPTEMBER',
-							'COM_BLOG_OCTOBER',
-							'COM_BLOG_NOVEMBER',
-							'COM_BLOG_DECEMBER'
-						);
-						//if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) {
-						if ($i == $now) {
-							$months = JFactory::getDate()->format("m");
-						} else {
-							$months = 12;
-						}
+					$start = intval(substr($first->get('publish_up'), 0, 4));
+					$now = Date::format("Y");
 
-						for ($k=0, $z=$months; $k < $z; $k++)
-						{
-						?>
-							<li>
-								<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k+1), 1)); ?>"><?php echo Lang::txt($m[$k]); ?></a>
-							</li>
-						<?php
-						}
-						?>
-						</ol>
-					<?php } ?>
-					</li>
-				<?php
+					for ($i=$now, $n=$start; $i >= $n; $i--)
+					{
+					?>
+						<li>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i); ?>"><?php echo $i; ?></a>
+						<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) { ?>
+							<ol>
+							<?php
+							$m = array(
+								'COM_BLOG_JANUARY',
+								'COM_BLOG_FEBRUARY',
+								'COM_BLOG_MARCH',
+								'COM_BLOG_APRIL',
+								'COM_BLOG_MAY',
+								'COM_BLOG_JUNE',
+								'COM_BLOG_JULY',
+								'COM_BLOG_AUGUST',
+								'COM_BLOG_SEPTEMBER',
+								'COM_BLOG_OCTOBER',
+								'COM_BLOG_NOVEMBER',
+								'COM_BLOG_DECEMBER'
+							);
+							//if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) {
+							if ($i == $now)
+							{
+								$months = Date::format("m");
+							}
+							else
+							{
+								$months = 12;
+							}
+
+							for ($k=0, $z=$months; $k < $z; $k++)
+							{
+							?>
+								<li>
+									<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k+1), 1)); ?>"><?php echo Lang::txt($m[$k]); ?></a>
+								</li>
+							<?php
+							}
+							?>
+							</ol>
+						<?php } ?>
+						</li>
+					<?php
+					}
 				}
-			}
 				?>
 				</ol>
 			</div><!-- / .blog-entries-years -->

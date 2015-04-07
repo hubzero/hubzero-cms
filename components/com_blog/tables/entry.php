@@ -30,6 +30,10 @@
 
 namespace Components\Blog\Tables;
 
+use Lang;
+use Date;
+use User;
+
 /**
  * Blog Entry database class
  */
@@ -107,7 +111,7 @@ class Entry extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 		}
 
 		if (!$this->publish_up || $this->publish_up == $this->_db->getNullDate())
@@ -224,7 +228,7 @@ class Entry extends \JTable
 	private function _buildQuery($filters=array())
 	{
 		$nullDate = $this->_db->getNullDate();
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$query = "FROM `$this->_tbl` AS m LEFT JOIN `#__xprofiles` AS u ON u.uidNumber=m.created_by";
 

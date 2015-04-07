@@ -37,6 +37,12 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use Exception;
+use Request;
+use Pathway;
+use Lang;
+use Route;
+use User;
+use Date;
 
 /**
  * Blog controller class for entries
@@ -365,11 +371,11 @@ class Entries extends SiteController
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
-			$entry['publish_up']   = \JFactory::getDate($entry['publish_up'], Config::get('offset'))->toSql();
+			$entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
 		}
 		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
 		{
-			$entry['publish_down'] = \JFactory::getDate($entry['publish_down'], Config::get('offset'))->toSql();
+			$entry['publish_down'] = Date::of($entry['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		$row = $this->model->entry(0);

@@ -81,7 +81,7 @@ class Comment extends Model
 	 * Returns a reference to a blog comment model
 	 *
 	 * @param   mixed   $oid  ID (int) or alias (string)
-	 * @return  object  BlogModelComment
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -125,11 +125,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -182,11 +182,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('modified'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('modified'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

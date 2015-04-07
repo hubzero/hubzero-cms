@@ -33,6 +33,9 @@ namespace Components\Blog\Models;
 use Components\Blog\Tables;
 use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
+use Component;
+use Lang;
+use User;
 
 require_once(__DIR__ . DS . 'entry.php');
 
