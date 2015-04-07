@@ -70,9 +70,9 @@ class Status extends Model
 	}
 
 	/**
-	 * Returns a reference to a log model
+	 * Returns a reference to the model
 	 *
-	 * @param      mixed $oid TODO ID
+	 * @param      mixed $oid status ID
 	 * @return     object Todo
 	 */
 	static function &getInstance($oid=null)

@@ -37,6 +37,7 @@ use Google_Service_Drive_DriveFile;
 use Google_Service_Drive_Permission;
 use Google_Service_Oauth2;
 use Google_Http_Request;
+use Hubzero\Base\Object;
 
 require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
 		. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
@@ -44,7 +45,7 @@ require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
 /**
  * Projects Connect helper class
  */
-class Connect extends \JObject {
+class Connect extends Object {
 
 	/**
 	 * Project

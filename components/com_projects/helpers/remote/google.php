@@ -35,11 +35,12 @@ use Google_Service_Drive_Permission;
 use Google_Service_Drive_DriveFile;
 use Google_Service_Drive_ParentReference;
 use Google_Http_MediaFileUpload;
+use Hubzero\Base\Object;
 
 /**
  * Projects Google Drive helper class
  */
-class Google extends \JObject
+class Google extends Object
 {
 	/**
 	 * Load file metadata

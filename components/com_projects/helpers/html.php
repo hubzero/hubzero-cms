@@ -31,11 +31,12 @@
 namespace Components\Projects\Helpers;
 
 use Exception;
+use Hubzero\Base\Object;
 
 /**
  * Html helper class
  */
-class Html extends \JObject
+class Html extends Object
 {
 	/**
 	 * Show time since present moment or an actual date

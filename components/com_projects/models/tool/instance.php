@@ -88,9 +88,9 @@ class Instance extends Model
 	}
 
 	/**
-	 * Returns a reference to a todo model
+	 * Returns a reference to the model
 	 *
-	 * @param      mixed $oid TODO ID
+	 * @param      mixed $oid object ID
 	 * @return     object Todo
 	 */
 	static function &getInstance($oid=null)

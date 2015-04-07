@@ -38,6 +38,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.view.php');
 require_once(__DIR__ . DS . 'tool' . DS . 'instance.php');
 require_once(__DIR__ . DS . 'tool' . DS . 'log.php');
 require_once(__DIR__ . DS . 'tool' . DS . 'status.php');
+require_once(__DIR__ . DS . 'tool' . DS . 'view.php');
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
