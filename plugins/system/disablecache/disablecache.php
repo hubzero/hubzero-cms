@@ -81,7 +81,7 @@ class plgSystemDisablecache extends JPlugin
 				\Config::set('caching', $this->_caching);
 			}
 		}
- 	}
+	}
 
 	/**
 	 * Check if the current URL is one of the set rules
