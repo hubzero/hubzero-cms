@@ -840,6 +840,7 @@ class Create extends SiteController
 		// Strip any scripting there may be
 		if (trim($row->fulltxt))
 		{
+			$row->fulltxt   = \Components\Resources\Helpers\Html::stripStyles($row->fulltxt);
 			$row->fulltxt   = $this->_txtClean($row->fulltxt);
 			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 			$row->footertext = $this->_txtClean($row->footertext);

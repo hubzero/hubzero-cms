@@ -38,6 +38,93 @@ include_once(__DIR__ . DS . 'tags.php');
 class Html
 {
 	/**
+	 * Generate a select form
+	 *
+	 * @param   string  $content     Content to filter
+	 * @param   array   $disallowed  List of styles to remove
+	 * @return  string  HTML
+	 */
+	public static function stripStyles($content, $disallowed = array())
+	{
+		if (empty($disallowed))
+		{
+			$disallowed = array(
+				// Font specific
+				'font-family',
+				'font-variant',
+				'font-size',
+				'font-size-adjust',
+				'font',
+				'color',
+				'line-height',
+				'letter-spacing',
+				'text-decoration',
+				'text-decoration-color',
+				'text-decoration-line',
+				'text-decoration-style',
+				'text-indent',
+				'text-shadow',
+				'text-transform',
+				'word-break',
+				'word-spacing',
+				'word-wrap',
+				// Other styles
+				'animation',
+				'animation-delay',
+				'animation-direction',
+				'animation-duration',
+				'animation-fill-mode',
+				'animation-iteration-count',
+				'animation-name',
+				'animation-play-state',
+				'animation-timing-function',
+				'background',
+				'background-attachment',
+				'background-clip',
+				'background-color',
+				'background-image',
+				'background-origin',
+				'background-position',
+				'background-repeat',
+				'background-size',
+				'box-shadow',
+				'cursor',
+			);
+		}
+
+		$content = preg_replace_callback(
+			'/<[^>]+style[\x00-\x20]*=[\`\'\"]*([^\`\'\"]+)[\`\'\"]*[^>]*>/i',
+			function ($match) use ($content, $disallowed)
+			{
+				$properties = array();
+
+				$declarations = explode(';', $match[1]);
+				$declarations = array_map('trim', $declarations);
+
+				foreach ($declarations as $declaration)
+				{
+					@list($property, $value) = explode(':', $declaration);
+					$property = strtolower(trim($property));
+
+					if (!$property) continue;
+
+					if (!in_array($property, $disallowed))
+					{
+						$properties[] = $property . ': ' . trim($value);
+					}
+				}
+
+				$replacement = trim(implode($properties, '; '));
+
+				return str_replace($match[1], $replacement, $match[0]);
+			},
+			$content
+		);
+
+		return $content;
+	}
+
+	/**
 	 * Short description for 'writeRating'
 	 *
 	 * Long description (if any) ...
