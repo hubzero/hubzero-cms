@@ -84,13 +84,6 @@ class Token
 	 */
 	public function __construct()
 	{
-		$config = \JFactory::getConfig();
-
-		if (empty($config))
-		{
-			throw new RuntimeException(__CLASS__ . '::__construct(); failed JFactory::getConfig() call');
-		}
-
 		// HubmailConfig is defined here
 		$file = '/etc/hubmail_gw.conf';
 

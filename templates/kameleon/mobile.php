@@ -31,20 +31,21 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
 //define tempate
 $this->template = 'kameleon';
 
-//get device info
 $browser = new \Hubzero\Browser\Detector();
-
-//get joomla version
-$joomlaVersion = new JVersion();
-$joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
+$cls = array(
+	$browser->name(),
+	$browser->name() . $browser->major()
+);
 ?>
 <!DOCTYPE html>
-<html class="<?php echo strtolower($browser->device() . ' ' . $browser->platform() . ' ' . $browser->platformVersion()); ?> <?php echo $joomlaRelease; ?>">
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
 	<head>
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/index.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/mobile.css" />
@@ -65,8 +66,8 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 			<header id="masthead" role="banner">
 				<div class="inner">
 					<h1>
-						<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-							<span><?php echo $config->getValue('config.sitename'); ?></span>
+						<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+							<span><?php echo Config::get('sitename'); ?></span>
 						</a>
 					</h1>
 					<div class="mobile-search">
@@ -82,7 +83,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 		</div><!-- / #top -->
 
 		<div id="wrap" class="mobile-wrap">
-			<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?>" role="main">
+			<main id="content" class="<?php echo Request::getCmd('option', ''); ?>" role="main">
 				<div class="inner">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">
@@ -117,7 +118,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 			</main><!-- / #content -->
 
 			<footer id="footer" class="mobile-footer">
-				<a href="?tmpl=fullsite">View Full Site</a>
+				<a id="footer-anchor" href="<?php echo Request::base(true); ?>?tmpl=fullsite"><?php echo Lang::txt('View Full Site'); ?></a>
 			</footer><!-- / #footer -->
 		</div><!-- / #wrap -->
 

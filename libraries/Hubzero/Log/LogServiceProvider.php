@@ -61,11 +61,11 @@ class LogServiceProvider extends ServiceProvider
 		$this->app['log.debug'] = function($app)
 		{
 			$log = new Writer(
-				new Monolog(\JFactory::getConfig()->get('application_env')),
+				new Monolog($app['config']->get('application_env')),
 				\JDispatcher::getInstance()
 			);
 
-			$path = \JFactory::getConfig()->get('log_path');
+			$path = $app['config']->get('log_path');
 			if (is_dir('/var/log/hubzero'))
 			{
 				$path = '/var/log/hubzero';
@@ -87,11 +87,11 @@ class LogServiceProvider extends ServiceProvider
 		$this->app['log.auth'] = function($app)
 		{
 			$log = new Writer(
-				new Monolog(\JFactory::getConfig()->get('application_env')),
+				new Monolog($app['config']->get('application_env')),
 				\JDispatcher::getInstance()
 			);
 
-			$path = \JFactory::getConfig()->get('log_path');
+			$path = $app['config']->get('log_path');
 			if (is_dir('/var/log/hubzero'))
 			{
 				$path = '/var/log/hubzero';

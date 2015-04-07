@@ -293,7 +293,7 @@ class MessagesModelMessage extends JModelAdmin
 			// Load the user details (already valid from table check).
 			$fromUser = \User::getInstance($table->user_id_from);
 			$toUser = \User::getInstance($table->user_id_to);
-			$debug = JFactory::getConfig()->get('debug_lang');
+			$debug = \Config::get('debug_lang');
 			$default_language = \Component::params('com_languages')->get('administrator');
 			$lang = JLanguage::getInstance($toUser->getParam('admin_language', $default_language), $debug);
 			$lang->load('com_messages', JPATH_ADMINISTRATOR);

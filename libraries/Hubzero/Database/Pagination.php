@@ -96,10 +96,10 @@ class Pagination
 		$instance = new self;
 
 		$instance->total = $total;
-		$instance->start = \JRequest::getInt($start, 0);
-		$instance->limit = \JRequest::getInt(
+		$instance->start = \Request::getInt($start, 0);
+		$instance->limit = \Request::getInt(
 			$limit,
-			\JFactory::getApplication()->getUserState($namespace . '.limit', \JFactory::getConfig()->get('list_limit'))
+			\JFactory::getApplication()->getUserState($namespace . '.limit', \Config::get('list_limit'))
 		);
 
 		\JFactory::getApplication()->setUserState($namespace . '.start', $instance->start);

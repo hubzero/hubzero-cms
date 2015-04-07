@@ -45,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->environment = \JFactory::getConfig()->get('application_env', 'production');
+		$this->environment = \Config::get('application_env', 'production');
 
 		if (strtolower($this->environment) == 'production')
 		{

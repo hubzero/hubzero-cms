@@ -52,11 +52,8 @@ class Redis implements StorageInterface
 	 */
 	private static function getPrefix()
 	{
-		// get site config
-		$config = \JFactory::getConfig();
-
 		// get redis key prefixes
-		$prefixes = $config->get('redis_key_prefix', array());
+		$prefixes = \Config::get('redis_key_prefix', array());
 
 		// return prefix
 		return isset($prefixes['session']) ? $prefixes['session'] : 'session:';

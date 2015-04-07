@@ -30,9 +30,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-$juser  = JFactory::getUser();
-
 JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
@@ -48,7 +45,7 @@ $cls = array(
 );
 
 // Prepend site name to document title
-$this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
+$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo end($cls); ?> ie ie6"> <![endif]-->
@@ -87,47 +84,47 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 						<header id="masthead" role="banner">
 							<h1>
-								<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-									<span><?php echo $config->getValue('config.sitename'); ?></span>
+								<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+									<span><?php echo Config::get('sitename'); ?></span>
 								</a>
 							</h1>
 
 							<nav id="account" role="navigation">
-							<?php if (!$juser->get('guest')) {
-									$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+							<?php if (!User::isGuest()) {
+									$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 							?>
-								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+								<ul class="menu loggedin">
 									<li>
 										<div id="account-info">
 											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $profile->get('name'); ?>" width="30" height="30" />
-											<a class="account-details" href="<?php echo JRoute::_($profile->getLink()); ?>">
+											<a class="account-details" href="<?php echo Route::url($profile->getLink()); ?>">
 												<?php echo stripslashes($profile->get('name')); ?> 
 												<span class="account-email"><?php echo $profile->get('email'); ?></span>
 											</a>
 										</div>
 										<ul>
 											<li id="account-dashboard">
-												<a href="<?php echo JRoute::_($profile->getLink() . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_DASHBOARD'); ?></span></a>
+												<a href="<?php echo Route::url($profile->getLink() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_KAMELEON_ACCOUNT_DASHBOARD'); ?></span></a>
 											</li>
 											<li id="account-profile">
-												<a href="<?php echo JRoute::_($profile->getLink() . '&active=profile'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_PROFILE'); ?></span></a>
+												<a href="<?php echo Route::url($profile->getLink() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_KAMELEON_ACCOUNT_PROFILE'); ?></span></a>
 											</li>
 											<li id="account-messages">
-												<a href="<?php echo JRoute::_($profile->getLink() . '&active=messages'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_MESSAGES'); ?></span></a>
+												<a href="<?php echo Route::url($profile->getLink() . '&active=messages'); ?>"><span><?php echo Lang::txt('TPL_KAMELEON_ACCOUNT_MESSAGES'); ?></span></a>
 											</li>
 											<li id="account-logout">
-												<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('TPL_KAMELEON_LOGOUT'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_KAMELEON_LOGOUT'); ?></span></a>
 											</li>
 										</ul>
 									</li>
 								</ul>
 							<?php } else { ?>
-								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+								<ul class="menu loggedout">
 									<li id="account-login">
-										<a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('TPL_KAMELEON_LOGIN'); ?>"><?php echo JText::_('TPL_KAMELEON_LOGIN'); ?></a>
+										<a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_KAMELEON_LOGIN'); ?>"><?php echo Lang::txt('TPL_KAMELEON_LOGIN'); ?></a>
 									</li>
 									<li id="account-register">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>" title="<?php echo JText::_('TPL_KAMELEON_SIGN_UP'); ?>"><?php echo JText::_('TPL_KAMELEON_REGISTER'); ?></a>
+										<a href="<?php echo Route::url('index.php?option=com_members&controller=register'); ?>" title="<?php echo Lang::txt('TPL_KAMELEON_SIGN_UP'); ?>"><?php echo Lang::txt('TPL_KAMELEON_REGISTER'); ?></a>
 									</li>
 								</ul>
 								<?php /* <jdoc:include type="modules" name="account" /> */ ?>
@@ -142,8 +139,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 						<div id="sub-masthead">
 						<?php if ($this->countModules('helppane')) : ?>
 							<p id="tab">
-								<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_KAMELEON_NEED_HELP'); ?>">
-									<span><?php echo JText::_('TPL_KAMELEON_HELP'); ?></span>
+								<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('TPL_KAMELEON_NEED_HELP'); ?>">
+									<span><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></span>
 								</a>
 							</p>
 						<?php endif; ?>
@@ -152,7 +149,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								<?php if (!$this->countModules('welcome')) : ?>
 								<jdoc:include type="modules" name="breadcrumbs" />
 								<?php else: ?>
-								<span class="pathway"><?php echo JText::_('TPL_KAMELEON_TAGLINE'); ?></span>
+								<span class="pathway"><?php echo Lang::txt('TPL_KAMELEON_TAGLINE'); ?></span>
 								<?php endif; ?>
 							</div><!-- / #trail -->
 						</div><!-- / #sub-masthead -->
@@ -171,7 +168,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			</div><!-- / #top -->
 
 			<div id="wrap">
-				<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?>" role="main">
+				<main id="content" class="<?php echo Request::getCmd('option', ''); ?>" role="main">
 					<div class="inner">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">

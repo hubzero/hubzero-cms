@@ -53,28 +53,16 @@ class plgSystemDisablecache extends JPlugin
 	private $_path = '';
 
 	/**
-	 * Constructor
-	 *
-	 * @param	object	$subject The object to observe
-	 * @param 	array   $config  An array that holds the plugin configuration
-	 * @since	1.0
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * Check if caching is disabled for this page and set the site config accordingly
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function onAfterRoute()
 	{
-		if ($this->_checkRules() && JFactory::getApplication()->isSite())
+		if ($this->_checkRules() && \JFactory::getApplication()->isSite())
 		{
-			$this->_caching = JFactory::getConfig()->getValue('config.caching');
-			JFactory::getConfig()->setValue('config.caching', 0);
+			$this->_caching = \Config::get('caching');
+			\Config::set('caching', 0);
 		}
 	}
 
@@ -82,15 +70,15 @@ class plgSystemDisablecache extends JPlugin
 	 * Check if caching should be re-enabled for this page if it was disabled and
 	 * set the site config accordingly
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function onAfterDispatch()
 	{
-		if ($this->_checkRules() && JFactory::getApplication()->isSite())
+		if ($this->_checkRules() && \JFactory::getApplication()->isSite())
 		{
 			if ($this->params->def('reenable_afterdispatch', 0))
 			{
-				JFactory::getConfig()->setValue('config.caching', $this->_caching);
+				\Config::set('caching', $this->_caching);
 			}
 		}
  	}
@@ -98,14 +86,13 @@ class plgSystemDisablecache extends JPlugin
 	/**
 	 * Check if the current URL is one of the set rules
 	 *
-	 * @return 	boolean	True if the current page is a rule
+	 * @return  boolean  True if the current page is a rule
 	 */
 	private function _checkRules()
 	{
 		if (!$this->_path)
 		{
-			$juri = JURI::getInstance();
-			$this->_path = $this->_parseQueryString(str_replace($juri->base(), '', $juri->current()));
+			$this->_path = $this->_parseQueryString(str_replace(\Request::base(), '', \Request::current()));
 		}
 
 		$defs = str_replace("\r", '', $this->params->def('definitions',''));
@@ -125,8 +112,8 @@ class plgSystemDisablecache extends JPlugin
 	/**
 	 * Trim leading and trailing slashes off a URI
 	 *
-	 * @param	string	$str
-	 * @return 	string
+	 * @param   string  $str
+	 * @return  string
 	 */
 	private function _parseQueryString($str)
 	{

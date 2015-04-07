@@ -40,49 +40,49 @@ class Server extends Object
 	/**
 	 * File to serve up
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_filename;
 
 	/**
 	 * Generate Accept-Ranges header?
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
 	private $_acceptranges;
 
 	/**
 	 * Serve with mod_xsendfile
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
 	private static $_allowxsendfle = false;
 
 	/**
 	 * inline or attachment
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_disposition;
 
 	/**
 	 * Name to save file as
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_saveas;
 
 	/**
 	 * Content Type
 	 * 
-	 * @var [type]
+	 * @var  string
 	 */
 	private static $_contentType;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -92,8 +92,8 @@ class Server extends Object
 	/**
 	 * Set the name to save file as
 	 *
-	 * @param      string $saveas Name to save file as
-	 * @return     mixed  String if field is set, NULL if not
+	 * @param   string  $saveas  Name to save file as
+	 * @return  mixed   String if field is set, NULL if not
 	 */
 	public function saveas($saveas = null)
 	{
@@ -108,8 +108,8 @@ class Server extends Object
 	/**
 	 * Set the filename value
 	 *
-	 * @param      string $filename File to serve up
-	 * @return     mixed  String if field is set, NULL if not
+	 * @param   string  $filename  File to serve up
+	 * @return  mixed   String if field is set, NULL if not
 	 */
 	public function filename($filename = null)
 	{
@@ -123,13 +123,14 @@ class Server extends Object
 
 	/**
 	 * Allow apache to serve files
-	 * @return [type] [description]
+	 *
+	 * @return  void
 	 */
 	public function allowXsendFile()
 	{
 		// is mod_xsendfile loaded & we have allowed xsendfile in config
 		if (in_array('mod_xsendfile', apache_get_modules())
-			&& \JFactory::getConfig()->getValue('allow_xsendfile', 0) == 1)
+			&& \Config::get('allow_xsendfile', 0) == 1)
 		{
 			self::$_allowxsendfle = true;
 		}
@@ -138,8 +139,8 @@ class Server extends Object
 	/**
 	 * Set the filename value
 	 *
-	 * @param      string  $filename File to serve up
-	 * @return     boolean True if path is allowable, False if not
+	 * @param   string   $filename  File to serve up
+	 * @return  boolean  True if path is allowable, False if not
 	 */
 	public static function valid($filename = null)
 	{
@@ -178,8 +179,8 @@ class Server extends Object
 	/**
 	 * Set the acceptranges value
 	 *
-	 * @param      unknown $acceptranges Value to set
-	 * @return     mixed Boolean if field is set, NULL if not
+	 * @param   boolean  $acceptranges  Value to set
+	 * @return  mixed    Boolean if field is set, NULL if not
 	 */
 	public function acceptranges($acceptranges = null)
 	{
@@ -194,8 +195,8 @@ class Server extends Object
 	/**
 	 * Set the disposition value
 	 *
-	 * @param      string $disposition Value to set
-	 * @return     mixed String if field is set, NULL if not
+	 * @param   string  $disposition  Value to set
+	 * @return  mixed   String if field is set, NULL if not
 	 */
 	public function disposition($disposition = null)
 	{
@@ -223,7 +224,7 @@ class Server extends Object
 	/**
 	 * Set Content Type
 	 * 
-	 * @param string $contentType
+	 * @param  string  $contentType
 	 */
 	public function setContentType($contentType = null)
 	{
@@ -236,7 +237,7 @@ class Server extends Object
 	/**
 	 * Read the contents of a file and display it
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function serve()
 	{
@@ -247,10 +248,10 @@ class Server extends Object
 	 * Read the contents of a file and display display as attachment
 	 * (browser should default to saving file rather than displaying)
 	 *
-	 * @param      string  $filename     File to serve up
-	 * @param      string  $saveas       Name to save file as
-	 * @param      boolean $acceptranges Generate Accept-Ranges header?
-	 * @return     boolean True on success, False if error
+	 * @param   string   $filename      File to serve up
+	 * @param   string   $saveas        Name to save file as
+	 * @param   boolean  $acceptranges  Generate Accept-Ranges header?
+	 * @return  boolean  True on success, False if error
 	 */
 	public function serve_attachment($filename, $saveas = null, $acceptranges = true)
 	{
@@ -261,9 +262,9 @@ class Server extends Object
 	 * Read the contents of a file and display it inline
 	 * (display in browser window)
 	 *
-	 * @param      string  $filename     File to serve up
-	 * @param      boolean $acceptranges Generate Accept-Ranges header?
-	 * @return     boolean True on success, False if error
+	 * @param   string   $filename      File to serve up
+	 * @param   boolean  $acceptranges  Generate Accept-Ranges header?
+	 * @return  boolean  True on success, False if error
 	 */
 	public function serve_inline($filename, $acceptranges = true)
 	{
@@ -273,11 +274,11 @@ class Server extends Object
 	/**
 	 * Read the contents of a file and display it
 	 *
-	 * @param      string  $filename     File to serve up
-	 * @param      string  $saveas       Name to save file as (used for attachment disposition)
-	 * @param      string  $disposition  inline or attachment
-	 * @param      boolean $acceptranges Generate Accept-Ranges header?
-	 * @return     boolean True on success, False if error
+	 * @param   string   $filename      File to serve up
+	 * @param   string   $saveas        Name to save file as (used for attachment disposition)
+	 * @param   string   $disposition   inline or attachment
+	 * @param   boolean  $acceptranges  Generate Accept-Ranges header?
+	 * @return  boolean  True on success, False if error
 	 */
 	public static function serve_file($filename, $saveas=null, $disposition='inline', $acceptranges=true)
 	{
@@ -304,8 +305,8 @@ class Server extends Object
 			$saveas = basename($saveas);
 		}
 
-		$saveas    = addslashes($saveas);
-		$filesize  = filesize($filename);
+		$saveas   = addslashes($saveas);
+		$filesize = filesize($filename);
 
 		// Get the file's mimetype
 		if (!self::$_contentType)

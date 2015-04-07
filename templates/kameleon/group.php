@@ -35,8 +35,6 @@ $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
 
-$config = JFactory::getConfig();
-
 $this->template = 'kameleon';
 ?>
 <!DOCTYPE html>
@@ -68,15 +66,15 @@ $this->template = 'kameleon';
 
 		<?php if ($this->countModules('helppane')) : ?>
 			<p id="tab">
-				<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('Need help? Send a trouble report to our support team.'); ?>">
-					<span><?php echo JText::_('Need Help?'); ?></span>
+				<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('Need help? Send a trouble report to our support team.'); ?>">
+					<span><?php echo Lang::txt('Need Help?'); ?></span>
 				</a>
 			</p>
 		<?php endif; ?>
 
 		<div id="special-bar">
-			<p id="powered"><a href="<?php echo $this->baseurl; ?>/"><?php echo JText::sprintf('powered by <span>%s</span>', $config->getValue('sitename')); ?></a></p>
-			<p id="learnmore"><a href="<?php echo $this->baseurl; ?>/about"><?php echo JText::sprintf('Learn more about %s', $config->getValue('sitename')); ?></a></p>
+			<p id="powered"><a href="<?php echo $this->baseurl; ?>/"><?php echo Lang::txt('powered by <span>%s</span>', Config::get('sitename')); ?></a></p>
+			<p id="learnmore"><a href="<?php echo $this->baseurl; ?>/about"><?php echo Lang::txt('Learn more about %s', Config::get('sitename')); ?></a></p>
 		</div>
 
 		<jdoc:include type="message" />

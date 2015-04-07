@@ -38,17 +38,6 @@ defined('_JEXEC') or die('Restricted access');
 class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @param object $subject the object to observe
-	 * @param array  $config  an array that holds the plugin configuration
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * Hook for after parsing route
 	 *
 	 * @param  array $vars the request vars
@@ -59,17 +48,17 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 		// First, check for presence of subject dn, which is the minimum required field
 		if (!isset($_SERVER['SSL_CLIENT_S_DN']) || !$_SERVER['SSL_CLIENT_S_DN'])
 		{
-			\JFactory::getApplication()->redirect($this->params->get('failure_location', '/invalidcert.php'));
+			\App::redirect($this->params->get('failure_location', '/invalidcert.php'));
 			return;
 		}
 
-		if (\JFactory::getUser()->get('guest'))
+		if (\User::isGuest())
 		{
 			// If so, redirect to login
 			$return['option']        = 'com_users';
 			$return['task']          = 'user.login';
 			$return['authenticator'] = 'certificate';
-			$return['return']        = base64_encode(\JURI::current());
+			$return['return']        = base64_encode(\Request::current());
 
 			return $return;
 		}
@@ -78,7 +67,7 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 		$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'certificate', $_SERVER['SSL_CLIENT_I_DN_CN']);
 		if ($link = \Hubzero\Auth\Link::getInstance($hzad->id, $_SERVER['SSL_CLIENT_S_DN_CN']))
 		{
-			if ($link->user_id == \JFactory::getUser()->get('id'))
+			if ($link->user_id == \User::get('id'))
 			{
 				// All clear...return nothing
 				return;

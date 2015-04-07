@@ -32,139 +32,6 @@ use Hubzero\Item\Comment\File;
 class Comment extends \JTable
 {
 	/**
-	 * Primary key
-	 *
-	 * @var integer int(11)
-	 */
-	var $id            = NULL;
-
-	/**
-	 * Object this is a comment for
-	 *
-	 * @var integer int(11)
-	 */
-	var $item_id      = NULL;
-
-	/**
-	 * Object type (resource, kb, etc)
-	 *
-	 * @var string varchar(100)
-	 */
-	var $item_type    = NULL;
-
-	/**
-	 * Comment
-	 *
-	 * @var string text
-	 */
-	var $content       = NULL;
-
-	/**
-	 * When the entry was created
-	 *
-	 * @var string datetime (0000-00-00 00:00:00)
-	 */
-	var $created       = NULL;
-
-	/**
-	 * Who created this entry
-	 *
-	 * @var integer int(11)
-	 */
-	var $created_by    = NULL;
-
-	/**
-	 * When the entry was modifed
-	 *
-	 * @var string datetime (0000-00-00 00:00:00)
-	 */
-	var $modified      = NULL;
-
-	/**
-	 * Who modified this entry
-	 *
-	 * @var integer int(11)
-	 */
-	var $modified_by   = NULL;
-
-	/**
-	 * Display comment as anonymous
-	 *
-	 * @var integer tinyint(3)
-	 */
-	var $anonymous     = NULL;
-
-	/**
-	 * Parent comment
-	 *
-	 * @var integer int(11)
-	 */
-	var $parent        = NULL;
-
-	/**
-	 * Notify the user of replies
-	 *
-	 * @var integer tinyint(2)
-	 */
-	var $notify        = NULL;
-
-	/**
-	 * Access level (0=public, 1=registered, 2=special, 3=protected, 4=private)
-	 *
-	 * @var integer tinyint(2)
-	 */
-	var $access        = NULL;
-
-	/**
-	 * Pushed state (0=unpublished, 1=published, 2=trashed)
-	 *
-	 * @var integer int(2)
-	 */
-	var $state         = NULL;
-
-	/**
-	 * Positive votes (people liked this comment)
-	 *
-	 * @var integer int(11)
-	 */
-	var $positive      = NULL;
-
-	/**
-	 * Negative votes (people disliked this comment)
-	 *
-	 * @var integer int(11)
-	 */
-	var $negative      = NULL;
-
-	/**
-	 * Upload path
-	 *
-	 * @var string
-	 */
-	var $_uploadDir    = '/sites/comments';
-
-	/**
-	 * Allowed Extensions
-	 *
-	 * @var string
-	 */
-	var $_extensions    = array('jpg','png','gif','bmp','tiff');
-
-	/**
-	 * array
-	 *
-	 * @var array
-	 */
-	var $attachmentNames = NULL;
-
-	/**
-	 * decimal(2,1)
-	 *
-	 * @var integer
-	 */
-	var $rating      = NULL;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -183,30 +50,29 @@ class Comment extends \JTable
 	public function check()
 	{
 		$this->content = trim($this->content);
-		if (!$this->content || $this->content == \JText::_('Enter your comments...'))
+		if (!$this->content || $this->content == \Lang::txt('Enter your comments...'))
 		{
-			$this->setError(\JText::_('Please provide a comment'));
+			$this->setError(\Lang::txt('Please provide a comment'));
 			return false;
 		}
 
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(\JText::_('Missing entry ID.'));
+			$this->setError(\Lang::txt('Missing entry ID.'));
 			return false;
 		}
 
 		$this->item_type = strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($this->item_type)));
 		if (!$this->item_type)
 		{
-			$this->setError(\JText::_('Missing entry type.'));
+			$this->setError(\Lang::txt('Missing entry type.'));
 			return false;
 		}
 
 		if (!$this->created_by)
 		{
-			$juser = \JFactory::getUser();
-			$this->created_by = $juser->get('id');
+			$this->created_by = \User::get('id');
 		}
 
 		if (!$this->id)
@@ -216,8 +82,7 @@ class Comment extends \JTable
 		}
 		else
 		{
-			$juser = \JFactory::getUser();
-			$this->modified_by = $juser->get('id');
+			$this->modified_by = \User::get('id');
 			$this->modified = \JFactory::getDate()->toSql();
 		}
 
@@ -235,17 +100,17 @@ class Comment extends \JTable
 				switch ($fileError)
 				{
 					case 1:
-						$this->setError(\JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
+						$this->setError(\Lang::txt('FILE TO LARGE THAN PHP INI ALLOWS'));
 						return false;
 					break;
 
 					case 2:
-						$this->setError(\JText::_('FILE TO LARGE THAN HTML FORM ALLOWS'));
+						$this->setError(\Lang::txt('FILE TO LARGE THAN HTML FORM ALLOWS'));
 						return false;
 					break;
 
 					case 3:
-						$this->setError(\JText::_('ERROR PARTIAL UPLOAD'));
+						$this->setError(\Lang::txt('ERROR PARTIAL UPLOAD'));
 						return false;
 					break;
 
@@ -259,7 +124,7 @@ class Comment extends \JTable
 			$fileSize = $_FILES[$fieldName]['size'];
 			if ($fileSize > 2000000)
 			{
-				$this->setError(\JText::_('FILE BIGGER THAN 2MB'));
+				$this->setError(\Lang::txt('FILE BIGGER THAN 2MB'));
 				return false;
 			}
 
@@ -285,7 +150,7 @@ class Comment extends \JTable
 
 			if ($extOk == false)
 			{
-				$this->setError(\JText::_('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
+				$this->setError(\Lang::txt('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
 				return false;
 			}
 
@@ -305,7 +170,7 @@ class Comment extends \JTable
 
 			if (!\JFile::upload($fileTemp, $uploadPath))
 			{
-				$this->setError(\JText::_('ERROR MOVING FILE'));
+				$this->setError(\Lang::txt('ERROR MOVING FILE'));
 				return false;
 			}
 
@@ -339,7 +204,7 @@ class Comment extends \JTable
 	 */
 	private function getUploadDir()
 	{
-		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
+		return PATH_APP . DS . ltrim($this->_uploadDir, DS);
 	}
 
 	/**
@@ -456,18 +321,16 @@ class Comment extends \JTable
 
 		if (!$item_type || !$item_id)
 		{
-			$this->setError(\JText::_('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
+			$this->setError(\Lang::txt('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
-
-		if (!$juser->get('guest'))
+		if (!\User::isGuest())
 		{
 			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
-			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $this->_db->Quote($juser->get('id')) . " AND v.item_type='comment' ";
+			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $this->_db->Quote(\User::get('id')) . " AND v.item_type='comment' ";
 		}
 		else
 		{

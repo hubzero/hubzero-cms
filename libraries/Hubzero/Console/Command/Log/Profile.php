@@ -70,7 +70,7 @@ class Profile extends Base
 	 **/
 	public static function path()
 	{
-		$dir = \JFactory::getConfig()->getValue('config.log_path');
+		$dir = \Config::get('log_path');
 
 		if (is_dir('/var/log/hubzero-cms'))
 		{

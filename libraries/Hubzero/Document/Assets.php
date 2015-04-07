@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,9 +32,9 @@ namespace Hubzero\Document;
 
 use Hubzero\Document\Asset\Javascript;
 use Hubzero\Document\Asset\Stylesheet;
-use JFactory;
-use JURI;
 use Exception;
+use Request;
+use Config;
 use lessc;
 
 /**
@@ -100,7 +100,7 @@ class Assets
 
 		$root = self::base();
 
-		\JFactory::getDocument()->addStyleSheet(rtrim(\JURI::base(true), DS) . $stylesheet . '?v=' . filemtime($root . $stylesheet));
+		\JFactory::getDocument()->addStyleSheet(rtrim(\Request::base(true), DS) . $stylesheet . '?v=' . filemtime($root . $stylesheet));
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Assets
 
 		$root = self::base();
 
-		\JFactory::getDocument()->addScript(rtrim(\JURI::base(true), DS) . $script . '?v=' . filemtime($root . $script));
+		\JFactory::getDocument()->addScript(rtrim(\Request::base(true), DS) . $script . '?v=' . filemtime($root . $script));
 	}
 
 	/**
@@ -250,7 +250,7 @@ class Assets
 			return $image;
 		}
 
-		$template  = JFactory::getApplication()->getTemplate();
+		$template = \JFactory::getApplication()->getTemplate();
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'images' . DS . $image;
@@ -265,7 +265,7 @@ class Assets
 			if (file_exists($root . $path))
 			{
 				// Push script to the document
-				return rtrim(JURI::base(true), DS) . $path;
+				return rtrim(Request::base(true), DS) . $path;
 			}
 		}
 	}
@@ -281,7 +281,7 @@ class Assets
 	 */
 	public static function getComponentStylesheet($component, $stylesheet, $dir = 'css')
 	{
-		$template  = JFactory::getApplication()->getTemplate();
+		$template = \JFactory::getApplication()->getTemplate();
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
@@ -296,7 +296,7 @@ class Assets
 			if (file_exists($root . $path))
 			{
 				// Push script to the document
-				return rtrim(JURI::base(true), DS) . $path;
+				return rtrim(Request::base(true), DS) . $path;
 			}
 		}
 	}
@@ -319,7 +319,7 @@ class Assets
 			return $image;
 		}
 
-		$template  = JFactory::getApplication()->getTemplate();
+		$template = \JFactory::getApplication()->getTemplate();
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . 'images' . DS . $image;
@@ -334,7 +334,7 @@ class Assets
 			if (file_exists($root . $path))
 			{
 				// Push script to the document
-				return rtrim(JURI::base(true), DS) . $path;
+				return rtrim(Request::base(true), DS) . $path;
 			}
 		}
 	}
@@ -404,7 +404,7 @@ class Assets
 			return $image;
 		}
 
-		$template  = JFactory::getApplication()->getTemplate();
+		$template = \JFactory::getApplication()->getTemplate();
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . 'images' . DS . $image;
@@ -424,11 +424,11 @@ class Assets
 			{
 				if ($i == 0)
 				{
-					$b = rtrim(JURI::base(true), DS);
+					$b = rtrim(Request::base(true), DS);
 				}
 				else
 				{
-					$b = str_replace('/administrator', '', rtrim(JURI::base(true), DS));
+					$b = str_replace('/administrator', '', rtrim(Request::base(true), DS));
 				}
 				// Push script to the document
 				return $b . $path;
@@ -500,7 +500,7 @@ class Assets
 			return $image;
 		}
 
-		$template  = JFactory::getApplication()->getTemplate();
+		$template = \JFactory::getApplication()->getTemplate();
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
@@ -512,7 +512,7 @@ class Assets
 			if (file_exists(JPATH_ROOT . $path))
 			{
 				// Push script to the document
-				return str_replace('/administrator', '', rtrim(JURI::base(true), DS)) . $path;
+				return str_replace('/administrator', '', rtrim(Request::base(true), DS)) . $path;
 			}
 		}
 	}
@@ -528,11 +528,11 @@ class Assets
 	public static function getSystemStylesheet($elements = null)
 	{
 		// Path to system cache
-		$cachedir = JPATH_ROOT . DS . 'cache';
+		$cachedir = PATH_APP . DS . 'cache';
 		// Path to system CSS
 		$thispath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
 
-		$env = JFactory::getConfig()->getValue('config.application_env', 'production');
+		$env = Config::get('application_env', 'production');
 
 		try {
 			// Primary build file
@@ -564,7 +564,7 @@ class Assets
 				}
 
 				// Are there any template overrides?
-				$template  = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'less'; // . 'bootstrap.less';
+				$template  = JPATH_ROOT . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate() . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
 				if (file_exists($template . DS . $primary . '.less'))
@@ -642,10 +642,10 @@ class Assets
 				if (!is_array($cache) || $newCache['updated'] > $cache['updated'])
 				{
 					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
-					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(JURI::base(true), DS) . '/media/system/', $newCache['compiled']);
+					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(Request::base(true), DS) . '/media/system/', $newCache['compiled']);
 					file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
 				}
-				$output =  rtrim(JURI::root(true), '/') . DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
+				$output =  rtrim(Request::root(true), '/') . DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
 			}
 		}
 		catch (Exception $e)
@@ -736,7 +736,7 @@ class Assets
 					'$1'*/
 				);
 				$contents = preg_replace($patterns, $replacements, $contents);
-				$contents = str_replace("url('/media/system/", "url('" . rtrim(JURI::base(true), DS) . "/media/system/", $contents);
+				$contents = str_replace("url('/media/system/", "url('" . rtrim(Request::base(true), DS) . "/media/system/", $contents);
 
 				if ($fp = fopen($cachedir . DS . $cachefile, 'wb'))
 				{
@@ -745,7 +745,7 @@ class Assets
 				}
 			}
 
-			$output = rtrim(JURI::base(true), DS) . DS . 'cache' . DS . $cachefile;
+			$output = rtrim(Request::base(true), DS) . DS . 'cache' . DS . $cachefile;
 		}
 
 		return $output;

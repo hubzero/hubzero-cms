@@ -493,14 +493,13 @@ class Base
 				if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 				{
 					// Use the MySQL driver for this
-					$config = \JFactory::getConfig();
 					$database = \JDatabase::getInstance(
 						array(
 							'driver'   => 'mysql',
-							'host'     => $config->getValue('host'),
-							'user'     => $config->getValue('user'),
-							'password' => $config->getValue('password'),
-							'database' => $config->getValue('db')
+							'host'     => \Config::get('host'),
+							'user'     => \Config::get('user'),
+							'password' => \Config::get('password'),
+							'database' => \Config::get('db')
 						)
 					);
 
@@ -1034,14 +1033,13 @@ class Base
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
 				// Use the MySQL driver for this
-				$config = \JFactory::getConfig();
 				$database = \JDatabase::getInstance(
 					array(
 						'driver'   => 'mysql',
-						'host'     => $config->getValue('host'),
-						'user'     => $config->getValue('user'),
-						'password' => $config->getValue('password'),
-						'database' => $config->getValue('db')
+						'host'     => \Config::get('host'),
+						'user'     => \Config::get('user'),
+						'password' => \Config::get('password'),
+						'database' => \Config::get('db')
 					)
 				);
 

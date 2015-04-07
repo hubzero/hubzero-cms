@@ -86,28 +86,26 @@ class Message extends \Swift_Message
 	 */
 	public function send($transporter='', $options=array())
 	{
-		$config = \JFactory::getConfig();
-
-		$transporter = $transporter ? $transporter : $config->getValue('config.mailer');
+		$transporter = $transporter ? $transporter : \Config::get('mailer');
 
 		switch (strtolower($transporter))
 		{
 			case 'smtp':
 				if (!isset($options['host']))
 				{
-					$options['host'] = $config->getValue('config.smtphost');
+					$options['host'] = \Config::get('smtphost');
 				}
 				if (!isset($options['port']))
 				{
-					$options['port'] = $config->getValue('config.smtpport');
+					$options['port'] = \Config::get('smtpport');
 				}
 				if (!isset($options['username']))
 				{
-					$options['username'] = $config->getValue('config.smtpuser');
+					$options['username'] = \Config::get('smtpuser');
 				}
 				if (!isset($options['password']))
 				{
-					$options['password'] = $config->getValue('config.smtppass');
+					$options['password'] = \Config::get('smtppass');
 				}
 
 				if (!empty($options))
@@ -142,8 +140,7 @@ class Message extends \Swift_Message
 		$mailer = \Swift_Mailer::newInstance($transport);
 		$result = $mailer->send($this, $this->_failures);
 
-		$log = \JFactory::getLogger();
-		$log->info(\JText::sprintf('Mail sent to %s', json_encode($this->getTo())));
+		\Log::info(\Lang::txt('Mail sent to %s', json_encode($this->getTo())));
 
 		return $result;
 	}

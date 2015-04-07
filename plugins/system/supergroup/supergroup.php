@@ -40,31 +40,14 @@ jimport('joomla.event.plugin');
 class plgSystemSupergroup extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @since 1.5
-	 */
-	public function __construct(& $subject)
-	{
-		parent::__construct($subject, NULL);
-	}
-
-	/**
 	 * Method that fires after before a super group displays a super group comonent
 	 *
-	 * @return   void
+	 * @return  void
 	 */
 	public function onBeforeRenderSuperGroupComponent()
 	{
 		// get request options
-		$option = JRequest::getCmd('option', '');
-		$cn     = JRequest::getVar('cn', '');
-		$active = JRequest::getVar('active', '');
+		$option = Request::getCmd('option', '');
 
 		// make sure we in groups
 		if ($option != 'com_groups')
@@ -72,15 +55,17 @@ class plgSystemSupergroup extends JPlugin
 			return;
 		}
 
+		$cn     = Request::getVar('cn', '');
+		$active = Request::getVar('active', '');
+
 		// load group object
-		$group  = \Hubzero\User\Group::getInstance( $cn );
+		$group  = \Hubzero\User\Group::getInstance($cn);
 
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 		{
 			// get com_groups params to get upload path
-			$groupParams     = JComponentHelper::getParams('com_groups');
-			$uploadPath      = JPATH_ROOT . DS . trim($groupParams->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+			$uploadPath      = $this->filespace($group);
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
 
@@ -92,7 +77,7 @@ class plgSystemSupergroup extends JPlugin
 
 				// build function name
 				$parseRouteFunction = ucfirst($active) . 'ParseRoute';
-				$parseRouteFunction = str_replace(array("-", "."), "", $parseRouteFunction);
+				$parseRouteFunction = str_replace(array('-', '.'), '', $parseRouteFunction);
 
 				// if we have a build route functions, run it
 				if (function_exists($parseRouteFunction))
@@ -110,17 +95,17 @@ class plgSystemSupergroup extends JPlugin
 					// set each var
 					foreach ($vars as $key => $var)
 					{
-						JRequest::setVar($key, $var);
+						Request::setVar($key, $var);
 					}
 				}
 			}
 
 			// remove "sg_" prefix for super group query params
-			foreach (JRequest::get() as $k => $v)
+			foreach (Request::get() as $k => $v)
 			{
 				if (strpos($k, 'sg_') !== false)
 				{
-					JRequest::setVar(str_replace('sg_', '', $k), $v);
+					Request::setVar(str_replace('sg_', '', $k), $v);
 				}
 			}
 		}
@@ -129,8 +114,8 @@ class plgSystemSupergroup extends JPlugin
 	/**
 	 * Method that fires after an SEF route is built
 	 *
-	 * @param    $uri    URI after route has been built
-	 * @return   void
+	 * @param   object  $uri  URI after route has been built
+	 * @return  void
 	 */
 	public function onAfterBuildSefRoute($uri)
 	{
@@ -161,18 +146,17 @@ class plgSystemSupergroup extends JPlugin
 		$query = $uri->getQuery(true);
 
 		// get request options
-		$cn     = JRequest::getVar('cn', '');
-		$active = JRequest::getVar('active', '');
+		$cn     = Request::getVar('cn', '');
+		$active = Request::getVar('active', '');
 
 		// load group object
-		$group  = \Hubzero\User\Group::getInstance( $cn );
+		$group  = \Hubzero\User\Group::getInstance($cn);
 
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 		{
 			// get com_groups params to get upload path
-			$groupParams     = JComponentHelper::getParams('com_groups');
-			$uploadPath      = JPATH_ROOT . DS . trim($groupParams->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+			$uploadPath      = $this->filespace($group);
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
 
@@ -190,7 +174,7 @@ class plgSystemSupergroup extends JPlugin
 
 				// build function name
 				$buildRouteFunction = ucfirst($active) . 'BuildRoute';
-				$buildRouteFunction = str_replace(array("-", "."), "", $buildRouteFunction);
+				$buildRouteFunction = str_replace(array('-', '.'), '', $buildRouteFunction);
 
 				// if we have a build route functions, run it
 				if (function_exists($buildRouteFunction))
@@ -208,5 +192,17 @@ class plgSystemSupergroup extends JPlugin
 				}
 			}
 		}
+	}
+
+	/**
+	 * Method that fires after an SEF route is built
+	 *
+	 * @param   object  $group
+	 * @return  string
+	 */
+	protected function filespace($group)
+	{
+		$params = Component::params('com_groups');
+		return PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 	}
 }

@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if (JRequest::getInt('getstarted', 0) && ($tpl = $this->params->get('template', '')))
+if (Request::getInt('getstarted', 0) && ($tpl = $this->params->get('template', '')))
 {
 	$fallback = 'hubbasic2013';
 
@@ -54,7 +54,7 @@ if (JRequest::getInt('getstarted', 0) && ($tpl = $this->params->get('template', 
 		$database->setQuery("UPDATE `#__template_styles` SET `home`=1 WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
 		$database->query();
 
-		JFactory::getApplication()->redirect(JRoute::_('/gettingstarted'));
+		App::redirect(Route::url('/gettingstarted'));
 	}
 }
 
@@ -67,7 +67,7 @@ $flavor = $this->params->get('flavor', false);
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<title><?php echo JFactory::getConfig()->getValue('config.sitename') . ' - ' . $this->getTitle(); ?></title>
+		<title><?php echo Config::get('sitename') . ' - ' . $this->getTitle(); ?></title>
 
 		<!-- Styles -->
 		<link rel="stylesheet" href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/css/normalize.min.css" />
@@ -116,7 +116,7 @@ $flavor = $this->params->get('flavor', false);
 
 			<header>
 				<div class="inner">
-					<h1><?php echo JText::sprintf('TPL_WELCOME_CONGRATS' . ($this->params->get('flavor') ? '_' . strtoupper($this->params->get('flavor')) : ''), \Hubzero\Version\Version::VERSION); ?></h1>
+					<h1><?php echo Lang::txt('TPL_WELCOME_CONGRATS' . ($this->params->get('flavor') ? '_' . strtoupper($this->params->get('flavor')) : ''), \Hubzero\Version\Version::VERSION); ?></h1>
 
 					<div class="displays">
 						<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/screen-x2.png" class="display" alt="" />
@@ -129,13 +129,13 @@ $flavor = $this->params->get('flavor', false);
 			<main class="content">
 				<div class="inner">
 					<div class="intro">
-						<h4><?php echo JText::_('TPL_WELCOME_ABOUT_HEADER'); ?></h4>
-						<p><?php echo JText::_('TPL_WELCOME_ABOUT_BODY'); ?></p>
+						<h4><?php echo Lang::txt('TPL_WELCOME_ABOUT_HEADER'); ?></h4>
+						<p><?php echo Lang::txt('TPL_WELCOME_ABOUT_BODY'); ?></p>
 					</div>
 
 
 					<?php if ($flavor == 'amazon') : ?>
-						<h2><span><?php echo JText::_('TPL_WELCOME_FIRST_THING'); ?></span></h2>
+						<h2><span><?php echo Lang::txt('TPL_WELCOME_FIRST_THING'); ?></span></h2>
 
 						<div class="section">
 							<div class="cols clearfix">
@@ -144,13 +144,13 @@ $flavor = $this->params->get('flavor', false);
 								</div>
 								<div class="col spacer">&nbsp;</div>
 								<div class="col txt">
-									<h3><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_HEADER_' . strtoupper($flavor)); ?></h3>
+									<h3><?php echo Lang::txt('TPL_WELCOME_ADMIN_PASS_HEADER_' . strtoupper($flavor)); ?></h3>
 
-									<p><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_BODY_' . strtoupper($flavor)); ?></p>
+									<p><?php echo Lang::txt('TPL_WELCOME_ADMIN_PASS_BODY_' . strtoupper($flavor)); ?></p>
 
-									<?php echo JText::sprintf('TPL_WELCOME_ADMIN_PASS_SITE_URL', $_SERVER['SERVER_NAME'] ); ?>
+									<?php echo Lang::txt('TPL_WELCOME_ADMIN_PASS_SITE_URL', $_SERVER['SERVER_NAME'] ); ?>
 									<br/><br/>
-									<?php echo JText::sprintf('TPL_WELCOME_ADMIN_PASS_ADMIN_URL', $_SERVER['SERVER_NAME'] ); ?>
+									<?php echo Lang::txt('TPL_WELCOME_ADMIN_PASS_ADMIN_URL', $_SERVER['SERVER_NAME'] ); ?>
 
 								</div>
 							</div>
@@ -162,9 +162,9 @@ $flavor = $this->params->get('flavor', false);
 									<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/ssh.svg" alt="" />
 								</div>
 								<div class="col txt">
-									<h3><?php echo JText::_('TPL_WELCOME_SSH_HEADER_' . strtoupper($flavor)); ?></h3>
+									<h3><?php echo Lang::txt('TPL_WELCOME_SSH_HEADER_' . strtoupper($flavor)); ?></h3>
 
-									<p><?php echo JText::sprintf('TPL_WELCOME_SSH_BODY_' . strtoupper($flavor), $_SERVER['SERVER_NAME']); ?></p>
+									<p><?php echo Lang::txt('TPL_WELCOME_SSH_BODY_' . strtoupper($flavor), $_SERVER['SERVER_NAME']); ?></p>
 								</div>
 								<div class="spacer col">&nbsp;</div>
 								<div class="nomobile col icon">
@@ -174,11 +174,10 @@ $flavor = $this->params->get('flavor', false);
 						</div>
 					<?php endif; ?>
 
-
 					<?php if ($flavor != 'amazon') : ?>
-	
-						<h2 class="info"><span><?php echo JText::_('TPL_WELCOME_GETTING_TO_KNOW'); ?></span></h2>
-	
+
+						<h2 class="info"><span><?php echo Lang::txt('TPL_WELCOME_GETTING_TO_KNOW'); ?></span></h2>
+
 						<div class="section">
 							<div class="cols clearfix">
 								<div class="col icon">
@@ -186,24 +185,24 @@ $flavor = $this->params->get('flavor', false);
 								</div>
 								<div class="col spacer">&nbsp;</div>
 								<div class="col txt">
-									<h3><?php echo JText::_('TPL_WELCOME_UTILIZE_HEADER'); ?></h3>
-	
-									<p><?php echo JText::_('TPL_WELCOME_UTILIZE_BODY'); ?></p>
-									<a href="http://hubzero.org/documentation/current/users" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_UTILIZE_LINK'); ?></a>
+									<h3><?php echo Lang::txt('TPL_WELCOME_UTILIZE_HEADER'); ?></h3>
+
+									<p><?php echo Lang::txt('TPL_WELCOME_UTILIZE_BODY'); ?></p>
+									<a href="http://hubzero.org/documentation/current/users" class="b" rel="external" target="_blank"><?php echo Lang::txt('TPL_WELCOME_UTILIZE_LINK'); ?></a>
 								</div>
 							</div>
 						</div>
-	
+
 						<div class="section inverted">
 							<div class="cols clearfix">
 								<div class="mobile col icon">
 									<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/manage.svg" alt="" />
 								</div>
 								<div class="col txt">
-									<h3><?php echo JText::_('TPL_WELCOME_MANAGE_HEADER'); ?></h3>
-	
-									<p><?php echo JText::_('TPL_WELCOME_MANAGE_BODY'); ?></p>
-									<a href="http://hubzero.org/documentation/current/managers" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_MANAGE_LINK'); ?></a>
+									<h3><?php echo Lang::txt('TPL_WELCOME_MANAGE_HEADER'); ?></h3>
+
+									<p><?php echo Lang::txt('TPL_WELCOME_MANAGE_BODY'); ?></p>
+									<a href="http://hubzero.org/documentation/current/managers" class="b" rel="external" target="_blank"><?php echo Lang::txt('TPL_WELCOME_MANAGE_LINK'); ?></a>
 								</div>
 								<div class="col spacer">&nbsp;</div>
 								<div class="col icon nomobile">
@@ -211,7 +210,7 @@ $flavor = $this->params->get('flavor', false);
 								</div>
 							</div>
 						</div>
-	
+
 						<div class="section">
 							<div class="cols clearfix">
 								<div class="col icon">
@@ -219,54 +218,54 @@ $flavor = $this->params->get('flavor', false);
 								</div>
 								<div class="col spacer">&nbsp;</div>
 								<div class="col txt">
-									<h3><?php echo JText::_('TPL_WELCOME_EXTEND_HEADER'); ?></h3>
-	
-									<p><?php echo JText::_('TPL_WELCOME_EXTEND_BODY'); ?></p>
-									<a href="http://hubzero.org/documentation/current/webdevs" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_EXTEND_LINK'); ?></a>
+									<h3><?php echo Lang::txt('TPL_WELCOME_EXTEND_HEADER'); ?></h3>
+
+									<p><?php echo Lang::txt('TPL_WELCOME_EXTEND_BODY'); ?></p>
+									<a href="http://hubzero.org/documentation/current/webdevs" class="b" rel="external" target="_blank"><?php echo Lang::txt('TPL_WELCOME_EXTEND_LINK'); ?></a>
 								</div>
 							</div>
 						</div>
 					</div>
-	
+
 					<div class="bam">
 						<div class="inner">	
-							<h2 class="info"><span><?php echo JText::_('TPL_WELCOME_SETTING_UP'); ?></span></h2>
-							<p class="intro"><?php echo JText::_('TPL_WELCOME_SETTING_UP_BODY'); ?></p>
-	
+							<h2 class="info"><span><?php echo Lang::txt('TPL_WELCOME_SETTING_UP'); ?></span></h2>
+							<p class="intro"><?php echo Lang::txt('TPL_WELCOME_SETTING_UP_BODY'); ?></p>
+
 							<div class="section">
 								<div class="cols clearfix">
 									<div class="col">
-										<h3><?php echo JText::_('TPL_WELCOME_TODO_HEADER'); ?></h3>
+										<h3><?php echo Lang::txt('TPL_WELCOME_TODO_HEADER'); ?></h3>
 										<ul>
 											<li class="about">
-												<h4><?php echo JText::_('TPL_WELCOME_TODO_ABOUT_HEADER'); ?></h4>
-												<p><?php echo JText::_('TPL_WELCOME_TODO_ABOUT_BODY'); ?></p>
+												<h4><?php echo Lang::txt('TPL_WELCOME_TODO_ABOUT_HEADER'); ?></h4>
+												<p><?php echo Lang::txt('TPL_WELCOME_TODO_ABOUT_BODY'); ?></p>
 											</li>
 											<li class="contact">
-												<h4><?php echo JText::_('TPL_WELCOME_TODO_CONTACT_HEADER'); ?></h4>
-												<p><?php echo JText::_('TPL_WELCOME_TODO_CONTACT_BODY'); ?></p>
+												<h4><?php echo Lang::txt('TPL_WELCOME_TODO_CONTACT_HEADER'); ?></h4>
+												<p><?php echo Lang::txt('TPL_WELCOME_TODO_CONTACT_BODY'); ?></p>
 											</li>
 											<li class="terms">
-												<h4><?php echo JText::_('TPL_WELCOME_TODO_TERMS_HEADER'); ?></h4>
-												<p><?php echo JText::_('TPL_WELCOME_TODO_TERMS_BODY'); ?></p>
+												<h4><?php echo Lang::txt('TPL_WELCOME_TODO_TERMS_HEADER'); ?></h4>
+												<p><?php echo Lang::txt('TPL_WELCOME_TODO_TERMS_BODY'); ?></p>
 											</li>
 										</ul>
 									</div>
 									<div class="col spacer">&nbsp;</div>
 									<div class="col">
-										<h3><?php echo JText::_('TPL_WELCOME_RECOMMEND_HEADER'); ?></h3>
+										<h3><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_HEADER'); ?></h3>
 										<ul>
 											<li class="logins">
-												<h4><?php echo JText::_('TPL_WELCOME_RECOMMEND_AUTH_HEADER'); ?></h4>
-												<p><?php echo JText::_('TPL_WELCOME_RECOMMEND_AUTH_BODY'); ?></p>
+												<h4><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_AUTH_HEADER'); ?></h4>
+												<p><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_AUTH_BODY'); ?></p>
 											</li>
 											<li class="analytics">
-												<h4><?php echo JText::_('TPL_WELCOME_RECOMMEND_ANALYTICS_HEADER'); ?></h4>
-												<p><?php echo JText::_('TPL_WELCOME_RECOMMEND_ANALYTICS_BODY'); ?></p>
+												<h4><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_ANALYTICS_HEADER'); ?></h4>
+												<p><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_ANALYTICS_BODY'); ?></p>
 											</li>
 											<li class="captcha">
-												<h4><?php echo JText::_('TPL_WELCOME_RECOMMEND_RECAPTCHA_HEADER'); ?></h4>
-												<p><?php echo JText::_('TPL_WELCOME_RECOMMEND_RECAPTCHA_BODY'); ?></p>
+												<h4><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_RECAPTCHA_HEADER'); ?></h4>
+												<p><?php echo Lang::txt('TPL_WELCOME_RECOMMEND_RECAPTCHA_BODY'); ?></p>
 											</li>
 										</ul>
 									</div>
@@ -274,13 +273,13 @@ $flavor = $this->params->get('flavor', false);
 							</div>
 						</div>
 					</div>
-	
+
 				<?php endif; ?>
 
 
 					<div class="inner">
-						<h2><span><?php echo JText::_('TPL_WELCOME_READY'); ?></span></h2>
-	
+						<h2><span><?php echo Lang::txt('TPL_WELCOME_READY'); ?></span></h2>
+
 						<div class="section">
 							<div class="cols clearfix">
 								<div class="col icon">
@@ -288,9 +287,9 @@ $flavor = $this->params->get('flavor', false);
 								</div>
 								<div class="spacer col">&nbsp;</div>
 								<div class="col txt">
-									<p><?php echo JText::sprintf('TPL_WELCOME_CHANGE_PAGE_BODY', rtrim(JURI::base(), '/') . '/gettingstarted'); ?></p>
-	
-									<a href="<?php echo $this->baseurl; ?>/?getstarted=1" class="b"><?php echo JText::_('TPL_WELCOME_READY'); ?></a>
+									<p><?php echo Lang::txt('TPL_WELCOME_CHANGE_PAGE_BODY', rtrim(Request::base(), '/') . '/gettingstarted'); ?></p>
+
+									<a href="<?php echo $this->baseurl; ?>/?getstarted=1" class="b"><?php echo Lang::txt('TPL_WELCOME_READY'); ?></a>
 								</div>
 							</div>
 						</div>
@@ -300,11 +299,11 @@ $flavor = $this->params->get('flavor', false);
 									<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/administration.svg" alt="" />
 								</div>
 								<div class="col txt">
-									<h3><?php echo JText::_('TPL_WELCOME_GO_TO_ADMIN_HEADER'); ?></h3>
+									<h3><?php echo Lang::txt('TPL_WELCOME_GO_TO_ADMIN_HEADER'); ?></h3>
 	
-									<p><?php echo JText::_('TPL_WELCOME_GO_TO_ADMIN_BODY'); ?></p>
+									<p><?php echo Lang::txt('TPL_WELCOME_GO_TO_ADMIN_BODY'); ?></p>
 	
-									<a href="<?php echo $this->baseurl; ?>/administrator" class="b"><?php echo JText::_('TPL_WELCOME_GO_TO_ADMIN_LINK'); ?></a>
+									<a href="<?php echo $this->baseurl; ?>/administrator" class="b"><?php echo Lang::txt('TPL_WELCOME_GO_TO_ADMIN_LINK'); ?></a>
 								</div>
 								<div class="spacer col">&nbsp;</div>
 								<div class="nomobile col icon">
@@ -313,34 +312,34 @@ $flavor = $this->params->get('flavor', false);
 							</div>
 						</div-->
 					</div>
-	
+
 					<!--div class="bam babam">
 						<div class="inner">	
-							<h2 class="info"><span><?php echo JText::_('TPL_WELCOME_HELP'); ?></span></h2>
-							<p class="intro"><?php echo JText::_('TPL_WELCOME_HELP_BODY'); ?></p>
+							<h2 class="info"><span><?php echo Lang::txt('TPL_WELCOME_HELP'); ?></span></h2>
+							<p class="intro"><?php echo Lang::txt('TPL_WELCOME_HELP_BODY'); ?></p>
 	
 							<div class="section">
 								<div class="cols cols3 clearfix">
 									<div class="col">
-										<h3><?php echo JText::_('TPL_WELCOME_HELP_QUESTION_HEADER'); ?></h3>
-										<p><?php echo JText::_('TPL_WELCOME_HELP_QUESTION_BODY'); ?></p>
+										<h3><?php echo Lang::txt('TPL_WELCOME_HELP_QUESTION_HEADER'); ?></h3>
+										<p><?php echo Lang::txt('TPL_WELCOME_HELP_QUESTION_BODY'); ?></p>
 									</div>
 									<div class="col idea">
-										<h3><?php echo JText::_('TPL_WELCOME_HELP_IDEA_HEADER'); ?></h3>
-										<p><?php echo JText::_('TPL_WELCOME_HELP_IDEA_BODY'); ?></p>
+										<h3><?php echo Lang::txt('TPL_WELCOME_HELP_IDEA_HEADER'); ?></h3>
+										<p><?php echo Lang::txt('TPL_WELCOME_HELP_IDEA_BODY'); ?></p>
 									</div>
 									<div class="col error">
-										<h3><?php echo JText::_('TPL_WELCOME_HELP_ERROR_HEADER'); ?></h3>
-										<p><?php echo JText::_('TPL_WELCOME_HELP_ERROR_BODY'); ?></p>
+										<h3><?php echo Lang::txt('TPL_WELCOME_HELP_ERROR_HEADER'); ?></h3>
+										<p><?php echo Lang::txt('TPL_WELCOME_HELP_ERROR_BODY'); ?></p>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div-->
-		
+
 				<div class="inner">
 					<div class="fun">
-						<p><?php echo JText::_('TPL_WELCOME_HAVE_FUN'); ?></p>
+						<p><?php echo Lang::txt('TPL_WELCOME_HAVE_FUN'); ?></p>
 					</div>
 				</div>
 			</main>

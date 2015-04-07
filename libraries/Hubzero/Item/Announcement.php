@@ -48,97 +48,6 @@ class Announcement extends \JTable
 	const STATE_DELETED     = 2;
 
 	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $content = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $priority = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var date
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var date
-	 */
-	var $publish_up = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var date
-	 */
-	var $publish_down = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $sticky = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $email = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $sent = NULL;
-
-	/**
 	 * Constructor method for JTable class
 	 *
 	 * @param  database object
@@ -157,7 +66,7 @@ class Announcement extends \JTable
 		//make sure we have content
 		if (!isset($this->content) || $this->content == '')
 		{
-			$this->setError(\JText::_('Announcement must contain some content.'));
+			$this->setError(\Lang::txt('Announcement must contain some content.'));
 			return false;
 		}
 
@@ -406,10 +315,9 @@ class Announcement extends \JTable
 		$html = str_replace("\n", "\r\n", $html);
 
 		// set from address
-		$jconfig = \JFactory::getConfig();
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' Groups',
-			'email' => $jconfig->getValue('config.mailfrom')
+			'name'  => \Config::get('sitename') . ' Groups',
+			'email' => \Config::get('mailfrom')
 		);
 
 		// define subject

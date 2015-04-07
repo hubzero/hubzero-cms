@@ -348,7 +348,7 @@ class Loader
 		$app    = \JFactory::getApplication();
 		$user   = \User::getRoot();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$lang   = \JFactory::getLanguage()->getTag();
+		$lang   = \Lang::getTag();
 		$clientId = (int) $app->getClientId();
 
 		$cache = \JFactory::getCache('com_modules', '');
@@ -476,23 +476,21 @@ class Loader
 			$cacheparams->cachegroup = $module->module;
 		}
 
-		$user  = \User::getRoot();
 		$cache = \JFactory::getCache($cacheparams->cachegroup, 'callback');
-		$conf  = \JFactory::getConfig();
 
 		// Turn cache off for internal callers if parameters are set to off and for all logged in users
-		if ($moduleparams->get('owncache', null) === '0' || $conf->get('caching') == 0 || $user->get('id'))
+		if ($moduleparams->get('owncache', null) === '0' || \Config::get('caching') == 0 || \User::get('id'))
 		{
 			$cache->setCaching(false);
 		}
 
 		// module cache is set in seconds, global cache in minutes, setLifeTime works in minutes
-		$cache->setLifeTime($moduleparams->get('cache_time', $conf->get('cachetime') * 60) / 60);
+		$cache->setLifeTime($moduleparams->get('cache_time', \Config::get('cachetime') * 60) / 60);
 
 		$wrkaroundoptions = array('nopathway' => 1, 'nohead' => 0, 'nomodules' => 1, 'modulemode' => 1, 'mergehead' => 1);
 
 		$wrkarounds = true;
-		$view_levels = md5(serialize($user->getAuthorisedViewLevels()));
+		$view_levels = md5(serialize(\User::getAuthorisedViewLevels()));
 
 		switch ($cacheparams->cachemode)
 		{

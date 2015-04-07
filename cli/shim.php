@@ -72,6 +72,19 @@ $app['app'] = $app;
 
 /*
 |--------------------------------------------------------------------------
+| Register The Configuration Repository
+|--------------------------------------------------------------------------
+|
+| The configuration repository is used to lazily load in the options for
+| this application from the configuration files. The files are easily
+| separated by their concerns so they do not become really crowded.
+|
+*/
+
+$app['config'] = new \Hubzero\Config\Repository('cli');
+
+/*
+|--------------------------------------------------------------------------
 | Register The Core Service Providers
 |--------------------------------------------------------------------------
 |

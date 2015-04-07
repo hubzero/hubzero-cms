@@ -64,11 +64,11 @@ class Log
 	public static function write($statement)
 	{
 		$logger = new \Hubzero\Log\Writer(
-			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
+			new \Monolog\Logger(\Config::get('application_env')),
 			\JDispatcher::getInstance()
 		);
 
-		$path = (is_dir(self::HZPATH)) ? self::HZPATH : \JFactory::getConfig()->getValue('config.log_path');
+		$path = (is_dir(self::HZPATH)) ? self::HZPATH : \Config::get('log_path');
 
 		$logger->useFiles($path . DS . self::FILENAME, 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
 		$logger->info($statement);

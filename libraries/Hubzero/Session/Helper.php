@@ -29,7 +29,7 @@
  */
 
 namespace Hubzero\Session;
-use JFactory;
+
 use Hubzero\Session\Storage;
 
 class Helper
@@ -42,7 +42,7 @@ class Helper
 	public static function storage()
 	{
 		// get storage handler (from config)
-		$storageHandler = JFactory::getConfig()->get('session_handler');
+		$storageHandler = \Config::get('session_handler');
 
 		// create storage class
 		$storageClass = 'Hubzero\\Session\\Storage\\' . ucfirst($storageHandler);
