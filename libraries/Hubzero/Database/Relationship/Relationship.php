@@ -152,13 +152,52 @@ class Relationship
 	 **/
 	public function getConstrainedKeys($constraint)
 	{
+		$this->related->select($this->relatedKey);
+
+		return $this->getConstrained($constraint)->fieldsByKey($this->relatedKey);
+	}
+
+	/**
+	 * Get rows based on given constraint
+	 *
+	 * @param  closure $constraint the constraint function to apply
+	 * @return \Hubzero\Database\Rows
+	 * @since  1.3.2
+	 **/
+	public function getConstrainedRows($constraint)
+	{
+		$this->related->select($this->related->getQualifiedFieldName('*'));
+
+		return $this->getConstrained($constraint);
+	}
+
+	/**
+	 * Gets the constrained items
+	 *
+	 * @param  closure $constraint the constraint function to apply
+	 * @return \Hubzero\Database\Rows
+	 * @since  1.3.2
+	 **/
+	protected function getConstrained($constraint)
+	{
 		call_user_func_array($constraint, array($this->related));
 
-		// Return the ids resulting from the contraint query
 		// Note that rows is called on the base relational model, not on this relationship,
 		// thus it is not calling the constrain method...which is how we want it to work.
 		// Constraining here would not make sense as that would limit our result to 1 entry.
-		return $this->related->select($this->relatedKey)->rows()->fieldsByKey($this->relatedKey);
+		return $this->related->rows();
+	}
+
+	/**
+	 * Get related keys from a given row set
+	 *
+	 * @param  \Hubzero\Database\Rows $rows the rows from which to grab the related keys
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function getRelatedKeysFromRows($rows)
+	{
+		return $rows->fieldsByKey($this->getRelatedKey());
 	}
 
 	/**
@@ -215,38 +254,86 @@ class Relationship
 	}
 
 	/**
+	 * Loads the relationship content with the provided data
+	 *
+	 * @param  array  $rows the rows that we'll be seeding
+	 * @param  string $data the data to seed
+	 * @param  string $name the name of the relationship
+	 * @return object
+	 * @since  1.3.2
+	 **/
+	public function seedWithData($rows, $data, $name)
+	{
+		return $this->seed($rows, $data, $name);
+	}
+
+	/**
 	 * Loads the relationship content, and sets it on the related model
 	 *
 	 * This is used when pre-loading relationship content
 	 * via ({@link \Hubzero\Database\Relational::including()})
 	 *
-	 * @param  array  $rows the rows that we'll be seeding
-	 * @param  string $name the relationship name that we'll use to attach to the rows
-	 * @param  string $subs the nested relationships that should be passed on to the child
+	 * @param  array   $rows       the rows that we'll be seeding
+	 * @param  string  $name       the relationship name that we'll use to attach to the rows
+	 * @param  closure $constraint the constraint function to limit related items
+	 * @param  string  $subs       the nested relationships that should be passed on to the child
 	 * @return object
 	 * @since  1.3.2
 	 **/
-	public function seedRelationship($rows, $name, $subs=null)
+	public function seedWithRelation($rows, $name, $constraint=null, $subs=null)
 	{
-		if (!$keys = $rows->fieldsByKey($this->localKey))
-		{
-			return $rows;
-		}
+		if (!$keys = $rows->fieldsByKey($this->localKey)) return $rows;
 
-		$relations = $this->related->whereIn($this->relatedKey, array_unique($keys));
+		$relations = $this->getRelations($keys, $constraint);
 
-		if (isset($subs))
-		{
-			$relations = $relations->including($subs);
-		}
-		else
-		{
-			$relations = $relations->rows();
-		}
+		if (isset($subs)) $relations->including($subs);
 
+		$resultsByRelatedKey = $this->getResultsByRelatedKey($relations);
+
+		return $this->seed($rows, $resultsByRelatedKey , $name);
+	}
+
+	/**
+	 * Gets the relations that will be seeded on to the provided rows
+	 *
+	 * @param  array   $keys       the keys for which to fetch related items
+	 * @param  closure $constraint the constraint function to limit related items
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getRelations($keys, $constraint=null)
+	{
+		if (isset($constraint)) call_user_func_array($constraint, array($this->related));
+
+		return $this->related->whereIn($this->relatedKey, array_unique($keys));
+	}
+
+	/**
+	 * Sorts the relations into arrays keyed by the related key
+	 *
+	 * @param  array $relations the relations to sort
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getResultsByRelatedKey($relations)
+	{
+		return $relations->rows();
+	}
+
+	/**
+	 * Seeds the given rows with data
+	 *
+	 * @param  \Hubzero\Database\Rows $rows the rows to seed on to
+	 * @param  \Hubzero\Database\Rows $data the data from which to seed
+	 * @param  string                 $name the relationship name
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function seed($rows, $data, $name)
+	{
 		foreach ($rows as $row)
 		{
-			if ($related = $relations->seek($row->{$this->localKey}))
+			if ($related = $data->seek($row->{$this->localKey}))
 			{
 				$row->addRelationship($name, $related);
 			}

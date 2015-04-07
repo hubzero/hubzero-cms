@@ -83,17 +83,6 @@ class OneToManyThrough extends OneToMany
 	}
 
 	/**
-	 * Fetches tbe results of tbe relationship
-	 *
-	 * @return \Hubzero\Database\Rows
-	 * @since  1.3.2
-	 **/
-	public function rows()
-	{
-		return $this->constrain()->rows();
-	}
-
-	/**
 	 * Loads the relationship content and returns the related side of the model
 	 *
 	 * @return object
@@ -117,11 +106,9 @@ class OneToManyThrough extends OneToMany
 	 **/
 	public function getConstrainedKeys($constraint)
 	{
-		call_user_func_array($constraint, array($this->related));
-
-		// Return the ids resulting from the contraint query
 		$this->mediate();
-		return array_unique($this->related->rows()->fieldsByKey($this->associativeLocal));
+
+		return array_unique($this->getConstrained($constraint)->fieldsByKey($this->associativeLocal));
 	}
 
 	/**
@@ -171,13 +158,17 @@ class OneToManyThrough extends OneToMany
 	/**
 	 * Gets the relations that will be seeded on to the provided rows
 	 *
-	 * @param  array $keys the keys for which to fetch related items
+	 * @param  array   $keys       the keys for which to fetch related items
+	 * @param  closure $constraint the constraint function to limit related items
 	 * @return array
 	 * @since  1.3.2
 	 **/
-	protected function getRelations($keys)
+	protected function getRelations($keys, $constraint=null)
 	{
 		$this->mediate();
+
+		if (isset($constraint)) call_user_func_array($constraint, array($this->related));
+
 		return $this->related->whereIn($this->associativeTable . '.' . $this->associativeLocal, array_unique($keys));
 	}
 

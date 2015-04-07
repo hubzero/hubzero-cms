@@ -90,7 +90,7 @@ class Relational implements \IteratorAggregate
 	 *
 	 * @var array
 	 **/
-	private $methods = array();
+	private $methods = [];
 
 	/**
 	 * The database query object
@@ -104,21 +104,28 @@ class Relational implements \IteratorAggregate
 	 *
 	 * @var array
 	 **/
-	private $relationships = array();
+	private $relationships = [];
 
 	/**
 	 * The forwards for the model (i.e. other places to look for attributes)
 	 *
 	 * @var array
 	 **/
-	private $forwards = array();
+	private $forwards = [];
+
+	/**
+	 * The includes set on the model for eager loading
+	 *
+	 * @var string
+	 **/
+	private $includes = [];
 
 	/**
 	 * The model data returned as the result of a query, or set for saving
 	 *
 	 * @var array
 	 **/
-	private $attributes = array();
+	private $attributes = [];
 
 	/**
 	 * The table to which the class pertains
@@ -158,7 +165,7 @@ class Relational implements \IteratorAggregate
 	 * @var array
 	 * @see \Hubzero\Database\Rules
 	 **/
-	protected $rules = array();
+	protected $rules = [];
 
 	/**
 	 * Default order by for select queries
@@ -191,21 +198,21 @@ class Relational implements \IteratorAggregate
 	 *
 	 * @var array
 	 **/
-	public $always = array();
+	public $always = [];
 
 	/**
 	 * Automatic fields to populate every time a row is created
 	 *
 	 * @var array
 	 **/
-	public $initiate = array();
+	public $initiate = [];
 
 	/**
 	 * Automatic fields to populate every time a row is updated
 	 *
 	 * @var array
 	 **/
-	public $renew = array();
+	public $renew = [];
 
 	/**
 	 * Constructs an object instance
@@ -732,10 +739,9 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function rows()
 	{
-		// @FIXME: if we have rows from a join, can we go ahead and seed those relationships here?
-
 		// Fetch the results
 		$rows = $this->rowsFromRaw($this->query->fetch());
+		$rows = $this->parseIncluding($rows);
 
 		// Set a few things on the rows object that might be helpful
 		$rows->pagination = $this->pagination;
@@ -850,10 +856,11 @@ class Relational implements \IteratorAggregate
 	/**
 	 * Returns all rows (unless otherwise limited)
 	 *
+	 * @param  string|array $columns the columns to select
 	 * @return \Hubzero\Database\Relational|static
 	 * @since  1.3.2
 	 **/
-	public static function all()
+	public static function all($columns=null)
 	{
 		return self::blank();
 	}
@@ -1077,8 +1084,6 @@ class Relational implements \IteratorAggregate
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeys($constraint);
 
-		// @FIXME: should this attach the related data to the model the same way including does?
-
 		$this->where($rel->getLocalKey(), 'IN', $keys, 'and', $depth);
 	}
 
@@ -1124,6 +1129,75 @@ class Relational implements \IteratorAggregate
 		});
 
 		return $this;
+	}
+
+	/**
+	 * Limits current model based on conditions of relationship
+	 *
+	 * @FIXME: decide whether or not to use this
+	 *
+	 * This is NOT currently used. The problem here has to do with relationship data.
+	 * If you constrain based on a relationship, and then later on end up wanting to access
+	 * properties of that relationship, it will currently do two queries.  Instead, we
+	 * could get the data with the original constraint and attach it to the models in a
+	 * similar fashion to the way that including() works.
+	 *
+	 * To make this work, data would need to be stored on the object, and then seeded
+	 * after the model rows are fetched (like parseIncludes() works now).
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	private function whereRelated($relationship, $constraint)
+	{
+		$this->data = [];
+		$keys       = null;
+
+		// Parse for nested relationships
+		if (strpos($name, '.'))
+		{
+			// If we have a nested name, pull out the first one
+			list($name, $subs)  = explode('.', $name, 2);
+			$relationship       = $this->$name();
+			$this->data[$name]  = $relationship->whereRelated($subs, $constraint);
+		}
+		else
+		{
+			$relationship       = $this->$name();
+			$this->data[$name]  = $relationship->getConstrainedRows($constraint);
+		}
+
+		// Update keys to only include those in this and previous results
+		$keys = is_null($keys) ? $relationship->getRelatedKeysFromRows($this->data[$name])
+		                       : array_intersect($keys, $relationship->getRelatedKeysFromRows($this->data[$name]));
+
+		// Only keep unique keys
+		$keys = array_unique($keys);
+
+		// Set our where clause if needed
+		if (!empty($keys)) $this->whereIn($relationship->getLocalKey(), $keys);
+
+		return $this;
+	}
+
+	/**
+	 * Seeds the rows with any pre-fetched data
+	 *
+	 * @FIXME: decide whether or not to use this
+	 *
+	 * @param  \Hubzero\Database\Rows $rows the rows to seed
+	 * @return \Hubzero\Database\Rows
+	 * @since  1.3.2
+	 **/
+	private function seed($rows)
+	{
+		// Set our constrained (pre-fetched data) back on the rows
+		foreach ($this->data as $relationship => $data)
+		{
+			$rows = $this->$relationship()->seedWithData($rows, $data, $relationship);
+		}
+
+		return $rows;
 	}
 
 	/**
@@ -1432,29 +1506,54 @@ class Relational implements \IteratorAggregate
 	}
 
 	/**
-	 * Retrieves an associated model in conjunction with the current one
+	 * Sets an associated relationship to be retrieved with the current model
 	 *
-	 * @return \Hubzero\Database\Rows
+	 * @return $this
 	 * @since  1.3.2
 	 **/
 	public function including()
 	{
-		// @FIXME: should this defer until ready to use, like any other request
-		//         this could just set includings, and rows() would process them
-		//         then you could also attach constraints to the includings in the form of
-		//         relationship.something and those will be processed when seeding
-		$rows = $this->rows();
-		$subs = null;
+		// Divide our relationships into those that are constrained and those that are unconstrained
 		foreach (func_get_args() as $relationship)
 		{
+			$this->includes[] = $relationship;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Retrieves an associated model in conjunction with the current one
+	 *
+	 * @param  \Hubzero\Database\Rows $rows the rows to parse and augment
+	 * @return \Hubzero\Database\Rows
+	 * @since  1.3.2
+	 **/
+	private function parseIncluding($rows)
+	{
+		$subs       = null;
+		$constraint = null;
+		foreach ($this->includes as $relationship)
+		{
+			// Check for array, meaning we have relationship_name => constraint
+			if (is_array($relationship)) list($relationship, $constraint) = $relationship;
+
 			// Parse for nested relationships
-			if (strpos($relationship, '.'))
+			if (strpos($relationship, '.')) list($relationship, $subs) = explode('.', $relationship, 2);
+
+			// If we have subs and a constraint, the constraint should apply to the subs, not the intermediate relation
+			if (isset($subs) && isset($constraint))
 			{
-				// If we have a nested relationship, pull out the first one
-				list($relationship, $subs) = explode('.', $relationship, 2);
+				$subs       = [$subs, $constraint];
+				$constraint = null;
 			}
-			$rows = $this->$relationship()->seedRelationship($rows, $relationship, $subs);
-			$subs = null;
+
+			// Get the actual rows
+			$rows = $this->$relationship()->seedWithRelation($rows, $relationship, $constraint, $subs);
+
+			// Reset some vars
+			$subs       = null;
+			$constraint = null;
 		}
 
 		return $rows;

@@ -39,7 +39,7 @@ use Hubzero\Database\Rows;
 class OneToMany extends Relationship
 {
 	/**
-	 * Fetch results of relationship
+	 * Fetches the results of relationship
 	 *
 	 * @return \Hubzero\Database\Relational
 	 * @since  1.3.2
@@ -106,61 +106,49 @@ class OneToMany extends Relationship
 	 **/
 	public function getConstrainedKeys($constraint)
 	{
-		call_user_func_array($constraint, array($this->related));
+		$this->related->select($this->related->getPrimaryKey())
+		              ->select($this->relatedKey);
 
-		return $this->related->select($this->related->getPrimaryKey())
-		                     ->select($this->relatedKey)
-		                     ->rows()
-		                     ->fieldsByKey($this->relatedKey);
+		return $this->getConstrained($constraint)->fieldsByKey($this->relatedKey);
 	}
 
 	/**
-	 * Loads the relationship content, and sets it on the related model
+	 * Loads the relationship content with the provided data
 	 *
 	 * @param  array  $rows the rows that we'll be seeding
-	 * @param  string $name the relationship name that we'll use to attach to the rows
-	 * @param  string $subs the nested relationships that should be passed on to the child
+	 * @param  string $data the data to seed
+	 * @param  string $name the name of the relationship
 	 * @return object
 	 * @since  1.3.2
 	 **/
-	public function seedRelationship($rows, $name, $subs=null)
+	public function seedWithData($rows, $data, $name)
 	{
-		if (!$keys = $rows->fieldsByKey($this->localKey))
-		{
-			return $rows;
-		}
+		$resultsByRelatedKey = $this->getResultsByRelatedKey($data);
 
-		$relations = $this->getRelations($keys);
+		return $this->seed($rows, $resultsByRelatedKey, $name);
+	}
 
-		if (isset($subs))
-		{
-			$relations = $relations->including($subs);
-		}
-
-		$resultsByRelatedKey = $this->getResultsByRelatedKey($relations);
-
+	/**
+	 * Seeds the given rows with data
+	 *
+	 * @param  array  $rows the rows to seed on to
+	 * @param  array  $data the data from which to seed
+	 * @param  string $name the relationship name
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function seed($rows, $data, $name)
+	{
 		// Add the relationships back to the original models
 		foreach ($rows as $row)
 		{
-			if (isset($resultsByRelatedKey[$row->{$this->localKey}]))
+			if (isset($data[$row->{$this->localKey}]))
 			{
-				$row->addRelationship($name, $resultsByRelatedKey[$row->{$this->localKey}]);
+				$row->addRelationship($name, $data[$row->{$this->localKey}]);
 			}
 		}
 
 		return $rows;
-	}
-
-	/**
-	 * Gets the relations that will be seeded on to the provided rows
-	 *
-	 * @param  array $keys the keys for which to fetch related items
-	 * @return array
-	 * @since  1.3.2
-	 **/
-	protected function getRelations($keys)
-	{
-		return $this->related->whereIn($this->relatedKey, array_unique($keys));
 	}
 
 	/**
