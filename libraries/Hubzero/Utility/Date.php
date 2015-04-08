@@ -413,7 +413,7 @@ class Date extends DateTime
 	 */
 	public function toLocal($format='')
 	{
-		$format = ?: self::$format;
+		$format = $format ?: self::$format;
 
 		// get timezone idenfier from user setting otherwise user system
 		$tz = \User::getParam('timezone', \Config::get('offset'));
