@@ -35,6 +35,12 @@ use Hubzero\Utility\Sanitize;
 use Components\Store\Tables\Store;
 use Components\Store\Tables\OrderItem;
 use Exception;
+use Component;
+use Request;
+use Route;
+use Config;
+use Lang;
+use Date;
 
 /**
  * Controller class for store items
@@ -149,7 +155,7 @@ class Items extends AdminController
 		{
 			// New item
 			$this->view->row->available = 0;
-			$this->view->row->created   = \Date::toSql();
+			$this->view->row->created   = Date::toSql();
 			$this->view->row->published = 0;
 			$this->view->row->featured  = 0;
 			$this->view->row->special   = 0;
@@ -195,7 +201,7 @@ class Items extends AdminController
 		$row->description = Sanitize::clean($row->description);
 		if (!$id)
 		{
-			$row->created = $row->created ? $row->created : \Date::toSql();
+			$row->created = $row->created ? $row->created : Date::toSql();
 		}
 		$sizes = ($_POST['sizes']) ? $_POST['sizes'] : '';
 		$sizes = str_replace(' ', '', $sizes);

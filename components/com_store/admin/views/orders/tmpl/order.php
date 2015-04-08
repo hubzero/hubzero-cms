@@ -42,8 +42,8 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('order');
 
-$order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL ;
-$status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL;
+$order_date = (intval($this->row->ordered) <> 0) ? Date::of($this->row->ordered)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL ;
+$status_changed = (intval($this->row->status_changed) <> 0) ? Date::of($this->row->status_changed)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL;
 
 switch ($this->row->status)
 {

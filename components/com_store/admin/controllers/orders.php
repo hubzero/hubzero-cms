@@ -36,6 +36,13 @@ use Hubzero\Bank\Teller;
 use Components\Store\Tables\Order;
 use Components\Store\Tables\OrderItem;
 use Exception;
+use Component;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Controller class for store orders
@@ -117,7 +124,7 @@ class Orders extends AdminController
 				}
 				$o->itemtitles = $items;
 
-				$targetuser = \JUser::getInstance($o->uid);
+				$targetuser = User::getInstance($o->uid);
 				$o->author = $targetuser->get('username');
 			}
 		}
@@ -371,7 +378,7 @@ class Orders extends AdminController
 				}
 			}
 
-			$this->view->customer = \JUser::getInstance($this->view->row->uid);
+			$this->view->customer = User::getInstance($this->view->row->uid);
 
 			// Check available user funds
 			$BTL = new Teller($this->database, $this->view->row->uid);
@@ -420,7 +427,7 @@ class Orders extends AdminController
 
 			// get user bank account
 			//$xprofile = \Hubzero\User\Profile::getInstance($row->uid);
-			$xprofile = \JUser::getInstance($row->uid);
+			$xprofile = User::getInstance($row->uid);
 			$BTL_Q = new Teller($this->database, $xprofile->get('id'));
 
 			// start email message
@@ -429,7 +436,7 @@ class Orders extends AdminController
 			$emailbody .= '----------------------------------------------------------'."\r\n";
 			$emailbody .= Lang::txt('COM_STORE_ORDER').' '.Lang::txt('COM_STORE_NUM').': '. $id ."\r\n";
 			$emailbody .= "\t".Lang::txt('COM_STORE_ORDER').' '.Lang::txt('COM_STORE_TOTAL').': '. $cost ."\r\n";
-			$emailbody .= "\t\t".Lang::txt('COM_STORE_PLACED').': '. \JHTML::_('date', $row->ordered, Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n";
+			$emailbody .= "\t\t".Lang::txt('COM_STORE_PLACED').': '. Date::of($row->ordered)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n";
 			$emailbody .= "\t\t".Lang::txt('COM_STORE_STATUS').': ';
 
 			switch ($action)
@@ -454,7 +461,7 @@ class Orders extends AdminController
 					}
 
 					// update order information
-					$row->status_changed = \Date::toSql();
+					$row->status_changed = Date::toSql();
 					$row->status = 1;
 					$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_COMPLETED')) . '.';
 				break;
@@ -473,7 +480,7 @@ class Orders extends AdminController
 						throw new Exception($this->database->getErrorMsg(), 500);
 					}
 					// update order information
-					$row->status_changed = \Date::toSql();
+					$row->status_changed = Date::toSql();
 					$row->status = 2;
 
 					$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_CANCELLED')) . '.';
@@ -507,12 +514,12 @@ class Orders extends AdminController
 					$emailbody .= ' ' . Lang::txt('COM_STORE_IN_PROCESS') . "\r\n";
 					break;
 				case 1:
-					$emailbody .= ' '.strtolower(Lang::txt('COM_STORE_COMPLETED')).' '.Lang::txt('COM_STORE_ON').' '.\JHTML::_('date', $row->status_changed, Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
+					$emailbody .= ' '.strtolower(Lang::txt('COM_STORE_COMPLETED')).' '.Lang::txt('COM_STORE_ON').' '.Date::of($row->status_changed)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
 					$emailbody .= Lang::txt('COM_STORE_EMAIL_PROCESSED').'.'."\r\n";
 					break;
 				case 2:
 				default:
-					$emailbody .= ' '.strtolower(Lang::txt('COM_STORE_CANCELLED')).' '.Lang::txt('COM_STORE_ON').' '.\JHTML::_('date', $row->status_changed, Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
+					$emailbody .= ' '.strtolower(Lang::txt('COM_STORE_CANCELLED')).' '.Lang::txt('COM_STORE_ON').' '.Date::of($row->status_changed)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'))."\r\n\r\n";
 					$emailbody .= Lang::txt('COM_STORE_EMAIL_CANCELLED').'.'."\r\n";
 					break;
 			}

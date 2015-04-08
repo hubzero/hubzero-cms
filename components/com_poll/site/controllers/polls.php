@@ -33,6 +33,11 @@ namespace Components\Poll\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Poll\Tables\Poll;
 use Exception;
+use Request;
+use Pathway;
+use Route;
+use Date;
+use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'poll.php');
 
@@ -125,8 +130,8 @@ class Polls extends SiteController
 
 			if (isset($dates->mindate))
 			{
-				$first_vote = \JHTML::_('date', $dates->mindate, Lang::txt('DATE_FORMAT_LC2'));
-				$last_vote  = \JHTML::_('date', $dates->maxdate, Lang::txt('DATE_FORMAT_LC2'));
+				$first_vote = Date::of($dates->mindate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+				$last_vote  = Date::of($dates->maxdate)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
 			}
 
 			$query = 'SELECT a.id, a.text, a.hits, b.voters '

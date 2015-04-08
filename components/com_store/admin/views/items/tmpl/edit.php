@@ -46,7 +46,7 @@ Toolbar::help('item');
 $created = NULL;
 if (intval($this->row->created) <> 0)
 {
-	$created = JHTML::_('date', $this->row->created, Lang::txt('COM_STORE_DATE_FORMAT_HZ1'));
+	$created = Date::of($this->row->created)->toLocal(Lang::txt('COM_STORE_DATE_FORMAT_HZ1'));
 }
 
 ?>

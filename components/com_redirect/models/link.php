@@ -30,6 +30,10 @@
 
 namespace Components\Redirect\Models;
 
+use User;
+use Lang;
+use Date;
+
 jimport('joomla.application.component.modeladmin');
 
 /**
@@ -56,7 +60,7 @@ class Link extends \JModelAdmin
 		{
 			return false;
 		}
-		return \JFactory::getUser()->authorise('core.delete', 'com_redirect');
+		return User::authorise('core.delete', 'com_redirect');
 	}
 
 	/**
@@ -68,7 +72,7 @@ class Link extends \JModelAdmin
 	protected function canEditState($record)
 	{
 		// Check the component since there are no categories or other assets.
-		return \JFactory::getUser()->authorise('core.edit.state', 'com_redirect');
+		return User::authorise('core.edit.state', 'com_redirect');
 	}
 
 
@@ -146,7 +150,6 @@ class Link extends \JModelAdmin
 	public function activate(&$pks, $url, $comment = null)
 	{
 		// Initialise variables.
-		$user = \JFactory::getUser();
 		$db   = $this->getDbo();
 
 		// Sanitize the ids.
@@ -154,13 +157,13 @@ class Link extends \JModelAdmin
 		\JArrayHelper::toInteger($pks);
 
 		// Populate default comment if necessary.
-		$comment = (!empty($comment)) ? $comment : \Lang::txt('COM_REDIRECT_REDIRECTED_ON', \JHtml::_('date', time()));
+		$comment = (!empty($comment)) ? $comment : Lang::txt('COM_REDIRECT_REDIRECTED_ON', Date::toSql());
 
 		// Access checks.
-		if (!$user->authorise('core.edit', 'com_redirect'))
+		if (!User::authorise('core.edit', 'com_redirect'))
 		{
 			$pks = array();
-			$this->setError(\Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
 			return false;
 		}
 

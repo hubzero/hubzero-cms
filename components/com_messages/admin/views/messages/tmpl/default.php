@@ -14,7 +14,6 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
@@ -65,7 +64,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canChange	= $user->authorise('core.edit.state', 'com_messages');
+			$canChange = User::authorise('core.edit.state', 'com_messages');
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td>
@@ -82,7 +81,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo $item->user_from; ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('date', $item->date_time, Lang::txt('DATE_FORMAT_LC2')); ?>
+					<?php echo Date::of($item->date_time)->toLocal(Lang::txt('DATE_FORMAT_LC2')); ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

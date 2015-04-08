@@ -77,12 +77,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo strtoupper(Lang::txt('COM_STORE_ID')); ?></th>
+				<th scope="col" class="priority-5"><?php echo strtoupper(Lang::txt('COM_STORE_ID')); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_STORE_STATUS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_STORE_ORDERED_ITEMS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_STORE_TOTAL'); ?> (<?php echo Lang::txt('COM_STORE_POINTS'); ?>)</th>
-				<th scope="col"><?php echo Lang::txt('COM_STORE_BY'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_STORE_DATE'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_STORE_ORDERED_ITEMS'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_STORE_TOTAL'); ?> (<?php echo Lang::txt('COM_STORE_POINTS'); ?>)</th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_STORE_BY'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_STORE_DATE'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -124,7 +124,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td>
+				<td class="priority-5">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=order&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_STORE_VIEW_ORDER'); ?>">
 						<?php echo $row->id; ?>
 					</a>
@@ -132,17 +132,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $status; ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape(stripslashes($row->itemtitles)); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->total); ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $this->escape(stripslashes($row->author)); ?>
 				</td>
-				<td>
-					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+				<td class="priority-3">
+					<time datetime="<?php echo $row->ordered; ?>"><?php echo Date::of($row->ordered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=order&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_STORE_VIEW_ORDER'); ?>">

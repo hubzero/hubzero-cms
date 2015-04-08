@@ -118,19 +118,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<th scope="col">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_NEW_URL', 'a.new_url', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-4">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_REFERRER', 'a.referer', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-5">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_CREATED_DATE', 'a.created_date', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-2">
 					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-3">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col" class="nowrap">
+				<th scope="col" class="priority-5 nowrap">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -167,28 +167,28 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<td>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $item->id);?>" title="<?php echo $this->escape($item->old_url); ?>">
-							<?php echo $this->escape(str_replace(JURI::root(), '', $item->old_url)); ?>
+							<?php echo $this->escape(str_replace(Request::root(), '', $item->old_url)); ?>
 						</a>
 					<?php else : ?>
-						<?php echo $this->escape(str_replace(JURI::root(), '', $item->old_url)); ?>
+						<?php echo $this->escape(str_replace(Request::root(), '', $item->old_url)); ?>
 					<?php endif; ?>
 				</td>
 				<td>
 					<?php echo $this->escape($item->new_url); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($item->referer); ?>
 				</td>
-				<td class="center">
-					<?php echo JHtml::_('date', $item->created_date, Lang::txt('DATE_FORMAT_LC4')); ?>
+				<td class="priority-5 center">
+					<?php echo Date::of($item->created_date)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
 				</td>
-				<td class="center">
+				<td class="priority-2 center">
 					<?php echo JHtml::_('redirect.published', $item->published, $i); ?>
 				</td>
-				<td class="center">
+				<td class="priority-3 center">
 					<?php echo (int) $item->hits; ?>
 				</td>
-				<td class="center">
+				<td class="priority-5 center">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
