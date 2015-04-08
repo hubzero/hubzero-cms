@@ -31,6 +31,7 @@
 namespace Components\Wishlist\Models;
 
 use Hubzero\Base\Model;
+use Component;
 
 /**
  * Abstract model for wishlist

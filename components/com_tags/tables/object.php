@@ -31,6 +31,9 @@
 namespace Components\Tags\Tables;
 
 use stdClass;
+use User;
+use Date;
+use Lang;
 
 /**
  * Table class for attaching tags to objects
@@ -83,12 +86,12 @@ class Object extends \JTable
 		$this->taggerid = intval($this->taggerid);
 		if (!$this->taggerid)
 		{
-			$this->taggerid = \JFactory::getUser()->get('id');
+			$this->taggerid = User::get('id');
 		}
 
 		if (!$this->id)
 		{
-			$this->taggedon = \JFactory::getDate()->toSql();
+			$this->taggedon = Date::toSql();
 		}
 
 		return true;

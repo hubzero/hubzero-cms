@@ -32,7 +32,7 @@ namespace Components\Wishlist\Models;
 
 use Components\Tags\Models\Cloud;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Wishlist Tagging class

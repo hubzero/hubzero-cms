@@ -31,6 +31,9 @@
 namespace Components\Wishlist\Tables;
 
 use Components\Wishlist\Models\Tags;
+use Component;
+use Lang;
+use Date;
 
 /**
  * Table class for a wish
@@ -74,8 +77,8 @@ class Wish extends \JTable
 
 		if (!$this->id)
 		{
-			$this->proposed    = \JFactory::getDate()->toSql();
-			$this->proposed_by = \JFactory::getUser()->get('id');
+			$this->proposed    = Date::toSql();
+			$this->proposed_by = User::get('id');
 		}
 
 		return true;
@@ -513,12 +516,10 @@ class Wish extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
-
 		// Remove all tags
 		include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 		$wt = new Tags($oid);
-		$wt->setTags('', $juser->get('id'), 1);
+		$wt->setTags('', User::get('id'), 1);
 
 		// Delete the wish
 		return parent::delete($oid);

@@ -33,6 +33,10 @@ namespace Components\Tags\Admin\Controllers;
 use Components\Tags\Tables;
 use Components\Tags\Models\Object;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 /**
  * Tags controller class for listing tagged objects

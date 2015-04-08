@@ -35,6 +35,12 @@ use Hubzero\Item\Comment;
 use Components\Wishlist\Tables\Wishlist;
 use Components\Wishlist\Tables\Wish;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Cotnroller class for wishes
@@ -233,7 +239,7 @@ class Comments extends AdminController
 		{
 			$this->view->row->item_type  = 'wish';
 			$this->view->row->item_id    = $this->view->wish;
-			$this->view->row->created    = \JFactory::getDate()->toSql();
+			$this->view->row->created    = Date::toSql();
 			$this->view->row->created_by = User::get('id');
 		}
 

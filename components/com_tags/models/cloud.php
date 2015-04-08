@@ -34,6 +34,8 @@ use Components\Tags\Tables;
 use Hubzero\Component\View;
 use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
+use User;
+use Date;
 
 require_once(__DIR__ . DS . 'tag.php');
 
@@ -334,7 +336,7 @@ class Cloud extends Object
 				$tag->set('admin', $admin);
 				$tag->set('tag', $tg);
 				$tag->set('raw_tag', $raw);
-				$tag->set('created', \JFactory::getDate()->toSql());
+				$tag->set('created', Date::toSql());
 				$tag->set('created_by', $tagger);
 				$tag->store();
 			}
@@ -471,7 +473,7 @@ class Cloud extends Object
 				if (!isset($this->_cache['tags.cloud']) || $clear)
 				{
 					$view = new View(array(
-						'base_path' => JPATH_ROOT . '/components/com_tags/site',
+						'base_path' => PATH_CORE . '/components/com_tags/site',
 						'name'      => 'tags',
 						'layout'    => '_cloud'
 					));
@@ -502,7 +504,7 @@ class Cloud extends Object
 	{
 		if (!$tagger_id)
 		{
-			$tagger_id = \JFactory::getUser()->get('id');
+			$tagger_id = User::get('id');
 		}
 
 		$tagArray  = $this->_parse($tag_string);    // array of normalized tags

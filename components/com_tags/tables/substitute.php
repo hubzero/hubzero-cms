@@ -31,6 +31,9 @@
 namespace Components\Tags\Tables;
 
 use stdClass;
+use User;
+use Date;
+use Lang;
 
 /**
  * Table class for substituting tags for another tag
@@ -70,9 +73,8 @@ class Substitute extends \JTable
 
 		if (!$this->id)
 		{
-			$juser = \JFactory::getUser();
-			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 		}
 
 		if (!$this->tag_id)

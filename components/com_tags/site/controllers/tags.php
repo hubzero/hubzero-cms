@@ -36,6 +36,12 @@ use Components\Tags\Models\Tag;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use Exception;
+use Request;
+use Pathway;
+use Config;
+use Route;
+use Lang;
+use User;
 
 /**
  * Controller class for tags
@@ -509,7 +515,7 @@ class Tags extends SiteController
 		$title = trim($title);
 		$title .= ': ' . $area;
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = \JFactory::getDocument();
@@ -526,7 +532,7 @@ class Tags extends SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 
 			foreach ($rows as $row)
 			{

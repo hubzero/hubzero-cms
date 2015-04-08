@@ -30,8 +30,11 @@
 
 namespace Components\Wishlist\Models\Adapters;
 
+use Pathway;
+use Lang;
+
 require_once(__DIR__ . DS . 'base.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 /**
  * Adapter class for a forum post link for course forum

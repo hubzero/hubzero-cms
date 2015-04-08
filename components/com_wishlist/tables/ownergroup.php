@@ -31,6 +31,7 @@
 namespace Components\Wishlist\Tables;
 
 use Hubzero\User\Group;
+use Lang;
 
 /**
  * Table class for wishlist owner group

@@ -32,6 +32,8 @@ namespace Components\Wishlist\Models;
 
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
+use Lang;
+use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
@@ -195,11 +197,11 @@ class Plan extends Base
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

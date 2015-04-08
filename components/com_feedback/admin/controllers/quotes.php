@@ -33,6 +33,10 @@ namespace Components\Feedback\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Feedback\Tables\Quote;
 use Hubzero\User\Profile;
+use Request;
+use Route;
+use Lang;
+use Date;
 
 /**
  * Feedback controller class for quotes
@@ -172,7 +176,7 @@ class Quotes extends AdminController
 
 		if (!$this->view->row->id)
 		{
-			$this->view->row->date = \JFactory::getDate()->toSql();
+			$this->view->row->date = Date::toSql();
 		}
 
 		// Set any errors

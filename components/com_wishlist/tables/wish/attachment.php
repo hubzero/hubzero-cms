@@ -30,6 +30,9 @@
 
 namespace Components\Wishlist\Tables\Wish;
 
+use Route;
+use Lang;
+
 /**
  * Table class for wish attachments
  */

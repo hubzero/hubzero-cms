@@ -33,6 +33,8 @@ namespace Components\Wishlist\Models;
 use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Components\Wishlist\Tables;
+use Lang;
+use User;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wishlist.php');
 require_once(__DIR__ . DS . 'wish.php');
@@ -245,7 +247,7 @@ class Wishlist extends Base
 
 			if (!class_exists($cls))
 			{
-				$path = __DIR__ . '/adapters/' . $scope . '.php';
+				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 				if (!is_file($path))
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
@@ -364,7 +366,6 @@ class Wishlist extends Base
 		{
 			$filters['wishlist'] = (int) $this->get('id');
 		}
-		$juser = \JFactory::getUser();
 
 		$tbl = new Tables\Wish($this->_db);
 
@@ -373,7 +374,7 @@ class Wishlist extends Base
 			case 'count':
 				if (!is_numeric($this->_cache['wishes.count']) || $clear)
 				{
-					$this->_cache['wishes.count'] = (int) $tbl->get_count($this->get('id'), $filters, $this->get('admin'), $juser);
+					$this->_cache['wishes.count'] = (int) $tbl->get_count($this->get('id'), $filters, $this->get('admin'), User::getRoot());
 				}
 				return $this->_cache['wishes.count'];
 			break;
@@ -383,7 +384,7 @@ class Wishlist extends Base
 			default:
 				if (!($this->_cache['wishes.list'] instanceof ItemList) || $clear)
 				{
-					if ($results = $tbl->get_wishes($this->get('id'), $filters, $this->get('admin'), $juser))
+					if ($results = $tbl->get_wishes($this->get('id'), $filters, $this->get('admin'), User::getRoot()))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -650,12 +651,10 @@ class Wishlist extends Base
 	{
 		if (!$this->config()->get('access-check-list-done', false))
 		{
-			$juser = \JFactory::getUser();
-
 			$this->set('admin', 0);
 			$this->config()->set('access-view-' . $assetType, true);
 
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
 				if ($assetType == 'wish')
 				{
@@ -677,16 +676,16 @@ class Wishlist extends Base
 				}
 
 				// Admin
-				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+				$this->config()->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+				$this->config()->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 				if ($this->config()->get('access-manage-' . $assetType))
 				{
 					$this->set('admin', 1);
 				}
 				// Permissions
-				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
-				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
-				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
+				$this->config()->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+				$this->config()->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+				$this->config()->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 
 				if ($this->exists())
 				{
@@ -694,7 +693,7 @@ class Wishlist extends Base
 					$managers = $this->owners('individuals');
 					$advisory = $this->owners('advisory');
 
-					if (in_array($juser->get('id'), $managers))
+					if (in_array(User::get('id'), $managers))
 					{
 						$this->config()->set('access-manage-' . $assetType, true);
 						$this->config()->set('access-admin-' . $assetType, true);
@@ -704,7 +703,7 @@ class Wishlist extends Base
 
 						$this->set('admin', 2);  // individual group manager
 					}
-					if (in_array($juser->get('id'), $advisory))
+					if (in_array(User::get('id'), $advisory))
 					{
 						$this->config()->set('access-edit-' . $assetType, true);
 						$this->config()->set('access-edit-state-' . $assetType, true);

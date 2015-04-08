@@ -30,6 +30,10 @@
 
 namespace Components\Support\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for support query folders
  */
@@ -68,16 +72,15 @@ class QueryFolder extends \JTable
 
 		$this->user_id = intval($this->user_id);
 
-		$juser = \JFactory::getUser();
 		if (!$this->user_id)
 		{
-			$this->user_id = $juser->get('id');
+			$this->user_id = User::get('id');
 		}
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created = Date::toSql();
+			$this->created_by = User::get('id');
 
 			$this->_db->setQuery("SELECT `ordering` FROM $this->_tbl WHERE `user_id`=" . $this->user_id . " ORDER BY `ordering` DESC LIMIT 1");
 
@@ -86,8 +89,8 @@ class QueryFolder extends \JTable
 		}
 		else
 		{
-			$this->modified = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified = Date::toSql();
+			$this->modified_by = User::get('id');
 		}
 
 		return true;
@@ -257,7 +260,7 @@ class QueryFolder extends \JTable
 			}
 		}
 
-		$user_id = $user_id ?: \JFactory::getUser();
+		$user_id = $user_id ?: User::get('id');
 		$fid = 0;
 
 		// Loop through each folder
@@ -267,7 +270,7 @@ class QueryFolder extends \JTable
 			$stqf = new self($this->_db);
 			$stqf->bind($folder);
 			$stqf->created_by = $user_id;
-			$stqf->created    = \JFactory::getDate()->toSql();
+			$stqf->created    = Date::toSql();
 			$stqf->id         = null;
 			$stqf->user_id    = $user_id;
 			$stqf->iscore      = 0;
@@ -283,7 +286,7 @@ class QueryFolder extends \JTable
 				$stq = new Query($this->_db);
 				$stq->bind($query);
 				$stq->created_by = $user_id;
-				$stq->created    = \JFactory::getDate()->toSql();
+				$stq->created    = Date::toSql();
 				$stq->id         = null;
 				$stq->user_id    = $user_id;
 				$stq->folder_id  = $stqf->get('id');

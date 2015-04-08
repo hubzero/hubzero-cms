@@ -32,6 +32,11 @@ namespace Components\Wishlist\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Wishlist\Tables\Wishlist;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
 
 /**
  * Cotnroller class for wish lists

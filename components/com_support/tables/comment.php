@@ -30,6 +30,10 @@
 
 namespace Components\Support\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for support ticket comment
  */
@@ -72,12 +76,12 @@ class Comment extends \JTable
 
 		if (!$this->created_by)
 		{
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		if ($this->created_by && is_string($this->created_by))
 		{
-			$owner = \JUser::getInstance($this->created_by);
+			$owner = User::getInstance($this->created_by);
 			if ($owner && $owner->get('id'))
 			{
 				$this->created_by = (int) $owner->get('id');
@@ -86,7 +90,7 @@ class Comment extends \JTable
 
 		if (!$this->created)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 		}
 
 		return true;

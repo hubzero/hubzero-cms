@@ -30,6 +30,13 @@
 
 namespace Components\Wishlist\Tables;
 
+use Component;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+
 /**
  * Table class for wishlist owner
  */
@@ -63,7 +70,7 @@ class Owner extends \JTable
 
 		$nativeowners = $this->get_owners($listid, $admingroup, 1);
 
-		$quser = \JUser::getInstance($uid);
+		$quser = User::getInstance($uid);
 
 		// cannot delete "native" owner (e.g. resource contributor)
 		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true))
@@ -96,7 +103,7 @@ class Owner extends \JTable
 		{
 			foreach ($newowners as $no)
 			{
-				$quser = \JUser::getInstance($no);
+				$quser = User::getInstance($no);
 				if (is_object($quser)
 				 && !in_array($quser->get('id'), $owners['individuals'], true)
 				 && !in_array($quser->get('id'), $owners['advisory'], true))

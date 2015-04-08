@@ -41,6 +41,14 @@ use Hubzero\Utility\String;
 use Hubzero\Content\Server;
 use Hubzero\Bank\Teller;
 use Exception;
+use Component;
+use Request;
+use Pathway;
+use Config;
+use Lang;
+use User;
+use Date;
+use App;
 
 /**
  * Wishlist controller class
@@ -279,7 +287,7 @@ class Wishlists extends SiteController
 		// Get count of granted wishes
 		$sp_filters = $this->view->filters;
 		$sp_filters['filterby'] = 'granted';
-		$model->set('granted_count', $model->wishes('count', $sp_filters, true)); //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, $this->juser);
+		$model->set('granted_count', $model->wishes('count', $sp_filters, true)); //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, User::getRoot());
 		$model->set('granted_percentage', ($total > 0 && $model->get('granted_count') > 0 ? round(($model->get('granted_count')/$total) * 100, 0) : 0));
 
 		// Some extras
@@ -294,7 +302,7 @@ class Wishlists extends SiteController
 		$this->view->config   = $this->config;
 		$this->view->option   = $this->_option;
 		$this->view->task     = $this->_task;
-		$this->view->juser    = $this->juser;
+		$this->view->juser    = User::getRoot();
 		$this->view->wishlist = $model;
 		$this->view->total    = $total;
 
@@ -360,7 +368,7 @@ class Wishlists extends SiteController
 			$this->_buildPathway($wishlist);
 
 			// Go through some access checks
-			if ($this->juser->get('guest') && $action)
+			if (User::isGuest() && $action)
 			{
 				$this->_msg = ($action=="addbonus") ? Lang::txt('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
 				$this->loginTask();
@@ -499,7 +507,7 @@ class Wishlists extends SiteController
 		$this->view->title      = $this->_title;
 		$this->view->config     = $this->config;
 		$this->view->admin      = $this->_admin;
-		$this->view->juser      = $this->juser;
+		$this->view->juser      = User::getRoot();
 		$this->view->wishlist   = $wishlist;
 		$this->view->wish       = $wish;
 		$this->view->filters    = $filters;
@@ -534,7 +542,7 @@ class Wishlists extends SiteController
 
 		if (!$wishlist->access('manage'))
 		{
-			JError::raiseError(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -630,7 +638,7 @@ class Wishlists extends SiteController
 		$this->_buildPathway($wishlist);
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_MANAGE_SETTINGS');
 			$this->loginTask();
@@ -638,7 +646,7 @@ class Wishlists extends SiteController
 		}
 
 		$this->view->title    = $this->_title;
-		$this->view->juser    = $this->juser;
+		$this->view->juser    = User::getRoot();
 		$this->view->wishlist = $wishlist;
 		if ($this->getError())
 		{
@@ -679,7 +687,7 @@ class Wishlists extends SiteController
 		$this->_list_title = $wishlist->get('title');
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Set page title
 			$this->_list_title = $wishlist->get('title');
@@ -712,7 +720,7 @@ class Wishlists extends SiteController
 
 		$page->set('wishid', $wishid);
 		$page->set('created_by', Request::getInt('created_by', User::get('id'), 'post'));
-		$page->set('created', \JFactory::getDate()->toSql());
+		$page->set('created', Date::toSql());
 		$page->set('approved', 1);
 		$page->set('pagetext', Request::getVar('pagetext', '', 'post', 'none'));
 
@@ -740,7 +748,7 @@ class Wishlists extends SiteController
 		if ($due)
 		{
 			$publishtime = $due . ' 00:00:00';
-			$due = \JFactory::getDate(strtotime($publishtime))->toSql();
+			$due = Date::of(strtotime($publishtime))->toSql();
 		}
 
 		//is this wish assigned to anyone?
@@ -861,7 +869,7 @@ class Wishlists extends SiteController
 		$this->_buildPathway($wishlist);
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
 			$this->loginTask();
@@ -904,7 +912,7 @@ class Wishlists extends SiteController
 		$this->view->title    = $this->_title;
 		$this->view->config   = $this->config;
 		$this->view->admin    = $this->_admin;
-		$this->view->juser    = $this->juser;
+		$this->view->juser    = User::getRoot();
 		$this->view->wishlist = $wishlist;
 		$this->view->wish     = $wish;
 
@@ -1014,7 +1022,7 @@ class Wishlists extends SiteController
 			$this->view->title    = Lang::txt(strtoupper($this->_name));
 			$this->view->config   = $this->config;
 			$this->view->admin    = $this->_admin;
-			$this->view->juser    = $this->juser;
+			$this->view->juser    = User::getRoot();
 			$this->view->wishlist = $wishlist;
 			$this->view->wish     = $row;
 			$this->view->infolink = $infolink;
@@ -1028,7 +1036,7 @@ class Wishlists extends SiteController
 		$row->set('anonymous', Request::getInt('anonymous', 0));
 		$row->set('private', Request::getInt('private', 0));
 		//$row->set('about', Sanitize::clean($row->get('about')));
-		$row->set('proposed', ($wishid ? $row->get('proposed') : \JFactory::getDate()->toSql()));
+		$row->set('proposed', ($wishid ? $row->get('proposed') : Date::toSql()));
 
 		// store new content
 		if (!$row->store(true))
@@ -1143,7 +1151,7 @@ class Wishlists extends SiteController
 		$changed = false;
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Set page title
 			$this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2)) ? $wishlist->get('title') : '';
@@ -1203,7 +1211,7 @@ class Wishlists extends SiteController
 
 				case 'granted':
 					$wish->set('status', 1);
-					$wish->set('granted', \JFactory::getDate()->toSql());
+					$wish->set('granted', Date::toSql());
 					$wish->set('granted_by', User::get('id'));
 					$wish->set('granted_vid', ($vid ? $vid : 0));
 
@@ -1608,7 +1616,7 @@ class Wishlists extends SiteController
 		}
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Set page title
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
@@ -1710,7 +1718,7 @@ class Wishlists extends SiteController
 		}
 
 		$wishlist = $objWishlist->get_wishlist($listid);
-		$item = $objWish->get_wish($wishid, $juser->get('id'));
+		$item = $objWish->get_wish($wishid, User::get('id'));
 
 		// cannot proceed if wish id is not found
 		if (!$wishlist or !$item)
@@ -1729,7 +1737,7 @@ class Wishlists extends SiteController
 		$importance = Request::getVar('importance', '', 'post');
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Set page title
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
@@ -1799,7 +1807,7 @@ class Wishlists extends SiteController
 		$wishid   = Request::getInt('wishid', 0);
 		$ajax     = Request::getInt('ajax', 0);
 		$category = Request::getVar('cat', '');
-		$when     = \JFactory::getDate()->toSql();
+		$when     = Date::toSql();
 
 		// Get wishlist info
 		$wishlist = Wishlist::getInstance($listid);
@@ -1827,7 +1835,7 @@ class Wishlists extends SiteController
 		}
 
 		// is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
 			$this->loginTask();
@@ -1858,10 +1866,10 @@ class Wishlists extends SiteController
 			}
 
 			$row->set('anonymous', ($row->get('anonymous') ? $row->get('anonymous') : 0));
-			$row->set('added', \JFactory::getDate()->toSql());
+			$row->set('added', Date::toSql());
 			$row->set('state', 0);
 			$row->set('category', $category);
-			$row->set('added_by', $this->juser->get('id'));
+			$row->set('added_by', User::get('id'));
 
 			// Save the data
 			if (!$row->store(true))
@@ -2079,7 +2087,7 @@ class Wishlists extends SiteController
 		$wishlist = Wishlist::getInstance($wish->get('wishlist'));
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Get List Title
 			$this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage'))) ? $wishlist->get('title') : '';
@@ -2449,8 +2457,8 @@ class Wishlists extends SiteController
 			break; // 4 hours
 		}
 
-		$due['immediate'] = \JFactory::getDate(time() + $i)->toSql();
-		$due['warning']   = \JFactory::getDate(time() + $w)->toSql();
+		$due['immediate'] = Date::of(time() + $i)->toSql();
+		$due['warning']   = Date::of(time() + $w)->toSql();
 
 		return $due;
 	}

@@ -30,6 +30,8 @@
 
 namespace Components\Wishlist\Helpers;
 
+use Lang;
+
 /**
  * Wishlist helper class for misc. HTML
  */

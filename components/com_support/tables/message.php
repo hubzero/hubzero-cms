@@ -31,6 +31,7 @@
 namespace Components\Support\Tables;
 
 use Hubzero\Utility\String;
+use Lang;
 
 /**
  * Table class for support messages

@@ -31,6 +31,10 @@
 namespace Components\Wishlist\Tables;
 
 use Hubzero\Utility\Sanitize;
+use Config;
+use Lang;
+use Date;
+use User;
 
 /**
  * Table class for wishlist
@@ -130,11 +134,11 @@ class Wishlist extends \JTable
 			return false;
 		}
 
-		$sitename = \Config::get('sitename');
+		$sitename = Config::get('sitename');
 
-		$this->created     = \JFactory::getDate()->toSql();
+		$this->created     = Date::toSql();
 		$this->category    = $category;
-		$this->created_by  = \User::get('id');
+		$this->created_by  = User::get('id');
 		$this->referenceid = $refid;
 		$this->description = $description;
 		$this->public      = $public;

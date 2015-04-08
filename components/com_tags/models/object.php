@@ -32,6 +32,8 @@ namespace Components\Tags\Models;
 
 use Hubzero\User\Profile;
 use Hubzero\Base\Model;
+use Date;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'object.php');
 
@@ -166,11 +168,11 @@ class Object extends Model
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('taggedon'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('taggedon'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('taggedon'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('taggedon'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

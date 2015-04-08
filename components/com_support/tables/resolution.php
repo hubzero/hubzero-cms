@@ -30,6 +30,8 @@
 
 namespace Components\Support\Tables;
 
+use Lang;
+
 /**
  * Table class for support resolutions
  */

@@ -32,6 +32,8 @@ namespace Components\Feedback\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\String;
+use Request;
+use Lang;
 
 /**
  * Feedback controller class for handling media (files)

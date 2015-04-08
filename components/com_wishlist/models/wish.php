@@ -34,6 +34,9 @@ use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Hubzero\Base\ItemList;
 use Components\Wishlist\Tables;
+use User;
+use Lang;
+use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'attachment.php');
@@ -348,11 +351,11 @@ class Wish extends Base
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -540,7 +543,7 @@ class Wish extends Base
 					case static::WISH_STATE_REJECTED:  $state = Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
 					case static::WISH_STATE_DELETED:   $state = Lang::txt('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
 					case static::WISH_STATE_GRANTED:
-						$user = \JUser::getInstance($this->get('granted_by'));
+						$user = User::getInstance($this->get('granted_by'));
 						$state = $this->granted() != '0000-00-00 00:00:00'
 								? Lang::txt('on %s by %s', $this->granted('date'), $user->get('name'))
 								: '';
@@ -783,7 +786,7 @@ class Wish extends Base
 
 		if ($user_id === null)
 		{
-			$user_id = \JFactory::getUser()->get('id');
+			$user_id = User::get('id');
 		}
 
 		return $this->_tbl->getWishId(
@@ -810,7 +813,7 @@ class Wish extends Base
 
 		$tbl->wishid     = $this->get('id');
 		$tbl->userid     = User::get('id');
-		$tbl->voted      = \JFactory::getDate()->toSql();
+		$tbl->voted      = Date::toSql();
 		$tbl->importance = $importance;
 		$tbl->effort     = $effort;
 
@@ -866,7 +869,7 @@ class Wish extends Base
 		$tbl->category    = 'wish';
 		$tbl->voter       = User::get('id');
 		$tbl->ip          = Request::ip();
-		$tbl->voted       = \JFactory::getDate()->toSql();
+		$tbl->voted       = Date::toSql();
 		$tbl->helpful     = $vote;
 
 		if (!$tbl->check())
@@ -1119,7 +1122,7 @@ class Wish extends Base
 		if (!$this->get('myranking', null))
 		{
 			$tbl = new Tables\Wish\Rank($this->_db);
-			$tbl->load_vote(\JFactory::getUser()->get('id'), $this->get('id'));
+			$tbl->load_vote(User::get('id'), $this->get('id'));
 
 			$this->set('myranking', $tbl);
 		}

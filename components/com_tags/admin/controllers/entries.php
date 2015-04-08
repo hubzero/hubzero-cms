@@ -34,6 +34,10 @@ use Hubzero\Component\AdminController;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 /**
  * Tags controller class for managing entries

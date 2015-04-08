@@ -30,6 +30,9 @@
 
 namespace Components\Wishlist\Models\Adapters;
 
+use Pathway;
+use Lang;
+
 require_once(__DIR__ . DS . 'base.php');
 
 /**

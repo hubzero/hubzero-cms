@@ -33,6 +33,10 @@ namespace Components\Feedback\Site\Controllers;
 use Components\Feedback\Tables\Quote;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
+use Request;
+use Route;
+use Lang;
+use User;
 
 /**
  * Feedback controller class for media management
@@ -221,7 +225,7 @@ class Media extends SiteController
 		// Output form with error messages
 		$this->view->title     = $this->_title;
 		$this->view->webpath   = $this->config->get('uploadpath', '/site/quotes');
-		$this->view->default_picture = $this->config->get('defaultpic', '/components/com_feedback/assets/img/contributor.gif');
+		$this->view->default_picture = $this->config->get('defaultpic', '/components/com_feedback/site/assets/img/contributor.gif');
 		$this->view->path      = $dir;
 		$this->view->file      = $file;
 		$this->view->file_path = $path;

@@ -30,6 +30,10 @@
 
 namespace Components\Wishlist\Tables\Wish;
 
+use Lang;
+use Date;
+use User;
+
 /**
  * Table class for wishlist plan
  */
@@ -74,8 +78,8 @@ class Plan extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 		}
 
 		return true;

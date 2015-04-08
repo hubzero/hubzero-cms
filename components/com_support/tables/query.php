@@ -30,6 +30,10 @@
 
 namespace Components\Support\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for support queries
  */
@@ -84,7 +88,7 @@ class Query extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 		}
 		if ($this->iscore === null)
 		{
@@ -274,8 +278,7 @@ class Query extends \JTable
 		}
 		if (!$user_id)
 		{
-			$juser = \JFactory::getUser();
-			$user_id = $juser->get('id');
+			$user_id = User::get('id');
 		}
 		$filters = array(
 			'user_id'  => $user_id,
@@ -310,7 +313,7 @@ class Query extends \JTable
 		{
 			$condition = json_decode($condition);
 		}
-		$juser = \JFactory::getUser();
+		$juser = User::getRoot();
 
 		$op = ' ' . strtoupper($condition->operator) . ' ';
 
@@ -429,7 +432,7 @@ class Query extends \JTable
 				}
 				else if (strtolower($expr->fldval) == 'owner')
 				{
-					$user = \JUser::getInstance($expr->val);
+					$user = User::getInstance($expr->val);
 					if ($user)
 					{
 						$expr->val = $user->get('id');

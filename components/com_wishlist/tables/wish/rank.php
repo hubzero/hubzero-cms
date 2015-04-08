@@ -30,6 +30,8 @@
 
 namespace Components\Wishlist\Tables\Wish;
 
+use Lang;
+
 /**
  * Table class for wish ranking
  */

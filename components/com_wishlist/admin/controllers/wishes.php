@@ -39,6 +39,11 @@ use Components\Wishlist\Tables\OwnerGroup;
 use Components\Wishlist\Models\Tags;
 use Exception;
 use stdClass;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
 
 /**
  * Cotnroller class for wishes
@@ -216,7 +221,7 @@ class Wishes extends AdminController
 			{
 				if ($list->category == 'resource')
 				{
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 					$list->resource = new \Components\Resources\Tables\Resource($this->database);
 					$list->resource->load($list->referenceid);
 				}

@@ -28,12 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Route;
+use Date;
+use Lang;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tag.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'object.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'substitute.php');
 
 /**
  * Tag helper class for adding/removing/displaying tags on objects
@@ -196,7 +197,7 @@ class TagsHandler extends \Hubzero\Base\Object
 		// Add an entry linking the tag to the object it was used on
 		$to->strength = $strength;
 		$to->taggerid = $tagger_id;
-		$to->taggedon = JFactory::getDate()->toSql();
+		$to->taggedon = Date::toSql();
 
 		if (!$to->store())
 		{

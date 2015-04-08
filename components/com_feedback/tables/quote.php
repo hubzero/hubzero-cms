@@ -30,6 +30,9 @@
 
 namespace Components\Feedback\Tables;
 
+use Component;
+use Lang;
+
 /**
  * Table class for feedback quote
  */

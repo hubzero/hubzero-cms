@@ -30,6 +30,10 @@
 
 namespace Components\Support\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for support ticket
  */
@@ -75,7 +79,7 @@ class Ticket extends \JTable
 		{
 			if (!$this->created || $this->created == '0000-00-00 00:00:00')
 			{
-				$this->created = \JFactory::getDate()->toSql();
+				$this->created = Date::toSql();
 			}
 		}
 
@@ -109,7 +113,7 @@ class Ticket extends \JTable
 		}*/
 		if ($this->owner && is_string($this->owner))
 		{
-			$owner = \JUser::getInstance($this->owner);
+			$owner = User::getInstance($this->owner);
 			if ($owner && $owner->get('id'))
 			{
 				$this->owner = (int) $owner->get('id');
@@ -248,10 +252,9 @@ class Ticket extends \JTable
 		}
 		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != ''))
 		{
-			$juser = \JFactory::getUser();
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
-				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
+				$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 				$groups = '';
 				if ($xgroups)
 				{
@@ -584,7 +587,7 @@ class Ticket extends \JTable
 	 */
 	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
-		$year = ($year) ? $year : \JFactory::getDate()->format("Y");
+		$year = ($year) ? $year : Date::format("Y");
 		$endyear = intval($year) + 1;
 
 		$sql = "SELECT count(*)
@@ -618,7 +621,7 @@ class Ticket extends \JTable
 	 */
 	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
-		$year = ($year) ? $year : \JFactory::getDate()->format("Y");
+		$year = ($year) ? $year : Date::format("Y");
 		$endyear = intval($year) + 1;
 
 		$sql = "SELECT COUNT(DISTINCT k.ticket)
@@ -702,7 +705,7 @@ class Ticket extends \JTable
 	 */
 	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null, $username=null)
 	{
-		$year = ($year) ? $year : \JFactory::getDate()->format("Y");
+		$year = ($year) ? $year : Date::format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
 		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
@@ -725,7 +728,7 @@ class Ticket extends \JTable
 		}
 		if ($username)
 		{
-			$sql .= " AND k.created_by=" . $this->_db->Quote(\JUser::getInstance($username)->get('id'));
+			$sql .= " AND k.created_by=" . $this->_db->Quote(User::getInstance($username)->get('id'));
 		}
 
 		$this->_db->setQuery($sql);
@@ -743,7 +746,7 @@ class Ticket extends \JTable
 	 */
 	public function getCountOfTicketsOpenedInMonth($type=0, $year='', $month='01', $group=null)
 	{
-		$year = ($year) ? $year : \JFactory::getDate()->format("Y");
+		$year = ($year) ? $year : Date::format("Y");
 
 		$nextyear  = (intval($month) == 12) ? $year+1 : $year;
 		$nextmonth = (intval($month) == 12) ? '01' : sprintf("%02d",intval($month)+1);
@@ -777,7 +780,7 @@ class Ticket extends \JTable
 	 */
 	public function getAverageLifeOfTicket($type=0, $year='', $group=null)
 	{
-		$year = ($year) ? $year : \JFactory::getDate()->format("Y");
+		$year = ($year) ? $year : Date::format("Y");
 
 		$sql = "SELECT k.ticket, UNIX_TIMESTAMP(f.created) AS t_created, UNIX_TIMESTAMP(MAX(k.created)) AS c_created
 				FROM #__support_comments AS k, $this->_tbl AS f

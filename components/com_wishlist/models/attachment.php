@@ -30,6 +30,9 @@
 
 namespace Components\Wishlist\Models;
 
+use Route;
+use Lang;
+
 require_once(__DIR__ . DS . 'base.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 

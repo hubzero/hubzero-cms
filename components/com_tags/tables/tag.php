@@ -30,6 +30,10 @@
 
 namespace Components\Tags\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Table class for tags
  */
@@ -243,13 +247,13 @@ class Tag extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created_by = \JFactory::getUser()->get('id');
-			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = User::get('id');
+			$this->created    = Date::toSql();
 		}
 		else
 		{
-			$this->modified    = ($this->modified ? $this->modified : \JFactory::getDate()->toSql());
-			$this->modified_by = ($this->modified_by ? $this->modified_by : \JFactory::getUser()->get('id'));
+			$this->modified    = ($this->modified ? $this->modified : Date::toSql());
+			$this->modified_by = ($this->modified_by ? $this->modified_by : User::get('id'));
 		}
 
 		return true;

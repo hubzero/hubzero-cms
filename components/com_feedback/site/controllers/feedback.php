@@ -37,6 +37,13 @@ use Hubzero\Utility\Number;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use DirectoryIterator;
+use Component;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Feedback controller class
@@ -151,9 +158,9 @@ class Feedback extends SiteController
 	public function storyTask($row=null)
 	{
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
-		if (is_dir(PATH_APP . '/tmp/feedback/' . User::get('id')))
+		if (is_dir($this->tmpPath() . DS . User::get('id')))
 		{
-			\JFolder::delete(PATH_APP . '/tmp/feedback/' . User::get('id'));
+			\JFolder::delete($this->tmpPath() . DS . User::get('id'));
 		}
 
 		if (User::isGuest())
@@ -287,7 +294,7 @@ class Feedback extends SiteController
 		// Code cleaner for xhtml transitional compliance
 		$row->quote = Sanitize::stripAll($row->quote);
 		$row->quote = str_replace('<br>', '<br />', $row->quote);
-		$row->date  = \JFactory::getDate()->toSql();
+		$row->date  = Date::toSql();
 
 		// Check content
 		if (!$row->check())
@@ -321,7 +328,7 @@ class Feedback extends SiteController
 		}
 
 		// If there is a temp dir for this user then copy the contents to the newly created folder
-		$tempDir = PATH_APP . '/tmp/feedback/' . User::get('id');
+		$tempDir = $this->tmpPath() . DS . User::get('id');
 
 		if (is_dir($tempDir))
 		{
@@ -431,7 +438,7 @@ class Feedback extends SiteController
 		}
 
 		// Define upload directory and make sure its writable
-		$path = PATH_APP . DS . 'tmp/feedback/' . User::get('id');
+		$path = $this->tmpPath() . DS . User::get('id');
 
 		if (!is_dir($path))
 		{
@@ -517,6 +524,16 @@ class Feedback extends SiteController
 			'file'       => $filename . '.' . $ext,
 			'directory'  => str_replace(PATH_APP, '', $path),
 		));
+	}
+
+	/**
+	 * Path to the temp directory
+	 *
+	 * @return  string
+	 */
+	protected function tmpPath()
+	{
+		return PATH_APP . DS . 'tmp' . DS . 'feedback';
 	}
 }
 

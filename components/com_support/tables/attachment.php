@@ -30,6 +30,12 @@
 
 namespace Components\Support\Tables;
 
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for support attachments (tickets, comments)
  */
@@ -73,7 +79,7 @@ class Attachment extends \JTable
 		if (!$this->id)
 		{
 			$this->created_by = User::get('id');
-			$this->created    = \JFactory::getDate()->toSql();
+			$this->created    = Date::toSql();
 		}
 
 		return true;

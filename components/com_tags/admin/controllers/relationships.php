@@ -32,6 +32,7 @@ namespace Components\Tags\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
 
 /**
  * Tags controller class for managing raltionships between tags

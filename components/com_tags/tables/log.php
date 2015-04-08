@@ -30,6 +30,10 @@
 
 namespace Components\Tags\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Tags class for log table
  * This is used to track events on tags (adding, editing, merging, deleting)
@@ -61,17 +65,16 @@ class Log extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->timestamp = \JFactory::getDate()->toSql();
-			$this->actorid = $juser->get('id');
+			$this->timestamp = Date::toSql();
+			$this->actorid = User::get('id');
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->user_id = $juser->get('id');
+			$this->user_id = User::get('id');
 		}
 
 		return true;

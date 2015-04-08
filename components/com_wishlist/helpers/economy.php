@@ -34,6 +34,9 @@ use Components\Wishlist\Tables;
 use Hubzero\Base\Object;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
+use Component;
+use User;
+use Lang;
 
 /**
  * Wishlist Economy class:
@@ -175,7 +178,7 @@ class Economy extends Object
 			{
 				foreach ($owners as $owner)
 				{
-					$o = \JUser::getInstance($owner);
+					$o = User::getInstance($owner);
 					if (!is_object($o) || !$o->get('id'))
 					{
 						continue;
@@ -200,7 +203,7 @@ class Economy extends Object
 			// give main share
 			if ($wish->assigned && $mainshare)
 			{
-				$o = \JUser::getInstance($wish->assigned);
+				$o = User::getInstance($wish->assigned);
 				if (is_object($o) && $o->get('id'))
 				{
 					$BTLM = new Teller($this->_db , $wish->assigned);
@@ -214,7 +217,7 @@ class Economy extends Object
 			{
 				foreach ($payees as $p)
 				{
-					$o = \JUser::getInstance($p->uid);
+					$o = User::getInstance($p->uid);
 					if (!is_object($o) || !$o->get('id'))
 					{
 						continue;
@@ -243,10 +246,9 @@ class Economy extends Object
 		}
 
 		// Points for wish author (needs to be granted by another person)
-		$juser = \JFactory::getUser();
-		if ($wish->ranking > 0 && $wish->proposed_by != $juser->get('id') && $wish->proposed_by)
+		if ($wish->ranking > 0 && $wish->proposed_by != User::get('id') && $wish->proposed_by)
 		{
-			$o = \JUser::getInstance($wish->proposed_by);
+			$o = User::getInstance($wish->proposed_by);
 			if (is_object($o) && $o->get('id'))
 			{
 				$BTLA = new Teller($this->_db , $wish->proposed_by);
