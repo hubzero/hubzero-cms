@@ -63,12 +63,17 @@ $i = 1;
 	<div id="plg-header">
 		<h3 class="publications"><?php echo $this->title; ?></h3>
 	</div>
+	<ul id="page_options" class="pluginOptions">
+		<li>
+			<a class="icon-add btn"  href="<?php echo $url . '/?action=start'; ?>">
+				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?>
+			</a>
+		</li>
+	</ul>
 	<?php
 	if (count($this->rows) > 0 ) {
 	?>
-	<div class="list-editing"><p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SHOWING')); ?> <?php if ($this->total <= count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if ($this->total > count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?>
-		<span class="editlink addnew"><a href="<?php echo $url . '/?action=start'; ?>" ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a></span></p>
-		</div>
+
 		<table id="filelist" class="listing">
 			<thead>
 				<tr>
@@ -155,6 +160,21 @@ $i = 1;
 				<?php } ?></p>
 			</div>
 		<?php } ?>
+		<?php
+		// Pagination
+		$pageNav = new \JPagination(
+			$this->total,
+			$this->filters['start'],
+			$this->filters['limit']
+		);
+		$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+		$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
+
+		$pagenavhtml = $pageNav->getListFooter();
+		?>
+		<fieldset>
+			<?php echo $pagenavhtml; ?>
+		</fieldset>
 			<p class="extras">
 				<span class="leftfloat">
 				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>

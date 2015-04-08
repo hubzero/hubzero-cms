@@ -1554,7 +1554,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= JRequest::getInt('limit', 25);
+		$filters['limit'] 	 		= JRequest::getInt('limit', $this->params->get('display_limit'));
 		$filters['start'] 	 		= JRequest::getInt('limitstart', 0);
 		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'title');
 		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
@@ -1574,12 +1574,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
 
-		// Get all publications
+		// Get publications
 		$view->rows = $objP->getRecords($filters);
 
 		// Get total count
 		$results = $objP->getCount($filters);
 		$view->total = ($results && is_array($results)) ? count($results) : 0;
+
+		// Get all project pubs (for disk space calculation)
+		$all = $objP->getRecords($afilters = array('project' => $this->_project->id, 'dev' => 1, 'ignore-access' => 1 ));
 
 		// Areas required for publication
 		$view->required = array('content', 'description', 'license', 'authors');
@@ -1593,7 +1596,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get used space
 		$helper 	   = new PublicationHelper($this->_database);
-		$view->dirsize = $helper->getDiskUsage($this->_project->id, $view->rows);
+		$view->dirsize = $helper->getDiskUsage($this->_project->id, $all);
 		$view->params  = new JParameter( $this->_project->params );
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
