@@ -30,6 +30,8 @@
 
 namespace Components\Wiki\Tables;
 
+use Lang;
+
 /**
  * Wiki table class for logging events
  */

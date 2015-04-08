@@ -33,6 +33,9 @@ namespace Components\Collections\Models\Item;
 use Components\Collections\Models\Item as GenericItem;
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
+use Request;
+use Route;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -96,7 +99,7 @@ class Wiki extends GenericItem
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 		$page = null;
 
 		if (!$id)

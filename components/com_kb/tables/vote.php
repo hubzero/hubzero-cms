@@ -30,6 +30,8 @@
 
 namespace Components\Kb\Tables;
 
+use Lang;
+
 /**
  * Table class for knowledge base votes
  */

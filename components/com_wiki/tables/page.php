@@ -30,6 +30,10 @@
 
 namespace Components\Wiki\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Wiki table class for page
  */
@@ -326,7 +330,7 @@ class Page extends \JTable
 	 */
 	public function setRevisionId($id=null)
 	{
-		$modified = \JFactory::getDate()->toSql();
+		$modified = Date::toSql();
 		if (!$id)
 		{
 			$revision = $this->getCurrentRevision();
@@ -445,9 +449,9 @@ class Page extends \JTable
 				return false;
 			}
 
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->modified   = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = Date::toSql();
+			$this->modified   = Date::toSql();
+			$this->created_by = User::get('id');
 		}
 
 		if ($this->getError())
@@ -727,8 +731,6 @@ class Page extends \JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		$juser = \JFactory::getUser();
-
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$searchquery = $filters['search'];
@@ -865,11 +867,11 @@ class Page extends \JTable
 		}
 		else
 		{
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
 				if (!isset($filters['authorized']) || (isset($filters['authorized']) && $filters['authorized'] !== 'admin'))
 				{
-					$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+					$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 					$ugs = (is_object($profile)) ? $profile->getGroups('members') : array();
 
 					$groups = array();
@@ -883,11 +885,11 @@ class Page extends \JTable
 
 					if (count($groups) > 0)
 					{
-						$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
+						$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->Quote(User::get('id')) . ")))";
 					}
 					else
 					{
-						$where[] = "(w.access!=1 OR (w.access=1 AND w.created_by=" . $this->_db->Quote($juser->get('id')) . "))";
+						$where[] = "(w.access!=1 OR (w.access=1 AND w.created_by=" . $this->_db->Quote(User::get('id')) . "))";
 					}
 				}
 			}
@@ -1016,7 +1018,7 @@ class Page extends \JTable
 
 		if (!isset($RE))
 		{
-			$language = strtolower(\Lang::getTag());
+			$language = strtolower(Lang::getTag());
 
 			// This mess splits between a lower-case letter followed by
 			// either an upper-case or a numeral; except that it wont

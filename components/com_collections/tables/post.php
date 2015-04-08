@@ -30,6 +30,10 @@
 
 namespace Components\Collections\Tables;
 
+use Date;
+use User;
+use Lang;
+
 /**
  * Table class for collection posts
  */
@@ -89,8 +93,8 @@ class Post extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 
 			if (!$this->ordering)
 			{

@@ -30,6 +30,9 @@
 
 namespace Components\Forum\Tables;
 
+use Component;
+use Lang;
+
 /**
  * Table class for forum attachments
  */

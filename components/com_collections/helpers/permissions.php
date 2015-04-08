@@ -30,6 +30,9 @@
 
 namespace Components\Collections\Helpers;
 
+use hubzero\Base\Object;
+use User;
+
 /**
  * Permissions helper
  */
@@ -45,8 +48,8 @@ class Permissions
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param   string   $extension   The extension.
-	 * @param   integer  $categoryId  The category ID.
+	 * @param   string   $assetType
+	 * @param   integer  $assetId
 	 * @return  object
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
@@ -58,8 +61,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user   = \JFactory::getUser();
-		$result = new \JObject;
+		$result = new Object;
 
 		$actions = array(
 			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
@@ -67,7 +69,7 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

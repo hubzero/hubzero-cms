@@ -37,6 +37,10 @@ use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
 use Exception;
+use Request;
+use User;
+use Lang;
+use Date;
 
 /**
  * Wiki controller class for media
@@ -288,7 +292,7 @@ class Media extends SiteController
 		$attachment->pageid      = $listdir;
 		$attachment->filename    = $filename . '.' . $ext;
 		$attachment->description = trim(Request::getVar('description', '', 'post'));
-		$attachment->created     = \JFactory::getDate()->toSql();
+		$attachment->created     = Date::toSql();
 		$attachment->created_by  = User::get('id');
 
 		if (!$attachment->check())
@@ -379,7 +383,7 @@ class Media extends SiteController
 			$attachment->pageid      = $listdir;
 			$attachment->filename    = $file['name'];
 			$attachment->description = trim(Request::getVar('description', '', 'post'));
-			$attachment->created     = \JFactory::getDate()->toSql();
+			$attachment->created     = Date::toSql();
 			$attachment->created_by  = User::get('id');
 
 			if (!$attachment->check())

@@ -36,6 +36,11 @@ use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Revision;
 use Components\Wiki\Helpers\Parser;
 use Components\Wiki\Tables;
+use Request;
+use Config;
+use User;
+use Lang;
+use Date;
 
 /**
  * Controller class for wiki page revisions
@@ -212,7 +217,7 @@ class Revisions extends AdminController
 
 		if (!$row->exists())
 		{
-			$row->set('created', \JFactory::getDate()->toSql());
+			$row->set('created', Date::toSql());
 		}
 
 		$page = new Page(intval($row->get('pageid')));

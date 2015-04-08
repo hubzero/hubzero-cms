@@ -31,6 +31,9 @@
 namespace Components\Answers\Tables;
 
 use Hubzero\Utility\Validate;
+use Lang;
+use Date;
+use User;
 
 /**
  * Table class for question votes
@@ -69,7 +72,7 @@ class QuestionsLog extends \JTable
 
 		if (!$this->expires)
 		{
-			$this->expires = \JFactory::getDate(time() + (7 * 24 * 60 * 60))->toSql(); // in a week
+			$this->expires = Date::of(time() + (7 * 24 * 60 * 60))->toSql(); // in a week
 		}
 
 		if (!Validate::ip($this->ip))
@@ -103,8 +106,6 @@ class QuestionsLog extends \JTable
 		{
 			return false;
 		}
-
-		$now = \JFactory::getDate()->toSql();
 
 		$query = "SELECT COUNT(*) FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid);
 		if ($voter !== null)

@@ -33,6 +33,10 @@ namespace Components\Collections\Site\Controllers;
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Archive;
 use Hubzero\Component\SiteController;
+use Pathway;
+use Request;
+use Lang;
+use User;
 
 /**
  * Controller class for collections and posts

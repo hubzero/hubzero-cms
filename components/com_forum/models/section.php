@@ -34,6 +34,7 @@ use Components\Forum\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 use LogicException;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
 require_once(__DIR__ . DS . 'base.php');

@@ -35,6 +35,7 @@ use Components\Cron\Tables\Job as Table;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'job.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
@@ -205,7 +206,7 @@ class Job extends Model
 			return false;
 		}
 
-		$now = \JHTML::_('date', \JFactory::getDate(), 'Y-m-d H:i:s'); //\JFactory::getDate()->toSql();
+		$now = Date::of('now')->toLocal('Y-m-d H:i:s');
 
 		if ($this->get('publish_up')
 		 && $this->get('publish_up') != $this->_db->getNullDate()
@@ -229,7 +230,7 @@ class Job extends Model
 			return true;
 		}
 
-		$now = \JHTML::_('date', \JFactory::getDate(), 'Y-m-d H:i:s'); //\JFactory::getDate()->toSql();
+		$now = Date::of('now')->toLocal('Y-m-d H:i:s');
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != $this->_db->getNullDate()

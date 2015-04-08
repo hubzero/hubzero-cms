@@ -31,6 +31,7 @@
 namespace Components\Wiki\Helpers;
 
 use Exception;
+use Lang;
 
 jimport('joomla.event.dispatcher');
 
@@ -200,7 +201,7 @@ class Parser extends \JObservable
 
 		// Build the path to the needed parser plugin
 		$name = $input->clean($this->_name, 'cmd');
-		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
+		$path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
 		if (!\JFile::exists($path))
 		{

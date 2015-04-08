@@ -35,6 +35,10 @@ use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
+use Request;
+use Lang;
+use Date;
+use User;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
@@ -121,11 +125,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -404,7 +408,7 @@ class Comment extends Model
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
+			$juser = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 			// See if a person from this IP has already voted in the last week
 			$tbl = new Tables\Vote($this->_db);
@@ -440,7 +444,7 @@ class Comment extends Model
 			return false;
 		}
 
-		$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
+		$juser = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 		$al = new Tables\Vote($this->_db);
 		$al->object_id = $this->get('id');

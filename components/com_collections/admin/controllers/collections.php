@@ -33,6 +33,11 @@ namespace Components\Collections\Admin\Controllers;
 use Components\Collections\Models\Archive;
 use Components\Collections\Models\Collection;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
 
 /**
  * Controller class for Collections

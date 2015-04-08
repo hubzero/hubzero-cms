@@ -30,6 +30,10 @@
 
 namespace Components\Cron\Tables;
 
+use Date;
+use Lang;
+use User;
+
 /**
  * CRON table class for jobs
  */
@@ -92,16 +96,15 @@ class Job extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created = Date::toSql();
+			$this->created_by = User::get('id');
 		}
 		else
 		{
-			$this->modified = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified = Date::toSql();
+			$this->modified_by = User::get('id');
 		}
 
 		if (!$this->publish_up)
@@ -145,7 +148,7 @@ class Job extends \JTable
 
 		if (isset($filters['available']) && $filters['available'])
 		{
-			$now = \JFactory::getDate()->toSql();
+			$now = Date::toSql();
 
 			$where[] = "(c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(c.publish_down = '0000-00-00 00:00:00' OR c.publish_down > " . $this->_db->Quote($now) . ")";

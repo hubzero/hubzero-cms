@@ -34,6 +34,11 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Comment;
 use Hubzero\Component\SiteController;
 use Exception;
+use Pathway;
+use Request;
+use User;
+use Lang;
+use Date;
 
 /**
  * Wiki controller class for comments
@@ -254,7 +259,7 @@ class Comments extends SiteController
 		$comment->set('chtml', NULL);
 		$comment->set('chtml', $comment->content('parsed'));
 		$comment->set('anonymous', ($comment->get('anonymous') ? 1 : 0));
-		$comment->set('created', ($comment->get('created') ? $comment->get('created') : \JFactory::getDate()->toSql()));
+		$comment->set('created', ($comment->get('created') ? $comment->get('created') : Date::toSql()));
 
 		// Save the data
 		if (!$comment->store(true))

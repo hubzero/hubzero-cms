@@ -33,6 +33,10 @@ namespace Components\Wiki\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
+use Request;
+use Config;
+use User;
+use Lang;
 
 /**
  * Controller class for wiki pages

@@ -38,6 +38,12 @@ use Components\Forum\Models\Thread;
 use Components\Forum\Models\Post;
 use Components\Forum\Tables;
 use Exception;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use User;
+use Lang;
 
 /**
  * Forum controller class for threads
@@ -201,7 +207,7 @@ class Threads extends SiteController
 	 */
 	public function latestTask()
 	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		$app = \JFactory::getApplication();
 

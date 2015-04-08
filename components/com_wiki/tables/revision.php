@@ -30,6 +30,10 @@
 
 namespace Components\Wiki\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Wiki table class for page version
  */
@@ -78,8 +82,8 @@ class Revision extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 		}
 		$this->length = strlen($this->pagetext);
 

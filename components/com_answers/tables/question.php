@@ -31,6 +31,9 @@
 namespace Components\Answers\Tables;
 
 use Components\Answers\Models\Tags;
+use Lang;
+use Date;
+use User;
 
 /**
  * Table class for a question
@@ -63,7 +66,7 @@ class Question extends \JTable
 		}
 
 		// Updating entry
-		$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
+		$this->created    = $this->created    ?: Date::toSql();
 		$this->created_by = $this->created_by ?: User::get('id');
 
 		return true;

@@ -37,6 +37,11 @@ use Components\Collections\Models\Item;
 use Components\Collections\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Item\Comment;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use User;
 
 /**
  * Controller class for collection posts

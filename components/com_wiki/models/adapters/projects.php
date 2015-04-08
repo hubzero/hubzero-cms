@@ -30,6 +30,9 @@
 
 namespace Components\Wiki\Models\Adapters;
 
+use Request;
+use Route;
+
 require_once(__DIR__ . DS . 'base.php');
 
 /**

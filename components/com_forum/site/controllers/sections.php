@@ -33,6 +33,11 @@ namespace Components\Forum\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
+use Pathway;
+use Request;
+use Route;
+use User;
+use Lang;
 
 /**
  * Controller class for forum sections

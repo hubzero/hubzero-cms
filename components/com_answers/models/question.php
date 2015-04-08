@@ -36,6 +36,9 @@ use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
+use Lang;
+use User;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'questionslog.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'question.php');
@@ -651,13 +654,13 @@ class Question extends Base
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
+			$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 			// See if a person from this IP has already voted in the last week
 			$aql = new Tables\QuestionsLog($this->_db);
 			$this->set(
 				'voted',
-				$aql->checkVote($this->get('id'), Request::ip(), $juser->get('id'))
+				$aql->checkVote($this->get('id'), Request::ip(), $user->get('id'))
 			);
 		}
 
@@ -667,9 +670,9 @@ class Question extends Base
 	/**
 	 * Vote for the entry
 	 *
-	 * @param   integer $vote    The vote [0, 1]
-	 * @param   integer $user_id Optinal user ID to set as voter
-	 * @return  boolean False if error, True on success
+	 * @param   integer  $vote     The vote [0, 1]
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @return  boolean  False if error, True on success
 	 */
 	public function vote($vote=0, $user_id=0)
 	{
@@ -685,12 +688,12 @@ class Question extends Base
 			return false;
 		}
 
-		$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
+		$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 		$al = new Tables\QuestionsLog($this->_db);
 		$al->question_id = $this->get('id');
 		$al->ip          = Request::ip();
-		$al->voter       = $juser->get('id');
+		$al->voter       = $user->get('id');
 
 		if ($al->checkVote($al->question_id, $al->ip, $al->voter))
 		{
@@ -711,7 +714,7 @@ class Question extends Base
 			return false;
 		}
 
-		$al->expires = gmdate('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
+		$al->expires = Date::add('1 week')->toSql();
 
 		if (!$al->check())
 		{

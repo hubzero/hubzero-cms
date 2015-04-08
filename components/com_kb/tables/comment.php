@@ -30,6 +30,10 @@
 
 namespace Components\Kb\Tables;
 
+use User;
+use Lang;
+use Date;
+
 /**
  * Table class for knowledge base article comments
  */
@@ -67,7 +71,7 @@ class Comment extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
@@ -124,12 +128,10 @@ class Comment extends \JTable
 			$parent = 0;
 		}
 
-		$juser = \JFactory::getUser();
-
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$sql  = "SELECT c.*, v.vote FROM $this->_tbl AS c ";
-			$sql .= "LEFT JOIN #__faq_helpful_log AS v ON v.object_id=c.id AND v.user_id=" . $juser->get('id') . " AND v.type='comment' ";
+			$sql .= "LEFT JOIN #__faq_helpful_log AS v ON v.object_id=c.id AND v.user_id=" . User::get('id') . " AND v.type='comment' ";
 		}
 		else
 		{

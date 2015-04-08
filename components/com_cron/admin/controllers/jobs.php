@@ -35,6 +35,11 @@ use Components\Cron\Models\Job;
 use Components\Cron\Tables\Job as Table;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
 
 /**
  * Cron controller class for jobs
@@ -131,8 +136,8 @@ class Jobs extends AdminController
 
 		if (!$this->view->row->get('id'))
 		{
-			$this->view->row->set('created', \JFactory::getDate()->toSql());
-			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created', Date::toSql());
+			$this->view->row->set('created_by', User::get('id'));
 
 			$this->view->row->set('recurrence', '');
 		}
@@ -340,7 +345,7 @@ class Jobs extends AdminController
 				}
 			}
 
-			$job->set('last_run', \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m-d H:i:s'));
+			$job->set('last_run', Date::toLocal('Y-m-d H:i:s'));
 			$job->set('next_run', $job->nextRun());
 			$job->store();
 

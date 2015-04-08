@@ -40,6 +40,13 @@ use Hubzero\Utility\Sanitize;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
 use Exception;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use Lang;
+use Date;
+use User;
 
 /**
  * Answers controller class for questions
@@ -173,9 +180,8 @@ class Questions extends SiteController
 			}
 
 			// Perform some text cleaning, etc.
-			//$row->set('content', nl2br($row->get('content')));
 			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
-			$row->set('created', \JFactory::getDate()->toSql());
+			$row->set('created', Date::toSql());
 			$row->set('state', 0);
 			$row->set('created_by', User::get('id'));
 
@@ -205,74 +211,74 @@ class Questions extends SiteController
 		);
 
 		// Build the message subject
-			$subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
-			$message = array();
+		$subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
+		$message = array();
 
-			// Plain text message
-			$eview = new \Hubzero\Mail\View(array(
-				'name'   => 'emails',
-				'layout' => 'response_plaintext'
-			));
-			$eview->option   = $this->_option;
-			$eview->sitename = Config::get('sitename');
-			$eview->juser    = $this->juser;
-			$eview->question = $question;
-			$eview->row      = $row;
-			$eview->boundary = $from['multipart'];
+		// Plain text message
+		$eview = new \Hubzero\Mail\View(array(
+			'name'   => 'emails',
+			'layout' => 'response_plaintext'
+		));
+		$eview->option   = $this->_option;
+		$eview->sitename = Config::get('sitename');
+		$eview->juser    = $this->juser;
+		$eview->question = $question;
+		$eview->row      = $row;
+		$eview->boundary = $from['multipart'];
 
-			$message['plaintext'] = $eview->loadTemplate();
-			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+		$message['plaintext'] = $eview->loadTemplate();
+		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
-			// HTML message
-			$eview->setLayout('response_html');
+		// HTML message
+		$eview->setLayout('response_html');
 
-			$message['multipart'] = $eview->loadTemplate();
-			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+		$message['multipart'] = $eview->loadTemplate();
+		$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			// ---
+		// ---
 
-			$authorid = $question->creator('id');
+		$authorid = $question->creator('id');
 
-			$apu = $this->config->get('notify_users', '');
-			$apu = explode(',', $apu);
-			$apu = array_map('trim', $apu);
+		$apu = $this->config->get('notify_users', '');
+		$apu = explode(',', $apu);
+		$apu = array_map('trim', $apu);
 
-			$receivers = array();
+		$receivers = array();
 
-			if (!empty($apu))
+		if (!empty($apu))
+		{
+			foreach ($apu as $u)
 			{
-				foreach ($apu as $u)
+				$user = User::getInstance($u);
+				if ($user)
 				{
-					$user = \JUser::getInstance($u);
-					if ($user)
-					{
-						$receivers[] = $user->get('id');
-					}
-				}
-				$receivers = array_unique($receivers);
-			}
-
-			// Send the message
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-
-			// send the response, unless the author is also in the admin list.
-			if (!in_array($authorid, $receivers) && $question->get('email'))
-			{
-				if (!$dispatcher->trigger('onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
-				{
-					$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
+					$receivers[] = $user->get('id');
 				}
 			}
+			$receivers = array_unique($receivers);
+		}
 
-			// admin emails
-			if (!empty($receivers))
+		// Send the message
+		\JPluginHelper::importPlugin('xmessage');
+		$dispatcher = \JDispatcher::getInstance();
+
+		// send the response, unless the author is also in the admin list.
+		if (!in_array($authorid, $receivers) && $question->get('email'))
+		{
+			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
 			{
-				if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
-				{
-					$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
-				}
+				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
+		}
+
+		// admin emails
+		if (!empty($receivers))
+		{
+			if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
+			{
+				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
+			}
+		}
 
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . Request::getInt('rid', 0))
@@ -479,14 +485,14 @@ class Questions extends SiteController
 		// Record user's vote (new way)
 		if ($cat)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS  . 'tables' . DS . 'vote.php');
+			require_once(dirname(dirname(__DIR__)) . DS  . 'tables' . DS . 'vote.php');
 
 			$v = new Tables\Vote($this->database);
 			$v->referenceid = $row->get('id');
 			$v->category    = $cat;
 			$v->voter       = User::get('id');
 			$v->ip          = $ip;
-			$v->voted       = \JFactory::getDate()->toSql();
+			$v->voted       = Date::toSql();
 			$v->helpful     = $vote;
 			if (!$v->check())
 			{
@@ -536,29 +542,31 @@ class Questions extends SiteController
 		$this->view->task   = $this->_task;
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
-		$this->view->filters['start']    = Request::getInt('limitstart', 0);
-		$this->view->filters['tag']      = Request::getVar('tags', '');
-		$this->view->filters['tag']      = ($this->view->filters['tag']) ? $this->view->filters['tag'] : Request::getVar('tag', '');
-		$this->view->filters['q']        = Request::getVar('q', '');
+		$this->view->filters = array(
+			'limit'    => Request::getInt('limit', Config::get('list_limit')),
+			'start'    => Request::getInt('limitstart', 0),
+			'tag'      => Request::getVar('tags', ''),
+			'q'        => Request::getVar('q', ''),
+			'filterby' => Request::getWord('filterby', ''),
+			'sortby'   => Request::getWord('sortby', 'date'),
+			'sort_Dir' => Request::getWord('sortdir', 'DESC'),
+			'area'     => Request::getVar('area', '')
+		);
 
-		$this->view->filters['filterby'] = Request::getWord('filterby', '');
+		// Validate inputs
+		$this->view->filters['tag'] = ($this->view->filters['tag'] ? $this->view->filters['tag'] : Request::getVar('tag', ''));
+
 		if ($this->view->filters['filterby']
 		 && !in_array($this->view->filters['filterby'], array('open', 'closed')))
 		{
 			$this->view->filters['filterby'] = '';
 		}
 
-		$this->view->filters['sortby']   = Request::getWord('sortby', 'date');
 		if (!in_array($this->view->filters['sortby'], array('date', 'votes', 'rewards')))
 		{
 			$this->view->filters['sortby'] = 'date';
 		}
 
-		$this->view->filters['sort_Dir']   = Request::getWord('sortdir', 'DESC');
-
-		$this->view->filters['area']     = Request::getVar('area', '');
 		if ($this->view->filters['area']
 		 && !in_array($this->view->filters['area'], array('mine', 'assigned', 'interest')))
 		{
@@ -568,7 +576,7 @@ class Questions extends SiteController
 		// Get questions of interest
 		if ($this->view->filters['area'] == 'interest')
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 			// Get tags of interest
 			$mt = new \MembersModelTags(User::get('id'));
@@ -581,7 +589,7 @@ class Questions extends SiteController
 		// Get assigned questions
 		if ($this->view->filters['area'] == 'assigned')
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
 			$TA = new \ToolAuthor($this->database);
@@ -886,8 +894,8 @@ class Questions extends SiteController
 			$tags = preg_split("/[,;]/", $tags);
 			if (count($tags) > 0)
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$TA = new \ToolAuthor($this->database);
 				$objV = new \ToolVersion($this->database);
@@ -922,7 +930,7 @@ class Questions extends SiteController
 		{
 			foreach ($apu as $u)
 			{
-				$user = \JUser::getInstance($u);
+				$user = User::getInstance($u);
 				if ($user)
 				{
 					$receivers[] = $user->get('id');
@@ -1192,7 +1200,7 @@ class Questions extends SiteController
 		{
 			foreach ($apu as $u)
 			{
-				$user = \JUser::getInstance($u);
+				$user = User::getInstance($u);
 				if ($user)
 				{
 					$receivers[] = $user->get('id');

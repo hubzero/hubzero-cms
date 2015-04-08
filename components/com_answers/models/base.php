@@ -34,6 +34,7 @@ use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Component;
 use Lang;
+use Date;
 
 /**
  * Base class for Answers models to extend
@@ -65,11 +66,11 @@ class Base extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

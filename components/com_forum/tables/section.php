@@ -30,6 +30,10 @@
 
 namespace Components\Forum\Tables;
 
+use User;
+use Lang;
+use Date;
+
 /**
  * Table class for a forum category
  */
@@ -208,9 +212,8 @@ class Section extends \JTable
 
 		if (!$this->id)
 		{
-			$juser = \JFactory::getUser();
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 			$this->state = 1;
 			if (!$this->ordering)
 			{

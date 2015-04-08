@@ -31,6 +31,7 @@
 namespace Components\Forum\Models;
 
 use LogicException;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 require_once(__DIR__ . DS . 'base.php');

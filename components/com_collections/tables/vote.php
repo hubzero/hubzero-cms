@@ -30,6 +30,10 @@
 
 namespace Components\Collections\Tables;
 
+use Date;
+use User;
+use Lang;
+
 /**
  * Table class for post votes
  */
@@ -79,8 +83,8 @@ class Vote extends \JTable
 
 		if (!$this->id)
 		{
-			$this->voted   = \JFactory::getDate()->toSql();
-			$this->user_id = \JFactory::getUser()->get('id');
+			$this->voted   = Date::toSql();
+			$this->user_id = User::get('id');
 		}
 
 		return true;

@@ -33,6 +33,9 @@ namespace Components\Forum\Models;
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use InvalidArgumentException;
+use Component;
+use Lang;
+use Date;
 
 /**
  * Abstract model for forums
@@ -71,11 +74,11 @@ class Base extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -155,7 +158,7 @@ class Base extends Model
 
 		if (!class_exists($cls))
 		{
-			$path = __DIR__ . '/adapters/' . $scope . '.php';
+			$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 			if (!is_file($path))
 			{
 				throw new InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));

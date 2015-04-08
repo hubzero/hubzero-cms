@@ -34,6 +34,8 @@ use Components\Collections\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\User\Group;
 use Hubzero\Utility\String;
+use User;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'collection.php');
 require_once(__DIR__ . DS . 'post.php');

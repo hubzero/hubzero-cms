@@ -33,6 +33,11 @@ namespace Components\Kb\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Kb\Models\Archive;
 use Components\Kb\Models\Category;
+use Request;
+use Config;
+use Route;
+use User;
+use Lang;
 
 /**
  * Controller class for knowledge base categories

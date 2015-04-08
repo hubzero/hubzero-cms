@@ -32,6 +32,8 @@ namespace Components\Forum\Models;
 
 use Components\Forum\Tables;
 use Hubzero\Base\ItemList;
+use Lang;
+use User;
 
 require_once(__DIR__ . DS . 'section.php');
 
@@ -349,7 +351,7 @@ class Manager extends Base
 		{
 			$this->config()->set('access-view-' . $assetType, true);
 
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
 				$asset  = 'com_forum';
 				if ($assetId)
@@ -365,14 +367,14 @@ class Manager extends Base
 				}
 
 				// Admin
-				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+				$this->config()->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+				$this->config()->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 				// Permissions
-				$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
-				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
-				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
-				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
-				$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
+				$this->config()->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+				$this->config()->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+				$this->config()->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+				$this->config()->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+				$this->config()->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 			}
 
 			$this->config()->set('access-check-done', true);

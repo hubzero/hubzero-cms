@@ -30,6 +30,9 @@
 
 namespace Components\Wiki\Tables;
 
+use Lang;
+use User;
+
 /**
  * Wiki table for associating authors to a page
  */
@@ -308,7 +311,7 @@ class Author extends \JTable
 				$authors = array_map('trim', $authors);
 				foreach ($authors as $author)
 				{
-					$targetuser = \JUser::getInstance($author);
+					$targetuser = User::getInstance($author);
 
 					// Ensure we found an account
 					if (is_object($targetuser))

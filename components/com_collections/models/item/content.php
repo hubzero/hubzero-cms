@@ -32,6 +32,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Hubzero\Utility\String;
+use Request;
+use Route;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -104,7 +107,7 @@ class Content extends GenericItem
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Joomla' . DS . 'database' . DS . 'table' . DS . 'content.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'Joomla' . DS . 'database' . DS . 'table' . DS . 'content.php');
 
 		$article = new \JTableContent($this->_db);
 		$article->load($id);

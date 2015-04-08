@@ -31,6 +31,7 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Base\Model;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'following.php');
 

@@ -31,6 +31,7 @@
 namespace Components\Forum\Helpers;
 
 use Hubzero\Base\Object;
+use User;
 
 /**
  * Permissions helper
@@ -49,7 +50,7 @@ class Permissions
 	 *
 	 * @param   string   $extension  The extension.
 	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   JObject
+	 * @return  object   Object
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
@@ -60,7 +61,6 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user = \JFactory::getUser();
 		$result = new Object;
 
 		$actions = array(
@@ -74,7 +74,7 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

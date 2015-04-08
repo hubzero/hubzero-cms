@@ -38,6 +38,9 @@ use Hubzero\Content\Server;
 use Hubzero\Component\View;
 use Hubzero\Utility\Number;
 use Exception;
+use Request;
+use Lang;
+use User;
 
 /**
  * Collections controller class for media

@@ -30,6 +30,8 @@
 
 namespace Components\Collections\Models\Adapters;
 
+use Lang;
+
 require_once(__DIR__ . DS . 'base.php');
 
 /**

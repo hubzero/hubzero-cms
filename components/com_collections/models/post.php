@@ -31,6 +31,8 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Utility\String;
+use Request;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
 require_once(__DIR__ . DS . 'item.php');
@@ -313,7 +315,7 @@ class Post extends Base
 
 			if (!class_exists($cls))
 			{
-				$path = __DIR__ . '/adapters/' . $scope . '.php';
+				$path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 				if (!is_file($path))
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));

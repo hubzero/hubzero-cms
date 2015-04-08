@@ -33,6 +33,7 @@ namespace Components\Forum\Models;
 use Components\Forum\Tables;
 use Hubzero\Base\ItemList;
 use LogicException;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 require_once(__DIR__ . DS . 'base.php');
@@ -365,7 +366,7 @@ class Category extends Base
 	public function uniqueAliasCheck()
 	{
 		$alias = $this->get('alias');
-		$section = new ForumModelSection($this->get('section_id'));
+		$section = new Section($this->get('section_id'));
 
 		// all categories within a section
 		$categories = $section->categories('list');
@@ -376,7 +377,7 @@ class Category extends Base
 			$existing = $category->get('alias');
 			if ($alias == $existing)
 			{
-				$this->setError(JText::_('The alias must be unique within a section.'));
+				$this->setError(Lang::txt('The alias must be unique within a section.'));
 				return true;
 			}
 			else
@@ -386,6 +387,4 @@ class Category extends Base
 		}
 		return false;
 	}
-
 }
-

@@ -31,6 +31,7 @@
 namespace Components\Forum\Models\Adapters;
 
 use Hubzero\Utility\String;
+use Request;
 
 require_once(__DIR__ . DS . 'base.php');
 
@@ -58,7 +59,7 @@ class Course extends Base
 	{
 		$this->set('scope_id', $scope_id);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 
 		$offering = \CoursesModelOffering::getInstance($this->get('scope_id'));
 		$course = \CoursesModelCourse::getInstance($offering->get('course_id'));

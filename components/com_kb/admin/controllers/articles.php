@@ -34,6 +34,11 @@ use Hubzero\Component\AdminController;
 use Components\Kb\Models\Archive;
 use Components\Kb\Models\Article;
 use Components\Kb\Tables;
+use Request;
+use Config;
+use Route;
+use User;
+use Lang;
 
 /**
  * Controller class for knowledge base articles
@@ -177,7 +182,7 @@ class Articles extends AdminController
 		$this->view->row = $row;
 
 		// Fail if checked out not by 'me'
-		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out')  != $this->juser->get('id'))
+		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out')  != User::get('id'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -189,8 +194,8 @@ class Articles extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', \JFactory::getDate()->toSql());
+			$this->view->row->set('created_by', User::get('id'));
+			$this->view->row->set('created', Date::toSql());
 		}
 
 		$this->view->params = new \JParameter(
@@ -270,7 +275,7 @@ class Articles extends AdminController
 		// Save the tags
 		$row->tag(
 			Request::getVar('tags', '', 'post'),
-			$this->juser->get('id')
+			User::get('id')
 		);
 
 		if ($this->_task == 'apply')

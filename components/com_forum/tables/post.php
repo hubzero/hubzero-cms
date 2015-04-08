@@ -30,6 +30,10 @@
 
 namespace Components\Forum\Tables;
 
+use User;
+use Lang;
+use Date;
+
 /**
  * Table class for forum posts
  */
@@ -161,16 +165,15 @@ class Post extends \JTable
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created    = ($this->created && $this->created != $this->_db->getNullDate()) ? $this->created : \JFactory::getDate()->toSql();
-			$this->created_by = ($this->created_by) ? $this->created_by : $juser->get('id');
+			$this->created    = ($this->created && $this->created != $this->_db->getNullDate()) ? $this->created : Date::toSql();
+			$this->created_by = ($this->created_by) ? $this->created_by : User::get('id');
 		}
 		else
 		{
-			$this->modified    = ($this->modified && $this->modified != $this->_db->getNullDate()) ? $this->modified : \JFactory::getDate()->toSql();
-			$this->modified_by = ($this->modified_by) ? $this->modified_by : $juser->get('id');
+			$this->modified    = ($this->modified && $this->modified != $this->_db->getNullDate()) ? $this->modified : Date::toSql();
+			$this->modified_by = ($this->modified_by) ? $this->modified_by : User::get('id');
 		}
 
 		if (!$this->parent)
@@ -800,7 +803,7 @@ class Post extends \JTable
 		}
 
 		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->Quote($thread) . " AND r.state=1";
-		if (\JFactory::getUser()->get('guest'))
+		if (User::isGuest())
 		{
 			$query .= " AND r.access=0";
 		}
@@ -836,7 +839,7 @@ class Post extends \JTable
 		}
 		$where[] = "r.scope=" . $this->_db->Quote($scope);
 		$where[] = "r.state=" . $this->_db->Quote(1);
-		if (\JFactory::getUser()->get('guest'))
+		if (User::isGuest())
 		{
 			$where[] = "r.access=0";
 		}

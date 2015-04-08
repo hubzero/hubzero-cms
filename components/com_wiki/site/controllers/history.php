@@ -34,6 +34,10 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Revision;
 use Hubzero\Component\SiteController;
 use Exception;
+use Pathway;
+use Request;
+use User;
+use Lang;
 
 /**
  * Wiki controller class for page history

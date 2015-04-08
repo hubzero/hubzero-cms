@@ -35,6 +35,9 @@ use Components\Wiki\Tables;
 use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
 use Exception;
+use Component;
+use Request;
+use Lang;
 
 require_once(__DIR__ . DS . 'page.php');
 

@@ -34,6 +34,12 @@ use Hubzero\Component\AdminController;
 use Components\Blog\Models\Entry;
 use Components\Blog\Models\Comment;
 use Components\Blog\Tables;
+use Request;
+use Config;
+use Route;
+use User;
+use Lang;
+use Date;
 
 /**
  * Blog controller class for comments
@@ -218,8 +224,8 @@ class Comments extends AdminController
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('entry_id', Request::getInt('entry_id', 0));
-			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', \JFactory::getDate()->toSql());
+			$this->view->row->set('created_by', User::get('id'));
+			$this->view->row->set('created', Date::toSql());
 		}
 
 		// Set any errors

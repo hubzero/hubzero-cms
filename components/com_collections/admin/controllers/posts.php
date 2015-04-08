@@ -33,6 +33,10 @@ namespace Components\Collections\Admin\Controllers;
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Post;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 /**
  * Controller class for collection posts

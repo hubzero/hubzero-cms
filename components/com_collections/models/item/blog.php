@@ -32,6 +32,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Blog\Models\Entry;
+use Request;
+use Route;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -97,7 +100,7 @@ class Blog extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'post.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'post.php');
 		$post = null;
 
 		if (!$id)

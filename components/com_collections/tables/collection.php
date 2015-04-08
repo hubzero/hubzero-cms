@@ -29,6 +29,11 @@
  */
 
 namespace Components\Collections\Tables;
+
+use Date;
+use User;
+use Lang;
+
 /**
  * Table class for collections
  */
@@ -203,7 +208,7 @@ class Collection extends \JTable
 				return false;
 			}
 
-			$this->created    = ($this->created ? $this->created : \JFactory::getDate()->toSql());
+			$this->created    = ($this->created ? $this->created : Date::toSql());
 			$this->created_by = ($this->created_by ? $this->created_by : User::get('id'));
 			$this->state      = 1;
 		}

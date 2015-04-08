@@ -32,6 +32,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Resources\Tables\Resource;
+use Request;
+use Route;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -100,7 +103,7 @@ class Resources extends GenericItem
 
 		$id = ($id ?: Request::getInt('id', 0));
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
 		$resource = null;
 
 		if (!$id)

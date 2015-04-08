@@ -34,6 +34,10 @@ use Hubzero\Component\AdminController;
 use Components\Answers\Models\Question;
 use Components\Answers\Tables;
 use Exception;
+use Config;
+use Lang;
+use Route;
+use Request;
 
 /**
  * Controller class for questions
@@ -47,7 +51,7 @@ class Questions extends AdminController
 	 */
 	public function execute()
 	{
-		$this->banking = Component::params('com_members')->get('bankAccounts');
+		$this->banking = \Component::params('com_members')->get('bankAccounts');
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');

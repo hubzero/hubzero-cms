@@ -35,6 +35,11 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Page;
 use Components\Wiki\Models\Comment;
 use Components\Wiki\Tables;
+use Request;
+use Config;
+use User;
+use Lang;
+use Date;
 
 /**
  * Wiki controller class for entries
@@ -247,7 +252,7 @@ class Comments extends AdminController
 		{
 			$this->view->row->set('pageid', Request::getInt('pageid', 0));
 			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', \JFactory::getDate()->toSql());  // use gmdate() ?
+			$this->view->row->set('created', Date::toSql());  // use gmdate() ?
 		}
 
 		// Set any errors

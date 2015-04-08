@@ -30,6 +30,11 @@
 
 namespace Components\Collections\Tables;
 
+use Component;
+use Date;
+use User;
+use Lang;
+
 /**
  * Table class for collection item asset
  */
@@ -80,8 +85,8 @@ class Asset extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 			$this->state      = 1;
 
 			$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($this->item_id) . " ORDER BY ordering DESC LIMIT 1");

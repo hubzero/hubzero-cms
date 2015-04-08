@@ -33,6 +33,12 @@ namespace Components\Collections\Admin\Controllers;
 use Components\Collections\Models\Item;
 use Components\Collections\Tables;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Controller class for collection items
@@ -136,7 +142,7 @@ class Items extends AdminController
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', User::get('id'));
-			$this->view->row->set('created', \JFactory::getDate()->toSql());
+			$this->view->row->set('created', Date::toSql());
 		}
 
 		// Set any errors

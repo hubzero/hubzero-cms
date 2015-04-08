@@ -36,6 +36,9 @@ use Components\Collections\Models\Post;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Server;
 use Exception;
+use Request;
+use Lang;
+use User;
 
 /**
  * Collections controller class for media

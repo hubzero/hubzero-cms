@@ -32,6 +32,9 @@ namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Hubzero\Utility\String;
+use Request;
+use Route;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 

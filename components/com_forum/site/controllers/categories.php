@@ -36,6 +36,12 @@ use Components\Forum\Models\Manager;
 use Components\Forum\Models\Category;
 use Components\Forum\Tables;
 use Exception;
+use Pathway;
+use Request;
+use Route;
+use User;
+use Lang;
+
 
 /**
  * Controller class for forum categories

@@ -33,6 +33,8 @@ namespace Components\Forum\Models;
 use Components\Forum\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Lang;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
 require_once(__DIR__ . DS . 'base.php');
@@ -139,11 +141,11 @@ class Post extends Base
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('modified'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('modified'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

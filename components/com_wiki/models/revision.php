@@ -34,6 +34,10 @@ use Components\Wiki\Helpers\Parser;
 use Components\Wiki\Tables;
 use Hubzero\Base\Model;
 use Hubzero\Utility\String;
+use Request;
+use Lang;
+use User;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'revision.php');
 
@@ -127,11 +131,11 @@ class Revision extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -155,7 +159,7 @@ class Revision extends Model
 	{
 		if (!($this->_creator instanceof \JUser))
 		{
-			$this->_creator = \JUser::getInstance($this->get('created_by'));
+			$this->_creator = User::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
 				$this->_creator = new \JUser();

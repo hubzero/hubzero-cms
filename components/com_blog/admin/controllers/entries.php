@@ -33,6 +33,12 @@ namespace Components\Blog\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Blog\Models\Archive;
 use Components\Blog\Models\Entry;
+use Request;
+use Config;
+use Route;
+use User;
+use Lang;
+use Date;
 
 /**
  * Blog controller class for entries
@@ -157,9 +163,9 @@ class Entries extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', \JFactory::getDate()->toSql());
-			$this->view->row->set('publish_up', \JFactory::getDate()->toSql());
+			$this->view->row->set('created_by', User::get('id'));
+			$this->view->row->set('created', Date::toSql());
+			$this->view->row->set('publish_up', Date::toSql());
 		}
 
 		// Set any errors
@@ -189,11 +195,11 @@ class Entries extends AdminController
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
-			$fields['publish_up']   = \JFactory::getDate($fields['publish_up'], Config::get('offset'))->toSql();
+			$fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
 		}
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
 		{
-			$fields['publish_down'] = \JFactory::getDate($fields['publish_down'], Config::get('offset'))->toSql();
+			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		// Initiate extended database class

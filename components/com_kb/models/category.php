@@ -33,6 +33,7 @@ namespace Components\Kb\Models;
 use Components\Kb\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
+use User;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 require_once(__DIR__ . DS . 'article.php');
@@ -211,7 +212,7 @@ class Category extends Model
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access']  = \JFactory::getUser()->getAuthorisedViewLevels();
+			$filters['access']  = User::getAuthorisedViewLevels();
 		}
 		if (!isset($filters['empty']))
 		{

@@ -35,6 +35,9 @@ use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Hubzero\Base\ItemList;
+use Request;
+use Date;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 
@@ -119,11 +122,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

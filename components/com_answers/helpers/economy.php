@@ -36,6 +36,8 @@ use Hubzero\Bank\Config;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
 use Hubzero\User\Profile;
+use Lang;
+use User;
 
 /**
  * Answers Economy class:
@@ -219,7 +221,7 @@ class Economy extends Object
 		}
 
 		// Reward asker
-		$q_user = \JUser::getInstance($Q_owner);
+		$q_user = User::getInstance($Q_owner);
 		if (is_object($q_user) && $q_user->get('id'))
 		{
 			$BTL_Q = new Teller($this->_db , $q_user->get('id'));
@@ -243,7 +245,7 @@ class Economy extends Object
 		}
 
 		// Reward others
-		$ba_user = \JUser::getInstance($BA_owner);
+		$ba_user = User::getInstance($BA_owner);
 
 		if (is_object($ba_user) && $ba_user->get('id'))
 		{

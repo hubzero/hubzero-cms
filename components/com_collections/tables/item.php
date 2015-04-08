@@ -30,6 +30,10 @@
 
 namespace Components\Collections\Tables;
 
+use Date;
+use User;
+use Lang;
+
 /**
  * Table class for collection items
  */
@@ -69,16 +73,15 @@ class Item extends \JTable
 			$this->access = 0;
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 		}
 		else
 		{
-			$this->modified    = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified    = Date::toSql();
+			$this->modified_by = User::get('id');
 			if (!$this->created_by)
 			{
 				$this->created    = $this->modified;
@@ -377,9 +380,7 @@ class Item extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
-
-		$query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote($juser->get('id'));
+		$query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote(User::get('id'));
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

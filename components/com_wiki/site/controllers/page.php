@@ -37,6 +37,11 @@ use Components\Wiki\Models\Revision;
 use Components\Wiki\Helpers\Parser;
 use Components\Wiki\Tables;
 use Exception;
+use Pathway;
+use Request;
+use User;
+use Lang;
+use Date;
 
 /**
  * Wiki controller class for pages
@@ -710,7 +715,7 @@ class Page extends SiteController
 		}
 		else
 		{
-			$this->page->set('modified', \JFactory::getDate()->toSql());
+			$this->page->set('modified', Date::toSql());
 		}
 
 		if (!$this->page->store(true))

@@ -30,6 +30,10 @@
 
 namespace Components\Forum\Tables;
 
+use User;
+use Lang;
+use Date;
+
 /**
  * Table class for a forum category
  */
@@ -218,11 +222,10 @@ class Category extends \JTable
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 			if (!$this->ordering)
 			{
 				$this->ordering = $this->getHighestOrdering($this->scope, $this->scope_id);
@@ -230,8 +233,8 @@ class Category extends \JTable
 		}
 		else
 		{
-			$this->modified    = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified    = Date::toSql();
+			$this->modified_by = User::get('id');
 		}
 
 		return true;
@@ -465,7 +468,7 @@ class Category extends \JTable
 			$this->$k = intval($oid);
 		}
 
-		include_once(__DIR__ . '/post.php');
+		include_once(__DIR__ . DS . 'post.php');
 
 		$post = new Post($this->_db);
 		if (!$post->deleteByCategory($this->$k))

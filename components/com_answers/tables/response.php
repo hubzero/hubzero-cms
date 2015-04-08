@@ -30,6 +30,10 @@
 
 namespace Components\Answers\Tables;
 
+use Date;
+use Lang;
+use User;
+
 /**
  * Table class for answers response
  */
@@ -81,7 +85,7 @@ class Response extends \JTable
 			$this->anonymous = 1;
 		}
 
-		$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
+		$this->created    = $this->created    ?: Date::toSql();
 		$this->created_by = $this->created_by ?: User::get('id');
 
 		return true;
@@ -95,7 +99,7 @@ class Response extends \JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 		$ab = new \Components\Support\Tables\ReportAbuse($this->_db);
 
 		if (isset($filters['question_id']))

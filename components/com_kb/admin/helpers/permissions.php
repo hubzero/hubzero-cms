@@ -31,6 +31,7 @@
 namespace Components\Kb\Admin\Helpers;
 
 use Hubzero\Base\Object;
+use User;
 
 /**
  * Table class for knowledge base permissions
@@ -69,12 +70,11 @@ class Permissions
 			'core.delete'
 		);
 
-		$user   = \JFactory::getUser();
 		$result = new Object;
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

@@ -38,8 +38,10 @@ use Hubzero\Base\Model;
 use Hubzero\Utility\String;
 use stdClass;
 use Request;
-use User;
 use Route;
+use Lang;
+use Date;
+use User;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'article.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
@@ -244,7 +246,7 @@ class Article extends Model
 		}
 
 		$pdt = strftime('Y', $dt) . '-' . strftime('m', $dt) . '-' . strftime('d', $dt) . ' 00:00:00';
-		$today = \JFactory::getDate()->toSql();
+		$today = Date::toSql();
 
 		if ($this->param('close_comments') != 'now' && $today < $pdt)
 		{
@@ -290,11 +292,11 @@ class Article extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

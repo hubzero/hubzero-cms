@@ -30,6 +30,10 @@
 
 namespace Components\Collections\Tables;
 
+use Date;
+use User;
+use Lang;
+
 /**
  * Table class for following something
  */
@@ -94,7 +98,7 @@ class Following extends \JTable
 		if (!$this->follower_id)
 		{
 			$this->follower_type = 'member';
-			$this->follower_id   = \JFactory::getUser()->get('id');
+			$this->follower_id   = User::get('id');
 		}
 
 		$this->following_id = intval($this->following_id);
@@ -116,7 +120,7 @@ class Following extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 		}
 
 		return true;

@@ -92,7 +92,7 @@ class Jobs extends SiteController
 		$filters = array(
 			'state'     => 1,
 			'available' => true,
-			'next_run'  => \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m-d H:i:s')
+			'next_run'  => Date::toLocal('Y-m-d H:i:s')
 		);
 
 		$output = new stdClass;
@@ -131,7 +131,7 @@ class Jobs extends SiteController
 				}
 
 				$job->mark('end_run');
-				$job->set('last_run', \JHTML::_('date', \JFactory::getDate(), 'Y-m-d H:i:s')); //JFactory::getDate()->toSql());
+				$job->set('last_run', Date::toLocal('Y-m-d H:i:s')); //JFactory::getDate()->toSql());
 				$job->set('next_run', $job->nextRun());
 				$job->store();
 

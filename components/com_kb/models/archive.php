@@ -34,6 +34,7 @@ use Components\Kb\Tables;
 use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
+use User;
 
 require_once(__DIR__ . DS . 'category.php');
 
@@ -174,7 +175,7 @@ class Archive extends Object
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = \JFactory::getUser()->getAuthorisedViewLevels();
+			$filters['access'] = User::getAuthorisedViewLevels();
 		}
 		if (!isset($filters['section']))
 		{
@@ -244,7 +245,7 @@ class Archive extends Object
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = \JFactory::getUser()->getAuthorisedViewLevels();
+			$filters['access'] = User::getAuthorisedViewLevels();
 		}
 		if (!isset($filters['start']))
 		{

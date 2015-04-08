@@ -31,6 +31,9 @@
 namespace Components\Answers\Tables;
 
 use Hubzero\Utility\Validate;
+use User;
+use Date;
+use Lang;
 
 /**
  * Table class for votes
@@ -69,7 +72,7 @@ class Vote extends \JTable
 
 		if (!$this->id)
 		{
-			$this->voted = ($this->voted) ? $this->voted : \JFactory::getDate()->toSql();
+			$this->voted = ($this->voted) ? $this->voted : Date::toSql();
 			$this->voter = ($this->voter) ? $this->voter : User::get('id');
 		}
 
@@ -112,8 +115,6 @@ class Vote extends \JTable
 		{
 			return false;
 		}
-
-		$now = \JFactory::getDate()->toSql();
 
 		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid=" . $this->_db->Quote($refid) . " AND category = " . $this->_db->Quote($category) . " AND voter=" . $this->_db->Quote($voter);
 

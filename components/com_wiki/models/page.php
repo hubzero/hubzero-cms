@@ -35,6 +35,10 @@ use Components\Wiki\Tables;
 use Hubzero\Base\Model;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Request;
+use Lang;
+use User;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
@@ -262,7 +266,7 @@ class Page extends Model
 		{
 			if (!$user_id)
 			{
-				$user_id = \JFactory::getUser()->get('id');
+				$user_id = User::get('id');
 			}
 			$wpa = new Tables\Author($this->_db);
 			$this->set('author-' . $user_id, $wpa->isAuthor($this->get('id'), $user_id));
@@ -286,7 +290,7 @@ class Page extends Model
 	{
 		if (!($this->_creator instanceof \JUser))
 		{
-			$this->_creator = \JUser::getInstance($this->get('created_by'));
+			$this->_creator = User::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
 				$this->_creator = new \JUser();
@@ -638,11 +642,11 @@ class Page extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($property), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($property))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($property), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($property))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -1080,8 +1084,6 @@ class Page extends Model
 	 */
 	public function log($action='page_created', $user_id=0)
 	{
-		$user = \JFactory::getUser();
-
 		$data = new \stdClass();
 		foreach ($this->_tbl->getProperties() as $property)
 		{
@@ -1093,8 +1095,8 @@ class Page extends Model
 
 		$log = new Tables\Log($this->_db);
 		$log->pid       = (int) $this->get('id');
-		$log->uid       = ($user_id ? $user_id : $user->get('id'));
-		$log->timestamp = \JFactory::getDate()->toSql();
+		$log->uid       = ($user_id ? $user_id : User::get('id'));
+		$log->timestamp = Date::toSql();
 		$log->action    = (string) $action;
 		$log->actorid   = $user->get('id');
 		$log->comments  = json_encode($data);

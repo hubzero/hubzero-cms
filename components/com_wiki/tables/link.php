@@ -30,6 +30,9 @@
 
 namespace Components\Wiki\Tables;
 
+use Lang;
+use Date;
+
 /**
  * Wiki table class for logging links
  */
@@ -72,7 +75,7 @@ class Link extends \JTable
 
 		if (!$this->id)
 		{
-			$this->timestamp = \JFactory::getDate()->toSql();
+			$this->timestamp = Date::toSql();
 		}
 
 		return true;
@@ -134,7 +137,7 @@ class Link extends \JTable
 			return true;
 		}
 
-		$timestamp = \JFactory::getDate()->toSql();
+		$timestamp = Date::toSql();
 
 		$query = "INSERT INTO $this->_tbl (`page_id`, `timestamp`, `scope`, `scope_id`, `link`, `url`) VALUES ";
 

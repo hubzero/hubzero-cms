@@ -31,6 +31,7 @@
 namespace Components\Answers\Tables;
 
 use Hubzero\Utility\Validate;
+use Lang;
 
 /**
  * Table class for answer votes

@@ -36,6 +36,11 @@ use Components\Kb\Models\Article;
 use Components\Kb\Models\Comment;
 use Hubzero\Component\SiteController;
 use Exception;
+use Pathway;
+use Request;
+use Config;
+use Lang;
+use User;
 
 /**
  * Knowledge Base controller

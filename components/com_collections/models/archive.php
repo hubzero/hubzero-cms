@@ -35,6 +35,8 @@ use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
 use Hubzero\User\Profile;
 use Hubzero\Plugin\Params;
+use User;
+use Lang;
 
 require_once(__DIR__ . DS . 'post.php');
 require_once(__DIR__ . DS . 'following.php');
@@ -439,7 +441,7 @@ class Archive extends Object
 	 */
 	public function mine($type='')
 	{
-		$juser = \JFactory::getUser();
+		$user = User::getRoot();
 
 		$tbl = new Tables\Collection($this->_db);
 
@@ -449,7 +451,7 @@ class Archive extends Object
 			case 'groups':
 				$collections = array();
 
-				$member = Profile::getInstance($juser->get('id'));
+				$member = Profile::getInstance($user->get('id'));
 
 				$usergroups = $member->getGroups('members');
 				if ($usergroups)
@@ -496,7 +498,7 @@ class Archive extends Object
 			default:
 				$collections = $tbl->getRecords(array(
 					'object_type' => 'member',
-					'object_id'   => $juser->get('id'),
+					'object_id'   => $user->get('id'),
 					'state'       => 1
 				));
 			break;
@@ -520,7 +522,7 @@ class Archive extends Object
 
 			if (!$follower_id && $follower_type == 'member')
 			{
-				$follower_id = \JFactory::getUser()->get('id');
+				$follower_id = User::get('id');
 			}
 
 			$follow = new Following($this->_object_id, $this->_object_type, $follower_id, $follower_type);
@@ -547,7 +549,7 @@ class Archive extends Object
 
 			if (!$follower_id && $follower_type == 'member')
 			{
-				$follower_id = \JFactory::getUser()->get('id');
+				$follower_id = User::get('id');
 			}
 
 			$follow = new Following($follower_id, $follower_type, $this->_object_id, $this->_object_type);
