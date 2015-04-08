@@ -232,6 +232,22 @@ abstract class Driver
 	}
 
 	/**
+	 * Sets the connection
+	 *
+	 * This method is public because it can be helpful when testing.
+	 * You can ignore the constructor and just set the connection of
+	 * your choice.  We assume the person setting the connection
+	 * has done their checks to make sure it is valid.
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function setConnection($connection)
+	{
+		$this->connection = $connection;
+	}
+
+	/**
 	 * Sets the SQL statement string for later execution
 	 *
 	 * @param  string $query the SQL statement to set

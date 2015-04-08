@@ -38,6 +38,8 @@ use Hubzero\Database\Exception\QueryFailedException;
 
 /**
  * Pdo database driver
+ *
+ * @FIXME: can we get rid of mysql-specific syntax and only have driver calls here?
  */
 class Pdo extends Driver
 {
@@ -71,7 +73,7 @@ class Pdo extends Driver
 			// Establish connection string
 			$parameters  = "mysql:host={$options['host']};charset=utf8";
 			$parameters .= ($options['select']) ? ";dbname={$options['database']}" : '';
-			$this->connection = new \PDO($parameters, $options['user'], $options['password'], $extras);
+			$this->setConnection(new \PDO($parameters, $options['user'], $options['password'], $extras));
 		}
 		catch (\PDOException $e)
 		{
@@ -705,7 +707,8 @@ class Pdo extends Driver
 	 */
 	public function setUTF()
 	{
-		return $this->connection->exec("SET NAMES 'utf8'");
+		// @FIXME: This should be handled by the syntax class!
+		//return $this->connection->exec("SET NAMES 'utf8'");
 	}
 
 	/**
