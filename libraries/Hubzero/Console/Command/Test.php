@@ -42,13 +42,60 @@ defined('_JEXEC') or die('Restricted access');
 class Test extends Base implements CommandInterface
 {
 	/**
-	 * Dump the database
+	 * Default execute method
 	 *
 	 * @return void
 	 **/
 	public function execute()
 	{
-		$this->output->addLine('Not implemented', 'warning');
+		$this->run();
+	}
+
+	/**
+	 * Run the tests
+	 *
+	 * @return void
+	 **/
+	public function run()
+	{
+		// Make sure phpunit is installed
+		exec('which phpunit', $output);
+		if (!$output)
+		{
+			$this->output->error('PHPUnit does not appear to be installed');
+		}
+
+		// Get the extension to test...for now, this is required
+		if (!$extension = $this->arguments->getOpt(3))
+		{
+			$this->output->error('Please provide a specific extension to test');
+		}
+
+		// Parse the extension and build a real path
+		$path  = PATH_CORE . DS;
+		$parts = explode('_', $extension);
+		switch ($parts[0])
+		{
+			case 'lib':
+				unset($parts[0]);
+				$path .= 'libraries' . DS . 'Hubzero' . DS . implode(DS, $parts) . DS . 'Tests';
+				break;
+
+			default:
+				$this->output->error('Sorry, we were not able to find an extension by that name or that extension type is not currently supported');
+				break;
+		}
+
+		// Make sure the test directory exists
+		if (!is_dir($path))
+		{
+			$this->output->error('Sorry, we could\'t find a test directory for that extension');
+		}
+
+		// Build the command
+		$cmd = 'phpunit --no-globals-backup --bootstrap ' . PATH_CORE . DS . 'cli' . DS . 'shim.php ' . escapeshellarg($path) . ' 2>&1';
+
+		system($cmd);
 	}
 
 	/**
@@ -61,7 +108,17 @@ class Test extends Base implements CommandInterface
 		$this
 			->output
 			->addOverview(
-				'Testing functions.'
+				'A custom PHPUnit testing wrapper. This helps with setting up the 
+				environment and allowing for specialized options related to testing.'
+			)
+			->addArgument(
+				'extension',
+				'The first option to the "run" command should be a specific extension.
+				Currently, running the entire suite of tests is not allowed.  The command
+				will search the provided extension for a directory titled "Test".  The
+				command will parse the provided extension, and expects a name in the format
+				of com_name, mod_name, plg_folder_element, or lib_name.  Libraries are
+				assumed to be in the Hubzero library folder.'
 			);
 	}
 }
