@@ -411,8 +411,10 @@ class Date extends DateTime
 	 * @param   string  $format  The date format specification string (see {@link PHP_MANUAL#date})
 	 * @return  string
 	 */
-	public function toLocal($format)
+	public function toLocal($format='')
 	{
+		$format = ?: self::$format;
+
 		// get timezone idenfier from user setting otherwise user system
 		$tz = \User::getParam('timezone', \Config::get('offset'));
 
