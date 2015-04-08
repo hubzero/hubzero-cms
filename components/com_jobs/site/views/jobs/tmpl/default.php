@@ -57,10 +57,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<ul id="useroptions">
 				<?php if ($this->guest) { ?>
 					<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a class="btn" href="'.Route::url('index.php?option='.$option.'&task=view').'?action=login">'.Lang::txt('COM_JOBS_ACTION_LOGIN').'</a> '.Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-				<?php } else if($this->emp && $this->allowsubscriptions) {  ?>
+				<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 					<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option='.$option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
 					<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option='.$option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
-				<?php } else if($this->admin) { ?>
+				<?php } else if ($this->admin) { ?>
 					<li>
 						<?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
 						<a class="icon-dashboard btn" href="<?php echo Route::url('index.php?option='.$option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
@@ -168,7 +168,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 						//$txt = $model->content('parsed');
 						$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, 'd&\nb\sp;M&\nb\sp;y') : 'ASAP';
-						if($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
+						if ($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
 						{
 							$closedate = 'closed';
 						}
@@ -176,32 +176,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$curcat = $jc->getCat($jobs[$i]->cid);
 
 						// compute relevance to search keywords
-						if ($filters['search']) {
+						if ($filters['search'])
+						{
 							$relscore = $jobs[$i]->keywords > 0 ? floor(($jobs[$i]->keywords * 100) / $maxscore) : 0;
 						}
 
 						// what's the job status?
-						if ($this->admin && !$this->emp && !$this->mini) {
+						if ($this->admin && !$this->emp && !$this->mini)
+						{
 							$status = '';
 							$class =  '';
 							switch ( $jobs[$i]->status )
 							{
-								case 0:    		$status =  Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
-												$class  = 'post_pending';
-																						break;
-								case 1:    		$status =  $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
-												? Lang::txt('COM_JOBS_JOB_STATUS_INVALID')
-												: Lang::txt('COM_JOBS_JOB_STATUS_ACTIVE');
-												$class  = $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
-												? 'post_invalidsub'
-												: 'post_active';
-																						break;
-								case 3:    		$status =  Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE');
-												$class  = 'post_inactive';
-												break;
-								case 4:    		$status =  Lang::txt('COM_JOBS_JOB_STATUS_DRAFT');
-												$class  = 'post_draft';
-												break;
+								case 0:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
+											$class  = 'post_pending';
+											break;
+								case 1:     $status =  $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
+											? Lang::txt('COM_JOBS_JOB_STATUS_INVALID')
+											: Lang::txt('COM_JOBS_JOB_STATUS_ACTIVE');
+											$class  = $jobs[$i]->inactive &&  $jobs[$i]->inactive < $now
+											? 'post_invalidsub'
+											: 'post_active';
+											break;
+								case 3:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE');
+											$class  = 'post_inactive';
+											break;
+								case 4:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_DRAFT');
+											$class  = 'post_draft';
+											break;
 							}
 						}
 						?>
