@@ -118,7 +118,7 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 					<td>
 						<time datetime="<?php echo $this->row->created; ?>"><?php echo $this->row->created; ?></time>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created ? $this->row->created : JFactory::getDate()->toSql(); ?>" />
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created ? $this->row->created : Date::toSql(); ?>" />
 					</td>
 				</tr>
 				<tr>
@@ -126,7 +126,7 @@ function submitbutton(pressbutton)
 					<td>
 						<?php
 						$creator = $this->row->created_by ? $this->row->created_by : $this->juser->get('id');
-						$editor  = JUser::getInstance($creator);
+						$editor  = User::getInstance($creator);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : Lang::txt('unknown');
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $creator; ?>" />

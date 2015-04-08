@@ -574,7 +574,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$new_hztv->vnc_geometry  = $status['vncGeometry'];
 			$new_hztv->vnc_command   = $invokedir . DS . $status['toolname'] . DS . 'r' . $status['revision'] . DS . 'middleware' . DS . 'invoke -T r' . $status['revision'];
 			$new_hztv->mw            = $status['mw'];
-			$new_hztv->released      = JFactory::getDate()->toSql();
+			$new_hztv->released      = Date::toSql();
 			$new_hztv->released_by   = $this->juser->get('username');
 			$new_hztv->license       = $status['license'];
 			$new_hztv->fulltxt       = $status['fulltxt'];

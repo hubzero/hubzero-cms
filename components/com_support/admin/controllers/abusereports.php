@@ -36,6 +36,12 @@ use Hubzero\Component\AdminController;
 use Hubzero\Mail\Message;
 use Hubzero\Mail\View;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'reportabuse.php');
 
@@ -219,7 +225,7 @@ class Abusereports extends AdminController
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 		$report->state = 1;
-		$report->reviewed = \JFactory::getDate()->toSql();
+		$report->reviewed = Date::toSql();
 		$report->reviewed_by = User::get('id');
 		if (!$report->store())
 		{
@@ -285,7 +291,7 @@ class Abusereports extends AdminController
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 
-		$report->reviewed = \JFactory::getDate()->toSql();
+		$report->reviewed = Date::toSql();
 		$report->reviewed_by = User::get('id');
 		$report->note = Request::getVar('note', '');
 

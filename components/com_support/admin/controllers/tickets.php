@@ -42,6 +42,11 @@ use Hubzero\User\Profile;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'queryfolder.php');
@@ -306,7 +311,7 @@ class Tickets extends AdminController
 			// Creating a new ticket
 			$row->set('severity', 'normal');
 			$row->set('status', 0);
-			$row->set('created', \JFactory::getDate()->toSql());
+			$row->set('created', Date::toSql());
 			$row->set('login', User::get('username'));
 			$row->set('name', User::get('name'));
 			$row->set('email', User::get('email'));
@@ -453,7 +458,7 @@ class Tickets extends AdminController
 		// Check if changes were made inbetween the time the comment was started and posted
 		if ($id)
 		{
-			$started = Request::getVar('started', \JFactory::getDate()->toSql(), 'post');
+			$started = Request::getVar('started', Date::toSql(), 'post');
 			$lastcomment = $row->comments('list', array(
 				'sort'     => 'created',
 				'sort_Dir' => 'DESC',
@@ -480,7 +485,7 @@ class Tickets extends AdminController
 		if ($id && !$row->get('open') && $row->get('open') != $old->get('open'))
 		{
 			// Record the closing time
-			$row->set('closed', \JFactory::getDate()->toSql());
+			$row->set('closed', Date::toSql());
 		}
 
 		// Check content
@@ -615,7 +620,7 @@ class Tickets extends AdminController
 		//$rowc = new Comment();
 		$rowc->set('ticket', $row->get('id'));
 		$rowc->set('comment', nl2br($comment));
-		$rowc->set('created', \JFactory::getDate()->toSql());
+		$rowc->set('created', Date::toSql());
 		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
@@ -966,7 +971,7 @@ class Tickets extends AdminController
 			$rowc = new Comment();
 			$rowc->set('ticket', $id);
 			$rowc->set('comment', $comment);
-			$rowc->set('created', \JFactory::getDate()->toSql());
+			$rowc->set('created', Date::toSql());
 			$rowc->set('created_by', User::get('id'));
 			//$rowc->set('access', $access);
 

@@ -49,7 +49,7 @@ Toolbar::help('section');
 $create_date = NULL;
 if (intval($this->row->get('created')) <> 0)
 {
-	$create_date = JHTML::_('date', $this->row->get('created'));
+	$create_date = Date::of($this->row->get('created'))->toSql();
 }
 ?>
 <script type="text/javascript">

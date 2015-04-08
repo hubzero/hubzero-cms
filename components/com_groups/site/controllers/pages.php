@@ -361,10 +361,10 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// set page version vars
 		$this->version->set('pageid', $this->page->get('id'));
 		$this->version->set('version', $currentVersionNumber + 1);
-		$this->version->set('created', JFactory::getDate()->toSql());
+		$this->version->set('created', Date::toSql());
 		$this->version->set('created_by', User::get('id'));
 		$this->version->set('approved', 1);
-		$this->version->set('approved_on', JFactory::getDate()->toSql());
+		$this->version->set('approved_on', Date::toSql());
 		$this->version->set('approved_by', User::get('id'));
 
 		// if we have php or script tags we must get page approved by admin

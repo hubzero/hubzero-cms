@@ -1070,7 +1070,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($status == 1)
 		{
 			$object = new stdClass();
-			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => JFactory::getDate()->toSql());
+			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => Date::toSql());
 			$this->setMessageType($format);
 			$this->setMessage($object);
 		}
@@ -1116,7 +1116,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if (!$mv->getError())
 		{
 			$object = new stdClass();
-			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => JFactory::getDate()->toSql());
+			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => Date::toSql());
 			$this->setMessageType($format);
 			$this->setMessage($object);
 		}

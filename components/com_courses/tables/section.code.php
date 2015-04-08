@@ -71,7 +71,7 @@ class SectionCode extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
+			$this->created    = \Date::toSql();
 			$this->created_by = User::get('id');
 		}
 

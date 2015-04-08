@@ -1512,7 +1512,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Set the last modified datetime
-		$profile->set('modifiedDate', JFactory::getDate()->toSql());
+		$profile->set('modifiedDate', Date::toSql());
 
 		// Save the changes
 		if (!$profile->update())

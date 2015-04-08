@@ -272,7 +272,7 @@ class Shop extends SiteController
 					$item->itemid = $this->view->id;
 					$item->uid = User::get('id');
 					$item->type = $purchasetype;
-					$item->added = \JFactory::getDate()->toSql();
+					$item->added = \Date::toSql();
 					$item->quantity = 1;
 					$item->selections = '';
 
@@ -421,7 +421,7 @@ class Shop extends SiteController
 			return;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		// Get cart object
 		$item = new Cart($this->database);

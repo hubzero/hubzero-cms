@@ -165,7 +165,7 @@ class TagsHandler extends \Hubzero\Base\Object
 			// Add new tag!
 			$t->tag = $t->normalize($tag);
 			$t->raw_tag = addslashes($tag);
-			$t->created = \JFactory::getDate()->toSql();
+			$t->created = \Date::toSql();
 			$t->created_by = $tagger_id;
 			if (!$t->check())
 			{

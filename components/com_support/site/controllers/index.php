@@ -31,6 +31,8 @@
 namespace Components\Support\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Pathway;
+use Lang;
 
 /**
  * Displays support pages

@@ -113,7 +113,7 @@ class Unit extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 			$this->created_by = User::get('id');
 
 			$this->state = ($this->state) ? $this->state : 1;

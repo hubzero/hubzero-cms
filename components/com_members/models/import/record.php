@@ -204,11 +204,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if (!$this->record->entry->get('uidNumber'))
 		{
-			$this->raw->registerDate = JFactory::getDate()->toSql();
+			$this->raw->registerDate = Date::toSql();
 		}
 
 		// Set modified date/user
-		$this->raw->modifiedDate = JFactory::getDate()->toSql();
+		$this->raw->modifiedDate = Date::toSql();
 
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{

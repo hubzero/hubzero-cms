@@ -131,7 +131,7 @@ class ImportHooks extends AdminController
 
 			// set the created by/at
 			$this->hook->set('created_by', \JFactory::getUser()->get('id'));
-			$this->hook->set('created', \JFactory::getDate()->toSql());
+			$this->hook->set('created', \Date::toSql());
 		}
 
 		// attempt to save

@@ -168,7 +168,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if ($this->get('expires')
 		 && $this->get('expires') != $this->_db->getNullDate()
@@ -214,7 +214,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			$redeemed_by = User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', \JFactory::getDate()->toSql());
+		$this->set('redeemed', \Date::toSql());
 		return $this->store();
 	}
 }

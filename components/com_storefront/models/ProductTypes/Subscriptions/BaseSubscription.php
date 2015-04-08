@@ -19,7 +19,7 @@ class BaseSubscription
      */
     public function getExpiration()
     {
-        $now = JFactory::getDate()->toSql();
+        $now = Date::toSql();
 
         $sql = 'SELECT `crtmExpires`,
                 IF(`crtmExpires` < \'' . $now . '\', 0, 1) AS `crtmActive`

@@ -268,13 +268,13 @@ class Record extends Object
 		else
 		{
 			$this->raw->standalone = 1;
-			$this->raw->created    = \JFactory::getDate()->toSql();
+			$this->raw->created    = \Date::toSql();
 			$this->raw->created_by = $this->_user->get('id');
 
 			// publish up/down
 			if (!isset($this->raw->publish_up))
 			{
-				$this->raw->publish_up = \JFactory::getDate()->toSql();
+				$this->raw->publish_up = \Date::toSql();
 			}
 			if (!isset($this->raw->publish_down))
 			{
@@ -283,7 +283,7 @@ class Record extends Object
 		}
 
 		// set modified date/user
-		$this->raw->modified    = \JFactory::getDate()->toSql();
+		$this->raw->modified    = \Date::toSql();
 		$this->raw->modified_by = $this->_user->get('id');
 
 		// set status

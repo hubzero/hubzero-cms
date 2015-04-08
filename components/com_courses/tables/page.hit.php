@@ -70,7 +70,7 @@ Class PageHit extends \JTable
 
 		if (!$this->id)
 		{
-			$this->timestamp = \JFactory::getDate()->toSql();
+			$this->timestamp = \Date::toSql();
 			if (!$this->ip)
 			{
 				$this->ip = Request::ip();

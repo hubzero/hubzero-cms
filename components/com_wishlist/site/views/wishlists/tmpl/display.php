@@ -320,7 +320,7 @@ if ($this->wishlist->exists())
 											case 1:
 												$html .= '<span class="granted">'.Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
 												/*if ($item->granted != '0000-00-00 00:00:00') {
-													$html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.JHTML::_('date',$item->granted, Lang::txt('DATE_FORMAT_HZ1')).'</span>';
+													$html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
 												}*/
 											break;
 											case 3:

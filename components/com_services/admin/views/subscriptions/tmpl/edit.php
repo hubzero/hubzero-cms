@@ -34,13 +34,13 @@ Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCR
 Toolbar::save();
 Toolbar::cancel();
 
-$added   = (intval( $this->subscription->added ) <> 0)   ? JHTML::_('date', $this->subscription->added, Lang::txt('DATE_FORMAT_HZ1')) : NULL;
-$updated = (intval( $this->subscription->updated ) <> 0) ? JHTML::_('date', $this->subscription->updated, Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
-$expires = (intval( $this->subscription->expires) <> 0)  ? JHTML::_('date', $this->subscription->expires, Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+$added   = (intval($this->subscription->added) <> 0)   ? Date::of($this->subscription->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))   : NULL;
+$updated = (intval($this->subscription->updated) <> 0) ? Date::of($this->subscription->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+$expires = (intval($this->subscription->expires) <> 0) ? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 
 $status = '';
 $pending = $this->subscription->currency . ' ' . $this->subscription->pendingpayment;
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 $onhold_msg = ($this->subscription->status==2) ? Lang::txt('COM_SERVICES_SEND_MESSAGE') : Lang::txt('COM_SERVICES_SUBSCRIPTION_ON_HOLD');
 
@@ -99,9 +99,9 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_SERVICES_FIELD_EMPLOYER'); ?>:</label><br />
-				<?php echo Lang::txt('Company Name'); ?>: 	<?php echo $this->subscription->companyName; ?> <br />
+				<?php echo Lang::txt('Company Name'); ?>: <?php echo $this->subscription->companyName; ?> <br />
 				<?php echo Lang::txt('Company Location'); ?>: <?php echo $this->subscription->companyLocation; ?> <br />
-				<?php echo Lang::txt('Company URL'); ?>: 		<?php echo $this->subscription->companyWebsite; ?>
+				<?php echo Lang::txt('Company URL'); ?>: <?php echo $this->subscription->companyWebsite; ?>
 			</div>
 
 			<div class="input-wrap">

@@ -111,7 +111,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 			return false;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if ($this->get('publish_up')
 		 && $this->get('publish_up') != $this->_db->getNullDate()
@@ -136,7 +136,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 			return true;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != $this->_db->getNullDate()
@@ -236,7 +236,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 		$log->scope_id  = $scope_id;
 		$log->scope     = $scope;
 		$log->user_id   = User::get('id');
-		$log->timestamp = \JFactory::getDate()->toSql();
+		$log->timestamp = \Date::toSql();
 		$log->action    = $action;
 		$log->comments  = $log;
 		$log->actor_id  = User::get('id');

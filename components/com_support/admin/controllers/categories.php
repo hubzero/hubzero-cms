@@ -32,6 +32,10 @@ namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Support\Tables\Category;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 /**
  * Support controller class for categories

@@ -175,7 +175,7 @@ class Import extends AdminController
 
 			// set the created by/at
 			$this->import->set('created_by', \JFactory::getUser()->get('id'));
-			$this->import->set('created_at', \JFactory::getDate()->toSql());
+			$this->import->set('created_at', \Date::toSql());
 		}
 
 		// do we have a data file

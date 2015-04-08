@@ -192,7 +192,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		if (!$id)
 		{
 			$unit->set('offering_id', Request::getInt('offering_id', 0));
-			$unit->set('created', \JFactory::getDate()->toSql());
+			$unit->set('created', \Date::toSql());
 			$unit->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
 		}
 
@@ -227,7 +227,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 				$assetGroup->set('unit_id', $unit->get('id'));
 				$assetGroup->set('parent', 0);
-				$assetGroup->set('created', \JFactory::getDate()->toSql());
+				$assetGroup->set('created', \Date::toSql());
 				$assetGroup->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
 
 				// Save the asset group
@@ -344,7 +344,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		{
 			$assetGroup->set('unit_id', Request::getInt('unit_id', 0));
 			$assetGroup->set('parent', Request::getInt('parent', 0));
-			$assetGroup->set('created', \JFactory::getDate()->toSql());
+			$assetGroup->set('created', \Date::toSql());
 			$assetGroup->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
 		}
 
@@ -841,7 +841,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$asset->set('subtype', Request::getWord('subtype', 'file'));
 			$asset->set('state', 0);
 			$asset->set('course_id', Request::getInt('course_id', 0));
-			$asset->set('created', \JFactory::getDate()->toSql());
+			$asset->set('created', \Date::toSql());
 			$asset->set('created_by', \JFactory::getApplication()->getAuthn('user_id'));
 		}
 
@@ -1436,7 +1436,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		$member_badge->set('action', $action);
 		$member_badge->set('action_on', $now);
@@ -1573,7 +1573,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get timestamp
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		// Save the unity details
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.unity.php';
@@ -1604,7 +1604,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			if ($score > $gradebook->get('score'))
 			{
 				$gradebook->set('score', $score);
-				$gradebook->set('score_recorded', \JFactory::getDate()->toSql());
+				$gradebook->set('score_recorded', \Date::toSql());
 				if (!$gradebook->store())
 				{
 					$this->setMessage($gradebook->getError(), 500, 'Internal error');
@@ -1618,7 +1618,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$gradebook->set('score', $score);
 			$gradebook->set('scope', 'asset');
 			$gradebook->set('scope_id', $asset_id);
-			$gradebook->set('score_recorded', \JFactory::getDate()->toSql());
+			$gradebook->set('score_recorded', \Date::toSql());
 			if (!$gradebook->store())
 			{
 				$this->setMessage($gradebook->getError(), 500, 'Internal error');

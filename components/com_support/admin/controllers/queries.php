@@ -38,6 +38,10 @@ use Components\Support\Tables\Resolution;
 use Components\Support\Tables\Query;
 use Components\Support\Tables\QueryFolder;
 use stdClass;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'ticket.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php');

@@ -87,7 +87,7 @@ Joomla.submitbutton = function(pressbutton)
 							<?php echo $mailing->newsletter_name; ?>
 						</td>
 						<td>
-							<?php echo JHTML::_('date', $mailing->mailing_date, "F d, Y @ g:ia"); ?>
+							<?php echo Date::of($mailing->mailing_date)->toLocal("F d, Y @ g:ia"); ?>
 						</td>
 						<td>
 							<?php

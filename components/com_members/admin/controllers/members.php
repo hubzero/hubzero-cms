@@ -379,7 +379,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		{
 			$profile->set('public',0);
 		}
-		$profile->set('modifiedDate', JFactory::getDate()->toSql());
+		$profile->set('modifiedDate', Date::toSql());
 
 		$profile->set('homeDirectory', trim($p['homeDirectory']));
 

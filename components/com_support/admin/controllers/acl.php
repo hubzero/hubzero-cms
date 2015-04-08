@@ -36,6 +36,9 @@ use Components\Support\Tables\Aco;
 use Components\Support\Tables\AroAco;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Route;
+use Lang;
 
 /**
  * Support controller class for defining permissions
@@ -170,7 +173,7 @@ class Acl extends AdminController
 			switch ($row->model)
 			{
 				case 'user':
-					$user = \JUser::getInstance($row->foreign_key);
+					$user = User::getInstance($row->foreign_key);
 					if (!is_object($user))
 					{
 						throw new Exception(Lang::txt('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'), 500);

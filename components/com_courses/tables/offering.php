@@ -133,7 +133,7 @@ class Offering extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
+			$this->created    = \Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
@@ -190,7 +190,7 @@ class Offering extends \JTable
 
 		if (isset($filters['available']) && $filters['available'])
 		{
-			$now = \JFactory::getDate()->toSql();
+			$now = \Date::toSql();
 
 			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->Quote($now) . ")";

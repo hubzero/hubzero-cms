@@ -584,7 +584,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$ticket = new \Components\Support\Models\Ticket();
 
 		// Set the created date
-		$ticket->set('created', JFactory::getDate()->toSql());
+		$ticket->set('created', Date::toSql());
 
 		// Incoming
 		$ticket->set('report', Request::getVar('report', '', 'post', 'none', 2));
@@ -711,7 +711,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))
 		{
 			// Record the closing time
-			$ticket->set('closed', JFactory::getDate()->toSql());
+			$ticket->set('closed', Date::toSql());
 		}
 
 		// Any tags?
@@ -740,7 +740,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 				$ticket->open();
 			}
 		}
-		$comment->set('created', JFactory::getDate()->toSql());
+		$comment->set('created', Date::toSql());
 		$comment->set('created_by', $user->get('uidNumber'));
 		$comment->set('access', Request::getInt('access', 0, 'post'));
 

@@ -40,6 +40,13 @@ use Hubzero\Browser\Detector;
 use Hubzero\User\Profile;
 use Hubzero\Content\Server;
 use Exception;
+use Request;
+use Pathway;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
@@ -1056,7 +1063,7 @@ class Tickets extends SiteController
 		$row = new Ticket();
 		$row->set('open', 1);
 		$row->set('status', 0);
-		$row->set('created', \JFactory::getDate()->toSql());
+		$row->set('created', Date::toSql());
 		$row->set('login', $reporter['login']);
 		$row->set('severity', (isset($problem['severity']) ? $problem['severity'] : 'normal'));
 		$row->set('owner', (isset($problem['owner']) ? $problem['owner'] : null));
@@ -1185,7 +1192,7 @@ class Tickets extends SiteController
 
 			$rowc = new Comment();
 			$rowc->set('ticket', $row->get('id'));
-			$rowc->set('created', \JFactory::getDate()->toSql());
+			$rowc->set('created', Date::toSql());
 			$rowc->set('created_by', User::get('id'));
 			$rowc->set('access', 1);
 			$rowc->set('comment', Lang::txt('COM_SUPPORT_TICKET_SUBMITTED'));
@@ -1655,7 +1662,7 @@ class Tickets extends SiteController
 		$rowc->set('ticket', $id);
 
 		// Check if changes were made inbetween the time the comment was started and posted
-		$started = Request::getVar('started', \JFactory::getDate()->toSql(), 'post');
+		$started = Request::getVar('started', Date::toSql(), 'post');
 		$lastcomment = $row->comments('list', array(
 			'sort'     => 'created',
 			'sort_Dir' => 'DESC',
@@ -1687,7 +1694,7 @@ class Tickets extends SiteController
 		if ($id && !$row->get('open') && $row->get('open') != $old->get('open'))
 		{
 			// Record the closing time
-			$row->set('closed', \JFactory::getDate()->toSql());
+			$row->set('closed', Date::toSql());
 		}
 
 		// Incoming comment
@@ -1715,7 +1722,7 @@ class Tickets extends SiteController
 
 		$rowc->set('ticket', $id);
 		$rowc->set('comment', nl2br($comment));
-		$rowc->set('created', \JFactory::getDate()->toSql());
+		$rowc->set('created', Date::toSql());
 		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
@@ -2091,7 +2098,7 @@ class Tickets extends SiteController
 				$rowc = new Comment();
 				$rowc->set('ticket', $ticket);
 				$rowc->set('comment', '');
-				$rowc->set('created', \JFactory::getDate()->toSql());
+				$rowc->set('created', Date::toSql());
 				$rowc->set('created_by', User::get('id'));
 				$rowc->set('access', 1);
 
@@ -2120,7 +2127,7 @@ class Tickets extends SiteController
 			// set some defaults
 			$row->set('status', 0);
 			$row->set('open', 1);
-			$row->set('created', \JFactory::getDate()->toSql());
+			$row->set('created', Date::toSql());
 			$row->set('severity', ($row->get('severity') ? $row->get('severity') : 'normal'));
 			$row->set('category', ($row->get('category') ? $row->get('category') : Lang::txt('COM_SUPPORT_CATEGORY_TOOLS')));
 			$row->set('resolved', '');

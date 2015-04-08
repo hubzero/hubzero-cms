@@ -31,6 +31,8 @@
 namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\Group as UserGroup;
+use Component;
+use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 
@@ -141,8 +143,8 @@ class Group extends Base
 			break;
 
 			case 'comments':
-				$segments['scope']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['scope'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['scope']  = Date::of($this->get('publish_up'))->format('Y') . '/';
+				$segments['scope'] .= Date::of($this->get('publish_up'))->format('m') . '/';
 				$segments['scope'] .= $this->get('alias');
 
 				$anchor = '#comments';
@@ -150,8 +152,8 @@ class Group extends Base
 
 			case 'permalink':
 			default:
-				$segments['scope']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['scope'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['scope']  = Date::of($this->get('publish_up'))->format('Y') . '/';
+				$segments['scope'] .= Date::of($this->get('publish_up'))->format('m') . '/';
 				$segments['scope'] .= $this->get('alias');
 			break;
 		}

@@ -293,7 +293,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 */
 	public function logView($course=null)
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 
 		if (!$course || !is_object($course))
 		{
@@ -321,7 +321,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view = new Tables\AssetViews($this->_db);
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
-		$view->viewed            = \JFactory::getDate()->toSql();
+		$view->viewed            = \Date::toSql();
 		$view->viewed_by         = $member->get('id');
 		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
@@ -350,17 +350,17 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$this->logView($course);
 
 		// Check to see that the view template exists, otherwise, use the default
-		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php'))
+		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php'))
 		{
 			$layout = $type . '_' . $subtype;
 		}
-		elseif (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
+		elseif (file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
 		{
 			$layout = $type;
 		}
 
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'site',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site',
 			'name'      => 'assets',
 			'layout'    => $layout
 		));
@@ -529,9 +529,9 @@ class CoursesModelAsset extends CoursesModelAbstract
 		// If this is a form...
 		if ($forms && $this->get('type') == 'form')
 		{
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php';
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php';
 
 			// Copy the form as well...look up by asset_id
 			if ($form = PdfForm::loadByAssetId($originalId))

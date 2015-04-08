@@ -649,11 +649,11 @@ class Items extends AdminController
 		// Is this a new resource?
 		if (!$id)
 		{
-			$this->view->row->created      = \JFactory::getDate()->toSql();
+			$this->view->row->created      = \Date::toSql();
 			$this->view->row->created_by   = User::get('id');
 			$this->view->row->modified     = $this->database->getNullDate();
 			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = \JFactory::getDate()->toSql();
+			$this->view->row->publish_up   = \Date::toSql();
 			$this->view->row->publish_down = Lang::txt('COM_RESOURCES_NEVER');
 			if ($this->view->pid)
 			{
@@ -814,7 +814,7 @@ class Items extends AdminController
 		if ($isNew)
 		{
 			// New entry
-			$row->created    = $row->created    ? $row->created    : \JFactory::getDate()->toSql();
+			$row->created    = $row->created    ? $row->created    : \Date::toSql();
 			$row->created_by = $row->created_by ? $row->created_by : User::get('id');
 			$row->access     = 0;
 		}
@@ -826,7 +826,7 @@ class Items extends AdminController
 			$created_by_id = Request::getInt('created_by_id', 0);
 
 			// Updating entry
-			$row->modified    = \JFactory::getDate()->toSql();
+			$row->modified    = \Date::toSql();
 			$row->modified_by = User::get('id');
 
 			if ($created_by_id)
@@ -1370,7 +1370,7 @@ class Items extends AdminController
 				// If we're publishing, set the UP date
 				if ($publish)
 				{
-					$resource->publish_up = \JFactory::getDate()->toSql();
+					$resource->publish_up = \Date::toSql();
 				}
 
 				// Is this a standalone resource and we need to email approved submissions?

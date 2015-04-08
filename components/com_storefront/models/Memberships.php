@@ -79,7 +79,7 @@ class StorefrontModelMemberships
 	 */
 	public function getMembershipInfo($crtId, $pId)
 	{
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
@@ -190,7 +190,7 @@ class StorefrontModelMemberships
 	{
 		$db = JFactory::getDBO();
 
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 		$sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
 		$sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
 		$sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);

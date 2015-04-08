@@ -953,7 +953,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$tool = array_map('trim', $tool);
 		$tool = array_map(array('Request', '_cleanVar'), $tool); // Sanitize the input a bit
 
-		$today = JFactory::getDate()->toSql();
+		$today = Date::toSql();
 
 		$group_prefix = $this->config->get('group_prefix', 'app-');
 		$dev_suffix   = $this->config->get('dev_suffix', '_dev');
@@ -1128,7 +1128,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$hzg->create();
 			$hzg->set('type', 2);
 			$hzg->set('description', Lang::txt('COM_TOOLS_DELEVOPMENT_GROUP', $tool['title']));
-			$hzg->set('created', JFactory::getDate()->toSql());
+			$hzg->set('created', Date::toSql());
 			$hzg->set('created_by', User::get('id'));
 		}
 		else
@@ -1481,7 +1481,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		$hzt->state = $newstate;
-		$hzt->state_changed = JFactory::getDate()->toSql();
+		$hzt->state_changed = Date::toSql();
 		$hzt->update();
 
 		$status = $hztv->toArray();
@@ -1612,7 +1612,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 			$xlog->debug(__FUNCTION__ . "() state changing to $newstate");
 			$hzt->state = $newstate;
-			$hzt->state_changed = JFactory::getDate()->toSql();
+			$hzt->state_changed = Date::toSql();
 		}
 
 		// if priority changes
@@ -1810,7 +1810,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Compose Message
 		$message  = strtoupper(Lang::txt('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
 		$message .= strtoupper(Lang::txt('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
-		$message .= strtoupper(Lang::txt('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', JFactory::getDate()->toSql(), Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
+		$message .= strtoupper(Lang::txt('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', Date::toSql(), Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
 		$message .= strtoupper(Lang::txt('COM_TOOLS_BY')) . ': ' . User::get('username') . "\r\n";
 		$message .= '----------------------------' . "\r\n\r\n";
 		if ($comment)
@@ -2012,7 +2012,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$log = $rowc->changelog()->lists();
 		if (!empty($log['changes']) || $comment)
 		{
-			$rowc->set('created', JFactory::getDate()->toSql());
+			$rowc->set('created', Date::toSql());
 			$rowc->set('created_by', User::get('id'));
 			$rowc->set('access', $access);
 
@@ -2198,7 +2198,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$email = 1;
 			$rowc->set('comment', nl2br($comment));
 		}
-		$rowc->set('created', JFactory::getDate()->toSql());
+		$rowc->set('created', Date::toSql());
 		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
@@ -2230,7 +2230,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$row = new \Components\Support\Models\Ticket();
 		$row->set('open', 1);
 		$row->set('status', 0);
-		$row->set('created', JFactory::getDate()->toSql());
+		$row->set('created', Date::toSql());
 		$row->set('login', User::get('username'));
 		$row->set('severity', 'normal');
 		$row->set('summary', Lang::txt('COM_TOOLS_NEW_TOOL_SUBMISSION') . ': ' . $tool['toolname']);

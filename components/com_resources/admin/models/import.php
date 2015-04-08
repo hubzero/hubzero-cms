@@ -198,7 +198,7 @@ class Import extends Model
 		$importRun->set('import_id', $this->get('id'));
 		$importRun->set('count', $this->get('count'));
 		$importRun->set('ran_by', User::get('id'));
-		$importRun->set('ran_at', \JFactory::getDate()->toSql());
+		$importRun->set('ran_at', \Date::toSql());
 		$importRun->set('dry_run', $dryRun);
 		$importRun->store();
 	}

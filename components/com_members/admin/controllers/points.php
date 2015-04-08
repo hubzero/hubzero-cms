@@ -288,7 +288,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				'category'    => Request::getVar('category', 'general', 'post'),
 				'amount'      => Request::getInt('amount', 0),
 				'description' => Request::getVar('description', 'Reason unspecified', 'post'),
-				'created'     => JFactory::getDate()->toSql()
+				'created'     => Date::toSql()
 			);
 
 			switch ($data['type'])
@@ -446,7 +446,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$data = Request::getVar('transaction', array());
 		$data = array_map('trim', $data);
 
-		$when = JFactory::getDate()->toSql();
+		$when = Date::toSql();
 
 		// make sure this function was not already run
 		$MH = new \Hubzero\Bank\MarketHistory($this->database);
@@ -482,7 +482,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				// Save log
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $log['ref'];
-				$data['date']         = JFactory::getDate()->toSql();
+				$data['date']         = Date::toSql();
 				$data['market_value'] = $data['amount'];
 				$data['category']     = $log['category'];
 				$data['action']       = $log['action'];
@@ -581,7 +581,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				{
 					$MH = new \Hubzero\Bank\MarketHistory($this->database);
 					$data['itemid']       = $ref;
-					$data['date']         = JFactory::getDate()->toSql();
+					$data['date']         = Date::toSql();
 					$data['market_value'] = $accumulated;
 					$data['category']     = 'answers';
 					$data['action']       = $action;
@@ -641,7 +641,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = JFactory::getDate()->toSql();
+				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'reviews';
 				$data['action']       = $action;
@@ -691,7 +691,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = JFactory::getDate()->toSql();
+				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'resources';
 				$data['action']       = $action;

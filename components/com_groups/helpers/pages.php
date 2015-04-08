@@ -527,7 +527,7 @@ class GroupsHelperPages
 
 		// mark page as checked out
 		$sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`)
-			    VALUES(".$db->quote($pageid).",".$db->quote($user->get('id')).", '".JFactory::getDate()->toSql()."');";
+			    VALUES(".$db->quote($pageid).",".$db->quote($user->get('id')).", '".Date::toSql()."');";
 		$db->setQuery($sql);
 		$db->query();
 	}

@@ -116,7 +116,7 @@ function submitbutton(pressbutton)
 					<td>
 						<span class="votes up">+<?php echo $this->row->get('helpful'); ?></span>
 						<span class="votes down">-<?php echo $this->row->get('nothelpful'); ?></span>
-						<?php if ( $this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0 ) { ?>
+						<?php if ($this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0) { ?>
 							<input type="button" name="reset_helpful" value="<?php echo Lang::txt('COM_ANSWERS_FIELD_RESET'); ?>" onclick="submitbutton('reset');" />
 						<?php } ?>
 					</td>
@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-created"><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATED'); ?></label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'answer[created]', 'field-created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?>
+				<?php echo JHTML::_('calendar', $this->row->get('created', Date::toSql()), 'answer[created]', 'field-created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?>
 			</div>
 		</fieldset>
 	</div>

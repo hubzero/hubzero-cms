@@ -405,7 +405,7 @@ $cc = array();
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="update" />
 
-				<input type="hidden" name="started" value="<?php echo JFactory::getDate()->toSql(); ?>" />
+				<input type="hidden" name="started" value="<?php echo Date::toSql(); ?>" />
 
 				<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 				<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />

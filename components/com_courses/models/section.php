@@ -214,7 +214,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return false;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if ($this->get('start_date')
 		 && $this->get('start_date') != $this->_db->getNullDate()
@@ -238,7 +238,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if ($this->get('end_date')
 		 && $this->get('end_date') != $this->_db->getNullDate()
@@ -263,7 +263,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != $this->_db->getNullDate()

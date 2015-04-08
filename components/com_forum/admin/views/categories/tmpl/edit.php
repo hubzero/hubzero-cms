@@ -45,7 +45,7 @@ Toolbar::help('category');
 $create_date = NULL;
 if (intval($this->row->created) <> 0)
 {
-	$create_date = JHTML::_('date', $this->row->created);
+	$create_date = Date::of($this->row->created)->toSql();
 }
 ?>
 <script type="text/javascript">

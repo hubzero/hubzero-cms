@@ -114,7 +114,7 @@ class Services extends AdminController
 		$database = \JFactory::getDBO();
 
 		$objS = new Service($database);
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		$default1 = array(
 			'id' => 0,

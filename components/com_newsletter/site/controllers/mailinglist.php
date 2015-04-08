@@ -203,7 +203,7 @@ class Mailinglist extends SiteController
 			$subscription->mid        = $list;
 			$subscription->email      = $email;
 			$subscription->status     = 'inactive';
-			$subscription->date_added = \JFactory::getDate()->toSql();
+			$subscription->date_added = \Date::toSql();
 
 			//mail confirmation email and save subscription
 			if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
@@ -250,7 +250,7 @@ class Mailinglist extends SiteController
 					$subscription->mid        = $list;
 					$subscription->email      = $email;
 					$subscription->status     = 'inactive';
-					$subscription->date_added = \JFactory::getDate()->toSql();
+					$subscription->date_added = \Date::toSql();
 
 					//mail confirmation email and save subscription
 					if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
@@ -552,7 +552,7 @@ class Mailinglist extends SiteController
 		//set that we are now confirmed
 		$newsletterMailinglistEmail->status         = 'active';
 		$newsletterMailinglistEmail->confirmed      = 1;
-		$newsletterMailinglistEmail->date_confirmed = \JFactory::getDate()->toSql();
+		$newsletterMailinglistEmail->date_confirmed = \Date::toSql();
 
 		//save
 		$newsletterMailinglistEmail->save($newsletterMailinglistEmail);

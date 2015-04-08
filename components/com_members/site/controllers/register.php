@@ -159,7 +159,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if ($target_xprofile->get('registerDate') == '')
 		{
-			$target_xprofile->set('registerDate', JFactory::getDate()->toSql());
+			$target_xprofile->set('registerDate', Date::toSql());
 		}
 
 		if ($xregistration->get('email') != $target_xprofile->get('email'))
@@ -437,7 +437,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 			if ($xprofile->get('registerDate') == '')
 			{
-				$xprofile->set('registerDate', JFactory::getDate()->toSql());
+				$xprofile->set('registerDate', Date::toSql());
 			}
 
 			if ($xregistration->get('email') != $xprofile->get('email'))
@@ -1343,7 +1343,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					$xprofile = \Hubzero\User\Profile::getInstance($login);
 					if ($xprofile)
 					{
-						$dtmodify = JFactory::getDate()->toSql();
+						$dtmodify = Date::toSql();
 						$xprofile->set('email',$pemail);
 						$xprofile->set('modifiedDate',$dtmodify);
 						if ($xprofile->update())

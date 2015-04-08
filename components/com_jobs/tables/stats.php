@@ -232,7 +232,7 @@ class JobStats extends \JTable
 		}
 
 		$today = \JFactory::getDate()->format('Y-m-d');
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		// load existing entry
 		$this->loadStat($itemid, $category);

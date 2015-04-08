@@ -33,6 +33,10 @@ namespace Components\Support\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Support\Models\Status;
 use Components\Support\Tables\Resolution;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 /**
  * Support controller class for managing ticket resolutions

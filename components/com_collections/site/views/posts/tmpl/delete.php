@@ -62,6 +62,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		<p class="submit">
 			<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>" />
-			<a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, 'Y').'/'.JHTML::_('date',$this->entry->publish_up, 'm').'/'.$this->entry->alias); ?>">Cancel</a>
+			<a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.Date::of($this->entry->publish_up)->toLocal('Y').'/'.Date::of($this->entry->publish_up)->toLocal('m').'/'.$this->entry->alias); ?>"><?php echo Lang::txt('Cancel'); ?></a>
 		</p>
 	</form>

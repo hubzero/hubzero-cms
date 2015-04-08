@@ -113,7 +113,7 @@ class FileAssetHandler extends AssetHandler
 		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'file';
 		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'file';
 		$this->asset['url']        = $file;
-		$this->asset['created']    = \JFactory::getDate()->toSql();
+		$this->asset['created']    = \Date::toSql();
 		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = Request::getInt('course_id', 0);
 

@@ -245,12 +245,12 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// set created if new module
 		if (!$this->module->get('id'))
 		{
-			$this->module->set('created', JFactory::getDate()->toSql());
+			$this->module->set('created', Date::toSql());
 			$this->module->set('created_by', User::get('id'));
 		}
 
 		// set modified
-		$this->module->set('modified', JFactory::getDate()->toSql());
+		$this->module->set('modified', Date::toSql());
 		$this->module->set('modified_by', User::get('id'));
 
 		// save version settings
@@ -818,7 +818,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 
 		// set approved and approved date and approver
 		$module->set('approved', 1);
-		$module->set('approved_on', JFactory::getDate()->toSql());
+		$module->set('approved_on', Date::toSql());
 		$module->set('approved_by', $this->juser->get('id'));
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)

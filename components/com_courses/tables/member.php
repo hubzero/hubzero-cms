@@ -210,7 +210,7 @@ class Member extends \JTable
 
 		if (!$this->id)
 		{
-			$this->enrolled = \JFactory::getDate()->toSql();
+			$this->enrolled = \Date::toSql();
 		}
 
 		return true;

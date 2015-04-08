@@ -238,7 +238,7 @@ class Newsletter extends AdminController
 		if (!isset($newsletter['id']))
 		{
 			//update the modified info
-			$newsletter['created']    = \JFactory::getDate()->toSql();
+			$newsletter['created']    = \Date::toSql();
 			$newsletter['created_by'] = User::get('id');
 		}
 		else
@@ -281,7 +281,7 @@ class Newsletter extends AdminController
 		}
 
 		//update the modified info
-		$newsletter['modified']    = \JFactory::getDate()->toSql();
+		$newsletter['modified']    = \Date::toSql();
 		$newsletter['modified_by'] = User::get('id');
 
 		// if no plain text was entered lets take the html content
@@ -875,7 +875,7 @@ class Newsletter extends AdminController
 
 		if ($scheduler == '1')
 		{
-			$scheduledDate = \JFactory::getDate()->toSql();
+			$scheduledDate = \Date::toSql();
 		}
 		else
 		{
@@ -887,7 +887,7 @@ class Newsletter extends AdminController
 			//make sure we have at least the date or we use now
 			if (!$schedulerDate)
 			{
-				$scheduledDate = \JFactory::getDate()->toSql();
+				$scheduledDate = \Date::toSql();
 			}
 
 			//break apart parts of date
@@ -945,7 +945,7 @@ class Newsletter extends AdminController
 		$values = array();
 
 		// create date object once
-		$date = \JFactory::getDate()->toSql();
+		$date = \Date::toSql();
 
 		// create new record for each email
 		foreach ($emails as $email)

@@ -259,7 +259,7 @@ class MessagesModelMessage extends JModelAdmin
 			$table->user_id_from = \User::get('id');
 		}
 		if (intval($table->date_time) == 0) {
-			$table->date_time = JFactory::getDate()->toSql();
+			$table->date_time = Date::toSql();
 		}
 
 		// Check the data.

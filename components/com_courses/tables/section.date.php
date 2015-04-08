@@ -107,7 +107,7 @@ class SectionDate extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 			$this->created_by = User::get('id');
 
 			// Make sure the record doesn't already exist

@@ -78,7 +78,7 @@ $lastactivity = Lang::txt('COM_SUPPORT_NOT_APPLICAPABLE');
 if ($this->row->comments()->total() > 0)
 {
 	$last = $this->row->comments()->last();
-	$lastactivity = '<time datetime="' . $last->created() . '">' . JHTML::_('date', $last->created(), Lang::txt('TIME_FORMAT_HZ1')) . '</time>';
+	$lastactivity = '<time datetime="' . $last->created() . '">' . Date::of($last->created())->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . '</time>';
 	$this->row->comments()->rewind();
 }
 
@@ -399,9 +399,9 @@ if (!$no_html)
 					</strong>
 					<span class="permalink">
 						<span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-						<span class="time"><time><?php echo JHTML::_('date', JFactory::getDate()->toSql(), Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="time"><time><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-						<span class="date"><time><?php echo JHTML::_('date', JFactory::getDate()->toSql(), Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="date"><time><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 
 					<label for="comment-field-access" class="private hasTip" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION'); ?>">
@@ -608,7 +608,7 @@ if (!$no_html)
 	<div class="clr"></div>
 	<?php } ?>
 
-	<input type="hidden" name="started" value="<?php echo JFactory::getDate()->toSql(); ?>" />
+	<input type="hidden" name="started" value="<?php echo Date::toSql(); ?>" />
 
 	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

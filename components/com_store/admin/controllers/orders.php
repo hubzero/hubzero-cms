@@ -454,7 +454,7 @@ class Orders extends AdminController
 					}
 
 					// update order information
-					$row->status_changed = \JFactory::getDate()->toSql();
+					$row->status_changed = \Date::toSql();
 					$row->status = 1;
 					$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_COMPLETED')) . '.';
 				break;
@@ -473,7 +473,7 @@ class Orders extends AdminController
 						throw new Exception($this->database->getErrorMsg(), 500);
 					}
 					// update order information
-					$row->status_changed = \JFactory::getDate()->toSql();
+					$row->status_changed = \Date::toSql();
 					$row->status = 2;
 
 					$statusmsg = Lang::txt('COM_STORE_ORDER') . ' #' . $id . ' ' . Lang::txt('COM_STORE_HAS_BEEN') . ' ' . strtolower(Lang::txt('COM_STORE_CANCELLED')) . '.';

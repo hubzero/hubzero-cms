@@ -790,7 +790,7 @@ class Citations extends SiteController
 		// New entry so set the created date
 		if (!$row->id)
 		{
-			$row->created = \JFactory::getDate()->toSql();
+			$row->created = \Date::toSql();
 		}
 
 		// Field named 'uri' due to conflict with existing 'url' variable

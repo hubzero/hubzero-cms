@@ -744,7 +744,7 @@ class Create extends SiteController
 		}
 		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
 
-		$row->created    = ($row->created)    ? $row->created    : \JFactory::getDate()->toSql();
+		$row->created    = ($row->created)    ? $row->created    : \Date::toSql();
 		$row->created_by = ($row->created_by) ? $row->created_by : User::get('id');
 
 		// Set status to "composing"
@@ -756,9 +756,9 @@ class Create extends SiteController
 		{
 			$row->published = ($row->published ?: 2);
 		}
-		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : \JFactory::getDate()->toSql());
+		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : \Date::toSql());
 		$row->publish_down = ($row->publish_down && $row->publish_down != '0000-00-00 00:00:00' ? $row->publish_down : '0000-00-00 00:00:00');
-		$row->modified     = \JFactory::getDate()->toSql();
+		$row->modified     = \Date::toSql();
 		$row->modified_by  = User::get('id');
 		$row->access       = ($row->access ?: 0);
 
@@ -1247,7 +1247,7 @@ class Create extends SiteController
 
 				// Set status to published
 				$resource->published = 1;
-				$resource->publish_up = \JFactory::getDate()->toSql();
+				$resource->publish_up = \Date::toSql();
 			}
 			else
 			{
@@ -1259,7 +1259,7 @@ class Create extends SiteController
 				{
 					// Set status to published
 					$resource->published = 1;
-					$resource->publish_up = \JFactory::getDate()->toSql();
+					$resource->publish_up = \Date::toSql();
 				}
 				else
 				{

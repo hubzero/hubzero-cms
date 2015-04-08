@@ -146,11 +146,11 @@ class Jobs extends AdminController
 		// Is this a new job?
 		if (!$id)
 		{
-			$this->view->row->created      = \JFactory::getDate()->toSql();
+			$this->view->row->created      = \Date::toSql();
 			$this->view->row->created_by   = User::get('id');
 			$this->view->row->modified     = '0000-00-00 00:00:00';
 			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = \JFactory::getDate()->toSql();
+			$this->view->row->publish_up   = \Date::toSql();
 			$this->view->row->employerid   = 1; // admin
 		}
 		else if (!$this->view->row->load($id))
@@ -262,7 +262,7 @@ class Jobs extends AdminController
 			$code = $subscription->generateCode(8, 8, 0, 1, 0);
 			$job->code = $code;
 
-			$job->added   = \JFactory::getDate()->toSql();
+			$job->added   = \Date::toSql();
 			$job->addedBy = User::get('id');
 		}
 
@@ -294,7 +294,7 @@ class Jobs extends AdminController
 					else
 					{
 						$job->status   = 1;
-						$job->opendate = \JFactory::getDate()->toSql();
+						$job->opendate = \Date::toSql();
 						$statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_APPROVED');
 					}
 				break;
@@ -315,7 +315,7 @@ class Jobs extends AdminController
 			}
 
 			$job->editedBy = User::get('id');
-			$job->edited = \JFactory::getDate()->toSql();
+			$job->edited = \Date::toSql();
 		}
 
 		if (!$job->store())

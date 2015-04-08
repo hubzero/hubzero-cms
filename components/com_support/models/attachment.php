@@ -31,6 +31,10 @@
 namespace Components\Support\Models;
 
 use Hubzero\Base\Model;
+use Component;
+use Request;
+use Route;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 

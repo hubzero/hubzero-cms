@@ -145,7 +145,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . $row->created . '<br />';
 	$info .= Lang::txt('COM_RESOURCES_CREATED_BY') . ': ' . $this->escape($row->created_by) . '<br />';
 
-	$now = JFactory::getDate()->toSql();
+	$now = Date::toSql();
 	switch ($row->published)
 	{
 		case 0:

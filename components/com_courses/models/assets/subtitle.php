@@ -230,7 +230,7 @@ class SubtitleAssetHandler extends AssetHandler
 		$this->asset['type']       = 'file';
 		$this->asset['subtype']    = 'file';
 		$this->asset['url']        = $info['filename'] . '.txt';
-		$this->asset['created']    = \JFactory::getDate()->toSql();
+		$this->asset['created']    = \Date::toSql();
 		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = $course_id;
 

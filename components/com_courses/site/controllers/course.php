@@ -640,7 +640,7 @@ class Course extends SiteController
 		$xlog = new Tables\Log($this->database);
 		$xlog->gid       = $this->course->get('id');
 		$xlog->uid       = User::get('id');
-		$xlog->timestamp = \JFactory::getDate()->toSql();
+		$xlog->timestamp = \Date::toSql();
 		$xlog->action    = 'course_deleted';
 		$xlog->comments  = $log;
 		$xlog->actorid   = User::get('id');

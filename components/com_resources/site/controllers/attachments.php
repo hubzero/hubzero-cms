@@ -100,10 +100,10 @@ class Attachments extends SiteController
 		$asset = new Resource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $row->title;
-		$asset->created      = \JFactory::getDate()->toSql();
+		$asset->created      = \Date::toSql();
 		$asset->created_by   = User::get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = \JFactory::getDate()->toSql();
+		$asset->publish_up   = \Date::toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->path         = 'http://'; // make sure no path is specified just yet
@@ -173,10 +173,10 @@ class Attachments extends SiteController
 		$asset = new Resource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $asset->title;
-		$asset->created      = \JFactory::getDate()->toSql();
+		$asset->created      = \Date::toSql();
 		$asset->created_by   = User::get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = \JFactory::getDate()->toSql();
+		$asset->publish_up   = \Date::toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->access       = 0;
@@ -354,10 +354,10 @@ class Attachments extends SiteController
 		$row = new Resource($this->database);
 		$row->title        = $filename . '.' . $ext;
 		$row->introtext    = $row->title;
-		$row->created      = \JFactory::getDate()->toSql();
+		$row->created      = \Date::toSql();
 		$row->created_by   = User::get('id');
 		$row->published    = 1;
-		$row->publish_up   = \JFactory::getDate()->toSql();
+		$row->publish_up   = \Date::toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->access       = 0;
@@ -683,10 +683,10 @@ class Attachments extends SiteController
 		}
 		$row->title        = ($row->title) ? $row->title : $file['name'];
 		$row->introtext    = $row->title;
-		$row->created      = \JFactory::getDate()->toSql();
+		$row->created      = \Date::toSql();
 		$row->created_by   = User::get('id');
 		$row->published    = 1;
-		$row->publish_up   = \JFactory::getDate()->toSql();
+		$row->publish_up   = \Date::toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->path         = ''; // make sure no path is specified just yet

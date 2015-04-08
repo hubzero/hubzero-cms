@@ -115,7 +115,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category); ?>"><?php echo ($row->category . ' #' . $row->referenceid); ?></a></td>
 				<td><?php echo $this->escape($row->subject); ?></td>
 				<td><?php echo $this->escape($juser->get('username')); ?></td>
-				<td><?php echo JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+				<td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 <?php
 	$k = 1 - $k;

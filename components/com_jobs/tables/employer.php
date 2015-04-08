@@ -60,7 +60,7 @@ class Employer extends \JTable
 			return false;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 		$query  = "SELECT e.id FROM $this->_tbl AS e  ";
 		if (!$admin)
 		{

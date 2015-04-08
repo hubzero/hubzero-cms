@@ -45,7 +45,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	}
 
 	$html  = '';
-	$now = JFactory::getDate()->toSql();
+	$now = Date::toSql();
 
 	if (!$this->mini)
 	{

@@ -128,7 +128,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php
-					$now = JFactory::getDate()->toSql();
+					$now = Date::toSql();
 					$alt = Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
 					if ($now <= $row->publish_up && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_PENDING');

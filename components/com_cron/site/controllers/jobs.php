@@ -131,7 +131,7 @@ class Jobs extends SiteController
 				}
 
 				$job->mark('end_run');
-				$job->set('last_run', Date::toLocal('Y-m-d H:i:s')); //JFactory::getDate()->toSql());
+				$job->set('last_run', Date::toLocal('Y-m-d H:i:s')); //Date::toSql());
 				$job->set('next_run', $job->nextRun());
 				$job->store();
 

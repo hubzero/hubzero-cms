@@ -297,7 +297,7 @@ class Calendar extends Model
 		if (!strstr($statusCode, '200 OK'))
 		{
 			$this->set('failed_attempts', $this->failed_attempts + 1);
-			$this->set('last_fetched_attempt', \JFactory::getDate()->toSql());
+			$this->set('last_fetched_attempt', \Date::toSql());
 			$this->store(true);
 			$this->setError($this->get('title'));
 			return false;
@@ -416,7 +416,7 @@ class Calendar extends Model
 			$event->set('content', stripslashes(str_replace('\n', "\n", $event->get('content'))));
 			$event->set('adresse_info', isset($incomingEvent['LOCATION']) ? $incomingEvent['LOCATION'] : '');
 			$event->set('extra_info', isset($incomingEvent['URL']) ? $incomingEvent['URL'] : '');
-			$event->set('modified', \JFactory::getDate()->toSql());
+			$event->set('modified', \Date::toSql());
 			$event->set('modified_by', \JFactory::getUser()->get('id'));
 			$event->set('publish_up', $publish_up);
 			$event->set('publish_down', $publish_down);
@@ -432,7 +432,7 @@ class Calendar extends Model
 				$event->set('scope', $this->get('scope'));
 				$event->set('scope_id', $this->get('scope_id'));
 				$event->set('state', 1);
-				$event->set('created', \JFactory::getDate()->toSql());
+				$event->set('created', \Date::toSql());
 				$event->set('created_by', \JFactory::getUser()->get('id'));
 				$event->set('time_zone', -5);
 				$event->set('registerby', '0000-00-00 00:00:00');
@@ -445,8 +445,8 @@ class Calendar extends Model
 
 		// mark as fetched
 		// clear failed attempts
-		$this->set('last_fetched', \JFactory::getDate()->toSql());
-		$this->set('last_fetched_attempt', \JFactory::getDate()->toSql());
+		$this->set('last_fetched', \Date::toSql());
+		$this->set('last_fetched_attempt', \Date::toSql());
 		$this->set('failed_attempts', 0);
 		$this->store(true);
 		return true;

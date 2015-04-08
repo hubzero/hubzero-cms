@@ -87,7 +87,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	{
 		return array(
 			'gidNumber' => null,
-			'timestamp' => JFactory::getDate()->toSql(),
+			'timestamp' => Date::toSql(),
 			'userid'    => JFactory::getUser()->get('id'),
 			'action'    => '',
 			'comments'  => '',

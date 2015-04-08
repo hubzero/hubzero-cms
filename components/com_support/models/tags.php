@@ -33,8 +33,9 @@ namespace Components\Support\Models;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Hubzero\Base\ItemList;
+use Route;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Support Tagging class

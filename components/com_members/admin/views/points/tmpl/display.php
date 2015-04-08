@@ -89,7 +89,7 @@ Toolbar::preferences('com_members', '550');
 
 	<?php if (count($this->stats) > 0) { ?>
 		<table class="adminlist">
-			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', JFactory::getDate()->toSql(), Lang::txt('DATE_FORMAT_HZ1')); ?></caption>
+			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', Date::toSql(), Lang::txt('DATE_FORMAT_HZ1')); ?></caption>
 			<thead>
 				<tr>
 					<th scope="col" rowspan="2">Activity</th>

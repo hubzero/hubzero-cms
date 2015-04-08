@@ -224,10 +224,10 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// set page version vars
 		$this->version->set('pageid', $this->page->get('id'));
 		$this->version->set('version', $this->version->get('version') + 1);
-		$this->version->set('created', JFactory::getDate()->toSql());
+		$this->version->set('created', Date::toSql());
 		$this->version->set('created_by', $this->juser->get('id'));
 		$this->version->set('approved', 1);
-		$this->version->set('approved_on', JFactory::getDate()->toSql());
+		$this->version->set('approved_on', Date::toSql());
 		$this->version->set('approved_by', $this->juser->get('id'));
 
 		// if we have php or script tags we must get page approved by admin
@@ -697,7 +697,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 
 		// set approved and approved date and approver
 		$currentVersion->set('approved', 1);
-		$currentVersion->set('approved_on', JFactory::getDate()->toSql());
+		$currentVersion->set('approved_on', Date::toSql());
 		$currentVersion->set('approved_by', $this->juser->get('id'));
 
 		// save version with approved status

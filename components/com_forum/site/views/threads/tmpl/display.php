@@ -115,7 +115,6 @@ $this->thread->set('category', $this->category->get('alias'));
 					<p class="comment-member-photo">
 						<?php
 						$anon = (!User::isGuest() ? 0 : 1);
-						$now  = JFactory::getDate();
 						?>
 						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
 					</p>
@@ -130,9 +129,9 @@ $this->thread->set('category', $this->category->get('alias'));
 								</strong>
 								<span class="permalink">
 									<span class="comment-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 									<span class="comment-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								</span>
 							</p>
 

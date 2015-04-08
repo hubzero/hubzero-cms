@@ -117,14 +117,14 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
 					<td>
-						<?php echo JHTML::_('date', $this->row->created, 'Y-m-d H:i:s'); ?>
+						<?php echo Date::of($this->row->created)->toLocal('Y-m-d H:i:s'); ?>
 					</td>
 				</tr>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php 
-						$user = JUser::getInstance($this->row->created_by);
+						$user = User::getInstance($this->row->created_by);
 						echo $this->escape($user->get('name'));
 						?>
 					</td>
@@ -133,14 +133,14 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
 						<td>
-							<?php echo JHTML::_('date', $this->row->modified, 'Y-m-d H:i:s'); ?>
+							<?php echo Date::of($this->row->modified)->toLocal('Y-m-d H:i:s'); ?>
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
 						<td>
 							<?php 
-							$user = JUser::getInstance($this->row->modified_by);
+							$user = User::getInstance($this->row->modified_by);
 							echo $this->escape($user->get('name'));
 							?>
 						</td>

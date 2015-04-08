@@ -81,7 +81,7 @@ class Asset extends \JTable
 		{
 			$this->state = (isset($this->state)) ? $this->state : 1;
 
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 			$this->created_by = User::get('id');
 		}
 

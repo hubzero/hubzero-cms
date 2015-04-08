@@ -383,7 +383,7 @@ class Mailinglist extends AdminController
 			}
 			else
 			{
-				$inserts[] = "(" . $this->mid . ", '" . $email . "', 'active', 0, '" . \JFactory::getDate()->toSql() . "')";
+				$inserts[] = "(" . $this->mid . ", '" . $email . "', 'active', 0, '" . \Date::toSql() . "')";
 			}
 		}
 

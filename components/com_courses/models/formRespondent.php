@@ -186,7 +186,7 @@ class PdfFormRespondent
 				'score'          => $score,
 				'scope'          => 'asset',
 				'scope_id'       => $asset_id,
-				'score_recorded' => \JFactory::getDate()->toSql()
+				'score_recorded' => \Date::toSql()
 			);
 
 			$gradebook->save($grade);
@@ -196,7 +196,7 @@ class PdfFormRespondent
 			$gradebook->save(
 				array(
 					'score'          => $score,
-					'score_recorded' => \JFactory::getDate()->toSql()
+					'score_recorded' => \Date::toSql()
 				)
 			);
 		}
@@ -294,7 +294,7 @@ class PdfFormRespondent
 		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id.' AND question_id = '.(int)$qid);
 		$dbh->query();
-		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(\JFactory::getDate()->toSql()).')');
+		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(\Date::toSql()).')');
 		$dbh->query();
 
 		return $this;
@@ -383,7 +383,7 @@ class PdfFormRespondent
 	 **/
 	public function markStart()
 	{
-		$this->started = \JFactory::getDate()->toSql();
+		$this->started = \Date::toSql();
 		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('UPDATE #__courses_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
 		$dbh->query();
@@ -398,7 +398,7 @@ class PdfFormRespondent
 	 **/
 	public function markEnd()
 	{
-		$this->started = \JFactory::getDate()->toSql();
+		$this->started = \Date::toSql();
 		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('UPDATE #__courses_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
 		$dbh->query();

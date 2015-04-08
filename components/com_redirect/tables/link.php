@@ -103,7 +103,7 @@ class Link extends \JTable
 	public function store($updateNulls = false)
 	{
 		// Initialise variables.
-		$date = \JFactory::getDate()->toSql();
+		$date = \Date::toSql();
 
 		if ($this->id)
 		{

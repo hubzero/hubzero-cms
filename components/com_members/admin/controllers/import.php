@@ -209,7 +209,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 
 			// Set the created by/at
 			$this->import->set('created_by', User::get('id'));
-			$this->import->set('created_at', JFactory::getDate()->toSql());
+			$this->import->set('created_at', Date::toSql());
 		}
 
 		// Do we have a data file

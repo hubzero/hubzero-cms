@@ -338,7 +338,7 @@ class Citations extends AdminController
 		// New entry so set the created date
 		if (!$row->id)
 		{
-			$row->created = \JFactory::getDate()->toSql();
+			$row->created = \Date::toSql();
 		}
 
 		// Check content for missing required data

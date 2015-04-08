@@ -34,6 +34,8 @@ use Hubzero\Base\Object;
 use Hubzero\Utility\Validate;
 use InvalidArgumentException;
 use stdClass;
+use User;
+use Lang;
 
 /**
  * Support mdoel for a ticket changelog
@@ -324,13 +326,13 @@ class Changelog extends Object
 			if (!strstr($acc, '@'))
 			{
 				// Username or user ID - load the user
-				$acc = (is_string($acc)) ? strtolower($acc) : $acc;
-				$juser = \JUser::getInstance($acc);
+				$acc  = (is_string($acc)) ? strtolower($acc) : $acc;
+				$user = User::getInstance($acc);
 
 				// Did we find an account?
 				if (is_object($juser))
 				{
-					$this->_log['cc'][] = $juser->get('username');
+					$this->_log['cc'][] = $user->get('username');
 				}
 				else
 				{

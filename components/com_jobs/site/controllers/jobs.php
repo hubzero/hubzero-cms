@@ -733,7 +733,7 @@ class Jobs extends SiteController
 		$units 		= Request::getInt('units_' . $serviceid, 0);
 		$contact 	= Request::getVar('contact', '');
 		$total 		= $service->unitprice * $units;
-		$now 		= \JFactory::getDate()->toSql();
+		$now 		= \Date::toSql();
 		$new 		= 0;
 		$credit 	= 0;
 		$months 	= $units * $service->unitsize;
@@ -1226,7 +1226,7 @@ class Jobs extends SiteController
 
 		$job = new Job($this->database);
 		$ja  = new JobApplication($this->database);
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		if (!$job->loadJob($code))
 		{
@@ -1464,11 +1464,11 @@ class Jobs extends SiteController
 			}
 
 			$job->editedBy = User::get('id');
-			$job->edited   = \JFactory::getDate()->toSql();
+			$job->edited   = \Date::toSql();
 		}
 		else
 		{
-			$job->added   = \JFactory::getDate()->toSql();
+			$job->added   = \Date::toSql();
 			$job->addedBy = User::get('id');
 		}
 
@@ -1540,7 +1540,7 @@ class Jobs extends SiteController
 			{
 				// confirm
 				$job->status       = !$autoapprove && !$this->_masteradmin ? 0 : 1;
-				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : \JFactory::getDate()->toSql(); // set open date as of now, if confirming new ad publication
+				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : \Date::toSql(); // set open date as of now, if confirming new ad publication
 				$this->_msg_passed = !$autoapprove && !$this->_masteradmin ? Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
 			}
 		}
@@ -1774,7 +1774,7 @@ class Jobs extends SiteController
 				$subscription->units     = 72;
 				$subscription->serviceid = 1;
 				$subscription->expires   = \JFactory::getDate(strtotime("+ 72 months"))->toSql();
-				$subscription->added     = \JFactory::getDate()->toSql();
+				$subscription->added     = \Date::toSql();
 
 				if (!$subscription->store())
 				{
@@ -2198,7 +2198,7 @@ class Jobs extends SiteController
 	protected function setupServices()
 	{
 		$objS = new Service($this->database);
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		$default1 = array(
 			'id'          => 0,

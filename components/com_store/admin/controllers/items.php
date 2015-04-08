@@ -149,7 +149,7 @@ class Items extends AdminController
 		{
 			// New item
 			$this->view->row->available = 0;
-			$this->view->row->created   = \JFactory::getDate()->toSql();
+			$this->view->row->created   = \Date::toSql();
 			$this->view->row->published = 0;
 			$this->view->row->featured  = 0;
 			$this->view->row->special   = 0;
@@ -195,7 +195,7 @@ class Items extends AdminController
 		$row->description = Sanitize::clean($row->description);
 		if (!$id)
 		{
-			$row->created = $row->created ? $row->created : \JFactory::getDate()->toSql();
+			$row->created = $row->created ? $row->created : \Date::toSql();
 		}
 		$sizes = ($_POST['sizes']) ? $_POST['sizes'] : '';
 		$sizes = str_replace(' ', '', $sizes);

@@ -206,10 +206,10 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 		$row->title = ($row->title) ? $row->title : $file['name'];
 		$row->introtext = $row->title;
-		$row->created = JFactory::getDate()->toSql();
+		$row->created = Date::toSql();
 		$row->created_by = User::get('id');
 		$row->published = 1;
-		$row->publish_up = JFactory::getDate()->toSql();
+		$row->publish_up = Date::toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone = 0;
 		$row->access = 0;

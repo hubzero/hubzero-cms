@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS'), 'addedit.png');
 Toolbar::preferences('com_services', '550');
 
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 // Push some styles to the template
 $this->css('admin.subscriptions.css');
@@ -111,7 +111,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	$name  = Lang::txt('COM_SERVICES_UNKNOWN');
 	$login = Lang::txt('COM_SERVICES_UNKNOWN');
-	$ruser = JUser::getInstance($row->uid);
+	$ruser = User::getInstance($row->uid);
 	if (is_object($ruser))
 	{
 		$name  = $ruser->get('name');
@@ -121,7 +121,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$status = '';
 	$pending = Lang::txt('COM_SERVICES_FOR_UNITS', $row->currency . ' ' . $row->pendingpayment, $row->pendingunits);
 
-	$expires = (intval($row->expires) <> 0) ? JHTML::_('date', $row->expires, Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+	$expires = (intval($row->expires) <> 0) ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 
 	switch ($row->status)
 	{
@@ -147,8 +147,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td><?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span style="color:#ff0000;">' . $pending . '</span>' : $pending; ?></td>
 				<td><?php echo $name . ' (' . $login . ')'; ?></td>
-				<td><?php echo JHTML::_('date', $row->added, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
-				<td><?php echo $row->updated ? JHTML::_('date', $row->updated, Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER'); ?></td>
+				<td><?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+				<td><?php echo $row->updated ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER'); ?></td>
 				<td><?php echo $expires; ?></td>
 			</tr>
 <?php

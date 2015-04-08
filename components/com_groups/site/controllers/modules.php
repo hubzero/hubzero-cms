@@ -235,12 +235,12 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		// set created if new module
 		if (!$this->module->get('id'))
 		{
-			$this->module->set('created', JFactory::getDate()->toSql());
+			$this->module->set('created', Date::toSql());
 			$this->module->set('created_by', JFactory::getUser()->get('id'));
 		}
 
 		// set modified
-		$this->module->set('modified', JFactory::getDate()->toSql());
+		$this->module->set('modified', Date::toSql());
 		$this->module->set('modified_by', JFactory::getUser()->get('id'));
 
 

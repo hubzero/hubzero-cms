@@ -398,7 +398,7 @@ class Tool extends JTable
 			$query = "UPDATE #__tool SET ";
 			if ($newstate)
 			{
-				$query.= "state=" . $this->_db->Quote($newstate) . ", state_changed='" . JFactory::getDate()->toSql() . "'";
+				$query.= "state=" . $this->_db->Quote($newstate) . ", state_changed='" . Date::toSql() . "'";
 			}
 			if ($newstate && $priority)
 			{

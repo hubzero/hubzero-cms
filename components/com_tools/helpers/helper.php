@@ -178,7 +178,7 @@ class ContribtoolHelper
 	 */
 	public function record_view($database, $ticketid)
 	{
-		$when = JFactory::getDate()->toSql();
+		$when = Date::toSql();
 
 		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='" . $ticketid . "' AND uid=" . \User::get('id');
 		$database->setQuery($sql);

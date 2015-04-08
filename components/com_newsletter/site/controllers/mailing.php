@@ -87,7 +87,7 @@ class NewsletterControllerMailing extends SiteController
 				$action->email       = $recipient->email;
 				$action->ip          = $_SERVER['REMOTE_ADDR'];
 				$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-				$action->date        = \JFactory::getDate()->toSql();
+				$action->date        = \Date::toSql();
 
 				//save action
 				$newsletterMailingRecipientAction->save($action);
@@ -134,7 +134,7 @@ class NewsletterControllerMailing extends SiteController
 			$action->email       = $recipient->email;
 			$action->ip          = $_SERVER['REMOTE_ADDR'];
 			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = \JFactory::getDate()->toSql();
+			$action->date        = \Date::toSql();
 
 			//save action
 			$newsletterMailingRecipientAction->save($action);
@@ -175,7 +175,7 @@ class NewsletterControllerMailing extends SiteController
 			$action->email       = $recipient->email;
 			$action->ip          = $_SERVER['REMOTE_ADDR'];
 			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = \JFactory::getDate()->toSql();
+			$action->date        = \Date::toSql();
 
 			//save action
 			$newsletterMailingRecipientAction->save($action);
@@ -209,7 +209,7 @@ class NewsletterControllerMailing extends SiteController
 			$action->email       = $recipient->email;
 			$action->ip          = $_SERVER['REMOTE_ADDR'];
 			$action->user_agent  = $_SERVER['HTTP_USER_AGENT'];
-			$action->date        = \JFactory::getDate()->toSql();
+			$action->date        = \Date::toSql();
 
 			//save action
 			$newsletterMailingRecipientAction->save($action);

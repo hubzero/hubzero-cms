@@ -70,7 +70,7 @@ class Review extends \JTable
 
 		if (!$this->created || $this->created == '0000-00-00 00:00:00')
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 		}
 
 		$this->user_id = $this->user_id ?: \JFactory::getUser()->get('id');

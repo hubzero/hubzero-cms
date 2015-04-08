@@ -32,6 +32,7 @@ namespace Components\Support\Helpers;
 
 use Hubzero\Base\Object;
 use Hubzero\User\Helper as UserHelper;
+use User;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'acos.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'aros_acos.php');
@@ -47,7 +48,7 @@ class ACL extends Object
 	 *
 	 * @var object
 	 */
-	private $_juser;
+	private $_user;
 
 	/**
 	 * Database
@@ -77,7 +78,7 @@ class ACL extends Object
 	 */
 	public function __construct()
 	{
-		$this->_juser = \JFactory::getUser();
+		$this->_user = User::getRoot();
 		$this->_db = \JFactory::getDBO();
 
 		$sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
@@ -88,9 +89,9 @@ class ACL extends Object
 		$this->_db->setQuery($sql);
 		$this->_raw_data = $this->_db->loadAssocList();
 
-		if (!$this->_juser->get('guest'))
+		if (!$this->_user->get('guest'))
 		{
-			$this->_user_groups = UserHelper::getGroups($this->_juser->get('id'));
+			$this->_user_groups = UserHelper::getGroups($this->_user->get('id'));
 		}
 	}
 
@@ -125,12 +126,12 @@ class ACL extends Object
 		$permission = 0;
 
 		// Check if they are logged in
-		if (!$aro_foreign_key && $this->_juser->get('guest'))
+		if (!$aro_foreign_key && $this->_user->get('guest'))
 		{
 			return $permission;
 		}
 
-		if ($this->_juser->authorise('core.admin'))
+		if ($this->_user->authorise('core.admin'))
 		{
 			return 1;
 		}
@@ -176,7 +177,7 @@ class ACL extends Object
 		{
 			// Get the aco permission
 			if ($line['aro_model'] == 'user'
-			 && $line['aro_foreign_key'] == $this->_juser->get('id')
+			 && $line['aro_foreign_key'] == $this->_user->get('id')
 			 && $line['aco_model'] == $aco)
 			{
 				if (isset($line['action_' . $action]))
@@ -189,7 +190,7 @@ class ACL extends Object
 			if ($aco_foreign_key)
 			{
 				if ($line['aro_model'] == 'user'
-				 && $line['aro_foreign_key'] == $this->_juser->get('id')
+				 && $line['aro_foreign_key'] == $this->_user->get('id')
 				 && $line['aco_model'] == $aco
 				 && $line['aco_foreign_key'] == $aco_foreign_key)
 				{
@@ -220,10 +221,10 @@ class ACL extends Object
 	{
 		if ($aro_foreign_key)
 		{
-			if ($this->_juser->get('id') != $aro_foreign_key)
+			if ($this->_user->get('id') != $aro_foreign_key)
 			{
-				$this->_juser = \JUser::getInstance($aro_foreign_key);
-				$this->_user_groups = UserHelper::getGroups($this->_juser->get('id'));
+				$this->_user = User::getInstance($aro_foreign_key);
+				$this->_user_groups = UserHelper::getGroups($this->_user->get('id'));
 			}
 		}
 	}
@@ -251,7 +252,7 @@ class ACL extends Object
 
 			// Get the aco permission
 			if ($line['aro_model'] == 'user'
-			 && $line['aro_foreign_key'] == $this->_juser->get('id')
+			 && $line['aro_foreign_key'] == $this->_user->get('id')
 			 && $line['aco_model'] == $aco)
 			{
 				$line['action_' . $action] = $permission;
@@ -261,7 +262,7 @@ class ACL extends Object
 			if ($aco_foreign_key)
 			{
 				if ($line['aro_model'] == 'user'
-				 && $line['aro_foreign_key'] == $this->_juser->get('id')
+				 && $line['aro_foreign_key'] == $this->_user->get('id')
 				 && $line['aco_model'] == $aco
 				 && $line['aco_foreign_key'] == $aco_foreign_key)
 				{
@@ -274,7 +275,7 @@ class ACL extends Object
 		{
 			$l = array(
 				'aro_model'         => 'user',
-				'aro_foreign_key'   => $this->_juser->get('id'),
+				'aro_foreign_key'   => $this->_user->get('id'),
 				'aco_model'         => $aco,
 				'aco_foreign_key'   => $aco_foreign_key,
 				'action_' . $action => $permission

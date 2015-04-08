@@ -31,9 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri = JURI::getInstance();
-
-$base = rtrim($juri->base(), DS);
+$base = rtrim(Request::base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
@@ -47,7 +45,7 @@ $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 $base = rtrim(str_replace('/administrator', '', $base), DS);
 
-$this->commentor = JFactory::getUser($this->reported->author);
+$this->commentor = User::getInstance($this->reported->author);
 
 $this->css(
 	'@media only screen and (max-device-width: 480px) {
@@ -67,7 +65,7 @@ $this->css(
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
-						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
+						<a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>
 					</span>
 					<br />
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
@@ -135,10 +133,10 @@ $this->css(
 							</tr>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reported:</th>
-								<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+								<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo Date::of($this->report->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of($this->report->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 							</tr>
 						<?php if (!$this->author) { ?>
-							<?php $reporter = JFactory::getUser($this->report->created_by); ?>
+							<?php $reporter = User::getInstance($this->report->created_by); ?>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reported by:</th>
 								<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left"><?php echo $this->escape($reporter->get('name')); ?> (<?php echo $this->escape($reporter->get('username')); ?>)</td>
@@ -151,7 +149,7 @@ $this->css(
 						<?php if ($this->report->reviewed && $this->report->reviewed != '0000-00-00 00:00:00') { ?>
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reviewed:</th>
-								<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->reviewed, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->reviewed, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+								<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo Date::of($this->report->reviewed)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of($this->report->reviewed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 							</tr>
 						<?php } ?>
 						<?php if ($this->report->note && !$this->author) { ?>
@@ -177,7 +175,7 @@ $this->css(
 		<tbody>
 			<tr>
 				<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
-				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo JHTML::_('date', $this->reported->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->reported->created, Lang::txt('DATE_FORMAT_HZ1')); ?></span></th>
+				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo Date::of($this->reported->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of($this->reported->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span></th>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 0 2em;">

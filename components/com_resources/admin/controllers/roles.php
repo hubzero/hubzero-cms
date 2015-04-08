@@ -147,7 +147,7 @@ class Roles extends AdminController
 		if (!$this->view->row->id)
 		{
 			$this->view->row->created_by = User::get('id');
-			$this->view->row->created = \JFactory::getDate()->toSql();
+			$this->view->row->created = \Date::toSql();
 		}
 
 		$types = $this->view->row->getTypesForRole();

@@ -335,7 +335,7 @@ class Import extends SiteController
 		$citations_saved     = array();
 		$citations_not_saved = array();
 		$citations_error     = array();
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 		$user = $this->juser->get('id');
 		$allow_tags   = $this->config->get('citation_allow_tags', 'no');
 		$allow_badges = $this->config->get('citation_allow_badges', 'no');

@@ -921,7 +921,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badge->set('member_id', $m);
 						$badge->set('section_badge_id', $sb->get('id'));
 						$badge->set('earned', 1);
-						$badge->set('earned_on', \JFactory::getDate()->toSql());
+						$badge->set('earned_on', \Date::toSql());
 						$badge->set('criteria_id', $sb->get('criteria_id'));
 						$badge->store();
 

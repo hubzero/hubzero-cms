@@ -403,7 +403,7 @@ class ContentModelArticles extends JModelList
 
 		// Define null and now dates
 		$nullDate	= $db->Quote($db->getNullDate());
-		$nowDate	= $db->Quote(JFactory::getDate()->toSql());
+		$nowDate	= $db->Quote(Date::toSql());
 
 		if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content')))
 		{

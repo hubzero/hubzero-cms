@@ -77,7 +77,7 @@ class ContentAssetHandler extends AssetHandler
 		$asset->set('url',          ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
 		$asset->set('graded',       ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
 		$asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
-		$asset->set('created',      \JFactory::getDate()->toSql());
+		$asset->set('created',      \Date::toSql());
 		$asset->set('created_by',   \JFactory::getApplication()->getAuthn('user_id'));
 		$asset->set('course_id',    Request::getInt('course_id', 0));
 		$asset->set('state',        0);

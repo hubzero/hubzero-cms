@@ -148,7 +148,7 @@ class Section extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
+			$this->created    = \Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
@@ -204,7 +204,7 @@ class Section extends \JTable
 
 		if (isset($filters['available']) && $filters['available'])
 		{
-			$now = \JFactory::getDate()->toSql();
+			$now = \Date::toSql();
 
 			$where[] = "(os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->Quote($now) . ")";
@@ -212,7 +212,7 @@ class Section extends \JTable
 
 		if (isset($filters['started']))
 		{
-			$now = \JFactory::getDate()->toSql();
+			$now = \Date::toSql();
 
 			if ($filters['started'] === true)
 			{
@@ -226,7 +226,7 @@ class Section extends \JTable
 
 		if (isset($filters['ended']))
 		{
-			$now = \JFactory::getDate()->toSql();
+			$now = \Date::toSql();
 
 			if ($filters['ended'] === true)
 			{

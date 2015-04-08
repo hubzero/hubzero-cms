@@ -188,7 +188,7 @@ $this->css()
 						$html = '';
 						if ($this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted())
 						{
-							$html .= ($this->wish->get('due') <= JFactory::getDate()->format('Y-m-d H:i:s'))
+							$html .= ($this->wish->get('due') <= Date::format('Y-m-d H:i:s'))
 									? '<span class="overdue"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_OVERDUE')
 									: '<span class="due"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->get('due'));
 							$html .= '</a></span>';

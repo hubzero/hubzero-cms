@@ -37,6 +37,11 @@ use Hubzero\Base\Object;
 use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Component;
+use Request;
+use Lang;
+use User;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php');
@@ -242,7 +247,7 @@ class Ticket extends Model
 	{
 		if ($this->isOwned())
 		{
-			$id = $id ?: \JFactory::getUser()->get('id');
+			$id = $id ?: User::get('id');
 
 			if ($this->get('owner') == $id)
 			{
@@ -921,15 +926,15 @@ class Ticket extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			case 'local':
-				return \JHTML::_('date', $this->get('created'), $this->_db->getDateFormat());
+				return Date::of($this->get('created'))->toLocal($this->_db->getDateFormat());
 			break;
 
 			default:

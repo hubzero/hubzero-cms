@@ -47,12 +47,6 @@ Toolbar::spacer();
 Toolbar::help('job');
 
 JHTML::_('behavior.calendar');
-
-$create_date = NULL;
-if (intval($this->row->get('created')) <> 0)
-{
-	$create_date = JHTML::_('date', $this->row->get('created'));
-}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -265,9 +259,9 @@ jQuery(document).ready(function($){
 							{
 								$param = new JParameter(
 									(is_object($data) ? $data->toString() : $data),
-									JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . DS . $plugin->element . '.xml'
+									PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . DS . $plugin->element . '.xml'
 								);
-								$param->addElementPath(JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element);
+								$param->addElementPath(PATH_CORE . DS . 'plugins' . DS . 'cron' . DS . $plugin->element);
 								//$out = $param->render('params', $event['params']);
 								$html = array();
 								foreach ($param->getParams('params', $event['params']) as $p)
@@ -454,7 +448,7 @@ jQuery(document).ready(function($){
 					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->get('created_by'));
+						$editor = User::getInstance($this->row->get('created_by'));
 						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
@@ -464,7 +458,7 @@ jQuery(document).ready(function($){
 					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('created')); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape(JHTML::_('date', $this->row->get('created'), 'Y-m-d H:i:s')); ?>" />
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s')); ?>" />
 					</td>
 				</tr>
 			<?php if ($this->row->get('modified')) { ?>
@@ -472,7 +466,7 @@ jQuery(document).ready(function($){
 					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_MODIFIER'); ?>:</th>
 					<td>
 						<?php
-						$modifier = JUser::getInstance($this->row->get('modified_by'));
+						$modifier = User::getInstance($this->row->get('modified_by'));
 						echo $this->escape($modifier->get('name'));
 						?>
 						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
@@ -482,7 +476,7 @@ jQuery(document).ready(function($){
 					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_MODIFIED'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('modified')); ?>
-						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape(JHTML::_('date', $this->row->get('modified'), 'Y-m-d H:i:s')); ?>" />
+						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s')); ?>" />
 					</td>
 				</tr>
 			<?php } ?>

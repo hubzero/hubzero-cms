@@ -167,7 +167,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 
 			// set the created by/at
 			$this->hook->set('created_by', User::get('id'));
-			$this->hook->set('created', JFactory::getDate()->toSql());
+			$this->hook->set('created', Date::toSql());
 		}
 
 		// Attempt to save

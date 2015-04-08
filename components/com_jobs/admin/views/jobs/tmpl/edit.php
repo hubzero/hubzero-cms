@@ -44,7 +44,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('job');
 
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 $usonly = $this->config->get('usonly');
 $this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : Lang::txt('COM_JOBS_USA');

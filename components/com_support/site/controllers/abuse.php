@@ -34,6 +34,13 @@ use Components\Support\Tables\ReportAbuse;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Utility\Validate;
+use Request;
+use Pathway;
+use Config;
+use Route;
+use Lang;
+use User;
+use Date;
 
 /**
  * Report items as abusive
@@ -201,7 +208,7 @@ class Abuse extends SiteController
 		$row->report     = Sanitize::clean($row->report);
 		$row->report     = nl2br($row->report);
 		$row->created_by = User::get('id');
-		$row->created    = \JFactory::getDate()->toSql();
+		$row->created    = Date::toSql();
 		$row->state      = 0;
 
 		// Check content

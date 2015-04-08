@@ -38,6 +38,10 @@ use Components\Support\Tables\Ticket;
 use Components\Support\Tables\Resolution;
 use Hubzero\Component\SiteController;
 use stdClass;
+use Request;
+use Route;
+use Lang;
+use User;
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
@@ -55,7 +59,7 @@ class Queries extends SiteController
 	public function displayTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=tickets&task=display'
+			Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display')
 		);
 	}
 
@@ -99,7 +103,7 @@ class Queries extends SiteController
 			$this->view->row->sort_dir = 'desc';
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'conditions.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php');
 		$con = new Conditions();
 		$this->view->conditions = $con->getConditions();
 

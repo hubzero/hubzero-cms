@@ -34,8 +34,11 @@ use Components\Support\Models\Attachment;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Number;
 use Hubzero\Component\View;
+use Request;
+use Lang;
+use User;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php');
 
 /**
  * Collections controller class for media

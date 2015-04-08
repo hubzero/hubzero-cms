@@ -111,7 +111,7 @@ class Announcement extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \JFactory::getDate()->toSql();
+			$this->created    = \Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
@@ -157,7 +157,7 @@ class Announcement extends \JTable
 
 		if (isset($filters['published']))
 		{
-			$now = \JFactory::getDate()->toSql();
+			$now = \Date::toSql();
 			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
 		}

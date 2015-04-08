@@ -133,7 +133,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td class="priority-2">
 					<?php if ($row->date && $row->date != '0000-00-00 00:00:00') { ?>
-						<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+						<time datetime="<?php echo $row->date; ?>"><?php echo Date::of($row->date)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					<?php } ?>
 				</td>
 				<td class="priority-3">

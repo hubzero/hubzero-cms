@@ -118,12 +118,12 @@ class Resource extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
+			$this->created    = $this->created    ?: \Date::toSql();
 			$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
 		}
 		else
 		{
-			$this->modified    = $this->modified    ?: \JFactory::getDate()->toSql();
+			$this->modified    = $this->modified    ?: \Date::toSql();
 			$this->modified_by = $this->modified_by ?: \JFactory::getUser()->get('id');
 		}
 
@@ -276,7 +276,7 @@ class Resource extends \JTable
 	public function buildQuery($filters=array())
 	{
 		$juser = \JFactory::getUser();
-		$now = \JFactory::getDate()->toSql();
+		$now = \Date::toSql();
 
 		$query  = "";
 		if (isset($filters['tag']) && $filters['tag'] != '')

@@ -677,7 +677,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($appcount > 1)
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . JHTML::_('date', JFactory::getDate()->toSql(), 'g:i a') . ')';
+			$app->caption .= ' (' . JHTML::_('date', Date::toSql(), 'g:i a') . ')';
 		}
 
 		// Save the changed caption
@@ -1542,7 +1542,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$tool = new ToolVersion($this->database);
 		$tool->loadFromName($app);
 
-		$created = JFactory::getDate()->toSql();
+		$created = Date::toSql();
 
 		// Get a list of all their recent tools
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'recent.php');

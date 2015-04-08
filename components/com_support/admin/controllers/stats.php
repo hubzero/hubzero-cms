@@ -32,6 +32,9 @@ namespace Components\Support\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Support\Tables;
+use Request;
+use Config;
+use Lang;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'status.php');
 

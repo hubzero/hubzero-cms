@@ -410,13 +410,13 @@ class Events extends AdminController
 		if ($row->id)
 		{
 			// Existing - update modified info
-			$row->modified = \JFactory::getDate()->toSql();
+			$row->modified = \Date::toSql();
 			$row->modified_by = User::get('id');
 		}
 		else
 		{
 			// New - set created info
-			$row->created = \JFactory::getDate()->toSql();
+			$row->created = \Date::toSql();
 			$row->created_by = User::get('id');
 		}
 
@@ -482,7 +482,7 @@ class Events extends AdminController
 		// make sure we have a start date
 		if (!$row->publish_up)
 		{
-			$row->publish_up = \JFactory::getDate()->toSql();
+			$row->publish_up = \Date::toSql();
 		}
 
 		// If this is a new event, publish it, otherwise retain its state

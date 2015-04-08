@@ -178,9 +178,9 @@ if (!$no_html) {
 									<a class="permalink" href="#c">
 										<span class="entry-date">
 											<span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-											<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+											<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 											<span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-											<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+											<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 										</span>
 									</a>
 								</p>
@@ -204,13 +204,10 @@ if (!$no_html) {
 									<?php echo $this->escape(stripslashes(User::get('name'))); ?>
 								</a>
 								<span class="permalink">
-									<?php
-									$now = JFactory::getDate()->toSql();
-									?>
 									<span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+									<span class="time"><time datetime="<?php echo Date::toSql(); ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 									<span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+									<span class="date"><time datetime="<?php echo Date::toSql(); ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								</span>
 							</p>
 

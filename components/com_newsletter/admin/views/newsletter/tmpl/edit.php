@@ -172,7 +172,7 @@ function submitbutton(pressbutton)
 						<tr>
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
 							<td>
-								<?php echo JHTML::_('date', $this->newsletter->created, 'F d, Y @ g:ia'); ?>
+								<?php echo Date::of($this->newsletter->created)->toLocal('F d, Y @ g:ia'); ?>
 								<input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
 							</td>
 						</tr>
@@ -183,7 +183,7 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
 							<td>
 								<?php
-									$user = JUser::getInstance($this->newsletter->created_by);
+									$user = User::getInstance($this->newsletter->created_by);
 									echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
 								?>
 								<input type="hidden" name="newsletter[created_by]" value="<?php echo $this->newsletter->created_by; ?>" />
@@ -195,7 +195,7 @@ function submitbutton(pressbutton)
 						<tr>
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
 							<td>
-								<?php echo JHTML::_('date', $this->newsletter->modified, 'F d, Y @ g:ia'); ?>
+								<?php echo Date::of($this->newsletter->modified)->toLocal('F d, Y @ g:ia'); ?>
 								<input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
 							</td>
 						</tr>
@@ -206,7 +206,7 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
 							<td>
 								<?php
-									$user = JUser::getInstance($this->newsletter->modified_by);
+									$user = User::getInstance($this->newsletter->modified_by);
 									echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
 								?>
 								<input type="hidden" name="newsletter[modified_by]" value="<?php echo $this->newsletter->modified_by; ?>" />

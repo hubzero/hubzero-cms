@@ -32,6 +32,7 @@ namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
+use Date;
 
 require_once(__DIR__ . DS . 'base.php');
 
@@ -140,8 +141,8 @@ class Member extends Base
 			break;
 
 			case 'comments':
-				$segments['task']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['task']  = Date::of($this->get('publish_up'))->format('Y') . '/';
+				$segments['task'] .= Date::of($this->get('publish_up'))->format('m') . '/';
 				$segments['task'] .= $this->get('alias');
 
 				$anchor = '#comments';
@@ -149,8 +150,8 @@ class Member extends Base
 
 			case 'permalink':
 			default:
-				$segments['task']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['task']  = Date::of($this->get('publish_up'))->format('Y') . '/';
+				$segments['task'] .= Date::of($this->get('publish_up'))->format('m') . '/';
 				$segments['task'] .= $this->get('alias');
 			break;
 		}
