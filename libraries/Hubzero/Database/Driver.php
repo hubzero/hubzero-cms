@@ -838,6 +838,25 @@ abstract class Driver
 	protected function log($time)
 	{
 		// Build the actual query
+		$query = $this->toString();
+
+		Event::fire('database.query', $query, $time);
+
+		// Add it to the internal logs
+		$this->log[] = $query;
+		$this->count++;
+		$this->timer += $time;
+	}
+
+	/**
+	 * Gets the string version of the query
+	 *
+	 * @return string
+	 * @since  2.0.0
+	 **/
+	public function toString()
+	{
+		// Build the actual query
 		if (is_object($this->statement))
 		{
 			$query = $this->interpolate($this->statement->queryString, $this->bindings);
@@ -847,12 +866,7 @@ abstract class Driver
 			$query = $this->statement;
 		}
 
-		Event::fire('database.query', $query, $time);
-
-		// Add it to the internal logs
-		$this->log[] = $query;
-		$this->count++;
-		$this->timer += $time;
+		return $query;
 	}
 
 	/**
