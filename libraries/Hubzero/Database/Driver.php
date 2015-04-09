@@ -1031,6 +1031,20 @@ abstract class Driver
 	}
 
 	/**
+	 * Sets the common table prefix for the database driver
+	 *
+	 * @param  string $prefix the prefix to use
+	 * @return $this
+	 * @since  2.0.0
+	 */
+	public function setPrefix($prefix)
+	{
+		$this->tablePrefix = $prefix;
+
+		return $this;
+	}
+
+	/**
 	 * Gets the current sql statement
 	 *
 	 * @return string
