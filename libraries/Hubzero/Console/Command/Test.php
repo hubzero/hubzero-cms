@@ -107,13 +107,11 @@ class Test extends Base implements CommandInterface
 		if (is_resource($process))
 		{
 			while ($c = fgetc($pipes[1])) print $c;
-			print fgets($pipes[1]);
+			while ($s = fgets($pipes[1])) print $s;
 		}
 
 		// Close process
 		proc_close($process);
-
-		$this->output->addSpacer();
 	}
 
 	/**
