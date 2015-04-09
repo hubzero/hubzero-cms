@@ -273,6 +273,11 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			echo nl2br($this->view->revision->get('pagetext'));
 			return;
 		}
+		elseif (JRequest::getVar('format', '') == 'printable')
+		{
+			echo $this->view->revision->get('pagehtml');
+			return;
+		}
 
 		// Load the wiki parser
 		$wikiconfig = array(
@@ -981,6 +986,8 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 	 * Output the contents of a wiki page as a PDF
 	 *
 	 * Based on work submitted by Steven Maus <steveng4235@gmail.com> (2014)
+	 * 4/9/2015 - changed to use wkhtmltopdf since this broke.
+	 * com_newsletter also uses wkhtmltopdf.
 	 *
 	 * @return     void
 	 */
@@ -1028,38 +1035,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		JRequest::setVar('format', 'pdf');
 
-		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-		// set header and footer fonts
-		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-		// set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		$pdf->SetHeaderMargin(10);
-		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-		// set auto page breaks
-		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-		// set image scale factor
-		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-		// Set font
-		$pdf->SetFont('dejavusans', '', 11, '', true);
-
-		//$current = $page->getCurrentRevision();
-		//$pageTitle = $page->getTitle();
-		//$pageAuthor = $page->authors();
-		$pdf->setAuthor  = $this->page->creator('name');
-		$pdf->setCreator = JFactory::getConfig()->get('sitename');
-
-		$pdf->setDocModificationTimeStamp($this->page->modified());
-		$pdf->setHeaderData(NULL, 0, strtoupper($this->page->get('itle')), NULL, array(84, 94, 124), array(146, 152, 169));
-		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
-
-		$pdf->AddPage();
-
 		// Set the view page content to current revision html
 		$this->view->page = $this->page;
 
@@ -1078,13 +1053,84 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		// Parse the text
 		$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
 
-		$pdf->writeHTML($this->view->loadTemplate(), true, false, true, false, '');
 
-		header("Content-type: application/octet-stream");
+		//build url to newsletter with no html
+		$wikiPageUrl = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'wiki' . DS . $wikiconfig['pagename'] . '?format=printable';
 
-		// Close and output PDF document
-		// Force the download of the PDF
-		$pdf->Output($this->page->get('pagename') . '.pdf', 'D');
+		//path to newsletter file
+		$wikiPageFolder = JPATH_ROOT . DS . 'site' . DS . 'wiki' . DS . 'pdf';
+		$wikiPagePdf = $wikiPageFolder . DS . $wikiconfig['pagename'] . '.pdf';
+
+		// check for upload path
+		if (!is_dir($wikiPageFolder))
+		{
+			// Build the path if it doesn't exist
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($wikiPageFolder))
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
+					JText::_('Unable to create the filepath.'),
+					'error'
+				);
+				return;
+			}
+		}
+
+		// check multiple places for wkhtmltopdf lib
+		// fallback on phantomjs
+		$cmd = '';
+		$fallback = '';
+		if (file_exists('/usr/bin/wkhtmltopdf') && file_exists('/usr/bin/xvfb-run'))
+		{
+			//$cmd = '/usr/bin/wkhtmltopdf ' . $wikiPageUrl . ' ' . $wikiPagePdf;
+			$cmd = '/usr/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $wikiPageUrl . ' ' . $wikiPagePdf;
+		}
+		else if (file_exists('/usr/local/bin/wkhtmltopdf') && file_exists('/usr/local/bin/xvfb-run'))
+		{
+			//$cmd = '/usr/local/bin/wkhtmltopdf ' . $wikiPageUrl . ' ' . $wikiPagePdf;
+			$cmd = '/usr/local/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $wikiPageUrl . ' ' . $wikiPagePdf;
+		}
+
+		if (file_exists('/usr/bin/phantomjs'))
+		{
+			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
+			$fallback = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $wikiPageUrl . ' ' . $wikiPagePdf . ' 8.5in*11in';
+			if (!$cmd)
+			{
+				$cmd = $fallback;
+			}
+		}
+		if (isset($cmd))
+		{
+			// exec command
+			$task = exec($cmd, $ouput, $status);
+
+			// wkhtmltopdf failed, so let's try phantomjs
+			if (!file_exists($wikiPagePdf) && $fallback && $cmd != $fallback)
+			{
+				exec($fallback, $ouput, $status);
+			}
+		}
+
+				//make sure we have a file to output
+		if (!file_exists($wikiPagePdf))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
+				JText::_('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
+				'error'
+			);
+			return;
+		}
+
+		//output as attachment
+		header("Content-type: application/pdf");
+		header("Content-Disposition: attachment; filename=" . str_replace(' ', '_', $wikiconfig['pagename']) . ".pdf");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+		echo file_get_contents($wikiPagePdf);
+
 		exit();
 	}
 }
