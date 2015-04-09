@@ -95,7 +95,25 @@ class Test extends Base implements CommandInterface
 		// Build the command
 		$cmd = 'phpunit --no-globals-backup --bootstrap ' . PATH_CORE . DS . 'cli' . DS . 'shim.php ' . escapeshellarg($path) . ' 2>&1';
 
-		system($cmd);
+		// We want to stream the output, so set up what we need to do that
+		$descriptorspec = [
+			0 => array("pipe", "r"),
+			1 => array("pipe", "w"),
+			2 => array("pipe", "w")
+		];
+
+		$process = proc_open($cmd, $descriptorspec, $pipes);
+
+		if (is_resource($process))
+		{
+			while ($c = fgetc($pipes[1])) print $c;
+			print fgets($pipes[1]);
+		}
+
+		// Close process
+		proc_close($process);
+
+		$this->output->addSpacer();
 	}
 
 	/**
