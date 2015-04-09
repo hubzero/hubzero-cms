@@ -611,7 +611,10 @@ class Query
 	 **/
 	public function toString()
 	{
-		return $this->buildQuery($this->type);
+		return $this->connection
+		            ->prepare($this->buildQuery($this->type))
+		            ->bind($this->syntax->getBindings())
+		            ->toString();
 	}
 
 	/**
