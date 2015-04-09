@@ -228,9 +228,9 @@ $maintext = $this->model->description('parsed');
 				$citeinstruct  = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
 				$citeinstruct .= \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
 				?>
-				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
+				<h4><?php echo (isset($citations) && ($citations != NULL || $citations != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
 				<div class="resource-content">
-					<?php echo $citeinstruct; ?>
+					<?php echo (isset($citations) && ($citations != NULL || $citations != '') ? $citeinstruct : ''); ?>
 				</div>
 			<?php } ?>
 		<?php } ?>
