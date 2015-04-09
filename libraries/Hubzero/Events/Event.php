@@ -32,20 +32,44 @@ namespace Hubzero\Events;
 
 use Hubzero\Base\Traits\ErrorBag;
 use InvalidArgumentException;
+use Serializable;
+use ArrayAccess;
+use Countable;
 
 /**
  * Default Event class.
  */
-class Event extends AbstractEvent
+class Event implements ArrayAccess, Serializable, Countable
 {
 	use ErrorBag;
 
 	/**
-	 * An array of listeners that were triggered
+	 * The event name.
 	 *
-	 * @var    array
+	 * @var  string
 	 */
-	protected $triggered = array();
+	protected $name;
+
+	/**
+	 * The event group name.
+	 *
+	 * @var  string
+	 */
+	protected $group;
+
+	/**
+	 * The event arguments.
+	 *
+	 * @var  array
+	 */
+	protected $arguments;
+
+	/**
+	 * A flag to see if the event propagation is stopped.
+	 *
+	 * @var  boolean
+	 */
+	protected $stopped = false;
 
 	/**
 	 * An array of error messages or Exception objects.
@@ -55,59 +79,40 @@ class Event extends AbstractEvent
 	protected $response = array();
 
 	/**
-	 * Add an error message.
+	 * Constructor.
 	 *
-	 * @param   string  $error  Error message.
-	 * @param   string  $key    Specific key to set the value to
-	 * @return  object  This method is chainable.
+	 * @param  string  $name       The event name.
+	 * @param  array   $arguments  The event arguments.
 	 */
-	public function addResponse($data)
+	public function __construct($name, array $arguments = array())
 	{
-		array_push($this->response, $data);
-
-		return $this;
-	}
-
-	/**
-	 * Get the list of responses from triggered listeners.
-	 *
-	 * @return  array
-	 */
-	public function getResponse()
-	{
-		return $this->response;
-	}
-
-	/**
-	 * Add to the list of listeners that were triggered.
-	 *
-	 * @param   mixed   $listener
-	 * @return  object  This method is chainable.
-	 */
-	public function isTriggering($listener)
-	{
-		if (is_object($listener))
+		if (strstr($name, '.'))
 		{
-			if ($listener instanceof WrappedListener)
-			{
-				$listener = $listener->getWrappedListener();
-			}
-			$listener = get_class($listener);
+			$this->group = strstr($name, '.', true);
+			$name = ltrim(strstr($name, '.'), '.');
 		}
-
-		$this->triggered[] = $listener;
-
-		return $this;
+		$this->name      = $name;
+		$this->arguments = $arguments;
 	}
 
 	/**
-	 * Get the list of triggered lsiteners.
+	 * Get the event group name.
 	 *
-	 * @return  boolean
+	 * @return  string  The event group name.
 	 */
-	public function getTriggered()
+	public function getGroup()
 	{
-		return $this->triggered;
+		return $this->group;
+	}
+
+	/**
+	 * Get the event name.
+	 *
+	 * @return  string  The event name.
+	 */
+	public function getName()
+	{
+		return $this->name;
 	}
 
 	/**
@@ -171,6 +176,100 @@ class Event extends AbstractEvent
 	}
 
 	/**
+	 * Get an event argument value.
+	 *
+	 * @param   string  $name     The argument name.
+	 * @param   mixed   $default  The default value if not found.
+	 * @return  mixed  The argument value or the default value.
+	 */
+	public function getArgument($name, $default = null)
+	{
+		if (isset($this->arguments[$name]))
+		{
+			return $this->arguments[$name];
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Tell if the given event argument exists.
+	 *
+	 * @param   string  $name  The argument name.
+	 * @return  boolean  True if it exists, false otherwise.
+	 */
+	public function hasArgument($name)
+	{
+		return isset($this->arguments[$name]);
+	}
+
+	/**
+	 * Get all event arguments.
+	 *
+	 * @return  array  An associative array of argument names as keys
+	 *                 and their values as values.
+	 */
+	public function getArguments()
+	{
+		return $this->arguments;
+	}
+
+	/**
+	 * Count the number of arguments.
+	 *
+	 * @return  integer  The number of arguments.
+	 */
+	public function count()
+	{
+		return count($this->arguments);
+	}
+
+	/**
+	 * Serialize the event.
+	 *
+	 * @return  string  The serialized event.
+	 */
+	public function serialize()
+	{
+		return serialize(array($this->name, $this->arguments, $this->stopped));
+	}
+
+	/**
+	 * Unserialize the event.
+	 *
+	 * @param   string  $serialized  The serialized event.
+	 * @return  void
+	 */
+	public function unserialize($serialized)
+	{
+		list($this->name, $this->arguments, $this->stopped) = unserialize($serialized);
+	}
+
+	/**
+	 * Add an error message.
+	 *
+	 * @param   string  $error  Error message.
+	 * @param   string  $key    Specific key to set the value to
+	 * @return  object  This method is chainable.
+	 */
+	public function addResponse($data)
+	{
+		array_push($this->response, $data);
+
+		return $this;
+	}
+
+	/**
+	 * Get the list of responses from triggered listeners.
+	 *
+	 * @return  array
+	 */
+	public function getResponse()
+	{
+		return $this->response;
+	}
+
+	/**
 	 * Stop the event propagation.
 	 *
 	 * @return  void
@@ -178,6 +277,16 @@ class Event extends AbstractEvent
 	public function stop()
 	{
 		$this->stopped = true;
+	}
+
+	/**
+	 * Tell if the event propagation is stopped.
+	 *
+	 * @return  boolean  True if stopped, false otherwise.
+	 */
+	public function isStopped()
+	{
+		return true === $this->stopped;
 	}
 
 	/**
@@ -207,5 +316,27 @@ class Event extends AbstractEvent
 	public function offsetUnset($name)
 	{
 		$this->removeArgument($name);
+	}
+
+		/**
+	 * Tell if the given event argument exists.
+	 *
+	 * @param   string  $name  The argument name.
+	 * @return  boolean  True if it exists, false otherwise.
+	 */
+	public function offsetExists($name)
+	{
+		return $this->hasArgument($name);
+	}
+
+	/**
+	 * Get an event argument value.
+	 *
+	 * @param   string  $name  The argument name.
+	 * @return  mixed  The argument value or null if not existing.
+	 */
+	public function offsetGet($name)
+	{
+		return $this->getArgument($name);
 	}
 }

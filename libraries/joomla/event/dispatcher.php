@@ -65,6 +65,12 @@ class JDispatcher extends JObject
 	 */
 	public static function getInstance()
 	{
+		// [!] Hubzero
+		if (class_exists('\\Event'))
+		{
+			return \Event::getRoot();
+		}
+
 		if (self::$instance === null)
 		{
 			self::$instance = new JDispatcher;
@@ -128,6 +134,12 @@ class JDispatcher extends JObject
 	 */
 	public function trigger($event, $args = array())
 	{
+		// [!] Hubzero
+		if (class_exists('\\Event'))
+		{
+			return \Event::trigger($event, $args);
+		}
+
 		// Initialise variables.
 		$result = array();
 
@@ -185,6 +197,12 @@ class JDispatcher extends JObject
 	 */
 	public function attach($observer)
 	{
+		// [!] Hubzero
+		if (class_exists('\\Event'))
+		{
+			return;
+		}
+
 		if (is_array($observer))
 		{
 			if (!isset($observer['handler']) || !isset($observer['event']) || !is_callable($observer['handler']))
@@ -253,6 +271,12 @@ class JDispatcher extends JObject
 	 */
 	public function detach($observer)
 	{
+		// [!] Hubzero
+		if (class_exists('\\Event'))
+		{
+			return;
+		}
+
 		// Initialise variables.
 		$retval = false;
 

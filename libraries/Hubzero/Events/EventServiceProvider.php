@@ -30,8 +30,9 @@
 
 namespace Hubzero\Events;
 
+use Hubzero\Events\Debug\TraceableDispatcher;
+use Hubzero\Config\Repository;
 use Hubzero\Base\ServiceProvider;
-use Hubzero\Plugin\Loader;
 
 /**
  * Event service provider
@@ -45,10 +46,17 @@ class EventServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app['dispatcher'] = function()
+		$this->app['dispatcher'] = function($app)
 		{
-			$dispatcher = new Dispatcher;
-			$dispatcher->addListenerLoader(new Loader);
+			$dispatcher = new Dispatcher();
+
+			if ($app['config'] instanceof Repository)
+			{
+				if ($app['config']->get('debug'))
+				{
+					$dispatcher = new TraceableDispatcher($dispatcher);
+				}
+			}
 
 			return $dispatcher;
 		};

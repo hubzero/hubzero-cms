@@ -30,13 +30,17 @@
 
 namespace Hubzero\Plugin;
 
+use Hubzero\Events\DispatcherInterface;
 use Hubzero\Events\LoaderInterface;
-use DirectoryIterator;
 use Exception;
+use Event;
 use User;
 use Lang;
 
-class Loader
+/**
+ * Plugin loader
+ */
+class Loader implements LoaderInterface
 {
 	/**
 	 * A persistent cache of the loaded plugins.
@@ -46,6 +50,17 @@ class Loader
 	protected static $plugins = null;
 
 	/**
+	 * Get the event name.
+	 *
+	 * @return  string  The event name.
+	 * @since   2.0
+	 */
+	public function getName()
+	{
+		return 'plugins';
+	}
+
+	/**
 	 * Get the plugin data of a specific type if no specific plugin is specified
 	 * otherwise only the specific plugin data is returned.
 	 *
@@ -53,7 +68,31 @@ class Loader
 	 * @param   string  $plugin  The plugin name.
 	 * @return  mixed   An array of plugin data objects, or a plugin data object.
 	 */
-	public function load($type, $plugin = null)
+	public function loadListeners($type)
+	{
+		$results = array();
+		$plugins = (array) $this->byType($type);
+
+		foreach ($plugins as $p)
+		{
+			if ($result = $this->init($p))
+			{
+				$results[] = $result;
+			}
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Get the plugin data of a specific type if no specific plugin is specified
+	 * otherwise only the specific plugin data is returned.
+	 *
+	 * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
+	 * @param   string  $plugin  The plugin name.
+	 * @return  mixed   An array of plugin data objects, or a plugin data object.
+	 */
+	public function byType($type, $plugin = null)
 	{
 		$result = array();
 
@@ -62,7 +101,7 @@ class Loader
 			// Is this the right plugin?
 			if ($p->type == $type)
 			{
-				if ($plugin && $p->name == $plugin)
+				if ($plugin && $p->name != $plugin)
 				{
 					$result = $p;
 					break;
@@ -84,7 +123,7 @@ class Loader
 	 */
 	public function isEnabled($type, $plugin = null)
 	{
-		$result = $this->load($type, $plugin);
+		$result = $this->byType($type, $plugin);
 
 		return (!empty($result));
 	}
@@ -114,15 +153,21 @@ class Loader
 		{
 			$results = null;
 
-			// Load the plugins from the database.
-			$plugins = $this->all();
+			// Makes sure we have an event dispatcher
+			if (!($dispatcher instanceof DispatcherInterface))
+			{
+				$dispatcher = Event::getRoot();
+			}
 
 			// Get the specified plugin(s).
-			for ($i = 0, $t = count($plugins); $i < $t; $i++)
+			foreach ($this->all() as $plug)
 			{
-				if ($plugins[$i]->type == $type && ($plugin === null || $plugins[$i]->name == $plugin))
+				if ($plug->type == $type && ($plugin === null || $plug->name == $plugin))
 				{
-					self::_import($plugins[$i], $autocreate, $dispatcher);
+					if ($p = $this->init($plug, $autocreate)) //, $dispatcher))
+					{
+						$dispatcher->addListener($p);
+					}
 					$results = true;
 				}
 			}
@@ -141,22 +186,18 @@ class Loader
 	/**
 	 * Loads the plugin file.
 	 *
-	 * @param   JPlugin      &$plugin     The plugin.
-	 * @param   boolean      $autocreate  True to autocreate.
-	 * @param   JDispatcher  $dispatcher  Optionally allows the plugin to use a different dispatcher.
-	 *
+	 * @param   object   $plugin  The plugin data.
 	 * @return  boolean  True on success.
-	 *
-	 * @since   11.1
 	 */
-	protected static function _import(&$plugin, $autocreate = true, $dispatcher = null)
+	protected function init(&$plugin, $autocreate = true, $dispatcher = null)
 	{
 		static $paths = array();
 
 		$plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
 		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
 
-		$path = JPATH_PLUGINS . '/' . $plugin->type . '/' . $plugin->name . '/' . $plugin->name . '.php';
+		$path = PATH_CORE . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php';
+		//$path2 = PATH_APP . DS . 'plugins' . DS . $plugin->type . DS . $plugin->name . DS . $plugin->name . '.php';
 
 		if (!isset($paths[$path]))
 		{
@@ -176,19 +217,23 @@ class Loader
 			if ($autocreate)
 			{
 				// Makes sure we have an event dispatcher
-				if (!is_object($dispatcher))
+				if (!($dispatcher instanceof DispatcherInterface))
 				{
-					$dispatcher = Event::getRoot();
+					//$dispatcher = Event::getRoot();
+					$dispatcher = new \JDispatcher();
 				}
 
 				$className = 'plg' . $plugin->type . $plugin->name;
+
 				if (class_exists($className))
 				{
 					// Instantiate and register the plugin.
-					$dispatcher->addListener(new $className((array) $plugin));
+					return new $className($dispatcher, (array) $plugin);
 				}
 			}
 		}
+
+		return null;
 	}
 
 	/**

@@ -28,27 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Events;
+namespace Hubzero\Facades;
 
 /**
- * Interface for loading event groups.
+ * Module loader facade
  */
-interface LoaderInterface
+class Plugin extends Facade
 {
 	/**
-	 * Get the event name.
+	 * Get the registered name.
 	 *
-	 * @return  string  The event name.
-	 * @since   2.0
+	 * @return  string
 	 */
-	public function getName();
-
-	/**
-	 * Load the given listener group.
-	 *
-	 * @param   string  $group
-	 * @return  array
-	 * @since   2.0
-	 */
-	public function loadListeners($group);
+	public static function getAccessor()
+	{
+		return 'plugin';
+	}
 }

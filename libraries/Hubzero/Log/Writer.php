@@ -1,19 +1,50 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
 namespace Hubzero\Log;
 
-use JDispatcher;
+use Hubzero\Events\DispatcherInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Formatter\LineFormatter;
 
+/**
+ * Class for writing logs
+ */
 class Writer
 {
 	/**
 	 * The Monolog logger instance.
 	 *
-	 * @var \Monolog\Logger
+	 * @var object
 	 */
 	protected $monolog;
 
@@ -36,18 +67,18 @@ class Writer
 	/**
 	 * The event dispatcher instance.
 	 *
-	 * @var \Hubzero\Events\Dispacher
+	 * @var object
 	 */
 	protected $dispatcher;
 
 	/**
 	 * Create a new log writer instance.
 	 *
-	 * @param  \Monolog\Logger  $monolog
-	 * @param  \Hubzero\Events\Dispatcher  $dispatcher
+	 * @param  object  $monolog
+	 * @param  object  $dispatcher
 	 * @return void
 	 */
-	public function __construct(MonologLogger $monolog, JDispatcher $dispatcher = null)
+	public function __construct(MonologLogger $monolog, DispatcherInterface $dispatcher = null)
 	{
 		$this->monolog = $monolog;
 
@@ -152,7 +183,7 @@ class Writer
 				return MonologLogger::EMERGENCY;
 
 			default:
-				throw new \InvalidArgumentException(\JText::_('Invalid log level.'));
+				throw new \InvalidArgumentException(\Lang::txt('Invalid log level.'));
 		}
 	}
 
@@ -167,7 +198,7 @@ class Writer
 	{
 		if (!isset($this->dispatcher))
 		{
-			throw new \RuntimeException(\JText::_('Events dispatcher has not been set.'));
+			throw new \RuntimeException(\Lang::txt('Events dispatcher has not been set.'));
 		}
 
 		$this->dispatcher->register('onLog', $handler);
@@ -242,6 +273,6 @@ class Writer
 			return $this->callMonolog($method, $parameters);
 		}
 
-		throw new \BadMethodCallException(\JText::sprintf('Method [%s] does not exist.', $method));
+		throw new \BadMethodCallException(\Lang::txt('Method [%s] does not exist.', $method));
 	}
 }

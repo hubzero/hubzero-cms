@@ -57,6 +57,7 @@ class Application extends Container
 	private static $baseServices = array(
 		'Hubzero\Language\TranslationServiceProvider',
 		'Hubzero\Events\EventServiceProvider',
+		'Hubzero\Plugin\PluginServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
 		'Hubzero\Component\ComponentServiceProvider',
@@ -72,12 +73,14 @@ class Application extends Container
 		'App'       => 'Hubzero\Facades\App',
 		'Config'    => 'Hubzero\Facades\Config',
 		'Request'   => 'Hubzero\Facades\Request',
+		'Event'     => 'Hubzero\Facades\Event',
 		'Route'     => 'Hubzero\Facades\Route',
 		'User'      => 'Hubzero\Facades\User',
 		'Lang'      => 'Hubzero\Facades\Lang',
 		'Log'       => 'Hubzero\Facades\Log',
 		'Date'      => 'Hubzero\Facades\Date',
 		'Component' => 'Hubzero\Facades\Component',
+		'Plugin'    => 'Hubzero\Facades\Plugin',
 	);
 
 	/**

@@ -62,7 +62,7 @@ class LogServiceProvider extends ServiceProvider
 		{
 			$log = new Writer(
 				new Monolog($app['config']->get('application_env')),
-				\JDispatcher::getInstance()
+				$app['dispatcher']
 			);
 
 			$path = $app['config']->get('log_path');
@@ -88,7 +88,7 @@ class LogServiceProvider extends ServiceProvider
 		{
 			$log = new Writer(
 				new Monolog($app['config']->get('application_env')),
-				\JDispatcher::getInstance()
+				$app['dispatcher']
 			);
 
 			$path = $app['config']->get('log_path');

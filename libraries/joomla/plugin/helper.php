@@ -39,6 +39,12 @@ abstract class JPluginHelper
 	 */
 	public static function getPlugin($type, $plugin = null)
 	{
+		// [!] Hubzero
+		if (class_exists('\\Plugin'))
+		{
+			return \Plugin::byType($type, $plugin);
+		}
+
 		$result = array();
 		$plugins = self::_load();
 
@@ -82,6 +88,12 @@ abstract class JPluginHelper
 	 */
 	public static function isEnabled($type, $plugin = null)
 	{
+		// [!] Hubzero
+		if (class_exists('\\Plugin'))
+		{
+			return \Plugin::isEnabled($type, $plugin);
+		}
+
 		$result = self::getPlugin($type, $plugin);
 		return (!empty($result));
 	}
@@ -101,6 +113,12 @@ abstract class JPluginHelper
 	 */
 	public static function importPlugin($type, $plugin = null, $autocreate = true, $dispatcher = null)
 	{
+		// [!] Hubzero
+		if (class_exists('\\Plugin'))
+		{
+			return \Plugin::import($type, $plugin, $autocreate, $dispatcher);
+		}
+
 		static $loaded = array();
 
 		// check for the default args, if so we can optimise cheaply
@@ -250,6 +268,12 @@ abstract class JPluginHelper
 
 	static function loadLanguage($extension, $basePath = JPATH_BASE)
 	{
+		// [!] Hubzero
+		if (class_exists('\\Plugin'))
+		{
+			return \Plugin::language($extension, $basePath);
+		}
+
 		return JFactory::getLanguage()->load( strtolower($extension), $basePath);
 	}
 }

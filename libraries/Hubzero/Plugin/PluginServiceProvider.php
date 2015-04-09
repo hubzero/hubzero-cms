@@ -28,27 +28,33 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Events;
+namespace Hubzero\Plugin;
+
+use Hubzero\Events\DispatcherInterface;
+use Hubzero\Base\ServiceProvider;
 
 /**
- * Interface for events.
- * An event has a name and its propagation can be stopped (if the implementation supports it).
+ * Plugin loader service provider
  */
-interface EventInterface
+class PluginServiceProvider extends ServiceProvider
 {
 	/**
-	 * Get the event name.
+	 * Register the service provider.
 	 *
-	 * @return  string  The event name.
-	 * @since   2.0
+	 * @return  void
 	 */
-	public function getName();
+	public function register()
+	{
+		$this->app['plugin'] = function($app)
+		{
+			$loader = new Loader();
 
-	/**
-	 * Tell if the event propagation is stopped.
-	 *
-	 * @return  boolean  True if stopped, false otherwise.
-	 * @since   2.0
-	 */
-	public function isStopped();
+			if ($app['dispatcher'] instanceof DispatcherInterface)
+			{
+				$app['dispatcher']->addListenerLoader($loader);
+			}
+
+			return $loader;
+		};
+	}
 }
