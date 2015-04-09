@@ -1054,9 +1054,9 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function checkout($userId=null)
 	{
-		$userId = $userId ?: \User::get('id');
+		$userId = $userId ?: User::get('id');
 		$this->set('checked_out', $userId)
-		     ->set('checked_out_time', \Date::toSql())
+		     ->set('checked_out_time', Date::toSql())
 		     ->save();
 	}
 
@@ -1085,7 +1085,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function isCheckedOut()
 	{
-		return ($this->checked_out && $this->checked_out != \User::get('id'));
+		return ($this->checked_out && $this->checked_out != User::get('id'));
 	}
 
 	/**
@@ -1235,7 +1235,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function whereIsMine($column='created_by')
 	{
-		$this->whereEquals($column, \User::get('id'));
+		$this->whereEquals($column, User::get('id'));
 		return $this;
 	}
 
@@ -1298,8 +1298,8 @@ class Relational implements \IteratorAggregate
 	public function ordered($orderBy='orderby', $orderDir='orderdir')
 	{
 		// Look for our request vars of interest
-		$this->orderBy  = \Request::getCmd($orderBy,  $this->getState('orderby',  $this->orderBy));
-		$this->orderDir = \Request::getCmd($orderDir, $this->getState('orderdir', $this->orderDir));
+		$this->orderBy  = Request::getCmd($orderBy,  $this->getState('orderby',  $this->orderBy));
+		$this->orderDir = Request::getCmd($orderDir, $this->getState('orderdir', $this->orderDir));
 
 		$qualifiedOrderBy = $this->orderBy;
 
@@ -1367,7 +1367,7 @@ class Relational implements \IteratorAggregate
 			throw new RuntimeException('Cannot determine creator of non-existant row(s)');
 		}
 
-		return $this->$field == \JFactory::getUser()->get('id');
+		return $this->$field == User::get('id');
 	}
 
 	/**
@@ -1647,7 +1647,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function automaticCreated()
 	{
-		return \Date::toSql();
+		return Date::toSql();
 	}
 
 	/**
@@ -1658,7 +1658,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function automaticCreatedBy()
 	{
-		return \User::get('id');
+		return User::get('id');
 	}
 
 	/**
