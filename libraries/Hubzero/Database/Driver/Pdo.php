@@ -176,6 +176,8 @@ class Pdo extends Driver
 			$this->statement->bindValue($idx, $binding);
 			$idx++;
 		}
+
+		return $this;
 	}
 
 	/**
