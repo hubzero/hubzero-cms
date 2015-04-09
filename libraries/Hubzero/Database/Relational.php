@@ -100,6 +100,13 @@ class Relational implements \IteratorAggregate
 	private $query = null;
 
 	/**
+	 * The database connection used by the query object
+	 *
+	 * @var Hubzero\Database\Driver|object
+	 **/
+	private $connection = null;
+
+	/**
 	 * The relationships on this model
 	 *
 	 * @var array
@@ -217,10 +224,11 @@ class Relational implements \IteratorAggregate
 	/**
 	 * Constructs an object instance
 	 *
+	 * @param  object $connection the database connection to use
 	 * @return void
 	 * @since  1.3.2
 	 **/
-	public function __construct()
+	public function __construct($connection=null)
 	{
 		// Set model name
 		$this->modelName = with(new \ReflectionClass($this))->getShortName();
@@ -230,8 +238,8 @@ class Relational implements \IteratorAggregate
 		$plural      = \Hubzero\Utility\Inflector::pluralize(strtolower($this->getModelName()));
 		$this->table = $this->table ?: '#__' . $namespace . $plural;
 
-		// Set up query object
-		$this->newQuery();
+		// Set up connection and query object
+		$this->setConnection($connection)->newQuery();
 
 		// Store methods for later
 		$this->methods = get_class_methods($this);
@@ -380,6 +388,20 @@ class Relational implements \IteratorAggregate
 	public function setup()
 	{
 		// Overload in subclass to do something here...nothing by default
+	}
+
+	/**
+	 * Sets the database connection to be used by the query builder
+	 *
+	 * @param  object $connection the connection to set
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function setConnection($connection)
+	{
+		$this->connection = $connection;
+
+		return $this;
 	}
 
 	/**
@@ -589,7 +611,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	private function newQuery()
 	{
-		$this->query = with(new Query)->select('*')->from($this->getTableName());
+		$this->query = with(new Query($this->connection))->select('*')->from($this->getTableName());
 		return $this;
 	}
 
