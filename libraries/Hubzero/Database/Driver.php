@@ -239,12 +239,15 @@ abstract class Driver
 	 * your choice.  We assume the person setting the connection
 	 * has done their checks to make sure it is valid.
 	 *
-	 * @return void
-	 * @author 
+	 * @param  object $connection the connection to set
+	 * @return $this
+	 * @since  2.0.0
 	 **/
 	public function setConnection($connection)
 	{
 		$this->connection = $connection;
+
+		return $this;
 	}
 
 	/**
