@@ -260,8 +260,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$view->calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber'),
-			'published' => array(1)
+			'scope_id'  => $this->group->get('gidNumber')
 		));
 
 		$jconfig = JFactory::getConfig();
@@ -318,8 +317,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber'),
-			'published' => array(1)
+			'scope_id'  => $this->group->get('gidNumber')
 		));
 
 		// add each calendar to the sources
@@ -422,7 +420,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if ($event->allDay)
 			{
 				//google events don't put a time.
-				if(!isset($event->end))
+				if (!isset($event->end))
 				{
 					$event->end = '0000-00-00 00:00:00';
 				}
@@ -508,7 +506,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
 			'scope_id'  => $this->group->get('gidNumber'),
-			'published' => array(1),
 			'readonly'  => 0
 		));
 
@@ -1755,8 +1752,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
-			'scope_id'  => $this->group->get('gidNumber'),
-			'published' => array(1)
+			'scope_id'  => $this->group->get('gidNumber')
 		));
 
 		// array to hold refreshed cals
