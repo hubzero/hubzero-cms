@@ -1,0 +1,98 @@
+<?xml version="1.0" ?>
+<dataset>
+	<table name="comments">
+		<column>id</column>
+		<column>user_id</column>
+		<column>post_id</column>
+		<column>content</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+			<value>This is the greatest thing ever!</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>1</value>
+			<value>1</value>
+			<value>Actually, I take that back.</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>2</value>
+			<value>1</value>
+			<value>You can't take it back!</value>
+		</row>
+	</table>
+	<table name="post_tag">
+		<column>id</column>
+		<column>post_id</column>
+		<column>tag_id</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>1</value>
+			<value>2</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>1</value>
+			<value>3</value>
+		</row>
+	</table>
+	<table name="posts">
+		<column>id</column>
+		<column>user_id</column>
+		<column>content</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>This is why I want to be a teacher.</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>1</value>
+			<value>This is why I want to be a computer programmer.</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>2</value>
+			<value>This is why I don't have Facebook.</value>
+		</row>
+	</table>
+	<table name="tags">
+		<column>id</column>
+		<column>name</column>
+		<row>
+			<value>1</value>
+			<value>fun stuff</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>smart stuff</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>important stuff</value>
+		</row>
+	</table>
+	<table name="users">
+		<column>id</column>
+		<column>name</column>
+		<column>email</column>
+		<row>
+			<value>1</value>
+			<value>Test User</value>
+			<value>testuser@gmail.com</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>Admin</value>
+			<value>admin@hub.com</value>
+		</row>
+	</table>
+</dataset>
