@@ -104,7 +104,7 @@ class Relational implements \IteratorAggregate
 	 *
 	 * @var Hubzero\Database\Driver|object
 	 **/
-	private $connection = null;
+	private static $connection = null;
 
 	/**
 	 * The relationships on this model
@@ -224,11 +224,10 @@ class Relational implements \IteratorAggregate
 	/**
 	 * Constructs an object instance
 	 *
-	 * @param  object $connection the database connection to use
 	 * @return void
 	 * @since  1.3.2
 	 **/
-	public function __construct($connection=null)
+	public function __construct()
 	{
 		// Set model name
 		$this->modelName = with(new \ReflectionClass($this))->getShortName();
@@ -239,7 +238,7 @@ class Relational implements \IteratorAggregate
 		$this->table = $this->table ?: '#__' . $namespace . $plural;
 
 		// Set up connection and query object
-		$this->setConnection($connection)->newQuery();
+		$this->newQuery();
 
 		// Store methods for later
 		$this->methods = get_class_methods($this);
@@ -394,14 +393,12 @@ class Relational implements \IteratorAggregate
 	 * Sets the database connection to be used by the query builder
 	 *
 	 * @param  object $connection the connection to set
-	 * @return $this
+	 * @return void
 	 * @since  1.3.2
 	 **/
-	public function setConnection($connection)
+	public static function setDefaultConnection($connection)
 	{
-		$this->connection = $connection;
-
-		return $this;
+		self::$connection = $connection;
 	}
 
 	/**
@@ -611,7 +608,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	private function newQuery()
 	{
-		$this->query = with(new Query($this->connection))->select('*')->from($this->getTableName());
+		$this->query = with(new Query(self::$connection))->select('*')->from($this->getTableName());
 		return $this;
 	}
 
