@@ -79,7 +79,6 @@ jQuery(document).ready(function(jq){
 				iframe.parent().find('div.processing-indicator').show();
 			},
 			onComplete: function(id, file, response) {
-				console.log(response);
 				iframe.parent().find('div.processing-indicator').hide();
 				if (response.success) {
 					iframe.attr('src', iframe.attr('src') + '1');

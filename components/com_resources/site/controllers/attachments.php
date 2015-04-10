@@ -180,7 +180,7 @@ class Attachments extends SiteController
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->access       = 0;
-		$asset->path         = urldecode(Request::getVar('url', 'http://'));
+		$asset->path         = Request::getVar('url', 'http://');
 		$asset->type         = 11;
 
 		$asset->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $asset->path);

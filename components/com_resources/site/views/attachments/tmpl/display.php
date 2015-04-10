@@ -69,7 +69,7 @@ $this->css('create.css')
 			$files = array(13,15,26,33,35,38);
 			$n = count($this->children);
 		?>
-		<p><?php echo Jtext::_('COM_CONTRIBUTE_ATTACH_EDIT_TITLE_EXPLANATION'); ?></p>
+		<p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EDIT_TITLE_EXPLANATION'); ?></p>
 		<table class="list">
 			<tbody>
 			<?php
