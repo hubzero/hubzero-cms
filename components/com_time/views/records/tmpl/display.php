@@ -174,7 +174,7 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 							</td>
 							<td><?php echo $record->uname; ?></td>
 							<td class="col-time"><?php echo $record->time; ?></td>
-							<td><?php echo JHTML::_('date', $record->date, 'm/d/y', null); ?></td>
+							<td><?php echo JHTML::_('date', $record->date, 'm/d/y'); ?></td>
 							<td><?php echo $record->pname; ?></td>
 							<td class="last" title="<?php echo $originalDescription; ?>"><?php echo $record->description; ?></td>
 						</tr>

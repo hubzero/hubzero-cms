@@ -271,15 +271,12 @@ class TimeHtml
 	 */
 	public static function buildTimeListHours($time=1)
 	{
-		$options[] = JHTML::_('select.option', 0, "0", 'value', 'text');
-		$options[] = JHTML::_('select.option', 1, "1", 'value', 'text');
-		$options[] = JHTML::_('select.option', 2, "2", 'value', 'text');
-		$options[] = JHTML::_('select.option', 3, "3", 'value', 'text');
-		$options[] = JHTML::_('select.option', 4, "4", 'value', 'text');
-		$options[] = JHTML::_('select.option', 5, "5", 'value', 'text');
-		$options[] = JHTML::_('select.option', 6, "6", 'value', 'text');
-		$options[] = JHTML::_('select.option', 7, "7", 'value', 'text');
-		$options[] = JHTML::_('select.option', 8, "8", 'value', 'text');
+		$options = array();
+
+		for ($i=0; $i < 24; $i++)
+		{
+			$options[] = JHTML::_('select.option', $i, (string)$i, 'value', 'text');
+		}
 
 		// @FIXME: generalize by removing "record[time]" and replacing with variable for active tab
 		$tlist = JHTML::_('select.genericlist', $options, 'records[htime]', array('class'=>'no-search', 'tabindex' => 1), 'value', 'text', $time, 'htime', false, false);
