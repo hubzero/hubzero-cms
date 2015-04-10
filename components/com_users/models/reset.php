@@ -194,6 +194,13 @@ class UsersModelReset extends JModelForm
 			$this->setError( JText::_('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
 		}
 
+		// If we're resetting password to the current password, just return true
+		// That way you can't reset the counter on your current password, or invalidate it by putting it into history
+		if (\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $password1))
+		{
+			return true;
+		}
+
 		if ($this->getError()) {
 			$this->setError( $this->getError() );
 			return false;
