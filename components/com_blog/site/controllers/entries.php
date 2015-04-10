@@ -653,8 +653,7 @@ class Entries extends SiteController
 				array($entry->get('created_by')), $this->option)
 			);
 
-			JPluginHelper::importPlugin('xmessage');
-			if (!JDispatcher::getInstance()->trigger('onSendMessage', $activity)
+			if (!Event::trigger('xmessage.onSendMessage', $activity)
 			{
 				$this->setError(Lang::txt('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
 			}

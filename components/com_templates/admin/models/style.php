@@ -46,8 +46,6 @@ class TemplatesModelStyle extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication('administrator');
-
 		// Load the User state.
 		$pk = (int) Request::getInt('id');
 		$this->setState('style.id', $pk);
@@ -375,13 +373,9 @@ class TemplatesModelStyle extends JModelAdmin
 		}
 
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
 		$table		= $this->getTable();
 		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState('style.id');
 		$isNew		= true;
-
-		// Include the extension plugins for the save events.
-		JPluginHelper::importPlugin('extension');
 
 		// Load the row if saving an existing record.
 		if ($pk > 0) {
@@ -410,7 +404,7 @@ class TemplatesModelStyle extends JModelAdmin
 		}
 
 		// Trigger the onExtensionBeforeSave event.
-		$result = $dispatcher->trigger('onExtensionBeforeSave', array('com_templates.style', &$table, $isNew));
+		$result = Event::trigger('extension.onExtensionBeforeSave', array('com_templates.style', &$table, $isNew));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
@@ -466,7 +460,7 @@ class TemplatesModelStyle extends JModelAdmin
 		$this->cleanCache();
 
 		// Trigger the onExtensionAfterSave event.
-		$dispatcher->trigger('onExtensionAfterSave', array('com_templates.style', &$table, $isNew));
+		Event::trigger('extension.onExtensionAfterSave', array('com_templates.style', &$table, $isNew));
 
 		$this->setState('style.id', $table->id);
 

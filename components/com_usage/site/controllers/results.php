@@ -33,6 +33,10 @@ namespace Components\Usage\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Usage\Helpers\Helper;
 use Exception;
+use Pathway;
+use Request;
+use Event;
+use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 
@@ -90,12 +94,8 @@ class Results extends SiteController
 
 		$this->view->no_html = \Request::getVar('no_html', 0);
 
-		// Get plugins
-		\JPluginHelper::importPlugin('usage');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Trigger the functions that return the areas we'll be using
-		$this->view->cats = $dispatcher->trigger('onUsageAreas', array());
+		$this->view->cats = Event::trigger('usage.onUsageAreas');
 
 		if (is_array($this->view->cats))
 		{
@@ -124,7 +124,7 @@ class Results extends SiteController
 		}
 
 		// Get the sections
-		$this->view->sections = $dispatcher->trigger('onUsageDisplay', array(
+		$this->view->sections = Event::trigger('usage.onUsageDisplay', array(
 				$this->_option,
 				$this->_task,
 				$udb,

@@ -407,13 +407,9 @@ class Response extends Base
 					$AE = new Economy($this->_db);
 					$AE->distribute_points($this->get('question_id'), $aq->get('created_by'), $this->get('created_by'), 'closure');
 
-					// Load the plugins
-					\JPluginHelper::importPlugin('xmessage');
-					$dispatcher = \JDispatcher::getInstance();
-
 					// Call the plugin
 					if (
-						!$dispatcher->trigger('onTakeAction', array(
+						!Event::trigger('xmessage.onTakeAction', array(
 							'answers_reply_submitted',
 							array($aq->creator('id')),
 							'com_answers',

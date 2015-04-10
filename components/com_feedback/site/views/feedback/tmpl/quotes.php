@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js('quotes.js');
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$base = rtrim(Request::base(true), '/');
 ?>
 
 <header id="content-header">

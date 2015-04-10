@@ -32,6 +32,11 @@ namespace Components\Services\Admin\Controllers;
 
 use Components\Services\Tables\Service;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
+use Date;
 
 /**
  * Controller class for services
@@ -114,7 +119,7 @@ class Services extends AdminController
 		$database = \JFactory::getDBO();
 
 		$objS = new Service($database);
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		$default1 = array(
 			'id' => 0,

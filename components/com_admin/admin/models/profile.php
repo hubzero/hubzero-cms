@@ -75,12 +75,8 @@ class AdminModelProfile extends UsersModelUser
 		}
 
 		// TODO: Maybe this can go into the parent model somehow?
-		// Get the dispatcher and load the users plugins.
-		$dispatcher	= JDispatcher::getInstance();
-		JPluginHelper::importPlugin('user');
-
 		// Trigger the data preparation event.
-		$results = $dispatcher->trigger('onContentPrepareData', array('com_admin.profile', $data));
+		$results = Event::trigger('user.onContentPrepareData', array('com_admin.profile', $data));
 
 		// Check for errors encountered while preparing the data.
 		if (count($results) && in_array(false, $results, true)) {
@@ -98,9 +94,7 @@ class AdminModelProfile extends UsersModelUser
 	 */
 	public function getItem($pk = null)
 	{
-		$user = JFactory::getUser();
-
-		return parent::getItem($user->get('id'));
+		return parent::getItem(User::get('id'));
 	}
 
 	/**
@@ -114,7 +108,7 @@ class AdminModelProfile extends UsersModelUser
 	public function save($data)
 	{
 		// Initialise variables;
-		$user = JFactory::getUser();
+		$user = User::getRoot();
 
 		unset($data['id']);
 		unset($data['groups']);

@@ -117,16 +117,9 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		$content    = Request::getVar("content", 0);
 		$order      = Request::getVar("order", "desc");
 
-		// import joomla plugin helper
-		jimport('joomla.plugin.helper');
-
-		// Load plugins
-		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher = JDispatcher::getInstance();
-
 		// get the search areas
 		$areas = array();
-		$searchareas = $dispatcher->trigger('onWhatsNewAreas');
+		$searchareas = Event::trigger('whatsnew.onWhatsNewAreas');
 		foreach ($searchareas as $area)
 		{
 			$areas = array_merge($areas, $area);

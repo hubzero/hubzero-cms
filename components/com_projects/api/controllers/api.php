@@ -69,7 +69,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 						$this->_manageFiles();
 						break;
 					default:
-						return $this->_errorMessage(404, JText::_('Method unavailable'));
+						return $this->_errorMessage(404, Lang::txt('Method unavailable'));
 						break;
 				}
 			break;
@@ -97,32 +97,32 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'projects';
 		$response->tasks = array(
 			'list' => array(
-				'description' => JText::_('Get a list of projects user is a member of'),
+				'description' => Lang::txt('Get a list of projects user is a member of'),
 				'parameters'  => array(
 					'sortby' => array(
-						'description' => JText::_('Field to sort results by.'),
+						'description' => Lang::txt('Field to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'created',
 						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
 					),
 					'sortdir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 					'verbose' => array(
-						'description' => JText::_('Receive verbose output for project status, team member role and privacy.'),
+						'description' => Lang::txt('Receive verbose output for project status, team member role and privacy.'),
 						'type'        => 'integer',
 						'default'     => '0',
 						'accepts'     => array('0', '1')
@@ -131,57 +131,57 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			),
 			'files' => array(
 				'list' => array(
-					'description' => JText::_('Get a list of project files'),
+					'description' => Lang::txt('Get a list of project files'),
 					'parameters'  => array(
 						'project_id' => array(
-							'description' => JText::_('Project alias or numeric id.'),
+							'description' => Lang::txt('Project alias or numeric id.'),
 							'type'        => 'string',
 							'default'     => '0',
 							'required'    => 'true'
 						),
 					),
 					'subdir' => array(
-						'description' => JText::_('Directory path within project repo, if not included in the asset file path.'),
+						'description' => Lang::txt('Directory path within project repo, if not included in the asset file path.'),
 						'type'        => 'string'
 					),
 				),
 				'get' => array(
-					'description' => JText::_('Get project file metadata.'),
+					'description' => Lang::txt('Get project file metadata.'),
 					'parameters'  => array(
 						'project_id' => array(
-							'description' => JText::_('Project alias or numeric id.'),
+							'description' => Lang::txt('Project alias or numeric id.'),
 							'type'        => 'string',
 							'default'     => '0',
 							'required'    => 'true'
 						),
 						'asset' => array(
-							'description' => JText::_('Array of file paths.'),
+							'description' => Lang::txt('Array of file paths.'),
 							'type'        => 'array',
 							'required'    => 'true'
 						),
 						'subdir' => array(
-							'description' => JText::_('Directory path within project repo, if not included in the asset file path.'),
+							'description' => Lang::txt('Directory path within project repo, if not included in the asset file path.'),
 							'type'        => 'string'
 						),
 					),
 				),
 				'insert' => array(
-					'description' => JText::_('Insert a file into project.'),
+					'description' => Lang::txt('Insert a file into project.'),
 					'parameters'  => array(
 						'project_id' => array(
-							'description' => JText::_('Project alias or numeric id.'),
+							'description' => Lang::txt('Project alias or numeric id.'),
 							'type'        => 'string',
 							'default'     => '0',
 							'required'    => 'true'
 						),
 						'data_path' => array(
-							'description' => JText::_('Path to local or remote file.'),
+							'description' => Lang::txt('Path to local or remote file.'),
 							'type'        => 'string',
 							'required'    => 'true'
 						),
 					),
 					'subdir' => array(
-						'description' => JText::_('Directory path within project repo to insert file into.'),
+						'description' => Lang::txt('Directory path within project repo to insert file into.'),
 						'type'        => 'string'
 					),
 				),
@@ -205,7 +205,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		// make sure we have a user
 		if ($user === false)
 		{
-			return $this->_errorMessage(404, JText::_('User not found'));
+			return $this->_errorMessage(404, Lang::txt('User not found'));
 		}
 
 		include_once(PATH_CORE . DS . 'components' . DS
@@ -269,41 +269,41 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 					switch ($entry->state)
 					{
 						case 0:
-							$obj->state = ($entry->setup_stage < $setupComplete) ? JText::_('setup') : JText::_('suspended');
+							$obj->state = ($entry->setup_stage < $setupComplete) ? Lang::txt('setup') : Lang::txt('suspended');
 							break;
 
 						case 1:
 						default:
-							$obj->state = JText::_('active');
+							$obj->state = Lang::txt('active');
 							break;
 
 						case 2:
-							$obj->state = JText::_('deleted');
+							$obj->state = Lang::txt('deleted');
 							break;
 
 						case 5:
-							$obj->state = JText::_('pending approval');
+							$obj->state = Lang::txt('pending approval');
 							break;
 					}
 
 					// Privacy
-					$obj->privacy = $obj->privacy == 1 ? JText::_('private') : JText::_('public');
+					$obj->privacy = $obj->privacy == 1 ? Lang::txt('private') : Lang::txt('public');
 
 					// Team role
 					switch ($entry->role)
 					{
 						case 0:
 						default:
-							$obj->userRole = JText::_('collaborator');
+							$obj->userRole = Lang::txt('collaborator');
 							break;
 						case 1:
-							$obj->userRole = JText::_('manager');
+							$obj->userRole = Lang::txt('manager');
 							break;
 						case 2:
-							$obj->userRole = JText::_('author');
+							$obj->userRole = Lang::txt('author');
 							break;
 						case 3:
-							$obj->userRole = JText::_('reviewer');
+							$obj->userRole = Lang::txt('reviewer');
 							break;
 					}
 				}
@@ -330,7 +330,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		// make sure we have a user
 		if ($user === false)
 		{
-			return $this->_errorMessage(404, JText::_('User not found'));
+			return $this->_errorMessage(404, Lang::txt('User not found'));
 		}
 
 		// Authorization for project team
@@ -342,7 +342,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			// Set the error message
 			$this->_errorMessage(
 				404,
-				JText::_('Missing required parameter: project_id.'),
+				Lang::txt('Missing required parameter: project_id.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;
@@ -354,7 +354,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			// Set the error message
 			$this->_errorMessage(
 				404,
-				JText::_('Project not found.'),
+				Lang::txt('Project not found.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;
@@ -366,7 +366,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			// Set the error message
 			$this->_errorMessage(
 				401,
-				JText::_('Unauthorized task.'),
+				Lang::txt('Unauthorized task.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;

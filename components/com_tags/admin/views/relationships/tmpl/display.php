@@ -34,7 +34,7 @@ $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_RELATIONSHIPS'), 'tags.png');
 
-$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 JHTML::_('behavior.tooltip');
 

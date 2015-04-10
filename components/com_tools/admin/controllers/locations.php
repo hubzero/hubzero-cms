@@ -226,7 +226,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		}
 
 		$this->setMessage(
-			Jtext::_('COM_TOOLS_ITEM_SAVED'),
+			Lang::_('COM_TOOLS_ITEM_SAVED'),
 			'message'
 		);
 

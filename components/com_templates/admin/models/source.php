@@ -195,13 +195,9 @@ class TemplatesModelSource extends JModelForm
 			return false;
 		}
 
-		$dispatcher = JDispatcher::getInstance();
 		$fileName   = $this->getState('filename');
 		$client     = JApplicationHelper::getClientInfo($template->client_id);
 		$filePath   = JPath::clean($client->path.'/templates/'.$template->element.'/'.$fileName);
-
-		// Include the extension plugins for the save events.
-		JPluginHelper::importPlugin('extension');
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -214,7 +210,7 @@ class TemplatesModelSource extends JModelForm
 		}
 
 		// Trigger the onExtensionBeforeSave event.
-		$result = $dispatcher->trigger('onExtensionBeforeSave', array('com_templates.source', &$data, false));
+		$result = Event::trigger('extension.onExtensionBeforeSave', array('com_templates.source', &$data, false));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
@@ -235,7 +231,7 @@ class TemplatesModelSource extends JModelForm
 		}
 
 		// Trigger the onExtensionAfterSave event.
-		$dispatcher->trigger('onExtensionAfterSave', array('com_templates.source', &$table, false));
+		Event::trigger('extension.onExtensionAfterSave', array('com_templates.source', &$table, false));
 
 		return true;
 	}

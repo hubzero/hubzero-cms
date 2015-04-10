@@ -32,6 +32,12 @@ namespace Components\Services\Admin\Controllers;
 
 use Components\Services\Tables\Subscription;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Event;
+use Route;
+use Lang;
+use Date;
 
 /**
  * Controller class for service subscriptions
@@ -134,7 +140,7 @@ class Subscriptions extends AdminController
 			return;
 		}
 
-		$this->view->customer = \JUser::getInstance($this->view->subscription->uid);
+		$this->view->customer = User::getInstance($this->view->subscription->uid);
 
 		// check available user funds
 		$BTL = new \Hubzero\Bank\Teller($this->database, $this->view->subscription->uid);
@@ -221,7 +227,7 @@ class Subscriptions extends AdminController
 				$oldunits = $subscription->units;
 
 				$months = $newunits * $service->unitsize;
-				$newexpire = ($oldunits > 0  && intval($subscription->expires) <> 0) ? \JFactory::getDate(strtotime($subscription->expires . "+" . $months . "months"))->format("Y-m-d") : \JFactory::getDate(strtotime("+" . $months . "months"))->format("Y-m-d");
+				$newexpire = ($oldunits > 0  && intval($subscription->expires) <> 0) ? Date::of(strtotime($subscription->expires . "+" . $months . "months"))->format("Y-m-d") : Date::of(strtotime("+" . $months . "months"))->format("Y-m-d");
 				$subscription->expires = $newunits ? $newexpire : $subscription->expires;
 				$subscription->status =  1;
 				$subscription->units = $subscription->units + $newunits;
@@ -257,7 +263,7 @@ class Subscriptions extends AdminController
 		if (($action && $action != 'message') || $message)
 		{
 			$subscription->notes .= '------------------------------' . "\r\n";
-			$subscription->notes .= Lang::txt('COM_SERVICES_SUBSCRIPTION_STATUS_UPDATED') . ', '.\JFactory::getDate() . "\r\n";
+			$subscription->notes .= Lang::txt('COM_SERVICES_SUBSCRIPTION_STATUS_UPDATED') . ', '. Date::toSql() . "\r\n";
 			$subscription->notes .= $statusmsg ? $statusmsg . "\r\n" : '';
 			$subscription->notes .= $message   ? $message . "\r\n"   : '';
 			$subscription->notes .= '------------------------------' . "\r\n";
@@ -297,9 +303,7 @@ class Subscriptions extends AdminController
 				$emailbody .= $message;
 			}
 
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option)))
 			{
 				$this->addComponentMessage(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'), 'error');
 			}

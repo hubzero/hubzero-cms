@@ -43,9 +43,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
-		$dispatcher	= JDispatcher::getInstance();
+		$app  = JFactory::getApplication();
 
 		// Get view related request variables.
 		$print = Request::getBool('print');
@@ -54,18 +52,20 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$state = $this->get('State');
 		$item = $this->get('Item');
 
-		if ($item) {
-		// Get Category Model data
-		$categoryModel = JModelLegacy::getInstance('Category', 'NewsfeedsModel', array('ignore_request' => true));
-		$categoryModel->setState('category.id', $item->catid);
-		$categoryModel->setState('list.ordering', 'a.name');
-		$categoryModel->setState('list.direction', 'asc');
-		$items = $categoryModel->getItems();
+		if ($item)
+		{
+			// Get Category Model data
+			$categoryModel = JModelLegacy::getInstance('Category', 'NewsfeedsModel', array('ignore_request' => true));
+			$categoryModel->setState('category.id', $item->catid);
+			$categoryModel->setState('list.ordering', 'a.name');
+			$categoryModel->setState('list.direction', 'asc');
+			$items = $categoryModel->getItems();
 		}
 
 		// Check for errors.
-		// @TODO Maybe this could go into JComponentHelper::raiseErrors($this->get('Errors'))
-		if (count($errors = $this->get('Errors'))) {
+		// @TODO Maybe this could go into Component::raiseErrors($this->get('Errors'))
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseWarning(500, implode("\n", $errors));
 
 			return false;
@@ -79,7 +79,8 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		// check if cache directory is writeable
 		$cacheDir = JPATH_CACHE . '/';
 
-		if (!is_writable($cacheDir)) {
+		if (!is_writable($cacheDir))
+		{
 			JError::raiseNotice('0', Lang::txt('COM_NEWSFEEDS_CACHE_DIRECTORY_UNWRITABLE'));
 			return;
 		}
@@ -136,7 +137,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$offset = $state->get('list.offset');
 
 		// Check the access to the newsfeed
-		$levels = $user->getAuthorisedViewLevels();
+		$levels = User::getAuthorisedViewLevels();
 
 		if (!in_array($item->access, $levels) or ((in_array($item->access, $levels) and (!in_array($item->category_access, $levels))))) {
 			JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -197,7 +198,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		$this->assignRef('newsfeed', $newsfeed);
 		$this->assignRef('state', $state);
 		$this->assignRef('item', $item);
-		$this->assignRef('user', $user);
+		$this->assignRef('user', User::getRoot());
 		$this->print = $print;
 
 		$this->_prepareDocument();

@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$prfx = '?';
 				}
 				$url = str_replace('http:', 'https:', $url);
-				$url .= $prfx . 'enablejsapi=1&origin=' . JURI::getInstance()->base();
+				$url .= $prfx . 'enablejsapi=1&origin=' . Request::base();
 
 				$this->asset->content = str_replace($matches[2], $url, $this->asset->content);
 				$this->asset->content = str_replace('<iframe', '<iframe id="player"', $this->asset->content);

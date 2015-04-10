@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('reports')
-	 ->css('css/impact.css', 'projects', 'publications');
+     ->css('css/impact.css', 'projects', 'publications');
 
 // Common options for js charts
 $options = "
@@ -60,11 +60,11 @@ tooltip: true,
 
 ?>
 
-<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.min.js"></script>
-<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
-<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo JURI::base(true); ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.min.js"></script>
+<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<?php echo Request::base(true); ?>/media/system/js/flot/jquery.flot.resize.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo Request::base(true); ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <header id="content-header" class="reports">
 	<h2><?php echo $this->title; ?></h2>
@@ -103,15 +103,15 @@ tooltip: true,
 				<span class="stats-label"><?php echo Lang::txt('Active projects'); ?></span></td>
 			<?php if ($this->monthly) {
 
-				$y 			= 0;
-				$xdata 		= '';
-				$xticks 	= '';
-				$yTickSize 	= $this->stats['general']['new'];
+				$y         = 0;
+				$xdata     = '';
+				$xticks    = '';
+				$yTickSize = $this->stats['general']['new'];
 
 				foreach ($this->monthly as $month => $data)
 				{
-					$xdata 	.= '[' . $y . ', ' . $data['general']['new'] . ']';
-					$xdata 	.= (($y + 1) == count($this->monthly)) ? '' : ',';
+					$xdata  .= '[' . $y . ', ' . $data['general']['new'] . ']';
+					$xdata  .= (($y + 1) == count($this->monthly)) ? '' : ',';
 					$xticks .= "[" . $y . ", '" . $month . "']";
 					$xticks .= (($y + 1) == count($this->monthly)) ? '' : ',';
 					$y++;
@@ -136,18 +136,18 @@ tooltip: true,
 
 						function showTooltip(x,y,contents, append)
 						{
-						      $('<div>' +  contents + append + '</div>').css( {
-						            position: 'absolute',
-						            display: 'none',
-						            top: y,
-						            left: x,
-						            'border-style': 'solid',
-						            'border-color': '#CCC',
-									'font-size': '0.8em',
-						            color: '#CCC',
-						            padding: '0 2px'
-						      }).appendTo("body").fadeIn(200);
-						 }
+							$('<div>' +  contents + append + '</div>').css( {
+								position: 'absolute',
+								display: 'none',
+								top: y,
+								left: x,
+								'border-style': 'solid',
+								'border-color': '#CCC',
+								'font-size': '0.8em',
+								color: '#CCC',
+								padding: '0 2px'
+							}).appendTo("body").fadeIn(200);
+						}
 
 						function showLabels(graph, points, append)
 						{
@@ -162,29 +162,28 @@ tooltip: true,
 								{
 									if (points[k].data[m][0] != null && points[k].data[m][1] != null)
 									{
-								  		if (k == 0)
+										if (k == 0)
 										{
-									  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+											showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 												graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
 												points[k].data[m][1], append)
-								  		}
+										}
 										else
 										{
-									 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+											showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 												graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
 												points[k].data[m][1], append)
-								  		}
-
+										}
 									}
 								}
 							}
-						 }
+						}
 
-						var data   		= [<?php echo $xdata; ?>];
-						var xticks 		= [<?php echo $xticks; ?>];
-						var ph 	   		= $('#stat-total');
-						var tipContent 	= '%y';
-						var yTickSize 	= <?php echo $yTickSize; ?>;
+						var data       = [<?php echo $xdata; ?>];
+						var xticks     = [<?php echo $xticks; ?>];
+						var ph         = $('#stat-total');
+						var tipContent = '%y';
+						var yTickSize  = <?php echo $yTickSize; ?>;
 
 						if (ph.length > 0)
 						{
@@ -265,11 +264,11 @@ tooltip: true,
 							if (jQuery()) {
 								var $ = jq;
 
-								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];
-								var ph 	   		= $('#stat-activity');
-								var tipContent 	= '%y%';
-								var yTickSize 	= <?php echo $yTickSize; ?>;
+								var data       = [<?php echo $xdata; ?>];
+								var xticks     = [<?php echo $xticks; ?>];
+								var ph         = $('#stat-activity');
+								var tipContent = '%y%';
+								var yTickSize  = <?php echo $yTickSize; ?>;
 
 								if (ph.length > 0)
 								{
@@ -415,15 +414,15 @@ tooltip: true,
 				<span class="stats-label"><?php echo Lang::txt('projects store files'); ?></span></td>
 					<?php if ($this->monthly) {
 
-						$y 			= 0;
-						$xdata 		= '';
-						$xticks 	= '';
-						$yTickSize 	= $this->stats['files']['total'];
+						$y         = 0;
+						$xdata     = '';
+						$xticks    = '';
+						$yTickSize = $this->stats['files']['total'];
 
 						foreach ($this->monthly as $month => $data)
 						{
-							$xdata 	.= '[' . $y . ', ' . $data['files']['total'] . ']';
-							$xdata 	.= (($y + 1) == count($this->monthly)) ? '' : ',';
+							$xdata  .= '[' . $y . ', ' . $data['files']['total'] . ']';
+							$xdata  .= (($y + 1) == count($this->monthly)) ? '' : ',';
 							$xticks .= "[" . $y . ", '" . $month . "']";
 							$xticks .= (($y + 1) == count($this->monthly)) ? '' : ',';
 							$y++;
@@ -435,11 +434,11 @@ tooltip: true,
 							if (jQuery()) {
 								var $ = jq;
 
-								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];
-								var ph 	   		= $('#stat-files');
-								var tipContent 	= '%y';
-								var yTickSize 	= <?php echo $yTickSize; ?>;
+								var data       = [<?php echo $xdata; ?>];
+								var xticks     = [<?php echo $xticks; ?>];
+								var ph         = $('#stat-files');
+								var tipContent = '%y';
+								var yTickSize  = <?php echo $yTickSize; ?>;
 
 								if (ph)
 								{
@@ -490,15 +489,15 @@ tooltip: true,
 				<span class="stats-label"><?php echo Lang::txt('projects have used publications'); ?></span></td>
 					<?php if ($this->monthly) {
 
-						$y 			= 0;
-						$xdata 		= '';
-						$xticks 	= '';
-						$yTickSize 	= round($this->stats['pub']['total']/$this->stats['general']['total'], 0);
+						$y         = 0;
+						$xdata     = '';
+						$xticks    = '';
+						$yTickSize = round($this->stats['pub']['total']/$this->stats['general']['total'], 0);
 
 						foreach ($this->monthly as $month => $data)
 						{
-							$xdata 	.= '[' . $y . ', ' . $data['pub']['new'] . ']';
-							$xdata 	.= (($y + 1) == count($this->monthly)) ? '' : ',';
+							$xdata  .= '[' . $y . ', ' . $data['pub']['new'] . ']';
+							$xdata  .= (($y + 1) == count($this->monthly)) ? '' : ',';
 							$xticks .= "[" . $y . ", '" . $month . "']";
 							$xticks .= (($y + 1) == count($this->monthly)) ? '' : ',';
 							$y++;
@@ -511,11 +510,11 @@ tooltip: true,
 							if (jQuery()) {
 								var $ = jq;
 
-								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];
-								var ph 	   		= $('#stat-pub');
-								var tipContent 	= '%y';
-								var yTickSize 	= <?php echo $yTickSize; ?>;
+								var data       = [<?php echo $xdata; ?>];
+								var xticks     = [<?php echo $xticks; ?>];
+								var ph         = $('#stat-pub');
+								var tipContent = '%y';
+								var yTickSize  = <?php echo $yTickSize; ?>;
 
 								if (ph)
 								{

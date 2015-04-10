@@ -34,6 +34,7 @@ use Component;
 use Request;
 use Config;
 use Route;
+use Event;
 use Lang;
 use User;
 
@@ -136,9 +137,7 @@ class Owner extends \JTable
 					$url = Request::base() . Route::url('index.php?option=com_wishlist&id=' . $listid);
 					$message .= Lang::txt('Please go to %s to view the wish list and rank new wishes.', $url);
 
-					\JPluginHelper::importPlugin('xmessage');
-					$dispatcher = \JDispatcher::getInstance();
-					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist')))
+					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist')))
 					{
 						$this->setError(Lang::txt('Failed to message new wish list owner.'));
 					}

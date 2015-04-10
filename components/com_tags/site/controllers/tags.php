@@ -39,6 +39,7 @@ use Exception;
 use Request;
 use Pathway;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -162,10 +163,6 @@ class Tags extends SiteController
 			throw new Exception(Lang::txt('COM_TAGS_TAG_NOT_FOUND'), 404);
 		}
 
-		// Load plugins
-		\JPluginHelper::importPlugin('tags');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Incoming paging vars
 		$this->view->filters = array(
 			'limit' => Request::getInt('limit', Config::get('list_limit')),
@@ -176,7 +173,7 @@ class Tags extends SiteController
 		// Get the active category
 		$area = Request::getString('area', '');
 
-		$this->view->categories = $dispatcher->trigger('onTagView', array(
+		$this->view->categories = Event::trigger('tags.onTagView', array(
 			$tags,
 			$this->view->filters['limit'],
 			$this->view->filters['start'],
@@ -410,12 +407,8 @@ class Tags extends SiteController
 		$limitstart = Request::getInt('limitstart', 0);
 		$limit = Request::getInt('limit', Config::get('list_limit'));
 
-		// Load plugins
-		\JPluginHelper::importPlugin('tags');
-		$dispatcher = \JDispatcher::getInstance();
-
 		$areas = array();
-		$searchareas = $dispatcher->trigger('onTagAreas');
+		$searchareas = Event::trigger('tags.onTagAreas');
 		foreach ($searchareas as $area)
 		{
 			$areas = array_merge($areas, $area);
@@ -437,7 +430,7 @@ class Tags extends SiteController
 		// Get the search results
 		if (count($activeareas) > 1)
 		{
-			$sqls = $dispatcher->trigger('onTagView',
+			$sqls = Event::trigger('tags.onTagView',
 				array(
 					$tags,
 					$limit,
@@ -477,7 +470,7 @@ class Tags extends SiteController
 		}
 		else
 		{
-			$results = $dispatcher->trigger('onTagView',
+			$results = Event::trigger('tags.onTagView',
 				array(
 					$tags,
 					$limit,
@@ -839,16 +832,12 @@ class Tags extends SiteController
 			return;
 		}
 
-		// Get Tags plugins
-		\JPluginHelper::importPlugin('tags');
-		$dispatcher = \JDispatcher::getInstance();
-
 		foreach ($ids as $id)
 		{
 			$id = intval($id);
 
 			// Remove references to the tag
-			$dispatcher->trigger('onTagDelete', array($id));
+			Event::trigger('tags.onTagDelete', array($id));
 
 			// Remove the tag
 			$tag = new Tag($id);

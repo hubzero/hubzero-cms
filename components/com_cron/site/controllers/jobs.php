@@ -34,6 +34,8 @@ use Components\Cron\Models\Manager;
 use Hubzero\Component\SiteController;
 use Request;
 use User;
+use Date;
+use Event;
 use stdClass;
 
 /**
@@ -100,9 +102,6 @@ class Jobs extends SiteController
 
 		if ($results = $model->jobs('list', $filters))
 		{
-			\JPluginHelper::importPlugin('cron');
-			$dispatcher = \JDispatcher::getInstance();
-
 			foreach ($results as $job)
 			{
 				if ($job->get('active') || !$job->isAvailable())
@@ -113,7 +112,7 @@ class Jobs extends SiteController
 				// Show related content
 				$job->mark('start_run');
 
-				$results = $dispatcher->trigger($job->get('event'), array($job));
+				$results = Event::trigger('cron.' . $job->get('event'), array($job));
 				if ($results && is_array($results))
 				{
 					// Set it as active in case there were multiple plugins called on

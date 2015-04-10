@@ -176,7 +176,7 @@ $group = Request::getVar('group', '');
 				<?php
 				$tmp = ('-' . time());
 				$this->js('jquery.fileuploader.js', 'system');
-				$jbase = rtrim(JURI::getInstance()->base(true), '/');
+				$jbase = rtrim(Request::base(true), '/');
 				?>
 				<div class="field-wrap">
 				<div id="ajax-uploader" data-instructions="<?php echo Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $tmp; ?>">

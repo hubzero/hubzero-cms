@@ -38,11 +38,6 @@ if (!$this->sub)
 $this->js('wiki.js', 'com_wiki')
      ->js('jquery.fileuploader.js', 'system');
 
-$juser = JFactory::getUser();
-
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 $tags = $this->page->tags('string');
 
 if ($this->page->exists())
@@ -118,8 +113,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<p><?php echo Lang::txt('COM_WIKI_IMAGE_MACRO_HINT', Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
 		<p><?php echo Lang::txt('COM_WIKI_FILE_MACRO_HINT', Route::url('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
 
-		<div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-			<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+		<div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+			<iframe name="filer" id="filer" src="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 		</div>
 		<div id="file-uploader-list"></div>
 	</div>
@@ -220,8 +215,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<div class="field-wrap">
 			<div class="grid">
 				<div class="col span-half">
-					<div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-						<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+					<div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+						<iframe name="filer" id="filer" src="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 					</div>
 					<div id="file-uploader-list"></div>
 				</div>
@@ -234,7 +229,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php } ?>
 	</fieldset><div class="clear"></div>
 
-<?php if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) {?>
+<?php if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) {?>
 	<fieldset>
 		<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 
@@ -246,7 +241,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				$cls = ' class="hide"';
 			}
 
-			if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) { ?>
+			if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) { ?>
 				<label for="params_mode">
 					<?php echo Lang::txt('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
 					<select name="params[mode]" id="params_mode">
@@ -264,8 +259,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				<label<?php echo $cls; ?> for="params_authors">
 					<?php echo Lang::txt('COM_WIKI_FIELD_AUTHORS'); ?>:
 					<?php
-					$mc = $dispatcher->trigger(
-						'onGetMultiEntry',
+					$mc = Event::trigger(
+						'hubzero.onGetMultiEntry',
 						array(array(
 							'members',
 							'authors',
@@ -333,7 +328,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<label>
 				<?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)));
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {

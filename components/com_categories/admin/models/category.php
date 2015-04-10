@@ -160,7 +160,7 @@ class CategoriesModelCategory extends JModelAdmin
 
 			if (intval($result->created_time))
 			{
-				$date = new JDate($result->created_time);
+				$date = Date::of($result->created_time);
 				$date->setTimezone($tz);
 				$result->created_time = $date->toSql(true);
 			}
@@ -171,7 +171,7 @@ class CategoriesModelCategory extends JModelAdmin
 
 			if (intval($result->modified_time))
 			{
-				$date = new JDate($result->modified_time);
+				$date = Date::of($result->modified_time);
 				$date->setTimezone($tz);
 				$result->modified_time = $date->toSql(true);
 			}
@@ -364,13 +364,9 @@ class CategoriesModelCategory extends JModelAdmin
 	public function save($data)
 	{
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
 		$table = $this->getTable();
 		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 		$isNew = true;
-
-		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
 
 		// Load the row if saving an existing category.
 		if ($pk > 0)
@@ -415,7 +411,7 @@ class CategoriesModelCategory extends JModelAdmin
 		}
 
 		// Trigger the onContentBeforeSave event.
-		$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, &$table, $isNew));
+		$result = Event::trigger('content.' . $this->event_before_save, array($this->option . '.' . $this->name, &$table, $isNew));
 		if (in_array(false, $result, true))
 		{
 			$this->setError($table->getError());
@@ -430,7 +426,7 @@ class CategoriesModelCategory extends JModelAdmin
 		}
 
 		// Trigger the onContentAfterSave event.
-		$dispatcher->trigger($this->event_after_save, array($this->option . '.' . $this->name, &$table, $isNew));
+		Event::trigger('content.' . $this->event_after_save, array($this->option . '.' . $this->name, &$table, $isNew));
 
 		// Rebuild the path for the category:
 		if (!$table->rebuildPath($table->id))
@@ -466,16 +462,13 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	function publish(&$pks, $value = 1)
 	{
-		if (parent::publish($pks, $value)) {
+		if (parent::publish($pks, $value))
+		{
 			// Initialise variables.
-			$dispatcher = JDispatcher::getInstance();
 			$extension  = Request::getCmd('extension');
 
-			// Include the content plugins for the change of category state event.
-			JPluginHelper::importPlugin('content');
-
 			// Trigger the onCategoryChangeState event.
-			$dispatcher->trigger('onCategoryChangeState', array($extension, $pks, $value));
+			Event::trigger('content.onCategoryChangeState', array($extension, $pks, $value));
 
 			return true;
 		}
@@ -553,7 +546,6 @@ class CategoriesModelCategory extends JModelAdmin
 
 		$table = $this->getTable();
 		$db = $this->getDbo();
-		$user = JFactory::getUser();
 		$extension = JFactory::getApplication()->input->get('extension', '', 'word');
 		$i = 0;
 
@@ -576,7 +568,7 @@ class CategoriesModelCategory extends JModelAdmin
 				}
 			}
 			// Check that user has create permission for parent category
-			$canCreate = ($parentId == $table->getRootId()) ? $user->authorise('core.create', $extension) : $user->authorise('core.create', $extension . '.category.' . $parentId);
+			$canCreate = ($parentId == $table->getRootId()) ? User::authorise('core.create', $extension) : User::authorise('core.create', $extension . '.category.' . $parentId);
 			if (!$canCreate)
 			{
 				// Error since user cannot create in parent category
@@ -594,7 +586,7 @@ class CategoriesModelCategory extends JModelAdmin
 				return false;
 			}
 			// Make sure we can create in root
-			elseif (!$user->authorise('core.create', $extension))
+			elseif (!User::authorise('core.create', $extension))
 			{
 				$this->setError(Lang::txt('COM_CATEGORIES_BATCH_CANNOT_CREATE'));
 				return false;
@@ -740,7 +732,6 @@ class CategoriesModelCategory extends JModelAdmin
 		$table = $this->getTable();
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$user = JFactory::getUser();
 		$extension = JFactory::getApplication()->input->get('extension', '', 'word');
 
 		// Check that the parent exists.
@@ -763,7 +754,7 @@ class CategoriesModelCategory extends JModelAdmin
 				}
 			}
 			// Check that user has create permission for parent category
-			$canCreate = ($parentId == $table->getRootId()) ? $user->authorise('core.create', $extension) : $user->authorise('core.create', $extension . '.category.' . $parentId);
+			$canCreate = ($parentId == $table->getRootId()) ? User::authorise('core.create', $extension) : User::authorise('core.create', $extension . '.category.' . $parentId);
 			if (!$canCreate)
 			{
 				// Error since user cannot create in parent category
@@ -775,7 +766,7 @@ class CategoriesModelCategory extends JModelAdmin
 			// Note that the entire batch operation fails if any category lacks edit permission
 			foreach ($pks as $pk)
 			{
-				if (!$user->authorise('core.edit', $extension . '.category.' . $pk))
+				if (!User::authorise('core.edit', $extension . '.category.' . $pk))
 				{
 					// Error since user cannot edit this category
 					$this->setError(Lang::txt('COM_CATEGORIES_BATCH_CANNOT_EDIT'));

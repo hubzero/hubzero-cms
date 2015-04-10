@@ -576,7 +576,7 @@ $cc = array();
 					<?php
 					$tmp = Request::getVar('tmp_dir', ('-' . time()), 'post');
 					$this->js('jquery.fileuploader.js', 'system');
-					$jbase = rtrim(JURI::getInstance()->base(true), '/');
+					$jbase = rtrim(Request::base(true), '/');
 					?>
 					<div id="ajax-uploader" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $this->row->get('id'); ?>&amp;comment=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $this->row->get('id'); ?>&amp;comment=<?php echo $tmp; ?>">
 						<noscript>

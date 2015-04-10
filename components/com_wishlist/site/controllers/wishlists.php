@@ -45,6 +45,7 @@ use Component;
 use Request;
 use Pathway;
 use Config;
+use Event;
 use Lang;
 use User;
 use Date;
@@ -800,10 +801,7 @@ class Wishlists extends SiteController
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			// Send message
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-
-			if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject, $message, $from, array($objWish->get('assigned')), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('wishlist_wish_assigned', $subject, $message, $from, array($objWish->get('assigned')), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 			}
@@ -1093,10 +1091,7 @@ class Wishlists extends SiteController
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-
-			if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $wishlist->owners('individuals'), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $wishlist->owners('individuals'), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 			}
@@ -1289,10 +1284,7 @@ class Wishlists extends SiteController
 			}
 			else if ($this->_task == 'editwish')
 			{
-				\JPluginHelper::importPlugin('xmessage');
-				$dispatcher = \JDispatcher::getInstance();
-
-				if (!$dispatcher->trigger('onSendMessage', array('wishlist_status_changed', $subject1, $message, $from, array($wish->get('proposed_by')), $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_status_changed', $subject1, $message, $from, array($wish->get('proposed_by')), $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 				}
@@ -1301,7 +1293,7 @@ class Wishlists extends SiteController
 				 && $wish->get('proposed_by') != $wish->get('assigned')
 				 && $status == 'accepted')
 				{
-					if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject2, $as_mes, $from, array($wish->get('assigned')), $this->_option)))
+					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_wish_assigned', $subject2, $as_mes, $from, array($wish->get('assigned')), $this->_option)))
 					{
 						$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 					}
@@ -1352,9 +1344,7 @@ class Wishlists extends SiteController
 		if ($category == 'question' or $category == 'ticket')
 		{
 			// move to a question or a ticket
-			\JPluginHelper::importPlugin('support' , 'transfer');
-			$dispatcher = \JDispatcher::getInstance();
-			$dispatcher->trigger('transferItem', array(
+			Event::trigger('support.transferItem', array(
 					'wish',
 					$wishid,
 					$category,
@@ -1482,16 +1472,12 @@ class Wishlists extends SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-
-				\JPluginHelper::importPlugin('xmessage');
-				$dispatcher = \JDispatcher::getInstance();
-
-				if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $newlist->owners('individuals'), $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $newlist->owners('individuals'), $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 				}
 
-				if (!$dispatcher->trigger('onSendMessage', array('support_item_transferred', $subject2, $message, $from, array($wish->get('proposed_by')), $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('support_item_transferred', $subject2, $message, $from, array($wish->get('proposed_by')), $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 				}
@@ -1928,9 +1914,6 @@ class Wishlists extends SiteController
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-
 			// collect ids of people who were already emailed
 			$contacted = array();
 
@@ -1939,7 +1922,7 @@ class Wishlists extends SiteController
 				$contacted[] = $objWish->get('proposed_by');
 
 				// send message to wish owner
-				if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_posted', $subject1, $message, $from, array($objWish->get('proposed_by')), $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_posted', $subject1, $message, $from, array($objWish->get('proposed_by')), $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 				}
@@ -1952,7 +1935,7 @@ class Wishlists extends SiteController
 				$contacted[] = $objWish->get('assigned');
 
 				// send message to person to who wish is assigned
-				if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_posted', $subject2, $message, $from, array($objWish->get('assigned')), $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_posted', $subject2, $message, $from, array($objWish->get('assigned')), $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 				}
@@ -1968,7 +1951,7 @@ class Wishlists extends SiteController
 				 && !in_array($parent->get('added_by'), $contacted))
 				{
 					$contacted[] = $parent->get('added_by');
-					if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->get('added_by')), $this->_option)))
+					if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->get('added_by')), $this->_option)))
 					{
 						$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 					}
@@ -1981,7 +1964,7 @@ class Wishlists extends SiteController
 
 			if (count($comm) > 0)
 			{
-				if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 				}

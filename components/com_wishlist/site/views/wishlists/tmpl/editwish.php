@@ -122,9 +122,7 @@ if ($this->wishlist->exists())
 					<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_TAGS'); ?>: <br />
 					<?php
 					// Tag editor plug-in
-					JPluginHelper::importPlugin( 'hubzero' );
-					$dispatcher = JDispatcher::getInstance();
-					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
+					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
 					if (count($tf) > 0) {
 						echo $tf[0];
 					} else { ?>

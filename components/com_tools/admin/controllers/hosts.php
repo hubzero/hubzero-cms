@@ -298,7 +298,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		if (!$row->hostname)
 		{
-			$this->setMessage(Jtext::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'), 'error');
+			$this->setMessage(Lang::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -349,7 +349,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		$this->setMessage(
-			Jtext::_('COM_TOOLS_ITEM_SAVED'),
+			Lang::_('COM_TOOLS_ITEM_SAVED'),
 			'message'
 		);
 

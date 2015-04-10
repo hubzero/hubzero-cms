@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 $database = JFactory::getDBO();
 $sql = "SELECT status

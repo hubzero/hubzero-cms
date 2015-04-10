@@ -81,9 +81,8 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="newtag"><?php echo Lang::txt('COM_TAGS_NEW_TAG'); ?>:</label><br />
 				<?php
-				JPluginHelper::importPlugin('hubzero');
-				$tf = JDispatcher::getInstance()->trigger(
-					'onGetMultiEntry',
+				$tf = Event::trigger(
+					'hubzero.onGetMultiEntry',
 					array(
 						array('tags', 'newtag', 'newtag')
 					)

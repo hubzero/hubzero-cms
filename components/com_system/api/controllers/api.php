@@ -131,11 +131,11 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			'last_core_update' => null
 		);
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_update' . DS . 'helpers' . DS . 'cli.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_update' . DS . 'helpers' . DS . 'cli.php';
 
 		// Get the last update
 		$rows = json_decode(
-			cli::log(
+			\Components\Update\Helpers\Cli::log(
 				1,
 				0,
 				'',
@@ -156,7 +156,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		// Get last core update
 		$rows = json_decode(
-			cli::log(
+			\Components\Update\Helpers\Cli::log(
 				1,
 				0,
 				'Merge remote-tracking',
@@ -190,9 +190,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		if ($values == 'all')
 		{
-			JPluginHelper::importPlugin('hubzero');
-			$dispatcher = JDispatcher::getInstance();
-			$response->overview = $dispatcher->trigger('onSystemOverview');
+			$response->overview = Event::trigger('hubzero.onSystemOverview');
 		}
 
 		$this->setMessage($response);
@@ -208,7 +206,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$response   = array();
-		$response[] = \Config::get('lifetime');
+		$response[] = Config::get('lifetime');
 
 		$this->setMessage($response);
 	}

@@ -43,6 +43,7 @@ use Exception;
 use Pathway;
 use Request;
 use Config;
+use Event;
 use Route;
 use Lang;
 use Date;
@@ -258,14 +259,10 @@ class Questions extends SiteController
 			$receivers = array_unique($receivers);
 		}
 
-		// Send the message
-		\JPluginHelper::importPlugin('xmessage');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// send the response, unless the author is also in the admin list.
 		if (!in_array($authorid, $receivers) && $question->get('email'))
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -274,7 +271,7 @@ class Questions extends SiteController
 		// admin emails
 		if (!empty($receivers))
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -975,9 +972,7 @@ class Questions extends SiteController
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -1090,9 +1085,7 @@ class Questions extends SiteController
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 				// Send the message
-				\JPluginHelper::importPlugin('xmessage');
-				$dispatcher = \JDispatcher::getInstance();
-				if (!$dispatcher->trigger('onSendMessage', array('answers_question_deleted', $subject, $message, $from, $users, $this->_option)))
+				if (!Event::trigger('xmessage.onSendMessage', array('answers_question_deleted', $subject, $message, $from, $users, $this->_option)))
 				{
 					$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 				}
@@ -1210,12 +1203,9 @@ class Questions extends SiteController
 		}
 
 		// Send the message
-		\JPluginHelper::importPlugin('xmessage');
-		$dispatcher = \JDispatcher::getInstance();
-
 		if (!in_array($authorid, $receivers) && $question->get('email'))
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_submitted', $subject, $message, $from, array($authorid), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('answers_reply_submitted', $subject, $message, $from, array($authorid), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -1223,7 +1213,7 @@ class Questions extends SiteController
 
 		if (!empty($receivers))
 		{
-			if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
@@ -1264,12 +1254,8 @@ class Questions extends SiteController
 			$this->setError($question->getError());
 		}
 
-		// Load the plugins
-		\JPluginHelper::importPlugin('xmessage');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Call the plugin
-		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array(User::get('id')), $this->_option, $rid)))
+		if (!Event::trigger('xmessage.onTakeAction', array('answers_reply_submitted', array(User::get('id')), $this->_option, $rid)))
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_ACTION_FAILED'));
 		}

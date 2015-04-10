@@ -63,7 +63,7 @@ class ModulesModelModule extends JModelAdmin
 		$this->setState('module.id', $pk);
 
 		// Load the parameters.
-		$params	= Component::params('com_modules');
+		$params = Component::params('com_modules');
 		$this->setState('params', $params);
 	}
 
@@ -170,13 +170,12 @@ class ModulesModelModule extends JModelAdmin
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		// Set the variables
-		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$i = 0;
 
 		foreach ($pks as $pk)
 		{
-			if ($user->authorise('core.create', 'com_modules'))
+			if (User::authorise('core.create', 'com_modules'))
 			{
 				$table->reset();
 				$table->load($pk);
@@ -266,13 +265,12 @@ class ModulesModelModule extends JModelAdmin
 	protected function batchMove($value, $pks, $contexts)
 	{
 		// Set the variables
-		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$i = 0;
 
 		foreach ($pks as $pk)
 		{
-			if ($user->authorise('core.edit', 'com_modules'))
+			if (User::authorise('core.edit', 'com_modules'))
 			{
 				$table->reset();
 				$table->load($pk);
@@ -330,9 +328,8 @@ class ModulesModelModule extends JModelAdmin
 	public function delete(&$pks)
 	{
 		// Initialise variables.
-		$pks	= (array) $pks;
-		$user	= JFactory::getUser();
-		$table	= $this->getTable();
+		$pks   = (array) $pks;
+		$table = $this->getTable();
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
@@ -340,7 +337,7 @@ class ModulesModelModule extends JModelAdmin
 			if ($table->load($pk))
 			{
 				// Access checks.
-				if (!$user->authorise('core.delete', 'com_modules') || $table->published != -2)
+				if (!User::authorise('core.delete', 'com_modules') || $table->published != -2)
 				{
 					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 					//	throw new Exception(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
@@ -391,11 +388,10 @@ class ModulesModelModule extends JModelAdmin
 	public function duplicate(&$pks)
 	{
 		// Initialise variables.
-		$user	= JFactory::getUser();
-		$db		= $this->getDbo();
+		$db = $this->getDbo();
 
 		// Access checks.
-		if (!$user->authorise('core.create', 'com_modules'))
+		if (!User::authorise('core.create', 'com_modules'))
 		{
 			throw new Exception(Lang::txt('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
@@ -519,19 +515,19 @@ class ModulesModelModule extends JModelAdmin
 		// The folder and element vars are passed when saving the form.
 		if (empty($data))
 		{
-			$item		= $this->getItem();
-			$clientId	= $item->client_id;
-			$module		= $item->module;
+			$item     = $this->getItem();
+			$clientId = $item->client_id;
+			$module   = $item->module;
 		}
 		else
 		{
-			$clientId	= JArrayHelper::getValue($data, 'client_id');
-			$module		= JArrayHelper::getValue($data, 'module');
+			$clientId = JArrayHelper::getValue($data, 'client_id');
+			$module   = JArrayHelper::getValue($data, 'module');
 		}
 
 		// These variables are used to add data from the plugin XML files.
-		$this->setState('item.client_id',	$clientId);
-		$this->setState('item.module',		$module);
+		$this->setState('item.client_id', $clientId);
+		$this->setState('item.module', $module);
 
 		// Get the form.
 		$form = $this->loadForm('com_modules.module', 'module', array('control' => 'jform', 'load_data' => $loadData));
@@ -574,7 +570,7 @@ class ModulesModelModule extends JModelAdmin
 		$app = JFactory::getApplication();
 
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_modules.edit.module.data', array());
+		$data = $app->getUserState('com_modules.edit.module.data', array());
 
 		if (empty($data))
 		{
@@ -603,12 +599,12 @@ class ModulesModelModule extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		// Initialise variables.
-		$pk	= (!empty($pk)) ? (int) $pk : (int) $this->getState('module.id');
-		$db	= $this->getDbo();
+		$pk = (!empty($pk)) ? (int) $pk : (int) $this->getState('module.id');
+		$db = $this->getDbo();
 
 		if (!isset($this->_cache[$pk]))
 		{
-			$false	= false;
+			$false = false;
 
 			// Get a row instance.
 			$table = $this->getTable();
@@ -628,7 +624,7 @@ class ModulesModelModule extends JModelAdmin
 			{
 				if ($extensionId = (int) $this->getState('extension.id'))
 				{
-					$query	= $db->getQuery(true);
+					$query = $db->getQuery(true);
 					$query->select('element, client_id');
 					$query->from('#__extensions');
 					$query->where('extension_id = '.$extensionId);
@@ -650,13 +646,12 @@ class ModulesModelModule extends JModelAdmin
 					}
 
 					// Extension found, prime some module values.
-					$table->module		= $extension->element;
-					$table->client_id	= $extension->client_id;
+					$table->module = $extension->element;
+					$table->client_id = $extension->client_id;
 				}
 				else
 				{
-					$app = JFactory::getApplication();
-					$app->redirect(Route::url('index.php?option=com_modules&view=modules', false));
+					App::redirect(Route::url('index.php?option=com_modules&view=modules', false));
 					return false;
 				}
 			}
@@ -708,8 +703,8 @@ class ModulesModelModule extends JModelAdmin
 			$this->_cache[$pk]->assignment = $assignment;
 
 			// Get the module XML.
-			$client	= JApplicationHelper::getClientInfo($table->client_id);
-			$path	= JPath::clean($client->path.'/modules/'.$table->module.'/'.$table->module.'.xml');
+			$client = JApplicationHelper::getClientInfo($table->client_id);
+			$path   = JPath::clean($client->path.'/modules/'.$table->module.'/'.$table->module.'.xml');
 
 			if (file_exists($path))
 			{
@@ -763,22 +758,19 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	protected function prepareTable(&$table)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
-
-		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->position	= trim($table->position);
+		$table->title    = htmlspecialchars_decode($table->title, ENT_QUOTES);
+		$table->position = trim($table->position);
 
 		if (empty($table->id))
 		{
 			// Set the values
-			//$table->created	= $date->toSql();
+			//$table->created = Date::toSql();
 		}
 		else
 		{
 			// Set the values
-			//$table->modified	= $date->toSql();
-			//$table->modified_by	= $user->get('id');
+			//$table->modified    = Date::toSql();
+			//$table->modified_by = User::get('id');
 		}
 	}
 
@@ -800,12 +792,12 @@ class ModulesModelModule extends JModelAdmin
 		jimport('joomla.filesystem.folder');
 
 		// Initialise variables.
-		$lang		= Lang::getRoot();
-		$clientId	= $this->getState('item.client_id');
-		$module		= $this->getState('item.module');
+		$lang     = Lang::getRoot();
+		$clientId = $this->getState('item.client_id');
+		$module   = $this->getState('item.module');
 
-		$client		= JApplicationHelper::getClientInfo($clientId);
-		$formFile	= JPath::clean($client->path.'/modules/'.$module.'/'.$module.'.xml');
+		$client   = JApplicationHelper::getClientInfo($clientId);
+		$formFile = JPath::clean($client->path.'/modules/'.$module.'/'.$module.'.xml');
 
 		// Load the core and/or local language file(s).
 			$lang->load($module, $client->path, null, false, true)
@@ -854,7 +846,7 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	function validate($form, $data, $group = null)
 	{
-		require_once JPATH_ROOT.'/components/com_content/admin/helpers/content.php';
+		require_once PATH_CORE . '/components/com_content/admin/helpers/content.php';
 
 		return parent::validate($form, $data, $group);
 	}
@@ -871,13 +863,9 @@ class ModulesModelModule extends JModelAdmin
 	public function save($data)
 	{
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
-		$table		= $this->getTable();
-		$pk			= (!empty($data['id'])) ? $data['id'] : (int) $this->getState('module.id');
-		$isNew		= true;
-
-		// Include the content modules for the onSave events.
-		JPluginHelper::importPlugin('extension');
+		$table = $this->getTable();
+		$pk    = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('module.id');
+		$isNew = true;
 
 		// Load the row if saving an existing record.
 		if ($pk > 0)
@@ -889,7 +877,7 @@ class ModulesModelModule extends JModelAdmin
 		// Alter the title and published state for Save as Copy
 		if (Request::getVar('task') == 'save2copy')
 		{
-			$orig_data	= Request::getVar('jform', array(), 'post', 'array');
+			$orig_data  = Request::getVar('jform', array(), 'post', 'array');
 			$orig_table = clone($this->getTable());
 			$orig_table->load((int) $orig_data['id']);
 
@@ -918,7 +906,7 @@ class ModulesModelModule extends JModelAdmin
 		}
 
 		// Trigger the onExtensionBeforeSave event.
-		$result = $dispatcher->trigger('onExtensionBeforeSave', array('com_modules.module', &$table, $isNew));
+		$result = Event::trigger('extension.onExtensionBeforeSave', array('com_modules.module', &$table, $isNew));
 		if (in_array(false, $result, true))
 		{
 			$this->setError($table->getError());
@@ -944,8 +932,8 @@ class ModulesModelModule extends JModelAdmin
 		//	' WHERE moduleid = '.(int) $table->id
 		// );
 
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 		$query->delete();
 		$query->from('#__modules_menu');
 		$query->where('moduleid = '.(int)$table->id);
@@ -1004,7 +992,7 @@ class ModulesModelModule extends JModelAdmin
 				}
 
 				$this->_db->setQuery(
-					'INSERT INTO #__modules_menu (moduleid, menuid) VALUES '.
+					'INSERT INTO `#__modules_menu` (moduleid, menuid) VALUES '.
 					implode(',', $tuples)
 				);
 
@@ -1017,10 +1005,10 @@ class ModulesModelModule extends JModelAdmin
 		}
 
 		// Trigger the onExtensionAfterSave event.
-		$dispatcher->trigger('onExtensionAfterSave', array('com_modules.module', &$table, $isNew));
+		Event::trigger('extension.onExtensionAfterSave', array('com_modules.module', &$table, $isNew));
 
 		// Compute the extension id of this module in case the controller wants it.
-		$query	= $db->getQuery(true);
+		$query = $db->getQuery(true);
 		$query->select('extension_id');
 		$query->from('#__extensions AS e');
 		$query->leftJoin('#__modules AS m ON e.element = m.module');
@@ -1035,8 +1023,8 @@ class ModulesModelModule extends JModelAdmin
 			return;
 		}
 
-		$this->setState('module.extension_id',	$extensionId);
-		$this->setState('module.id',			$table->id);
+		$this->setState('module.extension_id', $extensionId);
+		$this->setState('module.id', $table->id);
 
 		// Clear modules cache
 		$this->cleanCache();

@@ -32,6 +32,11 @@ namespace Components\Whatsnew\Site\Controllers;
 
 use Components\Whatsnew\Helpers\Period;
 use Hubzero\Component\SiteController;
+use Pathway;
+use Request;
+use Config;
+use Event;
+use Lang;
 
 /**
  * Controller class for dipslaying what's new
@@ -45,8 +50,6 @@ class Results extends SiteController
 	 */
 	public function execute()
 	{
-		\JPluginHelper::importPlugin('whatsnew');
-
 		$this->registerTask('feedrss', 'feed');
 		$this->registerTask('feed.rss', 'feed');
 
@@ -131,15 +134,12 @@ class Results extends SiteController
 			$activeareas = $areas;
 		}
 
-		// Load plugins
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Process the keyword for exact phrase matches, etc.
 		$p = new Period($this->view->period);
 
 		// Get the search result totals
-		$this->view->totals = $dispatcher->trigger(
-			'onWhatsnew',
+		$this->view->totals = Event::trigger(
+			'whatsnew.onWhatsnew',
 			array(
 				$p,
 				0,
@@ -151,8 +151,8 @@ class Results extends SiteController
 		$this->view->limit = ($this->view->limit == 0) ? 'all' : $this->view->limit;
 
 		// Get the search results
-		$this->view->results = $dispatcher->trigger(
-			'onWhatsnew',
+		$this->view->results = Event::trigger(
+			'whatsnew.onWhatsnew',
 			array(
 				$p,
 				$this->view->limit,
@@ -349,8 +349,8 @@ class Results extends SiteController
 		$p = new Period($period);
 
 		// Fetch results
-		$results = \JDispatcher::getInstance()->trigger(
-			'onWhatsNew',
+		$results = Event::trigger(
+			'whatsnew.onWhatsNew',
 			array(
 				$p,
 				$limit,
@@ -491,7 +491,7 @@ class Results extends SiteController
 			$areas = array();
 
 			// Trigger the functions that return the areas we'll be searching
-			$searchareas = \JDispatcher::getInstance()->trigger('onWhatsNewAreas');
+			$searchareas = Event::trigger('whatsnew.onWhatsNewAreas');
 
 			// Build an array of the areas
 			foreach ($searchareas as $area)

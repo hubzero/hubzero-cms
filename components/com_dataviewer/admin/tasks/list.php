@@ -14,7 +14,7 @@ function dv_list()
 {
 	global $com_name, $conf;
 
-	JToolBarHelper::title( JText::_('Database List' ), 'databases');
+	JToolBarHelper::title( Lang::txt('Database List' ), 'databases');
 	JToolBarHelper::preferences(JRequest::getcmd('option'), '500');
 
 

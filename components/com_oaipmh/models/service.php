@@ -34,6 +34,8 @@ use Components\Oaipmh\Models\Xml\Response;
 use Hubzero\Base\Traits\Escapable;
 use Hubzero\Base\Object;
 use Exception;
+use Event;
+use Lang;
 
 require_once(__DIR__ . '/../models/xml/response.php');
 
@@ -259,8 +261,7 @@ class Service extends Object
 	 */
 	private function loadProviders()
 	{
-		\JPluginHelper::importPlugin('oaipmh');
-		\JDispatcher::getInstance()->trigger('onOaipmhProvider', array(&$this));
+		Event::trigger('oaipmh.onOaipmhProvider', array(&$this));
 
 		return $this;
 	}

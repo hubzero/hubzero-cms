@@ -39,6 +39,7 @@ use Components\Wiki\Tables;
 use Exception;
 use Pathway;
 use Request;
+use Event;
 use User;
 use Lang;
 use Date;
@@ -310,18 +311,15 @@ class Page extends SiteController
 		JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
 
 		// Handle display events
-		\JPluginHelper::importPlugin('wiki');
-		$dispatcher = \JDispatcher::getInstance();
-
 		$this->page->event = new \stdClass();
 
-		$results = $dispatcher->trigger('onAfterDisplayTitle', array($this->page, &$this->view->revision, $this->config));
+		$results = Event::trigger('wiki.onAfterDisplayTitle', array($this->page, &$this->view->revision, $this->config));
 		$this->page->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onBeforeDisplayContent', array(&$this->page, &$this->view->revision, $this->config));
+		$results = Event::trigger('wiki.onBeforeDisplayContent', array(&$this->page, &$this->view->revision, $this->config));
 		$this->page->event->beforeDisplayContent = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onAfterDisplayContent', array(&$this->page, &$this->view->revision, $this->config));
+		$results = Event::trigger('wiki.onAfterDisplayContent', array(&$this->page, &$this->view->revision, $this->config));
 		$this->page->event->afterDisplayContent = trim(implode("\n", $results));
 
 		$this->view->message = $this->_message;
@@ -1029,7 +1027,7 @@ class Page extends SiteController
 		$wikiPageUrl = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'wiki' . DS . $wikiconfig['pagename'] . '?format=printable';
 
 		//path to wiki file
-		$wikiPageFolder = JPATH_ROOT . DS . 'site' . DS . 'wiki' . DS . 'pdf';
+		$wikiPageFolder = PATH_APP . DS . 'site' . DS . 'wiki' . DS . 'pdf';
 		$wikiPagePdf = $wikiPageFolder . DS . $wikiconfig['pagename'] . '.pdf';
 
 		// check for upload path
@@ -1040,8 +1038,8 @@ class Page extends SiteController
 			if (!JFolder::create($wikiPageFolder))
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
-					JText::_('Unable to create the filepath.'),
+					Route::url('index.php?option=' . $this->_option . '&id=' . $id),
+					Lang::txt('Unable to create the filepath.'),
 					'error'
 				);
 				return;
@@ -1065,7 +1063,7 @@ class Page extends SiteController
 
 		if (file_exists('/usr/bin/phantomjs'))
 		{
-			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
+			$rasterizeFile = PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
 			$fallback = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $wikiPageUrl . ' ' . $wikiPagePdf . ' 8.5in*11in';
 			if (!$cmd)
 			{
@@ -1088,8 +1086,8 @@ class Page extends SiteController
 		if (!file_exists($wikiPagePdf))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
-				JText::_('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
+				Route::url('index.php?option=' . $this->_option . '&id=' . $id),
+				Lang::txt('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
 				'error'
 			);
 			return;

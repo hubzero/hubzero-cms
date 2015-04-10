@@ -58,7 +58,7 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 
-$site = rtrim(JURI::getInstance()->base(true), '/');
+$site = rtrim(Request::base(true), '/');
 
 $dir = $item->get('id');
 if (!$dir)

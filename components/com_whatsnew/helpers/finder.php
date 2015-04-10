@@ -48,13 +48,9 @@ class Finder
 		// parse the time period for use by the whats new plugins
 		$p = self::parseTimePeriod($period);
 
-		// load whats new plugins
-		\JPluginHelper::importPlugin('whatsnew');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// get the search areas
 		$areas = array();
-		$search_areas = $dispatcher->trigger('onWhatsNewAreas');
+		$search_areas = \Event::trigger('whatsnew.onWhatsNewAreas');
 		foreach ($search_areas as $search_area)
 		{
 			$areas = array_merge($areas, $search_area);

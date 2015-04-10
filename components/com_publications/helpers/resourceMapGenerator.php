@@ -83,7 +83,7 @@ class ResourceMapGenerator
 	 */
 	public function setPaths()
 	{
-		$this->componentURL = JURI::base() . 'publications/';
+		$this->componentURL = Request::base() . 'publications/';
 		$this->resourceURL  = $this->componentURL . $this->id;
 
 		$database = \JFactory::getDBO();
@@ -343,7 +343,7 @@ class ResourceMapGenerator
 			$writer->writeAttribute('rdf:about', $this->resourceURL . '.rdf');
 			$curtime = date("Y-m-d\TH:i:sP",$_SERVER['REQUEST_TIME']);
 			$writer->startElement('dcterms:creator');
-				$writer->writeAttribute('rdf:resource', JURI::base());
+				$writer->writeAttribute('rdf:resource', Request::base());
 			$writer->endElement();
 			$writer->writeElement('dcterms:created', $curtime);
 			$writer->writeElement('dcterms:modified', $curtime);

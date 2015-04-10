@@ -37,9 +37,11 @@ use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
+use Date;
 
 /**
  * Cron controller class for jobs
@@ -170,9 +172,8 @@ class Jobs extends AdminController
 		}
 
 		$e = array();
-		\JPluginHelper::importPlugin('cron');
-		$dispatcher = \JDispatcher::getInstance();
-		$events = $dispatcher->trigger('onCronEvents');
+
+		$events = Event::trigger('cron.onCronEvents');
 		if ($events)
 		{
 			foreach ($events as $event)
@@ -305,9 +306,6 @@ class Jobs extends AdminController
 			return;
 		}
 
-		\JPluginHelper::importPlugin('cron');
-		$dispatcher = \JDispatcher::getInstance();
-
 		$output = new stdClass;
 		$output->jobs = array();
 
@@ -326,7 +324,7 @@ class Jobs extends AdminController
 			}
 
 			// Show related content
-			$results = $dispatcher->trigger($job->get('event'), array($job));
+			$results = Event::trigger('cron.' . $job->get('event'), array($job));
 			if ($results)
 			{
 				if (is_array($results))

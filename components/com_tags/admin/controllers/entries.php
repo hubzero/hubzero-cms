@@ -36,6 +36,7 @@ use Components\Tags\Models\Tag;
 use Exception;
 use Request;
 use Config;
+use Event;
 use Route;
 use Lang;
 
@@ -233,16 +234,12 @@ class Entries extends AdminController
 			return;
 		}
 
-		// Get Tags plugins
-		\JPluginHelper::importPlugin('tags');
-		$dispatcher = \JDispatcher::getInstance();
-
 		foreach ($ids as $id)
 		{
 			$id = intval($id);
 
 			// Remove references to the tag
-			$dispatcher->trigger('onTagDelete', array($id));
+			Event::trigger('tags.onTagDelete', array($id));
 
 			// Remove the tag
 			$tag = new Tag($id);
