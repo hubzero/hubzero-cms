@@ -801,6 +801,32 @@ class Html extends Object
 	}
 
 	/**
+	 * Covert param to array of values
+	 *
+	 * @param      string $param
+	 *
+	 * @return     array
+	 */
+	public static function getCountArray($array = array())
+	{
+		$counts = array();
+		if (!empty($array))
+		{
+			foreach ($array as $a)
+			{
+				if (!empty($a))
+				{
+					foreach ($a as $key => $value)
+					{
+						$counts[$key] = $value;
+					}
+				}
+			}
+		}
+		return $counts;
+	}
+
+	/**
 	 * Get the random number appended to file name
 	 *
 	 * @param      string $path

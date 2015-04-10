@@ -633,8 +633,8 @@ class Projects extends Base
 			}
 
 			// Get item counts
-			Event::trigger( 'projects.onProjectCount', array( $this->model, &$counts) );
-			$this->model->set('counts', $counts);
+			$counts = Event::trigger( 'projects.onProjectCount', array( $this->model) );
+			$this->model->set('counts', Helpers\Html::getCountArray($counts));
 
 			// Record page visit
 			if ($this->active == 'feed' && !$ajax)

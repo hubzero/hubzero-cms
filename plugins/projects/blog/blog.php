@@ -90,7 +90,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
 			'name'    => 'blog',
@@ -106,10 +106,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 * Event call to return count of items
 	 *
 	 * @param      object  $model 		Project
-	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $model, &$counts )
+	public function &onProjectCount( $model )
 	{
 		// New activity count
 		$counts['new'] = $model->newCount();

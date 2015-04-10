@@ -111,7 +111,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
 			'name'    => 'notes',
@@ -127,13 +127,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 * Event call to return count of items
 	 *
 	 * @param      object  $model 		Project
-	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $model, &$counts )
+	public function &onProjectCount( $model )
 	{
-		$database = JFactory::getDBO();
-
 		$group_prefix = $model->config()->get('group_prefix', 'pr-');
 		$groupname = $group_prefix . $model->get('alias');
 		$scope = 'projects' . DS . $model->get('alias') . DS . 'notes';

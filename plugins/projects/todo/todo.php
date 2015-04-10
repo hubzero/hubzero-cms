@@ -76,7 +76,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	   array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
 			'name'    => 'todo',
@@ -92,10 +92,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 * Event call to return count of items
 	 *
 	 * @param	   object  $model			Project
-	 * @param	   integer &$counts
 	 * @return	   array   integer
 	 */
-	public function &onProjectCount( $model, &$counts, $admin = 0 )
+	public function &onProjectCount( $model, $admin = 0 )
 	{
 		$database = JFactory::getDBO();
 

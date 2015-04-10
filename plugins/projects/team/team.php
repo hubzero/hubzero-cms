@@ -76,7 +76,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
 			'name'    => 'team',
@@ -95,7 +95,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $model, &$counts )
+	public function &onProjectCount( $model )
 	{
 		$database = JFactory::getDBO();
 

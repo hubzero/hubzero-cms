@@ -92,10 +92,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 * Event call to return count of items
 	 *
 	 * @param      object  $model 		Project
-	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function onProjectCount( $model, &$counts )
+	public function onProjectCount( $model )
 	{
 		// Not counting
 		return false;

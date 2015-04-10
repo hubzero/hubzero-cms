@@ -129,7 +129,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $model, &$counts )
+	public function &onProjectCount( $model )
 	{
 		$count =  $this->getCount($model->get('alias'), 'files');
 		$counts['files'] = $count;
