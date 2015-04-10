@@ -78,7 +78,7 @@ class Migration20150326183839ComTools extends Base
 					$preferences->loadByUser($row->uidNumber);
 					$preferences->user_id  = $row->uidNumber;
 					$preferences->class_id = 0;
-					$preferences->jobs     = $row->jobsAllowed;
+					$preferences->jobs     = ($row->jobsAllowed ? $row->jobsAllowed : 10);
 					$preferences->store();
 				}
 			}
