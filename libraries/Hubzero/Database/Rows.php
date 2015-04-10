@@ -169,6 +169,17 @@ class Rows implements Iterator
 	}
 
 	/**
+	 * Grabs the raw rows out of the iterator
+	 *
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function raw()
+	{
+		return $this->rows;
+	}
+
+	/**
 	 * Gets current row in array of rows
 	 *
 	 * @return mixed
@@ -187,7 +198,10 @@ class Rows implements Iterator
 	 **/
 	public function key()
 	{
-		return key($this->rows);
+		if (isset($this->rows))
+		{
+			return key($this->rows);
+		}
 	}
 
 	/**
