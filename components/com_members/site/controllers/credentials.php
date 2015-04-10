@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_COMPONENT . DS . 'models' . DS . 'token.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'token.php';
 
 /**
  * Members controller class for profiles
@@ -480,7 +480,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
-		$error = false;
+		$error    = false;
+		$changing = true;
 
 		if (!$password1 || !$password2)
 		{
@@ -497,6 +498,15 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		elseif (!empty($msg))
 		{
 			$error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_FAILS_REQUIREMENTS');
+		}
+
+		// If we're resetting password to the current password, just return true
+		// That way you can't reset the counter on your current password, or invalidate it by putting it into history
+		if (\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $password1))
+		{
+			$error    = false;
+			$changing = false;
+			$result   = true;
 		}
 
 		if ($error)
@@ -522,8 +532,11 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// Encrypt the password and update the profile
-		$result = \Hubzero\User\Password::changePassword($profile->get('username'), $password1);
+		if ($changing)
+		{
+			// Encrypt the password and update the profile
+			$result = \Hubzero\User\Password::changePassword($profile->get('username'), $password1);
+		}
 
 		// Save the changes
 		if (!$result)
