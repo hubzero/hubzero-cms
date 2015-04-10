@@ -41,11 +41,11 @@ if ($mode != 'preview')
 	switch ($this->model->resource->published)
 	{
 		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . JText::_('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . JText::_('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . JText::_('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
+		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
+		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
+		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
+		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
 	}
 }
 
@@ -59,8 +59,6 @@ if ($mode != 'preview')
 	$curtool 		= $this->curtool;
 	$alltools 		= $this->alltools;
 	$revision 		= $this->revision;
-
-	$juser = JFactory::getUser();
 
 ?>
 <div id="content-header">
@@ -93,7 +91,7 @@ if ($mode != 'preview')
 						?>
 					</p>
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
-						<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
+						<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
 					<?php } ?>
 				</div><!-- / .overviewcontainer -->
 
@@ -105,11 +103,11 @@ if ($mode != 'preview')
 						$ghtml = array();
 						foreach ($this->model->resource->getGroups() as $allowedgroup)
 						{
-							$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 						}
 					?>
 					<p class="warning">
-						<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 					</p>
 					<?php
 					}
@@ -127,35 +125,35 @@ if ($mode != 'preview')
 						if ($revision && $thistool) {
 							$versiontext .= $thistool->version.'</strong>';
 							if ($this->model->resource->revision!='dev') {
-								$versiontext .=  '<br /> '.ucfirst(JText::_('COM_RESOURCES_PUBLISHED_ON')).' ';
-								$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, JText::_('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
-								$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.JText::_('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, JText::_('DATE_FORMAT_HZ1')): '';
+								$versiontext .=  '<br /> '.ucfirst(Lang::txt('COM_RESOURCES_PUBLISHED_ON')).' ';
+								$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, Lang::txt('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
+								$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.Lang::txt('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, Lang::txt('DATE_FORMAT_HZ1')): '';
 							} else {
-								$versiontext .= ' ('.JText::_('COM_RESOURCES_IN_DEVELOPMENT').')';
+								$versiontext .= ' ('.Lang::txt('COM_RESOURCES_IN_DEVELOPMENT').')';
 							}
 						} else if ($curtool) {
-							$versiontext .= $curtool->version.'</strong> - '.JText::_('COM_RESOURCES_PUBLISHED_ON').' ';
-							$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, JText::_('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
+							$versiontext .= $curtool->version.'</strong> - '.Lang::txt('COM_RESOURCES_PUBLISHED_ON').' ';
+							$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, Lang::txt('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
 						}
 
 						if (!$thistool)
 						{
-							$html .= "\t\t\t\t".'<p class="curversion">'.JText::_('COM_RESOURCES_VERSION').' '.$versiontext.'</p>'."\n";
+							$html .= "\t\t\t\t".'<p class="curversion">'.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext.'</p>'."\n";
 						}
 						else if ($revision == 'dev')
 						{
-							$html .= "\t\t\t\t".'<p class="devversion">'.JText::_('COM_RESOURCES_VERSION').' '.$versiontext;
-							$html .= $this->model->resource->toolpublished ? ' <span>'.JText::_('View').' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.JText::_('other versions').'</a></span>' : '';
+							$html .= "\t\t\t\t".'<p class="devversion">'.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext;
+							$html .= $this->model->resource->toolpublished ? ' <span>'.Lang::txt('View').' <a href="'.Route::url('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.Lang::txt('other versions').'</a></span>' : '';
 							$html .='</p>'."\n";
 						}
 						else
 						{
 							// Show archive message
-							$msg = '<strong>'.JText::_('COM_RESOURCES_ARCHIVE').'</strong> '.JText::_('COM_RESOURCES_VERSION').' '.$versiontext;
+							$msg = '<strong>'.Lang::txt('COM_RESOURCES_ARCHIVE').'</strong> '.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext;
 							if (isset($this->model->resource->curversion) && $this->model->resource->curversion) {
-								$msg .= ' <br />'.JText::_('COM_RESOURCES_LATEST_VERSION').': <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a>.';
+								$msg .= ' <br />'.Lang::txt('COM_RESOURCES_LATEST_VERSION').': <a href="'.Route::url('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a>.';
 							}
-							$msg .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.JText::_('COM_RESOURCES_TOOL_ALL_VERSIONS').'</a>';
+							$msg .= ' <a href="'.Route::url('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.Lang::txt('COM_RESOURCES_TOOL_ALL_VERSIONS').'</a>';
 							$html .= '<p class="archive">' . $msg . '</p>' . "\n";
 						}
 
@@ -170,16 +168,16 @@ if ($mode != 'preview')
 								$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->model->resource->id . '.' . $this->model->resource->doi_label;
 							}
 
-							$html .= "\t\t".'<p class="doi">'.$doi.' <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=about').'#citethis">'.JText::_('cite this').'</a></span></p>'."\n";
+							$html .= "\t\t".'<p class="doi">'.$doi.' <span><a href="'.Route::url('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=about').'#citethis">'.Lang::txt('cite this').'</a></span></p>'."\n";
 						}
 
 						// Open/closed source
 						if (isset($this->model->resource->toolsource) && $this->model->resource->toolsource == 1 && isset($this->model->resource->tool)) { // open source
-							$html .= '<p class="opensource_license">'.JText::_('Open source').': <a class="popup" href="index.php?option='.$this->option.'&task=license&tool='.$this->model->resource->tool.'&no_html=1">license</a> ';
-							$html .= ($this->model->resource->taravailable) ? ' |  <a href="index.php/'.$this->model->resource->tarname.'?option='.$this->option.'&task=sourcecode&tool='.$this->model->resource->tool.'">'.JText::_('download').'</a> '."\n" : ' | <span class="unavail">'.JText::_('code unavaialble').'</span>'."\n";
+							$html .= '<p class="opensource_license">'.Lang::txt('Open source').': <a class="popup" href="index.php?option='.$this->option.'&task=license&tool='.$this->model->resource->tool.'&no_html=1">license</a> ';
+							$html .= ($this->model->resource->taravailable) ? ' |  <a href="index.php/'.$this->model->resource->tarname.'?option='.$this->option.'&task=sourcecode&tool='.$this->model->resource->tool.'">'.Lang::txt('download').'</a> '."\n" : ' | <span class="unavail">'.Lang::txt('code unavaialble').'</span>'."\n";
 							$html .= '</p>'."\n";
 						} elseif (isset($this->model->resource->toolsource) && !$this->model->resource->toolsource) { // closed source, archive page
-							$html .= '<p class="closedsource_license">'.JText::_('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE').'</p>'."\n";
+							$html .= '<p class="closedsource_license">'.Lang::txt('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE').'</p>'."\n";
 						}
 						// do we have a first-time user guide?
 						$helper->getChildren($this->model->resource->id, 0, 'all');
@@ -192,7 +190,7 @@ if ($mode != 'preview')
 								$title = ($child->logicaltitle)
 										? $child->logicaltitle
 										: stripslashes($child->title);
-								if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) {
+								if ($child->access == 0 || ($child->access == 1 && !User::isGuest())) {
 									if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) {
 										$guide = $child;
 									}
@@ -201,9 +199,9 @@ if ($mode != 'preview')
 							$url = $guide ? \Components\Resources\Helpers\Html::processPath($this->option, $guide, $this->model->resource->id) : '';
 							$html .= "\t\t".'<p class="supdocs">'."\n";
 							if ($url) {
-								$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.JText::_('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE').'</a></span></span>'."\n";
+								$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.Lang::txt('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE').'</a></span></span>'."\n";
 							}
-							$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS').'</a></span>'."\n";
+							$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.Route::url('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.Lang::txt('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS').'</a></span>'."\n";
 							$html .= "\t\t".'</p>'."\n";
 						}
 
@@ -242,12 +240,12 @@ if ($mode != 'preview')
 				<div class="metaplaceholder">
 					<p>
 						<?php echo ($revision=='dev')
-								? JText::_('This section will be filled when this tool version gets published.')
-								: JText::_('This section is unavailable in an archive version of a tool.');
+								? Lang::txt('This section will be filled when this tool version gets published.')
+								: Lang::txt('This section is unavailable in an archive version of a tool.');
 
 						if (isset($this->model->resource->curversion) && $this->model->resource->curversion)
 						{
-							echo ' '.JText::_('Consult the latest published version').' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a> '.JText::_('for most current information.');
+							echo ' '.Lang::txt('Consult the latest published version').' <a href="'.Route::url('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a> '.Lang::txt('for most current information.');
 						}
 						?>
 					</p>
@@ -267,12 +265,8 @@ if ($mode != 'preview')
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php
-			// Get Releated Resources plugin
-			JPluginHelper::importPlugin('resources', 'related');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Show related content
-			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)

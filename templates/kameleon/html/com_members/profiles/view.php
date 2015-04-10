@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-$no_html = JRequest::getInt('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 $user_messaging = $this->config->get('user_messaging', 0);
 
 $prefix = $this->profile->get("name") . "'s";
@@ -48,7 +47,7 @@ switch ($user_messaging)
 		$mssaging = false;
 		break;
 	case 1:
-		$common = \Hubzero\User\Helper::getCommonGroups( $juser->get("id"), $this->profile->get('uidNumber') );
+		$common = \Hubzero\User\Helper::getCommonGroups(User::get("id"), $this->profile->get('uidNumber') );
 		if (count($common) > 0)
 		{
 			$messaging = true;
@@ -60,7 +59,7 @@ switch ($user_messaging)
 }
 
 //if user is this member turn on editing and password change, turn off messaging
-if ($this->profile->get('uidNumber') == $juser->get("id"))
+if ($this->profile->get('uidNumber') == User::get("id"))
 {
 	if ($this->tab == "profile")
 	{
@@ -72,7 +71,7 @@ if ($this->profile->get('uidNumber') == $juser->get("id"))
 }
 
 //no messaging if guest
-if ($juser->get("guest"))
+if (User::isGuest())
 {
 	$messaging = false;
 }
@@ -84,7 +83,7 @@ if (!$no_html)
 ?>
 <header id="content-header" class="content-header">
 	<div id="page_header">
-		<?php if ($this->profile->get('uidNumber') == $juser->get("id")) : ?>
+		<?php if ($this->profile->get('uidNumber') == User::get("id")) : ?>
 			<?php
 				$cls = '';
 				$span_title = "Public Profile :: Your profile is currently public.";
@@ -98,7 +97,7 @@ if (!$no_html)
 			?>
 
 			<?php if ($this->tab == 'profile') : ?>
-				<a id="profile-privacy" href="<?php echo JRoute::_($this->profile->getLink()); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+				<a id="profile-privacy" href="<?php echo Route::url($this->profile->getLink()); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 					<?php echo $title; ?>
 				</a>
 			<?php else: ?>
@@ -108,7 +107,7 @@ if (!$no_html)
 			<?php endif; ?>
 		<?php endif; ?>
 		<h2>
-			<a href="<?php echo JRoute::_($this->profile->getLink()); ?>">
+			<a href="<?php echo Route::url($this->profile->getLink()); ?>">
 				<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 			</a>
 		</h2>
@@ -122,19 +121,19 @@ if (!$no_html)
 		<div id="page_sidebar">
 			<?php
 				$src = \Hubzero\User\Profile\Helper::getMemberPhoto($this->profile, 0, false);
-				$link = JRoute::_($this->profile->getLink());
+				$link = Route::url($this->profile->getLink());
 			?>
 			<div id="page_identity">
-				<?php $title = ($this->profile->get('uidNumber') == $juser->get("id")) ? "Go to my Dashboard" : "Go to " . $this->profile->get('name') . "'s Profile"; ?>
+				<?php $title = ($this->profile->get('uidNumber') == User::get("id")) ? "Go to my Dashboard" : "Go to " . $this->profile->get('name') . "'s Profile"; ?>
 				<a href="<?php echo $link; ?>" id="page_identity_link" title="<?php echo $title; ?>">
-					<img src="<?php echo $src; ?>" alt="<?php echo JText::sprintf('The profile picture for %s', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
+					<img src="<?php echo $src; ?>" alt="<?php echo Lang::txt('The profile picture for %s', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
 				</a>
 			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>
 			<ul id="member_options">
 				<li>
-					<a class="message tooltips" title="Message :: Send a message to <?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
-						<?php echo JText::_('Message'); ?>
+					<a class="message tooltips" title="Message :: Send a message to <?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
+						<?php echo Lang::txt('Message'); ?>
 					</a>
 				</li>
 			</ul>
@@ -148,7 +147,7 @@ if (!$no_html)
 							continue;
 						}
 						$name = $c[$key];
-						$url = JRoute::_($this->profile->getLink() . '&active=' . $key);
+						$url = Route::url($this->profile->getLink() . '&active=' . $key);
 						$cls = ($this->tab == $key) ? 'active' : '';
 						$tab_name = ($this->tab == $key) ? $name : $tab_name;
 
@@ -187,7 +186,7 @@ if (!$no_html)
 				$thumb = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '_th.gif';
 				$full = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
 			?>
-			<?php if (file_exists(JPATH_ROOT . $thumb)) : ?>
+			<?php if (file_exists(PATH_APP . $thumb)) : ?>
 				<a id="member-stats-graph" rel="lightbox" title="<?php echo $this->profile->get("name") . "'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
 					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name") . "'s Impact Graph"; ?>" />
 				</a>
@@ -199,15 +198,15 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_($this->profile->getLink() . '&task=edit'); ?>">
-							<?php echo JText::_('Edit profile'); ?>
+						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == User::get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->getLink() . '&task=edit'); ?>">
+							<?php echo Lang::txt('Edit profile'); ?>
 						</a>
 					</li>
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo JRoute::_($this->profile->getLink() . '&task=changepassword'); ?>">
-							<?php echo JText::_('Change Password'); ?>
+						<a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo Route::url($this->profile->getLink() . '&task=changepassword'); ?>">
+							<?php echo Lang::txt('Change Password'); ?>
 						</a>
 					</li>
 				<?php endif; ?>

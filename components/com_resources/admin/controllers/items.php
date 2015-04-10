@@ -39,6 +39,10 @@ use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Html;
 use Hubzero\Component\AdminController;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 /**
  * Manage resource entries
@@ -1140,9 +1144,7 @@ class Items extends AdminController
 			$message .= $base . DS . 'resources' . DS . $row->id;
 
 			// Send message
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('resources_submission_approved', $subject, $message, $from, $contributors, $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('resources_submission_approved', $subject, $message, $from, $contributors, $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_FAILED_TO_MESSAGE_USERS'));
 			}

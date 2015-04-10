@@ -35,10 +35,7 @@ $this->js('jquery.editable.min.js', 'system')
      ->js('deployJava.js')
      ->js();
 
-$base = rtrim(JURI::base(true), '/');
-
-JPluginHelper::importPlugin('tools');
-;
+$base = rtrim(Request::base(true), '/');
 ?>
 <p id="troubleshoot" class="help">
 	If your application fails to appear within a minute, <a target="_blank" rel="external" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem</a>.
@@ -73,7 +70,7 @@ JPluginHelper::importPlugin('tools');
 <script type="text/javascript">
 	var JavaNotFound = 'It appears that Java is either not installed or not enabled.'<?php
 		$options = array();
-		if ($plugins = JDispatcher::getInstance()->trigger('onToolSessionIdentify'))
+		if ($plugins = Event::trigger('tools.onToolSessionIdentify'))
 		{
 			$url = 'index.php?option=com_tools&app=' . $this->app->name . '&task=session&sess=' . $this->app->sess . '&viewer=';
 			foreach ($plugins as $plugin)
@@ -83,7 +80,7 @@ JPluginHelper::importPlugin('tools');
 					continue;
 				}
 
-				$options[] = '<a href="' . JRoute::_($url . $plugin->name) . '">' . $plugin->title . '</a>';
+				$options[] = '<a href="' . Route::url($url . $plugin->name) . '">' . $plugin->title . '</a>';
 			}
 			if (count($options))
 			{

@@ -33,8 +33,7 @@ namespace Modules\ResourceMenu;
 
 use Hubzero\Module\Module;
 use stdClass;
-use JPluginHelper;
-use JDispatcher;
+use Event;
 
 /**
  * Module class for displaying a megamenu
@@ -55,12 +54,9 @@ class Helper extends Module
 		$obj = new stdClass;
 		$obj->text = $this->params->get('content');
 
-		JPluginHelper::importPlugin('content', 'xhubtags');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Get the search result totals
-		$results = $dispatcher->trigger(
-			'onPrepareContent',
+		$results = Event::trigger(
+			'content.onPrepareContent',
 			array(
 				'',
 				$obj,

@@ -30,14 +30,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JPluginHelper::importPlugin('courses');
-$plugins = JDispatcher::getInstance()->trigger('onCourse', array(
+$plugins = Event::trigger('courses.onCourse', array(
 	$this->course,
 	$this->offering,
 	true
 ));
 ?>
-<div id="guide-overlay" class="guide-wrap" data-action="<?php echo JRoute::_($this->offering->link() . '&active=' . $this->plugin . '&unit=mark'); ?>">
+<div id="guide-overlay" class="guide-wrap" data-action="<?php echo Route::url($this->offering->link() . '&active=' . $this->plugin . '&unit=mark'); ?>">
 	<div class="guide-content">
 
 		<div class="grid">
@@ -54,7 +53,7 @@ $plugins = JDispatcher::getInstance()->trigger('onCourse', array(
 							}
 							?>
 							<li>
-								<strong class="<?php echo $plugin->get('name'); ?>"><?php echo $plugin->get('title'); ?></strong> <span><?php echo JText::_('PLG_COURSES_' . strtoupper($plugin->get('name')) . '_BLURB'); ?></span>
+								<strong class="<?php echo $plugin->get('name'); ?>"><?php echo $plugin->get('title'); ?></strong> <span><?php echo Lang::txt('PLG_COURSES_' . strtoupper($plugin->get('name')) . '_BLURB'); ?></span>
 							</li>
 							<?php
 						}
@@ -64,17 +63,17 @@ $plugins = JDispatcher::getInstance()->trigger('onCourse', array(
 			</div>
 			<div class="col span-half omega">
 				<div class="guide-about">
-					<h3><?php echo JText::_('Welcome to the course!'); ?></h3>
-					<p><?php echo JText::_('We\'ve tried to organize things to group related content and make it easier to find what you need. Feel free to explore the various menu options.'); ?></p>
-					<p><?php echo JText::sprintf('You can always get back to the %s by clicking the link found under the title of this course.', '<a href="' . JRoute::_($this->course->link()) . '">Course overview</a>'); ?></p>
+					<h3><?php echo Lang::txt('Welcome to the course!'); ?></h3>
+					<p><?php echo Lang::txt('We\'ve tried to organize things to group related content and make it easier to find what you need. Feel free to explore the various menu options.'); ?></p>
+					<p><?php echo Lang::txt('You can always get back to the %s by clicking the link found under the title of this course.', '<a href="' . Route::url($this->course->link()) . '">Course overview</a>'); ?></p>
 					<p class="guide-dismiss">
-						<?php echo JText::_('Click anywhere to dismiss this guide and get started!'); ?>
+						<?php echo Lang::txt('Click anywhere to dismiss this guide and get started!'); ?>
 					</p>
 				</div>
 
 				<div class="guide-onemorething">
-					<p><?php echo JText::_('Oh, and one more thing:'); ?></p>
-					<p class="guide-luck"><?php echo JText::_('Good Luck!'); ?></p>
+					<p><?php echo Lang::txt('Oh, and one more thing:'); ?></p>
+					<p class="guide-luck"><?php echo Lang::txt('Good Luck!'); ?></p>
 				</div>
 			</div>
 		</div>

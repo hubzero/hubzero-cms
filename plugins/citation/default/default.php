@@ -81,10 +81,6 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 		//check to see if this is endnote content
 		if (preg_match('/%A|%0|%T/', $raw_contents))
 		{
-			//load citation import plugins
-			\JPluginHelper::importPlugin('citation');
-			$dispatcher = \JDispatcher::getInstance();
-
 			//make new file to pass to dispatcher
 			$new_file = array(
 				'name'     => $file_info['filename'] . '.enw',
@@ -94,7 +90,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 				'size'     => $file['size']
 			);
 
-			$return = $dispatcher->trigger('onImport' , array($new_file));
+			$return = event::trigger('citation.onImport' , array($new_file));
 			return $return[0];
 		}
 	}

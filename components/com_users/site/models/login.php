@@ -34,7 +34,8 @@ class UsersModelLogin extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_users.login', 'login', array('load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -50,19 +51,22 @@ class UsersModelLogin extends JModelForm
 	protected function loadFormData()
 	{
 		// Check the session for previously entered login form data.
-		$app	= JFactory::getApplication();
-		$data	= $app->getUserState('users.login.form.data', array());
+		$app  = JFactory::getApplication();
+		$data = $app->getUserState('users.login.form.data', array());
 
 		// check for return URL from the request first
-		if ($return = Request::getVar('return', '', 'method', 'base64')) {
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
+		{
 			$data['return'] = base64_decode($return);
-			if (!JURI::isInternal($data['return'])) {
+			if (!JURI::isInternal($data['return']))
+			{
 				$data['return'] = '';
 			}
 		}
 
 		// Set the return URL if empty.
-		if (!isset($data['return']) || empty($data['return'])) {
+		if (!isset($data['return']) || empty($data['return']))
+		{
 			$data['return'] = 'index.php?option=com_members&task=myaccount';
 		}
 		$app->setUserState('users.login.form.data', $data);
@@ -97,14 +101,8 @@ class UsersModelLogin extends JModelForm
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'user')
 	{
-		// Import the approriate plugin group.
-		JPluginHelper::importPlugin($group);
-
-		// Get the dispatcher.
-		$dispatcher = JDispatcher::getInstance();
-
 		// Trigger the form preparation event.
-		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
+		$results = Event::trigger($group . '.onContentPrepareForm', array($form, $data));
 
 		// Check for errors encountered while preparing the form.
 		if (count($results) && in_array(false, $results, true))

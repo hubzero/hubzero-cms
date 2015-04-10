@@ -115,8 +115,7 @@ class UsersModelGroup extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		// Include the content plugins for events.
-		JPluginHelper::importPlugin('user');
+		Plugin::import('user');
 
 		// Check the super admin permissions for group
 		// We get the parent group permissions and then check the group permissions manually
@@ -140,7 +139,7 @@ class UsersModelGroup extends JModelAdmin
 		}
 
 		// Check for non-super admin trying to save with super admin group
-		$iAmSuperAdmin = JFactory::getUser()->authorise('core.admin');
+		$iAmSuperAdmin = User::authorise('core.admin');
 		if ((!$iAmSuperAdmin) && ($groupSuperAdmin))
 		{
 			try
@@ -159,7 +158,7 @@ class UsersModelGroup extends JModelAdmin
 		if ($iAmSuperAdmin)
 		{
 			// Next, are we a member of the current group?
-			$myGroups = JAccess::getGroupsByUser(JFactory::getUser()->get('id'), false);
+			$myGroups = JAccess::getGroupsByUser(User::get('id'), false);
 			if (in_array($data['id'], $myGroups))
 			{
 				// Now, would we have super admin permissions without the current group?
@@ -201,18 +200,13 @@ class UsersModelGroup extends JModelAdmin
 	{
 		// Typecast variable.
 		$pks = (array) $pks;
-		$user	= JFactory::getUser();
-		$groups = JAccess::getGroupsByUser($user->get('id'));
+		$groups = JAccess::getGroupsByUser(User::get('id'));
 
 		// Get a row instance.
 		$table = $this->getTable();
 
-		// Load plugins.
-		JPluginHelper::importPlugin('user');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Check if I am a Super Admin
-		$iAmSuperAdmin = $user->authorise('core.admin');
+		$iAmSuperAdmin = User::authorise('core.admin');
 
 		// do not allow to delete groups to which the current user belongs
 		foreach ($pks as $i => $pk)
@@ -229,14 +223,14 @@ class UsersModelGroup extends JModelAdmin
 			if ($table->load($pk))
 			{
 				// Access checks.
-				$allow = $user->authorise('core.edit.state', 'com_users');
+				$allow = User::authorise('core.edit.state', 'com_users');
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && JAccess::checkGroup($pk, 'core.admin')) ? false : $allow;
 
 				if ($allow)
 				{
 					// Fire the onUserBeforeDeleteGroup event.
-					$dispatcher->trigger('onUserBeforeDeleteGroup', array($table->getProperties()));
+					Event::trigger('user.onUserBeforeDeleteGroup', array($table->getProperties()));
 
 					if (!$table->delete($pk))
 					{
@@ -246,7 +240,7 @@ class UsersModelGroup extends JModelAdmin
 					else
 					{
 						// Trigger the onUserAfterDeleteGroup event.
-						$dispatcher->trigger('onUserAfterDeleteGroup', array($table->getProperties(), true, $this->getError()));
+						Event::trigger('user.onUserAfterDeleteGroup', array($table->getProperties(), true, $this->getError()));
 					}
 				}
 				else

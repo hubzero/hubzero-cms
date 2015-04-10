@@ -36,7 +36,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 ?>
 
 <div class="edit-assetgroup">
-	<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save" method="POST" class="edit-form">
+	<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save" method="POST" class="edit-form">
 
 		<p>
 			<label for="title">Title:</label>
@@ -45,28 +45,24 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 		<p>
 			<label for="state">Published:</label>
 			<select name="state">
-				<option value="0"<?php if ($ag->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('No'); ?></option>
-				<option value="1"<?php if ($ag->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Yes'); ?></option>
+				<option value="0"<?php if ($ag->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JNo'); ?></option>
+				<option value="1"<?php if ($ag->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JYes'); ?></option>
 			</select>
 		</p>
 
 <?php
-
-	JPluginHelper::importPlugin('courses');
-	$dispatcher = JDispatcher::getInstance();
-
-	if ($plugins = $dispatcher->trigger('onAssetgroupEdit'))
+	if ($plugins = Event::trigger('courses.onAssetgroupEdit'))
 	{
 		$data = $ag->get('params');
 
 		foreach ($plugins as $plugin)
 		{
-			$p = JPluginHelper::getPlugin('courses', $plugin['name']);
+			$p = Plugin::byType('courses', $plugin['name']);
 			$default = new JRegistry($p->params);
 
 			$param = new JParameter(
 				(is_object($data) ? $data->toString() : $data),
-				JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+				PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 			);
 			foreach ($default->toArray() as $k => $v)
 			{
@@ -82,7 +78,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 			}
 			?>
 			<fieldset class="eventparams" id="params-<?php echo $plugin['name']; ?>">
-				<legend><?php echo JText::sprintf('%s Parameters', $plugin['title']); ?></legend>
+				<legend><?php echo Lang::txt('%s Parameters', $plugin['title']); ?></legend>
 				<?php echo $out; ?>
 			</fieldset>
 			<?php

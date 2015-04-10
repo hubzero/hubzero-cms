@@ -33,13 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$now = JFactory::getDate();
+$now = Date::getRoot();
 
-$year  = JHTML::_('date', $now, 'Y');
-$month = JHTML::_('date', $now, 'm');
-$day   = JHTML::_('date', $now, 'd');
+$year  = Date::toLocal('Y');
+$month = Date::toLocal('m');
+$day   = Date::toLocal('d');
 
-$weeklater = JFactory::getDate(mktime(0, 0, 0, $month, $day+7, $year));
+$weeklater = Date::of(mktime(0, 0, 0, $month, $day+7, $year));
 
 $database = JFactory::getDBO();
 
@@ -58,15 +58,15 @@ $base = $this->offering->link();
 
 	<h3 class="heading">
 		<a name="dashboard"></a>
-		<?php echo JText::_('PLG_COURSES_DASHBOARD'); ?>
+		<?php echo Lang::txt('PLG_COURSES_DASHBOARD'); ?>
 	</h3>
 
 	<div class="sub-section">
 		<div class="sub-section-overview">
 			<h3>
-				<?php echo JText::_('PLG_COURSES_DASHBOARD_OVERVIEW'); ?>
+				<?php echo Lang::txt('PLG_COURSES_DASHBOARD_OVERVIEW'); ?>
 			</h3>
-			<p><?php echo JText::_('PLG_COURSES_DASHBOARD_OVERVIEW_ABOUT'); ?></p>
+			<p><?php echo Lang::txt('PLG_COURSES_DASHBOARD_OVERVIEW_ABOUT'); ?></p>
 		</div>
 		<div class="sub-section-content">
 			<div class="grid">
@@ -76,21 +76,21 @@ $base = $this->offering->link();
 						<tr>
 							<td>
 								<span>
-									<?php echo JText::sprintf('PLG_COURSES_DASHBOARD_ENROLLED', '<strong>' . $this->offering->members(array('count' => true, 'student'=>1)) . '</strong>'); ?>
+									<?php echo Lang::txt('PLG_COURSES_DASHBOARD_ENROLLED', '<strong>' . $this->offering->members(array('count' => true, 'student'=>1)) . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-passing">
 								<span>
-									<?php echo JText::sprintf('PLG_COURSES_DASHBOARD_PASSING', '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'); ?>
+									<?php echo Lang::txt('PLG_COURSES_DASHBOARD_PASSING', '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-failing">
 								<span>
-									<?php echo JText::sprintf('PLG_COURSES_DASHBOARD_FAILING', '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'); ?>
+									<?php echo Lang::txt('PLG_COURSES_DASHBOARD_FAILING', '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
@@ -99,7 +99,7 @@ $base = $this->offering->link();
 			</div>
 			<div class="col span9 omega">
 				<div class="dashboard-timeline-start">
-					<p><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></p>
+					<p><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 				<?php if ($rows) { ?>
 					<ul class="dashboard-timeline">
@@ -129,11 +129,11 @@ $base = $this->offering->link();
 						}
 						?>
 						<li>
-							<a href="<?php echo JRoute::_($url); ?>">
+							<a href="<?php echo Route::url($url); ?>">
 								<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
 							</a>
 							<span class="details">
-								<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></time>
+								<time datetime="<?php echo $row->publish_up; ?>"><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 							</span>
 						</li>
 						<?php
@@ -146,11 +146,11 @@ $base = $this->offering->link();
 					</ul>
 				<?php } else { ?>
 					<ul class="dashboard-timeline">
-						<li class="noresults"><?php echo JText::_('PLG_COURSES_DASHBOARD_NOTHING_HAPPENING'); ?></li>
+						<li class="noresults"><?php echo Lang::txt('PLG_COURSES_DASHBOARD_NOTHING_HAPPENING'); ?></li>
 					</ul>
 				<?php } ?>
 				<div class="dashboard-timeline-start">
-					<p><?php echo JHTML::_('date', $weeklater, JText::_('DATE_FORMAT_HZ1')); ?></p>
+					<p><?php echo Date::of($weeklater)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 			</div>
 			</div><!-- / .grid -->

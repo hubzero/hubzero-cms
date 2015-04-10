@@ -42,24 +42,23 @@ $this->css('introduction.css', 'system')
 	<div class="grid">
 		<div class="col span8">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<?php
-					JPluginHelper::importPlugin('hubzero');
-					$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags','','')));
+					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags','','')));
 
-					echo (count($tf) > 0) ? implode("\n", $tf) : '<input type="text" name="tag" id="actags" value="" placeholder="' . JText::_('What are you interested in?') . '" />';
+					echo (count($tf) > 0) ? implode("\n", $tf) : '<input type="text" name="tag" id="actags" value="" placeholder="' . Lang::txt('What are you interested in?') . '" />';
 					?>
-					<!-- <input type="text" name="tag" value="" placeholder="<?php echo JText::_('What are you interested in?'); ?>" /> -->
+					<!-- <input type="text" name="tag" value="" placeholder="<?php echo Lang::txt('What are you interested in?'); ?>" /> -->
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 			<p>Tags are <strong>keywords</strong> or <strong>phrases</strong> that help you find content, events, and even members which have something <strong>in common</strong>.</p>
-			<p><a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">More on how tags work &raquo;</a></p>
+			<p><a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">More on how tags work &raquo;</a></p>
 		</div>
 		<div class="col span3 offset1 omega">
-			<a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">
-				<?php echo JText::_('Browse the full list'); ?>
+			<a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+				<?php echo Lang::txt('Browse the full list'); ?>
 			</a>
 		</div>
 	</div>
@@ -69,7 +68,7 @@ $this->css('introduction.css', 'system')
 
 	<div class="grid">
 		<div class="col span6 recent-tags">
-			<h2><?php echo JText::_('COM_TAGS_RECENTLY_USED'); ?></h2>
+			<h2><?php echo Lang::txt('COM_TAGS_RECENTLY_USED'); ?></h2>
 
 			<?php
 			$cloud = $this->cloud->render('html', array(
@@ -85,13 +84,13 @@ $this->css('introduction.css', 'system')
 			}
 			else
 			{
-				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
+				echo '<p class="warning">' . Lang::txt('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			}
 			?>
 		</div><!-- / .col span6 -->
 
 		<div class="col span6 omega top-tags">
-			<h2><?php echo JText::_('COM_TAGS_TOP_100'); ?></h2>
+			<h2><?php echo Lang::txt('COM_TAGS_TOP_100'); ?></h2>
 
 			<?php
 			$cloud = $this->cloud->render('html', array(
@@ -107,7 +106,7 @@ $this->css('introduction.css', 'system')
 			}
 			else
 			{
-				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
+				echo '<p class="warning">' . Lang::txt('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			}
 			?>
 		</div><!-- / .col span6 omega -->

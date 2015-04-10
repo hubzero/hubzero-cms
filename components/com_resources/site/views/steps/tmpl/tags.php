@@ -50,7 +50,7 @@ class RecommendedTags
 			'count'   => 20
 		), $opts);
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'Inflect.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'Inflect.php';
 		$dbh = JFactory::getDBO();
 
 		$dbh->setQuery(
@@ -303,10 +303,7 @@ $this->css('create.css')
 			<label>
 				<?php echo Lang::txt('COM_CONTRIBUTE_TAGS_ASSIGNED'); ?>:
 				<?php
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher = JDispatcher::getInstance();
-
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$recommended->get_existing_tags_value_list())) );
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',$recommended->get_existing_tags_value_list())));
 
 				if (count($tf) > 0) {
 					echo $tf[0];

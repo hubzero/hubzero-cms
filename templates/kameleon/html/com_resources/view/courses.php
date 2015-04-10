@@ -42,23 +42,23 @@ if ($mode != 'preview')
 	switch ($this->model->resource->published)
 	{
 		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . JText::_('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . JText::_('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . JText::_('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
+		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
+		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
+		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
+		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
 	}
 }
 
 $thumb = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id."_th.gif";
 $full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id.".gif";
-if (file_exists(JPATH_ROOT . $thumb))
+if (file_exists(PATH_CORE . $thumb))
 {
 	$html .= '</br>';
 	$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
 	$html .= '<img src="'.$thumb.'" alt="'.$resource->id.' Impact Graph"/></a>';
 }
-$juser = JFactory::getUser();
+
 ?>
 <div id="content-header">
 	<section class="main section upperpane">
@@ -83,7 +83,7 @@ $juser = JFactory::getUser();
 						</div><!-- / #authorslist -->
 					<?php } ?>
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
-						<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
+						<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
 					<?php } ?>
 				</div><!-- / .overviewcontainer -->
 
@@ -95,11 +95,11 @@ $juser = JFactory::getUser();
 							$ghtml = array();
 							foreach ($this->model->resource->getGroups() as $allowedgroup)
 							{
-								$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+								$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 							}
 					?>
 					<p class="warning">
-						<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 					</p>
 					<?php
 					}
@@ -128,9 +128,9 @@ $juser = JFactory::getUser();
 						$live_site = rtrim(JURI::base(),'/');
 						?>
 						<p>
-							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
-							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
-							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
+							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
+							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
+							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
 						</p>
 						<?php
 						echo $this->tab != 'play' ? \Components\Resources\Helpers\Html::license( $this->model->params->get( 'license', '' ) ) : '';
@@ -171,12 +171,8 @@ $juser = JFactory::getUser();
 		</div><!-- / .subject -->
 		<div class="aside extracontent">
 			<?php
-			// Get Releated Resources plugin
-			JPluginHelper::importPlugin('resources', 'related');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Show related content
-			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
@@ -217,12 +213,12 @@ $juser = JFactory::getUser();
 			<colgroup class="lecture_exercises"></colgroup>
 			<thead>
 				<tr>
-					<th><?php echo JText::_('Lecture Number/Topic'); ?></th>
-					<th width="12%"><?php echo JText::_('Online Lecture'); ?></th>
-					<th><?php echo JText::_('Video'); ?></th>
-					<th><?php echo JText::_('Lecture Notes'); ?></th>
-					<th><?php echo JText::_('Supplemental Material'); ?></th>
-					<th><?php echo JText::_('Suggested Exercises'); ?></th>
+					<th><?php echo Lang::txt('Lecture Number/Topic'); ?></th>
+					<th width="12%"><?php echo Lang::txt('Online Lecture'); ?></th>
+					<th><?php echo Lang::txt('Video'); ?></th>
+					<th><?php echo Lang::txt('Lecture Notes'); ?></th>
+					<th><?php echo Lang::txt('Supplemental Material'); ?></th>
+					<th><?php echo Lang::txt('Suggested Exercises'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -244,7 +240,7 @@ $juser = JFactory::getUser();
 					$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 					$html .= "\t\t\t".'<td>';
 					if ($child->standalone == 1) {
-						$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$child->id).'"';
+						$html .= '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$child->id).'"';
 						if ($link_action == 1) {
 							$html .= ' target="_blank"';
 						} elseif ($link_action == 2) {
@@ -279,18 +275,18 @@ $juser = JFactory::getUser();
 							{
 								case "player":
 								case "quicktime":
-									$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.JText::_('View').'</a>' : '';
+									$videoi .= (!$videoi) ? '<a href="'.$grandchild->path.'">'.Lang::txt('View').'</a>' : '';
 									break;
 								case "breeze":
-									$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.$this->escape(stripslashes($grandchild->title)).'">'.JText::_('View Flash').'</a>' : '';
+									$breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="'.$grandchild->path.'&amp;no_html=1" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View Flash').'</a>' : '';
 									break;
 								case "hubpresenter":
-									$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.JText::_('View HTML').'</a>' : '';
+									$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View HTML').'</a>' : '';
 									break;
 								case "pdf":
 								default:
 									if ($grandchild->logicaltype == 14) {
-										$pdf .= '<a href="'.$grandchild->path.'">'.JText::_('Notes').'</a>'."\n";
+										$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').'</a>'."\n";
 									} elseif ($grandchild->logicaltype == 51) {
 										$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 									} else {
@@ -306,7 +302,7 @@ $juser = JFactory::getUser();
 										}
 										elseif ($linkAction == 2)
 										{
-											$url = JRoute::_('index.php?option=com_resources&id=' . $child->id . '&resid=' . $grandchild->id . '&task=play');
+											$url = Route::url('index.php?option=com_resources&id=' . $child->id . '&resid=' . $grandchild->id . '&task=play');
 											$supp .= '<a class="play '.$width.'x'.$height.'" href="'.$url.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
 										}
 										else
@@ -328,7 +324,7 @@ $juser = JFactory::getUser();
 						$html .= "\t\t\t".'<td>'.$supp.'</td>'."\n";
 						$html .= "\t\t\t".'<td>'.$exercises.'</td>'."\n";
 					} else {
-						//$html .= "\t\t\t".'<td colspan="5">'.JText::_('Currently unavilable').'</td>'."\n";
+						//$html .= "\t\t\t".'<td colspan="5">'.Lang::txt('Currently unavilable').'</td>'."\n";
 						$html .= "\t\t\t".'<td colspan="5"> </td>'."\n";
 					}
 					$html .= "\t\t".'</tr>'."\n";

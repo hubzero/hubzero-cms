@@ -34,22 +34,21 @@ $this->css()
      ->js();
 
 $txt = '';
-$mode = strtolower(JRequest::getWord('mode', ''));
+$mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
 	switch ($this->model->resource->published)
 	{
 		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . JText::_('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . JText::_('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . JText::_('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
+		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
+		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
+		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
+		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
 	}
 }
 
-$juser = JFactory::getUser();
 ?>
 <div id="content-header">
 	<section class="main section upperpane">
@@ -75,8 +74,8 @@ $juser = JFactory::getUser();
 						</div><!-- / #authorslist -->
 					<?php } ?>
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
-						<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>">
-							<?php echo JText::_('COM_RESOURCES_EDIT'); ?>
+						<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>">
+							<?php echo Lang::txt('COM_RESOURCES_EDIT'); ?>
 						</a>
 					<?php } ?>
 				</div><!-- / .overviewcontainer -->
@@ -90,11 +89,11 @@ $juser = JFactory::getUser();
 						$ghtml = array();
 						foreach ($this->model->resource->getGroups() as $allowedgroup)
 						{
-							$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 						}
 					?>
 					<p class="warning">
-						<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 					</p>
 					<?php
 					}
@@ -153,12 +152,8 @@ $juser = JFactory::getUser();
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php
-			// Get Releated Resources plugin
-			JPluginHelper::importPlugin('resources', 'related');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Show related content
-			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)

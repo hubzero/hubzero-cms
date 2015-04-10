@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 $sparams = new JRegistry($this->course->offering()->section()->get('params'));
 
 $units = $this->course->offering()->units();
@@ -40,7 +38,7 @@ $unit  = $this->course->offering()->unit($this->unit);
 
 if (!$unit)
 {
-	JError::raiseError(404, JText::_('uh-oh'));
+	App::abort(404, Lang::txt('uh-oh'));
 }
 
 $aggroups = $unit->assetgroups();
@@ -48,7 +46,7 @@ $aggroups = $unit->assetgroups();
 $lecture = $unit->assetgroup($this->group);
 if (!$lecture)
 {
-	JError::raiseError(404, JText::_('uh-oh'));
+	App::abort(404, Lang::txt('uh-oh'));
 }
 
 $base    = $this->course->offering()->link() . '&active=outline';
@@ -56,23 +54,23 @@ $altBase = $this->course->offering()->link();
 $current = $unit->assetgroups()->key();
 
 if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) || ($sparams->get('preview', 0) == 2 && $unit->get('ordering') > 1))) { ?>
-	<p class="info"><?php echo JText::_('Access to this content is restricted to students only. You must be enrolled to view the content.'); ?></p>
+	<p class="info"><?php echo Lang::txt('Access to this content is restricted to students only. You must be enrolled to view the content.'); ?></p>
 <?php } else { ?>
 
 	<?php if ($this->course->offering()->access('manage')) { ?>
 		<?php if (!$lecture->isPublished()) { ?>
 		<div class="asset-status unpublished">
-			<span><?php echo JText::_('This lecture is <strong>unpublished</strong>.'); ?></span>
+			<span><?php echo Lang::txt('This lecture is <strong>unpublished</strong>.'); ?></span>
 		</div>
 		<?php } ?>
 		<?php if ($lecture->isDraft()) { ?>
 		<div class="asset-status draft">
-			<span><?php echo JText::_('This lecture is in <strong>draft</strong> mode.'); ?></span>
+			<span><?php echo Lang::txt('This lecture is in <strong>draft</strong> mode.'); ?></span>
 		</div>
 		<?php } ?>
 		<?php if ($lecture->isPublished() && !$lecture->isAvailable()) { ?>
 		<div class="asset-status pending">
-			<span><?php echo JText::sprintf('This lecture is <strong>scheduled</strong> to be available at %s.', $lecture->get('publish_up')); ?></span>
+			<span><?php echo Lang::txt('This lecture is <strong>scheduled</strong> to be available at %s.', $lecture->get('publish_up')); ?></span>
 		</div>
 		<?php } ?>
 	<?php } ?>
@@ -111,7 +109,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 				if ($used)
 				{
 					// Check prerequisites
-					$member = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+					$member = $this->course->offering()->section()->member(User::get('id'));
 					if (is_null($member->get('section_id')))
 					{
 						$member->set('section_id', $this->course->offering()->section()->get('id'));
@@ -131,9 +129,9 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 						$requirements = implode(', ', $requirements);
 
 						// Redirect back to the course outline
-						\JFactory::getApplication()->redirect(
-							JRoute::_($base),
-							JText::sprintf('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
+						App::redirect(
+							Route::url($base),
+							Lang::txt('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
 							'warning'
 						);
 						return;
@@ -146,17 +144,17 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 						?>
 						<?php if (!$used_asset->isPublished()) { ?>
 						<div class="asset-status unpublished">
-							<span><?php echo JText::_('This asset is <strong>unpublished</strong>.'); ?></span>
+							<span><?php echo Lang::txt('This asset is <strong>unpublished</strong>.'); ?></span>
 						</div>
 						<?php } ?>
 						<?php if ($used_asset->isDraft()) { ?>
 						<div class="asset-status draft">
-							<span><?php echo JText::_('This asset is in <strong>draft</strong> mode.'); ?></span>
+							<span><?php echo Lang::txt('This asset is in <strong>draft</strong> mode.'); ?></span>
 						</div>
 						<?php } ?>
 						<?php if ($used_asset->isPublished() && !$used_asset->isAvailable()) { ?>
 						<div class="asset-status pending">
-							<span><?php echo JText::sprintf('This asset is <strong>scheduled</strong> to be available at %s.', $used_asset->get('publish_up')); ?></span>
+							<span><?php echo Lang::txt('This asset is <strong>scheduled</strong> to be available at %s.', $used_asset->get('publish_up')); ?></span>
 						</div>
 						<?php } ?>
 						<?php
@@ -196,10 +194,10 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 									continue;
 								}
 							}
-							$href = JRoute::_($altBase . '&asset=' . $a->get('id'));
+							$href = Route::url($altBase . '&asset=' . $a->get('id'));
 							/*if ($a->get('type') == 'video')
 							{
-								$href = JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
+								$href = Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
 							}*/
 							$cls = 'download';
 							if ($a->get('type') == 'exam')
@@ -219,7 +217,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 					}
 					else
 					{
-						echo '<li><small>' . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . '</small></li>';
+						echo '<li><small>' . Lang::txt('COURSES_NO_ASSETS_FOR_GROUPING') . '</small></li>';
 					}
 					?>
 				</ul>
@@ -244,8 +242,8 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 						{
 							$found = true;
 							?>
-							<a class="icon-prev prev btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
-								<?php echo JText::_('Prev'); ?>
+							<a class="icon-prev prev btn" href="<?php echo Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
+								<?php echo Lang::txt('Prev'); ?>
 							</a>
 							<?php
 							break;
@@ -255,7 +253,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 
 				if (!$found) { ?>
 				<span class="icon-prev disabled prev btn">
-					<?php echo JText::_('Prev'); ?>
+					<?php echo Lang::txt('Prev'); ?>
 				</span>
 				<?php }
 
@@ -281,11 +279,11 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 
 				if (!$gAlias) { ?>
 				<span class="icon-next disabled next opposite btn">
-					<?php echo JText::_('Next'); ?>
+					<?php echo Lang::txt('Next'); ?>
 				</span>
 				<?php } else { ?>
-				<a class="icon-next next opposite btn" href="<?php echo JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $gAlias); ?>">
-					<?php echo JText::_('Next'); ?>
+				<a class="icon-next next opposite btn" href="<?php echo Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $gAlias); ?>">
+					<?php echo Lang::txt('Next'); ?>
 				</a>
 				<?php }
 
@@ -306,8 +304,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 
 	<?php
 		// Trigger event
-		$dispatcher = JDispatcher::getInstance();
-		$results = $dispatcher->trigger('onCourseAfterLecture', array(
+		$results = Event::trigger('courses.onCourseAfterLecture', array(
 			$this->course,
 			$unit,
 			$lecture

@@ -54,7 +54,7 @@ if ($isManager)
 	$filters['state'] = -1;
 }
 
-if (JRequest::getInt('nonadmin', 0) == 1)
+if (Request::getInt('nonadmin', 0) == 1)
 {
 	$isNowOnManager = false;
 }
@@ -64,17 +64,17 @@ $this->database = JFactory::getDBO();
 $base = $this->course->offering()->link();
 
 // Get the current time
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 $i = 0;
 
 if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
-	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
+	<p class="info"><?php echo Lang::txt('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
 	<?php if ($this->course->access('manage')) { ?>
 		<div class="manager-options">
-			<span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Build outline</a>
+			<span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Build outline</a>
 		</div>
 	<?php } ?>
 
@@ -82,12 +82,12 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 		<?php if (!$this->course->offering()->access('view') && $sparams->get('preview', 0)) : ?>
 			<div class="advertise-enroll">
 				<div class="advertise-text">
-					<?php echo JText::_('You\'re currently viewing this course in preview mode. Some features may be disabled.'); ?>
+					<?php echo Lang::txt('You\'re currently viewing this course in preview mode. Some features may be disabled.'); ?>
 				</div>
-				<a href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">
+				<a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">
 					<div class="advertise-action btn">Enroll for <?php echo $price; ?>!</div>
 				</a>
-				<a target="_blank" class="advertise-popup" href="<?php echo JRoute::_('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+				<a target="_blank" class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
 					<div class="advertise-help btn">Why enroll?</div>
 				</a>
 			</div>
@@ -95,15 +95,14 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 		<div class="outline-head">
 			<?php
 				// Trigger event
-				$dispatcher = JDispatcher::getInstance();
-				$results = $dispatcher->trigger('onCourseBeforeOutline', array(
+				$results = Event::trigger('courses.onCourseBeforeOutline', array(
 					$this->course,
 					$this->course->offering()
 				));
 				// Output results
 				echo implode("\n", $results);
 
-				$this->member  = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+				$this->member  = $this->course->offering()->section()->member(User::get('id'));
 				$progress      = ($this->member->get('id')) ? $this->course->offering()->gradebook()->progress($this->member->get('id')) : array();
 				if (is_null($this->member->get('section_id')))
 				{
@@ -176,7 +175,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 							<div class="grid">
 								<p class="info">
 									Content for this unit is only available to enrolled students.
-									<a href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">
+									<a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">
 										Enroll for <?php echo $price; ?>!
 									</a>
 								</p>
@@ -309,12 +308,12 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																$cls = 'unavailable';
 															}
 
-															$href = JRoute::_($base . '&asset=' . $a->get('id'));
+															$href = Route::url($base . '&asset=' . $a->get('id'));
 															$target = '';
 															if ($a->get('type') == 'video' && !$hasPrimaryVideo)
 															{
 																$hasPrimaryVideo = true;
-																$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+																$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 															}
 															else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 															{
@@ -437,11 +436,11 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 														{
 															continue;
 														}
-														$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+														$href = Route::url($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
 														$target = '';
 														if ($a->get('type') == 'video')
 														{
-															$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+															$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 														}
 														else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 														{
@@ -481,11 +480,11 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 								{
 									if ($a->isAvailable() || $isManager)
 									{
-										$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+										$href = Route::url($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
 										$target = '';
 										if ($a->get('type') == 'video')
 										{
-											$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+											$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 										}
 										else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 										{
@@ -521,7 +520,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 	<?php } ?>
 
 <?php elseif ($this->course->offering()->access('manage')) : ?>
-		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
+		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
 <?php else : ?>
 		<p class="info">There is currently no outline available for this course.</p>
 <?php endif; ?>

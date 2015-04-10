@@ -38,12 +38,14 @@ class UsersModelProfile extends JModelForm
 		// Get the user id.
 		$userId = (!empty($userId)) ? $userId : (int)$this->getState('user.id');
 
-		if ($userId) {
+		if ($userId)
+		{
 			// Initialise the table with JUser.
 			$table = JTable::getInstance('User');
 
 			// Attempt to check the row in.
-			if (!$table->checkin($userId)) {
+			if (!$table->checkin($userId))
+			{
 				$this->setError($table->getError());
 				return false;
 			}
@@ -64,15 +66,14 @@ class UsersModelProfile extends JModelForm
 		// Get the user id.
 		$userId = (!empty($userId)) ? $userId : (int)$this->getState('user.id');
 
-		if ($userId) {
+		if ($userId)
+		{
 			// Initialise the table with JUser.
 			$table = JTable::getInstance('User');
 
-			// Get the current user object.
-			$user = JFactory::getUser();
-
 			// Attempt to check the row out.
-			if (!$table->checkout($user->get('id'), $userId)) {
+			if (!$table->checkout(User::get('id'), $userId))
+			{
 				$this->setError($table->getError());
 				return false;
 			}
@@ -92,8 +93,8 @@ class UsersModelProfile extends JModelForm
 	 */
 	public function getData()
 	{
-		if ($this->data === null) {
-
+		if ($this->data === null)
+		{
 			$userId = $this->getState('user.id');
 
 			// Initialise the table with JUser.
@@ -105,7 +106,8 @@ class UsersModelProfile extends JModelForm
 
 			// Override the base user data with any data in the session.
 			$temp = (array)JFactory::getApplication()->getUserState('com_users.edit.profile.data', array());
-			foreach ($temp as $k => $v) {
+			foreach ($temp as $k => $v)
+			{
 				$this->data->$k = $v;
 			}
 
@@ -116,15 +118,12 @@ class UsersModelProfile extends JModelForm
 			$registry = new JRegistry($this->data->params);
 			$this->data->params = $registry->toArray();
 
-			// Get the dispatcher and load the users plugins.
-			$dispatcher	= JDispatcher::getInstance();
-			JPluginHelper::importPlugin('user');
-
 			// Trigger the data preparation event.
-			$results = $dispatcher->trigger('onContentPrepareData', array('com_users.profile', $this->data));
+			$results = Event::trigger('user.onContentPrepareData', array('com_users.profile', $this->data));
 
 			// Check for errors encountered while preparing the data.
-			if (count($results) && in_array(false, $results, true)) {
+			if (count($results) && in_array(false, $results, true))
+			{
 				$this->setError($dispatcher->getError());
 				$this->data = false;
 			}
@@ -202,7 +201,8 @@ class UsersModelProfile extends JModelForm
 		if (Component::params('com_users')->get('frontend_userparams'))
 		{
 			$form->loadFile('frontend', false);
-			if (JFactory::getUser()->authorise('core.login.admin')) {
+			if (User::authorise('core.login.admin'))
+			{
 				$form->loadFile('frontend_admin', false);
 			}
 		}
@@ -223,7 +223,7 @@ class UsersModelProfile extends JModelForm
 
 		// Get the user id.
 		$userId = JFactory::getApplication()->getUserState('com_users.edit.profile.id');
-		$userId = !empty($userId) ? $userId : (int)JFactory::getUser()->get('id');
+		$userId = !empty($userId) ? $userId : (int) User::get('id');
 
 		// Set the user id.
 		$this->setState('user.id', $userId);
@@ -246,8 +246,8 @@ class UsersModelProfile extends JModelForm
 		$user = new JUser($userId);
 
 		// Prepare the data for the user object.
-		$data['email']		= $data['email1'];
-		$data['password']	= $data['password1'];
+		$data['email']    = $data['email1'];
+		$data['password'] = $data['password1'];
 
 		// Unset the username if it should not be overwritten
 		$username = $data['username'];
@@ -265,19 +265,21 @@ class UsersModelProfile extends JModelForm
 		unset($data['sendEmail']);
 
 		// Bind the data.
-		if (!$user->bind($data)) {
+		if (!$user->bind($data))
+		{
 			$this->setError(Lang::txt('COM_USERS_PROFILE_BIND_FAILED', $user->getError()));
 			return false;
 		}
 
 		// Load the users plugin group.
-		JPluginHelper::importPlugin('user');
+		Plugin::import('user');
 
 		// Null the user groups so they don't get overwritten
 		$user->groups = null;
 
 		// Store the data.
-		if (!$user->save()) {
+		if (!$user->save())
+		{
 			$this->setError($user->getError());
 			return false;
 		}

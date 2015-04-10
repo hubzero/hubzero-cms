@@ -216,12 +216,8 @@ if ($mode != 'preview')
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php
-			// Get Releated Resources plugin
-			JPluginHelper::importPlugin('resources', 'related');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Show related content
-			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)

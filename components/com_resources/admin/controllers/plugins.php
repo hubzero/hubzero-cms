@@ -32,6 +32,11 @@ namespace Components\Resources\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Config;
+use Event;
+use Route;
+use Lang;
 
 /**
  * Manage resource types
@@ -174,7 +179,7 @@ class Plugins extends AdminController
 			throw new Exception($this->database->stderr(), 500);
 		}
 
-		$lang = \Lang::getRoot();
+		$lang = Lang::getRoot();
 		if ($this->view->rows)
 		{
 			foreach ($this->view->rows as &$item)
@@ -189,12 +194,8 @@ class Plugins extends AdminController
 			}
 		}
 
-		// Get related plugins
-		\JPluginHelper::importPlugin('resources');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Show related content
-		$this->view->manage = $dispatcher->trigger('onCanManage');
+		$this->view->manage = Event::trigger('resources.onCanManage');
 
 		$this->view->client = $this->client;
 		$this->view->states = \JHTML::_('grid.state', $this->view->filters['state']);
@@ -230,13 +231,9 @@ class Plugins extends AdminController
 			return;
 		}
 
-		// Get related plugins
-		\JPluginHelper::importPlugin('resources', $plugin);
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Show related content
-		$out = $dispatcher->trigger(
-			'onManage',
+		$out = Event::trigger(
+			'resources.onManage',
 			array(
 				$this->_option,
 				$this->_controller,

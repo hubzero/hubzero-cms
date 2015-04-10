@@ -53,12 +53,8 @@ class UsersModelUser extends JModelAdmin
 	{
 		$result = parent::getItem($pk);
 
-		// Get the dispatcher and load the users plugins.
-		$dispatcher	= JDispatcher::getInstance();
-		JPluginHelper::importPlugin('user');
-
 		// Trigger the data preparation event.
-		$results = $dispatcher->trigger('onContentPrepareData', array('com_users.user', $result));
+		$results = Event::trigger('user.onContentPrepareData', array('com_users.user', $result));
 
 		return $result;
 	}
@@ -112,17 +108,14 @@ class UsersModelUser extends JModelAdmin
 		}
 
 		// TODO: Maybe this can go into the parent model somehow?
-		// Get the dispatcher and load the users plugins.
-		$dispatcher	= JDispatcher::getInstance();
-		JPluginHelper::importPlugin('user');
 
 		// Trigger the data preparation event.
-		$results = $dispatcher->trigger('onContentPrepareData', array('com_users.profile', $data));
+		$results = Event::trigger('user.onContentPrepareData', array('com_users.profile', $data));
 
 		// Check for errors encountered while preparing the data.
 		if (count($results) && in_array(false, $results, true))
 		{
-			$this->setError($dispatcher->getError());
+			$this->setError(Event::getError());
 		}
 
 		return $data;
@@ -157,7 +150,7 @@ class UsersModelUser extends JModelAdmin
 	public function validate($form, $data, $group = null)
 	{
 		// Fire HUBzero registration check here so that we don't have to duplicate validation code
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
 		$registration = new MembersModelRegistration();
 		$registration->set('name',  $data['name']);
 		$registration->set('login', $data['username']);
@@ -185,10 +178,10 @@ class UsersModelUser extends JModelAdmin
 	public function save($data)
 	{
 		// Initialise variables;
-		$pk			= (!empty($data['id'])) ? $data['id'] : (int) $this->getState('user.id');
-		$user		= JUser::getInstance($pk);
+		$pk   = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('user.id');
+		$user = User::getInstance($pk);
 
-		$my = JFactory::getUser();
+		$my = User::getRoot();
 
 		if ($data['block'] && $pk == $my->id && !$my->block)
 		{
@@ -252,18 +245,13 @@ class UsersModelUser extends JModelAdmin
 	public function delete(&$pks)
 	{
 		// Initialise variables.
-		$user  = JFactory::getUser();
 		$table = $this->getTable();
 		$pks   = (array) $pks;
 
 		// Check if I am a Super Admin
-		$iAmSuperAdmin = $user->authorise('core.admin');
+		$iAmSuperAdmin = User::authorise('core.admin');
 
-		// Trigger the onUserBeforeSave event.
-		JPluginHelper::importPlugin('user');
-		$dispatcher = JDispatcher::getInstance();
-
-		if (in_array($user->id, $pks))
+		if (in_array(User::get('id'), $pks))
 		{
 			$this->setError(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_DELETE_SELF'));
 
@@ -276,7 +264,7 @@ class UsersModelUser extends JModelAdmin
 			if ($table->load($pk))
 			{
 				// Access checks.
-				$allow = $user->authorise('core.delete', 'com_users');
+				$allow = User::authorise('core.delete', 'com_users');
 
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && JAccess::check($pk, 'core.admin')) ? false : $allow;
@@ -287,7 +275,7 @@ class UsersModelUser extends JModelAdmin
 					$user_to_delete = JFactory::getUser($pk);
 
 					// Fire the onUserBeforeDelete event.
-					$dispatcher->trigger('onUserBeforeDelete', array($table->getProperties()));
+					Event::trigger('user.onUserBeforeDelete', array($table->getProperties()));
 
 					if (!$table->delete($pk))
 					{
@@ -298,7 +286,7 @@ class UsersModelUser extends JModelAdmin
 					else
 					{
 						// Trigger the onUserAfterDelete event.
-						$dispatcher->trigger('onUserAfterDelete', array($user_to_delete->getProperties(), true, $this->getError()));
+						Event::trigger('user.onUserAfterDelete', array($user_to_delete->getProperties(), true, $this->getError()));
 					}
 				}
 				else
@@ -332,21 +320,17 @@ class UsersModelUser extends JModelAdmin
 	function block(&$pks, $value = 1)
 	{
 		// Initialise variables.
-		$app        = JFactory::getApplication();
-		$dispatcher = JDispatcher::getInstance();
-		$user       = JFactory::getUser();
+		$app = JFactory::getApplication();
 
 		// Check if I am a Super Admin
-		$iAmSuperAdmin = $user->authorise('core.admin');
+		$iAmSuperAdmin = User::authorise('core.admin');
 		$table = $this->getTable();
 		$pks   = (array) $pks;
-
-		JPluginHelper::importPlugin('user');
 
 		// Access checks.
 		foreach ($pks as $i => $pk)
 		{
-			if ($value == 1 && $pk == $user->get('id'))
+			if ($value == 1 && $pk == User::get('id'))
 			{
 				// Cannot block yourself.
 				unset($pks[$i]);
@@ -355,7 +339,7 @@ class UsersModelUser extends JModelAdmin
 			elseif ($table->load($pk))
 			{
 				$old   = $table->getProperties();
-				$allow = $user->authorise('core.edit.state', 'com_users');
+				$allow = User::authorise('core.edit.state', 'com_users');
 
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && JAccess::check($pk, 'core.admin')) ? false : $allow;
@@ -394,7 +378,7 @@ class UsersModelUser extends JModelAdmin
 						}
 
 						// Trigger the onUserBeforeSave event.
-						$result = $dispatcher->trigger('onUserBeforeSave', array($old, false, $table->getProperties()));
+						$result = Event::trigger('user.onUserBeforeSave', array($old, false, $table->getProperties()));
 
 						if (in_array(false, $result, true))
 						{
@@ -411,7 +395,7 @@ class UsersModelUser extends JModelAdmin
 						}
 
 						// Trigger the onAftereStoreUser event
-						$dispatcher->trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+						Event::trigger('user.onUserAfterSave', array($table->getProperties(), false, true, null));
 					}
 					catch (Exception $e)
 					{
@@ -449,16 +433,10 @@ class UsersModelUser extends JModelAdmin
 	 */
 	function activate(&$pks)
 	{
-		// Initialise variables.
-		$dispatcher = JDispatcher::getInstance();
-		$user = JFactory::getUser();
-
 		// Check if I am a Super Admin
-		$iAmSuperAdmin = $user->authorise('core.admin');
+		$iAmSuperAdmin = User::authorise('core.admin');
 		$table = $this->getTable();
 		$pks   = (array) $pks;
-
-		JPluginHelper::importPlugin('user');
 
 		// Access checks.
 		foreach ($pks as $i => $pk)
@@ -466,7 +444,7 @@ class UsersModelUser extends JModelAdmin
 			if ($table->load($pk))
 			{
 				$old = $table->getProperties();
-				$allow = $user->authorise('core.edit.state', 'com_users');
+				$allow = User::authorise('core.edit.state', 'com_users');
 
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && JAccess::check($pk, 'core.admin')) ? false : $allow;
@@ -492,7 +470,7 @@ class UsersModelUser extends JModelAdmin
 						}
 
 						// Trigger the onUserBeforeSave event.
-						$result = $dispatcher->trigger('onUserBeforeSave', array($old, false, $table->getProperties()));
+						$result = Event::trigger('user.onUserBeforeSave', array($old, false, $table->getProperties()));
 
 						if (in_array(false, $result, true))
 						{
@@ -509,7 +487,7 @@ class UsersModelUser extends JModelAdmin
 						}
 
 						// Fire the onAftereStoreUser event
-						$dispatcher->trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+						Event::trigger('user.onUserAfterSave', array($table->getProperties(), false, true, null));
 					}
 					catch (Exception $e)
 					{
@@ -539,24 +517,18 @@ class UsersModelUser extends JModelAdmin
 	 */
 	function approve(&$pks)
 	{
-		// Initialise variables.
-		$dispatcher = JDispatcher::getInstance();
-		$user       = JFactory::getUser();
-
 		// Check if I am a Super Admin
-		$iAmSuperAdmin = $user->authorise('core.admin');
+		$iAmSuperAdmin = User::authorise('core.admin');
 		$table         = $this->getTable();
 		$pks           = (array) $pks;
-
-		JPluginHelper::importPlugin('user');
 
 		// Access checks.
 		foreach ($pks as $i => $pk)
 		{
 			if ($table->load($pk))
 			{
-				$old	= $table->getProperties();
-				$allow	= $user->authorise('core.edit.state', 'com_users');
+				$old   = $table->getProperties();
+				$allow = User::authorise('core.edit.state', 'com_users');
 
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && JAccess::check($pk, 'core.admin')) ? false : $allow;
@@ -576,7 +548,7 @@ class UsersModelUser extends JModelAdmin
 						}
 
 						// Trigger the onUserBeforeSave event.
-						$result = $dispatcher->trigger('onUserBeforeSave', array($old, false, $table->getProperties()));
+						$result = Event::trigger('user.onUserBeforeSave', array($old, false, $table->getProperties()));
 
 						if (in_array(false, $result, true))
 						{
@@ -593,7 +565,7 @@ class UsersModelUser extends JModelAdmin
 						}
 
 						// Fire the onAftereStoreUser event
-						$dispatcher->trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+						Event::trigger('user.onUserAfterSave', array($table->getProperties(), false, true, null));
 					}
 					catch (Exception $e)
 					{
@@ -690,7 +662,7 @@ class UsersModelUser extends JModelAdmin
 		JArrayHelper::toInteger($user_ids);
 
 		// Non-super admin cannot work with super-admin group
-		if ((!JFactory::getUser()->get('isRoot') && JAccess::checkGroup($group_id, 'core.admin')) || $group_id < 1)
+		if ((!User::get('isRoot') && JAccess::checkGroup($group_id, 'core.admin')) || $group_id < 1)
 		{
 			$this->setError(Lang::txt('COM_USERS_ERROR_INVALID_GROUP'));
 
@@ -801,9 +773,7 @@ class UsersModelUser extends JModelAdmin
 	 */
 	public function getGroups()
 	{
-		$user = JFactory::getUser();
-
-		if ($user->authorise('core.edit', 'com_users') && $user->authorise('core.manage', 'com_users'))
+		if (User::authorise('core.edit', 'com_users') && User::authorise('core.manage', 'com_users'))
 		{
 			$model = JModelLegacy::getInstance('Groups', 'UsersModel', array('ignore_request' => true));
 

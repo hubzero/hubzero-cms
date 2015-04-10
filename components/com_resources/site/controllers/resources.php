@@ -44,6 +44,11 @@ use Components\Resources\Helpers\Helper;
 use Components\Resources\Models;
 use Hubzero\Component\SiteController;
 use stdClass;
+use Pathway;
+use Request;
+use Route;
+use Event;
+use Lang;
 
 /**
  * Resources controller class
@@ -567,12 +572,8 @@ class Resources extends SiteController
 					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, '');
 				}
 
-				// Get Resources plugins
-				\JPluginHelper::importPlugin('resources');
-				$dispatcher = \JDispatcher::getInstance();
-
 				// Get the sections
-				$bits['sections'] = $dispatcher->trigger('onResources', array($model, $this->_option, array('about'), 'metadata'));
+				$bits['sections'] = Event::trigger('resources.onResources', array($model, $this->_option, array('about'), 'metadata'));
 
 				// Fill our container
 				$bits['resource'] = $model->resource;
@@ -1300,10 +1301,6 @@ class Resources extends SiteController
 		// Get contribtool params
 		$tconfig = \Component::params('com_tools');
 
-		// Get Resources plugins
-		\JPluginHelper::importPlugin('resources');
-		$dispatcher = \JDispatcher::getInstance();
-
 		$sections = array();
 		$cats = array();
 
@@ -1311,14 +1308,14 @@ class Resources extends SiteController
 		if (!isset($this->model->thistool) || !$this->model->thistool)
 		{
 			// Trigger the functions that return the areas we'll be using
-			$cats = $dispatcher->trigger('onResourcesAreas', array(
+			$cats = Event::trigger('resources.onResourcesAreas', array(
 					$this->model
 				)
 			);
 		}
 		elseif (isset($this->model->revision) && $this->model->revision)
 		{
-			$cats = $dispatcher->trigger('onResourcesAreas', array(
+			$cats = Event::trigger('resources.onResourcesAreas', array(
 					$this->model
 				)
 			);
@@ -1343,7 +1340,7 @@ class Resources extends SiteController
 		}
 
 		// Get the sections
-		$sections = $dispatcher->trigger('onResources', array(
+		$sections = Event::trigger('resources.onResources', array(
 				$this->model,
 				$this->_option,
 				array($tab),
@@ -1998,12 +1995,8 @@ class Resources extends SiteController
 			return;
 		}
 
-		// Get Resources plugins
-		\JPluginHelper::importPlugin('resources');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Call the trigger
-		$results = $dispatcher->trigger($trigger, array($this->_option));
+		$results = Event::trigger('resources.' . $trigger, array($this->_option));
 		if (is_array($results))
 		{
 			$html = $results[0]['html'];

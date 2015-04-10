@@ -54,7 +54,7 @@ class UsersModelRegistration extends JModelForm
 		}
 
 		// Load the users plugin group.
-		JPluginHelper::importPlugin('user');
+		Plugin::import('user');
 
 		// Activate the user.
 		$user = User::getInstance($userId);
@@ -177,15 +177,16 @@ class UsersModelRegistration extends JModelForm
 	 */
 	public function getData()
 	{
-		if ($this->data === null) {
-
+		if ($this->data === null)
+		{
 			$this->data	= new stdClass();
-			$app	= JFactory::getApplication();
-			$params	= Component::params('com_users');
+			$app    = JFactory::getApplication();
+			$params = Component::params('com_users');
 
 			// Override the base user data with any data in the session.
 			$temp = (array)$app->getUserState('com_users.registration.data', array());
-			foreach ($temp as $k => $v) {
+			foreach ($temp as $k => $v)
+			{
 				$this->data->$k = $v;
 			}
 
@@ -201,16 +202,13 @@ class UsersModelRegistration extends JModelForm
 			unset($this->data->password1);
 			unset($this->data->password2);
 
-			// Get the dispatcher and load the users plugins.
-			$dispatcher	= JDispatcher::getInstance();
-			JPluginHelper::importPlugin('user');
-
 			// Trigger the data preparation event.
-			$results = $dispatcher->trigger('onContentPrepareData', array('com_users.registration', $this->data));
+			$results = Event::trigger('user.onContentPrepareData', array('com_users.registration', $this->data));
 
 			// Check for errors encountered while preparing the data.
-			if (count($results) && in_array(false, $results, true)) {
-				$this->setError($dispatcher->getError());
+			if (count($results) && in_array(false, $results, true))
+			{
+				$this->setError(Event::getError());
 				$this->data = false;
 			}
 		}
@@ -233,7 +231,8 @@ class UsersModelRegistration extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_users.registration', 'registration', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -282,8 +281,8 @@ class UsersModelRegistration extends JModelForm
 	protected function populateState()
 	{
 		// Get the application object.
-		$app	= JFactory::getApplication();
-		$params	= $app->getParams('com_users');
+		$app    = JFactory::getApplication();
+		$params = $app->getParams('com_users');
 
 		// Load the parameters.
 		$this->setState('params', $params);
@@ -298,7 +297,7 @@ class UsersModelRegistration extends JModelForm
 	 */
 	public function register($temp)
 	{
-		$db		= $this->getDbo();
+		$db     = $this->getDbo();
 		$params = Component::params('com_users');
 
 		// Initialise the table with JUser.
@@ -306,13 +305,14 @@ class UsersModelRegistration extends JModelForm
 		$data = (array)$this->getData();
 
 		// Merge in the registration data.
-		foreach ($temp as $k => $v) {
+		foreach ($temp as $k => $v)
+		{
 			$data[$k] = $v;
 		}
 
 		// Prepare the data for the user object.
-		$data['email']		= $data['email1'];
-		$data['password']	= $data['password1'];
+		$data['email']    = $data['email1'];
+		$data['password'] = $data['password1'];
 		$useractivation = $params->get('useractivation');
 		$sendpassword = $params->get('sendpassword', 1);
 
@@ -329,7 +329,7 @@ class UsersModelRegistration extends JModelForm
 		}
 
 		// Load the users plugin group.
-		JPluginHelper::importPlugin('user');
+		Plugin::import('user');
 
 		// Store the data.
 		if (!$user->save()) {
@@ -339,10 +339,10 @@ class UsersModelRegistration extends JModelForm
 
 		// Compile the notification mail values.
 		$data = $user->getProperties();
-		$data['fromname']	= Config::get('fromname');
-		$data['mailfrom']	= Config::get('mailfrom');
-		$data['sitename']	= Config::get('sitename');
-		$data['siteurl']	= Request::root();
+		$data['fromname'] = Config::get('fromname');
+		$data['mailfrom'] = Config::get('mailfrom');
+		$data['sitename'] = Config::get('sitename');
+		$data['siteurl']  = Request::root();
 
 		// Handle account activation/confirmation emails.
 		if ($useractivation == 2)

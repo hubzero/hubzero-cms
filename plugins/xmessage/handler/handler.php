@@ -152,9 +152,9 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				$last_time = 0;
 				if ($last_sent->created)
 				{
-					$last_time = JFactory::getDate($last_sent->created)->toUnix();
+					$last_time = Date::of($last_sent->created)->toUnix();
 				}
-				$time_difference = (JFactory::getDate()->toUnix() + $time_limit) - $last_time;
+				$time_difference = (Date::toUnix() + $time_limit) - $last_time;
 
 				if ($time_difference < $time_limit)
 				{
@@ -176,7 +176,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		// Store the message in the database
 		$xmessage->subject    = $subject;
 		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
-		$xmessage->created    = JFactory::getDate()->toSql();
+		$xmessage->created    = Date::toSql();
 		$xmessage->created_by = User::get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
@@ -195,9 +195,6 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		// Do we have any recipients?
 		if (count($to) > 0)
 		{
-			// Load plugins
-			$dispatcher = JDispatcher::getInstance();
-
 			$mconfig = Component::params('com_members');
 
 			// Get all the sender's groups
@@ -225,8 +222,8 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				$recipient = new \Hubzero\Message\Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
-				$recipient->created  = JFactory::getDate()->toSql();
-				$recipient->expires  = JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
+				$recipient->created  = Date::toSql();
+				$recipient->expires  = Date::of(time() + (168 * 24 * 60 * 60))->toSql();
 				$recipient->actionid = 0; //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
 				// Get the user's methods for being notified
@@ -281,7 +278,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						}
 						else
 						{
-							if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action)))
+							if (!Event::trigger('onMessage', array($from, $xmessage, $user, $action)))
 							{
 								$this->setError(Lang::txt('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $action));
 							}
@@ -296,7 +293,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 					if (!$methods || count($methods) <= 0)
 					{
 						// Load the default method
-						$p = JPluginHelper::getPlugin('members', 'messages');
+						$p = Plugin::byType('members', 'messages');
 						$pp = new JRegistry((is_object($p) ? $p->params : ''));
 
 						$d = $pp->get('default_method', 'email');
@@ -307,7 +304,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						}
 
 						// Use the Default in the case the user has no methods
-						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $d)))
+						if (!Event::trigger('onMessage', array($from, $xmessage, $user, $d)))
 						{
 							$this->setError(Lang::txt('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $d));
 						}

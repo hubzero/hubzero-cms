@@ -32,13 +32,13 @@
 namespace Modules\WhatsNew;
 
 use Hubzero\Module\Module;
-use JURI;
-use JFactory;
-use Route;
-use JPluginHelper;
-use JDispatcher;
 use Components\Whatsnew\Helpers\Period;
 use MembersModelTags;
+use Event;
+use Route;
+use Lang;
+use User;
+use JFactory;
 
 /**
  * Module class for displaying what's new in a category of content
@@ -58,12 +58,8 @@ class Helper extends Module
 			// No - so we'll need to get it
 			$areas = array();
 
-			// Load the whatsnew plugins
-			JPluginHelper::importPlugin('whatsnew');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Trigger the functions that return the areas we'll be searching
-			$searchareas = $dispatcher->trigger('onWhatsNewAreas');
+			$searchareas = Event::trigger('whatsnew.onWhatsNewAreas');
 
 			// Build an array of the areas
 			foreach ($searchareas as $area)
@@ -126,8 +122,8 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
-		$live_site = rtrim(JURI::base(), '/');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
+		$live_site = rtrim(Request::base(), '/');
 
 		// Get some initial parameters
 		$count        = intval($this->params->get('limit', 5));
@@ -202,15 +198,11 @@ class Helper extends Module
 			$activeareas[] = $area;
 		}
 
-		// Load plugins
-		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Process the keyword for exact time period
 		$p = new Period($this->period);
 
 		// Get the search results
-		$results = $dispatcher->trigger('onWhatsnew', array(
+		$results = event::trigger('whatsnew.onWhatsnew', array(
 				$p,
 				$count,
 				0,
@@ -238,7 +230,7 @@ class Helper extends Module
 
 		if ($this->tagged)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 			$mt = new MembersModelTags(User::get('id'));
 			$tags = $mt->tags();
 

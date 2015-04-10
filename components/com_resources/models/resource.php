@@ -33,6 +33,10 @@ namespace Components\Resources\Models;
 use Components\Resources\Tables;
 use Components\Resources\Helpers;
 use Hubzero\Base\Object;
+use Component;
+use Request;
+use Event;
+use Lang;
 
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'resource.php');
 
@@ -257,17 +261,15 @@ class Resource extends Object
 			return false;
 		}
 
-		$now = \JFactory::getDate();
-
 		if ($this->resource->publish_up
 		 && $this->resource->publish_up != $this->_db->getNullDate()
-		 && $this->resource->publish_up >= $now)
+		 && $this->resource->publish_up >= Date::toSql())
 		{
 			return false;
 		}
 		if ($this->resource->publish_down
 		 && $this->resource->publish_down != $this->_db->getNullDate()
-		 && $this->resource->publish_down <= $now)
+		 && $this->resource->publish_down <= Date::toSql())
 		{
 			return false;
 		}
@@ -951,7 +953,7 @@ class Resource extends Object
 		{
 			$this->tags = array();
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
 			$rt = new Helpers\Tags($this->resource->id);
 			if ($results = $rt->tags('list')) // get_tags_on_object
@@ -1024,10 +1026,10 @@ class Resource extends Object
 		{
 			$this->citations = array();
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 			$cc = new \Components\Citations\Tables\Citation($this->_db);
 
@@ -1182,8 +1184,8 @@ class Resource extends Object
 					);
 
 					$content = (string) $this->get('description', '');
-					\JPluginHelper::importPlugin('content');
-					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+
+					Event::trigger('content.onContentPrepare', array(
 						'com_resources.resource.description',
 						&$this,
 						&$config

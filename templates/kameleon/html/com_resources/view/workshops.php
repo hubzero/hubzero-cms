@@ -34,22 +34,21 @@ $this->css()
      ->js();
 
 $txt = '';
-$mode = strtolower(JRequest::getWord('mode', ''));
+$mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
 	switch ($this->model->resource->published)
 	{
 		case 1: $txt .= ''; break; // published
-		case 2: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
-		case 3: $txt .= '<span>[' . JText::_('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
-		case 4: $txt .= '<span>[' . JText::_('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
-		case 5: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
-		case 0; $txt .= '<span>[' . JText::_('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
+		case 2: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;  // external draft
+		case 3: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_PENDING') . ']</span> ';        break;  // pending
+		case 4: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DELETED') . ']</span> ';        break;  // deleted
+		case 5: $txt .= '<span>[' . Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;  // internal draft
+		case 0; $txt .= '<span>[' . Lang::txt('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;  // unpublished
 	}
 }
 
-$juser = JFactory::getUser();
 ?>
 <div id="content-header">
 	<section class="main section upperpane">
@@ -74,7 +73,7 @@ $juser = JFactory::getUser();
 						</div><!-- / #authorslist -->
 					<?php } ?>
 					<?php if ($this->model->params->get('access-edit-resource')) { ?>
-						<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
+						<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->resource->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
 					<?php } ?>
 				</div><!-- / .overviewcontainer -->
 
@@ -86,11 +85,11 @@ $juser = JFactory::getUser();
 							$ghtml = array();
 							foreach ($this->model->resource->getGroups() as $allowedgroup)
 							{
-								$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+								$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 							}
 					?>
 					<p class="warning">
-						<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+						<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 					</p>
 					<?php
 					}
@@ -166,13 +165,13 @@ $juser = JFactory::getUser();
 							?>
 							<p>
 							<?php if ($audio) { ?>
-								<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
+								<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
 							<?php } ?>
 							<?php if ($video) { ?>
-								<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
+								<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
 							<?php } ?>
 							<?php if ($notes) { ?>
-								<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
+								<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
 							<?php } ?>
 							</p>
 							<?php
@@ -218,12 +217,8 @@ $juser = JFactory::getUser();
 		</div><!-- / .subject -->
 		<div class="aside extracontent">
 			<?php
-			// Get Releated Resources plugin
-			JPluginHelper::importPlugin('resources', 'related');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Show related content
-			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
+			$out = Event::trigger('resources.onResourcesSub', array($this->model->resource, $this->option, 1));
 			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
@@ -248,9 +243,9 @@ $juser = JFactory::getUser();
 	if ($this->tab == 'about' && $ccount > 0)
 	{
 		$filters = array(
-			'sortby' => JRequest::getVar('sortby', $this->model->params->get('sort_children', 'ordering')),
-			'limit'  => JRequest::getInt('limit', 0),
-			'start'  => JRequest::getInt('limitstart', 0),
+			'sortby' => Request::getVar('sortby', $this->model->params->get('sort_children', 'ordering')),
+			'limit'  => Request::getInt('limit', 0),
+			'start'  => Request::getInt('limitstart', 0),
 			'id'     => $this->model->resource->id
 		);
 
@@ -259,21 +254,21 @@ $juser = JFactory::getUser();
 
 		// Build the results
 		$sortbys = array(
-			'date'     => JText::_('DATE'),
-			'title'    => JText::_('TITLE'),
-			'author'   => JText::_('AUTHOR'),
-			'ordering' => JText::_('ORDERING')
+			'date'     => Lang::txt('DATE'),
+			'title'    => Lang::txt('TITLE'),
+			'author'   => Lang::txt('AUTHOR'),
+			'ordering' => Lang::txt('ORDERING')
 		);
 		if ($this->model->params->get('show_ranking'))
 		{
-			$sortbys['ranking'] = JText::_('RANKING');
+			$sortbys['ranking'] = Lang::txt('RANKING');
 		}
 		?>
-		<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->_option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
+		<form method="get" action="<?php echo Route::url('index.php?option=' . $this->_option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
 			<section class="section">
 				<div class="subject">
 					<h3>
-						<?php echo JText::_('In This Workshop'); ?>
+						<?php echo Lang::txt('In This Workshop'); ?>
 					</h3>
 
 					<?php
@@ -302,11 +297,11 @@ $juser = JFactory::getUser();
 				<div class="aside">
 					<fieldset class="controls">
 						<label for="sortby">
-							<?php echo JText::_('COM_RESOURCES_SORT_BY'); ?>:
+							<?php echo Lang::txt('COM_RESOURCES_SORT_BY'); ?>:
 							<?php echo \Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $filters['sortby'], ''); ?>
 						</label>
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
 						</p>
 					</fieldset>
 				</div><!-- / .aside -->
