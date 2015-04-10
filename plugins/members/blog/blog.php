@@ -782,12 +782,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
 			$message .= stripslashes($row->content)."\r\n\r\n";
 			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= rtrim(JURI::getInstance()->base(), '/') . '/' . ltrim(JRoute::_($this->entry->link() . '#comments), '/') . "\r\n";
+			$message .= rtrim(Request::base(), '/') . '/' . ltrim(JRoute::_($this->entry->link() . '#comments), '/') . "\r\n";
 
 			// Send the message
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option)))
 			{
 				$this->setError(JText::_('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
 			}

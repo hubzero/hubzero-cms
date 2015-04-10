@@ -90,7 +90,6 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		);
 
 		$database = JFactory::getDBO();
-		$dispatcher = JDispatcher::getInstance();
 
 		// Incoming paging vars
 		$limit = JRequest::getInt('limit', 25);
@@ -103,7 +102,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();
-		$searchareas = $dispatcher->trigger('onMembersContributionsAreas', array());
+		$searchareas = Event::trigger('members.onMembersContributionsAreas', array());
 		foreach ($searchareas as $area)
 		{
 			$areas = array_merge($areas, $area);
@@ -129,7 +128,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the search result totals
-		$totals = $dispatcher->trigger('onMembersContributions', array(
+		$totals = Event::trigger('members.onMembersContributions', array(
 				$member,
 				$option,
 				0,
@@ -189,7 +188,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 			$limit = ($limit == 0) ? 'all' : $limit;
 
 			// Get the search results
-			$results = $dispatcher->trigger('onMembersContributions', array(
+			$results = Event::trigger('members.onMembersContributions', array(
 				$member,
 				$option,
 				$limit,

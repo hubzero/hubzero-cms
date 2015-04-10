@@ -107,7 +107,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$this->option   = $option;
 
 		// Get a needed library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this tool
 		$this->a = new \Components\Answers\Tables\Question($this->database);
@@ -370,8 +370,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$tags = explode(',', $tags);
 			if (count($tags) > 0)
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$TA = new ToolAuthor($this->database);
 				$objV = new ToolVersion($this->database);
@@ -421,7 +421,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 			// Build the message
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'site',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'question_plaintext'
 			));
@@ -442,16 +442,14 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers')))
+			if (!Event::trigger('xmessage.onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers')))
 			{
 				$this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
 			}
 		}
 
 		// Redirect to the question
-		JFactory::getApplication()->redirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name)
 		);
 	}

@@ -39,10 +39,7 @@ if (!$this->entry->exists())
 }
 
 //tag editor
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
-$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
+$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
 
 $type = 'file'; //strtolower(JRequest::getWord('type', $item->get('type')));
 if (!$type)

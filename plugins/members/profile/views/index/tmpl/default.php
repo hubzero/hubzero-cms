@@ -66,9 +66,9 @@ if (isset($this->registration_update))
 }
 
 //incremental registration
-require_once JPATH_BASE . '/components/com_members/tables/incremental/awards.php';
-require_once JPATH_BASE . '/components/com_members/tables/incremental/groups.php';
-require_once JPATH_BASE . '/components/com_members/tables/incremental/options.php';
+require_once PATH_CORE . '/components/com_members/tables/incremental/awards.php';
+require_once PATH_CORE . '/components/com_members/tables/incremental/groups.php';
+require_once PATH_CORE . '/components/com_members/tables/incremental/options.php';
 
 $uid = (int)$this->profile->get('uidNumber');
 $incrOpts = new ModIncrementalRegistrationOptions;
@@ -806,9 +806,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							JPluginHelper::importPlugin( 'hubzero');
-							$dispatcher = JDispatcher::getInstance();
-							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($tag_string))));
+							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($tag_string))));
 
 							if (count($tf) > 0)
 							{

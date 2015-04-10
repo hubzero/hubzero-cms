@@ -189,13 +189,12 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$dispatcher = JDispatcher::getInstance();
 
 		// Incoming paging vars
 		$sort = JRequest::getVar('sort', 'date');
 		$access = JRequest::getVar('access', 'all');
 
-		$config = JComponentHelper::getParams('com_resources');
+		$config = Component::params('com_resources');
 		if ($return == 'metadata')
 		{
 			if ($config->get('show_ranking'))

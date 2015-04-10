@@ -66,9 +66,7 @@ $this->css();
 			<label>
 				<?php echo Lang::txt('COM_ANSWERS_TAGS'); ?>:<br />
 				<?php
-				JPluginHelper::importPlugin('hubzero');
-
-				$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->row->get('tags', ''))));
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->row->get('tags', ''))));
 				$tf = implode("\n", $tf);
 
 				echo $tf ? $tf : '<textarea name="tags" id="actags" rows="6" cols="35">' . $this->escape($this->row->get('tags', '')) . '</textarea>';

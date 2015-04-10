@@ -190,7 +190,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get linked accounts, if any
-		$view->domains_avail = JPluginHelper::getPlugin('authentication');
+		$view->domains_avail = Plugin::byType('authentication');
 		$view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get("id"));
 
 		// Put the used domains into an array with details available from the providers (if applicable)
@@ -198,12 +198,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->domain_names = array();
 		if ($view->hzalaccounts)
 		{
+			Plugin::import('authentication');
+
 			$i = 0;
 			foreach ($view->hzalaccounts as $authenticators)
 			{
-				JPluginHelper::importPlugin('authentication');
-
-				$plugin = JPluginHelper::getPlugin('authentication', $authenticators['auth_domain_name']);
+				$plugin = Plugin::byType('authentication', $authenticators['auth_domain_name']);
 
 				// Make sure we got the plugin
 				if (!is_object($plugin))
@@ -290,12 +290,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -546,9 +543,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$profile->load($this->user->get('id'));
 
 		// Fire the onBeforeStoreUser trigger
-		JPluginHelper::importPlugin('user');
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onBeforeStoreUser', array($this->user->getProperties(), false));
+		Event::trigger('user.onBeforeStoreUser', array($this->user->getProperties(), false));
 
 		// Validate the password against password rules
 		if (!empty($password1))
@@ -610,7 +605,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Fire the onAfterStoreUser trigger
-		$dispatcher->trigger('onAfterStoreUser', array($this->user->getProperties(), false, null, $this->getError()));
+		Event::trigger('user.onAfterStoreUser', array($this->user->getProperties(), false, null, $this->getError()));
 
 		// Flush the variables from the session
 		$app->setUserState($this->option . 'token', null);

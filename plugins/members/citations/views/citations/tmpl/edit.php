@@ -57,11 +57,8 @@ foreach ($this->badges as $badge)
 	$b[] = $badge['raw_tag'];
 }
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
-$tags_list   = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', implode(",", $t))));
-$badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b))));
+$tags_list   = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', implode(",", $t))));
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b))));
 ?>
 
 <div id="browsebox" class="frm">
@@ -153,10 +150,7 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 								<?php
 								$authors = $this->row->authors();
 
-								JPluginHelper::importPlugin('hubzero');
-								$dispatcher = JDispatcher::getInstance();
-
-								$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'author', 'field-author', '', '')));
+								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', '')));
 								if (count($mc) > 0) {
 									echo $mc[0];
 								} else { ?>

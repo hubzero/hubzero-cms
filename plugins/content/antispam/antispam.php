@@ -68,10 +68,8 @@ class plgContentAntispam extends JPlugin
 		// Get the detector manager
 		$service = new \Hubzero\Spam\Checker();
 
-		JPluginHelper::importPlugin('antispam');
-		$dispatcher = JDispatcher::getInstance();
 
-		foreach ($dispatcher->trigger('onAntispamDetector') as $detector)
+		foreach (Event::trigger('antispam.onAntispamDetector') as $detector)
 		{
 			if (!$detector) continue;
 
@@ -87,7 +85,7 @@ class plgContentAntispam extends JPlugin
 			// Learn from it?
 			if ($this->params->get('learn_spam', 1))
 			{
-				$dispatcher->trigger('onAntispamTrain', array(
+				Event::trigger('antispam.onAntispamTrain', array(
 					$content,
 					true
 				));
@@ -106,7 +104,7 @@ class plgContentAntispam extends JPlugin
 		// Learn from it?
 		if ($this->params->get('learn_ham', 0))
 		{
-			$dispatcher->trigger('onAntispamTrain', array(
+			Event::trigger('antispam.onAntispamTrain', array(
 				$content,
 				false
 			));

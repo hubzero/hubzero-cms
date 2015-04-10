@@ -593,16 +593,13 @@ $area = JRequest::getVar('area', 'about');
 	<section class="main section citation-section" id="reviews">
 		<h3><?php echo JText::_('COM_CITATIONS_REVIEWS'); ?></h3>
 		<?php
-			JPluginHelper::importPlugin('hubzero');
-			$dispatcher = JDispatcher::getInstance();
-
 			$params = array(
 				$citation,
 				$this->option,
 				JRoute::_('index.php?option='.$this->option.'&task=view&id='.$citation->id.'&area=reviews'),
 				array('png','jpg','gif','tiff','pdf')
 			);
-			$comments = $dispatcher->trigger( 'onAfterDisplayContent', $params );
+			$comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
 			echo $comments[0];
 		?>
 	</section>

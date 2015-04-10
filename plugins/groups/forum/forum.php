@@ -1459,15 +1459,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 
 			$encryptor = new \Hubzero\Mail\Token();
-			$jconfig = JFactory::getConfig();
-			$juri = JURI::getInstance();
-
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
 
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename'),
-				'email' => $jconfig->getValue('config.mailfrom')
+				'name'  => Config::get('sitename'),
+				'email' => Config::get('mailfrom')
 			);
 
 			// Email each group member separately, each needs a user specific token
@@ -1479,7 +1474,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				// add unsubscribe link
 				$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
-				$unsubscribeLink  = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
+				$unsubscribeLink  = rtrim(Request::base(), '/') . '/' . ltrim(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
 
 				$msg = array();
 
@@ -1508,7 +1503,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
 
-				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
+				if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
 				{
 					$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 				}

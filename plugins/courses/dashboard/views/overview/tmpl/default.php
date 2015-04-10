@@ -159,8 +159,5 @@ $base = $this->offering->link();
 	</div>
 
 <?php
-	JPluginHelper::importPlugin('courses');
-	$dispatcher = JDispatcher::getInstance();
-
-	$after = $dispatcher->trigger('onCourseDashboard', array($this->course, $this->offering));
+	$after = Event::trigger('courses.onCourseDashboard', array($this->course, $this->offering));
 	echo implode("\n", $after);

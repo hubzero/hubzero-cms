@@ -511,12 +511,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$settings[$component->action] = array();
 		}
 
-		// Load plugins
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Fetch message methods
-		$notimethods = $dispatcher->trigger('onMessageMethods', array());
+		$notimethods = Event::trigger('xmessage.onMessageMethods', array());
 
 		// A var for storing the default notification method
 		$default_method = null;
@@ -1102,9 +1098,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$from['email'] = $member->get('email');
 
 		// Send the message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('member_message', $subject, $message, $from, $email_users, $option)))
+		if (!Event::trigger('xmessage.onSendMessage', array('member_message', $subject, $message, $from, $email_users, $option)))
 		{
 			$this->setError(JText::_('PLG_MEMBERS_MESSAGES_ERROR_MSG_USER_FAILED'));
 		}

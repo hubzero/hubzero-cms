@@ -127,9 +127,6 @@ class plgContentFormatwiki extends JPlugin
 
 		if (trim($content) && $this->_isWiki($content))
 		{
-			$dispatcher = JDispatcher::getInstance();
-			JPluginHelper::importPlugin('wiki');
-
 			if (!isset($params['fullparse']))
 			{
 				$params['fullparse'] = true;
@@ -141,7 +138,7 @@ class plgContentFormatwiki extends JPlugin
 			}
 
 			// Trigger the onFinderBeforeSave event.
-			$results = $dispatcher->trigger('onWikiParseText', array($content, $params, $params['fullparse'], true));
+			$results = Event::trigger('wiki.onWikiParseText', array($content, $params, $params['fullparse'], true));
 			$content = implode('', $results);
 		}
 

@@ -29,15 +29,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//instantiate autocompleter
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 //is the autocompleter disabled
 $disabled = ($this->tos) ? true : false;
 
 //get autocompleter
-$tos = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'mbrs', 'members', '', $this->tos, '', $disabled)));
+$tos = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'mbrs', 'members', '', $this->tos, '', $disabled)));
 
 $this->css();
 ?>

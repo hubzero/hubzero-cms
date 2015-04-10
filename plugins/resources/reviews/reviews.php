@@ -379,7 +379,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
 		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = ($row->id ? $row->created : JFactory::getDate()->toSql());
+		$row->created    = ($row->id ? $row->created : Date::toSql());
 		$row->state      = ($row->id ? $row->state : 0);
 		$row->created_by = ($row->id ? $row->created_by : User::get('id'));
 
@@ -477,13 +477,13 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		if (!$voted && $vote) // && $rev->user_id != User::get('id'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 			$v = new Vote($database);
 			$v->referenceid = $id;
 			$v->category    = $cat;
 			$v->voter       = User::get('id');
 			$v->ip          = $ip;
-			$v->voted       = JFactory::getDate()->toSql();
+			$v->voted       = Date::toSql();
 			$v->helpful     = $vote;
 			if (!$v->check())
 			{
@@ -611,7 +611,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 		$row->comment   = \Hubzero\Utility\Sanitize::clean($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created && $row->created != '0000-00-00 00:00:00') ? $row->created : JFactory::getDate()->toSql();
+		$row->created   = ($row->created && $row->created != '0000-00-00 00:00:00') ? $row->created : Date::toSql();
 
 		// Check for missing (required) fields
 		if (!$row->check())
@@ -668,9 +668,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		);
 
 		// Send message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option)))
+		if (!Event::trigger('xmessage.onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option)))
 		{
 			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
 		}
