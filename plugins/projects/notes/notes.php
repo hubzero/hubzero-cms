@@ -584,30 +584,25 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function fixupPathway()
 	{
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->setPathway(array());
-
 		// Add group
 		if ($this->model->groupOwner())
 		{
-			$pathway->setPathway(array());
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
 				Route::url('index.php?option=com_groups')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				\Hubzero\Utility\String::truncate($this->model->groupOwner('description'), 50),
 				Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn'))
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_PROJECTS_PROJECTS'),
 				Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn') . '&active=projects')
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COMPONENT_LONG_NAME'),
 				Route::url('index.php?option=' . $this->_option)
 			);
@@ -615,7 +610,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		if ($this->model->exists())
 		{
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->model->get('title')),
 				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias'))
 			);
@@ -623,19 +618,19 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		if ($this->_tool && $this->_tool->id)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
 				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->model->get('alias') . '&active=tools')
 			);
 
-			$pathway->addItem(
+			Pathway::append(
 				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
 				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id)
 			);
 
-			$pathway->addItem(
+			Pathway::append(
 				ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
 				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id . '&action=wiki')
@@ -643,7 +638,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
 				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->model->get('alias') . '&active=notes')

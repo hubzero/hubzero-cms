@@ -1160,8 +1160,7 @@ class Publications extends SiteController
 					$this->view->version 		= $version;
 
 					// Get publication plugin params
-					$pplugin 			= \JPluginHelper::getPlugin( 'projects', 'publications' );
-					$pparams 			= new \JParameter($pplugin->params);
+					$pparams = Plugin::params( 'projects', 'publications' );
 
 					$this->view->googleView	= $pparams->get('googleview');
 

@@ -3,8 +3,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Connections enabled?
-$plugin = JPluginHelper::getPlugin( 'projects', 'files' );
-$p_params = new JParameter($plugin->params);
+$p_params = Plugin::params( 'projects', 'files' );
 
 $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);

@@ -314,9 +314,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(
+		Pathway::append(
 				stripslashes($view->row->get('content')),
 				Route::url('index.php?option=' . $this->_option
 					. '&alias=' . $this->model->get('alias') . '&active=todo'

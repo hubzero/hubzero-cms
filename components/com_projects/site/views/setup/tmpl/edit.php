@@ -223,8 +223,7 @@ else
 						<?php } ?>
 
 						<?php
-						$plugin = JPluginHelper::getPlugin( 'projects', 'notes' );
-						$pparams = new JParameter( $plugin->params );
+						$pparams = Plugin::params( 'projects', 'notes' );
 						if ($pparams->get('enable_publinks')) { ?>
 						<label>
 							<input type="hidden"  name="params[notes_public]" value="0" />
@@ -233,8 +232,7 @@ else
 						<?php } ?>
 
 						<?php
-						$plugin = JPluginHelper::getPlugin( 'projects', 'files' );
-						$pparams = new JParameter( $plugin->params );
+						$pparams = Plugin::params( 'projects', 'files' );
 						if ($pparams->get('enable_publinks')) { ?>
 						<label>
 							<input type="hidden"  name="params[files_public]" value="0" />

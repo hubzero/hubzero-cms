@@ -645,8 +645,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Common extensions (for gallery)
-			$pubPlugin 	= \JPluginHelper::getPlugin( 'projects', 'publications' );
-			$pubparams  = new \JParameter($pubPlugin->params);
+			$pubparams 	= Plugin::params( 'projects', 'publications' );
 
 			$view->image_ext = \Components\Projects\Helpers\Html::getParamArray(
 								$pubparams->get('image_types', 'bmp, jpeg, jpg, png, gif' ));

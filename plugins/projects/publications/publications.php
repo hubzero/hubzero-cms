@@ -1112,9 +1112,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
 			$view->url . '?action=start'
 		);
@@ -1611,10 +1609,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _appendBreadcrumbs( $title, $url, $version = 'default')
 	{
 		// Append breadcrumbs
-		$app 		= JFactory::getApplication();
-		$pathway 	= $app->getPathway();
 		$url 		= $version != 'default' ? $url . '&version=' . $version : $url;
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($title),
 			$url
 		);
@@ -1741,9 +1737,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->url = Route::url($view->route);
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
 			$view->url . '?action=start'
 		);
@@ -1834,9 +1828,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->url = Route::url($view->route . '?action=start');
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')),
 			$view->url
 		);
@@ -2123,10 +2115,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$row->loadVersion($pid, $version);
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
 		$url = $version != 'default' ? $view->url . '&amp;version=' . $version : $view->url;
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($row->title),
 			$view->url
 		);
@@ -2929,10 +2919,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
 		$url =  $view->url . '?version='.$version;
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($row->title),
 			$url
 		);
@@ -4233,9 +4221,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Append breadcrumbs
 		if (!$ajax)
 		{
-			$app = JFactory::getApplication();
-			$pathway = $app->getPathway();
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($pub->title),
 				$url
 			);
@@ -6328,9 +6314,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		// Append breadcrumbs
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($view->pub->title),
 			$view->url
 		);
@@ -7214,8 +7198,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
-				$plugin = JPluginHelper::getPlugin('projects', $pluginName);
-				$params = new JParameter($plugin->params);
+				$params = Plugin::params('projects', $pluginName);
 
 				// Get restrictions from plugin params
 				$projects = $params->get('restricted')
