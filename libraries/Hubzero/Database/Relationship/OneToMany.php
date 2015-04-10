@@ -61,7 +61,7 @@ class OneToMany extends Relationship
 		// Check and make sure this is an array of arrays
 		if (!is_array($data)) return false;
 
-		if (is_array($data[0]))
+		if (isset($data[0]) && is_array($data[0]))
 		{
 			foreach ($data as $d)
 			{
