@@ -91,7 +91,7 @@ $this->css()
 					<label for="time" style="float:left;"><?php echo Lang::txt('COM_TIME_RECORDS_TIME'); ?>:</label>
 					<div style="width: 75px; float:left; margin-right: 5px; margin-left: 5px">
 						<select name="htime" id="htime" class="no-search" tabindex="1">
-							<?php for ($i=0; $i < 9; $i++) : ?>
+							<?php for ($i=0; $i < 24; $i++) : ?>
 								<option value="<?php echo $i; ?>" <?php echo ($this->row->hours == $i) ? 'selected="selected"' : ''; ?>>
 									<?php echo $i; ?>
 								</option>

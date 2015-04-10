@@ -166,7 +166,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 							</td>
 							<td><?php echo $record->user->name; ?></td>
 							<td class="col-time"><?php echo $record->time; ?></td>
-							<td><?php echo JHTML::_('date', $record->date, 'm/d/y', null); ?></td>
+							<td><?php echo JHTML::_('date', $record->date, 'm/d/y'); ?></td>
 							<td>
 								<?php echo String::highlight(
 									$record->task->name,
