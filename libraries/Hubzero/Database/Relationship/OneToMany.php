@@ -146,6 +146,10 @@ class OneToMany extends Relationship
 			{
 				$row->addRelationship($name, $data[$row->{$this->localKey}]);
 			}
+			else
+			{
+				$row->addRelationship($name, new Rows);
+			}
 		}
 
 		return $rows;
