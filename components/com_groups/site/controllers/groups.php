@@ -106,7 +106,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if (is_object($profile))
 		{
 			//get users tags
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 			$mt = new MembersModelTags($profile->get("uidNumber"));
 			$mytags = $mt->render('string');
 
@@ -194,7 +194,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->groups = \Hubzero\User\Group::find($this->view->filters);
 		$this->view->authorized = $this->_authorize();
 
-
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -257,9 +256,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if ($this->view->group->get('approved') != 1)
 		{
 			//get list of members & managers & invitees
-			$managers 	= $this->view->group->get('managers');
-			$members 	= $this->view->group->get('members');
-			$invitees 	= $this->view->group->get('invitees');
+			$managers = $this->view->group->get('managers');
+			$members  = $this->view->group->get('members');
+			$invitees = $this->view->group->get('invitees');
 			$members_invitees = array_merge($members, $invitees);
 			$managers_members_invitees = array_merge($managers, $members, $invitees);
 
@@ -482,13 +481,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->view->logos = JFolder::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
 		}
 
-		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
-		$this->view->hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
+		$this->view->hub_group_plugins = Event::trigger('groups.onGroupAreas', array());
 		array_unshift($this->view->hub_group_plugins, array(
 			'name'             => 'overview',
 			'title'            => 'Overview',
@@ -514,7 +509,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//display view
 		$this->view->display();
 	}
-
 
 	/**
 	 *  Save group settings
@@ -677,17 +671,14 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Rename the temporary upload directory if it exist
 		$log_comments = '';
 
-		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onGroupAfterSave', array($before, $group));
+		Event::trigger('groups.onGroupAfterSave', array($before, $group));
 
 		if ($this->_task == 'new')
 		{
 			if ($lid != $group->get('gidNumber'))
 			{
 				$config = $this->config;
-				$bp = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS);
+				$bp = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS);
 				if (is_dir($bp . DS . $lid))
 				{
 					rename($bp . DS . $lid, $bp . DS . $group->get('gidNumber'));
@@ -698,7 +689,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
-			$logs = $dispatcher->trigger('onGroupNew', array($group));
+			$logs = Event::trigger('groups.onGroupNew', array($group));
 			if (count($logs) > 0)
 			{
 				$log_comments .= implode('', $logs);
@@ -883,16 +874,12 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			return;
 		}
 
-		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-
 		//start log
 		$this->view->log = Lang::txt('COM_GROUPS_DELETE_MEMBER_LOG',count($this->view->group->get('members')));
 
 		// Trigger the functions that delete associated content
 		// Should return logs of what was deleted
-		$logs = $dispatcher->trigger('onGroupDeleteCount', array($this->view->group));
+		$logs = Event::trigger('groups.onGroupDeleteCount', array($this->view->group));
 		if (count($logs) > 0)
 		{
 			$this->view->log .= '<br />' . implode('<br />', $logs);
@@ -994,20 +981,16 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		$log .= '' . "\n";
 
-		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Trigger the functions that delete associated content
 		// Should return logs of what was deleted
-		$logs = $dispatcher->trigger('onGroupDelete', array($this->view->group));
+		$logs = Event::trigger('groups.onGroupDelete', array($this->view->group));
 		if (count($logs) > 0)
 		{
 			$log .= implode('',$logs);
 		}
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->group->get('gidNumber');
+		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->group->get('gidNumber');
 		if (is_dir($path))
 		{
 			// Attempt to delete the file

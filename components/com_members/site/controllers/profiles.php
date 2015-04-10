@@ -72,7 +72,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function incremOptOutTask()
 	{
-		$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		if (!$profile)
 		{
 			return;
@@ -100,7 +100,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function autocompleteTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}
@@ -110,8 +110,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$referrer = Request::getVar('HTTP_REFERER', NULL, 'server');
 		if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer))
 		{
-			if (!$this->juser->authorise('core.admin', $this->_option)
-			 && !$this->juser->authorise('core.manage', $this->_option))
+			if (!User::authorise('core.admin', $this->_option)
+			 && !User::authorise('core.manage', $this->_option))
 			{
 				switch ($this->config->get('user_messaging'))
 				{
@@ -121,7 +121,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 					case 1:
 					default:
-						$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+						$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 						$xgroups = $profile->getGroups('all');
 						$usersgroups = array();
 						if (!empty($xgroups))
@@ -148,7 +148,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 						if (!$members || empty($members))
 						{
-							$members = array($this->juser->get('id'));
+							$members = array(User::get('id'));
 						}
 
 						$restrict = " AND xp.uidNumber IN (" . implode(',', $members) . ")";
@@ -259,7 +259,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$this->view->setError($error);
 		}
 
-		$this->view->juser = $this->juser;
+		$this->view->juser = User::getRoot();
 
 		$this->view->display();
 	}
@@ -439,7 +439,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function myaccountTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount'))),
@@ -449,7 +449,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		Request::setVar('id', $this->juser->get('id'));
+		Request::setVar('id', User::get('id'));
 		$this->viewTask();
 		return;
 	}
@@ -478,10 +478,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Incoming
 		$id = Request::getInt('id', 0);
 		$tab = Request::getVar('active', 'dashboard');  // The active tab (section)
-
-		// Get plugins
-		JPluginHelper::importPlugin('members');
-		$dispatcher = JDispatcher::getInstance();
 
 		// Ensure we have an ID
 		if (!$id)
@@ -517,7 +513,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		//   Doing so can have negative affects.
 		if ($this->config->get('employeraccess') && $tab == 'resume')
 		{
-			$checkemp   = $dispatcher->trigger('isEmployer', array());
+			$checkemp   = Event::trigger('members.isEmployer', array());
 			$emp        = is_array($checkemp) ? $checkemp[0] : 0;
 			$this->view->authorized = $emp ? 1 : $this->view->authorized;
 		}
@@ -526,7 +522,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if ($profile->get('public') != 1 && !$this->view->authorized)
 		{
 			// Check if they're logged in
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&id=' . $profile->get('uidNumber')), 'server');
 				$this->setRedirect(
@@ -559,7 +555,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Trigger the functions that return the areas we'll be using
-		$this->view->cats = $dispatcher->trigger('onMembersAreas', array($this->juser, $profile));
+		$this->view->cats = Event::trigger('members.onMembersAreas', array(User::getRoot(), $profile));
 
 		$available = array();
 		foreach ($this->view->cats as $cat)
@@ -577,7 +573,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Get the sections
-		$this->view->sections = $dispatcher->trigger('onMembers', array($this->juser, $profile, $this->_option, array($tab)));
+		$this->view->sections = Event::trigger('members.onMembers', array(User::getRoot(), $profile, $this->_option, array($tab)));
 
 		// Merge profile params (take precendence) with the site config
 		//  ** What is this for?
@@ -704,7 +700,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		);
 
 		// Load some needed libraries
-		if (\Hubzero\User\Helper::isXDomainUser($this->juser->get('id')))
+		if (\Hubzero\User\Helper::isXDomainUser(User::get('id')))
 		{
 			App::abort(403, Lang::txt('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT'));
 			return;
@@ -1327,7 +1323,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
@@ -1534,8 +1530,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Make sure certain changes make it back to the Joomla user table
 		if ($id > 0)
 		{
-			$juser = JUser::getInstance($id);
-			$jname = $juser->get('name');
+			$juser  = User::getInstance($id);
+			$jname  = $juser->get('name');
 			$jemail = $juser->get('email');
 			if ($name != trim($jname))
 			{

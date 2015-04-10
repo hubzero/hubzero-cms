@@ -43,6 +43,7 @@ use Exception;
 use Request;
 use Pathway;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -846,10 +847,6 @@ class Tickets extends SiteController
 			}
 		}
 
-		// Generate a CAPTCHA
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Output HTML
 		$lists = array();
 
@@ -900,7 +897,7 @@ class Tickets extends SiteController
 			->set('file_types', $this->config->get('file_ext'))
 			->set('lists', $lists)
 			->set('row', $row)
-			->set('captchas', $dispatcher->trigger('onGetComponentCaptcha'))
+			->set('captchas', Event::trigger('support.onGetComponentCaptcha'))
 			->setLayout('new')
 			->display();
 	}
@@ -917,12 +914,8 @@ class Tickets extends SiteController
 
 		$live_site = rtrim(Request::base(), '/');
 
-		// Get plugins
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Trigger any events that need to be called before session stop
-		$dispatcher->trigger('onPreTicketSubmission', array());
+		Event::trigger('support.onPreTicketSubmission', array());
 
 		// Incoming
 		$no_html  = Request::getInt('no_html', 0);
@@ -970,7 +963,7 @@ class Tickets extends SiteController
 
 		// Trigger any events that need to be called
 		$customValidation = true;
-		$result = $dispatcher->trigger('onValidateTicketSubmission', array($reporter, $problem));
+		$result = Event::trigger('support.onValidateTicketSubmission', array($reporter, $problem));
 		$customValidation = (is_array($result) && !empty($result)) ? $result[0] : $customValidation;
 
 		// Check for some required fields
@@ -993,7 +986,7 @@ class Tickets extends SiteController
 		if (!$verified)
 		{
 			// Check CAPTCHA
-			$validcaptchas = $dispatcher->trigger('onValidateCaptcha');
+			$validcaptchas = Event::trigger('support.onValidateCaptcha');
 			if (count($validcaptchas) > 0)
 			{
 				foreach ($validcaptchas as $validcaptcha)
@@ -1274,9 +1267,6 @@ class Tickets extends SiteController
 					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 					// Send e-mail to admin?
-					\JPluginHelper::importPlugin('xmessage');
-					$dispatcher = \JDispatcher::getInstance();
-
 					foreach ($rowc->to('ids') as $to)
 					{
 						if ($allowEmailResponses)
@@ -1287,7 +1277,7 @@ class Tickets extends SiteController
 						}
 
 						// Get the user's email address
-						if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+						if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
 						{
 							$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 						}
@@ -1341,7 +1331,7 @@ class Tickets extends SiteController
 		}
 
 		// Trigger any events that need to be called before session stop
-		$dispatcher->trigger('onTicketSubmission', array($row));
+		Event::trigger('support.onTicketSubmission', array($row));
 
 		// Output Thank You message
 		$this->view->ticket  = $row->get('id');
@@ -1737,9 +1727,7 @@ class Tickets extends SiteController
 			throw new Exception($rowc->getError(), 500);
 		}
 
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-		$dispatcher->trigger('onTicketUpdate', array($row, $rowc));
+		Event::trigger('support.onTicketUpdate', array($row, $rowc));
 
 		$attach = new Tables\Attachment($this->database);
 		if ($tmp = Request::getInt('tmp_dir'))
@@ -1856,8 +1844,6 @@ class Tickets extends SiteController
 					}
 				}
 
-				\JPluginHelper::importPlugin('xmessage');
-
 				foreach ($rowc->to('ids') as $to)
 				{
 					if ($allowEmailResponses)
@@ -1868,7 +1854,7 @@ class Tickets extends SiteController
 					}
 
 					// Get the user's email address
-					if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+					if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 					}

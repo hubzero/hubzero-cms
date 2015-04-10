@@ -37,6 +37,7 @@ use Hubzero\Utility\Validate;
 use Request;
 use Pathway;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -117,12 +118,8 @@ class Abuse extends SiteController
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_CATEGORY_NOT_FOUND'), 404);
 		}
 
-		// Load plugins
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get the search result totals
-		$results = $dispatcher->trigger('getReportedItem', array(
+		$results = Event::trigger('support.getReportedItem', array(
 			$this->view->refid,
 			$this->view->cat,
 			$this->view->parentid
@@ -250,9 +247,7 @@ class Abuse extends SiteController
 		}
 
 		// Get the search result totals
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-		$results = $dispatcher->trigger('onReportItem', array(
+		$results = Event::trigger('support.onReportItem', array(
 			$this->view->refid,
 			$this->view->cat
 		));
@@ -264,7 +259,7 @@ class Abuse extends SiteController
 			$reported->author = 0;
 
 			// Get the search result totals
-			$results = $dispatcher->trigger('getReportedItem', array(
+			$results = Event::trigger('support.getReportedItem', array(
 				$this->view->refid,
 				$this->view->cat,
 				0

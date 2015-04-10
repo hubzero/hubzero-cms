@@ -357,9 +357,7 @@ if ($this->registration->Interests != REG_HIDE) {
 	$message = (!empty($this->xregistration->_invalid['interests'])) ? '<p class="error">' . $this->xregistration->_invalid['interests'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
-	JPluginHelper::importPlugin( 'hubzero' );
-	$dispatcher = JDispatcher::getInstance();
-	$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($this->tags))) );
+	$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($this->tags))));
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
 	$html .= "\t\t\t".Lang::txt('MEMBER_FIELD_TAGS').': '.$required."\n";

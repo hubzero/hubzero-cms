@@ -140,10 +140,6 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		{
 			$row = new MwSession($mwdb);
 
-			// Get plugins
-			JPluginHelper::importPlugin('mw');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
@@ -155,7 +151,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				}
 
 				// Trigger any events that need to be called before session stop
-				$dispatcher->trigger('onBeforeSessionStop', array($row->appname));
+				Event::trigger('mw.onBeforeSessionStop', array($row->appname));
 
 				// Stop the session
 				$status = $this->middleware("stop $id", $output);
@@ -170,7 +166,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				}
 
 				// Trigger any events that need to be called after session stop
-				$dispatcher->trigger('onAfterSessionStop', array($row->appname));
+				Event::trigger('mw.onAfterSessionStop', array($row->appname));
 			}
 		}
 
@@ -273,7 +269,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		// Incoming
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
-			'start'=> $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+			'start' => $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
 		$obj = new ToolsTableSessionClass($this->database);

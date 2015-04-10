@@ -25,14 +25,12 @@ class ContentViewArticle extends JViewLegacy
 	{
 		// Initialise variables.
 		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-		$dispatcher	= JDispatcher::getInstance();
+		$userId		= User::get('id');
 
 		$this->item		= $this->get('Item');
 		$this->print	= Request::getBool('print');
 		$this->state	= $this->get('State');
-		$this->user		= $user;
+		$this->user		= User::getRoot();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -117,17 +115,16 @@ class ContentViewArticle extends JViewLegacy
 		//
 		// Process the content plugins.
 		//
-		JPluginHelper::importPlugin('content');
-		$results = $dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$this->params, $offset));
+		$results = Event::trigger('content.onContentPrepare', array ('com_content.article', &$item, &$this->params, $offset));
 
 		$item->event = new stdClass();
-		$results = $dispatcher->trigger('onContentAfterTitle', array('com_content.article', &$item, &$this->params, $offset));
+		$results = Event::trigger('content.onContentAfterTitle', array('com_content.article', &$item, &$this->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_content.article', &$item, &$this->params, $offset));
+		$results = Event::trigger('content.onContentBeforeDisplay', array('com_content.article', &$item, &$this->params, $offset));
 		$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onContentAfterDisplay', array('com_content.article', &$item, &$this->params, $offset));
+		$results = Event::trigger('content.onContentAfterDisplay', array('com_content.article', &$item, &$this->params, $offset));
 		$item->event->afterDisplayContent = trim(implode("\n", $results));
 
 		// Increment the hit counter of the article.

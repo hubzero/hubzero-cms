@@ -142,7 +142,6 @@ class Component extends \JModelForm
 	 */
 	public function save($data)
 	{
-		$dispatcher = \JDispatcher::getInstance();
 		$table = \JTable::getInstance('extension');
 		$isNew = true;
 
@@ -197,7 +196,7 @@ class Component extends \JModelForm
 		}
 
 		// Trigger the oonConfigurationBeforeSave event.
-		$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
+		$result = Event::trigger($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
 
 		if (in_array(false, $result, true))
 		{
@@ -216,7 +215,7 @@ class Component extends \JModelForm
 		$this->cleanCache('_system');
 
 		// Trigger the onConfigurationAfterSave event.
-		$dispatcher->trigger($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew));
+		Event::trigger($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew));
 
 		return true;
 	}

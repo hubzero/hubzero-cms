@@ -170,8 +170,7 @@ class Hub extends Relational
 				$object  = new Object;
 				$object->set('notes', stripslashes($this->get('notes')));
 
-				\JPluginHelper::importPlugin('content');
-				\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+				\Event::trigger('content.onContentPrepare', array(
 					'com_time.hub.notes',
 					&$object,
 					&$config

@@ -36,8 +36,10 @@ use Hubzero\Component\AdminController;
 use Hubzero\Mail\Message;
 use Hubzero\Mail\View;
 use Exception;
+use Component;
 use Request;
 use Config;
+use Event;
 use Route;
 use Lang;
 use User;
@@ -121,12 +123,8 @@ class Abusereports extends AdminController
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 
-		// Load plugins
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get the parent ID
-		$results = $dispatcher->trigger('getParentId', array(
+		$results = Event::trigger('support.getParentId', array(
 			$report->referenceid,
 			$report->category
 		));
@@ -145,7 +143,7 @@ class Abusereports extends AdminController
 		}
 
 		// Get the reported item
-		$results = $dispatcher->trigger('getReportedItem', array(
+		$results = Event::trigger('support.getReportedItem', array(
 			$report->referenceid,
 			$cat,
 			$parentid
@@ -165,7 +163,7 @@ class Abusereports extends AdminController
 		}
 
 		// Get the title
-		$titles = $dispatcher->trigger('getTitle', array(
+		$titles = Event::trigger('support.getTitle', array(
 			$report->category,
 			$parentid
 		));
@@ -232,11 +230,8 @@ class Abusereports extends AdminController
 			throw new Exception($report->getError(), 500);
 		}
 
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Remove the reported item and any other related processes that need be performed
-		$results = $dispatcher->trigger('releaseReportedItem', array(
+		$results = Event::trigger('support.releaseReportedItem', array(
 			$report->referenceid,
 			$parentid,
 			$report->category
@@ -295,12 +290,8 @@ class Abusereports extends AdminController
 		$report->reviewed_by = User::get('id');
 		$report->note = Request::getVar('note', '');
 
-		// Load plugins
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get the reported item
-		$results = $dispatcher->trigger('getReportedItem', array(
+		$results = Event::trigger('support.getReportedItem', array(
 			$report->referenceid,
 			$report->category,
 			$parentid
@@ -320,7 +311,7 @@ class Abusereports extends AdminController
 		}
 
 		// Remove the reported item and any other related processes that need be performed
-		$results = $dispatcher->trigger('deleteReportedItem', array(
+		$results = Event::trigger('support.deleteReportedItem', array(
 			$report->referenceid,
 			$parentid,
 			$report->category,
@@ -340,8 +331,7 @@ class Abusereports extends AdminController
 
 		if ($isSpam)
 		{
-			\JPluginHelper::importPlugin('antispam');
-			$results = $dispatcher->trigger('onAntispamTrain', array(
+			$results = Event::trigger('antispam.onAntispamTrain', array(
 				$reported->text,
 				$isSpam
 			));

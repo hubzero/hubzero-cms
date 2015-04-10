@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css()
      ->js();
-
-$juser = JFactory::getUser();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -166,12 +164,8 @@ $juser = JFactory::getUser();
 					<?php
 					if (count($this->rows) > 0)
 					{
-						// Get plugins
-						JPluginHelper::importPlugin('members');
-						$dispatcher = JDispatcher::getInstance();
-
 						$areas = array();
-						$activeareas = $dispatcher->trigger('onMembersContributionsAreas', array($this->authorized));
+						$activeareas = Event::trigger('members.onMembersContributionsAreas', array($this->authorized));
 						foreach ($activeareas as $area)
 						{
 							$areas = array_merge($areas, $area);
@@ -183,13 +177,13 @@ $juser = JFactory::getUser();
 
 						// User messaging
 						$messaging = false;
-						if ($this->config->get('user_messaging') > 0 && !$juser->get('guest'))
+						if ($this->config->get('user_messaging') > 0 && !User::isGuest())
 						{
 							switch ($this->config->get('user_messaging'))
 							{
 								case 1:
 									// Get the groups the visiting user
-									$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+									$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 									$usersgroups = array();
 									if (!empty($xgroups))
 									{
@@ -233,7 +227,7 @@ $juser = JFactory::getUser();
 								$id = $row->uidNumber;
 							}
 
-							if ($row->uidNumber == $juser->get('id'))
+							if ($row->uidNumber == User::get('id'))
 							{
 								$cls .= ($cls) ? ' me' : 'me';
 							}
@@ -279,7 +273,7 @@ $juser = JFactory::getUser();
 
 							// User messaging
 							$messageuser = false;
-							if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id'))
+							if ($messaging && $row->uidNumber > 0 && $row->uidNumber != User::get('id'))
 							{
 								switch ($this->config->get('user_messaging'))
 								{
@@ -342,7 +336,7 @@ $juser = JFactory::getUser();
 							</td>
 							<td class="message-member">
 							<?php if ($messageuser) { ?>
-								<a class="message tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+								<a class="message tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
 									<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO', $this->escape($name)); ?>
 								</a>
 							<?php } ?>

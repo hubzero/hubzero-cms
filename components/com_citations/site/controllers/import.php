@@ -35,6 +35,13 @@ use Components\Citations\Tables\Type;
 use Components\Citations\Tables\Tags;
 use Hubzero\Component\SiteController;
 use Exception;
+use Pathway;
+use Request;
+use Route;
+use Event;
+use User;
+use Date;
+use Lang;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -51,7 +58,7 @@ class Import extends SiteController
 	 */
 	public function execute()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))),
@@ -95,7 +102,7 @@ class Import extends SiteController
 		}
 
 		//are we only allowing admins?
-		$isAdmin = $this->juser->authorize($this->_option, 'import');
+		$isAdmin = User::authorize($this->_option, 'import');
 		if ($importParam == 2 && !$isAdmin)
 		{
 			$this->setRedirect(
@@ -118,12 +125,8 @@ class Import extends SiteController
 		// Instantiate a new view
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
-		//import the plugins
-		\JPluginHelper::importPlugin('citation');
-		$dispatcher = \JDispatcher::getInstance();
-
 		//call the plugins
-		$this->view->accepted_files = $dispatcher->trigger('onImportAcceptedFiles' , array());
+		$this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles' , array());
 
 		//get any messages
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
@@ -170,12 +173,8 @@ class Import extends SiteController
 			throw new Exception(Lang::txt('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
 		}
 
-		// load citation import plugins
-		\JPluginHelper::importPlugin('citation');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// call the plugins
-		$citations = $dispatcher->trigger('onImport' , array($file));
+		$citations = Event::trigger('citation.onImport' , array($file));
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
@@ -190,7 +189,7 @@ class Import extends SiteController
 		}
 
 		// get the session object
-		$session = \JFactory::getSession();
+		$session   = \JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// write the citation data to files
@@ -228,7 +227,7 @@ class Import extends SiteController
 	public function reviewTask()
 	{
 		// get the session object
-		$session = \JFactory::getSession();
+		$session   = \JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// get the citations
@@ -305,7 +304,7 @@ class Import extends SiteController
 	public function saveTask()
 	{
 		// get the session object
-		$session = \JFactory::getSession();
+		$session   = \JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// read in contents of citations file
@@ -335,7 +334,7 @@ class Import extends SiteController
 		$citations_saved     = array();
 		$citations_not_saved = array();
 		$citations_error     = array();
-		$now = \Date::toSql();
+		$now = Date::toSql();
 		$user = $this->juser->get('id');
 		$allow_tags   = $this->config->get('citation_allow_tags', 'no');
 		$allow_badges = $this->config->get('citation_allow_badges', 'no');
@@ -530,7 +529,7 @@ class Import extends SiteController
 
 		if (isset($group) && $group != '')
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
 			$gob = new \GroupsGroup($this->database);
 			$cn = $gob->getName($group);
 

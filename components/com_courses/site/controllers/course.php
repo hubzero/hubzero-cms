@@ -35,6 +35,13 @@ use Hubzero\Component\SiteController;
 use Hubzero\Base\Object;
 use Hubzero\Content\Server;
 use Exception;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use Event;
+use User;
+use Lang;
 
 /**
  * Courses controller class
@@ -155,11 +162,8 @@ class Course extends SiteController
 
 		$this->view->active = Request::getVar('active', 'overview');
 
-		\JPluginHelper::importPlugin('courses');
-		$dispatcher = \JDispatcher::getInstance();
-
-		$this->view->plugins = $dispatcher->trigger(
-			'onCourseView',
+		$this->view->plugins = Event::trigger(
+			'courses.onCourseView',
 			array(
 				$this->course,
 				$this->view->active
@@ -548,10 +552,6 @@ class Course extends SiteController
 		// Get number of course members
 		$managers = $this->course->get('managers');
 
-		// Get plugins
-		\JPluginHelper::importPlugin('courses');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Incoming
 		$process = Request::getVar('process', '');
 		$confirmdel = Request::getVar('confirmdel', '');
@@ -569,7 +569,7 @@ class Course extends SiteController
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
-			$logs = $dispatcher->trigger('onCourseDeleteCount', array($course));
+			$logs = Event::trigger('courses.onCourseDeleteCount', array($course));
 			if (count($logs) > 0)
 			{
 				$log .= '<br />' . implode('<br />', $logs);
@@ -629,9 +629,7 @@ class Course extends SiteController
 		$message = str_replace("\n", "\r\n", $message);
 
 		// Send the message
-		\JPluginHelper::importPlugin('xmessage');
-		$dispatcher = \JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option)))
+		if (!Event::trigger('xmessage.onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option)))
 		{
 			$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');
 		}

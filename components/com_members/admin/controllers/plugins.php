@@ -185,12 +185,8 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Get related plugins
-		JPluginHelper::importPlugin('members');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Show related content
-		$this->view->manage = $dispatcher->trigger('onCanManage');
+		$this->view->manage = Event::trigger('members.onCanManage');
 
 		$this->view->client = $this->client;
 		$this->view->states = JHTML::_('grid.state', $this->view->filters['state']);
@@ -225,13 +221,9 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			);
 		}
 
-		// Get related plugins
-		JPluginHelper::importPlugin('members', $plugin);
-		$dispatcher = JDispatcher::getInstance();
-
 		// Show related content
-		$out = $dispatcher->trigger(
-			'onManage',
+		$out = Event::trigger(
+			'members.onManage',
 			array(
 				$this->_option,
 				$this->_controller,

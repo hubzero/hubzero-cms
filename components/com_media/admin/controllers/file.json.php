@@ -85,11 +85,9 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			JPluginHelper::importPlugin('content');
-			$dispatcher	= JDispatcher::getInstance();
 			$object_file = new JObject($file);
 			$object_file->filepath = $filepath;
-			$result = $dispatcher->trigger('onContentBeforeSave', array('com_media.file', &$object_file, true));
+			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true)) {
 				// There are some errors in the plugins
 				$log->addEntry(array('comment' => 'Errors before save: '.$filepath.' : '.implode(', ', $object_file->getErrors())));
@@ -139,7 +137,7 @@ class MediaControllerFile extends JControllerLegacy
 			else
 			{
 				// Trigger the onContentAfterSave event.
-				$dispatcher->trigger('onContentAfterSave', array('com_media.file', &$object_file, true));
+				Event::trigger('content.onContentAfterSave', array('com_media.file', &$object_file, true));
 				$log->addEntry(array('comment' => $folder));
 				$response = array(
 					'status' => '1',

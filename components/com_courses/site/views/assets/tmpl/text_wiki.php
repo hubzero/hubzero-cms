@@ -43,8 +43,8 @@ $config = array(
 );
 
 $this->model->set('content', stripslashes($this->model->get('content')));
-\JPluginHelper::importPlugin('content');
-\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+
+Event::trigger('content.onContentPrepare', array(
 	'com_courses.asset.content',
 	&$this->model,
 	&$config

@@ -42,9 +42,6 @@ if (!$this->tmpl)
 JHTML::_('behavior.tooltip');
 $this->css();
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 $cc = array();
 ?>
 <script type="text/javascript">
@@ -90,7 +87,7 @@ function saveAndUpdate()
 			<div class="input-wrap">
 				<label for="actags"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label>
 				<?php
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')) );
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else { ?>
@@ -102,7 +99,7 @@ function saveAndUpdate()
 				<div class="input-wrap">
 					<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label>
 					<?php
-					$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'fields[group]', 'acgroup','','','','owner')) );
+					$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'fields[group]', 'acgroup','','','','owner')));
 					if (count($gc) > 0) {
 						echo $gc[0];
 					} else { ?>
@@ -187,7 +184,7 @@ function saveAndUpdate()
 			<div class="input-wrap">
 				<label for="comment-field-message">
 					<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?> <?php
-					$mc = $dispatcher->trigger('onGetMultiEntry', array(
+					$mc = Event::trigger('hubzero.onGetMultiEntry', array(
 						array(
 							'members',   // The component to call
 							'cc',        // Name of the input field

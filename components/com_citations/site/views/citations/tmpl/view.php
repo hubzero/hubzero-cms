@@ -35,13 +35,12 @@ $this->css()
      ->js();
 
 //remove $this
-$juser = $this->juser;
-$config = $this->config;
+$config   = $this->config;
 $database = $this->database;
 $citation = $this->citation;
 
 //load user profile
-$profile = \Hubzero\User\Profile::getInstance( $citation->uid );
+$profile = \Hubzero\User\Profile::getInstance($citation->uid);
 
 //get citation type
 $ct = new \Components\Citations\Tables\Type($database);
@@ -151,7 +150,7 @@ $area = Request::getVar('area', 'about');
 	<div class="content-header-left">
 		<h2>
 			<?php echo $citation->title; ?>
-			<?php if ($juser->get('id') == $citation->uid) : ?>
+			<?php if (User::get('id') == $citation->uid) : ?>
 				<a class="edit" href="<?php echo Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id); ?>">Edit</a>
 			<?php endif; ?>
 		</h2>
@@ -593,16 +592,13 @@ $area = Request::getVar('area', 'about');
 	<section class="main section citation-section" id="reviews">
 		<h3><?php echo Lang::txt('COM_CITATIONS_REVIEWS'); ?></h3>
 		<?php
-			JPluginHelper::importPlugin('hubzero');
-			$dispatcher = JDispatcher::getInstance();
-
 			$params = array(
 				$citation,
 				$this->option,
 				Route::url('index.php?option='.$this->option.'&task=view&id='.$citation->id.'&area=reviews'),
 				array('png','jpg','gif','tiff','pdf')
 			);
-			$comments = $dispatcher->trigger( 'onAfterDisplayContent', $params );
+			$comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
 			echo $comments[0];
 		?>
 	</section>

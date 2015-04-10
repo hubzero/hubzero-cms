@@ -33,9 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // push css
 $this->css();
-
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -72,7 +69,7 @@ $dispatcher = JDispatcher::getInstance();
 			<label>
 				<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
 				<?php
-					$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'logins', 'acmembers')) );
+					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'logins', 'acmembers')));
 					if (count($mc) > 0) {
 						echo $mc[0];
 					} else { ?>

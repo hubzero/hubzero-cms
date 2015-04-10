@@ -202,7 +202,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			// If it was a user id
 			if (is_numeric($l))
 			{
-				$user = JUser::getInstance($l);
+				$user = User::getInstance($l);
 				$uid = $user->get('id');
 
 				// Ensure we found an account
@@ -700,9 +700,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$from['email'] = Config::get('mailfrom');
 
 		// E-mail the administrator
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option)))
+		if (!Event::trigger('xmessage.onSendMessage', array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option)))
 		{
 			$this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
 		}

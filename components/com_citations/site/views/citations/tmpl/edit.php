@@ -54,11 +54,8 @@ foreach ($this->badges as $badge)
 	$b[] = $badge['raw_tag'];
 }
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
-$tags_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))));
-$badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))));
+$tags_list   = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))));
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))));
 
 //get the referrer
 $backLink = Route::url('index.php?option=' . $this->option);
@@ -67,7 +64,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 	$backLink = $_SERVER['HTTP_REFERER'];
 }
 
-$pid = Request::getInt( 'publication', 0 );
+$pid = Request::getInt('publication', 0);
 
 ?>
 <header id="content-header">

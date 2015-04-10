@@ -33,6 +33,10 @@ namespace Components\Courses\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Exception;
 use stdClass;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
@@ -90,7 +94,7 @@ class Sections extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('config.list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(

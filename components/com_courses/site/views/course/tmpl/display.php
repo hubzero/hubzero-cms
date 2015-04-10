@@ -643,9 +643,7 @@ $this->css('course.css')
 </section><!-- / .course section -->
 
 <?php
-JPluginHelper::importPlugin('courses');
-
-$after = JDispatcher::getInstance()->trigger('onCourseViewAfter', array($this->course));
+$after = Event::trigger('courses.onCourseViewAfter', array($this->course));
 if ($after && count($after) > 0) { ?>
 <section class="below course section">
 	<?php echo implode("\n", $after); ?>

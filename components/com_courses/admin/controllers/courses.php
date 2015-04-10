@@ -32,6 +32,10 @@ namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php');
 
@@ -279,10 +283,6 @@ class Courses extends AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Get plugins
-			\JPluginHelper::importPlugin('courses');
-			$dispatcher = \JDispatcher::getInstance();
-
 			foreach ($ids as $id)
 			{
 				// Load the course page

@@ -78,13 +78,9 @@ class GroupsHelperView
 		//do we already have an instance of categories?
 		if (!isset(self::$_sections))
 		{
-			// Get group plugins
-			JPluginHelper::importPlugin('groups');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Trigger the functions that return the areas we'll be using
 			// then add overview to array
-			$sections = $dispatcher->trigger('onGroupAreas', array());
+			$sections = Event::trigger('groups.onGroupAreas', array());
 			array_unshift($sections, array(
 				'name'             => 'overview',
 				'title'            => 'Overview',
@@ -110,15 +106,11 @@ class GroupsHelperView
 	 */
 	public static function getBeforeSectionsContent($group)
 	{
-		// Get group plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-
 		// are we authorized
 		$authorized = self::authorize($group);
 
 		//get before group content
-		$beforeGroupContent = $dispatcher->trigger('onBeforeGroup', array(
+		$beforeGroupContent = Event::trigger('groups.onBeforeGroup', array(
 			$group,
 			$authorized
 		));
@@ -141,10 +133,6 @@ class GroupsHelperView
 			// are we authorized
 			$authorized = self::authorize($group);
 
-			// Get group plugins
-			JPluginHelper::importPlugin('groups');
-			$dispatcher = JDispatcher::getInstance();
-
 			//get active tab
 			$tab = self::getTab($group);
 
@@ -160,7 +148,7 @@ class GroupsHelperView
 			$limit = ($limit == 0) ? 'all' : $limit;
 
 			// Get the sections
-			$sectionsContent = $dispatcher->trigger('onGroup', array(
+			$sectionsContent = Event::trigger('groups.onGroup', array(
 					$group,
 					'com_groups',
 					$authorized,
@@ -233,7 +221,7 @@ class GroupsHelperView
 
 		// pass vars to view
 		$view->group           = $group;
-		$view->juser           = JFactory::getUser();
+		$view->juser           = User::getRoot();
 		$view->classOrId       = $classOrId;
 		$view->tab             = self::getTab($group);
 		$view->sections        = self::getSections();
@@ -451,7 +439,7 @@ class GroupsHelperView
 		$base = DS . trim($base, DS) . DS . $group->get('gidNumber') . DS . 'template';
 
 		// get all php files in template directory
-		$files = JFolder::files(JPATH_ROOT . $base, '\\.php', false, true);
+		$files = \JFolder::files(JPATH_ROOT . $base, '\\.php', false, true);
 
 		// check to see if any of our files are page templates
 		foreach ($files as $file)
@@ -644,17 +632,14 @@ class GroupsHelperView
 	 */
 	public static function superGroupLogin($group)
 	{
-		//get application objects
-		$app = JFactory::getApplication();
-
 		// if user is already logged in go to
 		if (!User::isGuest())
 		{
-			$app->redirect(
-					Route::url('index.php?option=com_groups&cn=' . $group->get('cn')),
-					Lang::txt('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', User::get('name'), User::get('email')),
-					'warning'
-				);
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $group->get('cn')),
+				Lang::txt('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', User::get('name'), User::get('email')),
+				'warning'
+			);
 		}
 
 		// create view object
@@ -707,7 +692,7 @@ class GroupsHelperView
 		define('JPATH_GROUPCOMPONENT', $templateComponentFolder);
 
 		// Call plugin to capture super group component route segments
-		JDispatcher::getInstance()->trigger('onBeforeRenderSuperGroupComponent', array());
+		Event::trigger('onBeforeRenderSuperGroupComponent', array());
 
 		// include and render component
 		ob_start();

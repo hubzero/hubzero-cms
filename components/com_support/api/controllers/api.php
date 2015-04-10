@@ -820,9 +820,6 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			$message['multipart'] = $eview->loadTemplate();
 
 			// Send e-mail to admin?
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-
 			foreach ($comment->to('ids') as $to)
 			{
 				if ($allowEmailResponses)
@@ -833,7 +830,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 				}
 
 				// Get the user's email address
-				if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support')))
+				if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support')))
 				{
 					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 				}

@@ -45,6 +45,7 @@ use Exception;
 use Request;
 use Config;
 use Route;
+use Event;
 use Lang;
 use User;
 
@@ -635,9 +636,7 @@ class Tickets extends AdminController
 			throw new Exception($rowc->getError(), 500);
 		}
 
-		\JPluginHelper::importPlugin('support');
-		$dispatcher = \JDispatcher::getInstance();
-		$dispatcher->trigger('onTicketUpdate', array($row, $rowc));
+		Event::trigger('support.onTicketUpdate', array($row, $rowc));
 
 		if (!$isNew)
 		{
@@ -739,8 +738,6 @@ class Tickets extends AdminController
 				}
 
 				// Send e-mail to admin?
-				\JPluginHelper::importPlugin('xmessage');
-
 				foreach ($rowc->to('ids') as $to)
 				{
 					if ($allowEmailResponses)
@@ -751,7 +748,7 @@ class Tickets extends AdminController
 					}
 
 					// Get the user's email address
-					if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+					if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 					}
@@ -1073,7 +1070,7 @@ class Tickets extends AdminController
 						}
 
 						// Get the user's email address
-						if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+						if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
 						{
 							$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 						}

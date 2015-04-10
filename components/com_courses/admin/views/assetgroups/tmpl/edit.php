@@ -42,9 +42,6 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 
 JHTML::_('behavior.modal');
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -137,7 +134,7 @@ jQuery(document).ready(function($){
 				<tr>
 					<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 					<td><?php
-					$creator = JUser::getInstance($this->row->get('created_by'));
+					$creator = User::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
 			<?php } ?>
@@ -158,10 +155,7 @@ jQuery(document).ready(function($){
 		</fieldset>
 
 		<?php
-			JPluginHelper::importPlugin('courses');
-			$dispatcher = JDispatcher::getInstance();
-
-			if ($plugins = $dispatcher->trigger('onAssetgroupEdit'))
+			if ($plugins = Event::trigger('courses.onAssetgroupEdit'))
 			{
 				$data = $this->row->get('params');
 
@@ -172,7 +166,7 @@ jQuery(document).ready(function($){
 
 					$param = new JParameter(
 						(is_object($data) ? $data->toString() : $data),
-						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+						PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 					);
 					foreach ($default->toArray() as $k => $v)
 					{

@@ -36,8 +36,8 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//JLoader::import('joomla.application.component.helper');
 
 		//include tool utils
-		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
-		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php';
+		include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+		include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php';
 
 		// Get the format type for the request
 		$this->format = Request::getVar('format', 'application/json');
@@ -130,7 +130,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		//get supportedtag usage
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$resource_tags = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
@@ -219,14 +219,14 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		//get supportedtag usage
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$this->rt = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new ToolVersion($database);
 		$vid = $tv->getVersionIdFromResource($tool_info->id, $version);
@@ -292,11 +292,11 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false)	return $this->not_found();
+		if ($result === false) return $this->not_found();
 
 		//mw session lib
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate middleware database object
 		$mwdb = ToolsHelperUtils::getMWDBO();
@@ -360,7 +360,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		{
 			if ($notFound)
 			{
-				$screenshot = JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
+				$screenshot = PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
 			}
 			else
 			{
@@ -410,9 +410,9 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		//include needed tool libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//create database object
 		JLoader::import("joomla.database.table");
@@ -515,11 +515,10 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		jimport('joomla.plugin.helper');
 
 		// Get plugins
-		JPluginHelper::importPlugin('mw', $app->toolname);
-		$dispatcher = JDispatcher::getInstance();
+		Plugin::import('mw', $app->name);
 
 		// Trigger any events that need to be called before session invoke
-		$dispatcher->trigger('onBeforeSessionInvoke', array($app->toolname, $app->version));
+		Event::trigger('mw.onBeforeSessionInvoke', array($app->toolname, $app->version));
 
 		// We've passed all checks so let's actually start the session
 		$status = ToolsHelperUtils::middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
@@ -535,7 +534,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$app->sess = $output->session;
 
 		// Trigger any events that need to be called after session invoke
-		$dispatcher->trigger('onAfterSessionInvoke', array($app->toolname, $app->version));
+		Event::trigger('mw.onAfterSessionInvoke', array($app->toolname, $app->version));
 
 		// Get a count of the number of sessions of this specific tool
 		$appcount = $ms->getCount($result->get('username'), $app->name);
@@ -544,7 +543,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($appcount > 1)
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . JFactory::getDate()->format("g:i a") . ')';
+			$app->caption .= ' (' . Date::format("g:i a") . ')';
 		}
 
 		// Save the changed caption
@@ -978,17 +977,16 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		jimport('joomla.plugin.helper');
 
 		// Get plugins
-		JPluginHelper::importPlugin('mw', $app->name);
-		$dispatcher = JDispatcher::getInstance();
+		Plugin::import('mw', $app->name);
 
 		// Trigger any events that need to be called before session start
-		$dispatcher->trigger('onBeforeSessionStart', array($toolname, $tv->revision));
+		Event::trigger('mw.onBeforeSessionStart', array($toolname, $tv->revision));
 
 		// Call the view command
 		$status = ToolsHelperUtils::middleware($command, $output);
 
 		// Trigger any events that need to be called after session start
-		$dispatcher->trigger('onAfterSessionStart', array($toolname, $tv->revision));
+		Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
 
 		//add the session id to the result
 		$output->session = $sessionid;
@@ -1054,17 +1052,16 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		jimport('joomla.plugin.helper');
 
 		//get middleware plugins
-		JPluginHelper::importPlugin('mw', $ms->appname);
-		$dispatcher = JDispatcher::getInstance();
+		Plugin::import('mw', $ms->appname);
 
 		// Trigger any events that need to be called before session stop
-		$dispatcher->trigger('onBeforeSessionStop', array($ms->appname));
+		Event::trigger('mw.onBeforeSessionStop', array($ms->appname));
 
 		//run command to stop session
 		$status = ToolsHelperUtils::middleware("stop $sessionid", $out);
 
 		// Trigger any events that need to be called after session stop
-		$dispatcher->trigger('onAfterSessionStop', array($ms->appname));
+		Event::trigger('mw.onAfterSessionStop', array($ms->appname));
 
 		// was the session stopped successfully
 		if ($status == 1)

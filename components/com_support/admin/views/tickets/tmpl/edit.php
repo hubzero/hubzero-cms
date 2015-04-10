@@ -82,9 +82,6 @@ if ($this->row->comments()->total() > 0)
 	$this->row->comments()->rewind();
 }
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 $cc = array();
 
 $no_html = Request::getInt('no_html', 0);
@@ -412,8 +409,7 @@ if (!$no_html)
 
 				<div class="ticket-content">
 					<?php
-						JPluginHelper::importPlugin('support');
-						$results = $dispatcher->trigger('onTicketComment', array($this->row));
+						$results = Event::trigger('support.onTicketComment', array($this->row));
 						echo implode("\n", $results);
 					?>
 					<fieldset>
@@ -468,7 +464,7 @@ if (!$no_html)
 						<div class="input-wrap">
 							<label for="comment-field-message">
 								<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?> <?php
-								$mc = $dispatcher->trigger('onGetMultiEntry', array(
+								$mc = Event::trigger('hubzero.onGetMultiEntry', array(
 									array(
 										'members',   // The component to call
 										'cc',        // Name of the input field
@@ -509,7 +505,7 @@ if (!$no_html)
 						<label for="tags">
 							<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?>
 							<?php
-							$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string'))));
+							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string'))));
 
 							if (count($tf) > 0) {
 								echo $tf[0];
@@ -524,7 +520,7 @@ if (!$no_html)
 							<label for="ticket-field-group">
 								<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:<br />
 								<?php
-								$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','', $this->row->get('group'),'','owner')) );
+								$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','', $this->row->get('group'),'','owner')));
 								if (count($gc) > 0) {
 									echo $gc[0];
 								} else { ?>

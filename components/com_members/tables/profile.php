@@ -93,15 +93,11 @@ class MembersProfile extends JTable
 	 */
 	public function buildQuery($filters=array(), $admin)
 	{
-		// Get plugins
-		JPluginHelper::importPlugin('members');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Trigger the functions that return the areas we'll be using
 		$select = "";
 		if (!isset($filters['count']) && isset($filters['contributions']))
 		{
-			$bits = $dispatcher->trigger('onMembersContributionsCount', array($filters['authorized']));
+			$bits = Event::trigger('members.onMembersContributionsCount', array($filters['authorized']));
 			$select .= ', COALESCE(cv.total_count, 0) AS rcount, COALESCE(cv.resource_count, 0) AS resource_count, COALESCE(cv.wiki_count, 0) AS wiki_count ';
 		}
 

@@ -39,6 +39,13 @@ use Components\Store\Tables\Cart;
 use Components\Store\Tables\Order;
 use Components\Store\Tables\OrderItem;
 use Exception;
+use Component;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use Event;
+use Lang;
 
 /**
  * Controller class for the store
@@ -535,9 +542,7 @@ class Shop extends SiteController
 			$message = str_replace("\n", "\r\n", $message);
 
 			// Send confirmation
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('store_notifications', $subject, $message, $hub, array(User::get('id')), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('store_notifications', $subject, $message, $hub, array(User::get('id')), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_STORE_ERROR_MESSAGE_FAILED'));
 			}

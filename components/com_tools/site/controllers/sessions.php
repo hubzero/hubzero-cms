@@ -621,11 +621,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Get plugins
-		JPluginHelper::importPlugin('mw', $app->toolname);
-		$dispatcher = JDispatcher::getInstance();
+		Plugin::import('mw', $app->toolname);
 
 		// Trigger any events that need to be called before session invoke
-		$dispatcher->trigger('onBeforeSessionInvoke', array($app->toolname, $app->version));
+		Event::trigger('mw.onBeforeSessionInvoke', array($app->toolname, $app->version));
 
 		$toolparams = '';
 
@@ -669,7 +668,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$app->sess = !empty($output->session) ? $output->session : '';
 
 		// Trigger any events that need to be called after session invoke
-		$dispatcher->trigger('onAfterSessionInvoke', array($app->toolname, $app->version));
+		Event::trigger('mw.onAfterSessionInvoke', array($app->toolname, $app->version));
 
 		// Get a count of the number of sessions of this specific tool
 		$appcount = $ms->getCount(User::get('username'), $app->name);
@@ -677,7 +676,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($appcount > 1)
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . JHTML::_('date', Date::toSql(), 'g:i a') . ')';
+			$app->caption .= ' (' . Date::toLocal('g:i a') . ')';
 		}
 
 		// Save the changed caption
@@ -1113,11 +1112,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$app->owns     = $ms->checkSession($app->sess);
 
 		// Get plugins
-		JPluginHelper::importPlugin('mw', $app->name);
-		$dispatcher = JDispatcher::getInstance();
+		Plugin::import('mw', $app->name);
 
 		// Trigger any events that need to be called before session start
-		$dispatcher->trigger('onBeforeSessionStart', array($toolname, $tv->revision));
+		Event::trigger('mw.onBeforeSessionStart', array($toolname, $tv->revision));
 
 		// Call the view command
 		$status = $this->middleware($command, $output);
@@ -1278,7 +1276,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Trigger any events that need to be called after session start
-		$dispatcher->trigger('onAfterSessionStart', array($toolname, $tv->revision));
+		Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
 
 		// Set the layout
 		$sublayout = strtolower(Request::getWord('layout', ''));
@@ -1402,11 +1400,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Get plugins
-		JPluginHelper::importPlugin('mw', $ms->appname);
-		$dispatcher = JDispatcher::getInstance();
+		Plugin::import('mw', $ms->appname);
 
 		// Trigger any events that need to be called before session stop
-		$dispatcher->trigger('onBeforeSessionStop', array($ms->appname));
+		Event::trigger('mw.onBeforeSessionStop', array($ms->appname));
 
 		// Stop the session
 		$status = $this->middleware("stop $sess", $output);
@@ -1428,7 +1425,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Trigger any events that need to be called after session stop
-		$dispatcher->trigger('onAfterSessionStop', array($ms->appname));
+		Event::trigger('mw.onAfterSessionStop', array($ms->appname));
 
 		// Take us back to the main page...
 		if ($rtrn)

@@ -34,11 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$juser = JFactory::getUser();
-
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 $status = $this->row->status('text');
 
 $unknown  = 1;
@@ -388,9 +383,9 @@ $cc = array();
 					$jxuser = new \Hubzero\User\Profile();
 
 					$anon = 1;
-					if (!$juser->get('guest'))
+					if (!User::isGuest())
 					{
-						$jxuser->load($juser->get('id'));
+						$jxuser->load(User::get('id'));
 						$anon = 0;
 					}
 				?>
@@ -399,7 +394,7 @@ $cc = array();
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->get('id'); ?>" />
 				<input type="hidden" name="ticket[id]" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
-				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
+				<input type="hidden" name="username" value="<?php echo User::get('username'); ?>" />
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -423,7 +418,7 @@ $cc = array();
 					<label>
 						<?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 						<?php
-						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
+						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
 
 						if (count($tf) > 0) {
 							echo $tf[0];
@@ -437,7 +432,7 @@ $cc = array();
 							<label>
 								<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 								<?php
-								$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '', $this->row->get('group'), '', 'ticketowner')));
+								$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '', $this->row->get('group'), '', 'ticketowner')));
 								if (count($gc) > 0) {
 									echo $gc[0];
 								} else { ?>
@@ -523,8 +518,7 @@ $cc = array();
 
 			<?php if ($this->row->access('create', 'comments') || $this->row->access('create', 'private_comments')) { ?>
 				<?php
-					JPluginHelper::importPlugin('support');
-					$results = $dispatcher->trigger('onTicketComment', array($this->row));
+					$results = Event::trigger('support.onTicketComment', array($this->row));
 					echo implode("\n", $results);
 				?>
 				<fieldset>
@@ -624,7 +618,7 @@ $cc = array();
 
 					<label>
 						<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
-						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
 						if (count($mc) > 0) {
 							echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
 						} else { ?> <span class="hint"><?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>

@@ -42,9 +42,6 @@ Toolbar::help('ticket');
 JHTML::_('behavior.tooltip');
 $this->css();
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 $browser = new \Hubzero\Browser\Detector();
 
 $cc = array();
@@ -88,7 +85,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="actags"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label>
 				<?php
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')) );
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else { ?>
@@ -100,7 +97,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="acgroup"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label></td>
 					<?php
-					$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')) );
+					$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')));
 					if (count($gc) > 0) {
 						echo $gc[0];
 					} else { ?>
@@ -172,7 +169,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?></label>
 				<?php
-				$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
+				$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
 				if (count($mc) > 0) {
 					echo $mc[0];
 				} else { ?>

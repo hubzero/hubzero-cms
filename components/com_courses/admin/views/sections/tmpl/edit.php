@@ -391,10 +391,7 @@ jQuery(document).ready(function($){
 				</fieldset>
 
 				<?php
-					JPluginHelper::importPlugin('courses');
-					$dispatcher = JDispatcher::getInstance();
-
-					if ($plugins = $dispatcher->trigger('onSectionEdit'))
+					if ($plugins = Event::trigger('courses.onSectionEdit'))
 					{
 						$data = $this->row->get('params');
 
@@ -402,7 +399,7 @@ jQuery(document).ready(function($){
 						{
 							$param = new JParameter(
 								(is_object($data) ? $data->toString() : $data),
-								JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+								PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 							);
 							$out = $param->render('params', 'onSectionEdit');
 							if (!$out)

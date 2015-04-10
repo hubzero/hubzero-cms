@@ -373,9 +373,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$group->update();
 
 		// Get plugins
-		JPluginHelper::importPlugin('groups');
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onGroupAfterSave', array($before, $group));
+		Event::trigger('groups.onGroupAfterSave', array($before, $group));
 
 		// log edit
 		GroupsModelLog::log(array(
@@ -892,10 +890,6 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Get plugins
-			JPluginHelper::importPlugin('groups');
-			$dispatcher = JDispatcher::getInstance();
-
 			foreach ($ids as $id)
 			{
 				// Load the group page
@@ -943,7 +937,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 				// Trigger the functions that delete associated content
 				// Should return logs of what was deleted
-				$logs = $dispatcher->trigger('onGroupDelete', array($group));
+				$logs = Event::trigger('groups.onGroupDelete', array($group));
 				if (count($logs) > 0)
 				{
 					$log .= implode('', $logs);

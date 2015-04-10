@@ -325,9 +325,7 @@ if ($label == "none") {
 				<label>
 					<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 					<?php
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher = JDispatcher::getInstance();
-						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
 						if (count($tf) > 0) : ?>
 							<?php echo $tf[0]; ?>
 						<?php else: ?>

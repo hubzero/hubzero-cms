@@ -86,8 +86,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<ul id="candidates">
 			<?php
-			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher = JDispatcher::getInstance();
 			foreach ($seekers as $seeker)
 			{
 				?>
@@ -101,7 +99,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 						'layout'  => 'seeker'
 					)
 				);
-				$plugin = JPluginHelper::getPlugin( 'members', 'resume' );
 				$params = new JParameter( $plugin->params );
 
 				$view->seeker   = $seeker;

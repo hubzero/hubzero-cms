@@ -37,6 +37,11 @@ use Components\Jobs\Tables\JobType;
 use Components\Jobs\Tables\Employer;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
 
 /**
  * Controller class for job postings
@@ -358,9 +363,7 @@ class Jobs extends AdminController
 				$emailbody .= $message;
 			}
 
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
 			}
@@ -384,7 +387,7 @@ class Jobs extends AdminController
 	private function _checkQuota($job, $uid, $database)
 	{
 		// make sure we aren't over quota
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
 		$objS = new \Components\Services\Tables\Service($database);
 		$maxads = isset($this->config->parameters['maxads']) && intval($this->config->parameters['maxads']) > 0  ? $this->config->parameters['maxads'] : 3;
 		$service = $objS->getUserService($uid);

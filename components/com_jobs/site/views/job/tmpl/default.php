@@ -199,19 +199,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html  = '';
 			$html .= '<ul id="candidates">'."\n";
 
-			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher = JDispatcher::getInstance();
 			$k = 1;
-			for ($i=0, $n=count( $job->applications ); $i < $n; $i++) {
-				if ($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
-					$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? JHTML::_('date',$job->applications[$i]->applied, Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('N/A');
+			for ($i=0, $n=count( $job->applications ); $i < $n; $i++)
+			{
+				if ($job->applications[$i]->seeker && $job->applications[$i]->status != 2)
+				{
+					$applied = ($job->applications[$i]->applied !='0000-00-00 00:00:00') ? Date::of($job->applications[$i]->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('N/A');
 					$html  .= '<li class="applic">'."\n";
 					$html  .= '<span class="countc">'.$k.'</span> '.$job->applications[$i]->seeker->name.' '.Lang::txt('applied on').' '.$applied."\n";
 					$html  .= $job->applications[$i]->cover ? '<blockquote>'.trim(stripslashes($job->applications[$i]->cover)).'</blockquote>' : '';
 					$html  .= '</li>'."\n";
 					$html  .= '<li>'."\n";
 					// show seeker info
-					$out   = $dispatcher->trigger( 'showSeeker', array($job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list=0) );
+					$out   = Event::trigger('members.showSeeker', array($job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list=0));
 					if (count($out) > 0) {
 						$html .= $out[0];
 					}
@@ -220,8 +220,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$k++;
 				}
 			}
-			if (count($job->withdrawnlist) > 0) {
-				for ($i=0, $n=count( $job->withdrawnlist ); $i < $n; $i++) {
+			if (count($job->withdrawnlist) > 0)
+			{
+				for ($i=0, $n=count( $job->withdrawnlist ); $i < $n; $i++)
+				{
 					$n = $k;
 
 					$n++;
@@ -229,7 +231,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 
 			$html  .= '</ul>'."\n";
-			if (count($job->withdrawnlist) > 0) {
+			if (count($job->withdrawnlist) > 0)
+			{
 				$html  .= '<p>'.count($job->withdrawnlist).' '.Lang::txt('COM_JOBS_NOTICE_CANDIDATES_WITHDREW').'</p>'."\n";
 			}
 

@@ -46,6 +46,11 @@ use Components\Services\Tables\Service;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use Exception;
+use Request;
+use Pathway;
+use Event;
+use Route;
+use Lang;
 
 /**
  * Jobs controller class for postings
@@ -294,12 +299,8 @@ class Jobs extends SiteController
 			return;
 		}
 
-		// Get Members plugins
-		\JPluginHelper::importPlugin('members', 'resume');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Call the trigger
-		$results = $dispatcher->trigger($trigger, array());
+		$results = Event::trigger('members.' . $trigger, array());
 		if (is_array($results) && isset($results[0]) && isset($results[0]['html']))
 		{
 			$html = $results[0]['html'];
@@ -319,12 +320,8 @@ class Jobs extends SiteController
 		// Shortlisted user
 		$oid  = Request::getInt('oid', 0);
 
-		// Get Members plugins
-		\JPluginHelper::importPlugin('members', 'resume');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Call the trigger
-		$results = $dispatcher->trigger('shortlist', array($oid, $ajax=0));
+		$results = Event::trigger('members.shortlist', array($oid, $ajax=0));
 
 		// Go back to the page
 		$this->setRedirect(
@@ -2101,10 +2098,6 @@ class Jobs extends SiteController
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
 
-			// Get Members plugins
-			\JPluginHelper::importPlugin('members', 'resume');
-			$dispatcher = \JDispatcher::getInstance();
-
 			$pile .= $pile != 'all' ? '_' . User::get('id') : '';
 			$zipname = Lang::txt('Resumes') . '_' . $pile . '.zip';
 
@@ -2125,7 +2118,7 @@ class Jobs extends SiteController
 			{
 				foreach ($files as $avalue => $alabel)
 				{
-					$apath =  $dispatcher->trigger('build_path', array($avalue));
+					$apath = Event::trigger('members.build_path', array($avalue));
 					$path  = is_array($apath) ? $apath[0] : '';
 					$file = $path ? PATH_APP . $path . DS . $alabel : '';
 

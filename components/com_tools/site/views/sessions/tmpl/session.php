@@ -44,7 +44,7 @@ foreach ($this->shares as $share)
 	}
 }
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 $database = JFactory::getDBO();
 $preferences = new ToolsTablePreferences($database);
@@ -65,13 +65,9 @@ else if ($declared = $preferences->param('viewer'))
 	Request::setVar('viewer', $declared);
 }
 
-JPluginHelper::importPlugin('mw');
-JPluginHelper::importPlugin('tools');
-$dispatcher = JDispatcher::getInstance();
-
 // We actually need to do this first so we know what viewer is the active one.
-$output  = $dispatcher->trigger('onToolSessionView', array($this->app, $this->output, $readOnly));
-$plugins = $dispatcher->trigger('onToolSessionIdentify');
+$output  = Event::trigger('tools.onToolSessionView', array($this->app, $this->output, $readOnly));
+$plugins = Event::trigger('tools.onToolSessionIdentify');
 
 $this->css('tools.css')
      ->js('sessions.js');
@@ -280,8 +276,7 @@ if (!$this->app->sess) {
 					<label for="field-username">
 						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH'); ?>
 						<?php
-						JPluginHelper::importPlugin('hubzero');
-						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'acmembers')));
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'username', 'acmembers')));
 						if (count($mc) > 0) {
 							echo '<span class="hint">'.Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE').'</span>'.$mc[0];
 						} else { ?>
@@ -384,8 +379,8 @@ if (!$this->app->sess) {
 <?php } ?>
 
 	<?php
-	$output = $dispatcher->trigger(
-		'onSessionView',
+	$output = Event::trigger(
+		'mw.onSessionView',
 		array(
 			$this->option,
 			$this->toolname,

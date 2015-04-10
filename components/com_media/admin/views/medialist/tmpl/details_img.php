@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 $params = new JRegistry;
-$dispatcher	= JDispatcher::getInstance();
-$dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+
+Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
 		<tr>
 			<td>
@@ -34,4 +34,4 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_media.file', &$this->_
 		<?php endif;?>
 		</tr>
 <?php
-$dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+Event::trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));

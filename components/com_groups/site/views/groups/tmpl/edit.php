@@ -36,9 +36,7 @@ $this->css()
      ->js('jquery.cycle2', 'system');
 
 //tag editor
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
+$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)));
 
 //are we using the email gateway for group forum
 $params =  Component::params('com_groups');
@@ -165,7 +163,7 @@ else
 								<option value=""><?php echo Lang::txt('COM_GROUPS_LOGO_FIELD_OPTION_NULL'); ?></option>
 								<?php foreach ($this->logos as $logo) { ?>
 									<?php
-										$remove = JPATH_SITE . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
+										$remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
 										$sel = (str_replace($remove,"",$logo) == $this->group->get('logo')) ? 'selected' : '';
 									?>
 									<option <?php echo $sel; ?> value="<?php echo str_replace(JPATH_SITE,"",$logo); ?>"><?php echo str_replace($remove,"",$logo); ?></option>

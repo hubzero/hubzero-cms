@@ -30,8 +30,7 @@ class ContentViewCategory extends JViewLegacy
 
 	function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
+		$app = JFactory::getApplication();
 
 		// Get some data from the models
 		$state		= $this->get('State');
@@ -65,9 +64,9 @@ class ContentViewCategory extends JViewLegacy
 		$category->params->merge($cparams);
 
 		// Check whether category access level allows access.
-		$user	= JFactory::getUser();
-		$groups	= $user->getAuthorisedViewLevels();
-		if (!in_array($category->access, $groups)) {
+		$groups = User::getAuthorisedViewLevels();
+		if (!in_array($category->access, $groups))
+		{
 			return JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
@@ -91,27 +90,24 @@ class ContentViewCategory extends JViewLegacy
 			$item->catslug = $item->category_alias ? ($item->catid.':'.$item->category_alias) : $item->catid;
 			$item->event = new stdClass();
 
-			$dispatcher = JDispatcher::getInstance();
-
 			// Old plugins: Ensure that text property is available
 			if (!isset($item->text))
 			{
 				$item->text = $item->introtext;
 			}
 
-			JPluginHelper::importPlugin('content');
-			$results = $dispatcher->trigger('onContentPrepare', array ('com_content.category', &$item, &$this->params, 0));
+			$results = Event::trigger('content.onContentPrepare', array ('com_content.category', &$item, &$this->params, 0));
 
 			// Old plugins: Use processed text as introtext
 			$item->introtext = $item->text;
 
-			$results = $dispatcher->trigger('onContentAfterTitle', array('com_content.category', &$item, &$item->params, 0));
+			$results = Event::trigger('content.onContentAfterTitle', array('com_content.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_content.category', &$item, &$item->params, 0));
+			$results = Event::trigger('content.onContentBeforeDisplay', array('com_content.category', &$item, &$item->params, 0));
 			$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onContentAfterDisplay', array('com_content.category', &$item, &$item->params, 0));
+			$results = Event::trigger('content.onContentAfterDisplay', array('com_content.category', &$item, &$item->params, 0));
 			$item->event->afterDisplayContent = trim(implode("\n", $results));
 		}
 
@@ -177,7 +173,7 @@ class ContentViewCategory extends JViewLegacy
 		$this->assignRef('params', $params);
 		$this->assignRef('parent', $parent);
 		$this->assignRef('pagination', $pagination);
-		$this->assignRef('user', $user);
+		$this->assignRef('user', User::getRoot());
 
 		$this->_prepareDocument();
 

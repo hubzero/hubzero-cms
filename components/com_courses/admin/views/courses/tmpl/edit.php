@@ -193,10 +193,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 
 		<?php
-			JPluginHelper::importPlugin('courses');
-			$dispatcher = JDispatcher::getInstance();
-
-			if ($plugins = $dispatcher->trigger('onCourseEdit'))
+			if ($plugins = Event::trigger('courses.onCourseEdit'))
 			{
 				$data = $this->row->get('params');
 
@@ -204,7 +201,7 @@ function submitbutton(pressbutton)
 				{
 					$param = new JParameter(
 						(is_object($data) ? $data->toString() : $data),
-						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+						PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 					);
 					$out = $param->render('params', 'onCourseEdit');
 					if (!$out)

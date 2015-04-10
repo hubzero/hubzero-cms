@@ -424,9 +424,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		);
 
 																		// Get plugins
-																		JPluginHelper::importPlugin('groups');
-																		$dispatcher = JDispatcher::getInstance();
-																		$group_plugins = $dispatcher->trigger('onGroupAreas', array());
+																		$group_plugins = Event::trigger('groups.onGroupAreas', array());
 																		array_unshift($group_plugins, array(
 																			'name'             => 'overview',
 																			'title'            => 'Overview',

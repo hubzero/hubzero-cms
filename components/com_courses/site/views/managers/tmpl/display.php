@@ -47,10 +47,7 @@ $offerings = $this->course->offerings();
 					<label for="field-usernames">
 						<?php echo Lang::txt('COM_COURSES_ADD_MANAGER_LABEL'); ?>
 						<?php
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher = JDispatcher::getInstance();
-
-						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'usernames', 'field-usernames', '', '')));
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'usernames', 'field-usernames', '', '')));
 						if (count($mc) > 0) {
 							echo $mc[0];
 						} else { ?>

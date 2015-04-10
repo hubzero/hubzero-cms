@@ -38,16 +38,16 @@ include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php');
 
@@ -224,10 +224,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$status['questions'] = 'N/A';
 			if (Component::isEnabled('com_answers'))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 
 				$aq = new \Components\Answers\Tables\Question($this->database);
 				$status['questions'] = $aq->getCount(array(
@@ -240,8 +240,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$status['wishes'] = 'N/A';
 			if (Component::isEnabled('com_wishlist'))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
 
 				$objWishlist = new \Components\Wishlist\Tables\Wishlist($this->database);
 				$objWish = new \Components\Wishlist\Tables\Wish($this->database);
@@ -1825,9 +1825,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// fire off message
 		if ($summary or $comment)
 		{
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option)))
+			if (!Event::trigger('xmessage.onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option)))
 			{
 				$this->addComponentMessage(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'), 'error');
 			}

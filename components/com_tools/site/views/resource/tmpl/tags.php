@@ -59,10 +59,7 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 		<label>
 			<?php echo Lang::txt('COM_TOOLS_TAGS_ASSIGNED'); ?>:
 			<?php
-			JPluginHelper::importPlugin( 'hubzero' );
-			$dispatcher = JDispatcher::getInstance();
-
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
+			$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)));
 
 			if (count($tf) > 0) {
 				echo $tf[0];

@@ -531,9 +531,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					<label<?php echo (!empty($this->xregistration->_invalid['interests'])) ? ' class="fieldWithErrors"' : ''; ?>>
 						<?php echo Lang::txt('COM_MEMBERS_REGISTER_INTERESTS'); ?>: <?php echo ($this->registrationInterests == REG_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<?php
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher = JDispatcher::getInstance();
-						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'interests', 'actags','',stripslashes($this->registration['interests']))));
+						$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'interests', 'actags','',stripslashes($this->registration['interests']))));
 
 						echo (count($tf) > 0)
 							? implode("\n", $tf)
@@ -955,9 +953,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 			$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
 			$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>' : '';
 
-			JPluginHelper::importPlugin('hubzero');
-			$dispatcher = JDispatcher::getInstance();
-			$captchas = $dispatcher->trigger('onGetCaptcha');
+			$captchas = Event::trigger('hubzero.onGetCaptcha');
 
 			if (count($captchas) > 0) { ?>
 				<fieldset>

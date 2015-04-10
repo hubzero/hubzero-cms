@@ -35,9 +35,7 @@ $this->css('course.css')
      ->js();
 
 //tag editor
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
+$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))));
 
 //build back link
 $host = Request::getVar("HTTP_HOST", '', "SERVER");

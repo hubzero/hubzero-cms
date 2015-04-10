@@ -109,9 +109,7 @@ $this->css()
 			<label>
 				<?php echo Lang::txt('EVENTS_E_TAGS'); ?>
 				<?php
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher = JDispatcher::getInstance();
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])));
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {

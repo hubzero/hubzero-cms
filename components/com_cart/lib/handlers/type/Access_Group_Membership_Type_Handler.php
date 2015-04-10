@@ -42,7 +42,7 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 
 	public function handle()
 	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
 		$ms = new StorefrontModelMemberships();
 
 		/* NEW
@@ -59,11 +59,11 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 		try
 		{
 			// Get user ID for the cart
-			require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
 			$userId = CartModelCart::getCartUser($this->crtId);
 
 			// Get Joomla! user group ID to set the user to (from meta)
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
 			$userGId = StorefrontModelProduct::getMeta($this->item['info']->pId, 'userGroupId');
 
 			$add = JUserHelper::addUserToGroup($userId, $userGId);
@@ -76,14 +76,12 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
 			$table->load($userId);
 
 			// Trigger the onAftereStoreUser event
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+			Event::trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
 		}
 		catch (Exception $e)
 		{
 			// Error
 			return false;
 		}
-
 	}
 }

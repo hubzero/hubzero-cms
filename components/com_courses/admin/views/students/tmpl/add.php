@@ -103,10 +103,8 @@ function submitbutton(pressbutton)
 				<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
 				<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
 				<?php
-				/*JPluginHelper::importPlugin('hubzero');
-				$dispatcher = JDispatcher::getInstance();
-
-				$mc = $dispatcher->trigger('onGetMultiEntry', array(
+				/*
+				$mc = Event::trigger('hubzero.onGetMultiEntry', array(
 					array(
 						'members',   // The component to call
 						'fields[user_id]',        // Name of the input field
@@ -127,7 +125,7 @@ function submitbutton(pressbutton)
 					<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 			<?php
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 				$model = CoursesModelCourses::getInstance();
 				if ($model->courses()->total() > 0)
 				{

@@ -33,6 +33,14 @@ namespace Components\Courses\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Exception;
+use Pathway;
+use Request;
+use Config;
+use Route;
+use Event;
+use User;
+use Lang;
+use App;
 
 /**
  * Courses controller class for an offering
@@ -207,12 +215,8 @@ class Offering extends SiteController
 		// Build pathway
 		$this->_buildPathway();
 
-		// Get plugins
-		\JPluginHelper::importPlugin('courses');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Trigger the functions that return the areas we'll be using
-		$plugins = $dispatcher->trigger('onCourse', array(
+		$plugins = Event::trigger('courses.onCourse', array(
 			$this->course,
 			$this->course->offering()
 		));
@@ -361,8 +365,7 @@ class Offering extends SiteController
 		{
 			$link = $offering->link();
 
-			\JPluginHelper::importPlugin('courses');
-			$data = \JDispatcher::getInstance()->trigger('onCourseEnrolled', array(
+			$data = Event::trigger('courses.onCourseEnrolled', array(
 				$this->course, $offering, $offering->section()
 			));
 			if ($data && count($data) > 0)

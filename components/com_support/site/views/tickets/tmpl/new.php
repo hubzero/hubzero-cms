@@ -208,9 +208,7 @@ $group = Request::getVar('group', '');
 				<label>
 					<?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 					<?php
-					JPluginHelper::importPlugin('hubzero');
-					$dispatcher = JDispatcher::getInstance();
-					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
+					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
 
 					if (count($tf) > 0) {
 						echo $tf[0];
@@ -224,7 +222,7 @@ $group = Request::getVar('group', '');
 						<label>
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
 							<?php
-							$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', $group, '', 'ticketowner')));
+							$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', $group, '', 'ticketowner')));
 							if (count($gc) > 0) {
 								echo $gc[0];
 							} else { ?>
@@ -288,7 +286,7 @@ $group = Request::getVar('group', '');
 
 				<label>
 					<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
-					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
+					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
 					if (count($mc) > 0) {
 						echo '<span class="hint">'.Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
 					} else { ?> <span class="hint"><?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>

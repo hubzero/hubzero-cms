@@ -211,10 +211,6 @@ class CartMessenger
 
 		//print_r($summary); die;
 
-		// Get message plugin
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-
 		// "from" info
 		$from = array();
 		$from['name']  = Config::get('sitename');
@@ -226,25 +222,21 @@ class CartMessenger
 
 		// Admin email
 		$to = array($params->get('storeAdminId'));
-		$dispatcher->trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
+		Event::trigger('xmessage.onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
 
 		// Email to client
 		$clientEmail = 'Thank you for your order at ' .  Config::get('sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
 		$to = array(CartModelCart::getCartUser($transactionInfo->crtId));
 
-		$dispatcher->trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
+		Event::trigger('xmessage.onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
 	}
 
 	private function emailError($error, $errorType = NULL)
 	{
 		$params = Component::params(Request::getVar('option'));
-
-		// Get message plugin
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
 
 		// "from" info
 		$from = array();
@@ -280,6 +272,6 @@ class CartMessenger
 		}
 
 		// Send emails
-		$dispatcher->trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
+		Event::trigger('xmessage.onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
 	}
 }

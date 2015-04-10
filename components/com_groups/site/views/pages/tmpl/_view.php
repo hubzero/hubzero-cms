@@ -169,9 +169,6 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 <?php if ($displayComments && $this->page->get('id') > 0) : ?>
 	<div id="page-comments">
 		<?php
-			JPluginHelper::importPlugin('hubzero');
-			$dispatcher = JDispatcher::getInstance();
-
 			// get experts
 			$experts = array();
 			foreach ($this->group->get('members') as $member)
@@ -233,7 +230,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 				$params
 			);
 
-			$comments = $dispatcher->trigger('onAfterDisplayContent', $params);
+			$comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
 			echo $comments[0];
 		?>
 	</div>
