@@ -528,7 +528,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 
 	<?php
 		// Trigger event
-		$results = $dispatcher->trigger('onCourseAfterOutline', array(
+		$results = Event::trigger('onCourseAfterOutline', array(
 			$this->course,
 			$this->course->offering()
 		));
