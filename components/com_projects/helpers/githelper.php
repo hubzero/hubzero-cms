@@ -420,20 +420,21 @@ class Git extends Object
 	 *
 	 * @param      string  	$file		file path
 	 * @param      string  	$hash		Git hash
-	 * @param      string  	$temppath	Output content to temp path
+	 * @param      string  	$target		Output content to path
 	 *
 	 * @return     void
 	 */
-	public function getContent($file = '', $hash = '', $temppath = '')
+	public function getContent($file = '', $hash = '', $target = '')
 	{
-		if (!$file || !$hash || !$temppath)
+		if (!$file || !$hash)
 		{
 			return false;
 		}
+		$call = 'show  ' . $hash . ':' . escapeshellarg($file);
+		$call.= $target ? ' > ' . escapeshellarg($target) : '';
 
 		// Make Git call
-		$this->callGit('show  ' . $hash . ':' . escapeshellarg($file)
-			. ' > ' . escapeshellarg($temppath));
+		$this->callGit($call);
 
 		return true;
 	}
@@ -460,7 +461,7 @@ class Git extends Object
 		switch ( $return )
 		{
 			case 'combined':
-				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%H||%s" --name-only --max-count=1 ';
+				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%H||%f" --name-only --max-count=1 ';
 				break;
 
 			case 'date':

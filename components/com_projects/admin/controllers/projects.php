@@ -281,7 +281,7 @@ class Projects extends AdminController
 		\JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = \JDispatcher::getInstance();
 
-		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $model, 'files', 'admin', '', $this->config, NULL));
+		$content = $dispatcher->trigger( 'diskspace', array( $model, 'local', 'admin'));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
@@ -753,7 +753,7 @@ class Projects extends AdminController
 		\JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = \JDispatcher::getInstance();
 
-		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', 'advoptimize', $this->config, NULL));
+		$content = $dispatcher->trigger( 'advoptimize', array( $project, 'local'));
 
 		// Redirect
 		$this->setRedirect(

@@ -37,6 +37,10 @@ include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 	. DS . 'helpers' . DS . 'compiler.php' );
 
+// Get repo model
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'models' . DS . 'repo.php');
+
 /**
  * Projects Files plugin
  */
@@ -110,7 +114,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array(
 			'name'    => 'files',
@@ -126,13 +130,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * Event call to return count of items
 	 *
 	 * @param      object  $model		Project
-	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
 	public function &onProjectCount( $model )
 	{
-		$count =  $this->getCount($model->get('alias'), 'files');
-		$counts['files'] = $count;
+		$repo  = new \Components\Projects\Models\Repo ($model, 'local');
+		$counts['files'] = $repo->count();
 
 		return $counts;
 	}
@@ -145,7 +148,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $model, $action = '', $areas = null)
+	public function onProject ( $model, $action = '', $areas = null, $params = array())
 	{
 		$returnhtml = true;
 
@@ -168,11 +171,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Model
+		// Project model
 		$this->model = $model;
 
 		// Check authorization
-		if ($model->exists() && !$model->access('member'))
+		if ($this->model->exists() && !$this->model->access('member'))
 		{
 			return $arr;
 		}
@@ -180,18 +183,27 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			$this->_config      = $model->config();
-			$this->_publishing  = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
-			$this->_tool	    = NULL;
-			$this->_audience    = 'internal';
-			$this->_data	    = NULL;
-			$this->_database    = \JFactory::getDBO();
-			$this->_uid 		= User::get('id');
+			// Load repo model
+			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar( 'repo', 'local');
+			$this->repo = new \Components\Projects\Models\Repo ($this->model, $repoName);
 
-			// Contribute process outside of projects
+			$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+			$this->_database   = \JFactory::getDBO();
+			$this->_uid 	   = User::get('id');
+			$this->_task       = $action ? $action : Request::getVar('action', 'browse');
+			$this->subdir 	   = trim(urldecode(Request::getVar('subdir', '')), DS);
+			$this->publication = Request::getInt('pid', 0);
+
+			// Set repo path
 			if (!$this->model->exists())
 			{
+				// Contribute process outside of projects
 				$this->model->set('provisioned', 1);
+				$this->_path = $this->getMembersPath();
+			}
+			else
+			{
+				$this->_path = $this->repo->get('path');
 			}
 
 			// Remote connections
@@ -206,20 +218,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 										'auto'		=> NULL
 										);
 
-			$this->_task   = $action ? $action : Request::getVar('action', 'browse');
-
-			// MIME types
+			// Hubzero library classes
 			$this->mt = new \Hubzero\Content\Mimetypes();
-
-			// Incoming
-			$this->subdir 	   = trim(urldecode(Request::getVar('subdir', '')), DS);
-			$this->publication = Request::getInt('pid', 0);
+			$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
 
 			// Set routing
 			$this->_route = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
-
-			// Get time zone
-			$zone = date_default_timezone_get();
 
 			//  Establish connection to external services
 			if ($this->model->exists() && !$this->model->isProvisioned())
@@ -227,15 +231,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_connect = new \Components\Projects\Helpers\Connect(
 					$this->model,
 					$this->_uid,
-					$zone
+					date_default_timezone_get()
 				);
+				$this->_logPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'logs');
 
 				// Get services the project is connected to
 				$this->_rServices = $this->_connect->getActive();
 			}
-
-			// Get path
-			$this->_path = $this->getProjectPath();
 
 			// Include Git Helper
 			$this->_getGitHelper();
@@ -243,13 +245,28 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// File actions
 			switch ($this->_task)
 			{
+				// File browser
+				case 'browse':
+				default:
+					$arr['html'] 	= $this->browse();
+					break;
+
+				// Publishing selectors
+				case 'select':
+				case 'filter':
+					$arr['html'] 	= $this->select();
+					break;
+				case 'browser':
+					$arr['html'] 	= $this->browser();
+					break;
+
+				case 'upload':
+					$arr['html'] 	= $this->upload();
+					break;
+
 				case 'save':
 				case 'saveprov':
 					$arr['html'] 	= $this->save();
-					break;
-
-				case 'status':
-					$arr['html'] 	= $this->status();
 					break;
 
 				case 'download':
@@ -293,20 +310,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$arr['html'] 	= $this->diff();
 					break;
 
-				case 'upload':
-					$arr['html'] 	= $this->upload();
-					break;
-
-				case 'browser':
-					$arr['html'] 	= $this->browser();
-					break;
-
 				case 'diskspace':
+					$arr['html'] 	= $this->diskspace(
+						$this->model, $this->repo->get('name'), $this->_uid
+					);
+					break;
 				case 'optimize':
 				case 'advoptimize':
-					$arr['html'] 	= $this->diskspace(
-						$this->_option, $this->model, $this->_case,
-						$this->_uid, $this->_task, $this->_config, $this->_tool);
+					$arr['html'] 	= $this->optimize(
+						$this->model, $this->repo->get('name'));
 					break;
 
 				case 'compile':
@@ -334,8 +346,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					break;
 
 				case 'newdir':
-					$ajax 			= Request::getInt('ajax', 0);
-					$arr['html'] 	= $ajax ? $this->_newDir() :  $this->display();
+					$arr['html'] 	= $this->_newDir();
 					break;
 
 				case 'trash':
@@ -345,21 +356,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				case 'restore':
 					$arr['html'] 	= $this->restore();
 					break;
-
-				case 'select':
-				case 'filter':
-					$arr['html'] 	= $this->select();
-					break;
-
-				case 'data':
-					$arr['html'] 	= $this->data(); // AJAX call
-					break;
-
-				case 'browse':
-				default:
-
-				$arr['html'] 	= $this->display();
-				break;
 			}
 		}
 
@@ -374,140 +370,87 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	//----------------------------------------
 	// Views and Processors
 	//----------------------------------------
-
-	/**
-	 * Load a limited number of files
-	 *
-	 * @return     string
-	 */
-	public function data()
-	{
-
-	}
-
 	/**
 	 * View of project files
 	 *
 	 * @return     string
 	 */
-	public function display($sync = 0)
+	public function browse($sync = 0)
 	{
-		// Build filters
-		$filters = array();
-		$filters['limit'] 	      = Request::getInt('limit', 100);
-		$filters['start']         = Request::getInt( 'limitstart', 0);
-		$filters['sortby']        = Request::getVar( 'sortby', 'filename');
-		$filters['sortdir']       = Request::getVar( 'sortdir', 'ASC');
-		$filters['showUntracked'] = true;
-		$filters['limited']       = false;
-		$filters['recurse']       = false;
-		$filters['getsorted']     = true;
-		$filters['subdir']        = $this->subdir;
-
-		// Something is wrong
-		if (!$this->_path)
-		{
-			// Output error
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'	=>'projects',
-					'element'	=>'files',
-					'name'		=>'error'
-				)
-			);
-
-			$view->title  = '';
-			$view->option = $this->_option;
-			$view->setError( $this->getError() );
-			return $view->loadTemplate();
-		}
-
-		// Does subdirectory exist?
-		if ($this->subdir && !is_dir($this->_path . DS . $this->subdir))
-		{
-			$this->subdir = '';
-		}
-
-		// Write config file
-		$this->writeGitConfig( $this->model->get('alias'), $this->_config, $this->_case);
-
-		// Build URL
-		$url 	= Route::url($this->_route . '&active=files');
-
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder' 	=> 'projects',
 				'element' 	=> 'files',
 				'name' 		=> 'browse',
-				'layout' 	=> 'filelist'
+				'layout' 	=> 'display'
 			)
 		);
 
-		// Get used space in project directory
-		$view->dirsize = $this->getDiskUsage($this->_path, $this->params->get('disk_usage'));
-
-		// Do we have any changes to report?
-		$this->onAfterUpdate();
-
-		// Sharing with external services setup
-		$view->connect		 = $this->_connect;
-		$view->services 	 = $this->_rServices;
-		$view->connections	 = $this->_connect->getConnections($this->_uid);
-		$view->sharing 		 = 0;
-		$remotes			 = array();
-
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
+		// Does subdirectory exist?
+		if (!$this->repo->dirExists($this->subdir))
+		{
+			$this->subdir = '';
+		}
 
 		// Load member params
 		$member = $this->model->member(true);
 		$view->oparams = new \JParameter($member->params);
 
-		// Remote service(s) active?
-		if (!empty($this->_rServices) && $this->_case == 'files')
+		// Sync active?
+		$remotes = array();
+		$view->connect       = $this->_connect;
+		$view->services      = $this->_rServices;
+		$view->connections	 = $this->_connect->getConnections($this->_uid);
+
+		if (!empty($this->_rServices) && $this->repo->isLocal())
 		{
-			$view->sharing = 1;
+			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
+			$remotes  = $objRFile->getRemoteEditFiles($this->model->get('id'), 'google', $this->subdir);
 
-			// Get stored connections
-			foreach ($view->services as $servicename)
-			{
-				// Get stored remote connections
-				$remotes[$servicename] = $objRFile->getRemoteEditFiles($this->model->get('id'), $servicename, $this->subdir);
-
-				$sync	= $sync == 2 ? 0 : $view->oparams->get($servicename . '_sync_queue', 0);
-			}
+			$view->sync 		 = $sync == 2 ? 0 : $view->oparams->get('google_sync_queue', 0);
+			$view->rSync 		 = $this->_rSync;
+			$view->sharing 		 = 1;
 		}
 
-		// Get local files and folders
-		$localDirs          = $this->getFolders($this->_path, $this->subdir);
-		$view->items        = $this->getFiles($filters, $localDirs, $remotes);
+		// Set params
+		$view->params = array(
+			'subdir'               => $this->subdir,
+			'filter'               => Request::getVar('filter', ''),
+			'limit'                => Request::getInt('limit', 0),
+			'start'                => Request::getInt('limitstart', 0),
+			'sortby'               => Request::getVar('sortby', 'name'),
+			'sortdir'              => Request::getVar('sortdir', 'ASC'),
+			'showFullMetadata'     => true,
+			'getParents'           => true, // show folders
+			'getChildren'          => false, // do not recurse
+			'showUntracked'        => true,
+			'getPubConnections'    => false,
+			'remoteConnections'    => $remotes,
+		);
 
-		$view->params 		= $this->model->params;
-		$view->rSync 		= $this->_rSync;
-		$view->url			= $url;
-		$view->sync			= $sync;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->filters 		= $filters;
-		$view->subdir 		= $this->subdir;
-		$view->task			= $this->_task;
-		$view->case 		= $this->_case;
-		$view->config 		= $this->_config;
-		$view->publishing	= $this->_publishing;
+		// Retrieve items
+		$view->items = $this->repo->call('filelist', $view->params);
+
+		// Do we have any changes to report?
+		$this->onAfterUpdate();
+
+		$view->publishing	= false; // do not show publishing info
 		$view->title		= $this->_area['title'];
-		$view->quota 		= $view->params->get('quota')
-							? $view->params->get('quota')
-							: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+		$view->url 			= Route::url($this->_route . '&active=files');
+		$view->option 		= $this->_option;
+		$view->subdir 		= $this->subdir;
+		$view->model 		= $this->model;
+		$view->repo    		= $this->repo;
+		$view->uid 			= $this->_uid;
 		$view->fileparams 	= $this->params;
-		$view->sizelimit 	= \Hubzero\Utility\Number::formatBytes($this->params->get('maxUpload', '104857600'));
+		$view->database		= $this->_database;
 
 		return $view->loadTemplate();
 	}
 
 	/**
-	 * Browser within publications NEW
+	 * Browser within publications (Curation)
 	 *
 	 * @return     string
 	 */
@@ -522,12 +465,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
-		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'content';
+		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras')))
+					? $parts[0] : 'content';
 		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
-
-		// Make sure Git helper is included
-		$this->_getGitHelper();
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -538,7 +479,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Load classes
+		// Load publication classes
 		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
 		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
@@ -600,8 +541,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->items = NULL;
 		if ($this->model->get('id'))
 		{
-			$this->minimal = true;
-			$view->items = $this->getList();
+			// Set params
+			$params = array(
+				'filter'               => Request::getVar('filter', ''),
+				'limit'                => Request::getInt('limit', 0),
+				'start'                => Request::getInt('limitstart', 0),
+				'sortby'               => 'localpath', // important for selector!
+				'showFullMetadata'     => false,
+				'getParents'           => true, // show folders
+				'getChildren'          => true, // look inside directories
+			);
+
+			// Retrieve items
+			$view->items = $this->repo->call('filelist', $params);
 		}
 
 		$view->option 		= $this->_option;
@@ -617,11 +569,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->filter		= $filter;
 		$view->sizelimit 	= $this->params->get('maxUpload', '104857600');
 
-		if ($this->model->isProvisioned())
-		{
-			$view->quota = \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
-		}
-
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
@@ -632,7 +579,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Browser for within publications
+	 * Browser for within publications (Old flow)
 	 *
 	 * @return     string
 	 */
@@ -650,18 +597,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		// Contribute process outside of projects
-		if (!is_object($this->model) or !$this->model->exists())
-		{
-			$this->model->set('provisioned', 1);
-		}
-
-		// Does subdirectory exist?
-		if (!is_dir($this->_path. DS . $this->subdir))
-		{
-			$this->subdir = '';
-		}
-
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -671,24 +606,25 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Build filters
-		$filters = array();
-		$filters['limit'] 	      = Request::getInt('limit', 100);
-		$filters['start']         = Request::getInt( 'limitstart', 0);
-		$filters['sortby']        = Request::getVar( 'sortby', 'filename');
-		$filters['sortdir']       = Request::getVar( 'sortdir', 'ASC');
-		$filters['showUntracked'] = false;
-		$filters['limited']       = true;
-		$filters['recurse']       = false;
-
 		// Get file list
 		if (!$this->model->exists())
 		{
-			$view->files = $this->getMemberFiles($this->_path, $this->subdir);
+			$view->files = $this->getMemberFiles();
 		}
 		elseif ($content == 'files')
 		{
-			$view->files = $this->getFiles($filters);
+			// Set query params
+			$params = array(
+				'limit'                => Request::getInt('limit', 0),
+				'start'                => Request::getInt('limitstart', 0),
+				'sortby'               => Request::getVar('sortby', 'localpath'),
+				'sortdir'              => Request::getVar('sortdir', 'ASC'),
+				'showFullMetadata'     => false,
+				'getParents'           => false, // show folders
+				'getChildren'          => true,
+			);
+
+			$view->files = $this->repo->call('filelist', $params);
 		}
 		else
 		{
@@ -750,7 +686,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
 		$view->base 		= $content;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->model->config();
 		$view->pid 			= $pid;
 		$view->title		= $this->_area['title'];
 
@@ -764,258 +700,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Register update info in user session
-	 *
-	 * @return     void
-	 */
-	public function registerUpdate( $type = '' , $file = '', $append = true, $appendMessage = '')
-	{
-		if (!$type || !$file)
-		{
-			return false;
-		}
-
-		$kind = 'projects.' . $this->model->get('alias') . '.' . $type;
-
-		// Get session
-		$jsession = \JFactory::getSession();
-
-		if ($append == true)
-		{
-			$exVal  = $jsession->get($kind);
-			$val 	= $exVal ? $exVal . ', ' . $file : $file;
-		}
-		else
-		{
-			$val = $file;
-		}
-
-		$val .= $appendMessage ? ' (' . $appendMessage . ') ' : '';
-
-		$jsession->set($kind, $val);
-		return true;
-	}
-
-	/**
-	 * Event call after file update
-	 *
-	 * @return     void
-	 */
-	public function onAfterUpdate()
-	{
-		$sync     = 0;
-		$activity = '';
-		$message  = '';
-		$ref	  = '';
-
-		// Get session
-		$jsession = \JFactory::getSession();
-
-		// Get values from session
-		$updated 	= $jsession->get('projects.' . $this->model->get('alias') . '.updated');
-		$uploaded 	= $jsession->get('projects.' . $this->model->get('alias') . '.uploaded');
-		$failed 	= $jsession->get('projects.' . $this->model->get('alias') . '.failed');
-		$deleted 	= $jsession->get('projects.' . $this->model->get('alias') . '.deleted');
-		$restored 	= $jsession->get('projects.' . $this->model->get('alias') . '.restored');
-		$extracted 	= $jsession->get('projects.' . $this->model->get('alias') . '.extracted');
-
-		// Clean up session values
-		$jsession->set('projects.' . $this->model->get('alias') . '.failed', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.updated', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.deleted', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.restored', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.extracted', '');
-
-		// Provisioned project?
-		if ($this->model->isProvisioned() || !$this->model->get('id'))
-		{
-			return false;
-		}
-
-		// Pass success or error message
-		if ($failed && !$uploaded && !$uploaded)
-		{
-			$this->_message = array('message' => 'Failed to upload ' . $failed, 'type' => 'error');
-		}
-		elseif ($uploaded || $updated)
-		{
-			$sync = 1;
-
-			$uploadParts = explode(',', $uploaded);
-			$updateParts = explode(',', $updated);
-
-			if ($uploaded)
-			{
-				if (count($uploadParts) > 2)
-				{
-					$message = 'uploaded ' . basename($uploadParts[0]) . ' and '
-						. (count($uploadParts) - 1) . ' more files ' ;
-				}
-				else
-				{
-					$message = 'uploaded ';
-					$u = 0;
-					foreach ($uploadParts as $part)
-					{
-						$message .= basename($part);
-						$u++;
-						$message .= count($uploadParts) == $u ? '' : ', ';
-					}
-				}
-
-				// Clean up session values
-				$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
-
-				// Save referenced files
-				$ref = $extracted ? $extracted : $uploaded;
-			}
-			if ($updated)
-			{
-				$message .= $uploaded ? '. Updated ' : 'updated ';
-				if (count($updateParts) > 2)
-				{
-					$message.= basename($updateParts[0]) . ' and ' . (count($updateParts) - 1) . ' more files ' ;
-				}
-				else
-				{
-					$message = 'updated ';
-					$u = 0;
-					foreach ($updateParts as $part)
-					{
-						$message .= basename($part);
-						$u++;
-						$message .= count($updateParts) == $u ? '' : ', ';
-					}
-				}
-
-				// Save referenced files
-				if ($extracted)
-				{
-					$ref .= $extracted;
-				}
-				else
-				{
-					$ref .= $uploaded ? ', ' . $updated : $updated;
-				}
-			}
-
-			$activity  = $message . ' ' . strtolower(Lang::txt('PLG_PROJECTS_FILES_IN_PROJECT_FILES')) ;
-
-			$message = 'Successfully ' . $message;
-			$message.= $failed ? ' There was a problem uploading ' . $failed : '';
-			$this->_message = array('message' => $message, 'type' => 'success');
-		}
-		elseif ($deleted)
-		{
-			// Save referenced files
-			$ref = $deleted;
-
-			$delParts = explode(',', $deleted);
-
-			$sync = 1;
-
-			$what = count($delParts) == 1 ? $deleted : count($delParts)
-				. ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
-
-			// Output message
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED')
-				. ' ' . $what, 'type' => 'success');
-		}
-		elseif ($restored)
-		{
-			// Save referenced files
-			$ref = $restored;
-
-			$resParts = explode(',', $restored);
-
-			$sync = 1;
-
-			$activity = 'restored deleted file ' . basename($resParts[0]);
-
-			// Output message
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED')
-				. ' ' . basename($resParts[0]), 'type' => 'success');
-		}
-
-		// Force sync
-		if ($sync)
-		{
-			$obj = new \Components\Projects\Tables\Project( $this->_database );
-			$obj->saveParam($this->model->get('id'), 'google_sync_queue', 1);
-		}
-
-		// Add activity to feed
-		if ($activity && $this->_case == 'files')
-		{
-			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
-
-			$refParts  = explode(',', $ref);
-			$parsedRef = '';
-
-			$selected = array();
-			foreach ($refParts as $file)
-			{
-				if (is_file( $this->_path . DS . trim($file) ))
-				{
-					$hash   = $this->_git->gitLog(trim($file), '' , 'hash');
-					if ($hash)
-					{
-						$selected[] = substr($hash, 0, 10) . ':' . trim($file);
-
-						// Generate preview
-						$this->getFilePreview(trim($file), $hash, $this->_path, '');
-						// Generate medium-size preview
-						$this->getFilePreview(trim($file), $hash, $this->_path, '', '', true);
-					}
-				}
-			}
-
-			// Save hash and file name in a reference
-			if ($selected)
-			{
-				foreach ($selected as $sel)
-				{
-					if (((strlen($parsedRef) + strlen($sel)) <= 254))
-					{
-						$parsedRef .= $sel . ',';
-					}
-					else
-					{
-						break;
-					}
-				}
-				$parsedRef = substr($parsedRef,0,strlen($parsedRef) - 1);
-			}
-
-			// Check to make sure we are not over in char length
-			if (strlen($parsedRef) > 255)
-			{
-				$parsedRef = \Components\Projects\Helpers\Html::shortenText($parsedRef);
-			}
-
-			// Record activity
-			$aid = $objAA->recordActivity( $this->model->get('id'),
-				$this->_uid, $activity,
-				$parsedRef, 'project files',
-				Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $this->model->get('alias') . '&active=files'), 'files', 1
-			);
-		}
-	}
-
-	/**
 	 * Upload view
 	 *
 	 * @return     void, redirect
 	 */
 	public function upload()
 	{
-		$prov 	= $this->model->isProvisioned() ? 1 : 0;
-
 		// Incoming
 		$ajax 	= Request::getInt('ajax', 0);
-		$pid 	= Request::getInt('pid', 0);
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -1027,493 +719,122 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get used space
-		$usageGit = $prov ? false : $this->params->get('disk_usage');
-		$dirsize = $this->getDiskUsage($this->_path, false);
+		$dirsize  = $this->repo->call('getDiskUsage',
+			$params = array(
+				'history' => $this->params->get('disk_usage')
+			)
+		);
 
-		// Get quota & routing
-		if ($prov)
-		{
-			$view->quota = \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
-			$route 		 = 'index.php?option=com_publications&task=submit';
-			$view->url   = Route::url($route);
-		}
-		else
-		{
-			// Get quota
-			$quota 		 = $this->model->params->get('quota');
-			$view->quota = $quota
-				? $quota
-				: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$view->url 	= Route::url($this->_route . '&active=files');
-		}
+		// Get quota
+		$quota 		 = $this->model->params->get('quota');
+		$view->quota = $quota
+			? $quota
+			: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
+		$view->url = Route::url($this->_route . '&active=files');
 
 		$view->unused 		= $view->quota - $dirsize;
 		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
 		$view->model 		= $this->model;
-		$view->uid 			= $this->_uid;
-		$view->pid 			= $pid;
+		$view->repo			= $this->repo;
 		$view->subdir 		= $this->subdir;
-		$view->case 		= $this->_case;
 		$view->ajax			= $ajax;
-		$view->config 		= $this->_config;
+		$view->config 		= $this->model->config();
 		$view->sizelimit 	= $this->params->get('maxUpload', '104857600');
 		$view->title		= $this->_area['title'];
 		$view->params 		= $this->params;
 
-		// Get messages	and errors
-		$view->msg = $this->_msg;
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
 		return $view->loadTemplate();
 	}
 
 	/**
-	 * Upload file(s) via AJAX and check into Git
-	 *
-	 * @return     void, redirect
-	 */
-	public function ajaxSave()
-	{
-		// Incoming
-		$expand  	= Request::getInt('expand_zip');
-		$sizeLimit 	= $this->params->get('maxUpload', '104857600');
-		$pid 		= Request::getInt('pid', 0);
-
-		$prov    	= ($this->_task == 'saveprov' || $this->model->isProvisioned()) ? 1 : 0;
-		$newProv	= ($prov && !$this->model->get('id')) ? 1 : 0;
-		$this->_task= $newProv ? 'saveprov' : $this->_task;
-		$dirsize 	= 0;
-		$new 		= true;
-		$exists	  	= 0;
-
-		// Get temp path
-		$temp_path 	 = $newProv ? 'temp' : $this->getProjectPath ($this->model->get('alias'), 'temp');
-		$tempFile	 = NULL;
-
-		// Collect output
-		$out      = array();
-		$updated  = array();
-		$uploaded = array();
-		$skipped  = array();
-
-		// get the file
-		if (isset($_FILES['qqfile']))
-		{
-			$stream = false;
-			$file = $_FILES['qqfile']['name'];
-			$size = (int) $_FILES['qqfile']['size'];
-		}
-		elseif (isset($_GET['qqfile']))
-		{
-			$stream = true;
-			$file = $_GET['qqfile'];
-			$size = (int) $_SERVER["CONTENT_LENGTH"];
-		}
-		else
-		{
-			return json_encode(array('error' => Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILE')));
-		}
-
-		// Provisioned project scenario
-		if ($newProv)
-		{
-			$quota 		= \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')),
-							'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($this->_path, false);
-		}
-		else
-		{
-
-			// Get quota
-			$params 	= $this->model->params;
-			$quota 		= $params->get('quota');
-			$quota 		= $quota
-						  ? $quota
-						  : \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')),
-							'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($this->_path, $this->params->get('disk_usage'));
-		}
-
-		// Some checks
-		if ($size > $sizeLimit)
-		{
-			// Store in session
-			$this->registerUpdate('failed', $file, true, Lang::txt('PLG_PROJECTS_FILES_ERROR_LARGE_FILE'));
-
-			return json_encode(array('error' => Lang::txt('PLG_PROJECTS_FILES_ERROR_LARGE_FILE')));
-		}
-
-		$pathinfo = pathinfo($file);
-		$filename = $pathinfo['filename'];
-		$ext 	  = $pathinfo['extension'];
-
-		// Archive?
-		$archive_formats = array('zip', 'tar', 'gz');
-		$expand = in_array(strtolower($ext), $archive_formats) && $expand ? 1 : 0;
-
-		// Make the filename safe
-		$filename = urldecode($filename);
-		$filename = \Components\Projects\Helpers\Html::makeSafeFile($filename);
-
-		$fName 	  = $ext ? $filename . '.' . $ext : $filename;
-
-		$fpath = $this->subdir ? $this->subdir . DS . $fName : $fName;
-		$file  = $this->_path . DS . $fpath;
-
-		$tempFile = $temp_path . DS . $fName;
-		$repoFile = $this->_path . DS . $fpath;
-
-		// Are we updating?
-		if (file_exists($repoFile))
-		{
-			$exists = 1;
-		}
-
-		// Compute used space
-		$unused = $quota - $dirsize;
-
-		if ($size > $unused)
-		{
-			if (is_file($tempFile))
-			{
-				unlink($tempFile);
-			}
-
-			// Store in session
-			$this->registerUpdate('failed', $fName, true, Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DISK_SPACE'));
-
-			return json_encode(array('error' => Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DISK_SPACE')));
-		}
-
-		// Upload temp file
-		$where 	  = $expand ? $tempFile : $repoFile;
-		if ($stream == true)
-		{
-			/*$input    = fopen("php://input", "r");
-			$target   = fopen($where , "w");
-			$realSize = stream_copy_to_stream($input, $target);
-
-			fclose($input);
-			fclose($target);
-			*/
-			copy("php://input", $where);
-		}
-		else
-		{
-			move_uploaded_file($_FILES['qqfile']['tmp_name'], $where);
-		}
-
-		// Do virus check
-		if (file_exists($where) && \Components\Projects\Helpers\Html::virusCheck($where))
-		{
-			if ($exists && !$expand)
-			{
-				// Discard uploaded change
-				$this->_git->gitCheckout($fpath);
-			}
-
-			// Store in session
-			$this->registerUpdate('failed', $fName, true, Lang::txt('PLG_PROJECTS_FILES_ERROR_VIRUS'));
-			return json_encode(array('error' => Lang::txt('PLG_PROJECTS_FILES_ERROR_VIRUS')));
-		}
-
-		// Set commit message
-		$commitMsgZip 	= 'Added as part of archive ' . $fName . "\n";
-		$commitMsg 		= '';
-
-		// Perform upload
-		if ($expand)
-		{
-			if (!is_file($tempFile))
-			{
-				// Store in session
-				$this->registerUpdate('failed', $fName, true, Lang::txt('PLG_PROJECTS_FILES_ERROR_TEMP_FILE_UPLOAD'));
-
-				return json_encode(array('error' => Lang::txt('PLG_PROJECTS_FILES_ERROR_TEMP_FILE_UPLOAD')));
-			}
-
-			$z 	   = 0;
-			$cSize = 0;
-			$ext   = strtolower($ext);
-			if ($ext == 'tar' || $ext == 'gz')
-			{
-				// Expand tar file
-				$z = $this->untar($tempFile, $uploaded, $updated,
-					$commitMsgZip, $cSize, $this->_path, $this->subdir,
-					$unused, $fName );
-			}
-			elseif ($ext == 'zip')
-			{
-				// Expand zip using ZipArchiver
-				$z = $this->unzip($tempFile, $uploaded, $updated,
-					$commitMsgZip, $cSize, $this->_path, $this->subdir,
-					$unused, $fName );
-			}
-			// Commit expanded files
-			if ($z > 0)
-			{
-				if (!$newProv)
-				{
-					if ($this->_git->gitCommit($commitMsgZip))
-					{
-						// Store in session
-						$act = $new ? 'uploaded' : 'updated';
-						$this->registerUpdate($act, $fpath, true, $z . ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS_EXTRACTED'));
-					}
-				}
-
-				// Delete temp file
-				if (is_file($tempFile)) { unlink($tempFile); }
-
-				// Success
-				return json_encode(array(
-					'success'   => $z,
-					'file'      => $fName,
-					'isNew'		=> $new
-				));
-			}
-			else
-			{
-				$this->registerUpdate('failed', $fName);
-				return json_encode(array('error' => Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED')));
-			}
-		}
-		else
-		{
-			if (file_exists($this->_path . DS . $fpath))
-			{
-				if ($exists)
-				{
-					$updated[] = $fpath;
-				}
-				else
-				{
-					$uploaded[] = $fpath;
-				}
-
-				$this->_queue[] = $fpath;
-
-				if (!$newProv)
-				{
-					// Git add
-					$new = in_array($fpath, $updated) ? false : true;
-
-					$this->_git->gitAdd($fpath, $commitMsg, $new);
-
-					if ($commitMsg)
-					{
-						if ($this->_git->gitCommit($commitMsg))
-						{
-							// Store in session
-							$act = $new ? 'uploaded' : 'updated';
-							$this->registerUpdate($act, $fpath);
-						}
-					}
-				}
-			}
-			else
-			{
-				$this->registerUpdate('failed', $fName);
-				return json_encode(array('error' => Lang::txt('PLG_PROJECTS_FILES_ERROR_TEMP_FILE_COPY')));
-			}
-		}
-
-		return json_encode(array(
-			'success'   => 1,
-			'file'      => $file,
-			'isNew'		=> $new
-		 )
-		);
-	}
-
-	/**
-	 * Upload file(s) and check into Git
+	 * Upload file(s) and add to repository
 	 *
 	 * @return     void, redirect
 	 */
 	public function save()
 	{
 		// Incoming
-		$view = Request::getVar('view', 'view'); // where to redirect
-		$json = Request::getVar('json', 0); // give response in json?
+		$json       = Request::getVar('json', 0);
+		$no_html    = Request::getVar('no_html', 0);
+		$view       = Request::getVar('view', 'view'); // where to redirect
+		$ajaxUpload = $no_html && !$json ? true : false;
 
-		// AJAX uploader
-		if (Request::getVar('no_html', 0) && !$json)
+		if ($view == 'pub')
 		{
-			return $this->ajaxSave();
-		}
-
-		// Incoming files
-		$files = Request::getVar( 'upload', '', 'files', 'array' );
-
-		if (empty($files['name']) or $files['name'][0] == '')
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_NO_FILES'));
-		}
-
-		// Collect output
-		$out      = array();
-		$updated  = array();
-		$uploaded = array();
-		$skipped  = array();
-		$sync	  = 0;
-
-		// Archive formats
-		$archive_formats = array('zip', 'tar', 'gz');
-
-		// Provisioned project scenario
-		if ($this->_task == 'saveprov')
-		{
-			$quota 		= \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($this->_path, false);
+			$url = Request::getVar('HTTP_REFERER', NULL, 'server');
 		}
 		else
 		{
-			// Get quota
-			$params 	= $this->model->params;
-			$quota 		= $params->get('quota');
-			$quota 		= $quota
-						  ? $quota
-						  : \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($this->_path, $this->params->get('disk_usage'));
+			$url  = Route::url($this->_route . '&active=files');
+			$url .= $this->subdir ? '?subdir=' .urlencode($this->subdir) : '';
 		}
 
-		// Compute used space
-		$unused = $quota - $dirsize;
-		$cSize  = 0;
+		// Get quota
+		$quota = $this->model->exists() ? $this->model->params->get('quota') : \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
 
-		// Process each file
-		if (!$this->getError())
+		// Get used space
+		$dirsize = $this->repo->exists() ? $this->repo->call('getDiskUsage', $params = array('history' => $this->params->get('disk_usage'))) : 0;
+
+		// Set params
+		$params = array(
+			'subdir'      => $this->subdir,
+			'dataPath'    => Request::getVar('data_path', ''),
+			'expand'      => Request::getInt('expand_zip', 0),
+			'ajaxUpload'  => $ajaxUpload,
+			'path'        => $this->_path,
+			'quota'       => $quota,
+			'dirsize'     => $dirsize,
+			'sizelimit'   => $this->params->get('maxUpload', '104857600')
+		);
+
+		// Upload file
+		$results = $this->repo->insert($params);
+
+		// Register changes for active projects
+		if (!empty($results) && !$this->model->isProvisioned())
 		{
-			// Go through uploaded files
-			for ($i=0; $i < count($files['name']); $i++)
+			foreach ($results as $updateType => $files)
 			{
-				$file = $files['name'][$i];
-				$tmp_name = $files['tmp_name'][$i];
-
-				// Make the filename safe
-				if ($file)
+				foreach ($files as $file)
 				{
-					$file = \Components\Projects\Helpers\Html::makeSafeFile($file);
-				}
-
-				// Get file extention
-				$ext   = \Components\Projects\Helpers\Html::getFileExtension($file);
-
-				// Subdir?
-				$file = $this->subdir ? $this->subdir . DS . $file : $file;
-
-				// Check file size
-				$sizelimit = \Hubzero\Utility\Number::formatBytes($this->params->get('maxUpload', '104857600'));
-
-				if ( $files['size'][$i] > intval($this->params->get('maxUpload', '104857600')))
-				{
-					$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
-						. $sizelimit . '. ' . Lang::txt('PLG_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
-				}
-
-				// Combined size
-				if ($files['size'][$i] > 0)
-				{
-					$cSize = $cSize + $files['size'][$i];
-				}
-
-				// Check against quota
-				if ($cSize > $unused)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
-					break;
-				}
-
-				// Expand archive?
-				$expand  = Request::getInt('expand_zip', 0);
-				$zipfile = in_array(strtolower($ext), $archive_formats) ? 1 : 0;
-
-				if (!$this->getError() && $zipfile && $expand)
-				{
-					$commitMsgZip 	= 'Added as part of archive ' . basename($file) . "\n";
-					$z				= 0;
-					$ext   			= strtolower($ext);
-
-					if ($ext == 'tar' || $ext == 'gz')
+					$this->registerUpdate($updateType, $file);
+					// Ajax requires output right here
+					if ($ajaxUpload)
 					{
-						// Expand tar file
-						$z = $this->untar($tmp_name, $uploaded, $updated,
-							$commitMsgZip, $cSize, $this->_path, $subdir, $unused, $file );
-					}
-					elseif ($ext == 'zip')
-					{
-						// Expand zip using ZipArchiver
-						$z = $this->unzip($tmp_name, $uploaded, $updated,
-							$commitMsgZip, $cSize, $this->_path, $subdir, $unused, $file );
-					}
-
-					// Commit expanded files
-					if ($z > 0)
-					{
-						if ($this->_task != 'saveprov')
+						if ($updateType == 'failed')
 						{
-							$this->_git->gitCommit($commitMsgZip);
-						}
-					}
-					else
-					{
-						$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-					}
-				}
-
-				// Upload file
-				if (!$this->getError() && (!$zipfile || !$expand))
-				{
-					$exists = 0;
-					if (file_exists($this->_path . DS . $file))
-					{
-						$exists    = 1;
-						$updated[] = $file;
-					}
-
-					if (!\JFile::upload($tmp_name, $this->_path . DS . $file))
-					{
-						$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_UPLOADING'));
-					}
-					else
-					{
-						// Do virus check
-						if (\Components\Projects\Helpers\Html::virusCheck( $this->_path . DS . $file))
-						{
-							if ($exists)
-							{
-								// Discard uploaded change
-								$this->_git->gitCheckout($file);
-							}
-
-							$this->setError(Lang::txt('Virus detected, refusing to upload'));
+							return json_encode(array(
+								'error' => $this->repo->getError()
+							));
 						}
 						else
 						{
-							$uploaded[] = $file;
-
-							if ($this->_task != 'saveprov')
-							{
-								// Git add
-								$new = isset($updated[$file]) ? false : true;
-								$this->_git->gitAdd($file, $commitMsg, $new);
-								$this->_git->gitCommit($commitMsg);
-
-								// Store in session
-								$updateType = $new ? 'uploaded' : 'updated';
-								$this->registerUpdate($updateType, $file);
-
-								// Generate preview
-								$hash = $this->_git->gitLog($file, '' , 'hash');
-								$this->getFilePreview($file, $hash, $this->_path, $this->subdir);
-							}
+							return json_encode(array(
+								'success'   => 1,
+								'file'      => $file,
+								'isNew'		=> $updateType == 'uploaded' ? true : false
+								)
+							);
 						}
 					}
 				}
+			}
+		}
+
+		// On error
+		if ($this->repo->getError())
+		{
+			if ($ajaxUpload || $json)
+			{
+				return json_encode(array(
+					'error' => $this->repo->getError()
+				));
+			}
+			else
+			{
+				$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+				$this->_referer = $url;
+				return;
 			}
 		}
 
@@ -1529,371 +850,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			));
 		}
 
-		// Display view
-		if ($view == 'browser')
+		// Go back
+		$this->_referer = $url;
+
+		// Set success message
+		if (isset($this->_msg) && $this->_msg)
 		{
-			return $this->browser();
-		}
-		else
-		{
-			// Pass success or error message
-			if ($this->getError())
-			{
-				$this->_message = array('message' => $this->getError(), 'type' => 'error');
-			}
-			elseif (isset($this->_msg) && $this->_msg)
-			{
-				$this->_message = array('message' => $this->_msg, 'type' => 'success');
-			}
-
-			$url 	= Route::url($this->_route . '&active=files');
-			$url .= $this->subdir ? '?subdir=' .urlencode($this->subdir) : '';
-
-			if ($view == 'pub')
-			{
-				$url = Request::getVar('HTTP_REFERER', NULL, 'server');
-			}
-
-			$this->_referer = $url;
-			return;
-		}
-	}
-
-	/**
-	 * Untar
-	 *
-	 * @return     void
-	 */
-	public function untar( $tmp_name = '', &$uploaded, &$updated,
-		&$commitMsgZip, &$cSize,
-		$path = '', $subdir = '',
-		$unused = 0, $file)
-	{
-
-		if (!$tmp_name)
-		{
-			$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-			return false;
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
-		// Reserved names (service directories)
-		$reserved = \Components\Projects\Helpers\Html::getParamArray($this->params->get('reservedNames'));
-
-		$temp_path 	 = $this->_task == 'saveprov' ? 'temp' : $this->getProjectPath ($this->model->get('alias'), 'temp');
-		$archive 	 = $temp_path . DS . $file;
-		$extractPath = $temp_path . DS . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 );
-		$z 			 = 0;
-		$unzipto 	 = $subdir ? $path . DS . $subdir : $path;
-
-		// Create dir to extract into
-		if (!is_dir($extractPath))
-		{
-			\JFolder::create($extractPath);
-		}
-
-		if (!is_file($tmp_name))
-		{
-			$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-			return false;
-		}
-
-		// Do virus check
-		if (\Components\Projects\Helpers\Html::virusCheck($tmp_name))
-		{
-			$this->setError(Lang::txt('Virus detected, refusing to upload'));
-			return false;
-		}
-
-		// Expand tar
-		try
-		{
-			chdir($temp_path);
-			exec('tar xvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out );
-
-			// Now copy extracted contents into project
-			$extracted = \JFolder::files($extractPath, '.', true, true,
-				$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
-
-			foreach ($extracted as $e)
-			{
-				$fileinfo = pathinfo($e);
-				$a_dir  = $fileinfo['dirname'];
-				$a_dir	= str_replace($extractPath, '', $a_dir);
-				$a_file = $fileinfo['basename'];
-
-				// Skip certain system files
-				if (preg_match("/__MACOSX/", $e) OR preg_match("/.DS_Store/", $e))
-				{
-					continue;
-				}
-
-				$fSize = filesize($e);
-
-				// Combined size
-				if ($fSize > 0)
-				{
-					$cSize = $cSize + $fSize;
-				}
-
-				// Check against quota
-				if ($cSize > $unused)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
-					break;
-				}
-
-				// Clean up filename
-				$safe_dir = $a_dir && $a_dir != '.' ? \Components\Projects\Helpers\Html::makeSafeDir($a_dir) : '';
-				$safe_file= \Components\Projects\Helpers\Html::makeSafeFile($a_file);
-
-				$skipDir = 0;
-				if ($safe_dir && in_array(strtolower($safe_dir), $reserved))
-				{
-					$skipDir = 1;
-				}
-				$safename = $safe_dir && !$skipDir ? $safe_dir . DS . $safe_file : $safe_file;
-				$afile 	  = $subdir ? $subdir . DS . $safename : $safename;
-
-				// Provision directory
-				if ($safe_dir && !$skipDir && !is_dir($unzipto . DS . $safe_dir ))
-				{
-					if (\JFolder::create( $unzipto . DS . $safe_dir ) && $this->_task != 'saveprov')
-					{
-						if ($this->_git->makeEmptyFolder($afile))
-						{
-							$commitMsgZip .= Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-								. '  ' . escapeshellarg($afile) ."\n";
-						}
-					}
-					$z++;
-				}
-
-				if (file_exists($path . DS . $afile))
-				{
-					$updated[] = $afile;
-				}
-
-				// Copy file into project
-				if (\JFile::copy($e, $unzipto . DS . $safename))
-				{
-					// Add to Git
-					if (is_file($path . DS . $afile))
-					{
-						$uploaded[] = $afile;
-
-						if ($this->_task != 'saveprov')
-						{
-							// Git add & commit
-							$this->_git->gitAdd($afile, $commitMsgZip);
-							$this->_git->gitCommit($commitMsgZip);
-
-							// Store in session
-							$this->registerUpdate('extracted', $afile);
-
-							// Generate preview
-							$hash = $this->_git->gitLog($afile, '' , 'hash');
-							$this->getFilePreview($afile, $hash, $path, $subdir);
-						}
-
-						$z++;
-					}
-				}
-			}
-
-			// Clean up
-			\JFolder::delete($extractPath);
-			\JFile::delete($archive);
-
-			return $z;
-		}
-		catch (Exception $e)
-		{
-			$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-			return false;
-		}
-	}
-
-	/**
-	 * Extract files using ZipArchive
-	 *
-	 * @return     void
-	 */
-	public function unzip(
-		$tmp_name = '', &$uploaded, &$updated,
-		&$commitMsgZip, &$cSize,
-		$path = '', $subdir = '',
-		$unused = 0, $file)
-	{
-		if (!extension_loaded('zip'))
-		{
-			$this->setError(Lang::txt('COM_PROJECT_ZLIB_PACKAGE_REQUIRED'));
-			return false;
-		}
-
-		if (!$tmp_name)
-		{
-			$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-			return false;
-		}
-
-		$z = 0;
-		$unzipto = $subdir ? $path . DS . $subdir : $path;
-
-		// Reserved names (service directories)
-		$reserved = \Components\Projects\Helpers\Html::getParamArray(
-			$this->params->get('reservedNames'));
-
-		// Do virus check
-		if (\Components\Projects\Helpers\Html::virusCheck($tmp_name))
-		{
-			$this->setError(Lang::txt('Virus detected, refusing to upload'));
-			return false;
-		}
-
-		$zip = new ZipArchive;
-
-		if ($zip->open($tmp_name) === true)
-		{
-			$stopLoop = 0;
-			$skipDir  = 0;
-
-			for ($a = 0; $a < $zip->numFiles; $a++)
-			{
-		        if ($stopLoop)
-				{
-					$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-					break;
-				}
-
-				$filename = $zip->getNameIndex($a);
-		        $fileinfo = pathinfo($filename);
-
-				$a_dir  = $fileinfo['dirname'];
-				$a_file = $fileinfo['basename'];
-
-				// Skip certain system files
-				if (preg_match("/__MACOSX/", $filename) OR preg_match("/.DS_Store/", $filename))
-				{
-					continue;
-				}
-
-				// Clean up filename
-				$safe_dir = $a_dir ? \Components\Projects\Helpers\Html::makeSafeDir($a_dir) : '';
-				$safe_file= \Components\Projects\Helpers\Html::makeSafeFile($a_file);
-				$safename = $safe_dir && !$skipDir ? $safe_dir . DS . $safe_file : $safe_file;
-				$afile 	  = $subdir ? $subdir . DS . $safename : $safename;
-				$adir 	  = $subdir ? $subdir . DS . $safe_dir : $safe_dir;
-
-				if (substr( $filename, -1 ) == '/' && !is_dir($unzipto . DS . $safename))
-				{
-					// Check that we directory name is not reserved for other purposes
-					if (!$subdir && in_array(strtolower($safe_file), $reserved))
-					{
-						// extract to the current directory
-						$skipDir = 1;
-						continue;
-					}
-
-					if (\JFolder::create( $unzipto . DS . $safename ))
-					{
-						if ($this->_task != 'saveprov')
-						{
-							if ($this->_git->makeEmptyFolder($afile))
-							{
-								$commitMsgZip .= Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-									. '  ' . escapeshellarg($afile) ."\n";
-							}
-						}
-						$z++;
-					}
-					else
-					{
-						$stopLoop = 1;
-						continue;
-					}
-				}
-				else
-				{
-					// Missing parent directory?
-					if ($safe_dir && !is_dir($unzipto . DS . $safe_dir))
-					{
-						if (\JFolder::create( $unzipto . DS . $safe_dir ))
-						{
-							if ($this->_task != 'saveprov')
-							{
-								if ($this->_git->makeEmptyFolder($adir))
-								{
-									$commitMsgZip .= Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-										. '  ' . escapeshellarg($adir) ."\n";
-								}
-							}
-							$z++;
-						}
-						else
-						{
-							$stopLoop = 1;
-							continue;
-						}
-					}
-
-					// Copy temp file into project
-					if (substr( $filename, -1 ) != '/')
-					{
-						if (file_exists($path . DS . $afile))
-						{
-							$updated[] = $afile;
-						}
-
-						copy("zip://" . $tmp_name . "#" . $filename, $unzipto . DS . $safename);
-
-						$fSize = filesize($path . DS . $afile);
-
-						// Combined size
-						if ($fSize > 0)
-						{
-							$cSize = $cSize + $fSize;
-						}
-
-						// Check against quota
-						if ($cSize > $unused)
-						{
-							$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
-							break;
-						}
-					}
-
-					// Add to Git
-					if (is_file($path . DS . $afile))
-					{
-						$uploaded[] = $afile;
-
-						if ($this->_task != 'saveprov')
-						{
-							// Git add & commit
-							$this->_git->gitAdd($afile, $commitMsgZip);
-							$this->_git->gitCommit($commitMsgZip);
-
-							// Store in session
-							$this->registerUpdate('extracted', $afile);
-
-							// Generate preview
-							$hash = $this->_git->gitLog($afile, '' , 'hash');
-							$this->getFilePreview($afile, $hash, $path, $subdir);
-						}
-
-						$z++;
-					}
-				}
-		    }
-
-		    $zip->close();
-			return $z;
-		}
-		else
-		{
-			$this->setError(Lang::txt('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
-			return false;
-		}
+		return;
 	}
 
 	/**
@@ -1924,7 +890,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->ajax 		= 1;
 		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
-		$view->tool			= $this->_tool;
 		$view->url			= $url;
 		$view->path 		= $this->_path;
 		$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -2125,7 +1090,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->subdir 		= $this->subdir;
 			$view->case 		= $this->_case;
-			$view->tool			= $this->_tool;
 			$view->url			= $url;
 			$view->path 		= $this->_path;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -2258,7 +1222,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->case 		= $this->_case;
 			$view->ajax 		= Request::getInt('ajax', 0);
-			$view->tool			= $this->_tool;
 			$view->subdir 		= $this->subdir;
 			$view->url			= $url;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -2489,7 +1452,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->subdir 		= $this->subdir;
 			$view->case 		= $this->_case;
-			$view->tool			= $this->_tool;
 			$view->path 		= $this->_path;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 
@@ -2849,13 +1811,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		$view->url 	        = Route::url($this->_route . '&active=files');
-		$view->config		= $this->_config;
+		$view->config		= $this->model->config();
 		$view->file 		= $file;
 		$view->fpath 		= $fpath;
 		$view->option 		= $this->_option;
 		$view->model 		= $this->model;
 		$view->case 		= $this->_case;
-		$view->tool			= $this->_tool;
 		$view->uid 			= $this->_uid;
 		$view->title		= $this->_area['title'];
 		$view->subdir 		= $this->subdir;
@@ -2884,7 +1845,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function history()
 	{
 		// Clean incoming data
-		$this->cleanData();
+		$this->_cleanData();
 
 		// Incoming
 		$checked = Request::getVar( 'asset', '', 'request', 'array' );
@@ -3009,14 +1970,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->model 		= $this->model;
 		$view->case 		= $this->_case;
-		$view->tool			= $this->_tool;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->title		= $this->_area['title'];
 		$view->subdir 		= $this->subdir;
 		$view->remote		= $remote;
 		$view->connected	= $connected;
-		$view->config		= $this->_config;
+		$view->config		= $this->model->config();
 
 		if ($this->getError())
 		{
@@ -3167,57 +2127,37 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$disp 		= isset($data->disp) ? $data->disp : 'inline';
 		$limited 	= isset($data->limited) ? $data->limited : 0;
 		$hash 		= isset($data->hash) ? $data->hash : 0;
-
-		$database = \JFactory::getDBO();
+		$repoName	= isset($data->repo) ? $data->repo : 'local';
 
 		// Instantiate a project
-		$obj = new \Components\Projects\Tables\Project( $database );
+		$model = \Components\Projects\Models\Project($projectid);
 
-		$uid   = User::get('id');
-
-		// Get Project
-		$project = $obj->getProject($projectid, $uid);
-
-		if (!$project || ($limited == 1 && !$project->owner))
+		if (!$model->exists() || ($limited == 1 && !$model->access('member')))
 		{
 			// Throw error
 			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED'), 403);
 			return;
 		}
 
-		// Load component configs
-		$config = Component::params('com_projects');
+		// Load repo
+		$repo = new \Components\Projects\Models\Repo ($model, $repoName);
 
-		// Get project path
-		$this->_path  = \Components\Projects\Helpers\Html::getProjectRepoPath($project->alias);
-
-		$deleteTemp = 0;
-
+		$deleteTemp = false;
 		if ($hash)
 		{
-			$tempPath  	= \Components\Projects\Helpers\Html::getProjectRepoPath($project->alias, 'temp', false);
-
-			if (!is_dir( $tempPath ))
-			{
-				// Create path
-				if (!\JFolder::create( $tempPath ))
-				{
-					// Throw error
-					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
-					return;
-				}
-			}
-
-			// Include Git Helper
-			$this->_getGitHelper();
-
-			$tempName = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 ) . basename($file);
+			$tempPath = sys_get_temp_dir();
+			$tempName = 'temp-' . \Components\Projects\Helpers\Html::generateCode(4, 4, 0, 1, 0) . basename($file);
 			$serve    = $tempPath . DS . $tempName;
 
 			// Get file content
-			$this->_git->getContent($file, $hash, $serve);
+			$repo->call('content', $params = array(
+					'fileName' => $file,
+					'hash'     => $hash,
+					'target'   => $serve
+				)
+			);
 
-			$deleteTemp = 1;
+			$deleteTemp = true;
 		}
 		else
 		{
@@ -3244,7 +2184,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($deleteTemp)
 		{
 			// Delete downloaded temp file
-			\JFile::delete($serve);
+			$fileSystem = new \Hubzero\Filesystem\Filesystem();
+			$fileSystem->delete($serve);
 		}
 
 		if (!$result)
@@ -3551,7 +2492,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Import & download converted file
 				if ($remote && $remote['converted'] == 1 && $remote['service'] == 'google')
 				{
-					$temp_path 	= $this->getProjectPath ($this->model->get('alias'), 'temp');
+					$temp_path = sys_get_temp_dir();
 
 					// Load remote resource
 					$this->_connect->setUser($this->model->get('owned_by_user'));
@@ -3677,7 +2618,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function compile()
 	{
 		// Clean incoming data
-		$this->cleanData();
+		$this->_cleanData();
 
 		// Incoming
 		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
@@ -3701,7 +2642,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Path for storing temp previews
-		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
+		$imagepath = trim($this->model->config()->get('imagepath', '/site/projects'), DS);
 		$outputDir = DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'compiled';
 
 		// Make sure output dir exists
@@ -4025,8 +2966,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get temp path
 		if (!$filename)
 		{
-			$temp  	 = $this->getProjectPath ($this->model->get('alias'), $dir);
-			$sfile 	 = $temp . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+			if (empty($this->_logPath))
+			{
+				return false;
+			}
+			if (!is_dir($this->_logPath))
+			{
+				$this->fileSystem->makeDirectory($this->_logPath);
+			}
+			$sfile 	 = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
 		}
 		else
 		{
@@ -4051,8 +2999,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get temp path
 		if (!$filename)
 		{
-			$temp  	 = $this->getProjectPath ($this->model->get('alias'), $dir);
-			$sfile 	 = $temp . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
 		}
 		else
 		{
@@ -4123,7 +3070,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$to_path)
 		{
-			$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
+			$imagepath = trim($this->model->config()->get('imagepath', '/site/projects'), DS);
 			$to_path = PATH_APP . DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'preview';
 		}
 
@@ -4214,21 +3161,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$maxDownload 	= intval($this->params->get('maxDownload', 104857600));
 
 		// Get temp directory
-		$base_path 		= $this->getProjectPath ($this->model->get('alias'), 'temp');
+		$base_path 		= sys_get_temp_dir();
 		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
 		$path 			= $subdir ? $projectPath. DS . $subdir : $projectPath;
 		$combinedSize  	= 0;
-
-		// Check that we have our temp directiry
-		if (!is_dir( $base_path ))
-		{
-			if (!\JFolder::create( $base_path ))
-			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_TEMP_PATH') );
-				return false;
-			}
-		}
-
 		$tarpath =  $base_path . DS . $tarname;
 
 		$zip = new ZipArchive;
@@ -4298,56 +3234,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		if (!isset($this->_git))
 		{
-			if (!isset($this->_config))
-			{
-				$this->_config 	 = Component::params('com_projects');
-			}
-			if (!isset($this->_path))
-			{
-				$this->_path = $this->getProjectPath();
-			}
-
 			$this->_git = new \Components\Projects\Helpers\Git($this->_path);
 		}
 	}
 
 	/**
-	 * Get disk space
+	 * Optimize repository
 	 *
-	 * @param      string	$option
-	 * @param      object  	$project
-	 * @param      string  	$case
-	 * @param      integer  $by
-	 * @param      string  	$action
-	 * @param      object 	$config
-	 * @param      string  	$tool
+	 * @param      object  	$model Project model
+	 * @param      string  	$repoName
 	 *
 	 * @return     string
 	 */
-	public function diskspace( $option, $model, $case, $by, $action, $config, $tool = NULL )
+	public function optimize($model, $repoName = 'local')
 	{
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  =>'projects',
-				'element' =>'files',
-				'name'    =>'diskspace'
-			)
-		);
-
-		// Get path and initialize Git
-		if ($by == 'admin')
-		{
-			$this->model   = $model;
-			$this->_path   = $this->getProjectPath($this->model->get('alias'), $case);
-			$this->_config = $this->model->config();
-		}
-
-		// Make sure Git helper is included
-		$this->_getGitHelper();
-
-		$url = Route::url($this->_route . '&active=files&action=diskspace');
-
 		// Run git-gc
 		if ($action == 'optimize' || $action == 'advoptimize')
 		{
@@ -4363,29 +3263,62 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			return true;
 		}
+	}
 
-		// Report .git usage?
+	/**
+	 * Show disk usage
+	 *
+	 * @param      object  	$model Project model
+	 * @param      string  	$repoName
+	 * @param      integer  $by
+	 *
+	 * @return     string
+	 */
+	public function diskspace($model, $repoName = 'local', $by = '')
+	{
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  =>'projects',
+				'element' =>'files',
+				'name'    =>'diskspace'
+			)
+		);
+
+		if (!isset($this->repo))
+		{
+			$this->repo = new \Components\Projects\Models\Repo ($model, $repoName);
+		}
+
+		$url = Route::url('index.php?option=' . $this->_option
+			. '&alias=' . $model->get('alias') . '&active=files&action=diskspace');
+
+		// Report usage with all history?
 		if ($this->params->get('disk_usage') == true || $by == 'admin')
 		{
-			$view->dirsize 	  = self::getDiskUsage($this->_path, true);
-			$view->totalspace = self::getDiskUsage($this->_path, false, false);
+			$view->dirsize = $this->repo->call('getDiskUsage',
+				$params = array('working' => true, 'history' => true)
+			);
+			$view->totalspace = $this->repo->call('getDiskUsage',
+				$params = array('working' => false, 'history' => false)
+			);
 		}
 		else
 		{
-			$view->totalspace = self::getDiskUsage($this->_path, false);
+			$view->totalspace = $this->repo->call('getDiskUsage',
+				$params = array('working' => false, 'history' => true)
+			);
 			$view->dirsize = $view->totalspace;
 		}
-
-		// Project params
-		$view->params = $this->model->params;
 
 		// Get publication usage
 		if (\JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+				. DS . 'helpers' . DS . 'html.php');
 
 			$filters 					= array();
-			$filters['project']  		= $this->model->get('id');
+			$filters['project']  		= $model->get('id');
 			$filters['ignore_access']   = 1;
 			$filters['dev']   	 		= 1;
 
@@ -4395,68 +3328,24 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$pubs 				= $objP->getRecords($filters);
 
 			$view->pubDiskUsage = \Components\Publications\Helpers\Html::getDiskUsage($pubs);
-			$view->pubQuota 	= $view->params->get('pubQuota')
-								? $view->params->get('pubQuota')
-								: \Components\Projects\Helpers\Html::convertSize( floatval($config->get('pubQuota', '1')), 'GB', 'b');
+			$view->pubQuota 	= $model->params->get('pubQuota')
+								? $model->params->get('pubQuota')
+								: \Components\Projects\Helpers\Html::convertSize( floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
 		}
 
-		// Build filters
-		$filters = array();
-		$filters['count'] 	      = 1;
-
-		$view->total  = $this->getFiles($filters);
-		$quota 		  = $view->params->get('quota');
+		$view->total  = $this->repo->count();
+		$quota 		  = $model->params->get('quota');
 		$view->quota  = $quota
 			? $quota
-			: \Components\Projects\Helpers\Html::convertSize( floatval($config->get('defaultQuota', '1')), 'GB', 'b');
+			: \Components\Projects\Helpers\Html::convertSize( floatval($model->config()->get('defaultQuota', '1')), 'GB', 'b');
 
-		$view->case 	= $case;
-		$view->tool		= $tool;
-		$view->action 	= $action;
 		$view->by 		= $by;
-		$view->model 	= $this->model;
-		$view->option 	= $option;
-		$view->config 	= $config;
-		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
-		$view->pparams 	= $this->params;
-		$view->usageGit = $this->params->get('disk_usage');
-
-		return $view->loadTemplate();
-	}
-
-	//----------------------------------------
-	// Git calls
-	//----------------------------------------
-
-	/**
-	 * Git status
-	 *
-	 * @return     string
-	 */
-	public function status()
-	{
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'status'
-			)
-		);
-
-		$view->status 	= $this->_git->gitStatus();
+		$view->model 	= $model;
 		$view->option 	= $this->_option;
-		$view->model 	= $this->model;
-		$view->ajax 	= Request::getInt('ajax', 0);
+		$view->config 	= $model->config();
+		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
+		$view->params 	= $this->params;
 
-		// Build URL
-		$view->url = Route::url($this->_route . '&active=files');
-		$view->subdir = $this->subdir;
-
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
 		return $view->loadTemplate();
 	}
 
@@ -4470,9 +3359,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'trash'
+				'folder'  =>'projects',
+				'element' =>'files',
+				'name'    =>'trash'
 			)
 		);
 
@@ -4494,37 +3383,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-
-	//----------------------------------------
-	// Retrievers
-	//----------------------------------------
-
-	/**
-	 * Get folders
-	 *
-	 * @param      string	$path
-	 * @param      string  	$subdir
-	 * @param      boolean  $recurse
-	 * @param      boolean  $fullpath
-	 * @param      array 	$exclude
-	 *
-	 * @return     array
-	 */
-	public function getFolders($path = '', $subdir = '', $recurse = false,
-		$fullpath = false, $exclude = array('.git'))
-	{
-		// Check path format
-		$subdir = trim($subdir, DS);
-
-		// Make full path
-		$path = $path . DS . $subdir;
-
-		// Use Joomla to get folder list
-		$folders = \JFolder::folders( $path, '.', $recurse, $fullpath, $exclude);
-
-		return $folders;
-	}
-
 	/**
 	 * Get member files (provisioned project)
 	 *
@@ -4534,27 +3392,23 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array
 	 */
-	public function getMemberFiles($path = '', $subdir = '', $recurse = true)
+	public function getMemberFiles($recurse = true)
 	{
 		// Check path format
-		$subdir = trim($subdir, DS);
-		$fullpath = $subdir ? $path. DS . $subdir : $path;
+		$subdir = trim($this->subdir, DS);
+		$fullpath = $subdir ? $this->_path. DS . $subdir : $this->_path;
+
+		$get = $this->fileSystem->files($fullpath);
 
 		$files = array();
-
-		$fileSystem = new \Hubzero\Filesystem\Filesystem();
-		$get = $fileSystem->files($fullpath);
-
 		if ($get)
 		{
 			foreach ($get as $file)
 			{
 				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
 				{
-					$entry = array();
-					$entry['name']	= basename($file);
-					$entry['fpath']	= str_replace($path . DS, '', $file);
-					$entry['ext'] = \Components\Projects\Helpers\Html::getFileExtension($entry['name']);
+					$file = str_replace($this->_path . DS, '', $file);
+					$entry = new \Components\Projects\Models\File(trim($file), $this->_path);
 					$files[] = $entry;
 				}
 			}
@@ -4568,7 +3422,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array
 	 */
-	public function cleanData()
+	protected function _cleanData()
 	{
 		// Clean up empty values
 		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
@@ -4605,378 +3459,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get file info
-	 *
-	 * @param      string	$fpath
-	 * @param      boolean  $fullpath
-	 * @param      boolean 	$count
-	 * @param      boolean  $norecurse
-	 *
-	 * @return     array
-	 */
-	public function getFileInfo($fpath = '', $fullpath = '', $count = 0, $norecurse = 1 )
-	{
-		$entry = array();
-		$entry['name']	= basename($fpath);
-		if (!$count)
-		{
-			$entry['fpath']		= $fpath;
-			$e 					= $norecurse ? $entry['name'] : $entry['fpath'];
-			$entry['bytes']		= filesize($fullpath . DS . $e);
-			$entry['size']		= $entry['bytes'] ? \Hubzero\Utility\Number::formatBytes($entry['bytes']) : 'unknown';
-			$entry['ext']		= \Components\Projects\Helpers\Html::getFileExtension( $e );
-
-			// Get last commit data
-			if ($this->_fileinfo && isset($this->_fileinfo[$fpath]))
-			{
-				$gitData = $this->_fileinfo[$fpath];
-			}
-			else
-			{
-				$gitData = $this->_git->gitLog($fpath, '', 'combined');
-			}
-			$entry['date']  	= isset($gitData['date']) ? $gitData['date'] : NULL;
-			$entry['author'] 	= isset($gitData['author']) ? $gitData['author'] : NULL;
-			$entry['email'] 	= isset($gitData['email']) ? $gitData['email'] : NULL;
-			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
-
-			// SFTP?
-			if (strpos($entry['message'], '[SFTP]') !== false)
-			{
-				if (isset($this->_profileAssoc) && isset($this->_profileAssoc[trim($entry['author'])]))
-				{
-					$entry['author'] = $this->_profileAssoc[trim($entry['author'])]->get('name');
-					$entry['email']  = $this->_profileAssoc[trim($entry['author'])]->get('email');
-				}
-				else
-				{
-					$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
-					if ($profile)
-					{
-						$entry['author'] = $profile->get('name');
-						$entry['email'] = $profile->get('email');
-						$this->_profileAssoc[trim($entry['author'])] = $profile;
-					}
-				}
-			}
-
-			// Publishing
-			$entry['pid'] 				= '';
-			$entry['pub_title'] 		= '';
-			$entry['pub_version'] 		= '';
-			$entry['pub_version_label'] = '';
-			$entry['pub_num']			= 0;
-
-			// Is file linked with a publication?
-			if ($this->_publishing && $this->_pubassoc && isset($this->_pubassoc[$fpath]))
-			{
-				$pub = $this->_pubassoc[$fpath][0];
-				$entry['pid'] 				= $pub['id'];
-				$entry['pub_title']	 		= $pub['title'];
-				$entry['pub_version'] 		= $pub['version'];
-				$entry['pub_version_label'] = $pub['version_label'];
-				$entry['pub_num']			= count($this->_pubassoc[$fpath]);
-			}
-		}
-		return $entry;
-	}
-
-	/**
-	 * Get files from Git repository
-	 *
-	 * @param      array	$filters
-	 *
-	 * @return     array
-	 */
-	public function getFiles ($filters = array(), $folders = array(), $remotes = array())
-	{
-		$path            = $this->_path;
-		$subdir          = isset($filters['subdir']) ? $filters['subdir'] : NULL;
-		$sortdir         = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
-		$sortby          = isset($filters['sortby']) ? $filters['sortby'] : '';
-		$count           = isset($filters['count']) ? $filters['count'] : 0;
-		$limit           = isset($filters['limit']) ? $filters['limit'] : 0;
-		$start           = isset($filters['start']) ? $filters['start'] : 0;
-		$rand            = isset($filters['rand']) ? $filters['rand'] : 0;
-		$limited         = isset($filters['limited']) ? $filters['limited'] : false;
-		$norecurse       = empty($filters['recurse']) ? true : false;
-		$showUntracked   = isset($filters['showUntracked']) ? $filters['showUntracked'] : true;
-
-		// Check path format
-		$subdir = trim($subdir, DS);
-		$fullpath = $subdir ? $path . DS . $subdir : $path;
-
-		$files 		= array();
-		$sorting 	= array();
-		$i			= 0;
-
-		if (!is_dir($path))
-		{
-			return $count ? 0 : $files;
-		}
-
-		// Make sure Git helper is included
-		$this->_getGitHelper();
-
-		// Get files
-		$out = $this->_git->getFiles($subdir);
-
-		// Show untracked files?
-		$untracked = array();
-		if ($showUntracked)
-		{
-			$untracked = $this->_git->getFiles($subdir, true);
-		}
-
-		// Return count
-		if ($count)
-		{
-			return (count($out) + count($untracked));
-		}
-		$counterStart = count($folders) + count($remotes) + $start;
-
-		// Get pub associations
-		if ($this->_publishing)
-		{
-			$pA = new \Components\Publications\Tables\Attachment( $this->_database );
-			$this->_pubassoc = $pA->getPubAssociations($this->model->get('id'), 'file');
-		}
-
-		$this->_fileinfo = $this->_git->gitLogAll($subdir);
-
-		// Return files
-		if (count($out) > 0)
-		{
-			if ($rand)
-			{
-				shuffle($out);
-			}
-			foreach ($out as $line)
-			{
-				if ($limit && $i >= $limit)
-				{
-					break;
-				}
-
-				$arr = explode("\t", $line);
-	            $fpath = $arr[0];
-				$base = basename($fpath);
-
-				// Do not show files in child directories
-				if ($norecurse == true)
-				{
-					$dirname = dirname($fpath);
-					if ($dirname != '.' && $dirname != $subdir)
-					{
-						continue;
-					}
-				}
-				else
-				{
-					$base = $fpath;
-				}
-
-				if (file_exists($fullpath . DS . $base))
-				{
-					if ($limited == true)
-					{
-						// Get only basic file information (for quick browsing)
-						$file = array();
-						$file['name']	= basename($fpath);
-						$file['fpath']	= $fpath;
-						$file['ext']	= \Components\Projects\Helpers\Html::getFileExtension($fpath);
-					}
-					else
-					{
-						$file = $this->getFileInfo($fpath, $fullpath, $count, $norecurse);
-						$file['untracked'] = 0;
-
-						// Skip uncommitted files
-						if (!$file['date'])
-						{
-							continue;
-						}
-					}
-
-					if (!in_array($file, $files))
-					{
-						$files[] =  $file;
-
-						if ($file['name'] != '.gitignore')
-						{
-							$i++;
-						}
-					}
-				}
-			}
-		}
-
-		// Go through untracked files
-		if (count($untracked) > 0)
-		{
-			foreach ($untracked as $ut)
-			{
-				if ($limit && $i >= $limit)
-				{
-					break;
-				}
-
-				$dirname = dirname($ut);
-				if ($dirname != '.' && $dirname != $subdir)
-				{
-					continue;
-				}
-
-				$file = $this->getFileInfo($ut, $path, $count, $norecurse);
-				$file['untracked'] = 1;
-				$files[] =  $file;
-
-				$i++;
-			}
-		}
-
-		if (isset($filters['getsorted']) && $filters['getsorted'] == true)
-		{
-			// Sort local and remote file info
-			return $this->_sortItems(
-				$files,
-				$folders,
-				$remotes,
-				$filters['sortby'],
-				$filters['sortdir']
-			);
-		}
-
-		return $files;
-	}
-
-	/**
-	 * Combine file and folder data
-	 *
-	 * @param      array	$files
-	 * @param      array  	$dirs
-	 * @param      array  	$shared
-	 * @param      string   $sortby
-	 * @param      string   $sortdir
-	 *
-	 * @return     array
-	 */
-	protected function _sortItems($files, $dirs, $remotes, $sortby = '', $sortdir = 'ASC' )
-	{
-		$combined = array();
-		$sorting  = array();
-		$follow	  = array();
-		$sortOrder = $sortdir == 'ASC' ? SORT_ASC : SORT_DESC;
-
-		// Go through Git files
-		if (count($files) > 0)
-		{
-			foreach ($files as $file)
-			{
-				if ($file['name'] == '.gitignore')
-				{
-					continue;
-				}
-
-				$item 				= array();
-				$item['type'] 		= 'document';
-				$item['item'] 		= $file;
-				$item['name'] 		= $file['name'];
-				$item['remote'] 	= NULL;
-
-				if ($sortby == 'sizes')
-				{
-					$sorting[] = $file['bytes'];
-				}
-				elseif ($sortby == 'modified')
-				{
-					$sorting[] = strtotime(JFactory::getDate(strtotime($file['date']))); // Make UTC for comparison
-				}
-				else
-				{
-					$sorting[] = strtolower($file['name']);
-				}
-				$combined[]	= $item;
-			}
-		}
-
-		// Go through remote files (with remote editing on)
-		if (count($remotes) > 0 && !empty($remotes))
-		{
-			foreach ($remotes as $servicename => $remote)
-			{
-				if (!empty($remote))
-				{
-					foreach ($remote as $fpath => $r)
-					{
-						if ($sortby == 'sizes')
-						{
-							$sorting[] = NULL;
-						}
-						if ($sortby == 'modified')
-						{
-							$sorting[] = strtotime($r->remote_modified); // already UTC
-						}
-						else
-						{
-							$sorting[] = strtolower($r->remote_title);
-						}
-
-						$item 				= array();
-						$item['type'] 		= 'remote';
-						$item['item'] 		= $r;
-						$item['name'] 		= $r->remote_title;
-						$item['remote'] 	= $servicename;
-
-						$combined[] = $item;
-					}
-				}
-			}
-
-			array_multisort($sorting, $sortOrder, $combined );
-		}
-
-		// Go through directories
-		if (count($dirs) > 0 && !empty($dirs))
-		{
-			foreach ($dirs as $dir)
-			{
-				$item 				= array();
-				$item['type'] 		= 'folder';
-				$item['item'] 		= $dir;
-				$item['name'] 		= $dir;
-				$item['remote'] 	= NULL;
-
-				if ($sortby == 'sizes')
-				{
-					$sorting[] = NULL;
-				}
-				if ($sortby == 'modified')
-				{
-					$sorting[] = NULL;
-				}
-				if ($sortby == 'filename')
-				{
-					$sorting[]  = strtolower($dir);
-				}
-				$combined[] = $item;
-			}
-		}
-
-		// Sort by name
-		if (!empty($combined))
-		{
-			array_multisort($sorting, $sortOrder, $combined );
-		}
-
-		return $combined;
-	}
-
-	//----------------------------------------
-	// Misc
-	//----------------------------------------
-
-	/**
 	 * Sort incoming file/folder data
 	 *
 	 * @return     array
@@ -4984,7 +3466,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _sortIncoming()
 	{
 		// Clean incoming data
-		$this->cleanData();
+		$this->_cleanData();
 
 		// Incoming
 		$checked = Request::getVar( 'asset', '', 'request', 'array' );
@@ -5024,308 +3506,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get file count
-	 *
-	 * @param      string	$identifier
-	 * @param      string  	$case
-	 *
-	 * @return     integer
-	 */
-	public function getCount($identifier, $case = 'files')
-	{
-		if (!$identifier)
-		{
-			return 0;
-		}
-
-		$database = \JFactory::getDBO();
-
-		$obj = new \Components\Projects\Tables\Project( $database );
-		if (!$obj->loadProject($identifier))
-		{
-			return 0;
-		}
-
-		// Include remote files?
-		$pparams 	= new \JParameter( $obj->params );
-		$connected 	= $pparams->get('google_dir_id');
-		$converted  = 0;
-
-		if ($connected)
-		{
-			require_once( PATH_CORE . DS . 'components'
-				. DS . 'com_projects' . DS . 'tables' . DS . 'remotefile.php');
-			$objRFile = new \Components\Projects\Tables\RemoteFile ($database);
-			$converted = $objRFile->getFileCount($obj->id, '', '1');
-		}
-
-		// Get project path
-		$this->_path = \Components\Projects\Helpers\Html::getProjectRepoPath($obj->alias);
-
-		// Get local file count
-		$count = $this->getFiles($filters = array('count' => 1));
-
-		return ($count + $converted);
-	}
-
-	/**
-	 * Erase repo
-	 *
-	 * @param      string	$identifier
-	 * @param      string  	$case
-	 *
-	 * @return     void
-	 */
-	public function eraseRepo($identifier, $case = 'files')
-	{
-		if (!$identifier)
-		{
-			return 0;
-		}
-
-		// Get project path
-		$path = $this->getProjectPath($identifier, $case);
-
-		if ($path && is_dir( $path . DS . '.git' ))
-		{
-			// cd
-			chdir($path);
-
-			// Wipe out .git directory
-			exec('rm -rf .git', $out);
-
-			return 1;
-		}
-		return 0;
-	}
-
-	/**
-	 * Get files stats for all projects
-	 *
-	 * @param      array 	$aliases	Project aliases for which to compute stats
-	 * @param      string 	$get
-	 *
-	 * @return     mixed
-	 */
-	public function getStats($aliases = array(), $get = 'total')
-	{
-		if (empty($aliases))
-		{
-			return false;
-		}
-
-		$files = 0;
-		$diskSpace = 0;
-		$commits = 0;
-		$usage = 0;
-
-		// Publication space
-		if ($get == 'pubspace')
-		{
-			// Load publications component configs
-			$pubconfig = Component::params( 'com_publications' );
-			$base_path = DS . trim($pubconfig->get('webpath'), DS);
-
-			chdir(PATH_CORE . $base_path);
-			exec('du -sk ', $out);
-			$used = 0;
-
-			if ($out && isset($out[0]))
-			{
-				$kb = str_replace('.', '', trim($out[0]));
-				$used = $kb * 1024;
-			}
-
-			return $used;
-		}
-
-		foreach ($aliases as $alias)
-		{
-			$path = \Components\Projects\Helpers\Html::getProjectRepoPath($alias, 'files', false);
-
-			// Make sure there is .git directory
-			if (!is_dir($path) || !is_dir($path . DS . '.git'))
-			{
-				continue;
-			}
-
-			if ($get == 'diskspace')
-			{
-				$diskSpace = $diskSpace + $this->getDiskUsage($path, $this->params->get('disk_usage'));
-			}
-			else
-			{
-				$git = new \Components\Projects\Helpers\Git($path);
-				if ($get == 'commitCount')
-				{
-					$nf = $git->callGit('ls-files --full-name ');
-
-					if ($nf && substr($nf[0], 0, 5) != 'fatal')
-					{
-						$out = $git->callGit('log | grep "^commit" | wc -l' );
-
-						if (is_array($out))
-						{
-							$c =  end($out);
-							$commits = $commits + $c;
-						}
-					}
-				}
-				else
-				{
-					$count = count($git->getFiles());
-					$files = $files + $count;
-
-					if ($count > 1)
-					{
-						$usage++;
-					}
-				}
-			}
-		}
-
-		if ($get == 'total')
-		{
-			return $files;
-		}
-		elseif ($get == 'usage')
-		{
-			return $usage;
-		}
-		elseif ($get == 'diskspace')
-		{
-			return $diskSpace;
-		}
-		elseif ($get == 'commitCount')
-		{
-			return $commits;
-		}
-	}
-
-	/**
-	 * Get used disk space in path
-	 *
-	 * @param      string 	$path
-	 * @param      boolean 	$git
-	 * @param      boolean 	$working
-	 *
-	 * @return     integer
-	 */
-	public function getDiskUsage($path = '', $git = true, $working = true)
-	{
-		$used = 0;
-
-		if ($path && is_dir($path))
-		{
-			chdir($path);
-
-			$where = $git == true ? ' .[!.]*' : '';
-
-			// Make sure there is .git directory
-			if ($git == true && !is_dir($path . DS . '.git'))
-			{
-				return 0;
-			}
-
-			exec('du -sk ' . $where, $out);
-
-			if ($out && isset($out[0]))
-			{
-				$dir = $git == true ? '.git' : '.';
-				$kb = str_replace($dir, '', trim($out[0]));
-				$used = $kb * 1024;
-			}
-		}
-
-		if ($git == false && $working == true)
-		{
-			$gitUsage = $this->getDiskUsage($path, true);
-			$used = $used - $gitUsage;
-		}
-
-		return $used;
-	}
-
-	/**
-	 * Write config for direct Git access
-	 *
-	 * @param      string	$alias
-	 * @param      object 	$config
-	 * @param      string  	$case
-	 *
-	 * @return     void
-	 */
-	public function writeGitConfig($alias = '', $config = NULL, $case = 'files')
-	{
-		if (!$alias || !$config)
-		{
-			return false;
-		}
-
-		// Get site name
-		$sitename = Config::get('config.sitename') ? Config::get('config.sitename') : 'myhub';
-
-		// Get configs
-		$gitConfigPath 	= '/etc/apache2/' . $sitename . '.conf.d/projects';
-		$prefix 		= $config->get('offroot', 0) ? '' : PATH_APP;
-		$webpath 		= $prefix . DS . trim($config->get('webpath'), DS);
-		$group 			= $config->get('group_prefix', 'pr-') . $alias;
-		$configFile 	= $gitConfigPath . DS . 'projects.conf';
-
-		// Load psystem configs
-		$sysconfig = Component::params('com_system');
-
-		// We need the config path set up by admin beforehand
-		if ( !is_dir($gitConfigPath) )
-		{
-			return false;
-		}
-
-		// Make sure the config for this project wasn't written already
-		if (is_file($configFile))
-		{
-			$read = $this->_readFile($configFile, '', true);
-
-			if (preg_match("/\/" . $alias . "\/git\/" . $case . "/", $read))
-			{
-				return true;
-			}
-		}
-
-		// Config text
-		$ctext  = '############' . "\n";
-		$ctext .= 'ScriptAlias /projects/' . $alias . '/git/ /usr/lib/git-core/git-http-backend/' . "\n";
-		$ctext .= '<Location /projects/' . $alias . '/git/' . $case . '>' . "\n";
-		$ctext .= "\t" . 'SetEnv GIT_PROJECT_ROOT ' . $webpath . DS . $alias . "\n";
-		$ctext .= "\t" . 'SetEnv GIT_HTTP_EXPORT_ALL' . "\n";
-		$ctext .= "\t" . 'Options +ExecCGI' . "\n";
-		$ctext .= "\t" . 'AuthType Basic' . "\n";
-		$ctext .= "\t" . 'AuthBasicProvider ldap' . "\n";
-		$ctext .= "\t" . 'AuthName "' . $sitename . ' Project \'' . $alias . '\'"' . "\n";
-		$ctext .= "\t" . 'AuthzLDAPAuthoritative on' . "\n";
-		$ctext .= "\t" . 'AuthLDAPBindDN "' . $sysconfig->get('ldap_managerdn') . '"' . "\n";
-		$ctext .= "\t" . 'AuthLDAPBindPassword "' . $sysconfig->get('ldap_managerpw') . '"' . "\n";
-		$ctext .= "\t" . 'AuthLDAPGroupAttributeIsDN off' . "\n";
-		$ctext .= "\t" . 'AuthLDAPGroupAttribute memberUid' . "\n";
-		$ctext .= "\t" . 'AuthLDAPURL ' . $sysconfig->get('ldap_primary') . '/ou=users,'
-			   . $sysconfig->get('ldap_basedn') . "\n";
-		$ctext .= "\t" . 'Require ldap-group cn=' . $group . ',ou=groups,' . $sysconfig->get('ldap_basedn') . "\n";
-		$ctext .= "\t" . 'Allow from all' . "\n";
-		$ctext .= '</Location>' . "\n";
-		$ctext .= '############' . "\n";
-
-		// Write to config file
-		$this->_writeToFile($ctext, $configFile, true);
-
-		// Restart apache
-		exec('/etc/init.d/apache2 restart');
-
-		return true;
-	}
-
-	/* External services */
-
-	/**
 	 * Manage connections to outside services
 	 *
 	 * @param      string	$service	Service name (google/dropbox)
@@ -5354,7 +3534,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				if ($this->_connect->disconnect($service, $removeData))
 				{
-					$this->_msg = Lang::txt('PLG_PROJECTS_FILES_DISCONNECT_SUCCESS') . ' ' . $configs['servicename'];
+					$this->_msg = Lang::txt('PLG_PROJECTS_FILES_DISCONNECT_SUCCESS')
+						. ' ' . $configs['servicename'];
 				}
 				else
 				{
@@ -5490,11 +3671,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$ajax)
 		{
-			return $this->display();
+			return $this->browse();
 		}
 		else
 		{
-			$this->_rSync['output'] = $this->display();
+			$this->_rSync['output'] = $this->browse();
 			return json_encode($this->_rSync);
 		}
 	}
@@ -5532,10 +3713,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$synced = $pparams->get($service . '_sync', 1);
 
 		// Get disk usage
-		$diskUsage = $this->getDiskUsage($this->_path, $this->params->get('disk_usage'));
+		$diskUsage = $this->repo->call('getDiskUsage',
+			$params = array(
+				'working' => true,
+				'history' => $this->params->get('disk_usage')
+			)
+		);
+
 		$quota 	   = $pparams->get('quota')
 					? $pparams->get('quota')
-					: \Components\Projects\Helpers\Html::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+					: \Components\Projects\Helpers\Html::convertSize( floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
 		$avail 	   = $quota - $diskUsage;
 
 		// Last synced remote/local change
@@ -5931,7 +4118,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				{
 					$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 					$this->_connect->generateThumbnail($service, $projectOwner,
-						$nR, $this->_config, $this->model->get('alias'));
+						$nR, $this->model->config(), $this->model->get('alias'));
 				}
 
 				$tChange = $nR['time'] > $tChange ? $nR['time'] : $tChange;
@@ -6233,7 +4420,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' '
 						. \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 						$this->_connect->generateThumbnail($service, $projectOwner, $remote,
-							$this->_config, $this->model->get('alias'));
+							$this->model->config(), $this->model->get('alias'));
 					}
 
 					// Generate local preview
@@ -6287,7 +4474,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$obj->saveParam($this->model->get('id'), $service . '_last_local_change', $lastLocalChange);
 
 		// Debug output
-		$temp = $this->getProjectPath ($this->model->get('alias'), 'logs');
+		$temp = $this->_logPath;
 		$this->_writeToFile($output, $temp . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log', true);
 
 		// Record sync status
@@ -6359,7 +4546,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$timecheck = date('c', time() - (1 * 1 * 60));
 			if ($synced >= $timecheck)
 			{
-				$status['output'] = $this->display(2);
+				$status['output'] = $this->browse(2);
 			}
 
 			// Timed sync?
@@ -6473,700 +4660,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 
-	/* External calls */
-
-	/**
-	 * Event call to return data for a specific project
-	 *
-	 * @param      string  $identifier 		Project alias OR ID
-	 * @param      string  $action 			Action
-	 * @param      integer $uid 			User ID
-	 * @param      json    $data			Data object
-	 * @param      string  $case			Directory where .git sits ('files' or 'tool:toolname')
-	 * @param      string  $format
-	 * @return     array   Return array of html
-	 */
-	public function onProjectExternal (
-		$identifier = NULL, $action = '', $uid = NULL,
-		$data = NULL, $case = 'files', $format = 'json'
-	)
-	{
-		$arr = array(
-			'project' => $identifier,
-			'action'  => $action,
-			'results' => '',
-			'error'   => false,
-			'message' => ''
-		);
-
-		// We do need a project id
-		if ($identifier === NULL)
-		{
-			$arr['error']	= true;
-			$arr['message'] = Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_PROJECT_ID');
-			return $arr;
-		}
-
-		// Include
-		require_once( PATH_CORE . DS . 'components' . DS
-			.'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once( PATH_CORE . DS . 'components' . DS
-			.'com_projects' . DS . 'tables' . DS . 'activity.php');
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'helpers' . DS . 'html.php');
-
-		$this->_database = \JFactory::getDBO();
-		$this->_uid 	 = $uid;
-
-		if (!$this->_uid)
-		{
-			$this->_uid = User::get('id');
-		}
-
-		// Get project and check authorization
-		$this->model = new Models\Project($identifier);
-
-		if (!$this->model->exists() || !$this->model->access('member'))
-		{
-			$arr['error']	= true;
-			$arr['message'] = !$this->model->exists()
-							  ? Lang::txt('PLG_PROJECTS_FILES_ERROR_UNABLE_TO_LOAD_PROJECT')
-							  : Lang::txt('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED');
-			return $arr;
-		}
-
-		$this->_case 	 = $case ? $case : 'files';
-		$this->_option   = 'com_projects';
-		$this->_audience = 'external';
-		$this->_data	 = $data;
-		$this->_format	 = $format;
-		$this->_config 	 = $this->model->config();
-
-		// Set routing
-		$this->_route = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
-
-		// MIME types
-		$this->mt = new \Hubzero\Content\Mimetypes();
-
-		// Get path
-		$this->_path = $this->getProjectPath();
-
-		// Include Git Helper
-		$this->_getGitHelper();
-
-		// Something is wrong
-		if (!$this->_path)
-		{
-			$arr['error']	= true;
-			$arr['message'] = Lang::txt('PLG_PROJECTS_FILES_ERROR_REPO_NOT_FOUND');
-			return $arr;
-		}
-
-		// Incoming
-		$this->subdir 	= isset($this->_data->subdir) ? $this->_data->subdir
-						: trim(urldecode(Request::getVar('subdir', '')), DS);
-
-		$juri = JURI::getInstance();
-		$base = rtrim($juri->base(), DS);
-		if (substr($base, -13) == 'administrator')
-		{
-			$base = substr($base, 0, strlen($base)-13);
-		}
-		if (substr($base, -3) == 'api')
-		{
-			$base = substr($base, 0, strlen($base)-3);
-		}
-		$this->base = $base;
-
-		// File actions
-		switch ($action)
-		{
-			case 'list':
-			default:
-				$arr['results'] = $this->getList();
-				break;
-
-			case 'get':
-				$arr['results'] = $this->getMetadata();
-				break;
-
-			case 'insert':
-				$arr['results'] = $this->insertFile();
-				break;
-
-			case 'rename':
-				$arr['results'] = $this->renameFile();
-				break;
-		}
-
-		// Pass success or error message
-		if ($this->getError())
-		{
-			$arr['error']	 = true;
-			$arr['message']  = $this->getError();
-		}
-		else
-		{
-			$arr['message']  =  (isset($this->_msg) && $this->_msg)
-							? $this->_msg : Lang::txt('PLG_PROJECTS_FILES_MESSAGE_SUCCESS');
-		}
-
-		// Return data
-		return $format == 'json' ? json_encode($arr) : $arr;
-	}
-
-	/**
-	 * Rename
-	 *
-	 * Rename file
-	 *
-	 * @return     mixed
-	 */
-	public function renameFile()
-	{
-		// Incoming
-		$oldpath  	= isset($this->_data->oldpath) ? $this->_data->oldpath : urldecode(Request::getVar( 'oldpath', '' ));
-		$newpath   	= isset($this->_data->newpath) ? $this->_data->newpath : urldecode(Request::getVar( 'newpath', '' ));
-
-		if (!$oldpath || !$newpath)
-		{
-			$this->setError(Lang::txt('Cannot rename without valid paths'));
-			return false;
-		}
-
-		// Get extensions
-		$newExt = explode('.', $newpath);
-		$newExt = count($newExt) > 1 ? end($newExt) : '';
-
-		$oldExt = explode('.', $oldpath);
-		$oldExt = count($oldExt) > 1 ? end($oldExt) : '';
-
-		// Keep original extension (important)
-		$newpath = $newExt ? $newpath : $newpath . '.' . $oldExt;
-
-		$newdir  = dirname($newpath) == '.' ? '' : dirname($newpath) . DS;
-		$newname = \Components\Projects\Helpers\Html::makeSafeFile(basename($newpath));
-		$newpath = $newdir . $newname;
-
-		// Compare new and old name
-		if ($newpath == $oldpath)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
-			return false;
-		}
-
-		// If another file with the same name exists in this path
-		if (is_file($this->_path . DS . $newpath))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
-			return false;
-		}
-
-		if (!is_file($this->_path . DS . $oldpath))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
-			return false;
-		}
-
-		// Move file
-		$this->_git->gitMove($oldpath, $newpath, 'file', $commitMsg);
-		$this->_git->gitCommit($commitMsg);
-
-		// On success return uploaded file metadata
-		if (!$this->getError())
-		{
-			return $this->getMetadata( array($newpath) );
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get file list
-	 *
-	 * List of items in project or project subdirectory
-	 *
-	 * @return     mixed
-	 */
-	public function getList()
-	{
-		// Incoming
-		$sortby  = isset($this->_data->sortby) ? $this->_data->sortby : Request::getVar( 'sortby', 'name' );
-		$sortdir = isset($this->_data->sortdir) ? $this->_data->sortdir : Request::getVar( 'sortdir', 'ASC' );
-		$filter  = isset($this->_data->filter) ? $this->_data->filter : urldecode(Request::getVar( 'filter', '' ));
-
-		// Get list of files from repo
-		$docs 	 = $this->_git->getFiles($this->subdir);
-
-		$this->_fileinfo = NULL;
-
-		$items 		= array();
-		$sorting 	= array();
-		$parents	= array();
-
-		if ($docs)
-		{
-			foreach ($docs as $file)
-			{
-				$file = $this->subdir ? substr($file, strlen($this->subdir) +1) : $file;
-
-				$metadata = $this->getItemMetadata(trim($file));
-				if ($metadata)
-				{
-					// Search filter applied
-					$getParents = 1;
-					if ($filter
-						&& strpos(trim($metadata->name), trim($filter)) === false
-						&& strpos(trim($metadata->dirname), trim($filter)) === false)
-					{
-						continue;
-					}
-					elseif ($filter)
-					{
-						$getParents = 0;
-					}
-
-					// Do we have a parent?
-					if ($getParents && $metadata->dirname && !in_array($metadata->dirname, $parents))
-					{
-						$obj 				= new stdClass;
-						$obj->type			= 'folder';
-						$obj->name			= basename($metadata->dirname);
-						$obj->localPath		= $metadata->dirname;
-						$obj->dirname 		= dirname($metadata->dirname) == '.' ? NULL : dirname($metadata->dirname);
-						$obj->parents 		= $this->getParents($obj->dirname);
-
-						$items[] 			= $obj;
-						$sorting[] 			= strtolower($metadata->dirname);
-						$parents[]			= $metadata->dirname;
-					}
-
-					if (basename($file) == '.gitignore')
-					{
-						continue;
-					}
-
-					$items[] 	= $metadata;
-					$sorting[] 	= strtolower($metadata->localPath);
-				}
-			}
-		}
-
-		$sortOrder = $sortdir == 'ASC' ? SORT_ASC : SORT_DESC;
-		array_multisort($sorting, $sortOrder, $items );
-
-		return $items;
-	}
-
-	/**
-	 * Insert file(s) into project via upload or local copy
-	 *
-	 * @return     returns array with inserted file(s) info
-	 */
-	public function insertFile()
-	{
-		// Incoming
-		$dataPath  = isset($this->_data->dataPath)
-					? $this->_data->dataPath
-					: Request::getVar( 'data_path', '' ); // path to local or remote file to copy
-		$results  = array();
-		$assets   = array();
-
-		// Via remote/local copy
-		if ($dataPath)
-		{
-			$dataPath = urldecode($dataPath);
-
-			// Figure destination
-			$file 		= \Components\Projects\Helpers\Html::makeSafeFile(basename($dataPath));
-			$localPath	= $this->subdir ? $this->subdir . DS . $file : $file;
-			$fullPath	= $this->_path . DS . $localPath;
-
-			// Are we updating?
-			$newFile = is_file($fullPath) ? false : true;
-
-			$tempPath = NULL;
-
-			// Local file not found? Try to download as remote
-			if (!is_file($dataPath))
-			{
-				$ch = curl_init();
-				curl_setopt($ch, $dataPath);
-
-				$tempPath = $this->getProjectPath ($this->model->get('alias'), 'temp') . DS . $file; // temp
-				$tempFile = fopen($tempPath, 'w+');
-
-				if (!$tempFile)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_TEMP_PATH'));
-					return false;
-				}
-
-				// Download file to a temp directory
-				if (curl_setopt($ch, CURLOPT_URL, $dataPath))
-				{
-					curl_setopt($ch, CURLOPT_FILE, $tempFile);
-					curl_exec ($ch);
-					$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-					if ($success !== 200)
-					{
-						$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_DOWNLOAD_DATA'));
-						unlink($tempPath);
-					}
-				}
-				else
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ACCESS_DATA_PATH'));
-				}
-
-				// Close connections
-				curl_close ($ch);
-				fclose($tempFile);
-			}
-
-			$dataPath = $tempPath && is_file($tempPath) ? $tempPath : $dataPath;
-
-			// Have file?
-			if (!is_file($dataPath))
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_SOURCE'));
-				return false;
-			}
-
-			// Destination directory exists?
-			if ($this->subdir && !is_dir($this->_path . DS . $this->subdir))
-			{
-				// Create directory
-				if (!\JFolder::create( $this->_path . DS . $this->subdir ))
-				{
-					// Failed to create directory
-					$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
-				}
-				else
-				{
-					if ($this->_git->makeEmptyFolder($this->subdir))
-					{
-						$assets[] = $this->subdir;
-					}
-				}
-			}
-
-			// Proceed with copy if no error
-			if (!$this->getError())
-			{
-				if (!\JFile::copy($dataPath, $fullPath))
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_INSERT'));
-					return false;
-				}
-				elseif ($tempPath && is_file($tempPath))
-				{
-					unlink($tempPath);
-				}
-
-				// Git add & commit
-				$commitMsg 		= '';
-				$this->_git->gitAdd($localPath, $commitMsg, $newFile);
-
-				if ($this->_git->gitCommit($commitMsg))
-				{
-					// Store in session
-					$updateType = $newFile ? 'uploaded' : 'updated';
-					$this->registerUpdate($updateType, $localPath);
-				}
-
-				// After upload actions
-				$this->onAfterUpdate();
-			}
-
-			$assets[] = $file;
-		}
-		else
-		{
-			// Via upload
-			$this->_task = 'save';
-
-			// Incoming files
-			$files = Request::getVar( 'upload', '', 'files', 'array' );
-
-			// Get file paths
-			if (!empty($files['name']))
-			{
-				for ($i=0; $i < count($files['name']); $i++)
-				{
-					$file = $files['name'][$i];
-					$file = \Components\Projects\Helpers\Html::makeSafeFile($file);
-					$assets[] = $this->subdir ? $this->subdir . DS . $file : $file;
-				}
-			}
-
-			// Perform upload
-			$this->save();
-
-			// After upload actions
-			$this->onAfterUpdate();
-		}
-
-		// On success return uploaded file metadata
-		if (!$this->getError())
-		{
-			return $this->getMetadata( $assets);
-		}
-
-		return $results;
-	}
-
-	/**
-	 * Get file metadata
-	 *
-	 * Get metadata on requested file(s)
-	 *
-	 * @return     mixed
-	 */
-	public function getMetadata( $checked = NULL)
-	{
-		// Clean incoming data
-		$this->cleanData();
-
-		$assets = isset($this->_data->assets) ? $this->_data->assets : Request::getVar( 'asset', '', 'request', 'array' );
-
-		// Incoming
-		$checked = $checked ? $checked : $assets;
-
-		if (empty($checked))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_SELECTED'));
-			return false;
-		}
-
-		$files = array();
-
-		// Go through files and collect metadata
-		foreach ($checked as $file)
-		{
-			$metadata = $this->getItemMetadata(trim($file));
-			if ($metadata)
-			{
-				$files[] = $metadata;
-			}
-		}
-
-		if (empty($files))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_RETRIEVED'));
-			return false;
-		}
-
-		return $files;
-	}
-
-	/**
-	 * Get item parent directories
-	 *
-	 * @return     mixed
-	 */
-	public function getParents($dirname = '')
-	{
-		$parents = new stdClass;
-
-		$dirParts = explode('/', $dirname);
-
-		$i = 1;
-		$collect = '';
-
-		foreach ($dirParts as $part)
-		{
-			$collect .= DS . $part;
-			$parents->$i = trim($collect, DS);
-			$i++;
-		}
-
-		return $parents;
-	}
-
-	/**
-	 * Get file metadata
-	 *
-	 * @return     mixed
-	 */
-	public function getItemMetadata($file = '', $hash = '')
-	{
-		$rFile = isset($this->_data->file) ? $this->_data->file : Request::getVar( 'file', '' );
-		$rHash = isset($this->_data->hash) ? $this->_data->hash : Request::getVar( 'hash', '' );
-
-		$file = trim($file) ? $file : $rFile;
-		$hash = trim($hash) ? $hash : $rHash;
-
-		if ($file == '')
-		{
-			return false;
-		}
-
-		// Build file object
-		$obj 				= new stdClass;
-		$obj->type			= 'file';
-		$obj->name			= basename($file);
-		$obj->localPath		= $this->subdir ? $this->subdir . DS . $file : $file;
-		$fullPath			= $this->_path . DS . $obj->localPath;
-
-		// Dir path
-		$obj->dirname 		= dirname($obj->localPath) == '.' ? NULL : dirname($obj->localPath);
-
-		// Get all parents
-		$obj->parents		= $this->getParents($obj->dirname);
-
-		if (!$hash && !file_exists($fullPath) )
-		{
-			return false;
-		}
-		if ($hash && !file_exists($fullPath))
-		{
-			$obj->size 		= $this->_git->gitLog($obj->localPath, $hash, 'size');
-		}
-		else
-		{
-			$obj->size		= filesize($fullPath);
-		}
-
-		$obj->formattedSize = $obj->size ? \Hubzero\Utility\Number::formatBytes($obj->size) : NULL;
-
-		// Get file extention
-		$obj->ext = \Components\Projects\Helpers\Html::getFileExtension($file);
-
-		if (isset($this->minimal) && $this->minimal == true)
-		{
-			return $obj;
-		}
-		// Mime type
-		if (isset($this->mt))
-		{
-			$mTypeParts = explode(';', $this->mt->getMimeType($fullPath));
-			$obj->mimeType   = \Components\Projects\Helpers\Html::fixUpMimeType($obj->name, $mTypeParts[0]);
-		}
-
-		// Get last commit data
-		if (isset($this->_fileinfo) && $this->_fileinfo && isset($this->_fileinfo[$obj->localPath]))
-		{
-			$gitData = $this->_fileinfo[$obj->localPath];
-		}
-		else
-		{
-			$gitData = $this->_git->gitLog($obj->localPath, $hash, 'combined');
-		}
-
-		if (!$gitData)
-		{
-			return false;
-		}
-		$obj->date			= isset($gitData['date']) ? $gitData['date'] : NULL;
-		$obj->author 		= isset($gitData['author']) ? $gitData['author'] : NULL;
-		$obj->email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
-		$obj->commitHash 	= $hash ? $hash : $gitData['hash'];
-
-		// Get public link
-		if ($this->_audience == 'external')
-		{
-			$obj->md5hash		= hash_file('md5', $fullPath);
-			require_once( PATH_CORE . DS . 'components' . DS
-				.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
-
-			$objSt = new \Components\Projects\Tables\Stamp( $this->_database );
-
-			// Build reference for download URL
-			$reference = array(
-				'file' 		=> $obj->localPath,
-				'disp' 		=> 'attachment',
-				'hash' 		=> $obj->commitHash,
-				'limited' 	=> 2
-			);
-
-			$expires = \JFactory::getDate('+15 minutes')->toSql();
-
-			// Get short lived download URL
-			$stamp = $objSt->registerStamp($this->model->get('id'), json_encode($reference), 'files', 0, $expires);
-			if ($stamp)
-			{
-				$obj->downloadUrl = $this->base . DS . 'projects' . DS . 'get?s=' . $stamp;
-			}
-		}
-		else
-		{
-			$obj->fullPath = $fullPath;
-		}
-
-		return $obj;
-	}
-
-	/* Get Paths */
-
-	/**
-	 * Get project path and create/initialize it if doesn't exist
-	 *
-	 * @param      string	$identifier
-	 * @param      string  	$case
-	 *
-	 * @return     string
-	 */
-	public function getProjectPath($identifier = NULL, $case = NULL)
-	{
-		if (!isset($this->model) || !is_object($this->model))
-		{
-			return NULL;
-		}
-
-		// Provisioned project with no repo
-		if ($this->model->isProvisioned() && !$this->model->exists())
-		{
-			return $this->getMembersPath();
-		}
-
-		if (!$identifier)
-		{
-			$identifier = $this->model->get('alias');
-		}
-		if (!$case)
-		{
-			$case = isset($this->_case) && $this->_case ? $this->_case : 'files';
-		}
-
-		if (!$case || !$identifier )
-		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_GET_PROJECT_PATH') );
-			return false;
-		}
-		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($identifier, $case, false);
-
-		// Do we need to create master directory off the web root?
-		if (isset($this->_config))
-		{
-			$webdir = DS . trim($this->_config->get('webpath'), DS);
-			if ($this->_config->get('offroot') && !is_dir($webdir))
-			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_MASTERDIR')  . ' ' . $webdir );
-				return false;
-			}
-		}
-
-		if (!is_dir( $path ))
-		{
-			// Create path
-			if (!\JFolder::create( $path ))
-			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $path ;
-				return false;
-			}
-		}
-
-		// Initialize Git
-		if ($case == 'files')
-		{
-			$git = new \Components\Projects\Helpers\Git($path);
-			$git->iniGit();
-		}
-
-		return $path;
-	}
-
 	/**
 	 * Get path to member dir (for provisioned projects)
 	 *
@@ -7191,5 +4684,231 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		return PATH_APP . $path;
+	}
+
+	/**
+	 * Register update info in user session
+	 *
+	 * @return     void
+	 */
+	public function registerUpdate( $type = '' , $file = '', $append = true, $appendMessage = '')
+	{
+		if (!$type || !$file)
+		{
+			return false;
+		}
+
+		$kind = 'projects.' . $this->model->get('alias') . '.' . $type;
+
+		// Get session
+		$jsession = \JFactory::getSession();
+
+		if ($append == true)
+		{
+			$exVal  = $jsession->get($kind);
+			$val 	= $exVal ? $exVal . ', ' . $file : $file;
+		}
+		else
+		{
+			$val = $file;
+		}
+
+		$val .= $appendMessage ? ' (' . $appendMessage . ') ' : '';
+
+		$jsession->set($kind, $val);
+		return true;
+	}
+
+	/**
+	 * Event call after file update
+	 *
+	 * @return     void
+	 */
+	public function onAfterUpdate()
+	{
+		$sync     = 0;
+		$activity = '';
+		$message  = '';
+		$ref	  = '';
+
+		// Get session
+		$jsession = \JFactory::getSession();
+
+		// Get values from session
+		$updated 	= $jsession->get('projects.' . $this->model->get('alias') . '.updated');
+		$uploaded 	= $jsession->get('projects.' . $this->model->get('alias') . '.uploaded');
+		$failed 	= $jsession->get('projects.' . $this->model->get('alias') . '.failed');
+		$deleted 	= $jsession->get('projects.' . $this->model->get('alias') . '.deleted');
+		$restored 	= $jsession->get('projects.' . $this->model->get('alias') . '.restored');
+		$expanded 	= $jsession->get('projects.' . $this->model->get('alias') . '.expanded');
+
+		// Clean up session values
+		$jsession->set('projects.' . $this->model->get('alias') . '.failed', '');
+		$jsession->set('projects.' . $this->model->get('alias') . '.updated', '');
+		$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
+		$jsession->set('projects.' . $this->model->get('alias') . '.deleted', '');
+		$jsession->set('projects.' . $this->model->get('alias') . '.restored', '');
+		$jsession->set('projects.' . $this->model->get('alias') . '.expanded', '');
+
+		// Provisioned project?
+		if ($this->model->isProvisioned() || !$this->model->get('id'))
+		{
+			return false;
+		}
+
+		// Pass success or error message
+		if ($failed && !$uploaded && !$uploaded)
+		{
+			$this->_message = array('message' => 'Failed to upload ' . $failed, 'type' => 'error');
+		}
+		elseif ($uploaded || $updated || $expanded)
+		{
+			$sync = 1;
+
+			$uploadParts = explode(',', $uploaded);
+			$updateParts = explode(',', $updated);
+
+			if ($uploaded)
+			{
+				if (count($uploadParts) > 2)
+				{
+					$message = 'uploaded ' . basename($uploadParts[0]) . ' and '
+						. (count($uploadParts) - 1) . ' more files ' ;
+				}
+				else
+				{
+					$message = 'uploaded ';
+					$u = 0;
+					foreach ($uploadParts as $part)
+					{
+						$message .= basename($part);
+						$u++;
+						$message .= count($uploadParts) == $u ? '' : ', ';
+					}
+				}
+
+				// Clean up session values
+				$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
+
+				// Save referenced files
+				$ref = $uploaded;
+			}
+			if ($updated)
+			{
+				$message .= $uploaded ? '. Updated ' : 'updated ';
+				if (count($updateParts) > 2)
+				{
+					$message.= basename($updateParts[0]) . ' and ' . (count($updateParts) - 1) . ' more files ' ;
+				}
+				else
+				{
+					$message = 'updated ';
+					$u = 0;
+					foreach ($updateParts as $part)
+					{
+						$message .= basename($part);
+						$u++;
+						$message .= count($updateParts) == $u ? '' : ', ';
+					}
+				}
+			}
+
+			$activity  = $message . ' ' . strtolower(Lang::txt('PLG_PROJECTS_FILES_IN_PROJECT_FILES')) ;
+
+			$message = 'Successfully ' . $message;
+			$message.= $failed ? ' There was a problem uploading ' . $failed : '';
+			$this->_message = array('message' => $message, 'type' => 'success');
+		}
+		elseif ($deleted)
+		{
+			// Save referenced files
+			$ref = $deleted;
+
+			$delParts = explode(',', $deleted);
+
+			$sync = 1;
+
+			$what = count($delParts) == 1 ? $deleted : count($delParts)
+				. ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
+
+			// Output message
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_DELETED')
+				. ' ' . $what, 'type' => 'success');
+		}
+		elseif ($restored)
+		{
+			// Save referenced files
+			$ref = $restored;
+
+			$resParts = explode(',', $restored);
+
+			$sync = 1;
+
+			$activity = 'restored deleted file ' . basename($resParts[0]);
+
+			// Output message
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED')
+				. ' ' . basename($resParts[0]), 'type' => 'success');
+		}
+
+		// Force sync
+		if ($sync)
+		{
+			$this->model->saveParam('google_sync_queue', 1);
+		}
+
+		// Add activity to feed
+		if ($activity && $this->repo->isLocal())
+		{
+			$refParts  = explode(',', $ref);
+			$parsedRef = '';
+
+			$selected = array();
+			foreach ($refParts as $file)
+			{
+				if (is_file( $this->_path . DS . trim($file) ))
+				{
+					$hash   = $this->_git->gitLog(trim($file), '' , 'hash');
+					if ($hash)
+					{
+						$selected[] = substr($hash, 0, 10) . ':' . trim($file);
+
+						// Generate preview
+						$this->getFilePreview(trim($file), $hash, $this->_path, '');
+						// Generate medium-size preview
+						$this->getFilePreview(trim($file), $hash, $this->_path, '', '', true);
+					}
+				}
+			}
+
+			// Save hash and file name in a reference
+			if ($selected)
+			{
+				foreach ($selected as $sel)
+				{
+					if (((strlen($parsedRef) + strlen($sel)) <= 254))
+					{
+						$parsedRef .= $sel . ',';
+					}
+					else
+					{
+						break;
+					}
+				}
+				$parsedRef = substr($parsedRef, 0, strlen($parsedRef) - 1);
+			}
+
+			// Check to make sure we are not over in char length
+			if (strlen($parsedRef) > 255)
+			{
+				$parsedRef = \Components\Projects\Helpers\Html::shortenText($parsedRef);
+			}
+
+			// Record activity
+			$aid = $this->model->recordActivity( $activity, $parsedRef, 'project files',
+				Route::url('index.php?option=' . $this->_option
+				. '&alias=' . $this->model->get('alias') . '&active=files'), 'files', 1
+			);
+		}
 	}
 }

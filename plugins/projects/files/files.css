@@ -527,7 +527,8 @@
 	.download_file:before,
 	.open_file:before,
 	#a-sync:before,
-	#a-compile:before
+	#a-compile:before,
+	#a-rename:before
 	{
 		content: "";
 		width: 16px;
@@ -562,6 +563,9 @@
 	}
 	#a-folder:before {
 		content: "\f07b";
+	}
+	#a-rename:before {
+		content: "\270D";
 	}
 	#a-upload:before {
 		content: "\2295";
@@ -722,18 +726,6 @@
 	.delete {
 		background: none;
 		padding: 0;
-	}
-	.list-editing {
-		height: 25px;
-	}
-	.list-editing a:hover {
-		border: none;
-	}
-	.list-editing a.inactive, .list-editing a.inactive:hover {
-		background: none;
-		color: #CCC;
-		border: none;
-		cursor: default;
 	}
 	.asset_resource span {
 		display: none;

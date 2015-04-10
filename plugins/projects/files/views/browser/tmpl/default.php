@@ -44,24 +44,28 @@ $skipped = 0;
 				if ($this->images)
 				{
 					// Skip non-image/video files
-					if (!in_array(strtolower($file['ext']), $this->image_ext) && !in_array(strtolower($file['ext']), $this->video_ext)) {
+					if (!in_array($file->get('ext'), $this->image_ext) && !in_array($file->get('ext'), $this->video_ext)) {
 						continue;
 					}
 				}
 				// Skip files attached in another role
-				if (in_array($file['fpath'], $this->exclude)) {
+				if (in_array($file->get('localPath'), $this->exclude)) {
+					continue;
+				}
+				if ($file->get('type') != 'file')
+				{
 					continue;
 				}
 
 				// Ignore hidden files
-				if (substr(basename($file['fpath']), 0, 1) == '.')
+				if (substr($file->get('name'), 0, 1) == '.')
 				{
 					continue;
 				}
-				$shown[] = $file['fpath'];
+				$shown[] = $file->get('localPath');
 
 				 ?>
-			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($file['fpath'], 50); ?></li>
+			<li class="c-click" id="file::<?php echo urlencode($file->get('localPath')); ?>"><img src="<?php echo $file->getIcon(); ?>" alt="<?php echo $file->get('ext'); ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($file->get('localPath'), 50); ?></li>
 		<?php
 			$i++;
 		?>
@@ -72,14 +76,16 @@ $skipped = 0;
 
 	// Check for missing items
 	// Primary content / Supporting docs
-	if (isset($this->attachments)) {
-		if (count($this->attachments) > 0) {
-			foreach ($this->attachments as $attachment) {
-				if (!in_array($attachment->path, $shown)) {
+	if (isset($this->attachments))
+	{
+		if (count($this->attachments) > 0)
+		{
+			foreach ($this->attachments as $attachment)
+			{
+				if (!in_array($attachment->path, $shown)) 
+				{
 					// Found missing
-					$miss = array();
-					$miss['fpath'] = $attachment->path;
-					$miss['ext'] = \Components\Projects\Helpers\Html::getFileExtension( $attachment->path);
+					$miss = new \Components\Projects\Models\File($attachment->path, '');
 					$missing[] = $miss;
 				}
 			}
@@ -87,14 +93,16 @@ $skipped = 0;
 	}
 
 	// Screenshots
-	if ($this->images) {
-		if (count($this->shots) > 0) {
-			foreach ($this->shots as $shot) {
-				if (!in_array($shot->filename, $shown)) {
+	if ($this->images)
+	{
+		if (count($this->shots) > 0)
+		{
+			foreach ($this->shots as $shot)
+			{
+				if (!in_array($shot->filename, $shown))
+				{
 					// Found missing
-					$miss = array();
-					$miss['fpath'] = $shot->filename;
-					$miss['ext'] = \Components\Projects\Helpers\Html::getFileExtension( $shot->filename);
+					$miss = new \Components\Projects\Models\File(trim($shot->filename), '');
 					$missing[] = $miss;
 				}
 			}
@@ -102,9 +110,11 @@ $skipped = 0;
 	}
 
 	// Add missing items
-	if (count($missing) > 0) {
-		foreach ($missing as $miss) { ?>
-			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
+	if (count($missing) > 0)
+	{
+		foreach ($missing as $miss)
+		{ ?>
+			<li class="c-click i-missing" id="file::<?php echo urlencode($miss->get('localPath')); ?>"><img src="<?php echo $miss->getIcon(); ?>" alt="<?php echo $miss->get('ext'); ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($miss->get('localPath'), 50); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
 	<?php	}
 	}
 	 ?>
@@ -112,7 +122,7 @@ $skipped = 0;
 	<label class="addnew">
 		<input name="upload[]" type="file" size="20" class="option" id="uploader" />
 	</label>
-		<input type="hidden" name="option" value="<?php echo $this->model->isProvisioned() ? 'com_publications' :  $this->option; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->model->isProvisioned() ? 'com_publications' : $this->option; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pid; ?>" />

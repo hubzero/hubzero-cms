@@ -34,7 +34,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 $rUrl = $this->url . '?a=1' . $subdirlink;
 
 // Incoming
-$basic   = Request::getInt('basic', 0);
+$basic = Request::getInt('basic', 0);
 
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
@@ -42,17 +42,8 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 ?>
 <?php if ($this->ajax) { ?>
 <div id="abox-content">
-<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
 <?php } ?>
-<?php
-// Display error or success message
-if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError().'</p>');
-}
-?>
-<?php
-if (!$this->getError()) {
-?>
 
 <form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
 	<?php if (!$this->ajax) { ?>
@@ -112,7 +103,6 @@ if (!$this->getError()) {
 
 		<input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->params->get('maxUpload', '104857600'); ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 		<input type="hidden" name="action" id="formaction" value="save" />
 		<input type="hidden" name="failed" id="failed" value="0" />
 		<input type="hidden" name="uploaded" id="uploaded" value="0" />
@@ -121,7 +111,7 @@ if (!$this->getError()) {
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="avail" id="avail" value="<?php echo $this->unused; ?>" />
-		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
+		<input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
@@ -141,7 +131,6 @@ if (!$this->getError()) {
 		<?php } ?>
 	</fieldset>
 </form>
-<?php } ?>
 <?php if ($this->ajax) { ?>
 </div>
 <?php } ?>

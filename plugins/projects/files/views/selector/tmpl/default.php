@@ -178,9 +178,9 @@ $subdirOptions = array();
 $subdirOptions[] = array('path' => '', 'label' => 'home directory');
 foreach ($this->items as $item)
 {
-	if ($item->type == 'folder')
+	if ($item->get('type') == 'folder')
 	{
-		$subdirOptions[] = array('path' => $item->localPath , 'label' => $item->localPath);
+		$subdirOptions[] = array('path' => $item->get('localPath'), 'label' => $item->get('localPath'));
 	}
 }
 

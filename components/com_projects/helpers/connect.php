@@ -264,7 +264,7 @@ class Connect extends Object {
 
 		// We will use files plugin params
 		$plugin		 = \JPluginHelper::getPlugin( 'projects', 'files' );
-		$filesParams = new \JParameter($plugin->params);
+		$filesParams = new \JRegistry($plugin->params);
 
 		// Get project params
 		$pparams = $this->model->params;

@@ -35,18 +35,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 		// Get all parents
 		foreach ($this->items as $item)
 		{
-			if ($item->type == 'folder')
+			if ($item->get('type') == 'folder')
 			{
 				$tempId = strtolower(\Components\Projects\Helpers\Html::generateCode(5, 5, 0, 1, 1));
-				$parents[$item->localPath] = $tempId;
+				$parents[$item->get('localPath')] = $tempId;
 			}
 
 			// Selected item?
-			if (!empty($this->selected) && in_array($item->localPath, $this->selected))
+			if (!empty($this->selected) && in_array($item->get('localPath'), $this->selected))
 			{
-				if ($item->parents)
+				if ($item->get('parents'))
 				{
-					foreach ($item->parents as $i => $parent)
+					foreach ($item->get('parents') as $i => $parent)
 					{
 						$openParents[] = $parent;
 					}
@@ -58,63 +58,59 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<ul class="file-selector" id="file-selector">
 			<?php foreach ($this->items as $item)
 			{
-					$icon = $item->type == 'folder'
-							? "/plugins/projects/files/images/folder.gif"
-							: \Components\Projects\Helpers\Html::getFileIcon($item->ext);
+				$level =  $item->getDirLevel($item->get('dirname'));
 
-					$level =  $item->dirname ? count(explode('/', $item->dirname)) : 0;
+				// Get element ID
+				$liId  = ($item->get('type') == 'folder' && isset($parents[$item->get('localPath')]))
+						? 'dir-' . $parents[$item->get('localPath')]
+						: 'item-' . $a;
 
-					// Get element ID
-					$liId  = ($item->type == 'folder' && isset($parents[$item->localPath]))
-							? 'dir-' . $parents[$item->localPath]
-							: 'item-' . $a;
-
-					// Assign parent classes (for collapsing)
-					$parentCss = '';
-					if ($item->parents)
+				// Assign parent classes (for collapsing)
+				$parentCss = '';
+				if ($item->get('parents'))
+				{
+					foreach ($item->get('parents') as $i => $parent)
 					{
-						foreach ($item->parents as $i => $parent)
+						if (isset($parents[$parent]))
 						{
-							if (isset($parents[$parent]))
-							{
-								$parentCss .= ' parent-' . $parents[$parent];
-							}
+							$parentCss .= ' parent-' . $parents[$parent];
 						}
 					}
+				}
 
-					$levelCss = $this->showLevels == true ? 'level-' . $level : 'flatlist';
-					$a++;
+				$levelCss = $this->showLevels == true ? 'level-' . $level : 'flatlist';
+				$a++;
 
-					// Is file already attached?
-					$selected = !empty($this->selected) && in_array($item->localPath, $this->selected) ? 1 : 0;
+				// Is file already attached?
+				$selected = !empty($this->selected) && in_array($item->get('localPath'), $this->selected) ? 1 : 0;
 
-					// Is file type allowed?
-					$allowed = $item->type == 'file' && !empty($this->allowed)
-							&& !in_array($item->ext, $this->allowed)
-							? ' notallowed' : ' allowed';
+				// Is file type allowed?
+				$allowed = $item->get('type') == 'file' && !empty($this->allowed)
+						&& !in_array($item->get('ext'), $this->allowed)
+						? ' notallowed' : ' allowed';
 
-					$used = !empty($this->used)
-							&& in_array($item->localPath, $this->used) ? true : false;
+				$used = !empty($this->used)
+						&& in_array($item->get('localPath'), $this->used) ? true : false;
 
-					// Do not allow files used in other elements
-					$allowed = $used ? ' notallowed' : $allowed;
+				// Do not allow files used in other elements
+				$allowed = $used ? ' notallowed' : $allowed;
 
-					// No selection for folders
-					$allowed = $item->type == 'folder' ? ' freeze' : $allowed;
+				// No selection for folders
+				$allowed = $item->get('type') == 'folder' ? ' freeze' : $allowed;
 
-					// Do not allow to delete previously selected items
-					$allowed = $selected ? ' freeze' : $allowed;
+				// Do not allow to delete previously selected items
+				$allowed = $selected ? ' freeze' : $allowed;
 
-					// Is selection within folder? Then open this folder
-					$opened = !empty($openParents) && $item->type == 'folder'
-							&& in_array($item->localPath, $openParents) ? 1 : 0;
+				// Is selection within folder? Then open this folder
+				$opened = !empty($openParents) && $item->get('type') == 'folder'
+						&& in_array($item->get('localPath'), $openParents) ? 1 : 0;
 
 				?>
-				<li class="<?php echo $item->type == 'folder' ? 'type-folder' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) { echo ' selectedfilter preselected'; } ?><?php echo $allowed; ?><?php echo $opened ? ' opened' : ''; ?>" id="<?php echo $liId; ?>">
-					<span class="item-info"><?php echo $item->type == 'file' ? $item->formattedSize : ''; ?></span>
-					<span class="item-wrap <?php echo $levelCss; ?>" id="<?php echo urlencode($item->localPath); ?>">
-						<?php if ($item->type == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
-						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->name, 50); ?></span>
+				<li class="<?php echo $item->get('type') == 'folder' ? 'type-folder' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) { echo ' selectedfilter preselected'; } ?><?php echo $allowed; ?><?php echo $opened ? ' opened' : ''; ?>" id="<?php echo $liId; ?>">
+					<span class="item-info"><?php echo $item->get('type') == 'file' ? $item->getSize('formatted') : ''; ?></span>
+					<span class="item-wrap <?php echo $levelCss; ?>" id="<?php echo urlencode($item->get('localPath')); ?>">
+						<?php if ($item->get('type') == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
+						<img src="<?php echo $item->get('icon'); ?>" alt="" /> <span title="<?php echo $item->get('localPath'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50); ?></span>
 					</span>
 
 				</li>

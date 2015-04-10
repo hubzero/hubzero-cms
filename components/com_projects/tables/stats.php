@@ -253,20 +253,18 @@ class Stats extends \JTable
 		}
 		else
 		{
+			// Get repo model
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+				. DS . 'models' . DS . 'repo.php');
+
 			// Compute
-			\JPluginHelper::importPlugin( 'projects', 'files');
-			$dispatcher = \JDispatcher::getInstance();
-			$fTotal 	= $dispatcher->trigger( 'getStats', array($validProjects) );
-			$fTotal 	= $fTotal[0];
+			$repo       = new \Components\Projects\Models\Repo();
+			$fTotal 	= $repo->getStats($validProjects);
 			$fAverage 	= number_format($fTotal/$validCount, 0);
-			$fUsage 	= $dispatcher->trigger( 'getStats', array($validProjects, 'usage') );
-			$fUsage 	= $fUsage[0];
-			$fDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'diskspace') );
-			$fDSpace 	= $fDSpace[0];
-			$fCommits 	= $dispatcher->trigger( 'getStats', array($validProjects, 'commitCount') );
-			$fCommits 	= $fCommits[0];
-			$pDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'pubspace') );
-			$pDSpace 	= $pDSpace[0];
+			$fUsage 	= $repo->getStats($validProjects, 'usage');
+			$fDSpace 	= $repo->getStats($validProjects, 'diskspace');
+			$fCommits 	= $repo->getStats($validProjects, 'commitCount');
+			$pDSpace 	= $repo->getStats($validProjects, 'pubspace');
 
 			$perc = round(($fUsage * 100)/$active) . '%';
 
