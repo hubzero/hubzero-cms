@@ -198,6 +198,10 @@ class UsersModelReset extends JModelForm
 		// That way you can't reset the counter on your current password, or invalidate it by putting it into history
 		if (\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $password1))
 		{
+			// Flush the user data from the session.
+			$app->setUserState('com_users.reset.token', null);
+			$app->setUserState('com_users.reset.user', null);
+
 			return true;
 		}
 
