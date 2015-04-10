@@ -57,11 +57,11 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$this->user_id = JFactory::getApplication()->getAuthn('user_id');
 
 		// Switch based on entity type and action
-		switch($this->segments[0])
+		switch ($this->segments[0])
 		{
 			// Files
 			case 'files':
-				switch($this->_action)
+				switch ($this->_action)
 				{
 					case 'list':
 					case 'get':
