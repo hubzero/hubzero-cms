@@ -211,7 +211,7 @@ class Pdo extends Driver
 	 **/
 	private function inferType($binding)
 	{
-		if     (is_bool($binding)) $type = \PDO::PARAM_BOOL;
+		if (is_bool($binding))     $type = \PDO::PARAM_BOOL;
 		elseif (is_null($binding)) $type = \PDO::PARAM_NULL;
 		elseif (is_int($binding))  $type = \PDO::PARAM_INT;
 		else                       $type = \PDO::PARAM_STR;
