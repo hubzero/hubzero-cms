@@ -159,12 +159,15 @@ class Pdo extends Driver
 	/**
 	 * Binds the given bindings to the prepared statement
 	 *
-	 * @param  array  $bindings the param bindings
-	 * @param  string $type     the param type
+	 * If you're going to pass in types, they must be keyed
+	 * the same as the bindings.
+	 *
+	 * @param  array $bindings the param bindings
+	 * @param  array $type     the param types
 	 * @return $this
 	 * @since  2.0.0
 	 **/
-	public function bind($bindings, $type=null)
+	public function bind($bindings, $type=[])
 	{
 		$idx = 1;
 
@@ -173,11 +176,47 @@ class Pdo extends Driver
 		foreach ($bindings as $binding)
 		{
 			// We use bindValue here because that allows us to pass in plain old strings
-			$this->statement->bindValue($idx, $binding);
+			$this->statement->bindValue(
+				$idx,
+				$binding,
+				isset($type[$idx]) ? $this->translateType($type[$idx]) : $this->inferType($binding)
+			);
+
 			$idx++;
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Explicitly translate generic type to driver specific types
+	 *
+	 * @param  string $type the variable type (bool, null, int, str)
+	 * @return int
+	 * @since  2.0.0
+	 **/
+	private function translateType($type)
+	{
+		return constant('\PDO::PARAM_' . strtoupper($type));
+	}
+
+	/**
+	 * Infers the variable type from the variable itself
+	 *
+	 * Some sql syntax is more particular about type than others.
+	 *
+	 * @param  mixed $binding the binding to infer from
+	 * @return int
+	 * @since  2.0.0
+	 **/
+	private function inferType($binding)
+	{
+		if     (is_bool($binding)) $type = \PDO::PARAM_BOOL;
+		elseif (is_null($binding)) $type = \PDO::PARAM_NULL;
+		elseif (is_int($binding))  $type = \PDO::PARAM_INT;
+		else                       $type = \PDO::PARAM_STR;
+
+		return $type;
 	}
 
 	/**
