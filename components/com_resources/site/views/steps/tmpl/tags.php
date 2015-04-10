@@ -31,8 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!function_exists('stem')) {
-	function stem($str) {
+if (!function_exists('stem'))
+{
+	function stem($str)
+	{
 		return preg_replace('/^(?:a[bdcfglnpst]?|ant[ei]?|be|co[mlnr]?|de|di[as]?|e[nmxf]|extra|hemi|hyper|hypo|over|peri|post|pr[eo]|re|semi|su[bcfgprs]|sy[nm]|trans|ultra|un|under)+/', '', preg_replace('/(?:e[dr]|ing|e?s|or|ator|able|ible|acious|ary|ate|ation|cy|eer|or|escent|fic|fy|iferous|ile?|ism|ist|ity|ive|ise|ize|oid|ose|osis|ous|tude)+$/', '', $str));
 	}
 }
@@ -44,7 +46,8 @@ class RecommendedTags
 	const ENDORSED_TAG = 2;
 	const REGULAR_TAG  = 1;
 
-	public function __construct($rid, $existing, $opts = array()) {
+	public function __construct($rid, $existing, $opts = array())
+	{
 		$opts = array_merge(array(
 			'min_len' => 4,
 			'count'   => 20
@@ -66,24 +69,31 @@ class RecommendedTags
 			INNER JOIN #__tags t ON t.id = to1.tagid
 			WHERE to1.tbl = \'resources\' AND to1.objectid = '.$rid
 		);
-		if (!$existing) {
-			foreach ($dbh->loadAssocList() as $tag) {
-				if ($tag['is_focus_area']) {
+		if (!$existing)
+		{
+			foreach ($dbh->loadAssocList() as $tag)
+			{
+				if ($tag['is_focus_area'])
+				{
 					$this->focus_areas[] = $tag['raw_tag'];
 					$this->existing_fa_map[strtolower($tag['raw_tag'])] = true;
 				}
-				else {
+				else
+				{
 					$this->existing_tags[] = $tag['raw_tag'];
 					$this->existing_map[strtolower($tag['raw_tag'])] = true;
 				}
 			}
 		}
 		else {
-			foreach ($existing as $tag) {
-				if (!is_null($tag[2])) {
+			foreach ($existing as $tag)
+			{
+				if (!is_null($tag[2]))
+				{
 					$this->existing_fa_map[strtolower($tag[0])] = true;
 				}
-				else {
+				else
+				{
 					$this->existing_tags[] = $tag[0];
 					$this->existing_map[strtolower($tag[0])] = true;
 				}
@@ -95,7 +105,8 @@ class RecommendedTags
 			LEFT JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.objectid = t.id AND to1.label = \'label\' AND to1.tagid = (SELECT id FROM #__tags WHERE tag = \'endorsed\')');
 
 		$tags = array();
-		foreach ($dbh->loadAssocList() as $row) {
+		foreach ($dbh->loadAssocList() as $row)
+		{
 			$tags[Inflect::singularize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
 			$tags[Inflect::pluralize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
 		}
@@ -108,45 +119,57 @@ class RecommendedTags
 		);
 		$words = preg_split('/\W+/', join(' ', $dbh->loadResultArray()));
 		$word_count = count($words);
-		if (!$words[$word_count - 1]) {
+		if (!$words[$word_count - 1])
+		{
 			array_pop($words);
 			--$word_count;
 		}
 
 		$freq = array();
 		$last = array();
-		foreach ($words as $idx=>$word) {
-			if (self::is_stop_word($word, $opts['min_len'])) {
+		foreach ($words as $idx=>$word)
+		{
+			if (self::is_stop_word($word, $opts['min_len']))
+			{
 				continue;
 			}
 			$stems = array(array(stem($word), strtolower($word)));
-			if (isset($words[$idx + 1]) && !self::is_stop_word($words[$idx + 1], $opts['min_len'])) {
+			if (isset($words[$idx + 1]) && !self::is_stop_word($words[$idx + 1], $opts['min_len']))
+			{
 				$stems[] = array($stems[0][0].' '.stem($words[$idx + 1]), strtolower($word).' '.strtolower($words[$idx + 1]));
 			}
-			if (isset($words[$idx + 2]) && !self::is_stop_word($words[$idx + 2], $opts['min_len'])) {
+			if (isset($words[$idx + 2]) && !self::is_stop_word($words[$idx + 2], $opts['min_len']))
+			{
 				$stems[] = array(
 					$stems[0][0].' '.stem($words[$idx + 1]).' '.stem($words[$idx + 2]),
 					Inflect::singularize(strtolower($word)).' '.strtolower($words[$idx + 1]).' '.strtolower($words[$idx + 2])
 				);
 			}
-			foreach ($stems as $set_idx=>$set) {
+			foreach ($stems as $set_idx=>$set)
+			{
 				list($stem, $word) = $set;
-				if (isset($this->existing_map[strtolower($word)]) || isset($this->focus_area_map[strtolower($word)])) {
+				if (isset($this->existing_map[strtolower($word)]) || isset($this->focus_area_map[strtolower($word)]))
+				{
 					continue;
 				}
-				if (!isset($freq[$stem])) {
+				if (!isset($freq[$stem]))
+				{
 					$freq[$stem] = array('text' => $word, 'count' => 0);
 				}
-				else {
+				else
+				{
 					$freq[$stem]['count'] += ($idx - $last[$stem])/$word_count * ($set_idx + 1);
 				}
 				$last[$stem] = $idx;
 			}
 		}
 
-		foreach ($freq as $stem=>$def) {
-			foreach (array($stem, $def['text']) as $text) {
-				if (isset($tags[$text])) {
+		foreach ($freq as $stem=>$def)
+		{
+			foreach (array($stem, $def['text']) as $text)
+			{
+				if (isset($tags[$text]))
+				{
 					$freq[$stem]['count'] += $tags[$text] === self::ENDORSED_TAG ? 3 : 1.5;
 					break;
 				}
@@ -156,7 +179,8 @@ class RecommendedTags
 		$this->tags = array_slice($freq, 0, $opts['count']);
 	}
 
-	private static function is_stop_word($word, $word_min_len) {
+	private static function is_stop_word($word, $word_min_len)
+	{
 		static $stop_words = array(
 			"a"=>       true, "able"=>    true, "about"=>     true, "across"=>    true, "after"=>   true,
 			"akin"=>    true, "all"=>     true, "almost"=>    true, "also"=>      true, "am"=>      true,
@@ -191,34 +215,44 @@ class RecommendedTags
 		return isset($stop_words[$word]) || strlen($word) < $word_min_len;
 	}
 
-	public function get_tags() {
+	public function get_tags()
+	{
 		return $this->tags;
 	}
-	public function get_existing_tags() {
+	public function get_existing_tags()
+	{
 		return $this->existing_tags;
 	}
-	public function get_existing_tags_map() {
+	public function get_existing_tags_map()
+	{
 		return $this->existing_map;
 	}
-	public function get_existing_tags_value_list() {
+	public function get_existing_tags_value_list()
+	{
 		static $val_list = array();
-		if (!$val_list) {
-			foreach ($this->existing_tags as $tag) {
+		if (!$val_list)
+		{
+			foreach ($this->existing_tags as $tag)
+			{
 				$val_list[] = str_replace('"', '&quot;', str_replace(',', '&#44;', $tag));
 			}
 		}
 		return implode(',', $val_list);
 	}
-	public function get_focus_areas() {
+	public function get_focus_areas()
+	{
 		return $this->focus_areas;
 	}
-	public function get_focus_areas_map() {
+	public function get_focus_areas_map()
+	{
 		return $this->focus_areas_map;
 	}
-	public function get_existing_focus_areas_map() {
+	public function get_existing_focus_areas_map()
+	{
 		return $this->existing_fa_map;
 	}
-	public function get_focus_area_properties() {
+	public function get_focus_area_properties()
+	{
 		return $this->fa_properties;
 	}
 }
