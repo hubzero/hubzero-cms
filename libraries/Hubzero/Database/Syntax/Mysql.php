@@ -519,7 +519,7 @@ class Mysql
 		foreach ($this->set as $field => $value)
 		{
 			$updates[] = $this->connection->quoteName($field) . ' = ' . ((is_null($value)) ? 'NULL' : '?');
-			$this->bind(trim($value));
+			$this->bind(is_string($value) ? trim($value) : $value);
 		}
 
 		return 'SET ' . implode(',', $updates);
@@ -540,7 +540,7 @@ class Mysql
 		{
 			$fields[] = $this->connection->quoteName($field);
 			$values[] = (is_null($value)) ? 'NULL' : '?';
-			$this->bind(trim($value));
+			$this->bind(is_string($value) ? trim($value) : $value);
 		}
 
 		return '(' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ')';
@@ -571,7 +571,7 @@ class Mysql
 		{
 			$havings[] = $having['column'] . ' ' . $having['operator'] . ' ?';
 
-			$this->bind(trim($having['value']));
+			$this->bind(is_string($having['value']) ? trim($having['value']) : $having['value']);
 		}
 
 		return 'HAVING ' . implode(" AND ", $havings);
