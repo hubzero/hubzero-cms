@@ -82,7 +82,7 @@ $skipped = 0;
 		{
 			foreach ($this->attachments as $attachment)
 			{
-				if (!in_array($attachment->path, $shown)) 
+				if (!in_array($attachment->path, $shown))
 				{
 					// Found missing
 					$miss = new \Components\Projects\Models\File($attachment->path, '');
