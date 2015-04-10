@@ -85,6 +85,34 @@ class Loader implements LoaderInterface
 	}
 
 	/**
+	 * Get the params for a specific plugin
+	 *
+	 * @param   string  $type    The plugin type, relates to the sub-directory in the plugins directory.
+	 * @param   string  $plugin  The plugin name.
+	 * @return  object
+	 */
+	public function params($type, $plugin)
+	{
+		$result = $this->byType($type, $plugin);
+
+		if (!$result || empty($result))
+		{
+			$result = new stdClass;
+			$result->params = '';
+		}
+
+		if (is_string($result->params))
+		{
+			$temp = new \JRegistry;
+			$temp->loadString($result->params);
+
+			$result->params = $temp;
+		}
+
+		return $result->params;
+	}
+
+	/**
 	 * Get the plugin data of a specific type if no specific plugin is specified
 	 * otherwise only the specific plugin data is returned.
 	 *
@@ -101,7 +129,7 @@ class Loader implements LoaderInterface
 			// Is this the right plugin?
 			if ($p->type == $type)
 			{
-				if ($plugin && $p->name != $plugin)
+				if ($plugin && $p->name == $plugin)
 				{
 					$result = $p;
 					break;
