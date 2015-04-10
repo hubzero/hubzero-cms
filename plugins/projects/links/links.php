@@ -76,20 +76,14 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas( $alias = NULL, $all = false )
+	public function &onProjectAreas( $alias = NULL )
 	{
-		// Not showing side panel
-		$area = array();
-
-		if ($all == true)
-		{
-			$area = array(
-				'name'    => 'links',
-				'title'   => 'Links',
-				'submenu' => NULL,
-				'show'    => false
-			);
-		}
+		$area = array(
+			'name'    => 'links',
+			'title'   => 'Links',
+			'submenu' => NULL,
+			'show'    => false
+		);
 
 		return $area;
 	}
@@ -121,7 +115,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$this->_task = $action ? $action : Request::getVar('action');
 
 		// Get this area details
-		$this->_area = $this->onProjectAreas(NULL, true);
+		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ))

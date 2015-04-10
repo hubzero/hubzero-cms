@@ -549,15 +549,8 @@ class Projects extends Base
 			$this->model->recordFirstJoinActivity();
 		}
 
-		// Get project plugins
-		\JPluginHelper::importPlugin( 'projects');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get available plugins
-		$plugins = $dispatcher->trigger(
-			'onProjectAreas',
-			array( 'alias' => $this->model->get('alias'), 'all' => true )
-		);
+		$plugins = Event::trigger('projects.onProjectAreas', array($this->model->get('alias')));
 
 		// Get tabbed plugins
 		$this->view->tabs = Helpers\Html::getTabs($plugins);
@@ -598,7 +591,7 @@ class Projects extends Base
 				);
 
 				// Get plugin content
-				$sections = $dispatcher->trigger( 'onProject', $plugin_params);
+				$sections = Event::trigger( 'projects.onProject', $plugin_params);
 
 				// Output
 				if (!empty($sections))
@@ -640,7 +633,7 @@ class Projects extends Base
 			}
 
 			// Get item counts
-			$dispatcher->trigger( 'onProjectCount', array( $this->model, &$counts) );
+			Event::trigger( 'projects.onProjectCount', array( $this->model, &$counts) );
 			$this->model->set('counts', $counts);
 
 			// Record page visit
