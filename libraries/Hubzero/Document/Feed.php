@@ -246,15 +246,15 @@ class Feed extends \JDocument
 	 */
 	public function render($cache = false, $params = array())
 	{
-		$option = \JRequest::getCmd('option');
+		$option = \Request::getCmd('option');
 
 		// Get the feed type
-		$type = \JRequest::getCmd('type', 'Rss');
+		$type = \Request::getCmd('type', 'Rss');
 
 		// Cache TODO In later release
 		$cache      = 0;
 		$cache_time = 3600;
-		$cache_path = JPATH_BASE . DS . 'cache';
+		$cache_path = PATH_APP . DS . 'cache';
 
 		// set filename for rss feeds
 		$file = strtolower(str_replace('.', '', $type));
@@ -264,7 +264,7 @@ class Feed extends \JDocument
 		$renderer = $this->loadXRenderer(($type) ? $type : 'Rss');
 		if (!($renderer instanceof \JDocumentRenderer))
 		{
-			\JError::raiseError(404, \JText::_('Resource Not Found'));
+			\App::abort(404, \Lang::txt('Resource Not Found'));
 		}
 		$this->setMimeEncoding($renderer->getContentType());
 
@@ -308,7 +308,7 @@ class Feed extends \JDocument
 			}
 			else
 			{
-				throw new \InvalidArgumentException(\JText::_('Unable to load renderer class'), 500);
+				throw new \InvalidArgumentException(\Lang::txt('Unable to load renderer class'), 500);
 			}
 		}
 

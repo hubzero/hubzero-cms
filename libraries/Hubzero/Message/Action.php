@@ -56,7 +56,7 @@ class Action extends \JTable
 		$this->element = intval($this->element);
 		if (!$this->element)
 		{
-			$this->setError(\JText::_('Please provide an element.'));
+			$this->setError(\Lang::txt('Please provide an element.'));
 			return false;
 		}
 		return true;
@@ -78,7 +78,7 @@ class Action extends \JTable
 
 		if (!$component || !$element || !$uid || !$type)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(\Lang::txt('Missing argument.'));
 			return false;
 		}
 

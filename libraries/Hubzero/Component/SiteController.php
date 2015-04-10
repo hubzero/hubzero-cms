@@ -232,7 +232,7 @@ class SiteController extends Object implements ControllerInterface
 		}
 
 		// get language object & get any loaded lang for option
-		$lang   = \JFactory::getLanguage();
+		$lang   = \Lang::getRoot();
 		$loaded = $lang->getPaths($this->_option);
 
 		// Load language file if we dont have one yet
@@ -242,7 +242,7 @@ class SiteController extends Object implements ControllerInterface
 		}
 
 		// Set some commonly used vars
-		$this->juser    = \JFactory::getUser();
+		$this->juser    = \User::getRoot();
 		$this->database = \JFactory::getDBO();
 		$this->config   = \Component::params($this->_option);
 
@@ -295,7 +295,7 @@ class SiteController extends Object implements ControllerInterface
 	public function execute()
 	{
 		// Incoming task
-		$this->_task = strtolower(\JRequest::getCmd('task', \JRequest::getWord('layout', '')));
+		$this->_task = strtolower(\Request::getCmd('task', \Request::getWord('layout', '')));
 
 		// Check if the task is in the taskMap
 		if (isset($this->_taskMap[$this->_task]))
@@ -464,7 +464,7 @@ class SiteController extends Object implements ControllerInterface
 				\JFactory::getSession()->set('component.message.queue', $this->componentMessageQueue);
 			}
 
-			\JFactory::getApplication()->redirect($this->_redirect, $this->_message, $this->_messageType);
+			\App::redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
 

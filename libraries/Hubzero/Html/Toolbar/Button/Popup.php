@@ -104,7 +104,7 @@ class Popup extends Button
 	{
 		if (substr($url, 0, 4) !== 'http')
 		{
-			$url = \JURI::base() . $url;
+			$url = \Request::base() . $url;
 		}
 
 		return $url;

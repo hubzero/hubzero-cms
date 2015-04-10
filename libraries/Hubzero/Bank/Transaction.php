@@ -36,69 +36,6 @@ namespace Hubzero\Bank;
 class Transaction extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid         = NULL;
-
-	/**
-	 * varchar(20)
-	 *
-	 * @var string
-	 */
-	var $type        = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $category    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $referenceid = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $amount      = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $created     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $balance     = NULL;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -119,21 +56,21 @@ class Transaction extends \JTable
 		$this->uid = intval($this->uid);
 		if (!$this->uid)
 		{
-			$this->setError(\JText::_('Entry must have a user ID.'));
+			$this->setError(\Lang::txt('Entry must have a user ID.'));
 			return false;
 		}
 
 		$this->type = trim($this->type);
 		if (!$this->type)
 		{
-			$this->setError(\JText::_('Entry must have a type (e.g., deposit, withdraw).'));
+			$this->setError(\Lang::txt('Entry must have a type (e.g., deposit, withdraw).'));
 			return false;
 		}
 
 		$this->category = trim($this->category);
 		if (!$this->category)
 		{
-			$this->setError(\JText::_('Entry must have a category.'));
+			$this->setError(\Lang::txt('Entry must have a category.'));
 			return false;
 		}
 
@@ -143,7 +80,7 @@ class Transaction extends \JTable
 
 		if (!$this->created)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 		}
 
 		return true;
@@ -320,8 +257,7 @@ class Transaction extends \JTable
 
 		if ($uid == null)
 		{
-			$juser = \JFactory::getUser();
-			$uid = $juser->get('id');
+			$uid = \User::get('id');
 		}
 
 		$query = "SELECT ";

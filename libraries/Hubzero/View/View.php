@@ -189,7 +189,7 @@ class View extends Object
 			$this->setLayout($this->_layout);
 		}
 
-		$this->baseurl = \JURI::base(true);
+		$this->baseurl = \Request::base(true);
 	}
 
 	/**
@@ -464,7 +464,7 @@ class View extends Object
 		$tpl = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
 
 		// Load the language file for the template
-		$lang = \JFactory::getLanguage();
+		$lang = \Lang::getRoot();
 		$lang->load('tpl_' . $template, JPATH_BASE, null, false, false)
 			|| $lang->load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, false)
 			|| $lang->load('tpl_' . $template, JPATH_BASE, $lang->getDefault(), false, false)

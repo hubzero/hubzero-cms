@@ -58,14 +58,14 @@ class Wallet
 
 		if (!class_exists($cls))
 		{
-			throw new ProviderNotFoundException(\JText::sprntf('Invalid badges provider of "%s".', $provider));
+			throw new ProviderNotFoundException(\Lang::txt('Invalid badges provider of "%s".', $provider));
 		}
 
 		$this->_provider = new $cls($requestType);
 
 		if (!($this->_provider instanceof ProviderInterface))
 		{
-			throw new InvalidProviderException(\JText::sprintf('Invalid badges provider of "%s". Provider must implement ProviderInterface', $provider));
+			throw new InvalidProviderException(\Lang::txt('Invalid badges provider of "%s". Provider must implement ProviderInterface', $provider));
 		}
 	}
 

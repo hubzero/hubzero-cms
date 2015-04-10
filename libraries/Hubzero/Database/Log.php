@@ -65,7 +65,7 @@ class Log
 	{
 		$logger = new \Hubzero\Log\Writer(
 			new \Monolog\Logger(\Config::get('application_env')),
-			\JDispatcher::getInstance()
+			\Event::getRoot()
 		);
 
 		$path = (is_dir(self::HZPATH)) ? self::HZPATH : \Config::get('log_path');
@@ -96,7 +96,7 @@ class Log
 			 ||  $item['class'] == 'Hubzero\Database\Rows'))
 			{
 
-				$file = (isset($item['file'])) ? str_replace(JPATH_ROOT, '', $item['file']) : $file;
+				$file = (isset($item['file'])) ? str_replace(PATH_CORE, '', $item['file']) : $file;
 				$line = (isset($item['line'])) ? $item['line'] : $line;
 			}
 		}

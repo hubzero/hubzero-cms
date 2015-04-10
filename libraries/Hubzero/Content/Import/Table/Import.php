@@ -56,21 +56,21 @@ class Import extends \JTable
 		$this->name = trim($this->name);
 		if ($this->name == '')
 		{
-			$this->setError(\JText::_('Name field is required for import.'));
+			$this->setError(\Lang::txt('Name field is required for import.'));
 			return false;
 		}
 
 		$this->type = trim($this->type);
 		if ($this->type == '')
 		{
-			$this->setError(\JText::_('Type field is required for import.'));
+			$this->setError(\Lang::txt('Type field is required for import.'));
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->created_at = ($this->created_at ?: \JFactory::getDate()->toSql());
-			$this->created_by = ($this->created_by ?: \JFactory::getUser()->get('id'));
+			$this->created_at = ($this->created_at ?: \Date::toSql());
+			$this->created_by = ($this->created_by ?: \User::get('id'));
 		}
 
 		return true;

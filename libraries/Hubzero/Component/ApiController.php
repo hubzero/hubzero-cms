@@ -75,12 +75,12 @@ class ApiController implements ControllerInterface
 	{
 		$response = new \stdClass();
 		$response->error->code    = 500;
-		$response->error->message = \JText::_('Component must implement the execute() method.');
+		$response->error->message = \Lang::txt('Component must implement the execute() method.');
 
 		$this->getResponse()
 		     ->setErrorMessage($response->error->code, $response->error->message);
 
-		$this->setMessageType(\JRequest::getWord('format', 'json'));
+		$this->setMessageType(\Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 

@@ -85,7 +85,7 @@ class AbstractRenderer implements Renderable
 	{
 		if (!is_array($messages))
 		{
-			throw new InvalidArgumentException(\JText::sprintf(
+			throw new InvalidArgumentException(\Lang::txt(
 				'Messages must be an array. Type of "%s" passed.',
 				gettype($messages)
 			));

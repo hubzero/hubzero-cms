@@ -375,8 +375,7 @@ class Group extends Object
 		}
 
 		//trigger the onAfterStoreGroup event
-		\JPluginHelper::importPlugin('user');
-		\JDispatcher::getInstance()->trigger('onAfterStoreGroup', array($this));
+		\Event::trigger('user.onAfterStoreGroup', array($this));
 
 		return $this->gidNumber;
 	}
@@ -648,20 +647,14 @@ class Group extends Object
 
 		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents
 		// for every user added to this group
-		\JPluginHelper::importPlugin('groups');
-		$dispatcher = \JDispatcher::getInstance();
-
 		foreach ($aNewUserGroupEnrollments as $userid)
 		{
-			$dispatcher->trigger('onGroupUserEnrollment', array($this->gidNumber, $userid));
+			\Event::trigger('groups.onGroupUserEnrollment', array($this->gidNumber, $userid));
 		}
 
 		if ($affected > 0)
 		{
-			\JPluginHelper::importPlugin('user');
-
-			//trigger the onAfterStoreGroup event
-			$dispatcher->trigger('onAfterStoreGroup', array($this));
+			\Event::trigger('user.onAfterStoreGroup', array($this));
 		}
 
 		return true;
@@ -716,8 +709,7 @@ class Group extends Object
 		$db->query();
 
 		//trigger the onAfterStoreGroup event
-		\JPluginHelper::importPlugin('user');
-		\JDispatcher::getInstance()->trigger('onAfterStoreGroup', array($this));
+		\Event::trigger('user.onAfterStoreGroup', array($this));
 
 		return true;
 	}
@@ -1463,14 +1455,11 @@ class Group extends Object
 	 */
 	public function getLogo($what='')
 	{
-		// get user
-		$juser = \JFactory::getUser();
-
 		//default logo
 		$default_logo = DS . 'components' . DS . 'com_groups' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
 
 		//logo link - links to group overview page
-		$link = \JRoute::_('index.php?option=com_groups&cn=' . $this->get('cn'));
+		$link = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
 
 		//path to group uploaded logo
 		$path = '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
@@ -1481,7 +1470,7 @@ class Group extends Object
 		//check to make sure were a member to show logo for hidden group
 		$members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
 		if ($this->get('discoverability') == 1
-		 && !in_array($juser->get('id'), $members_and_invitees))
+		 && !in_array(\User::get('id'), $members_and_invitees))
 		{
 			$src = $default_logo;
 		}
@@ -1497,7 +1486,7 @@ class Group extends Object
 			return $src;
 		}
 
-		return \JURI::base(true) . $src;
+		return \Request::base(true) . $src;
 	}
 
 	/**
@@ -1569,8 +1558,7 @@ class Group extends Object
 					'camelcase' => 0
 				);
 
-				\JPluginHelper::importPlugin('content');
-				\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+				\Event::trigger('content.onContentPrepare', array(
 					'com_groups.group.' . $type . '_desc',
 					&$this,
 					&$config

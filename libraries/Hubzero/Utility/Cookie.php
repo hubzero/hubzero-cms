@@ -66,7 +66,7 @@ class Cookie
 		$hash  = \JUtility::getHash(\JFactory::getApplication()->getName() . ':' . $namespace);
 		$crypt = new \JSimpleCrypt();
 
-		if ($str = \JRequest::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
+		if ($str = \Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 		{
 			$sstr   = $crypt->decrypt($str);
 			$cookie = @unserialize($sstr);

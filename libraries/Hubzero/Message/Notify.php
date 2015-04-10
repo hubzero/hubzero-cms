@@ -56,7 +56,7 @@ class Notify extends \JTable
 		$this->uid = intval($this->uid);
 		if (!$this->uid)
 		{
-			$this->setError(\JText::_('Please provide a user ID.'));
+			$this->setError(\Lang::txt('Please provide a user ID.'));
 			return false;
 		}
 		return true;

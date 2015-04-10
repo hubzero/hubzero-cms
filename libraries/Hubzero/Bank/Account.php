@@ -36,41 +36,6 @@ namespace Hubzero\Bank;
 class Account extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid      = NULL;
-
-	/**
-	 * decimal(11,2)
-	 *
-	 * @var number
-	 */
-	var $balance  = NULL;
-
-	/**
-	 * decimal(11,2)
-	 *
-	 * @var number
-	 */
-	var $earnings = NULL;
-
-	/**
-	 * decimal(11,2)
-	 *
-	 * @var number
-	 */
-	var $credit   = NULL;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -90,7 +55,7 @@ class Account extends \JTable
 	{
 		if (trim($this->uid) == '')
 		{
-			$this->setError(\JText::_('Entry must have a user ID.'));
+			$this->setError(\Lang::txt('Entry must have a user ID.'));
 			return false;
 		}
 

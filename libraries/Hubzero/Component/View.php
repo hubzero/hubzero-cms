@@ -116,7 +116,7 @@ class View extends AbstractView
 				}
 			}
 
-			$option = ($this->option ? $this->option : \JRequest::getCmd('option'));
+			$option = ($this->option ? $this->option : \Request::getCmd('option'));
 			$option = ucfirst(substr($option, 4));
 
 			// Namespaced

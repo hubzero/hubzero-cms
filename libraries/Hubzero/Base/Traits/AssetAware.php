@@ -143,7 +143,7 @@ trait AssetAware
 		}
 		else if ($this instanceof ControllerInterface)
 		{
-			return \JRequest::getCmd('option', $this->_option);
+			return \Request::getCmd('option', $this->_option);
 		}
 		else if ($this instanceof Module)
 		{

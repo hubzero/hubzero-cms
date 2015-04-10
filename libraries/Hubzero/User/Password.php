@@ -347,8 +347,7 @@ class Password
 
 		if ($affected > 0)
 		{
-			\JPluginHelper::importPlugin('user');
-			\JDispatcher::getInstance()->trigger('onAfterStorePassword', array($this));
+			\Event::trigger('user.onAfterStorePassword', array($this));
 		}
 
 		return true;
@@ -396,8 +395,7 @@ class Password
 
 		if ($affected > 0)
 		{
-			\JPluginHelper::importPlugin('user');
-			\JDispatcher::getInstance()->trigger('onAfterDeletePassword', array($this));
+			\Event::trigger('user.onAfterDeletePassword', array($this));
 		}
 
 		return true;
@@ -599,7 +597,7 @@ class Password
 	public static function getPasshash($password)
 	{
 		// Get the password encryption/hashing mechanism
-		$config = \JComponentHelper::getParams('com_members');
+		$config = \Component::params('com_members');
 		$type   = $config->get('passhash_mechanism', 'CRYPT_SHA512');
 
 		switch ($type)
@@ -628,7 +626,7 @@ class Password
 	public static function changePasshash($user = null, $passhash)
 	{
 		// Get config values for min, max, and warning
-		$config        = \JComponentHelper::getParams('com_members');
+		$config        = \Component::params('com_members');
 		$shadowMin     = $config->get('shadowMin', '0');
 		$shadowMax     = $config->get('shadowMax', null);
 		$shadowWarning = $config->get('shadowWarning', '7');
@@ -750,7 +748,7 @@ class Password
 			}
 			else
 			{
-				$user = \JUser::getInstance($user);
+				$user = \User::getInstance($user);
 
 				if (is_object($user) && !empty($user->password))
 				{

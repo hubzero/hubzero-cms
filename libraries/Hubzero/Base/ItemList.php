@@ -159,7 +159,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 
 		if (!$this->valid())
 		{
-			throw new \OutOfBoundsException(\JText::_('Invalid seek position'));
+			throw new \OutOfBoundsException(\Lang::txt('Invalid seek position'));
 		}
 	}
 

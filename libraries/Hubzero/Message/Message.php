@@ -56,7 +56,7 @@ class Message extends \JTable
 		$this->message = trim($this->message);
 		if (!$this->message)
 		{
-			$this->setError(\JText::_('Please provide a message.'));
+			$this->setError(\Lang::txt('Please provide a message.'));
 			return false;
 		}
 

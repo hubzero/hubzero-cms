@@ -56,21 +56,21 @@ class Hook extends \JTable
 		$this->name = trim($this->name);
 		if ($this->name == '')
 		{
-			$this->setError(\JText::_('Name field is required for import hook.'));
+			$this->setError(\Lang::txt('Name field is required for import hook.'));
 			return false;
 		}
 
 		$this->type = trim($this->type);
 		if ($this->type == '')
 		{
-			$this->setError(\JText::_('Type field is required for import hook.'));
+			$this->setError(\Lang::txt('Type field is required for import hook.'));
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->created    = ($this->created    ?: \JFactory::getDate()->toSql());
-			$this->created_by = ($this->created_by ?: \JFactory::getUser()->get('id'));
+			$this->created    = ($this->created    ?: \Date::toSql());
+			$this->created_by = ($this->created_by ?: \User::get('id'));
 		}
 
 		return true;

@@ -30,27 +30,6 @@ namespace Hubzero\Item\Comment;
 class File extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $comment_id  = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $filename    = NULL;
-
-	/**
 	 * Upload path
 	 *
 	 * @var string
@@ -78,7 +57,7 @@ class File extends \JTable
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
-			$this->setError(\JText::_('Please provide a file name'));
+			$this->setError(\Lang::txt('Please provide a file name'));
 			return false;
 		}
 
@@ -87,7 +66,7 @@ class File extends \JTable
 		$this->comment_id = intval($this->comment_id);
 		if (!$this->comment_id)
 		{
-			$this->setError(\JText::_('Missing comment ID.'));
+			$this->setError(\Lang::txt('Missing comment ID.'));
 			return false;
 		}
 
@@ -118,7 +97,7 @@ class File extends \JTable
 	 */
 	private function _getUploadDir()
 	{
-		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
+		return PATH_APP . DS . ltrim($this->_uploadDir, DS);
 	}
 
 	/**
@@ -240,7 +219,7 @@ class File extends \JTable
 	{
 		if ($comment_id === null)
 		{
-			$this->setError(JText::_('Missing argument: comment ID'));
+			$this->setError(\Lang::txt('Missing argument: comment ID'));
 			return false;
 		}
 
@@ -298,7 +277,7 @@ class File extends \JTable
 			jimport('joomla.filesystem.file');
 			if (!\JFile::delete($this->_getUploadDir() . DS . $filename))
 			{
-				$this->setError(\JText::_('Unable to delete file.'));
+				$this->setError(\Lang::txt('Unable to delete file.'));
 				return false;
 			}
 		}

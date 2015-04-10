@@ -76,9 +76,8 @@ class Autocompleter extends AbstractHelper
 			break;
 		}
 
-		\JPluginHelper::importPlugin('hubzero');
-		$results = \JDispatcher::getInstance()->trigger(
-			$event,
+		$results = \Event::trigger(
+			'hubzero.' . $event,
 			array(
 				array($what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl)
 			)

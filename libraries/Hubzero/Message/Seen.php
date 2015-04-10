@@ -56,13 +56,13 @@ class Seen extends \JTable
 		$this->mid = intval($this->mid);
 		if (!$this->mid)
 		{
-			$this->setError(\JText::_('Please provide a message ID.'));
+			$this->setError(\Lang::txt('Please provide a message ID.'));
 			return false;
 		}
 		$this->uid = intval($this->uid);
 		if (!$this->uid)
 		{
-			$this->setError(\JText::_('Please provide a user ID.'));
+			$this->setError(\Lang::txt('Please provide a user ID.'));
 			return false;
 		}
 		return true;

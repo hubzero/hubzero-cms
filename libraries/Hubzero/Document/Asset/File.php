@@ -236,7 +236,7 @@ class File extends Object
 	{
 		if (!array_key_exists($type, $this->paths))
 		{
-			throw new \Exception(\JText::sprintf('Unknown asset path type of %s given.', $type));
+			throw new \Exception(\Lang::txt('Unknown asset path type of %s given.', $type));
 		}
 
 		$path = trim((string) $path);
@@ -262,7 +262,7 @@ class File extends Object
 			// If loading from an absolute path
 			if ($this->directory == '/')
 			{
-				$this->paths['source'] = JPATH_ROOT . DS . $this->directory . $this->file();
+				$this->paths['source'] = PATH_APP . DS . $this->directory . $this->file();
 			}
 			else
 			{
@@ -292,7 +292,7 @@ class File extends Object
 
 				if ($this->extensionType() == 'components')
 				{
-					$paths[] = JPATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . $client . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+					$paths[] = PATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . $client . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
 				}
 				$paths[] = $base . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
 				$paths[] = $base . DS . $this->file();
@@ -407,17 +407,17 @@ class File extends Object
 
 		if ($this->extensionType() == 'system')
 		{
-			$relative = rtrim(str_replace('/administrator', '', \JURI::base(true)), '/') . substr($output, strlen(JPATH_ROOT));
+			$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(JPATH_ROOT));
 		}
 		else
 		{
 			if (substr($output, 0, strlen(JPATH_BASE)) == JPATH_BASE)
 			{
-				$relative = rtrim(\JURI::base(true), '/') . substr($output, strlen(JPATH_BASE));
+				$relative = rtrim(\Request::base(true), '/') . substr($output, strlen(JPATH_BASE));
 			}
 			else
 			{
-				$relative = rtrim(str_replace('/administrator', '', \JURI::base(true)), '/') . substr($output, strlen(JPATH_SITE));
+				$relative = rtrim(str_replace('/administrator', '', \Request::base(true)), '/') . substr($output, strlen(JPATH_SITE));
 			}
 		}
 

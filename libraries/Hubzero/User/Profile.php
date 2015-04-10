@@ -33,6 +33,7 @@ namespace Hubzero\User;
 use Hubzero\Base\Object;
 use Hubzero\User\Profile\Helper as ProfileHelper;
 use Hubzero\Utility\String;
+use Event;
 
 /**
  * Extended user profile
@@ -1015,8 +1016,7 @@ class Profile extends Object
 
 		if ($affected > 0)
 		{
-			\JPluginHelper::importPlugin('user');
-			\JDispatcher::getInstance()->trigger('onAfterStoreProfile', array($this));
+			Event::trigger('user.onAfterStoreProfile', array($this));
 		}
 
 		return true;
@@ -1077,8 +1077,7 @@ class Profile extends Object
 
 		if ($affected > 0)
 		{
-			\JPluginHelper::importPlugin('user');
-			\JDispatcher::getInstance()->trigger('onAfterDeleteProfile', array($this));
+			Event::trigger('user.onAfterDeleteProfile', array($this));
 		}
 
 		$this->clear();
@@ -1573,8 +1572,7 @@ class Profile extends Object
 					'camelcase' => 0
 				);
 
-				\JPluginHelper::importPlugin('content');
-				\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+				Event::trigger('content.onContentPrepare', array(
 					'com_members.profile.bio',
 					&$this,
 					&$config

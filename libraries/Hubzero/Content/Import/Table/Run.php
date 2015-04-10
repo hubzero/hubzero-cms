@@ -55,7 +55,7 @@ class Run extends \JTable
 	{
 		if ($this->import_id == '')
 		{
-			$this->setError(\JText::_('Import ID # is required for import run.'));
+			$this->setError(\Lang::txt('Import ID # is required for import run.'));
 			return false;
 		}
 

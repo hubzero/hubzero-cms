@@ -56,7 +56,7 @@ class Recipient extends \JTable
 		$this->mid = intval($this->mid);
 		if (!$this->mid)
 		{
-			$this->setError(\JText::_('Please provide a message ID.'));
+			$this->setError(\Lang::txt('Please provide a message ID.'));
 			return false;
 		}
 		return true;

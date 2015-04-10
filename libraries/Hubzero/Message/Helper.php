@@ -31,6 +31,10 @@
 namespace Hubzero\Message;
 
 use Hubzero\Base\Object;
+use Event;
+use Lang;
+use User;
+use Date;
 
 /**
  * Hubzero message class for handling message routing
@@ -72,7 +76,7 @@ class Helper extends Object
 					$recipient = new Recipient($database);
 					if (!$recipient->setState(1, $mids))
 					{
-						$this->setError(\JText::sprintf('Unable to update recipient records %s for user %s', implode(',', $mids), $uid));
+						$this->setError(Lang::txt('Unable to update recipient records %s for user %s', implode(',', $mids), $uid));
 					}
 				}
 			}
@@ -114,14 +118,13 @@ class Helper extends Object
 		}
 
 		$database = \JFactory::getDBO();
-		$juser = \JFactory::getUser();
 
 		// Create the message object and store it in the database
 		$xmessage = new Message($database);
 		$xmessage->subject    = $subject;
 		$xmessage->message    = $message;
-		$xmessage->created    = \JFactory::getDate()->toSql();
-		$xmessage->created_by = $juser->get('id');
+		$xmessage->created    = Date::toSql();
+		$xmessage->created_by = User::get('id');
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
 		$xmessage->group_id   = $group_id;
@@ -154,8 +157,8 @@ class Helper extends Object
 				$recipient = new Recipient($database);
 				$recipient->uid      = $uid;
 				$recipient->mid      = $xmessage->id;
-				$recipient->created  = \JFactory::getDate()->toSql();
-				$recipient->expires  = \JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
+				$recipient->created  = Date::toSql();
+				$recipient->expires  = Date::of(time() + (168 * 24 * 60 * 60))->toSql();
 				$recipient->actionid = $action->id;
 				if (!$recipient->store())
 				{
@@ -166,11 +169,7 @@ class Helper extends Object
 				$notify = new Notify($database);
 				$methods = $notify->getRecords($uid, $type);
 
-				$user = \JUser::getInstance($uid);
-
-				// Load plugins
-				\JPluginHelper::importPlugin('xmessage');
-				$dispatcher = \JDispatcher::getInstance();
+				$user = User::getInstance($uid);
 
 				// Do we have any methods?
 				if ($methods)
@@ -180,9 +179,9 @@ class Helper extends Object
 					{
 						$action = strtolower($method->method);
 
-						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action)))
+						if (!Event::trigger('xmessage.onMessage', array($from, $xmessage, $user, $action)))
 						{
-							$this->setError(\JText::sprintf('Unable to message user %s with method %s', $uid, $action));
+							$this->setError(Lang::txt('Unable to message user %s with method %s', $uid, $action));
 						}
 					}
 				}

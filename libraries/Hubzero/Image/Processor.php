@@ -93,14 +93,14 @@ class Processor extends Object
 		//check to see if we have an image to work with
 		if (is_null($this->source))//&& is_file($this->source))
 		{
-			$this->setError(\JText::_('[ERROR] Image Source not set.'));
+			$this->setError(\Lang::txt('[ERROR] Image Source not set.'));
 			return;
 		}
 
 		//check to make sure its a file if not remote
 		if (!$isRemoteImage && !is_file($this->source))
 		{
-			$this->setError(\JText::_('[ERROR] Image doesn\'t exist on the server.'));
+			$this->setError(\Lang::txt('[ERROR] Image doesn\'t exist on the server.'));
 			return;
 		}
 
@@ -147,7 +147,7 @@ class Processor extends Object
 		$installed_exts = get_loaded_extensions();
 		if (!in_array($package, $installed_exts))
 		{
-			$this->setError(\JText::sprintf('[ERROR] You are missing the required PHP package %s.', $package));
+			$this->setError(\Lang::txt('[ERROR] You are missing the required PHP package %s.', $package));
 			return false;
 		}
 
@@ -212,7 +212,7 @@ class Processor extends Object
 	{
 		if (!$this->checkPackageRequirements('exif'))
 		{
-			$this->setError(\JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+			$this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
 			return false;
 		}
 
@@ -423,7 +423,7 @@ class Processor extends Object
 	{
 		if (!$this->checkPackageRequirements('exif'))
 		{
-			$this->setError(\JText::_('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+			$this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
 			return false;
 		}
 
@@ -555,12 +555,12 @@ class Processor extends Object
 
 			if ($make_paths)
 			{
-				JFolder::create($info['dirname']);
+				\JFolder::create($info['dirname']);
 			}
 
 			if (!is_dir($info['dirname']) && $make_paths == false)
 			{
-				$this->setError(\JText::_('You must supply a valid path or allow save function to create recursive path'));
+				$this->setError(\Lang::txt('You must supply a valid path or allow save function to create recursive path'));
 				return;
 			}
 

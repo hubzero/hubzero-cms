@@ -93,7 +93,7 @@ class Helper
 	 *
 	 * @return    array
 	 */
-	public static function getFeaturedGroups( $groupList )
+	public static function getFeaturedGroups($groupList)
 	{
 		//database object
 		$database = \JFactory::getDBO();
@@ -190,16 +190,13 @@ class Helper
 	 */
 	public static function listGroups($name='', $config, $groups=array(), $num_columns=2, $display_logos=true, $display_private_description=false, $description_char_limit=150)
 	{
-		//user object
-		$user = \JFactory::getUser();
-
 		//database object
 		$database = \JFactory::getDBO();
 
 		//check to see if we have any groups to show
 		if (!$groups)
 		{
-			return '<p class="info">' . \JText::sprintf('COM_GROUPS_INTRO_NO_' . str_replace(' ', '_', strtoupper($name)), $user->get('id')) . '</p>';
+			return '<p class="info">' . \Lang::txt('COM_GROUPS_INTRO_NO_' . str_replace(' ', '_', strtoupper($name)), \User::get('id')) . '</p>';
 		}
 
 		//var to hold html
@@ -297,7 +294,7 @@ class Helper
 						}
 						else
 						{
-							$html .= "<h3><a href=\"" . \JRoute::_('index.php?option=com_groups&task=view&cn=' . $group->cn) . "\">{$hg->description}</a></h3>";
+							$html .= "<h3><a href=\"" . \Route::url('index.php?option=com_groups&task=view&cn=' . $group->cn) . "\">{$hg->description}</a></h3>";
 						}
 
 						if ($gdescription)
@@ -310,7 +307,7 @@ class Helper
 						}
 						if (!$isPublished)
 						{
-							$html .= "<span class=\"status not-published\">".\JText::_('Group has been unpublished by administrator')."</span>";
+							$html .= "<span class=\"status not-published\">".\Lang::txt('Group has been unpublished by administrator')."</span>";
 						}
 
 						if (isset($group->matches))
@@ -318,7 +315,7 @@ class Helper
 							$html .= "<ol class=\"tags\">";
 								foreach ($group->matches as $t)
 								{
-									$html .= '<li><a href="' . \JRoute::_($gt->tag($t)->link()) . '">' . $t . '</a></li>';
+									$html .= '<li><a href="' . \Route::url($gt->tag($t)->link()) . '">' . $t . '</a></li>';
 								}
 							$html .= "</ol>";
 						}
@@ -458,13 +455,9 @@ class Helper
 			return;
 		}
 
-		// Get plugins
-		\JPluginHelper::importPlugin('groups');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Trigger the functions that return the areas we'll be using
 		//then add overview to array
-		$hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
+		$hub_group_plugins = \Event::trigger('groups.onGroupAreas', array());
 		array_unshift($hub_group_plugins, array('name'=>'overview', 'title'=>'Overview', 'default_access'=>'anyone'));
 
 		//array to store plugin preferences when after retrieved from db
@@ -552,7 +545,7 @@ class Helper
 		$db = \JDatabase::getInstance();
 
 		// make sure we have a group object
-		if (!$group = Group::getInstance(\JRequest::getVar('cn', $cname)))
+		if (!$group = Group::getInstance(\Request::getVar('cn', $cname)))
 		{
 			return $db;
 		}

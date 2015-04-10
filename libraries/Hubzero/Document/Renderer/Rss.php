@@ -52,7 +52,7 @@ class Rss extends \JDocumentRenderer
 	 */
 	public function render($name = NULL, $params = NULL, $content = NULL)
 	{
-		$now  = \JFactory::getDate();
+		$now  = \Date::getRoot();
 		$data = $this->_doc;
 
 		$uri = \JFactory::getURI();
@@ -278,7 +278,7 @@ class Rss extends \JDocumentRenderer
 	 */
 	private function _relToAbs($text)
 	{
-		$base = \JURI::base();
+		$base = \Request::base();
 		$text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 
 		return $text;

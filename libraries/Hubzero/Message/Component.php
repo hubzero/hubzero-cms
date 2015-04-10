@@ -57,20 +57,20 @@ class Component extends \JTable
 		$this->component = trim($this->component);
 		if (!$this->component)
 		{
-			$this->setError(\JText::_('Please provide a component.'));
+			$this->setError(\Lang::txt('Please provide a component.'));
 			return false;
 		}
 		$this->_db->setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
 		$extensions = $this->_db->loadResultArray();
 		if (!in_array($this->component, $extensions))
 		{
-			$this->setError(\JText::_('Component does not exist.'));
+			$this->setError(\Lang::txt('Component does not exist.'));
 			return false;
 		}
 		$this->action = trim($this->action);
 		if (!$this->action)
 		{
-			$this->setError(\JText::_('Please provide an action.'));
+			$this->setError(\Lang::txt('Please provide an action.'));
 			return false;
 		}
 		return true;

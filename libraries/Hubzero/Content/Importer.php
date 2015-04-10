@@ -171,7 +171,7 @@ class Importer
 		// do we still not have adapter
 		if (!$this->adapter)
 		{
-			throw new \Exception(\JText::_('Content Import: No adapter found to count import data.'));
+			throw new \Exception(\Lang::txt('Content Import: No adapter found to count import data.'));
 		}
 	}
 

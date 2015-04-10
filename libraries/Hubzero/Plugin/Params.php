@@ -56,21 +56,21 @@ class Params extends \JTable
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id)
 		{
-			$this->setError(\JText::_('Entry must have an object ID'));
+			$this->setError(\Lang::txt('Entry must have an object ID'));
 			return false;
 		}
 
 		$this->folder = trim($this->folder);
 		if (!$this->folder)
 		{
-			$this->setError(\JText::_('Entry must have a folder'));
+			$this->setError(\Lang::txt('Entry must have a folder'));
 			return false;
 		}
 
 		$this->element = trim($this->element);
 		if (!$this->element)
 		{
-			$this->setError(\JText::_('Entry must have an element'));
+			$this->setError(\Lang::txt('Entry must have an element'));
 			return false;
 		}
 		return true;
@@ -144,7 +144,7 @@ class Params extends \JTable
 			return null;
 		}
 
-		$plugin = \JPluginHelper::getPlugin($folder, $element);
+		$plugin = \Plugin::byType($folder, $element);
 
 		return new \JRegistry($plugin->params);
 	}

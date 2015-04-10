@@ -512,7 +512,7 @@ class Validate
 
 		if (!isset($reserved[$type]))
 		{
-			throw new \InvalidArgumentException(\JText::sprintf('Type must be "username" or "group". Type of "%s" provided.', $type));
+			throw new \InvalidArgumentException(\Lang::txt('Type must be "username" or "group". Type of "%s" provided.', $type));
 		}
 
 		if (in_array(strtolower($val), $reserved[$type]))

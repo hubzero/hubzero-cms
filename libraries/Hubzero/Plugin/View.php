@@ -155,7 +155,7 @@ class View extends AbstractView
 			$this->setLayout('default');
 		}
 
-		$this->baseurl = \JURI::base(true);
+		$this->baseurl = \Request::base(true);
 	}
 
 	/**
@@ -184,7 +184,7 @@ class View extends AbstractView
 			}
 			else
 			{
-				throw new Exception(\JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
+				throw new Exception(\Lang::txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
 			}
 		}
 
@@ -222,7 +222,7 @@ class View extends AbstractView
 			}
 			else
 			{
-				throw new Exception(\JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
+				throw new Exception(\Lang::txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
 			}
 		}
 

@@ -81,7 +81,7 @@ class Import extends Model
 		// make sure we have file
 		if (!$file = $this->get('file'))
 		{
-			throw new Exception(__METHOD__ . '(); ' . \JText::_('Missing required data file.'));
+			throw new Exception(__METHOD__ . '(); ' . \Lang::txt('Missing required data file.'));
 		}
 
 		// build path to file
@@ -90,13 +90,13 @@ class Import extends Model
 		// make sure file exists
 		if (!file_exists($filePath))
 		{
-			throw new Exception(__METHOD__ . '(); ' . \JText::sprintf('Data file does not exist at path: %s.', $filePath));
+			throw new Exception(__METHOD__ . '(); ' . \Lang::txt('Data file does not exist at path: %s.', $filePath));
 		}
 
 		// make sure we can read the file
 		if (!is_readable($filePath))
 		{
-			throw new Exception(__METHOD__ . '(); ' . \JText::_('Data file not readable.'));
+			throw new Exception(__METHOD__ . '(); ' . \Lang::txt('Data file not readable.'));
 		}
 
 		return $filePath;
@@ -110,7 +110,7 @@ class Import extends Model
 	public function fileSpacePath()
 	{
 		// build upload path
-		$uploadPath = JPATH_ROOT . DS . 'site' . DS . 'import' . DS . $this->get('id');
+		$uploadPath = PATH_APP . DS . 'site' . DS . 'import' . DS . $this->get('id');
 
 		// return path
 		return $uploadPath;
@@ -172,8 +172,8 @@ class Import extends Model
 		$importRun = new Run();
 		$importRun->set('import_id', $this->get('id'))
 				->set('count', $this->get('count'))
-				->set('ran_by', \JFactory::getUser()->get('id'))
-				->set('ran_at', \JFactory::getDate()->toSql())
+				->set('ran_by', \User::get('id'))
+				->set('ran_at', \Date::toSql())
 				->set('dry_run', $dryRun)
 				->store();
 	}

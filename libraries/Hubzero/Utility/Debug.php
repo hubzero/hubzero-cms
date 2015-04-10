@@ -126,7 +126,7 @@ class Debug
 
 		if (!($renderer instanceof Renderable))
 		{
-			throw new InvalidArgumentException(\JText::sprintf(
+			throw new InvalidArgumentException(\Lang::txt(
 				'%s was unable to fetch renderer or renderer was not an instance of %s',
 				get_class($this) . '::' . __FUNCTION__,
 				__NAMESPACE__ . '\Renderable'

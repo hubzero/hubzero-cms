@@ -110,9 +110,9 @@ abstract class Model extends Object
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -335,9 +335,9 @@ abstract class Model extends Object
 		else
 		{
 			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data))
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
 			);
-			throw new \InvalidArgumentException(\JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data)));
+			throw new \InvalidArgumentException(\Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)));
 		}
 
 		return $res;
@@ -382,7 +382,7 @@ abstract class Model extends Object
 		//$trace = false;
 		if (JDEBUG)
 		{
-			$message = '[' . \JRequest::getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
+			$message = '[' . \Request::getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
 			//$trace = true;
 		}
 
@@ -392,7 +392,7 @@ abstract class Model extends Object
 			return;
 		}
 
-		$logger = \JFactory::getLogger();
+		$logger = \Log::getRoot();
 		$logger->$type($message);
 	}
 
@@ -431,7 +431,7 @@ abstract class Model extends Object
 
 			if ($this->_context)
 			{
-				$results = $this->importPlugin('content')->trigger('onContentBeforeSave', array(
+				$results = \Event::trigger('content.onContentBeforeSave', array(
 					$this->_context,
 					&$this,
 					$this->exists()
@@ -440,7 +440,7 @@ abstract class Model extends Object
 				{
 					if ($result === false)
 					{
-						$this->setError(\JText::_('Content failed validation.'));
+						$this->setError(\Lang::txt('Content failed validation.'));
 						return false;
 					}
 				}
@@ -488,7 +488,7 @@ abstract class Model extends Object
 	 */
 	public function importPlugin($type='')
 	{
-		\JPluginHelper::importPlugin($type);
+		\Plugin::import($type);
 
 		return $this;
 	}
@@ -500,7 +500,7 @@ abstract class Model extends Object
 	 */
 	public function trigger($event='', $params=array())
 	{
-		return \JDispatcher::getInstance()->trigger($event, $params);
+		return \Event::trigger($event, $params);
 	}
 
 	/**
@@ -613,7 +613,7 @@ abstract class Model extends Object
 	 */
 	public function __call($method, $parameters)
 	{
-		throw new \BadMethodCallException(__CLASS__ . '; ' . \JText::sprintf('Method [%s] does not exist.', $method));
+		throw new \BadMethodCallException(__CLASS__ . '; ' . \Lang::txt('Method [%s] does not exist.', $method));
 	}
 }
 

@@ -165,7 +165,7 @@ class Checker
 	 */
 	protected function getIp()
 	{
-		return \JRequest::ip();
+		return \Request::ip();
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Checker
 	 */
 	protected function getUserAgent()
 	{
-		return \JRequest::getVar('HTTP_USER_AGENT', null, 'server');
+		return \Request::getVar('HTTP_USER_AGENT', null, 'server');
 	}
 
 	/**
