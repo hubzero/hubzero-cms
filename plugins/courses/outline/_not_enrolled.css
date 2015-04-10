@@ -1,0 +1,27 @@
+/**
+ * @package    hubzero-cms
+ * @file       plugins/courses/outline/_not_enrolled.css
+ * @copyright  Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.enroll-now {
+	text-align: center;
+	background: #333333;
+	padding: 15px;
+}
+.enroll-now .btn {
+	border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
+	color: #996633;
+	text-shadow: 0 1px 0 #fedd9b;
+	background: #feda71;
+	background: -webkit-gradient(linear, left top, left bottom, from(#feda71), to(#febe4d));
+	background: -webkit-linear-gradient(#feda71, #febe4d);
+	background: -moz-linear-gradient(center top, #feda71 0%, #febe4d 100%);
+	background: -moz-gradient(center top, #feda71 0%, #febe4d 100%);
+	background: -ms-linear-gradient(#feda71, #febe4d);
+	background: -o-linear-gradient(#feda71, #febe4d);
+	background: linear-gradient(#feda71, #febe4d);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71,endColorstr=#febe4d);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71, endColorstr=#febe4d)";
+}

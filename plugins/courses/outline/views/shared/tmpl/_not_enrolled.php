@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->js('_not_enrolled.js');
+$this->js('_not_enrolled.js')
+     ->css('_not_enrolled.css');
 
 $oparams = new JRegistry($this->course->offering()->get('params'));
 
@@ -45,6 +46,9 @@ if ($cost = $oparams->get('store_price', false))
 <div id="offering-introduction">
 	<div class="instructions">
 		<p class="warning"><?php echo JText::_($this->message); ?></p>
+	</div>
+	<div class="enroll-now">
+		<a class="enroll btn" href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">Enroll for <?php echo $price; ?>!</a>
 	</div>
 	<div class="questions">
 		<p>
