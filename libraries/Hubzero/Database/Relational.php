@@ -1103,7 +1103,7 @@ class Relational implements \IteratorAggregate
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeys($constraint);
 
-		$this->where($rel->getLocalKey(), 'IN', $keys, 'and', $depth);
+		return $this->where($rel->getLocalKey(), 'IN', $keys, 'and', $depth);
 	}
 
 	/**
@@ -1124,7 +1124,7 @@ class Relational implements \IteratorAggregate
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeys($constraint);
 
-		$this->where($rel->getLocalKey(), 'IN', $keys, 'or', $depth);
+		return $this->where($rel->getLocalKey(), 'IN', $keys, 'or', $depth);
 	}
 
 	/**
@@ -1136,18 +1136,16 @@ class Relational implements \IteratorAggregate
 	 *
 	 * @param  string $relationship the relationship name to constrain against
 	 * @param  int    $count        the minimum number of rows required
+	 * @param  int    $depth        the depth level of the clause, for sub clauses
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function whereRelatedHasCount($relationship, $count=1)
+	public function whereRelatedHasCount($relationship, $count=1, $depth=0)
 	{
-		$rel = $this->$relationship();
-		$this->whereRelatedHas($relationship, function($related) use ($count, $rel)
-		{
-			$related->group($rel->getRelatedKey())->having('COUNT(*)', '>=', $count);
-		});
+		$rel  = $this->$relationship();
+		$keys = $rel->getConstrainedKeysByCount($count);
 
-		return $this;
+		return $this->where($rel->getLocalKey(), 'IN', $keys, 'and', $depth);
 	}
 
 	/**

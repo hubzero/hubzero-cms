@@ -144,7 +144,7 @@ class Relationship
 	}
 
 	/**
-	 * Get keys based on a given constraint
+	 * Gets keys based on a given constraint
 	 *
 	 * @param  closure $constraint the constraint function to apply
 	 * @return array
@@ -158,7 +158,7 @@ class Relationship
 	}
 
 	/**
-	 * Get rows based on given constraint
+	 * Gets rows based on given constraint
 	 *
 	 * @param  closure $constraint the constraint function to apply
 	 * @return \Hubzero\Database\Rows
@@ -169,6 +169,23 @@ class Relationship
 		$this->related->select($this->related->getQualifiedFieldName('*'));
 
 		return $this->getConstrained($constraint);
+	}
+
+	/**
+	 * Gets the constrained count
+	 *
+	 * @param  int $count the count to limit by
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function getConstrainedKeysByCount($count)
+	{
+		$relatedKey = $this->relatedKey;
+
+		return $this->getConstrainedKeys(function($related) use ($count, $relatedKey)
+		{
+			$related->group($relatedKey)->having('COUNT(*)', '>=', $count);
+		});
 	}
 
 	/**

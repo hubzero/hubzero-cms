@@ -112,6 +112,23 @@ class OneToManyThrough extends OneToMany
 	}
 
 	/**
+	 * Gets the constrained count
+	 *
+	 * @param  int $count the count to limit by
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function getConstrainedKeysByCount($count)
+	{
+		$associativeLocal = $this->associativeLocal;
+
+		return $this->getConstrainedKeys(function($related) use ($count, $associativeLocal)
+		{
+			$related->group($associativeLocal)->having('COUNT(*)', '>=', $count);
+		});
+	}
+
+	/**
 	 * Joins the intermediate and related tables together to the model for the pending query
 	 *
 	 * @return $this
