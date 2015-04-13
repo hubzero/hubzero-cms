@@ -28,10 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Route;
-use Date;
-use Lang;
-
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tag.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'object.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'substitute.php');
