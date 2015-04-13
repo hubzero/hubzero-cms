@@ -60,6 +60,20 @@ class Migration20150224205200PlgContent extends Base
 				$query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
 				$this->db->setQuery($query);
 				$this->db->query();
+
+				if (!$plugin->enabled)
+				{
+					$this->enablePlugin('content', 'formathtml');
+				}
+			}
+			else
+			{
+				$params = new \JRegistry;
+				$params->set('applyFormat', 1);
+				$params->set('convertFormat', 0);
+				$params->set('sanitizeBefore', 0);
+
+				$this->addPluginEntry('content', 'formathtml', 1, $params->toString());
 			}
 		}
 	}
