@@ -30,9 +30,6 @@
 
 namespace Hubzero\Database;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Pagination class
  */
@@ -99,11 +96,11 @@ class Pagination
 		$instance->start = \Request::getInt($start, 0);
 		$instance->limit = \Request::getInt(
 			$limit,
-			\JFactory::getApplication()->getUserState($namespace . '.limit', \Config::get('list_limit'))
+			User::getState($namespace . '.limit', \Config::get('list_limit'))
 		);
 
-		\JFactory::getApplication()->setUserState($namespace . '.start', $instance->start);
-		\JFactory::getApplication()->setUserState($namespace . '.limit', $instance->limit);
+		User::setState($namespace . '.start', $instance->start);
+		User::setState($namespace . '.limit', $instance->limit);
 
 		return $instance;
 	}

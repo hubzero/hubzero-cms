@@ -1326,8 +1326,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function getState($var, $default=null)
 	{
-		// @FIXME: does this really belong here...?
-		return \JFactory::getApplication()->getUserState($this->getModelName() . ".{$var}", $default);
+		return User::getState($this->getModelName() . ".{$var}", $default);
 	}
 
 	/**
@@ -1340,8 +1339,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function setState($key, $value)
 	{
-		// @FIXME: does this really belong here...?
-		\JFactory::getApplication()->setUserState($this->getModelName() . ".{$key}", $value);
+		User::setState($this->getModelName() . ".{$key}", $value);
 	}
 
 	/**
