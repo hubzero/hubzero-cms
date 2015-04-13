@@ -596,7 +596,7 @@ class Publications extends SiteController
 		);
 
 		// Get the sections
-		$sections = $dispatcher->trigger( 'onPublication', array(
+		$sections = Event::trigger( 'publications.onPublication', array(
 			$this->model,
 			$this->_option,
 			array($tab),
