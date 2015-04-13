@@ -47,43 +47,40 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'search_field' => urldecode($app->getUserStateFromRequest(
+			'search_field' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search_field',
 				'search_field',
 				'name'
 			)),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'user_id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
-			'class_alias' => $app->getUserStateFromRequest(
+			'class_alias' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.class_alias',
 				'class_alias',
 				''
 			),
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -242,7 +239,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_USER_PREFS_SAVE_SUCCESSFUL'),
 			'message'
@@ -280,7 +277,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 				if (!$class->id)
 				{
 					// Output message and redirect
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_TOOLS_USER_PREFS_MISSING_DEFAULT_CLASS'),
 						'error'
@@ -296,7 +293,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 		else // no rows were selected
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_TOOLS_USER_PREFS_DELETE_NO_ROWS'),
 				'warning'
@@ -304,7 +301,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_USER_PREFS_SET_TO_DEFAULT')
 		);

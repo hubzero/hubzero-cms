@@ -41,6 +41,7 @@ use Config;
 use User;
 use Lang;
 use Date;
+use App;
 
 /**
  * Controller class for wiki page revisions
@@ -70,41 +71,38 @@ class Revisions extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			// Paging
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'version'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
 			// Filters
-			'search' => $app->getUserStateFromRequest(
+			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			),
-			'pageid' => $app->getUserStateFromRequest(
+			'pageid' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.pageid',
 				'pageid',
 				0,
@@ -145,7 +143,7 @@ class Revisions extends AdminController
 		$pageid = Request::getInt('pageid', 0);
 		if (!$pageid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'error'
@@ -266,7 +264,7 @@ class Revisions extends AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'), false),
 			Lang::txt('COM_WIKI_REVISION_SAVED')
 		);
@@ -286,7 +284,7 @@ class Revisions extends AdminController
 
 		if (count($ids) <= 0)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
@@ -349,7 +347,7 @@ class Revisions extends AdminController
 						// Can't delete - it's the only approved version!
 						if ($count <= 1)
 						{
-							$this->setRedirect(
+							App::redirect(
 								Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 								Lang::txt('COM_WIKI_ERROR_CANNOT_REMOVE_REVISION'),
 								'error'
@@ -365,7 +363,7 @@ class Revisions extends AdminController
 				}
 
 				// Set the redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 					$msg
 				);
@@ -395,7 +393,7 @@ class Revisions extends AdminController
 
 			if (!$revision->store())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 					$revision->getError(),
 					'error'
@@ -404,7 +402,7 @@ class Revisions extends AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false)
 		);
 	}
@@ -416,7 +414,7 @@ class Revisions extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false)
 		);
 	}

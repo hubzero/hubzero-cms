@@ -48,6 +48,7 @@ use Route;
 use Event;
 use Lang;
 use User;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'queryfolder.php');
@@ -65,9 +66,6 @@ class Tickets extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$obj = new Tables\Ticket($this->database);
 
 		// Get filters
@@ -76,20 +74,20 @@ class Tickets extends AdminController
 
 		$this->view->filters = array(
 			// Paging
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Query to filter by
-			'show' => $app->getUserStateFromRequest(
+			'show' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.show',
 				'show',
 				0,
@@ -150,7 +148,7 @@ class Tickets extends AdminController
 			if ($query->id == $this->view->filters['show'])
 			{
 				// Search
-				$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+				$this->view->filters['search']       = urldecode(Request::getState(
 					$this->_option . '.' . $this->_controller . '.search',
 					'search',
 					''
@@ -159,12 +157,12 @@ class Tickets extends AdminController
 				$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
 
 				// Incoming sort
-				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+				$this->view->filters['sort']         = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sort',
 					'filter_order',
 					$query->sort
 				));
-				$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
+				$this->view->filters['sortdir']     = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sortdir',
 					'filter_order_Dir',
 					$query->sort_dir
@@ -197,7 +195,7 @@ class Tickets extends AdminController
 			//$folder = reset($this->view->folders);
 			//$query = $folder->queries[0];
 			// Search
-			$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
+			$this->view->filters['search'] = urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
@@ -206,12 +204,12 @@ class Tickets extends AdminController
 			$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
 
 			// Incoming sort
-			$this->view->filters['sort']   = trim($app->getUserStateFromRequest(
+			$this->view->filters['sort']   = trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				$query->sort
 			));
-			$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
+			$this->view->filters['sortdir'] = trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				$query->sort_dir
@@ -236,7 +234,7 @@ class Tickets extends AdminController
 		{
 			if (!isset($this->view->filters['sort']) || !$this->view->filters['sort'])
 			{
-				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+				$this->view->filters['sort']         = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sort',
 					'filter_order',
 					'created'
@@ -244,7 +242,7 @@ class Tickets extends AdminController
 			}
 			if (!isset($this->view->filters['sortdir']) || !$this->view->filters['sortdir'])
 			{
-				$this->view->filters['sortdir']         = trim($app->getUserStateFromRequest(
+				$this->view->filters['sortdir']         = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sortdir',
 					'filter_order_Dir',
 					'DESC'
@@ -546,7 +544,7 @@ class Tickets extends AdminController
 
 				// Plain text email
 				$eview = new \Hubzero\Mail\View(array(
-					'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'site',
+					'base_path' => PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'site',
 					'name'      => 'emails',
 					'layout'    => 'ticket_plain'
 				));
@@ -709,7 +707,7 @@ class Tickets extends AdminController
 
 				// Plain text email
 				$eview = new \Hubzero\Mail\View(array(
-					'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'site',
+					'base_path' => PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'site',
 					'name'      => 'emails',
 					'layout'    => 'comment_plain'
 				));
@@ -824,7 +822,7 @@ class Tickets extends AdminController
 			$filters = str_replace('&amp;','&', $filters);
 
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''), false),
 				Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->get('id'))
 			);
@@ -1130,7 +1128,7 @@ class Tickets extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . (Request::getInt('no_html', 0) ? '&no_html=1' : ''), false),
 			Lang::txt('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids))
 		);
@@ -1152,7 +1150,7 @@ class Tickets extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'),
 				'error'
@@ -1182,7 +1180,7 @@ class Tickets extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_DELETED', count($ids))
 		);

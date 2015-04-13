@@ -39,6 +39,7 @@ use Exception;
 use Request;
 use Route;
 use Lang;
+use App;
 
 /**
  * Support controller class for defining permissions
@@ -102,7 +103,7 @@ class Acl extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_ACL_SAVED')
 		);
@@ -141,7 +142,7 @@ class Acl extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_ACL_REMOVED')
 		);
@@ -238,7 +239,7 @@ class Acl extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_ACL_SAVED')
 		);

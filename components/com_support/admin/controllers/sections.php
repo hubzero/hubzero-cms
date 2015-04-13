@@ -36,6 +36,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use App;
 
 /**
  * Support controller class for managing ticket sections
@@ -62,18 +63,15 @@ class Sections extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.sections.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.sections.limitstart',
 				'limitstart',
 				0,
@@ -187,7 +185,7 @@ class Sections extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('SECTION_SUCCESSFULLY_SAVED')
 		);
@@ -213,7 +211,7 @@ class Sections extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('SUPPORT_ERROR_SELECT_SECTION_TO_DELETE')
 			);
@@ -228,7 +226,7 @@ class Sections extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('SECTION_SUCCESSFULLY_DELETED', count($ids))
 		);

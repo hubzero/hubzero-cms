@@ -33,11 +33,7 @@ namespace Components\Wiki\Models;
 jimport('joomla.application.component.modeladmin');
 
 /**
- * Banner model.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_banners
- * @since		1.6
+ * Page permissions model.
  */
 class PagePermissions extends \JModelAdmin
 {
@@ -111,7 +107,7 @@ class PagePermissions extends \JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = \JFactory::getApplication()->getUserState('com_wiki.edit.page.data', array());
+		$data = \User::getState('com_wiki.edit.page.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

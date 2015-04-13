@@ -63,18 +63,15 @@ class Resolutions extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.resolutions.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.resolutions.limitstart',
 				'limitstart',
 				0,
@@ -173,7 +170,7 @@ class Resolutions extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_SAVED')
 		);
@@ -195,7 +192,7 @@ class Resolutions extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE'),
 				'error'
@@ -211,7 +208,7 @@ class Resolutions extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_DELETED', count($ids))
 		);

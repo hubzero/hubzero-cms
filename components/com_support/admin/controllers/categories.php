@@ -62,29 +62,26 @@ class Categories extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.categories.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.categories.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.categories.sort',
 				'filter_order',
 				'title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.categories.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -150,7 +147,7 @@ class Categories extends AdminController
 	 */
 	public function applyTask()
 	{
-		$this->saveTask(false);
+		$this->saveTask();
 	}
 
 	/**
@@ -197,7 +194,7 @@ class Categories extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_SAVED')
 		);
@@ -223,7 +220,7 @@ class Categories extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE'),
 				'error'
@@ -239,7 +236,7 @@ class Categories extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', count($ids))
 		);

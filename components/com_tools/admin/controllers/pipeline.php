@@ -57,39 +57,37 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$app = JFactory::getApplication();
-
 		$this->view->filters = array(
 			// Get filters
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'search_field' => urldecode($app->getUserStateFromRequest(
+			'search_field' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search_field',
 				'search_field',
 				'all'
 			)),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'toolname'
 			),
-			'sort_Dir' => strtoupper($app->getUserStateFromRequest(
+			'sort_Dir' => strtoupper(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			)),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -178,7 +176,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		// Do we have an ID?
 		if (!$fields['id'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_TOOLS_ERROR_MISSING_ID'),
 				'error'
@@ -209,13 +207,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false)
 			);
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_SAVED')
 		);

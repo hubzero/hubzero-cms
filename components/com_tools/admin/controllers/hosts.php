@@ -60,40 +60,37 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'hostname' => urldecode($app->getUserStateFromRequest(
+			'hostname' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.hostname',
 				'hostname',
 				''
 			)),
-			'hosttype' => urldecode($app->getUserStateFromRequest(
+			'hosttype' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.hosttype',
 				'hosttype',
 				''
 			)),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'hostname'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -358,7 +355,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -391,7 +388,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -426,7 +423,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_DELETED'),
 			'message'

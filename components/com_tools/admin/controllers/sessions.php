@@ -51,45 +51,42 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'username' => urldecode($app->getUserStateFromRequest(
+			'username' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.username',
 				'username',
 				''
 			)),
-			'appname' => urldecode($app->getUserStateFromRequest(
+			'appname' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.appname',
 				'appname',
 				''
 			)),
-			'exechost' => urldecode($app->getUserStateFromRequest(
+			'exechost' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.exechost',
 				'exechost',
 				''
 			)),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'start'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -170,7 +167,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_SESSIONS_TERMINATED'),
 			'message'
@@ -268,8 +265,8 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
-			'start' => $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+			'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
+			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
 		$obj = new ToolsTableSessionClass($this->database);
@@ -414,7 +411,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
 			Lang::txt('COM_TOOLS_SESSION_CLASS_SAVE_SUCCESSFUL'),
 			'message'
@@ -449,7 +446,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				if ($row->alias == 'default')
 				{
 					// Output message and redirect
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
 						Lang::txt('COM_TOOLS_SESSION_CLASS_DONT_DELETE_DEFAULT'),
 						'warning'
@@ -468,7 +465,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		else // no rows were selected
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
 				Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_NO_ROWS'),
 				'warning'
@@ -476,7 +473,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
 			Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_SUCCESSFUL')
 		);
@@ -489,7 +486,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	 */
 	public function cancelclassTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false)
 		);
 	}

@@ -44,6 +44,7 @@ use Config;
 use Route;
 use Lang;
 use User;
+use App;
 
 /**
  * Cotnroller class for wishes
@@ -75,51 +76,48 @@ class Wishes extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'search' => $app->getUserStateFromRequest(
+			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			),
-			'wishlist' => $app->getUserStateFromRequest(
+			'wishlist' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.wishlist',
 				'wishlist',
 				0,
 				'int'
 			),
-			'filterby' => $app->getUserStateFromRequest(
+			'filterby' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.filterby',
 				'filterby',
 				'all'
 			),
-			'tag' => $app->getUserStateFromRequest(
+			'tag' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tag',
 				'tag',
 				''
 			),
 			// Get sorting variables
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'subject'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -128,7 +126,7 @@ class Wishes extends AdminController
 		);
 		if (!$this->view->filters['wishlist'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=lists', false),
 				Lang::txt('Missing list ID'),
 				'error'
@@ -378,7 +376,7 @@ class Wishes extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wishlist=' . $row->wishlist, false),
 			Lang::txt('COM_WISHLIST_WISH_SAVED')
 		);
@@ -418,7 +416,7 @@ class Wishes extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist, false),
 			Lang::txt('COM_WISHLIST_ITEMS_REMOVED', count($ids))
 		);
@@ -440,7 +438,7 @@ class Wishes extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_WISHLIST_NO_ID'),
 				'error'
@@ -463,7 +461,7 @@ class Wishes extends AdminController
 		// Check and store the changes
 		if (!$row->check())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -472,7 +470,7 @@ class Wishes extends AdminController
 		}
 		if (!$row->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -481,7 +479,7 @@ class Wishes extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -506,7 +504,7 @@ class Wishes extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				($state == 1 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH')),
 				'error'
@@ -539,7 +537,7 @@ class Wishes extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''), false),
 			$message
 		);
@@ -555,7 +553,7 @@ class Wishes extends AdminController
 		$wishlist = Request::getInt('wishlist', 0);
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist, false)
 		);
 	}

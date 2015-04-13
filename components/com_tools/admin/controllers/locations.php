@@ -58,29 +58,26 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'zone' => urldecode($app->getUserStateFromRequest(
+			'zone' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.zone',
 				'zone',
 				0,
 				'int'
 			)),
-			'tmpl' => $app->getUserStateFromRequest(
+			'tmpl' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tmpl',
 				'tmpl',
 				''
 			),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'zone'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -94,13 +91,13 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		else
 		{
 			// Get paging variables
-			$this->view->filters['limit']        = $app->getUserStateFromRequest(
+			$this->view->filters['limit'] = Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			);
-			$this->view->filters['start']        = $app->getUserStateFromRequest(
+			$this->view->filters['start'] = Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -235,7 +232,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -256,7 +253,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 
 		if ($state != 'up' && $state != 'down')
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -268,7 +265,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			$row->set('state', $state);
 			if (!$row->store())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
 					'error'
@@ -277,7 +274,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -309,7 +306,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_DELETED'),
 			'message'

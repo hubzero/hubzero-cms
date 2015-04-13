@@ -38,6 +38,8 @@ use Event;
 use Route;
 use Lang;
 use Date;
+use User;
+use App;
 
 /**
  * Controller class for service subscriptions
@@ -64,30 +66,27 @@ class Subscriptions extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Get sorting variables
-			'sortby' => $app->getUserStateFromRequest(
+			'sortby' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortby',
 				'sortby',
 				'pending'
 			),
-			'filterby' => $app->getUserStateFromRequest(
+			'filterby' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.filterby',
 				'filterby',
 				'all'
@@ -133,7 +132,7 @@ class Subscriptions extends AdminController
 
 		if (!$this->view->subscription)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SERVICES_SUBSCRIPTION_NOT_FOUND')
 			);
@@ -176,7 +175,7 @@ class Subscriptions extends AdminController
 		$subscription = new Subscription($this->database);
 		if (!$subscription->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SERVICES_SUBSCRIPTION_NOT_FOUND'),
 				'error'
@@ -188,7 +187,7 @@ class Subscriptions extends AdminController
 		$service = new Service($this->database);
 		if (!$service->loadService('', $subscription->serviceid))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' .  $subscription->serviceid,
 				'error'
@@ -196,7 +195,7 @@ class Subscriptions extends AdminController
 			return;
 		}
 
-		$author    = \JUser::getInstance($subscription->uid);
+		$author    = User::getInstance($subscription->uid);
 		$subscription->notes = rtrim(stripslashes(Request::getVar('notes', '')));
 		$action    = Request::getVar('action', '');
 		$message   = Request::getVar('message', '');
@@ -309,7 +308,7 @@ class Subscriptions extends AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SERVICES_SUBSCRIPTION_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
 		);

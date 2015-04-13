@@ -47,7 +47,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	{
 		if (!$this->config->get('zones'))
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false));
+			App::redirect(Route::url('index.php?option=' . $this->_option, false));
 			return;
 		}
 
@@ -64,40 +64,37 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'zone' => urldecode($app->getUserStateFromRequest(
+			'zone' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.zone',
 				'zone',
 				''
 			)),
-			'master' => urldecode($app->getUserStateFromRequest(
+			'master' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.master',
 				'master',
 				''
 			)),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'zone'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -236,7 +233,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -257,7 +254,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		if ($state != 'up' && $state != 'down')
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -279,7 +276,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -313,7 +310,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_DELETED'),
 			'message'
@@ -327,7 +324,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

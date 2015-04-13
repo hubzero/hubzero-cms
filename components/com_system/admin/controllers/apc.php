@@ -31,6 +31,10 @@
 namespace Components\System\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Primary controller for the APC component
@@ -52,9 +56,9 @@ class Apc extends AdminController
 		$this->VERSION = '$Id: apc.php 271315 2008-12-16 07:15:07Z shire $';
 
 		// Read optional configuration file (if it exists)
-		if (file_exists(JPATH_COMPONENT . DS . 'helpers' . DS . 'apc.conf.php'))
+		if (file_exists(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'apc.conf.php'))
 		{
-			include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'apc.conf.php');
+			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'apc.conf.php');
 		}
 
 		// Set some defaults
@@ -379,7 +383,7 @@ class Apc extends AdminController
 		apc_clear_cache($cache_mode);
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=host', false),
 			Lang::txt('Cache cleared')
 		);

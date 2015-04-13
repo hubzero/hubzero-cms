@@ -44,6 +44,7 @@ use Route;
 use Lang;
 use User;
 use Date;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'reportabuse.php');
 
@@ -59,24 +60,21 @@ class Abusereports extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'state' => $app->getUserStateFromRequest(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				0,
@@ -113,7 +111,7 @@ class Abusereports extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -213,7 +211,7 @@ class Abusereports extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -238,7 +236,7 @@ class Abusereports extends AdminController
 		));
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY')
 		);
@@ -272,7 +270,7 @@ class Abusereports extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -361,7 +359,7 @@ class Abusereports extends AdminController
 
 			// Plain text
 			$eview = new View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'abuse_plain'
 			));
@@ -420,7 +418,7 @@ class Abusereports extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN')
 		);

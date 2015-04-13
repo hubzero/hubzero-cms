@@ -37,6 +37,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'status.php');
 
@@ -65,36 +66,33 @@ class Statuses extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'open' => $app->getUserStateFromRequest(
+			'open' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.open',
 				'open',
 				-1,
 				'int'
 			),
 			// Get sorting variables
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'open'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
@@ -177,7 +175,7 @@ class Statuses extends AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_SAVED')
 		);
@@ -200,7 +198,7 @@ class Statuses extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_ERROR_SELECT_STATUS_TO_DELETE'),
 				'error'
@@ -216,7 +214,7 @@ class Statuses extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', count($ids))
 		);

@@ -37,6 +37,7 @@ use Request;
 use Config;
 use User;
 use Lang;
+use App;
 
 /**
  * Controller class for wiki pages
@@ -69,47 +70,44 @@ class Pages extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			'authorized' => true,
 			// Paging
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Filters
-			'search' => $app->getUserStateFromRequest(
+			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			),
-			'namespace' => $app->getUserStateFromRequest(
+			'namespace' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.namespace',
 				'namespace',
 				''
 			),
-			'group' => $app->getUserStateFromRequest(
+			'group' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.group',
 				'group',
 				''
@@ -241,7 +239,7 @@ class Pages extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_WIKI_PAGE_SAVED')
 		);
@@ -260,7 +258,7 @@ class Pages extends AdminController
 
 		if (count($ids) <= 0)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
@@ -321,7 +319,7 @@ class Pages extends AdminController
 					}
 				}
 
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_WIKI_PAGES_DELETED', count($ids))
 				);
@@ -345,7 +343,7 @@ class Pages extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
@@ -367,7 +365,7 @@ class Pages extends AdminController
 		// Check and store the changes
 		if (!$row->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -375,7 +373,7 @@ class Pages extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -396,7 +394,7 @@ class Pages extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
@@ -410,7 +408,7 @@ class Pages extends AdminController
 
 		if (!$page->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$page->getError(),
 				'error'
@@ -419,7 +417,7 @@ class Pages extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -440,7 +438,7 @@ class Pages extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
@@ -458,7 +456,7 @@ class Pages extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

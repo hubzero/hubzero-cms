@@ -31,6 +31,9 @@
 namespace Components\System\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Route;
+use Lang;
+use App;
 
 /**
  * System controller class for info
@@ -55,9 +58,9 @@ class Geodb extends AdminController
 	 */
 	public function importHubconfigTask()
 	{
-		if (file_exists(JPATH_ROOT . DS . 'hubconfiguration.php'))
+		if (file_exists(PATH_APP . DS . 'hubconfiguration.php'))
 		{
-			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
+			include_once(PATH_APP . DS . 'hubconfiguration.php');
 		}
 
 		$table = new \JTableExtension($this->database);
@@ -83,7 +86,7 @@ class Geodb extends AdminController
 
 		$table->store();
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SYSTEM_GEO_IMPORT_COMPLETE')
 		);

@@ -40,6 +40,7 @@ use Config;
 use User;
 use Lang;
 use Date;
+use App;
 
 /**
  * Wiki controller class for entries
@@ -68,40 +69,37 @@ class Comments extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
-			'pageid' => $app->getUserStateFromRequest(
+			'pageid' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.pageid',
 				'pageid',
 				0,
 				'int'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
 			// Get sorting variables
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'created'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -304,7 +302,7 @@ class Comments extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $fields['pageid'], false),
 			Lang::txt('COM_WIKI_COMMENT_SAVED')
 		);
@@ -339,7 +337,7 @@ class Comments extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false),
 			Lang::txt('COM_WIKI_COMMENTS_DELETED', count($ids))
 		);
@@ -367,7 +365,7 @@ class Comments extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_WIKI_UNPUBLISH') : Lang::txt('COM_WIKI_PUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 				Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action),
 				'error'
@@ -397,7 +395,7 @@ class Comments extends AdminController
 		}
 
 		// Set redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 			$message
 		);
@@ -411,7 +409,7 @@ class Comments extends AdminController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false)
 		);
 	}

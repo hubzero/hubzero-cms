@@ -37,6 +37,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use App;
 
 /**
  * Tags controller class for listing tagged objects
@@ -63,40 +64,37 @@ class Tagged extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit'  => $app->getUserStateFromRequest(
+			'limit'  => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start'  => $app->getUserStateFromRequest(
+			'start'  => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'tagid' => $app->getUserStateFromRequest(
+			'tagid' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tag',
 				'tag',
 				0,
 				'int'
 			),
-			'tbl'     => $app->getUserStateFromRequest(
+			'tbl'     => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tbl',
 				'tbl',
 				''
 			),
-			'sort'     => $app->getUserStateFromRequest(
+			'sort'     => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'raw_tag'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -208,7 +206,7 @@ class Tagged extends AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -229,7 +227,7 @@ class Tagged extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
 				'error'
@@ -245,7 +243,7 @@ class Tagged extends AdminController
 			$row->delete(intval($id));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TAGS_OBJECT_REMOVED')
 		);

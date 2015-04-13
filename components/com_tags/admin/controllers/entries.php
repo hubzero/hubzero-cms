@@ -39,6 +39,7 @@ use Config;
 use Event;
 use Route;
 use Lang;
+use App;
 
 /**
  * Tags controller class for managing entries
@@ -65,39 +66,36 @@ class Entries extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'by' => $app->getUserStateFromRequest(
+			'by' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.by',
 				'filterby',
 				'all'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'raw_tag'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -205,7 +203,7 @@ class Entries extends AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -226,7 +224,7 @@ class Entries extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
 				'error'
@@ -248,7 +246,7 @@ class Entries extends AdminController
 
 		$this->cleancacheTask(false);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TAGS_TAG_REMOVED')
 		);
@@ -275,7 +273,7 @@ class Entries extends AdminController
 			return true;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -298,7 +296,7 @@ class Entries extends AdminController
 		if ($step == 1
 		&& (!$ids || count($ids) < 1))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -400,7 +398,7 @@ class Entries extends AdminController
 					echo $this->getError();
 				}
 
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_TAGS_TAGS_MERGED')
 				);
@@ -426,7 +424,7 @@ class Entries extends AdminController
 		if ($step == 1
 		 && (!$ids || count($ids) < 1))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -517,7 +515,7 @@ class Entries extends AdminController
 					}
 				}
 
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_TAGS_TAGS_COPIED')
 				);

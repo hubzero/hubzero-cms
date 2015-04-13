@@ -31,6 +31,9 @@
 namespace Components\System\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for system config
@@ -55,9 +58,9 @@ class Ldap extends AdminController
 	 */
 	public function importHubconfigTask()
 	{
-		if (file_exists(JPATH_ROOT . DS . 'hubconfiguration.php'))
+		if (file_exists(PATH_APP . DS . 'hubconfiguration.php'))
 		{
-			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
+			include_once(PATH_APP . DS . 'hubconfiguration.php');
 		}
 
 		$table = new \JTableExtension($this->database);
@@ -84,7 +87,7 @@ class Ldap extends AdminController
 
 		$table->store();
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_SYSTEM_LDAP_IMPORT_COMPLETE')
 		);
@@ -114,7 +117,7 @@ class Ldap extends AdminController
 			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']), 'passed');
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -143,7 +146,7 @@ class Ldap extends AdminController
 			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']), 'passed');
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -172,7 +175,7 @@ class Ldap extends AdminController
 			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']), 'passed');
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -204,7 +207,7 @@ class Ldap extends AdminController
 			$this->setMessage(Lang::txt('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']), 'passed');
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

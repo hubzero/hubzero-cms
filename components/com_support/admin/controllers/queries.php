@@ -42,6 +42,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'ticket.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'query.php');
@@ -59,29 +60,26 @@ class Queries extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -232,7 +230,7 @@ class Queries extends AdminController
 		if (!$no_html && $tmpl != 'component')
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED')
 			);
@@ -321,7 +319,7 @@ class Queries extends AdminController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
 					'error'
@@ -340,7 +338,7 @@ class Queries extends AdminController
 		if (!$no_html && $tmpl != 'component')
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_DELETED', count($ids))
 			);
@@ -481,7 +479,7 @@ class Queries extends AdminController
 			if (!$no_html && $tmpl != 'component')
 			{
 				// Output messsage and redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
 				);
@@ -524,7 +522,7 @@ class Queries extends AdminController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);
@@ -589,7 +587,7 @@ class Queries extends AdminController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);

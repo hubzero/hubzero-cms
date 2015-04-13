@@ -57,35 +57,33 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$app = JFactory::getApplication();
-
 		// Get Filters
 		$this->view->filters = array(
-			'id' => $app->getUserStateFromRequest(
+			'id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.versions.id',
 				'id',
 				0,
 				'int'
 			),
 			// Sorting
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort',
 				'filter_order',
 				'toolname'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart',
 				'limitstart',
 				0,
@@ -176,7 +174,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		// Do we have an ID?
 		if (!$fields['version'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_TOOLS_ERROR_MISSING_ID'),
 				'error'
@@ -224,13 +222,13 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version'], false)
 			);
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_SAVED')
 		);
