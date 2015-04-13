@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js('discussions.lecture.js');
+
 $base = $this->course->offering()->link();
 ?>
 <div id="comments-container" data-action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">

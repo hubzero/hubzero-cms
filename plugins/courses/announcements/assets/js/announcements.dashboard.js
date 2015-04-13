@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/dashboard/dashboard.jquery.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/courses/announcements/assets/js/announcements.dashboard.js
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -10,11 +10,7 @@ if (!jq) {
 }
 
 String.prototype.nohtml = function () {
-	if (this.indexOf('?') == -1) {
-		return this + '?no_html=1';
-	} else {
-		return this + '&no_html=1';
-	}
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
 };
 
 jQuery(document).ready(function(jq){
@@ -29,7 +25,7 @@ jQuery(document).ready(function(jq){
 			return res;
 		});
 	});
-	
+
 	if ($('#announcementForm').length > 0) {
 		$('.announcements')
 			.on('submit', '#announcementForm', function(e) {

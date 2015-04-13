@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->css();
-$this->js('announcements.dashboard.js');
+$this->css()
+     ->js('announcements.dashboard.js');
 
 $rows = $this->offering->announcements(array(
 	'limit'     => $this->params->get('display_limit', 1),
@@ -88,7 +88,7 @@ $rows = $this->offering->announcements(array(
 						<label for="field_content">
 							<span class="label-text"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span></span>
 							<?php
-							echo \JFactory::getEditor()->display('fields[content]', '', '', '', 35, 3, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
+							echo $this->editor('fields[content]', '', 35, 3, 'field_content', array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

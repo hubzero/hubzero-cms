@@ -33,20 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$now = Date::getRoot();
-
-$year  = Date::toLocal('Y');
-$month = Date::toLocal('m');
-$day   = Date::toLocal('d');
-
-$weeklater = Date::of(mktime(0, 0, 0, $month, $day+7, $year));
+$now  = Date::toSql();
+$week = Date::add('1 week')->toSql();
 
 $database = JFactory::getDBO();
 
-$query  = "SELECT sd.*
-		FROM #__courses_offering_section_dates AS sd
+$query = "SELECT sd.*
+		FROM `#__courses_offering_section_dates` AS sd
 		WHERE sd.section_id=" . $this->offering->section()->get('id') . "
-		AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($weeklater) . ")
+		AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($week) . ")
 		AND sd.scope!='asset'
 		ORDER BY sd.publish_up LIMIT 20";
 
@@ -150,7 +145,7 @@ $base = $this->offering->link();
 					</ul>
 				<?php } ?>
 				<div class="dashboard-timeline-start">
-					<p><?php echo Date::of($weeklater)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></p>
+					<p><?php echo Date::of($week)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 			</div>
 			</div><!-- / .grid -->

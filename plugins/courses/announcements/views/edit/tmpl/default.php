@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css('jquery.datepicker.css', 'system')
      ->css('jquery.timepicker.css', 'system')
-     ->css();
-$this->js('jquery.timepicker.js', 'system')
+     ->css()
+     ->js('jquery.timepicker.js', 'system')
      ->js();
 ?>
 <section class="main section">
@@ -54,7 +54,7 @@ $this->js('jquery.timepicker.js', 'system')
 			<label for="field_content">
 				<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
-				echo \JFactory::getEditor()->display('fields[content]', $this->escape($this->model->content('raw')), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
+				echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 5, 'field_content', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 

@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/forum/forum.js
+ * @file        plugins/courses/discussions/assets/js/discussions.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -10,11 +10,7 @@ if (!jq) {
 }
 
 String.prototype.nohtml = function () {
-	if (this.indexOf('?') == -1) {
-		return this + '?no_html=1';
-	} else {
-		return this + '&no_html=1';
-	}
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
 };
 
 if (!HUB) {

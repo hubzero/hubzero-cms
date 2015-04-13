@@ -167,7 +167,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		// Get filters for the entries list
 		$filters = array(
 			'search' => Request::getVar('q', ''),
-			'limit'  => Request::getInt('limit', JFactory::getConfig()->get('list_limit', 25)),
+			'limit'  => Request::getInt('limit', Config::get('list_limit', 25)),
 			'start'  => Request::getInt('limitstart', 0)
 		);
 		$filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
@@ -253,15 +253,13 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		// Incoming dates are in local time. We need to convert to UTC
 		if ($model->get('publish_up') && $model->get('publish_up') != '0000-00-00 00:00:00')
 		{
-			$dt = new JDate($model->get('publish_up'), JFactory::getConfig()->getValue('config.offset'));
-			$model->set('publish_up', $dt->format(JFactory::getDBO()->getDateFormat()));
+			$model->set('publish_up', Date::of($model->get('publish_up'), Config::get('offset'))->toSql());
 		}
 
 		// Incoming dates are in local time. We need to convert to UTC
 		if ($model->get('publish_down') && $model->get('publish_down') != '0000-00-00 00:00:00')
 		{
-			$dt = new JDate($model->get('publish_down'), JFactory::getConfig()->getValue('config.offset'));
-			$model->set('publish_down', $dt->format(JFactory::getDBO()->getDateFormat()));
+			$model->set('publish_down', Date::of($model->get('publish_down'), Config::get('offset'))->toSql());
 		}
 
 		if (!isset($fields['priority']) || !$fields['priority'])

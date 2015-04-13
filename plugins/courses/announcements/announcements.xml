@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/courses/members.xml
+@file           plugins/courses/announcements/announcements.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Display a course's announcements</description>
+	<description>PLG_COURSES_ANNOUNCEMENTS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="announcements">announcements.php</filename>
 	</files>

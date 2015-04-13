@@ -70,7 +70,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		$nonadmin = JFactory::getApplication()->getUserState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
+		$nonadmin = Request::getState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
 		if (!($active = Request::getVar('active')) && !$nonadmin)
 		{
 			Request::setVar('active', ($active = $this->_name));

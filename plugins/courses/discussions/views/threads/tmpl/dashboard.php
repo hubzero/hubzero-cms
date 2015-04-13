@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 $database = JFactory::getDBO();
 
 $base = $this->course->offering()->link();
@@ -199,7 +202,7 @@ if (count($inst) > 0)
 							{
 								$anon = 0;
 							}
-							$now = JFactory::getDate();
+							$now = Date::getRoot();
 							?>
 							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 						</p>
@@ -223,7 +226,7 @@ if (count($inst) > 0)
 							<label for="field_comment">
 								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 								<?php
-								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
+								echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', array('class' => 'minimal no-footer'));
 								?>
 							</label>
 
@@ -239,30 +242,30 @@ if (count($inst) > 0)
 									<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
 									<select name="fields[category_id]" id="field-category_id">
 										<option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
-							<?php
-								foreach ($this->sections as $section)
-								{
-									if ($section->categories)
-									{
-							?>
-										<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
-							<?php
-										foreach ($section->categories as $category)
+										<?php
+										foreach ($this->sections as $section)
 										{
-											if ($category->closed)
+											if ($section->categories)
 											{
-												continue;
+												?>
+												<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
+												<?php
+												foreach ($section->categories as $category)
+												{
+													if ($category->closed)
+													{
+														continue;
+													}
+													?>
+													<option value="<?php echo $category->id; ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
+													<?php
+												}
+												?>
+												</optgroup>
+												<?php
 											}
-							?>
-										<option value="<?php echo $category->id; ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
-							<?php
 										}
-							?>
-										</optgroup>
-							<?php
-									}
-								}
-							?>
+										?>
 									</select>
 								</label>
 								</div>

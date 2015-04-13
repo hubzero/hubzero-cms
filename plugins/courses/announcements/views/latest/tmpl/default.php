@@ -59,40 +59,40 @@ if ($rows->total() > 0)
 
 	if (count($announcements))
 	{
-?>
-	<div class="announcements">
-		<?php foreach ($announcements as $row) { ?>
-			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-				<?php echo $row->content('parsed'); ?>
-				<dl class="entry-meta">
-					<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
-					<dd class="time">
-						<time datetime="<?php echo $row->published(); ?>">
-							<?php echo $row->published('time'); ?>
-						</time>
-					</dd>
-					<dd class="date">
-						<time datetime="<?php echo $row->published(); ?>">
-							<?php echo $row->published('date'); ?>
-						</time>
-					</dd>
-				</dl>
-				<?php
-					$page = Request::getVar('REQUEST_URI', '', 'server');
-					if ($page && $this->params->get('allowClose', 1))
-					{
-						$page .= (strstr($page, '?')) ? '&' : '?';
-						$page .= 'ancmnt' . $row->get('id') . '=closed';
-						?>
-						<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
-							<span><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
-						</a>
-						<?php
-					}
-				?>
-			</div>
-		<?php } ?>
-	</div>
-	<?php
+		?>
+		<div class="announcements">
+			<?php foreach ($announcements as $row) { ?>
+				<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
+					<?php echo $row->content('parsed'); ?>
+					<dl class="entry-meta">
+						<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
+						<dd class="time">
+							<time datetime="<?php echo $row->published(); ?>">
+								<?php echo $row->published('time'); ?>
+							</time>
+						</dd>
+						<dd class="date">
+							<time datetime="<?php echo $row->published(); ?>">
+								<?php echo $row->published('date'); ?>
+							</time>
+						</dd>
+					</dl>
+					<?php
+						$page = Request::getVar('REQUEST_URI', '', 'server');
+						if ($page && $this->params->get('allowClose', 1))
+						{
+							$page .= (strstr($page, '?')) ? '&' : '?';
+							$page .= 'ancmnt' . $row->get('id') . '=closed';
+							?>
+							<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
+								<span><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
+							</a>
+							<?php
+						}
+					?>
+				</div>
+			<?php } ?>
+		</div>
+		<?php
 	}
 }
