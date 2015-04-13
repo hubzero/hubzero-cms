@@ -93,7 +93,7 @@ $schema 	= $metaElements->getSchema();
 				$webpath,
 				'gallery'
 			);
-			
+
 			$view = new \Hubzero\Component\View(array(
 				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 				'name'      => 'view',

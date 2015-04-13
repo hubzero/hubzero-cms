@@ -372,7 +372,7 @@ class RemoteFile extends \JTable
 	 * @return     mixed False if error, Object on success
 	 */
 	public function updateRecord ( $projectid = NULL, $service = '', $id = NULL,
-	 	$local_path = '', $type = 'file', $uid = 0, $parentId = 0, $title = '',
+		$local_path = '', $type = 'file', $uid = 0, $parentId = 0, $title = '',
 		$remote_md5 = '', $local_md5 = '', $converted = '',
 		$remote_format = '', $local_format = '', $remote_modified = '', $remote_author = '' )
 	{
