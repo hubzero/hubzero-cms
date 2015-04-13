@@ -89,7 +89,7 @@ class TraceableDispatcher implements DispatcherInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function addListener($listener, array $events = array())
+	public function addListener($listener, $events = array())
 	{
 		$this->dispatcher->addListener($listener, $events);
 	}

@@ -132,7 +132,6 @@ class TraceableListener
 	{
 		$this->called = true;
 
-		//$event = $arguments[0];
 		//$e = $this->stopwatch->start($this->name, 'event_listener');
 
 		if ($this->listener instanceof Closure)

@@ -146,11 +146,16 @@ class Dispatcher implements DispatcherInterface
 	 * @return  Dispatcher  This method is chainable.
 	 * @throws  InvalidArgumentException
 	 */
-	public function addListener($listener, array $events = array())
+	public function addListener($listener, $events = array())
 	{
 		if (!is_object($listener))
 		{
 			throw new InvalidArgumentException('The given listener is not an object.');
+		}
+
+		if (is_string($events))
+		{
+			$events = array($events => Priority::NORMAL);
 		}
 
 		// We deal with a closure.
@@ -163,6 +168,8 @@ class Dispatcher implements DispatcherInterface
 
 			foreach ($events as $name => $priority)
 			{
+				$name = ltrim(strstr($name, '.'), '.');
+
 				if (!isset($this->listeners[$name]))
 				{
 					$this->listeners[$name] = new ListenersPriorityQueue;
@@ -390,6 +397,7 @@ class Dispatcher implements DispatcherInterface
 			$event->addArgument($name, $arg);
 		}
 
+		// Are there any listeners for this event?
 		if (isset($this->listeners[$event->getName()]))
 		{
 			foreach ($this->listeners[$event->getName()] as $listener)
