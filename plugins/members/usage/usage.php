@@ -378,7 +378,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 					$rank = $i;
 				}
 				$i++;
-	    	}
+			}
 		}
 
 		if ($rank)

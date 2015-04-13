@@ -87,22 +87,18 @@ class plgCronPublications extends JPlugin
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
 
-		$jconfig = JFactory::getConfig();
 		$pconfig = Component::params('com_publications');
 
 		// Get some params
 		$limit = $pconfig->get('limitStats', 5);
 		$image = $pconfig->get('email_image', '');
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_publications', JPATH_BASE);
+		Lang::load('com_publications', JPATH_BASE);
 
 		// Is logging enabled?
-		if (is_file(JPATH_ROOT . DS . 'components'
-			. DS . 'com_publications' . DS . 'tables' . DS . 'logs.php'))
+		if (is_file(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php'))
 		{
-			require_once( JPATH_ROOT . DS. 'components'
-				. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+			require_once(PATH_CORE . DS. 'components' . DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
 		}
 		else
 		{
@@ -111,10 +107,8 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Helpers
-		require_once(JPATH_ROOT . DS . 'components'. DS .'com_members'
-			. DS . 'helpers' . DS . 'imghandler.php');
-		require_once(JPATH_ROOT . DS . 'components'. DS . 'com_publications'
-			. DS . 'helpers' . DS . 'html.php');
+		require_once(PATH_CORE . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
+		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id, P.picture ";
@@ -150,8 +144,8 @@ class plgCronPublications extends JPlugin
 
 		// Set email config
 		$from = array(
-			'name'      => $jconfig->getValue('config.fromname') . ' ' . Lang::txt('Publications'),
-			'email'     => $jconfig->getValue('config.mailfrom'),
+			'name'      => Config::get('fromname') . ' ' . Lang::txt('Publications'),
+			'email'     => Config::get('mailfrom'),
 			'multipart' => md5(date('U'))
 		);
 
@@ -281,14 +275,10 @@ class plgCronPublications extends JPlugin
 	{
 		$database = JFactory::getDBO();
 		$config = Component::params('com_publications');
-		$jconfig = JFactory::getConfig();
 
-		require_once(JPATH_ROOT . DS . 'components'. DS
-			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-		require_once(JPATH_ROOT . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'components'. DS
-			. 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(PATH_CORE . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Check that mkAIP script exists
 		if (!\Components\Publications\Helpers\Utilities::archiveOn())
@@ -378,8 +368,8 @@ class plgCronPublications extends JPlugin
 		{
 			// Set email config
 			$from = array(
-				'name'      => $jconfig->getValue('config.fromname') . ' ' . Lang::txt('Publications'),
-				'email'     => $jconfig->getValue('config.mailfrom'),
+				'name'      => Config::get('fromname') . ' ' . Lang::txt('Publications'),
+				'email'     => Config::get('mailfrom'),
 				'multipart' => md5(date('U'))
 			);
 
@@ -412,7 +402,7 @@ class plgCronPublications extends JPlugin
 		// All done
 		return true;
 	}
-	
+
 	/**
 	 * Issue master DOI for publications if does not exist
 	 *
@@ -442,8 +432,7 @@ class plgCronPublications extends JPlugin
 			return true;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-			. DS . 'models' . DS . 'publication.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi();
@@ -471,8 +460,7 @@ class plgCronPublications extends JPlugin
 
 			// Build url
 			$pointer = $model->publication->alias ? $model->publication->alias : $model->publication->id;
-			$url = $doiService->_configs->livesite . DS . 'publications'
-							. DS . $pointer . DS . 'main';
+			$url = $doiService->_configs->livesite . DS . 'publications' . DS . $pointer . DS . 'main';
 
 			// Master DOI should link to /main
 			$doiService->set('url', $url);

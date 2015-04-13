@@ -43,15 +43,15 @@ class plgEditorTinymce extends JPlugin
 	 */
 	public function onInit()
 	{
-		$app		= JFactory::getApplication();
-		$language	= JFactory::getLanguage();
+		$app      = JFactory::getApplication();
+		$language = JFactory::getLanguage();
 
 		$mode	= (int) $this->params->get('mode', 1);
 		$theme	= array('simple', 'advanced', 'advanced');
 		$skin	= $this->params->get('skin', '0');
 
 		switch ($skin)
-  		{
+		{
 			case '3':
 				$skin = 'skin : "o2k7", skin_variant : "black",';
 				break;
@@ -141,12 +141,12 @@ class plgEditorTinymce extends JPlugin
 					}
 					else
 					{
-						$content_css = 'content_css : "' . JURI::root() .'templates/system/css/editor.css",';
+						$content_css = 'content_css : "' . Request::root() .'templates/system/css/editor.css",';
 					}
 				}
 				else
 				{
-					$content_css = 'content_css : "' . JURI::root() .'templates/'. $template . '/css/editor.css",';
+					$content_css = 'content_css : "' . Request::root() .'templates/'. $template . '/css/editor.css",';
 				}
 			}
 		}
@@ -773,11 +773,12 @@ class plgEditorTinymce extends JPlugin
 				/*
 				 * Results should be an object
 				 */
-				if ( $button->get('name') ) {
-					$modal		= ($button->get('modal')) ? ' class="modal-button"' : null;
-					$href		= ($button->get('link')) ? ' href="'.JURI::base().$button->get('link').'"' : null;
-					$onclick	= ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
-					$title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
+				if ($button->get('name'))
+				{
+					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
+					$href    = ($button->get('link')) ? ' href="'.Request::base().$button->get('link').'"' : null;
+					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$return .= '<div class="button2-left"><div class="' . $button->get('name')
 						. '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
 						. '">' . $button->get('text') . "</a></div></div>\n";

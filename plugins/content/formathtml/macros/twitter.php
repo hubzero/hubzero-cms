@@ -92,7 +92,7 @@ class Twitter extends Macro
 		$widgetCode  = 'data-widget-id="346714310770302976"';
 		$widgetCode .= ' href="https://twitter.com/'. $screenName .'"';
 		$widgetCode .= ' data-screen-name="' . $screenName . '"';
-		
+
 		// pass already configured widget
 		if ($widgetId)
 		{

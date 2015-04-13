@@ -19,12 +19,12 @@ class plgSystemRemember extends JPlugin
 		$app = JFactory::getApplication();
 
 		// No remember me for admin
-		if ($app->isAdmin()) {
+		if ($app->isAdmin())
+		{
 			return;
 		}
 
-		$user = JFactory::getUser();
-		if ($user->get('guest'))
+		if (User::isGuest())
 		{
 			$hash = JApplication::getHash('JLOGIN_REMEMBER');
 
@@ -36,7 +36,7 @@ class plgSystemRemember extends JPlugin
 				$filter = JFilterInput::getInstance();
 
 				// Create the encryption key, apply extra hardening using the user agent string.
-                // Since we're decoding, no UA validity check is required.
+				// Since we're decoding, no UA validity check is required.
 				$privateKey = JApplication::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
 				$key = new JCryptKey('simple', $privateKey, $privateKey);
@@ -88,9 +88,8 @@ class plgSystemRemember extends JPlugin
 				}
 				catch (Exception $e)
 				{
-					$config = JFactory::getConfig();
-					$cookie_domain = $config->get('cookie_domain', '');
-					$cookie_path = $config->get('cookie_path', '/');
+					$cookie_domain = Config::get('cookie_domain', '');
+					$cookie_path   = Config::get('cookie_path', '/');
 					// Clear the remember me cookie
 					setcookie(
 						JApplication::getHash('JLOGIN_REMEMBER'), false, time() - 86400,

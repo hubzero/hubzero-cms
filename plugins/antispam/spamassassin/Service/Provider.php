@@ -62,7 +62,7 @@ class Provider extends AbstractService
 	 * @param    string $value Conent to test
 	 * @return   bool True if the comment is spam, false if not
 	 */
-	public function isSpam($value = null) 
+	public function isSpam($value = null)
 	{
 		if ($value)
 		{
@@ -76,12 +76,12 @@ class Provider extends AbstractService
 
 		$params = array();
 
-		if (!is_file(__DIR__ . '/Client/' . ucfirst(strtolower($this->get('client'))) . '.php'))
+		if (!is_file(__DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php'))
 		{
 			throw new Exception(\Lang::txt('Client type of "%s" not found.', $this->get('client')));
 		}
 
-		require_once __DIR__ . '/Client/' . ucfirst(strtolower($this->get('client'))) . '.php';
+		require_once __DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php';
 
 		if ($this->get('client') == 'remote')
 		{

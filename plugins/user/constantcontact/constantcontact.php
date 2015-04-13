@@ -59,14 +59,14 @@ class plgUserConstantContact extends JPlugin
 	public function onAfterStoreProfile($user)
 	{
 		//get the user's email and mail preference option
-		$userEmailAddress 			= $user->get('email');
-		$userEmailPreferenceOption 	= $user->get('mailPreferenceOption');
+		$userEmailAddress          = $user->get('email');
+		$userEmailPreferenceOption = $user->get('mailPreferenceOption');
 
 		//get values from plugin params
-		$_ccUsername 	= $this->params->get('ccUsername','');
-		$_ccPassword	= $this->params->get('ccPassword','');
-		$_ccApiKey 		= $this->params->get('ccApiKey', '');
-		$_ccManagePref	= $this->params->get('ccManageEmailPreference', 0);
+		$_ccUsername   = $this->params->get('ccUsername','');
+		$_ccPassword   = $this->params->get('ccPassword','');
+		$_ccApiKey     = $this->params->get('ccApiKey', '');
+		$_ccManagePref = $this->params->get('ccManageEmailPreference', 0);
 
 		//make sure we want Constant Contact to manage email preferences
 		if (!$_ccManagePref)
@@ -81,7 +81,7 @@ class plgUserConstantContact extends JPlugin
 		}
 
 		//include constant contact library
-		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'user' . DS . 'constantcontact' . DS . 'lib' . DS . 'ConstantContact.php' );
+		require_once(__DIR__ . DS . 'lib' . DS . 'ConstantContact.php');
 
 
 		//build constant contact object
@@ -92,7 +92,7 @@ class plgUserConstantContact extends JPlugin
 		{
 			$ccContactLists = $ConstantContact->getLists();
 		}
-		catch(CTCTException $e)
+		catch (CTCTException $e)
 		{
 			return;
 		}
@@ -101,7 +101,7 @@ class plgUserConstantContact extends JPlugin
 		$defaultList = $ccContactLists['lists'][0]->id;
 
 		//load contact by email
-		$ccContact = $ConstantContact->searchContactsByEmail( $userEmailAddress );
+		$ccContact = $ConstantContact->searchContactsByEmail($userEmailAddress);
 
 		//create contact if one does not exist
 		if (!$ccContact)
@@ -109,10 +109,10 @@ class plgUserConstantContact extends JPlugin
 			//build new contact
 			$Contact = new Contact();
 			$Contact->emailAddress = $userEmailAddress;
-			$Contact->lists = array( $defaultList );
+			$Contact->lists = array($defaultList);
 
 			//add new contact
-			$ccContact = $ConstantContact->addContact( $Contact );
+			$ccContact = $ConstantContact->addContact($Contact);
 			$ccContact = array($ccContact);
 		}
 
@@ -120,22 +120,22 @@ class plgUserConstantContact extends JPlugin
 		if ($ccContact[0]->status == 'Do Not Mail' && $userEmailPreferenceOption == 2)
 		{
 			//load contact
-			$Contact = $ConstantContact->getContactDetails( $ccContact[0] );
+			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
 
 			//set new contact details
 			$Contact->optInSource = "ACTION_BY_CONTACT";
-			$Contact->lists = array( $defaultList );
+			$Contact->lists = array($defaultList);
 
 			//update contact
-			$ccContact = $ConstantContact->updateContact( $Contact );
+			$ccContact = $ConstantContact->updateContact($Contact);
 		}
 		else if ($ccContact[0]->status == 'Active' && $userEmailPreferenceOption == 0)
 		{
 			//load contact
-			$Contact = $ConstantContact->getContactDetails( $ccContact[0] );
+			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
 
 			//put on do not mail list
-			$ccContact = $ConstantContact->deleteContact( $Contact );
+			$ccContact = $ConstantContact->deleteContact($Contact);
 		}
 	}
 
@@ -147,7 +147,7 @@ class plgUserConstantContact extends JPlugin
 	public function onAfterDeleteProfile($user)
 	{
 		//get the user's email
-		$userEmailAddress 	= $user->get('email');
+		$userEmailAddress = $user->get('email');
 
 		//make sure we have a valid email address
 		if (!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
@@ -156,12 +156,12 @@ class plgUserConstantContact extends JPlugin
 		}
 
 		//include constant contact library
-		require_once( JPATH_ROOT . DS . 'plugins' . DS . 'user' . DS . 'constantcontact' . DS . 'lib' . DS . 'ConstantContact.php' );
+		require_once(__DIR__ . DS . 'lib' . DS . 'ConstantContact.php');
 
 		//get values from plugin params
-		$_ccUsername 	= $this->params->get('ccUsername','');
-		$_ccPassword	= $this->params->get('ccPassword','');
-		$_ccApiKey 		= $this->params->get('ccApiKey', '');
+		$_ccUsername = $this->params->get('ccUsername','');
+		$_ccPassword = $this->params->get('ccPassword','');
+		$_ccApiKey   = $this->params->get('ccApiKey', '');
 
 		//build constant contact object
 		$ConstantContact = new Constantcontact("basic", $_ccApiKey, $_ccUsername, $_ccPassword);
@@ -171,22 +171,22 @@ class plgUserConstantContact extends JPlugin
 		{
 			$ccContactLists = $ConstantContact->getLists();
 		}
-		catch(CTCTException $e)
+		catch (CTCTException $e)
 		{
 			return;
 		}
 
 		//load contact by email
-		$ccContact = $ConstantContact->searchContactsByEmail( $userEmailAddress );
+		$ccContact = $ConstantContact->searchContactsByEmail($userEmailAddress);
 
 		//if we have contact object
 		if ($ccContact)
 		{
 			//load contact
-			$Contact = $ConstantContact->getContactDetails( $ccContact[0] );
+			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
 
 			//put on do not mail list
-			$ccContact = $ConstantContact->deleteContact( $Contact );
+			$ccContact = $ConstantContact->deleteContact($Contact);
 		}
 	}
 

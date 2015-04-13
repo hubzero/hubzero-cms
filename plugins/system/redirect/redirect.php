@@ -23,7 +23,7 @@ class plgSystemRedirect extends JPlugin
 	 * @return	void
 	 * @since	1.0
 	 */
-	function __construct(&$subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 
@@ -44,7 +44,8 @@ class plgSystemRedirect extends JPlugin
 			$current = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
 
 			// Attempt to ignore idiots.
-			if ((strpos($current, 'mosConfig_') !== false) || (strpos($current, '=http://') !== false)) {
+			if ((strpos($current, 'mosConfig_') !== false) || (strpos($current, '=http://') !== false))
+			{
 				// Render the error page.
 				JError::customErrorPage($error);
 			}
@@ -52,9 +53,9 @@ class plgSystemRedirect extends JPlugin
 			// See if the current url exists in the database as a redirect.
 			$db = JFactory::getDBO();
 				$db->setQuery(
-				'SELECT '.$db->quoteName('new_url').', '.$db->quoteName('published').
-				' FROM '.$db->quoteName('#__redirect_links') .
-				' WHERE '.$db->quoteName('old_url').' = '.$db->quote($current),
+				'SELECT ' . $db->quoteName('new_url') . ', ' . $db->quoteName('published').
+				' FROM ' . $db->quoteName('#__redirect_links') .
+				' WHERE ' . $db->quoteName('old_url') . ' = ' . $db->quote($current),
 				0, 1
 			);
 			$link = $db->loadObject();
@@ -73,7 +74,8 @@ class plgSystemRedirect extends JPlugin
 			}
 
 			// If a redirect exists and is published, permanently redirect.
-			if ($link and ($link->published == 1)) {
+			if ($link and ($link->published == 1))
+			{
 				$app->redirect($link->new_url, null, null, true, false);
 			}
 			else
@@ -82,34 +84,38 @@ class plgSystemRedirect extends JPlugin
 
 				$db->setQuery('SELECT id FROM ' . $db->quoteName('#__redirect_links') . '  WHERE old_url= ' . $db->quote($current));
 				$res = $db->loadResult();
-				if (!$res) {
-
+				if (!$res)
+				{
 					// If not, add the new url to the database.
-					 $query = $db->getQuery(true);
-					 $query->insert($db->quoteName('#__redirect_links'), false);
-					 $columns = array( $db->quoteName('old_url'),
-									$db->quoteName('new_url'),
-									$db->quoteName('referer'),
-									$db->quoteName('comment'),
-									$db->quoteName('hits'),
-									$db->quoteName('published'),
-									$db->quoteName('created_date')
-								);
+					$query = $db->getQuery(true);
+					$query->insert($db->quoteName('#__redirect_links'), false);
+					$columns = array(
+						$db->quoteName('old_url'),
+						$db->quoteName('new_url'),
+						$db->quoteName('referer'),
+						$db->quoteName('comment'),
+						$db->quoteName('hits'),
+						$db->quoteName('published'),
+						$db->quoteName('created_date')
+					);
 					$query->columns($columns);
-				    $query->values($db->Quote($current). ', '. $db->Quote('').
-				  				' ,'.$db->Quote($referer).', '.$db->Quote('').',1,0, '.
-								  $db->Quote(Date::toSql())
-								);
+					$query->values(
+						$db->Quote($current) . ', ' . $db->Quote('').
+						' ,' . $db->Quote($referer) . ', ' . $db->Quote('') . ',1,0, ' .
+						$db->Quote(Date::toSql())
+					);
 
 					$db->setQuery($query);
 					$db->query();
 
-				} else {
+				}
+				else
+				{
 					// Existing error url, increase hit counter
 					$query = $db->getQuery(true);
 					$query->update($db->quoteName('#__redirect_links'));
-					$query->set($db->quoteName('hits').' = '.$db->quoteName('hits').' + 1');
-					$query->where('id = '.(int)$res);
+					$query->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1');
+					$query->where('id = ' . (int)$res);
 					$db->setQuery((string)$query);
 					$db->query();
 				}
@@ -117,7 +123,8 @@ class plgSystemRedirect extends JPlugin
 				JError::customErrorPage($error);
 			}
 		}
-		else {
+		else
+		{
 			// Render the error page.
 			JError::customErrorPage($error);
 		}
