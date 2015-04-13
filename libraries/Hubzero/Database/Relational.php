@@ -40,8 +40,6 @@ use Hubzero\Database\Relationship\OneToOne;
 use Hubzero\Error\Exception\BadMethodCallException;
 use Hubzero\Error\Exception\RuntimeException;
 
-use Hubzero\Console\Event;
-
 /**
  * Database ORM base class
  *
@@ -918,7 +916,7 @@ class Relational implements \IteratorAggregate
 		if ($this->isNew())
 		{
 			$this->set($this->getPrimaryKey(), $result);
-			Event::fire($this->getTableName() . '.new', $this);
+			Event::trigger($this->getTableName() . '.new', ['model' => $this]);
 		}
 
 		return $result;

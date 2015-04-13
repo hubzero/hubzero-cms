@@ -31,7 +31,6 @@
 
 namespace Hubzero\Database;
 
-use Hubzero\Console\Event;
 use Hubzero\Utility\String;
 
 use \Hubzero\Error\Exception\RuntimeException;
@@ -840,7 +839,10 @@ abstract class Driver
 		// Build the actual query
 		$query = $this->toString();
 
-		Event::fire('database.query', $query, $time);
+		Event::trigger('database.query', [
+			'query' => $query,
+			'time'  => $time
+		]);
 
 		// Add it to the internal logs
 		$this->log[] = $query;

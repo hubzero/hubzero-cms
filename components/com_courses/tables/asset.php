@@ -30,8 +30,6 @@
 
 namespace Components\Courses\Tables;
 
-use Hubzero\Console\Event;
-
 /**
  *
  * Course assets table class
@@ -98,11 +96,12 @@ class Asset extends \JTable
 	{
 		if (!$this->path)
 		{
-			Event::register($this->getTableName() . '.new', function($table)
+			Event::listen(function($event)
 			{
+				$table       = $event->getArgument('table');
 				$table->path = $table->course_id . '/' . $table->id;
 				$table->store();
-			});
+			}, $this->getTableName() . '.new');
 		}
 
 		return parent::store($updateNulls);

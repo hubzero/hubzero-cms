@@ -124,13 +124,12 @@ class Asset
 		if ($this->model->isNew())
 		{
 			$me = $this;
-			\Hubzero\Console\Event::register(
-				$this->model->getTableName() . '.new',
-				function($model) use ($asset, $me)
+			Event::listen(
+				function($event) use ($asset, $me)
 				{
 					$asset->name = $me->getAssetName();
 					$asset->store();
-				});
+				}, $this->model->getTableName() . '.new');
 		}
 
 		// Return the id
