@@ -257,7 +257,7 @@ function popratings()
 			$this->view('_selectlicense')
 			     ->set('licenses', $this->licenses)
 			     ->set('selected', $this->license)
-			     ->display(); 
+			     ->display();
 			?>
 		</div>
 		<div class="input-wrap">
@@ -366,7 +366,7 @@ function popratings()
 	</div>
 	<div class="input-wrap">
 		<label for="access"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
-		<?php 
+		<?php
 		// Draw access select list
 		$this->view('_selectaccess')
 		     ->set('as', 'Public,Registered,Private')
@@ -376,7 +376,7 @@ function popratings()
 	</div>
 	<div class="input-wrap">
 		<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
-		<?php 
+		<?php
 		// Draw group selector
 		$this->view('_selectgroup')
 		     ->set('groups', $this->groups)

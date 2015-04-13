@@ -151,14 +151,14 @@ else
 }
 
 // Part below
-if (!$this->publication->access('view-all')) 
+if (!$this->publication->access('view-all'))
 {
 	// show nothing else
 	$html .= '</section><!-- / .main section -->'."\n";
 	echo $html;
 	return;
-} 
-else 
+}
+else
 {
 	$html .= '<div class="clear sep"></div>'."\n";
 	$html .= '</section><!-- / .main section -->'."\n";
