@@ -187,12 +187,8 @@ else
 	$html .= ' <div class="aside extracontent">'."\n";
 }
 
-
-JPluginHelper::importPlugin( 'publications');
-$dispatcher = JDispatcher::getInstance();
-
 // Show related content
-$out = $dispatcher->trigger( 'onPublicationSub', array($this->publication, $this->option, 1) );
+$out = Event::trigger( 'publications.onPublicationSub', array($this->publication, $this->option, 1) );
 if (count($out) > 0) {
 	foreach ($out as $ou)
 	{

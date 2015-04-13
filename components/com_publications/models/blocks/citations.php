@@ -212,10 +212,6 @@ class Citations extends Base
 		$parts 	= explode("doi:", $url);
 		$doi   	= count($parts) > 1 ? $parts[1] : $url;
 
-		// Get links plugin
-		\JPluginHelper::importPlugin( 'projects', 'links' );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Plugin params
 		$plugin_params = array(
 			$pub->id,
@@ -226,7 +222,7 @@ class Citations extends Base
 		);
 
 		// Attach citation
-		$output = $dispatcher->trigger( 'attachCitation', $plugin_params);
+		$output = Event::trigger( 'projects.attachCitation', $plugin_params);
 
 		if (isset($output[0]))
 		{
@@ -328,10 +324,6 @@ class Citations extends Base
 	{
 		$cid = $cid ? $cid : Request::getInt( 'cid', 0 );
 
-		// Get links plugin
-		\JPluginHelper::importPlugin( 'projects', 'links' );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Plugin params
 		$plugin_params = array(
 			$pub->id,
@@ -340,7 +332,7 @@ class Citations extends Base
 		);
 
 		// Attach citation
-		$output = $dispatcher->trigger( 'unattachCitation', $plugin_params);
+		$output = Event::trigger( 'projects.unattachCitation', $plugin_params);
 
 		if (isset($output[0]))
 		{

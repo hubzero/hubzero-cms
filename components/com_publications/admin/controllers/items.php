@@ -1360,9 +1360,7 @@ class Items extends AdminController
 			$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 			// Send message
-			\JPluginHelper::importPlugin('xmessage');
-			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array(
+			if (!Event::trigger('xmessage.onSendMessage', array(
 				'publication_status_changed',
 				$subject,
 				$body,
@@ -1792,9 +1790,7 @@ class Items extends AdminController
 		else
 		{
 			// Archival for non-curated publications
-			\JPluginHelper::importPlugin( 'projects', 'publications' );
-			$dispatcher = \JDispatcher::getInstance();
-			$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
+			$result = Event::trigger( 'projects.archivePub', array($pid, $vid) );
 		}
 
 		$this->_message = Lang::txt('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');

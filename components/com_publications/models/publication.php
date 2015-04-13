@@ -862,8 +862,7 @@ class Publication extends Object
 					);
 
 					$content = (string) stripslashes($this->get('description', ''));
-					\JPluginHelper::importPlugin('content');
-					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+					Event::trigger('content.onContentPrepare', array(
 						'com_publications.publication.description',
 						&$this,
 						&$config
@@ -937,8 +936,7 @@ class Publication extends Object
 					);
 
 					$content = (string) stripslashes($this->get('release_notes', ''));
-					\JPluginHelper::importPlugin('content');
-					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+					Event::trigger('content.onContentPrepare', array(
 						'com_publications.publication.release_notes',
 						&$this,
 						&$config
@@ -1046,9 +1044,7 @@ class Publication extends Object
 					{
 						$content = (string) stripslashes($this->getNbtag($aliasmap));
 					}
-
-					\JPluginHelper::importPlugin('content');
-					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+					Event::trigger('content.onContentPrepare', array(
 						'com_publications.publication.' . $field,
 						&$this,
 						&$config

@@ -463,10 +463,6 @@ class Authors extends Base
 		// (Re)send email invitation
 		if ($sendInvite && $email)
 		{
-			// Get team plugin
-			\JPluginHelper::importPlugin( 'projects', 'team' );
-			$dispatcher = \JDispatcher::getInstance();
-
 			// Get project model
 			$project = new \Components\Projects\Models\Project($pub->_project->id);
 
@@ -481,7 +477,7 @@ class Authors extends Base
 			);
 
 			// Send invite
-			$output = $dispatcher->trigger( 'sendInviteEmail', $plugin_params);
+			$output = Event::trigger( 'projects.sendInviteEmail', $plugin_params);
 			$result = json_decode($output[0]);
 		}
 
@@ -621,10 +617,6 @@ class Authors extends Base
 		// (Re)send email invitation
 		if ($sendInvite && $email)
 		{
-			// Get team plugin
-			\JPluginHelper::importPlugin( 'projects', 'team' );
-			$dispatcher = \JDispatcher::getInstance();
-
 			// Get project model
 			$project = new \Components\Projects\Models\Project($pub->_project->id);
 
@@ -639,7 +631,7 @@ class Authors extends Base
 			);
 
 			// Send invite
-			$output = $dispatcher->trigger( 'sendInviteEmail', $plugin_params);
+			$output = Event::trigger( 'projects.sendInviteEmail', $plugin_params);
 			$result = json_decode($output[0]);
 		}
 

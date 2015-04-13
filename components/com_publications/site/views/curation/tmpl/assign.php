@@ -30,10 +30,6 @@ if (!$this->ajax)
 	$this->css('curation.css')
 		 ->js('curation.js');
 }
-
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-
 ?>
 <div id="abox-content" class="curation-wrap">
 	<h3><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_VIEW'); ?></h3>
@@ -49,7 +45,7 @@ $dispatcher = JDispatcher::getInstance();
 		<?php
 			$ownerProfile  = $this->row->curator ? \Hubzero\User\Profile::getInstance($this->row->curator) : NULL;
 			$selected = $ownerProfile ? $ownerProfile->get('name') : '';
-			$mc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('members', 'owner', 'owner', '', $selected,'','owner')) );
+			$mc = Event::trigger( 'hubzero.onGetSingleEntryWithSelect', array(array('members', 'owner', 'owner', '', $selected,'','owner')) );
 			if (count($mc) > 0) {
 				echo $mc[0];
 			} else { ?>

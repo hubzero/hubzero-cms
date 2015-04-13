@@ -98,9 +98,6 @@ $panels = array(
 	'submitter'		=> $this->typeParams->get('show_submitter', 0)
 );
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 ?>
 
 <script type="text/javascript">
@@ -242,7 +239,7 @@ function popratings()
 		<fieldset>
 		<div class="input-wrap">
 			<?php
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
+			$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
 			if (count($tf) > 0) {
 				echo $tf[0];
 			} else { ?>

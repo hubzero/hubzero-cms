@@ -218,14 +218,8 @@ class Data extends Base
 	public function transferData( $elementparams, $elementId, $pub, $blockParams,
 			$attachments, $oldVersion, $newVersion)
 	{
-		// Get databases plugin
-		\JPluginHelper::importPlugin( 'projects', 'databases');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get configs
 		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
-
-		$juser = \JFactory::getUser();
 
 		$newConfigs = new stdClass;
 		$newConfigs->path = $configs->path;
@@ -259,13 +253,13 @@ class Data extends Base
 
 			// Make new attachment record
 			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id') ))
 			{
 				continue;
 			}
 
 			// New database instance - need to clone again and get a new version number
-			$result 			= $dispatcher->trigger( 'clone_database', array( $pAttach->object_name, $pub->_project, $newConfigs->servePath) );
+			$result 			= Event::trigger( 'projects.clone_database', array( $pAttach->object_name, $pub->_project, $newConfigs->servePath) );
 			$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 
 			// Failed to clone
@@ -377,12 +371,7 @@ class Data extends Base
 		}
 
 		// Get actor
-		$juser = \JFactory::getUser();
-		$uid   = $juser->get('id');
-		if (!$uid)
-		{
-			return false;
-		}
+		$uid   = User::get('id');
 
 		// Counters
 		$i = 0;
@@ -423,10 +412,6 @@ class Data extends Base
 	 */
 	public function addAttachment($database_name, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
-		// Get databases plugin
-		\JPluginHelper::importPlugin( 'projects', 'databases');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get database object and load record
 		$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 		$objData->loadRecord($database_name);
@@ -467,7 +452,7 @@ class Data extends Base
 
 		if ($new)
 		{
-			$result = $dispatcher->trigger( 'clone_database', array( $database_name, $pub->_project, $configs->servePath) );
+			$result = Event::trigger( 'projects.clone_database', array( $database_name, $pub->_project, $configs->servePath) );
 			$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
 		}
 		else
@@ -524,8 +509,7 @@ class Data extends Base
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
-		$juser = \JFactory::getUser();
-		$uid   = $juser->get('id');
+		$uid   = User::get('id');
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
@@ -539,10 +523,6 @@ class Data extends Base
 		// Remove link
 		if (!$this->getError())
 		{
-			// Get databases plugin
-			\JPluginHelper::importPlugin( 'projects', 'databases');
-			$dispatcher = \JDispatcher::getInstance();
-
 			// Get database object and load record
 			$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 			$objData->loadRecord($row->object_name);
@@ -552,7 +532,7 @@ class Data extends Base
 				return false;
 			}
 
-			$result = $dispatcher->trigger( 'remove_database', array( $row->object_name, $pub->_project, $row->object_revision) );
+			$result = Event::trigger( 'projects.remove_database', array( $row->object_name, $pub->_project, $row->object_revision) );
 
 			$row->delete();
 
@@ -575,11 +555,9 @@ class Data extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= Request::getVar( 'title', '' );
-		$thumb 	= Request::getInt( 'makedefault', 0 );
-
-		$juser = \JFactory::getUser();
-		$uid   = $juser->get('id');
+		$title = Request::getVar( 'title', '' );
+		$thumb = Request::getInt( 'makedefault', 0 );
+		$uid   = User::get('id');
 
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
@@ -885,10 +863,6 @@ class Data extends Base
 			return false;
 		}
 
-		// Get files plugin
-		\JPluginHelper::importPlugin( 'projects', 'files');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get data definition
 		$dd = json_decode($objPD->data_definition, true);
 
@@ -969,12 +943,12 @@ class Data extends Base
 
 				// Generate thumbnails for images
 				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
-				$dispatcher->trigger( 'getFilePreview', array(
+				Event::trigger( 'projects.getFilePreview', array(
 					$file, '', $repoPath, '', NULL, false, $configs->dataPath, $thumb, 180, 180)
 				);
 				// Medium size thumb
 				$medium 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
-				$dispatcher->trigger( 'getFilePreview', array(
+				Event::trigger( 'projects.getFilePreview', array(
 					$file, '', $repoPath, '', NULL, true, $configs->dataPath, $medium)
 				);
 			}

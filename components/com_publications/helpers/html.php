@@ -1717,9 +1717,7 @@ class Html
 		// Send HUB message
 		if ($hubMessage)
 		{
-			\JPluginHelper::importPlugin( 'xmessage' );
-			$dispatcher = \JDispatcher::getInstance();
-			$dispatcher->trigger( 'onSendMessage',
+			Event::trigger( 'xmessage.onSendMessage',
 				array(
 					'publication_status_changed',
 					$subject,

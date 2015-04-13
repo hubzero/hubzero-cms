@@ -344,10 +344,6 @@ class Databases extends Object
 			$pubconfig = Component::params( 'com_publications' );
 			$config = Component::params( 'com_projects' );
 
-			// Get databases plugin
-			\JPluginHelper::importPlugin( 'projects', 'databases');
-			$dispatcher = \JDispatcher::getInstance();
-
 			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Original database not found
@@ -383,7 +379,7 @@ class Databases extends Object
 			// First-time clone
 			if ($newpub)
 			{
-				$result = $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
+				$result = Event::trigger( 'projects.clone_database', array( $database_name, $this->_project, $pPath) );
 				$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
 
 				// Failed to clone
@@ -652,12 +648,8 @@ class Databases extends Object
 			// Db updated, clone again
 			if (strtotime($objData->updated) > $rtime)
 			{
-				// Get databases plugin
-				\JPluginHelper::importPlugin( 'projects', 'databases');
-				$dispatcher = \JDispatcher::getInstance();
-
 				// New database instance - need to clone again and get a new version number
-				$result 	= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
+				$result 	= Event::trigger( 'projects.clone_database', array( $database_name, $this->_project, $pPath) );
 				$dbVersion  = $result && isset($result[0]) ? $result[0] : NULL;
 
 				// Update attatchment record with new revision & path

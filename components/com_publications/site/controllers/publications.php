@@ -573,10 +573,6 @@ class Publications extends SiteController
 		$contentAccess = $this->model->access('view-all');
 		$restricted    = $contentAccess ? false : true;
 
-		// Get publication plugins
-		\JPluginHelper::importPlugin( 'publications' );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// For curation we need somewhat different vars
 		// TBD - streamline
 		if ($this->_curated)
@@ -593,7 +589,7 @@ class Publications extends SiteController
 		$extended = $lastPubRelease && $lastPubRelease->id == $this->model->version->id ? true : false;
 
 		// Trigger the functions that return the areas we'll be using
-		$cats = $dispatcher->trigger( 'onPublicationAreas', array(
+		$cats = Event::trigger( 'publications.onPublicationAreas', array(
 			$this->model,
 			$this->model->versionAlias,
 			$extended)
@@ -854,10 +850,6 @@ class Publications extends SiteController
 			return;
 		}
 
-		// Get publication plugins
-		\JPluginHelper::importPlugin( 'publications' );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get type info
 		$this->publication->_category = new Tables\Category( $this->database );
 		$this->publication->_category->load($this->publication->category);
@@ -869,10 +861,10 @@ class Publications extends SiteController
 		$params->merge( $rparams );
 
 		// Get cats
-		$cats = $dispatcher->trigger( 'onPublicationAreas', array($this->publication, $this->version, false, true) );
+		$cats = Event::trigger( 'publications.onPublicationAreas', array($this->publication, $this->version, false, true) );
 
 		// Get the sections
-		$sections = $dispatcher->trigger( 'onPublication',
+		$sections = Event::trigger( 'publications.onPublication',
 			array($this->publication, $this->_option, array('play'), 'all',
 			$this->version, false, true) );
 
@@ -1539,9 +1531,7 @@ class Publications extends SiteController
 		else
 		{
 			// Archival for non-curated publications
-			\JPluginHelper::importPlugin( 'projects', 'publications' );
-			$dispatcher = \JDispatcher::getInstance();
-			$result = $dispatcher->trigger( 'archivePub', array($pub->id, $pub->version_id) );
+			Event::trigger( 'projects.archivePub', array($pub->id, $pub->version_id) );
 		}
 
 		return $archive;
@@ -1777,12 +1767,8 @@ class Publications extends SiteController
 			return;
 		}
 
-		// Get Publications plugins
-		\JPluginHelper::importPlugin( 'publications' );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Call the trigger
-		$results = $dispatcher->trigger( $trigger, array($this->_option) );
+		$results = Event::trigger( 'publications.' . $trigger, array($this->_option) );
 		if (is_array($results))
 		{
 			$html = $results[0]['html'];
@@ -1919,10 +1905,6 @@ class Publications extends SiteController
 		$allowed = array('team', 'files', 'notes', 'publications', 'links');
 		$plugin  = in_array($active, $allowed) ? $active : 'publications';
 
-		// Get output from plugin
-		\JPluginHelper::importPlugin( 'projects', $plugin);
-		$dispatcher = \JDispatcher::getInstance();
-
 		if (User::isGuest() && ($action == 'login' || $this->_task == 'start'))
 		{
 			$this->_msg = $this->_task == 'start'
@@ -1981,7 +1963,7 @@ class Publications extends SiteController
 								$areas = array($plugin)
 		);
 
-		$content = $dispatcher->trigger( 'onProject', $plugin_params);
+		$content = Event::trigger( 'projects.onProject', $plugin_params);
 		$this->view->content = (is_array($content) && isset($content[0]['html'])) ? $content[0]['html'] : '';
 
 		if (isset($content[0]['msg']) && !empty($content[0]['msg']))
