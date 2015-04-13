@@ -64,4 +64,44 @@ class User extends Facade
 	{
 		return \JFactory::getUser();
 	}
+
+	/**
+	 * Gets a user state.
+	 *
+	 * @param   string  $key      The path of the state.
+	 * @param   mixed   $default  Optional default value, returned if the internal value is null.
+	 * @return  mixed   The user state or null.
+	 */
+	public static function getState($key, $default = null)
+	{
+		$session  = \JFactory::getSession();
+		$registry = $session->get('registry');
+
+		if (!is_null($registry))
+		{
+			return $registry->get($key, $default);
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Sets the value of a user state variable.
+	 *
+	 * @param   string  $key    The path of the state.
+	 * @param   string  $value  The value of the variable.
+	 * @return  mixed   The previous state, if one existed.
+	 */
+	public static function setState($key, $value)
+	{
+		$session  = \JFactory::getSession();
+		$registry = $session->get('registry');
+
+		if (!is_null($registry))
+		{
+			return $registry->set($key, $value);
+		}
+
+		return null;
+	}
 }

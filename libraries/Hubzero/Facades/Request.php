@@ -85,4 +85,31 @@ class Request extends \JRequest
 	public static function createFromGlobals()
 	{
 	}
+
+	/**
+	 * Gets the value of a user state variable.
+	 *
+	 * @param   string  $key      The key of the user state variable.
+	 * @param   string  $request  The name of the variable passed in a request.
+	 * @param   string  $default  The default value for the variable if not found. Optional.
+	 * @param   string  $type     Filter for the variable. Optional.
+	 * @return  The request user state.
+	 */
+	public static function getState($key, $request, $default = null, $type = 'none')
+	{
+		$cur_state = \User::getState($key, $default);
+		$new_state = self::getVar($request, null, 'default', $type);
+
+		// Save the new value only if it was set in this request.
+		if ($new_state !== null)
+		{
+			\User::setState($key, $new_state);
+		}
+		else
+		{
+			$new_state = $cur_state;
+		}
+
+		return $new_state;
+	}
 }
