@@ -449,7 +449,7 @@ class Media extends Base
 		}
 		elseif ($redirect)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}

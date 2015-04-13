@@ -181,7 +181,7 @@ class Base extends SiteController
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option='
 			. $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
@@ -458,8 +458,6 @@ class Base extends SiteController
 			return false;
 		}
 
-		$juri = \JURI::getInstance();
-
 		// Log activity
 		$objLog  				= new Tables\Log( $this->database );
 		$objLog->projectid 		= $pid;
@@ -470,7 +468,7 @@ class Base extends SiteController
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
 		$objLog->time 			= date('Y-m-d H:i:s');
-		$objLog->request_uri 	= Request::getVar('REQUEST_URI', $juri->base(), 'server');
+		$objLog->request_uri 	= Request::getVar('REQUEST_URI', Request::base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();
 	}

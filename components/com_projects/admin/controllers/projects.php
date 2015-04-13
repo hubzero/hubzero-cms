@@ -80,38 +80,35 @@ class Projects extends AdminController
 	{
 		$this->view->config = $this->config;
 
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get quotas
 		$this->view->defaultQuota = Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
 		$this->view->premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
 
 		// Get filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.projects.limit',
 				'limit',
 				Config::get('config.list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.projects.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.projects.search',
 				'search',
 				''
 			)),
-			'sortby' => $app->getUserStateFromRequest(
+			'sortby' => Request::getState(
 				$this->_option . '.projects.sort',
 				'filter_order',
 				'id'
 			),
-			'sortdir' => $app->getUserStateFromRequest(
+			'sortdir' => Request::getState(
 				$this->_option . '.projects.sortdir',
 				'filter_order_Dir',
 				'DESC'
@@ -223,7 +220,7 @@ class Projects extends AdminController
 		{
 			if (!$model->exists())
 			{
-				$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
+				App::redirect(Route::url('index.php?option=' . $this->_option, false),
 					Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 					'error');
 				return;
@@ -231,7 +228,7 @@ class Projects extends AdminController
 		}
 		if (!$id)
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
 				'error');
 			return;
@@ -330,7 +327,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option,
+			App::redirect('index.php?option=' . $this->_option,
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -519,7 +516,7 @@ class Projects extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
@@ -539,7 +536,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -648,7 +645,7 @@ class Projects extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option='.$this->_option, false),
 			Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' ('.$alias.') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED')
 		);
@@ -670,7 +667,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error'
 			);
@@ -681,7 +678,7 @@ class Projects extends AdminController
 
 		if (!$file)
 		{
-			$this->setRedirect($url,
+			App::redirect($url,
 				Lang::txt('Please specify a file/directory path to add and commit into project'),
 				'error'
 			);
@@ -695,7 +692,7 @@ class Projects extends AdminController
 
 		if (!is_file($path . DS . $file))
 		{
-			$this->setRedirect($url,
+			App::redirect($url,
 				Lang::txt('Error: File not found in the project, cannot add and commit'),
 				'error');
 			return;
@@ -712,7 +709,7 @@ class Projects extends AdminController
 		$gitHelper->gitCommit($commitMsg);
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('File checked into project Git repo')
 		);
@@ -734,7 +731,7 @@ class Projects extends AdminController
 		$project = new Models\Project($id);
 		if (!$project->exists())
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -747,7 +744,7 @@ class Projects extends AdminController
 		$repo->call('optimize', $params);
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('Git repo optimized')
 		);
@@ -767,7 +764,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
+			App::redirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -793,7 +790,7 @@ class Projects extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('Sync log unavailable')
 		);

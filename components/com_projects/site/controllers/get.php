@@ -58,7 +58,7 @@ class Get extends SiteController
 		$objSt = new Tables\Stamp( $this->database );
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -67,7 +67,7 @@ class Get extends SiteController
 		// Can only serve files or notes at the moment
 		if (!in_array($objSt->type, array('files', 'notes', 'publications')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -86,7 +86,7 @@ class Get extends SiteController
 		}
 
 		// Redirect if nothing fetched
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
 

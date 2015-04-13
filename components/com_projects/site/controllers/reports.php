@@ -176,7 +176,7 @@ class Reports extends Base
 		// Redirect on error
 		if ($this->getError())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option
 				. '&controller=reports&task=custom'
 				. '&searchterm=' . $filter),
