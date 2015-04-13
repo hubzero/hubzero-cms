@@ -168,7 +168,7 @@ class Dispatcher implements DispatcherInterface
 
 			foreach ($events as $name => $priority)
 			{
-				$name = ltrim(strstr($name, '.'), '.');
+				$name = (strstr($name, '.') ? ltrim(strstr($name, '.'), '.') : $name);
 
 				if (!isset($this->listeners[$name]))
 				{
@@ -208,6 +208,18 @@ class Dispatcher implements DispatcherInterface
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Thsi is an alias for addListener()
+	 *
+	 * @param   mixed  $listener
+	 * @param   array  $events
+	 * @throws  InvalidArgumentException
+	 */
+	public function listen($listener, $events = array())
+	{
+		return $this->addListener($listener, $events);
 	}
 
 	/**
@@ -323,6 +335,18 @@ class Dispatcher implements DispatcherInterface
 		}
 
 		return $this;
+	}
+
+	/**
+	 * This is an alias for removeListener()
+	 *
+	 * @param   object  $listener  The listener to remove.
+	 * @param   mixed   $event     The event object or name.
+	 * @return  object  This method is chainable.
+	 */
+	public function forget($listener, $event = null)
+	{
+		return $this->removeListener($listener, $event);
 	}
 
 	/**
