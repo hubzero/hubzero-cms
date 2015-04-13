@@ -32,4 +32,5 @@
 return array(
 	'Module'  => 'Hubzero\Facades\Module',
 	'Pathway' => 'Hubzero\Facades\Pathway',
+	'Notify'  => 'Hubzero\Facades\Notify',
 );

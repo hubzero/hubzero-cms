@@ -31,4 +31,5 @@
 return array(
 	'Hubzero\Html\ToolbarServiceProvider',
 	'Hubzero\Module\ModuleServiceProvider',
+	'Hubzero\Notification\NotificationServiceProvider',
 );
