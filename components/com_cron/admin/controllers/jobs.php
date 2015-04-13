@@ -42,6 +42,7 @@ use Route;
 use Lang;
 use User;
 use Date;
+use App;
 
 /**
  * Cron controller class for jobs
@@ -70,29 +71,26 @@ class Jobs extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.jobs.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.jobs.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => trim($app->getUserStateFromRequest(
+			'sort' => trim(Request::getState(
 				$this->_option . '.jobs.sort',
 				'filter_order',
 				'id'
 			)),
-			'sort_Dir' => trim($app->getUserStateFromRequest(
+			'sort_Dir' => trim(Request::getState(
 				$this->_option . '.jobs.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -276,7 +274,7 @@ class Jobs extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_CRON_ITEM_SAVED')
 		);
@@ -298,7 +296,7 @@ class Jobs extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
@@ -377,7 +375,7 @@ class Jobs extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
@@ -397,7 +395,7 @@ class Jobs extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false),
 			Lang::txt('COM_CRON_ITEMS_DELETED')
 		);
@@ -425,7 +423,7 @@ class Jobs extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_CRON_STATE_UNPUBLISH') : Lang::txt('COM_CRON_STATE_PUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action),
 				'error'
@@ -458,7 +456,7 @@ class Jobs extends AdminController
 			$this->setMessage(Lang::txt('COM_CRON_ITEMS_UNPUBLISHED', $total));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}

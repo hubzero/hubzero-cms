@@ -37,6 +37,7 @@ use Request;
 use Route;
 use Lang;
 use Date;
+use App;
 
 /**
  * Feedback controller class for quotes
@@ -69,35 +70,32 @@ class Quotes extends AdminController
 			Request::checkToken() or jexit('Invalid Token');
 		}
 
-		// Get site configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.search',
 				'search',
 				''
 			)),
 			// Get sorting variables
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.sortby',
 				'filter_order',
 				'date'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
 			// Get paging variables
-			'start'  => $app->getUserStateFromRequest(
+			'start'  => Request::getState(
 				$this->_option . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'limit'  => $app->getUserStateFromRequest(
+			'limit'  => Request::getState(
 				$this->_option . '.limit',
 				'limit',
 				Config::get('list_limit'),
@@ -217,7 +215,7 @@ class Quotes extends AdminController
 			{
 				if (!\JFile::delete($path . DS . $existingPicture))
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 					);
 					return;
@@ -269,7 +267,7 @@ class Quotes extends AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_FEEDBACK_QUOTE_SAVED', $row->fullname)
 		);
@@ -292,7 +290,7 @@ class Quotes extends AdminController
 		// Check for an ID
 		if (!count($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'),
 				'error'
@@ -309,7 +307,7 @@ class Quotes extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_FEEDBACK_REMOVED')
 		);

@@ -38,6 +38,7 @@ use Config;
 use Route;
 use Lang;
 use User;
+use App;
 
 /**
  * Controller class for Collections
@@ -66,46 +67,43 @@ class Collections extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
 			'state'  => -1,
 			'access' => -1,
-			'object_type' => $app->getUserStateFromRequest(
+			'object_type' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.object_type',
 				'object_type',
 				''
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'state' => $app->getUserStateFromRequest(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				'-1'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -208,7 +206,7 @@ class Collections extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_COLLECTIONS_COLLECTION_SAVED')
 		);
@@ -243,7 +241,7 @@ class Collections extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			($this->getError() ? implode('<br />', $this->getErrors()) : Lang::txt('COM_COLLECTIONS_ITEMS_DELETED')),
 			($this->getError() ? 'error' : null)
@@ -307,7 +305,7 @@ class Collections extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_COLLECTIONS_ERROR_SELECT_ITEMS'),
 				'error'
@@ -322,7 +320,7 @@ class Collections extends AdminController
 		// Check and store the changes
 		if (!$row->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -331,7 +329,7 @@ class Collections extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -356,7 +354,7 @@ class Collections extends AdminController
 		// Check for a resource
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_COLLECTIONS_ERROR_SELECT_TO', $this->_task),
 				'error'
@@ -395,7 +393,7 @@ class Collections extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);

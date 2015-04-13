@@ -39,6 +39,7 @@ use Config;
 use Route;
 use User;
 use Lang;
+use App;
 
 /**
  * Controller class for knowledge base articles
@@ -67,59 +68,56 @@ class Articles extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'search' => $app->getUserStateFromRequest(
+			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			),
-			'orphans' => $app->getUserStateFromRequest(
+			'orphans' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.orphans',
 				'orphans',
 				0,
 				'int'
 			),
-			'category' => $app->getUserStateFromRequest(
+			'category' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.category',
 				'category',
 				0,
 				'int'
 			),
-			'section' => $app->getUserStateFromRequest(
+			'section' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.section',
 				'section',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			'state' => -1,
-			'access' => $app->getUserStateFromRequest(
+			'access' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.access',
 				'access',
 				0,
@@ -182,9 +180,9 @@ class Articles extends AdminController
 		$this->view->row = $row;
 
 		// Fail if checked out not by 'me'
-		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out')  != User::get('id'))
+		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out') != User::get('id'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_KB_CHECKED_OUT'),
 				'warning'
@@ -200,7 +198,7 @@ class Articles extends AdminController
 
 		$this->view->params = new \JParameter(
 			$this->view->row->get('params'),
-			JPATH_COMPONENT . DS . 'kb.xml'
+			dirname(dirname(__DIR__)) . DS . 'kb.xml'
 		);
 
 		$c = new Archive();
@@ -284,7 +282,7 @@ class Articles extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_KB_ARTICLE_SAVED')
 		);
@@ -316,7 +314,7 @@ class Articles extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_KB_ITEMS_REMOVED', count($ids))
 		);
@@ -339,7 +337,7 @@ class Articles extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				($state == 1 ? Lang::txt('COM_KB_SELECT_PUBLISH') : Lang::txt('COM_KB_SELECT_UNPUBLISH')),
 				'error'
@@ -371,7 +369,7 @@ class Articles extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&section=' . $cid : ''), false),
 			$message
 		);
@@ -394,7 +392,7 @@ class Articles extends AdminController
 			$article->checkin();
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -413,7 +411,7 @@ class Articles extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_KB_NO_ID'),
 				'error'
@@ -426,7 +424,7 @@ class Articles extends AdminController
 
 		if (!$article->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$article->getError(),
 				'error'
@@ -435,7 +433,7 @@ class Articles extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -454,7 +452,7 @@ class Articles extends AdminController
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_KB_NO_ID'),
 				'error'
@@ -468,7 +466,7 @@ class Articles extends AdminController
 
 		if (!$article->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$article->getError(),
 				'error'
@@ -481,7 +479,7 @@ class Articles extends AdminController
 		$helpful->deleteVote($id);
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

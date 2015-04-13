@@ -39,6 +39,11 @@ use Components\Citations\Tables\Tags;
 use Components\Citations\Helpers\Format;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for citations
@@ -52,30 +57,27 @@ class Citations extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Get filters
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'sort',
 				'created DESC'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
@@ -247,7 +249,7 @@ class Citations extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_PUBLISHED')
 		);
@@ -281,7 +283,7 @@ class Citations extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_UNPUBLISHED')
 		);
@@ -313,10 +315,10 @@ class Citations extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		$citation = array_map('trim', Request::getVar('citation', array(), 'post'));
-		$exclude = Request::getVar('exclude', '', 'post');
+		$exclude  = Request::getVar('exclude', '', 'post');
 		$rollover = Request::getInt("rollover", 0);
-		$this->tags = trim(Request::getVar('tags', ''));
-		$this->badges = trim(Request::getVar('badges', ''));
+		$this->tags     = Request::getVar('tags', '');
+		$this->badges   = Request::getVar('badges', '');
 		$this->sponsors = Request::getVar('sponsors', array(), 'post');
 
 		// Bind incoming data to object
@@ -415,7 +417,7 @@ class Citations extends AdminController
 		$ct->setTags($this->badges, User::get('id'), 0, 1, 'badge');
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_SAVED')
 		);
@@ -506,7 +508,7 @@ class Citations extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true),
 			$message
 		);

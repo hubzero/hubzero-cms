@@ -32,6 +32,10 @@ namespace Components\Citations\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Tables\Sponsor;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for citation types
@@ -136,7 +140,7 @@ class Sponsors extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_SPONSOR_SAVED')
 		);
@@ -156,7 +160,7 @@ class Sponsors extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('CITATION_NO_SPONSOR'),
 				'error'
@@ -172,7 +176,7 @@ class Sponsors extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_SPONSOR_REMOVED')
 		);

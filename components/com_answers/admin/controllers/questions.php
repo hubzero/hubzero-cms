@@ -34,10 +34,11 @@ use Hubzero\Component\AdminController;
 use Components\Answers\Models\Question;
 use Components\Answers\Tables;
 use Exception;
+use Request;
+use Route;
 use Config;
 use Lang;
-use Route;
-use Request;
+use App;
 
 /**
  * Controller class for questions
@@ -68,34 +69,31 @@ class Questions extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'tag' => $app->getUserStateFromRequest(
+			'tag' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.tag',
 				'tag',
 				''
 			),
-			'q' => $app->getUserStateFromRequest(
+			'q' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.q',
 				'q',
 				''
 			),
-			'filterby' => $app->getUserStateFromRequest(
+			'filterby' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.filterby',
 				'filterby',
 				'all'
 			),
 			// Paging
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -103,12 +101,12 @@ class Questions extends AdminController
 			),
 			// Sorting
 			'sortby' => '',
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'created'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getstate(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
@@ -226,7 +224,7 @@ class Questions extends AdminController
 		}
 
 		// Redirect back to the full questions list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_ANSWERS_QUESTION_SAVED')
 		);
@@ -248,7 +246,7 @@ class Questions extends AdminController
 
 		if (count($ids) <= 0)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -269,7 +267,7 @@ class Questions extends AdminController
 		// Redirect
 		if ($this->getError())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				implode('<br />', $this->getErrors()),
 				'error'
@@ -277,7 +275,7 @@ class Questions extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_ANSWERS_QUESTION_DELETED')
 		);
@@ -304,7 +302,7 @@ class Questions extends AdminController
 		{
 			$action = ($publish == 1) ? Lang::txt('COM_ANSWERS_SET_STATE_CLOSE') : Lang::txt('COM_ANSWERS_SET_STATE_OPEN');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action),
 				'error'
@@ -343,7 +341,7 @@ class Questions extends AdminController
 			$message = Lang::txt('COM_ANSWERS_QUESTIONS_OPENED', count($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);

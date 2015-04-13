@@ -38,6 +38,7 @@ use Config;
 use Route;
 use User;
 use Lang;
+use App;
 
 /**
  * Controller class for knowledge base categories
@@ -66,48 +67,45 @@ class Categories extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
 			'state' => -1,
-			'access' => $app->getUserStateFromRequest(
+			'access' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.access',
 				'access',
 				0,
 				'int'
 			),
-			'search' => $app->getUserStateFromRequest(
+			'search' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			),
 			'empty' => 1,
-			'section' => $app->getUserStateFromRequest(
+			'section' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.id',
 				'id',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'a.title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -116,7 +114,7 @@ class Categories extends AdminController
 		);
 		if (!$this->view->filters['section'])
 		{
-			$this->view->filters['section'] = $app->getUserStateFromRequest(
+			$this->view->filters['section'] = Request::getState(
 				$this->_option . '.' . $this->_controller . '.cid',
 				'cid',
 				0,
@@ -249,7 +247,7 @@ class Categories extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . ($articles ? '&id=0' : ''), false),
 			Lang::txt('COM_KB_CATEGORY_SAVED')
 		);
@@ -301,7 +299,7 @@ class Categories extends AdminController
 				// Make sure we have an ID to work with
 				if (!$id)
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_KB_NO_ID'),
 						'error'
@@ -324,7 +322,7 @@ class Categories extends AdminController
 				}
 
 				// Set the redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$msg,
 					$typ
@@ -350,7 +348,7 @@ class Categories extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				($state == 1 ? Lang::txt('COM_KB_SELECT_PUBLISH') : Lang::txt('COM_KB_SELECT_UNPUBLISH')),
 				'error'
@@ -379,7 +377,7 @@ class Categories extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''), false),
 			$message
 		);

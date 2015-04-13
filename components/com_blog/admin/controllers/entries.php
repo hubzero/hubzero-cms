@@ -39,6 +39,7 @@ use Route;
 use User;
 use Lang;
 use Date;
+use App;
 
 /**
  * Blog controller class for entries
@@ -67,44 +68,41 @@ class Entries extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
-			'scope' => $app->getUserStateFromRequest(
+			'scope' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scope',
 				'scope',
 				'site'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'state' => urldecode($app->getUserStateFromRequest(
+			'state' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				''
 			)),
 			// Get sorting variables
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -114,7 +112,7 @@ class Entries extends AdminController
 
 		if ($this->view->filters['scope'] == 'group')
 		{
-			$this->view->filters['scope_id'] = $app->getUserStateFromRequest(
+			$this->view->filters['scope_id'] = Request::getState(
 				$this->_option . '.' . $this->_controller . '.scope_id',
 				'scope_id',
 				0,
@@ -228,7 +226,7 @@ class Entries extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BLOG_ENTRY_SAVED')
 		);
@@ -262,7 +260,7 @@ class Entries extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BLOG_ENTRIES_DELETED')
 		);
@@ -287,7 +285,7 @@ class Entries extends AdminController
 		// Check for a resource
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
 				'error'
@@ -326,7 +324,7 @@ class Entries extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
@@ -350,7 +348,7 @@ class Entries extends AdminController
 		// Check for a resource
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
 				'error'
@@ -368,7 +366,7 @@ class Entries extends AdminController
 			// Store new content
 			if (!$row->store())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$row->getError(),
 					'error'
@@ -389,7 +387,7 @@ class Entries extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);

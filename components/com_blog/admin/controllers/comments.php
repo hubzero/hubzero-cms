@@ -40,6 +40,7 @@ use Route;
 use User;
 use Lang;
 use Date;
+use App;
 
 /**
  * Blog controller class for comments
@@ -68,39 +69,37 @@ class Comments extends AdminController
 	 */
 	public function displayTask()
 	{
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
-			'entry_id'     => $app->getUserStateFromRequest(
+			'entry_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.entry_id',
 				'entry_id',
 				0,
 				'int'
 			),
-			'search'  => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
 			// Get sorting variables
-			'sort'         => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'created'
 			),
-			'sort_Dir'     => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit'        => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start'        => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -276,7 +275,7 @@ class Comments extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false),
 			Lang::txt('COM_BLOG_COMMENT_SAVED')
 		);
@@ -312,7 +311,7 @@ class Comments extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
 		);
 	}
@@ -325,7 +324,7 @@ class Comments extends AdminController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
 		);
 	}

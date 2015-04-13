@@ -34,6 +34,10 @@ use Components\Cache\Helpers\Cache as Helper;
 use Components\Cache\Models\Cache as Handler;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Cache Controller
@@ -113,7 +117,7 @@ class Cleanser extends AdminController
 			$this->model->cleanlist($cid);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&client=' . $this->model->getClient()->id, false)
 		);
 	}
@@ -139,7 +143,7 @@ class Cleanser extends AdminController
 			$msgType = 'error';
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&view=purge', false),
 			$msg,
 			$msgType

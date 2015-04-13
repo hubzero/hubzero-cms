@@ -42,6 +42,8 @@ use Config;
 use Route;
 use Lang;
 use User;
+use Date;
+use App;
 
 /**
  * Controller class for job postings
@@ -55,42 +57,39 @@ class Jobs extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Get sorting variables
-			'sortby' => $app->getUserStateFromRequest(
+			'sortby' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortby',
 				'filter_order',
 				'added'
 			),
-			'sortdir' => $app->getUserStateFromRequest(
+			'sortdir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
 			// Filters
-			'category' => $app->getUserStateFromRequest(
+			'category' => Request::getState(
 				$this->_option . '.' . $this->_controller . 'category',
 				'category',
 				'all'
 			),
 			'filterby' => '',
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . 'search',
 				'search',
 				''
@@ -151,16 +150,16 @@ class Jobs extends AdminController
 		// Is this a new job?
 		if (!$id)
 		{
-			$this->view->row->created      = \Date::toSql();
+			$this->view->row->created      = Date::toSql();
 			$this->view->row->created_by   = User::get('id');
 			$this->view->row->modified     = '0000-00-00 00:00:00';
 			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = \Date::toSql();
+			$this->view->row->publish_up   = Date::toSql();
 			$this->view->row->employerid   = 1; // admin
 		}
 		else if (!$this->view->row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
 				'error'
@@ -175,7 +174,7 @@ class Jobs extends AdminController
 		{
 			if (!$this->view->employer->loadEmployer($this->view->row->employerid))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
 					'error'
@@ -194,7 +193,7 @@ class Jobs extends AdminController
 		}
 
 		// Get subscription info
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
 
 		$this->view->subscription = new \Components\Services\Tables\Subscription($this->database);
 		$this->view->subscription->loadSubscription($this->view->employer->subscriptionid, '', '', $status=array(0, 1));
@@ -252,7 +251,7 @@ class Jobs extends AdminController
 		{
 			if (!$job->load($id))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
 					'error'
@@ -262,12 +261,12 @@ class Jobs extends AdminController
 		}
 		else
 		{ // saving new job
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
 			$subscription = new \Components\Services\Tables\Subscription($this->database);
 			$code = $subscription->generateCode(8, 8, 0, 1, 0);
 			$job->code = $code;
 
-			$job->added   = \Date::toSql();
+			$job->added   = Date::toSql();
 			$job->addedBy = User::get('id');
 		}
 
@@ -299,7 +298,7 @@ class Jobs extends AdminController
 					else
 					{
 						$job->status   = 1;
-						$job->opendate = \Date::toSql();
+						$job->opendate = Date::toSql();
 						$statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_APPROVED');
 					}
 				break;
@@ -320,7 +319,7 @@ class Jobs extends AdminController
 			}
 
 			$job->editedBy = User::get('id');
-			$job->edited = \Date::toSql();
+			$job->edited   = Date::toSql();
 		}
 
 		if (!$job->store())
@@ -341,15 +340,13 @@ class Jobs extends AdminController
 				'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
 			);
 
-			$juri    = Request::getInstance();
-
-			$base = rtrim($juri->base(), DS);
+			$base = rtrim(Request::base(), '/');
 			if (substr($base, -13) == 'administrator')
 			{
 				$base = substr($base, 0, strlen($base)-13);
 			}
 			$sef  = 'jobs/job/' . $job->code;
-			$link = rtrim($base, DS) . DS . trim($sef, DS);
+			$link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 			// start email message
 			$emailbody .= $subject . ':' . "\r\n";
@@ -370,7 +367,7 @@ class Jobs extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_JOBS_ITEM_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
 		);
@@ -413,7 +410,7 @@ class Jobs extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
 				'error'
@@ -430,7 +427,7 @@ class Jobs extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids))
 		);

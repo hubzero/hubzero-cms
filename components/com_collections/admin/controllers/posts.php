@@ -37,6 +37,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use App;
 
 /**
  * Controller class for collection posts
@@ -63,48 +64,45 @@ class Posts extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
 			'state'  => -1,
 			'access' => -1,
-			'collection_id' => $app->getUserStateFromRequest(
+			'collection_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.collection_id',
 				'collection_id',
 				0,
 				'int'
 			),
-			'item_id' => $app->getUserStateFromRequest(
+			'item_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.item_id',
 				'item_id',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'created'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -202,7 +200,7 @@ class Posts extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_COLLECTIONS_POST_SAVED')
 		);
@@ -237,7 +235,7 @@ class Posts extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_COLLECTIONS_ITEMS_DELETED')
 		);

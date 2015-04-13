@@ -32,6 +32,10 @@ namespace Components\Checkin\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Checkin Controller
@@ -88,7 +92,7 @@ class Checkin extends AdminController
 		// Initialise variables.
 		$ids = Request::getVar('cid', array(), '', 'array');
 
-		$msg = '';
+		$msg = null;
 
 		if (empty($ids))
 		{
@@ -100,7 +104,7 @@ class Checkin extends AdminController
 			$msg = Lang::txts('COM_CHECKIN_N_ITEMS_CHECKED_IN', $this->model->checkin($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			($msg ?: null)
 		);

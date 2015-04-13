@@ -33,6 +33,10 @@ namespace Components\Citations\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Citations\Helpers;
 use Components\Citations\Tables;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for citation format
@@ -82,7 +86,7 @@ class Format extends AdminController
 		$citationsFormat = new Tables\Format($this->database);
 		$citationsFormat->save($format);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_FORMAT_SAVED')
 		);

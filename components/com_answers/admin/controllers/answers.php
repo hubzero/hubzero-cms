@@ -35,10 +35,11 @@ use Components\Answers\Models\Question;
 use Components\Answers\Models\Response;
 use Components\Answers\Tables;
 use Exception;
-use Config;
-use Lang;
-use Route;
 use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for question responses
@@ -68,30 +69,27 @@ class Answers extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'filterby' => $app->getUserStateFromRequest(
+			'filterby' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.filterby',
 				'filterby',
 				'all'
 			),
-			'question_id' => $app->getUserStateFromRequest(
+			'question_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.qid',
 				'qid',
 				0,
 				'int'
 			),
 			// Paging
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -99,16 +97,16 @@ class Answers extends AdminController
 			),
 			// Sorting
 			'sortby' => '',
-			'sort' => trim($app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'created'
-			)),
-			'sort_Dir' => trim($app->getUserStateFromRequest(
+			),
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
-			))
+			)
 		);
 
 		$this->view->question = new Question($this->view->filters['question_id']);
@@ -218,7 +216,7 @@ class Answers extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_ANSWERS_ANSWER_SAVED')
 		);
@@ -253,7 +251,7 @@ class Answers extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . Request::getInt('qid', 0), false)
 		);
 	}
@@ -284,7 +282,7 @@ class Answers extends AdminController
 		{
 			$action = ($publish == 1) ? 'accept' : 'reject';
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action),
 				'error'
@@ -293,7 +291,7 @@ class Answers extends AdminController
 		}
 		else if (count($id) > 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'),
 				'error'
@@ -304,7 +302,7 @@ class Answers extends AdminController
 		$ar = new Response($id[0]);
 		if (!$ar->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -333,7 +331,7 @@ class Answers extends AdminController
 		$ar->set('state', $publish);
 		if (!$ar->store(false))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$ar->getError(),
 				'error'
@@ -351,7 +349,7 @@ class Answers extends AdminController
 			$message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
@@ -379,7 +377,7 @@ class Answers extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_ANSWERS_VOTE_LOG_RESET')
 		);

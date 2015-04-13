@@ -32,6 +32,10 @@ namespace Components\Citations\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Tables\Type;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for citation types
@@ -136,7 +140,7 @@ class Types extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_TYPE_SAVED')
 		);
@@ -159,7 +163,7 @@ class Types extends AdminController
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('CITATION_NO_TYPE'),
 				'error'
@@ -175,7 +179,7 @@ class Types extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('CITATION_TYPE_REMOVED')
 		);
