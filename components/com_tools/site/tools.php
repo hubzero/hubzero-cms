@@ -35,7 +35,7 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'tool.php');
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'tools'));
-if (!file_exists(_DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tools';
 }

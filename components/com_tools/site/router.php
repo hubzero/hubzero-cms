@@ -101,8 +101,12 @@ class ToolsRouter extends \Hubzero\Component\Router\Base
 		{
 			switch ($segments[0])
 			{
+				case 'zones':
+					$vars['controller'] = $segments[0];
+				break;
+
 				case 'media':
-					$vars['controller'] = 'media';
+					$vars['controller'] = $segments[0];
 				break;
 
 				case 'pipeline':
@@ -273,7 +277,18 @@ class ToolsRouter extends \Hubzero\Component\Router\Base
 				break;
 
 				default:
-					$vars['sess'] = $segments[1];
+					if (isset($vars['controller']) && $vars['controller'] == 'zones')
+					{
+						$vars['task'] = $segments[1];
+						if (isset($segments[2]))
+						{
+							$vars['id'] = $segments[2];
+						}
+					}
+					else
+					{
+						$vars['sess'] = $segments[1];
+					}
 				break;
 			}
 		}
