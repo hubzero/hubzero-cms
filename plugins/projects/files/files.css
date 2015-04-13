@@ -76,6 +76,9 @@
 		display: block;
 		padding: 1.5em 0 0 0;
 	}
+	#abox-content {
+		min-height: 200px;
+	}
 	#drop-files {
 		border: 1px solid #CCC;
 		padding: 1em;
@@ -1179,6 +1182,13 @@
 		border-bottom: 1px dotted #000;
 		background: url("/plugins/projects/files/images/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
+	}
+	#abox-content h3 span.folder {
+		border: none;
+	}
+	#abox-content h3 span.file {
+		font-size: 75%;
+		color: #000;
 	}
 	#plg-form h3 span a.remotedir {
 		background: none;

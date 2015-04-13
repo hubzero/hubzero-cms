@@ -168,7 +168,7 @@ class Git extends Models\Adapter
 			}
 
 			// Untracked?
-			if (in_array($file, $untracked))
+			if (in_array($file->get('localPath'), $untracked))
 			{
 				$file->set('untracked', true);
 			}
@@ -375,6 +375,90 @@ class Git extends Models\Adapter
 	{
 		$dirPath  = isset($params['subdir']) ? $params['subdir'] : NULL;
 
+	}
+
+	/**
+	 * Move item
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function move($params = array())
+	{
+		$fromFile = isset($params['fromFile']) ? $params['fromFile'] : NULL;
+		$toFile   = isset($params['toFile']) ? $params['toFile'] : NULL;
+		$type     = isset($params['type']) ? $params['type'] : 'file';
+
+		if (!($fromFile instanceof Models\File) || !($toFile instanceof Models\File))
+		{
+			return false;
+		}
+
+		$this->_git->gitMove($fromFile->get('localPath'), $toFile->get('localPath'), $type, $commitMsg);
+		$this->_git->gitCommit($commitMsg);
+
+		return true;
+	}
+
+	/**
+	 * Make dir
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function makeDirectory ($params = array())
+	{
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		if (!($file instanceof Models\File) || $file->get('type') != 'folder')
+		{
+			return false;
+		}
+
+		if (!$this->get('remote'))
+		{
+			if ($this->fileSystem->makeDirectory($file->get('fullPath'), 0755, true, true))
+			{
+				$this->checkin($params);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete dir
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function deleteDirectory ($params = array())
+	{
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		if (!($file instanceof Models\File) || $file->get('type') != 'folder')
+		{
+			return false;
+		}
+
+		// Delete from Git
+		$this->_git->gitDelete($file->get('localPath'), 'folder', $commitMsg);
+		$this->_git->gitCommit($commitMsg);
+
+		if (!$this->get('remote') && file_exists($file->get('fullPath')))
+		{
+			// Remove directory that is not in Git
+			if (!$this->fileSystem->deleteDirectory($file->get('fullPath')))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

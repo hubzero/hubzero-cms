@@ -70,7 +70,7 @@ if ($this->getError()) {
 <?php } ?>
 
 <form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="get" action="<?php echo $this->url; ?>">
-	<?php if (!$this->ajax && $this->case == 'files') { ?>
+	<?php if (!$this->ajax) { ?>
 		<div id="plg-header">
 			<h3 class="files">
 				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $bc; ?><?php } ?>

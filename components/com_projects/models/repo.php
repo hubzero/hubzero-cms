@@ -35,7 +35,7 @@ use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Components\Projects\Models;
 
-//require_once(dirname(__DIR__) . DS . 'tables' . DS . 'repo.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'repo.php');
 require_once(__DIR__ . DS . 'file.php');
 require_once(__DIR__ . DS . 'adapter.php');
 
@@ -109,13 +109,11 @@ class Repo extends Object
 		if ($this->get('name') !== 'local')
 		{
 			// Load repo info from db
-			/*
 			if (!$this->_tbl)
 			{
 				$this->_tbl = new Tables\Repo($this->_db);
 			}
 			$this->_tbl->loadRepo($this->get('project')->get('id'), $this->get('name'));
-			*/
 		}
 		else
 		{
@@ -186,26 +184,6 @@ class Repo extends Object
 	}
 
 	/**
-	 * Check that directory within repo exists
-	 *
-	 * @param	string	$dirname	Directory path
-	 * @return  boolean
-	 */
-	public function dirExists($dirname = NULL)
-	{
-		if ($this->get('remote'))
-		{
-			// TBD - remote check
-		}
-		elseif ($dirname && !file_exists($this->get('path') . DS . $dirname))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Make adapter call
 	 *
 	 * @param	string	$call	Method name
@@ -244,11 +222,23 @@ class Repo extends Object
 	/**
 	 * Get file count
 	 *
+	 * @param   array	$params
 	 * @return  integer
 	 */
-	public function count()
+	public function count($params = array())
 	{
-		return $this->_adapter->count();
+		return $this->call('count', $params);
+	}
+
+	/**
+	 * Get file list (retrieve and sort)
+	 *
+	 * @param      array	$params
+	 * @return     array
+	 */
+	public function filelist($params = array())
+	{
+		return $this->call('filelist', $params);
 	}
 
 	/**
@@ -266,112 +256,247 @@ class Repo extends Object
 	}
 
 	/**
-	 * Get files stats for all projects
+	 * Check that directory within repo exists
 	 *
-	 * @param      array 	$aliases	Project aliases for which to compute stats
-	 * @param      string 	$get
-	 *
-	 * @return     mixed
+	 * @param	string	$dirPath	Directory path
+	 * @return  boolean
 	 */
-	public function getStats($aliases = array(), $get = 'total')
+	public function dirExists($dirPath = NULL)
 	{
-		if (empty($aliases))
+		if (!$dirPath)
+		{
+			return false;
+		}
+		if ($this->get('remote'))
+		{
+			// TBD - remote check
+		}
+		elseif (!file_exists($this->get('path') . DS . $dirPath))
 		{
 			return false;
 		}
 
-		$files     = 0;
-		$diskSpace = 0;
-		$commits   = 0;
-		$usage     = 0;
+		return true;
+	}
 
-		// Publication space
-		if ($get == 'pubspace')
+	/**
+	 * Check that file within repo exists
+	 *
+	 * @param	string	$filePath	File path
+	 * @return  boolean
+	 */
+	public function fileExists($filePath = NULL)
+	{
+		if (!$filePath)
 		{
-			// Load publications component configs
-			$pubconfig = Component::params( 'com_publications' );
-			$base_path = DS . trim($pubconfig->get('webpath'), DS);
-
-			chdir(PATH_CORE . $base_path);
-			exec('du -sk ', $out);
-			$used = 0;
-
-			if ($out && isset($out[0]))
-			{
-				$kb = str_replace('.', '', trim($out[0]));
-				$used = $kb * 1024;
-			}
-
-			return $used;
+			return false;
+		}
+		if ($this->get('remote'))
+		{
+			// TBD - remote check
+		}
+		elseif (!file_exists($this->get('path') . DS . $filePath))
+		{
+			return false;
 		}
 
-		// Compute size of local project repos
-		foreach ($aliases as $alias)
+		return true;
+	}
+
+	/**
+	 * Delete a directory within repo
+	 *
+	 * @return  boolean
+	 */
+	public function deleteDirectory($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$dir       = isset($params['dir']) ? $params['dir'] : NULL;
+
+		$localDirPath = $dirPath ? $dirPath . DS . $dir : $dir;
+
+		if (!$dir || $dir == '.' || !$this->dirExists($localDirPath))
 		{
-			$path = \Components\Projects\Helpers\Html::getProjectRepoPath($alias, 'files', false);
-
-			// Make sure there is .git directory
-			if (!is_dir($path) || !is_dir($path . DS . '.git'))
-			{
-				continue;
-			}
-
-			if ($get == 'diskspace')
-			{
-				$diskSpace = $diskSpace + $this->call('getDiskUsage',
-					$params = array(
-						'path'    => $path,
-						'working' => true,
-						'git'     => true
-					)
-				);
-			}
-			else
-			{
-				$git = new \Components\Projects\Helpers\Git($path);
-				if ($get == 'commitCount')
-				{
-					$nf = $git->callGit('ls-files --full-name ');
-
-					if ($nf && substr($nf[0], 0, 5) != 'fatal')
-					{
-						$out = $git->callGit('log | grep "^commit" | wc -l' );
-
-						if (is_array($out))
-						{
-							$c =  end($out);
-							$commits = $commits + $c;
-						}
-					}
-				}
-				else
-				{
-					$count = count($git->getFiles());
-					$files = $files + $count;
-
-					if ($count > 1)
-					{
-						$usage++;
-					}
-				}
-			}
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
+			return false;
 		}
 
-		// Output
-		switch ($get)
+		// File object
+		$fileObject = new Models\File(trim($localDirPath), $path);
+		$fileObject->set('type', 'folder');
+		$params['file'] = $fileObject;
+
+		// Adapter call
+		if ($this->call('deleteDirectory', $params))
 		{
-			case 'total':
-				return $files;
-				break;
-			case 'usage':
-				return $usage;
-				break;
-			case 'diskspace':
-				return $diskspace;
-				break;
-			case 'commitCount':
-				return $commits;
-				break;
+			return true;
+		}
+		else
+		{
+			// Failed to delete directory
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
+			return false;
+		}
+
+	}
+
+	/**
+	 * Create a new directory within repo
+	 *
+	 * @return  boolean
+	 */
+	public function makeDirectory($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$newDir    = isset($params['newDir']) ? $params['newDir'] : NULL;
+		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
+
+		$newDir = \Components\Projects\Helpers\Html::makeSafeDir($newDir);
+		$localDirPath = $dirPath ? $dirPath . DS . $newDir : $newDir;
+
+		// Check that we have directory to create
+		if (!$newDir)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_CREATE'));
+			return false;
+		}
+
+		// Check that we directory name is not reserved for other purposes
+		if (dirname($localDirPath) == '.' && in_array(strtolower($newDir), $reserved))
+		{
+			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
+			return false;
+		}
+
+		// Directory already exists ?
+		if ($this->dirExists($localDirPath))
+		{
+			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". '
+			. Lang::txt('PLG_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS') );
+			return false;
+		}
+
+		// File object
+		$fileObject = new Models\File(trim($localDirPath), $path);
+		$fileObject->set('type', 'folder');
+		$params['file']    = $fileObject;
+		$params['replace'] = false;
+
+		// Adapter call
+		if ($this->call('makeDirectory', $params))
+		{
+			return true;
+		}
+		else
+		{
+			// Failed to create directory
+			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
+			return false;
+		}
+	}
+
+	/**
+	 * Rename a file or folder within repo
+	 *
+	 * @return  boolean
+	 */
+	public function rename($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$from      = isset($params['from']) ? $params['from'] : NULL;
+		$to        = isset($params['to']) ? $params['to'] : NULL;
+		$type      = isset($params['type']) ? $params['type'] : 'file';
+
+		if (!$to)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_NAME'));
+			return false;
+		}
+
+		if (!$from)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+			return false;
+		}
+
+		// Make dir/file name safe
+		if ($type == 'folder')
+		{
+			$to = \Components\Projects\Helpers\Html::makeSafeDir($to);
+		}
+		else
+		{
+			$to = \Components\Projects\Helpers\Html::makeSafeFile($to);
+		}
+
+		// Compare new and old name
+		if ($from == $to)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
+			return false;
+		}
+
+		// Set paths
+		$fromLocalPath = $dirPath ? $dirPath . DS . $from : $from;
+		$toLocalPath   = $dirPath ? $dirPath . DS . $to : $to;
+
+		// Already exists?
+		if ($type == 'folder')
+		{
+			if ($this->dirExists($toLocalPath))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $to);
+				return false;
+			}
+			if (!$this->dirExists($fromLocalPath))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+				return false;
+			}
+		}
+		if ($type == 'file')
+		{
+			if ($this->fileExists($toLocalPath))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
+				return false;
+			}
+			if (!$this->fileExists($fromLocalPath))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+				return false;
+			}
+
+			$newExt = \Components\Projects\Helpers\Html::getFileExtension($toLocalPath);
+			$fromExt = \Components\Projects\Helpers\Html::getFileExtension($fromLocalPath);
+
+			// Do not remove extension
+			$toLocalPath = $newExt && $newExt == $fromExt  ? $toLocalPath : $toLocalPath . '.' . $fromExt;
+		}
+
+		// File object - From
+		$fromFile = new Models\File(trim($fromLocalPath), $path);
+		$fromFile->set('type', $type);
+		$params['fromFile'] = $fromFile;
+
+		// File object - To
+		$toFile = new Models\File(trim($toLocalPath), $path);
+		$toFile->set('type', $type);
+		$params['toFile'] = $toFile;
+
+		// Adapter call
+		if ($this->call('move', $params))
+		{
+			return true;
+		}
+		else
+		{
+			// Failed to create directory
+			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME') );
+			return false;
 		}
 	}
 
@@ -384,7 +509,7 @@ class Repo extends Object
 	{
 		$ajaxUpload  = isset($params['ajaxUpload']) ? $params['ajaxUpload'] : false;
 		$dataPath    = isset($params['dataPath']) ? $params['dataPath'] : NULL;
-		$path        = isset($params['path']) ? $params['path'] : $this->_path;
+		$path        = isset($params['path']) ? $params['path'] : $this->get('path');
 		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
 		$sizeLimit   = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
 		$quota       = isset($params['quota']) ? $params['quota'] : '104857600';
@@ -493,7 +618,6 @@ class Repo extends Object
 	 */
 	protected function _upload($file, $tmp_name, $target, $size, &$available, $params)
 	{
-		$path        = isset($params['path']) ? $params['path'] : $this->_path;
 		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
 		$sizeLimit   = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
 		$expand      = isset($params['expand']) ? $params['expand'] : false;
@@ -535,7 +659,7 @@ class Repo extends Object
 				}
 			}
 
-			// Build our model
+			// File object
 			$fileObject        = new Models\File(trim($localPath), $this->get('path'));
 			$params['file']    = $fileObject;
 			$params['replace'] = $exists;
@@ -690,7 +814,7 @@ class Repo extends Object
 			{
 				if ($this->fileSystem->makeDirectory( $target . DS . $safe_dir, 0755, true, true ))
 				{
-					// Build our model
+					// File object
 					$localDirPath = $dirPath ? $dirPath . DS . $safe_dir : $safe_dir;
 					$fileObject = new Models\File(trim($localDirPath), $this->get('path'));
 					$fileObject->set('type', 'folder');
@@ -706,7 +830,7 @@ class Repo extends Object
 			// Copy file into project
 			if ($this->fileSystem->copy($e, $target . DS . $safeName))
 			{
-				// Build our model
+				// File object
 				$fileObject        = new Models\File(trim($localPath), $this->get('path'));
 				$params['file']    = $fileObject;
 				$params['replace'] = $exists;
@@ -774,5 +898,115 @@ class Repo extends Object
 	public function iniRemote()
 	{
 		// TBD
+	}
+
+	/**
+	 * Get files stats for all projects
+	 *
+	 * @param      array 	$aliases	Project aliases for which to compute stats
+	 * @param      string 	$get
+	 *
+	 * @return     mixed
+	 */
+	public function getStats($aliases = array(), $get = 'total')
+	{
+		if (empty($aliases))
+		{
+			return false;
+		}
+
+		$files     = 0;
+		$diskSpace = 0;
+		$commits   = 0;
+		$usage     = 0;
+
+		// Publication space
+		if ($get == 'pubspace')
+		{
+			// Load publications component configs
+			$pubconfig = Component::params( 'com_publications' );
+			$base_path = DS . trim($pubconfig->get('webpath'), DS);
+
+			chdir(PATH_CORE . $base_path);
+			exec('du -sk ', $out);
+			$used = 0;
+
+			if ($out && isset($out[0]))
+			{
+				$kb = str_replace('.', '', trim($out[0]));
+				$used = $kb * 1024;
+			}
+
+			return $used;
+		}
+
+		// Compute size of local project repos
+		foreach ($aliases as $alias)
+		{
+			$path = \Components\Projects\Helpers\Html::getProjectRepoPath($alias, 'files', false);
+
+			// Make sure there is .git directory
+			if (!is_dir($path) || !is_dir($path . DS . '.git'))
+			{
+				continue;
+			}
+
+			if ($get == 'diskspace')
+			{
+				$diskSpace = $diskSpace + $this->call('getDiskUsage',
+					$params = array(
+						'path'    => $path,
+						'working' => true,
+						'git'     => true
+					)
+				);
+			}
+			else
+			{
+				$git = new \Components\Projects\Helpers\Git($path);
+				if ($get == 'commitCount')
+				{
+					$nf = $git->callGit('ls-files --full-name ');
+
+					if ($nf && substr($nf[0], 0, 5) != 'fatal')
+					{
+						$out = $git->callGit('log | grep "^commit" | wc -l' );
+
+						if (is_array($out))
+						{
+							$c =  end($out);
+							$commits = $commits + $c;
+						}
+					}
+				}
+				else
+				{
+					$count = count($git->getFiles());
+					$files = $files + $count;
+
+					if ($count > 1)
+					{
+						$usage++;
+					}
+				}
+			}
+		}
+
+		// Output
+		switch ($get)
+		{
+			case 'total':
+				return $files;
+				break;
+			case 'usage':
+				return $usage;
+				break;
+			case 'diskspace':
+				return $diskSpace;
+				break;
+			case 'commitCount':
+				return $commits;
+				break;
+		}
 	}
 }

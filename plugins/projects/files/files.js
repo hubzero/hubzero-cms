@@ -37,6 +37,7 @@ HUB.ProjectFiles = {
 	bfolders: new Array(),
 	pub: 0,
 	remote: 0,
+	untracked: 0,
 	service: '',
 	sConflict: 0,
 	dir: 0,
@@ -543,6 +544,7 @@ HUB.ProjectFiles = {
 		var pub 		= this.pub;
 		var dir 		= this.dir;
 		var remote 		= this.remote;
+		var untracked   = this.untracked;
 
 		var manage 		= $('#file-manage');
 		var	ops 		= $('.fmanage');
@@ -823,6 +825,7 @@ HUB.ProjectFiles = {
 		var pub 		= this.pub;
 		var dir 		= this.dir;
 		var remote 		= this.remote;
+		var untracked 	= this.untracked;
 		var service 	= this.service;
 		var sConflict 	= this.sConflict;
 
@@ -831,6 +834,9 @@ HUB.ProjectFiles = {
 		{
 			if ($(el).hasClass('publ')) {
 				pub = pub + 1;
+			}
+			if ($(el).hasClass('untracked')) {
+				untracked = untracked + 1;
 			}
 			if ($(el).hasClass('remote')) {
 				remote = remote + 1;
@@ -872,6 +878,9 @@ HUB.ProjectFiles = {
 			if ($(el).hasClass('publ')) {
 				pub = pub - 1;
 			}
+			if ($(el).hasClass('untracked')) {
+				untracked = untracked - 1;
+			}
 			if ($(el).hasClass('remote'))
 			{
 				remote = remote - 1;
@@ -909,6 +918,9 @@ HUB.ProjectFiles = {
 		if (remote <= 0) {
 			remote = 0;
 		}
+		if (untracked <= 0) {
+			untracked = 0;
+		}
 
 		// Record new values
 		HUB.ProjectFiles.bchecked = bselected.length + bfolders.length;
@@ -917,6 +929,7 @@ HUB.ProjectFiles = {
 		HUB.ProjectFiles.dir = dir;
 		HUB.ProjectFiles.pub = pub;
 		HUB.ProjectFiles.remote = remote;
+		HUB.ProjectFiles.untracked = untracked;
 		HUB.ProjectFiles.service = service;
 		HUB.ProjectFiles.sConflict = sConflict;
 	},
@@ -1120,6 +1133,7 @@ HUB.ProjectFiles = {
 		var pub 		= this.pub;
 		var dir 		= this.dir;
 		var remote 		= this.remote;
+		var untracked 	= this.untracked;
 		var service 	= this.service;
 		var sConflict 	= this.sConflict;
 		var ops = $('.fmanage');
@@ -1151,28 +1165,31 @@ HUB.ProjectFiles = {
 		}
 		else if (bchecked == 1)
 		{
+			// Single file selection
 			if ($('#a-delete').length && $('#a-delete').hasClass('inactive')) {
 				$('#a-delete').removeClass('inactive');
 			}
-			if ($('#a-move').length && $('#a-move').hasClass('inactive') && (remote == 0)) {
+			if ($('#a-move').length && $('#a-move').hasClass('inactive') && (remote == 0) && (untracked == 0)) {
 				$('#a-move').removeClass('inactive');
 			}
 			if ($('#a-download').length && $('#a-download').hasClass('inactive') && dir == 0) {
 				$('#a-download').removeClass('inactive');
 			}
-			if ($('#a-history').length && $('#a-history').hasClass('inactive') && dir == 0) {
+			if ($('#a-history').length && $('#a-history').hasClass('inactive') && dir == 0 && (untracked == 0)) {
 				$('#a-history').removeClass('inactive');
 			}
 			if ($('#a-folder').length && !$('#a-folder').hasClass('inactive')) {
 				$('#a-folder').addClass('inactive');
 			}
-
 			if ($('#a-more').length && $('#a-more').hasClass('inactive') && dir == 0) {
 				$('#a-more').removeClass('inactive');
 			}
+			if ($('#a-rename').length && $('#a-rename').hasClass('inactive') && (remote == 0) && (untracked == 0)) {
+				$('#a-rename').removeClass('inactive');
+			}
 
 			// Sharing
-			if ($('#a-share').length && $('#a-share').hasClass('inactive') && dir == 0)
+			if ($('#a-share').length && $('#a-share').hasClass('inactive') && dir == 0 && (untracked == 0))
 			{
 				var selected = bselected[0];
 
@@ -1186,7 +1203,7 @@ HUB.ProjectFiles = {
 			}
 
 			// Compile preview
-			if ($('#a-compile').length && $('#a-compile').hasClass('inactive') && dir == 0)
+			if ($('#a-compile').length && $('#a-compile').hasClass('inactive') && dir == 0 && (untracked == 0))
 			{
 				var selected = bselected[0];
 
@@ -1198,23 +1215,19 @@ HUB.ProjectFiles = {
 					$('#a-compile').removeClass('inactive');
 				}
 			}
-
 		}
 		else if (bchecked > 1)
 		{
-			if($('#a-more').length && !$('#a-more').hasClass('inactive') )
-			{
-				$('#a-more').addClass('inactive');
-			}
+			// Multi-file selection
 
 			if ($('#a-delete').length && $('#a-delete').hasClass('inactive'))
 			{
 				$('#a-delete').removeClass('inactive');
 			}
-			if ($('#a-move').length && $('#a-move').hasClass('inactive') && remote == 0) {
+			if ($('#a-move').length && $('#a-move').hasClass('inactive') && remote == 0 && (untracked == 0)) {
 				$('#a-move').removeClass('inactive');
 			}
-			else if($('#a-move').length && !$('#a-move').hasClass('inactive') && (remote > 0))
+			else if($('#a-move').length && !$('#a-move').hasClass('inactive') && ((remote > 0) || untracked > 0))
 			{
 				$('#a-move').addClass('inactive');
 			}
@@ -1225,12 +1238,22 @@ HUB.ProjectFiles = {
 			{
 				$('#a-download').addClass('inactive');
 			}
+
+			if($('#a-more').length && !$('#a-more').hasClass('inactive') )
+			{
+				$('#a-more').addClass('inactive');
+			}
+
 			if ($('#a-compile').length && !$('#a-compile').hasClass('inactive')) {
 				$('#a-compile').addClass('inactive');
 			}
 
 			if ($('#a-history').length && !$('#a-history').hasClass('inactive')) {
 				$('#a-history').addClass('inactive');
+			}
+
+			if ($('#a-rename').length && !$('#a-rename').hasClass('inactive')) {
+				$('#a-rename').addClass('inactive');
 			}
 
 			if ($('#a-folder').length && !$('#a-folder').hasClass('inactive')) {

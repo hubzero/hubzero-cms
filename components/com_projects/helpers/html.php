@@ -1476,7 +1476,7 @@ class Html extends Object
 	 * @param      string $url
 	 * @return     string
 	 */
-	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL)
+	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL, $linkit = true)
 	{
 		$bc = NULL;
 		$href = '';
@@ -1489,8 +1489,15 @@ class Html extends Object
 			{
 				$parent   = count($desectPath) > 1 && $p != count($desectPath)  ? $href  : '';
 				$href  	 .= DS . $desectPath[$p];
-				$bc .= ' &raquo; <span><a href="' . $url . '/?subdir='
-					. urlencode($href) . '" class="folder">' . $desectPath[$p].'</a></span> ';
+				if ($linkit)
+				{
+					$bc .= ' &raquo; <span><a href="' . $url . '/?subdir='
+						. urlencode($href) . '" class="folder">' . $desectPath[$p] . '</a></span> ';
+				}
+				else
+				{
+					$bc .= ' <span class="folder">' . $desectPath[$p] . '</span> &raquo; ';
+				}
 			}
 		}
 

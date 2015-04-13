@@ -34,9 +34,7 @@ $subdirPath = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 <tr class="mini faded mline">
 	<?php if ($this->model->access('content')) { ?>
 	<td>
-		<?php if (!$this->item->get('untracked')) { ?>
-		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; ?>" />
-		<?php } ?>
+		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } ?>" />
 	</td>
 	<?php } ?>
 	<td class="top_valign nobsp">
@@ -44,10 +42,7 @@ $subdirPath = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 		<?php if ($this->item->get('type') == 'file') { ?>
 		<a href="<?php echo $this->url
 		. '/?action=download' . $subdirPath
-		. '&amp;file=' . urlencode($this->item->get('name')); ?>"
-		<?php if (!$this->item->get('untracked')) { ?>
-		class="preview file:<?php echo urlencode($this->item->get('name')); ?>" <?php } ?>>
-		<?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
+		. '&amp;file=' . urlencode($this->item->get('name')); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
 		<?php } else { ?>
 			<a href="<?php echo $this->url. '/?action=browse&amp;subdir=' . $this->item->get('localPath'); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
 		<?php } ?>
@@ -57,7 +52,7 @@ $subdirPath = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 	<td class="shrinked">
 	<?php if (!$this->item->get('untracked') && $this->item->get('type') == 'file') { ?>
 		<a href="<?php echo $this->url . '/?action=history' . $subdirPath . '&amp;asset=' . urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
-	<?php } ?>
+	<?php } elseif ($this->item->get('untracked')) { echo Lang::txt('PLG_PROJECTS_FILES_UNTRACKED'); } ?>
 	</td>
 	<td class="shrinked"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $this->item->get('author'); ?></td>
 	<td class="shrinked nojs">
