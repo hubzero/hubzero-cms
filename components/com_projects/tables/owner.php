@@ -947,7 +947,7 @@ class Owner extends \JTable
 		{
 			return false;
 		}
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`added`,`status`,
 			`native`, `role`, `invited_name`, `invited_email`, `invited_code` )
@@ -1008,7 +1008,7 @@ class Owner extends \JTable
 			return false;
 		}
 		$owners = array();
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 		$added = array();
 
 		// Individual user added

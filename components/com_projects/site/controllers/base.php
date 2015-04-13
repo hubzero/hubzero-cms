@@ -55,7 +55,7 @@ class Base extends SiteController
 		}
 
 		// Publishing enabled?
-		$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
 		// Setup complete?
 		$this->_setupComplete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -100,7 +100,7 @@ class Base extends SiteController
 		}
 
 		// Database development on?
-		if (\JPluginHelper::isEnabled('projects', 'databases'))
+		if (Plugin::isEnabled('projects', 'databases'))
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 				. DS . 'tables' . DS . 'database.php');

@@ -86,7 +86,7 @@ class Reports extends Base
 		// Incoming
 		$data   = Request::getVar( 'data', array(), 'post', 'array' );
 		$from   = Request::getVar( 'fromdate', \JHTML::_('date', \JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-		$to     = Request::getVar( 'todate', \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m') );
+		$to     = Request::getVar( 'todate', \JHTML::_('date', Date::toSql(), 'Y-m') );
 		$filter = Request::getVar( 'searchterm', '');
 
 		if (empty($data))

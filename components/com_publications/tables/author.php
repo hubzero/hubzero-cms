@@ -307,14 +307,14 @@ class Author extends \JTable
 		if ($result = $this->_db->loadAssoc())
 		{
 			$this->bind( $result );
-			$this->modified 	= \JFactory::getDate()->toSql();
+			$this->modified 	= Date::toSql();
 			$this->modified_by 	= $juser->get('id');
 		}
 		else
 		{
 			$this->publication_version_id 	= $vid;
 			$this->role 					= 'submitter';
-			$this->created 					= \JFactory::getDate()->toSql();
+			$this->created 					= Date::toSql();
 			$this->created_by 				= $juser->get('id');
 			$this->ordering 				= 1;
 		}
@@ -549,7 +549,7 @@ class Author extends \JTable
 				. $this->_db->Quote($this->lastName) . ", "
 				. $this->_db->Quote($this->organization) . ", "
 				. $this->_db->Quote($this->credit) . ", "
-				. $this->_db->Quote(\JFactory::getDate()->toSql()) . ", "
+				. $this->_db->Quote(Date::toSql()) . ", "
 				. $this->_db->Quote($this->created_by) . ", "
 				. $this->_db->Quote($this->status) . ", "
 				. $this->_db->Quote($this->project_owner_id) . ")";

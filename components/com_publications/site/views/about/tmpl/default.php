@@ -212,7 +212,7 @@ $schema 	= $metaElements->getSchema();
 		// Build our citation object
 		$cite = new stdClass();
 		$cite->title = $this->publication->title;
-		$cite->year = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->publication->published_up, 'Y') : JHTML::_('date', \JFactory::getDate()->toSql(), 'Y');
+		$cite->year = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->publication->published_up, 'Y') : JHTML::_('date', Date::toSql(), 'Y');
 
 		$cite->location = '';
 		$cite->date = '';

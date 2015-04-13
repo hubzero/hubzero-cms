@@ -398,7 +398,7 @@ class Link extends Base
 			$objPA->path 					= $path;
 			$objPA->type 					= $this->_name;
 			$objPA->created_by 				= $uid;
-			$objPA->created 				= \JFactory::getDate()->toSql();
+			$objPA->created 				= Date::toSql();
 			$objPA->role 					= $element->role;
 			$objPA->title 					= $title;
 
@@ -478,7 +478,7 @@ class Link extends Base
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= \JFactory::getDate()->toSql();
+		$row->modified 		= Date::toSql();
 
 		// Update record
 		if (!$row->store())

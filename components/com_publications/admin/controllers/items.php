@@ -1054,7 +1054,7 @@ class Items extends AdminController
 					// Save date accepted
 					if ($action == 'publish')
 					{
-						$this->model->version->accepted = \JFactory::getDate()->toSql();
+						$this->model->version->accepted = Date::toSql();
 
 						if ($this->_curated)
 						{
@@ -1084,7 +1084,7 @@ class Items extends AdminController
 							|| $this->model->version->archived == '0000-00-00 00:00:00')
 							&& Helpers\Utilities::mkAip($this->model->version))
 						{
-							$this->model->version->archived = \JFactory::getDate()->toSql();
+							$this->model->version->archived = Date::toSql();
 						}
 					}
 
@@ -1107,7 +1107,7 @@ class Items extends AdminController
 
 				case 'unpublish':
 					$this->model->version->state = 0;
-					$this->model->version->published_down = \JFactory::getDate()->toSql();
+					$this->model->version->published_down = Date::toSql();
 					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_UNPUBLISHED');
 					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
 
@@ -1120,7 +1120,7 @@ class Items extends AdminController
 		// Updating entry if anything changed
 		if (!$this->getError())
 		{
-			$this->model->version->modified    = \JFactory::getDate()->toSql();
+			$this->model->version->modified    = Date::toSql();
 			$this->model->version->modified_by = User::get('id');
 
 			// Store content
@@ -1165,7 +1165,7 @@ class Items extends AdminController
 						$objC->parent_activity  = $aid;
 						$objC->comment          = $comment;
 						$objC->admin            = 1;
-						$objC->created          = \JFactory::getDate()->toSql();
+						$objC->created          = Date::toSql();
 						$objC->created_by       = User::get('id');
 						$objC->store();
 

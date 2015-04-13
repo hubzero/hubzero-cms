@@ -425,7 +425,7 @@ class Files extends Object
 					// Update only if no hash recorded (or update requested)
 					$objPA->vcs_hash 				= $objPA->vcs_hash && $update_hash == 0 ? $objPA->vcs_hash : $vcs_hash;
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= \JFactory::getDate()->toSql();
+					$objPA->modified 				= Date::toSql();
 				}
 				else
 				{
@@ -436,7 +436,7 @@ class Files extends Object
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->vcs_hash 				= $vcs_hash;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= \JFactory::getDate()->toSql();
+					$objPA->created 				= Date::toSql();
 				}
 
 				$objPA->ordering 					= $added + 1;
@@ -650,7 +650,7 @@ class Files extends Object
 				$objAtt = new \Components\Publications\Tables\Attachment( $this->_database );
 				$objAtt->load($att->id);
 				$objAtt->modified_by  = $uid;
-				$objAtt->modified 	  = \JFactory::getDate()->toSql();
+				$objAtt->modified 	  = Date::toSql();
 				$objAtt->content_hash = hash_file('sha256', $newpath. DS .$att->path);
 
 				// Create hash file

@@ -92,7 +92,7 @@ class ToolView extends  \JTable
 			return false;
 		}
 
-		$now    	= \JFactory::getDate()->toSql();
+		$now    	= Date::toSql();
 		$lastView 	= NULL;
 
 		if ($this->loadView($toolid, $userid))

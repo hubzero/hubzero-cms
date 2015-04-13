@@ -400,7 +400,7 @@ class Databases extends Object
 					$result 			= Event::trigger( 'projects.clone_database', array( $database_name, $this->_project, $pPath) );
 					$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 					$objPA->modified_by = $uid;
-					$objPA->modified 	= \JFactory::getDate()->toSql();
+					$objPA->modified 	= Date::toSql();
 				}
 				else
 				{
@@ -415,7 +415,7 @@ class Databases extends Object
 				$objPA->publication_version_id 	= $vid;
 				$objPA->type 					= $this->_attachmentType;
 				$objPA->created_by 				= $uid;
-				$objPA->created 				= \JFactory::getDate()->toSql();
+				$objPA->created 				= Date::toSql();
 			}
 
 			// We do need a revision number!
@@ -664,7 +664,7 @@ class Databases extends Object
 												. DS . $database_name . DS . '?v=' . $dbVersion;
 					$objAtt->object_revision = $dbVersion;
 					$objAtt->modified_by 	 = $uid;
-					$objAtt->modified 		 = \JFactory::getDate()->toSql();
+					$objAtt->modified 		 = Date::toSql();
 					$objAtt->store();
 					$published++;
 				}

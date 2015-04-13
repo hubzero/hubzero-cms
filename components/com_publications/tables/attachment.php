@@ -566,7 +566,7 @@ class Attachment extends \JTable
 		$pAttach->ordering 				= $att->ordering;
 		$pAttach->publication_version_id= $vid;
 		$pAttach->created_by 			= $uid;
-		$pAttach->created 				= \JFactory::getDate()->toSql();
+		$pAttach->created 				= Date::toSql();
 		if ($pAttach->store())
 		{
 			return $this->bind($pAttach);

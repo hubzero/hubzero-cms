@@ -41,7 +41,7 @@ $aClass  = 'item_off';
 $active  = Lang::txt('COM_PUBLICATIONS_MTYPE_OFF');
 
 // If we got a plugin - type is supported
-if (JPluginHelper::isEnabled('projects', $this->row->alias))
+if (Plugin::isEnabled('projects', $this->row->alias))
 {
 	$aClass  = 'item_on';
 	$active  = Lang::txt('COM_PUBLICATIONS_MTYPE_ON');

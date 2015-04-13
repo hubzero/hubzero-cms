@@ -499,7 +499,7 @@ class Curation extends Object
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= \JFactory::getDate()->toSql();
+			$data->updated 		= Date::toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -543,7 +543,7 @@ class Curation extends Object
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= \JFactory::getDate()->toSql();
+			$data->updated 		= Date::toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -587,7 +587,7 @@ class Curation extends Object
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= \JFactory::getDate()->toSql();
+			$data->updated 		= Date::toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -620,7 +620,7 @@ class Curation extends Object
 
 		// Record update time
 		$data 				= new stdClass;
-		$data->updated 		= \JFactory::getDate()->toSql();
+		$data->updated 		= Date::toSql();
 		$data->updated_by 	= $actor;
 		$data->update		= stripslashes($dispute);
 		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
@@ -655,7 +655,7 @@ class Curation extends Object
 
 		// Record update time
 		$data 				= new stdClass;
-		$data->updated 		= \JFactory::getDate()->toSql();
+		$data->updated 		= Date::toSql();
 		$data->updated_by 	= $actor;
 		$data->review_status = 3;
 		$data->update		= stripslashes($reason);
@@ -728,7 +728,7 @@ class Curation extends Object
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= \JFactory::getDate()->toSql();
+			$data->updated 		= Date::toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -773,7 +773,7 @@ class Curation extends Object
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= \JFactory::getDate()->toSql();
+			$data->updated 		= Date::toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -1749,7 +1749,7 @@ class Curation extends Object
 
 		// Create new record
 		$obj->publication_version_id 	= $pub->version_id;
-		$obj->created 					= \JFactory::getDate()->toSql();
+		$obj->created 					= Date::toSql();
 		$obj->created_by				= $actor;
 		$obj->changelog					= $changelog;
 		$obj->curator					= $curator;
@@ -2037,7 +2037,7 @@ class Curation extends Object
 				$readme .= "\n ";
 				$readme .= "\n ";
 				$readme .= '--------------------------------------------' . "\n ";
-				$readme .= 'Archival package produced ' . \JFactory::getDate()->toSql();
+				$readme .= 'Archival package produced ' . Date::toSql();
 
 				$handle  = fopen($readmeFile, 'w');
 				fwrite($handle, $readme);
@@ -2156,7 +2156,7 @@ class Curation extends Object
 						$objPA->path 					= $shot->filename;
 						$objPA->type 					= 'file';
 						$objPA->created_by 				= $uid;
-						$objPA->created 				= \JFactory::getDate()->toSql();
+						$objPA->created 				= Date::toSql();
 						$objPA->role 					= $element->manifest->params->role;
 						$objPA->element_id 				= $element->id;
 						$objPA->ordering 				= $shot->ordering;

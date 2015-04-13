@@ -376,7 +376,7 @@ class Notes extends Object
 				if ($objPA->loadAttachment($vid, $pageId, 'note'))
 				{
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= \JFactory::getDate()->toSql();
+					$objPA->modified 				= Date::toSql();
 				}
 				else
 				{
@@ -386,7 +386,7 @@ class Notes extends Object
 					$objPA->path 					= '';
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= \JFactory::getDate()->toSql();
+					$objPA->created 				= Date::toSql();
 				}
 
 				// Save object information

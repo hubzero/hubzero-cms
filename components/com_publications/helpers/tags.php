@@ -97,7 +97,7 @@ class Tags extends \TagsHandler
 	public function get_tags_with_objects($id=0, $category=0, $tag='')
 	{
 		$juser = \JFactory::getUser();
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t,
 			$this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'");
@@ -206,7 +206,7 @@ class Tags extends \TagsHandler
 	public function get_objects_on_tag($tag='', $id=0, $category=0, $sortby='title', $tag2='', $filterby=array())
 	{
 		$juser = \JFactory::getUser();
-		$now  = \JFactory::getDate()->toSql();
+		$now  = Date::toSql();
 
 		if ($tag || $tag2)
 		{
@@ -499,8 +499,8 @@ class Tags extends \TagsHandler
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
 		$sql .= "AND tj.tbl=" . $this->_db->Quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
-		$sql .= "AND V.published_up < " . $this->_db->Quote(\JFactory::getDate()->toSql()) . " ";
-		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->Quote(\JFactory::getDate()->toSql()) . ") ";
+		$sql .= "AND V.published_up < " . $this->_db->Quote(Date::toSql()) . " ";
+		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->Quote(Date::toSql()) . ") ";
 		$sql .= "GROUP BY tagid ";
 		$sql .= "ORDER BY tcount DESC ";
 		$sql .= "LIMIT $limit";

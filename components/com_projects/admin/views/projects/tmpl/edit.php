@@ -131,13 +131,13 @@ function submitbutton(pressbutton)
 				<?php } ?>
 			</div>
 
-			<?php if (JPluginHelper::isEnabled('projects', 'apps') or $this->publishing) { ?>
+			<?php if (Plugin::isEnabled('projects', 'tools') or $this->publishing) { ?>
 				<div class="input-wrap">
 					<?php echo Lang::txt('COM_PROJECTS_TYPE'); ?>
 					<select name="type">
 						<?php foreach ($this->types as $type) {
 							if (($type->id == 3 && !$this->publishing) ||
-							($type->id == 2 && !JPluginHelper::isEnabled('projects', 'apps'))) {
+							($type->id == 2 && !Plugin::isEnabled('projects', 'tools'))) {
 								continue;
 							}
 							$selected = $type->id == $this->obj->type ? ' selected="selected"' : '';
@@ -294,12 +294,6 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_PROJECTS_FILES'); ?>:</th>
 					<td><?php echo $this->counts['files']; ?></td>
 				</tr>
-				<?php if (JPluginHelper::isEnabled('projects', 'apps') && isset($this->counts['apps'])) { ?>
-				<tr>
-					<th><?php echo Lang::txt('COM_PROJECTS_APPS'); ?>:</th>
-					<td><?php echo $this->counts['apps']; ?></td>
-				</tr>
-				<?php } ?>
 				<?php if ($this->publishing) { ?>
 				<tr>
 					<th><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS'); ?>:</th>

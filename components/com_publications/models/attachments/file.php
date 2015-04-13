@@ -1021,7 +1021,7 @@ class File extends Base
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= \JFactory::getDate()->toSql();
+		$row->modified 		= Date::toSql();
 
 		// Update record
 		if (!$row->store())
@@ -1090,7 +1090,7 @@ class File extends Base
 			{
 				$objPA->vcs_hash 				= $vcs_hash;
 				$objPA->modified_by 			= $uid;
-				$objPA->modified 				= \JFactory::getDate()->toSql();
+				$objPA->modified 				= Date::toSql();
 				$update = 1; // Copy file again (new version)
 
 				// Reflect the update in curation record
@@ -1106,7 +1106,7 @@ class File extends Base
 			$objPA->type 					= $this->_name;
 			$objPA->vcs_hash 				= $vcs_hash;
 			$objPA->created_by 				= $uid;
-			$objPA->created 				= \JFactory::getDate()->toSql();
+			$objPA->created 				= Date::toSql();
 			$objPA->role 					= $element->role;
 
 			// Reflect the update in curation record

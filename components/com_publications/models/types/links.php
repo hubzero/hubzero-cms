@@ -318,7 +318,7 @@ class Links extends Object
 				if ($objPA->loadAttachment($vid, $link, 'link'))
 				{
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= \JFactory::getDate()->toSql();
+					$objPA->modified 				= Date::toSql();
 				}
 				else
 				{
@@ -328,7 +328,7 @@ class Links extends Object
 					$objPA->path 					= $link;
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= \JFactory::getDate()->toSql();
+					$objPA->created 				= Date::toSql();
 					$objPA->title 					= NULL;
 				}
 

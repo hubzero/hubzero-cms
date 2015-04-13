@@ -157,7 +157,7 @@ class Authors extends Base
 				if ($pAuthor->status == 2 || $pAuthor->status == 0)
 				{
 					$pAuthor->status 		= 1;
-					$pAuthor->modified 		= \JFactory::getDate()->toSql();
+					$pAuthor->modified 		= Date::toSql();
 					$pAuthor->modified_by 	= $actor;
 
 					if ($pAuthor->updateAssociationByOwner())
@@ -181,7 +181,7 @@ class Authors extends Base
 				$pAuthor->name 						= $profile && $profile->name ? $profile->name : $invited;
 				$pAuthor->firstName 				= $profile->givenName ? $profile->givenName : '';
 				$pAuthor->lastName 					= $profile->surname ? $profile->surname : '';
-				$pAuthor->created 					= \JFactory::getDate()->toSql();
+				$pAuthor->created 					= Date::toSql();
 				$pAuthor->created_by 				= $actor;
 
 				if (!$pAuthor->createAssociation())
@@ -273,7 +273,7 @@ class Authors extends Base
 			$pAuthor->name 						= $author->name;
 			$pAuthor->project_owner_id 			= $author->project_owner_id;
 			$pAuthor->publication_version_id 	= $newVersion->id;
-			$pAuthor->created 					= \JFactory::getDate()->toSql();
+			$pAuthor->created 					= Date::toSql();
 			$pAuthor->created_by 				= $juser->get('id');
 			if (!$pAuthor->createAssociation())
 			{
@@ -402,7 +402,7 @@ class Authors extends Base
 			$objO->projectid 	 = $pub->_project->id;
 			$objO->userid 		 = $uid;
 			$objO->status 		 = $uid ? 1 : 0;
-			$objO->added 		 = \JFactory::getDate()->toSql();
+			$objO->added 		 = Date::toSql();
 			$objO->role 		 = 2;
 			$objO->invited_email = $email;
 			$objO->invited_name  = $name;
@@ -430,13 +430,13 @@ class Authors extends Base
 
 		if ($pAuthor->loadAssociationByOwner( $owner, $pub->version_id ))
 		{
-			$pAuthor->modified 		= \JFactory::getDate()->toSql();
+			$pAuthor->modified 		= Date::toSql();
 			$pAuthor->modified_by 	= $actor;
 			$exists = 1;
 		}
 		else
 		{
-			$pAuthor->created 				 = \JFactory::getDate()->toSql();
+			$pAuthor->created 				 = Date::toSql();
 			$pAuthor->created_by 			 = $actor;
 			$pAuthor->publication_version_id = $pub->version_id;
 			$pAuthor->project_owner_id 		 = $owner;
@@ -541,7 +541,7 @@ class Authors extends Base
 		$row->name 	 		= $row->firstName . ' ' . $row->lastName;
 		$row->credit 		= $credit;
 		$row->modified_by 	= $actor;
-		$row->modified 		= \JFactory::getDate()->toSql();
+		$row->modified 		= Date::toSql();
 
 		// Check that profile exists
 		if ($uid)

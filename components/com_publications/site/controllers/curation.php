@@ -566,7 +566,7 @@ class Curation extends SiteController
 
 					// Create new record
 					$obj->publication_version_id 	= $row->id;
-					$obj->created 					= \JFactory::getDate()->toSql();
+					$obj->created 					= Date::toSql();
 					$obj->created_by				= User::get('id');
 					$obj->changelog					= $changelog;
 					$obj->curator					= 1;
@@ -647,8 +647,8 @@ class Curation extends SiteController
 		}
 
 		$this->model->version->state       = 1; // published
-		$this->model->version->accepted    = \JFactory::getDate()->toSql();
-		$this->model->version->reviewed    = \JFactory::getDate()->toSql();
+		$this->model->version->accepted    = Date::toSql();
+		$this->model->version->reviewed    = Date::toSql();
 		$this->model->version->reviewed_by = User::get('id');
 
 		// Archive (mkAIP) if no grace period and not previously archived
@@ -658,7 +658,7 @@ class Curation extends SiteController
 			|| $this->model->version->archived == '0000-00-00 00:00:00')
 		)
 		{
-			$this->model->version->archived = \JFactory::getDate()->toSql();
+			$this->model->version->archived = Date::toSql();
 		}
 
 		// Set curation
@@ -753,7 +753,7 @@ class Curation extends SiteController
 
 		// Change publication status
 		$row->state 		= 7; // pending author changes
-		$row->reviewed 		= \JFactory::getDate()->toSql();
+		$row->reviewed 		= Date::toSql();
 		$row->reviewed_by 	= User::get('id');
 
 		if (!$row->store())
@@ -862,7 +862,7 @@ class Curation extends SiteController
 		$pub->_curationModel->setPubAssoc($pub);
 
 		$data 					= new stdClass;
-		$data->reviewed 		= \JFactory::getDate()->toSql();
+		$data->reviewed 		= Date::toSql();
 		$data->reviewed_by 		= User::get('id');
 		$data->review_status 	= $action == 'pass' ? 1 : 2;
 		if ($action == 'pass')

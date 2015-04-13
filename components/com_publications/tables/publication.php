@@ -120,7 +120,7 @@ class Publication extends \JTable
 	public function buildQuery( $filters = array(), $usergroups = array(), $admin = false )
 	{
 		$juser 		= \JFactory::getUser();
-		$now 		= \JFactory::getDate()->toSql();
+		$now 		= Date::toSql();
 		$groupby 	= ' GROUP BY C.id ';
 
 		$project 		= isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
@@ -525,7 +525,7 @@ class Publication extends \JTable
 			return false;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 		$alias = str_replace( ':', '-', $alias );
 
 		$sql  = "SELECT V.*, C.id as id, C.category, C.master_type,

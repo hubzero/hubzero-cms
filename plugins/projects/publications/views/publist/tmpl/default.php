@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+$publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
 if (!$publishing)
 {

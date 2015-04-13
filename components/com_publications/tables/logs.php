@@ -91,7 +91,7 @@ class Log extends \JTable
 
 		$uid 	= User::isGuest() ? 'guest' : User::get('id');
 
-		$log = \JFactory::getDate()->toSql() . "\t" . $ip . "\t" . $uid . "\t" . $type . "\n";
+		$log = Date::toSql() . "\t" . $ip . "\t" . $uid . "\t" . $type . "\n";
 
 		$handle  = fopen(PATH_APP . $logPath . DS . $filename, 'a');
 
@@ -143,7 +143,7 @@ class Log extends \JTable
 		}
 
 		$this->$field = $count;
-		$this->modified	= \JFactory::getDate()->toSql();
+		$this->modified	= Date::toSql();
 
 		if ($this->store())
 		{
@@ -212,7 +212,7 @@ class Log extends \JTable
 			$this->month					= $thisMonthNum;
 		}
 
-		$this->modified	= \JFactory::getDate()->toSql();
+		$this->modified	= Date::toSql();
 
 		if ($type == 'primary')
 		{
@@ -400,7 +400,7 @@ class Log extends \JTable
 		}
 
 		$query .= " WHERE P.id=C.project_id AND C.id=V.publication_id AND C.category = t.id AND
-					V.main=1 AND V.state=1 AND V.published_up < '" . \JFactory::getDate()->toSql() . "'";
+					V.main=1 AND V.state=1 AND V.published_up < '" . Date::toSql() . "'";
 		$query .= " GROUP BY V.publication_id ";
 
 		$query .= $lastmonth ? " ORDER BY L.page_views DESC, V.id ASC " :  "ORDER BY V.title ASC ";
@@ -454,7 +454,7 @@ class Log extends \JTable
 			$query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
 		}
 
-		$query .= " WHERE V.state=1 AND V.main=1 AND V.published_up < '" . \JFactory::getDate()->toSql() . "'";
+		$query .= " WHERE V.state=1 AND V.main=1 AND V.published_up < '" . Date::toSql() . "'";
 
 		$this->_db->setQuery( $query );
 		$totals = $this->_db->loadObjectList();
@@ -519,7 +519,7 @@ class Log extends \JTable
 					AND A.ordering=1 AND status=1";
 
 		$query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id
-					AND V.main=1 AND V.published_up < '" . \JFactory::getDate()->toSql() . "' ";
+					AND V.main=1 AND V.published_up < '" . Date::toSql() . "' ";
 
 		if (!empty($exclude))
 		{
@@ -641,7 +641,7 @@ class Log extends \JTable
 		$query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id AND period='14' AND datetime='" . $dthis . "-01 00:00:00' ";
 
 		$query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id
-					AND V.main=1 AND V.published_up < '" . \JFactory::getDate()->toSql() . "' AND C.project_id=$projectid";
+					AND V.main=1 AND V.published_up < '" . Date::toSql() . "' AND C.project_id=$projectid";
 
 		$query .= $pubid ? " AND V.publication_id=" . $this->_db->Quote($pubid) : "";
 		$query .= " GROUP BY V.publication_id ";

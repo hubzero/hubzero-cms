@@ -110,7 +110,7 @@ class Publications extends SiteController
 		$this->_curated = $this->config->get('curation', 0);
 
 		// Are we allowing contributions
-		$this->_contributable = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_contributable = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 	}
 
 	/**

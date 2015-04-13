@@ -201,7 +201,7 @@ class Content extends Base
 
 					// Record update time
 					$data 				= new stdClass;
-					$data->updated 		= \JFactory::getDate()->toSql();
+					$data->updated 		= Date::toSql();
 					$data->updated_by 	= $actor;
 					$data->update 		= ''; // remove dispute
 

@@ -248,7 +248,7 @@ class Description extends Base
 
 					// Record update time
 					$data 				= new stdClass;
-					$data->updated 		= \JFactory::getDate()->toSql();
+					$data->updated 		= Date::toSql();
 					$data->updated_by 	= $actor;
 
 					// Unmark as skipped
@@ -270,7 +270,7 @@ class Description extends Base
 		// Update modified info
 		if ($changed)
 		{
-			$row->modified 	  = \JFactory::getDate()->toSql();
+			$row->modified 	  = Date::toSql();
 			$row->modified_by = $actor;
 			$this->_parent->set('_update', 1);
 		}

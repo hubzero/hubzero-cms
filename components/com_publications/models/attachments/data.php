@@ -442,7 +442,7 @@ class Data extends Base
 			$objPA->publication_version_id 	= $pub->version_id;
 			$objPA->type 					= $this->_name;
 			$objPA->created_by 				= $uid;
-			$objPA->created 				= \JFactory::getDate()->toSql();
+			$objPA->created 				= Date::toSql();
 			$objPA->role 					= $element->role;
 			$new = 1;
 
@@ -464,7 +464,7 @@ class Data extends Base
 				$result 			= Event::trigger( 'projects.clone_database', array( $database_name, $pub->_project, $configs->servePath) );
 				$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 				$objPA->modified_by = $uid;
-				$objPA->modified 	= \JFactory::getDate()->toSql();
+				$objPA->modified 	= Date::toSql();
 			}
 			else
 			{
@@ -571,7 +571,7 @@ class Data extends Base
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= \JFactory::getDate()->toSql();
+		$row->modified 		= Date::toSql();
 
 		// Update record
 		if (!$row->store())

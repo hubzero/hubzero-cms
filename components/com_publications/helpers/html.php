@@ -635,7 +635,7 @@ class Html
 			$text .= ($publication->main == 1 || $publication->state == 1) ? ''
 				: '<strong>'.Lang::txt('COM_PUBLICATIONS_ARCHIVE').'</strong> ';
 			$text .= Lang::txt('COM_PUBLICATIONS_VERSION').' <strong>'.$publication->version_label.'</strong>';
-			$now = \JFactory::getDate()->toSql();
+			$now = Date::toSql();
 
 			switch ($publication->state)
 			{
@@ -736,7 +736,7 @@ class Html
 	public static function showAccessMessage( $publication)
 	{
 		$msg = '';
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Show message to restricted users
 		if (!$publication->access('view-all'))
@@ -1268,7 +1268,7 @@ class Html
 		$date   = '';
 		$class  = '';
 
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		switch ($row->state)
 		{

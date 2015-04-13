@@ -187,7 +187,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$repoName   = !empty($params['repo']) ? $params['repo'] : Request::getVar( 'repo', 'local');
 			$this->repo = new \Components\Projects\Models\Repo ($this->model, $repoName);
 
-			$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+			$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 			$this->_database   = \JFactory::getDBO();
 			$this->_uid 	   = User::get('id');
 			$this->_task       = $action ? $action : Request::getVar('action', 'browse');
@@ -2453,7 +2453,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				$fullpath 	= $archive['path'];
 				$file  		= $archive['name'];
-				$serveas	= 'Project Files ' . \JFactory::getDate()->toSql() . '.zip';
+				$serveas	= 'Project Files ' . Date::toSql() . '.zip';
 				$deleteTemp = 1;
 			}
 			else
@@ -3312,7 +3312,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get publication usage
-		if (\JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
+		if (Plugin::isEnabled('projects', 'publications') && $by == 'admin')
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'helpers' . DS . 'html.php');
@@ -4446,7 +4446,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$output .= 'Sync complete:' . "\n";
 		$output .= 'Local time: '. $endTime . "\n";
-		$output .= 'UTC time: '.  \JFactory::getDate()->toSql() . "\n";
+		$output .= 'UTC time: '.  Date::toSql() . "\n";
 		$output .= 'Sync completed in: '.  $length . "\n";
 
 		// Determine next sync ID

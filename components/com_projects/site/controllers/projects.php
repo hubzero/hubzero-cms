@@ -801,7 +801,7 @@ class Projects extends Base
 			$this->model->set('state', $state);
 			$this->model->set('setup_stage', 2);
 			$this->model->set('provisioned', 0);
-			$this->model->set('modified', \JFactory::getDate()->toSql());
+			$this->model->set('modified', Date::toSql());
 			$this->model->set('modified_by', User::get('id'));
 
 			// Save changes
@@ -924,7 +924,7 @@ class Projects extends Base
 		}
 
 		// Update project
-		$this->model->set('modified', \JFactory::getDate()->toSql());
+		$this->model->set('modified', Date::toSql());
 		$this->model->set('modified_by', User::get('id'));
 
 		if ($this->_task != 'fixownership')
@@ -1066,7 +1066,7 @@ class Projects extends Base
 			$cbase = $this->model->get('admin_notes');
 
 			// Meta data for comment
-			$now = \JFactory::getDate()->toSql();
+			$now = Date::toSql();
 			$meta = '<meta>' . \JHTML::_('date', $now, 'M d, Y') . ' - ' . User::get('name') . '</meta>';
 
 			// Save approval

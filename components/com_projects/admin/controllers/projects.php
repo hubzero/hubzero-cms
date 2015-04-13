@@ -48,7 +48,7 @@ class Projects extends AdminController
 	public function execute()
 	{
 		// Publishing enabled?
-		$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
 		// Include scripts
 		$this->_includeScripts();
@@ -339,7 +339,7 @@ class Projects extends AdminController
 		$obj->title 		= $formdata['title'] ? rtrim($formdata['title']) : $obj->title;
 		$obj->about 		= rtrim(\Hubzero\Utility\Sanitize::clean($formdata['about']));
 		$obj->type 			= isset($formdata['type']) ? $formdata['type'] : 1;
-		$obj->modified 		= \JFactory::getDate()->toSql();
+		$obj->modified 		= Date::toSql();
 		$obj->modified_by 	= User::get('id');
 		$obj->private 		= Request::getVar( 'private', 0 );
 

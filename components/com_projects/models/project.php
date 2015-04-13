@@ -968,7 +968,7 @@ class Project extends Model
 				$member->num_visits = $member->num_visits + 1; // record visit in a day
 				$member->prev_visit = $member->lastvisit;
 			}
-			$member->lastvisit = \JFactory::getDate()->toSql();
+			$member->lastvisit = Date::toSql();
 			$member->store();
 		}
 	}

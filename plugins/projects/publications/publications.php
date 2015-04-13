@@ -7189,7 +7189,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$pluginName = is_object($choice) ? $choice->alias : $choice;
 
 				// We need a plugin
-				if (!JPluginHelper::isEnabled('projects', $pluginName))
+				if (!Plugin::isEnabled('projects', $pluginName))
 				{
 					continue;
 				}

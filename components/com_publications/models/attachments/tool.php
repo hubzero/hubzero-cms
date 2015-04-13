@@ -425,7 +425,7 @@ class Tool extends Base
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= \JFactory::getDate()->toSql();
+		$row->modified 		= Date::toSql();
 
 		// Update record
 		if (!$row->store())

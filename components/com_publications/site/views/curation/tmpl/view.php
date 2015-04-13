@@ -34,7 +34,7 @@ $this->css()
 // Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 
-$now = \JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 // Get creator name
 $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);

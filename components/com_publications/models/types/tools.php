@@ -386,7 +386,7 @@ class Tools extends Object
 				if ($objPA->loadAttachment($vid, $toolname, 'tool'))
 				{
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= \JFactory::getDate()->toSql();
+					$objPA->modified 				= Date::toSql();
 				}
 				else
 				{
@@ -396,7 +396,7 @@ class Tools extends Object
 					$objPA->path 					= '';
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= \JFactory::getDate()->toSql();
+					$objPA->created 				= Date::toSql();
 				}
 
 				// Save object information

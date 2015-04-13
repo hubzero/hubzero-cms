@@ -272,7 +272,7 @@ class Citations extends Base
 			return false;
 		}
 
-		$citation->created 		= $new ? \JFactory::getDate()->toSql() : $citation->created;
+		$citation->created 		= $new ? Date::toSql() : $citation->created;
 		$citation->uid			= $new ? $actor : $citation->uid;
 		$citation->published	= 1;
 

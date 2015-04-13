@@ -242,7 +242,7 @@ class Activity extends \JTable
 
 		$this->projectid 	= $projectid;
 		$this->userid 		= $by;
-		$this->recorded 	= \JFactory::getDate()->toSql();
+		$this->recorded 	= Date::toSql();
 		$this->activity 	= $activity;
 		$this->highlighted 	= $highlighted;
 		$this->referenceid 	= $referenceid;

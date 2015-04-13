@@ -479,7 +479,7 @@ class Setup extends Base
 			$this->model->set('state', $state);
 			$this->model->set('provisioned', 0); // remove provisioned flag if any
 			$this->model->set('setup_stage', $this->_setupComplete);
-			$this->model->set('created', \JFactory::getDate()->toSql());
+			$this->model->set('created', Date::toSql());
 
 			// Save changes
 			if (!$this->model->store())
@@ -622,13 +622,13 @@ class Setup extends Base
 
 				if ($this->model->exists())
 				{
-					$this->model->set('modified', \JFactory::getDate()->toSql());
+					$this->model->set('modified', Date::toSql());
 					$this->model->set('modified_by', User::get('id'));
 				}
 				else
 				{
 					$this->model->set('alias', $name);
-					$this->model->set('created', \JFactory::getDate()->toSql());
+					$this->model->set('created', Date::toSql());
 					$this->model->set('created_by_user', User::get('id'));
 					$this->model->set('owned_by_group', $this->_gid);
 					$this->model->set('owned_by_user', User::get('id'));

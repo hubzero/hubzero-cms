@@ -339,7 +339,7 @@ class Batchcreate extends AdminController
 				$item['publication']->category 			= $catId ? $catId : $cat;
 				$item['publication']->project_id 		= $this->project->id;
 				$item['publication']->created_by 		= $this->_uid;
-				$item['publication']->created 			= \JFactory::getDate()->toSql();
+				$item['publication']->created 			= Date::toSql();
 				$item['publication']->access 			= 0;
 
 				// Version properties
@@ -500,7 +500,7 @@ class Batchcreate extends AdminController
 		$item['version']->publication_id 	= $pid;
 		$item['version']->version_number 	= 1;
 		$item['version']->created_by 		= $this->_uid;
-		$item['version']->created 			= \JFactory::getDate()->toSql();
+		$item['version']->created 			= Date::toSql();
 		$item['version']->secret			= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 		$item['version']->access			= 0;
 		$item['version']->main				= 1;
@@ -645,7 +645,7 @@ class Batchcreate extends AdminController
 			$attachment->publication_version_id 	= $vid;
 			$attachment->vcs_hash 					= $vcs_hash;
 			$attachment->created_by 				= $this->_uid;
-			$attachment->created 					= \JFactory::getDate()->toSql();
+			$attachment->created 					= Date::toSql();
 			$attachment->store();
 		}
 
@@ -768,7 +768,7 @@ class Batchcreate extends AdminController
 				$pScreenshot->publication_id 			= $pub->id;
 				$pScreenshot->publication_version_id 	= $pub->version_id;
 				$pScreenshot->title 					= $attachment->title;
-				$pScreenshot->created 					= \JFactory::getDate()->toSql();
+				$pScreenshot->created 					= Date::toSql();
 				$pScreenshot->created_by 				= $this->_uid;
 				$pScreenshot->store();
 				return true;
@@ -796,7 +796,7 @@ class Batchcreate extends AdminController
 			$objO->projectid 	 = $this->project->id;
 			$objO->userid 		 = $author->user_id;
 			$objO->status 		 = $author->user_id ? 1 : 0;
-			$objO->added 		 = \JFactory::getDate()->toSql();
+			$objO->added 		 = Date::toSql();
 			$objO->role 		 = 2;
 			$objO->invited_email = '';
 			$objO->invited_name  = $author->name;
@@ -805,7 +805,7 @@ class Batchcreate extends AdminController
 		}
 		$author->publication_version_id = $vid;
 		$author->created_by = $this->_uid;
-		$author->created 	= \JFactory::getDate()->toSql();
+		$author->created 	= Date::toSql();
 
 		$author->store();
 	}

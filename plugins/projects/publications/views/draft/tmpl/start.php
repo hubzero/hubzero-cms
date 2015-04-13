@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			// Check if type is supported (need a plugin)
 			if (isset($this->useBlocks) && !$this->useBlocks)
 			{
-				if (!JPluginHelper::isEnabled('projects', $current->alias))
+				if (!Plugin::isEnabled('projects', $current->alias))
 				{
 					continue;
 				}

@@ -84,7 +84,7 @@ class Html extends Object
 		$parsed 	= date_parse($time);
 		$timestamp	= strtotime($time);
 
-		$now 		= $utc ? \JFactory::getDate()->toSql() : date('c');
+		$now 		= $utc ? Date::toSql() : date('c');
 		$current  	= date_parse($now);
 
 		if ($full)

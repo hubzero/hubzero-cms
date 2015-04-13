@@ -77,7 +77,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	$active  = 'off';
 
 	// If we got a plugin - type is supported
-	if (JPluginHelper::isEnabled('projects', $row->alias))
+	if (Plugin::isEnabled('projects', $row->alias))
 	{
 		$aClass  = 'on';
 		$active  = 'on';

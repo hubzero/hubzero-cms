@@ -301,7 +301,7 @@ class Stats extends \JTable
 			$this->year 		= $thisYearNum;
 			$this->month 	    = $thisMonthNum;
 			$this->week 		= $thisWeekNum;
-			$this->processed    = \JFactory::getDate()->toSql();
+			$this->processed    = Date::toSql();
 			$this->stats 	    = json_encode($stats);
 			$this->store();
 		}

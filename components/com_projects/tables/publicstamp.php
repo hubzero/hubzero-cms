@@ -58,7 +58,7 @@ class Stamp extends \JTable
 		{
 			return false;
 		}
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$query  = "SELECT * FROM $this->_tbl WHERE stamp=" . $this->_db->Quote($stamp);
 		$query .= " LIMIT 1";
@@ -151,7 +151,7 @@ class Stamp extends \JTable
 			return false;
 		}
 
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$obj = new self($this->_db);
 		$obj->checkStamp( $projectid, $reference, $type );
@@ -182,7 +182,7 @@ class Stamp extends \JTable
 		}
 
 		// Make new entry
-		$created = \JFactory::getDate()->toSql();
+		$created = Date::toSql();
 		$created_by	= User::get('id');
 
 		// Generate stamp
