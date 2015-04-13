@@ -101,6 +101,19 @@ class Session implements MessageStore
 	}
 
 	/**
+	 * Return a count of messages
+	 *
+	 * @param   string  $domain
+	 * @return  integer
+	 */
+	public function total($domain)
+	{
+		$messages = $this->session->get($this->key($domain), array());
+
+		return count($messages);
+	}
+
+	/**
 	 * Get the storage key
 	 *
 	 * @param   string  $domain
@@ -108,7 +121,7 @@ class Session implements MessageStore
 	 */
 	private function key($domain)
 	{
-		$domain = !$domain ?: $domain . '.';
+		$domain = (is_null($domain) ?: $domain . '.');
 
 		return $domain . 'application.queue';
 	}

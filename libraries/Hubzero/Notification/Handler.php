@@ -90,7 +90,7 @@ class Handler
 	 */
 	public function error($message, $domain = null)
 	{
-		$this->message($message, 'danger');
+		$this->message($message, 'error');
 
 		return $this;
 	}

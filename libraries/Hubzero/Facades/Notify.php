@@ -42,6 +42,6 @@ class Notify extends Facade
 	 */
 	protected static function getAccessor()
 	{
-		return 'flash';
+		return 'notification';
 	}
 }
