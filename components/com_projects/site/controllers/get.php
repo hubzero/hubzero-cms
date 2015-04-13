@@ -74,7 +74,7 @@ class Get extends SiteController
 		}
 
 		// Serve requested item
-		$content = Event::trigger('projects.serve', array($objSt->type, $objSt->projectid, $objSt->reference)); 
+		$content = Event::trigger('projects.serve', array($objSt->type, $objSt->projectid, $objSt->reference));
 
 		// Output
 		foreach ($content as $out)
