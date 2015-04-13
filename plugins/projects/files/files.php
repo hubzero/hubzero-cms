@@ -3247,21 +3247,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function optimize($model, $repoName = 'local')
 	{
-		// Run git-gc
-		if ($action == 'optimize' || $action == 'advoptimize')
+		if (!isset($this->repo))
 		{
-			$command = $action == 'advoptimize' ? 'gc --aggressive' : 'gc';
-			$this->_git->callGit($command);
-
-			if ($by != 'admin')
-			{
-				$this->_message = array('message' => 'Disk space optimized', 'type' => 'success');
-				$this->_referer = $url;
-				return;
-			}
-
-			return true;
+			$this->repo = new \Components\Projects\Models\Repo ($model, $repoName);
 		}
+		$adv = $this->_task == 'advoptimize' ? true : false;
+		$params = array(
+			'path' => $this->_path,
+			'adv'  => $adv
+		);
+		$this->repo->call('optimize', $params);
+		return true;
 	}
 
 	/**

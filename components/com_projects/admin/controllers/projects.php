@@ -241,12 +241,9 @@ class Projects extends AdminController
 		$objT = $model->table('Type');
 		$this->view->types = $objT->getTypes();
 
-		// Get plugin
-		\JPluginHelper::importPlugin( 'projects');
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get activity counts
-		$dispatcher->trigger( 'onProjectCount', array( $model, &$counts, 1) );
+		$counts = Event::trigger( 'projects.onProjectCount', array( $model, 1) );
+		$counts = Helpers\Html::getCountArray($counts);
 		$counts['activity'] = $objAC->getActivityCount( $model->get('id'), User:: get('id'));
 		$this->view->counts = $counts;
 
@@ -277,11 +274,7 @@ class Projects extends AdminController
 		// Get project params
 		$this->view->params = $model->params;
 
-		// Get Disk Usage
-		\JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher = \JDispatcher::getInstance();
-
-		$content = $dispatcher->trigger( 'diskspace', array( $model, 'local', 'admin'));
+		$content = Event::trigger( 'projects.diskspace', array( $model, 'local', 'admin'));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
@@ -629,10 +622,6 @@ class Projects extends AdminController
 		// Erase all files, remove files repository
 		if ($alias)
 		{
-			\JPluginHelper::importPlugin( 'projects', 'files' );
-			$dispatcher = \JDispatcher::getInstance();
-			$dispatcher->trigger( 'eraseRepo', array($alias) );
-
 			// Delete base dir for .git repos
 			$dir 		= $alias;
 			$prefix 	= $this->config->get('offroot', 0) ? '' : PATH_CORE ;
@@ -740,6 +729,10 @@ class Projects extends AdminController
 	{
 		$id = Request::getVar( 'id', 0 );
 
+		// Get repo model
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'models' . DS . 'repo.php');
+
 		$project = new Models\Project($id);
 		if (!$project->exists())
 		{
@@ -748,12 +741,12 @@ class Projects extends AdminController
 				'error');
 			return;
 		}
-
-		// Get Disk Usage
-		\JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher = \JDispatcher::getInstance();
-
-		$content = $dispatcher->trigger( 'advoptimize', array( $project, 'local'));
+		$repo = new \Components\Projects\Models\Repo ($project, 'local');
+		$params = array(
+			'path' => $repo->get('path'),
+			'adv'  => true
+		);
+		$repo->call('optimize', $params);
 
 		// Redirect
 		$this->setRedirect(

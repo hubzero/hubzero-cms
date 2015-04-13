@@ -599,4 +599,25 @@ class Git extends Models\Adapter
 
 		return false;
 	}
+
+	/**
+	 * Optimize repository
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     integer
+	 */
+	public function optimize($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->_path;
+		$aggressive = isset($params['adv']) ? $params['adv'] : false;
+		if ($path && is_dir( $path . DS . '.git' ))
+		{
+			$command = $aggressive ? 'gc --aggressive' : 'gc';
+			$this->_git->callGit($command);
+			return true;
+		}
+
+		return false;
+	}
 }
