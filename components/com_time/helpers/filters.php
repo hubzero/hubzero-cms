@@ -46,11 +46,8 @@ class Filters
 	 **/
 	public static function getFilters($namespace)
 	{
-		// Set filters for view
-		$app = \JFactory::getApplication();
-
 		// Process query filters
-		$q = $app->getUserState("{$namespace}.query");
+		$q = User::getState("{$namespace}.query");
 		if ($incoming = Request::getVar('q', false))
 		{
 			$q[] = $incoming;
@@ -68,7 +65,7 @@ class Filters
 		$query = self::filtersMap($q);
 
 		// Turn search into array of results, if not already
-		$search = Request::getVar('search', $app->getUserState("{$namespace}.search", ''));
+		$search = Request::getVar('search', User::getState("{$namespace}.search", ''));
 		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
 		if ($search && !is_array($search))
 		{
@@ -79,8 +76,8 @@ class Filters
 		}
 
 		// Set some values in the session
-		$app->setUserState("{$namespace}.search", $search);
-		$app->setUserState("{$namespace}.query",  $query);
+		User::setState("{$namespace}.search", $search);
+		User::setState("{$namespace}.query",  $query);
 
 		return array('search' => $search, 'q' => $query);
 	}
