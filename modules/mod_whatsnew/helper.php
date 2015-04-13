@@ -245,7 +245,7 @@ class Helper extends Module
 				}
 
 				// Get the search results
-				$results2 = $dispatcher->trigger('onWhatsnew', array(
+				$results2 = \Event::trigger('onWhatsnew', array(
 						$p,
 						$count,
 						0,
