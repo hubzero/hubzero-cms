@@ -201,10 +201,14 @@ class MwZones extends JTable
 				$filters['id'] = array($filters['id']);
 				$filters['id'] = array_map('intval', $filters['id']);
 			}
-			if (!empty($filters['id']))
+			if (empty($filters['id']))
 			{
-				$where[] = "c.`id` IN (" . implode(',', $filters['id']) . ")";
+				$filters['id'][] = 0;
 			}
+			//if (!empty($filters['id']))
+			//{
+				$where[] = "c.`id` IN (" . implode(',', $filters['id']) . ")";
+			//}
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
