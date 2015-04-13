@@ -372,10 +372,6 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		// Get plugin
-		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher = JDispatcher::getInstance();
-
 		// Plugin params
 		$plugin_params = array(
 			$this->project_id,
@@ -384,7 +380,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		);
 
 		// Perform action
-		$output = $dispatcher->trigger( 'onProjectExternal', $plugin_params);
+		$output = Event::trigger( 'projects.onProjectExternal', $plugin_params);
 
 		$response 			= new stdClass;
 		$response->task 	= 'files';

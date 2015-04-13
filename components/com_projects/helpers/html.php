@@ -1566,9 +1566,7 @@ class Html extends Object
 		$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 		// Send HUB message
-		\JPluginHelper::importPlugin( 'xmessage' );
-		$dispatcher = \JDispatcher::getInstance();
-		$dispatcher->trigger( 'onSendMessage',
+		Event::trigger( 'xmessage.onSendMessage',
 			array(
 				$component,
 				$subject,

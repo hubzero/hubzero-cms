@@ -58,9 +58,6 @@ $quota 		= $quota ? $quota : \Components\Projects\Helpers\Html::convertSize( flo
 $pubQuota 	= $this->params->get('pubQuota');
 $pubQuota 	= $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-
 $this->css();
 
 ?>
@@ -125,7 +122,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="tags"><?php echo Lang::txt('COM_PROJECTS_TAGS'); ?>:</label>
 				<?php
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
+				$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
 
 				if (count($tf) > 0) {
 					echo $tf[0];

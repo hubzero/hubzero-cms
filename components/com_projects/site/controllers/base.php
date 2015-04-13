@@ -571,9 +571,7 @@ class Base extends SiteController
 				}
 
 				// Send HUB message
-				\JPluginHelper::importPlugin( 'xmessage' );
-				$dispatcher = \JDispatcher::getInstance();
-				$dispatcher->trigger( 'onSendMessage',
+				Event::trigger( 'xmessage.onSendMessage',
 					array(
 						'projects_member_added',
 						$subject_active,

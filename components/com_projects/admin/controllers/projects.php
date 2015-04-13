@@ -467,9 +467,7 @@ class Projects extends AdminController
 			$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
 			// Send HUB message
-			\JPluginHelper::importPlugin( 'xmessage' );
-			$dispatcher = \JDispatcher::getInstance();
-			$dispatcher->trigger( 'onSendMessage',
+			Event::trigger( 'xmessage.onSendMessage',
 				array( 'projects_admin_notice', $subject, $body, $from, $managers, $this->_option ));
 		}
 
