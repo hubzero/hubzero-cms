@@ -31,14 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 
 <form action="index.php" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset>
-		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
+		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
 
 		<label for="uid">
 			<input type="hidden" name="uid" value="<?php echo $this->escape($this->uid); ?>" id="uid" />
@@ -56,13 +56,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 				}
 			?>
-			<strong><?php echo JText::_('PLG_GROUPS_MEMBERS_MEMBER'); ?>: </strong> <?php echo $this->escape($u->get('name')); ?>
+			<strong><?php echo Lang::txt('PLG_GROUPS_MEMBERS_MEMBER'); ?>: </strong> <?php echo $this->escape($u->get('name')); ?>
 		</label>
 
 		<label for="roles">
-			<strong><?php echo JText::_('PLG_GROUPS_MEMBERS_SELECT_ROLE'); ?></strong>
+			<strong><?php echo Lang::txt('PLG_GROUPS_MEMBERS_SELECT_ROLE'); ?></strong>
 			<select name="role" id="roles">
-				<option value=""><?php echo JText::_('PLG_GROUPS_MEMBERS_OPT_SELECT_ROLE'); ?></option>
+				<option value=""><?php echo Lang::txt('PLG_GROUPS_MEMBERS_OPT_SELECT_ROLE'); ?></option>
 				<?php foreach ($this->roles as $role) { ?>
 					<?php if (!in_array($role['name'],$current_roles)) { ?>
 						<option value="<?php echo $role['id']; ?>"><?php echo $this->escape($role['name']); ?></option>
@@ -77,6 +77,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<input type="hidden" name="action" value="submitrole" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 	<p class="submit">
-		<input type="submit" name="submit" value="<?php echo JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?>" />
+		<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?>" />
 	</p>
 </form>

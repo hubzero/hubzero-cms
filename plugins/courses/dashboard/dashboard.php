@@ -60,7 +60,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'managers'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f083');
@@ -71,25 +71,24 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		$nonadmin = JFactory::getApplication()->getUserState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
-		if (!($active = JRequest::getVar('active')) && !$nonadmin)
+		if (!($active = Request::getVar('active')) && !$nonadmin)
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		if ($response->get('name') == $active)
 		{
 			// Set the page title
 			$document = JFactory::getDocument();
-			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_' . strtoupper($this->_name)));
+			$document->setTitle($document->getTitle() . ': ' . Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
-			$pathway = JFactory::getApplication()->getPathway();
-			$pathway->addItem(
-				JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+			Pathway::append(
+				Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
 				$offering->link() . '&active=' . $this->_name
 			);
 
 			$view = with($this->view('default', 'overview'))
-				->set('option', JRequest::getVar('option', 'com_courses'))
+				->set('option', Request::getVar('option', 'com_courses'))
 				->set('course', $course)
 				->set('offering', $offering)
 				->set('params', $this->params);

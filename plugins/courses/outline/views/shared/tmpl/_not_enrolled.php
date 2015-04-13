@@ -45,10 +45,10 @@ if ($cost = $oparams->get('store_price', false))
 
 <div id="offering-introduction">
 	<div class="instructions">
-		<p class="warning"><?php echo JText::_($this->message); ?></p>
+		<p class="warning"><?php echo Lang::txt($this->message); ?></p>
 	</div>
 	<div class="enroll-now">
-		<a class="enroll btn" href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">Enroll for <?php echo $price; ?>!</a>
+		<a class="enroll btn" href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">Enroll for <?php echo $price; ?>!</a>
 	</div>
 	<div class="questions">
 		<p>
@@ -64,24 +64,24 @@ if ($cost = $oparams->get('store_price', false))
 		</ul>
 		<p>
 			For more details, check out our 
-			<a class="advertise-popup" target="_blank" href="<?php echo JRoute::_('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+			<a class="advertise-popup" target="_blank" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
 				enrollment benefits
 			</a>.
 		</p>
 		<p>
-			<strong><?php echo JText::_('I\'m convinced...now what?'); ?></strong>
+			<strong><?php echo Lang::txt('I\'m convinced...now what?'); ?></strong>
 		</p>
 		<p>
-			<a href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">Enroll for <?php echo $price; ?>!</a>
+			<a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">Enroll for <?php echo $price; ?>!</a>
 		</p>
 		<p>
-			<strong><?php echo JText::_('Want more details about this and similar courses?'); ?></strong>
+			<strong><?php echo Lang::txt('Want more details about this and similar courses?'); ?></strong>
 			</p>
 		<p>
-			<?php echo JText::sprintf(
+			<?php echo Lang::txt(
 				'To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.',
-				JRoute::_($this->course->link()),
-				JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse'));
+				Route::url($this->course->link()),
+				Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse'));
 			?>
 		</p>
 	</div>

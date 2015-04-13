@@ -33,26 +33,26 @@ $this->css()
      ->js();
 ?>
 <?php if (!$this->components) { ?>
-	<p class="error"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NO_COMPONENTS_FOUND'); ?></p>
+	<p class="error"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_NO_COMPONENTS_FOUND'); ?></p>
 <?php } else { ?>
-	<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm" class="full">
 		<input type="hidden" name="action" value="savesettings" />
 		<table class="settings">
 			<caption>
-				<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
 			</caption>
 			<thead>
 				<tr>
-					<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SENT_WHEN'); ?></th>
+					<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SENT_WHEN'); ?></th>
 				<?php foreach ($this->notimethods as $notimethod) { ?>
-					<th scope="col"><input type="checkbox" name="override[<?php echo $notimethod; ?>]" value="all" onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod; ?>');" /> <?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod)); ?></th>
+					<th scope="col"><input type="checkbox" name="override[<?php echo $notimethod; ?>]" value="all" onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod; ?>');" /> <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod)); ?></th>
 				<?php } ?>
 				</tr>
 			</thead>
 			<tfoot>
 				<tr>
 					<td colspan="<?php echo (count($this->notimethods) + 1); ?>">
-						<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
+						<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>" />
 					</td>
 				</tr>
 			</tfoot>
@@ -68,12 +68,12 @@ $this->css()
 					$sheader = $component->name;
 					$lang->load($component->name);
 
-					$display_header = $lang->hasKey($component->name) ? JText::_($component->name) : ucfirst(str_replace('com_', '', $component->name));
+					$display_header = $lang->hasKey($component->name) ? Lang::txt($component->name) : ucfirst(str_replace('com_', '', $component->name));
 				?>
 				<tr class="section-header">
 					<th scope="col"><?php echo $this->escape($display_header); ?></th>
 					<?php foreach ($this->notimethods as $notimethod) { ?>
-						<th scope="col"><span class="<?php echo $notimethod; ?> iconed"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_'.strtoupper($notimethod)); ?></span></th>
+						<th scope="col"><span class="<?php echo $notimethod; ?> iconed"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_'.strtoupper($notimethod)); ?></span></th>
 					<?php } ?>
 				</tr>
 				<?php

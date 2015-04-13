@@ -55,13 +55,13 @@ class Word extends \JTable
 		$this->word = trim($this->word);
 		if (!$this->word)
 		{
-			$this->setError(\JText::_('Entry must contain some content.'));
+			$this->setError(\Lang::txt('Entry must contain some content.'));
 			return false;
 		}
 
 		if (!$this->created)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 		}
 
 		return true;

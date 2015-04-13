@@ -110,7 +110,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 			if ($this->_stats)
 			{
-				$areas['impact'] = JText::_('PLG_MEMBERS_IMPACT');
+				$areas['impact'] = Lang::txt('PLG_MEMBERS_IMPACT');
 				$areas['icon'] = '';
 			}
 		}
@@ -154,7 +154,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			$this->_option = $option;
 
 			// Which view
-			$task = JRequest::getVar('action', '');
+			$task = Request::getVar('action', '');
 
 			switch ($task)
 			{
@@ -200,7 +200,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$view->option    = $this->_option;
 		$view->database  = $this->_database;
 		$view->uid       = $uid;
-		$view->pubconfig = JComponentHelper::getParams('com_publications');
+		$view->pubconfig = Component::params('com_publications');
 
 		if ($this->getError())
 		{
@@ -225,7 +225,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		if ($this->_cParams->get('include_publications', 0) == 1)
 		{
 			$areas = array(
-				'impact' => JText::_('PLG_MEMBERS_IMPACT_PUBLICATIONS')
+				'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
 			);
 		}
 		$this->_areas = $areas;
@@ -328,12 +328,12 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 				{
 					if ($row->alias)
 					{
-						$sef = JRoute::_('index.php?option=com_publications&alias='
+						$sef = Route::url('index.php?option=com_publications&alias='
 							. $row->alias . '&v=' . $row->version_number);
 					}
 					else
 					{
-						$sef = JRoute::_('index.php?option=com_publications&id='
+						$sef = Route::url('index.php?option=com_publications&id='
 							. $row->id . '&v=' . $row->version_number);
 					}
 					$rows[$key]->href = $sef;
@@ -368,7 +368,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			  . stripslashes($row->cat_name);
 		if ($authors)
 		{
-			$html .= ' <span>|</span>' . JText::_('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $authors, false, true ) . "\n";
+			$html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $authors, false, true ) . "\n";
 		}
 		if ($row->doi)
 		{
@@ -380,7 +380,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			$url .= $row->author == true ? '&active=publications&pid=' . $row->id : '';
 			$html .= ' <span>|</span> Project: ';
 			$html .= '<a href="';
-			$html .= JRoute::_($url) . '">';
+			$html .= Route::url($url) . '">';
 			$html .= $row->project_title;
 			$html .='</a>';
 			$html .= "\n";

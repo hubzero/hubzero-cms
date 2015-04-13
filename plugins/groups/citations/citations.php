@@ -63,7 +63,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'             => $this->_name,
-			'title'            => JText::_('PLG_GROUPS_CITATIONS'),
+			'title'            => Lang::txt('PLG_GROUPS_CITATIONS'),
 			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => '275D'
@@ -136,7 +136,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				//if set to nobody make sure cant access
 				if ($group_plugin_acl == 'nobody')
 				{
-					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 
@@ -144,11 +144,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				if ($this->juser->get('guest')
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
-					$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
+					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 
 					$this->redirect(
-						JRoute::_('index.php?option=com_users&view=login?return=' . base64_encode($url)),
-						JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+						Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
+						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
 					);
 					return;
@@ -157,7 +157,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				//check to see if user is member and plugin access requires members
 				if (!in_array($this->juser->get('id'), $members) && $group_plugin_acl == 'members')
 				{
-					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 			}
@@ -243,7 +243,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->group             = $this->group;
 		$view->option            = $this->option;
 		$view->database          = $this->database;
-		$view->config            = JComponentHelper::getParams('com_citations');
+		$view->config            = Component::params('com_citations');
 		$view->allow_import      = $view->config->get('citation_import', 1);
 		$view->allow_bulk_import = $view->config->get('citation_bulk_import', 1);
 		$view->isAdmin           = ($this->authorized == 'manager') ? true : false;
@@ -272,10 +272,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->option            = $this->option;
 		$view->task              = $this->_name;
 		$view->database          = $this->database;
-		$view->config            = JComponentHelper::getParams('com_citations');
+		$view->config            = Component::params('com_citations');
 		$view->allow_import      = $view->config->get('citation_import', 1);
 		$view->allow_bulk_import = $view->config->get('citation_bulk_import', 1);
-		$view->title             = JText::_(strtoupper($this->_name));
+		$view->title             = Lang::txt(strtoupper($this->_name));
 		$view->isAdmin           = ($this->authorized == 'manager') ? true : false;
 
 		// Instantiate a new citations object
@@ -294,40 +294,40 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$view->addTemplatePath($this->_superGroupViewOverride('browse'));
 
 			//paging filters
-			$view->filters['limit']   = JRequest::getInt('limit', 0, 'request');
-			$view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
+			$view->filters['limit']   = Request::getInt('limit', 0, 'request');
+			$view->filters['start']   = Request::getInt('limitstart', 0, 'get');
 		}
 		else
 		{
 			//paging filters
-			$view->filters['limit']   = JRequest::getInt('limit', 50, 'request');
-			$view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
+			$view->filters['limit']   = Request::getInt('limit', 50, 'request');
+			$view->filters['start']   = Request::getInt('limitstart', 0, 'get');
 		}
 
 		//search/filtering params
 		$view->filters['scope']           = 'group';
 		$view->filters['scope_id']        = $this->group->get('gidNumber');
-		$view->filters['id']			  = JRequest::getInt('id', 0);
-		$view->filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
-		$view->filters['search']          = JRequest::getVar('search', '');
-		$view->filters['type']            = JRequest::getVar('type', '');
-		$view->filters['author']          = JRequest::getVar('author', '');
-		$view->filters['publishedin']     = JRequest::getVar('publishedin', '');
-		$view->filters['year_start']      = JRequest::getInt('year_start', $view->earliest_year);
-		$view->filters['year_end']        = JRequest::getInt('year_end', date("Y"));
-		$view->filters['filter']          = JRequest::getVar('filter', '');
-		$view->filters['sort']            = JRequest::getVar('sort', 'year DESC');
-		$view->filters['reftype']         = JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$view->filters['geo']             = JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$view->filters['aff']             = JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-		$view->filters['startuploaddate'] = JRequest::getVar('startuploaddate', '0000-00-00');
-		$view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', '0000-00-00');
+		$view->filters['id']			  = Request::getInt('id', 0);
+		$view->filters['tag']             = trim(Request::getVar('tag', '', 'request', 'none', 2));
+		$view->filters['search']          = Request::getVar('search', '');
+		$view->filters['type']            = Request::getVar('type', '');
+		$view->filters['author']          = Request::getVar('author', '');
+		$view->filters['publishedin']     = Request::getVar('publishedin', '');
+		$view->filters['year_start']      = Request::getInt('year_start', $view->earliest_year);
+		$view->filters['year_end']        = Request::getInt('year_end', date("Y"));
+		$view->filters['filter']          = Request::getVar('filter', '');
+		$view->filters['sort']            = Request::getVar('sort', 'year DESC');
+		$view->filters['reftype']         = Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$view->filters['geo']             = Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$view->filters['aff']             = Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		$view->filters['startuploaddate'] = Request::getVar('startuploaddate', '0000-00-00');
+		$view->filters['enduploaddate']   = Request::getVar('enduploaddate', '0000-00-00');
 
 		// Affiliation filter
 		$view->filter = array(
-			'all'    => JText::_('PLG_GROUPS_CITATIONS_ALL'),
-			'aff'    => JText::_('PLG_GROUPS_CITATIONS_AFFILIATED'),
-			'nonaff' => JText::_('PLG_GROUPS_CITATIONS_NONAFFILIATED')
+			'all'    => Lang::txt('PLG_GROUPS_CITATIONS_ALL'),
+			'aff'    => Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'),
+			'nonaff' => Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED')
 		);
 		if (!in_array($view->filters['filter'], array_keys($view->filter)))
 		{
@@ -336,12 +336,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Sort Filter
 		$view->sorts = array(
-			'sec_cnt DESC' => JText::_('PLG_GROUPS_CITATIONS_CITEDBY'),
-			'year DESC'    => JText::_('PLG_GROUPS_CITATIONS_YEAR'),
-			'created DESC' => JText::_('PLG_GROUPS_CITATIONS_NEWEST'),
-			'title ASC'    => JText::_('PLG_GROUPS_CITATIONS_TITLE'),
-			'author ASC'   => JText::_('PLG_GROUPS_CITATIONS_AUTHOR'),
-			'journal ASC'  => JText::_('PLG_GROUPS_CITATIONS_JOURNAL')
+			'sec_cnt DESC' => Lang::txt('PLG_GROUPS_CITATIONS_CITEDBY'),
+			'year DESC'    => Lang::txt('PLG_GROUPS_CITATIONS_YEAR'),
+			'created DESC' => Lang::txt('PLG_GROUPS_CITATIONS_NEWEST'),
+			'title ASC'    => Lang::txt('PLG_GROUPS_CITATIONS_TITLE'),
+			'author ASC'   => Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR'),
+			'journal ASC'  => Lang::txt('PLG_GROUPS_CITATIONS_JOURNAL')
 		);
 		if (!in_array($view->filters['sort'], array_keys($view->sorts)))
 		{
@@ -360,7 +360,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['idlist'] = JRequest::getVar('idlist', $session->get('idlist'));
+			$view->filters['idlist'] = Request::getVar('idlist', $session->get('idlist'));
 			$session->set('idlist', $view->filters['idlist']);
 		}
 
@@ -397,8 +397,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($view->filters['startuploaddate'] > $view->filters['enduploaddate'])
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_citations&task=browse'),
-				JText::_('PLG_GROUPS_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
+				Route::url('index.php?option=com_citations&task=browse'),
+				Lang::txt('PLG_GROUPS_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
 				'error'
 			);
 			return;
@@ -454,7 +454,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//get the users id to make lookup
-		$users_ip = JRequest::ip();
+		$users_ip = Request::ip();
 
 		//get the param for ip regex to use machine ip
 		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
@@ -557,7 +557,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// push objects to view
 		$view->group   = $this->group;
 		$view->isAdmin = ($this->authorized == 'manager') ? true : false;
-		$view->config  = JComponentHelper::getParams('com_citations');
+		$view->config  = Component::params('com_citations');
 
 		// are we allowing user to add citation
 		$allowImport = $view->config->get('citation_import', 1);
@@ -566,8 +566,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&active=' . $this->_name . '&action=browse', false),
-				JText::_('PLG_GROUPS_CITATION_EDIT_NOTALLOWED'),
+				Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&active=' . $this->_name . '&action=browse', false),
+				Lang::txt('PLG_GROUPS_CITATION_EDIT_NOTALLOWED'),
 				'warning'
 			);
 			return;
@@ -603,7 +603,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		));
 
 		// Incoming - expecting an array id[]=4232
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Pub author
 		$pubAuthor = false;
@@ -639,23 +639,23 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($id && $id != 0)
 		{
 			$pathway->addItem($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
-			$pathway->addItem(JText::_('PLG_GROUPS_CITATIONS_EDIT'));
+			$pathway->addItem(Lang::txt('PLG_GROUPS_CITATIONS_EDIT'));
 		}
 		else
 		{
-			$pathway->addItem(JText::_('PLG_GROUPS_CITATIONS_ADD'));
+			$pathway->addItem(Lang::txt('PLG_GROUPS_CITATIONS_ADD'));
 		}
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle( JText::_('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
+		$document->setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
 
 		//push jquery to doc
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
-		$view->title  = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->action));
+		$view->title  = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));
 
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
@@ -714,11 +714,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$c['scope_id'] = $this->group->get('gidNumber');
 
 		//get tags
-		$tags = trim(JRequest::getVar('tags', ''));
+		$tags = trim(Request::getVar('tags', ''));
 		unset($c['tags']);
 
 		//get badges
-		$badges = trim(JRequest::getVar('badges', ''));
+		$badges = trim(Request::getVar('badges', ''));
 		unset($c['badges']);
 
 		// Bind incoming data to object
@@ -733,11 +733,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// New entry so set the created date
 		if (!$row->id)
 		{
-			$row->created = JFactory::getDate()->toSql();
+			$row->created = Date::toSql();
 		}
 
 		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = JRequest::getVar('uri', '', 'post');
+		$row->url = Request::getVar('uri', '', 'post');
 
 		// Check content for missing required data
 		if (!$row->check())
@@ -756,7 +756,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming associations
-		$arr     = JRequest::getVar('assocs', array());
+		$arr     = Request::getVar('assocs', array());
 		$ignored = array();
 
 		foreach ($arr as $a)
@@ -807,7 +807,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$this->config = JComponentHelper::getParams('com_citations');
+		$this->config = Component::params('com_citations');
 
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
@@ -825,8 +825,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// resdirect after save
 		$this->redirect(
-			JRoute::_('index.php?option=com_groups' . DS . $this->group->cn . DS .'citations'),
-			JText::_('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
+			Route::url('index.php?option=com_groups' . DS . $this->group->cn . DS .'citations'),
+			Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
 			'success'
 		);
 		return;
@@ -884,7 +884,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	public function _superGroupViewOverride($name)
 	{
 		// get groups config
-		$groupsConfig = JComponentHelper::getParams('com_groups');
+		$groupsConfig = Component::params('com_groups');
 
 		// build base path
 		$base = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -902,7 +902,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	public function _superGroupHelper()
 	{
 		// get groups config
-		$groupsConfig = JComponentHelper::getParams('com_groups');
+		$groupsConfig = Component::params('com_groups');
 
 		// build base path
 		$base = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -921,8 +921,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	private function _loginTask()
 	{
 		$this->redirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS. $this->_name .'&action=' . $this->action, false, true))),
-			JText::_('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS. $this->_name .'&action=' . $this->action, false, true))),
+			Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);
 		return;
@@ -935,7 +935,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _import()
 	{
-		$this->redirect(JRoute::_('index.php?option=com_citations&controller=import&group=' . $group->get('gidNumber')));
+		$this->redirect(Route::url('index.php?option=com_citations&controller=import&group=' . $group->get('gidNumber')));
 		return;
 	}
 

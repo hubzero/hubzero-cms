@@ -52,12 +52,12 @@ class plgCronCourses extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'syncPassportBadgeStatus',
-				'label'  => JText::_('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
+				'label'  => Lang::txt('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'emailInstructorDigest',
-				'label'  => JText::_('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
+				'label'  => Lang::txt('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
 				'params' => 'emaildigest'
 			),
 		);
@@ -73,7 +73,7 @@ class plgCronCourses extends JPlugin
 	 */
 	public function syncPassportBadgeStatus(\Components\Cron\Models\Job $job)
 	{
-		$params = JComponentHelper::getParams('com_courses');
+		$params = Component::params('com_courses');
 
 		$badgesHandler  = new Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
 		$badgesProvider = $badgesHandler->getProvider();
@@ -142,7 +142,7 @@ class plgCronCourses extends JPlugin
 									if ($badge && !$badge->get('action'))
 									{
 										$badge->set('action', $status);
-										$badge->set('action_on', JFactory::getDate()->toSql());
+										$badge->set('action_on', Date::toSql());
 										$badge->store();
 									}
 								}
@@ -169,16 +169,16 @@ class plgCronCourses extends JPlugin
 		$database = JFactory::getDBO();
 		$juri     = JURI::getInstance();
 		$jconfig  = JFactory::getConfig();
-		$cconfig  = JComponentHelper::getParams('com_courses');
+		$cconfig  = Component::params('com_courses');
 
 		$lang->load('com_courses');
 		$lang->load('com_courses', JPATH_ROOT);
 
 		$from = array();
-		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_COURSES');
+		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_COURSES');
 		$from['email']     = $jconfig->getValue('config.mailfrom');
 
-		$subject = JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_SUBJECT_EMAIL_DIGEST');
+		$subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
 

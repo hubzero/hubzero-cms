@@ -33,23 +33,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->rows) {
 ?>
-	<table class="activity" id="wiki-list" summary="<?php echo JText::_('PLG_GROUPS_WIKI_DASHBOARD_SUMMARY'); ?>">
+	<table class="activity" id="wiki-list" summary="<?php echo Lang::txt('PLG_GROUPS_WIKI_DASHBOARD_SUMMARY'); ?>">
 		<tbody>
 <?php
 	$cls = 'even';
 	foreach ($this->rows as $row)
 	{
-		$name = JText::_('WIKI_AUTHOR_UNKNOWN');
+		$name = Lang::txt('WIKI_AUTHOR_UNKNOWN');
 		$juser = JUser::getInstance( $row->created_by );
 		if (is_object($juser) && $juser->get('name')) {
 			$name = $juser->get('name');
 		}
 
 		if ($row->version > 1) {
-			$t = JText::_('WIKI_EDITED');
+			$t = Lang::txt('WIKI_EDITED');
 			$c = 'wiki-edited';
 		} else {
-			$t = JText::_('WIKI_CREATED');
+			$t = Lang::txt('WIKI_CREATED');
 			$c = 'wiki-created';
 		}
 
@@ -57,9 +57,9 @@ if ($this->rows) {
 ?>
 			<tr class="<?php echo $cls; ?>">
 				<th scope="row"><span class="<?php echo $c; ?>"><?php echo $t; ?></span></th>
-				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&pagename='.$row->pagename.'&scope='.$row->scope); ?>"><?php echo stripslashes($row->title); ?></a></td>
-				<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $name; ?></a></td>
-				<td class="date"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+				<td><a href="<?php echo Route::url('index.php?option='.$this->option.'&pagename='.$row->pagename.'&scope='.$row->scope); ?>"><?php echo stripslashes($row->title); ?></a></td>
+				<td class="author"><a href="<?php echo Route::url('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $name; ?></a></td>
+				<td class="date"><?php echo JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 <?php
 	}
@@ -67,5 +67,5 @@ if ($this->rows) {
 		</tbody>
 	</table>
 <?php } else { ?>
-	<p><?php echo JText::_('PLG_GROUPS_WIKI_NO_RESULTS_FOUND'); ?></p>
+	<p><?php echo Lang::txt('PLG_GROUPS_WIKI_NO_RESULTS_FOUND'); ?></p>
 <?php } ?>

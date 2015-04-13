@@ -37,7 +37,7 @@ $this->css()
      ->js('jquery.hoverIntent', 'system');
 ?>
 
-<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></h3>
+<h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></h3>
 
 <?php if (isset($this->notifications) && count($this->notifications) > 0) {
 	foreach ($this->notifications as $notification) { ?>
@@ -46,14 +46,14 @@ $this->css()
 } // close if count ?>
 
 <div id="members-account-section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option .
+	<form action="<?php echo Route::url('index.php?option=' . $this->option .
 										'&id=' . $this->id .
 										'&active=account' .
 										'&task=confirmtoken'); ?>" method="post">
 		<fieldset>
-			<legend><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></legend>
 			<div class="fieldset-grouping">
-				<label for="token"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_TOKEN'); ?>:</label>
+				<label for="token"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_TOKEN'); ?>:</label>
 				<input id="token" name="token" type="text" class="required" size="36" />
 			</div>
 		</fieldset>
@@ -61,8 +61,8 @@ $this->css()
 		<div class="clear"></div>
 
 		<p class="submit">
-			<input name="change" type="submit" value="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>" />
-			<input type="reset" class="cancel" value="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_CANCEL'); ?>" />
+			<input name="change" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>" />
+			<input type="reset" class="cancel" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_CANCEL'); ?>" />
 		</p>
 
 		<?php echo JHTML::_('form.token'); ?>

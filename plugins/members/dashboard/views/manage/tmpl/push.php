@@ -31,13 +31,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="module-list">
 	<h2 class="section-header">
-		<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_TITLE'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_TITLE'); ?>
 	</h2>
-	<p class="warning"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_WARNING'); ?></p>
+	<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_WARNING'); ?></p>
 	<form action="index.php" method="post">
 		<fieldset class="adminform">
 			<div class="input-wrap">
-				<label><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?> <span class="required">required</span></label><br />
+				<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?> <span class="required">required</span></label><br />
 				<select name="module">
 					<option value="">- Select Module to Push &mdash;</option>
 					<?php foreach ($this->modules as $module) : ?>
@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_COLUMN'); ?></label><br />
+					<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_COLUMN'); ?></label><br />
 					<select name="column">
 						<option value="1">1</option>
 						<option value="2">2</option>
@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_POSITION'); ?></label><br />
+					<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_POSITION'); ?></label><br />
 					<select name="position">
 						<option value="first">First</option>
 						<option value="last">Last</option>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_WIDTH'); ?></label><br />
+					<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_WIDTH'); ?></label><br />
 					<select name="width">
 						<option value="1">1</option>
 						<option value="2">2</option>
@@ -75,19 +75,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
-				<div class="input-wrap" data-hint="<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_HEIGHT_HINT'); ?>">
-					<label><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_HEIGHT'); ?></label><br />
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_HEIGHT_HINT'); ?>">
+					<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_HEIGHT'); ?></label><br />
 					<select name="height">
 						<option value="1">1</option>
 						<option selected="selected" value="2">2</option>
 						<option value="3">3</option>
 						<option value="4">4</option>
 					</select>
-					<span class="hint"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_HEIGHT_HINT'); ?></span>
+					<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_HEIGHT_HINT'); ?></span>
 				</div>
 			</div>
 			<p class="submit">
-				<button class="button dopush" type="submit"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_BUTTON'); ?></button>
+				<button class="button dopush" type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_BUTTON'); ?></button>
 			</p>
 
 		</fieldset>

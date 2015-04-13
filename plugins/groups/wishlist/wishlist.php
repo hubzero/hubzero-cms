@@ -52,7 +52,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name' => 'wishlist',
-			'title' => JText::_('PLG_GROUPS_WISHLIST'),
+			'title' => Lang::txt('PLG_GROUPS_WISHLIST'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f078'
@@ -111,7 +111,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -119,11 +119,11 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			if ($juser->get('guest')
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
 				return;
@@ -135,7 +135,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			 && $authorized != 'admin')
 			{
 				$arr['html'] = '<p class="info">'
-					. JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+					. Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 		}
@@ -157,7 +157,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Get the component parameters
-		$this->config = JComponentHelper::getParams('com_wishlist');
+		$this->config = Component::params('com_wishlist');
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_wishlist');
@@ -190,7 +190,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			if (\Hubzero\User\Group::exists($gid))
 			{
 				$group = \Hubzero\User\Group::getInstance($gid);
-				$id = $obj->createlist($category, $gid, 0, $cn . ' ' . JText::_('PLG_GROUPS_WISHLIST_NAME_GROUP'));
+				$id = $obj->createlist($category, $gid, 0, $cn . ' ' . Lang::txt('PLG_GROUPS_WISHLIST_NAME_GROUP'));
 			}
 		}
 
@@ -200,7 +200,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		//if we dont have a wishlist display error
 		if (!$wishlist)
 		{
-			$arr['html'] = '<p class="error">' . JText::_('PLG_GROUPS_WISHLIST_ERROR_WISHLIST_NOT_FOUND') . '</p>';
+			$arr['html'] = '<p class="error">' . Lang::txt('PLG_GROUPS_WISHLIST_ERROR_WISHLIST_NOT_FOUND') . '</p>';
 			return $arr;
 		}
 
@@ -208,9 +208,9 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$owners = $objOwner->get_owners($id, $this->config->get('group'), $wishlist);
 
 		//if user is guest and wishlist isnt public
-		//if(!$wishlist->public && $juser->get('guest'))
+		//if (!$wishlist->public && $juser->get('guest'))
 		//{
-		//	$arr['html'] = '<p class="warning">' . JText::_('The Group Wishlist is not a publicly viewable list.') . '</p>';
+		//	$arr['html'] = '<p class="warning">' . Lang::txt('The Group Wishlist is not a publicly viewable list.') . '</p>';
 		//	return $arr;
 		//}
 
@@ -296,7 +296,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		// no id means no list
 		if (!$id)
 		{
-			return JText::sprintf('PLG_GROUPS_WISHLIST_LOG', 0);
+			return Lang::txt('PLG_GROUPS_WISHLIST_LOG', 0);
 		}
 
 		// get wishes count
@@ -305,7 +305,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		), 1);
 
 		// return message
-		return JText::sprintf('PLG_GROUPS_WISHLIST_LOG', $wishes);
+		return Lang::txt('PLG_GROUPS_WISHLIST_LOG', $wishes);
 	}
 
 	/**
@@ -351,7 +351,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$wishlist->delete();
 
 		// return message
-		return JText::sprintf('PLG_GROUPS_WISHLIST_LOG', count($wishes));
+		return Lang::txt('PLG_GROUPS_WISHLIST_LOG', count($wishes));
 	}
 }
 

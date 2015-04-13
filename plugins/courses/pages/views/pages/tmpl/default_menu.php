@@ -40,21 +40,21 @@ $base = $this->offering->link() . '&active=pages';
 		{
 			?>
 		<li>
-			<a class="<?php echo $page->get('section_id') ? 'page-section' : ($page->get('offering_id') ? 'page-offering' : 'page-courses'); ?> page<?php if ($page->get('url') == $this->page->get('url')) { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&unit=' . $page->get('url')); ?>"><?php echo $this->escape(stripslashes($page->get('title'))); ?></a>
+			<a class="<?php echo $page->get('section_id') ? 'page-section' : ($page->get('offering_id') ? 'page-offering' : 'page-courses'); ?> page<?php if ($page->get('url') == $this->page->get('url')) { echo ' active'; } ?>" href="<?php echo Route::url($base . '&unit=' . $page->get('url')); ?>"><?php echo $this->escape(stripslashes($page->get('title'))); ?></a>
 		</li>
 			<?php
 		}
 		?>
 	<?php } else { ?>
 		<li>
-			<a class="active page" href="<?php echo $base; ?>"><?php echo JText::_('PLG_COURSES_PAGES_NONE_FOUND'); ?></a>
+			<a class="active page" href="<?php echo $base; ?>"><?php echo Lang::txt('PLG_COURSES_PAGES_NONE_FOUND'); ?></a>
 		</li>
 	<?php } ?>
 	</ul>
 <?php if ($this->offering->access('manage', 'section')) { ?>
 	<p>
-		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&unit=add'); ?>">
-			<?php echo JText::_('PLG_COURSES_PAGES_ADD_PAGE'); ?>
+		<a class="icon-add add btn" href="<?php echo Route::url($base . '&unit=add'); ?>">
+			<?php echo Lang::txt('PLG_COURSES_PAGES_ADD_PAGE'); ?>
 		</a>
 	</p>
 <?php } ?>

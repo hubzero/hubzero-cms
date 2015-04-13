@@ -20,7 +20,7 @@ class  plgSystemLog extends JPlugin
 		$log = JLog::getInstance();
 		$errorlog = array();
 
-		switch($response['status'])
+		switch ($response['status'])
 		{
 			case JAuthentication::STATUS_SUCCESS :
 			{

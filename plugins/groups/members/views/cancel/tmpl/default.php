@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
 	<div class="explaination">
-		<p class="info"><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_EXPLANATION'); ?></p>
+		<p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATION'); ?></legend>
+		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_INVITATION'); ?></legend>
 
 <?php
 $names = array();
@@ -54,12 +54,12 @@ foreach ($this->users as $user)
 }
 ?>
 		<label>
-			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATIONS'); ?><br />
+			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_INVITATIONS'); ?><br />
 			<strong><?php echo implode(', ', $names); ?></strong>
 		</label>
 
 		<label for="reason">
-			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_REASON'); ?>
+			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_REASON'); ?>
 			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
 		</label>
 	</fieldset><div class="clear"></div>
@@ -68,6 +68,6 @@ foreach ($this->users as $user)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="confirmcancel" />
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
 	</p>
 </form>

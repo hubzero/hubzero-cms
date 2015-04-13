@@ -31,11 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$href = JRoute::_($this->base . '&asset=' . $this->a->get('id'));
+$href = Route::url($this->base . '&asset=' . $this->a->get('id'));
 
 if ($this->a->get('type') == 'video')
 {
-	$href = JRoute::_($this->base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->ag->get('alias'));
+	$href = Route::url($this->base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->ag->get('alias'));
 }
 
 ?>

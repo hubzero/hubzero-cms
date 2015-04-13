@@ -51,7 +51,7 @@ class plgSystemLanguageFilter extends JPlugin
 				self::$mode_sef 	= ($router->getMode() == JROUTER_MODE_SEF) ? true : false;
 				self::$sefs 		= JLanguageHelper::getLanguages('sef');
 				self::$lang_codes 	= JLanguageHelper::getLanguages('lang_code');
-				self::$default_lang = JComponentHelper::getParams('com_languages')->get('site', 'en-GB');
+				self::$default_lang = Component::params('com_languages')->get('site', 'en-GB');
 				self::$default_sef 	= self::$lang_codes[self::$default_lang]->sef;
 				self::$homes		= MultilangstatusHelper::getHomepages();
 
@@ -96,7 +96,7 @@ class plgSystemLanguageFilter extends JPlugin
 					$cookie_path 	= $conf->get('config.cookie_path', '/');
 					setcookie(JApplication::getHash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
 					// set the request var
-					JRequest::setVar('language', $lang_code);
+					Request::setVar('language', $lang_code);
 				}
 			}
 			parent::__construct($subject, $config);
@@ -204,7 +204,7 @@ class plgSystemLanguageFilter extends JPlugin
 		$app = JFactory::getApplication();
 
 		$array = array();
-		$lang_code = JRequest::getString(JApplication::getHash('language'), null , 'cookie');
+		$lang_code = Request::getString(JApplication::getHash('language'), null , 'cookie');
 		// No cookie - let's try to detect browser language or use site default
 		if (!$lang_code) {
 			if ($this->params->get('detect_browser', 1)){
@@ -220,7 +220,7 @@ class plgSystemLanguageFilter extends JPlugin
 			$sef = $parts[0];
 
 			// Redirect only if not in post
-			$post = JRequest::get('POST');
+			$post = Request::get('POST');
 			if (!empty($lang_code) && ($app->input->getMethod() != "POST" || count($post) == 0))
 			{
 				if ($this->params->get('remove_default_prefix', 0) == 0)
@@ -288,7 +288,7 @@ class plgSystemLanguageFilter extends JPlugin
 			if (!isset(self::$sefs[$sef])) {
 				$sef = isset(self::$lang_codes[$lang_code]) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
 				$uri->setVar('lang', $sef);
-				$post = JRequest::get('POST');
+				$post = Request::get('POST');
 				if ($app->input->getMethod() != "POST" || count($post) == 0)
 				{
 					$app = JFactory::getApplication();
@@ -454,16 +454,16 @@ class plgSystemLanguageFilter extends JPlugin
 
 			// Get menu item link
 			if ($app->getCfg('sef')) {
-				$active_link = JRoute::_('index.php?Itemid='.$active->id, false);
+				$active_link = Route::url('index.php?Itemid='.$active->id, false);
 			} else {
-				$active_link = JRoute::_($active->link.'&Itemid='.$active->id, false);
+				$active_link = Route::url($active->link.'&Itemid='.$active->id, false);
 			}
 			if ($active_link == JUri::base(true).'/') {
 				$active_link .= 'index.php';
 			}
 
 			// Get current link
-			$current_link = JRequest::getUri();
+			$current_link = Request::getUri();
 			if ($current_link == JUri::base(true).'/') {
 				$current_link .= 'index.php';
 			}
@@ -484,14 +484,14 @@ class plgSystemLanguageFilter extends JPlugin
 					$menu 	= $app->getMenu();
 					$server = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
 
-					foreach(JLanguageHelper::getLanguages() as $language) {
+					foreach (JLanguageHelper::getLanguages() as $language) {
 						if (isset($associations[$language->lang_code])) {
 							$item = $menu->getItem($associations[$language->lang_code]);
 							if ($item && JLanguage::exists($language->lang_code)) {
 								if ($app->getCfg('sef')) {
-									$link = JRoute::_('index.php?Itemid='.$associations[$language->lang_code].'&lang='.$language->sef);
+									$link = Route::url('index.php?Itemid='.$associations[$language->lang_code].'&lang='.$language->sef);
 								} else {
-									$link = JRoute::_($item->link.'&Itemid='.$associations[$language->lang_code].'&lang='.$language->sef);
+									$link = Route::url($item->link.'&Itemid='.$associations[$language->lang_code].'&lang='.$language->sef);
 								}
 
 								// Check if language is the default site language and remove url language code is on
@@ -514,13 +514,13 @@ class plgSystemLanguageFilter extends JPlugin
 					$menu 	= $app->getMenu();
 					$server = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
 
-					foreach(JLanguageHelper::getLanguages() as $language) {
+					foreach (JLanguageHelper::getLanguages() as $language) {
 						$item = $menu->getDefault($language->lang_code);
 						if ($item && $item->language != $active->language && $item->language != '*' && JLanguage::exists($language->lang_code)) {
 							if ($app->getCfg('sef')) {
-								$link = JRoute::_('index.php?Itemid='.$item->id.'&lang='.$language->sef);
+								$link = Route::url('index.php?Itemid='.$item->id.'&lang='.$language->sef);
 							} else {
-								$link = JRoute::_($item->link.'&Itemid='.$item->id.'&lang='.$language->sef);
+								$link = Route::url($item->link.'&Itemid='.$item->id.'&lang='.$language->sef);
 							}
 
 							// Check if language is the default site language and remove url language code is on

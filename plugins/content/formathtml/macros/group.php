@@ -50,7 +50,7 @@ class GroupMacro extends Macro
 	 */
 	public function __construct()
 	{
-		$cname = \JRequest::getVar('cn', \JRequest::getVar('gid', ''));
+		$cname = \Request::getVar('cn', \Request::getVar('gid', ''));
 		$this->group = Group::getInstance($cname);
 	}
 
@@ -81,6 +81,6 @@ class GroupMacro extends Macro
 	 */
 	protected function canRender()
 	{
-		return \JRequest::getCmd('option', '') == 'com_groups';
+		return \Request::getCmd('option', '') == 'com_groups';
 	}
 }

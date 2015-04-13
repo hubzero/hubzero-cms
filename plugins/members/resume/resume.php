@@ -69,7 +69,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
 
-		$this->config = JComponentHelper::getParams('com_jobs');
+		$this->config = Component::params('com_jobs');
 	}
 
 	/**
@@ -87,7 +87,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber') || $this->isEmployer($user, $member))
 		{
-			$areas['resume'] = JText::_('PLG_MEMBERS_RESUME');
+			$areas['resume'] = Lang::txt('PLG_MEMBERS_RESUME');
 			$areas['icon'] = 'f016';
 		}
 
@@ -213,7 +213,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Jobs component needs to be enabled
 		if (!$this->config->get('component_enabled'))
 		{
-			$arr['html'] = '<p class="warning">' . JText::_('PLG_MEMBERS_RESUME_WARNING_DISABLED') . '</p>';
+			$arr['html'] = '<p class="warning">' . Lang::txt('PLG_MEMBERS_RESUME_WARNING_DISABLED') . '</p>';
 			return $arr;
 		}
 
@@ -226,7 +226,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			$database = JFactory::getDBO();
 			$juser = JFactory::getUser();
 
-			$task = JRequest::getVar('action','');
+			$task = Request::getVar('action','');
 
 			switch ($task)
 			{
@@ -244,7 +244,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 		else if ($emp)
 		{
-			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_($member->getLink() . '&active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>' . "\n";
+			//$arr['metadata'] = '<p class="resume"><a href="'.Route::url($member->getLink() . '&active=resume').'">'.ucfirst(Lang::txt('Resume')).'</a></p>' . "\n";
 			$arr['metadata'] = '';
 		}
 
@@ -263,11 +263,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save($database, $option, $member, $task, $emp)
 	{
-		$lookingfor = JRequest::getVar('lookingfor','');
-		$tagline    = JRequest::getVar('tagline','');
-		$active     = JRequest::getInt('activeres', 0);
-		$author     = JRequest::getInt('author', 0);
-		$title      = JRequest::getVar('title','');
+		$lookingfor = Request::getVar('lookingfor','');
+		$tagline    = Request::getVar('tagline','');
+		$active     = Request::getInt('activeres', 0);
+		$author     = Request::getInt('author', 0);
+		$title      = Request::getVar('title','');
 
 		if ($task == 'saveprefs')
 		{
@@ -275,7 +275,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			if (!$js->loadSeeker($member->get('uidNumber')))
 			{
-				$this->setError(JText::_('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
+				$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 				return '';
 			}
 
@@ -286,7 +286,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			}
 
 			$js->active = $active;
-			$js->updated = JFactory::getDate()->toSql();
+			$js->updated = Date::toSql();
 
 			if (!$js->store())
 			{
@@ -323,19 +323,19 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	protected function _activate($database, $option, $member, $emp)
 	{
 		// are we activating or disactivating?
-		$active = JRequest::getInt('on', 0);
+		$active = Request::getInt('on', 0);
 
 		$js = new \Components\Jobs\Tables\JobSeeker($database);
 
 		if (!$js->loadSeeker($member->get('uidNumber')))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 			return '';
 		}
 		else if (!$active)
 		{
 			$js->active = $active;
-			$js->updated = JFactory::getDate()->toSql();
+			$js->updated = Date::toSql();
 
 			// store new content
 			if (!$js->store())
@@ -489,34 +489,34 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	protected function _upload($database, $option, $member)
 	{
 		$path = $this->build_path($member->get('uidNumber'));
-		$emp = JRequest::getInt('emp', 0);
+		$emp = Request::getInt('emp', 0);
 
 		if (!$path)
 		{
-			$this->setError(JText::_('PLG_MEMBERS_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
 			return $this->_view($database, $option, $member, $emp);
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming file
-		$file = JRequest::getVar('uploadres', '', 'files', 'array');
+		$file = Request::getVar('uploadres', '', 'files', 'array');
 
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
 			return $this->_view($database, $option, $member, $emp);
 		}
 
 		// Incoming
-		$title = JRequest::getVar('title', '');
-		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
+		$title = Request::getVar('title', '');
+		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
 		$path = PATH_APP . $path;
 
 		// Replace file title with user name
 		$file_ext = substr($file['name'], strripos($file['name'], '.'));
-		$file['name']  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
+		$file['name']  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
 		$file['name'] .= $file_ext;
 
 		// Make the filename safe
@@ -527,7 +527,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$ext = strtolower(JFile::getExt($file['name']));
 		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt'))))
 		{
-			$this->setError(JText::_('Disallowed file type.'));
+			$this->setError(Lang::txt('Disallowed file type.'));
 			return $this->_view($database, $option, $member, $emp);
 		}
 
@@ -552,7 +552,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(Lang::txt('ERROR_UPLOADING'));
 		}
 		else
 		{
@@ -562,13 +562,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			{
 				JFile::delete($fpath);
 
-				$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+				$this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
 				return $this->_view($database, $option, $member, $emp);
 			}
 
 			// File was uploaded, create database entry
 			$title = htmlspecialchars($title);
-			$row->created = JFactory::getDate()->toSql();
+			$row->created = Date::toSql();
 			$row->filename = $file['name'];
 			$row->title = $title ? $title : $default_title;
 
@@ -598,7 +598,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$row = new Resume($database);
 		if (!$row->loadResume($member->get('uidNumber')))
 		{
-			$this->setError(JText::_('Resume ID not found.'));
+			$this->setError(Lang::txt('Resume ID not found.'));
 			return '';
 		}
 
@@ -609,7 +609,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if (!file_exists(PATH_APP . $path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(Lang::txt('FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -617,7 +617,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete(PATH_APP . $path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 			}
 			else
 			{
@@ -649,7 +649,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersShortlist()
 	{
-		$oid = JRequest::getInt('oid', 0);
+		$oid = Request::getInt('oid', 0);
 
 		if ($oid)
 		{
@@ -678,7 +678,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			{
 				$shortlist->emp      = $juser->get('id');
 				$shortlist->seeker   = $oid;
-				$shortlist->added    = JFactory::getDate()->toSql();
+				$shortlist->added    = Date::toSql();
 				$shortlist->category = 'resume';
 				$shortlist->check();
 				$shortlist->store();
@@ -770,7 +770,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// check validity of date
 		if (empty($unix_date))
 		{
-			return JText::_('Bad date');
+			return Lang::txt('Bad date');
 		}
 
 		// is it future date or past date
@@ -817,7 +817,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Ensure we have a database object
 		if (!$database)
 		{
-			JError::raiseError(500, JText::_('DATABASE_NOT_FOUND'));
+			JError::raiseError(500, Lang::txt('DATABASE_NOT_FOUND'));
 			return;
 		}
 
@@ -836,12 +836,12 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if (!is_file($file))
 		{
-			JError::raiseError(404, JText::_('FILE_NOT_FOUND'));
+			JError::raiseError(404, Lang::txt('FILE_NOT_FOUND'));
 			return;
 		}
 
 		// Use user name as file name
-		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('Resume')) : $member->get('name') . ' ' . ucfirst(JText::_('Resume'));
+		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
 		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));;
 
 		// Initiate a new content server and serve up the file
@@ -862,7 +862,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if (!$result)
 		{
-			JError::raiseError(500, JText::_('SERVER_ERROR'));
+			JError::raiseError(500, Lang::txt('SERVER_ERROR'));
 		}
 		else
 		{

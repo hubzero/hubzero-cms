@@ -51,7 +51,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 	public function onUsageAreas()
 	{
 		return array(
-			'region' => JText::_('PLG_USAGE_REGION')
+			'region' => Lang::txt('PLG_USAGE_REGION')
 		);
 	}
 
@@ -200,7 +200,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 			// Print region list table...
 			$html .= '<table summary="' . $regionname . '">' . "\n";
-			$html .= "\t" . '<caption>' . JText::_('Table') . ' ' . $t . ': ' . $regionname . '</caption>' . "\n";
+			$html .= "\t" . '<caption>' . Lang::txt('Table') . ' ' . $t . ': ' . $regionname . '</caption>' . "\n";
 			$html .= "\t" . '<thead>' . "\n";
 			$html .= "\t\t" . '<tr>' . "\n";
 			for ($pidx = 0; $pidx < count($period); $pidx++)
@@ -280,14 +280,14 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 		$o = UsageHelper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
 
 		// Build HTML
-		$html  = '<form method="post" action="'. JRoute::_('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
+		$html  = '<form method="post" action="'. Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR').': ' . "\n";
+		$html .= "\t\t\t".Lang::txt('PLG_USAGE_SHOW_DATA_FOR').': ' . "\n";
 		$html .= "\t\t\t" . '<select name="selectedPeriod" id="selectedPeriod">' . "\n";
 		$html .= $o;
 		$html .= "\t\t\t" . '</select>' . "\n";
-		$html .= "\t\t" . '</label> <input type="submit" value="' . JText::_('PLG_USAGE_VIEW') . '" />' . "\n";
+		$html .= "\t\t" . '</label> <input type="submit" value="' . Lang::txt('PLG_USAGE_VIEW') . '" />' . "\n";
 		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 		$html .= $this->regionlist($db, 1, 1, $enddate);

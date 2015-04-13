@@ -35,13 +35,13 @@ $database = JFactory::getDBO();
 $this->css()
      ->js();
 ?>
-<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages&task=sent'); ?>" method="post">
+<form action="<?php echo Route::url($this->member->getLink() . '&active=messages&task=sent'); ?>" method="post">
 	<table class="data">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
-				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?></th>
-				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_DATE_SENT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TO'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DATE_SENT'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -60,7 +60,7 @@ $this->css()
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
 
 						//url to view message
-						$url = JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id);
+						$url = Route::url($this->member->getLink() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;
@@ -83,10 +83,10 @@ $this->css()
 						$subject .= "</a>";
 
 						//get who the message is to
-						$to = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$row->uid) . "\">" . $row->name . "</a>";
+						$to = "<a href=\"" . Route::url('index.php?option='.$this->option.'&id='.$row->uid) . "\">" . $row->name . "</a>";
 
 						//date received
-						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
+						$date = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));
 					?>
 					<tr>
 						<td><?php echo $subject; ?></td>
@@ -96,7 +96,7 @@ $this->css()
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="6"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NONE'); ?></td>
+					<td colspan="6"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_NONE'); ?></td>
 				</tr>
 			<?php endif; ?>
 		</tbody>

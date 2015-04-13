@@ -35,14 +35,14 @@ $year  = date("Y", strtotime($this->event->get('publish_up')));
 $month = date("m", strtotime($this->event->get('publish_up')));
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 <ul id="page_options">
 	<li>
-		<a class="icon-date btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
-			<?php echo JText::_('Back to Calendar'); ?>
+		<a class="icon-date btn date" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
+			<?php echo Lang::txt('Back to Calendar'); ?>
 		</a>
 	</li>
 </ul>
@@ -52,10 +52,10 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 		<?php echo $this->event->get('title'); ?>
 	</span>
 	<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
+		<a class="delete" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 			Delete
 		</a>
-		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
+		<a class="edit" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 			Edit
 		</a>
 	<?php endif; ?>
@@ -64,20 +64,20 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 <div class="event-sub-menu">
 	<ul>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->get('id')); ?>">
-				<span><?php echo JText::_('Details'); ?></span>
+			<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->get('id')); ?>">
+				<span><?php echo Lang::txt('Details'); ?></span>
 			</a>
 		</li>
 		<?php if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
 			<li class="active">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
-					<span><?php echo JText::_('Register'); ?></span>
+				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
+					<span><?php echo Lang::txt('Register'); ?></span>
 				</a>
 			</li>
 			<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->get('id')); ?>">
-						<span><?php echo JText::_('Registrants ('.$this->registrants.')'); ?></span>
+					<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->get('id')); ?>">
+						<span><?php echo Lang::txt('Registrants ('.$this->registrants.')'); ?></span>
 					</a>
 				</li>
 			<?php endif; ?>
@@ -86,14 +86,14 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 	<div class="clear"></div>
 </div>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>" id="hubForm" method="post">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>" id="hubForm" method="post">
 	<fieldset>
-		<legend><?php echo JText::_('Limited Registration'); ?></legend>
+		<legend><?php echo Lang::txt('Limited Registration'); ?></legend>
 		<p class="info">
-			<?php echo JText::_('Registration is password protected. Please supply the password you were given with your invite to join the event.'); ?>
+			<?php echo Lang::txt('Registration is password protected. Please supply the password you were given with your invite to join the event.'); ?>
 		</p>
 		<label>
-			<?php echo JText::_('Password:'); ?> <span class="required">Required</span>
+			<?php echo Lang::txt('Password:'); ?> <span class="required">Required</span>
 			<input type="password" name="passwrd" />
 		</label>
 	</fieldset>

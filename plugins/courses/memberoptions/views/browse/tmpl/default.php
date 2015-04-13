@@ -30,20 +30,20 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$juser = JFactory::getUser();
-$params = $params =  JComponentHelper::getParams('com_courses');
+
+$params = $params =  Component::params('com_courses');
 
 $allowEmailResponses = $params->get('email_comment_processing');
 
 // Be sure to update this if you add more options
-if($allowEmailResponses)
+if ($allowEmailResponses)
 	$atLeastOneOption = true;
 else
 	$atLeastOneOption = false;
 
 ?>
 
-<form action="<?php echo JRoute::_($this->course->link() . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
+<form action="<?php echo Route::url($this->course->link() . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -51,15 +51,15 @@ else
 	<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID;?>" />
 
 	<div class="course-content-header">
-		<h3><?php echo JText::_('COURSE_MEMBEROPTIONS'); ?></h3>
+		<h3><?php echo Lang::txt('COURSE_MEMBEROPTIONS'); ?></h3>
 	</div>
 
-	<p><?php echo JText::_('COURSE_MEMBEROPTIONS_DESC'); ?></p>
+	<p><?php echo Lang::txt('COURSE_MEMBEROPTIONS_DESC'); ?></p>
 
 	<?php if ($allowEmailResponses) { ?>
 		<div style="padding-top:25px;">
-			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> >
-			<label for="recvpostemail"><?php echo JText::_('COURSE_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
+			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> >
+			<label for="recvpostemail"><?php echo Lang::txt('COURSE_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
 		</div>
 	<?php
 	}
@@ -72,7 +72,7 @@ else
 	<?php
 	}
 	else{
-		echo JText::_('COURSE_MEMBEROPTIONS_NONE');
+		echo Lang::txt('COURSE_MEMBEROPTIONS_NONE');
 	}
 	?>
 

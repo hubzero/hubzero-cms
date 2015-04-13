@@ -208,7 +208,7 @@ class Macro
 	 */
 	public function description()
 	{
-		return \JText::_('Not implemented.');
+		return \Lang::txt('Not implemented.');
 	}
 }
 

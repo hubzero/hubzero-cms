@@ -32,7 +32,7 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
 
 /**
  * Wiki macro class for displaying hello world
@@ -86,13 +86,14 @@ class Courses extends Macro
 	private function _getCourses()
 	{
 		// Filters for courses
-		$filters             = array();
-		$filters['state']    = 1;
-		$filters['group']    = $this->_getArg('group', '');
-		$filters['tag']      = $this->_getArg('tag', '');
-		$filters['limit']    = $this->_getArg('limit', 5);
-		$filters['sort']     = 'title';
-		$filters['sort_Dir'] = 'ASC';
+		$filters = array(
+			'state'    => 1,
+			'group'    => $this->_getArg('group', ''),
+			'tag'      => $this->_getArg('tag', ''),
+			'limit'    => $this->_getArg('limit', 5),
+			'sort'     => 'title',
+			'sort_Dir' => 'ASC'
+		);
 
 		// make sure to replace group cname with group id
 		if (isset($filters['group']))
@@ -137,7 +138,8 @@ class Courses extends Macro
 				if ($this->_getArg('instructor', null))
 				{
 					// get an array of instructor uid
-					$instructorIds = array_map(function($instructor) {
+					$instructorIds = array_map(function($instructor)
+					{
 						return $instructor->get('user_id');
 					}, $instructors);
 
@@ -200,7 +202,7 @@ class Courses extends Macro
 						$profile = \Hubzero\User\Profile::getInstance($instructor->get('user_id'));
 						if ($profile)
 						{
-							$instr[] = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
+							$instr[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $profile->get('uidNumber')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
 						}
 
 					}
@@ -216,7 +218,7 @@ class Courses extends Macro
 		}
 		else
 		{
-			$html .= '<em>' . \JText::_('Sorry, there were no courses matching your search.') . '</em>';
+			$html .= '<em>' . \Lang::txt('Sorry, there were no courses matching your search.') . '</em>';
 		}
 
 		$html .= '</div>';
@@ -234,7 +236,7 @@ class Courses extends Macro
 	private function _getArg($arg, $default = '')
 	{
 		// check to see if we have an arg matching our search
-		if (preg_match('/'.$arg.'=([^,|\s]*)/', $this->args, $matches))
+		if (preg_match('/' . $arg . '=([^,|\s]*)/', $this->args, $matches))
 		{
 			return trim($matches[1]);
 		}

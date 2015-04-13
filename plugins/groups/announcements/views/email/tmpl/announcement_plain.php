@@ -38,7 +38,7 @@ $jconfig = JFactory::getConfig();
 $group = \Hubzero\User\Group::getInstance( $this->announcement->scope_id );
 $groupLink = rtrim($juri->base(), DS) . DS . 'groups' . DS . $group->get('cn');
 
-echo JText::_('Group Announcement') . ' - ' . $group->get('description') . "\n";
+echo Lang::txt('Group Announcement') . ' - ' . $group->get('description') . "\n";
 echo '-------------------------------------------------------' . "\n\n";
 echo strip_tags($this->announcement->content)  . "\n\n";
 echo $groupLink . DS . 'announcements';

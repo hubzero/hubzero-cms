@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$id = JRequest::getVar('id','');
+$id = Request::getVar('id','');
 
 if (!$id) {
 	$html = 'Nothing to see here!';

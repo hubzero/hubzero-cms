@@ -44,7 +44,7 @@ class PlgSystemHighlight extends JPlugin
 		$extension = $input->get('option', '', 'cmd');
 
 		// Check if the highlighter is enabled.
-		if (!JComponentHelper::getParams($extension)->get('highlight_terms', 1))
+		if (!Component::params($extension)->get('highlight_terms', 1))
 		{
 			return true;
 		}

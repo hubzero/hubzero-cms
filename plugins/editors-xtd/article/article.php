@@ -69,7 +69,7 @@ class plgButtonArticle extends JPlugin
 		$button = new JObject();
 		$button->set('modal', true);
 		$button->set('link', $link);
-		$button->set('text', JText::_('PLG_ARTICLE_BUTTON_ARTICLE'));
+		$button->set('text', Lang::txt('PLG_ARTICLE_BUTTON_ARTICLE'));
 		$button->set('name', 'article');
 		$button->set('options', "{handler: 'iframe', size: {x: 770, y: 400}}");
 

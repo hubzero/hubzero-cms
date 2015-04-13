@@ -137,11 +137,11 @@ class plgUserProfile extends JPlugin
 	{
 		if ($value)
 		{
-			return JText::_('JYES');
+			return Lang::txt('JYES');
 		}
 		else
 		{
-			return JText::_('JNO');
+			return Lang::txt('JNO');
 		}
 	}
 

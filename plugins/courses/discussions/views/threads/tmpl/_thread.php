@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//$juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
 $this->active = (isset($this->active) ? $this->active : '');
@@ -72,20 +71,20 @@ if (!$this->thread->thread)
 ?>
 					<li class="thread thread<?php echo $this->thread->thread; if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
 						<?php
-							$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+							$name = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 							$huser = '';
 							if (!$this->thread->anonymous)
 							{
 								$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
 								if (is_object($huser) && $huser->get('name'))
 								{
-									$name = ($huser->get('public') ? '<a href="' . JRoute::_($huser->getLink()) . '">' : '') . $this->escape(stripslashes($huser->get('name'))) . ($huser->get('public') ? '</a>' : '');
+									$name = ($huser->get('public') ? '<a href="' . Route::url($huser->getLink()) . '">' : '') . $this->escape(stripslashes($huser->get('name'))) . ($huser->get('public') ? '</a>' : '');
 								}
 							}
 
 							if ($this->thread->state == 3)
 							{
-								$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
+								$comment = '<p class="warning">' . Lang::txt('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
 							}
 							else
 							{
@@ -105,20 +104,20 @@ if (!$this->thread->thread)
 						?>
 						<div class="comment-content">
 							<?php //if ($this->thread->sticky) { ?>
-							<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? JText::_('This thread is sticky') : JText::_('This thread is not sticky'); ?>">
-								<?php echo ($this->thread->sticky) ? JText::_('sticky') :  JText::_('not sticky'); ?>
+							<p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('This thread is sticky') : Lang::txt('This thread is not sticky'); ?>">
+								<?php echo ($this->thread->sticky) ? Lang::txt('sticky') :  Lang::txt('not sticky'); ?>
 							</p>
 							<?php //} ?>
 							<?php if ($this->thread->instructor_replied) { ?>
-							<p class="instructor-commented" title="<?php echo JText::_('Instructor commented in this discussion'); ?>">
-								<?php echo JText::_('instructor'); ?>
+							<p class="instructor-commented" title="<?php echo Lang::txt('Instructor commented in this discussion'); ?>">
+								<?php echo Lang::txt('instructor'); ?>
 							</p>
 							<?php } ?>
 							<p class="comment-title">
-								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo JHTML::_('date', $this->thread->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo JHTML::_('date', $this->thread->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 							</p>
 							<p class="comment-body">
-								<a href="<?php echo JRoute::_($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
+								<a href="<?php echo Route::url($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
 							</p>
 							<p class="comment-author">
 								<strong><?php echo $name; ?></strong>

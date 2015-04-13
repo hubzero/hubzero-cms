@@ -73,8 +73,8 @@ if ($assets->total() > 0)
 		$ratio = $originalWidth / $originalHeight;
 		?>
 			<div class="holder">
-				<a data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS)); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>px;" />
+				<a data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS)); ?>" class="img-link">
+					<img src="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS)); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>px;" />
 				</a>
 			</div>
 		<?php
@@ -86,8 +86,8 @@ if ($assets->total() > 0)
 			foreach ($images as $asset)
 			{
 				?>
-				<a data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" />
+				<a data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" class="img-link">
+					<img src="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" />
 				</a>
 				<?php
 			}
@@ -107,7 +107,7 @@ if ($assets->total() > 0)
 		{
 ?>
 				<li class="type-<?php echo $asset->get('type'); ?>">
-					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" <?php echo ($asset->get('type') == 'link') ? ' rel="external"' : ''; ?>>
+					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" <?php echo ($asset->get('type') == 'link') ? ' rel="external"' : ''; ?>>
 						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">
@@ -121,11 +121,11 @@ if ($assets->total() > 0)
 
 							if (preg_match("/$UrlPtn/", $asset->get('filename')))
 							{
-								echo JText::_('external link');
+								echo Lang::txt('external link');
 							}
 							else
 							{
-								echo JText::_('internal link');
+								echo Lang::txt('internal link');
 							}
 							?>
 				<?php } ?>

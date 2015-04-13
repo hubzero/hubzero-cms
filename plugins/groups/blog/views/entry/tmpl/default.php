@@ -42,15 +42,15 @@ $this->css()
 	<ul id="page_options">
 	<?php if ($this->canpost) { ?>
 		<li>
-			<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
-				<?php echo JText::_('PLG_GROUPS_BLOG_NEW_ENTRY'); ?>
+			<a class="icon-add add btn" href="<?php echo Route::url($base . '&action=new'); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_BLOG_NEW_ENTRY'); ?>
 			</a>
 		</li>
 	<?php } ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<li>
-			<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>">
-				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS'); ?>
+			<a class="icon-config config btn" href="<?php echo Route::url($base . '&action=settings'); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS'); ?>
 			</a>
 		</li>
 	<?php } ?>
@@ -83,7 +83,7 @@ $this->css()
 			<dl class="entry-meta">
 				<dt>
 					<span>
-						<?php echo JText::sprintf('PLG_GROUPS_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
+						<?php echo Lang::txt('PLG_GROUPS_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
 					</span>
 				</dt>
 				<dd class="date">
@@ -98,27 +98,27 @@ $this->css()
 				</dd>
 			<?php if ($this->row->get('allow_comments')) { ?>
 				<dd class="comments">
-					<a href="<?php echo JRoute::_($this->row->link('comments')); ?>">
-						<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $this->row->comments('count')); ?>
+					<a href="<?php echo Route::url($this->row->link('comments')); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $this->row->comments('count')); ?>
 					</a>
 				</dd>
 			<?php } else { ?>
 				<dd class="comments">
 					<span>
-						<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?>
 					</span>
 				</dd>
 			<?php } ?>
 			<?php if ($this->juser->get('id') == $this->row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 				<dd class="state">
-					<?php echo JText::_('PLG_GROUPS_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 				</dd>
 				<dd class="entry-options">
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
-						<span><?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?></span>
+					<a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
+						<span><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?></span>
 					</a>
-					<a class="icon-delete delete" data-confirm="<?php echo JText::_('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
-						<span><?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?></span>
+					<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
+						<span><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></span>
 					</a>
 				</dd>
 			<?php } ?>
@@ -135,14 +135,14 @@ $this->css()
 				$name = $this->escape(stripslashes($name));
 			?>
 			<div class="entry-author">
-				<h3><?php echo JText::_('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
+				<h3><?php echo Lang::txt('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
 				<p class="entry-author-photo">
 					<img src="<?php echo $this->row->creator('picture'); ?>" alt="" />
 				</p>
 				<div class="entry-author-content">
 					<h4>
 						<?php if ($this->row->creator()->get('public')) { ?>
-							<a href="<?php echo JRoute::_($this->row->creator()->getLink()); ?>">
+							<a href="<?php echo Route::url($this->row->creator()->getLink()); ?>">
 								<?php echo $name; ?>
 							</a>
 						<?php } else { ?>
@@ -153,7 +153,7 @@ $this->css()
 						<?php if ($this->row->creator('bio')) { ?>
 							<?php echo $this->row->creator()->getBio('parsed', 300); ?>
 						<?php } else { ?>
-							<em><?php echo JText::_('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?></em>
+							<em><?php echo Lang::txt('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?></em>
 						<?php } ?>
 					</p>
 				</div>
@@ -169,7 +169,7 @@ $this->css()
 	$this->filters['limit'] = 5;
 	?>
 		<div class="container blog-popular-entries">
-			<h4><?php echo JText::_('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
 		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($popular as $row) { ?>
@@ -180,19 +180,19 @@ $this->css()
 					}
 				?>
 				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
+					<a href="<?php echo Route::url($row->link()); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				</li>
 			<?php } ?>
 			</ol>
 		<?php } else { ?>
-			<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+			<p><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 		<?php } ?>
 		</div><!-- / .blog-popular-entries -->
 
 		<div class="container blog-recent-entries">
-			<h4><?php echo JText::_('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
 		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($recent as $row) { ?>
@@ -203,14 +203,14 @@ $this->css()
 					}
 				?>
 				<li>
-					<a href="<?php echo JRoute::_($row->link()); ?>">
+					<a href="<?php echo Route::url($row->link()); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				</li>
 			<?php } ?>
 			</ol>
 		<?php } else { ?>
-			<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+			<p><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 		<?php } ?>
 		</div><!-- / .blog-recent-entries -->
 	<?php
@@ -223,7 +223,7 @@ $this->css()
 	<section class="section below">
 		<div class="subject">
 			<h3 class="below_heading">
-				<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
 				<?php
@@ -240,15 +240,15 @@ $this->css()
 				?>
 			<?php } else { ?>
 				<p class="no-comments">
-					<?php echo JText::_('PLG_GROUPS_BLOG_NO_COMMENTS'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_NO_COMMENTS'); ?>
 				</p>
 			<?php } ?>
 
 			<h3 class="below_heading">
-				<?php echo JText::_('PLG_GROUPS_BLOG_POST_COMMENT'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_COMMENT'); ?>
 			</h3>
 
-			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
+			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
 						$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
@@ -262,25 +262,25 @@ $this->css()
 				</p>
 				<fieldset>
 					<?php
-						$replyto = $this->row->comment(JRequest::getInt('reply', 0));
+						$replyto = $this->row->comment(Request::getInt('reply', 0));
 						if ($replyto->exists())
 						{
-							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
+							$name = Lang::txt('PLG_GROUPS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous'))
 							{
 								$name = $this->escape(stripslashes($replyto->creator('name', $name)));
 								if ($replyto->creator('public'))
 								{
-									$name = '<a href="' . JRoute::_($replyto->creator()->getLink()) . '">' . $name . '</a>';
+									$name = '<a href="' . Route::url($replyto->creator()->getLink()) . '">' . $name . '</a>';
 								}
 							}
 					?>
 					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 						<p>
 							<strong><?php echo $name; ?></strong>
-							<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span>
+							<span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span>
 							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-							<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span>
+							<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
 						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>
@@ -289,21 +289,21 @@ $this->css()
 
 					<?php if (!$this->juser->get('guest')) { ?>
 						<label for="comment_content">
-							Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
+							Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
 							<?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<label id="comment-anonymous-label">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo JText::_('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" name="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
+							<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
 						</p>
 					<?php } else { ?>
 						<p class="warning">
-							<?php echo JText::sprintf('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="'. JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="'. Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
 						</p>
 					<?php } ?>
 
@@ -320,10 +320,10 @@ $this->css()
 
 					<div class="sidenote">
 						<p>
-							<strong><?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
+							<strong><?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 						</p>
 						<p>
-							<?php echo JText::_('PLG_GROUPS_BLOG_COMMENT_HELP'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENT_HELP'); ?>
 						</p>
 					</div>
 				</fieldset>
@@ -332,7 +332,7 @@ $this->css()
 		<aside class="aside">
 			<p>
 				<a class="icon-add btn" href="#post-comment">
-					<?php echo JText::_('PLG_GROUPS_BLOG_ADD_A_COMMENT'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_ADD_A_COMMENT'); ?>
 				</a>
 			</p>
 		</aside><!-- / .aside -->

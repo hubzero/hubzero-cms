@@ -34,17 +34,17 @@ $juser = $this->juser;
 
 $this->css();
 ?>
-<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_PROJECTS'); ?></h3>
+<h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>
 
 <div class="aside">
 	<div class="container">
-		<h3><?php echo JText::_('PLG_MEMBERS_PROJECTS_CREATE'); ?></h3>
-		<p><?php echo JText::_('PLG_MEMBERS_PROJECTS_CREATE_EXPLANATION'); ?></p>
-		<p><a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_ADD'); ?></a></p>
+		<h3><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_CREATE'); ?></h3>
+		<p><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_CREATE_EXPLANATION'); ?></p>
+		<p><a class="icon-add btn" href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ADD'); ?></a></p>
 	</div>
 	<div class="container">
-		<h3><?php echo JText::_('PLG_MEMBERS_PROJECTS_EXPLORE'); ?></h3>
-		<p><?php echo JText::sprintf('PLG_MEMBERS_PROJECTS_EXPLORE_EXPLANATION', JRoute::_('index.php?option=com_projects&task=browse'), JRoute::_('index.php?option=com_projects&task=features')); ?></p>
+		<h3><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_EXPLORE'); ?></h3>
+		<p><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_EXPLORE_EXPLANATION', Route::url('index.php?option=com_projects&task=browse'), Route::url('index.php?option=com_projects&task=features')); ?></p>
 	</div>
 </div><!-- / .aside -->
 
@@ -52,13 +52,13 @@ $this->css();
 	<div class="entries-filters">
 		<ul class="entries-menu">
 			<li>
-				<a class="active" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=projects&action=all'); ?>">
-					<?php echo JText::_('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
+				<a class="active" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=projects&action=all'); ?>">
+					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=projects&action=updates'); ?>">
-					<?php echo JText::_('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=projects&action=updates'); ?>">
+					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
 				</a>
 			</li>
 		</ul>

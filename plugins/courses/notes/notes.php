@@ -57,7 +57,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', '270D');
@@ -67,9 +67,9 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		if ($response->get('name') == $active)
@@ -79,20 +79,20 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			$this->database = JFactory::getDBO();
 
 			$this->view = with($this->view('default', 'notes'))
-				->set('option', JRequest::getCmd('option', 'com_courses'))
-				->set('controller', JRequest::getWord('controller', 'course'))
+				->set('option', Request::getCmd('option', 'com_courses'))
+				->set('controller', Request::getWord('controller', 'course'))
 				->set('course', $course)
 				->set('offering', $offering)
-				->set('no_html', JRequest::getInt('no_html', 0));
+				->set('no_html', Request::getInt('no_html', 0));
 
 			$this->view->filters = array(
 				'section_id' => $offering->section()->get('id'),
-				'search'     => JRequest::getVar('search', '')
+				'search'     => Request::getVar('search', '')
 			);
 
 			$this->view->model = new CoursesPluginModelNote(0);
 
-			if ($action = strtolower(JRequest::getWord('action', '')))
+			if ($action = strtolower(Request::getWord('action', '')))
 			{
 				switch ($action)
 				{
@@ -177,7 +177,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function _download()
 	{
-		$format = strtolower(JRequest::getWord('frmt', 'txt'));
+		$format = strtolower(Request::getWord('frmt', 'txt'));
 		if (!in_array($format, array('txt', 'csv')))
 		{
 			$format = 'txt';
@@ -217,7 +217,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$note_id = JRequest::getInt('note', 0);
+			$note_id = Request::getInt('note', 0);
 
 			$this->view->model = new CoursesPluginModelNote($note_id);
 		}
@@ -230,47 +230,47 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function _save()
 	{
-		$note_id = JRequest::getInt('note', 0);
+		$note_id = Request::getInt('note', 0);
 
 		$model = new CoursesPluginModelNote($note_id);
 
-		if ($scope = JRequest::getWord('scope', 'lecture'))
+		if ($scope = Request::getWord('scope', 'lecture'))
 		{
 			$model->set('scope', $scope);
 		}
-		if ($scope_id = JRequest::getInt('scope_id', 0))
+		if ($scope_id = Request::getInt('scope_id', 0))
 		{
 			$model->set('scope_id', $scope_id);
 		}
-		if ($pos_x = JRequest::getInt('x', 0))
+		if ($pos_x = Request::getInt('x', 0))
 		{
 			$model->set('pos_x', $pos_x);
 		}
-		if ($pos_y = JRequest::getInt('y', 0))
+		if ($pos_y = Request::getInt('y', 0))
 		{
 			$model->set('pos_y', $pos_y);
 		}
-		if ($width = JRequest::getInt('w', 0))
+		if ($width = Request::getInt('w', 0))
 		{
 			$model->set('width', $width);
 		}
-		if ($height = JRequest::getInt('h', 0))
+		if ($height = Request::getInt('h', 0))
 		{
 			$model->set('height', $height);
 		}
-		if ($state = JRequest::getInt('state', 0))
+		if ($state = Request::getInt('state', 0))
 		{
 			$model->set('state', $state);
 		}
-		if ($timestamp = JRequest::getVar('time', ''))
+		if ($timestamp = Request::getVar('time', ''))
 		{
 			$model->set('timestamp', $timestamp);
 		}
-		if ($content = JRequest::getVar('txt', ''))
+		if ($content = Request::getVar('txt', ''))
 		{
 			$model->set('content', $content);
 		}
-		$model->set('access', JRequest::getInt('access', 0));
+		$model->set('access', Request::getInt('access', 0));
 		$model->set('section_id', $this->view->offering->section()->get('id'));
 
 		if (!$model->store(true))
@@ -297,7 +297,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function _delete()
 	{
-		$note_id = JRequest::getInt('note', 0);
+		$note_id = Request::getInt('note', 0);
 
 		$model = new CoursesPluginModelNote($note_id);
 		if ($model->exists())

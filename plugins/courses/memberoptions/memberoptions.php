@@ -55,7 +55,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', 'registered')
 			->set('display_menu_tab', false);
 
@@ -64,16 +64,16 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		if ($response->get('name') == $active)
 		{
 			// Things we need from the form
-			$recvEmailOptionID    = JRequest::getInt('memberoptionid', 0);
-			$recvEmailOptionValue = JRequest::getInt('recvpostemail', 0);
+			$recvEmailOptionID    = Request::getInt('memberoptionid', 0);
+			$recvEmailOptionValue = Request::getInt('recvpostemail', 0);
 
 			include_once(__DIR__ . DS . 'memberoption.class.php');
 
@@ -145,7 +145,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 	 */
 	protected function save($course, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
+		$postSaveRedirect = Request::getVar('postsaveredirect', '');
 
 		// Instantaite database object
 		$database = JFactory::getDBO();
@@ -178,16 +178,15 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 			return $this->edit();
 		}
 
-		$app = JFactory::getApplication();
-		$app->enqueueMessage('You have successfully updated your email settings','Message');
+		$msg = 'You have successfully updated your email settings';
 
 		if (!$postSaveRedirect)
 		{
-			$app->redirect(JRoute::_($this->course->link() . '&active=' . $this->_name . '&task=edit'));
+			App::redirect(Route::url($this->course->link() . '&active=' . $this->_name . '&task=edit'), $msg);
 		}
 		else
 		{
-			$app->redirect($postSaveRedirect);
+			App::redirect($postSaveRedirect, $msg);
 		}
 	}
 }

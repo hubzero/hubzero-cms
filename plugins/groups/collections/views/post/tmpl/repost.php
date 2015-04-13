@@ -35,24 +35,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 $task = 'post/' . $this->post_id . '/collect';
 if ($this->collection_id)
 {
-	$task = JRequest::getVar('board', 0) . '/collect';
+	$task = Request::getVar('board', 0) . '/collect';
 }
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=' . $task); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=' . $task); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('Collect'); ?></legend>
+		<legend><?php echo Lang::txt('Collect'); ?></legend>
 
 		<div class="grid">
 		<div class="col span-half">
 		<label for="field-collection_id">
-			<?php echo JText::_('Select collection'); ?>
+			<?php echo Lang::txt('Select collection'); ?>
 			<select name="collection_id" id="field-collection_id">
-				<option value="0"><?php echo JText::_('Select ...'); ?></option>
-				<optgroup label="<?php echo JText::_('My collections'); ?>">
+				<option value="0"><?php echo Lang::txt('Select ...'); ?></option>
+				<optgroup label="<?php echo Lang::txt('My collections'); ?>">
 <?php
 if ($this->myboards)
 {
@@ -99,14 +99,14 @@ if ($this->groupboards)
 		<p class="or">OR</p>
 		<div class="col span-half omega">
 			<label for="field-collection_title">
-				<?php echo JText::_('Create collection'); ?>
+				<?php echo Lang::txt('Create collection'); ?>
 				<input type="text" name="collection_title" id="field-collection_title" value="" />
 			</label>
 		</div>
 		</div>
 
 		<label for="field_description">
-			<?php echo JText::_('Add a description'); ?>
+			<?php echo Lang::txt('Add a description'); ?>
 			<?php echo $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
@@ -126,6 +126,6 @@ if ($this->groupboards)
 	<?php echo JHTML::_('form.token'); ?>
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_POST'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_POST'); ?>" />
 	</p>
 </form>

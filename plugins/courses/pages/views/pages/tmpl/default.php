@@ -52,7 +52,7 @@ if (!$this->page)
 	<div class="pages-content">
 		<div id="pages-introduction">
 			<div class="instructions">
-				<p><?php echo JText::_('PLG_COURSES_PAGES_NONE_FOUND'); ?></p>
+				<p><?php echo Lang::txt('PLG_COURSES_PAGES_NONE_FOUND'); ?></p>
 			</div>
 		</div>
 	</div><!-- / .pages-content -->
@@ -85,13 +85,13 @@ else
 	<?php if ($authorized) { ?>
 		<ul class="manager-options">
 			<li>
-				<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>" title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
-					<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>
+				<a class="icon-delete delete" href="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>" title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
+					<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>
 				</a>
 			</li>
 			<li>
-				<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&unit=' . $this->page->get('url') . '&b=edit'); ?>" title="<?php echo JText::_('PLG_COURSES_PAGES_EDIT'); ?>">
-					<?php echo JText::_('PLG_COURSES_PAGES_EDIT'); ?>
+				<a class="icon-edit edit" href="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit'); ?>" title="<?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>">
+					<?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>
 				</a>
 			</li>
 		</ul>

@@ -175,7 +175,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		$attr = $this->attr;
 
 		// Get wiki config
-		$this->config = \JComponentHelper::getParams('com_wiki');
+		$this->config = \Component::params('com_wiki');
 		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
@@ -189,7 +189,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		// Is it numeric?
 		if (is_numeric($file))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
 			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
@@ -475,7 +475,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		$file = trim($file, DS);
 
-		if (\JRequest::getVar('format') == 'pdf')
+		if (\Request::getVar('format') == 'pdf')
 		{
 			return $this->_path($file);
 		}
@@ -488,7 +488,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 		$link .= $this->pagename . DS . 'Image:' . $file;
 
-		return \JRoute::_($link);
+		return \Route::url($link);
 	}
 
 	/**

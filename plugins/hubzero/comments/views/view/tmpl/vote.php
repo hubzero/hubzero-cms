@@ -74,18 +74,18 @@ else
 $juser = JFactory::getUser();
 if (!$juser->get('guest'))
 {
-	$like_title    = JText::sprintf('PLG_HUBZERO_COMMENTS_VOTE_UP', $this->item->get('positive', 0));
-	$dislike_title = JText::sprintf('PLG_HUBZERO_COMMENTS_VOTE_DOWN', $this->item->get('negative', 0));
+	$like_title    = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_UP', $this->item->get('positive', 0));
+	$dislike_title = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DOWN', $this->item->get('negative', 0));
 	$cls = ' tooltips';
 }
 else
 {
-	$like_title    = JText::_('PLG_HUBZERO_COMMENTS_VOTE_UP_LOGIN');
-	$dislike_title = JText::_('PLG_HUBZERO_COMMENTS_VOTE_DOWN_LOGIN');
+	$like_title    = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_UP_LOGIN');
+	$dislike_title = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DOWN_LOGIN');
 	$cls = ' tooltips';
 }
 
-$no_html = JRequest::getInt('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) { ?>
 <p class="comment-voting voting">
@@ -93,22 +93,22 @@ if (!$no_html) { ?>
 	<span class="vote-like<?php echo $lcls; ?>">
 		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by') || !$this->params->get('access-vote-comment')) { ?>
 			<span class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
-				<?php echo $this->item->get('positive', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
+				<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
 			</span>
 		<?php } else { ?>
-			<a class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_($this->url . 'action=commentvote&voteup=' . $this->item->get('id')); ?>" title="<?php echo $like_title; ?>">
-				<?php echo $this->item->get('positive', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
+			<a class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=commentvote&voteup=' . $this->item->get('id')); ?>" title="<?php echo $like_title; ?>">
+				<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
 			</a>
 		<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
 		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by') || !$this->params->get('access-vote-comment')) { ?>
 			<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('negative', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
+				<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
 			</span>
 		<?php } else { ?>
-			<a class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_($this->url . 'action=commentvote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('negative', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
+			<a class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=commentvote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
+				<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
 			</a>
 		<?php } ?>
 	</span>

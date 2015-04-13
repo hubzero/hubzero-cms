@@ -36,7 +36,7 @@ class plgEditorNone extends JPlugin
 					var showFullPaths = ".$showFullPaths.";
 					function insertAtCursor(myField, myValue) {
 
-						if(showFullPaths)
+						if (showFullPaths)
 						{
 							var hub = 'https://' + document.location.host + '/';
 							myValue = myValue.replace(/(<img[\w+]* src=)\"([^\"]*)\"/gi, \"$1\\\"\" + hub + \"$2\\\"\");

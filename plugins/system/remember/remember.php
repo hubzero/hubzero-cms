@@ -28,7 +28,7 @@ class plgSystemRemember extends JPlugin
 		{
 			$hash = JApplication::getHash('JLOGIN_REMEMBER');
 
-			if ($str = JRequest::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
+			if ($str = Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 			{
 				jimport('joomla.utilities.simplecrypt');
 				$credentials = array();

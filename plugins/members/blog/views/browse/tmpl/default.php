@@ -43,13 +43,13 @@ $this->css()
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
-			<?php echo JText::_('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?>
+		<a class="icon-add add btn" href="<?php echo Route::url($base . '&task=new'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?>
 		</a>
 	</li>
 	<li>
-		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&task=settings'); ?>">
-			<?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS'); ?>
+		<a class="icon-config config btn" href="<?php echo Route::url($base . '&task=settings'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS'); ?>
 		</a>
 	</li>
 </ul>
@@ -59,20 +59,20 @@ $this->css()
 
 	<div class="introduction">
 		<div class="introduction-message">
-			<p><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_EMPTY'); ?></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_INTRO_EMPTY'); ?></p>
 		</div>
 		<div class="introduction-questions">
-			<p><strong><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_WHAT_IS_A_BLOG'); ?></strong></p>
-			<p><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_WHAT_IS_A_BLOG_EXPLANATION'); ?></p>
+			<p><strong><?php echo Lang::txt('PLG_MEMBERS_BLOG_INTRO_WHAT_IS_A_BLOG'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_INTRO_WHAT_IS_A_BLOG_EXPLANATION'); ?></p>
 
-			<p><strong><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_HOW_TO_START'); ?></strong></p>
-			<p><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_HOW_TO_START_EXPLANATION'); ?></p>
+			<p><strong><?php echo Lang::txt('PLG_MEMBERS_BLOG_INTRO_HOW_TO_START'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_INTRO_HOW_TO_START_EXPLANATION'); ?></p>
 		</div>
 	</div><!-- / .introduction -->
 
 <?php } else { ?>
 
-<form method="get" action="<?php echo JRoute::_($base); ?>">
+<form method="get" action="<?php echo Route::url($base); ?>">
 	<section class="section">
 		<div class="subject">
 		<?php if ($this->getError()) : ?>
@@ -80,20 +80,20 @@ $this->css()
 		<?php endif; ?>
 
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_LEGEND'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_LABEL'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
+					<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LABEL'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
 			<div class="container">
 				<h3>
 					<?php if (isset($this->search) && $this->search) { ?>
-						<?php echo JText::sprintf('PLG_MEMBERS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
+						<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
 					<?php } else if (!isset($this->year) || !$this->year) { ?>
-						<?php echo JText::_('PLG_MEMBERS_BLOG_LATEST_ENTRIES'); ?>
+						<?php echo Lang::txt('PLG_MEMBERS_BLOG_LATEST_ENTRIES'); ?>
 					<?php } else {
 						$archiveDate  = $this->year;
 						$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
@@ -112,7 +112,7 @@ $this->css()
 						$path  = $base . '&task=feed.rss';
 						$path .= ($this->year)  ? '&year=' . $this->year   : '';
 						$path .= ($this->month) ? '&month=' . $this->month : '';
-						$feed = JRoute::_($path);
+						$feed = Route::url($path);
 						if (substr($feed, 0, 4) != 'http')
 						{
 							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
@@ -120,7 +120,7 @@ $this->css()
 						$feed = str_replace('https:://', 'http://', $feed);
 					?>
 					<a class="feed" href="<?php echo $feed; ?>">
-						<?php echo JText::_('PLG_MEMBERS_BLOG_RSS_FEED'); ?>
+						<?php echo Lang::txt('PLG_MEMBERS_BLOG_RSS_FEED'); ?>
 					</a>
 					<?php } ?>
 				</h3>
@@ -140,14 +140,14 @@ $this->css()
 				?>
 				<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
 					<h4 class="entry-title">
-						<a href="<?php echo JRoute::_($row->link()); ?>">
+						<a href="<?php echo Route::url($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</h4>
 					<dl class="entry-meta">
 						<dt>
 							<span>
-								<?php echo JText::sprintf('PLG_MEMBERS_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
 							</span>
 						</dt>
 						<dd class="date">
@@ -162,7 +162,7 @@ $this->css()
 						</dd>
 						<dd class="author">
 							<?php if ($row->creator('public')) { ?>
-								<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>">
+								<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
 									<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 								</a>
 							<?php } else { ?>
@@ -171,29 +171,29 @@ $this->css()
 						</dd>
 						<?php if ($row->get('allow_comments') == 1) { ?>
 							<dd class="comments">
-								<a href="<?php echo JRoute::_($row->link('comments')); ?>">
-									<?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
+								<a href="<?php echo Route::url($row->link('comments')); ?>">
+									<?php echo Lang::txt('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
 								</a>
 							</dd>
 						<?php } else { ?>
 							<dd class="comments">
 								<span>
-									<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
+									<?php echo Lang::txt('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
 								</span>
 							</dd>
 						<?php } ?>
 						<?php if ($juser->get('id') == $row->get('created_by')) { ?>
 							<dd class="state <?php echo $row->state('text'); ?>">
-								<?php echo JText::_('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
 							</dd>
 						<?php } ?>
 						<dd class="entry-options">
 						<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-							<a class="edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>">
-								<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>
+							<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
+								<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>
 							</a>
-							<a class="delete" data-confirm="<?php echo JText::_('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>">
-								<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>
+							<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
+								<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>
 							</a>
 						<?php } ?>
 						</dd>
@@ -234,14 +234,14 @@ $this->css()
 					echo $pageNav->getListFooter();
 				?>
 	<?php } else { ?>
-				<p class="warning"><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+				<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 	<?php } ?>
 			</div>
 		</div><!-- / .subject -->
 		<aside class="aside">
 		<?php if ($first->exists()) { ?>
 			<div class="container">
-				<h4><?php echo JText::_('PLG_MEMBERS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ul>
 					<?php
 						$start = intval(substr($first->get('publish_up'), 0, 4));
@@ -263,7 +263,7 @@ $this->css()
 					?>
 					<?php for ($i=$now, $n=$start; $i >= $n; $i--) : ?>
 						<li>
-							<a href="<?php echo JRoute::_($base . '&task=' . $i); ?>">
+							<a href="<?php echo Route::url($base . '&task=' . $i); ?>">
 								<?php echo $i; ?>
 							</a>
 							<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) : ?>
@@ -271,8 +271,8 @@ $this->css()
 									<?php $months = ($i == $now) ? date("m") : 12; ?>
 									<?php for ($k=0, $z=$months; $k < $z; $k++) : ?>
 										<li>
-											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo JRoute::_($base . '&task=' . $i . '/' . sprintf("%02d", ($k+1), 1)); ?>">
-												<?php echo JText::_($m[$k]); ?>
+											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&task=' . $i . '/' . sprintf("%02d", ($k+1), 1)); ?>">
+												<?php echo Lang::txt($m[$k]); ?>
 											</a>
 										</li>
 									<?php endfor; ?>
@@ -289,36 +289,36 @@ $this->css()
 		$this->filters['limit'] = 5;
 		?>
 			<div class="container blog-popular-entries">
-				<h4><?php echo JText::_('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
 			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 				<ol>
 				<?php foreach ($popular as $row) { ?>
 					<li>
-						<a href="<?php echo JRoute::_($row->link()); ?>">
+						<a href="<?php echo Route::url($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</li>
 				<?php } ?>
 				</ol>
 			<?php } else { ?>
-				<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+				<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 			<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 
 			<div class="container blog-recent-entries">
-				<h4><?php echo JText::_('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_RECENT_ENTRIES'); ?></h4>
 			<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
 				<ol>
 				<?php foreach ($recent as $row) { ?>
 					<li>
-						<a href="<?php echo JRoute::_($row->link()); ?>">
+						<a href="<?php echo Route::url($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</li>
 				<?php } ?>
 				</ol>
 			<?php } else { ?>
-				<p><?php echo JText::_('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
+				<p><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 			<?php } ?>
 			</div><!-- / .blog-recent-entries -->
 		<?php

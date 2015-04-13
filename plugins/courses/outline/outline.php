@@ -55,7 +55,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f0ae');
@@ -65,16 +65,16 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		// Check to see if user is member and plugin access requires members
 		$sparams = new JRegistry($course->offering()->section()->get('params'));
 		if (!$course->offering()->section()->access('view') && !$sparams->get('preview', 0))
 		{
-			$response->set('html', '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>');
+			$response->set('html', '<p class="info">' . Lang::txt('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>');
 			return $response;
 		}
 
@@ -85,11 +85,11 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 			// Course and action
 			$this->course = $course;
-			$action = strtolower(JRequest::getWord('action', ''));
+			$action = strtolower(Request::getWord('action', ''));
 
 			$this->view = $this->view('default', 'outline');
-			$this->view->option     = JRequest::getCmd('option', 'com_courses');
-			$this->view->controller = JRequest::getWord('controller', 'course');
+			$this->view->option     = Request::getCmd('option', 'com_courses');
+			$this->view->controller = Request::getWord('controller', 'course');
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->config     = $course->config();
@@ -122,11 +122,11 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	 */
 	private function _display()
 	{
-		if (($unit = JRequest::getVar('unit', '')))
+		if (($unit = Request::getVar('unit', '')))
 		{
 			$this->view->setLayout('unit');
 		}
-		if (($group = JRequest::getVar('group', '')))
+		if (($group = Request::getVar('group', '')))
 		{
 			$this->view->setLayout('lecture');
 		}
@@ -150,12 +150,12 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->course->access('manage'))
 		{
-			JError::raiseError(401, JText::_('Not Authorized'));
+			JError::raiseError(401, Lang::txt('Not Authorized'));
 			return;
 		}
 
 		// If we have a scope set, we're loading a specific outline piece (ex: a unit)
-		if ($scope = JRequest::getWord('scope', false))
+		if ($scope = Request::getWord('scope', false))
 		{
 			// Setup view
 			$this->view->setLayout("edit{$scope}");
@@ -170,7 +170,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 			$this->view->title         = "Edit {$scope}";
 			$this->view->scope         = $scope;
-			$this->view->scope_id      = JRequest::getInt('scope_id');
+			$this->view->scope_id      = Request::getInt('scope_id');
 
 			return;
 		}

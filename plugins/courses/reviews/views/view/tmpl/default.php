@@ -33,13 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $comment = new \Hubzero\Item\Comment($this->database);
 
-$edit = JRequest::getInt('editcomment', 0);
+$edit = Request::getInt('editcomment', 0);
 
 $this->js();
 ?>
 <?php if ($this->params->get('access-view-comment')) { ?>
 		<h3 class="review-title">
-			<?php echo JText::_('PLG_COURSES_REVIEWS'); ?>
+			<?php echo Lang::txt('PLG_COURSES_REVIEWS'); ?>
 		</h3>
 	<?php if ($this->comments->total() > 0) {
 		$this->view('list')
@@ -56,26 +56,26 @@ $this->js();
 		<div class="no-reviews">
 			<?php if ($this->obj->isManager()) { ?>
 			<div class="instructions">
-				<p><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS'); ?></p>
+				<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_NO_REVIEWS'); ?></p>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_MANAGER'); ?></strong></p>
-				<p><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_MANAGER_EXPLANATION'); ?></p>
+				<p><strong><?php echo Lang::txt('PLG_COURSES_REVIEWS_REVIEW_MANAGER'); ?></strong></p>
+				<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_REVIEW_MANAGER_EXPLANATION'); ?></p>
 			</div>
 			<?php } else { ?>
 			<div class="instructions">
-				<p><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_BE_FIRST'); ?></p>
+				<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_NO_REVIEWS_BE_FIRST'); ?></p>
 				<ol>
-					<li><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP1'); ?></li>
-					<li><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP2'); ?></li>
-					<li><?php echo JText::_('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP3'); ?></li>
+					<li><?php echo Lang::txt('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP1'); ?></li>
+					<li><?php echo Lang::txt('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP2'); ?></li>
+					<li><?php echo Lang::txt('PLG_COURSES_REVIEWS_NO_REVIEWS_STEP3'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong><?php echo JText::_('PLG_COURSES_REVIEWS_HOW_TO_ENROLL'); ?></strong></p>
-				<p><?php echo JText::_('PLG_COURSES_REVIEWS_HOW_TO_ENROLL_EXPLANATION'); ?></p>
-				<p><strong><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_WITHOUT_ENROLLING'); ?></strong></p>
-				<p><?php echo JText::_('PLG_COURSES_REVIEWS_REVIEW_WITHOUT_ENROLLING_EXPLANATION'); ?></p>
+				<p><strong><?php echo Lang::txt('PLG_COURSES_REVIEWS_HOW_TO_ENROLL'); ?></strong></p>
+				<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_HOW_TO_ENROLL_EXPLANATION'); ?></p>
+				<p><strong><?php echo Lang::txt('PLG_COURSES_REVIEWS_REVIEW_WITHOUT_ENROLLING'); ?></strong></p>
+				<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_REVIEW_WITHOUT_ENROLLING_EXPLANATION'); ?></p>
 			</div>
 			<?php } ?>
 		</div>
@@ -85,13 +85,13 @@ $this->js();
 	<div class="below section">
 		<h3 class="post-comment-title">
 		<?php if ($this->depth <= 1 && $this->params->get('access-review-comment')) { ?>
-			<?php echo JText::_('PLG_COURSES_REVIEWS_POST_A_REVIEW'); ?>
+			<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_A_REVIEW'); ?>
 		<?php } else { ?>
-			<?php echo JText::_('PLG_COURSES_REVIEWS_POST_A_COMMENT'); ?>
+			<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_A_COMMENT'); ?>
 		<?php } ?>
 		</h3>
 
-			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform">
+			<form method="post" action="<?php echo Route::url($this->url); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"></span>
 					<?php
@@ -109,29 +109,29 @@ $this->js();
 				<?php
 				if (!$this->juser->get('guest'))
 				{
-					if (($replyto = JRequest::getInt('replyto', 0)))
+					if (($replyto = Request::getInt('replyto', 0)))
 					{
 						$reply = new \Hubzero\Item\Comment($this->database);
 						$reply->load($replyto);
 
-						$name = JText::_('COM_KB_ANONYMOUS');
+						$name = Lang::txt('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous)
 						{
 							$xuser = new \Hubzero\User\Profile();
 							$xuser->load($reply->created_by);
 							if (is_object($xuser) && $xuser->get('name'))
 							{
-								$name = '<a href="' . JRoute::_($xuser->getLink()) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
+								$name = '<a href="' . Route::url($xuser->getLink()) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 							}
 						}
 					?>
 					<blockquote cite="c<?php echo $this->replyto->id; ?>">
 						<p>
 							<strong><?php echo $name; ?></strong>
-							<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span>
-							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span>
-							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+							<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+							<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
+							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 						</p>
 						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->content), 300); ?></p>
 					</blockquote>
@@ -139,7 +139,7 @@ $this->js();
 					}
 				}
 
-				$comment->parent = JRequest::getInt('replyto', 0);
+				$comment->parent = Request::getInt('replyto', 0);
 				if ($edit)
 				{
 					$comment->load($edit);
@@ -149,11 +149,11 @@ $this->js();
 					}*/
 					?>
 					<p class="warning">
-						<?php echo JText::_('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />
-						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span>
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+						<?php echo Lang::txt('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />
+						<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 					</p>
 					<?php
 					if ($comment->parent)
@@ -164,43 +164,43 @@ $this->js();
 				?>
 				<?php if ($this->depth <= 1) {  // && $this->params->get('access-review-comment') ?>
 					<fieldset class="rating">
-						<legend><?php echo JText::_('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
+						<legend><?php echo Lang::txt('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
 
 						<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_5">
 							&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
+							<?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
 						</label>
 
 						<input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->rating == 4) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_4">
 							&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
+							<?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
 						</label>
 
 						<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_3">
 							&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
+							<?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
 						</label>
 
 						<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_2">
 							&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
+							<?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
 						</label>
 
 						<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_1">
 							&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
-							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
+							<?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
 						</label>
 					</fieldset>
 					<div class="clear"></div>
 				<?php } ?>
 
 					<label>
-						<?php echo JText::_('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
+						<?php echo Lang::txt('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
 						<?php echo $this->editor('comment[content]', $this->escape(stripslashes($comment->content)), 35, 20, 'commentcontent', array('class' => 'minimal no-footer')); ?>
 					</label>
 
@@ -208,14 +208,14 @@ $this->js();
 					<label id="comment-anonymous-label">
 					<?php if ($this->params->get('comments_anon', 1)) { ?>
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->anonymous) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('PLG_COURSES_REVIEWS_POST_ANONYMOUSLY'); ?>
+						<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_ANONYMOUSLY'); ?>
 					<?php } else { ?>
 						&nbsp; <input class="option" type="hidden" name="comment[anonymous]" id="comment-anonymous" value="0" />
 					<?php } ?>
 					</label>
 
 					<p class="submit">
-						<input type="submit" name="submit" value="<?php echo JText::_('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
+						<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
 					</p>
 
 					<input type="hidden" name="comment[id]" value="<?php echo $comment->id; ?>" />
@@ -230,7 +230,7 @@ $this->js();
 
 					<div class="sidenote">
 						<p>
-							<strong><?php echo JText::_('PLG_COURSES_REVIEWS_KEEP_RELEVANT'); ?></strong>
+							<strong><?php echo Lang::txt('PLG_COURSES_REVIEWS_KEEP_RELEVANT'); ?></strong>
 						</p>
 					</div>
 				</fieldset>
@@ -240,6 +240,6 @@ $this->js();
 	<?php } ?>
 <?php } else { ?>
 	<p class="warning">
-		<?php echo JText::_('PLG_COURSES_REVIEWS_MUST_BE_LOGGED_IN'); ?>
+		<?php echo Lang::txt('PLG_COURSES_REVIEWS_MUST_BE_LOGGED_IN'); ?>
 	</p>
 <?php } ?>

@@ -56,21 +56,21 @@ class MemberNote extends \JTable
 		$this->scope_id = intval($this->scope_id);
 		if (!$this->scope_id)
 		{
-			$this->setError(JText::_('Missing scope ID'));
+			$this->setError(Lang::txt('Missing scope ID'));
 			return false;
 		}
 
 		$this->scope = trim($this->scope);
 		if (!$this->scope)
 		{
-			$this->setError(JText::_('Missing scope'));
+			$this->setError(Lang::txt('Missing scope'));
 			return false;
 		}
 
 		$this->section_id = intval($this->section_id);
 		if (!$this->section_id)
 		{
-			$this->setError(JText::_('Missing section ID'));
+			$this->setError(Lang::txt('Missing section ID'));
 			return false;
 		}
 
@@ -85,7 +85,7 @@ class MemberNote extends \JTable
 		if (!$this->id)
 		{
 			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = Date::toSql();
 			$this->created_by = $juser->get('id');
 			$this->state = 1;
 		}

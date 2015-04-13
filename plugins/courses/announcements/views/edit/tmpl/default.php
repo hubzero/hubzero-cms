@@ -36,46 +36,44 @@ $this->css('jquery.datepicker.css', 'system')
      ->css();
 $this->js('jquery.timepicker.js', 'system')
      ->js();
-
-$juser = JFactory::getUser();
 ?>
 <section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($this->offering->link() . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend>
 				<?php if ($this->model->get('id')) { ?>
-						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
+						<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
 				<?php } else { ?>
-						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
+						<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
 				<?php } ?>
 			</legend>
 
 			<label for="field_content">
-				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
+				<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
 				echo \JFactory::getEditor()->display('fields[content]', $this->escape($this->model->content('raw')), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 
 			<fieldset>
-				<legend><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PUBLISH_WINDOW'); ?></legend>
-				<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_HINT'); ?></p>
+				<legend><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_PUBLISH_WINDOW'); ?></legend>
+				<p><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_HINT'); ?></p>
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
-							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
+							<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
 							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo ($this->model->get('publish_up') && $this->model->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_up'), JFactory::getDBO()->getDateFormat())) : ''); ?>" />
-							<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-publish_down" id="priority-publish_down">
-							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
+							<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
 							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo ($this->model->get('publish_down') && $this->model->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_down'), JFactory::getDBO()->getDateFormat())) : ''); ?>" />
-							<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 				</div>
@@ -83,15 +81,15 @@ $juser = JFactory::getUser();
 
 			<label for="field-priority" id="priority-label">
 				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->model->get('priority')) { echo ' checked="checked"'; } ?> />
-				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
+				<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
 
 		<p class="submit">
-			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
-			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>">
-				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CANCEL'); ?>
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
+			<a class="btn btn-secondary" href="<?php echo Route::url($this->offering->link() . '&active=announcements'); ?>">
+				<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CANCEL'); ?>
 			</a>
 		</p>
 

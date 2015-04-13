@@ -35,8 +35,8 @@ $base = $this->offering->link() . '&active=forum';
 <div class="filters">
 	<div class="filters-inner">
 		<p>
-			<a class="comments btn" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias); ?>">
-				<?php echo JText::_('All discussions'); ?>
+			<a class="comments btn" href="<?php echo Route::url($base . '&unit=' . $this->category->alias); ?>">
+				<?php echo Lang::txt('All discussions'); ?>
 			</a>
 		</p>
 		<h3 class="thread-title">
@@ -51,7 +51,7 @@ $base = $this->offering->link() . '&active=forum';
 			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
+		<form action="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
 			<?php
 			if ($this->rows)
 			{
@@ -81,7 +81,7 @@ $base = $this->offering->link() . '&active=forum';
 			else
 			{
 				?>
-				<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
+				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
 				<?php
 			}
 			$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
@@ -96,15 +96,15 @@ $base = $this->offering->link() . '&active=forum';
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<div class="container">
-			<h4><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ALL_TAGS'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ALL_TAGS'); ?></h4>
 			<?php if ($this->tags) { ?>
 				<?php echo $this->tags; ?>
 			<?php } else { ?>
-				<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_NONE'); ?></p>
+				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?></p>
 			<?php } ?>
 		</div><!-- / .container -->
 		<div class="container">
-			<h4><?php echo JText::_('PLG_COURSES_DISCUSSIONS_PARTICIPANTS'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_PARTICIPANTS'); ?></h4>
 			<?php if ($this->participants) { ?>
 				<ul>
 				<?php
@@ -113,12 +113,12 @@ $base = $this->offering->link() . '&active=forum';
 					{
 						if (!$participant->anonymous) {
 						?>
-						<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
+						<li><a href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
 						<?php
 						} else if (!$anon) {
 							$anon = true;
 						?>
-						<li><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS'); ?></li>
+						<li><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS'); ?></li>
 						<?php
 						}
 					}
@@ -127,7 +127,7 @@ $base = $this->offering->link() . '&active=forum';
 			<?php } ?>
 		</div><!-- / .container -->
 		<div class="container">
-			<h4><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ATTACHMENTS'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ATTACHMENTS'); ?></h4>
 			<?php if ($this->attachments) { ?>
 				<ul class="attachments">
 				<?php
@@ -135,11 +135,11 @@ $base = $this->offering->link() . '&active=forum';
 				{
 					$title = ($attachment->description) ? $attachment->description : $attachment->filename;
 					?>
-					<li><a href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $attachment->parent . '&c=' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
+					<li><a href="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $attachment->parent . '&c=' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
 				<?php } ?>
 				</ul>
 			<?php } else { ?>
-				<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_NONE'); ?></p>
+				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?></p>
 			<?php } ?>
 		</div><!-- / .container -->
 	</aside><!-- / .aside  -->
@@ -148,9 +148,9 @@ $base = $this->offering->link() . '&active=forum';
 <section class="below section">
 	<div class="subject">
 		<h3 class="post-comment-title">
-			<?php echo JText::_('PLG_COURSES_DISCUSSIONS_ADD_COMMENT'); ?>
+			<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ADD_COMMENT'); ?>
 		</h3>
-		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
 				$juser = JFactory::getUser();
@@ -167,37 +167,37 @@ $base = $this->offering->link() . '&active=forum';
 
 			<fieldset>
 			<?php if ($juser->get('guest')) { ?>
-				<p class="warning"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
+				<p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
 			<?php } else { ?>
 				<p class="comment-title">
 					<strong>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong>
 					<span class="permalink">
-						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+						<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 					</span>
 				</p>
 
 				<label for="field_comment">
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?>
 					<?php
 					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
 				<fieldset>
-					<legend><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?></legend>
+					<legend><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
 						<label>
-							<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_FILE'); ?>:
+							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
 						</label>
 
 						<label>
-							<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_DESCRIPTION'); ?>:
+							<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_DESCRIPTION'); ?>:
 							<input type="text" name="description" value="" />
 						</label>
 					</div>
@@ -205,11 +205,11 @@ $base = $this->offering->link() . '&active=forum';
 
 				<label for="field-anonymous" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 				</label>
 
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+					<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 				</p>
 			<?php } ?>
 
@@ -232,6 +232,6 @@ $base = $this->offering->link() . '&active=forum';
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">
-		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT_HINT'); ?></p>
+		<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT_HINT'); ?></p>
 	</aside><!-- /.aside -->
 </section><!-- / .below section -->

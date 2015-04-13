@@ -49,7 +49,7 @@ class plgButtonPagebreak extends JPlugin
 		$button = new JObject;
 		$button->set('modal', true);
 		$button->set('link', $link);
-		$button->set('text', JText::_('PLG_EDITORSXTD_PAGEBREAK_BUTTON_PAGEBREAK'));
+		$button->set('text', Lang::txt('PLG_EDITORSXTD_PAGEBREAK_BUTTON_PAGEBREAK'));
 		$button->set('name', 'pagebreak');
 		$button->set('options', "{handler: 'iframe', size: {x: 400, y: 100}}");
 

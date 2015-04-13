@@ -34,8 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$juser = JFactory::getUser();
-
 $filters = $this->filters;
 $filters['count'] = true;
 
@@ -50,23 +48,23 @@ $base = $this->offering->link() . '&active=announcements';
 ?>
 <div class="course_members">
 	<h3 class="heading">
-		<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS'); ?>
+		<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS'); ?>
 	</h3>
 
-	<form action="<?php echo JRoute::_($base); ?>" method="post">
+	<form action="<?php echo Route::url($base); ?>" method="post">
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LEGEND'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LABEL'); ?></label>
-				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>"/>
+				<legend><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LEGEND'); ?></legend>
+				<label for="entry-search-field"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LABEL'); ?></label>
+				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>"/>
 			</fieldset>
 		</div><!-- / .container -->
 
 		<?php if ($manager) { ?>
 			<p class="btn-container">
-				<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
-					<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
+				<a class="icon-add add btn" href="<?php echo Route::url($base . '&action=new'); ?>">
+					<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
 				</a>
 			</p>
 		<?php } ?>
@@ -95,12 +93,12 @@ $base = $this->offering->link() . '&active=announcements';
 							</dd>
 					<?php if ($manager) { ?>
 							<dd class="entry-options">
-							<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-								<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
-									<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
+							<?php if (User::get('id') == $row->get('created_by')) { ?>
+								<a class="icon-edit edit" href="<?php echo Route::url($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
+									<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
 								</a>
-								<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" data-confirm="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
-									<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
+								<a class="icon-delete delete" href="<?php echo Route::url($base . '&action=delete&entry=' . $row->get('id')); ?>" data-confirm="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
+									<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
 								</a>
 							<?php } ?>
 							</dd>
@@ -109,7 +107,7 @@ $base = $this->offering->link() . '&active=announcements';
 					</div>
 				<?php } ?>
 			<?php } else { ?>
-					<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
+					<p><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 			<?php } ?>
 
 			<?php

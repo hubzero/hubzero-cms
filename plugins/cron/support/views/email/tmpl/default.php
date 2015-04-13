@@ -50,7 +50,7 @@ foreach ($this->severities as $severity => $tickets)
 	$msg .= '=== ' . $severity . ' ===' . "\n";
 	foreach ($tickets as $ticket)
 	{
-		$sef = JRoute::_('index.php?option=com_support&controller=tickets&task=ticket&id='. $ticket->id);
+		$sef = Route::url('index.php?option=com_support&controller=tickets&task=ticket&id='. $ticket->id);
 
 		$msg .= '#' . $ticket->id . ' (' . $ticket->created . ') :: ' . $juri->base() . ltrim($sef, DS) . ' :: ' . stripslashes($ticket->summary) . "\n";
 	}

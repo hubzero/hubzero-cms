@@ -86,8 +86,8 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 					'name'    => 'overview'
 				)
 			);
-			$view->option     = JRequest::getCmd('option', 'com_courses');
-			$view->controller = JRequest::getWord('controller', 'course');
+			$view->option     = Request::getCmd('option', 'com_courses');
+			$view->controller = Request::getWord('controller', 'course');
 			$view->course     = $course;
 			$view->name       = $this->_name;
 			$view->courses    = $courses;

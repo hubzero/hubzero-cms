@@ -74,7 +74,7 @@ class Resources extends GroupMacro
 		// check if we can render
 		if (!parent::canRender())
 		{
-			return \JText::_('[This macro is designed for Groups only]');
+			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
 		// get args
@@ -93,8 +93,8 @@ class Resources extends GroupMacro
 		foreach ($groupResources as $resource)
 		{
 			$area = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $resource->area));
-			$resourceLink     = \JRoute::_('index.php?option=com_resources&id=' . $resource->id);
-			$resourceTypeLink = \JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $area);
+			$resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->id);
+			$resourceTypeLink = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $area);
 
 			$html .= '<a href="' . $resourceLink . '"><strong>' . $resource->title . '</strong></a>';
 			$html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->area . '</a></p>';

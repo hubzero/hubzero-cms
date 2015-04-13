@@ -35,7 +35,7 @@ $lat = 20;
 $long = 0;
 $zoom = 2;
 
-$dataurl = JRoute::_('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=online');
+$dataurl = Route::url('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=online');
 $dataurl = str_replace('&amp;','&',$dataurl);
 
 $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"

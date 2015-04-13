@@ -1,8 +1,6 @@
 <?php
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-
 $ct = count($this->sections);
 
 $base = $this->offering->link() . '&active=discussions&unit=manage';
@@ -27,27 +25,27 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 				<div class="container">
 					<span class="ordering-controls">
 					<?php if ($i != 0) { ?>
-						<a class="order-up reorder" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=orderup'); ?>" title="<?php echo JText::_('Move up'); ?>"><?php echo JText::_('Move up'); ?></a>
+						<a class="order-up reorder" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=orderup'); ?>" title="<?php echo Lang::txt('Move up'); ?>"><?php echo Lang::txt('Move up'); ?></a>
 					<?php } else { ?>
-						<span class="order-up reorder"><?php echo JText::_('Move up'); ?></span>
+						<span class="order-up reorder"><?php echo Lang::txt('Move up'); ?></span>
 					<?php } ?>
 
 					<?php if ($i < $ct) { ?>
-						<a class="order-down reorder" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=orderdown'); ?>" title="<?php echo JText::_('Move down'); ?>"><?php echo JText::_('Move down'); ?></a>
+						<a class="order-down reorder" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=orderdown'); ?>" title="<?php echo Lang::txt('Move down'); ?>"><?php echo Lang::txt('Move down'); ?></a>
 					<?php } else { ?>
-						<span class="order-down reorder"><?php echo JText::_('Move down'); ?></span>
+						<span class="order-down reorder"><?php echo Lang::txt('Move down'); ?></span>
 					<?php } ?>
 					</span>
 
 					<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
-					<form action="<?php echo JRoute::_($base); ?>" method="post">
+					<form action="<?php echo Route::url($base); ?>" method="post">
 					<?php } ?>
 					<table class="entries categories">
 						<caption>
 						<?php if ($this->config->get('access-edit-section') && $this->edit == $section->alias && $section->id) { ?>
 								<!-- <a name="s<?php echo $section->id; ?>"></a> [!] This seems to cause some serious display issues -->
 								<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
-								<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('Save'); ?>" />
 								<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
 								<input type="hidden" name="fields[scope]" value="course" />
 								<input type="hidden" name="fields[scope_id]" value="<?php echo $section->scope_id; ?>" />
@@ -62,13 +60,13 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<?php } ?>
 					<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->id) { ?>
 						<?php if ($this->config->get('access-delete-section')) { ?>
-							<a class="delete" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
-								<span><?php echo JText::_('Delete'); ?></span>
+							<a class="delete" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=delete'); ?>" title="<?php echo Lang::txt('Delete'); ?>">
+								<span><?php echo Lang::txt('Delete'); ?></span>
 							</a>
 						<?php } ?>
 						<?php if ($this->config->get('access-edit-section') && $this->edit != $section->alias && $section->id) { ?>
-							<a class="edit" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=edit#s' . $section->id); ?>" title="<?php echo JText::_('Edit'); ?>">
-								<span><?php echo JText::_('Edit'); ?></span>
+							<a class="edit" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=edit#s' . $section->id); ?>" title="<?php echo Lang::txt('Edit'); ?>">
+								<span><?php echo Lang::txt('Edit'); ?></span>
 							</a>
 						<?php } ?>
 					<?php } ?>
@@ -77,8 +75,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<tfoot>
 							<tr>
 								<td<?php if ($section->categories) { echo ' colspan="5"'; } ?>>
-									<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=new'); ?>">
-										<span><?php echo JText::_('Add Category'); ?></span>
+									<a class="icon-add add btn" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=new'); ?>">
+										<span><?php echo Lang::txt('Add Category'); ?></span>
 									</a>
 								</td>
 							</tr>
@@ -92,7 +90,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 									<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 								</th>
 								<td>
-									<span class="entry-title" data-href="<?php echo JRoute::_($base . '&b=' . $row->alias); ?>">
+									<span class="entry-title" data-href="<?php echo Route::url($base . '&b=' . $row->alias); ?>">
 										<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 									</span>
 									<span class="entry-details">
@@ -104,25 +102,25 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 								<td>
 									<span><?php echo $row->threads; ?></span>
 									<span class="entry-details">
-										<?php echo JText::_('Discussions'); ?>
+										<?php echo Lang::txt('Discussions'); ?>
 									</span>
 								</td>
 								<td>
 									<span><?php echo $row->posts; ?></span>
 									<span class="entry-details">
-										<?php echo JText::_('Posts'); ?>
+										<?php echo Lang::txt('Posts'); ?>
 									</span>
 								</td>
 							<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
 								<td class="entry-options">
-									<?php if (($row->created_by == $juser->get('id') || $this->config->get('access-edit-category')) && $section->id) { ?>
-										<a class="edit" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=' . $row->alias . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
-											<span><?php echo JText::_('Edit'); ?></span>
+									<?php if (($row->created_by == User::get('id') || $this->config->get('access-edit-category')) && $section->id) { ?>
+										<a class="edit" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=' . $row->alias . '/edit'); ?>" title="<?php echo Lang::txt('Edit'); ?>">
+											<span><?php echo Lang::txt('Edit'); ?></span>
 										</a>
 									<?php } ?>
 									<?php if ($this->config->get('access-delete-category') && $section->id) { ?>
-										<a class="delete tooltips" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY'); ?>" href="<?php echo JRoute::_($base . '&b=' . $section->alias . '&c=' . $row->alias . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
-											<span><?php echo JText::_('Delete'); ?></span>
+										<a class="delete tooltips" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY'); ?>" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=' . $row->alias . '/delete'); ?>" title="<?php echo Lang::txt('Delete'); ?>">
+											<span><?php echo Lang::txt('Delete'); ?></span>
 										</a>
 									<?php } ?>
 								</td>
@@ -131,7 +129,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 					<?php } ?>
 				<?php } else { ?>
 							<tr>
-								<td><?php echo JText::_('There are no categories.'); ?></td>
+								<td><?php echo Lang::txt('There are no categories.'); ?></td>
 							</tr>
 				<?php } ?>
 						</tbody>
@@ -144,25 +142,25 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 
 		<?php } else { ?>
 
-			<p><?php echo JText::_('This forum is currently empty.'); ?></p>
+			<p><?php echo Lang::txt('This forum is currently empty.'); ?></p>
 
 		<?php } ?>
 
 		<?php if ($this->config->get('access-create-section')) { ?>
 			<div class="container">
-				<form method="post" action="<?php echo JRoute::_($base); ?>">
+				<form method="post" action="<?php echo Route::url($base); ?>">
 					<fieldset>
 						<table class="entries categories">
 							<caption>
 								<label for="field-title">
-									<?php echo JText::_('New Section'); ?>
+									<?php echo Lang::txt('New Section'); ?>
 									<input type="text" name="fields[title]" id="field-title" value="" />
 								</label>
-								<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('Create'); ?>" />
 							</caption>
 							<tbody>
 								<tr>
-									<td><?php echo JText::_('Use sections to group related categories.'); ?></td>
+									<td><?php echo Lang::txt('Use sections to group related categories.'); ?></td>
 								</tr>
 							</tbody>
 						</table>
@@ -182,19 +180,19 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 	</div><!-- /.subject -->
 	<aside class="aside">
 		<div class="container">
-			<h3><?php echo JText::_('Statistics'); ?></h3>
+			<h3><?php echo Lang::txt('Statistics'); ?></h3>
 			<table>
 				<tbody>
 					<tr>
-						<th><?php echo JText::_('Categories'); ?></th>
+						<th><?php echo Lang::txt('Categories'); ?></th>
 						<td><span class="item-count"><?php echo $this->stats->categories; ?></span></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Discussions'); ?></th>
+						<th><?php echo Lang::txt('Discussions'); ?></th>
 						<td><span class="item-count"><?php echo $this->stats->threads; ?></span></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Posts'); ?></th>
+						<th><?php echo Lang::txt('Posts'); ?></th>
 						<td><span class="item-count"><?php echo $this->stats->posts; ?></span></td>
 					</tr>
 				</tbody>
@@ -202,16 +200,16 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 		</div>
 
 		<div class="container">
-			<h3><?php echo JText::_('Last Post'); ?></h3>
+			<h3><?php echo Lang::txt('Last Post'); ?></h3>
 			<p>
 			<?php
 			if (is_object($this->lastpost))
 			{
-				$lname = JText::_('Anonymous');
+				$lname = Lang::txt('Anonymous');
 				$lastposter = JUser::getInstance($this->lastpost->created_by);
 				if (is_object($lastposter))
 				{
-					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
+					$lname = '<a href="' . Route::url('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 				}
 				foreach ($this->sections as $section)
 				{
@@ -229,18 +227,18 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 					}
 				}
 				?>
-				<span class="entry-date" data-href="<?php echo JRoute::_($base . '&b=' . $sec . '&c=' . $cat . '/' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
+				<span class="entry-date" data-href="<?php echo Route::url($base . '&b=' . $sec . '&c=' . $cat . '/' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-					<span class="entry-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+					<span class="entry-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
+					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 				</span>
 				<span class="entry-author">
-					<?php echo JText::_('by'); ?>
+					<?php echo Lang::txt('by'); ?>
 					<?php echo $lname; ?>
 				</span>
 			<?php } else { ?>
-				<?php echo JText::_('none'); ?>
+				<?php echo Lang::txt('none'); ?>
 			<?php } ?>
 			</p>
 		</div>

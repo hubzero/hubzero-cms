@@ -127,7 +127,7 @@ class File extends Macro
 		$attr = $this->attr;
 
 		// Get wiki config
-		$this->config = \JComponentHelper::getParams('com_wiki');
+		$this->config = \Component::params('com_wiki');
 		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
@@ -481,7 +481,7 @@ class File extends Macro
 		$type = 'File';
 		if (in_array(strtolower(\JFile::getExt($file)), $this->imgs))
 		{
-			if (\JRequest::getVar('format') == 'pdf')
+			if (\Request::getVar('format') == 'pdf')
 			{
 				return $this->_path($file);
 			}
@@ -489,7 +489,7 @@ class File extends Macro
 		}
 		$link .= $this->pagename . DS . $type . ':' . $file;
 
-		return \JRoute::_($link);
+		return \Route::url($link);
 	}
 
 	/**
@@ -686,7 +686,7 @@ class File extends Macro
 						if (isset($attr['created_by']))
 						{
 							$user = \JUser::getInstance($attr['created_by']);
-							$html .= ', ' . \JText::sprintf('uploaded by %s ', stripslashes($user->get('name')));
+							$html .= ', ' . \Lang::txt('uploaded by %s ', stripslashes($user->get('name')));
 						}
 						if (isset($attr['created']))
 						{

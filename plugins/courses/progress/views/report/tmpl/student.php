@@ -90,7 +90,7 @@ foreach ($assets as $asset)
 	// Check for result for given student on form
 	$crumb = $asset->url;
 	$title = $asset->title;
-	$url   = JRoute::_($this->base . '&asset=' . $asset->id);
+	$url   = Route::url($this->base . '&asset=' . $asset->id);
 	$unit  = (isset($asset->unit_id)) ? $this->course->offering()->unit($asset->unit_id) : null;
 
 	if (!$crumb || strlen($crumb) != 20)
@@ -258,15 +258,15 @@ foreach ($assets as $asset)
 $section = $this->course->offering()->section();
 if (!$section->isAvailable() && !$section->ended())
 {
-	$h3 = JText::_('Course begins ') . date('M jS, Y', strtotime($section->get('start_date')));
+	$h3 = Lang::txt('Course begins ') . date('M jS, Y', strtotime($section->get('start_date')));
 }
 elseif ($section->isAvailable())
 {
-	$h3 = JText::_('Course currently in progress');
+	$h3 = Lang::txt('Course currently in progress');
 }
 else
 {
-	$h3 = JText::_('Course ended ') . date('M jS, Y', strtotime($section->get('end_date')));
+	$h3 = Lang::txt('Course ended ') . date('M jS, Y', strtotime($section->get('end_date')));
 }
 
 // Get the number of units in the course and figure out which is the current one
@@ -324,15 +324,15 @@ $progress_timeline .= '</div>';
 <div class="progress">
 	<?php if ($this->course->access('manage')) : ?>
 		<div class="extra">
-			<a href="<?php echo JRoute::_($this->base . '&active=progress') ?>" class="back btn icon-back"><?php echo JText::_('Back to all students') ?></a>
+			<a href="<?php echo Route::url($this->base . '&active=progress') ?>" class="back btn icon-back"><?php echo Lang::txt('Back to all students') ?></a>
 		</div>
 	<?php endif; ?>
 
 	<h3>
-		<?php echo (JRequest::getInt('id', false)) ? JFactory::getUser($this->member->get('user_id'))->get('name') . ':' : '' ?>
+		<?php echo (Request::getInt('id', false)) ? JFactory::getUser($this->member->get('user_id'))->get('name') . ':' : '' ?>
 		<?php echo $h3 ?>
 	</h3>
-	<h4><?php echo JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
+	<h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units) ?></h4>
 
 	<?php echo $progress_timeline ?>
 
@@ -386,8 +386,8 @@ $progress_timeline .= '</div>';
 			a certificate of completion.
 		</p>
 		<p>
-			<a class="claim-item" href="<?php echo JRoute::_($this->course->offering()->link() . '&controller=certificate'); ?>">
-				<?php echo JText::_('Download your certificate!'); ?>
+			<a class="claim-item" href="<?php echo Route::url($this->course->offering()->link() . '&controller=certificate'); ?>">
+				<?php echo Lang::txt('Download your certificate!'); ?>
 			</a>
 		</p>
 	</div>
@@ -396,8 +396,8 @@ $progress_timeline .= '</div>';
 	<div class="grades">
 		<div class="current-score">
 			<div class="current-score-inner">
-				<p class="grading-policy"><?php echo JText::_('grading policy') ?></p>
-				<p class="title"><?php echo JText::_('Your current score') ?></p>
+				<p class="grading-policy"><?php echo Lang::txt('grading policy') ?></p>
+				<p class="title"><?php echo Lang::txt('Your current score') ?></p>
 				<?php
 					$cls = '';
 					if ($passing === 1)
@@ -421,25 +421,25 @@ $progress_timeline .= '</div>';
 
 		<div class="quizzes">
 			<div class="quizzes-inner">
-				<p class="title"><?php echo JText::_('Quizzes taken') ?></p>
+				<p class="title"><?php echo Lang::txt('Quizzes taken') ?></p>
 				<p class="score"><?php echo $details['quizzes_taken'] ?></p>
-				<p><?php echo JText::sprintf('out of %d', $details['quizzes_total']) ?></p>
+				<p><?php echo Lang::txt('out of %d', $details['quizzes_total']) ?></p>
 			</div>
 		</div>
 
 		<div class="homeworks">
 			<div class="homeworks-inner">
-				<p class="title"><?php echo JText::_('Homeworks submitted') ?></p>
+				<p class="title"><?php echo Lang::txt('Homeworks submitted') ?></p>
 				<p class="score"><?php echo $details['homeworks_submitted'] ?></p>
-				<p><?php echo JText::sprintf('out of %d', $details['homeworks_total']) ?></p>
+				<p><?php echo Lang::txt('out of %d', $details['homeworks_total']) ?></p>
 			</div>
 		</div>
 
 		<div class="exams">
 			<div class="exams-inner">
-				<p class="title"><?php echo JText::_('Exams taken') ?></p>
+				<p class="title"><?php echo Lang::txt('Exams taken') ?></p>
 				<p class="score"><?php echo $details['exams_taken'] ?></p>
-				<p><?php echo JText::sprintf('out of %d', $details['exams_total']) ?></p>
+				<p><?php echo Lang::txt('out of %d', $details['exams_total']) ?></p>
 			</div>
 		</div>
 	</div>
@@ -468,9 +468,9 @@ $progress_timeline .= '</div>';
 				<table>
 					<thead>
 						<tr>
-							<td class="grade-details-title"><?php echo JText::_('Assignment') ?></td>
-							<td class="grade-details-score"><?php echo JText::_('Score') ?></td>
-							<td class="grade-details-date"><?php echo JText::_('Date taken') ?></td>
+							<td class="grade-details-title"><?php echo Lang::txt('Assignment') ?></td>
+							<td class="grade-details-score"><?php echo Lang::txt('Score') ?></td>
+							<td class="grade-details-date"><?php echo Lang::txt('Date taken') ?></td>
 						</tr>
 					</thead>
 					<tbody>
@@ -526,9 +526,9 @@ $progress_timeline .= '</div>';
 				<table>
 					<thead>
 						<tr>
-							<td class="grade-details-title"><?php echo JText::_('Assignment') ?></td>
-							<td class="grade-details-score"><?php echo JText::_('Score') ?></td>
-							<td class="grade-details-date"><?php echo JText::_('Date recorded') ?></td>
+							<td class="grade-details-title"><?php echo Lang::txt('Assignment') ?></td>
+							<td class="grade-details-score"><?php echo Lang::txt('Score') ?></td>
+							<td class="grade-details-date"><?php echo Lang::txt('Date recorded') ?></td>
 						</tr>
 					</thead>
 					<tbody>

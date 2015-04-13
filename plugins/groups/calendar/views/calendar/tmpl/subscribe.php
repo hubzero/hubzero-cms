@@ -36,7 +36,7 @@ $thisCalendar            = new stdClass;
 $thisCalendar->id        = 0;
 $thisCalendar->published = 1;
 $thisCalendar->title     = "All Calendars";
-foreach($this->calendars as $calendar)
+foreach ($this->calendars as $calendar)
 {
 	if ($calendar->get('id') == $this->calendar)
 	{
@@ -48,25 +48,25 @@ foreach($this->calendars as $calendar)
 <div class="subject group-calendar-subject subscribe">
 	<div class="container">
 		<h3>
-			<?php echo JText::_('Subscribe'); ?>
-			<a class="popup subscribe-help" href="<?php echo JRoute::_('index.php?option=com_help&component=groups&extension=calendar&page=subscriptions') ;?>">
-				<?php echo JText::_('Need Help?'); ?>
+			<?php echo Lang::txt('Subscribe'); ?>
+			<a class="popup subscribe-help" href="<?php echo Route::url('index.php?option=com_help&component=groups&extension=calendar&page=subscriptions') ;?>">
+				<?php echo Lang::txt('Need Help?'); ?>
 			</a>
 		</h3>
 
 		<div class="subscribe-content">
 			<p class="info">
-				<?php echo JText::_('If you are prompted to enter a username & password when subscribing to a calendar, enter your HUB credentials.'); ?>
+				<?php echo Lang::txt('If you are prompted to enter a username & password when subscribing to a calendar, enter your HUB credentials.'); ?>
 			</p>
 
 			<p>
-				<strong><?php echo JText::_('Select the calendars you wish to subscribe to:'); ?></strong>
+				<strong><?php echo Lang::txt('Select the calendars you wish to subscribe to:'); ?></strong>
 			</p>
 
 			<label>
 				<input type="checkbox" value="0" checked="checked" />
 				<img src="<?php echo JURI::base(true); ?>/plugins/groups/calendar/images/swatch-gray.png" />
-				<?php echo JText::_('Uncategorized Events'); ?>
+				<?php echo Lang::txt('Uncategorized Events'); ?>
 			</label>
 
 			<?php $cals = array(0); ?>
@@ -88,9 +88,9 @@ foreach($this->calendars as $calendar)
 					<?php endif; ?>
 					<?php echo $calendar->get('title'); ?>
 					<?php
-						if(!$enabled)
+						if (!$enabled)
 						{
-							echo JText::_('(Calendar is not publishing events.)');
+							echo Lang::txt('(Calendar is not publishing events.)');
 						}
 					?>
 				</label>
@@ -102,7 +102,7 @@ foreach($this->calendars as $calendar)
 				$webcalLink = 'webcal://' . $link;
 			?>
 			<br />
-			<label id="subscribe-link"><strong><?php echo JText::_('Click the subscribe button to the right or add the link below to add as a calendar subscription:'); ?></strong>
+			<label id="subscribe-link"><strong><?php echo Lang::txt('Click the subscribe button to the right or add the link below to add as a calendar subscription:'); ?></strong>
 				<input type="text" value="<?php echo $httpsLink; ?>" />
 				<a class="btn feed download https" href="<?php echo $httpsLink; ?>">Download</a>
 				<a class="btn feed subscribe-webcal webcal" href="<?php echo $webcalLink; ?>">Subscribe</a>

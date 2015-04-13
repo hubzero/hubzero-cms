@@ -53,23 +53,23 @@ $base = $this->offering->link();
 ?>
 
 <?php if ($this->course->offering()->section()->access('view')) : ?>
-<form action="<?php echo JRoute::_($base . '&active=notes'); ?>" method="get">
+<form action="<?php echo Route::url($base . '&active=notes'); ?>" method="get">
 	<fieldset class="filters">
 		<div class="filters-inner">
 			<ul>
 				<li>
-					<a class="download btn" href="<?php echo JRoute::_($base . '&active=notes&action=download&frmt=txt'); ?>">
-						<span><?php echo JText::_('PLG_COURSES_NOTES_DOWNLOAD'); ?></span>
+					<a class="download btn" href="<?php echo Route::url($base . '&active=notes&action=download&frmt=txt'); ?>">
+						<span><?php echo Lang::txt('PLG_COURSES_NOTES_DOWNLOAD'); ?></span>
 					</a>
 				</li>
 			</ul>
 			<div class="clear"></div>
 			<p>
 				<label for="filter-search">
-					<span><?php echo JText::_('PLG_COURSES_NOTES_SEARCH'); ?></span>
-					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_COURSES_NOTES_SEARCH_NOTES'); ?>" />
+					<span><?php echo Lang::txt('PLG_COURSES_NOTES_SEARCH'); ?></span>
+					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_COURSES_NOTES_SEARCH_NOTES'); ?>" />
 				</label>
-				<input type="submit" class="filter-submit" value="<?php echo JText::_('PLG_COURSES_NOTES_GO'); ?>" />
+				<input type="submit" class="filter-submit" value="<?php echo Lang::txt('PLG_COURSES_NOTES_GO'); ?>" />
 			</p>
 		</div><!-- / .filters-inner -->
 	</fieldset>
@@ -89,13 +89,13 @@ $base = $this->offering->link();
 		<div class="jSticky-medium static<?php if ($note->get('access')) { echo ' annotation'; } ?>" id="note-<?php echo $note->get('id'); ?>" data-id="<?php echo $note->get('id'); ?>">
 			<div class="jSticky-header">
 				<?php if ($note->get('timestamp') && $note->get('timestamp') != '00:00:00') { ?>
-					<a href="<?php echo str_replace('%3A', ':', JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))); ?>" class="time"><?php echo $this->escape($note->get('timestamp')); ?></a>
+					<a href="<?php echo str_replace('%3A', ':', Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))); ?>" class="time"><?php echo $this->escape($note->get('timestamp')); ?></a>
 				<?php } ?>
 			</div>
 			<div class="jStickyNote">
 				<textarea name="note_<?php echo $note->get('id'); ?>"><?php echo $this->escape(stripslashes($note->get('content'))); ?></textarea>
 			</div>
-			<a class="jSticky-delete" href="<?php echo JRoute::_($base . '&active=notes&action=delete&note=' . $note->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_NOTES_DELETE_NOTE'); ?>">x</a>
+			<a class="jSticky-delete" href="<?php echo Route::url($base . '&active=notes&action=delete&note=' . $note->get('id')); ?>" title="<?php echo Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE'); ?>">x</a>
 		</div>
 		<?php } ?>
 		<div class="clear"></div>
@@ -125,17 +125,17 @@ $base = $this->offering->link();
 	<div id="notes-introduction">
 		<div class="instructions">
 			<ol>
-				<li><?php echo JText::_('PLG_COURSES_NOTES_STEP1'); ?></li>
-				<li><?php echo JText::_('PLG_COURSES_NOTES_STEP2'); ?></li>
-				<li><?php echo JText::_('PLG_COURSES_NOTES_STEP3'); ?></li>
-				<li><?php echo JText::_('PLG_COURSES_NOTES_STEP4'); ?></li>
+				<li><?php echo Lang::txt('PLG_COURSES_NOTES_STEP1'); ?></li>
+				<li><?php echo Lang::txt('PLG_COURSES_NOTES_STEP2'); ?></li>
+				<li><?php echo Lang::txt('PLG_COURSES_NOTES_STEP3'); ?></li>
+				<li><?php echo Lang::txt('PLG_COURSES_NOTES_STEP4'); ?></li>
 			</ol>
 		</div><!-- / .instructions -->
 		<div class="questions">
-			<p><strong><?php echo JText::_('PLG_COURSES_NOTES_WHERE_IS_SAVE_BUTTON'); ?></strong></p>
-			<p><?php echo JText::_('PLG_COURSES_NOTES_WHERE_IS_SAVE_BUTTON_EXPLANATION'); ?></p>
-			<p><strong><?php echo JText::_('PLG_COURSES_NOTES_WHO_CAN_SEE_MY_NOTES'); ?></strong></p>
-			<p><?php echo JText::_('PLG_COURSES_NOTES_WHO_CAN_SEE_MY_NOTES_EXPLANATION'); ?></p>
+			<p><strong><?php echo Lang::txt('PLG_COURSES_NOTES_WHERE_IS_SAVE_BUTTON'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_COURSES_NOTES_WHERE_IS_SAVE_BUTTON_EXPLANATION'); ?></p>
+			<p><strong><?php echo Lang::txt('PLG_COURSES_NOTES_WHO_CAN_SEE_MY_NOTES'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_COURSES_NOTES_WHO_CAN_SEE_MY_NOTES_EXPLANATION'); ?></p>
 		</div><!-- / .post-type -->
 	</div><!-- / #collection-introduction -->
 <?php } ?>
@@ -151,7 +151,7 @@ $base = $this->offering->link();
 
 		$view->set('course', $this->course)
 		     ->set('option', $this->option)
-		     ->set('message', JText::_('PLG_COURSES_NOTES_ENROLLMENT_REQUIRED'))
+		     ->set('message', Lang::txt('PLG_COURSES_NOTES_ENROLLMENT_REQUIRED'))
 		     ->display();
 	?>
 <?php endif; ?>

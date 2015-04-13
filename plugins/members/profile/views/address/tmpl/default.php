@@ -34,7 +34,7 @@ $formattedAddresses = '<div class="grid cf">';
 if (count($this->addresses) < 1)
 {
 	$formattedAddresses .= '<div class="col span4">';
-	$formattedAddresses .= JText::_('PLG_MEMBERS_PROFILE_ADDRESS_ENTER');
+	$formattedAddresses .= Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_ENTER');
 	$formattedAddresses .= '</div>';
 }
 else
@@ -83,8 +83,8 @@ else
 		if ($this->displayEditLinks)
 		{
 			$formattedAddresses .= '<span class="address-links">';
-			$formattedAddresses .= '<a class="edit edit-address" href="' . JRoute::_($this->profile->getLink() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . JText::_('JACTION_EDIT') . '</a>';
-			$formattedAddresses .= ' | <a class="delete delete-address" href="' . JRoute::_($this->profile->getLink() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '">' . JText::_('JACTION_DELETE') . '</a>';
+			$formattedAddresses .= '<a class="edit edit-address" href="' . Route::url($this->profile->getLink() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_EDIT') . '</a>';
+			$formattedAddresses .= ' | <a class="delete delete-address" href="' . Route::url($this->profile->getLink() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_DELETE') . '</a>';
 			$formattedAddresses .= '</span>';
 		}
 

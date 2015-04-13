@@ -50,9 +50,9 @@ class plgQuickiconExtensionupdate extends JPlugin
 		$ajax_url = JURI::base().'index.php?option=com_installer&view=update&task=update.ajax';
 		$script = "var plg_quickicon_extensionupdate_ajax_url = '$ajax_url';\n";
 		$script .= 'var plg_quickicon_extensionupdate_text = {"UPTODATE" : "'.
-			JText::_('PLG_QUICKICON_EXTENSIONUPDATE_UPTODATE', true).'", "UPDATEFOUND": "'.
-			JText::_('PLG_QUICKICON_EXTENSIONUPDATE_UPDATEFOUND', true).'", "ERROR": "'.
-			JText::_('PLG_QUICKICON_EXTENSIONUPDATE_ERROR', true)."\"};\n";
+			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_UPTODATE', true).'", "UPDATEFOUND": "'.
+			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_UPDATEFOUND', true).'", "ERROR": "'.
+			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_ERROR', true)."\"};\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
 		$document->addScript(JURI::base().'../media/plg_quickicon_extensionupdate/extensionupdatecheck.js');
@@ -60,7 +60,7 @@ class plgQuickiconExtensionupdate extends JPlugin
 		return array(array(
 			'link' => 'index.php?option=com_installer&view=update',
 			'image' => 'header/icon-48-extension.png',
-			'text' => JText::_('PLG_QUICKICON_EXTENSIONUPDATE_CHECKING'),
+			'text' => Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_CHECKING'),
 			'id' => 'plg_quickicon_extensionupdate'
 		));
 	}

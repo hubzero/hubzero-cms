@@ -37,7 +37,7 @@ $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
-<div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
 			<?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
@@ -45,16 +45,16 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				$name = $this->escape(stripslashes($item->creator('name')));
 
 				if ($item->creator('public')) { ?>
-					<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
-						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+					<a href="<?php echo Route::url($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 					</a>
 				<?php } else { ?>
 					<span class="img-link">
-						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 					</span>
 				<?php } ?>
 				<p>
-					<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>">
+					<a href="<?php echo Route::url($item->creator()->getLink()); ?>">
 						<?php echo $this->escape(stripslashes($item->creator('name'))); ?>
 					</a> created this post
 					<br />
@@ -88,39 +88,39 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<div class="meta">
 			<p class="stats">
 				<span class="likes">
-					<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
+					<?php echo Lang::txt('%s likes', $item->get('positive', 0)); ?>
 				</span>
 				<span class="comments">
-					<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
+					<?php echo Lang::txt('%s comments', $item->get('comments', 0)); ?>
 				</span>
 				<span class="reposts">
-					<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
+					<?php echo Lang::txt('%s reposts', $item->get('reposts', 0)); ?>
 				</span>
 			</p>
 	<?php /*if (!$this->juser->get('guest')) { ?>
 			<div class="actions">
 		<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
-				<a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
-					<span><?php echo JText::_('Edit'); ?></span>
+				<a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
+					<span><?php echo Lang::txt('Edit'); ?></span>
 				</a>
 		<?php } else { ?>
-				<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->post->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/vote'); ?>">
-					<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
+				<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->post->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/vote'); ?>">
+					<span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
 				</a>
 		<?php } ?>
-				<a class="comment" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/comment'); ?>">
-					<span><?php echo JText::_('Comment'); ?></span>
+				<a class="comment" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/comment'); ?>">
+					<span><?php echo Lang::txt('Comment'); ?></span>
 				</a>
-				<a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
-					<span><?php echo JText::_('Collect'); ?></span>
+				<a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
+					<span><?php echo Lang::txt('Collect'); ?></span>
 				</a>
 		<?php if ($this->post->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
-				<a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
-					<span><?php echo JText::_('Delete'); ?></span>
+				<a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
+					<span><?php echo Lang::txt('Delete'); ?></span>
 				</a>
 		<?php } else if ($this->post->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
-				<a class="unpost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/remove'); ?>">
-					<span><?php echo JText::_('Remove'); ?></span>
+				<a class="unpost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/remove'); ?>">
+					<span><?php echo Lang::txt('Remove'); ?></span>
 				</a>
 		<?php } ?>
 			</div><!-- / .actions -->
@@ -128,15 +128,15 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		</div><!-- / .meta -->
 <?php //if ($this->post->created_by != $this->post->created_by) { ?>
 		<div class="convo attribution clearfix">
-			<a href="<?php echo JRoute::_($this->post->creator()->getLink()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
+			<a href="<?php echo Route::url($this->post->creator()->getLink()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
 				<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo JRoute::_($this->post->creator()->getLink()); ?>">
+				<a href="<?php echo Route::url($this->post->creator()->getLink()); ?>">
 					<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
 				</a>
 				onto
-				<a href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias')); ?>">
+				<a href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias')); ?>">
 					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 				</a>
 				<br />
@@ -157,18 +157,18 @@ if ($item->get('comments'))
 ?>
 		<div class="commnts">
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
 					said
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<blockquote>
@@ -185,21 +185,21 @@ if ($item->get('comments'))
 		?>
 		<div class="commnts">
 			<div class="comment convo clearfix">
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a>
 					will say
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
-				<form action="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
+				<form action="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
 					<fieldset>
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
@@ -215,7 +215,7 @@ if ($item->get('comments'))
 						<?php echo JHTML::_('form.token'); ?>
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
-						<input type="submit" class="comment-submit" value="<?php echo JText::_('Post comment'); ?>" />
+						<input type="submit" class="comment-submit" value="<?php echo Lang::txt('Post comment'); ?>" />
 					</fieldset>
 				</form>
 			</div>

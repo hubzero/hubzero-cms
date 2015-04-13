@@ -53,22 +53,22 @@ class plgCronPublications extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'sendAuthorStats',
-				'label'  => JText::_('PLG_CRON_PUBLICATIONS_SEND_STATS'),
+				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_SEND_STATS'),
 				'params' => 'authorstats'
 			),
 			array(
 				'name'   => 'rollUserStats',
-				'label'  => JText::_('PLG_CRON_PUBLICATIONS_ROLL_STATS'),
+				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_ROLL_STATS'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'runMkAip',
-				'label'  => JText::_('PLG_CRON_PUBLICATIONS_ARCHIVE'),
+				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_ARCHIVE'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'issueMasterDoi',
-				'label'  => JText::_('PLG_CRON_PUBLICATIONS_MASTER_DOI'),
+				'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_MASTER_DOI'),
 				'params' => ''
 			),
 		);
@@ -88,7 +88,7 @@ class plgCronPublications extends JPlugin
 		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
-		$pconfig = JComponentHelper::getParams('com_publications');
+		$pconfig = Component::params('com_publications');
 
 		// Get some params
 		$limit = $pconfig->get('limitStats', 5);
@@ -150,12 +150,12 @@ class plgCronPublications extends JPlugin
 
 		// Set email config
 		$from = array(
-			'name'      => $jconfig->getValue('config.fromname') . ' ' . JText::_('Publications'),
+			'name'      => $jconfig->getValue('config.fromname') . ' ' . Lang::txt('Publications'),
 			'email'     => $jconfig->getValue('config.mailfrom'),
 			'multipart' => md5(date('U'))
 		);
 
-		$subject = JText::_('Monthly Publication Usage Report');
+		$subject = Lang::txt('Monthly Publication Usage Report');
 
 		$i = 0;
 		foreach ($authors as $author)
@@ -219,7 +219,7 @@ class plgCronPublications extends JPlugin
 			// Send mail
 			if (!$message->send())
 			{
-				$this->setError(JText::sprintf('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $juser->get('email')));
+				$this->setError(Lang::txt('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $juser->get('email')));
 			}
 			$mailed[] = $juser->get('email');
 		}
@@ -280,7 +280,7 @@ class plgCronPublications extends JPlugin
 	public function runMkAip(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
-		$config = JComponentHelper::getParams('com_publications');
+		$config = Component::params('com_publications');
 		$jconfig = JFactory::getConfig();
 
 		require_once(JPATH_ROOT . DS . 'components'. DS
@@ -327,8 +327,8 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Start email message
-		$subject 	= JText::_('Update on recently archived publications');
-		$body 		= JText::_('The following publications passed the grace period and were archived:') . "\n";
+		$subject 	= Lang::txt('Update on recently archived publications');
+		$body 		= Lang::txt('The following publications passed the grace period and were archived:') . "\n";
 		$aipGroup 	= $config->get('aip_group');
 		$counter 	= 0;
 
@@ -366,7 +366,7 @@ class plgCronPublications extends JPlugin
 			// Run mkAIP and save archived date
 			if (\Components\Publications\Helpers\Utilities::mkAip($row))
 			{
-				$pv->archived = JFactory::getDate()->toSql();
+				$pv->archived = Date::toSql();
 				$pv->store();
 				$counter++;
 				$body .= $row->title . ' v.' . $row->version_label . ' (id #' . $row->id . ')' . "\n";
@@ -378,7 +378,7 @@ class plgCronPublications extends JPlugin
 		{
 			// Set email config
 			$from = array(
-				'name'      => $jconfig->getValue('config.fromname') . ' ' . JText::_('Publications'),
+				'name'      => $jconfig->getValue('config.fromname') . ' ' . Lang::txt('Publications'),
 				'email'     => $jconfig->getValue('config.mailfrom'),
 				'multipart' => md5(date('U'))
 			);

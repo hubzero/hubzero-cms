@@ -53,7 +53,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas = array(
-			'usage' => JText::_('PLG_MEMBERS_USAGE'),
+			'usage' => Lang::txt('PLG_MEMBERS_USAGE'),
 			'icon'  => 'f080'
 		);
 		return $areas;
@@ -94,7 +94,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			(!in_array($database->getPrefix() . 'author_stats', $tables)
 		 || !in_array($database->getPrefix() . 'metrics_author_cluster', $tables)))
 		{
-			$arr['html'] = '<p class="error">' . JText::_('PLG_MEMBERS_USAGE_ERROR_MISSING_TABLE') . '</p>';
+			$arr['html'] = '<p class="error">' . Lang::txt('PLG_MEMBERS_USAGE_ERROR_MISSING_TABLE') . '</p>';
 			return $arr;
 		}
 

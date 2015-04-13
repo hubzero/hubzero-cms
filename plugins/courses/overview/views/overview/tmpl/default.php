@@ -31,13 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$field = strtolower(JRequest::getWord('field', ''));
-$task  = strtolower(JRequest::getWord('task', ''));
+$field = strtolower(Request::getWord('field', ''));
+$task  = strtolower(Request::getWord('task', ''));
 
 if ($this->course->access('edit', 'course') && $field == 'description')
 {
 	?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 		<label for="field_description">
 			<?php
 				echo \JFactory::getEditor()->display('course[description]', $this->escape($this->course->description('raw')), '', '', 35, 50, false, 'field_description');
@@ -45,9 +45,9 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 		</label>
 
 		<p class="submit">
-			<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_COURSES_SAVE'); ?>" />
-			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
-				<?php echo JText::_('COM_COURSES_CANCEL'); ?>
+			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
+			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
+				<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
 			</a>
 		</p>
 
@@ -69,17 +69,17 @@ else
 	{
 		?>
 		<div class="manager-options">
-			<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=description'); ?>">
-				<?php echo JText::_('COM_COURSES_EDIT'); ?>
+			<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=description'); ?>">
+				<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
 			</a>
-			<span><strong><?php echo JText::_('COM_COURSES_LONG_DESCRIPTION'); ?></strong></span>
+			<span><strong><?php echo Lang::txt('COM_COURSES_LONG_DESCRIPTION'); ?></strong></span>
 		</div>
 		<?php
 	}
 
 	if (!$this->course->get('description'))
 	{
-		echo '<p><em>' . JText::_('COM_COURSES_LONG_DESCRIPTION_NONE') . '</em></p>';
+		echo '<p><em>' . Lang::txt('COM_COURSES_LONG_DESCRIPTION_NONE') . '</em></p>';
 	}
 	else
 	{

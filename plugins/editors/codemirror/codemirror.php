@@ -29,7 +29,7 @@ class plgEditorCodemirror extends JPlugin
 	public function onInit()
 	{
 		JHtml::_('core');
-		$uncompressed	= JFactory::getApplication()->getCfg('debug') ? '-uncompressed' : '';
+		$uncompressed = Config::get('debug') ? '-uncompressed' : '';
 		JHtml::_('script', $this->_basePath . 'js/codemirror'.$uncompressed.'.js', false, false, false, false);
 		JHtml::_('stylesheet', $this->_basePath . 'css/codemirror.css');
 
@@ -115,23 +115,26 @@ class plgEditorCodemirror extends JPlugin
 	 */
 	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
-		if (empty($id)) {
+		if (empty($id))
+		{
 			$id = $name;
 		}
 
 		// Only add "px" to width and height if they are not given as a percentage
-		if (is_numeric($width)) {
+		if (is_numeric($width))
+		{
 			$width .= 'px';
 		}
 
-		if (is_numeric($height)) {
+		if (is_numeric($height))
+		{
 			$height .= 'px';
 		}
 
 		// Must pass the field id to the buttons in this editor.
 		$buttons = $this->_displayButtons($id, $buttons, $asset, $author);
 
-		$compressed	= JFactory::getApplication()->getCfg('debug') ? '-uncompressed' : '';
+		$compressed	= Config::get('debug') ? '-uncompressed' : '';
 
 		// Default syntax
 		$parserFile = 'parsexml.js';
@@ -141,7 +144,7 @@ class plgEditorCodemirror extends JPlugin
 		$syntax = JFactory::getApplication()->getUserState('editor.source.syntax');
 
 		if ($syntax) {
-			switch($syntax)
+			switch ($syntax)
 			{
 				case 'css':
 					$parserFile = 'parsecss.js';
@@ -171,25 +174,27 @@ class plgEditorCodemirror extends JPlugin
 
 		foreach ($styleSheet as &$style)
 		{
-			$style = JURI::root(true).'/'.$this->_basePath.'css/'.$style;
+			$style = Request::root(true).'/'.$this->_basePath.'css/'.$style;
 		}
 
-		$options	= new stdClass;
+		$options = new stdClass;
 
-		$options->basefiles		= array('basefiles'.$compressed.'.js');
-		$options->path			= JURI::root(true).'/'.$this->_basePath.'js/';
-		$options->parserfile	= $parserFile;
-		$options->stylesheet	= $styleSheet;
-		$options->height		= $height;
-		$options->width			= $width;
+		$options->basefiles  = array('basefiles'.$compressed.'.js');
+		$options->path       = Request::root(true).'/'.$this->_basePath.'js/';
+		$options->parserfile = $parserFile;
+		$options->stylesheet = $styleSheet;
+		$options->height     = $height;
+		$options->width      = $width;
 		$options->continuousScanning = 500;
 
-		if ($this->params->get('linenumbers', 0)) {
-			$options->lineNumbers	= true;
-			$options->textWrapping	= false;
+		if ($this->params->get('linenumbers', 0))
+		{
+			$options->lineNumbers  = true;
+			$options->textWrapping = false;
 		}
 
-		if ($this->params->get('tabmode', '') == 'shift') {
+		if ($this->params->get('tabmode', '') == 'shift')
+		{
 			$options->tabMode = 'shift';
 		}
 
@@ -227,12 +232,14 @@ class plgEditorCodemirror extends JPlugin
 
 		foreach ($results as $result)
 		{
-			if (is_string($result) && trim($result)) {
+			if (is_string($result) && trim($result))
+			{
 				$html[] = $result;
 			}
 		}
 
-		if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
+		if (is_array($buttons) || (is_bool($buttons) && $buttons))
+		{
 			$results = $this->_subject->getButtons($name, $buttons, $asset, $author);
 
 			// This will allow plugins to attach buttons or change the behavior on the fly using AJAX
@@ -241,11 +248,12 @@ class plgEditorCodemirror extends JPlugin
 			foreach ($results as $button)
 			{
 				// Results should be an object
-				if ($button->get('name')) {
-					$modal		= ($button->get('modal')) ? 'class="modal-button"' : null;
-					$href		= ($button->get('link')) ? 'href="'.JURI::base().$button->get('link').'"' : null;
-					$onclick	= ($button->get('onclick')) ? 'onclick="'.$button->get('onclick').'"' : null;
-					$title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
+				if ($button->get('name'))
+				{
+					$modal   = ($button->get('modal')) ? 'class="modal-button"' : null;
+					$href    = ($button->get('link')) ? 'href="'.Request::base().$button->get('link').'"' : null;
+					$onclick = ($button->get('onclick')) ? 'onclick="'.$button->get('onclick').'"' : null;
+					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$html[] = '<div class="button2-left"><div class="'.$button->get('name').'">';
 					$html[] = '<a '.$modal.' title="'.$title.'" '.$href.' '.$onclick.' rel="'.$button->get('options').'">';
 					$html[] = $button->get('text').'</a></div></div>';

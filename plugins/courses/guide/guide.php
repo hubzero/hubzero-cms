@@ -52,7 +52,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseAfterOutline($course, $offering)
 	{
-		$member = $offering->member(JFactory::getUser()->get('id'));
+		$member = $offering->member(User::get('id'));
 		if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00')
 		{
 			return;
@@ -65,11 +65,11 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->view = with($this->view('overlay', $this->_name))
-			->set('option', JRequest::getCmd('option', 'com_courses'))
-			->set('controller', JRequest::getWord('controller', 'course'))
+			->set('option', Request::getCmd('option', 'com_courses'))
+			->set('controller', Request::getWord('controller', 'course'))
 			->set('course', $course)
 			->set('offering', $offering)
-			->set('juser', JFactory::getUser())
+			->set('juser', User::getRoot())
 			->set('plugin', $this->_name);
 
 		return $this->view->loadTemplate();
@@ -87,7 +87,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f059');
@@ -97,7 +97,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		$tmpl = JRequest::getWord('tmpl', null);
+		$tmpl = Request::getWord('tmpl', null);
 		if (!isset($tmpl) || $tmpl != 'component')
 		{
 			$this->css()
@@ -105,32 +105,32 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			     ->js('guide.overlay');
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($response->get('name') == $active)
 		{
-			$active = strtolower(JRequest::getWord('unit', ''));
+			$active = strtolower(Request::getWord('unit', ''));
 
 			if ($active == 'mark')
 			{
 				$action = 'mark';
 			}
-			if ($act = strtolower(JRequest::getWord('action', '')))
+			if ($act = strtolower(Request::getWord('action', '')))
 			{
 				$action = $act;
 			}
 
 			$this->view = $this->view('default', $this->_name);
-			$this->view->option     = JRequest::getCmd('option', 'com_courses');
-			$this->view->controller = JRequest::getWord('controller', 'course');
+			$this->view->option     = Request::getCmd('option', 'com_courses');
+			$this->view->controller = Request::getWord('controller', 'course');
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->config     = $this->params;
-			$this->view->juser      = JFactory::getUser();
+			$this->view->juser      = User::getRoot();
 			$this->view->plugin     = $this->_name;
 
 			switch ($action)
@@ -140,7 +140,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 				default: $this->_default(); break;
 			}
 
-			if (JRequest::getInt('no_html', 0))
+			if (Request::getInt('no_html', 0))
 			{
 				ob_clean();
 				header('Content-type: text/plain');
@@ -173,7 +173,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 	{
 		$this->view->setLayout('mark');
 
-		$member = $this->view->offering->member(JFactory::getUser()->get('id'));
+		$member = $this->view->offering->member(User::get('id'));
 		if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00')
 		{
 			return;
@@ -187,11 +187,11 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 				$lifetime = time() + 365*24*60*60;
 
 				\Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
-					'first_visit' => JFactory::getDate()->toSql()
+					'first_visit' => Date::toSql()
 				));
 			}
 		}
-		$member->set('first_visit', JFactory::getDate()->toSql());
+		$member->set('first_visit', Date::toSql());
 		$member->store();
 	}
 }

@@ -60,8 +60,8 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 		// Build the fields
 
 		$html  = '<label for="captcha_answer">' . "\n";
-		$html .= JText::sprintf('PLG_HUBZERO_MATHCAPTCHA_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
-		$html .= "\t" . '<input type="text" name="captcha_answer" id="captcha_answer" value="" size="3" id="answer" class="option" /> <span class="required">' . JText::_('PLG_HUBZERO_MATHCAPTCHA_REQUIRED') . '</span>' . "\n";
+		$html .= Lang::txt('PLG_HUBZERO_MATHCAPTCHA_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
+		$html .= "\t" . '<input type="text" name="captcha_answer" id="captcha_answer" value="" size="3" id="answer" class="option" /> <span class="required">' . Lang::txt('PLG_HUBZERO_MATHCAPTCHA_REQUIRED') . '</span>' . "\n";
 		$html .= "\t" . '<input type="hidden" name="captcha_krhash" id="captcha_krhash" value="' . $problem['key'] . '" />' . "\n";
 		$html .= '</label>' . "\n";
 
@@ -76,8 +76,8 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	public function onValidateCaptcha()
 	{
-		$key = JRequest::getVar('captcha_krhash', 0);
-		$answer = JRequest::getInt('captcha_answer', 0);
+		$key = Request::getVar('captcha_krhash', 0);
+		$answer = Request::getInt('captcha_answer', 0);
 		$answer = $this->_generateHash($answer, date('j'));
 
 		if ($answer == $key)

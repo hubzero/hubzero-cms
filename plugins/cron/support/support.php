@@ -53,22 +53,22 @@ class plgCronSupport extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'onClosePending',
-				'label'  => JText::_('PLG_CRON_SUPPORT_CLOSE_PENDING'),
+				'label'  => Lang::txt('PLG_CRON_SUPPORT_CLOSE_PENDING'),
 				'params' => 'ticketpending'
 			),
 			array(
 				'name'   => 'sendTicketsReminder',
-				'label'  =>  JText::_('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
+				'label'  =>  Lang::txt('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
 				'params' => 'ticketreminder'
 			),
 			array(
 				'name'   => 'sendTicketList',
-				'label'  =>  JText::_('PLG_CRON_SUPPORT_EMAIL_LIST'),
+				'label'  =>  Lang::txt('PLG_CRON_SUPPORT_EMAIL_LIST'),
 				'params' => 'ticketlist'
 			),
 			array(
 				'name'   => 'cleanTempUploads',
-				'label'  =>  JText::_('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
+				'label'  =>  Lang::txt('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
 				'params' => 'tickettemp'
 			)
 		);
@@ -86,7 +86,7 @@ class plgCronSupport extends JPlugin
 	{
 		$params = $job->get('params');
 
-		$sconfig = JComponentHelper::getParams('com_support');
+		$sconfig = Component::params('com_support');
 		$path = PATH_APP . DS . trim($sconfig->get('webpath', '/site/tickets'), DS);
 
 		$days = intval($params->get('support_tickettemp_age', '7'));
@@ -129,7 +129,7 @@ class plgCronSupport extends JPlugin
 		$database = JFactory::getDBO();
 
 		$slc = "SELECT id, login, email, name FROM `#__support_tickets` AS t";
-		$upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(JFactory::getDate()->toSql());
+		$upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(Date::toSql());
 
 		$where = array();
 
@@ -350,18 +350,18 @@ class plgCronSupport extends JPlugin
 				$jconfig = JFactory::getConfig();
 
 				$from = array(
-					'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT'),
+					'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT'),
 					'email'     => $jconfig->getValue('config.mailfrom'),
 					'multipart' => md5(date('U'))
 				);
 
 				// Set mail additional args (mail return path - used for bounces)
-				if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
+				if ($host = Request::getVar('HTTP_HOST', '', 'server'))
 				{
 					$args = '-f hubmail-bounces@' . $host;
 				}
 
-				$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKETS');
+				$subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 
 				$mailed = array();
 
@@ -369,7 +369,7 @@ class plgCronSupport extends JPlugin
 				$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
 
 				$comment = new \Components\Support\Models\Comment();
-				$comment->set('created', JFactory::getDate()->toSql());
+				$comment->set('created', Date::toSql());
 				$comment->set('created_by', 0);
 				$comment->set('access', 0);
 				$comment->set('comment', $message->message);
@@ -454,9 +454,9 @@ class plgCronSupport extends JPlugin
 					// Send mail
 					if (!$message->send())
 					{
-						echo 'CRON email failed: ' . JText::sprintf('Failed to mail %s', $email);
-						//$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
-						\JFactory::getLogger()->error('CRON email failed: ' . JText::sprintf('Failed to mail %s', $email));
+						echo 'CRON email failed: ' . Lang::txt('Failed to mail %s', $email);
+						//$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
+						\JFactory::getLogger()->error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
 					}
 					$mailed[] = $email;
 				}
@@ -480,7 +480,7 @@ class plgCronSupport extends JPlugin
 		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
-		$sconfig = JComponentHelper::getParams('com_support');
+		$sconfig = Component::params('com_support');
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_support');
@@ -546,18 +546,18 @@ class plgCronSupport extends JPlugin
 		}
 
 		$from = array(
-			'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT'),
+			'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT'),
 			'email'     => $jconfig->getValue('config.mailfrom'),
 			'multipart' => md5(date('U'))
 		);
 
 		//set mail additional args (mail return path - used for bounces)
-		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
+		if ($host = Request::getVar('HTTP_HOST', '', 'server'))
 		{
 			$args = '-f hubmail-bounces@' . $host;
 		}
 
-		$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_OPEN_TICKETS');
+		$subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_OPEN_TICKETS');
 
 		$mailed = array();
 
@@ -611,7 +611,7 @@ class plgCronSupport extends JPlugin
 			// Send mail
 			if (!$message->send())
 			{
-				$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
+				$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
 			}
 			$mailed[] = $juser->get('username');
 		}
@@ -633,7 +633,7 @@ class plgCronSupport extends JPlugin
 		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
-		$sconfig = JComponentHelper::getParams('com_support');
+		$sconfig = Component::params('com_support');
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_support');
@@ -932,17 +932,17 @@ class plgCronSupport extends JPlugin
 		}
 
 		$from = array();
-		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT');
+		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT');
 		$from['email']     = $jconfig->getValue('config.mailfrom');
 		$from['multipart'] = md5(date('U'));
 
 		// Set mail additional args (mail return path - used for bounces)
-		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
+		if ($host = Request::getVar('HTTP_HOST', '', 'server'))
 		{
 			$args = '-f hubmail-bounces@' . $host;
 		}
 
-		$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKETS');
+		$subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 
 		$usernames = array();
 		if ($users = $params->get('support_ticketlist_notify'))
@@ -1020,8 +1020,8 @@ class plgCronSupport extends JPlugin
 			$logger = \JFactory::getLogger();
 			if (!$message->send())
 			{
-				//$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
-				$logger->error('CRON email failed: ' . JText::sprintf('Failed to mail %s', $email));
+				//$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
+				$logger->error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
 			}
 			$mailed[] = $email;
 		}

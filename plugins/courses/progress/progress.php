@@ -59,7 +59,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f012');
@@ -69,9 +69,9 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		if ($response->get('name') != $active)
@@ -109,7 +109,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$this->view->option  = 'com_courses';
 		$this->view->base    = $this->base;
 
-		switch (JRequest::getWord('action'))
+		switch (Request::getWord('action'))
 		{
 			case 'assessmentdetails':   $this->assessmentdetails();   break;
 			case 'getprogressrows':     $this->getprogressrows();     break;
@@ -145,7 +145,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		// If this is an instructor, see if they want the overall view, or an individual student
 		if ($layout == 'instructor')
 		{
-			if ($student_id = JRequest::getInt('id', false))
+			if ($student_id = Request::getInt('id', false))
 			{
 				$layout = 'student';
 				$this->view->member = $this->course->offering()->section()->member($student_id);
@@ -173,7 +173,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 	{
 		$layout = 'assessmentdetails_partial';
 
-		$asset_id = JRequest::getInt('asset_id', false);
+		$asset_id = Request::getInt('asset_id', false);
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
@@ -201,8 +201,8 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get our limit and limitstart
-		$limit = JRequest::getInt('limit', '10');
-		$start = JRequest::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', '10');
+		$start = Request::getInt('limitstart', 0);
 
 		// Get all section members
 		$members      = $this->course->offering()->section()->members(array('student'=>1, 'limit'=>$limit, 'start'=>$start));
@@ -557,7 +557,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			JError::raiseError('403', 'Sorry, you don\'t have permission to do this');
 		}
 
-		if (!$asset_ids = JRequest::getVar('assets', false))
+		if (!$asset_ids = Request::getVar('assets', false))
 		{
 			JError::raiseError('422', 'Sorry, we don\'t know what results you\'re trying to retrieve');
 		}
@@ -689,15 +689,15 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$new = false;
 
 		// Get request variables
-		if ($asset_id = JRequest::getInt('asset_id', false))
+		if ($asset_id = Request::getInt('asset_id', false))
 		{
 			$asset->load($asset_id);
-			$asset->set('title', JRequest::getVar('title', $asset->get('title')));
-			$asset->set('grade_weight', JRequest::getWord('type', $asset->get('grade_weight')));
+			$asset->set('title', Request::getVar('title', $asset->get('title')));
+			$asset->set('grade_weight', Request::getWord('type', $asset->get('grade_weight')));
 
 			if ($asset->get('type') == 'form')
 			{
-				$asset->set('subtype', JRequest::getWord('type', $asset->get('grade_weight')));
+				$asset->set('subtype', Request::getWord('type', $asset->get('grade_weight')));
 			}
 		}
 		else
@@ -705,7 +705,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			$asset->set('title', 'New Item');
 			$asset->set('type', 'gradebook');
 			$asset->set('subtype', 'auxiliary');
-			$asset->set('created', JFactory::getDate()->toSql());
+			$asset->set('created', Date::toSql());
 			$asset->set('created_by', JFactory::getUser()->get('id'));
 			$asset->set('state', 1);
 			$asset->set('course_id', $this->course->get('id'));
@@ -765,7 +765,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$asset = new \Components\Courses\Tables\Asset(JFactory::getDBO());
 
 		// Get request variables
-		if ($asset_id = JRequest::getInt('asset_id', false))
+		if ($asset_id = Request::getInt('asset_id', false))
 		{
 			$asset->load($asset_id);
 			$asset->set('graded', 0);
@@ -806,17 +806,17 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get request variables
-		if (!$member_id = JRequest::getInt('student_id', false))
+		if (!$member_id = Request::getInt('student_id', false))
 		{
 			echo json_encode(array('success'=>false));
 			exit();
 		}
-		if (!$asset_id = JRequest::getInt('asset_id', false))
+		if (!$asset_id = Request::getInt('asset_id', false))
 		{
 			echo json_encode(array('success'=>false));
 			exit();
 		}
-		if (!$grade_value = JRequest::getVar('grade', false))
+		if (!$grade_value = Request::getVar('grade', false))
 		{
 			echo json_encode(array('success'=>false));
 			exit();
@@ -834,7 +834,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		$grade->set('override', $grade_value);
-		$grade->set('override_recorded', \JFactory::getDate()->toSql());
+		$grade->set('override_recorded', \Date::toSql());
 
 		if (!$grade->store())
 		{
@@ -861,12 +861,12 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get request variables
-		if (!$member_id = JRequest::getInt('student_id', false))
+		if (!$member_id = Request::getInt('student_id', false))
 		{
 			echo json_encode(array('success'=>false));
 			exit();
 		}
-		if (!$asset_id = JRequest::getInt('asset_id', false))
+		if (!$asset_id = Request::getInt('asset_id', false))
 		{
 			echo json_encode(array('success'=>false));
 			exit();
@@ -908,7 +908,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base, false),
+				Route::url($this->base, false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -920,7 +920,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base . '&active=progress', false),
+				Route::url($this->base . '&active=progress', false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -930,13 +930,13 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		// Get the grading policy id
 		$gpId = $this->course->offering()->section()->get('grade_policy_id');
 
-		$exam_weight     = JRequest::getInt('exam-weight') / 100;
-		$quiz_weight     = JRequest::getInt('quiz-weight') / 100;
-		$homework_weight = JRequest::getInt('homework-weight') / 100;
+		$exam_weight     = Request::getInt('exam-weight') / 100;
+		$quiz_weight     = Request::getInt('quiz-weight') / 100;
+		$homework_weight = Request::getInt('homework-weight') / 100;
 
 		if (($exam_weight + $quiz_weight + $homework_weight) != 1)
 		{
-			if (JRequest::getInt('no_html', false))
+			if (Request::getInt('no_html', false))
 			{
 				echo json_encode(array('error'=>true, 'message'=>'The sum of all weights should be 100.'));
 				exit();
@@ -945,7 +945,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			{
 				// Redirect with message
 				JFactory::getApplication()->redirect(
-					JRoute::_($this->base . '&active=progress', false),
+					Route::url($this->base . '&active=progress', false),
 					'The sum of all weights should be 100.',
 					'error'
 				);
@@ -970,14 +970,14 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$gp->set('exam_weight',     $exam_weight);
 		$gp->set('quiz_weight',     $quiz_weight);
 		$gp->set('homework_weight', $homework_weight);
-		$gp->set('threshold',       (JRequest::getInt('threshold') / 100));
-		$gp->set('description',     trim(JRequest::getVar('description')));
+		$gp->set('threshold',       (Request::getInt('threshold') / 100));
+		$gp->set('description',     trim(Request::getVar('description')));
 
 		if (!$gp->store())
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base . '&active=progress', false),
+				Route::url($this->base . '&active=progress', false),
 				'Something went wrong!',
 				'error'
 			);
@@ -991,7 +991,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			$section->store();
 		}
 
-		if (JRequest::getInt('no_html', false))
+		if (Request::getInt('no_html', false))
 		{
 			echo json_encode(array('success'=>true, 'message'=>'Scoring policy successfully saved!'));
 			exit();
@@ -1000,7 +1000,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base . '&active=progress', false),
+				Route::url($this->base . '&active=progress', false),
 				'Scoring policy successfully saved!',
 				'passed'
 			);
@@ -1020,7 +1020,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base, false),
+				Route::url($this->base, false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -1032,7 +1032,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base . '&active=progress', false),
+				Route::url($this->base . '&active=progress', false),
 				'You don\'t have permission to do this!',
 				'warning'
 			);
@@ -1057,7 +1057,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (JRequest::getInt('no_html', false))
+		if (Request::getInt('no_html', false))
 		{
 			$gp = new CoursesModelGradePolicies(1);
 			$policy->description     = $gp->get('description');
@@ -1078,7 +1078,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(
-				JRoute::_($this->base . '&active=progress', false),
+				Route::url($this->base . '&active=progress', false),
 				'Scoring policy successfully restored to the default configuration!',
 				'passed'
 			);

@@ -122,11 +122,11 @@ class Main extends Macro
 
 			if (!$g->id)
 			{
-				$l[] = '<a href="' . \JRoute::_($link) . '">' . stripslashes($g->getTitle()) . '</a>';
+				$l[] = '<a href="' . \Route::url($link) . '">' . stripslashes($g->getTitle()) . '</a>';
 			}
 			else
 			{
-				$l[] = '<a class="int-link" href="' . \JRoute::_($link) . '">' . stripslashes($g->getTitle()) . '</a>';
+				$l[] = '<a class="int-link" href="' . \Route::url($link) . '">' . stripslashes($g->getTitle()) . '</a>';
 			}
 		}
 

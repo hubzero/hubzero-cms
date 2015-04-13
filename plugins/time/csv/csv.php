@@ -66,9 +66,9 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->hub_id = JRequest::getInt('hub_id', null);
-		$view->start  = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$view->end    = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$view->hub_id = Request::getInt('hub_id', null);
+		$view->start  = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$view->end    = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
 		$records      = Record::all()->where('date', '>=', $view->start)
 		                              ->where('date', '<=', $view->end);
 		                              // @FIXME: order by non-native field
@@ -97,9 +97,9 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		// Load language
 		JFactory::getLanguage()->load('plg_time_csv', JPATH_ADMINISTRATOR);
 
-		$hub_id    = JRequest::getInt('hub_id', null);
-		$start     = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$end       = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$hub_id    = Request::getInt('hub_id', null);
+		$start     = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$end       = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
 		$records   = Record::all()->where('date', '>=', $start)
 		                           ->where('date', '<=', $end);
 		                           // @FIXME: order by non-native field
@@ -113,7 +113,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		}
 
 		$all  = true;
-		foreach (JRequest::get('GET') as $key => $value)
+		foreach (Request::get('GET') as $key => $value)
 		{
 			if (strpos($key, 'fields-') !== false)
 			{
@@ -134,27 +134,27 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		header("Expires: 0");
 
 		$row = array();
-		if ($hub = JRequest::getInt('fields-hub', $all))
+		if ($hub = Request::getInt('fields-hub', $all))
 		{
 			$row[] = Lang::txt('PLG_TIME_CSV_HUB');
 		}
-		if ($task = JRequest::getInt('fields-task', $all))
+		if ($task = Request::getInt('fields-task', $all))
 		{
 			$row[] = Lang::txt('PLG_TIME_CSV_TASK');
 		}
-		if ($user = JRequest::getInt('fields-user', $all))
+		if ($user = Request::getInt('fields-user', $all))
 		{
 			$row[] = Lang::txt('PLG_TIME_CSV_USER');
 		}
-		if ($date = JRequest::getInt('fields-date', $all))
+		if ($date = Request::getInt('fields-date', $all))
 		{
 			$row[] = Lang::txt('PLG_TIME_CSV_DATE');
 		}
-		if ($time = JRequest::getInt('fields-time', $all))
+		if ($time = Request::getInt('fields-time', $all))
 		{
 			$row[] = Lang::txt('PLG_TIME_CSV_TIME');
 		}
-		if ($description = JRequest::getInt('fields-description', $all))
+		if ($description = Request::getInt('fields-description', $all))
 		{
 			$row[] = Lang::txt('PLG_TIME_CSV_DESCRIPTION');
 		}

@@ -85,14 +85,14 @@ class GroupsMembersRole extends JTable
 		// make sure we have group id
 		if (trim($this->gidNumber) == '')
 		{
-			$this->setError(JText::_('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_GROUP_ID'));
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
 
 		// make sure we ahve role name
 		if (trim($this->name) == '')
 		{
-			$this->setError(JText::_('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_ROLE_NAME'));
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_ROLE_NAME'));
 			return false;
 		}
 

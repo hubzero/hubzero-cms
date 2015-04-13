@@ -52,7 +52,7 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'  => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name))
+			'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name))
 		);
 		return $area;
 	}

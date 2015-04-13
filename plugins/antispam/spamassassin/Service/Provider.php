@@ -78,7 +78,7 @@ class Provider extends AbstractService
 
 		if (!is_file(__DIR__ . '/Client/' . ucfirst(strtolower($this->get('client'))) . '.php'))
 		{
-			throw new Exception(\JText::sprintf('Client type of "%s" not found.', $this->get('client')));
+			throw new Exception(\Lang::txt('Client type of "%s" not found.', $this->get('client')));
 		}
 
 		require_once __DIR__ . '/Client/' . ucfirst(strtolower($this->get('client'))) . '.php';
@@ -107,7 +107,7 @@ class Provider extends AbstractService
 		}
 		else
 		{
-			throw new Exception(\JText::sprintf('Client type of "%s" not supported.', $this->get('client')));
+			throw new Exception(\Lang::txt('Client type of "%s" not supported.', $this->get('client')));
 		}
 
 		return $client->isSpam($value);

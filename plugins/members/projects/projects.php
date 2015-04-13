@@ -74,7 +74,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		//if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
-			$areas['projects'] = JText::_('PLG_MEMBERS_PROJECTS');
+			$areas['projects'] = Lang::txt('PLG_MEMBERS_PROJECTS');
 			$areas['icon'] = 'f03f';
 		}
 		return $areas;
@@ -117,9 +117,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['mine']     = 1;
 		$filters['updates']  = 1;
-		$filters['sortby']   = JRequest::getVar('sortby', 'title');
+		$filters['sortby']   = Request::getVar('sortby', 'title');
 		$filters['getowner'] = 1;
-		$filters['sortdir']  = JRequest::getVar('sortdir', 'ASC');
+		$filters['sortdir']  = Request::getVar('sortdir', 'ASC');
 
 		// Get a record count
 		$obj = new \Components\Projects\Tables\Project($this->_database);
@@ -134,7 +134,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Which view
-			$task = JRequest::getVar('action', '');
+			$task = Request::getVar('action', '');
 
 			switch ($task)
 			{
@@ -246,7 +246,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$afilters = array();
 		$view->total = $objAC->getActivities (0, $afilters, 1, $this->_juser->get('id'), $projects);
 		$view->limit = 25;
-		$afilters['limit'] = JRequest::getVar('limit', 25, 'request');
+		$afilters['limit'] = Request::getVar('limit', 25, 'request');
 		$view->filters = $afilters;
 		$activities = $objAC->getActivities (0, $afilters, 0, $this->_juser->get('id'), $projects);
 		$view->activities = $this->prepActivities ($activities, 'com_projects', $this->_juser->get('id'), $view->filters, $view->limit);

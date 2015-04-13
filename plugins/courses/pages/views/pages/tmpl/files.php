@@ -34,10 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 $base = $this->offering->link() . '&active=pages';
 ?>
 	<div id="attachments">
-		<form action="<?php echo JRoute::_($base); ?>" id="adminForm" method="post" enctype="multipart/form-data">
+		<form action="<?php echo Route::url($base); ?>" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo JRoute::_($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo Route::url($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
 
@@ -48,7 +48,7 @@ $base = $this->offering->link() . '&active=pages';
 							<td><input type="file" name="upload" id="upload" /></td>
 						</tr>
 						<tr>
-							<td><input type="submit" value="<?php echo JText::_('PLG_COURSES_PAGES_UPLOAD'); ?>" /></td>
+							<td><input type="submit" value="<?php echo Lang::txt('PLG_COURSES_PAGES_UPLOAD'); ?>" /></td>
 						</tr>
 					</tbody>
 				</table>

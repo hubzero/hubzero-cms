@@ -76,7 +76,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'             => 'resources',
-			'title'            => JText::_('PLG_GROUPS_RESOURCES'),
+			'title'            => Lang::txt('PLG_GROUPS_RESOURCES'),
 			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => 'f02d'
@@ -133,7 +133,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -141,12 +141,12 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			if ($juser->get('guest')
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$area = JRequest::getWord('area', 'resource');
-				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area);
+				$area = Request::getWord('area', 'resource');
+				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area);
 
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
 				return;
@@ -157,7 +157,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -191,8 +191,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Incoming paging vars
-		$sort = JRequest::getVar('sort', 'date');
-		$access = JRequest::getVar('access', 'all');
+		$sort = Request::getVar('sort', 'date');
+		$access = Request::getVar('access', 'all');
 
 		$config = Component::params('com_resources');
 		if ($return == 'metadata')
@@ -211,7 +211,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$rareas = $this->getResourcesAreas();
 
 		// Get the active category
-		$area = JRequest::getWord('area', 'resources');
+		$area = Request::getWord('area', 'resources');
 		if ($area)
 		{
 			$activeareas = array($area);
@@ -369,7 +369,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$ids = $this->getResourceIDs($group->get('cn'));
 
 		// Start the log text
-		$log = JText::_('PLG_GROUPS_RESOURCES_LOG') . ': ';
+		$log = Lang::txt('PLG_GROUPS_RESOURCES_LOG') . ': ';
 		if (count($ids) > 0)
 		{
 			$database = JFactory::getDBO();
@@ -390,7 +390,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$log .= JText::_('PLG_GROUPS_RESOURCES_NONE') . "\n";
+			$log .= Lang::txt('PLG_GROUPS_RESOURCES_NONE') . "\n";
 		}
 
 		// Return the log
@@ -405,7 +405,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		return JText::_('PLG_GROUPS_RESOURCES_LOG') . ': ' . count($this->getResourceIDs($group->get('cn')));
+		return Lang::txt('PLG_GROUPS_RESOURCES_LOG') . ': ' . count($this->getResourceIDs($group->get('cn')));
 	}
 
 	/**
@@ -509,7 +509,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Build query
 		$filters = array();
-		$filters['now'] = \JFactory::getDate()->toSql();
+		$filters['now'] = \Date::toSql();
 		$filters['sortby'] = $sort;
 		$filters['group'] = $group->get('cn');
 		$filters['access'] = $access;
@@ -575,11 +575,11 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				{
 					if ($row->alias)
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
 					}
 					else
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
+						$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
 					}
 				}
 			}

@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="module-list">
 	<h2 class="section-header">
-		<?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_TITLE'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_TITLE'); ?>
 	</h2>
 	<ul class="module-list-triggers">
 		<?php foreach ($this->modules as $module) : ?>
@@ -52,11 +52,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					<?php if (in_array($module->id, $this->mymodules)) : ?>
 						<a href="javascript:void(0);" class="btn button icon-extract" disabled="disabled">
-							<?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALLED'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALLED'); ?>
 						</a>
 					<?php else : ?>
 						<a href="javascript:void(0);" data-module="<?php echo $module->id; ?>" class="btn button btn-info icon-extract install-module">
-							<?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALL'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALL'); ?>
 						</a>
 					<?php endif; ?>
 
@@ -65,23 +65,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<dl class="module-details">
 				<?php if ($xml) : ?>
 					<?php if (isset($xml->attributes()->version)) : ?>
-						<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_VERSION'); ?></dt>
+						<dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_VERSION'); ?></dt>
 						<dd><?php echo $xml->attributes()->version; ?></dd>
 					<?php endif; ?>
 
 					<?php if ($xml->description != 'MOD_CUSTOM_XML_DESCRIPTION') : ?>
-						<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_DESCRIPTION'); ?></dt>
+						<dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_DESCRIPTION'); ?></dt>
 						<dd><?php
 						if (!strstr($xml->description, ' '))
 						{
 							JFactory::getLanguage()->load($module->module, JPATH_SITE);
-							$xml->description = JText::_($xml->description);
+							$xml->description = Lang::txt($xml->description);
 						}
 						echo $xml->description; ?></dd>
 					<?php endif; ?>
 
 					<?php if (count($xml->images->image) > 0) : ?>
-						<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_SCREENSHOTS'); ?></dt>
+						<dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_SCREENSHOTS'); ?></dt>
 						<dd>
 							<?php foreach ($xml->images->image as $image) : ?>
 								<img src="<?php echo $image; ?>" />

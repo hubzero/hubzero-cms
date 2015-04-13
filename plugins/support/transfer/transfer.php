@@ -195,7 +195,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			$author = User::getInstance(User::get('id'));
 		}
 
-		$today = JFactory::getDate()->toSql();
+		$today = Date::toSql();
 
 		// Where do we transfer?
 		switch ($to_type)

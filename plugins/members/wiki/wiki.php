@@ -51,7 +51,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	public function &onMembersContributionsAreas()
 	{
 		$areas = array(
-			'wiki' => JText::_('PLG_MEMBERS_WIKI')
+			'wiki' => Lang::txt('PLG_MEMBERS_WIKI')
 		);
 		return $areas;
 	}
@@ -174,11 +174,11 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 				{
 					if ($row->area != '' && $row->category != '')
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
 					}
 					else
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
 					}
 					$rows[$key]->text = $rows[$key]->itext;
 				}
@@ -203,17 +203,17 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<p class="details">';
 		if (isset($row->area) && isset($row->category))
 		{
-			$html .= JText::_('PLG_MEMBERS_WIKI_GROUP_WIKI') . ': ' . $row->area;
+			$html .= Lang::txt('PLG_MEMBERS_WIKI_GROUP_WIKI') . ': ' . $row->area;
 		}
 		else
 		{
-			$html .= JText::_('PLG_MEMBERS_WIKI');
+			$html .= Lang::txt('PLG_MEMBERS_WIKI');
 		}
 		$html .= '</p>' . "\n";
 		if ($row->text)
 		{
 			//if ($row->access == 1) {
-			//	$html .= "\t\t".'<p class="warning">' . JText::_('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED') . '</p>' ."\n";
+			//	$html .= "\t\t".'<p class="warning">' . Lang::txt('PLG_MEMBERS_TOPICS_NOT_AUTHORIZED') . '</p>' ."\n";
 			//} else {
 				$html .= "\t\t<p>" . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->text)), 300) . "</p>\n";
 			//}

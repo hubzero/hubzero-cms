@@ -70,12 +70,12 @@ class Sponsor extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 			$this->created_by = \User::get('id');
 		}
 		else
 		{
-			$this->modified = \JFactory::getDate()->toSql();
+			$this->modified = \Date::toSql();
 			$this->modified_by = \User::get('id');
 		}
 

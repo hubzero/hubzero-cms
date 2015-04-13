@@ -73,12 +73,12 @@ class plgCronCache extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'cleanSystemCss',
-				'label'  => JText::_('PLG_CRON_CACHE_REMOVE_SYSTEM_CSS'),
+				'label'  => Lang::txt('PLG_CRON_CACHE_REMOVE_SYSTEM_CSS'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'trashExpiredData',
-				'label'  => JText::_('PLG_CRON_CACHE_TRASH_EXPIRED_DATA'),
+				'label'  => Lang::txt('PLG_CRON_CACHE_TRASH_EXPIRED_DATA'),
 				'params' => ''
 			)
 		);

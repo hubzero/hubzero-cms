@@ -54,7 +54,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'  => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name))
+			'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name))
 		);
 		return $area;
 	}
@@ -84,8 +84,8 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				'name'    => 'metadata'
 			)
 		);
-		$view->option     = JRequest::getCmd('option', 'com_courses');
-		$view->controller = JRequest::getWord('controller', 'course');
+		$view->option     = Request::getCmd('option', 'com_courses');
+		$view->controller = Request::getWord('controller', 'course');
 		$view->course     = $course;
 
 		$arr['controls'] = $view->loadTemplate();
@@ -320,7 +320,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
-		if ($isNew && JRequest::getInt('store_product', 0))
+		if ($isNew && Request::getInt('store_product', 0))
 		{
 			include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
 
@@ -329,7 +329,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				// Constructor take the coupon code
 				$coupon = new StorefrontModelCoupon($model->get('code'));
 				// Couponn description (shows up in the cart)
-				$coupon->setDescription(JRequest::getVar('description', 'Test coupon, 10% off product with ID 111'));
+				$coupon->setDescription(Request::getVar('description', 'Test coupon, 10% off product with ID 111'));
 				// Expiration date
 				$coupon->setExpiration($model->get('created'));
 				// Number of times coupon can be used (unlimited by default)

@@ -58,7 +58,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		//if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
-			$areas['groups'] = JText::_('PLG_MEMBERS_GROUPS');
+			$areas['groups'] = Lang::txt('PLG_MEMBERS_GROUPS');
 			$areas['icon'] = 'f042';
 		}
 
@@ -139,7 +139,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				)
 			);
 			$view->total  = count($groups);
-			$view->filter = strtolower(JRequest::getWord('filter', '', 'get'));
+			$view->filter = strtolower(Request::getWord('filter', '', 'get'));
 
 			if (in_array($view->filter, array('invitees', 'applicants', 'members', 'managers')))
 			{
@@ -214,9 +214,9 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
 				if (count($invitees))
 				{
-					$title = JText::sprintf('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
-					$link = JRoute::_($member->getLink() . '&active=groups&filter=invitees');
-					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . JText::_('PLG_MEMBERS_GROUPS_ALERT') . '</h5>' . $title . '</span></a>';
+					$title = Lang::txt('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
+					$link = Route::url($member->getLink() . '&active=groups&filter=invitees');
+					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . Lang::txt('PLG_MEMBERS_GROUPS_ALERT') . '</h5>' . $title . '</span></a>';
 				}
 			}
 		}

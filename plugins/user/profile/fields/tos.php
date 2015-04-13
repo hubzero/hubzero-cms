@@ -47,7 +47,7 @@ class JFormFieldTos extends JFormFieldRadio
 
 		// Get the label text from the XML element, defaulting to the element name.
 		$text = $this->element['label'] ? (string) $this->element['label'] : (string) $this->element['name'];
-		$text = $this->translateLabel ? JText::_($text) : $text;
+		$text = $this->translateLabel ? Lang::txt($text) : $text;
 
 		// Set required to true as this field is not displayed at all if not required.
 		$this->required = true;
@@ -74,7 +74,7 @@ class JFormFieldTos extends JFormFieldRadio
 		{
 			$label .= ' title="'
 				. htmlspecialchars(
-				trim($text, ':') . '::' . ($this->translateDescription ? JText::_($this->description) : $this->description),
+				trim($text, ':') . '::' . ($this->translateDescription ? Lang::txt($this->description) : $this->description),
 				ENT_COMPAT, 'UTF-8'
 			) . '"';
 		}

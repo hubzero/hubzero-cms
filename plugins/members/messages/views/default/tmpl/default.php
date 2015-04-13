@@ -33,28 +33,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 $sections = array(
 	array(
 		'name' => 'inbox',
-		'title' => JText::_('PLG_MEMBERS_MESSAGES_INBOX'),
-		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=inbox&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'title' => Lang::txt('PLG_MEMBERS_MESSAGES_INBOX'),
+		'link' => Route::url($this->member->getLink() . '&active=messages&task=inbox&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'sent',
-		'title' => JText::_('PLG_MEMBERS_MESSAGES_SENT'),
-		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=sent&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'title' => Lang::txt('PLG_MEMBERS_MESSAGES_SENT'),
+		'link' => Route::url($this->member->getLink() . '&active=messages&task=sent&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'archive',
-		'title' => JText::_('PLG_MEMBERS_MESSAGES_ARCHIVE'),
-		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=archive&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'title' => Lang::txt('PLG_MEMBERS_MESSAGES_ARCHIVE'),
+		'link' => Route::url($this->member->getLink() . '&active=messages&task=archive&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'trash',
-		'title' => JText::_('PLG_MEMBERS_MESSAGES_TRASH'),
-		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=trash&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'title' => Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'),
+		'link' => Route::url($this->member->getLink() . '&active=messages&task=trash&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'new',
-		'title' => JText::_('PLG_MEMBERS_MESSAGES_COMPOSE'),
-		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=new&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'title' => Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE'),
+		'link' => Route::url($this->member->getLink() . '&active=messages&task=new&limit=' . $this->filters['limit'] . '&limitstart=0')
 	)
 );
 
@@ -62,17 +62,17 @@ $sections = array(
 $options = array(
 	array(
 		'name'  => 'settings',
-		'title' => JText::_('PLG_MEMBERS_MESSAGES_SETTINGS'),
-		'link'  => JRoute::_($this->member->getLink() . '&active=messages&task=settings')
+		'title' => Lang::txt('PLG_MEMBERS_MESSAGES_SETTINGS'),
+		'link'  => Route::url($this->member->getLink() . '&active=messages&task=settings')
 	)
 );
 
 //no html?
-$no_html = JRequest::getVar("no_html", 0);
+$no_html = Request::getVar("no_html", 0);
 ?>
 <?php if (!$no_html) : ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_MEMBERS_MESSAGES'); ?>
+	<?php echo Lang::txt('PLG_MEMBERS_MESSAGES'); ?>
 </h3>
 
 <div class="section">

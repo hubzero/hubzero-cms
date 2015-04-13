@@ -80,7 +80,7 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 		// make sure we have the needed recaptcha API keys
 		if (!$this->params->get('public') || !$this->params->get('private'))
 		{
-			return '<p class="error">' . JText::_('PLG_HUBZERO_RECAPTCHA_API_NEEDED') . '</p>';
+			return '<p class="error">' . Lang::txt('PLG_HUBZERO_RECAPTCHA_API_NEEDED') . '</p>';
 		}
 
 		// recaptcha html structure
@@ -121,8 +121,8 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 	public function onValidateCaptcha()
 	{
 		// get request params
-		$response = JRequest::getVar('g-recaptcha-response', null);
-		$remoteIp = JRequest::ip();
+		$response = Request::getVar('g-recaptcha-response', null);
+		$remoteIp = Request::ip();
 
 		// Discard empty solution submissions
 		if ($response == null || strlen($response) == 0)

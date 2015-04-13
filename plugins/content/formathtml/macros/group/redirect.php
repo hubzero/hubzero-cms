@@ -71,7 +71,7 @@ class Redirect extends GroupMacro
 		// Check if we can render
 		if (!parent::canRender())
 		{
-			return \JText::_('[This macro is designed for Groups only]');
+			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
 		// Get the arguments
@@ -96,7 +96,7 @@ class Redirect extends GroupMacro
 
 		// Delayed redirect
 		return '<script type="text/javascript">setTimeout(function () { window.location.href = "' . str_replace(array("'", '"'), array('%27', '%22'), $url) . '"; }, ' . ($delay * 1000) . ');</script>
-				<p class="warning">' . \JText::sprintf('This page will redirect in %s seconds', $delay) . '</p>';
+				<p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
 	}
 }
 

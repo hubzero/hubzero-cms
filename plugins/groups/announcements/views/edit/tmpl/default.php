@@ -42,8 +42,8 @@ $this->js()
 
 <ul id="page_options">
 	<li>
-		<a class="icon-prev back btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=announcements'); ?>">
-			<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_BACK'); ?>
+		<a class="icon-prev back btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=announcements'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_BACK'); ?>
 		</a>
 	</li>
 </ul>
@@ -52,34 +52,34 @@ $this->js()
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_HINT'); ?>
+			<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_HINT'); ?>
 		</div><!-- /.aside -->
 
 		<fieldset>
 			<legend>
 				<?php if ($this->announcement->get('id')) : ?>
-						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 				<?php else : ?>
-						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NEW'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_NEW'); ?>
 				<?php endif; ?>
 			</legend>
 
 			<label for="field_content">
-				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
+				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
 				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 
 			<fieldset>
-				<legend><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_WINDOW'); ?> <span class="optional"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_OPTIONAL'); ?></span></legend>
+				<legend><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_WINDOW'); ?> <span class="optional"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_OPTIONAL'); ?></span></legend>
 
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
-							<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_START'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_START'); ?>
 							<?php
 								$publish_up = $this->announcement->get('publish_up');
 								if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
@@ -89,12 +89,12 @@ $this->js()
 								}
 							?>
 							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($publish_up); ?>" />
-							<span class="hint"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-publish_down" id="priority-publish_down">
-							<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_END'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_END'); ?>
 							<?php
 								$publish_down = $this->announcement->get('publish_down');
 								if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
@@ -104,7 +104,7 @@ $this->js()
 								}
 							?>
 							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($publish_down); ?>" />
-							<span class="hint"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 				</div>
@@ -113,23 +113,23 @@ $this->js()
 			<label for="field-email" id="email-label">
 				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->email == 1) { echo 'checked="checked"'; } ?> />
 				<?php if ($this->announcement->sent == 1) : ?>
-					<span class="important"><?php echo JText::_('Announcement already emailed, send again?'); ?></span>
+					<span class="important"><?php echo Lang::txt('Announcement already emailed, send again?'); ?></span>
 				<?php else : ?>
-					<?php echo JText::_('Email announcement to group members?'); ?>
+					<?php echo Lang::txt('Email announcement to group members?'); ?>
 				<?php endif; ?>
 			</label>
 
 			<label for="field-priority" id="priority-label">
 				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> />
-				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?> <a href="#" class="tooltips" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</a>
+				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?> <a href="#" class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</a>
 			</label>
 			<label for="field-sticky" id="sticky-label">
 				<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->announcement->get('sticky')) { echo ' checked="checked"'; } ?> />
-				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?> <a href="#" class="tooltips" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</a>
+				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?> <a href="#" class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</a>
 			</label>
 
 			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_SAVE'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SAVE'); ?>" />
 			</p>
 		</fieldset>
 		<div class="clear"></div>

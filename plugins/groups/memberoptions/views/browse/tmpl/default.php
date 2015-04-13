@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
-$params = $params =  JComponentHelper::getParams('com_groups');
+$params = $params =  Component::params('com_groups');
 
 $allowEmailResponses = $params->get('email_comment_processing');
 
@@ -44,22 +44,22 @@ if ($allowEmailResponses)
 }
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="action" value="savememberoptions" />
 	<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID;?>" />
 
 	<div class="group-content-header">
-		<h3><?php echo JText::_('GROUP_MEMBEROPTIONS'); ?></h3>
+		<h3><?php echo Lang::txt('GROUP_MEMBEROPTIONS'); ?></h3>
 	</div>
 
-	<p><?php echo JText::_('GROUP_MEMBEROPTIONS_DESC'); ?></p>
+	<p><?php echo Lang::txt('GROUP_MEMBEROPTIONS_DESC'); ?></p>
 
 	<?php if ($allowEmailResponses) { ?>
 		<div style="padding-top:25px;">
 			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) { echo 'checked="checked"'; } ?> />
-			<label for="recvpostemail"><?php echo JText::_('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
+			<label for="recvpostemail"><?php echo Lang::txt('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
 		</div>
 	<?php
 	}
@@ -72,7 +72,7 @@ if ($allowEmailResponses)
 	<?php
 	}
 	else{
-		echo JText::_('GROUP_MEMBEROPTIONS_NONE');
+		echo Lang::txt('GROUP_MEMBEROPTIONS_NONE');
 	}
 	?>
 </form>

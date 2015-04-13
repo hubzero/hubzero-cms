@@ -441,7 +441,7 @@ class Parser
 			}
 			else
 			{
-				$macro->pageid = \JRequest::getInt('lid', 0, 'post');
+				$macro->pageid = \Request::getInt('lid', 0, 'post');
 			}
 			$macro->filepath   = $this->get('filepath');
 

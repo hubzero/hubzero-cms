@@ -245,7 +245,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		switch ($who)
 		{
 			case 'student':
-				$now = JFactory::getDate()->toSql();
+				$now = Date::toSql();
 				if ($what == 'count')
 				{
 					$this->database->setQuery("SELECT COUNT(*)

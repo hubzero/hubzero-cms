@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 		$cls .= ' author';
 	}
 
-	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
+	$rtrn = $this->url ? $this->url : Request::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
 	if (!strstr($rtrn, 'index.php'))
 	{
 		$rtrn .= '?';
@@ -82,26 +82,26 @@ defined('_JEXEC') or die('Restricted access');
 					<strong>
 					<?php if (!$this->comment->get('anonymous')) { ?>
 						<?php if ($this->comment->creator('public')) { ?>
-							<a href="<?php echo JRoute::_($this->comment->creator()->getLink()); ?>">
+							<a href="<?php echo Route::url($this->comment->creator()->getLink()); ?>">
 								<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
 							</a>
 						<?php } else { ?>
 							<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
 						<?php } ?>
 					<?php } else { ?>
-						<?php echo JText::_('PLG_COURSES_REVIEWS_ANONYMOUS'); ?>
+						<?php echo Lang::txt('PLG_COURSES_REVIEWS_ANONYMOUS'); ?>
 					<?php } ?>
 					</strong>
-					<a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->get('id'); ?>" title="<?php echo JText::_('PLG_COURSES_REVIEWS_PERMALINK'); ?>">
-						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span>
+					<a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->get('id'); ?>" title="<?php echo Lang::txt('PLG_COURSES_REVIEWS_PERMALINK'); ?>">
+						<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
 						<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span>
+						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 						<?php if ($this->comment->modified() && $this->comment->modified() != '0000-00-00 00:00:00') { ?>
-							&mdash; <?php echo JText::_('Edited'); ?>
-							<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span>
+							&mdash; <?php echo Lang::txt('Edited'); ?>
+							<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
 							<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
-							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span>
+							<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
 						<?php } ?>
 					</a>
@@ -109,13 +109,13 @@ defined('_JEXEC') or die('Restricted access');
 				<div class="comment-body">
 					<?php if ($this->comment->get('rating')) { ?>
 						<p class="avgrating <?php echo $rating; ?>">
-							<?php echo JText::sprintf('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $this->comment->get('rating')); ?>
+							<?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $this->comment->get('rating')); ?>
 						</p>
 					<?php } ?>
 					<?php
 					if ($this->comment->isReported())
 					{
-						echo '<p class="warning">' . JText::_('PLG_COURSES_REVIEWS_REPORTED_AS_ABUSIVE') . '</p>';
+						echo '<p class="warning">' . Lang::txt('PLG_COURSES_REVIEWS_REPORTED_AS_ABUSIVE') . '</p>';
 					}
 					else
 					{
@@ -126,38 +126,38 @@ defined('_JEXEC') or die('Restricted access');
 
 			<?php if ($this->comment->get('filename')) { ?>
 				<div class="attachment">
-					<p><?php echo JText::_('PLG_COURSES_REVIEWS_ATTACHED_FILE'); ?> <a href="<?php echo JURI::base() . 'site/comments/' . $this->comment->get('filename'); ?>"><?php echo $this->escape($this->comment->get('filename')); ?></a></p>
+					<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE'); ?> <a href="<?php echo JURI::base() . 'site/comments/' . $this->comment->get('filename'); ?>"><?php echo $this->escape($this->comment->get('filename')); ?></a></p>
 				</div>
 			<?php } ?>
 
 			<?php if (!$this->comment->isReported()) { ?>
 				<p class="comment-options">
 				<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment'); ?>"><!--
-						--><?php echo JText::_('PLG_COURSES_REVIEWS_EDIT'); ?><!--
+					<a class="icon-edit edit" href="<?php echo Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment'); ?>"><!--
+						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo JText::_('PLG_COURSES_REVIEWS_DELETE'); ?><!--
+					<a class="icon-delete delete" href="<?php echo Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_COURSES_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-						--><?php echo JText::_('PLG_COURSES_REVIEWS_REPLY'); ?><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_COURSES_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->get('id') . '&parent=' . $this->obj->get('id')); ?>"><!--
-						--><?php echo JText::_('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?><!--
+					<a class="icon-abuse abuse" href="<?php echo Route::url('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->get('id') . '&parent=' . $this->obj->get('id')); ?>"><!--
+						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?><!--
 					--></a>
 				</p><!-- / .comment-options -->
 			<?php } ?>
 
 			<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
 				<div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
-					<form action="<?php echo JRoute::_($this->url); ?>" method="post" enctype="multipart/form-data">
+					<form action="<?php echo Route::url($this->url); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
-							<legend><span><?php echo JText::sprintf('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator('name') : JText::_('PLG_COURSES_REVIEWS_ANONYMOUS'))); ?></span></legend>
+							<legend><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator('name') : Lang::txt('PLG_COURSES_REVIEWS_ANONYMOUS'))); ?></span></legend>
 
 							<input type="hidden" name="comment[id]" value="0" />
 							<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
@@ -171,21 +171,21 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo JHTML::_('form.token'); ?>
 
 							<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
+								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
 								<?php echo $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', array('class' => 'minimal no-footer')); ?>
 							</label>
 
 							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
 						<?php if ($this->params->get('comments_anon', 1)) { ?>
 								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-								<?php echo JText::_('PLG_COURSES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
+								<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
 						<?php } else { ?>
 								&nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" />
 						<?php } ?>
 							</label>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo JText::_('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
 							</p>
 						</fieldset>
 					</form>

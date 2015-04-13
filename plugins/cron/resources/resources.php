@@ -53,7 +53,7 @@ class plgCronResources extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'issueResourceMasterDoi',
-				'label'  => JText::_('PLG_CRON_RESOURCES_MASTER_DOI'),
+				'label'  => Lang::txt('PLG_CRON_RESOURCES_MASTER_DOI'),
 				'params' => ''
 			)
 		);
@@ -70,7 +70,7 @@ class plgCronResources extends JPlugin
 	public function issueResourceMasterDoi(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
-		$config   = JComponentHelper::getParams('com_publications');
+		$config   = Component::params('com_publications');
 
 		// Is config to issue master DOI turned ON?
 		if (!$config->get('master_doi'))

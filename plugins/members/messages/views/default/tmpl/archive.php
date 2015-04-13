@@ -36,13 +36,13 @@ $this->css()
      ->js();
 ?>
 
-<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages&task=archive'); ?>" method="post">
+<form action="<?php echo Route::url($this->member->getLink() . '&active=messages&task=archive'); ?>" method="post">
 
 	<div id="filters">
 		<input type="hidden" name="inaction" value="archive" />
-		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?>
 		<select class="option" name="filter">
-			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
+			<option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 			<?php
 				if ($this->components) {
 					foreach ($this->components as $component)
@@ -56,17 +56,17 @@ $this->css()
 				}
 			?>
 		</select>
-		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
+		<input class="option" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 	</div>
 
 	<div id="actions">
 		<select class="option" name="action">
-			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
-			<option value="sendtoinbox"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_INBOX'); ?></option>
-			<option value="sendtotrash"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
+			<option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
+			<option value="sendtoinbox"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_INBOX'); ?></option>
+			<option value="sendtotrash"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
 		</select>
 		<input type="hidden"name="activetab" value="archive" />
-		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
+		<input class="option" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
 	<br class="clear" />
 
@@ -75,9 +75,9 @@ $this->css()
 			<tr>
 				<th scope="col"><input type="checkbox" name="msgall" id="msgall" value="all" /></th>
 				<th scope="col"> </th>
-				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
-				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
-				<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_DATE_RECEIVED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DATE_RECEIVED'); ?></th>
 				<th scope="col"> </th>
 			</tr>
 		</thead>
@@ -101,7 +101,7 @@ $this->css()
 						$component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
 
 						//url to view message
-						$url = JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id);
+						$url = Route::url($this->member->getLink() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;
@@ -129,19 +129,19 @@ $this->css()
 						if (substr($row->type, -8) == '_message')
 						{
 							$u = JUser::getInstance($row->created_by);
-							$from = '<a href="' . JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')) . '">' . $u->get('name') . '</a>';
+							$from = '<a href="' . Route::url('index.php?option='.$this->option.'&id='.$u->get('id')) . '">' . $u->get('name') . '</a>';
 						}
 						else
 						{
-							$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
+							$from = Lang::txt('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
 						}
 
 						//date received
-						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
+						$date = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));
 
 						//delete link
-						$del_link = JRoute::_($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive');
-						$delete = '<a title="' . JText::_('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
+						$del_link = Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive');
+						$delete = '<a title="' . Lang::txt('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . Lang::txt('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
 
 						//special action
 						/*if ($row->actionid)
@@ -150,7 +150,7 @@ $this->css()
 							$xma->load( $row->actionid );
 							if ($xma)
 							{
-								$url = JRoute::_(stripslashes($xma->description));
+								$url = Route::url(stripslashes($xma->description));
 							}
 
 							if ($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00')
@@ -175,7 +175,7 @@ $this->css()
 				<?php endforeach; ?>
 			<?php else: ?>
 				<tr>
-					<td colspan="6"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NONE'); ?></td>
+					<td colspan="6"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_NONE'); ?></td>
 				</tr>
 			<?php endif; ?>
 		</tbody>

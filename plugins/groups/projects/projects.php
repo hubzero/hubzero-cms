@@ -52,7 +52,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->_config = JComponentHelper::getParams('com_projects');
+		$this->_config = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
 		$this->_juser = JFactory::getUser();
@@ -69,7 +69,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'             => $this->_name,
-			'title'            => JText::_('PLG_GROUPS_PROJECTS'),
+			'title'            => Lang::txt('PLG_GROUPS_PROJECTS'),
 			'default_access'   => $this->params->get('plugin_access','members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => 'f03f'
@@ -150,7 +150,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -158,11 +158,11 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			if ($juser->get('guest')
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
 				return;
@@ -172,7 +172,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			if (!in_array($juser->get('id'), $members) && $group_plugin_acl == 'members' && $authorized != 'admin')
 			{
 				$arr['html'] = '<p class="info">'
-					. JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+					. Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -181,7 +181,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				. DS . 'helpers' . DS . 'html.php');
 
 			// Which view
-			$task = $action ? strtolower(trim($action)) : JRequest::getVar('action', '');
+			$task = $action ? strtolower(trim($action)) : Request::getVar('action', '');
 
 			switch ($task)
 			{
@@ -243,9 +243,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['mine']     = 1;
 		$filters['updates']  = 1;
-		$filters['sortby']   = JRequest::getVar('sortby', 'status');
+		$filters['sortby']   = Request::getVar('sortby', 'status');
 		$filters['getowner'] = 1;
-		$filters['sortdir']  = JRequest::getVar('sortdir', 'DESC');
+		$filters['sortdir']  = Request::getVar('sortdir', 'DESC');
 
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -325,9 +325,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		$filters['mine']     = 1;
 		$filters['updates']  = 1;
-		$filters['sortby']   = JRequest::getVar('sortby', 'title');
+		$filters['sortby']   = Request::getVar('sortby', 'title');
 		$filters['getowner'] = 1;
-		$filters['sortdir']  = JRequest::getVar('sortdir', 'ASC');
+		$filters['sortdir']  = Request::getVar('sortdir', 'ASC');
 
 		// Get all projects group has access to
 		$obj = new \Components\Projects\Tables\Project($this->_database);
@@ -347,7 +347,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$view->total = $objAC->getActivities(0, $afilters, 1, $this->_juser->get('id'), $projects);
 		$view->limit = 25;
 
-		$afilters['limit'] = JRequest::getVar('limit', 25, 'request');
+		$afilters['limit'] = Request::getVar('limit', 25, 'request');
 		$view->filters = $afilters;
 
 		$activities = $objAC->getActivities(0, $afilters, 0, $this->_juser->get('id'), $projects);
@@ -546,7 +546,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$projects = $db->loadAssocList();
 
 		// Get the component parameters
-		$view->project_params = JComponentHelper::getParams('com_projects');
+		$view->project_params = Component::params('com_projects');
 
 		//push vars to the view
 		$view->projects = $projects;

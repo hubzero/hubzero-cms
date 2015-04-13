@@ -52,7 +52,7 @@ class plgCronMembers extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'onPointRoyalties',
-				'label'  => JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES'),
+				'label'  => Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES'),
 				'params' => ''
 			)
 		);
@@ -83,9 +83,9 @@ class plgCronMembers extends JPlugin
 		$curyear = JFactory::getDate()->format("Y-m");
 		$ref = strtotime($curyear);
 
-		$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
-		$rmsg = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_REVIEWS', $curyear);
-		$resmsg = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_RESOURCES', $curyear);
+		$this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
+		$rmsg = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_REVIEWS', $curyear);
+		$resmsg = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_RESOURCES', $curyear);
 
 		// Make sure we distribute royalties only once/ month
 		$MH = new \Hubzero\Bank\MarketHistory($this->database);
@@ -125,7 +125,7 @@ class plgCronMembers extends JPlugin
 				{
 					$MH = new \Hubzero\Bank\MarketHistory($this->database);
 					$data['itemid']       = $ref;
-					$data['date']         = JFactory::getDate()->toSql();
+					$data['date']         = Date::toSql();
 					$data['market_value'] = $accumulated;
 					$data['category']     = 'answers';
 					$data['action']       = $action;
@@ -144,12 +144,12 @@ class plgCronMembers extends JPlugin
 			}
 			else
 			{
-				$this->_message = JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_QUESTIONS');
+				$this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_QUESTIONS');
 			}
 		}
 		else
 		{
-			$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_ANSWERS', $curyear);
+			$this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_ANSWERS', $curyear);
 		}
 
 		// Get Royalties on Resource Reviews
@@ -177,7 +177,7 @@ class plgCronMembers extends JPlugin
 			}
 			else
 			{
-				$this->_message .= JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_REVIEWS');
+				$this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_REVIEWS');
 			}
 
 			// make a record of royalty payment
@@ -185,7 +185,7 @@ class plgCronMembers extends JPlugin
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = JFactory::getDate()->toSql();
+				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'reviews';
 				$data['action']       = $action;
@@ -204,7 +204,7 @@ class plgCronMembers extends JPlugin
 		}
 		else
 		{
-			$this->_message .= JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_REVIEWS', $curyear);
+			$this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_REVIEWS', $curyear);
 		}
 
 		// Get Royalties on Resources
@@ -227,7 +227,7 @@ class plgCronMembers extends JPlugin
 			}
 			else
 			{
-				$this->_message .= JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_RESOURCES');
+				$this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_RESOURCES');
 			}
 
 			// make a record of royalty payment
@@ -235,7 +235,7 @@ class plgCronMembers extends JPlugin
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
-				$data['date']         = JFactory::getDate()->toSql();
+				$data['date']         = Date::toSql();
 				$data['market_value'] = $accumulated;
 				$data['category']     = 'resources';
 				$data['action']       = $action;
@@ -254,7 +254,7 @@ class plgCronMembers extends JPlugin
 		}
 		else
 		{
-			$this->_message .= JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
+			$this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
 		}
 
 		//$time_end = microtime(true);

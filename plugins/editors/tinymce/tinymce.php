@@ -118,7 +118,7 @@ class plgEditorTinymce extends JPlugin
 
 				// Issue warning notice if the file is not found (but pass name to $content_css anyway to avoid TinyMCE error
 				if (!file_exists($templates_path . '/' . $template . '/css/' . $content_css_custom)) {
-					$msg = sprintf (JText::_('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom);
+					$msg = sprintf (Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom);
 					JError::raiseNotice('SOME_ERROR_CODE', $msg);
 				}
 			}
@@ -137,7 +137,7 @@ class plgEditorTinymce extends JPlugin
 					// if no editor.css file in system folder, show alert
 					if (!file_exists($templates_path . '/system/css/editor.css'))
 					{
-						JError::raiseNotice('SOME_ERROR_CODE', JText::_('PLG_TINY_ERR_EDITORCSSFILENOTPRESENT'));
+						JError::raiseNotice('SOME_ERROR_CODE', Lang::txt('PLG_TINY_ERR_EDITORCSSFILENOTPRESENT'));
 					}
 					else
 					{
@@ -798,7 +798,7 @@ class plgEditorTinymce extends JPlugin
 	{
 		$return  = '';
 		$return .= "\n<div class=\"toggle-editor\">\n";
-		$return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"".JText::_('PLG_TINY_BUTTON_TOGGLE_EDITOR').'">'.JText::_('PLG_TINY_BUTTON_TOGGLE_EDITOR')."</a></div></div>";
+		$return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"".Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR').'">'.Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR')."</a></div></div>";
 		$return .= "</div>\n";
 
 		return $return;

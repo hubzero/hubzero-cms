@@ -73,11 +73,11 @@ class DefaultHomePage extends GroupMacro
 		// check if we can render
 		if (!parent::canRender())
 		{
-			return \JText::_('[This macro is designed for Groups only]');
+			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
 		// add required helper lib
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'pages.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'pages.php';
 
 		// get default home page 
 		$html = \GroupsHelperPages::getDefaultHomePage($this->group);

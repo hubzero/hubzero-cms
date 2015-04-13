@@ -49,8 +49,8 @@ $this->css()
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-comments comments btn" href="<?php echo JRoute::_($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
-			<?php echo JText::_('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
+		<a class="icon-comments comments btn" href="<?php echo Route::url($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</li>
 </ul>
@@ -65,13 +65,13 @@ $this->css()
 
 		<h3 class="post-comment-title">
 			<?php if ($this->post->exists()) { ?>
-				<?php echo JText::_('PLG_GROUPS_FORUM_EDIT_DISCUSSION'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT_DISCUSSION'); ?>
 			<?php } else { ?>
-				<?php echo JText::_('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
 			<?php } ?>
 		</h3>
 
-		<form action="<?php echo JRoute::_($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo Route::url($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
 				$jxuser = new \Hubzero\User\Profile();
@@ -86,13 +86,13 @@ $this->css()
 					<div class="col span-half">
 						<label for="field-sticky">
 							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
 						</label>
 					</div>
 					<div class="col span-quarter">
 						<label for="field-closed">
 							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
 						</label>
 					</div>
 				</div>
@@ -104,12 +104,12 @@ $this->css()
 			<?php if (!$this->post->get('parent')) { ?>
 				<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
 				<label for="field-access">
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
 					<select name="fields[access]" id="field-access">
-						<option value="0"<?php if ($this->post->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-						<option value="1"<?php if ($this->post->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
-						<?php /*<option value="3"<?php if ($this->post->get('access', 0) == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PROTECTED'); ?></option>*/ ?>
-						<option value="4"<?php if ($this->post->get('access', 0) == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+						<option value="0"<?php if ($this->post->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+						<option value="1"<?php if ($this->post->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+						<?php /*<option value="3"<?php if ($this->post->get('access', 0) == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PROTECTED'); ?></option>*/ ?>
+						<option value="4"<?php if ($this->post->get('access', 0) == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
 					</select>
 				</label>
 				<?php } else { ?>
@@ -117,9 +117,9 @@ $this->css()
 				<?php } ?>
 
 				<label for="field-category_id">
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<select name="fields[category_id]" id="field-category_id">
-						<option value="0"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
+						<option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
 						<?php foreach ($this->model->sections() as $section) { ?>
 							<?php if ($section->categories('list')->total() > 0) { ?>
 								<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
@@ -133,7 +133,7 @@ $this->css()
 				</label>
 
 				<label for="field-title">
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->post->get('title'))); ?>" />
 				</label>
 			<?php } else { ?>
@@ -142,31 +142,31 @@ $this->css()
 			<?php } ?>
 
 				<label for="field_comment">
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
 					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
 				<label>
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
 					<?php
 						echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags');
 					?>
 				</label>
 
 				<fieldset>
-					<legend><?php echo JText::_('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
+					<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grid">
 						<div class="col span-half">
 							<label for="upload">
-								<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
+								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($this->post->attachment()->get('filename')) { echo '<strong>' . $this->escape(stripslashes($this->post->attachment()->get('filename'))) . '</strong>'; } ?>
 								<input type="file" name="upload" id="upload" />
 							</label>
 						</div>
 						<div class="col span-half omega">
 							<label for="field-attach-descritpion">
-								<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
+								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
 								<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($this->post->attachment()->get('description'))); ?>" />
 							</label>
 						</div>
@@ -174,23 +174,23 @@ $this->css()
 					</div>
 					<?php if ($this->post->attachment()->exists()) { ?>
 						<p class="warning">
-							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE_WARNING'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE_WARNING'); ?>
 						</p>
 					<?php } ?>
 				</fieldset>
 
 				<label for="field-anonymous" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
 
 				<p class="submit">
-					<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+					<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
 				</p>
 
 				<div class="sidenote">
 					<p>
-						<strong><?php echo JText::_('PLG_GROUPS_FORUM_KEEP_POLITE'); ?></strong>
+						<strong><?php echo Lang::txt('PLG_GROUPS_FORUM_KEEP_POLITE'); ?></strong>
 					</p>
 				</div>
 			</fieldset>
@@ -211,7 +211,7 @@ $this->css()
 	<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
 	</div><!-- / .subject -->
 	<aside class="aside">
-		<p><?php echo JText::_('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
+		<p><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
 	</aside><!-- /.aside -->
 	<?php } ?>
 </section><!-- / .below section -->

@@ -35,19 +35,19 @@ $this->css();
 ?>
 <?php if ($this->course->access('edit', 'course')) { ?>
 <div class="manager-options">
-	<a class="icon-add btn btn-secondary" id="add-offering" href="<?php echo JRoute::_($this->course->link() . '&task=newoffering'); ?>">
-		<?php echo JText::_('PLG_COURSES_OFFERINGS_NEW_OFFERING'); ?>
+	<a class="icon-add btn btn-secondary" id="add-offering" href="<?php echo Route::url($this->course->link() . '&task=newoffering'); ?>">
+		<?php echo Lang::txt('PLG_COURSES_OFFERINGS_NEW_OFFERING'); ?>
 	</a>
-	<span><strong><?php echo JText::_('PLG_COURSES_OFFERINGS_NEW_OFFERING_EXPLANATION'); ?></strong></span>
+	<span><strong><?php echo Lang::txt('PLG_COURSES_OFFERINGS_NEW_OFFERING_EXPLANATION'); ?></strong></span>
 </div>
 <?php } ?>
 <div class="container">
 	<table class="entries">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('PLG_COURSES_OFFERINGS_OFFERING'); ?></th>
-				<th scope="col"><?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLLED'); ?></th>
-				<th scope="col"><?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLLMENT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_COURSES_OFFERINGS_OFFERING'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLLED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLLMENT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -60,7 +60,7 @@ $this->css();
 
 	if ($offerings->total() > 0)
 	{
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		foreach ($offerings as $offering)
 		{
@@ -89,17 +89,17 @@ $this->css();
 				?>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else if ($offering->student(JFactory::getUser()->get('id'))->get('student')) { ?>
-					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else { ?>
 						<?php if ($offerings->total() > 1 && $offering->isAvailable()) { ?>
-						<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-							<?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
+						<a class="enroll btn" href="<?php echo Route::url($offering->link('enroll')); ?>">
+							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
 						</a>
 						<?php } else { ?>
 						--
@@ -109,11 +109,11 @@ $this->css();
 				<td>
 					<?php if ($offering->isAvailable()) { ?>
 					<span class="accepting enrollment">
-						<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_ACCEPTING'); ?>
+						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_STATUS_ACCEPTING'); ?>
 					</span>
 					<?php } else { ?>
 					<span class="closed enrollment">
-						<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_CLOSED'); ?>
+						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_STATUS_CLOSED'); ?>
 					</span>
 					<?php } ?>
 				</td>
@@ -168,17 +168,17 @@ $this->css();
 				</th>
 				<td>
 					<?php if ($this->course->isManager()) { ?>
-					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else if ($section->isMember()) { ?>
-					<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-						<?php echo JText::_('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
+					<a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+						<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
 					</a>
 					<?php } else { ?>
 						<?php if ($offerings->total() > 1 && $offering->isAvailable()) { ?>
-						<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-							<?php echo JText::_('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
+						<a class="enroll btn" href="<?php echo Route::url($offering->link('enroll')); ?>">
+							<?php echo Lang::txt('PLG_COURSES_OFFERINGS_ENROLL_IN_COURSE'); ?>
 						</a>
 						<?php } else { ?>
 						--
@@ -192,7 +192,7 @@ $this->css();
 						case 0:
 							?>
 							<span class="accepting enrollment">
-								<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_ACCEPTING'); ?>
+								<?php echo Lang::txt('PLG_COURSES_OFFERINGS_STATUS_ACCEPTING'); ?>
 							</a>
 							<?php
 						break;
@@ -200,7 +200,7 @@ $this->css();
 						case 1:
 							?>
 							<span class="restricted enrollment">
-								<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_RESTRICTED'); ?>
+								<?php echo Lang::txt('PLG_COURSES_OFFERINGS_STATUS_RESTRICTED'); ?>
 							</span>
 							<?php
 						break;
@@ -208,7 +208,7 @@ $this->css();
 						case 2:
 							?>
 							<span class="closed enrollment">
-								<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_CLOSED'); ?>
+								<?php echo Lang::txt('PLG_COURSES_OFFERINGS_STATUS_CLOSED'); ?>
 							</span>
 							<?php
 						break;
@@ -225,7 +225,7 @@ $this->css();
 	{
 	?>
 			<tr>
-				<td><?php echo JText::_('PLG_COURSES_OFFERINGS_NONE_FOUND'); ?></td>
+				<td><?php echo Lang::txt('PLG_COURSES_OFFERINGS_NONE_FOUND'); ?></td>
 			</tr>
 	<?php
 	}

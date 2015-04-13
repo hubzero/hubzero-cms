@@ -36,7 +36,7 @@ $base = $this->member->getLink() . '&active=courses';
 $this->css();
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_MEMBERS_COURSES'); ?>
+	<?php echo Lang::txt('PLG_MEMBERS_COURSES'); ?>
 </h3>
 
 <section class="section">
@@ -58,7 +58,7 @@ $this->css();
 				}
 				?>
 				<li>
-					<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo JRoute::_($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
+					<a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo Route::url($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
 						<?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
 					</a>
 				</li>
@@ -67,17 +67,17 @@ $this->css();
 	<?php } ?>
 
 	<div class="container" id="courses-container">
-		<form method="get" action="<?php echo JRoute::_($base); ?>">
+		<form method="get" action="<?php echo Route::url($base); ?>">
 
 			<ul class="entries-menu order-options">
 				<li>
-					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">
-						<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>
+					<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'); ?>">
-						<?php echo JText::_('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>
+					<a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'); ?>">
+						<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>
 					</a>
 				</li>
 			</ul>
@@ -88,9 +88,9 @@ $this->css();
 					$s = ($this->total > 0) ? $this->filters['start']+1 : 0; //($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
-					echo $this->escape(stripslashes($this->active->title)); //JText::_('PLG_MEMBERS_COURSES_' . strtoupper($this->filters['task']));
+					echo $this->escape(stripslashes($this->active->title)); //Lang::txt('PLG_MEMBERS_COURSES_' . strtoupper($this->filters['task']));
 					?>
-					<span>(<?php echo JText::sprintf('PLG_MEMBERS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
+					<span>(<?php echo Lang::txt('PLG_MEMBERS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 				</caption>
 				<tbody>
 		<?php if (count($this->results) > 0) { ?>
@@ -113,7 +113,7 @@ $this->css();
 					{
 						case 'student':
 							$cls = 'student';
-							$dateText = JText::_('PLG_MEMBERS_COURSES_ENROLLED');
+							$dateText = Lang::txt('PLG_MEMBERS_COURSES_ENROLLED');
 						break;
 
 						case 'manager':
@@ -121,7 +121,7 @@ $this->css();
 						case 'ta':
 						default:
 							$cls = 'manager';
-							$dateText = JText::_('PLG_MEMBERS_COURSES_EMPOWERED');
+							$dateText = Lang::txt('PLG_MEMBERS_COURSES_EMPOWERED');
 						break;
 					}
 			?>
@@ -130,20 +130,20 @@ $this->css();
 							<span class="entry-id"><?php echo $row->id; ?></span>
 						</th>
 						<td>
-							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $row->alias . $sfx); ?>">
+							<a class="entry-title" href="<?php echo Route::url('index.php?option=com_courses&gid=' . $row->alias . $sfx); ?>">
 								<?php echo $this->escape(stripslashes($row->title)); ?>
 							</a><br />
 							<span class="entry-details">
 								<?php echo $dateText; ?>
 								<!--
-								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 								-->
-								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
+								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php if ($row->section_title) { ?>
 								<span class="entry-section">
-									 &mdash; <strong><?php echo JText::_('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
+									 &mdash; <strong><?php echo Lang::txt('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
 								</span>
 								<?php } ?>
 							</span>
@@ -151,36 +151,36 @@ $this->css();
 						<td>
 							<?php if ($row->state == 3) { ?>
 							<span class="entry-state draft">
-								<?php echo JText::_('PLG_MEMBERS_COURSES_STATE_DRAFT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_COURSES_STATE_DRAFT'); ?>
 							</span>
 							<?php } ?>
 						</td>
 						<td>
 							<?php if ($row->starts) { ?>
-							<?php echo JText::_('PLG_MEMBERS_COURSES_STARTS'); ?><br />
+							<?php echo Lang::txt('PLG_MEMBERS_COURSES_STARTS'); ?><br />
 							<span class="entry-details">
 							<?php if ($row->starts != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
-								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
+								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 							<?php } else { ?>
-								<?php echo JText::_('PLG_MEMBERS_COURSES_NA'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
 							<?php } ?>
 							</span>
 							<?php } ?>
 						</td>
 						<td>
 							<?php if ($row->ends) { ?>
-							<?php echo JText::_('PLG_MEMBERS_COURSES_ENDS'); ?><br />
+							<?php echo Lang::txt('PLG_MEMBERS_COURSES_ENDS'); ?><br />
 							<span class="entry-details">
 								<?php if ($row->ends != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
-								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
+								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php } else { ?>
-									<?php echo JText::_('PLG_MEMBERS_COURSES_NA'); ?>
+									<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
 								<?php } ?>
 							</span>
 							<?php } ?>
@@ -192,7 +192,7 @@ $this->css();
 		<?php } else { ?>
 					<tr>
 						<td>
-							<?php echo JText::_('PLG_MEMBERS_COURSES_NO_RESULTS'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_COURSES_NO_RESULTS'); ?>
 						</td>
 					</tr>
 		<?php } // end if (count($this->results) > 0) { ?>
@@ -215,14 +215,14 @@ $this->css();
 	<div id="courses-introduction">
 		<div class="instructions">
 			<ol>
-				<li><?php echo JText::sprintf('PLG_MEMBERS_COURSES_FIND_COURSE', JRoute::_('index.php?option=com_courses')); ?></li>
-				<li><?php echo JText::_('PLG_MEMBERS_COURSES_ENROLL'); ?></li>
-				<li><?php echo JText::_('PLG_MEMBERS_COURSES_GET_LEARNING'); ?></li>
+				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_FIND_COURSE', Route::url('index.php?option=com_courses')); ?></li>
+				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_ENROLL'); ?></li>
+				<li><?php echo Lang::txt('PLG_MEMBERS_COURSES_GET_LEARNING'); ?></li>
 			</ol>
 		</div><!-- / .instructions -->
 		<div class="questions">
-			<p><strong><?php echo JText::_('PLG_MEMBERS_COURSES_WHAT_ARE_COURSES'); ?></strong></p>
-			<p><?php echo JText::_('PLG_MEMBERS_COURSES_EXPLANATION'); ?><p>
+			<p><strong><?php echo Lang::txt('PLG_MEMBERS_COURSES_WHAT_ARE_COURSES'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_COURSES_EXPLANATION'); ?><p>
 		</div><!-- / .post-type -->
 	</div><!-- / #collection-introduction -->
 <?php } ?>

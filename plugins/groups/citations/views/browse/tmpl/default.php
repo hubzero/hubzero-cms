@@ -79,21 +79,21 @@ if (isset($this->messages))
 ?>
 <div id="content-header-extra">
 	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-		<a class="btn icon-add" href="<?php echo JRoute::_($base. '&action=add'); ?>">
-			<?php echo JText::_('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
+		<a class="btn icon-add" href="<?php echo Route::url($base. '&action=add'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
 		</a>
 	<?php endif; ?>
 </div>
 
 <div class="frm" id="browsebox">
-	<form action="<?php echo JRoute::_(JURI::current()); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
+	<form action="<?php echo Route::url(JURI::current()); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 		<section class="main section">
 			<div class="subject">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="Search" />
 					<fieldset class="entry-search">
-						<legend><?php echo JText::_('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- /.container .data-entry -->
 				<div class="container">
@@ -119,9 +119,9 @@ if (isset($this->messages))
 								}
 							}
 						?>
-						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo JRoute::_($base . '&action=browse'.$queryString.'&filter='); ?>"><?php echo JText::_('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
-						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_($base . '&action=browse'.$queryString.'&filter=aff'); ?>"><?php echo JText::_('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
-						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo JText::_('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
+						<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter='); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
+						<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=aff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AFFILIATED'); ?></a></li>
+						<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo Route::url($base . '&action=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NONAFFILIATED'); ?></a></li>
 					</ul>
 					<div class="clearfix"></div>
 
@@ -145,7 +145,7 @@ if (isset($this->messages))
 											<input type="checkbox" class="checkall-download" />
 										</th>
 									<?php endif; ?>
-									<th colspan="3"><?php echo JText::_('PLG_GROUPS_CITATIONS'); ?></th>
+									<th colspan="3"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
 								</tr>
 								<?php if ($this->isAdmin) : ?>
 									<tr class="hidden"></tr>
@@ -231,15 +231,15 @@ if (isset($this->messages))
 													?>
 													<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
 														<?php $final = substr($final, 0, -2); ?>
-														<p class="sponsor"><?php echo JText::_('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
+														<p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
 													<?php endif; ?>
 													<p><?php echo nl2br($cite->abstract); ?></p>
 												</div>
 											<?php endif; ?>
 										</td>
 										<?php if ($this->isAdmin === true) : ?>
-											<td class="col-edit"><a href="<?php echo JRoute::_($base. '&action=edit&id=' .$cite->id ); ?>">
-												<?php echo JText::_('PLG_GROUPS_CITATIONS_EDIT'); ?>
+											<td class="col-edit"><a href="<?php echo Route::url($base. '&action=edit&id=' .$cite->id ); ?>">
+												<?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?>
 											</a></td>
 										<?php endif; ?>
 									</tr>
@@ -266,7 +266,7 @@ if (isset($this->messages))
 							</tbody>
 						</table>
 					<?php else : ?>
-						<p class="warning"><?php echo JText::_('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
 					<?php
 						$this->pageNav->setAdditionalUrlParam('task', 'browse');
@@ -301,9 +301,9 @@ if (isset($this->messages))
 			<div class="aside">
 				<fieldset>
 					<label>
-						<?php echo JText::_('PLG_GROUPS_CITATIONS_TYPE'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TYPE'); ?>
 						<select name="type" id="type">
-							<option value=""><?php echo JText::_('PLG_GROUPS_CITATIONS_ALL'); ?></option>
+							<option value=""><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></option>
 							<?php foreach ($this->types as $t) : ?>
 								<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
 								<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
@@ -311,7 +311,7 @@ if (isset($this->messages))
 						</select>
 					</label>
 					<label>
-						<?php echo JText::_('PLG_GROUPS_CITATIONS_TAGS'); ?>:
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>:
 						<?php
 							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
 							if (count($tf) > 0) : ?>
@@ -321,15 +321,15 @@ if (isset($this->messages))
 							<?php endif; ?>
 					</label>
 					<label>
-						<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHORED_BY'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORED_BY'); ?>
 						<input type="text" name="author" value="<?php echo $this->filters['author']; ?>" />
 					</label>
 					<label>
-						<?php echo JText::_('PLG_GROUPS_CITATIONS_PUBLISHED_IN'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISHED_IN'); ?>
 						<input type="text" name="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
 					</label>
 					<label for="year_start">
-						<?php echo JText::_('PLG_GROUPS_CITATIONS_YEAR'); ?><br />
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_YEAR'); ?><br />
 						<input type="text" name="year_start" class="half" value="<?php echo $this->filters['year_start']; ?>" />
 						to
 						<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
@@ -337,19 +337,19 @@ if (isset($this->messages))
 					<?php if ($this->isAdmin) { ?>
 						<fieldset>
 							<label>
-								<?php echo JText::_('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN'); ?>
+								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN'); ?>
 								<input type="text" name="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
-								<div class="hint"><?php echo JText::_('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
+								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
 							<label>
-								<?php echo JText::_('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
+								<?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
 								<input type="text" name="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
-								<div class="hint"><?php echo JText::_('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
+								<div class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 							</label>
 						</fieldset>
 					<?php } ?>
 					<label>
-						<?php echo JText::_('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
 						<select name="sort" id="sort" class="">
 							<?php foreach ($this->sorts as $k => $v) : ?>
 								<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
@@ -366,56 +366,56 @@ if (isset($this->messages))
 						</select>
 					</label>
 					<fieldset>
-						<legend><?php echo JText::_('PLG_GROUPS_CITATIONS_REFERENCE_TYPE'); ?></legend>
+						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE'); ?></legend>
 						<label>
 							<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
 						</label>
 					</fieldset>
 					<fieldset>
-						<legend><?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
+						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
 						<label>
 							<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
 						</label>
 					</fieldset>
 					<fieldset>
-						<legend><?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
+						<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
 						<label>
 							<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
 						</label>
 						<label>
 							<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
 						</label>
 					</fieldset>
 
@@ -424,18 +424,18 @@ if (isset($this->messages))
 					<input type="hidden" name="action" value="browse" />
 
 					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('PLG_GROUPS_CITATIONS_FILTER'); ?>" />
+						<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_FILTER'); ?>" />
 					</p>
 				</fieldset>
 
 				<?php if ($batch_download) : ?>
 					<fieldset id="download-batch">
-						<strong><?php echo JText::_('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
-						<p><?php echo JText::_('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
+						<strong><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
+						<p><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-						<input type="submit" name="download" class="download-endnote" value="<?php echo JText::_('PLG_GROUPS_CITATIONS_ENDNOTE'); ?>" />
+						<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_ENDNOTE'); ?>" />
 						|
-						<input type="submit" name="download" class="download-bibtex" value="<?php echo JText::_('PLG_GROUPS_CITATIONS_BIBTEX'); ?>" />
+						<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_BIBTEX'); ?>" />
 					</fieldset>
 				<?php endif; ?>
 			</div><!-- /.aside -->

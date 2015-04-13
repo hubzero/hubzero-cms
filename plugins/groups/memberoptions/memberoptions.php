@@ -53,7 +53,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name' => 'memberoptions',
-			'title' => JText::_('GROUP_MEMBEROPTIONS'),
+			'title' => Lang::txt('GROUP_MEMBEROPTIONS'),
 			'default_access' => 'registered',
 			'display_menu_tab' => $this->params->get('display_tab', 0),
 			'icon' => '2699'
@@ -87,8 +87,8 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		$this->option = $option;
 
 		// Things we need from the form
-		$recvEmailOptionID = JRequest::getInt('memberoptionid', 0);
-		$recvEmailOptionValue = JRequest::getInt('recvpostemail', 0);
+		$recvEmailOptionID = Request::getInt('memberoptionid', 0);
+		$recvEmailOptionValue = Request::getInt('recvpostemail', 0);
 
 		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 
@@ -168,7 +168,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	 */
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
+		$postSaveRedirect = Request::getVar('postsaveredirect', '');
 
 		//instantaite database object
 		$database = JFactory::getDBO();
@@ -204,15 +204,15 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		if (!$postSaveRedirect)
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit'),
-				JText::_('You have successfully updated your email settings')
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit'),
+				Lang::txt('You have successfully updated your email settings')
 			);
 		}
 		else
 		{
 			$this->redirect(
 				$postSaveRedirect,
-				JText::_('You have successfully updated your email settings')
+				Lang::txt('You have successfully updated your email settings')
 			);
 		}
 	}

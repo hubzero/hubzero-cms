@@ -111,11 +111,11 @@ class CoursesModelComment extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($field), JText::_('DATE_FORMAT_HZ1'));
+				return JHTML::_('date', $this->get($field), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($field), JText::_('TIME_FORMAT_HZ1'));
+				return JHTML::_('date', $this->get($field), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -280,7 +280,7 @@ class CoursesModelComment extends \Hubzero\Base\Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => \JRequest::getCmd('option', 'com_courses'),
+						'option'   => \Request::getCmd('option', 'com_courses'),
 						'scope'    => 'reviews',
 						'pagename' => $this->get('item_id'),
 						'pageid'   => 0,

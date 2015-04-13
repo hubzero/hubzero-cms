@@ -729,7 +729,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		else if (function_exists('imagegif'))
 		{
 			header('Content-Type: image/gif');
-			imagegif($img2);
+			imagegif ($img2);
 		}
 		else if (function_exists('imagepng'))
 		{

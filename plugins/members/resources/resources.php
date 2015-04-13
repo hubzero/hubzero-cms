@@ -258,11 +258,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 				{
 					if ($row->alias)
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
+						$rows[$key]->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
 					}
 					else
 					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
+						$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $row->id);
 					}
 				}
 			}
@@ -336,7 +336,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		$helper->getContributors();
 
 		// Get the component params and merge with resource params
-		$config = JComponentHelper::getParams('com_resources');
+		$config = Component::params('com_resources');
 
 		$rparams = new JRegistry($row->params);
 		//$params = $config;
@@ -367,13 +367,13 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		{
 			switch ($row->state)
 			{
-				case 5: $html .= ' <span class="resource-status internal">' . JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL') . '</span>'; break;
-				case 4: $html .= ' <span class="resource-status deleted">' . JText::_('PLG_MEMBERS_RESOURCES_STATUS_DELETED') . '</span>'; break;
-				case 3: $html .= ' <span class="resource-status pending">' . JText::_('PLG_MEMBERS_RESOURCES_STATUS_PENDING') . '</span>'; break;
-				case 2: $html .= ' <span class="resource-status draft">' . JText::_('PLG_MEMBERS_RESOURCES_STATUS_DRAFT') . '</span>'; break;
-				case 1: $html .= ' <span class="resource-status published">' . JText::_('PLG_MEMBERS_RESOURCES_STATUS_PUBLISHED') . '</span>'; break;
+				case 5: $html .= ' <span class="resource-status internal">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_PENDING_INTERNAL') . '</span>'; break;
+				case 4: $html .= ' <span class="resource-status deleted">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_DELETED') . '</span>'; break;
+				case 3: $html .= ' <span class="resource-status pending">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_PENDING') . '</span>'; break;
+				case 2: $html .= ' <span class="resource-status draft">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_DRAFT') . '</span>'; break;
+				case 1: $html .= ' <span class="resource-status published">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_PUBLISHED') . '</span>'; break;
 				case 0:
-				default: $html .= ' <span class="resource-status unpublished">' . JText::_('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED') . '</span>'; break;
+				default: $html .= ' <span class="resource-status unpublished">' . Lang::txt('PLG_MEMBERS_RESOURCES_STATUS_UNPUBLISHED') . '</span>'; break;
 			}
 		}
 		$html .= '</p>' . "\n";
@@ -403,9 +403,9 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 
 			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . JText::_('PLG_MEMBERS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . JText::_('PLG_MEMBERS_RESOURCES_RANKING') . '</dt>' . "\n";
+			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('PLG_MEMBERS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . Lang::txt('PLG_MEMBERS_RESOURCES_RANKING') . '</dt>' . "\n";
 			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . JText::_('PLG_MEMBERS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
+			$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('PLG_MEMBERS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
 			$html .= "\t\t\t\t\t" . '<div>' . "\n";
 			$html .= $statshtml;
 			$html .= "\t\t\t\t\t" . '</div>' . "\n";
@@ -432,13 +432,13 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . JText::sprintf('PLG_MEMBERS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
+			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . Lang::txt('PLG_MEMBERS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
 		}
 		$html .= "\t\t".'<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->area);
 		if ($helper->contributors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_MEMBERS_RESOURCES_CONTRIBUTORS') . ': ' . $helper->contributors;
+			$html .= ' <span>|</span> ' . Lang::txt('PLG_MEMBERS_RESOURCES_CONTRIBUTORS') . ': ' . $helper->contributors;
 		}
 		$html .= '</p>' . "\n";
 		if ($row->itext)

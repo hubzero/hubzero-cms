@@ -68,10 +68,10 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 
 		// Get vars from request
 		$permissions   = new Permissions('com_time');
-		$view->hub_id  = JRequest::getInt('hub_id', null);
-		$view->task_id = JRequest::getInt('task_id', null);
-		$view->start   = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$view->end     = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$view->hub_id  = Request::getInt('hub_id', null);
+		$view->task_id = Request::getInt('task_id', null);
+		$view->start   = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$view->end     = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
 		$view->hubs    = array();
 
 		$records = Record::where('date', '>=', JFactory::getDate($view->start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql())
@@ -146,10 +146,10 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	public static function getTimePerTask()
 	{
 		$permissions = new Permissions('com_time');
-		$hub_id      = JRequest::getInt('hub_id',  null);
-		$task_id     = JRequest::getInt('task_id', null);
-		$start       = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$end         = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$hub_id      = Request::getInt('hub_id',  null);
+		$task_id     = Request::getInt('task_id', null);
+		$start       = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$end         = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
 
 		$tasks   = Task::blank();
 		$records = Record::all();

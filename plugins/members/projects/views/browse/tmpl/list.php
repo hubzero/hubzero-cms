@@ -35,11 +35,11 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 switch ($this->which)
 {
-	case 'group':  		$title = JText::_('PLG_MEMBERS_PROJECTS_SHOW_GROUP');     	break;
-	case 'owned': 		$title = JText::_('PLG_MEMBERS_PROJECTS_SHOW_OWNED');   	break;
-	case 'other':    	$title = JText::_('PLG_MEMBERS_PROJECTS_SHOW_OTHER');    	break;
+	case 'group':  		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_GROUP');     	break;
+	case 'owned': 		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OWNED');   	break;
+	case 'other':    	$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OTHER');    	break;
 	default:
-	case 'all': 		$title = JText::_('PLG_MEMBERS_PROJECTS_SHOW_ALL');     	break;
+	case 'all': 		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');     	break;
 }
 ?>
 <h4 class="th_header"><?php echo $title.' ('.count($projects).')'; ?></h4>
@@ -48,9 +48,9 @@ switch ($this->which)
 	<thead>
 		<tr>
 			<th class="th_image" colspan="2"></th>
-			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=title&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo JText::_('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
-			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=status&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo JText::_('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
-			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=role&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo JText::_('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=title&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=status&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=role&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -59,14 +59,14 @@ switch ($this->which)
 	foreach ($projects as $row)
 	{
 			$goto  = 'alias=' . $row->alias;
-			$role = $row->role == 1 ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR');
-			$setup = ($row->setup_stage < $setup_complete) ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_SETUP') : '';
+			$role = $row->role == 1 ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR');
+			$setup = ($row->setup_stage < $setup_complete) ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP') : '';
 
 			$i++; ?>
 			<tr class="mline">
-				<td class="th_image"><a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo htmlentities($this->escape($row->title)); ?>"  class="project-image" /></a> <?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?></td>
+				<td class="th_image"><a href="<?php echo Route::url('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo htmlentities($this->escape($row->title)); ?>"  class="project-image" /></a> <?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?></td>
 				<td class="th_privacy"><?php if ($row->private == 1) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?></td>
-				<td class="th_title"><a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><?php echo $this->escape($row->title); ?></a>
+				<td class="th_title"><a href="<?php echo Route::url('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><?php echo $this->escape($row->title); ?></a>
 				<?php if ($this->which != 'owned') { ?><span class="block">
 				<?php echo ($row->owned_by_group) ? $row->groupname : $row->authorname; ?></span>
 				<?php } ?>
@@ -76,16 +76,16 @@ switch ($this->which)
 					$html = '';
 					if ($row->owner && $row->confirmed == 1) {
 						if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
-							$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.JText::_('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE').'</a></span>';
+							$html .= '<span class="active"><a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.Lang::txt('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT').'">&raquo; '.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE').'</a></span>';
 						}
 						else if ($row->setup_stage < $setup_complete) {
-								$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.JText::_('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('PLG_MEMBERS_PROJECTS_STATUS_SETUP').'</a></span> ';
+								$html .= '<span class="setup"><a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.Lang::txt('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP').'">&raquo; '.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP').'</a></span> ';
 						}
 						else if ($row->state == 0) {
-							$html .= '<span class="suspended">'.JText::_('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED').'</span> ';
+							$html .= '<span class="suspended">'.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED').'</span> ';
 						}
 						else if ($row->state == 5) {
-							$html .= '<span class="pending">'.JText::_('PLG_MEMBERS_PROJECTS_STATUS_PENDING').'</span> ';
+							$html .= '<span class="pending">'.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_PENDING').'</span> ';
 						}
 					}
 					echo $html;
@@ -93,7 +93,7 @@ switch ($this->which)
 				?>
 				</td>
 				<td class="th_role">
-					<?php echo $row->role == 1 ? JText::_('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : JText::_('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR') ;?>
+					<?php echo $row->role == 1 ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR') ;?>
 				</td>
 			</tr>
 <?php
@@ -102,5 +102,5 @@ switch ($this->which)
 	</tbody>
 	</table>
 <?php } else { ?>
-	<p class="noresults"><?php echo JText::_('PLG_MEMBERS_PROJECTS_NO_PROJECTS'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_NO_PROJECTS'); ?></p>
 <?php } ?>

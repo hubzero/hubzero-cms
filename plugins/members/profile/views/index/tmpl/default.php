@@ -79,16 +79,16 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<div id="profile-page-content" data-url="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile'); ?>">
+<div id="profile-page-content" data-url="<?php echo Route::url('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile'); ?>">
 	<h3 class="section-header">
-		<?php echo JText::_('PLG_MEMBERS_PROFILE'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_PROFILE'); ?>
 	</h3>
 
 	<?php if (count($update_missing) > 0) : ?>
 		<?php if (count($update_missing) == 1 && in_array("usageAgreement",array_keys($update_missing))) : ?>
 		<?php else: ?>
 			<div class="error member-update-missing">
-				<strong><?php echo JText::_('PLG_MEMBERS_PROFILE_UPDATE_BEFORE_CONTINUING'); ?></strong>
+				<strong><?php echo Lang::txt('PLG_MEMBERS_PROFILE_UPDATE_BEFORE_CONTINUING'); ?></strong>
 				<ul>
 					<?php foreach ($update_missing as $um) : ?>
 						<li><?php echo $um; ?></li>
@@ -100,7 +100,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 	<?php if (count($invalid) > 0) : ?>
 		<div class="error member-update-missing">
-			<strong><?php echo JText::_('PLG_MEMBERS_PROFILE_USER_INVALID'); ?></strong>
+			<strong><?php echo Lang::txt('PLG_MEMBERS_PROFILE_USER_INVALID'); ?></strong>
 			<ul>
 				<?php foreach ($invalid as $i) : ?>
 					<li><?php echo $i; ?></li>
@@ -112,12 +112,12 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	<?php if ($isUser) : ?>
 	<ul>
 		<li id="member-profile-completeness" class="hide">
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_COMPLETENESS'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS'); ?>
 			<div id="meter">
 				<span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo @$this->completeness_level; ?>" style="width:0%"></span>
 			</div>
 			<?php if ($isUser && $isIncrementalEnabled) : ?>
-				<span id="completeness-info"><?php echo JText::_('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS'); ?></span>
+				<span id="completeness-info"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS'); ?></span>
 			<?php endif; ?>
 		</li>
 	</ul>
@@ -130,19 +130,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			$awards = $awards->award();
 
 			$increm  = '<div id="award-info">';
-			$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', JRoute::_('index.php?option=com_store')) . '</p>';
+			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', Route::url('index.php?option=com_store')) . '</p>';
 
 			if ($awards['prior'])
 			{
-				$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
+				$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
 			}
 
 			if ($awards['new'])
 			{
-				$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
+				$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
 			}
 
-			$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), JRoute::_('index.php?option=com_store'), JRoute::_('index.php?option=com_answers'), JRoute::_('index.php?option=com_wishlist')) .'</p>';
+			$increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) .'</p>';
 
 			$increm .= '</div>';
 			$increm .= '<div id="wallet"><span>'.($awards['prior'] + $awards['new']).'</span></div>';
@@ -159,21 +159,21 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	<?php if (isset($update_missing) && in_array("usageAgreement",array_keys($update_missing))) : ?>
 		<div id="usage-agreement-popup">
 			<form action="index.php" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
-				<h2><?php echo JText::_('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
+				<h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
 				<div id="usage-agreement-box">
 					<iframe id="usage-agreement" src="<?php echo JURI::base(true); ?>/legal/terms?tmpl=component"></iframe>
 					<div id="usage-agreement-last-chance">
-						<h3><?php echo JText::_('PLG_MEMBERS_PROFILE_ARE_YOU_SURE'); ?></h3>
-						<p><?php echo JText::_('PLG_MEMBERS_PROFILE_ARE_YOU_SURE_EXPLANATION'); ?></p>
+						<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ARE_YOU_SURE'); ?></h3>
+						<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ARE_YOU_SURE_EXPLANATION'); ?></p>
 					</div>
 				</div>
 				<div id="usage-agreement-buttons">
-					<button class="section-edit-cancel usage-agreement-do-not-agree"><?php echo JText::_('PLG_MEMBERS_PROFILE_TERMS_NOT_AGREE'); ?></button>
-					<button class="section-edit-submit"><?php echo JText::_('PLG_MEMBERS_PROFILE_TERMS_AGREE'); ?></button>
+					<button class="section-edit-cancel usage-agreement-do-not-agree"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_NOT_AGREE'); ?></button>
+					<button class="section-edit-submit"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_AGREE'); ?></button>
 				</div>
 				<div id="usage-agreement-last-chance-buttons">
-					<button class="section-edit-cancel usage-agreement-back-to-agree"><?php echo JText::_('PLG_MEMBERS_PROFILE_TERMS_GO_BACK'); ?></button>
-					<button class="section-edit-cancel usage-agreement-dont-accept"><?php echo JText::_('PLG_MEMBERS_PROFILE_TERMS_I_DO_NOT_AGREE'); ?></button>
+					<button class="section-edit-cancel usage-agreement-back-to-agree"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_GO_BACK'); ?></button>
+					<button class="section-edit-cancel usage-agreement-dont-accept"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_I_DO_NOT_AGREE'); ?></button>
 				</div>
 				<input type="hidden" name="declinetou" value="0" />
 				<input type="hidden" name="usageAgreement" value="1" />
@@ -189,19 +189,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php if ($isUser) : ?>
 			<li class="profile-name section hidden">
 				<div class="section-content">
-					<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_NAME'); ?></div>
+					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NAME'); ?></div>
 					<div class="value"><?php echo $this->escape($this->profile->get('name')); ?></div>
 					<br class="clear" />
 					<?php
-						$name  = '<label class="side-by-side three">' . JText::_('PLG_MEMBERS_PROFILE_FIRST_NAME') . ' <input type="text" name="name[first]" id="" class="input-text" value="'.$this->escape($this->profile->get("givenName")).'" /></label>';
-						$name .= '<label class="side-by-side three">' . JText::_('PLG_MEMBERS_PROFILE_MIDDLE_NAME') . ' <input type="text" name="name[middle]" id="" class="input-text" value="'.$this->escape($this->profile->get("middleName")).'" /></label>';
-						$name .= '<label class="side-by-side three no-padding-right">' . JText::_('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="" class="input-text" value="'.$this->escape($this->profile->get("surname")).'" /></label>';
+						$name  = '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_FIRST_NAME') . ' <input type="text" name="name[first]" id="" class="input-text" value="'.$this->escape($this->profile->get("givenName")).'" /></label>';
+						$name .= '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_MIDDLE_NAME') . ' <input type="text" name="name[middle]" id="" class="input-text" value="'.$this->escape($this->profile->get("middleName")).'" /></label>';
+						$name .= '<label class="side-by-side three no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="" class="input-text" value="'.$this->escape($this->profile->get("surname")).'" /></label>';
 
 						$this->view('default', 'edit')
 						     ->set('registration_field', 'name')
 						     ->set('profile_field', 'name')
 						     ->set('registration', $this->registration->Fullname)
-						     ->set('title', JText::_('PLG_MEMBERS_PROFILE_NAME'))
+						     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_NAME'))
 						     ->set('profile', $this->profile)
 						     ->set('isUser', $isUser)
 						     ->set('inputs', $name)
@@ -211,7 +211,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</div>
 				<div class="section-edit">
 					<a class="edit-profile-section" href="#">
-						<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+						<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 					</a>
 				</div>
 			</li>
@@ -221,7 +221,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			<?php if ($isUser) : ?>
 				<li class="profile-password section hidden">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD'); ?></div>
 						<div class="value">***************</div>
 						<br class="clear" />
 						<div class="section-edit-container">
@@ -233,15 +233,15 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
 									<span class="section-edit-errors"></span>
 									<label for="password">
-										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
+										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
 										<input type="password" name="oldpass" id="password" class="input-text" />
 									</label>
 									<label for="newpass" class="side-by-side">
-										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?>
+										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?>
 										<input type="password" name="newpass" id="newpass" class="input-text" />
 									</label>
 									<label for="newpass2" class="side-by-side no-padding-right">
-										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_CONFIRM'); ?>
+										<?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CONFIRM'); ?>
 										<input type="password" name="newpass2" id="newpass2" class="input-text" />
 									</label>
 									<input type="hidden" name="change" value="1" />
@@ -257,7 +257,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					</div>
 					<div class="section-edit">
 						<a class="edit-profile-section" href="#">
-							<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 					</div>
 				</li>
@@ -282,11 +282,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-org section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ORGANIZATION'); ?></div>
 						<div class="value">
 							<?php
 								$org = $this->escape(stripslashes($this->profile->get('organization')));
-								echo ($org) ? $org : JText::_('PLG_MEMBERS_PROFILE_ENTER_ORG');
+								echo ($org) ? $org : Lang::txt('PLG_MEMBERS_PROFILE_ENTER_ORG');
 							?>
 						</div>
 						<br class="clear" />
@@ -301,7 +301,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 							//create select for organizations and optional text input
 							$organizations  = '<select name="org" class="input-select">';
-							$organizations .= '<option value="">' . JText::_('PLG_MEMBERS_PROFILE_SELECT_OR_ENTER_BELOW') . '</option>';
+							$organizations .= '<option value="">' . Lang::txt('PLG_MEMBERS_PROFILE_SELECT_OR_ENTER_BELOW') . '</option>';
 							foreach ($orgs as $o)
 							{
 								$sel = ($o->organization == $this->profile->get("organization")) ? "selected=\"selected\"" : "";
@@ -320,18 +320,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'org')
 							     ->set('profile_field', 'organization')
 							     ->set('registration', $this->registration->Organization)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_ORGANIZATION'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION') . $organizations . '</label><label>' . JText::_('PLG_MEMBERS_PROFILE_ENTER_ORG_BELOW') . $organizations_text . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[org]', $this->params->get('access_org'), 'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_ORGANIZATION') . $organizations . '</label><label>' . Lang::txt('PLG_MEMBERS_PROFILE_ENTER_ORG_BELOW') . $organizations_text . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[org]', $this->params->get('access_org'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -357,7 +357,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-orgtype section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'); ?></div>
 						<?php
 							//get organization types from db
 							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
@@ -373,7 +373,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 						?>
 						<div class="value">
-							<?php echo ($orgtype) ? $orgtype : JText::_('PLG_MEMBERS_PROFILE_ENTER_EMPLOYMENT_TYPE'); ?>
+							<?php echo ($orgtype) ? $orgtype : Lang::txt('PLG_MEMBERS_PROFILE_ENTER_EMPLOYMENT_TYPE'); ?>
 						</div>
 						<br class="clear" />
 						<?php
@@ -390,18 +390,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'orgtype')
 							     ->set('profile_field', 'orgtype')
 							     ->set('registration', $this->registration->Employment)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE') . $organization_types . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE') . $organization_types . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -427,7 +427,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-email section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_EMAIL'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'); ?></div>
 						<div class="value">
 							<a class="email" href="mailto:<?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
 								<?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>
@@ -439,20 +439,20 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'email')
 							     ->set('profile_field', 'email')
 							     ->set('registration', $this->registration->Email)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_EMAIL'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side">' . JText::_('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="'.$this->escape($this->profile->get('email')).'" /></label>'
-												. '<label class="side-by-side no-padding-right">' . JText::_('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="'.$this->escape($this->profile->get('email')).'" /></label>'
-												. '<br class="clear" /><p class="warning no-margin-top">' . JText::_('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>')
+							     ->set('inputs', '<label class="side-by-side">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_VALID') . ' <input type="text" class="input-text" name="email" id="profile-email" value="'.$this->escape($this->profile->get('email')).'" /></label>'
+												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_CONFIRM') . ' <input type="text" class="input-text" name="email2" id="profile-email2" value="'.$this->escape($this->profile->get('email')).'" /></label>'
+												. '<br class="clear" /><p class="warning no-margin-top">' . Lang::txt('PLG_MEMBERS_PROFILE_EMAIL_WARNING') . '</p>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -483,9 +483,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-web section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_ORCID'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ORCID'); ?></div>
 						<?php
-							$url = ($this->profile->get('orcid')) ? '<a class="orcid" rel="external" href="http://orcid.org/' . $this->profile->get('orcid') . '">' . $this->profile->get('orcid') . '</a>' : JText::_('PLG_MEMBERS_PROFILE_ORCID_ENTER');
+							$url = ($this->profile->get('orcid')) ? '<a class="orcid" rel="external" href="http://orcid.org/' . $this->profile->get('orcid') . '">' . $this->profile->get('orcid') . '</a>' : Lang::txt('PLG_MEMBERS_PROFILE_ORCID_ENTER');
 						?>
 						<div class="value"><?php echo $url; ?></div>
 						<br class="clear" />
@@ -494,30 +494,30 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'orcid')
 							     ->set('profile_field', 'orcid')
 							     ->set('registration', $this->registration->ORCID)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_ORCID'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_ORCID'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', '<div class="grid">
 				<div class="col span9">
 					<label>
-						' . JText::_('PLG_MEMBERS_PROFILE_ORCID') . '
+						' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID') . '
 						<input type="text" class="input-text" name="orcid" id="orcid" value="'. $this->escape($this->profile->get('orcid')) .'" />
 						<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(JURI::base(true), '/') . '" />
 					</label>
 				</div>
 				<div class="col span3 omega">
-					<a class="btn icon-search" id="orcid-fetch" href="' . JRoute::_('index.php?option=com_members&controller=orcid') . '">' . JText::_('PLG_MEMBERS_PROFILE_ORCID_FIND') . '</a>
+					<a class="btn icon-search" id="orcid-fetch" href="' . Route::url('index.php?option=com_members&controller=orcid') . '">' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_FIND') . '</a>
 				</div>
 			</div>
-			<p>' . JText::_('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
+			<p>' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -548,7 +548,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-web section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_WEBSITE'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE'); ?></div>
 						<?php
 							$url = stripslashes($this->profile->get('url'));
 							if ($url)
@@ -559,8 +559,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 									$url = 'http://' . $url;
 								}
 							}
-							$title = JText::sprintf('PLG_MEMBERS_PROFILE_WEBSITE_MEMBERS', $this->profile->get('name'));
-							$url = ($url) ? '<a class="url" rel="external" title="' . $title . '" href="' . $url . '">' . $url . '</a>' : JText::_('PLG_MEMBERS_PROFILE_WEBSITE_ENTER');
+							$title = Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE_MEMBERS', $this->profile->get('name'));
+							$url = ($url) ? '<a class="url" rel="external" title="' . $title . '" href="' . $url . '">' . $url . '</a>' : Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE_ENTER');
 						?>
 						<div class="value"><?php echo $url; ?></div>
 						<br class="clear" />
@@ -569,18 +569,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'web')
 							     ->set('profile_field', 'url')
 							     ->set('registration', $this->registration->URL)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_WEBSITE'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_WEBSITE') . '<input type="text" class="input-text" name="web" id="profile-url" value="'.$this->escape($this->profile->get('url')).'" /></label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_WEBSITE') . '<input type="text" class="input-text" name="web" id="profile-url" value="'.$this->escape($this->profile->get('url')).'" /></label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -611,13 +611,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-phone section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_TELEPHONE'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TELEPHONE'); ?></div>
 						<?php
 							$tel = $this->escape($this->profile->get('phone'));
 							//$tel = str_replace(".","-",$tel);
 							$tel = str_replace(' ', '-', $tel);
-							//$tel = ($tel) ? "<a class=\"phone\" href=\"tel:{$tel}\">{$tel}</a>" : JText::_('Enter your Phone Number');
-							$tel = ($tel) ? $tel : JText::_('PLG_MEMBERS_PROFILE_TELEPHONE_ENTER');
+							//$tel = ($tel) ? "<a class=\"phone\" href=\"tel:{$tel}\">{$tel}</a>" : Lang::txt('Enter your Phone Number');
+							$tel = ($tel) ? $tel : Lang::txt('PLG_MEMBERS_PROFILE_TELEPHONE_ENTER');
 						?>
 						<div class="value"><?php echo $tel; ?></div>
 						<br class="clear" />
@@ -626,18 +626,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'phone')
 							     ->set('profile_field', 'phone')
 							     ->set('registration', $this->registration->Phone)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_TELEPHONE'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_TELEPHONE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_TELEPHONE') . ' <input type="text" class="input-text" name="phone" id="profile-phone" value="'.$this->escape($this->profile->get('phone')) .'" /></label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[phone]',$this->params->get('access_phone'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_TELEPHONE') . ' <input type="text" class="input-text" name="phone" id="profile-phone" value="'.$this->escape($this->profile->get('phone')) .'" /></label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[phone]',$this->params->get('access_phone'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -674,7 +674,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<li class="profile-address section <?php echo $cls; ?>">
 					<div class="section-content">
 						<div class="key">
-							<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS'); ?>
 						</div>
 						<div class="value">
 							<?php
@@ -687,24 +687,24 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</div>
 						<br class="clear" />
 						<?php
-							$addAddressLink = '<a class="btn add add-address" href="' . JRoute::_($this->profile->getLink() . '&active=profile&action=addaddress') . '">' . JText::_('PLG_MEMBERS_PROFILE_ADDRESS_ADD') . '</a>';
+							$addAddressLink = '<a class="btn add add-address" href="' . Route::url($this->profile->getLink() . '&active=profile&action=addaddress') . '">' . Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_ADD') . '</a>';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'address')
 							     ->set('profile_field', 'address')
 							     ->set('registration', $this->registration->address)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_ADDRESS_TITLE'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_TITLE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="profile_address">' . JText::_('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />' . $addAddressLink . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[address]', $this->params->get('access_address'), 'input-select') . '</label>')
+							     ->set('inputs', '<label for="profile_address">' . Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />' . $addAddressLink . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[address]', $this->params->get('access_address'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -734,7 +734,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 			<li class="profile-bio section <?php echo $cls; ?>">
 				<div class="section-content">
-					<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_BIOGRAPHY'); ?></div>
+					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_BIOGRAPHY'); ?></div>
 					<?php
 						if ($this->profile->get('bio'))
 						{
@@ -742,7 +742,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						}
 						else
 						{
-							$bio = JText::_('PLG_MEMBERS_PROFILE_BIOGRAPHY_ENTER');
+							$bio = Lang::txt('PLG_MEMBERS_PROFILE_BIOGRAPHY_ENTER');
 						}
 					?>
 					<div class="value"><?php echo $bio; ?></div>
@@ -754,18 +754,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						     ->set('registration_field', 'bio')
 						     ->set('profile_field', 'bio')
 						     ->set('registration', $this->registration->Bio)
-						     ->set('title', JText::_('Biography'))
+						     ->set('title', Lang::txt('Biography'))
 						     ->set('profile', $this->profile)
 						     ->set('isUser', $isUser)
-						     ->set('inputs', '<label for="profile_bio">' . JText::_('PLG_MEMBERS_PROFILE_BIOGRAPHY') . $bio . '</label>')
-						     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>')
+						     ->set('inputs', '<label for="profile_bio">' . Lang::txt('PLG_MEMBERS_PROFILE_BIOGRAPHY') . $bio . '</label>')
+						     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>')
 						     ->display();
 					?>
 				</div>
 				<?php if ($isUser) : ?>
 					<div class="section-edit">
 						<a class="edit-profile-section" href="#">
-							<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 					</div>
 				<?php endif; ?>
@@ -800,9 +800,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 				<li class="profile-interests section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_INTERESTS'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_INTERESTS'); ?></div>
 						<div class="value">
-							<?php echo ($tags) ? $tags : JText::_('PLG_MEMBERS_PROFILE_INTERESTS_ENTER'); ?>
+							<?php echo ($tags) ? $tags : Lang::txt('PLG_MEMBERS_PROFILE_INTERESTS_ENTER'); ?>
 						</div>
 						<br class="clear" />
 						<?php
@@ -820,18 +820,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'interests')
 							     ->set('profile_field', 'interests')
 							     ->set('registration', $this->registration->Interests)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_INTERESTS'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_INTERESTS'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_INTERESTS') . $interests . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[tags]',$this->params->get('access_tags'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_INTERESTS') . $interests . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[tags]',$this->params->get('access_tags'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -865,13 +865,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-countryorigin section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_CITIZENSHIP'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_CITIZENSHIP'); ?></div>
 						<?php
 							$img = '';
 							$citizenship = '';
 							if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . JText::_('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
+								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name
@@ -886,13 +886,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$citizenship = $img . $citizenship;
 						?>
 						<div class="value">
-							<?php echo ($citizenship) ? $citizenship : JText::_('PLG_MEMBERS_PROFILE_CITIZENSHIP_ENTER'); ?>
+							<?php echo ($citizenship) ? $citizenship : Lang::txt('PLG_MEMBERS_PROFILE_CITIZENSHIP_ENTER'); ?>
 						</div>
 						<br class="clear" />
 
 						<?php
 							$countries  = '<select name="corigin" id="corigin" class="input-select">';
-							$countries .= '<option value="">'.JText::_('PLG_MEMBERS_PROFILE_SELECT').'</option>';
+							$countries .= '<option value="">'.Lang::txt('PLG_MEMBERS_PROFILE_SELECT').'</option>';
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
@@ -914,26 +914,26 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$no = 'checked="checked"';
 							}
 
-							$citizenship  = '<br /><input type="radio" name="corigin_us" id="corigin_usyes" value="yes" '.$yes.' /> ' . JText::_('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
-							$citizenship .= '<input type="radio" name="corigin_us" id="corigin_usno" value="no" '.$no.' /> ' . JText::_('PLG_MEMBERS_PROFILE_NO') . ' ';
+							$citizenship  = '<br /><input type="radio" name="corigin_us" id="corigin_usyes" value="yes" '.$yes.' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
+							$citizenship .= '<input type="radio" name="corigin_us" id="corigin_usno" value="no" '.$no.' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO') . ' ';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'countryorigin')
 							     ->set('profile_field', 'countryorigin')
 							     ->set('registration', $this->registration->Citizenship)
-							     ->set('title', JText::_('Citizenship'))
+							     ->set('title', Lang::txt('Citizenship'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side" for="123">' . JText::_('PLG_MEMBERS_PROFILE_CITIZEN_OF_USA') . $citizenship . '</label>'
-												. '<label class="side-by-side no-padding-right" for="corigin">'.JText::_('PLG_MEMBERS_PROFILE_CITIZEN_OR_RESIDENT') . $countries . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryorigin]', $this->params->get('access_countryorigin'), 'input-select') . '</label>')
+							     ->set('inputs', '<label class="side-by-side" for="123">' . Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OF_USA') . $citizenship . '</label>'
+												. '<label class="side-by-side no-padding-right" for="corigin">'.Lang::txt('PLG_MEMBERS_PROFILE_CITIZEN_OR_RESIDENT') . $countries . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryorigin]', $this->params->get('access_countryorigin'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -966,13 +966,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-countryresident section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_RESIDENCE'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE'); ?></div>
 						<?php
 							$img = '';
 							$residence = '';
 							if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . JText::_('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
+								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name
@@ -987,12 +987,12 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$residence = $img . $residence;
 						?>
 						<div class="value">
-							<?php echo ($residence) ? $residence : JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_ENTER'); ?>
+							<?php echo ($residence) ? $residence : Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_ENTER'); ?>
 						</div>
 						<br class="clear" />
 						<?php
 							$countries = '<select name="cresident" id="cresident" class="input-select">';
-							$countries .= '<option value="">' . JText::_('PLG_MEMBERS_PROFILE_SELECT') . '</option>';
+							$countries .= '<option value="">' . Lang::txt('PLG_MEMBERS_PROFILE_SELECT') . '</option>';
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
@@ -1015,26 +1015,26 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$no = 'checked="checked"';
 							}
 
-							$citizenship  = '<br /><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" ' . $yes . ' /> ' . JText::_('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
-							$citizenship .= '<input type="radio" name="cresident_us" id="cresident_usno" value="no" ' . $no . ' /> ' . JText::_('PLG_MEMBERS_PROFILE_NO') . ' ';
+							$citizenship  = '<br /><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" ' . $yes . ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
+							$citizenship .= '<input type="radio" name="cresident_us" id="cresident_usno" value="no" ' . $no . ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_NO') . ' ';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'countryresident')
 							     ->set('profile_field', 'countryresident')
 							     ->set('registration', $this->registration->Residency)
-							     ->set('title', JText::_('Residence'))
+							     ->set('title', Lang::txt('Residence'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side" for="456">' . JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship . '</label>'
-												. '<label class="side-by-side no-padding-right">' . JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN') . $countries . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label>')
+							     ->set('inputs', '<label class="side-by-side" for="456">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship . '</label>'
+												. '<label class="side-by-side no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN') . $countries . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -1065,19 +1065,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					?>
 				<li class="profile-sex section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_GENDER'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_GENDER'); ?></div>
 						<div class="value">
 							<?php
 								$gender = MembersHtml::propercase_singleresponse($this->profile->get('gender'));
-								echo ($gender != 'n/a') ? $gender : JText::_('PLG_MEMBERS_PROFILE_GENDER_ENTER');
+								echo ($gender != 'n/a') ? $gender : Lang::txt('PLG_MEMBERS_PROFILE_GENDER_ENTER');
 							?>
 						</div>
 						<br class="clear" />
 						<?php
 							$sexes = array(
-								'male'    => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_MALE'),
-								'female'  => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_FEMALE'),
-								'refused' => JText::_('PLG_MEMBERS_PROFILE_OPT_REFUSED')
+								'male'    => Lang::txt('PLG_MEMBERS_PROFILE_GENDER_OPT_MALE'),
+								'female'  => Lang::txt('PLG_MEMBERS_PROFILE_GENDER_OPT_FEMALE'),
+								'refused' => Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED')
 							);
 
 							$sex = '<select name="sex" class="input-select">';
@@ -1093,18 +1093,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'sex')
 							     ->set('profile_field', 'gender')
 							     ->set('registration', $this->registration->Sex)
-							     ->set('title', JText::_('Gender'))
+							     ->set('title', Lang::txt('Gender'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_GENDER') . $sex . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[gender]',$this->params->get('access_gender'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_GENDER') . $sex . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[gender]',$this->params->get('access_gender'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -1137,11 +1137,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 				<li class="profile-disability section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_DISABILITY'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY'); ?></div>
 						<div class="value">
 							<?php
 								$disability = MembersHtml::propercase_multiresponse($this->profile->get('disability'));
-								echo ($disability != 'n/a') ? $disability : JText::_('PLG_MEMBERS_PROFILE_DISABILITY_ENTER');
+								echo ($disability != 'n/a') ? $disability : Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_ENTER');
 							?>
 						</div>
 						<br class="clear" />
@@ -1180,39 +1180,39 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$disability_html .= ' checked="checked"';
 							}
-							$disability_html .= ' /> ' . JText::_('PLG_MEMBERS_PROFILE_YES') . '</label>'."\n";
+							$disability_html .= ' /> ' . Lang::txt('PLG_MEMBERS_PROFILE_YES') . '</label>'."\n";
 							$disability_html .= "\t\t\t".'<fieldset class="sub-sub">'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" ';
 							if (in_array('blind', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VISUAL').'</label>'."\n";
+							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VISUAL').'</label>'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilitydeaf" id="disabilitydeaf" ';
 							if (in_array('deaf', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_HEARING').'</label>'."\n";
+							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_HEARING').'</label>'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" ';
 							if (in_array('physical', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_PHYSICAL').'</label>'."\n";
+							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_PHYSICAL').'</label>'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilitylearning" id="disabilitylearning" ';
 							if (in_array('learning', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_COGNITIVE').'</label>'."\n";
+							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_COGNITIVE').'</label>'."\n";
 							$disability_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="disabilityvocal" id="disabilityvocal" ';
 							if (in_array('vocal', $disabilities))
 							{
 								$disability_html .= 'checked="checked" ';
 							}
-							$disability_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VOCAL').'</label>'."\n";
-							$disability_html .= "\t\t\t\t".'<label>'.JText::_('PLG_MEMBERS_PROFILE_OPT_OTHER').':'."\n";
+							$disability_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY_OPT_VOCAL').'</label>'."\n";
+							$disability_html .= "\t\t\t\t".'<label>'.Lang::txt('PLG_MEMBERS_PROFILE_OPT_OTHER').':'."\n";
 							$disability_html .= "\t\t\t\t".'<input name="disabilityother" class="input-text" id="disabilityother" type="text" value="'. $this->escape($disabilityother) .'" /></label>'."\n";
 							$disability_html .= "\t\t\t".'</fieldset>'."\n";
 							$disability_html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityno" value="no"';
@@ -1220,31 +1220,31 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$disability_html .= ' checked="checked"';
 							}
-							$disability_html .= '> '.JText::_('PLG_MEMBERS_PROFILE_NO_NONE').'</label>'."\n";
+							$disability_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_NO_NONE').'</label>'."\n";
 							$disability_html .= "\t\t\t".'<label><input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"';
 							if (in_array('refused', $disabilities))
 							{
 								$disability_html .= ' checked="checked"';
 							}
-							$disability_html .= '> '.JText::_('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
+							$disability_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
 							$disability_html .= "\t\t".'</fieldset>'."\n";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'disability')
 							     ->set('profile_field', 'disability')
 							     ->set('registration', $this->registration->Disability)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_DISABILITY'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="disability-input">' . JText::_('PLG_MEMBERS_PROFILE_DISABILITY') . $disability_html . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>')
+							     ->set('inputs', '<label for="disability-input">' . Lang::txt('PLG_MEMBERS_PROFILE_DISABILITY') . $disability_html . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 							</a>
 						</div>
 					<?php endif; ?>
@@ -1277,11 +1277,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 				<li class="profile-hispanic section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_HISPANIC'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC'); ?></div>
 						<div class="value">
 							<?php
 								$hispanic = MembersHtml::propercase_multiresponse($this->profile->get('hispanic'));
-								echo ($hispanic != 'n/a') ? $hispanic : JText::_('PLG_MEMBERS_PROFILE_HISPANIC_ENTER');
+								echo ($hispanic != 'n/a') ? $hispanic : Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_ENTER');
 							?>
 						</div>
 						<br class="clear" />
@@ -1320,27 +1320,27 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$hispanic_html .= 'checked="checked"';
 							}
-							$hispanic_html .= ' /> '.JText::_('PLG_MEMBERS_PROFILE_HISPANIC_OPT_YES').'</label>'."\n";
+							$hispanic_html .= ' /> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_YES').'</label>'."\n";
 							$hispanic_html .= "\t\t\t".'<fieldset class="sub-sub">'."\n";
 							$hispanic_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispaniccuban" id="hispaniccuban" ';
 							if (in_array('cuban', $hispanic))
 							{
 								$hispanic_html .= 'checked="checked" ';
 							}
-							$hispanic_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_HISPANIC_OPT_CUBAN').'</label>'."\n";
+							$hispanic_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_CUBAN').'</label>'."\n";
 							$hispanic_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispanicmexican" id="hispanicmexican" ';
 							if (in_array('mexican', $hispanic))
 							{
 								$hispanic_html .= 'checked="checked" ';
 							}
-							$hispanic_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_HISPANIC_OPT_MEXICAN').'</label>'."\n";
+							$hispanic_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_MEXICAN').'</label>'."\n";
 							$hispanic_html .= "\t\t\t\t".'<label><input type="checkbox" class="option" name="hispanicpuertorican" id="hispanicpuertorican" ';
 							if (in_array('puertorican', $hispanic))
 							{
 								$hispanic_html .= 'checked="checked" ';
 							}
-							$hispanic_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_HISPANIC_OPT_PEURTORICAN').'</label>'."\n";
-							$hispanic_html .= "\t\t\t\t".'<label>'.JText::_('PLG_MEMBERS_PROFILE_HISPANIC_OPT_OTHER')."\n";
+							$hispanic_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_PEURTORICAN').'</label>'."\n";
+							$hispanic_html .= "\t\t\t\t".'<label>'.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_OTHER')."\n";
 							$hispanic_html .= "\t\t\t\t".'<input name="hispanicother" class="input-text" id="hispanicother" type="text" value="'. $this->escape($hispanicother) .'" /></label>'."\n";
 							$hispanic_html .= "\t\t\t".'</fieldset>'."\n";
 							$hispanic_html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicno" value="no"';
@@ -1348,31 +1348,31 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$hispanic_html .= ' checked="checked"';
 							}
-							$hispanic_html .= '> '.JText::_('PLG_MEMBERS_PROFILE_HISPANIC_OPT_NO').'</label>'."\n";
+							$hispanic_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC_OPT_NO').'</label>'."\n";
 							$hispanic_html .= "\t\t\t".'<label><input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"';
 							if (in_array('refused', $hispanic))
 							{
 								$hispanic_html .= ' checked="checked"';
 							}
-							$hispanic_html .= '> '.JText::_('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
+							$hispanic_html .= '> '.Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
 							$hispanic_html .= "\t\t".'</fieldset>'."\n";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'hispanic')
 							     ->set('profile_field', 'hispanic')
 							     ->set('registration', $this->registration->Hispanic)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_HISPANIC'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="hispanic-input">' . JText::_('PLG_MEMBERS_PROFILE_HISPANIC') . $hispanic_html . '</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>')
+							     ->set('inputs', '<label for="hispanic-input">' . Lang::txt('PLG_MEMBERS_PROFILE_HISPANIC') . $hispanic_html . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-							<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 						</div>
 					<?php endif; ?>
@@ -1405,11 +1405,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 				<li class="profile-race section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_RACE'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_RACE'); ?></div>
 						<div class="value">
 							<?php
 								$race = MembersHtml::propercase_multiresponse($this->profile->get('race'));
-								echo ($race != 'n/a') ? $race : JText::_('PLG_MEMBERS_PROFILE_RACE_ENTER');
+								echo ($race != 'n/a') ? $race : Lang::txt('PLG_MEMBERS_PROFILE_RACE_ENTER');
 							?>
 						</div>
 						<br class="clear" />
@@ -1422,64 +1422,64 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 							$race_html = "";
 							$race_html .= "\t\t".'<fieldset class="sub">'."\n";
-							$race_html .= "\t\t\t".'<p class="hint">'.JText::_('PLG_MEMBERS_PROFILE_SELECT_MULTIPLE').'</p>'."\n";
+							$race_html .= "\t\t\t".'<p class="hint">'.Lang::txt('PLG_MEMBERS_PROFILE_SELECT_MULTIPLE').'</p>'."\n";
 
 							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="1" ';
 							if (in_array('nativeamerican', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_RACE_OPT_NATIVEAMERICAN').'</label>'."\n";
-							$race_html .= "\t\t\t".'<label class="indent">'.JText::_('PLG_MEMBERS_PROFILE_RACE_OPT_TRIBE').':'."\n";
+							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_NATIVEAMERICAN').'</label>'."\n";
+							$race_html .= "\t\t\t".'<label class="indent">'.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_TRIBE').':'."\n";
 							$race_html .= "\t\t\t".'<input name="racenativetribe" class="input-text" id="racenativetribe" type="text" value="'. $this->escape($this->profile->get('nativeTribe')) .'" /></label>'."\n";
 							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceasian" id="raceasian" value="1" ';
 							if (in_array('asian', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_RACE_OPT_ASIAN').'</label>'."\n";
+							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_ASIAN').'</label>'."\n";
 							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="raceblack" id="raceblack" value="1" ';
 							if (in_array('black', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_RACE_OPT_BLACK').'</label>'."\n";
+							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_BLACK').'</label>'."\n";
 							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racehawaiian" id="racehawaiian" value="1" ';
 							if (in_array('hawaiian', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_RACE_OPT_HAWAIIAN').'</label>'."\n";
+							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_HAWAIIAN').'</label>'."\n";
 							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racewhite" id="racewhite" value="1" ';
 							if (in_array('white', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_RACE_OPT_WHITE').'</label>'."\n";
+							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_RACE_OPT_WHITE').'</label>'."\n";
 							$race_html .= "\t\t\t".'<label><input type="checkbox" class="option" name="racerefused" id="racerefused" value="1" ';
 							if (in_array('refused', $race))
 							{
 								$race_html .= 'checked="checked" ';
 							}
-							$race_html .= '/> '.JText::_('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
+							$race_html .= '/> '.Lang::txt('PLG_MEMBERS_PROFILE_OPT_REFUSED').'</label>'."\n";
 							$race_html .= "\t\t".'</fieldset>'."\n";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'race')
 							     ->set('profile_field', 'race')
 							     ->set('registration', $this->registration->Race)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_RACE'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_RACE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="race-input">' . JText::_('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>')
+							     ->set('inputs', '<label for="race-input">' . Lang::txt('PLG_MEMBERS_PROFILE_RACE') . $race_html.'</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-							<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 						</div>
 					<?php endif; ?>
@@ -1521,19 +1521,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				?>
 				<li class="profile-optin section <?php echo $cls; ?>">
 					<div class="section-content">
-						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
+						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
 						<div class="value"><?php echo $mailPreferenceValue; ?></div>
 						<br class="clear" />
 						<?php
 							//define mail preference options
 							$options = array(
-								'-1' => JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
-								'1'  => JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
-								'0'  => JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
+								'-1' => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
+								'1'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
+								'0'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
 							);
 
 							//build option list
-							$optin_html  = '<strong>' . JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION') . '</strong>';
+							$optin_html  = '<strong>' . Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION') . '</strong>';
 							$optin_html .= '<label for="mailPreferenceOption">';
 							$optin_html .= '<select name="mailPreferenceOption">';
 							foreach ($options as $key => $value)
@@ -1548,18 +1548,18 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('registration_field', 'mailPreferenceOption')
 							     ->set('profile_field', 'mailPreferenceOption')
 							     ->set('registration', $this->registration->OptIn)
-							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_EMAILUPDATES'))
+							     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
 							     ->set('inputs', $optin_html)
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>')
+							     ->set('access', '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
 					<?php if ($isUser) : ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
-							<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 						</div>
 					<?php endif; ?>

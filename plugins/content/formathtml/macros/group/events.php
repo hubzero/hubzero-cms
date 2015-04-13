@@ -30,7 +30,7 @@
 
 namespace Plugins\Content\Formathtml\Macros\Group;
 
-require_once JPATH_ROOT.'/plugins/content/formathtml/macros/group.php';
+require_once dirname(__DIR__) . DS . 'group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 
@@ -74,7 +74,7 @@ class Events extends GroupMacro
 		// check if we can render
 		if (!parent::canRender())
 		{
-			return \JText::_('[This macro is designed for Groups only]');
+			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
 		// get args
@@ -148,7 +148,7 @@ class Events extends GroupMacro
 			foreach ($events as $event)
 			{
 				//build link
-				$link = \JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
+				$link = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
 
 				//build date
 				$date = '';
@@ -187,7 +187,7 @@ class Events extends GroupMacro
 		}
 		else
 		{
-			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . \JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
+			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
 		}
 
 		return $content;

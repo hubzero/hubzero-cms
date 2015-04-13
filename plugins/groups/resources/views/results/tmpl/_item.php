@@ -41,7 +41,7 @@ $RE = new \Components\Resources\Helpers\Helper($this->row->id, $database);
 $RE->getContributors();
 
 // Get the component params and merge with resource params
-$config = JComponentHelper::getParams('com_resources');
+$config = Component::params('com_resources');
 
 $rparams = new JRegistry($this->row->params);
 $params = $config;
@@ -58,7 +58,7 @@ switch ($params->get('show_date'))
 
 if (strstr($this->row->href, 'index.php'))
 {
-	$this->row->href = JRoute::_($this->row->href);
+	$this->row->href = Route::url($this->row->href);
 }
 $juri = JURI::getInstance();
 
@@ -88,9 +88,9 @@ switch ($this->row->access)
 		?>
 		<div class="metadata">
 			<dl class="rankinfo">
-				<dt class="ranking"><span class="rank-<?php echo $r; ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_THIS_HAS'); ?></span> <?php echo number_format($this->row->ranking, 1) . ' ' . JText::_('PLG_GROUPS_RESOURCES_RANKING'); ?></dt>
+				<dt class="ranking"><span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_THIS_HAS'); ?></span> <?php echo number_format($this->row->ranking, 1) . ' ' . Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></dt>
 				<dd>
-					<p><?php echo JText::_('PLG_GROUPS_RESOURCES_RANKING_EXPLANATION'); ?></p>
+					<p><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING_EXPLANATION'); ?></p>
 					<div>
 						<?php
 						$RE->getCitationsCount();
@@ -129,14 +129,14 @@ switch ($this->row->access)
 		}
 		?>
 		<div class="metadata">
-			<p class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo JText::sprintf('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $this->row->rating); ?></span>&nbsp;</span></p>
+			<p class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $this->row->rating); ?></span>&nbsp;</span></p>
 		</div>
 	<?php } ?>
 
 	<p class="details">
 		<?php echo $thedate; ?> <span>|</span> <?php echo stripslashes($this->row->area); ?>
 		<?php if ($RE->contributors) { ?>
-			<span>|</span> <?php echo JText::_('PLG_GROUPS_RESOURCES_CONTRIBUTORS') . ': ' . $RE->contributors; ?>
+			<span>|</span> <?php echo Lang::txt('PLG_GROUPS_RESOURCES_CONTRIBUTORS') . ': ' . $RE->contributors; ?>
 		<?php } ?>
 	</p>
 

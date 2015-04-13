@@ -37,7 +37,7 @@ $this->css()
      ->js('jquery.hoverIntent', 'system');
 ?>
 
-<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></h3>
+<h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></h3>
 
 <?php if (isset($this->notifications) && count($this->notifications) > 0) {
 	foreach ($this->notifications as $notification) { ?>
@@ -50,12 +50,12 @@ $this->css()
 <?php endif; ?>
 
 <div id="members-account-section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option .
+	<form action="<?php echo Route::url('index.php?option=' . $this->option .
 										'&id=' . $this->id .
 										'&active=account' .
 										'&task=setlocalpass'); ?>" method="post">
 		<fieldset>
-			<legend><?php echo JText::_('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></legend>
 
 			<div class="clear"></div>
 
@@ -65,11 +65,11 @@ $this->css()
 
 			<div id="password-group"<?php echo (count($this->password_rules) > 0) ? ' class="split-left"' : ""; ?>>
 				<div class="fieldset-grouping">
-					<label for="password1"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_PASSWORD'); ?>:</label>
+					<label for="password1"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_PASSWORD'); ?>:</label>
 					<input id="password1" name="password1" type="password" />
 				</div>
 				<div class="fieldset-grouping">
-					<label for="password2"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_VERIFY_PASSWORD'); ?>:</label>
+					<label for="password2"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_VERIFY_PASSWORD'); ?>:</label>
 					<input id="password2" name="password2" type="password" />
 				</div>
 			</div>
@@ -118,7 +118,7 @@ $this->css()
 		<div class="clear"></div>
 		<p class="submit">
 			<input type="hidden" name="change" value="1" />
-			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>" id="password-change-save" />
+			<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>" id="password-change-save" />
 			<input type="hidden" name="no_html" id="pass_no_html" value="0" />
 			<input type="hidden" name="redirect" id="pass_redirect" value="1" />
 		</p>

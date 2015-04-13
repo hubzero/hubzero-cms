@@ -30,7 +30,7 @@
 
 namespace Plugins\Content\Formathtml\Macros\Group;
 
-require_once JPATH_ROOT.'/plugins/content/formathtml/macros/group.php';
+require_once dirname(__DIR__) . DS . 'group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 
@@ -74,7 +74,7 @@ class Members extends GroupMacro
 		// check if we can render
 		if (!parent::canRender())
 		{
-			return \JText::_('[This macro is designed for Groups only]');
+			return \Lang::txt('[This macro is designed for Groups only]');
 		}
 
 		// get args
@@ -89,14 +89,14 @@ class Members extends GroupMacro
 		$members = $this->getGroupMembers($this->group, $filters);
 
 		//are we a group member
-		$isMember = (in_array(\JFactory::getUser()->get('id'), $this->group->get('members'))) ? true : false;
+		$isMember = (in_array(\User::get('id'), $this->group->get('members'))) ? true : false;
 
 		//get the members plugin access for this group
 		$memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
 
 		// make sure we can actually display for the current user
 		if ($memberAccess == 'anyone'
-			|| ($memberAccess == 'registered' && !JFactory::getUser()->get('guest'))
+			|| ($memberAccess == 'registered' && !User::isGuest())
 			|| ($memberAccess == 'members' && $isMember))
 		{
 			$html = $this->renderMembers($this->group, $members);
@@ -123,7 +123,7 @@ class Members extends GroupMacro
 		$members = $group->get('members');
 
 		// get group params
-		$params = \JComponentHelper::getParams("com_groups");
+		$params = \Component::params("com_groups");
 		$displaySystemUsers = $params->get('display_system_users', 'no');
 
 		//get this groups params
@@ -163,7 +163,7 @@ class Members extends GroupMacro
 			foreach ($members as $member)
 			{
 				$profile = \Hubzero\User\Profile::getInstance($member);
-				$link    = \JRoute::_('index.php?option=com_members&id='.$profile->get('uidNumber'));
+				$link    = \Route::url('index.php?option=com_members&id='.$profile->get('uidNumber'));
 
 				$content .= '<a href="' . $link . '" class="member" title="Go to ' . stripslashes($profile->get('name')) . '\'s Profile.">';
 				$content .= '<img src="' . $profile->getPicture(0, true) . '" alt="' . stripslashes($profile->get('name')) . '" class="member-border" width="50px" height="50px" />';

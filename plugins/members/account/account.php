@@ -62,7 +62,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// If this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
-			$areas['account'] = JText::_('PLG_MEMBERS_ACCOUNT');
+			$areas['account'] = Lang::txt('PLG_MEMBERS_ACCOUNT');
 			$areas['icon'] = 'f085';
 		}
 
@@ -114,7 +114,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			}
 
 			// Initialize variables (just needed for views)
-			$action       = JRequest::getWord('action', 'view');
+			$action       = Request::getWord('action', 'view');
 			$this->user   = $user;
 			$this->option = $option;
 
@@ -151,14 +151,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 					if ($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0)
 					{
 						$title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
-						$link  = JRoute::_($member->getLink() . '&active=account#password');
+						$link  = Route::url($member->getLink() . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
 					else if ($passinfo['diff'] < 0)
 					{
 						$title = 'Your password has expired!';
-						$link  = JRoute::_($member->getLink() . '&active=account#password');
+						$link  = Route::url($member->getLink() . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
@@ -317,9 +317,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' .
-					base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken'))),
-				JText::_('You must be a logged in to access this area.'),
+				Route::url('index.php?option=com_users&view=login&return=' .
+					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken'))),
+				Lang::txt('You must be a logged in to access this area.'),
 				'warning'
 			);
 			return;
@@ -329,7 +329,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
 		if (!empty($hzup->passhash))
 		{
-			JError::raiseError(404, JText::_('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
+			JError::raiseError(404, Lang::txt('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
 			return;
 		}
 
@@ -346,8 +346,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Redirect user to confirm token view page
 		$this->setRedirect(
-			JRoute::_($this->member->getLink() . '&active=account&task=confirmtoken'),
-			JText::_('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'),
+			Route::url($this->member->getLink() . '&active=account&task=confirmtoken'),
+			Lang::txt('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'),
 			'warning'
 		);
 
@@ -368,17 +368,17 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' .
-					base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken'))),
-				JText::_('You must be a logged in to access this area.'),
+				Route::url('index.php?option=com_users&view=login&return=' .
+					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken'))),
+				Lang::txt('You must be a logged in to access this area.'),
 				'warning'
 			);
 			return;
 		}
 
 		// Get the form input
-		$token  = JRequest::getVar('token', null, 'post', 'alnum');
-		$change = JRequest::getVar('change', '', 'post');
+		$token  = Request::getVar('token', null, 'post', 'alnum');
+		$change = Request::getVar('change', '', 'post');
 
 		// Create the view
 		$view = new \Hubzero\Plugin\View(
@@ -400,13 +400,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Make sure the token is the proper length
 		if (strlen($token) != 32)
 		{
 			// Oops, token wasn't the correct length (probably a copy/paste error)
-			$this->addPluginMessage(JText::_('Invalid token length, please re-input token'), 'error');
+			$this->addPluginMessage(Lang::txt('Invalid token length, please re-input token'), 'error');
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			return $view->loadTemplate();
 		}
@@ -415,7 +415,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!$row = $this->getToken())
 		{
 			// Oops, user doesn't have a token set in the db (or their account is blocked)
-			$this->addPluginMessage(JText::_('Invalid token.  You don\'t appear to have a token active, or your account is blocked.'), 'error');
+			$this->addPluginMessage(Lang::txt('Invalid token.  You don\'t appear to have a token active, or your account is blocked.'), 'error');
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			return $view->loadTemplate();
 		}
@@ -427,7 +427,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Invalide token
 		if (!isset($parts[1]))
 		{
-			JError::raiseError(404, JText::_('INVALID_TOKEN'));
+			JError::raiseError(404, Lang::txt('INVALID_TOKEN'));
 			return;
 		}
 
@@ -438,7 +438,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!($crypt == $testcrypt))
 		{
 			// Oops, user tokens don't match
-			$this->addPluginMessage(JText::_('Invalid token.  Please try re-entering your token'), 'error');
+			$this->addPluginMessage(Lang::txt('Invalid token.  Please try re-entering your token'), 'error');
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			return $view->loadTemplate();
 		}
@@ -449,8 +449,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Redirect user to set local password view
 		$this->setRedirect(
-			JRoute::_($this->member->getLink() . '&active=account&task=setlocalpass'),
-			JText::_('Please provide a new password'),
+			Route::url($this->member->getLink() . '&active=account&task=setlocalpass'),
+			Lang::txt('Please provide a new password'),
 			'warning'
 		);
 
@@ -470,9 +470,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' .
-					base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass'))),
-				JText::_('You must be a logged in to access this area.'),
+				Route::url('index.php?option=com_users&view=login&return=' .
+					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass'))),
+				Lang::txt('You must be a logged in to access this area.'),
 				'warning'
 			);
 			return;
@@ -486,17 +486,17 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		{
 			// Tsk tsk, no sneaky business
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken'),
-				JText::_('You must first verify your email address by inputting the token.'),
+				Route::url('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken'),
+				Lang::txt('You must first verify your email address by inputting the token.'),
 				'error'
 			);
 			return;
 		}
 
 		// Get the password input
-		$password1 = JRequest::getVar('password1', null, 'post', 'string', JREQUEST_ALLOWRAW);
-		$password2 = JRequest::getVar('password2', null, 'post', 'string', JREQUEST_ALLOWRAW);
-		$change    = JRequest::getVar('change', '', 'post');
+		$password1 = Request::getVar('password1', null, 'post', 'string', JREQUEST_ALLOWRAW);
+		$password2 = Request::getVar('password2', null, 'post', 'string', JREQUEST_ALLOWRAW);
+		$change    = Request::getVar('change', '', 'post');
 
 		// Create the view
 		$view = new \Hubzero\Plugin\View(
@@ -533,7 +533,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Load some needed libraries
 		jimport('joomla.user.helper');
@@ -559,15 +559,15 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$passrules = false;
 		if (!$password1 || !$password2) // must enter password twice
 		{
-			$this->setError(JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
+			$this->setError(Lang::txt('MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
 		}
 		elseif ($password1 != $password2) // passwords don't match
 		{
-			$this->setError(JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
+			$this->setError(Lang::txt('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
 		}
 		elseif (!empty($msg)) // password doesn't meet site requirements
 		{
-			$this->setError(JText::_('Password does not meet site password requirements. Please choose a password meeting all the requirements listed.'));
+			$this->setError(Lang::txt('Password does not meet site password requirements. Please choose a password meeting all the requirements listed.'));
 			$passrules = true;
 		}
 
@@ -582,7 +582,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 				//$change = $msg;
 			}
 
-			if (JRequest::getInt('no_html', 0))
+			if (Request::getInt('no_html', 0))
 			{
 				echo json_encode($change);
 				exit();
@@ -600,7 +600,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Save the changes
 		if (!$result)
 		{
-			$view->setError( JText::_('MEMBERS_PASS_CHANGE_FAILED') );
+			$view->setError( Lang::txt('MEMBERS_PASS_CHANGE_FAILED') );
 			return $view->loadTemplate();
 		}
 
@@ -611,12 +611,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$app->setUserState($this->option . 'token', null);
 
 		// Redirect
-		if (JRequest::getInt('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			echo json_encode(
 				array(
 					"success" => true,
-					"redirect" => JRoute::_($this->member->getLink() . '&active=account'))
+					"redirect" => Route::url($this->member->getLink() . '&active=account'))
 				);
 			exit();
 		}
@@ -624,8 +624,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect user to confirm view page
 			$this->setRedirect(
-				JRoute::_($this->member->getLink() . '&active=account'),
-				JText::_('Password reset successful'),
+				Route::url($this->member->getLink() . '&active=account'),
+				Lang::txt('Password reset successful'),
 				'passed'
 			);
 		}
@@ -645,7 +645,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	private function _unlink()
 	{
 		// Get the id of the account to be unlinked
-		$hzal_id = JRequest::getInt('hzal_id', null);
+		$hzal_id = Request::getInt('hzal_id', null);
 
 		// Get instance
 		$hzal = \Hubzero\Auth\Link::find_by_id($hzal_id);
@@ -655,8 +655,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
 		{
 			$this->setRedirect(
-				JRoute::_($this->member->getLink() . '&active=account'),
-				JText::_('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'),
+				Route::url($this->member->getLink() . '&active=account'),
+				Lang::txt('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'),
 				'warning'
 			);
 		}
@@ -664,14 +664,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Delete the auth_link
 		if (!$hzal->delete())
 		{
-			JError::raiseError(500, JText::_('PLG_MEMBERS_UNLINK_FAILED'));
+			JError::raiseError(500, Lang::txt('PLG_MEMBERS_UNLINK_FAILED'));
 			return;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_($this->member->getLink() . '&active=account'),
-			JText::_('PLG_MEMBERS_ACCOUNT_UNLINKED'),
+			Route::url($this->member->getLink() . '&active=account'),
+			Lang::txt('PLG_MEMBERS_ACCOUNT_UNLINKED'),
 			'passed'
 		);
 	}
@@ -739,7 +739,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// First, make sure webdav is there and that the necessary folders are there
 		if (!JFolder::exists($base))
 		{
-			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
+			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
 			return;
 		}
 		if (!JFolder::exists($homeDir))
@@ -749,7 +749,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
 			{
-				JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
+				JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
 				return;
 			}
 		}
@@ -758,18 +758,18 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
 			if (!JFolder::create($base . $user . $ssh, 0700))
 			{
-				JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
+				JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
 				return;
 			}
 		}
 
 		// Get the form input
-		$content = JRequest::getVar('keytext', '');
+		$content = Request::getVar('keytext', '');
 
 		// Write to the file
 		if (!JFile::write($base . $user . $ssh . $auth, $content) && $content != '')
 		{
-			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
+			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
 			return;
 		}
 
@@ -778,8 +778,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_($this->member->getLink() . '&active=account'),
-			JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'),
+			Route::url($this->member->getLink() . '&active=account'),
+			Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'),
 			'passed'
 		);
 	}
@@ -888,7 +888,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Save the token
 		if (!$db->query())
 		{
-			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_DATABASE_ERROR_TOKEN_NOT_SAVED'));
+			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_DATABASE_ERROR_TOKEN_NOT_SAVED'));
 			return;
 		}
 
@@ -920,7 +920,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Create the email with the new token
 		$url      = rtrim(JURI::base(),'/');
-		$return   = $url . JRoute::_($this->member->getLink() . '&acitve=account&task=confirmtoken');
+		$return   = $url . Route::url($this->member->getLink() . '&acitve=account&task=confirmtoken');
 		$subject  = 'Set local password, confirmation token for ' . $url;
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
 		$message .= 'Your reset token is: ' . $token;
@@ -934,7 +934,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Send the email
 		if (!$msg->send())
 		{
-			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_CONFIRMATION_EMAIL_NOT_SENT'));
+			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_CONFIRMATION_EMAIL_NOT_SENT'));
 			return;
 		}
 
@@ -963,7 +963,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the password
-		$pw = JRequest::getVar('password1', null, 'post');
+		$pw = Request::getVar('password1', null, 'post');
 
 		// Validate the password
 		if (!empty($pw))

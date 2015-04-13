@@ -291,7 +291,7 @@ class plgSearchPublications extends \JPlugin
 		usort($rows, create_function('$a, $b', 'return (($res = $a->get_weight() - $b->get_weight()) == 0 ? 0 : $res > 0 ? -1 : 1);'));
 		foreach ($rows as $row)
 		{
-			$row->set_link(JRoute::_($row->get_raw_link()));
+			$row->set_link(Route::url($row->get_raw_link()));
 			$results->add($row);
 		}
 	}

@@ -43,7 +43,7 @@ class plgSearchForum extends \JPlugin
 	 */
 	public static function getName()
 	{
-		return JText::_('Forum');
+		return Lang::txt('Forum');
 	}
 
 	/**

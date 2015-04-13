@@ -84,7 +84,7 @@ tooltip: true,
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <?php if ($this->totals && count($this->pubstats) > 1) { ?>
-<p class="pubstats-overall"><?php echo JText::_('PLG_MEMBERS_IMPACT_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . JText::_('PLG_MEMBERS_IMPACT_PUBLICATIONS_S') . ' ' . JText::_('PLG_MEMBERS_IMPACT_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . JText::_('PLG_MEMBERS_IMPACT_TIMES'); ?>.</p>
+<p class="pubstats-overall"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_MEMBERS_IMPACT_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_MEMBERS_IMPACT_TIMES'); ?>.</p>
 <?php } ?>
 <?php
 	foreach ($this->pubstats as $stat)
@@ -100,24 +100,24 @@ tooltip: true,
 		?>
 			<table class="pubstats-wrap">
 				<tr><td colspan="6" class="pubstats-h">
-					<img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
-					<span class="h-title"><a href="<?php echo JRoute::_('index.php?option=com_publications' . '&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
-					<span class="block mini faded"><?php echo JText::_('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo JText::_('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo \Hubzero\Utility\String::truncate($stat->project_title, 65); ?></a></span></span>
+					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
+					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications' . '&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
+					<span class="block mini faded"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, Lang::txt('DATE_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo Lang::txt('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo Route::url('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo \Hubzero\Utility\String::truncate($stat->project_title, 65); ?></a></span></span>
 				</td></tr>
 				<tr>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td><?php
-						echo '<span class="pubstats-label">' . JText::_('PLG_MEMBERS_IMPACT_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
+						echo '<span class="pubstats-label">' . Lang::txt('PLG_MEMBERS_IMPACT_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
 					?></td>
 
-					<td><?php echo '<span class="pubstats-label">' . JText::_('PLG_MEMBERS_IMPACT_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
+					<td><?php echo '<span class="pubstats-label">' . Lang::txt('PLG_MEMBERS_IMPACT_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
 
-					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . JText::_('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . JText::_('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, JText::_('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>
+					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, Lang::txt('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>
 				</tr>
 				<tr>
-					<td class="pubstats-sh"><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
+					<td class="pubstats-sh"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
 					<td class="pubstats-graph">
 						<div id="view-<?php echo $stat->publication_id; ?>" class="ph"></div>
 						<script type="text/javascript">
@@ -159,7 +159,7 @@ tooltip: true,
 
 									for (var k = 0; k < points.length; k++)
 									{
-										for(var m = 0; m < points[k].data.length; m++)
+										for (var m = 0; m < points[k].data.length; m++)
 										{
 											if (points[k].data[m][0] != null && points[k].data[m][1] != null)
 											{
@@ -214,7 +214,7 @@ tooltip: true,
 					<td><span class="stats-num"><?php echo $stat->total_views; ?></span></td>
 				</tr>
 				<tr>
-					<td class="pubstats-sh"><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_ACCESSES'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_ACCESSES_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
+					<td class="pubstats-sh"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_ACCESSES'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_ACCESSES_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
 					<td class="pubstats-graph"><div id="access-<?php echo $stat->publication_id; ?>" class="ph"></div>
 					<script type="text/javascript">
 						if (jQuery()) {
@@ -256,6 +256,6 @@ tooltip: true,
 <?php }
 
 } else { ?>
-	<p><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_NO_INFO'); ?></p>
+	<p><?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_NO_INFO'); ?></p>
 <?php } ?>
 </div>

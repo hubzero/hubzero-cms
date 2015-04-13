@@ -43,44 +43,6 @@ define("COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION", "receive-forum-emai
  */
 class courses_MemberOption extends JTable
 {
-
-	/**
-	 * Description for 'id'
-	 *
-	 * @var unknown
-	 */
-	var $id				= NULL;		// int
-
-	/**
-	 * Description for 'gidNumber'
-	 *
-	 * @var unknown
-	 */
-	var $gidNumber		= NULL;		// int
-
-	/**
-	 * Description for 'userid'
-	 *
-	 * @var unknown
-	 */
-	var $userid			= NULL;		// int
-
-	/**
-	 * Description for 'optionname'
-	 *
-	 * @var unknown
-	 */
-	var $optionname		= NULL;		// varchar(100)
-
-	/**
-	 * Description for 'optionvalue'
-	 *
-	 * @var unknown
-	 */
-	var $optionvalue	= NULL;		// varchar(100)
-
-	//-----------
-
 	/**
 	 * Short description for '__construct'
 	 *
@@ -103,24 +65,27 @@ class courses_MemberOption extends JTable
 	 */
 	public function check()
 	{
-
-		if (trim( $this->gidNumber ) == ''){
-			$this->setError( JText::_('Please provide a gidNumber') );
+		if (trim( $this->gidNumber ) == '')
+		{
+			$this->setError( Lang::txt('Please provide a gidNumber') );
 			return false;
 		}
 
-		if (trim( $this->userid ) == ''){
-			$this->setError( JText::_('Please provide a userid') );
+		if (trim( $this->userid ) == '')
+		{
+			$this->setError( Lang::txt('Please provide a userid') );
 			return false;
 		}
 
-		if (trim( $this->optionname ) == ''){
-			$this->setError( JText::_('Please provide an optionname') );
+		if (trim( $this->optionname ) == '')
+		{
+			$this->setError( Lang::txt('Please provide an optionname') );
 			return false;
 		}
 
-		if (trim( $this->optionvalue ) == ''){
-			$this->setError( JText::_('Please provide an optionvalue') );
+		if (trim( $this->optionvalue ) == '')
+		{
+			$this->setError( Lang::txt('Please provide an optionvalue') );
 			return false;
 		}
 
@@ -139,7 +104,6 @@ class courses_MemberOption extends JTable
 	 */
 	public function loadRecord($gidNumber=NULL, $userid=NULL, $optionname=NULL)
 	{
-
 		if (!$gidNumber)
 			$gidNumber = $this->gidNumber;
 
@@ -154,9 +118,6 @@ class courses_MemberOption extends JTable
 
 		$sql = "SELECT * FROM $this->_tbl WHERE userid='$userid' AND gidNumber='$gidNumber' and optionname='$optionname'";
 
-//		echo ($sql);
-//		exit;
-
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc())
 		{
@@ -167,8 +128,6 @@ class courses_MemberOption extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-
 	}
-
 }
 

@@ -1,8 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 $base = $this->offering->alias() . '&active=forum';
 ?>
 <section class="main section">
@@ -11,13 +9,13 @@ $base = $this->offering->alias() . '&active=forum';
 			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_($base); ?>" method="post">
+		<form action="<?php echo Route::url($base); ?>" method="post">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for posts'); ?></legend>
+					<legend><?php echo Lang::txt('Search for posts'); ?></legend>
 
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -31,7 +29,7 @@ $base = $this->offering->alias() . '&active=forum';
 			<div class="container">
 				<table class="entries">
 					<caption>
-						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
+						<?php echo Lang::txt('Search for "%s"', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
 				<?php
@@ -39,13 +37,13 @@ $base = $this->offering->alias() . '&active=forum';
 				{
 					foreach ($this->rows as $row)
 					{
-						$name = JText::_('Anonymous');
+						$name = Lang::txt('Anonymous');
 						if (!$row->anonymous)
 						{
-							$creator = JUser::getInstance($row->created_by);
+							$creator = User::getInstance($row->created_by);
 							if (is_object($creator))
 							{
-								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
+								$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
 							}
 						}
 
@@ -64,33 +62,33 @@ $base = $this->offering->alias() . '&active=forum';
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($base . '&unit=' . $this->categories[$row->category_id]->alias . '&b=' . $thread->id . '#c' . $row->id); ?>">
+								<a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->categories[$row->category_id]->alias . '&b=' . $thread->id . '#c' . $row->id); ?>">
 									<span><?php echo $this->escape(stripslashes($row->title)); ?> ...</span>
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAt_HZ1')); ?></time>
+										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time>
 									</span>
-									<?php echo JText::_('by'); ?>
+									<?php echo Lang::txt('by'); ?>
 									<span class="entry-author">
 										<?php echo $name; ?>
 									</span>
 								</span>
 							</td>
 							<!-- <td>
-								<span><?php echo JText::_('Section'); ?></span>
+								<span><?php echo Lang::txt('Section'); ?></span>
 								<span class="entry-details section-name">
 									<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->category_id]->section_id]->title, 100, array('exact' => true))); ?>
 								</span>
 							</td> -->
 							<td>
-								<span><?php echo JText::_('Category'); ?></span>
+								<span><?php echo Lang::txt('Category'); ?></span>
 								<span class="entry-details category-name">
 									<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->category_id]->title, 100, array('exact' => true))); ?>
 								</span>
 							</td>
 							<td>
-								<span><?php echo JText::_('Thread'); ?></span>
+								<span><?php echo Lang::txt('Thread'); ?></span>
 								<span class="entry-details thread-name">
 									<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($thread->title), 100, array('exact' => true))); ?>
 								</span>
@@ -100,7 +98,7 @@ $base = $this->offering->alias() . '&active=forum';
 					}
 				} else { ?>
 						<tr>
-							<td><?php echo JText::_('No discussions found.'); ?></td>
+							<td><?php echo Lang::txt('No discussions found.'); ?></td>
 						</tr>
 				<?php } ?>
 					</tbody>
@@ -122,17 +120,17 @@ $base = $this->offering->alias() . '&active=forum';
 	<aside class="aside">
 	<?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
-			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo Lang::txt('Start Your Own'); ?><span class="starter-point"></span></h3>
 		<?php if (!$this->category->closed) { ?>
 			<p>
-				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
+				<?php echo Lang::txt('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p class="add">
-				<a href="<?php echo JRoute::_($base . '&action=add'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a href="<?php echo Route::url($base . '&action=add'); ?>"><?php echo Lang::txt('Add Discussion'); ?></a>
 			</p>
 		<?php } else { ?>
 			<p class="warning">
-				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
+				<?php echo Lang::txt('This category is closed and no new discussions may be created.'); ?>
 			</p>
 		<?php } ?>
 		</div>

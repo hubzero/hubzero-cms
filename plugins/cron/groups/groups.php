@@ -52,12 +52,12 @@ class plgCronGroups extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'cleanGroupFolders',
-				'label'  => JText::_('PLG_CRON_GROUPS_REMOVE_ABANDONED_ASSETS'),
+				'label'  => Lang::txt('PLG_CRON_GROUPS_REMOVE_ABANDONED_ASSETS'),
 				'params' => ''
 			),
 			array(
 				'name'   => 'sendGroupAnnouncements',
-				'label'  => JText::_('PLG_CRON_GROUPS_SEND_ANNOUNCEMENTS'),
+				'label'  => Lang::txt('PLG_CRON_GROUPS_SEND_ANNOUNCEMENTS'),
 				'params' => ''
 			)
 		);
@@ -77,7 +77,7 @@ class plgCronGroups extends JPlugin
 		jimport('joomla.filesystem.folder');
 
 		// get group params
-		$groupParameters = JComponentHelper::getParams('com_groups');
+		$groupParameters = Component::params('com_groups');
 
 		// get group upload path
 		$groupUploadPath = ltrim($groupParameters->get('uploadpath', '/site/groups'), DS);

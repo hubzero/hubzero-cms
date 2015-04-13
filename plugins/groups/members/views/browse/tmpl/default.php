@@ -32,10 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 $filters = array(
-	'members'  => JText::_('PLG_GROUPS_MEMBERS'),
-	'managers' => JText::_('PLG_GROUPS_MEMBERS_MANAGERS'),
-	'pending'  => JText::_('PLG_GROUPS_MEMBERS_PENDING'),
-	'invitees' => JText::_('PLG_GROUPS_MEMBERS_INVITEES')
+	'members'  => Lang::txt('PLG_GROUPS_MEMBERS'),
+	'managers' => Lang::txt('PLG_GROUPS_MEMBERS_MANAGERS'),
+	'pending'  => Lang::txt('PLG_GROUPS_MEMBERS_PENDING'),
+	'invitees' => Lang::txt('PLG_GROUPS_MEMBERS_INVITEES')
 );
 
 if ($this->filter == '')
@@ -64,12 +64,12 @@ $option = 'com_groups';
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<ul id="page_options">
 			<li>
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
-					<?php echo JText::_('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
+				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
+					<?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
 				</a>
 				<?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
-					<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>">
-						<?php echo JText::_('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
+					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
 					</a>
 				<?php endif; ?>
 			</li>
@@ -79,38 +79,38 @@ $option = 'com_groups';
 
 <div class="section">
 	<h3 class="section-header">
-		<?php echo JText::_('PLG_GROUPS_MEMBERS'); ?>
+		<?php echo Lang::txt('PLG_GROUPS_MEMBERS'); ?>
 	</h3>
 
 	<div class="aside">
 		<div class="container">
-			<h4><?php echo JText::_('PLG_GROUPS_MEMBERS_MEMBER_ROLES'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES'); ?></h4>
 			<?php if (count($this->member_roles) > 0) { ?>
 				<ul class="roles">
 					<?php foreach ($this->member_roles as $role) { ?>
 						<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
 						<li>
 							<?php if ($this->authorized == 'manager' && $this->membership_control == 1) : ?>
-								<a class="remove-role" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=removerole&role='.$role['id']); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>">
-									<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>
+								<a class="remove-role" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=removerole&role='.$role['id']); ?>" title="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>">
+									<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>
 								</a>
-								<a class="edit-role" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=editrole&role='.$role['id']); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>">
-									<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>
+								<a class="edit-role" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=editrole&role='.$role['id']); ?>" title="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>">
+									<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>
 								</a>
 							<?php endif; ?>
-							<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>">
+							<a class="role <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>">
 								<?php echo $this->escape($role['name']); ?>
 							</a>
 						</li>
 					<?php } ?>
 				</ul>
 			<?php } else { ?>
-				<p class="starter"><?php echo JText::_('PLG_GROUPS_MEMBERS_NO_ROLES_FOUND'); ?></p>
+				<p class="starter"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_NO_ROLES_FOUND'); ?></p>
 			<?php }?>
 		</div><!-- / .container -->
 	</div>
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter); ?>" method="post">
+		<form action="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter); ?>" method="post">
 			<div class="container">
 				<ul class="entries-menu filter-options">
 					<?php foreach ($filters as $filter => $name) { ?>
@@ -122,7 +122,7 @@ $option = 'com_groups';
 						?>
 						<?php if ($filter != 'pending' && $filter != 'invitees' || ($this->authorized == 'admin' || $this->authorized == 'manager')) { ?>
 								<li>
-									<a class="<?php echo $filter . $active; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$filter); ?>"><?php echo $name; ?>
+									<a class="<?php echo $filter . $active; ?>" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$filter); ?>"><?php echo $name; ?>
 										<?php
 											if ($filter == 'pending') {
 												echo '('.count($this->group->get('applicants')).')';
@@ -154,7 +154,7 @@ $option = 'com_groups';
 							if ($this->role_filter) {
 								echo $role_name;
 							} elseif ($this->q) {
-								echo JText::_('PLG_GROUPS_MEMBERS_SEARCH') . ': ' . $this->escape($this->q);
+								echo Lang::txt('PLG_GROUPS_MEMBERS_SEARCH') . ': ' . $this->escape($this->q);
 							} else {
 								echo ucfirst($this->filter);
 							}
@@ -167,32 +167,32 @@ $option = 'com_groups';
 								<?php
 									if ($role_id) {
 										$append = '&users[]=role&role_id='.$role_id;
-										$title = JText::sprintf('PLG_GROUPS_MEMBERS_MESSAGE_ALL_ROLE', $role_name);
+										$title = Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL_ROLE', $role_name);
 									} else {
 										switch ($this->filter)
 										{
 											case 'pending':
 												$append = '&users[]=applicants';
-												$title = JText::_('PLG_GROUPS_MEMBERS_MESSAGE_ALL_APPLICANTS');
+												$title = Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL_APPLICANTS');
 												break;
 											case 'invitees':
 												$append = '&users[]=invitees';
-												$title = JText::_('PLG_GROUPS_MEMBERS_MESSAGE_ALL_INVITEES');
+												$title = Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL_INVITEES');
 												break;
 											case 'managers':
 												$append = '&users[]=managers';
-												$title = JText::_('PLG_GROUPS_MEMBERS_MESSAGE_ALL_MANAGERS');
+												$title = Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL_MANAGERS');
 												break;
 											case 'members':
 											default:
 												$append = '&users[]=all';
-												$title = JText::_('PLG_GROUPS_MEMBERS_MESSAGE_ALL_MEMBERS');
+												$title = Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL_MEMBERS');
 												break;
 										}
 									}
 								?>
-								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new'.$append); ?>" title="<?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE'); ?> :: <?php echo $title; ?>">
-									<?php echo JText::_('PLG_GROUPS_MEMBERS_MESSAGE_ALL'); ?>
+								<a class="message tooltips" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new'.$append); ?>" title="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE'); ?> :: <?php echo $title; ?>">
+									<?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL'); ?>
 								</a>
 								<?php } ?>
 							</span><!-- / .message-all -->
@@ -240,20 +240,20 @@ $option = 'com_groups';
 								switch ($this->filter)
 								{
 									case 'invitees':
-										$status = JText::_('PLG_GROUPS_MEMBERS_STATUS_INVITEE');
+										$status = Lang::txt('PLG_GROUPS_MEMBERS_STATUS_INVITEE');
 									break;
 									case 'pending':
-										$status = JText::_('PLG_GROUPS_MEMBERS_STATUS_PENDING');
+										$status = Lang::txt('PLG_GROUPS_MEMBERS_STATUS_PENDING');
 									break;
 									case 'managers':
-										$status = JText::_('PLG_GROUPS_MEMBERS_STATUS_MANAGER');
+										$status = Lang::txt('PLG_GROUPS_MEMBERS_STATUS_MANAGER');
 										$cls .= ' manager';
 									break;
 									case 'members':
 									default:
 										$status = 'Member';
 										if (in_array($guser,$this->managers)) {
-											$status = JText::_('PLG_GROUPS_MEMBERS_STATUS_MANAGER');
+											$status = Lang::txt('PLG_GROUPS_MEMBERS_STATUS_MANAGER');
 											$cls .= 'manager';
 										}
 									break;
@@ -275,10 +275,10 @@ $option = 'com_groups';
 											<?php echo $guser; ?>
 										</a>
 									</span>
-									<span class="status"><?php echo JText::_('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
+									<span class="status"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 								<?php } else { ?>
 									<span class="name">
-										<?php if ($u->get('public')) { ?><a href="<?php echo JRoute::_($u->getLink()); ?>"><?php } ?>
+										<?php if ($u->get('public')) { ?><a href="<?php echo Route::url($u->getLink()); ?>"><?php } ?>
 											<?php echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName'))); ?>
 										<?php if ($u->get('public')) { ?></a><?php } ?>
 									</span>
@@ -296,13 +296,13 @@ $option = 'com_groups';
 									$roles = $u->getGroupMemberRoles($u->get('uidNumber'),$this->group->gidNumber);
 
 									if ($roles) {
-										$html .= '<strong>' . JText::_('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
+										$html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
 										foreach ($roles as $role) {
-											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['name'].'</a>';
+											$all_roles .= ', <span><a href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['name'].'</a>';
 
 											if ($this->authorized == 'manager') {
 												if ($this->membership_control == 1) {
-													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
+													$all_roles .= '<span class="delete-role"><a href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
 												}
 											} else {
 												$all_roles .= '</span>';
@@ -313,7 +313,7 @@ $option = 'com_groups';
 
 										if ($this->authorized == 'manager') {
 											if ($this->membership_control == 1) {
-												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
+												$html .= ', <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 											}
 										}
 
@@ -321,9 +321,9 @@ $option = 'com_groups';
 
 									if ($this->membership_control == 1) {
 										if (($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
-											$html .= '<strong>' . JText::_('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
+											$html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
 											$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'"></span>';
-											$html .= ' <a class="assign-role" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
+											$html .= ' <a class="assign-role" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 										}
 									}
 									$html .= '</span>';
@@ -337,7 +337,7 @@ $option = 'com_groups';
 
 									if ($row)
 									{
-										$html .= '<span class="reason" data-title="' . JText::_('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
+										$html .= '<span class="reason" data-title="' . Lang::txt('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
 										$html .= '<span class="reason-reason">'.stripslashes($row->reason).'</span>';
 										$html .= '<span class="reason-date">'.JHTML::_('date', $row->date, 'F d, Y @ g:ia').'</span>';
 										$html .= '</span>';
@@ -353,17 +353,17 @@ $option = 'com_groups';
 										case 'invitees':
 											if ($this->membership_control == 1) {
 												if (!$inviteemail) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($u->get('name'))).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												} else {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($guser)).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($guser)).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												}
 											}
 											$html .= "\t\t\t\t".'<td class="approve-member"> </td>'."\n";
 										break;
 										case 'pending':
 											if ($this->membership_control == 1) {
-												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',$this->escape($u->get('name'))).'">'.JText::_('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
-												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',$this->escape($u->get('name'))).'">'.JText::_('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
+												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
+												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
 											}
 										break;
 										case 'managers':
@@ -371,7 +371,7 @@ $option = 'com_groups';
 										default:
 											if ($this->membership_control == 1) {
 												if (!in_array($guser,$this->managers) || (in_array($guser,$this->managers) && count($this->managers) > 1)) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',$this->escape($u->get('name'))).'">'.JText::_('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
 												} else {
 													$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 												}
@@ -380,12 +380,12 @@ $option = 'com_groups';
 													//force admins to use backend to demote manager if only 1
 													//if ($this->authorized == 'admin' || count($this->managers) > 1) {
 													if (count($this->managers) > 1) {
-														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',$this->escape($u->get('name'))).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
+														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
 													} else {
 														$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 													}
 												} else {
-													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',$this->escape($u->get('name'))).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
 												}
 											}
 										break;
@@ -397,17 +397,17 @@ $option = 'com_groups';
 								if (is_object($u) && $juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
 									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
-									$membersParams = JComponentHelper::getParams('com_members');
+									$membersParams = Component::params('com_members');
 									$userMessaging = $membersParams->get('user_messaging', 1);
 									if (!$inviteemail && $this->messages_acl != 'nobody')
 									{
 										if (in_array($juser->get('id'), $this->group->get('managers')))
 										{
-											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
+											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
 										}
 										else if ($userMessaging == 2 || ($userMessaging == 1 && in_array($juser->get('id'), $this->group->get('members'))))
 										{
-											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>';
+											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>';
 										}
 									}
 									else
@@ -423,7 +423,7 @@ $option = 'com_groups';
 						} else {
 						?>
 						<tr>
-							<td><?php echo JText::_('PLG_GROUPS_MEMBERS_NO_RESULTS'); ?></td>
+							<td><?php echo Lang::txt('PLG_GROUPS_MEMBERS_NO_RESULTS'); ?></td>
 						</tr>
 						<?php
 						}

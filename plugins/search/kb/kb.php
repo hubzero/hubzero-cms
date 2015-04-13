@@ -43,7 +43,7 @@ class plgSearchKB extends \JPlugin
 	 */
 	public static function getName()
 	{
-		return JText::_('Knowledge Base');
+		return Lang::txt('Knowledge Base');
 	}
 
 	/**

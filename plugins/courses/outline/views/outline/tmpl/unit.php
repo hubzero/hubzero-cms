@@ -36,13 +36,13 @@ defined('_JEXEC') or die('Restricted access');
 $unit = $this->course->offering()->unit($this->unit);
 if (!$unit)
 {
-	JError::raiseError(404, JText::_('uh-oh'));
+	JError::raiseError(404, Lang::txt('uh-oh'));
 }
 
 //echo $this->course->offering()->units()->key();
 
 if (!$this->course->offering()->access('view')) { ?>
-	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
+	<p class="info"><?php echo Lang::txt('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
 	<?php echo $unit->get('title'); ?>

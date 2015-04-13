@@ -62,13 +62,13 @@ $settingsHtml = trim($view->loadTemplate());
 			<?php if ($settingsHtml != '') : ?>
 				<li>
 					<a class="settings" title="Module Settings" href="javascript:void(0);">
-						<span><?php echo JText::_('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS'); ?></span>
+						<span><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS'); ?></span>
 					</a>
 				</li>
 			<?php endif; ?>
 			<li>
 				<a class="remove" title="Remove Module" href="javascript:void(0);">
-					<span><?php echo JText::_('PLG_MEMBERS_DASHBOARD_MODULE_REMOVE'); ?></span>
+					<span><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_REMOVE'); ?></span>
 				</a>
 			</li>
 		</ul>
@@ -80,7 +80,7 @@ $settingsHtml = trim($view->loadTemplate());
 			<?php
 				if ($this->admin)
 				{
-					echo '<div class="custom">' . JText::_('PLG_MEMBERS_DASHBOARD_MODULE_ADMIN_CONTENT') . '</div>';
+					echo '<div class="custom">' . Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_ADMIN_CONTENT') . '</div>';
 				}
 				elseif ($this->module->module == 'mod_custom')
 				{

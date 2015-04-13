@@ -30,7 +30,6 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
 ?>
 <section class="main section">
 	<div class="subject">
@@ -40,26 +39,26 @@ $juser = JFactory::getUser();
 
 		<h3 class="post-comment-title">
 		<?php if ($this->model->id) { ?>
-			<?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT_CATEGORY'); ?>
+			<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT_CATEGORY'); ?>
 		<?php } else { ?>
-			<?php echo JText::_('PLG_COURSES_DISCUSSIONS_NEW_CATEGORY'); ?>
+			<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_CATEGORY'); ?>
 		<?php } ?>
 		</h3>
 
-		<form action="<?php echo JRoute::_($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
+		<form action="<?php echo Route::url($this->offering->link() . '&active=discussions'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<?php
 				$jxuser = new \Hubzero\User\Profile();
-				$jxuser->load($juser->get('id'));
+				$jxuser->load(User::get('id'));
 				?>
 				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 			</p>
 
 			<fieldset>
 				<label for="field-section_id">
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_SECTION'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
 					<select name="fields[section_id]" id="field-section_id">
-						<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_SECTION_SELECT'); ?></option>
+						<option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_SECTION_SELECT'); ?></option>
 					<?php foreach ($this->sections as $section) { ?>
 						<option value="<?php echo $section->id; ?>"<?php if ($this->model->section_id == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
 					<?php } ?>
@@ -67,22 +66,22 @@ $juser = JFactory::getUser();
 				</label>
 
 				<label for="field-title">
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REQUIRED'); ?></span>
 					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->model->title)); ?>" />
 				</label>
 
 				<label for="field-description">
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_DESCRIPTION'); ?>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_DESCRIPTION'); ?>
 					<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->description)); ?></textarea>
 				</label>
 
 				<label for="field-closed" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->model->closed) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CLOSED'); ?>
+					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CLOSED'); ?>
 				</label>
 
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+					<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 				</p>
 			</fieldset>
 			<input type="hidden" name="fields[alias]" value="<?php echo $this->model->alias; ?>" />
@@ -102,6 +101,6 @@ $juser = JFactory::getUser();
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">
-		<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
+		<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_CATEGORY_HINT'); ?></p>
 	</aside><!-- /.aside -->
 </section><!-- / .main section -->

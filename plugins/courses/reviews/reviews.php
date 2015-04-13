@@ -59,10 +59,10 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Prepare the response
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)));
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
-		$this->option     = JRequest::getCmd('option', 'com_courses');
-		$this->controller = JRequest::getWord('controller', 'course');
+		$this->option     = Request::getCmd('option', 'com_courses');
+		$this->controller = Request::getWord('controller', 'course');
 
 		$database = JFactory::getDBO();
 		$tbl = new \Hubzero\Item\Comment($database);
@@ -82,11 +82,11 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 			$this->view = $this->view('default', 'view');
 			$this->view->database = $this->database = $database;
 			$this->view->juser    = $this->juser    = JFactory::getUser();
-			$this->view->option   = $this->option; //   = JRequest::getCmd('option', 'com_courses');
+			$this->view->option   = $this->option; //   = Request::getCmd('option', 'com_courses');
 			$this->view->controller = $this->controller;
 			$this->view->obj      = $this->obj      = $course;
 			$this->view->obj_type = $this->obj_type = substr($this->option, 4);
-			$this->view->url      = $this->url      = JRoute::_($course->link() . '&active=' . $this->_name, false, true);
+			$this->view->url      = $this->url      = Route::url($course->link() . '&active=' . $this->_name, false, true);
 			$this->view->depth    = 0;
 			$this->view->tbl      = $tbl;
 
@@ -94,7 +94,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 
 			$this->view->params   = $this->params;
 
-			$this->view->task     = $this->task    = JRequest::getVar('action', '');
+			$this->view->task     = $this->task    = Request::getVar('action', '');
 
 			switch ($this->task)
 			{
@@ -227,7 +227,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
-		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_($this->obj->link() . '&active=reviews'), 'server');
+		$url = ($url != '') ? $url : Request::getVar('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
 
 		parent::redirect($url, $msg, $msgType);
 	}
@@ -239,10 +239,10 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _login()
 	{
-		$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_($this->obj->link() . '&active=reviews', false, true), 'server'));
+		$return = base64_encode(Request::getVar('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server'));
 		$this->redirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
-			JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+			Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
 			'warning'
 		);
 	}
@@ -257,22 +257,22 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->setError(JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		// Get comments on this article
 		$v = new \Hubzero\Item\Vote($this->database);
 		$v->created_by = $this->juser->get('id');
 		$v->item_type  = 'comment';
 
-		if ($item_id = JRequest::getInt('voteup', 0))
+		if ($item_id = Request::getInt('voteup', 0))
 		{
 			$v->vote   = 1;
 		}
-		else if ($item_id = JRequest::getInt('votedown', 0))
+		else if ($item_id = Request::getInt('votedown', 0))
 		{
 			$v->vote   = -1;
 		}
@@ -324,7 +324,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		{
 			$this->redirect(
 				$this->url,
-				JText::_('PLG_COURSES_REVIEWS_VOTE_SAVED'),
+				Lang::txt('PLG_COURSES_REVIEWS_VOTE_SAVED'),
 				'message'
 			);
 			return;
@@ -391,10 +391,10 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$row = new \Hubzero\Item\Comment($this->database);
@@ -413,7 +413,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		{
 			$this->redirect(
 				$this->url,
-				JText::_('PLG_COURSES_REVIEWS_NOTAUTH'),
+				Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
 				'warning'
 			);
 			return;
@@ -443,7 +443,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 
 		$this->redirect(
 			$this->url,
-			JText::_('PLG_COURSES_REVIEWS_SAVED'),
+			Lang::txt('PLG_COURSES_REVIEWS_SAVED'),
 			'message'
 		);
 	}
@@ -463,7 +463,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$id = JRequest::getInt('comment', 0);
+		$id = Request::getInt('comment', 0);
 		if (!$id)
 		{
 			return $this->_redirect();
@@ -488,7 +488,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 
 		$this->redirect(
 			$this->url,
-			JText::_('PLG_COURSES_REVIEWS_REMOVED'),
+			Lang::txt('PLG_COURSES_REVIEWS_REMOVED'),
 			'message'
 		);
 	}

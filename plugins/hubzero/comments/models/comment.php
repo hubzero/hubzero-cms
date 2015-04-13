@@ -106,11 +106,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -161,11 +161,11 @@ class Comment extends Model
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('modified'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), \Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('modified'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), \Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -375,7 +375,7 @@ class Comment extends Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => \JRequest::getCmd('option', 'com_' . $this->get('item_type')),
+						'option'   => \Request::getCmd('option', 'com_' . $this->get('item_type')),
 						'scope'    => $this->get('item_type'),
 						'pagename' => $this->get('item_id'),
 						'pageid'   => 0,
@@ -531,7 +531,7 @@ class Comment extends Model
 			{
 				if ($_FILES[$fieldName]['error'])
 				{
-					$this->setError(\JText::_('PLG_HUBZERO_COMMENTS_ERROR_UPLOADING_FILE'));
+					$this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_ERROR_UPLOADING_FILE'));
 				}
 
 				$file = new Attachment();
@@ -553,7 +553,7 @@ class Comment extends Model
 					jimport('joomla.filesystem.folder');
 					if (!\JFolder::create($uploadDir))
 					{
-						$this->setError(\JText::_('PLG_HUBZERO_COMMENTS_UNABLE_TO_CREATE_UPLOAD_PATH'));
+						$this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
 				}
 
@@ -574,7 +574,7 @@ class Comment extends Model
 					jimport('joomla.filesystem.file');
 					if (!\JFile::upload($fileTemp, $uploadPath))
 					{
-						$this->setError(\JText::_('PLG_HUBZERO_COMMENTS_ERROR_MOVING_FILE'));
+						$this->setError(\Lang::txt('PLG_HUBZERO_COMMENTS_ERROR_MOVING_FILE'));
 					}
 					else
 					{

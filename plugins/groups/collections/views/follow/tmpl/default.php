@@ -37,23 +37,23 @@ $this->juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
-<form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
 	<p class="overview">
 		<span class="title count">
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
 		<span class="posts count">
-			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?>
+			<?php echo Lang::txt('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-		<a class="icon-add add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
-			<?php echo JText::_('New post'); ?>
+		<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+			<?php echo Lang::txt('New post'); ?>
 		</a>
 	<?php } else { ?>
-		<a class="icon-follow follow btn tooltips" title="<?php echo JText::_('Repost :: Watch this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
-			<?php echo JText::_('Follow'); //Repost collection ?>
+		<a class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>" href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
+			<?php echo Lang::txt('Follow'); //Repost collection ?>
 		</a>
 	<?php } ?>
 <?php } ?>
@@ -78,7 +78,7 @@ if ($this->rows->total() > 0)
 			$type = 'link';
 		}
 ?>
-		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
 				$this->view('default_' . $type, 'post')
@@ -97,39 +97,39 @@ if ($this->rows->total() > 0)
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
+							<?php echo Lang::txt('%s likes', $item->get('positive', 0)); ?>
 						</span>
 						<span class="comments">
-							<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
+							<?php echo Lang::txt('%s comments', $item->get('comments', 0)); ?>
 						</span>
 						<span class="reposts">
-							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
+							<?php echo Lang::txt('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
 			<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
 				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
-						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
-							<span><?php echo JText::_('Edit'); ?></span>
+						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
+							<span><?php echo Lang::txt('Edit'); ?></span>
 						</a>
 				<?php } else { ?>
-						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
-							<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
+						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
+							<span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
 						</a>
 				<?php } ?>
-						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
-							<span><?php echo JText::_('Comment'); ?></span>
+						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
+							<span><?php echo Lang::txt('Comment'); ?></span>
 						</a>
-						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
-							<span><?php echo JText::_('Collect'); ?></span>
+						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
+							<span><?php echo Lang::txt('Collect'); ?></span>
 						</a>
 				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
-						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
-							<span><?php echo JText::_('Delete'); ?></span>
+						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
+							<span><?php echo Lang::txt('Delete'); ?></span>
 						</a>
 				<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
-						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
-							<span><?php echo JText::_('Remove'); ?></span>
+						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
+							<span><?php echo Lang::txt('Remove'); ?></span>
 						</a>
 				<?php } ?>
 					</div><!-- / .actions -->
@@ -138,39 +138,39 @@ if ($this->rows->total() > 0)
 
 			<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
 						</a>
 						posted
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
 			<?php } ?>
 			<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->member, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a>
 						onto
-						<a href="<?php echo JRoute::_($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
+						<a href="<?php echo Route::url($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
 							<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -187,10 +187,10 @@ else
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
 				<ol>
-					<li><?php echo JText::_('Find images, files, links or text you want to share.'); ?></li>
-					<li><?php echo JText::_('Click on "New post" button.'); ?></li>
-					<li><?php echo JText::_('Add anything extra you want (tags are nice).'); ?></li>
-					<li><?php echo JText::_('Done!'); ?></li>
+					<li><?php echo Lang::txt('Find images, files, links or text you want to share.'); ?></li>
+					<li><?php echo Lang::txt('Click on "New post" button.'); ?></li>
+					<li><?php echo Lang::txt('Add anything extra you want (tags are nice).'); ?></li>
+					<li><?php echo Lang::txt('Done!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
 			<!-- <div class="questions">
@@ -199,7 +199,7 @@ else
 			</div><!- / .post-type -->
 	<?php } else { ?>
 			<div class="instructions">
-				<p><?php echo JText::_('No posts available for this collection.'); ?></p>
+				<p><?php echo Lang::txt('No posts available for this collection.'); ?></p>
 			</div><!-- / .instructions -->
 	<?php } ?>
 		</div><!-- / #collection-introduction -->

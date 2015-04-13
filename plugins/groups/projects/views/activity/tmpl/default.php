@@ -60,27 +60,27 @@ if (count($this->activities) > 0 ) {
 			<tr>
 				<td class="p-ima">
 					<?php if ($i == $more) { echo '<a name="more"></a>'; } ?>
-					<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'. JRoute::_('index.php?option=' . $this->option . '&alias=' . $projects[$pid]->alias . '&task=media') .'" alt="' . $this->escape($title) . '" /></a>'; ?>
+					<?php echo '<a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'. Route::url('index.php?option=' . $this->option . '&alias=' . $projects[$pid]->alias . '&task=media') .'" alt="' . $this->escape($title) . '" /></a>'; ?>
 				</td>
 				<td>
 					<span class="rightfloat mini faded<?php echo $timeclass; ?>">
 						<?php echo JHTML::_('date.relative', $a->recorded); ?>
 					</span>
 					<span class="project-name">
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option.'&task=view&'.$goto); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option.'&task=view&'.$goto); ?>">
 							<?php echo $this->escape($title); ?>
 						</a>
 					</span>
 					<div class="mline <?php echo $class; ?><?php if ($a->admin) { echo ' admin-action'; } ?>" id="tr_<?php echo $a->id; ?>">
 						<span>
-							<span class="actor"><?php echo $a->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $a->name; ?></span>
+							<span class="actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
 							<?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>
 						</span>
 					</div>
 
 					<?php if ($a->commentable) { ?>
 						<span class="comment">
-							<?php if (count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('COM_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('COM_PROJECTS_COMMENTS'); } ?>  <?php if (isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('COM_PROJECTS_NEW').'</span>'; } ?>
+							<?php if (count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.Lang::txt('COM_PROJECTS_COMMENT') : ' '.count($comments).' '.Lang::txt('COM_PROJECTS_COMMENTS'); } ?>  <?php if (isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.Lang::txt('COM_PROJECTS_NEW').'</span>'; } ?>
 						</span>
 						<?php  if (count($comments) > 0) { // Show Comments ?>
 							<ol class="comments" id="comments_<?php echo $a->id; ?>">
@@ -101,15 +101,15 @@ if (count($this->activities) > 0 ) {
 		</tbody>
 	</table>
 <?php } else { ?>
-	<p class="noresults"><?php echo JText::_('COM_PROJECTS_NO_ACTIVITIES'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('COM_PROJECTS_NO_ACTIVITIES'); ?></p>
 <?php } ?>
 
 <div id="more-updates" class="nav_pager">
 	<?php
 	if ($this->total > $this->filters['limit']) {
 		$limit = $this->filters['limit'] + $this->limit; ?>
-		<p><a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->gid.'&active=projects&action=updates&limit='.$limit.'&prev='.$this->filters['limit']);  ?>"><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
+		<p><a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->gid.'&active=projects&action=updates&limit='.$limit.'&prev='.$this->filters['limit']);  ?>"><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 	<?php } else if ($this->filters['limit'] != $this->limit) { ?>
-		<p><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+		<p><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 	<?php } ?>
 </div><!-- / #more-updates -->

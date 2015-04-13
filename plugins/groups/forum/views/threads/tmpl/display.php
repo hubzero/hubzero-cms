@@ -44,8 +44,8 @@ $this->css()
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>">
-			<?php echo JText::_('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
+		<a class="icon-comments comments btn" href="<?php echo Route::url($this->category->link()); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</li>
 </ul>
@@ -81,14 +81,14 @@ $this->css()
 				?>
 				<ol class="comments">
 					<li>
-						<p><?php echo JText::_('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p>
+						<p><?php echo Lang::txt('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p>
 					</li>
 				</ol>
 				<?php
 			}
 			?>
 
-		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
+		<form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
 			<?php
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
@@ -106,17 +106,17 @@ $this->css()
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<div class="container">
-			<h4><?php echo JText::_('PLG_GROUPS_FORUM_ALL_TAGS'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_TAGS'); ?></h4>
 			<?php if ($this->thread->tags('cloud')) { ?>
 				<?php echo $this->thread->tags('cloud'); ?>
 			<?php } else { ?>
-				<p><?php echo JText::_('PLG_GROUPS_FORUM_NONE'); ?></p>
+				<p><?php echo Lang::txt('PLG_GROUPS_FORUM_NONE'); ?></p>
 			<?php } ?>
 		</div><!-- / .container -->
 
 		<?php if ($this->thread->participants()->total() > 0) { ?>
 			<div class="container">
-				<h4><?php echo JText::_('PLG_GROUPS_FORUM_PARTICIPANTS'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_GROUPS_FORUM_PARTICIPANTS'); ?></h4>
 				<ul>
 				<?php
 					$anon = false;
@@ -125,7 +125,7 @@ $this->css()
 						if (!$participant->anonymous) {
 				?>
 					<li>
-						<a class="member" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>">
+						<a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->created_by); ?>">
 							<?php echo $this->escape(stripslashes($participant->name)); ?>
 						</a>
 					</li>
@@ -135,7 +135,7 @@ $this->css()
 				?>
 					<li>
 						<span class="member">
-							<?php echo JText::_('PLG_GROUPS_FORUM_ANONYMOUS'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'); ?>
 						</span>
 					</li>
 				<?php
@@ -148,7 +148,7 @@ $this->css()
 
 		<?php if ($this->thread->attachments()->total() > 0) { ?>
 			<div class="container">
-				<h4><?php echo JText::_('PLG_GROUPS_FORUM_ATTACHMENTS'); ?></h4>
+				<h4><?php echo Lang::txt('PLG_GROUPS_FORUM_ATTACHMENTS'); ?></h4>
 				<ul class="attachments">
 				<?php
 				foreach ($this->thread->attachments() as $attachment)
@@ -168,7 +168,7 @@ $this->css()
 						}
 				?>
 					<li>
-						<a class="<?php echo $cls; ?> attachment" href="<?php echo JRoute::_($base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
+						<a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
 							<?php echo $this->escape(stripslashes($title)); ?>
 						</a>
 					</li>
@@ -186,9 +186,9 @@ $this->css()
 <section class="below section">
 	<div class="subject">
 		<h3 class="post-comment-title">
-			<?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>
+			<?php echo Lang::txt('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>
 		</h3>
-		<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo Route::url($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
 				$anon = (!$juser->get('guest') ? 0 : 1);
@@ -199,44 +199,44 @@ $this->css()
 
 			<fieldset>
 			<?php if ($juser->get('guest')) { ?>
-				<p class="warning"><?php echo JText::_('PLG_GROUPS_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
+				<p class="warning"><?php echo Lang::txt('PLG_GROUPS_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
 			<?php } else { ?>
 				<p class="comment-title">
 					<strong>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong>
 					<span class="permalink">
-						<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
-						<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 
 				<label for="field_comment">
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
 					echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
 				<label>
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_YOUR_TAGS'); ?>:
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_YOUR_TAGS'); ?>:
 					<?php
 						echo $this->autocompleter('tags', 'tags', $this->escape($this->thread->tags('string')), 'actags');
 					?>
 				</label>
 
 				<fieldset>
-					<legend><?php echo JText::_('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
+					<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
 						<label for="upload">
-							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
 						</label>
 
 						<label for="upload-description">
-							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
 							<input type="text" name="description" id="upload-description" value="" />
 						</label>
 					</div>
@@ -244,17 +244,17 @@ $this->css()
 
 				<label for="field-anonymous" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
-					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
 
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+					<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
 				</p>
 			<?php } ?>
 
 				<div class="sidenote">
 					<p>
-						<strong><?php echo JText::_('PLG_GROUPS_FORUM_KEEP_POLITE'); ?></strong>
+						<strong><?php echo Lang::txt('PLG_GROUPS_FORUM_KEEP_POLITE'); ?></strong>
 					</p>
 				</div>
 			</fieldset>

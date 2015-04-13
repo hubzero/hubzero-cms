@@ -80,14 +80,14 @@ class Slider extends Macro
 
 		// needed objects
 		$db     = \JFactory::getDBO();
-		$option = \JRequest::getCmd('option');
-		$config = \JComponentHelper::getParams($option);
+		$option = \Request::getCmd('option');
+		$config = \Component::params($option);
 
 		// define a base url
 		switch ($option)
 		{
 			case 'com_groups':
-				$cn = \JRequest::getVar('cn');
+				$cn = \Request::getVar('cn');
 				$group = Group::getInstance($cn);
 
 				$base_url  = DS . trim($config->get('uploadpath', 'site/groups'), DS) . DS;

@@ -56,17 +56,17 @@ class TokenProb extends \JTable
 		$this->token = trim($this->token);
 		if (!$this->token)
 		{
-			$this->setError(\JText::_('Entry must contain a token.'));
+			$this->setError(\Lang::txt('Entry must contain a token.'));
 			return false;
 		}
 
 		if (!$this->created)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 		}
 		if ($this->id)
 		{
-			$this->modified = ($this->modified ? $this->modified : \JFactory::getDate()->toSql());
+			$this->modified = ($this->modified ? $this->modified : \Date::toSql());
 		}
 
 		return true;

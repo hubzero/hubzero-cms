@@ -62,7 +62,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 					<textarea name="description" cols="50" rows="2">{{gradepolicy.description}}</textarea>
 				</div>
 				<button type="submit">Submit</button>
-				<a class="restore-defaults" href="<?php echo JRoute::_($base. '&action=restoredefaults') ?>">Restore Defaults</a>
+				<a class="restore-defaults" href="<?php echo Route::url($base. '&action=restoredefaults') ?>">Restore Defaults</a>
 			{{else}}
 				<p class="warning">Sorry, you do not have permission to edit the grade policy for this course</p>
 			{{/if}}
@@ -133,7 +133,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 				<div class="extended-info">
 					<div class="picture">
 						<img src="<?php echo Juri::base(); ?>{{this.full}}" />
-						<a class="more-details" href="<?php echo JRoute::_($base.'&id=') ?>{{this.user_id}}">More details</a>
+						<a class="more-details" href="<?php echo Route::url($base.'&id=') ?>{{this.user_id}}">More details</a>
 					</div>
 					<div class="extended-info-extra">
 						<h6>Joined Course</h6>
@@ -297,7 +297,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 
 	<div class="clear"></div>
 
-	<form action="<?php echo JRoute::_($base); ?>" class="progress-form"></form>
+	<form action="<?php echo Route::url($base); ?>" class="progress-form"></form>
 
 	<div class="clear"></div>
 

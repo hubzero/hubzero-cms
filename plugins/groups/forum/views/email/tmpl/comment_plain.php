@@ -35,7 +35,7 @@ $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
 $base = rtrim($juri->base(), DS);
-$sef  = JRoute::_($this->thread->link());
+$sef  = Route::url($this->thread->link());
 $link = $base . DS . trim($sef, DS);
 
 // Build message
@@ -43,10 +43,10 @@ $message = '';
 if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
-	$message .= JText::_('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') . "\n";
-	$message .= 'Message from ' . $base . ' / ' . JText::sprintf('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')) . "\n";
+	$message .= Lang::txt('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') . "\n";
+	$message .= 'Message from ' . $base . ' / ' . Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')) . "\n";
 }
-$message .= ($this->post->get('anonymous')) ? JText::_('PLG_GROUPS_FORUM_ANONYMOUS') : $this->post->creator('name') . ' (' . $this->post->creator('username') . ')';
+$message .= ($this->post->get('anonymous')) ? Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS') : $this->post->creator('name') . ' (' . $this->post->creator('username') . ')';
 $message .= ' wrote (in ' . $this->group->get('description') . ': ' . $this->section->get('title') . ' - ' . $this->category->get('title') . ' - ' . $this->thread->get('title') . '):';
 
 $output = html_entity_decode($this->post->content('clean'), ENT_COMPAT, 'UTF-8');
@@ -60,7 +60,7 @@ $output = preg_replace_callback(
 );
 
 $message .= $output;
-$message .= "\n\n" . JText::_('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') . ":\n" . $this->get('unsubscribe');
+$message .= "\n\n" . Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') . ":\n" . $this->get('unsubscribe');
 
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 

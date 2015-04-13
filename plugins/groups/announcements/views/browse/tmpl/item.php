@@ -58,7 +58,7 @@ if ($this->announcement->get('sticky'))
 }
 
 //did the user already close this
-$closed = JRequest::getWord('group_announcement_' . $this->announcement->get('id'), '', 'cookie');
+$closed = Request::getWord('group_announcement_' . $this->announcement->get('id'), '', 'cookie');
 if ($closed == 'closed' && $this->showClose == true)
 {
 	return;
@@ -67,7 +67,7 @@ if ($closed == 'closed' && $this->showClose == true)
 
 <div class="announcement-container <?php echo $class; ?>">
 	<?php if (strstr($class, 'unpublished')) : ?>
-		<span class="unpublished-message"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_NOT_ACTIVE'); ?></span>
+		<span class="unpublished-message"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_NOT_ACTIVE'); ?></span>
 	<?php endif; ?>
 	<div class="announcement">
 		<?php echo $this->announcement->content('parsed'); ?>
@@ -99,19 +99,19 @@ if ($closed == 'closed' && $this->showClose == true)
 		<?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
 			<dd class="entry-options">
 				<?php if ($this->juser->get('id') == $this->announcement->get('created_by')) : ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->announcement->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
-						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
+					<a class="icon-edit edit" href="<?php echo Route::url($this->announcement->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 					</a>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->announcement->link('delete')); ?>" data-confirm="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
-						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
+					<a class="icon-delete delete" href="<?php echo Route::url($this->announcement->link('delete')); ?>" data-confirm="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
 					</a>
 				<?php endif; ?>
 			</dd>
 		<?php endif; ?>
 		</dl>
 	<?php if ($this->showClose) : ?>
-		<a class="close" href="<?php echo JRoute::_($this->announcement->link()); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
-			<span><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
+		<a class="close" href="<?php echo Route::url($this->announcement->link()); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
+			<span><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
 		</a>
 	<?php endif; ?>
 	</div>

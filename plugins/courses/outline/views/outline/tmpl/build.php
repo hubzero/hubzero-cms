@@ -37,7 +37,7 @@ $base = $this->course->offering()->link();
 
 <div class="header">
 	<a href="#" class="trash btn icon-trash">Deleted Assets</a>
-	<a href="<?php echo JRoute::_($base . '&active=outline'); ?>" class="done btn icon-check">Done</a>
+	<a href="<?php echo Route::url($base . '&active=outline'); ?>" class="done btn icon-check">Done</a>
 	<h3><?php echo $this->title; ?></h2>
 </div>
 
@@ -204,10 +204,10 @@ $base = $this->course->offering()->link();
 <?php
 				foreach ($unit->assets() as $a)
 				{
-					$href = JRoute::_($base . '&asset=' . $a->get('id'));
+					$href = Route::url($base . '&asset=' . $a->get('id'));
 					if ($a->get('type') == 'video')
 					{
-						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+						$href = Route::url($base . '&active=outline&a=' . $unit->get('alias'));
 					}
 					echo '<li class="asset-group-item"><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 				}
@@ -235,5 +235,5 @@ $base = $this->course->offering()->link();
 <div class="session-expired">
 	<h3>Session Expired</h3>
 	<p>Sorry. Your session has expired. You must login again to proceed.</p>
-	<p><a href="<?php echo JRoute::_('index.php?option=com_users&view=login&return='.base64_encode($_SERVER['REQUEST_URI'])); ?>" class="btn btn-warning">Login</a>
+	<p><a href="<?php echo Route::url('index.php?option=com_users&view=login&return='.base64_encode($_SERVER['REQUEST_URI'])); ?>" class="btn btn-warning">Login</a>
 </div>

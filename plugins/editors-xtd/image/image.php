@@ -38,9 +38,9 @@ class plgButtonImage extends JPlugin
 	function onDisplay($name, $asset, $author)
 	{
 		$app = JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_media');
+		$params = Component::params('com_media');
 		$user = JFactory::getUser();
-		$extension = JRequest::getCmd('option');
+		$extension = Request::getCmd('option');
 		if ($asset == ''){
 			$asset = $extension;
 		}
@@ -57,7 +57,7 @@ class plgButtonImage extends JPlugin
 			$button = new JObject;
 			$button->set('modal', true);
 			$button->set('link', $link);
-			$button->set('text', JText::_('PLG_IMAGE_BUTTON_IMAGE'));
+			$button->set('text', Lang::txt('PLG_IMAGE_BUTTON_IMAGE'));
 			$button->set('name', 'image');
 			$button->set('options', "{handler: 'iframe', size: {x: 800, y: 500}}");
 			return $button;

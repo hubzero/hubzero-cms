@@ -125,7 +125,7 @@ class plgSearchWiki extends \JPlugin
 			{
 				continue;
 			}
-			$row->set_link(JRoute::_($row->get_raw_link()));
+			$row->set_link(Route::url($row->get_raw_link()));
 			// rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
 			//$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
 			$row->set_description(strip_tags($row->get_description()));

@@ -69,13 +69,13 @@ class plgUserConstantContact extends JPlugin
 		$_ccManagePref	= $this->params->get('ccManageEmailPreference', 0);
 
 		//make sure we want Constant Contact to manage email preferences
-		if(!$_ccManagePref)
+		if (!$_ccManagePref)
 		{
 			return;
 		}
 
 		//make sure we have a valid email address
-		if(!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
+		if (!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
 		{
 			return;
 		}
@@ -104,7 +104,7 @@ class plgUserConstantContact extends JPlugin
 		$ccContact = $ConstantContact->searchContactsByEmail( $userEmailAddress );
 
 		//create contact if one does not exist
-		if(!$ccContact)
+		if (!$ccContact)
 		{
 			//build new contact
 			$Contact = new Contact();
@@ -117,7 +117,7 @@ class plgUserConstantContact extends JPlugin
 		}
 
 		//if we are wanting to opt in and we currently are on do-not-mail
-		if($ccContact[0]->status == 'Do Not Mail' && $userEmailPreferenceOption == 2)
+		if ($ccContact[0]->status == 'Do Not Mail' && $userEmailPreferenceOption == 2)
 		{
 			//load contact
 			$Contact = $ConstantContact->getContactDetails( $ccContact[0] );
@@ -129,7 +129,7 @@ class plgUserConstantContact extends JPlugin
 			//update contact
 			$ccContact = $ConstantContact->updateContact( $Contact );
 		}
-		else if($ccContact[0]->status == 'Active' && $userEmailPreferenceOption == 0)
+		else if ($ccContact[0]->status == 'Active' && $userEmailPreferenceOption == 0)
 		{
 			//load contact
 			$Contact = $ConstantContact->getContactDetails( $ccContact[0] );
@@ -150,7 +150,7 @@ class plgUserConstantContact extends JPlugin
 		$userEmailAddress 	= $user->get('email');
 
 		//make sure we have a valid email address
-		if(!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
+		if (!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
 		{
 			return;
 		}
@@ -180,7 +180,7 @@ class plgUserConstantContact extends JPlugin
 		$ccContact = $ConstantContact->searchContactsByEmail( $userEmailAddress );
 
 		//if we have contact object
-		if($ccContact)
+		if ($ccContact)
 		{
 			//load contact
 			$Contact = $ConstantContact->getContactDetails( $ccContact[0] );

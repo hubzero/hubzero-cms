@@ -35,14 +35,14 @@ $year  = date("Y", strtotime($this->event->publish_up));
 $month = date("m", strtotime($this->event->publish_up));
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 <ul id="page_options">
 	<li>
-		<a class="icon-date btn date" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
-			<?php echo JText::_('Back to Calendar'); ?>
+		<a class="icon-date btn date" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&year='.$year.'&month='.$month); ?>">
+			<?php echo Lang::txt('Back to Calendar'); ?>
 		</a>
 	</li>
 </ul>
@@ -52,10 +52,10 @@ $month = date("m", strtotime($this->event->publish_up));
 		<?php echo $this->event->title; ?>
 	</span>
 	<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
+		<a class="delete" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->id); ?>">
 			Delete
 		</a>
-		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->id); ?>">
+		<a class="edit" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->id); ?>">
 			Edit
 		</a>
 	<?php endif; ?>
@@ -64,22 +64,22 @@ $month = date("m", strtotime($this->event->publish_up));
 <div class="event-sub-menu">
 	<ul>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->id); ?>">
-				<span><?php echo JText::_('Details'); ?></span>
+			<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=details&event_id='.$this->event->id); ?>">
+				<span><?php echo Lang::txt('Details'); ?></span>
 			</a>
 		</li>
 		<?php if (isset($this->event->registerby) && $this->event->registerby != '' && $this->event->registerby != '0000-00-00 00:00:00') : ?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>">
-					<span><?php echo JText::_('Register'); ?></span>
+				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->id); ?>">
+					<span><?php echo Lang::txt('Register'); ?></span>
 				</a>
 			</li>
 		<?php endif; ?>
 
 		<?php if ($this->juser->get('id') == $this->event->created_by || $this->authorized == 'manager') : ?>
 			<li class="active">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->id); ?>">
-					<span><?php echo JText::_('Registrants ('.count($this->registrants).')'); ?></span>
+				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->id); ?>">
+					<span><?php echo Lang::txt('Registrants ('.count($this->registrants).')'); ?></span>
 				</a>
 			</li>
 		<?php endif; ?>
@@ -91,13 +91,13 @@ $month = date("m", strtotime($this->event->publish_up));
 	<thead>
 		<tr>
 			<th colspan="3">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=download&event_id='.$this->event->id); ?>">Download Registrants (.csv)</a>
+				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=download&event_id='.$this->event->id); ?>">Download Registrants (.csv)</a>
 			</th>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('Name'); ?></th>
-			<th><?php echo JText::_('Email'); ?></th>
-			<th><?php echo JText::_('Register Date'); ?></th>
+			<th><?php echo Lang::txt('Name'); ?></th>
+			<th><?php echo Lang::txt('Email'); ?></th>
+			<th><?php echo Lang::txt('Register Date'); ?></th>
 		</tr>
 	</thead>
 	<tbody>

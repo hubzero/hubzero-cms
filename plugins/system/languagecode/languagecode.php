@@ -122,7 +122,7 @@ class plgSystemLanguagecode extends JPlugin
 			<field
 				name="'.strtolower($tag).'"
 				type="text"
-				description="' . htmlspecialchars(JText::sprintf('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']), ENT_COMPAT, 'UTF-8') . '"
+				description="' . htmlspecialchars(Lang::txt('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']), ENT_COMPAT, 'UTF-8') . '"
 				translate_description="false"
 				label="' . $tag . '"
 				translate_label="false"

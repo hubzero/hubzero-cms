@@ -39,17 +39,17 @@ $this->css();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
-			<legend><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
 
 			<p class="warning">
-				<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))); ?>
+				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))); ?>
 			</p>
 
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" />
-				<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
+				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
@@ -65,10 +65,10 @@ $this->css();
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
+			<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
 
 			<?php if (!$this->no_html) { ?>
-				<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?></a>
+				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

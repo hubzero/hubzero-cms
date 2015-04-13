@@ -55,7 +55,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas = array(
-			'contributions' => JText::_('PLG_MEMBERS_CONTRIBUTIONS'),
+			'contributions' => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS'),
 			'icon' => 'f02d'
 		);
 		return $areas;
@@ -92,9 +92,9 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Incoming paging vars
-		$limit = JRequest::getInt('limit', 25);
-		$limitstart = JRequest::getInt('limitstart', 0);
-		$sort = strtolower(JRequest::getVar('sort', 'date'));
+		$limit = Request::getInt('limit', 25);
+		$limitstart = Request::getInt('limitstart', 0);
+		$sort = strtolower(Request::getVar('sort', 'date'));
 		if (!in_array($sort, array('usage', 'title', 'date')))
 		{
 			$sort = 'date';
@@ -109,7 +109,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the active category
-		$area = JRequest::getVar('area', '');
+		$area = Request::getVar('area', '');
 		if ($area)
 		{
 			$activeareas = array($area);

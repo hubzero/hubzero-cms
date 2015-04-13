@@ -31,9 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
-$no_html = JRequest::getInt('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 
 $base = $this->offering->link() . '&active=' . $this->name;
 if ($this->post->id) {
@@ -47,42 +45,42 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 	$this->post = new \Components\Forum\Models\Post($this->post);
 }
 ?>
-	<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" class="comment-edit" enctype="multipart/form-data" data-thread="<?php echo $this->post->get('thread'); ?>">
+	<form action="<?php echo Route::url($base); ?>" method="post" id="commentform" class="comment-edit" enctype="multipart/form-data" data-thread="<?php echo $this->post->get('thread'); ?>">
 	<?php if (!$no_html) { ?>
 		<p class="comment-member-photo">
 			<a class="comment-anchor" name="commentform"></a>
 			<?php
 			$anone = 1;
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
 				$anon = 0;
 			}
 			$now = JFactory::getDate();
 			?>
-			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
+			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 		</p>
 
 		<fieldset>
 	<?php } ?>
-	<?php if ($juser->get('guest')) { ?>
-			<p class="warning"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
+	<?php if (User::isGuest()) { ?>
+			<p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
 	<?php } else { ?>
 			<?php if (!$no_html) { ?>
 			<p class="comment-title">
 				<strong>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
 				</strong>
 				<span class="permalink">
 					<span class="comment-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-					<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+					<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+					<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
+					<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 				</span>
 			</p>
 			<?php } ?>
 
 			<label for="field_<?php echo $this->post->get('id'); ?>_comment">
-				<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
+				<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 				<?php
 				/* <textarea name="fields[comment]" id="field_<?php echo $this->post->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->content('raw')); ?></textarea> */
 
@@ -94,16 +92,16 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 				<div class="col span-half">
 		<?php } ?>
 			<label for="field-upload" id="comment-upload">
-				<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
+				<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
 				<input type="file" name="upload" id="field-upload" />
 			</label>
 		<?php if (!$this->post->get('parent')) { ?>
 				</div>
 				<div class="col span-half omega">
 					<label for="field-category_id">
-						<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
+						<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
 						<select name="fields[category_id]" id="field-category_id">
-							<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
+							<option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
 						<?php
 						foreach ($this->sections as $section)
 						{
@@ -129,11 +127,11 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 
 			<label for="field-anonymous" id="comment-anonymous-label">
 				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
+				<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 			</label>
 
 			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 			</p>
 	<?php } ?>
 	<?php if (!$no_html) { ?>
@@ -154,7 +152,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 		<input type="hidden" name="action" value="savethread" />
 
 		<input type="hidden" name="section" value="<?php //echo $this->filters['section']; ?>" />
-		<input type="hidden" name="return" value="<?php //echo base64_encode(JRoute::_($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias)); ?>" />
+		<input type="hidden" name="return" value="<?php //echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias)); ?>" />
 
 		<?php echo JHTML::_('form.token'); ?>
 	<?php if (!$no_html) { ?>

@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Load asset if applicable
-$id     = JRequest::getInt('asset_id', null);
+$id     = Request::getInt('asset_id', null);
 $asset  = new CoursesModelAsset($id);
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
 $assets = array();

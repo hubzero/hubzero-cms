@@ -42,7 +42,7 @@ $rows = $this->offering->announcements(array(
 	<div class="sub-section announcements">
 		<div class="grid">
 			<div class="col span-half">
-				<h3><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_LATEST'); ?></h3>
+				<h3><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_LATEST'); ?></h3>
 				<?php
 				if ($rows->total() > 0)
 				{
@@ -71,22 +71,22 @@ $rows = $this->offering->announcements(array(
 				else
 				{
 				?>
-					<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NONE_MADE'); ?></p>
+					<p><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NONE_MADE'); ?></p>
 				<?php
 				}
 				?>
 			</div><!-- / .col -->
 
 			<div class="col span-half omega">
-				<h3><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?></h3>
-				<form action="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
+				<h3><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?></h3>
+				<form action="<?php echo Route::url($this->offering->link() . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
 					<fieldset>
 						<legend>
-							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
+							<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
 						</legend>
 
 						<label for="field_content">
-							<span class="label-text"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span></span>
+							<span class="label-text"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span></span>
 							<?php
 							echo \JFactory::getEditor()->display('fields[content]', '', '', '', 35, 3, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 							?>
@@ -94,11 +94,11 @@ $rows = $this->offering->announcements(array(
 
 						<label for="field-priority" id="priority-label">
 							<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" />
-							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
+							<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 					<div class="clear"></div>

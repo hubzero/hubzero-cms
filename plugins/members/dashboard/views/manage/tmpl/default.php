@@ -33,13 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="admin-header">
 	<a class="icon-add button push-module" href="<?php echo 'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard&task=push'; ?>">
-		<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PUSH_TITLE'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_TITLE'); ?>
 	</a>
 	<a class="icon-add button add-module" href="<?php echo 'index.php?option=com_members&controller=plugins&task=manage&plugin=dashboard&task=add'; ?>">
-		<?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
 	</a>
 	<h3>
-		<?php echo JText::_('PLG_MEMBERS_DASHBOARD_MANAGE'); ?>
+		<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MANAGE'); ?>
 	</h3>
 </div>
 
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 	<div class="modules-empty">
-		<h3><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADMIN_EMPTY_TITLE'); ?></h3>
-		<p><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADMIN_EMPTY_DESC'); ?></p>
+		<h3><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADMIN_EMPTY_TITLE'); ?></h3>
+		<p><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADMIN_EMPTY_DESC'); ?></p>
 	</div>
 </div>

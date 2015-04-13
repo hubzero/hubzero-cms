@@ -105,7 +105,7 @@ class Video extends Macro
 		$default_width  = 640;
 		$default_height = 380;
 
-		$this->config = \JComponentHelper::getParams('com_wiki');
+		$this->config = \Component::params('com_wiki');
 		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
@@ -294,7 +294,7 @@ class Video extends Macro
 	{
 		if (substr($file, 0, 1) == DS)
 		{
-			$path = JPATH_ROOT . $file;
+			$path = PATH_APP . $file;
 		}
 		else
 		{
@@ -317,7 +317,7 @@ class Video extends Macro
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
 				}
 			}
-			$path  = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
+			$path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}
@@ -511,7 +511,7 @@ class Video extends Macro
 		$this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
 		if (in_array(strtolower(\JFile::getExt($file)), $this->imgs))
 		{
-			if (\JRequest::getVar('format') == 'pdf')
+			if (\Request::getVar('format') == 'pdf')
 			{
 				return $this->_path($file);
 			}
@@ -519,6 +519,6 @@ class Video extends Macro
 		}
 		$link .= $this->pagename . DS . $type . ':' . $file;
 
-		return \JRoute::_($link);
+		return \Route::url($link);
 	}
 }

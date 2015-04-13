@@ -53,7 +53,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	public function onMembersAreas($user, $member)
 	{
 		$areas = array(
-			'collections' => JText::_('PLG_MEMBERS_' . strtoupper($this->_name)),
+			'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name)),
 			'icon' => 'f005'
 		);
 		return $areas;
@@ -112,7 +112,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			{
 				$default = 'collections';
 			}
-			$this->action = JRequest::getVar('action', $default);
+			$this->action = Request::getVar('action', $default);
 
 			$juri = JURI::getInstance();
 			$path = $juri->getPath();
@@ -140,7 +140,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 								}
 								else
 								{
-									JRequest::setVar('post', $bits[1]);
+									Request::setVar('post', $bits[1]);
 									if (isset($bits[2]))
 									{
 										if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment')))
@@ -170,13 +170,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 							$this->action = $bits[0] . 'collection';
 							if (isset($bits[1]))
 							{
-								JRequest::setVar('unfollow', $bits[1]);
+								Request::setVar('unfollow', $bits[1]);
 							}
 						break;
 
 						default:
 							$this->action = 'collection';
-							JRequest::setVar('board', $bits[0]);
+							Request::setVar('board', $bits[0]);
 
 							if (isset($bits[1]))
 							{
@@ -268,11 +268,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _login()
 	{
-		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
 
 		$app = JFactory::getApplication();
-		$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
-		$app->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($route)));
+		$app->enqueueMessage(Lang::txt('MEMBERS_LOGIN_NOTICE'), 'warning');
+		$app->redirect(Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)));
 		return;
 	}
 
@@ -302,8 +302,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		$view->filters['limit']       = Request::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = Request::getInt('limitstart', 0);
 
 		//$filters = array();
 		//$filters['user_id'] = $this->juser->get('id');
@@ -392,8 +392,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		$view->filters['limit']       = Request::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = Request::getInt('limitstart', 0);
 
 		$filters = array();
 		$filters['user_id'] = $this->juser->get('id');
@@ -468,9 +468,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'limit'   => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
-			'start'   => JRequest::getInt('limitstart', 0),
-			'search'  => JRequest::getVar('search', ''),
+			'limit'   => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'   => Request::getInt('limitstart', 0),
+			'search'  => Request::getVar('search', ''),
 			'state'   => 1,
 			'user_id' => $this->juser->get('id')
 		);
@@ -542,19 +542,19 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'limit'         => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
-			'start'         => JRequest::getInt('limitstart', 0),
+			'limit'         => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'         => Request::getInt('limitstart', 0),
 			'user_id'       => $this->member->get('uidNumber'),
-			'search'        => JRequest::getVar('search', ''),
+			'search'        => Request::getVar('search', ''),
 			'state'         => 1,
-			'collection_id' => JRequest::getVar('board', ''),
+			'collection_id' => Request::getVar('board', ''),
 			'access'        => -1
 		);
 
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			JError::raiseError(400, JText::_('Collection not found.'));
+			JError::raiseError(400, Lang::txt('Collection not found.'));
 			return;
 		}
 
@@ -567,7 +567,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Is it a private board?
 		if ($view->collection->get('access') == 4 && $this->juser->get('id') != $this->member->get('uidNumber'))
 		{
-			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
+			JError::raiseError(403, Lang::txt('Your are not authorized to access this content.'));
 			return;
 		}
 
@@ -631,7 +631,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		if ($this->juser->get('id') == $this->member->get('uidNumber'))
 		{
-			JError::raiseError(500, JText::_('Your cannot follow your own content.'));
+			JError::raiseError(500, Lang::txt('Your cannot follow your own content.'));
 			return;
 		}
 
@@ -647,10 +647,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'collection':
-				$collection = $this->model->collection(JRequest::getVar('board', ''));
+				$collection = $this->model->collection(Request::getVar('board', ''));
 				if (!$collection->exists())
 				{
-					JError::raiseError(400, JText::_('Collection does not exist'));
+					JError::raiseError(400, Lang::txt('Collection does not exist'));
 					return;
 				}
 				$id = $collection->get('id');
@@ -663,10 +663,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->setError($this->model->getError());
 		}
 
-		if (JRequest::getInt('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = JRoute::_($this->member->getLink() . '&active=collections' . $sfx);
+			$response->href = Route::url($this->member->getLink() . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -698,7 +698,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Is it a private board?
 		if ($this->juser->get('id') == $this->member->get('uidNumber'))
 		{
-			JError::raiseError(500, JText::_('Your cannot unfollow your own content.'));
+			JError::raiseError(500, Lang::txt('Your cannot unfollow your own content.'));
 			return;
 		}
 
@@ -714,10 +714,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'collection':
-				$collection = $this->model->collection(JRequest::getVar('board', ''));
+				$collection = $this->model->collection(Request::getVar('board', ''));
 				if (!$collection->exists())
 				{
-					JError::raiseError(400, JText::_('Collection does not exist'));
+					JError::raiseError(400, Lang::txt('Collection does not exist'));
 					return;
 				}
 				$id = $collection->get('id');
@@ -730,10 +730,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->setError($this->model->getError());
 		}
 
-		if (JRequest::getInt('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = JRoute::_($this->member->getLink() . '&active=collections' . $sfx);
+			$response->href = Route::url($this->member->getLink() . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -773,13 +773,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$this->jconfig = JFactory::getConfig();
 
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		$view->filters['limit']       = Request::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = Request::getInt('limitstart', 0);
 		$view->filters['user_id']     = $this->member->get('uidNumber');
 		//$view->filters['created_by']     = $this->member->get('uidNumber');
-		$view->filters['search']      = JRequest::getVar('search', '');
+		$view->filters['search']      = Request::getVar('search', '');
 		$view->filters['state']       = 1;
-		$view->filters['collection_id'] = JRequest::getVar('board', '');
+		$view->filters['collection_id'] = Request::getVar('board', '');
 
 		// Filters for returning results
 		$count = array(
@@ -856,10 +856,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'limit'       => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
-			'start'       => JRequest::getInt('limitstart', 0),
+			'limit'       => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'       => Request::getInt('limitstart', 0),
 			'created_by'  => $this->member->get('uidNumber'),
-			'search'      => JRequest::getVar('search', ''),
+			'search'      => Request::getVar('search', ''),
 			'state'       => 1,
 			'object_id'   => $this->member->get('uidNumber'),
 			'object_type' => 'member',
@@ -932,7 +932,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->name       = $this->_name;
 		$view->model      = $this->model;
 
-		$post_id = JRequest::getInt('post', 0);
+		$post_id = Request::getInt('post', 0);
 
 		$view->post = \Components\Collections\Models\Post::getInstance($post_id);
 
@@ -951,7 +951,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Check authorization
 		if (!$this->params->get('access-view-item'))
 		{
-			JError::raiseError(403, JText::_('PLG_MEMBERS' . strtoupper($this->_name) . 'NOT_AUTH'));
+			JError::raiseError(403, Lang::txt('PLG_MEMBERS' . strtoupper($this->_name) . 'NOT_AUTH'));
 			return;
 		}
 
@@ -963,7 +963,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$view->no_html = JRequest::getInt('no_html', 0);
+		$view->no_html = Request::getInt('no_html', 0);
 
 		if ($view->no_html)
 		{
@@ -1001,15 +1001,15 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('access-edit-item') && !$this->params->get('access-create-item'))
 		{
 			$app = JFactory::getApplication();
-			$app->enqueueMessage(JText::_('You are not authorized to perform this action.'), 'error');
-			$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name));
+			$app->enqueueMessage(Lang::txt('You are not authorized to perform this action.'), 'error');
+			$app->redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
 			return;
 		}
 
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 		if ($no_html)
 		{
-			$type = strtolower(JRequest::getWord('type', 'file'));
+			$type = strtolower(Request::getWord('type', 'file'));
 			if (!in_array($type, array('file', 'image', 'text', 'link')))
 			{
 				$type = 'file';
@@ -1042,16 +1042,16 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->params     = $this->params;
 		$view->no_html     = $no_html;
 
-		$id = JRequest::getInt('post', 0);
+		$id = Request::getInt('post', 0);
 
-		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
+		$view->collection = $this->model->collection(Request::getVar('board', 0));
 
 		$view->collections = $this->model->collections();
 		if (!$view->collections->total())
 		{
 			$view->collection->setup($this->member->get('uidNumber'), 'member');
 			$view->collections = $this->model->collections();
-			$view->collection = $this->model->collection(JRequest::getVar('board', 0));
+			$view->collection = $this->model->collection(Request::getVar('board', 0));
 		}
 
 		$view->entry = $view->collection->post($id);
@@ -1060,7 +1060,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$view->collection = $this->model->collection($view->entry->get('collection_id'));
 		}
 
-		if ($remove = JRequest::getInt('remove', 0))
+		if ($remove = Request::getInt('remove', 0))
 		{
 			if (!$view->entry->item()->removeAsset($remove))
 			{
@@ -1095,7 +1095,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		if ($this->juser->get('guest'))
 		{
@@ -1104,12 +1104,12 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Get model
 		$row = new \Components\Collections\Models\Item($fields['id']);
@@ -1122,12 +1122,12 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add some data
-		if ($files  = JRequest::getVar('fls', '', 'files', 'array'))
+		if ($files  = Request::getVar('fls', '', 'files', 'array'))
 		{
 			$row->set('_files', $files);
 		}
-		$row->set('_assets', JRequest::getVar('assets', null, 'post'));
-		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('_assets', Request::getVar('assets', null, 'post'));
+		$row->set('_tags', trim(Request::getVar('tags', '')));
 		$row->set('state', 1);
 		if (!$row->exists())
 		{
@@ -1142,7 +1142,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Create a post entry linking the item to the board
-		$p = JRequest::getVar('post', array(), 'post');
+		$p = Request::getVar('post', array(), 'post');
 
 		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
@@ -1151,7 +1151,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$post->set('original', 1);
 		}
 
-		$coltitle = JRequest::getVar('collection_title', '', 'post');
+		$coltitle = Request::getVar('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
 			$collection = new \Components\Collections\Models\Collection();
@@ -1180,7 +1180,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
+		$app->redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
 	/**
@@ -1195,15 +1195,15 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		// No board ID selected so present repost form
-		$repost = JRequest::getInt('repost', 0);
+		$repost = Request::getInt('repost', 0);
 		if (!$repost)
 		{
 			// Incoming
-			$post_id       = JRequest::getInt('post', 0);
-			$collection_id = JRequest::getVar('board', 0);
+			$post_id       = Request::getInt('post', 0);
+			$collection_id = Request::getVar('board', 0);
 
 			if (!$post_id && $collection_id)
 			{
@@ -1251,13 +1251,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$collection_id = JRequest::getInt('collection_id', 0);
+		$collection_id = Request::getInt('collection_id', 0);
 		if (!$collection_id)
 		{
 			$collection = new \Components\Collections\Models\Collection();
-			$collection->set('title', JRequest::getVar('collection_title', ''));
+			$collection->set('title', Request::getVar('collection_title', ''));
 			$collection->set('object_id', $this->juser->get('id'));
 			$collection->set('object_type', 'member');
 			if (!$collection->store())
@@ -1266,7 +1266,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 			$collection_id = $collection->get('id');
 		}
-		$item_id       = JRequest::getInt('item_id', 0);
+		$item_id       = Request::getInt('item_id', 0);
 
 		// Try loading the current board/bulletin to see
 		// if this has already been posted to the board (i.e., no duplicates)
@@ -1277,7 +1277,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			// No record found -- we're OK to add one
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
-			$post->description   = JRequest::getVar('description', '', 'none', 2);
+			$post->description   = Request::getVar('description', '', 'none', 2);
 			if ($post->check())
 			{
 				$this->setError($post->getError());
@@ -1296,7 +1296,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Display updated item stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
+			echo Lang::txt('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
 			exit;
 		}
 
@@ -1320,16 +1320,16 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Access check
 		if (!$this->params->get('access-create-item'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
 		}
 
 		// Incoming
-		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(Request::getInt('post', 0));
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
-		$msg = JText::_('Post removed.');
+		$msg = Lang::txt('Post removed.');
 		$type = 'passed';
 		if (!$post->remove())
 		{
@@ -1337,9 +1337,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
-		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
-		if (($no_html = JRequest::getInt('no_html', 0)))
+		if (($no_html = Request::getInt('no_html', 0)))
 		{
 			echo $route;
 			exit;
@@ -1365,21 +1365,21 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Authorization check
 		if (!$this->params->get('access-edit-item'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
 		}
 
 		// Incoming
-		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(Request::getInt('post', 0));
 
-		if (!$post->move(JRequest::getInt('board', 0)))
+		if (!$post->move(Request::getInt('board', 0)))
 		{
 			$this->setError($post->getError());
 		}
 
-		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name);
+		$route = Route::url($this->member->getLink() . '&active=' . $this->_name);
 
-		if (($no_html = JRequest::getInt('no_html', 0)))
+		if (($no_html = Request::getInt('no_html', 0)))
 		{
 			echo $route;
 			exit;
@@ -1405,30 +1405,30 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Access check
 		if (!$this->params->get('access-delete-item'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
 		}
 
 		// Incoming
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
-		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(Request::getInt('post', 0));
 		if (!$post->get('id'))
 		{
 			return $this->_collections();
 		}
 
-		$process = JRequest::getVar('process', '');
-		$confirmdel = JRequest::getVar('confirmdel', '');
+		$process = Request::getVar('process', '');
+		$confirmdel = Request::getVar('confirmdel', '');
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel || !JRequest::checkToken())
+		if (!$process || !$confirmdel || !Request::checkToken())
 		{
 			if ($process && !$confirmdel)
 			{
-				$this->setError(JText::_('PLG_GROUPS_' . strtoupper($this->_name) . '_ERROR_CONFIRM_DELETION'));
+				$this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_ERROR_CONFIRM_DELETION'));
 				if ($no_html)
 				{
 					echo '';
@@ -1464,7 +1464,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		$msg = JText::_('Post deleted.');
+		$msg = Lang::txt('Post deleted.');
 		$type = 'passed';
 
 		// Mark the entry as deleted
@@ -1477,7 +1477,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to collection
-		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		if ($no_html)
 		{
@@ -1503,7 +1503,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post');
+		$comment = Request::getVar('comment', array(), 'post');
 
 		// Instantiate a new comment object and pass it the data
 		$row = new \Hubzero\Item\Comment($this->database);
@@ -1544,7 +1544,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$id = JRequest::getInt('comment', 0);
+		$id = Request::getInt('comment', 0);
 		if (!$id)
 		{
 			return $this->_post();
@@ -1573,7 +1573,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	private function _vote()
 	{
 		// Incoming
-		$id = JRequest::getInt('post', 0);
+		$id = Request::getInt('post', 0);
 
 		// Get the post model
 		$post = \Components\Collections\Models\Post::getInstance($id);
@@ -1585,10 +1585,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Display updated item stats if called via AJAX
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 		if ($no_html)
 		{
-			echo JText::sprintf('%s likes', $post->item()->get('positive'));
+			echo Lang::txt('%s likes', $post->item()->get('positive'));
 			exit;
 		}
 
@@ -1597,7 +1597,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Display the main listing
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
+		$app->redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
 	}
 
 	/**
@@ -1619,20 +1619,20 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	{
 		$app = JFactory::getApplication();
 
-		$collection = JRoute::_($this->member->getLink() . '&active=' . $this->_name);
+		$collection = Route::url($this->member->getLink() . '&active=' . $this->_name);
 
 		// Login check
 		if ($this->juser->get('guest'))
 		{
-			$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login?return=' . base64_encode($collection)));
+			$app->enqueueMessage(Lang::txt('MEMBERS_LOGIN_NOTICE'), 'warning');
+			$app->redirect(Route::url('index.php?option=com_users&view=login?return=' . base64_encode($collection)));
 			return;
 		}
 
 		// Access check
 		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection'))
 		{
-			$app->enqueueMessage(JText::_('You are not authorized to edit this collection.'), 'error');
+			$app->enqueueMessage(Lang::txt('You are not authorized to edit this collection.'), 'error');
 			$app->redirect($collection);
 			return;
 		}
@@ -1650,7 +1650,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->member  = $this->member;
 		$view->task    = $this->action;
 		$view->params  = $this->params;
-		$view->no_html = JRequest::getInt('no_html', 0);
+		$view->no_html = Request::getInt('no_html', 0);
 
 		if (is_object($row))
 		{
@@ -1658,7 +1658,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->entry = $this->model->collection(JRequest::getVar('board', ''));
+			$view->entry = $this->model->collection(Request::getVar('board', ''));
 		}
 
 		if ($this->getError())
@@ -1694,12 +1694,12 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Access check
 		if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Bind new content
 		$row = new \Components\Collections\Models\Collection();
@@ -1722,7 +1722,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Redirect to collection
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=all')); // . $row->get('alias')
+		$app->redirect(Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all')); // . $row->get('alias')
 	}
 
 	/**
@@ -1741,13 +1741,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Access check
 		if (!$this->params->get('access-delete-collection'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
 		}
 
 		// Incoming
-		$no_html = JRequest::getInt('no_html', 0);
-		$id = JRequest::getVar('board', 0);
+		$no_html = Request::getInt('no_html', 0);
+		$id = Request::getVar('board', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -1755,8 +1755,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_collections();
 		}
 
-		$process = JRequest::getVar('process', '');
-		$confirmdel = JRequest::getVar('confirmdel', '');
+		$process = Request::getVar('process', '');
+		$confirmdel = Request::getVar('confirmdel', '');
 
 		// Get the collection model
 		$collection = $this->model->collection($id);
@@ -1766,7 +1766,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			if ($process && !$confirmdel)
 			{
-				$this->setError(JText::_('PLG_GROUPS' . strtoupper($this->_name) . 'ERROR_CONFIRM_DELETION'));
+				$this->setError(Lang::txt('PLG_GROUPS' . strtoupper($this->_name) . 'ERROR_CONFIRM_DELETION'));
 			}
 
 			// Output HTML
@@ -1804,7 +1804,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to main view
-		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=all');
+		$route = Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=all');
 
 		if ($no_html)
 		{

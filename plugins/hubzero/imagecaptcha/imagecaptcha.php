@@ -62,7 +62,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGetCaptcha()
 	{
-		$showCaptcha = JRequest::getVar('showCaptcha', '');
+		$showCaptcha = Request::getVar('showCaptcha', '');
 		if ($showCaptcha)
 		{
 			return $this->_display();
@@ -112,11 +112,11 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	public function onValidateCaptcha()
 	{
-		$imgCatchaTxt     = strtolower(JRequest::getVar('imgCatchaTxt', ''));
-		$imgCatchaTxtInst = JRequest::getVar('imgCatchaTxtInst', '');
+		$imgCatchaTxt     = strtolower(Request::getVar('imgCatchaTxt', ''));
+		$imgCatchaTxtInst = Request::getVar('imgCatchaTxtInst', '');
 
-		$option = JRequest::getVar('option');
-		$task   = JRequest::getVar('task');
+		$option = Request::getVar('option');
+		$task   = Request::getVar('task');
 
 		if ($imgCatchaTxtInst == '' || $imgCatchaTxt == '')
 		{
@@ -154,8 +154,8 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 				'name'    => 'display'
 			)
 		);
-		$view->task = JRequest::getVar('task', '');
-		$view->option = JRequest::getVar('option', '');
+		$view->task = Request::getVar('task', '');
+		$view->option = Request::getVar('option', '');
 		$view->total = $GLOBALS['totalCaptchas'];
 
 		return $view->loadTemplate();
@@ -407,7 +407,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 		else if (function_exists('imagegif'))
 		{
 			header('Content-Type: image/gif');
-			imagegif($img2);
+			imagegif ($img2);
 		}
 		else if (function_exists('imagepng'))
 		{
@@ -418,7 +418,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 
 		//Set the session to store the security code
 		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
+		$currentSession->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
 		$width = 120;
 		$height = 40;
 	}
@@ -438,7 +438,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 
 		// Set the session to store the security code
 		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
+		$currentSession->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
 
 		$width = 120;
 		$height = 40;

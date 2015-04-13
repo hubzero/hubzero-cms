@@ -97,15 +97,15 @@ class plgUserXusers extends JPlugin
 
 			if ($joomla_order === false)
 			{
-				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
+				return JError::raiseError('SOME_ERROR_CODE', Lang::txt('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
 			}
 
 			if ($xuser_order <= $joomla_order)
 			{
-				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
+				return JError::raiseError('SOME_ERROR_CODE', Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
 			}
 
-			return JError::raiseWarning('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_FAILED'));
+			return JError::raiseWarning('SOME_ERROR_CODE', Lang::txt('E_JOOMLA_USER_PLUGIN_FAILED'));
 		}
 
 		// log login to auth log
@@ -226,7 +226,7 @@ class plgUserXusers extends JPlugin
 		$session->set('registration.incomplete', true);
 
 		// Check if quota exists for the user
-		$params = JComponentHelper::getParams('com_members');
+		$params = Component::params('com_members');
 
 		if ($params->get('manage_quotas', false))
 		{
@@ -276,7 +276,7 @@ class plgUserXusers extends JPlugin
 
 		if (!is_object($xprofile))
 		{
-			$params = JComponentHelper::getParams('com_members');
+			$params = Component::params('com_members');
 
 			$hubHomeDir = rtrim($params->get('homedir'),'/');
 
@@ -353,7 +353,7 @@ class plgUserXusers extends JPlugin
 				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 			}
 
-			$xprofile->set('registerDate', JFactory::getDate()->toSql());
+			$xprofile->set('registerDate', Date::toSql());
 
 			$result = $xprofile->create();
 
@@ -366,7 +366,7 @@ class plgUserXusers extends JPlugin
 		{
 			$update = false;
 
-			$params = JComponentHelper::getParams('com_members');
+			$params = Component::params('com_members');
 
 			if ($xprofile->get('username') != $user['username'])
 			{
@@ -427,12 +427,12 @@ class plgUserXusers extends JPlugin
 		}
 
 		// Check if quota exists for the user
-		$params = JComponentHelper::getParams('com_members');
+		$params = Component::params('com_members');
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
 			$quota = new UsersQuotas($this->database);
 			$quota->load(array('user_id'=>$user['id']));
@@ -483,7 +483,7 @@ class plgUserXusers extends JPlugin
 		\Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
 		// Check if quota exists for the user
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
 
 		$quota = new UsersQuotas($this->database);
 		$quota->load(array('user_id'=>$user['id']));
@@ -510,7 +510,6 @@ class plgUserXusers extends JPlugin
 	public function onLogoutUser($user, $options = array())
 	{
 		$authlog = JFactory::getAuthLogger();
-
 		$authlog->info($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 
 		apache_note('auth','logout');
@@ -520,7 +519,7 @@ class plgUserXusers extends JPlugin
 		// then delete the temp account
 		if (is_numeric($user['username']) && $user['username'] < 0)
 		{
-			$juser = JFactory::getUser($user['id']);
+			$juser = User::getInstance($user['id']);
 
 			// Further check to make sure this was an abandoned auth_link account
 			if (substr($juser->email, -8) == '@invalid')

@@ -81,8 +81,8 @@ $juser = JFactory::getUser();
 ?>
 <div id="content-header-extra">
 	<?php if ($this->isAdmin) : ?>
-		<a class="btn icon-add" href="<?php echo JRoute::_($base . '&action=add'); ?>">
-			<?php echo JText::_('PLG_MEMBERS_CITATIONS_SUBMIT_CITATION'); ?>
+		<a class="btn icon-add" href="<?php echo Route::url($base . '&action=add'); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SUBMIT_CITATION'); ?>
 		</a>
 	<?php endif; ?>
 </div>
@@ -93,27 +93,27 @@ $juser = JFactory::getUser();
 
 	<div class="introduction">
 		<div class="introduction-message">
-			<p><?php echo JText::_('PLG_MEMBERS_CITATIONS_INTRO_EMPTY'); ?></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_EMPTY'); ?></p>
 		</div>
 		<div class="introduction-questions">
-			<p><strong><?php echo JText::_('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS'); ?></strong></p>
-			<p><?php echo JText::_('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS_EXPLANATION'); ?></p>
+			<p><strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_WHAT_IS_THIS_EXPLANATION'); ?></p>
 
-			<p><strong><?php echo JText::_('PLG_MEMBERS_CITATIONS_INTRO_HOW_TO_START'); ?></strong></p>
-			<p><?php echo JText::_('PLG_MEMBERS_CITATIONS_INTRO_HOW_TO_START_EXPLANATION'); ?></p>
+			<p><strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_HOW_TO_START'); ?></strong></p>
+			<p><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_INTRO_HOW_TO_START_EXPLANATION'); ?></p>
 		</div>
 	</div><!-- / .introduction -->
 
 <?php } else { ?>
 
 	<section class="main section">
-		<form action="<?php echo JRoute::_(JURI::current()); ?>" id="citeform" method="get" class="section-inner <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
+		<form action="<?php echo Route::url(JURI::current()); ?>" id="citeform" method="get" class="section-inner <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="Search" />
 					<fieldset class="entry-search">
-						<legend><?php echo JText::_('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+						<legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- /.container .data-entry -->
 
@@ -122,22 +122,22 @@ $juser = JFactory::getUser();
 						<?php foreach ($this->sorts as $k => $v) : ?>
 						<li>
 							<?php $sel = ($k == $this->filters['sort']) ? 'class="active"' : ''; ?>
-							<a <?php echo $sel; ?> href="<?php echo JRoute::_($base . '&sort=' . $k . ($this->filters['type'] ? '&type=' . $this->filters['type'] : '')); ?>" title="<?php echo JText::sprintf('PLG_MEMBERS_CITATIONS_SORT_BY', $v); ?>">&darr; <?php echo $v; ?></a>
+							<a <?php echo $sel; ?> href="<?php echo Route::url($base . '&sort=' . $k . ($this->filters['type'] ? '&type=' . $this->filters['type'] : '')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SORT_BY', $v); ?>">&darr; <?php echo $v; ?></a>
 						</li>
 						<?php endforeach; ?>
 					</ul>
 					<ul class="entries-menu filter-options">
 						<li>
 							<label for="filter-type">
-								<?php echo JText::_('PLG_MEMBERS_CITATIONS_TYPE'); ?>
+								<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_TYPE'); ?>
 								<select name="type" id="filter-type">
-									<option value=""><?php echo JText::_('PLG_MEMBERS_CITATIONS_ALL'); ?></option>
+									<option value=""><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ALL'); ?></option>
 									<?php foreach ($this->types as $t) : ?>
 										<?php $sel = ($this->filters['type'] == $t['id']) ? 'selected="selected"' : ''; ?>
 										<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
 									<?php endforeach; ?>
 								</select>
-								<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_CITATIONS_FILTER'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_FILTER'); ?>" />
 							</label>
 						</li>
 					</ul>
@@ -158,7 +158,7 @@ $juser = JFactory::getUser();
 							}
 						?>
 						<table class="citations entries">
-							<caption><?php echo JText::_('PLG_MEMBERS_CITATIONS'); ?></caption>
+							<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
 							<?php if ($batch_download) : ?>
 							<thead>
 								<tr>
@@ -166,16 +166,16 @@ $juser = JFactory::getUser();
 										<input type="checkbox" class="checkall-download" />
 									</th>
 									<th colspan="3">
-										<?php echo JText::_('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?>
+										<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?>
 									</th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
 									<td colspan="4">
-										<?php echo JText::_('PLG_MEMBERS_CITATIONS_EXPORT_AS'); ?>
-										<input type="submit" name="download" class="download-endnote" value="<?php echo JText::_('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" /> |
-										<input type="submit" name="download" class="download-bibtex" value="<?php echo JText::_('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
+										<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EXPORT_AS'); ?>
+										<input type="submit" name="download" class="download-endnote" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ENDNOTE'); ?>" /> |
+										<input type="submit" name="download" class="download-bibtex" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_BIBTEX'); ?>" />
 									</td>
 								</tr>
 							</tfoot>
@@ -260,7 +260,7 @@ $juser = JFactory::getUser();
 													?>
 													<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
 														<?php $final = substr($final, 0, -2); ?>
-														<p class="sponsor"><?php echo JText::_('PLG_MEMBERS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
+														<p class="sponsor"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
 													<?php endif; ?>
 													<p><?php echo nl2br($cite->abstract); ?></p>
 												</div>
@@ -283,11 +283,11 @@ $juser = JFactory::getUser();
 										</td>
 										<?php if ($this->isAdmin === true) : ?>
 											<td class="col-options">
-												<a class="delete icon-delete" data-confirm="<?php echo JText::_('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($base . '&action=delete&citation=' . $cite->id); ?>">
-													<?php echo JText::_('PLG_MEMBERS_CITATIONS_EDIT'); ?>
+												<a class="delete icon-delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($base . '&action=delete&citation=' . $cite->id); ?>">
+													<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
 												</a>
-												<a class="edit icon-edit" href="<?php echo JRoute::_($base . '&action=edit&citation=' . $cite->id); ?>">
-													<?php echo JText::_('PLG_MEMBERS_CITATIONS_EDIT'); ?>
+												<a class="edit icon-edit" href="<?php echo Route::url($base . '&action=edit&citation=' . $cite->id); ?>">
+													<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?>
 												</a>
 											</td>
 										<?php endif; ?>
@@ -298,11 +298,11 @@ $juser = JFactory::getUser();
 						</table>
 					<?php else : ?>
 						<table class="citations entries">
-							<caption><?php echo JText::_('PLG_MEMBERS_CITATIONS'); ?></caption>
+							<caption><?php echo Lang::txt('PLG_MEMBERS_CITATIONS'); ?></caption>
 							<tbody>
 								<tr>
 									<td>
-										<p class="warning"><?php echo JText::_('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
+										<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 									</td>
 								</tr>
 							</tbody>

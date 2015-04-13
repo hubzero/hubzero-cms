@@ -52,7 +52,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name' => 'calendar',
-			'title' => JText::_('PLG_GROUPS_CALENDAR'),
+			'title' => Lang::txt('PLG_GROUPS_CALENDAR'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f073'
@@ -123,7 +123,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				//if set to nobody make sure cant access
 				if ($group_plugin_acl == 'nobody')
 				{
-					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 
@@ -131,11 +131,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				if ($juser->get('guest')
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
-					$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+					$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
 					$this->redirect(
-						JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-						JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+						Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
 					);
 					return;
@@ -144,7 +144,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				//check to see if user is member and plugin access requires members
 				if (!in_array($juser->get('id'), $members) && $group_plugin_acl == 'members')
 				{
-					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 			}
@@ -158,10 +158,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			\Hubzero\Document\Assets::addPluginScript('groups','calendar');
 
 			//get the request vars
-			$this->month    = JRequest::getInt('month', JFactory::getDate()->format("m") ,'get');
+			$this->month    = Request::getInt('month', JFactory::getDate()->format("m") ,'get');
 			$this->month    = (strlen($this->month) == 1) ? '0'.$this->month : $this->month;
-			$this->year     = JRequest::getInt('year', JFactory::getDate()->format("Y"), 'get');
-			$this->calendar = JRequest::getInt('calendar', 0, 'get');
+			$this->year     = Request::getInt('year', JFactory::getDate()->format("Y"), 'get');
+			$this->calendar = Request::getInt('calendar', 0, 'get');
 
 			// make sure month is always two digets
 			if (strlen($this->month) == 1)
@@ -220,7 +220,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($upcoming_events > 0)
 		{
 			$title = $this->group->get('description')." has {$upcoming_events} events this month.";
-			$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar');
+			$link = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Calendar Alert</h5>{$title}</span></a>";
 		}
 
@@ -279,8 +279,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->eventsCount = $eventsCalendar->events('count', $view->filters);
 
 		// get events for no js
-		$view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$view->filters['start'] = JRequest::getInt('limitstart', 0);
+		$view->filters['limit'] = Request::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$view->filters['start'] = Request::getInt('limitstart', 0);
 		$view->events = $eventsCalendar->events('list', $view->filters);
 
 		// add hub fancyselect lib
@@ -325,7 +325,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$source            = new stdClass;
 			$source->title     = $calendar->get('title');
-			$source->url       = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=' . $calendar->get('id'));
+			$source->url       = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=' . $calendar->get('id'));
 			$source->className = ($calendar->get('color')) ? 'fc-event-' . $calendar->get('color') : 'fc-event-default';
 			array_push($sources, $source);
 		}
@@ -333,7 +333,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// add uncategorized source
 		$source            = new stdClass;
 		$source->title     = 'Uncategorized';
-		$source->url       = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=0');
+		$source->url       = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar&action=events&calender_id=0');
 		$source->className = 'fc-event-default';
 		array_push($sources, $source);
 
@@ -354,9 +354,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$events = array();
 
 		// get request params
-		$start      = JRequest::getVar('start');
-		$end        = JRequest::getVar('end');
-		$calendarId = JRequest::getInt('calender_id', 'null');
+		$start      = Request::getVar('start');
+		$end        = Request::getVar('end');
+		$calendarId = Request::getInt('calender_id', 'null');
 
 		// format date/times
 		$start = JFactory::getDate($start . ' 00:00:00');
@@ -478,8 +478,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!in_array($this->juser->get('id'), $this->group->get('members')))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
-				JText::_('Only group members are allowed to create & edit events.'),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Lang::txt('Only group members are allowed to create & edit events.'),
 				'warning'
 			);
 			return;
@@ -496,7 +496,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 
 		//get the passed in event id
-		$eventId = JRequest::getInt('event_id', 0, 'get');
+		$eventId = Request::getInt('event_id', 0, 'get');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
@@ -517,8 +517,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				//do not have permission to edit the event
 				$this->redirect(
-					JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
-					JText::_('You do not have the correct permissions to edit this event.'),
+					Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+					Lang::txt('You do not have the correct permissions to edit this event.'),
 					'error'
 				);
 				return;
@@ -529,8 +529,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if ($eventCalendar->isSubscription())
 			{
 				$this->redirect(
-					JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$view->event->get('id')),
-					JText::_('You cannot edit imported events from remote calendar subscriptions.'),
+					Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$view->event->get('id')),
+					Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
 					'error'
 				);
 				return;
@@ -591,18 +591,18 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function save()
 	{
 		//get request vars
-		$event              = JRequest::getVar('event', array(), 'post');
-		$event['time_zone'] = JRequest::getVar('time_zone', -5);
-		$event['params']    = JRequest::getVar('params', array());
-		$event['content']   = JRequest::getVar('content', '', 'post', 'STRING', JREQUEST_ALLOWRAW);
-		$registration       = JRequest::getVar('include-registration', 0);
+		$event              = Request::getVar('event', array(), 'post');
+		$event['time_zone'] = Request::getVar('time_zone', -5);
+		$event['params']    = Request::getVar('params', array());
+		$event['content']   = Request::getVar('content', '', 'post', 'STRING', JREQUEST_ALLOWRAW);
+		$registration       = Request::getVar('include-registration', 0);
 
 		//set vars for saving
 		$event['catid']       = '-1';
 		$event['state']       = 1;
 		$event['scope']       = 'group';
 		$event['scope_id']    = $this->group->get('gidNumber');
-		$event['modified']    = JFactory::getDate()->toSql();
+		$event['modified']    = Date::toSql();
 		$event['modified_by'] = $this->juser->get('id');
 
 		// repeating rule
@@ -611,7 +611,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//if we are updating set modified time and actor
 		if (!isset($event['id']) || $event['id'] == 0)
 		{
-			$event['created']    = JFactory::getDate()->toSql();
+			$event['created']    = Date::toSql();
 			$event['created_by'] = $this->juser->get('id');
 		}
 
@@ -712,7 +712,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($registration && (!isset($event['registerby']) || $event['registerby'] == ''))
 		{
 			$this->setError('You must enter a valid event registration deadline to require registration.');
-			JRequest::setVar('includeRegistration', 1);
+			Request::setVar('includeRegistration', 1);
 			$this->event = $eventsModelEvent;
 			return $this->edit();
 		}
@@ -731,15 +731,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$month = JFactory::getDate(strtotime($event['publish_up']))->format("m");
 
 		//build message
-		$message = JText::_('You have successfully created a new group event.');
+		$message = Lang::txt('You have successfully created a new group event.');
 		if (isset($event['id']) && $event['id'] != 0)
 		{
-			$message = JText::_('You have successfully edited the group event.');
+			$message = Lang::txt('You have successfully edited the group event.');
 		}
 
 		//inform user and redirect
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
 			$message,
 			'passed'
 		);
@@ -753,7 +753,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function delete()
 	{
 		//get the passed in event id
-		$eventId = JRequest::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id','','get');
 
 		//load event data
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
@@ -763,8 +763,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			// do not have permission to delete the event
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
-				JText::_('You do not have the correct permissions to delete this event.'),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Lang::txt('You do not have the correct permissions to delete this event.'),
 				'error'
 			);
 			return;
@@ -775,8 +775,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($eventCalendar->isSubscription())
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$eventsModelEvent->get('id')),
-				JText::_('You cannot delete imported events from remote calendar subscriptions.'),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id='.$eventsModelEvent->get('id')),
+				Lang::txt('You cannot delete imported events from remote calendar subscriptions.'),
 				'error'
 			);
 			return;
@@ -789,8 +789,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$eventsModelEvent->store(true))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
-				JText::_('An error occurred while trying to delete the event. Please try again.'),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Lang::txt('An error occurred while trying to delete the event. Please try again.'),
 				'error'
 			);
 			return;
@@ -798,8 +798,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform user and return
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
-			JText::_('You have successfully deleted the event.'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+			Lang::txt('You have successfully deleted the event.'),
 			'passed'
 		);
 	}
@@ -822,7 +822,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 
 		//get request varse
-		$eventId = JRequest::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id','','get');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event( $eventId );
@@ -831,8 +831,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$view->event->get('id'))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
-				JText::_('Event not found.'),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Lang::txt('Event not found.'),
 				'error'
 			);
 			return;
@@ -874,7 +874,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function export()
 	{
 		// get request varse
-		$eventId = JRequest::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id','','get');
 
 		// load & export event
 		$eventsModelEvent = new \Components\Events\Models\Event( $eventId );
@@ -892,14 +892,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$this->params->get('allow_subscriptions', 1))
 		{
 			header('HTTP/1.1 404 Not Found');
-			die( JText::_('Calendar subsciptions are currently turned off.') );
+			die( Lang::txt('Calendar subsciptions are currently turned off.') );
 		}
 
 		//force https protocol
 		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 		{
 			JFactory::getApplication()->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-			die( JText::_('Calendar subscriptions only support the HTTPS (port 443) protocol.') );
+			die( Lang::txt('Calendar subscriptions only support the HTTPS (port 443) protocol.') );
 		}
 
 		//get the calendar plugin access
@@ -909,7 +909,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($plugin_access == 'nobody')
 		{
 			header('HTTP/1.1 404 Not Found');
-			die( JText::sprintf('GROUPS_PLUGIN_OFF', 'Calendar') );
+			die( Lang::txt('GROUPS_PLUGIN_OFF', 'Calendar') );
 		}
 
 		//is the plugin for registered or members only?
@@ -922,14 +922,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if ($plugin_access == 'registered' && !is_object($auth))
 			{
 				header('HTTP/1.1 403 Not Authorized');
-				die( JText::sprintf('GROUPS_PLUGIN_REGISTERED', 'Calendar') );
+				die( Lang::txt('GROUPS_PLUGIN_REGISTERED', 'Calendar') );
 			}
 
 			//make sure we are a member
 			if ($plugin_access == 'members' && !is_object($auth) && !in_array($auth->id, $this->group->get('members')))
 			{
 				header('HTTP/1.1 403 Unauthorized');
-				die( JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar') );
+				die( Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar') );
 			}
 		}
 
@@ -951,7 +951,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
-			echo JText::_('You are not authorized to view this calendar.');
+			echo Lang::txt('You are not authorized to view this calendar.');
 			exit();
 		}
 
@@ -964,7 +964,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
-			die( JText::_('You must enter a valid username and password.') );
+			die( Lang::txt('You must enter a valid username and password.') );
 		}
 
 		//get the user based on username
@@ -983,7 +983,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
-			die( JText::_('You must enter a valid username and password.') );
+			die( Lang::txt('You must enter a valid username and password.') );
 		}
 
 		//make sure password matches stored password
@@ -994,7 +994,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
-			die( JText::_('You must enter a valid username and password.') );
+			die( Lang::txt('You must enter a valid username and password.') );
 		}
 
 		return $user;
@@ -1011,7 +1011,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		require_once __DIR__ . DS . 'icalparser.php';
 
 		//get incoming
-		$file = JRequest::getVar('import', array(), 'files');
+		$file = Request::getVar('import', array(), 'files');
 
 		// parse file & get first event
 		$icalparser = new IcalParser($file['tmp_name']);
@@ -1068,7 +1068,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 
 		//get request varse
-		$eventId = JRequest::getVar('event_id','');
+		$eventId = Request::getVar('event_id','');
 
 		//load event data
 		$view->event = new \Components\Events\Models\Event( $eventId );
@@ -1081,8 +1081,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($view->event->get('registerby') == '' || $view->event->get('registerby') == '0000-00-00 00:00:00')
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
-				JText::_('This event does not have registration.'),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
+				Lang::txt('This event does not have registration.'),
 				'warning'
 			);
 			return;
@@ -1095,7 +1095,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($registerby >= $now)
 		{
 			//get the password
-			$password = JRequest::getVar('passwrd', '', 'post');
+			$password = Request::getVar('passwrd', '', 'post');
 
 			//is the event restricted
 			if ($view->event->get('restricted') != '' && $view->event->get('restricted') != $password && !isset($this->register))
@@ -1167,14 +1167,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function doRegister()
 	{
 		//get request vars
-		$register   = JRequest::getVar('register', NULL, 'post');
-		$arrival    = JRequest::getVar('arrival', NULL, 'post');
-		$departure  = JRequest::getVar('departure', NULL, 'post');
-		$dietary    = JRequest::getVar('dietary', NULL, 'post');
-		$dinner     = JRequest::getVar('dinner', NULL, 'post');
-		$disability = JRequest::getVar('disability', NULL, 'post');
-		$race       = JRequest::getVar('race', NULL, 'post');
-		$event_id   = JRequest::getInt('event_id', NULL, 'post');
+		$register   = Request::getVar('register', NULL, 'post');
+		$arrival    = Request::getVar('arrival', NULL, 'post');
+		$departure  = Request::getVar('departure', NULL, 'post');
+		$dietary    = Request::getVar('dietary', NULL, 'post');
+		$dinner     = Request::getVar('dinner', NULL, 'post');
+		$disability = Request::getVar('disability', NULL, 'post');
+		$race       = Request::getVar('race', NULL, 'post');
+		$event_id   = Request::getInt('event_id', NULL, 'post');
 
 		//load event data
 		$event = new \Components\Events\Models\Event( $event_id );
@@ -1188,19 +1188,19 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//check for first name
 		if (!isset($register['first_name']) || $register['first_name'] == '')
 		{
-			$errors[] = JText::_('Missing first name.');
+			$errors[] = Lang::txt('Missing first name.');
 		}
 
 		//check for last name
 		if (!isset($register['last_name']) || $register['last_name'] == '')
 		{
-			$errors[] = JText::_('Missing last name.');
+			$errors[] = Lang::txt('Missing last name.');
 		}
 
 		//check for affiliation
 		if (isset($register['affiliation']) && $register['affiliation'] == '')
 		{
-			$errors[] = JText::_('Missing affiliation.');
+			$errors[] = Lang::txt('Missing affiliation.');
 		}
 
 		//check for email if email is supposed to be on
@@ -1208,13 +1208,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			if (!isset($register['email']) || $register['email'] == '' || !filter_var($register['email'], FILTER_VALIDATE_EMAIL))
 			{
-				$errors[] = JText::_('Missing email address or email is not valid.');
+				$errors[] = Lang::txt('Missing email address or email is not valid.');
 			}
 
 			// check to make sure this is the only time registering
 			if (\Components\Events\Tables\Respondent::checkUniqueEmailForEvent($register['email'], $event_id) > 0)
 			{
-				$errors[] = JText::_('You have previously registered for this event.');
+				$errors[] = Lang::txt('You have previously registered for this event.');
 			}
 		}
 
@@ -1235,7 +1235,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//set data for saving
 		$eventsRespondent                       = new \Components\Events\Tables\Respondent( array() );
 		$eventsRespondent->event_id             = $event_id;
-		$eventsRespondent->registered           = JFactory::getDate()->toSql();
+		$eventsRespondent->registered           = Date::toSql();
 		$eventsRespondent->arrival              = $arrival['day'] . ' ' . $arrival['time'];
 		$eventsRespondent->departure            = $departure['day'] . ' ' . $departure['time'];
 
@@ -1302,7 +1302,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$message           = str_replace("\n", "\r\n", $email->loadTemplate());
 
 			//declare subject
-			$subject = JText::_( "[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
+			$subject = Lang::txt( "[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
 
 			//make from array
 			$from = array(
@@ -1350,7 +1350,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			// build to, from, & subject
 			$to      = JFactory::getUser()->get('email');
 			$from    = array('email' => 'groups@' . $_SERVER['HTTP_HOST'], 'name'  => $email->sitename . ' Group Calendar: ' . $this->group->get('description'));
-			$subject = JText::sprintf('Thank you for Registering for the "%s" event', $eventsEvent->title);
+			$subject = Lang::txt('Thank you for Registering for the "%s" event', $eventsEvent->title);
 
 			// send mail to user registering
 			$this->_sendEmail($to, $from, $subject, $message);
@@ -1358,8 +1358,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// redirect back to the event
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $event_id),
-			JText::_('You have successfully registered for the event.'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $event_id),
+			Lang::txt('You have successfully registered for the event.'),
 			'passed'
 		);
 	}
@@ -1383,7 +1383,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 
 		//get request varse
-		$eventId = JRequest::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id','','get');
 
 		//load event data
 		$view->event = new \Components\Events\Tables\Event( $this->database );
@@ -1423,7 +1423,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function download()
 	{
 		//get request varse
-		$eventId = JRequest::getVar('event_id','','get');
+		$eventId = Request::getVar('event_id','','get');
 
 		//get registrants count
 		$eventsRespondent = new \Components\Events\Tables\Respondent( array('id' => $eventId ) );
@@ -1590,7 +1590,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function editCalendar()
 	{
 		//get request vars
-		$calendarId = JRequest::getVar('calendar_id','');
+		$calendarId = Request::getVar('calendar_id','');
 
 		//create the view
 		$view = new \Hubzero\Plugin\View(
@@ -1635,7 +1635,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function saveCalendar()
 	{
 		//get request vars
-		$calendarInput = JRequest::getVar('calendar',array());
+		$calendarInput = Request::getVar('calendar',array());
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarInput['id']);
@@ -1680,8 +1680,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		$this->redirect(
-			JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
-			JText::_('You have successfully added a new calendar.'),
+			Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
+			Lang::txt('You have successfully added a new calendar.'),
 			'passed'
 		);
 	}
@@ -1695,8 +1695,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function deleteCalendar()
 	{
 		//get the passed in event id
-		$calendarId   = JRequest::getVar('calendar_id','');
-		$events       = JRequest::getVar('events','delete');
+		$calendarId   = Request::getVar('calendar_id','');
+		$events       = Request::getVar('events','delete');
 		$deleteEvents = ($events == 'delete') ? true : false;
 
 		// get the calendar
@@ -1707,8 +1707,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		$this->redirect(
-			JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
-			JText::_('You have successfully deleted the calendar.'),
+			Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
+			Lang::txt('You have successfully deleted the calendar.'),
 			'passed'
 		);
 	}
@@ -1719,7 +1719,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function refreshCalendar()
 	{
 		//get the passed in event id
-		$calendarId = JRequest::getVar('calendar_id','');
+		$calendarId = Request::getVar('calendar_id','');
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
@@ -1727,14 +1727,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// refresh Calendar (force refresh even if we dont need to yet)
 		if (!$calendar->refresh(true))
 		{
-			$this->setError( JText::sprintf('Unable to sync the group calendar "%s". Please verify the calendar subscription URL is valid.', $calendar->getError()) );
+			$this->setError( Lang::txt('Unable to sync the group calendar "%s". Please verify the calendar subscription URL is valid.', $calendar->getError()) );
 			return $this->calendars();
 		}
 
 		//inform and redirect
 		$this->redirect(
-			JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
-			JText::_('You have successfully refreshed the calendar.'),
+			Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=calendars'),
+			Lang::txt('You have successfully refreshed the calendar.'),
 			'passed'
 		);
 	}
@@ -1784,7 +1784,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$rules = array();
 
 		// get reccurrance
-		$reccurance = JRequest::getVar('reccurance', array(), 'post');
+		$reccurance = Request::getVar('reccurance', array(), 'post');
 
 		// valid frequencies
 		$validFreq = array('daily','weekly','monthly','yearly');
@@ -1861,7 +1861,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=".$this->group->get('gidNumber')."
 				AND state=1
-				AND (publish_up >='".JFactory::getDate()->toSql()."' OR publish_down >='".JFactory::getDate()->toSql()."')";
+				AND (publish_up >='".Date::toSql()."' OR publish_down >='".Date::toSql()."')";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -1880,7 +1880,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=".$this->group->get('gidNumber')."
 				AND state=1
-				AND (publish_up >= '".JFactory::getDate()->toSql()."' OR publish_down >='".JFactory::getDate()->toSql()."') AND publish_up <= '".JFactory::getDate()->format("Y-m-t 23:59:59")."'";
+				AND (publish_up >= '".Date::toSql()."' OR publish_down >='".Date::toSql()."') AND publish_up <= '".JFactory::getDate()->format("Y-m-t 23:59:59")."'";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}

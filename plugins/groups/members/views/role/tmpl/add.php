@@ -32,27 +32,27 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 <ul id="page_options">
 	<li>
-		<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>">
-			<?php echo JText::_('PLG_GROUPS_MEMBERS'); ?>
+		<a class="icon-browse btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_MEMBERS'); ?>
 		</a>
 	</li>
 </ul>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
+		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
 		<label>
-			<?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_NAME'); ?>: <span class="required">Required</span>
+			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME'); ?>: <span class="required">Required</span>
 			<input type="text" name="role[name]" value="<?php echo $this->role->name; ?>" >
 		</label>
 		<fieldset>
-			<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_ROLE_PERMISSIONS'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_PERMISSIONS'); ?></legend>
 			<?php foreach ($this->available_permissions as $perm => $label) : ?>
 				<label>
 					<?php $ckd = ($this->role->hasPermission($perm)) ? 'checked="checked"' : '' ?>
@@ -69,6 +69,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="saverole" />
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
 	</p>
 </form>

@@ -32,5 +32,5 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 		<div class="description">
-			<p><?php echo JText::_('This bulletin has been deleted by the original creator.'); ?></p>
+			<p><?php echo Lang::txt('This bulletin has been deleted by the original creator.'); ?></p>
 		</div>

@@ -64,7 +64,7 @@ class Timestamp extends Macro
 	 */
 	public function render()
 	{
-		return \JFactory::getDate()->toSql();
+		return \Date::toSql();
 	}
 }
 

@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
 $base = $this->course->offering()->link();
@@ -47,7 +46,7 @@ if (count($inst) > 0)
 	}
 }
 ?>
-<div id="comments-container" data-action="<?php echo JRoute::_($base . '&active=discussions'); ?>">
+<div id="comments-container" data-action="<?php echo Route::url($base . '&active=discussions'); ?>">
 
 <?php if (count($this->notifications) > 0) { ?>
 	<?php foreach ($this->notifications as $notification) { ?>
@@ -63,18 +62,18 @@ if (count($inst) > 0)
 			<div class="comments-feed">
 				<div class="comments-toolbar cf">
 					<p class="comment-sort-options">
-						<?php echo JText::_('Discussions'); ?>
+						<?php echo Lang::txt('Discussions'); ?>
 					</p>
 					<p class="comments-controls">
-						<a class="add active" href="<?php echo JRoute::_($base . '&active=discussions'); ?>" title="<?php echo JText::_('Start a new discussion'); ?>"><?php echo JText::_('New'); ?></a>
+						<a class="add active" href="<?php echo Route::url($base . '&active=discussions'); ?>" title="<?php echo Lang::txt('Start a new discussion'); ?>"><?php echo Lang::txt('New'); ?></a>
 					</p>
 				</div><!-- / .comments-toolbar -->
 
 				<div class="comments-options-bar">
-					<form class="comments-search" action="<?php echo JRoute::_($base . '&active=discussions'); ?>" method="get">
+					<form class="comments-search" action="<?php echo Route::url($base . '&active=discussions'); ?>" method="get">
 						<fieldset>
-							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('search ...'); ?>" />
-							<input type="submit" class="submit" value="<?php echo JText::_('Go'); ?>" />
+							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('search ...'); ?>" />
+							<input type="submit" class="submit" value="<?php echo Lang::txt('Go'); ?>" />
 
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -88,7 +87,7 @@ if (count($inst) > 0)
 				<div class="comment-threads">
 					<div class="category search-results hide">
 						<div class="category-header">
-							<span class="category-title"><?php echo JText::_('Search'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('Search'); ?></span>
 						</div>
 						<div class="category-content">
 						</div>
@@ -104,12 +103,12 @@ if (count($inst) > 0)
 						$filters['sort_Dir']   = 'DESC';
 						$filters['limit']      = 100;
 						$filters['start']      = 0;
-						$filters['created_by'] = $juser->get('id');
+						$filters['created_by'] = User::get('id');
 						//$filters['parent']     = 0;
 						$filters['replies']    = true;
 						?>
 						<div class="category-header">
-							<span class="category-title"><?php echo JText::_('Replies to My Comments'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('Replies to My Comments'); ?></span>
 							<span class="category-discussions count"><?php echo $this->post->count($filters); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
@@ -142,11 +141,11 @@ if (count($inst) > 0)
 						$filters['sort_Dir']   = 'DESC';
 						$filters['limit']      = 100;
 						$filters['start']      = 0;
-						//$filters['created_by'] = $juser->get('id');
+						//$filters['created_by'] = User::get('id');
 						//$filters['parent']     = 0;
 						?>
 						<div class="category-header">
-							<span class="category-title"><?php echo JText::_('Latest Comments'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('Latest Comments'); ?></span>
 							<span class="category-discussions count"><?php echo $this->post->count($filters); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
@@ -175,7 +174,7 @@ if (count($inst) > 0)
 
 			<div class="comments-panel">
 				<div class="comments-toolbar">
-					<p><span class="comments" data-comments="%s comments" data-add="<?php echo JText::_('Start a discussion'); ?>"><?php echo JText::_('Start a discussion'); ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
+					<p><span class="comments" data-comments="%s comments" data-add="<?php echo Lang::txt('Start a discussion'); ?>"><?php echo Lang::txt('Start a discussion'); ?></span><!--  <span class="instructor-comments">0 instructor comments</span> --></p>
 				</div><!-- / .comments-toolbar -->
 				<div class="comments-frame">
 
@@ -191,38 +190,38 @@ if (count($inst) > 0)
 					if ($c) {
 					?>
 
-					<form action="<?php echo JRoute::_($base . '&active=discussions'); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
+					<form action="<?php echo Route::url($base . '&active=discussions'); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
 						<p class="comment-member-photo">
 							<a class="comment-anchor" name="commentform"></a>
 							<?php
 							$anon = 1;
-							if (!$juser->get('guest'))
+							if (!User::isGuest())
 							{
 								$anon = 0;
 							}
 							$now = JFactory::getDate();
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
+							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 						</p>
 
 						<fieldset>
-						<?php if ($juser->get('guest')) { ?>
-							<p class="warning"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
+						<?php if (User::isGuest()) { ?>
+							<p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
 						<?php } else { ?>
 							<p class="comment-title">
 								<strong>
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+									<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
 								</strong>
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+									<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
+									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
 
 							<label for="field_comment">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
+								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 								<?php
 								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 								?>
@@ -231,15 +230,15 @@ if (count($inst) > 0)
 							<div class="grid">
 								<div class="col span-half">
 							<label for="field-upload" id="comment-upload">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
+								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
 								<input type="file" name="upload" id="field-upload" />
 							</label>
 								</div>
 								<div class="col span-half omega">
 									<label for="field-category_id">
-									<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
+									<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
 									<select name="fields[category_id]" id="field-category_id">
-										<option value="0"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
+										<option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
 							<?php
 								foreach ($this->sections as $section)
 								{
@@ -271,11 +270,11 @@ if (count($inst) > 0)
 
 							<label for="field-anonymous" id="comment-anonymous-label">
 								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
-								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
+								<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 							</label>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 							</p>
 						<?php } ?>
 						</fieldset>
@@ -296,12 +295,12 @@ if (count($inst) > 0)
 						<?php echo JHTML::_('form.token'); ?>
 
 						<p class="instructions">
-							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
+							<?php echo Lang::txt('Click on a comment on the left to view a discussion or start your own above.'); ?>
 						</p>
 					</form>
 					<?php } else { ?>
 						<p class="instructions">
-							<?php echo JText::_('The forum is currently empty and requires at least one section and category before posts can be made. Go to the discussions tab and click the "manage" button to set up the forum.'); ?>
+							<?php echo Lang::txt('The forum is currently empty and requires at least one section and category before posts can be made. Go to the discussions tab and click the "manage" button to set up the forum.'); ?>
 						</p>
 					<?php } ?>
 					<div class="comment-thread"><?php if ($this->data) { echo $this->data->html; } ?></div>

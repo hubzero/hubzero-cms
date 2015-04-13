@@ -51,7 +51,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	public function &onMembersAreas($user, $member)
 	{
 		$areas = array(
-			'profile' => JText::_('PLG_MEMBERS_PROFILE'),
+			'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
 			'icon'    => 'f007'
 		);
 		return $areas;
@@ -100,7 +100,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$this->areas  = $areas;
 
 			//get task
-			$this->task = JRequest::getVar('action', 'view');
+			$this->task = Request::getVar('action', 'view');
 			switch ($this->task)
 			{
 				case 'addaddress':    $arr['html'] = $this->addAddress();    break;
@@ -226,7 +226,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			default:       $index = 0; break;
 		}
 
-		$hconfig = JComponentHelper::getParams('com_members');
+		$hconfig = Component::params('com_members');
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
 
@@ -357,7 +357,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		);
 
 		//get request vars
-		$this->view->addressId = JRequest::getInt('addressid', 0);
+		$this->view->addressId = Request::getInt('addressid', 0);
 
 		//get member addresses
 		$this->view->address = new MembersAddress(JFactory::getDBO());
@@ -388,7 +388,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	public function saveAddress()
 	{
 		//get request vars
-		$address = JRequest::getVar('address', array());
+		$address = Request::getVar('address', array());
 
 		//set up objects
 		$database       = JFactory::getDBO();
@@ -419,8 +419,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		$this->redirect(
-			JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
-			JText::_('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
+			Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
+			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
 			'passed'
 		);
 		return;
@@ -434,7 +434,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	public function deleteAddress()
 	{
 		//get request vars
-		$addressId = JRequest::getInt('addressid', 0);
+		$addressId = Request::getInt('addressid', 0);
 
 		//set up objects
 		$database       = JFactory::getDBO();
@@ -453,7 +453,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		//make sure user can delete this address
 		if ($membersAddress->uidNumber != $juser->get('id'))
 		{
-			$this->setError(JText::_('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
+			$this->setError(Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
 			return $this->view();
 		}
 
@@ -473,8 +473,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		//inform and redirect
 		$this->redirect(
-			JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
-			JText::_('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
+			Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
+			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
 			'passed'
 		);
 		return;

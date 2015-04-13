@@ -52,12 +52,12 @@ class plgCronNewsletter extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'processMailings',
-				'label'  => JText::_('PLG_CRON_NEWSLETTER_PROCESS_QUEUE'),
+				'label'  => Lang::txt('PLG_CRON_NEWSLETTER_PROCESS_QUEUE'),
 				'params' => 'processmailings'
 			),
 			array(
 				'name'   => 'processIps',
-				'label'  => JText::_('PLG_CRON_NEWSLETTER_IP_ADDRESSES_TO_LOCATION'),
+				'label'  => Lang::txt('PLG_CRON_NEWSLETTER_IP_ADDRESSES_TO_LOCATION'),
 				'params' => ''
 			)
 		);
@@ -189,7 +189,7 @@ class plgCronNewsletter extends JPlugin
 
 				// mark as sent and save
 				$newsletterMailingRecipient->status    = 'sent';
-				$newsletterMailingRecipient->date_sent = JFactory::getDate()->toSql();
+				$newsletterMailingRecipient->date_sent = Date::toSql();
 				$newsletterMailingRecipient->save($newsletterMailingRecipient);
 			}
 		}

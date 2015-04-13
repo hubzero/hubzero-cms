@@ -50,7 +50,7 @@ if ($rows->total() > 0)
 	{
 		if ($this->params->get('allowClose', 1))
 		{
-			if (!($hide = JRequest::getWord('ancmnt' . $row->get('id'), '', 'cookie')))
+			if (!($hide = Request::getWord('ancmnt' . $row->get('id'), '', 'cookie')))
 			{
 				$announcements[] = $row;
 			}
@@ -78,14 +78,14 @@ if ($rows->total() > 0)
 					</dd>
 				</dl>
 				<?php
-					$page = JRequest::getVar('REQUEST_URI', '', 'server');
+					$page = Request::getVar('REQUEST_URI', '', 'server');
 					if ($page && $this->params->get('allowClose', 1))
 					{
 						$page .= (strstr($page, '?')) ? '&' : '?';
 						$page .= 'ancmnt' . $row->get('id') . '=closed';
 						?>
-						<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
-							<span><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
+						<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
+							<span><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
 						</a>
 						<?php
 					}

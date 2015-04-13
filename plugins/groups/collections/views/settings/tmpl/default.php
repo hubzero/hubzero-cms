@@ -38,36 +38,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .'&active=collections&action=savesettings'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .'&active=collections&action=savesettings'); ?>" method="post" id="hubForm" class="full">
 
 		<fieldset class="settings">
-			<legend><?php echo JText::_('PLG_GROUPS_COLLECTIONS'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS'); ?></legend>
 
 			<label for="param-posting">
-				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS'); ?>
 				<select name="params[create_collection]" id="param-create_collection">
-					<option value="0"<?php if (!$this->params->get('create_collection', 1)) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_ALL'); ?></option>
-					<option value="1"<?php if ($this->params->get('create_collection', 1) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_MANAGERS'); ?></option>
+					<option value="0"<?php if (!$this->params->get('create_collection', 1)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_ALL'); ?></option>
+					<option value="1"<?php if ($this->params->get('create_collection', 1) == 1) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_MANAGERS'); ?></option>
 				</select>
 			</label>
 
 			<p class="info">
-				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_INFO'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_INFO'); ?>
 			</p>
 		</fieldset>
 		<fieldset class="settings">
-			<legend><?php echo JText::_('PLG_GROUPS_COLLECTIONS_POSTS'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_POSTS'); ?></legend>
 
 			<label for="param-posting">
-				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS'); ?>
 				<select name="params[create_post]" id="param-create_post">
-					<option value="0"<?php if (!$this->params->get('create_post', 0)) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_ALL'); ?></option>
-					<option value="1"<?php if ($this->params->get('create_post', 0) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_MANAGERS'); ?></option>
+					<option value="0"<?php if (!$this->params->get('create_post', 0)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_ALL'); ?></option>
+					<option value="1"<?php if ($this->params->get('create_post', 0) == 1) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_MANAGERS'); ?></option>
 				</select>
 			</label>
 
 			<p class="info">
-				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_INFO'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_INFO'); ?>
 			</p>
 
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
@@ -84,8 +84,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="action" value="savesettings" />
 
 		<p class="submit">
-			<input type="submit" class="btn btn-success" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
+			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
+			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
 		</p>
 	</form>

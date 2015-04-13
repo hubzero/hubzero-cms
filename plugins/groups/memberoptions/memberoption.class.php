@@ -96,25 +96,25 @@ class GroupsTableMemberoption extends JTable
 	{
 		if (trim($this->gidNumber) == '')
 		{
-			$this->setError(JText::_('Please provide a gidNumber'));
+			$this->setError(Lang::txt('Please provide a gidNumber'));
 			return false;
 		}
 
 		if (trim($this->userid) == '')
 		{
-			$this->setError(JText::_('Please provide a userid'));
+			$this->setError(Lang::txt('Please provide a userid'));
 			return false;
 		}
 
 		if (trim($this->optionname) == '')
 		{
-			$this->setError(JText::_('Please provide an optionname'));
+			$this->setError(Lang::txt('Please provide an optionname'));
 			return false;
 		}
 
 		if (trim($this->optionvalue) == '')
 		{
-			$this->setError(JText::_('Please provide an optionvalue'));
+			$this->setError(Lang::txt('Please provide an optionvalue'));
 			return false;
 		}
 

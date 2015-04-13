@@ -45,7 +45,7 @@ $base    = 'index.php?option=com_time&controller=reports';
 
 // If no incoming fields vars selected, we'll assume we should show all
 $all  = true;
-foreach (JRequest::get('GET') as $key => $value)
+foreach (Request::get('GET') as $key => $value)
 {
 	if (strpos($key, 'fields-') !== false)
 	{
@@ -86,22 +86,22 @@ foreach (JRequest::get('GET') as $key => $value)
 			</div>
 			<div class="grouping">
 				<div><?php echo Lang::txt('PLG_TIME_CSV_FIELDS'); ?>:</div>
-				<input type="checkbox" name="fields-hub" value="1" <?php echo ($hub = JRequest::getInt('fields-hub', $all)) ? 'checked="checked"' : ''; ?>/>
+				<input type="checkbox" name="fields-hub" value="1" <?php echo ($hub = Request::getInt('fields-hub', $all)) ? 'checked="checked"' : ''; ?>/>
 				<label for="fields-hub"><?php echo Lang::txt('PLG_TIME_CSV_HUB'); ?></label>
 				<br />
-				<input type="checkbox" name="fields-task" value="1" <?php echo ($task = JRequest::getInt('fields-task', $all)) ? 'checked="checked"' : ''; ?>/>
+				<input type="checkbox" name="fields-task" value="1" <?php echo ($task = Request::getInt('fields-task', $all)) ? 'checked="checked"' : ''; ?>/>
 				<label for="fields-task"><?php echo Lang::txt('PLG_TIME_CSV_TASK'); ?></label>
 				<br />
-				<input type="checkbox" name="fields-user" value="1" <?php echo ($user = JRequest::getInt('fields-user', $all)) ? 'checked="checked"' : ''; ?>/>
+				<input type="checkbox" name="fields-user" value="1" <?php echo ($user = Request::getInt('fields-user', $all)) ? 'checked="checked"' : ''; ?>/>
 				<label for="fields-user"><?php echo Lang::txt('PLG_TIME_CSV_USER'); ?></label>
 				<br />
-				<input type="checkbox" name="fields-date" value="1" <?php echo ($date = JRequest::getInt('fields-date', $all)) ? 'checked="checked"' : ''; ?>/>
+				<input type="checkbox" name="fields-date" value="1" <?php echo ($date = Request::getInt('fields-date', $all)) ? 'checked="checked"' : ''; ?>/>
 				<label for="fields-date"><?php echo Lang::txt('PLG_TIME_CSV_DATE'); ?></label>
 				<br />
-				<input type="checkbox" name="fields-time" value="1" <?php echo ($time = JRequest::getInt('fields-time', $all)) ? 'checked="checked"' : ''; ?>/>
+				<input type="checkbox" name="fields-time" value="1" <?php echo ($time = Request::getInt('fields-time', $all)) ? 'checked="checked"' : ''; ?>/>
 				<label for="fields-time"><?php echo Lang::txt('PLG_TIME_CSV_TIME'); ?></label>
 				<br />
-				<input type="checkbox" name="fields-description" value="1" <?php echo ($description = JRequest::getInt('fields-description', $all)) ? 'checked="checked"' : ''; ?>/>
+				<input type="checkbox" name="fields-description" value="1" <?php echo ($description = Request::getInt('fields-description', $all)) ? 'checked="checked"' : ''; ?>/>
 				<label for="fields-description"><?php echo Lang::txt('PLG_TIME_CSV_DESCRIPTION'); ?></label>
 			</div>
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_TIME_CSV_FILTER'); ?>" />

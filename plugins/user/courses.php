@@ -49,7 +49,7 @@ class plgUserCourses extends \Hubzero\Plugin\Plugin
 		$group = new \Hubzero\User\Group();
 
 		// If the course doesn't have a group id set, then we need to create a new group
-		if(!$course->get('group_id'))
+		if (!$course->get('group_id'))
 		{
 			// Set some group info
 			$group->set('cn', 'course-'.$course->cn);
@@ -71,7 +71,7 @@ class plgUserCourses extends \Hubzero\Plugin\Plugin
 		// Get all of the course members that are not yet group members (i.e. they need to be added to the group)
 		$add = array_diff($course->get('members'), $group->get('members'));
 
-		foreach($add as $a)
+		foreach ($add as $a)
 		{
 			$group->add('members', $a);
 		}
@@ -79,7 +79,7 @@ class plgUserCourses extends \Hubzero\Plugin\Plugin
 		// Get all of the group members that are not members of the course (i.e. they need to be removed from the group)
 		$remove = array_diff($group->get('members'), $course->get('members'));
 
-		foreach($remove as $r)
+		foreach ($remove as $r)
 		{
 			$group->remove('members', $r);
 		}

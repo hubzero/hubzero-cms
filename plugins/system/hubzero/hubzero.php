@@ -94,7 +94,7 @@ class plgSystemHubzero extends JPlugin
 
 			$crypt = new JSimpleCrypt();
 
-			if ($str = JRequest::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
+			if ($str = Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 			{
 				$sstr = $crypt->decrypt($str);
 				$tracker = @unserialize($sstr);

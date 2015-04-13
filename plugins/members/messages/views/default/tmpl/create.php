@@ -37,13 +37,13 @@ $tos = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'mbrs', 
 
 $this->css();
 ?>
-<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+<form action="<?php echo Route::url($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset class="hub-mail">
 		<div class="cont">
-			<h3><?php echo JText::_('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
+			<h3><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
 			<label<?php if ($this->no_html) { echo ' class="width-65"'; } ?>>
-				<?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?>
-				<span class="required"><?php echo JText::_('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
+				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TO'); ?>
+				<span class="required"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
 				<?php
 					if (count($tos) > 0)
 					{
@@ -56,15 +56,15 @@ $this->css();
 				?>
 			</label>
 			<label>
-				<?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?>
-				<input type="text" name="subject" id="msg-subject" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'); ?>"  />
+				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT'); ?>
+				<input type="text" name="subject" id="msg-subject" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT_MESSAGE'); ?>"  />
 			</label>
 			<label>
-				<?php echo JText::_('PLG_MEMBERS_MESSAGES_MESSAGE'); ?> <span class="required"><?php echo JText::_('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
+				<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
 				<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 			</label>
 			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_SEND'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SEND'); ?>" />
 			</p>
 		</div>
 	</fieldset>

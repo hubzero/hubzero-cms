@@ -52,7 +52,7 @@ class plgCronUsers extends JPlugin
 		$obj->events = array(
 			array(
 				'name'   => 'cleanAuthTempAccounts',
-				'label'  => JText::_('PLG_CRON_USERS_REMOVE_TEMP_ACCOUNTS'),
+				'label'  => Lang::txt('PLG_CRON_USERS_REMOVE_TEMP_ACCOUNTS'),
 				'params' => ''
 			)
 		);

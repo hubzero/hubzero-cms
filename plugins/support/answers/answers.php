@@ -323,7 +323,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'question':
-				$upconfig = JComponentHelper::getParams('com_members');
+				$upconfig = Component::params('com_members');
 				$banking = $upconfig->get('bankAccounts');
 
 				$reward = 0;

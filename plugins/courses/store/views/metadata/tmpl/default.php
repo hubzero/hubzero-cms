@@ -77,13 +77,13 @@ if ($offering->exists())
 					</tr>
 <?php } ?>
 					<tr>
-						<th scope="row"><?php echo JText::_('Offering'); ?></th>
+						<th scope="row"><?php echo Lang::txt('Offering'); ?></th>
 						<td>
 							<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php echo JText::_('Section'); ?></th>
+						<th scope="row"><?php echo Lang::txt('Section'); ?></th>
 						<td>
 							<?php echo $this->escape(stripslashes($offering->section()->get('title'))); ?>
 						</td>
@@ -92,8 +92,8 @@ if ($offering->exists())
 			</table>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
-				<a class="outline btn" href="<?php echo JRoute::_($offering->link()); ?>">
-					<?php echo JText::_('Enter course'); ?>
+				<a class="outline btn" href="<?php echo Route::url($offering->link()); ?>">
+					<?php echo Lang::txt('Enter course'); ?>
 				</a>
 			</p>
 		<?php } else { ?>
@@ -102,13 +102,13 @@ if ($offering->exists())
 				<input type="hidden" name="pId[<?php echo $product->data->id; ?>]" value="1" />
 				<input type="hidden" name="updateCart" value="updateCart" />
 				<p>
-					<input type="submit" class="enroll btn" value="<?php echo JText::_('Enroll in course'); ?>" />
+					<input type="submit" class="enroll btn" value="<?php echo Lang::txt('Enroll in course'); ?>" />
 				</p>
 			</form>
 			<?php } else { ?>
 			<p>
-				<a class="enroll btn" href="<?php echo JRoute::_($url); ?>">
-					<?php echo JText::_('Enroll'); ?>
+				<a class="enroll btn" href="<?php echo Route::url($url); ?>">
+					<?php echo Lang::txt('Enroll'); ?>
 				</a>
 			</p>
 			<?php } ?>

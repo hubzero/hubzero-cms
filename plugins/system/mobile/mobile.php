@@ -45,26 +45,26 @@ class plgSystemMobile extends JPlugin
 	public function onAfterDispatch()
 	{
 		$session = JFactory::getSession();
-		$tmpl = JRequest::getVar("tmpl","");
+		$tmpl = Request::getVar("tmpl","");
 
-		if($tmpl == "mobile")
+		if ($tmpl == "mobile")
 		{
 			$session->set("mobile", true);
 		}
 		else
 		{
-			if($session->get("mobile"))
+			if ($session->get("mobile"))
 			{
-				JRequest::setVar("tmpl", "mobile");
+				Request::setVar("tmpl", "mobile");
 			}
 		}
 
 
 		//are we requesting to view full site again
-		if($tmpl == "fullsite")
+		if ($tmpl == "fullsite")
 		{
 			$session->set("mobile", false);
-			JRequest::setVar("tmpl", "");
+			Request::setVar("tmpl", "");
 
 			$app = JFactory::getApplication();
 			$app->redirect($_SERVER['SCRIPT_URI'] . '?' . str_replace('tmpl=fullsite', '', $_SERVER['QUERY_STRING']));

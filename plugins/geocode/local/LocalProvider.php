@@ -314,7 +314,7 @@ class LocalProvider extends AbstractProvider implements ProviderInterface
 	{
 		if (!in_array($this->type, array('countries', 'country')))
 		{
-			throw new UnsupportedException(\JText::sprintf('The LocalProvider does not support "%s".', $this->type));
+			throw new UnsupportedException(\Lang::txt('The LocalProvider does not support "%s".', $this->type));
 		}
 
 		$retriever = '_get' . ucfirst($this->type);

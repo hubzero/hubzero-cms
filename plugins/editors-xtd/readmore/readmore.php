@@ -44,7 +44,7 @@ class plgButtonReadmore extends JPlugin
 		// button is not active in specific content components
 
 		$getContent = $this->_subject->getContent($name);
-		$present = JText::_('PLG_READMORE_ALREADY_EXISTS', true) ;
+		$present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true) ;
 		$js = "
 			function insertReadmore(editor) {
 				var content = $getContent
@@ -62,7 +62,7 @@ class plgButtonReadmore extends JPlugin
 		$button = new JObject;
 		$button->set('modal', false);
 		$button->set('onclick', 'insertReadmore(\''.$name.'\');return false;');
-		$button->set('text', JText::_('PLG_READMORE_BUTTON_READMORE'));
+		$button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));
 		$button->set('name', 'readmore');
 		// TODO: The button writer needs to take into account the javascript directive
 		//$button->set('link', 'javascript:void(0)');

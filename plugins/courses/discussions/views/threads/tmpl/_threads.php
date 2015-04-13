@@ -86,7 +86,7 @@ if ($this->threads && is_array($this->threads))
 
 	if (count($subs) > 0)
 	{
-		$offering = CoursesModelOffering::getInstance(JRequest::getVar('offering', ''));
+		$offering = CoursesModelOffering::getInstance(Request::getVar('offering', ''));
 		if ($offering->exists())
 		{
 			$database = JFactory::getDBO();
@@ -100,7 +100,7 @@ if ($this->threads && is_array($this->threads))
 } else {
 ?>
 	<li class="comments-none">
-		<p><?php echo JText::_('No discussions found.'); ?></p>
+		<p><?php echo Lang::txt('No discussions found.'); ?></p>
 	</li>
 <?php
 }

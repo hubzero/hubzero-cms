@@ -85,7 +85,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						 || $xseen->whenseen == $database->getNullDate()
 						 || $xseen->whenseen == NULL)
 						{
-							$xseen->whenseen = JFactory::getDate()->toSql();
+							$xseen->whenseen = Date::toSql();
 							$xseen->store(true);
 						}
 					}

@@ -35,16 +35,16 @@ $this->css()->js();
 
 				<?php if ($this->params->get('access-create-comment')) { ?>
 					<h3 class="post-comment-title" id="post-comment">
-						<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_A_COMMENT'); ?>
+						<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_A_COMMENT'); ?>
 					</h3>
-					<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform" enctype="multipart/form-data">
+					<form method="post" action="<?php echo Route::url($this->url); ?>" id="commentform" enctype="multipart/form-data">
 						<p class="comment-member-photo">
 							<?php
 							$edit = 0;
 							// Make sure editing capaibilites are available before even accepting an ID to edit
 							if ($this->params->get('access-edit-comment') || $this->params->get('access-manage-comment'))
 							{
-								$edit = JRequest::getInt('commentedit', 0);
+								$edit = Request::getInt('commentedit', 0);
 							}
 
 							// Load the comment
@@ -58,7 +58,7 @@ $this->css()->js();
 
 							if (!$comment->exists())
 							{
-								$comment->set('parent', JRequest::getInt('commentreply', 0));
+								$comment->set('parent', Request::getInt('commentreply', 0));
 								$comment->set('created_by', (!$this->juser->get('guest') ? $this->juser->get('id') : 0));
 								$comment->set('anonymous', (!$this->juser->get('guest') ? 0 : 1));
 							}
@@ -69,22 +69,22 @@ $this->css()->js();
 							<?php
 							if (!$this->juser->get('guest'))
 							{
-								if ($replyto = JRequest::getInt('commentreply', 0))
+								if ($replyto = Request::getInt('commentreply', 0))
 								{
 									$reply = new \Plugins\Hubzero\Comments\Models\Comment($replyto);
 
-									$name = JText::_('COM_KB_ANONYMOUS');
+									$name = Lang::txt('COM_KB_ANONYMOUS');
 									if (!$reply->get('anonymous'))
 									{
-										$name = ($reply->creator('public') ? '<a href="' . JRoute::_($reply->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($repy->creator('name'))) . ($reply->creator('public') ? '</a>' : '');
+										$name = ($reply->creator('public') ? '<a href="' . Route::url($reply->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($repy->creator('name'))) . ($reply->creator('public') ? '</a>' : '');
 									}
 									?>
 									<blockquote cite="c<?php echo $reply->get('id'); ?>">
 										<p>
 											<strong><?php echo $name; ?></strong>
-											<span class="comment-date-at"><?php echo JText::_('COM_ANSWERS_AT'); ?></span>
+											<span class="comment-date-at"><?php echo Lang::txt('COM_ANSWERS_AT'); ?></span>
 											<span class="time"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('time'); ?></time></span>
-											<span class="comment-date-on"><?php echo JText::_('COM_ANSWERS_ON'); ?></span>
+											<span class="comment-date-on"><?php echo Lang::txt('COM_ANSWERS_ON'); ?></span>
 											<span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
 										</p>
 										<p><?php echo $reply->content('clean', 300); ?></p>
@@ -94,7 +94,7 @@ $this->css()->js();
 							}
 							?>
 							<label for="commentcontent">
-								<?php echo JText::_('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
+								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
 								<?php
 								if (!$this->juser->get('guest'))
 								{
@@ -104,17 +104,17 @@ $this->css()->js();
 							</label>
 
 							<label for="comment_file">
-								<?php echo JText::_('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>
+								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>
 								<input type="file" name="comment_file" id="comment_file" />
 							</label>
 
 							<label id="comment-anonymous-label">
 								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
-								<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
+								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
 							</label>
 
 							<p class="submit">
-								<input type="submit" class="btn btn-success" name="submit" value="<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
+								<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
 							</p>
 
 							<input type="hidden" name="comment[id]" value="<?php echo $comment->get('id'); ?>" />
@@ -130,7 +130,7 @@ $this->css()->js();
 
 							<div class="sidenote">
 								<p>
-									<strong><?php echo JText::_('PLG_HUBZERO_COMMENTS_KEEP_RELEVANT'); ?></strong>
+									<strong><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_KEEP_RELEVANT'); ?></strong>
 								</p>
 							</div>
 						</fieldset>
@@ -138,11 +138,11 @@ $this->css()->js();
 				<?php } ?>
 
 				<?php if ($this->params->get('comments_locked', 0) == 1) { ?>
-					<p class="info"><?php echo JText::_('PLG_HUBZERO_COMMENTS_LOCKED'); ?></p>
+					<p class="info"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_LOCKED'); ?></p>
 				<?php } ?>
 
 				<h3 class="post-comment-title">
-					<?php echo JText::_('PLG_HUBZERO_COMMENTS'); ?>
+					<?php echo Lang::txt('PLG_HUBZERO_COMMENTS'); ?>
 				</h3>
 				<?php if ($this->comments->count()) {
 					$this->view('list')
@@ -158,7 +158,7 @@ $this->css()->js();
 					     ->display();
 				} else if ($this->depth <= 1) { ?>
 					<p class="no-comments">
-						<?php echo JText::_('PLG_HUBZERO_COMMENTS_NO_COMMENTS'); ?>
+						<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_NO_COMMENTS'); ?>
 					</p>
 				<?php } ?>
 
@@ -169,6 +169,6 @@ $this->css()->js();
 	</section><!-- / .below section -->
 <?php } else { ?>
 	<p class="warning">
-		<?php echo JText::_('PLG_HUBZERO_COMMENTS_MUST_BE_LOGGED_IN'); ?>
+		<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_MUST_BE_LOGGED_IN'); ?>
 	</p>
 <?php } ?>

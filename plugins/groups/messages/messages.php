@@ -52,7 +52,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name' => 'messages',
-			'title' => JText::_('PLG_GROUPS_MESSAGES'),
+			'title' => Lang::txt('PLG_GROUPS_MESSAGES'),
 			'default_access' => $this->params->get('plugin_access','members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => '2709'
@@ -118,7 +118,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -126,11 +126,11 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			if ($juser->get('guest')
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
 				return;
@@ -141,7 +141,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -174,12 +174,12 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	{
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . JText::_('PLG_GROUPS_MESSAGES_SENT'));
+		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT'));
 
 		// Filters for returning results
 		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 10);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
+		$filters['limit'] = Request::getInt('limit', 10);
+		$filters['start'] = Request::getInt('limitstart', 0);
 		$filters['group_id'] = $this->group->get('gidNumber');
 
 		// Instantiate our message object
@@ -234,7 +234,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	protected function _view()
 	{
 		//get the message id
-		$message = JRequest::getVar('msg','','get');
+		$message = Request::getVar('msg','','get');
 
 		//if there is no message id show all sent messages
 		if (!$message)
@@ -273,7 +273,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->xmessage = $xmessage;
-		$view->no_html = JRequest::getInt('no_html', 0);
+		$view->no_html = Request::getInt('no_html', 0);
 		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
@@ -301,7 +301,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->get('description').': '.JText::_('PLG_GROUPS_MESSAGES_SEND'));
+		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt('PLG_GROUPS_MESSAGES_SEND'));
 
 		// Instantiate a vew
 		$view = new \Hubzero\Plugin\View(
@@ -329,8 +329,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		$view->member_roles = $member_roles;
 		$view->members = $members;
-		$view->users = JRequest::getVar('users', array('all'));
-		$view->no_html = JRequest::getInt('no_html', 0);
+		$view->users = Request::getVar('users', array('all'));
+		$view->no_html = Request::getInt('no_html', 0);
 		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
@@ -358,10 +358,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		//message
-		$message = JText::sprintf('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
+		$message = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
 
 		// Incoming array of users to message
-		$mbrs = JRequest::getVar('users', array(0), 'post');
+		$mbrs = Request::getVar('users', array(0), 'post');
 		switch ($mbrs[0])
 		{
 			case 'invitees':
@@ -385,7 +385,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 				$group_id = $this->group->get('gidNumber');
 			break;
 			default:
-				$message = JText::sprintf('PLG_GROUPS_MESSAGES_FOR_GROUP_MEMBER', $this->group->get('cn'));
+				$message = Lang::txt('PLG_GROUPS_MESSAGES_FOR_GROUP_MEMBER', $this->group->get('cn'));
 
 				foreach ($mbrs as $mbr)
 				{
@@ -415,8 +415,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming message and subject
-		$s = JRequest::getVar('subject', JText::_('PLG_GROUPS_MESSAGES_SUBJECT'));
-		$m = JRequest::getVar('message', '');
+		$s = Request::getVar('subject', Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT'));
+		$m = Request::getVar('message', '');
 
 		// Ensure we have a message
 		if (!$s || !$m)
@@ -459,14 +459,14 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// create url
 		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
+		$sef = Route::url('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
 		$sef = ltrim($sef, DS);
 
 		// create subject
 		$subject = $s . " [Email sent on Behalf of " . $juser->get('name') . "]";
 
 		//message
-		$plain  = JText::sprintf('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
+		$plain  = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
 		$plain .= "\r\n------------------------------------------------\r\n\r\n";
 		$plain .= $m;
 
@@ -512,7 +512,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// Determine if we're returning HTML or not
 		// (if no - this is an AJAX call)
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 		if (!$no_html)
 		{
 			$html = '';

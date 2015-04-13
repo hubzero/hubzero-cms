@@ -56,7 +56,7 @@ class MessageHash extends \JTable
 		$this->hash = trim($this->hash);
 		if (!$this->hash)
 		{
-			$this->setError(\JText::_('Entry must contain a hash.'));
+			$this->setError(\Lang::txt('Entry must contain a hash.'));
 			return false;
 		}
 

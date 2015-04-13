@@ -110,7 +110,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		// Build query
 		$filters = array();
 		$filters['tags'] = $ids;
-		$filters['now'] = JFactory::getDate()->toSql();
+		$filters['now'] = Date::toSql();
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 

@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 
 // Get our asset model
-$asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
+$asset = new CoursesModelAsset(Request::getInt('asset_id', null));
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
 
 // Get the asset groups
@@ -58,7 +58,7 @@ endforeach;
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 $tools     = ToolsModelTool::getMyTools();
-$config    = JComponentHelper::getParams('com_courses');
+$config    = Component::params('com_courses');
 $tool_path = $config->get('tool_path');
 ?>
 
@@ -80,26 +80,26 @@ $tool_path = $config->get('tool_path');
 		<p>
 			<label for="type">Type:</label>
 			<select name="type">
-				<option value="video"<?php if ($asset->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
-				<option value="file"<?php if ($asset->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
-				<option value="form"<?php if ($asset->get('type') == 'form') { echo ' selected="selected"'; } ?>><?php echo JText::_('Form'); ?></option>
-				<option value="text"<?php if ($asset->get('type') == 'text') { echo ' selected="selected"'; } ?>><?php echo JText::_('Text'); ?></option>
-				<option value="url"<?php if ($asset->get('type') == 'url') { echo ' selected="selected"'; } ?>><?php echo JText::_('URL'); ?></option>
+				<option value="video"<?php if ($asset->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Video'); ?></option>
+				<option value="file"<?php if ($asset->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('File'); ?></option>
+				<option value="form"<?php if ($asset->get('type') == 'form') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Form'); ?></option>
+				<option value="text"<?php if ($asset->get('type') == 'text') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Text'); ?></option>
+				<option value="url"<?php if ($asset->get('type') == 'url') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('URL'); ?></option>
 			</select>
 		</p>
 		<p>
 			<label for="subtype">Subtype:</label>
 			<select name="subtype">
-				<option value="video"<?php if ($asset->get('subtype') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
-				<option value="embedded"<?php if ($asset->get('subtype') == 'embedded') { echo ' selected="selected"'; } ?>><?php echo JText::_('Embedded'); ?></option>
-				<option value="file"<?php if ($asset->get('subtype') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
-				<option value="exam"<?php if ($asset->get('subtype') == 'exam') { echo ' selected="selected"'; } ?>><?php echo JText::_('Exam'); ?></option>
-				<option value="quiz"<?php if ($asset->get('subtype') == 'quiz') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz'); ?></option>
-				<option value="homework"<?php if ($asset->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo JText::_('Homework'); ?></option>
-				<option value="note"<?php if ($asset->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
-				<option value="wiki"<?php if ($asset->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('Wiki'); ?></option>
-				<option value="link"<?php if ($asset->get('subtype') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
-				<option value="tool"<?php if ($asset->get('subtype') == 'tool') { echo ' selected="selected"'; } ?>><?php echo JText::_('Tool'); ?></option>
+				<option value="video"<?php if ($asset->get('subtype') == 'video') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Video'); ?></option>
+				<option value="embedded"<?php if ($asset->get('subtype') == 'embedded') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Embedded'); ?></option>
+				<option value="file"<?php if ($asset->get('subtype') == 'file') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('File'); ?></option>
+				<option value="exam"<?php if ($asset->get('subtype') == 'exam') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Exam'); ?></option>
+				<option value="quiz"<?php if ($asset->get('subtype') == 'quiz') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Quiz'); ?></option>
+				<option value="homework"<?php if ($asset->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Homework'); ?></option>
+				<option value="note"<?php if ($asset->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Note'); ?></option>
+				<option value="wiki"<?php if ($asset->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Wiki'); ?></option>
+				<option value="link"<?php if ($asset->get('subtype') == 'link') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Link'); ?></option>
+				<option value="tool"<?php if ($asset->get('subtype') == 'tool') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Tool'); ?></option>
 			</select>
 		</p>
 		<p>

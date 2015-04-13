@@ -32,44 +32,44 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 <ul id="page_options">
 	<li>
-		<a class="icon-prev btn back" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
-			<?php echo JText::_('Back to Manage Calendars'); ?>
+		<a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
+			<?php echo Lang::txt('Back to Manage Calendars'); ?>
 		</a>
 	</li>
 </ul>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=savecalendar'); ?>" id="hubForm" method="post" class="full">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=savecalendar'); ?>" id="hubForm" method="post" class="full">
 
 	<fieldset>
-		<legend><?php echo JText::_('Group Calendar'); ?></legend>
+		<legend><?php echo Lang::txt('Group Calendar'); ?></legend>
 
-		<label><?php echo JText::_('Title:'); ?> <span class="required">Required</span>
+		<label><?php echo Lang::txt('Title:'); ?> <span class="required">Required</span>
 			<input type="text" name="calendar[title]" value="<?php echo $this->calendar->get('title'); ?>" />
 		</label>
 
-		<label><?php echo JText::_('URL:'); ?> <span class="optional">Optional</span>
+		<label><?php echo Lang::txt('URL:'); ?> <span class="optional">Optional</span>
 			<input type="text" name="calendar[url]" value="<?php echo $this->calendar->get('url'); ?>" />
-			<span class="hint"><?php echo JText::_('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
+			<span class="hint"><?php echo Lang::txt('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
 		</label>
 
-		<label><?php echo JText::_('Color:'); ?> <span class="optional">Optional</span>
+		<label><?php echo Lang::txt('Color:'); ?> <span class="optional">Optional</span>
 			<?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
 			<select name="calendar[color]">
 				<option value="">- Select Color &mdash;</option>
-				<?php foreach($colors as $color) : ?>
+				<?php foreach ($colors as $color) : ?>
 					<?php $sel = ($this->calendar->get('color') == $color) ? 'selected="selected"' : ''; ?>
 					<option <?php echo $sel; ?> value="<?php echo $color; ?>"><?php echo ucfirst($color); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</label>
 
-		<label><?php echo JText::_('Publish Events to Subscribers?:'); ?>
+		<label><?php echo Lang::txt('Publish Events to Subscribers?:'); ?>
 			<select name="calendar[published]">
 				<option <?php echo ($this->calendar->get('published') == 1) ? 'selected="selected"' : ''; ?>value="1">Yes</option>
 				<option value="0">No</option>

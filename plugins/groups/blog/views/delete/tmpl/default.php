@@ -39,8 +39,8 @@ $this->css()
 
 <ul id="page_options">
 	<li>
-		<a class="icon-archive archive btn" href="<?php echo JRoute::_($base); ?>">
-			<?php echo JText::_('PLG_GROUPS_BLOG_ARCHIVE'); ?>
+		<a class="icon-archive archive btn" href="<?php echo Route::url($base); ?>">
+			<?php echo Lang::txt('PLG_GROUPS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
 </ul>
@@ -48,20 +48,20 @@ $this->css()
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_($base . '&action=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
+	<form action="<?php echo Route::url($base . '&action=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
 		<div class="explaination">
 		<?php if ($this->authorized) { ?>
-			<p><a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>"><?php echo JText::_('PLG_GROUPS_BLOG_NEW_ENTRY'); ?></a></p>
+			<p><a class="icon-add add btn" href="<?php echo Route::url($base . '&action=new'); ?>"><?php echo Lang::txt('PLG_GROUPS_BLOG_NEW_ENTRY'); ?></a></p>
 		<?php } ?>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
-	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
+	 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
 
 			<label for="confirmdel">
 				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
-				<?php echo JText::_('PLG_GROUPS_BLOG_DELETE_CONFIRM'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
@@ -75,10 +75,10 @@ $this->css()
 		<input type="hidden" name="entry" value="<?php echo $this->entry->get('id'); ?>" />
 
 		<p class="submit">
-			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
-				<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>
+			<a class="btn btn-secondary" href="<?php echo Route::url($this->entry->link()); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_BLOG_CANCEL'); ?>
 			</a>
 		</p>
 	</form>

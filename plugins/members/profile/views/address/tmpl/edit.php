@@ -39,48 +39,48 @@ $this->css()
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="index.php" method="post" id="hubForm<?php if (JRequest::getInt('no_html', 0)) { echo '-ajax'; }; ?>" class="member-address-form">
-	<?php if (!JRequest::getInt('no_html', 0)) : ?>
+<form action="index.php" method="post" id="hubForm<?php if (Request::getInt('no_html', 0)) { echo '-ajax'; }; ?>" class="member-address-form">
+	<?php if (!Request::getInt('no_html', 0)) : ?>
 	<div class="explaination">
-		<h3><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></h3>
-		<p><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE_EXPLANATION') ;?></p>
-		<p><a class="icon-prev btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=profile&action=manageaddresses'); ?>"><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></a></p>
+		<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></h3>
+		<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE_EXPLANATION') ;?></p>
+		<p><a class="icon-prev btn" href="<?php echo Route::url('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=profile&action=manageaddresses'); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></a></p>
 	</div>
 	<?php endif; ?>
 	<fieldset>
-		<legend><?php echo ($this->address->id != 0) ? JText::_('PLG_MEMBERS_PROFILE_ADDRESS_EDIT') : JText::_('PLG_MEMBERS_PROFILE_ADDRESS_ADD'); ?></legend>
+		<legend><?php echo ($this->address->id != 0) ? Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_EDIT') : Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_ADD'); ?></legend>
 		<p><?php echo Jtext::sprintf('PLG_MEMBERS_PROFILE_ADDRESS_LOCATE', 'javascript:;'); ?></p>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_TO'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_TO'); ?>
 			<input type="text" name="address[addressTo]" value="<?php echo $this->escape($this->address->addressTo); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_LINE1'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_LINE1'); ?>
 			<input type="text" name="address[address1]" id="address1" value="<?php echo $this->escape($this->address->address1); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_LINE2'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_LINE2'); ?>
 			<input type="text" name="address[address2]" id="address2" value="<?php echo $this->escape($this->address->address2); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_CITY'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_CITY'); ?>
 			<input type="text" name="address[addressCity]" id="addressCity" value="<?php echo $this->escape($this->address->addressCity); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_PROVINCE'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_PROVINCE'); ?>
 			<input type="text" name="address[addressRegion]" id="addressRegion" value="<?php echo $this->escape($this->address->addressRegion); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_POSTALCODE'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_POSTALCODE'); ?>
 			<input type="text" name="address[addressPostal]" id="addressPostal" value="<?php echo $this->escape($this->address->addressPostal); ?>" />
 		</label>
 		<label>
-			<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_COUNTRY'); ?>
+			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_COUNTRY'); ?>
 			<?php
 				$countries = \Hubzero\Geocode\Geocode::countries();
 			?>
 			<select name="address[addressCountry]" id="addressCountry">
-				<option value=""><?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS_SELECT_COUNTRY'); ?></option>
+				<option value=""><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SELECT_COUNTRY'); ?></option>
 				<?php foreach ($countries as $country) : ?>
 					<?php $sel = ($country->name == $this->address->addressCountry) ? 'selected="selected"' : ''; ?>
 					<option <?php echo $sel; ?> value="<?php echo $country->name; ?>"><?php echo $this->escape($country->name); ?></option>
@@ -91,7 +91,7 @@ $this->css()
 		<input type="hidden" name="address[addressLongitude]" id="addressLongitude" value="<?php echo $this->escape($this->address->addressLongitude); ?>" />
 	</fieldset>
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
 	</p>
 	<input type="hidden" name="option" value="com_members" />
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />

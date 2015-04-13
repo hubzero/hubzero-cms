@@ -37,7 +37,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 	$base = str_replace('http://', 'https://', $base);
 }
 
-$controller = JRequest::getCmd('controller', JRequest::getCmd('view', ''));
+$controller = Request::getCmd('controller', Request::getCmd('view', ''));
 
 $this->css();
 ?>
@@ -60,14 +60,14 @@ $this->css();
 					//]]>
 					</script>
 
-					<a href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" ><?php echo JText::_('PLG_HUBZERO_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>
+					<a href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" ><?php echo Lang::txt('PLG_HUBZERO_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
 	<label for="imgCatchaTxt<?php echo $this->total; ?>">
-		<?php echo JText::_('PLG_HUBZERO_IMAGECAPTCHA_ENTER_CAPTCHA_VALUE'); ?>
+		<?php echo Lang::txt('PLG_HUBZERO_IMAGECAPTCHA_ENTER_CAPTCHA_VALUE'); ?>
 		<input type="text" name="imgCatchaTxt" id="imgCatchaTxt<?php echo $this->total; ?>" />
 	</label>
 

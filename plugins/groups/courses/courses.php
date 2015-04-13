@@ -52,7 +52,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'             => $this->_name,
-			'title'            => JText::_('PLG_GROUPS_COURSES'),
+			'title'            => Lang::txt('PLG_GROUPS_COURSES'),
 			'default_access'   => $this->params->get('plugin_access', 'anyone'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => 'f09c'

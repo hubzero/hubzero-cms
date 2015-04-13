@@ -35,44 +35,44 @@ $this->css();
 ?>
 
 <h3 class="section-header">
-	<?php echo JText::_('PLG_MEMBERS_POINTS'); ?>
+	<?php echo Lang::txt('PLG_MEMBERS_POINTS'); ?>
 </h3>
 
 <div class="grid">
 	<div class="col span-half">
 		<div class="point-balance-container">
-			<h4><?php echo JText::_('PLG_MEMBERS_POINTS_BALANCE'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_MEMBERS_POINTS_BALANCE'); ?></h4>
 			<div class="point-balance">
-				<strong><?php echo number_format($this->sum); ?> <span><?php echo strtolower(JText::_('PLG_MEMBERS_POINTS')); ?></span></strong>
-				<span class="spend">( <?php echo number_format($this->funds) . ' ' . strtolower(JText::_('PLG_MEMBERS_POINTS_AVAILABLE')); ?> )</span>
+				<strong><?php echo number_format($this->sum); ?> <span><?php echo strtolower(Lang::txt('PLG_MEMBERS_POINTS')); ?></span></strong>
+				<span class="spend">( <?php echo number_format($this->funds) . ' ' . strtolower(Lang::txt('PLG_MEMBERS_POINTS_AVAILABLE')); ?> )</span>
 			</div>
 		</div>
 	</div>
 	<div class="col span-half omega">
 		<p class="help">
-			<strong><?php echo JText::_('PLG_MEMBERS_POINTS_HOW_ARE_POINTS_AWARDED'); ?></strong><br />
-			<?php echo JText::_('PLG_MEMBERS_POINTS_AWARDED_EXPLANATION'); ?>
+			<strong><?php echo Lang::txt('PLG_MEMBERS_POINTS_HOW_ARE_POINTS_AWARDED'); ?></strong><br />
+			<?php echo Lang::txt('PLG_MEMBERS_POINTS_AWARDED_EXPLANATION'); ?>
 		</p>
 	</div>
 </div>
 
 <div class="container">
 	<table class="entries transactions">
-		<caption><?php echo JText::_('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_CAPTION'); ?></caption>
+		<caption><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_CAPTION'); ?></caption>
 		<thead>
 			<tr>
-				<th scope="col" class="textual-data"><?php echo JText::_('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DATE'); ?></th>
-				<th scope="col" class="textual-data"><?php echo JText::_('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DESCRIPTION'); ?></th>
-				<th scope="col" class="textual-data"><?php echo JText::_('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_TYPE'); ?></th>
-				<th scope="col" class="numerical-data"><?php echo JText::_('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_AMOUNT'); ?></th>
-				<th scope="col" class="numerical-data"><?php echo JText::_('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_BALANCE'); ?></th>
+				<th scope="col" class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DATE'); ?></th>
+				<th scope="col" class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DESCRIPTION'); ?></th>
+				<th scope="col" class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_TYPE'); ?></th>
+				<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_AMOUNT'); ?></th>
+				<th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_BALANCE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if ($this->hist) : ?>
 				<?php foreach ($this->hist as $item) : ?>
 					<tr>
-						<td><?php echo JHTML::_('date', $item->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+						<td><?php echo JHTML::_('date', $item->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 						<td><?php echo $this->escape($item->description); ?></td>
 						<td><?php echo $this->escape($item->type); ?></td>
 					<?php if ($item->type == 'withdraw') : ?>
@@ -86,7 +86,7 @@ $this->css();
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
-				<tr><td colspan="5"><?php echo JText::_('PLG_MEMBERS_POINTS_NO_TRANSACTIONS'); ?></td></tr>
+				<tr><td colspan="5"><?php echo Lang::txt('PLG_MEMBERS_POINTS_NO_TRANSACTIONS'); ?></td></tr>
 			<?php endif; ?>
 		</tbody>
 	</table>

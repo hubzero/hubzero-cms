@@ -37,17 +37,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
-			<legend><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
 
 			<p class="warning">
-				<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_WARNING', stripslashes($this->collection->get('title'))); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_WARNING', stripslashes($this->collection->get('title'))); ?>
 			</p>
 
 			<label for="confirmdel">
 				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
-				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
@@ -63,10 +63,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input type="submit" class="btn btn-danger" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
+			<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
 
 			<?php if (!$this->no_html) { ?>
-				<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
+				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

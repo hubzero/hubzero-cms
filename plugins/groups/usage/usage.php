@@ -46,7 +46,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name' => 'usage',
-			'title' => JText::_('USAGE'),
+			'title' => Lang::txt('USAGE'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f080'
@@ -103,7 +103,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -111,11 +111,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			if ($juser->get('guest')
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
 				return;
@@ -126,7 +126,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -158,11 +158,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$doc->addScript('plugins' . DS . 'groups' . DS . 'usage' . DS . 'datepicker.js');
 
 			//get the page id if we want to view stats on a specific page
-			$pid = JRequest::getVar('pid', '');
+			$pid = Request::getVar('pid', '');
 
 			//get start and end dates
-			$start = JRequest::getVar('start', date("Y-m-d 00:00:00",strtotime('-30 DAYS')));
-			$end = JRequest::getVar('end', date("Y-m-d 23:59:59"));
+			$start = Request::getVar('start', date("Y-m-d 00:00:00",strtotime('-30 DAYS')));
+			$end = Request::getVar('end', date("Y-m-d 23:59:59"));
 
 			//make sure start date is a full php datetime
 			if (strlen($start) != 19)

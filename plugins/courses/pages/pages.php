@@ -55,7 +55,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f05a');
@@ -65,9 +65,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		// Section specific pages
@@ -95,13 +95,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($response->get('name') == $active)
 		{
-			$action = strtolower(JRequest::getWord('group', ''));
+			$action = strtolower(Request::getWord('group', ''));
 			if ($action && $action != 'edit' && $action != 'delete')
 			{
 				$action = 'download';
 			}
 
-			$active = strtolower(JRequest::getWord('unit', ''));
+			$active = strtolower(Request::getWord('unit', ''));
 
 			if ($active == 'add')
 			{
@@ -111,14 +111,14 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			{
 				$action = 'download';
 			}
-			if ($act = strtolower(JRequest::getWord('action', '')))
+			if ($act = strtolower(Request::getWord('action', '')))
 			{
 				$action = $act;
 			}
 
 			$this->view = $this->view('default', 'pages');
-			$this->view->option     = JRequest::getCmd('option', 'com_courses');
-			$this->view->controller = JRequest::getWord('controller', 'course');
+			$this->view->option     = Request::getCmd('option', 'com_courses');
+			$this->view->controller = Request::getWord('controller', 'course');
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->config     = $course->config();
@@ -139,7 +139,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				default: $this->_list(); break;
 			}
 
-			if (JRequest::getInt('no_html', 0))
+			if (Request::getInt('no_html', 0))
 			{
 				ob_clean();
 				header('Content-type: text/plain');
@@ -164,7 +164,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		$this->view->setLayout('default');
 
-		$active = JRequest::getVar('unit', '');
+		$active = Request::getVar('unit', '');
 
 		// Section specific pages
 		$spages = $this->view->offering->pages(array(
@@ -217,9 +217,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
+			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -236,7 +236,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$page = JRequest::getVar('unit', '');
+			$page = Request::getVar('unit', '');
 
 			$this->view->model = $this->view->offering->page($page);
 		}
@@ -286,9 +286,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
+			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -298,9 +298,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$page = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$page = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		$model = new CoursesModelPage($page['id']);
 
@@ -323,7 +323,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->setRedirect(
-			JRoute::_($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url'))
+			Route::url($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url'))
 		);
 	}
 
@@ -336,9 +336,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->view->juser->get('guest'))
 		{
-			$return = JRoute::_($this->view->offering->link() . '&active=' . $this->_name, false, true);
+			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -347,7 +347,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		$model = $this->view->offering->page(JRequest::getVar('unit', ''));
+		$model = $this->view->offering->page(Request::getVar('unit', ''));
 
 		if ($model->exists())
 		{
@@ -360,7 +360,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->setRedirect(
-			JRoute::_($this->view->offering->link() . '&active=pages')
+			Route::url($this->view->offering->link() . '&active=pages')
 		);
 	}
 
@@ -393,7 +393,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')));
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')));
 			exit();
 		}
 
@@ -417,7 +417,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED')));
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED')));
 			exit();
 		}
 
@@ -431,7 +431,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			{
 				ob_clean();
 				header('Content-type: text/plain');
-				echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD')));
+				echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD')));
 				exit();
 			}
 		}
@@ -440,7 +440,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('PLG_COURSES_PAGES_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
 			exit();
 		}
 
@@ -449,7 +449,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => Lang::txt('File is empty')));
 			exit();
 		}
 		if ($size > $sizeLimit)
@@ -457,7 +457,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => JText::sprintf('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARG', $max)));
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARG', $max)));
 			exit();
 		}
 
@@ -521,27 +521,27 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_files();
 		}
 
-		if (JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->_ajaxUpload();
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('listdir', 0, 'post');
+		$listdir = Request::getInt('listdir', 0, 'post');
 		if (!$listdir)
 		{
-			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
 			return $this->_files();
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			return $this->_files();
 		}
 
@@ -553,7 +553,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
+				$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
 				return $this->_files();
 			}
 		}
@@ -567,7 +567,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Upload new files
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
 		}
 
 		// Push through to the media view
@@ -610,7 +610,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				if ($section = JRequest::getInt('section_id', 0))
+				if ($section = Request::getInt('section_id', 0))
 				{
 					$path .= $this->view->course->get('id') . DS . 'sections' . DS . $section . DS . 'pagefiles';
 				}
@@ -636,13 +636,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_files();
 		}
 
-		$no_html = JRequest::getVar('no_html', 0);
+		$no_html = Request::getVar('no_html', 0);
 
 		// Incoming file
-		$file = trim(JRequest::getVar('file', '', 'get'));
+		$file = trim(Request::getVar('file', '', 'get'));
 		if (!$file)
 		{
-			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			if ($no_html)
 			{
 				ob_clean();
@@ -662,7 +662,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Delete the file
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_FILE_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_NOT_FOUND'));
 			if ($no_html)
 			{
 				ob_clean();
@@ -681,7 +681,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_DELETE_FILE'));
+				$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_DELETE_FILE'));
 				if ($no_html)
 				{
 					ob_clean();
@@ -721,7 +721,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$this->view->page = new CoursesModelPage(JRequest::getInt('page', 0));
+		$this->view->page = new CoursesModelPage(Request::getInt('page', 0));
 	}
 
 	/**
@@ -731,11 +731,11 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _fileList()
 	{
-		$page = new CoursesModelPage(JRequest::getInt('page', 0));
+		$page = new CoursesModelPage(Request::getInt('page', 0));
 		if (!$page->exists())
 		{
 			$page->set('offering_id', $this->view->offering->get('id'));
-			$page->set('section_id', JRequest::getInt('section_id', 0));
+			$page->set('section_id', Request::getInt('section_id', 0));
 		}
 
 		$path = $this->_path($page);
@@ -801,12 +801,12 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->view->course->access('view'))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
 		// Get the scope of the parent page the file is attached to
-		$filename = JRequest::getVar('group', '');
+		$filename = Request::getVar('group', '');
 
 		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
@@ -821,15 +821,15 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Ensure we have a path
 		if (empty($filename))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
+			JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
 			return;
 		}
 
-		$page = $this->view->offering->page(JRequest::getVar('unit', ''));
+		$page = $this->view->offering->page(Request::getVar('unit', ''));
 		if (!$page->exists())
 		{
 			$pages = $this->view->offering->pages(array(
-				'url'         => JRequest::getVar('unit', ''),
+				'url'         => Request::getVar('unit', ''),
 				'offering_id' => array(0, $this->view->offering->get('id')),
 				'section_id'  => array(0, $this->view->offering->section()->get('id')),
 				'limit'       => 1,
@@ -847,7 +847,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			if (!$page)
 			{
-				JRequest::setVar('section_id', $this->view->offering->section()->get('id'));
+				Request::setVar('section_id', $this->view->offering->section()->get('id'));
 				$filepath = $this->_path($page) . DS . ltrim($filename, DS);
 				if (!file_exists($filepath))
 				{
@@ -861,7 +861,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 			if (!$found)
 			{
-				JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filepath);
+				JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filepath);
 				return;
 			}
 		}
@@ -875,7 +875,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR') . '[x]' . $filepath);
+			JError::raiseError(404, Lang::txt('COM_COURSES_SERVER_ERROR') . '[x]' . $filepath);
 		}
 		else
 		{

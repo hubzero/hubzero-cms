@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (substr($this->xmessage->type, -8) == '_message') {
 	$u = JUser::getInstance($this->xmessage->created_by);
-	$from = '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
+	$from = '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
 } else {
 	$from = 'System ('.$this->xmessage->component.')';
 }
@@ -41,46 +41,46 @@ if (substr($this->xmessage->type, -8) == '_message') {
 ?>
 <!--
 <a name="messages"></a>
-<h3><?php echo JText::_('MESSAGES'); ?></h3>
+<h3><?php echo Lang::txt('MESSAGES'); ?></h3>
 -->
 
 <div class="subject">
-	<?php if(!$this->no_html): ?>
+	<?php if (!$this->no_html): ?>
 	<ul class="entries-menu">
-		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
-		<?php if($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
+		<li><a class="active" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
+		<?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
+			<li><a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
 		<?php } ?>
 	</ul>
 	<br class="clear" />
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
+	<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
 		<fieldset class="hub-mail" style="min-height:200px">
 			<table class="groups entries" summary="Groups this person is a member of">
 				<caption>
-					<?php echo JText::_('PLG_GROUPS_MESSAGE'); ?>
-					<?php if(!$this->no_html) : ?>
+					<?php echo Lang::txt('PLG_GROUPS_MESSAGE'); ?>
+					<?php if (!$this->no_html) : ?>
 						<span>
-							<small>( <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small>
+							<small>( <a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small>
 						</span>
 					<?php endif; ?>
 				</caption>
 				<tbody>
 					<tr>
-						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
-						<td><?php echo JHTML::_('date', $this->xmessage->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
+						<td><?php echo JHTML::_('date', $this->xmessage->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>
+						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>
 						<td><?php echo $from; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_SUBJECT'); ?>:</th>
+						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT'); ?>:</th>
 						<td><?php echo stripslashes($this->xmessage->subject); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_MESSAGE'); ?>:</th>
+						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_MESSAGE'); ?>:</th>
 						<td><?php echo $this->xmessage->message; ?></td>
 					</tr>
 				</tbody>

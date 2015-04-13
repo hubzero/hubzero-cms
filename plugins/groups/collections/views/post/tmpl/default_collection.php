@@ -45,7 +45,7 @@ else
 }
 ?>
 		<h4<?php if ($collection->get('access', 0) == 4) { echo ' class="private"'; } ?>>
-			<a href="<?php echo JRoute::_($collection->link()); ?>">
+			<a href="<?php echo Route::url($collection->link()); ?>">
 				<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
 			</a>
 		</h4>
@@ -56,13 +56,13 @@ else
 			<tbody>
 				<tr>
 					<td>
-						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo JText::_('files'); ?></span>
+						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo Lang::txt('files'); ?></span>
 					</td>
 					<td>
-						<strong><?php echo $collection->count('collection'); ?></strong> <span class="post-type collection"><?php echo JText::_('collections'); ?></span>
+						<strong><?php echo $collection->count('collection'); ?></strong> <span class="post-type collection"><?php echo Lang::txt('collections'); ?></span>
 					</td>
 					<td>
-						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link"><?php echo JText::_('links'); ?></span>
+						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link"><?php echo Lang::txt('links'); ?></span>
 					</td>
 				</tr>
 			</tbody>

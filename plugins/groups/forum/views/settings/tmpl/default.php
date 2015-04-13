@@ -43,23 +43,23 @@ $this->css()
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_($base . '&action=savesettings'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url($base . '&action=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
-			<legend><?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_THREADS'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADS'); ?></legend>
 
 			<label for="param-threading">
-				<?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
 				<select name="params[threading]" id="param-threading">
-					<option value="list"<?php if ($this->config->get('threading', 'list') == 'list') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
-					<option value="tree"<?php if ($this->config->get('threading', 'list') == 'tree') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
+					<option value="list"<?php if ($this->config->get('threading', 'list') == 'list') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
+					<option value="tree"<?php if ($this->config->get('threading', 'list') == 'tree') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
 				</select>
-				<span class="hint"><?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?>
+				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?>
 			</label>
 
 			<label for="param-threading_depth">
-				<?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
+				<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
 				<input type="text" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />
-				<span class="hint"><?php echo JText::_('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
 			</label>
 
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
@@ -76,10 +76,10 @@ $this->css()
 		<input type="hidden" name="action" value="savesettings" />
 
 		<p class="submit">
-			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SAVE'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>">
-				<?php echo JText::_('PLG_GROUPS_FORUM_CANCEL'); ?>
+			<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?>
 			</a>
 		</p>
 	</form>

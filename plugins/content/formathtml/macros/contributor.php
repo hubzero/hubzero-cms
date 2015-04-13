@@ -139,7 +139,7 @@ class Contributor extends Macro
 		// Did we get a result from the database?
 		if ($name && $id)
 		{
-			return '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
+			return '<a href="' . \Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
 		}
 		else
 		{

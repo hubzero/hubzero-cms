@@ -35,7 +35,7 @@ $juser = JFactory::getUser();
 
 if (!$this->app->sess)
 {
-	echo '<p class="error"><strong>' . JText::_('PLG_TOOLS_NOVNC_ERROR') . '</strong><br />' . implode('<br />', $this->output) . '</p>';
+	echo '<p class="error"><strong>' . Lang::txt('PLG_TOOLS_NOVNC_ERROR') . '</strong><br />' . implode('<br />', $this->output) . '</p>';
 }
 else
 {
@@ -52,28 +52,28 @@ else
 	<div id="noVNC-control-bar" class="hidden">
 		<!--noVNC Mobile Device only Buttons-->
 		<div class="noVNC-buttons-left">
-			<input type="image" src="<?php echo $img; ?>/drag.png" id="noVNC_view_drag_button" class="noVNC_status_button" title="<?php echo JText::_('PLG_TOOLS_NOVNC_MOVE_VIEWPORT'); ?>" onclick="UI.setViewDrag();" />
+			<input type="image" src="<?php echo $img; ?>/drag.png" id="noVNC_view_drag_button" class="noVNC_status_button" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_MOVE_VIEWPORT'); ?>" onclick="UI.setViewDrag();" />
 			<div id="noVNC_mobile_buttons">
 				<input type="image" src="<?php echo $img; ?>/mouse_none.png" id="noVNC_mouse_button0" class="noVNC_status_button" onclick="UI.setMouseButton(1);" />
 				<input type="image" src="<?php echo $img; ?>/mouse_left.png" id="noVNC_mouse_button1" class="noVNC_status_button" onclick="UI.setMouseButton(2);" />
 				<input type="image" src="<?php echo $img; ?>/mouse_middle.png" id="noVNC_mouse_button2" class="noVNC_status_button" onclick="UI.setMouseButton(4);" />
 				<input type="image" src="<?php echo $img; ?>/mouse_right.png" id="noVNC_mouse_button4" class="noVNC_status_button" onclick="UI.setMouseButton(0);" />
-				<input type="image" src="<?php echo $img; ?>/keyboard.png" id="showKeyboard" class="noVNC_status_button" value="<?php echo JText::_('PLG_TOOLS_NOVNC_KEYBOARD'); ?>" title="<?php echo JText::_('PLG_TOOLS_NOVNC_SHOW_KEYBOARD'); ?>" onclick="UI.showKeyboard()" />
+				<input type="image" src="<?php echo $img; ?>/keyboard.png" id="showKeyboard" class="noVNC_status_button" value="<?php echo Lang::txt('PLG_TOOLS_NOVNC_KEYBOARD'); ?>" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_SHOW_KEYBOARD'); ?>" onclick="UI.showKeyboard()" />
 				<input type="email" autocapitalize="off" autocorrect="off" id="keyboardinput" class="noVNC_status_button" onKeyDown="onKeyDown(event);" onblur="UI.keyInputBlur();" />
 			</div>
 		</div>
 
 		<!--noVNC Buttons-->
 		<div class="noVNC-buttons-right">
-			<input type="image" src="<?php echo $img; ?>/ctrlaltdel.png" id="sendCtrlAltDelButton" class="noVNC_status_button" title="<?php echo JText::_('PLG_TOOLS_NOVNC_CTRLALTDEL'); ?>" onclick="UI.sendCtrlAltDel();" />
-			<input type="image" src="<?php echo $img; ?>/clipboard.png" id="clipboardButton" class="noVNC_status_button" title="<?php echo JText::_('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>" onclick="UI.toggleClipboardPanel();" />
+			<input type="image" src="<?php echo $img; ?>/ctrlaltdel.png" id="sendCtrlAltDelButton" class="noVNC_status_button" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CTRLALTDEL'); ?>" onclick="UI.sendCtrlAltDel();" />
+			<input type="image" src="<?php echo $img; ?>/clipboard.png" id="clipboardButton" class="noVNC_status_button" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>" onclick="UI.toggleClipboardPanel();" />
 		</div>
 
 		<!-- Clipboard Panel -->
 		<div id="noVNC_clipboard" class="triangle-right top">
 			<textarea id="noVNC_clipboard_text" rows="5" onfocus="UI.displayBlur();" onblur="UI.displayFocus();" onchange="UI.clipSend();"></textarea>
 			<br />
-			<input id="noVNC_clipboard_clear_button" type="button" value="<?php echo JText::_('PLG_TOOLS_NOVNC_CLEAR'); ?>" onclick="UI.clipClear();" />
+			<input id="noVNC_clipboard_clear_button" type="button" value="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLEAR'); ?>" onclick="UI.clipClear();" />
 		</div>
 	</div> <!-- End of noVNC-control-bar -->
 
@@ -81,11 +81,11 @@ else
 		<div id="noVNC_screen_pad"></div>
 
 		<div id="noVNC_status_bar" class="noVNC_status_bar">
-			<div id="noVNC_status"><?php echo JText::_('PLG_TOOLS_NOVNC_LOADING'); ?></div>
+			<div id="noVNC_status"><?php echo Lang::txt('PLG_TOOLS_NOVNC_LOADING'); ?></div>
 		</div>
 
 		<div id="noVNC_container">
-			<canvas id="noVNC_canvas" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>"><?php echo JText::_('PLG_TOOLS_NOVNC_ERROR_NO_CANVAS'); ?></canvas>
+			<canvas id="noVNC_canvas" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>"><?php echo Lang::txt('PLG_TOOLS_NOVNC_ERROR_NO_CANVAS'); ?></canvas>
 		</div>
 	</div>
 
@@ -117,7 +117,7 @@ else
 
 			if (!app.hasClass('no-refresh')) {
 				var li = $('<li></li>');
-				$('<a class="refresh" id="app-btn-refresh" alt="<?php echo JText::_('PLG_TOOLS_NOVNC_REFRESH'); ?>" title="<?php echo JText::_('PLG_TOOLS_NOVNC_REFRESH'); ?>"><span><?php echo JText::_('PLG_TOOLS_NOVNC_REFRESH'); ?></span></a>')
+				$('<a class="refresh" id="app-btn-refresh" alt="<?php echo Lang::txt('PLG_TOOLS_NOVNC_REFRESH'); ?>" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_REFRESH'); ?>"><span><?php echo Lang::txt('PLG_TOOLS_NOVNC_REFRESH'); ?></span></a>')
 					.on('click', function(event) {
 						//UI.requestRefresh();
 						var w = parseFloat(appcontent.width()),
@@ -134,7 +134,7 @@ else
 
 			if (!app.hasClass('no-resize') && !$('#app-btn-resizehandle').length) {
 				var li = $('<li></li>');
-				$('<a class="resize" id="app-btn-resizehandle" alt="<?php echo JText::_('PLG_TOOLS_NOVNC_RESIZE'); ?>" title="<?php echo JText::_('PLG_TOOLS_NOVNC_RESIZE'); ?>"><span id="app-size">' + app.attr('width').toString() + ' x ' + app.attr('height').toString() + '</span></a>')
+				$('<a class="resize" id="app-btn-resizehandle" alt="<?php echo Lang::txt('PLG_TOOLS_NOVNC_RESIZE'); ?>" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_RESIZE'); ?>"><span id="app-size">' + app.attr('width').toString() + ' x ' + app.attr('height').toString() + '</span></a>')
 					.appendTo(li);
 				li.appendTo(footermenu);
 

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $base = $this->course->offering()->link();
 ?>
-<div id="comments-container" data-action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">
+<div id="comments-container" data-action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">
 
 <?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>">
@@ -47,18 +47,18 @@ $base = $this->course->offering()->link();
 			<div class="comments-feed">
 				<div class="comments-toolbar cf">
 					<p class="comment-sort-options">
-						<?php echo JText::sprintf('%s Discussions', count($this->threads)); ?>
+						<?php echo Lang::txt('%s Discussions', count($this->threads)); ?>
 					</p>
 					<p class="comments-controls">
-						<a class="add<?php if (!$this->thread) { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" title="<?php echo JText::_('Start a new discussion'); ?>"><?php echo JText::_('New'); ?></a>
+						<a class="add<?php if (!$this->thread) { echo ' active'; } ?>" href="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" title="<?php echo Lang::txt('Start a new discussion'); ?>"><?php echo Lang::txt('New'); ?></a>
 					</p>
 				</div><!-- / .comments-toolbar -->
 
 				<div class="comments-options-bar">
-					<form class="comments-search" action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="get">
+					<form class="comments-search" action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="get">
 						<fieldset>
-							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('search ...'); ?>" />
-							<input type="submit" class="submit" value="<?php echo JText::_('Go'); ?>" />
+							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('search ...'); ?>" />
+							<input type="submit" class="submit" value="<?php echo Lang::txt('Go'); ?>" />
 							<input type="hidden" name="action" value="search" />
 						</fieldset>
 					</form>
@@ -67,7 +67,7 @@ $base = $this->course->offering()->link();
 				<div class="comment-threads">
 					<div class="category search-results hide">
 						<div class="category-header">
-							<span class="category-title"><?php echo JText::_('Search'); ?></span>
+							<span class="category-title"><?php echo Lang::txt('Search'); ?></span>
 						</div>
 						<div class="category-content">
 						</div>
@@ -114,11 +114,11 @@ $base = $this->course->offering()->link();
 
 			<div class="comments-panel">
 				<div class="comments-toolbar">
-					<p><span class="comments" data-comments="%s comments" data-add="Start a discussion"><?php echo JText::_('Start a discussion'); ?></span></p>
+					<p><span class="comments" data-comments="%s comments" data-add="Start a discussion"><?php echo Lang::txt('Start a discussion'); ?></span></p>
 				</div>
 				<div class="comments-frame">
 
-					<form action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
+					<form action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
 						<p class="comment-member-photo">
 							<a class="comment-anchor" name="commentform"></a>
 							<?php
@@ -128,46 +128,46 @@ $base = $this->course->offering()->link();
 							{
 								$anon = 0;
 							}
-							$now = JFactory::getDate()->toSql();
+							$now = Date::toSql();
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
+							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 						</p>
 
 						<fieldset>
 						<?php if ($juser->get('guest')) { ?>
-							<p class="warning"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
+							<p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
 						<?php } else { ?>
 							<p class="comment-title">
 								<strong>
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+									<a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 								</strong>
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
-									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+									<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
+									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
 
 							<label for="field_comment">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
+								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 								<?php
 								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
 								?>
 							</label>
 
 							<label for="field-upload" id="comment-upload">
-								<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
+								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
 								<input type="file" name="upload" id="field-upload" />
 							</label>
 
 							<label for="field-anonymous" id="comment-anonymous-label">
 								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
-								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
+								<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 							</label>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 							</p>
 						<?php } ?>
 						</fieldset>
@@ -186,12 +186,12 @@ $base = $this->course->offering()->link();
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 						<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
-						<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'))); ?>" />
+						<input type="hidden" name="return" value="<?php echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'))); ?>" />
 
 						<?php echo JHTML::_('form.token'); ?>
 
 						<p class="instructions">
-							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
+							<?php echo Lang::txt('Click on a comment on the left to view a discussion or start your own above.'); ?>
 						</p>
 					</form>
 

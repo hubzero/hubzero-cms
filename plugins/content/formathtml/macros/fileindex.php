@@ -80,7 +80,7 @@ class FileIndex extends Macro
 		// Did we get a result from the database?
 		if ($rows)
 		{
-			$config = JComponentHelper::getParams('com_wiki');
+			$config = Component::params('com_wiki');
 			if ($this->filepath != '')
 			{
 				$config->set('filepath', $this->filepath);
@@ -96,11 +96,11 @@ class FileIndex extends Macro
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+				$html .= '<li><a href="' . Route::url($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = \JUser::getInstance($row->created_by);
 				if ($huser->get('id'))
 				{
-					$html .= '- added by <a href="' . \JRoute::_('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
+					$html .= '- added by <a href="' . \Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
 				}
 				if ($row->created && $row->created != '0000-00-00 00:00:00')
 				{

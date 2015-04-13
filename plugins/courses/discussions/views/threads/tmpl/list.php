@@ -32,15 +32,15 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread'))
 <div class="sticky-thread-controls<?php echo ($this->post->sticky) ? ' stuck' : ''; ?>" data-thread="<?php echo $this->post->thread; ?>">
 	<p>
 		<a class="sticky-toggle"
-			href="<?php echo JRoute::_($stick . ($this->post->sticky ? 0 : 1)); ?>"
-			data-stick-href="<?php echo JRoute::_($stick . '1'); ?>"
-			data-unstick-href="<?php echo JRoute::_($stick . '0'); ?>"
-			data-stick-txt="<?php echo JText::_('Make sticky'); ?>"
-			data-unstick-txt="<?php echo JText::_('Make not sticky'); ?>">
-			<?php echo ($this->post->sticky) ? JText::_('Make not sticky') : JText::_('Make sticky'); ?>
+			href="<?php echo Route::url($stick . ($this->post->sticky ? 0 : 1)); ?>"
+			data-stick-href="<?php echo Route::url($stick . '1'); ?>"
+			data-unstick-href="<?php echo Route::url($stick . '0'); ?>"
+			data-stick-txt="<?php echo Lang::txt('Make sticky'); ?>"
+			data-unstick-txt="<?php echo Lang::txt('Make not sticky'); ?>">
+			<?php echo ($this->post->sticky) ? Lang::txt('Make not sticky') : Lang::txt('Make sticky'); ?>
 		</a>
 		<span class="hint">
-			<?php echo JText::_('Sticky discussions are viewable by all sections'); ?>
+			<?php echo Lang::txt('Sticky discussions are viewable by all sections'); ?>
 		</span>
 	</p>
 </div>

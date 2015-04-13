@@ -77,7 +77,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";

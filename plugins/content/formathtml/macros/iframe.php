@@ -45,7 +45,7 @@ class Iframe extends Macro
 	public function description()
 	{
 		// use host for example, that way  its not block
-		$host = 'https://' . \JRequest::getVar('HTTP_HOST', '', 'server');
+		$host = 'https://' . \Request::getVar('HTTP_HOST', '', 'server');
 
 		$txt = array();
 		$txt['wiki'] = 'Embeds an Iframe into the Page';

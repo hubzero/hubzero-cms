@@ -32,19 +32,19 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 <?php if (in_array($this->juser->get('id'), $this->members)) : ?>
 	<ul id="page_options">
 		<li>
-			<a class="icon-add btn add" title="<?php echo JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add'); ?>">
-				<?php echo JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
+			<a class="icon-add btn add" title="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add'); ?>">
+				<?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
 			</a>
 			<?php if ($this->authorized == 'manager') : ?>
-				<a class="icon-date btn date" title="<?php echo JText::_('Manage Calendars'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
-					<?php echo JText::_('Manage Calendars'); ?>
+				<a class="icon-date btn date" title="<?php echo Lang::txt('Manage Calendars'); ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=calendars'); ?>">
+					<?php echo Lang::txt('Manage Calendars'); ?>
 				</a>
 			<?php endif; ?>
 		</li>
@@ -53,13 +53,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array($this->juser->get('id'), $this->group->get('members'))) ? true : 0; ?>
 <div id="calendar"
-	data-base="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>"
+	data-base="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>"
 	data-month="<?php echo $this->month; ?>"
 	data-year="<?php echo $this->year; ?>"
 	data-event-quickcreate="<?php echo $quickCreate; ?>"></div>
 
 <select name="calendar" id="calendar-picker">
-	<option value="0"><?php echo JText::_('All Calendars'); ?></option>
+	<option value="0"><?php echo Lang::txt('All Calendars'); ?></option>
 	<?php foreach ($this->calendars as $calendar) : ?>
 		<?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
 		<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
@@ -69,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="subject group-calendar-subject event-list">
 	<div class="container">
-		<h3><?php echo JText::_('Events List'); ?></h3>
+		<h3><?php echo Lang::txt('Events List'); ?></h3>
 		<?php if ($this->eventsCount > 0) : ?>
 			<ol class="calendar-entries">
 				<?php foreach ($this->events as $event) : ?>
@@ -94,7 +94,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 									<?php echo JHTML::_('date',  $event->get('publish_up'), 'l, F d, Y'); ?>
 								<dd>
 								<dd class="time">
-									<?php echo JHTML::_('date',  $event->get('publish_up'), JText::_('TIME_FORMAT_HZ1')); ?>
+									<?php echo JHTML::_('date',  $event->get('publish_up'), Lang::txt('TIME_FORMAT_HZ1')); ?>
 								<dd>
 							<?php endif; ?>
 						</dl>
@@ -122,7 +122,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				echo $pageNav->getListFooter();
 			?>
 		<?php else : ?>
-			<p class="warning"><?php echo JText::_('PLG_GROUPS_CALENDAR_NO_ENTRIES_FOUND'); ?></p>
+			<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CALENDAR_NO_ENTRIES_FOUND'); ?></p>
 		<?php endif; ?>
 	</div>
 </div>

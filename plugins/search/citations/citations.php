@@ -48,7 +48,7 @@ class plgSearchCitations extends \JPlugin
 		$weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
 
 		//get com_citations params
-		$citationParams = JComponentHelper::getParams('com_citations');
+		$citationParams = Component::params('com_citations');
 		$citationSingleView = $citationParams->get('citation_single_view', 1);
 
 		//are we linking to singe citation view

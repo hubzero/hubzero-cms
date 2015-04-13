@@ -32,7 +32,7 @@
 defined('_JEXEC') or die();
 
 // Include LinkedIn php library
-require_once( join( DS, array( JPATH_ROOT, 'libraries', 'simplelinkedin-php', 'linkedin_3.2.0.class.php' ) ) );
+require_once(join(DS, array(PATH_CORE, 'libraries', 'simplelinkedin-php', 'linkedin_3.2.0.class.php')));
 
 class plgAuthenticationLinkedIn extends JPlugin
 {
@@ -58,7 +58,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		$js = "$(document).ready(function() {
 					$.getScript('https://platform.linkedin.com/in.js?async=true', function success() {
 						onLinkedInLoad = function () {
-							if(IN.User.isAuthorized()) {
+							if (IN.User.isAuthorized()) {
 								IN.API.Profile('me').result(function(profile) {
 									var linkedin = $('#linkedin').siblings('.sign-out');
 									linkedin
@@ -117,7 +117,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		// Set up linkedin configuration
 		$linkedin_config['appKey']      = $this->params->get('api_key');
 		$linkedin_config['appSecret']   = $this->params->get('app_secret');
-		$linkedin_config['callbackUrl'] = trim(Request::base(), DS) . DS . "index.php?option=com_users&view=login";
+		$linkedin_config['callbackUrl'] = trim(Request::base(), '/') . '/index.php?option=com_users&view=login';
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);

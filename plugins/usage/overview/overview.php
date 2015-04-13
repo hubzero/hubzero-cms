@@ -51,7 +51,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 	public function onUsageAreas()
 	{
 		return array(
-			'overview' => JText::_('PLG_USAGE_OVERVIEW')
+			'overview' => Lang::txt('PLG_USAGE_OVERVIEW')
 		);
 	}
 
@@ -206,7 +206,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 			{
 				$height = $highest ? round(($result->value / $highest)*100) : 0;
 				$sparkline .= "\t" . '<span class="index">';
-				$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . trim($this->_fmt_result($result->value, $result->valfmt)) . '">';
+				$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, Lang::txt('DATE_FORMAT_HZ1')) . ': ' . trim($this->_fmt_result($result->value, $result->valfmt)) . '">';
 				$sparkline .= trim($this->_fmt_result($result->value, $result->valfmt));
 				$sparkline .= '</span> ';
 				$sparkline .= '</span>' . "\n";
@@ -319,31 +319,31 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=prior12') . '"><span>' . JText::_('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $option . '&task=' . $task . '&period=prior12') . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'month')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=month') . '"><span>' . JText::_('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $option . '&task=' . $task . '&period=month') . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'qtr')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=qtr') . '"><span>' . JText::_('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $option . '&task=' . $task . '&period=qtr') . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'year')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=year') . '"><span>' . JText::_('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $option . '&task=' . $task . '&period=year') . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'fiscal')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=fiscal') . '"><span>' . JText::_('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $option . '&task=' . $task . '&period=fiscal') . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
 		$html .= "\t" . '</ul>' . "\n";
 		$html .= '</div>' . "\n";
 
@@ -373,11 +373,11 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$config = JComponentHelper::getParams($option);
+		$config = Component::params($option);
 
 		// Incoming
-		$period = JRequest::getVar('period', 'prior12');
-		$selectedPeriod = JRequest::getVar('selectedPeriod', '');
+		$period = Request::getVar('period', 'prior12');
+		$selectedPeriod = Request::getVar('selectedPeriod', '');
 
 		if (!$selectedPeriod)
 		{
@@ -435,12 +435,12 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		// Set the pathway
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
-		$pathway->addItem(JText::_('PLG_USAGE_PERIOD_' . strtoupper($period)), 'index.php?option=' . $option . '&task=' . $task . '&period=' . $period);
+		$pathway->addItem(Lang::txt('PLG_USAGE_PERIOD_' . strtoupper($period)), 'index.php?option=' . $option . '&task=' . $task . '&period=' . $period);
 
 		// Build the HTML
 		$html  = $this->_navlinks($option, $task, $period);
-		$html .= '<form method="post" action="' . JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=' . $period) . '">' . "\n";
-		$html .= "\t" . '<fieldset class="filters"><label>' . JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ';
+		$html .= '<form method="post" action="' . Route::url('index.php?option=' . $option . '&task=' . $task . '&period=' . $period) . '">' . "\n";
+		$html .= "\t" . '<fieldset class="filters"><label>' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': ';
 
 		$html .= '<select name="selectedPeriod">' . "\n";
 		switch ($period)
@@ -693,30 +693,30 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				}
 			break;
 		}
-		$html .= '</select></label> <input type="submit" value="' . JText::_('PLG_USAGE_VIEW') . '" /></fieldset>' . "\n";
+		$html .= '</select></label> <input type="submit" value="' . Lang::txt('PLG_USAGE_VIEW') . '" /></fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 
 		$tbl_cnt = 0;
-		$html .= '<table summary="' . JText::_('A break-down of site visitors.') . '">' . "\n";
-		$html .= "\t" . '<caption>' . JText::_('Table ' . ++$tbl_cnt . ': User statistics') . '</caption>' . "\n";
+		$html .= '<table summary="' . Lang::txt('A break-down of site visitors.') . '">' . "\n";
+		$html .= "\t" . '<caption>' . Lang::txt('Table ' . ++$tbl_cnt . ': User statistics') . '</caption>' . "\n";
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" rowspan="2" colspan="2">' . JText::_('Users') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" rowspan="2" class="numerical-data">' . JText::_('Totals') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . JText::_('Residence') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . JText::_('Organization') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" rowspan="2" colspan="2">' . Lang::txt('Users') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" rowspan="2" class="numerical-data">' . Lang::txt('Totals') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . Lang::txt('Residence') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . Lang::txt('Organization') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Identified') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('US') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Asia') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Europe') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Other') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . JText::_('Identified') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . JText::_('Education') . '">' . JText::_('Edu.') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . JText::_('Industry') . '">' . JText::_('Ind.') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . JText::_('Government') . '">' . JText::_('Gov.') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . JText::_('Other') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Identified') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('US') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Asia') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Europe') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Other') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . Lang::txt('Identified') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . Lang::txt('Education') . '">' . Lang::txt('Edu.') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . Lang::txt('Industry') . '">' . Lang::txt('Ind.') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . Lang::txt('Government') . '">' . Lang::txt('Gov.') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . Lang::txt('Other') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
@@ -773,15 +773,15 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="13" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="13" class="textual-data">' . Lang::txt('No data found.') . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
 		$html .= '</table>' . "\n";
 
 		// Start simulation Usage
-		$html .= '<table summary="' . JText::_('Simulation Usage') . '">' . "\n";
-		$html .= "\t" . '<caption>' . JText::_('Table ' . ++$tbl_cnt . ': Simulation Usage') . '</caption>' . "\n";
+		$html .= '<table summary="' . Lang::txt('Simulation Usage') . '">' . "\n";
+		$html .= "\t" . '<caption>' . Lang::txt('Table ' . ++$tbl_cnt . ': Simulation Usage') . '</caption>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
 
 		$db->setQuery("SELECT a.label,b.value,b.valfmt,a.plot,a.id FROM summary_simusage AS a, summary_simusage_vals AS b WHERE a.id=b.rowid AND b.period = '$period' AND b.datetime = '$datetime' ORDER BY a.id");
@@ -828,15 +828,15 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . Lang::txt('No data found.') . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
 		$html .= '</table>' . "\n";
 
 		// Start miscellaneous
-		$html .= '<table summary="' . JText::_('Miscellaneous Statistics') . '">' . "\n";
-		$html .= "\t" . '<caption>' . JText::_('Table ' . ++$tbl_cnt . ': Miscellaneous Statistics') . '</caption>' . "\n";
+		$html .= '<table summary="' . Lang::txt('Miscellaneous Statistics') . '">' . "\n";
+		$html .= "\t" . '<caption>' . Lang::txt('Table ' . ++$tbl_cnt . ': Miscellaneous Statistics') . '</caption>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
 
 		$db->setQuery("SELECT a.label,b.value,b.valfmt FROM summary_misc AS a, summary_misc_vals AS b WHERE a.id=b.rowid AND b.period = '$period' AND b.datetime = '$datetime' ORDER BY a.id");
@@ -861,7 +861,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . Lang::txt('No data found.') . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
@@ -869,16 +869,16 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/*
 		// "and more" Usage
-		$html .= '<table summary="' . JText::_('&quot;and more&quot; Usage') . '">' . "\n";
-		$html .= "\t" . '<caption>' . JText::_('Table '.++$tbl_cnt.': &quot;and more&quot; Usage') . '</caption>' . "\n";
+		$html .= '<table summary="' . Lang::txt('&quot;and more&quot; Usage') . '">' . "\n";
+		$html .= "\t" . '<caption>' . Lang::txt('Table '.++$tbl_cnt.': &quot;and more&quot; Usage') . '</caption>' . "\n";
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" rowspan="2">' . JText::_('Type') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="colgroup" colspan="2">' . JText::_('Users') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" rowspan="2">' . Lang::txt('Type') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="colgroup" colspan="2">' . Lang::txt('Users') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Interactive') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Download') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Interactive') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Download') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
@@ -948,7 +948,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 			$html .= $trows;
 		} else {
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="3" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="3" class="textual-data">' . Lang::txt('No data found.') . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
@@ -956,8 +956,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 
 		// Collaboration Usage
-		$html .= '<table summary="' . JText::_('Collaboration Usage') . '">' . "\n";
-		$html .= "\t" . '<caption>' . JText::_('Table '.++$tbl_cnt.': Collaboration Usage') . '</caption>' . "\n";
+		$html .= '<table summary="' . Lang::txt('Collaboration Usage') . '">' . "\n";
+		$html .= "\t" . '<caption>' . Lang::txt('Table '.++$tbl_cnt.': Collaboration Usage') . '</caption>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
 		$sql = "SELECT a.label,b.value,b.valfmt FROM summary_collab AS a, summary_collab_vals AS b WHERE a.id=b.rowid AND b.period = '".$period."' AND b.datetime = '".$datetime."' ORDER BY a.id";
 		$db->setQuery($sql);
@@ -979,7 +979,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 			}
 		} else {
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . Lang::txt('No data found.') . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
@@ -987,26 +987,26 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	*/
 
-		$html .= '<table summary="' . JText::_('User statistics by registered/unregistered') . '">' . "\n";
-		$html .= "\t" . '<caption><a name="tot"></a>' . JText::_('Table '. ++$tbl_cnt . ': User statistics by registered/unregistered') . '</caption>' . "\n";
+		$html .= '<table summary="' . Lang::txt('User statistics by registered/unregistered') . '">' . "\n";
+		$html .= "\t" . '<caption><a name="tot"></a>' . Lang::txt('Table '. ++$tbl_cnt . ': User statistics by registered/unregistered') . '</caption>' . "\n";
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" rowspan="2" colspan="2">' . JText::_('Users') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" rowspan="2" class="numerical-data">' . JText::_('Totals') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . JText::_('Residence') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . JText::_('Organization') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" rowspan="2" colspan="2">' . Lang::txt('Users') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" rowspan="2" class="numerical-data">' . Lang::txt('Totals') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . Lang::txt('Residence') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="colgroup" colspan="5">' . Lang::txt('Organization') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Identified') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('US') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Asia') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Europe') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . JText::_('Other') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . JText::_('Identified') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . JText::_('Education') . '">' . JText::_('Edu.') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . JText::_('Industry') . '">' . JText::_('Ind.') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . JText::_('Government') . '">' . JText::_('Gov.') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . JText::_('Other') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Identified') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('US') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Asia') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Europe') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('Other') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . Lang::txt('Identified') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . Lang::txt('Education') . '">' . Lang::txt('Edu.') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . Lang::txt('Industry') . '">' . Lang::txt('Ind.') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data" abbr="' . Lang::txt('Government') . '">' . Lang::txt('Gov.') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th scope="col" class="group numerical-data">' . Lang::txt('Other') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 		$html .= "\t" . '<tbody>' . "\n";
@@ -1065,7 +1065,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="13" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="13" class="textual-data">' . Lang::txt('No data found.') . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";

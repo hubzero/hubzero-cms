@@ -39,7 +39,7 @@ $this->css()
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-folder categories btn" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?></a>
+		<a class="icon-folder categories btn" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?></a>
 	</li>
 </ul>
 
@@ -48,13 +48,13 @@ $this->css()
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } ?>
 
-	<form action="<?php echo JRoute::_($base); ?>" method="post">
+	<form action="<?php echo Route::url($base); ?>" method="post">
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
-				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+				<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
+				<label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
+				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 				<input type="hidden" name="active" value="forum" />
@@ -65,7 +65,7 @@ $this->css()
 		<div class="container">
 			<table class="entries">
 				<caption>
-					<?php echo JText::sprintf('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
 				</caption>
 				<tbody>
 		<?php
@@ -76,11 +76,11 @@ $this->css()
 				$title = $this->escape(stripslashes($row->get('title')));
 				$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
 
-				$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
+				$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 				if (!$row->get('anonymous'))
 				{
 					$name = $this->escape(stripslashes($row->creator('name')));
-					$name = ($row->creator('public') ? '<a href="' . JRoute::_($row->creator()->getLink()) . '">' . $name . '</a>' : $name);
+					$name = ($row->creator('public') ? '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>' : $name);
 				}
 				$cls = array();
 				if ($row->get('closed'))
@@ -97,27 +97,27 @@ $this->css()
 							<span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
 						</th>
 						<td>
-							<a class="entry-title" href="<?php echo JRoute::_($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')); ?>">
+							<a class="entry-title" href="<?php echo Route::url($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')); ?>">
 								<span><?php echo $title; ?></span>
 							</a>
 							<span class="entry-details">
 								<span class="entry-date">
 									<?php echo $row->created('date'); ?>
 								</span>
-								<?php echo JText::_('by'); ?>
+								<?php echo Lang::txt('by'); ?>
 								<span class="entry-author">
 									<?php echo $name; ?>
 								</span>
 							</span>
 						</td>
 						<td>
-							<span><?php echo JText::_('PLG_GROUPS_FORUM_SECTION'); ?></span>
+							<span><?php echo Lang::txt('PLG_GROUPS_FORUM_SECTION'); ?></span>
 							<span class="entry-details section-name">
 								<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
 							</span>
 						</td>
 						<td>
-							<span><?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
+							<span><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
 							<span class="entry-details category-name">
 								<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
 							</span>
@@ -126,7 +126,7 @@ $this->css()
 				<?php } ?>
 			<?php } else { ?>
 					<tr>
-						<td><?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY_EMPTY'); ?></td>
+						<td><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY_EMPTY'); ?></td>
 					</tr>
 			<?php } ?>
 				</tbody>

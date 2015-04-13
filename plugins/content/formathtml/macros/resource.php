@@ -145,7 +145,7 @@ class Resource extends Macro
 			}
 			else
 			{
-				return '<a href="' . \JRoute::_($link) . '">' . stripslashes($r[1]) . '</a>';
+				return '<a href="' . \Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
 			}
 		}
 		else
@@ -164,11 +164,11 @@ class Resource extends Macro
 	 */
 	public function screenshots($alias, $num=1)
 	{
-		$config = \JComponentHelper::getParams('com_resources');
+		$config = \Component::params('com_resources');
 		$path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
 		$alias = strtolower($alias);
-		$d = @dir(JPATH_ROOT . $path . DS . $alias);
+		$d = @dir(PATH_APP . $path . DS . $alias);
 		$images = array();
 
 		if ($d)
@@ -176,7 +176,7 @@ class Resource extends Macro
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
+				if (is_file(PATH_APP . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file))
 					{
@@ -198,7 +198,7 @@ class Resource extends Macro
 				$tn = $this->thumbnail($images[$i]);
 				$type = explode('.', $images[$i]);
 
-				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $tn) && $k < $num)
+				if (is_file(PATH_APP . $path . DS . $alias . DS . $tn) && $k < $num)
 				{
 					$k++;
 

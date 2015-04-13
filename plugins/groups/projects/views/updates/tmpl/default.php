@@ -40,11 +40,11 @@ $this->css();
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$cn.'&active=projects&action=all'); ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+					<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$cn.'&active=projects&action=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
 					</a>
 				</li>
 				<li>
-					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$cn.'&active=projects&action=updates'); ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn='.$cn.'&active=projects&action=updates'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
 					</a>
 				</li>
 			</ul>
@@ -79,7 +79,7 @@ $this->css();
 		<div class="container">
 			<h3>Your Projects</h3>
 			<p>View a list of all the projects you collaborate on.</p>
-			<p>Go to <a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->uid . '&active=projects'); ?>">your projects</a></p>
+			<p>Go to <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects'); ?>">your projects</a></p>
 		</div>
 	</aside><!-- /.aside -->
 </section>

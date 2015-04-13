@@ -125,7 +125,7 @@ class Page extends Macro
 			{
 				$link = 'index.php?option=com_wiki&scope=' . $g->scope . '&pagename=' . $g->pagename;
 			}
-			return '<a href="' . \JRoute::_($link) . '">' . stripslashes($g->title) . '</a>';
+			return '<a href="' . \Route::url($link) . '">' . stripslashes($g->title) . '</a>';
 		}
 	}
 }

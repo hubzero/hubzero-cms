@@ -75,7 +75,7 @@ class plgSystemForceLogin extends JPlugin
 			return;
 		}
 
-		switch( JRequest::getCmd('option') )
+		switch ( Request::getCmd('option') )
 		{
 			case 'com_user':
 			case 'com_members':
@@ -86,7 +86,7 @@ class plgSystemForceLogin extends JPlugin
 				$vars['option'] = "com_user";
 				$vars['view'] = "login";
 				$vars['return'] = base64_encode($_SERVER['REQUEST_URI']);
-				JRequest::set($vars,'get',true);
+				Request::set($vars,'get',true);
 				break;
 		}
 	}

@@ -20,8 +20,8 @@ class plgContentPagenavigation extends JPlugin
 	 */
 	public function onContentBeforeDisplay($context, &$row, &$params, $page=0)
 	{
-		$view = JRequest::getCmd('view');
-		$print = JRequest::getBool('print');
+		$view = Request::getCmd('view');
+		$print = Request::getBool('print');
 
 		if ($print) {
 			return false;
@@ -99,24 +99,24 @@ class plgContentPagenavigation extends JPlugin
 			' AND (publish_down = '.$db->Quote($nullDate).' OR publish_down >= '.$db->Quote($now).')';
 
 			// Array of articles in same category correctly ordered.
-			$query	= $db->getQuery(true);
-	       //sqlsrv changes
-	        $case_when = ' CASE WHEN ';
-	        $case_when .= $query->charLength('a.alias');
-	        $case_when .= ' THEN ';
-	        $a_id = $query->castAsChar('a.id');
-	        $case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
-	        $case_when .= ' ELSE ';
-	        $case_when .= $a_id.' END as slug';
+			$query = $db->getQuery(true);
+			//sqlsrv changes
+			$case_when = ' CASE WHEN ';
+			$case_when .= $query->charLength('a.alias');
+			$case_when .= ' THEN ';
+			$a_id = $query->castAsChar('a.id');
+			$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+			$case_when .= ' ELSE ';
+			$case_when .= $a_id.' END as slug';
 
-	        $case_when1 = ' CASE WHEN ';
-	        $case_when1 .= $query->charLength('cc.alias');
-	        $case_when1 .= ' THEN ';
-	        $c_id = $query->castAsChar('cc.id');
-	        $case_when1 .= $query->concatenate(array($c_id, 'cc.alias'), ':');
-	        $case_when1 .= ' ELSE ';
-	        $case_when1 .= $c_id.' END as catslug';
-      		$query->select('a.id, a.language,'.$case_when.','.$case_when1);
+			$case_when1 = ' CASE WHEN ';
+			$case_when1 .= $query->charLength('cc.alias');
+			$case_when1 .= ' THEN ';
+			$c_id = $query->castAsChar('cc.id');
+			$case_when1 .= $query->concatenate(array($c_id, 'cc.alias'), ':');
+			$case_when1 .= ' ELSE ';
+			$case_when1 .= $c_id.' END as catslug';
+			$query->select('a.id, a.language,'.$case_when.','.$case_when1);
 			$query->from('#__content AS a');
 			$query->leftJoin('#__categories AS cc ON cc.id = a.catid');
 			$query->where('a.catid = '. (int)$row->catid .' AND a.state = '. (int)$row->state
@@ -155,18 +155,18 @@ class plgContentPagenavigation extends JPlugin
 			}
 
 			$pnSpace = "";
-			if (JText::_('JGLOBAL_LT') || JText::_('JGLOBAL_GT')) {
+			if (Lang::txt('JGLOBAL_LT') || Lang::txt('JGLOBAL_GT')) {
 				$pnSpace = " ";
 			}
 
 			if ($row->prev) {
-				$row->prev = JRoute::_(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
+				$row->prev = Route::url(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
 			} else {
 				$row->prev = '';
 			}
 
 			if ($row->next) {
-				$row->next = JRoute::_(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
+				$row->next = Route::url(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
 			} else {
 				$row->next = '';
 			}
@@ -180,7 +180,7 @@ class plgContentPagenavigation extends JPlugin
 					$html .= '
 					<li class="pagenav-prev">
 						<a href="'. $row->prev .'" rel="prev">'
-							. JText::_('JGLOBAL_LT') . $pnSpace . JText::_('JPREV') . '</a>
+							. Lang::txt('JGLOBAL_LT') . $pnSpace . Lang::txt('JPREV') . '</a>
 					</li>'
 					;
 				}
@@ -191,7 +191,7 @@ class plgContentPagenavigation extends JPlugin
 					$html .= '
 					<li class="pagenav-next">
 						<a href="'. $row->next .'" rel="next">'
-							. JText::_('JNEXT') . $pnSpace . JText::_('JGLOBAL_GT') .'</a>
+							. Lang::txt('JNEXT') . $pnSpace . Lang::txt('JGLOBAL_GT') .'</a>
 					</li>'
 					;
 				}

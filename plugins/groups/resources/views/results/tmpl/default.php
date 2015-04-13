@@ -35,7 +35,7 @@ $this->css()
 	 ->css('resources.css', 'com_resources')
      ->js('resources.js', 'com_resources');
 
-$config = JComponentHelper::getParams('com_resources');
+$config = Component::params('com_resources');
 
 // An array for storing all the links we make
 $links = array();
@@ -56,7 +56,7 @@ if ($this->cats)
 			$blob = ($cat['category']) ? $cat['category'] : '';
 
 			// Build the HTML
-			$l = "\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+			$l = "\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 
 			// Are there sub-categories?
 			if (isset($cat['_sub']) && is_array($cat['_sub']))
@@ -76,7 +76,7 @@ if ($this->cats)
 						$blob = ($subcat['category']) ? $subcat['category'] : '';
 
 						// Build the HTML
-						$k[] = "\t\t\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+						$k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 					}
 				}
 				// Do we actually have any links?
@@ -97,17 +97,17 @@ if ($this->cats)
 
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_GROUPS_RESOURCES'); ?>
+	<?php echo Lang::txt('PLG_GROUPS_RESOURCES'); ?>
 </h3>
 
 <ul id="page_options">
 	<li>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&group=' . $this->group->get('cn')); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
+		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&group=' . $this->group->get('cn')); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
 	</li>
 </ul>
 
 <section class="section">
-	<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources'); ?>">
+	<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources'); ?>">
 
 		<input type="hidden" name="area" value="<?php echo $this->escape($this->active); ?>" />
 
@@ -115,41 +115,41 @@ if ($this->cats)
 			<ul class="entries-menu filter-options">
 				<?php if (count($links) > 0) { ?>
 					<li class="filter-categories">
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=' . $this->active); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_CATEGORIES'); ?></a>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=' . $this->active); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_CATEGORIES'); ?></a>
 						<ul>
 							<?php echo implode("\n", $links); ?>
 						</ul>
 					</li>
 				<?php } ?>
 				<li>
-					<a<?php echo ($this->access == 'all') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=all'); ?>">
-						<?php echo JText::_('PLG_GROUPS_RESOURCES_ACCESS_ALL'); ?>
+					<a<?php echo ($this->access == 'all') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=all'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_ALL'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->access == 'public') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=public'); ?>">
-						<?php echo JText::_('PLG_GROUPS_RESOURCES_ACCESS_PUBLIC'); ?>
+					<a<?php echo ($this->access == 'public') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=public'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PUBLIC'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->access == 'protected') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=protected'); ?>">
-						<?php echo JText::_('PLG_GROUPS_RESOURCES_ACCESS_PROTECTED'); ?>
+					<a<?php echo ($this->access == 'protected') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=protected'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PROTECTED'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php echo ($this->access == 'private') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=private'); ?>">
-						<?php echo JText::_('PLG_GROUPS_RESOURCES_ACCESS_PRIVATE'); ?>
+					<a<?php echo ($this->access == 'private') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=private'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PRIVATE'); ?>
 					</a>
 				</li>
 			</ul>
 
 			<ul class="entries-menu">
-				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=date&access=' . $this->access); ?>" title="Sort by newest to oldest">&darr; <?php echo JText::_('PLG_GROUPS_RESOURCES_SORT_BY_DATE'); ?></a></li>
-				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=title&access=' . $this->access); ?>" title="Sort by title">&darr; <?php echo JText::_('PLG_GROUPS_RESOURCES_SORT_BY_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=date&access=' . $this->access); ?>" title="Sort by newest to oldest">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_DATE'); ?></a></li>
+				<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=title&access=' . $this->access); ?>" title="Sort by title">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_TITLE'); ?></a></li>
 				<?php if ($config->get('show_ranking')) { ?>
-					<li><a<?php echo ($this->sort == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=ranking&access=' . $this->access); ?>" title="Sort by popularity">&darr; <?php echo JText::_('PLG_GROUPS_RESOURCES_SORT_BY_RANKING'); ?></a></li>
+					<li><a<?php echo ($this->sort == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=ranking&access=' . $this->access); ?>" title="Sort by popularity">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RANKING'); ?></a></li>
 				<?php } else { ?>
-					<li><a<?php echo ($this->sort == 'rating') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=rating&access=' . $this->access); ?>" title="Sort by popularity">&darr; <?php echo JText::_('PLG_GROUPS_RESOURCES_SORT_BY_RATING'); ?></a></li>
+					<li><a<?php echo ($this->sort == 'rating') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=rating&access=' . $this->access); ?>" title="Sort by popularity">&darr; <?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RATING'); ?></a></li>
 				<?php } ?>
 			</ul>
 
@@ -208,7 +208,7 @@ if ($this->cats)
 							}
 						}
 
-						$num = ($total > 1) ? JText::sprintf('PLG_GROUPS_RESOURCES_RESULTS', $total) : JText::sprintf('PLG_GROUPS_RESOURCES_RESULT', $total);
+						$num = ($total > 1) ? Lang::txt('PLG_GROUPS_RESOURCES_RESULTS', $total) : Lang::txt('PLG_GROUPS_RESOURCES_RESULT', $total);
 						$this->total = $total;
 
 						// Build the category HTML
@@ -227,11 +227,11 @@ if ($this->cats)
 						// Initiate paging if we we're displaying an active category
 						if (!$dopaging)
 						{
-							$html .= '<p class="moreresults">' . JText::sprintf('PLG_GROUPS_RESOURCES_NUMBER_SHOWN', $amt);
+							$html .= '<p class="moreresults">' . Lang::txt('PLG_GROUPS_RESOURCES_NUMBER_SHOWN', $amt);
 							// Ad a "more" link if necessary
 							if ($totals[$k] > 5)
 							{
-								$html .= ' | <a href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='.urlencode(strToLower($this->cats[$k]['category']))) . '">'.JText::_('PLG_GROUPS_RESOURCES_MORE').'</a>';
+								$html .= ' | <a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='.urlencode(strToLower($this->cats[$k]['category']))) . '">'.Lang::txt('PLG_GROUPS_RESOURCES_MORE').'</a>';
 							}
 						}
 						$html .= '</p>' . "\n\n";
@@ -243,7 +243,7 @@ if ($this->cats)
 
 				if (!$foundresults)
 				{
-					echo '<p class="warning">' . JText::_('PLG_GROUPS_RESOURCES_NONE') . '</p>';
+					echo '<p class="warning">' . Lang::txt('PLG_GROUPS_RESOURCES_NONE') . '</p>';
 				}
 				?>
 			</div><!-- / .container-block -->

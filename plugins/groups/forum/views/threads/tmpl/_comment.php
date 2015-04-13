@@ -41,13 +41,13 @@ defined('_JEXEC') or die('Restricted access');
 		$this->config->set('access-edit-post', true);
 	}
 
-	$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
+	$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
 		if ($this->comment->creator()->get('public'))
 		{
-			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+			$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($this->comment->isReported())
 	{
-		$comment = '<p class="warning">' . JText::_('PLG_GROUPS_FORUM_COMMENT_REPORTED') . '</p>';
+		$comment = '<p class="warning">' . Lang::txt('PLG_GROUPS_FORUM_COMMENT_REPORTED') . '</p>';
 	}
 	else
 	{
@@ -69,16 +69,16 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="comment-content">
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
-				<a class="permalink" href="<?php echo JRoute::_($this->comment->link('anchor')); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>">
-					<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
+				<a class="permalink" href="<?php echo Route::url($this->comment->link('anchor')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_PERMALINK'); ?>">
+					<span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-					<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
+					<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					<?php if ($this->comment->wasModified()) { ?>
-						&mdash; <?php echo JText::_('PLG_GROUPS_FORUM_EDITED'); ?>
-						<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
+						&mdash; <?php echo Lang::txt('PLG_GROUPS_FORUM_EDITED'); ?>
+						<span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
 						<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
-						<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
+						<span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
 					<?php } ?>
 				</a>
@@ -95,41 +95,41 @@ defined('_JEXEC') or die('Restricted access');
 					 || $this->config->get('access-edit-post')
 					) { ?>
 				<?php if ($this->comment->get('parent') && $this->config->get('access-delete-post')) { ?>
-					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
-						--><?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?><!--
+					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
+						--><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) { ?>
-					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!--
-						--><?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?><!--
+					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
+						--><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php } ?>
 
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_GROUPS_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('PLG_GROUPS_FORUM_CANCEL'); ?><!--
+					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_GROUPS_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('PLG_GROUPS_FORUM_REPLY'); ?><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('PLG_GROUPS_FORUM_REPORT_ABUSE'); ?><!--
+				<a class="icon-abuse abuse" href="<?php echo Route::url($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('PLG_GROUPS_FORUM_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 			</p>
 
 
 		<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-			<div class="comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
+			<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo JText::sprintf('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="fields[id]" value="0" />
 						<input type="hidden" name="fields[state]" value="1" />
@@ -152,24 +152,24 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JHTML::_('form.token'); ?>
 
 						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
-							<span class="label-text"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
+							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
 							<?php
 							echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
 						<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-							<span class="label-text"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:</span>
+							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:</span>
 							<input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
 						</label>
 
 						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
 							<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

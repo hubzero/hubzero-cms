@@ -46,7 +46,7 @@ if ($count < 1 || $this->admin)
 }
 ?>
 <div class="module-settings">
-	<h4><?php echo JText::sprintf('PLG_MEMBERS_DASHBOARD_MODULES_SETTINGS', $this->escape($this->module->title)); ?></h4>
+	<h4><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULES_SETTINGS', $this->escape($this->module->title)); ?></h4>
 	<form action="index.php" method="post">
 		<?php $i = 0; ?>
 		<?php foreach ($this->fields as $field) : ?>
@@ -79,8 +79,8 @@ if ($count < 1 || $this->admin)
 		<?php endforeach; ?>
 
 		<div class="form-controls">
-			<button class="btn btn-success save" type="submit"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_SAVE'); ?></button>
-			<button class="btn cancel" type="button"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_CANCEL'); ?></button>
+			<button class="btn btn-success save" type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_SAVE'); ?></button>
+			<button class="btn cancel" type="button"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_CANCEL'); ?></button>
 		</div>
 	</form>
 </div>

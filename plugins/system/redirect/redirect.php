@@ -82,7 +82,7 @@ class plgSystemRedirect extends JPlugin
 
 				$db->setQuery('SELECT id FROM ' . $db->quoteName('#__redirect_links') . '  WHERE old_url= ' . $db->quote($current));
 				$res = $db->loadResult();
-				if(!$res) {
+				if (!$res) {
 
 					// If not, add the new url to the database.
 					 $query = $db->getQuery(true);
@@ -98,7 +98,7 @@ class plgSystemRedirect extends JPlugin
 					$query->columns($columns);
 				    $query->values($db->Quote($current). ', '. $db->Quote('').
 				  				' ,'.$db->Quote($referer).', '.$db->Quote('').',1,0, '.
-								  $db->Quote(JFactory::getDate()->toSql())
+								  $db->Quote(Date::toSql())
 								);
 
 					$db->setQuery($query);

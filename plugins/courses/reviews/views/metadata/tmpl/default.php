@@ -87,13 +87,13 @@ switch ($avg)
 ?>
 <div class="reviews-summary">
 	<p class="avgrating <?php echo $cls; ?>">
-		<strong><span><?php echo JText::sprintf('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?></span> (<?php echo $total; ?>)</strong>
+		<strong><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?></span> (<?php echo $total; ?>)</strong>
 	</p>
 	<table class="reviews-distribution">
-		<caption><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_DISTRIBUTION'); ?></caption>
+		<caption><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_DISTRIBUTION'); ?></caption>
 		<tbody>
 			<tr>
-				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_5_STAR'); ?></th>
+				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_5_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[5] / $total, 2)*100 : 0; ?>%;">
@@ -103,7 +103,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_4_STAR'); ?></th>
+				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_4_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[4] / $total, 2)*100 : 0; ?>%;">
@@ -113,7 +113,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_3_STAR'); ?></th>
+				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_3_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[3] / $total, 2)*100 : 0; ?>%;">
@@ -123,7 +123,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_2_STAR'); ?></th>
+				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_2_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[2] / $total, 2)*100 : 0; ?>%;">
@@ -133,7 +133,7 @@ switch ($avg)
 				</td>
 			</tr>
 			<tr>
-				<th><?php echo JText::_('PLG_COURSES_REVIEWS_RATING_1_STAR'); ?></th>
+				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_1_STAR'); ?></th>
 				<td>
 					<span class="review-base">
 						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[1] / $total, 2)*100 : 0; ?>%;">

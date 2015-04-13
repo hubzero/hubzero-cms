@@ -38,21 +38,21 @@ if ($this->params->get('allow_customization', 1) == 0)
 ?>
 
 <h3 class="section-header">
-	<?php echo JText::_('PLG_MEMBERS_DASHBOARD'); ?>
+	<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD'); ?>
 </h3>
 
 <?php if ($customizable) : ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-add btn add-module" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=dashboard&action=add' ); ?>">
-			<?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
+		<a class="icon-add btn add-module" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=dashboard&action=add' ); ?>">
+			<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
 		</a>
 	</li>
 </ul>
 <?php endif; ?>
 
 <noscript>
-	<p class="warning"><?php echo JText::_('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
+	<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 </noscript>
 
 <div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo $this->juser->get('id'); ?>">
@@ -69,6 +69,6 @@ if ($this->params->get('allow_customization', 1) == 0)
 </div>
 
 <div class="modules-empty">
-	<h3><?php echo JText::_('PLG_MEMBERS_DASHBOARD_EMPTY_TITLE'); ?></h3>
-	<p><?php echo JText::_('PLG_MEMBERS_DASHBOARD_EMPTY_DESC'); ?></p>
+	<h3><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_EMPTY_TITLE'); ?></h3>
+	<p><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_EMPTY_DESC'); ?></p>
 </div>

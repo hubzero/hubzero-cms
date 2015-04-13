@@ -129,11 +129,11 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $dt, JText::_('DATE_FORMAT_HZ1'));
+				return JHTML::_('date', $dt, Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $dt, JText::_('TIME_FORMAT_HZ1'));
+				return JHTML::_('date', $dt, Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -265,7 +265,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_base))
 		{
-			$this->_base = 'index.php?option=' . JRequest::getCmd('option', 'com_groups') . '&cn=' . $this->group('cn') . '&active=announcements';
+			$this->_base = 'index.php?option=' . Request::getCmd('option', 'com_groups') . '&cn=' . $this->group('cn') . '&active=announcements';
 		}
 		$link = $this->_base;
 

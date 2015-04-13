@@ -39,7 +39,7 @@ if ($this->results) {
 	$database = JFactory::getDBO();
 	$juser = JFactory::getUser();
 ?>
-	<table class="related-resources" summary="<?php echo JText::_('PLG_GROUPS_RESOURCES_DASHBOARD_SUMMARY'); ?>">
+	<table class="related-resources" summary="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_DASHBOARD_SUMMARY'); ?>">
 		<tbody>
 <?php
 	foreach ($this->results as $line)
@@ -105,9 +105,9 @@ if ($this->results) {
 ?>
 			<tr>
 <?php if ($this->config->get('show_ranking')) { ?>
-				<td class="ranking"><?php echo number_format($line->ranking,1); ?> <span class="rank-<?php echo $r; ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
+				<td class="ranking"><?php echo number_format($line->ranking,1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
 <?php } elseif ($this->config->get('show_rating')) { ?>
-				<td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo JText::sprintf('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span></td>
+				<td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span></td>
 <?php } ?>
 				<td>
 					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title ; ?></a>
@@ -117,32 +117,32 @@ if ($this->results) {
 							<table summary="<?php echo $line->title; ?>">
 								<tbody>
 									<tr>
-										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_TYPE'); ?></th>
+										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_TYPE'); ?></th>
 										<td><?php echo $line->section; ?></td>
 									</tr>
 <?php if ($helper->contributors) { ?>
 									<tr>
-										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_CONTRIBUTORS'); ?></th>
+										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_CONTRIBUTORS'); ?></th>
 										<td><?php echo $helper->contributors; ?></td>
 									</tr>
 <?php } ?>
 									<tr>
-										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_DATE'); ?></th>
-										<td><?php echo JHTML::_('date',$line->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></td>
+										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_DATE'); ?></th>
+										<td><?php echo JHTML::_('date',$line->publish_up, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 									</tr>
 									<tr>
-										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>
-										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo JText::sprintf('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>
+										<td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
 									</tr>
 									<tr>
-										<th><?php echo JText::_('PLG_GROUPS_RESOURCES_RATE_THIS'); ?></th>
+										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATE_THIS'); ?></th>
 										<td>
 											<ul class="starsz<?php echo $myclass; ?>">
-												<li class="str1"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=1#reviewform" title="<?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_POOR'); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_1_STAR'); ?></a></li>
-												<li class="str2"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=2#reviewform" title="<?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_FAIR'); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_2_STARS'); ?></a></li>
-												<li class="str3"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=3#reviewform" title="<?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_GOOD'); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_3_STARS'); ?></a></li>
-												<li class="str4"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=4#reviewform" title="<?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD'); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_4_STARS'); ?></a></li>
-												<li class="str5"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=5#reviewform" title="<?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_EXCELLENT'); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_RATING_5_STARS'); ?></a></li>
+												<li class="str1"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=1#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_POOR'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_1_STAR'); ?></a></li>
+												<li class="str2"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=2#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_FAIR'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_2_STARS'); ?></a></li>
+												<li class="str3"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=3#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_GOOD'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_3_STARS'); ?></a></li>
+												<li class="str4"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=4#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_4_STARS'); ?></a></li>
+												<li class="str5"><a href="<?php echo $line->href.$d; ?>task=addreview&amp;myrating=5#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_EXCELLENT'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_5_STARS'); ?></a></li>
 											</ul>
 										</td>
 									</tr>
@@ -160,5 +160,5 @@ if ($this->results) {
 		</tbody>
 	</table>
 <?php } else { ?>
-	<p><?php echo JText::_('PLG_GROUPS_RESOURCES_NONE'); ?></p>
+	<p><?php echo Lang::txt('PLG_GROUPS_RESOURCES_NONE'); ?></p>
 <?php } ?>

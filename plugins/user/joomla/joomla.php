@@ -89,14 +89,14 @@ class plgUserJoomla extends JPlugin
 					$lang->load('plg_user_joomla', JPATH_ADMINISTRATOR);
 
 					// Compute the mail subject.
-					$emailSubject = JText::sprintf(
+					$emailSubject = Lang::txt(
 						'PLG_USER_JOOMLA_NEW_USER_EMAIL_SUBJECT',
 						$user['name'],
 						$config->get('sitename')
 					);
 
 					// Compute the mail body.
-					$emailBody = JText::sprintf(
+					$emailBody = Lang::txt(
 						'PLG_USER_JOOMLA_NEW_USER_EMAIL_BODY',
 						$user['name'],
 						$config->get('sitename'),
@@ -125,7 +125,7 @@ class plgUserJoomla extends JPlugin
 
 					if (!$mail->Send()) {
 						// TODO: Probably should raise a plugin error but this event is not error checked.
-						JError::raiseWarning(500, JText::_('ERROR_SENDING_EMAIL'));
+						JError::raiseWarning(500, Lang::txt('ERROR_SENDING_EMAIL'));
 					}
 				}
 			}
@@ -155,7 +155,7 @@ class plgUserJoomla extends JPlugin
 
 		// If the user is blocked, redirect with an error
 		if ($instance->get('block') == 1) {
-			JError::raiseWarning('SOME_ERROR_CODE', JText::_('JERROR_NOLOGIN_BLOCKED'));
+			JError::raiseWarning('SOME_ERROR_CODE', Lang::txt('JERROR_NOLOGIN_BLOCKED'));
 			return false;
 		}
 
@@ -168,7 +168,7 @@ class plgUserJoomla extends JPlugin
 		$result	= $instance->authorise($options['action']);
 		if (!$result) {
 
-			JError::raiseWarning(401, JText::_('JERROR_LOGIN_DENIED'));
+			JError::raiseWarning(401, Lang::txt('JERROR_LOGIN_DENIED'));
 			return false;
 		}
 
@@ -266,7 +266,7 @@ class plgUserJoomla extends JPlugin
 
 		//TODO : move this out of the plugin
 		jimport('joomla.application.component.helper');
-		$config	= JComponentHelper::getParams('com_users');
+		$config	= Component::params('com_users');
 		// Default to Registered.
 		$defaultUserGroup = $config->get('new_usertype', 2);
 

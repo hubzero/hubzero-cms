@@ -41,19 +41,19 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
-		<a class="icon-unfollow unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
-			<span><?php echo JText::_('Unfollow All'); ?></span>
+		<a class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>" href="<?php echo Route::url($base . '&scope=unfollow'); ?>">
+			<span><?php echo Lang::txt('Unfollow All'); ?></span>
 		</a>
 		<?php } else { ?>
-		<a class="icon-follow follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
-			<span><?php echo JText::_('Follow All'); ?></span>
+		<a class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>" href="<?php echo Route::url($base . '&scope=follow'); ?>">
+			<span><?php echo Lang::txt('Follow All'); ?></span>
 		</a>
 		<?php } ?>
 	</li>
 </ul>
 <?php } ?>
 
-<form method="get" action="<?php echo JRoute::_($base . '&scope=following'); ?>" id="collections">
+<form method="get" action="<?php echo Route::url($base . '&scope=following'); ?>" id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('option', $this->option)
@@ -70,9 +70,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div class="container">
-			<table class="following entries" summary="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_TBL_SUMMARY'); ?>">
+			<table class="following entries" summary="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_TBL_SUMMARY'); ?>">
 				<!-- <caption>
-					<?php echo JText::_('People and collections you are following'); ?>
+					<?php echo Lang::txt('People and collections you are following'); ?>
 				</caption> -->
 				<tbody>
 		<?php foreach ($this->rows as $row) { ?>
@@ -87,24 +87,24 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						<?php } ?>
 						</th>
 						<td>
-							<a class="entry-title" href="<?php echo JRoute::_($row->following()->link()); ?>">
+							<a class="entry-title" href="<?php echo Route::url($row->following()->link()); ?>">
 								<?php echo $this->escape(stripslashes($row->following()->title())); ?>
 							</a>
 							<?php if ($row->get('following_type') == 'collection') { ?>
-								<?php echo JText::sprintf('by %s', $this->escape(stripslashes($row->following()->creator('name')))); ?>
+								<?php echo Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name')))); ?>
 							<?php } ?>
 							<br />
 							<span class="entry-details">
-								<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>
+								<span class="follower count"><?php echo Lang::txt('<strong>%s</strong> followers', $row->count('followers')); ?></span>
 							<?php if ($row->get('following_type') != 'collection') { ?>
-								<span class="following count"><?php echo JText::sprintf('<strong>%s</strong> following', $row->count('following')); ?></span>
+								<span class="following count"><?php echo Lang::txt('<strong>%s</strong> following', $row->count('following')); ?></span>
 							<?php } ?>
 							</span>
 						</td>
 						<td>
 							<?php if ($this->params->get('access-manage-collection')) { ?>
-							<a class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->following()->link('unfollow')); ?>">
-								<span><?php echo JText::_('Unfollow'); ?></span>
+							<a class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('Follow'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow'); ?>" href="<?php echo Route::url($row->following()->link('unfollow')); ?>">
+								<span><?php echo Lang::txt('Unfollow'); ?></span>
 							</a>
 							<?php } ?>
 						</td>
@@ -120,23 +120,23 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				<div class="instructions">
 		<?php if ($this->params->get('access-manage-collection')) { ?>
 					<!-- <p>
-						<?php echo JText::_('This group is not following anyone or any collections.'); ?>
+						<?php echo Lang::txt('This group is not following anyone or any collections.'); ?>
 					</p> -->
 					<ol>
-						<li><?php echo JText::_('Find a member or collection you like.'); ?></li>
-						<li><?php echo JText::_('Click on the "follow" button.'); ?></li>
-						<li><?php echo JText::_('Come back to collections and see all the posts!'); ?></li>
+						<li><?php echo Lang::txt('Find a member or collection you like.'); ?></li>
+						<li><?php echo Lang::txt('Click on the "follow" button.'); ?></li>
+						<li><?php echo Lang::txt('Come back to collections and see all the posts!'); ?></li>
 					</ol>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong><?php echo JText::_('What is following?'); ?></strong></p>
-					<p><?php echo JText::_('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
-					<p><?php echo JText::_('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
-					<p><?php echo JText::_('You can unfollow other people or collections at any time.'); ?></p>
+					<p><strong><?php echo Lang::txt('What is following?'); ?></strong></p>
+					<p><?php echo Lang::txt('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
+					<p><?php echo Lang::txt('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
+					<p><?php echo Lang::txt('You can unfollow other people or collections at any time.'); ?></p>
 				</div>
 		<?php } else { ?>
 					<p>
-						<?php echo JText::_('This group is not following anyone or any collections.'); ?>
+						<?php echo Lang::txt('This group is not following anyone or any collections.'); ?>
 					</p>
 				</div><!-- / .instructions -->
 		<?php } ?>

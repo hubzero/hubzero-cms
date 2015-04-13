@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$no_html = JRequest::getVar('no_html', 0);
+$no_html = Request::getVar('no_html', 0);
 
-$section = JRequest::getInt('section_id', 0);
+$section = Request::getInt('section_id', 0);
 
 $base = $this->offering->link() . '&active=pages';
 
@@ -78,7 +78,7 @@ if (!$no_html) { ?>
 		<form action="index.php" method="post" id="filelist">
 <?php } ?>
 <?php if (count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('PLG_COURSES_PAGES_NO_FILES_FOUND'); ?></p>
+			<p><?php echo Lang::txt('PLG_COURSES_PAGES_NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
 			<table>
 				<tbody>
@@ -87,7 +87,7 @@ if (!$no_html) { ?>
 				{
 					jimport('joomla.filesystem.file');
 
-					$page = JRequest::getVar('page', '');
+					$page = Request::getVar('page', '');
 
 					foreach ($this->docs as $path => $name)
 					{
@@ -99,14 +99,14 @@ if (!$no_html) { ?>
 							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
 						<td>
-							<a class="delete" href="<?php echo JRoute::_($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
-								<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>
+							<a class="delete" href="<?php echo Route::url($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
+								<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
 					<tr class="row-group end">
 						<td colspan="2">
-							<span class="file-path"><?php echo JRoute::_($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))); ?></span>
+							<span class="file-path"><?php echo Route::url($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))); ?></span>
 						</td>
 					</tr>
 				<?php

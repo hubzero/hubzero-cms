@@ -53,7 +53,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 		$obj = new stdClass;
 		$obj->name  = $this->_name;
 		$obj->type  = $this->_type;
-		$obj->title = JText::_('PLG_' . $this->_type . '_' . $this->_name . '_TITLE');
+		$obj->title = Lang::txt('PLG_' . $this->_type . '_' . $this->_name . '_TITLE');
 
 		return $obj;
 	}
@@ -70,7 +70,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 	{
 		$us = JFactory::getSession();
 
-		$declared = JRequest::getWord('viewer');
+		$declared = Request::getWord('viewer');
 		$viewer = ($declared ? $declared : $us->get('tool_viewer'));
 
 		if ((isset($session->rendered) && $session->rendered)
@@ -98,8 +98,8 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 			'layout'  => 'default'
 		));
 
-		return $view->set('option', JRequest::getCmd('option', 'com_tools'))
-					->set('controller', JRequest::getWord('controller', 'sessions'))
+		return $view->set('option', Request::getCmd('option', 'com_tools'))
+					->set('controller', Request::getWord('controller', 'sessions'))
 					->set('output', $session)
 					->set('app', $tool)
 					->set('readOnly', $readOnly)

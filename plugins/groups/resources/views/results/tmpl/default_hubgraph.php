@@ -34,12 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_GROUPS_RESOURCES'); ?>
+	<?php echo Lang::txt('PLG_GROUPS_RESOURCES'); ?>
 </h3>
 
 <ul id="page_options">
 	<li>
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&group=' . $this->group->get('cn')); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
+		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&group=' . $this->group->get('cn')); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
 	</li>
 </ul>
 

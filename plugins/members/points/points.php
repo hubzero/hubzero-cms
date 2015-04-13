@@ -58,7 +58,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		//if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
-			$areas['points'] = JText::_('PLG_MEMBERS_POINTS');
+			$areas['points'] = Lang::txt('PLG_MEMBERS_POINTS');
 			$areas['icon'] = 'f006';
 		}
 
@@ -100,7 +100,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 		if (!in_array($table, $tables))
 		{
-			$arr['html'] = '<p class="error">' . JText::_('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE') . '</p>';
+			$arr['html'] = '<p class="error">' . Lang::txt('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE') . '</p>';
 			return $arr;
 		}
 

@@ -37,29 +37,29 @@ $base = $this->member->getLink() . '&active=' . $this->name;
 		<ul class="sub-menu">
 			<?php if ($this->params->get('access-manage-collection')) { ?>
 				<li<?php if ($this->active == 'livefeed') { echo ' class="active"'; } ?>>
-					<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
-						<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
+					<a class="livefeed tooltips" href="<?php echo Route::url($base); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
+						<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
 					</a>
 				</li>
 			<?php } ?>
 			<li<?php if ($this->active == 'collections') { echo ' class="active"'; } ?>>
-				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
+				<a class="collections count" href="<?php echo Route::url($base . '&task=all'); ?>">
+					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
 				</a>
 			</li>
 			<li<?php if ($this->active == 'posts') { echo ' class="active"'; } ?>>
-				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
+				<a class="posts count" href="<?php echo Route::url($base . '&task=posts'); ?>">
+					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
 				</a>
 			</li>
 			<li<?php if ($this->active == 'followers') { echo ' class="active"'; } ?>>
-				<a class="followers count" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWERS', $this->followers); ?></span>
+				<a class="followers count" href="<?php echo Route::url($base . '&task=followers'); ?>">
+					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWERS', $this->followers); ?></span>
 				</a>
 			</li>
 			<li<?php if ($this->active == 'following') { echo ' class="active"'; } ?>>
-				<a class="following count" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWNG', $this->following); ?></span>
+				<a class="following count" href="<?php echo Route::url($base . '&task=following'); ?>">
+					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWNG', $this->following); ?></span>
 				</a>
 			</li>
 		</ul>

@@ -55,7 +55,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
 			->set('default_access', $this->params->get('plugin_access', 'members'))
 			->set('display_menu_tab', true)
 			->set('icon', 'f095');
@@ -65,9 +65,9 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		if (!($active = JRequest::getVar('active')))
+		if (!($active = Request::getVar('active')))
 		{
-			JRequest::setVar('active', ($active = $this->_name));
+			Request::setVar('active', ($active = $this->_name));
 		}
 
 		// Get a student count
@@ -77,23 +77,22 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		if ($response->get('name') == $active)
 		{
 			// Set some variables so other functions have access
-			$this->option   = JRequest::getCmd('option', 'com_courses');
+			$this->option   = Request::getCmd('option', 'com_courses');
 			$this->course   = $course;
 			$this->offering = $offering;
 
 			// Set the page title
 			$document = JFactory::getDocument();
-			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_ANNOUNCEMENTS'));
+			$document->setTitle($document->getTitle() . ': ' . Lang::txt('PLG_COURSES_ANNOUNCEMENTS'));
 
-			$pathway = JFactory::getApplication()->getPathway();
-			$pathway->addItem(
-				JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+			Pathway::append(
+				Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
 				$this->offering->link() . '&active=' . $this->_name
 			);
 
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
 
-			$action = JRequest::getWord('action', '');
+			$action = Request::getWord('action', '');
 
 			switch (strtolower($action))
 			{
@@ -137,7 +136,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		$view = with($this->view('dashboard', 'browse'))
 			->set('course', $course)
 			->set('offering', $offering)
-			->set('option', JRequest::getCmd('option', 'com_courses'))
+			->set('option', Request::getCmd('option', 'com_courses'))
 			->set('config', $course->config())
 			->set('params', $this->params);
 
@@ -163,13 +162,13 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			->set('option', $this->option)
 			->set('config', $this->course->config())
 			->set('params', $this->params)
-			->set('no_html', JRequest::getInt('no_html', 0));
+			->set('no_html', Request::getInt('no_html', 0));
 
 		// Get filters for the entries list
 		$filters = array(
-			'search' => JRequest::getVar('q', ''),
-			'limit'  => JRequest::getInt('limit', JFactory::getConfig()->get('list_limit', 25)),
-			'start'  => JRequest::getInt('limitstart', 0)
+			'search' => Request::getVar('q', ''),
+			'limit'  => Request::getInt('limit', JFactory::getConfig()->get('list_limit', 25)),
+			'start'  => Request::getInt('limitstart', 0)
 		);
 		$filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
 
@@ -204,7 +203,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 
 		if (!($model instanceof CoursesModelAnnouncement))
 		{
-			$model = CoursesModelAnnouncement::getInstance(JRequest::getInt('entry', 0));
+			$model = CoursesModelAnnouncement::getInstance(Request::getInt('entry', 0));
 		}
 
 		$view->set('model', $model);
@@ -232,15 +231,15 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		$response = new stdClass;
 		$response->code = 0;
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Get the model and bind the data
@@ -312,7 +311,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$id = JRequest::getInt('entry', 0);
+		$id = Request::getInt('entry', 0);
 
 		// Get the model and set the state to "deleted"
 		$model = CoursesModelAnnouncement::getInstance($id);

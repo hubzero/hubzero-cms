@@ -47,45 +47,45 @@ $default = $this->params->get('access-plugin');
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_($base . '&scope=save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo Route::url($base . '&scope=save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo JText::_($legend); ?></legend>
+		<legend><?php echo Lang::txt($legend); ?></legend>
 
 		<label for="field-access">
-			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY'); ?>
+			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY'); ?>
 			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->get('access', $default) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
-				<option value="1"<?php if ($this->entry->get('access', $default) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></option>
-				<option value="4"<?php if ($this->entry->get('access', $default) == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
+				<option value="0"<?php if ($this->entry->get('access', $default) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
+				<option value="1"<?php if ($this->entry->get('access', $default) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></option>
+				<option value="4"<?php if ($this->entry->get('access', $default) == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
 			</select>
 		</label>
 
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 
 		<label for="field-description">
-			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
+			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
 			<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'minimal no-footer')); ?>
 		</label>
 
 		<div class="grid">
 			<div class="col span6">
 				<label for="field-layout"<?php if ($this->task == 'save' && !$this->entry->get('layout')) { echo ' class="fieldWithErrors"'; } ?>>
-					<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT'); ?>
 					<select name="fields[layout]" id="field-layout">
-						<option value="grid"<?php if ($this->entry->get('layout') == 'grid') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
-						<option value="list"<?php if ($this->entry->get('layout') == 'list') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
+						<option value="grid"<?php if ($this->entry->get('layout') == 'grid') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
+						<option value="list"<?php if ($this->entry->get('layout') == 'list') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
 					</select>
 				</label>
 			</div>
 			<div class="col span6 omega">
 				<label for="field-sort"<?php if ($this->task == 'save' && !$this->entry->get('sort')) { echo ' class="fieldWithErrors"'; } ?>>
-					<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_SORT'); ?>
+					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT'); ?>
 					<select name="fields[sort]" id="field-sort">
-						<option value="created"<?php if ($this->entry->get('sort') == 'created') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
-						<option value="ordering"<?php if ($this->entry->get('sort') == 'ordering') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
+						<option value="created"<?php if ($this->entry->get('sort') == 'created') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
+						<option value="ordering"<?php if ($this->entry->get('sort') == 'ordering') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
 					</select>
 				</label>
 			</div>
@@ -107,6 +107,6 @@ $default = $this->params->get('access-plugin');
 	<input type="hidden" name="action" value="savecollection" />
 
 	<p class="submit">
-		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
+		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
 	</p>
 </form>

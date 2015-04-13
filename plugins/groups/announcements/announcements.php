@@ -54,7 +54,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'             => $this->_name,
-			'title'            => JText::_('COM_GROUPS_ANNOUNCEMENTS'),
+			'title'            => Lang::txt('COM_GROUPS_ANNOUNCEMENTS'),
 			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon'             => 'f095'
@@ -182,7 +182,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				//if set to nobody make sure cant access
 				if ($group_plugin_acl == 'nobody')
 				{
-					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 
@@ -190,11 +190,11 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				if ($this->juser->get('guest')
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
-					$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
+					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 
 					$this->redirect(
-						JRoute::_('index.php?option=com_users&view=login?return=' . base64_encode($url)),
-						JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+						Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
+						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
 					);
 					return;
@@ -203,7 +203,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				//check to see if user is member and plugin access requires members
 				if (!in_array($this->juser->get('id'), $members) && $group_plugin_acl == 'members')
 				{
-					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 			}
@@ -266,9 +266,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		//build array of filters
 		$view->filters              = array();
-		$view->filters['search']    = JRequest::getVar('q', '');
-		$view->filters['limit']     = JRequest::getInt('limit', $this->params->get('display_limit', 50));
-		$view->filters['start']     = JRequest::getInt('limitstart', 0);
+		$view->filters['search']    = Request::getVar('q', '');
+		$view->filters['limit']     = Request::getInt('limit', $this->params->get('display_limit', 50));
+		$view->filters['start']     = Request::getInt('limitstart', 0);
 		$view->filters['start']     = ($view->filters['limit'] == 0) ? 0 : $view->filters['start'];
 		$view->filters['scope']     = 'group';
 		$view->filters['scope_id']  = $this->group->get('gidNumber');
@@ -316,7 +316,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		);
 
 		//get incoming
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		//create new announcement Object
 		$view->announcement = new \Hubzero\Item\Announcement($this->database);
@@ -330,7 +330,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//make sure its this groups announcement
 		if (!$view->announcement->belongsToObject('group', $this->group->get('gidNumber')))
 		{
-			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
 			return $this->_list();
 		}
 
@@ -360,17 +360,17 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		//verify were authorized
 		if ($this->authorized != 'manager')
 		{
-			$this->setError( JText::_('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE') );
+			$this->setError( Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE') );
 			return $this->_list();
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// email announcement
@@ -387,7 +387,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		{
 			$fields['scope']      = 'group';
 			$fields['scope_id']   = $this->group->get('gidNumber');
-			$fields['created']    = JFactory::getDate()->toSql();
+			$fields['created']    = Date::toSql();
 			$fields['created_by'] = $this->juser->get('id');
 		}
 
@@ -432,8 +432,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		//success!
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
-			JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
+			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED'),
 			'success'
 		);
 		return;
@@ -449,12 +449,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//verify were authorized
 		if ($this->authorized != 'manager')
 		{
-			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_DELETE'));
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_DELETE'));
 			return $this->_list();
 		}
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		//announcement model
 		$announcement = new \Hubzero\Item\Announcement($this->database);
@@ -466,7 +466,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//make sure we are the one who created it
 		if ($announcement->created_by != $this->juser->get('id'))
 		{
-			$this->setError(JText::sprintf('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $profile->get('name')));
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $profile->get('name')));
 			return $this->_list();
 		}
 
@@ -476,13 +476,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//attempt to delete announcement
 		if (!$announcement->save($announcement))
 		{
-			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_UNABLE_TO_DELETE'));
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_UNABLE_TO_DELETE'));
 			return $this->_list();
 		}
 
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
-			JText::_('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED'),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
+			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED'),
 			'success'
 		);
 		return;

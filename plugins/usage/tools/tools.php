@@ -51,7 +51,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	public function onUsageAreas()
 	{
 		return array(
-			'tools' => JText::_('PLG_USAGE_TOOLs')
+			'tools' => Lang::txt('PLG_USAGE_TOOLs')
 		);
 	}
 
@@ -75,10 +75,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$cls = 'even';
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('#') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th>' . JText::_('Tool') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_($table_header) . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('Percent') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th>' . Lang::txt('Tool') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt($table_header) . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('Percent') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 		$count = 0;
@@ -131,7 +131,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
-					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $name[0] . '&active=usage') . '">' . $name[1] . '</a></td>' . "\n";
+					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.Route::url('index.php?option=com_resources&id=' . $name[0] . '&active=usage') . '">' . $name[1] . '</a></td>' . "\n";
 					$html .= "\t\t\t" . '<td>' . $value . '</td>' . "\n";
 					if ($total)
 						$vl = number_format((($row->value/$total)*100), 2);
@@ -181,9 +181,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 			$cls = 'even';
 			$html .= "\t" . '<thead>' . "\n";
 			$html .= "\t\t" . '<tr>' . "\n";
-			$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('#') . '</th>' . "\n";
-			$html .= "\t\t\t" . '<th>' . JText::_('Tool') . '</th>' . "\n";
-			$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('Ranking') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th>' . Lang::txt('Tool') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('Ranking') . '</th>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 			$html .= "\t" . '</thead>' . "\n";
 			$html .= "\t" . '<tbody>' . "\n";
@@ -200,7 +200,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				if ($row->published == "1") {
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
-					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . $row->title . '</a></td>' . "\n";
+					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . $row->title . '</a></td>' . "\n";
 					$html .= "\t\t\t" . '<td>' . $ranking . '</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
@@ -241,9 +241,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		$html .= "\t" . '<thead>' . "\n";
 		$html .= "\t\t" . '<tr>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('#') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th>' . JText::_('Tool') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('Citations') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('#') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th>' . Lang::txt('Tool') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th class="numerical-data">' . Lang::txt('Citations') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 
@@ -251,7 +251,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t" . '<tfoot>' . "\n";
 			$html .= "\t\t" . '<tr class="summary">' . "\n";
-			$html .= "\t\t\t" . '<th colspan="2" class="numerical-data">' . JText::_('Total Tools Citations') . '</th>' . "\n";
+			$html .= "\t\t\t" . '<th colspan="2" class="numerical-data">' . Lang::txt('Total Tools Citations') . '</th>' . "\n";
 			$html .= "\t\t\t" . '<td class="numerical-data">' . $result . '</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 			$html .= "\t" . '</tfoot>' . "\n";
@@ -278,7 +278,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				{
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
-					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . stripslashes($row->title) . '</a></td>';
+					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . stripslashes($row->title) . '</a></td>';
 					$html .= "\t\t\t" . '<td>' . $row->citations . '</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
@@ -601,37 +601,37 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=12&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=12&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'month' || $period == '1')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=1&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=1&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'qtr' || $period == '3')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=3&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=3&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'year' || $period == '0')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=0&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=0&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == 'fiscal' || $period == '13')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=13&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=13&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
 		if ($period == '14')
 		{
 			$html .= ' class="active"';
 		}
-		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=14&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_OVERALL') . '</span></a></li>' . "\n";
+		$html .= '><a href="'.Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=14&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_OVERALL') . '</span></a></li>' . "\n";
 		$html .= "\t" . '</ul>' . "\n";
 		$html .= '</div>' . "\n";
 
@@ -668,7 +668,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$table = $database->getPrefix() . 'stats_tops';
 		if (!in_array($table,$tables))
 		{
-			return '<p class="error">' . JText::_('Error: Required database table not found . ') . '</p>';
+			return '<p class="error">' . Lang::txt('Error: Required database table not found . ') . '</p>';
 		}
 
 		// Set some vars
@@ -676,9 +676,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$this->_task = $task;
 
 		// Incoming
-		$period = JRequest::getVar('period', '12');
-		$dthis  = JRequest::getVar('dthis', date('Y') . '-'.date('m'));
-		$s_top  = JRequest::getVar('top', '2');
+		$period = Request::getVar('period', '12');
+		$dthis  = Request::getVar('dthis', date('Y') . '-'.date('m'));
+		$s_top  = Request::getVar('top', '2');
 
 		$html = '';
 
@@ -687,10 +687,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= $this->navlinks($period, $s_top);
 		}
-		$html  = '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
+		$html  = '<form method="post" action="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
+		$html .= "\t\t\t".Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
 		$html .= "\t\t\t" . '<select name="top">' . "\n";
 
 		$sql = "SELECT * FROM #__stats_tops ORDER BY id";
@@ -724,7 +724,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		{
 			$html .= $this->drop_down_dates($database, $period, $s_top, $dthis) . ' ';
 		}
-		$html .= "\t\t" . '<input type="submit" value="' . JText::_('PLG_USAGE_VIEW') . '" />' . "\n";
+		$html .= "\t\t" . '<input type="submit" value="' . Lang::txt('PLG_USAGE_VIEW') . '" />' . "\n";
 		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 
@@ -758,7 +758,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$html .= '<p>' . JText::_('Please make a selection to view data . ') . '</p>' . "\n";
+			$html .= '<p>' . Lang::txt('Please make a selection to view data . ') . '</p>' . "\n";
 		}
 
 		return $html;

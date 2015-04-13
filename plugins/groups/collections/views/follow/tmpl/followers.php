@@ -39,13 +39,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <ul id="page_options">
 	<li>
-		<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=index'); ?>">
-			<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_GETTING_STARTED'); ?></span>
+		<a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
+			<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GETTING_STARTED'); ?></span>
 		</a>
 	</li>
 </ul>
 
-<form method="get" action="<?php echo JRoute::_($base . '&scope=followers'); ?>" id="collections">
+<form method="get" action="<?php echo Route::url($base . '&scope=followers'); ?>" id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('option', $this->option)
@@ -62,8 +62,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 	<?php if (!$juser->get('guest') && $this->params->get('access-manage-collection')) { ?>
 		<p class="guest-options">
-			<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&scope=settings'); ?>">
-				<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS'); ?></span>
+			<a class="icon-config config btn" href="<?php echo Route::url($base . '&scope=settings'); ?>">
+				<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS'); ?></span>
 			</a>
 		</p>
 	<?php } ?>
@@ -72,7 +72,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<div class="container">
 			<table class="followers entries">
 				<caption>
-					<?php echo JText::_('People following this group'); ?>
+					<?php echo Lang::txt('People following this group'); ?>
 				</caption>
 				<tbody>
 					<?php foreach ($this->rows as $row) { ?>
@@ -81,17 +81,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								<img src="<?php echo $row->follower()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->follower()->title())); ?>" />
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($row->follower()->link()); ?>">
+								<a class="entry-title" href="<?php echo Route::url($row->follower()->link()); ?>">
 									<?php echo $this->escape(stripslashes($row->follower()->title())); ?>
 								</a>
 								<br />
 								<span class="entry-details">
-									<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>
-									<span class="following count"><?php echo JText::sprintf('<strong>%s</strong> following', $row->count('following')); ?></span>
+									<span class="follower count"><?php echo Lang::txt('<strong>%s</strong> followers', $row->count('followers')); ?></span>
+									<span class="following count"><?php echo Lang::txt('<strong>%s</strong> following', $row->count('following')); ?></span>
 								</span>
 							</td>
 							<td>
-								<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time>
+								<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 							</td>
 						</tr>
 					<?php } ?>
@@ -104,17 +104,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<div id="collection-introduction">
 			<?php if ($this->params->get('access-manage-collection')) { ?>
 				<div class="instructions">
-					<p><?php echo JText::_('This group currently does not have anyone following it or any of its collections.'); ?></p>
+					<p><?php echo Lang::txt('This group currently does not have anyone following it or any of its collections.'); ?></p>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong><?php echo JText::_('What are followers?'); ?></strong></p>
-					<p><?php echo JText::_('"Followers" are members that have decided to receive all public posts this group makes or all posts in one of this group\'s collections.'); ?><p>
-					<p><?php echo JText::_('Followers cannot see of your private collections or posts made to private collections.'); ?><p>
+					<p><strong><?php echo Lang::txt('What are followers?'); ?></strong></p>
+					<p><?php echo Lang::txt('"Followers" are members that have decided to receive all public posts this group makes or all posts in one of this group\'s collections.'); ?><p>
+					<p><?php echo Lang::txt('Followers cannot see of your private collections or posts made to private collections.'); ?><p>
 				</div>
 			<?php } else { ?>
 				<div class="instructions">
 					<p>
-						<?php echo JText::_('This group is not following anyone or any collections.'); ?>
+						<?php echo Lang::txt('This group is not following anyone or any collections.'); ?>
 					</p>
 				</div><!-- / .instructions -->
 			<?php } ?>

@@ -54,14 +54,14 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
 	{
 		$response = with(new \Hubzero\Base\Object)
 			->set('name', $this->_name)
-			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)));
+			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
 		// Check if our area is in the array of areas we want to return results for
 		if ($response->get('name') == $active)
 		{
 			$view = $this->view('default', 'overview');
-			$view->set('option', JRequest::getCmd('option', 'com_courses'))
-			     ->set('controller', JRequest::getWord('controller', 'course'))
+			$view->set('option', Request::getCmd('option', 'com_courses'))
+			     ->set('controller', Request::getWord('controller', 'course'))
 			     ->set('course', $course);
 
 			$response->set('html', $view->loadTemplate());

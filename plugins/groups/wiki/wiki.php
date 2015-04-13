@@ -52,7 +52,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name' => 'wiki',
-			'title' => JText::_('PLG_GROUPS_WIKI'),
+			'title' => Lang::txt('PLG_GROUPS_WIKI'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
 			'icon' => 'f072'
@@ -127,7 +127,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -138,12 +138,12 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				$url = $_SERVER['REQUEST_URI'];
 				if (!JURI::isInternal($url))
 				{
-					$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
+					$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
 				}
 
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
 				return;
@@ -154,15 +154,15 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
 			// Set some variables for the wiki
-			$scope = trim(JRequest::getVar('scope', ''));
+			$scope = trim(Request::getVar('scope', ''));
 			if (!$scope)
 			{
-				JRequest::setVar('scope', $group->get('cn') . DS . $active);
+				Request::setVar('scope', $group->get('cn') . DS . $active);
 			}
 
 			// Import some needed libraries
@@ -202,7 +202,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				break;
 			}
 
-			$pagename = trim(JRequest::getVar('pagename', ''));
+			$pagename = trim(Request::getVar('pagename', ''));
 
 			if (substr(strtolower($pagename), 0, strlen('image:')) == 'image:'
 			 || substr(strtolower($pagename), 0, strlen('file:')) == 'file:')
@@ -211,12 +211,12 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				$action = 'download';
 			}
 
-			JRequest::setVar('task', $action);
+			Request::setVar('task', $action);
 
 			$lang = JFactory::getLanguage();
 			$lang->load('com_wiki');
 
-			//$controllerName = JRequest::getCmd('controller', 'page');
+			//$controllerName = Request::getCmd('controller', 'page');
 			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php'))
 			{
 				$controllerName = 'page';
@@ -304,7 +304,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Start the log text
-		$log = JText::_('PLG_GROUPS_WIKI_LOG') . ': ';
+		$log = Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ';
 
 		if (count($ids) > 0)
 		{
@@ -330,7 +330,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$log .= JText::_('PLG_GROUPS_WIKI_NO_RESULTS_FOUND')."\n";
+			$log .= Lang::txt('PLG_GROUPS_WIKI_NO_RESULTS_FOUND')."\n";
 		}
 
 		// Return the log
@@ -345,7 +345,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		return JText::_('PLG_GROUPS_WIKI_LOG') . ': ' . count($this->getPageIDs($group->get('cn')));
+		return Lang::txt('PLG_GROUPS_WIKI_LOG') . ': ' . count($this->getPageIDs($group->get('cn')));
 	}
 
 	/**

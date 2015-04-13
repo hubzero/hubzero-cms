@@ -51,7 +51,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	public function onUsageAreas()
 	{
 		return array(
-			'maps' => JText::_('PLG_USAGE_MAPS')
+			'maps' => Lang::txt('PLG_USAGE_MAPS')
 		);
 	}
 
@@ -180,8 +180,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'markers':
-				$date = JRequest::getVar('period', '2008-03-00');
-				$local = JRequest::getVar('local', '');
+				$date = Request::getVar('period', '2008-03-00');
+				$local = Request::getVar('local', '');
 
 				if ($local == 'us')
 				{
@@ -279,9 +279,9 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$lat  = JRequest::getVar('lat', '35');
-		$long = JRequest::getVar('long', '-90');
-		$zoom = JRequest::getVar('zoom', '');
+		$lat  = Request::getVar('lat', '35');
+		$long = Request::getVar('long', '-90');
+		$zoom = Request::getVar('zoom', '');
 		if ($lat != '35' && $long != '-90')
 		{
 			$zoom = '14';
@@ -291,14 +291,14 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			$zoom = '4';
 		}
 
-		$type = JRequest::getVar('type', 'online');
-		$no_html = JRequest::getVar('no_html', 0);
+		$type = Request::getVar('type', 'online');
+		$no_html = Request::getVar('no_html', 0);
 
 		$type = str_replace(':', '-', $type);
 
 		if ($no_html)
 		{
-			$data = JRequest::getVar('data','');
+			$data = Request::getVar('data','');
 
 			if ($data)
 			{
@@ -306,7 +306,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$config = JComponentHelper::getParams($option);
+				$config = Component::params($option);
 
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');
@@ -317,7 +317,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					JError::raiseError(500, JText::sprintf('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
+					JError::raiseError(500, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
 					return;
 				}
 
@@ -327,11 +327,11 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
-		$pathway->addItem(JText::_('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
+		$pathway->addItem(Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
 
-		$html  = '<h3>' . JText::_('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
-		$html .= '<p><a class="map" href="' . JRoute::_('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . JText::_('PLG_USAGE_MAPS_RESET') . '</a></p>';
-		$html .= '<iframe src="' . JRoute::_('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0"></iframe>' . "\n";
+		$html  = '<h3>' . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
+		$html .= '<p><a class="map" href="' . Route::url('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . Lang::txt('PLG_USAGE_MAPS_RESET') . '</a></p>';
+		$html .= '<iframe src="' . Route::url('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0"></iframe>' . "\n";
 
 		return $html;
 	}

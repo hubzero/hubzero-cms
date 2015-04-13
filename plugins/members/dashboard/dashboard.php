@@ -84,7 +84,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		//if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
-			$areas['dashboard'] = JText::_('PLG_MEMBERS_DASHBOARD');
+			$areas['dashboard'] = Lang::txt('PLG_MEMBERS_DASHBOARD');
 			$areas['icon'] = 'f009';
 		}
 
@@ -138,7 +138,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			$this->juser    = JFactory::getUser();
 			$this->database = JFactory::getDBO();
 			$this->option   = $option;
-			$this->action   = JRequest::getVar('action', 'display');
+			$this->action   = Request::getVar('action', 'display');
 
 			// build the action
 			$doAction = strtolower($this->action) . 'Action';
@@ -225,7 +225,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function moduleAction()
 	{
 		// get module id
-		$moduleId = JRequest::getInt('moduleid', 0);
+		$moduleId = Request::getInt('moduleid', 0);
 
 		// get list of modules
 		$modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
@@ -343,7 +343,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function saveAction()
 	{
 		// get request vars
-		$modules = JRequest::getString('modules', '');
+		$modules = Request::getString('modules', '');
 
 		// make sure we have modules
 		if ($modules == '')
@@ -365,7 +365,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// update the user preferences
 		$membersDashboardModelPreferences->set('uidNumber', $this->juser->get('id'));
 		$membersDashboardModelPreferences->set('preferences', $modules);
-		$membersDashboardModelPreferences->set('modified', JFactory::getDate()->toSql());
+		$membersDashboardModelPreferences->set('modified', Date::toSql());
 
 		// attempt to save
 		if (!$membersDashboardModelPreferences->store())
@@ -485,7 +485,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function manageSaveAction()
 	{
 		// get request vars
-		$modules = JRequest::getString('modules', '');
+		$modules = Request::getString('modules', '');
 
 		// save an empty set as an empty string
 		$modules = ($modules == '[]') ? '' : $modules;
@@ -545,7 +545,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function manageModuleAction()
 	{
 		// get module id
-		$moduleId = JRequest::getInt('moduleid', 0);
+		$moduleId = Request::getInt('moduleid', 0);
 
 		// get list of modules
 		$modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
@@ -615,11 +615,11 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function manageDoPushAction()
 	{
 		// get request vars
-		$module   = JRequest::getInt('module', null);
-		$column   = JRequest::getInt('column', 1);
-		$position = JRequest::getCmd('position', 'first');
-		$width    = JRequest::getInt('width', 1);
-		$height   = JRequest::getInt('height', 2);
+		$module   = Request::getInt('module', null);
+		$column   = Request::getInt('column', 1);
+		$position = Request::getCmd('position', 'first');
+		$width    = Request::getInt('width', 1);
+		$height   = Request::getInt('height', 2);
 
 		// make sure we have a module
 		if ($module == 0 || $module == null)
