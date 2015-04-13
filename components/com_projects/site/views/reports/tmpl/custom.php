@@ -74,10 +74,9 @@ $filter = Request::getVar( 'searchterm', '');
 				<div class="groupblock">
 					<div class="block">
 						<label><?php echo Lang::txt('Filter by tag'); ?>:
-						<?php JPluginHelper::importPlugin( 'hubzero' );
-						$dispatcher = JDispatcher::getInstance();
+						<?php
 
-						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'searchterm', 'searchterm','', $filter)) );
+						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'searchterm', 'searchterm','', $filter)) );
 
 						if (count($tf) > 0) {
 							echo $tf[0];

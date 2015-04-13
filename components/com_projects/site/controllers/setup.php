@@ -704,12 +704,8 @@ class Setup extends Base
 					return false;
 				}
 
-				// Get team plugin
-				\JPluginHelper::importPlugin( 'projects', 'team' );
-				$dispatcher = \JDispatcher::getInstance();
-
 				// Save team
-				$content = $dispatcher->trigger( 'onProject', array(
+				$content = Event::trigger( 'projects.onProject', array(
 					$this->model,
 					'save',
 					array('team')
@@ -809,12 +805,8 @@ class Setup extends Base
 	 */
 	protected function _loadTeamEditor()
 	{
-		// Get team plugin
-		\JPluginHelper::importPlugin( 'projects', 'team' );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Get plugin output
-		$content = $dispatcher->trigger( 'onProject', array(
+		$content = Event::trigger( 'projects.onProject', array(
 			$this->model,
 			$this->_task,
 			array('team')

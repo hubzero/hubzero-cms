@@ -5615,10 +5615,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$prefix = $this->_config->get('offroot', 0) ? '' : PATH_APP ;
 		$from_path = $prefix.$fpath;
 
-		// Get files plugin
-		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher = JDispatcher::getInstance();
-
 		// Get screenshot path
 		$webpath = $this->_pubconfig->get('webpath');
 		$galleryPath = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $webpath, 'gallery');
@@ -7224,8 +7220,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * @param   int  	$projectid
 	 * @return  void
 	 */
-	public function serve( $projectid = 0, $query = '')
+	public function serve( $type = '', $projectid = 0, $query = '')
 	{
+		$this->_area = $this->onProjectAreas();
+		if ($type != $this->_area['name'])
+		{
+			return false;
+		}
 		$data = json_decode($query);
 
 		if (!isset($data->pid) || !$projectid)

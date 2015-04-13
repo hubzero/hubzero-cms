@@ -35,9 +35,6 @@ $prev_start = $this->filters['start'] - $this->filters['limit'];
 $prev_start = $prev_start < 0 ? 0 : $prev_start;
 $next_start = $this->filters['start'] + $this->filters['limit'];
 
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-
 ?>
 <?php if (!$this->setup) { ?>
 	<h5><?php echo Lang::txt('COM_PROJECTS_ADD_NEW_MEMBERS').' '.Lang::txt('COM_PROJECTS_AS').':'; ?></h5>
@@ -63,7 +60,7 @@ $dispatcher = JDispatcher::getInstance();
 	<label id="add-users">
 		 <span class="instr i_user"><?php echo Lang::txt('COM_PROJECTS_ADD_IND_USER'); ?>:</span>
 		<?php
-			$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
+			$mc = Event::trigger( 'hubzero.onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
 			if (count($mc) > 0) {
 				echo $mc[0];
 			} else { ?>
@@ -74,7 +71,7 @@ $dispatcher = JDispatcher::getInstance();
 	<label id="add-groups">
 		 <span class="instr i_group"><?php echo Lang::txt('COM_PROJECTS_ADD_GROUP_OF_USERS'); ?>:</span>
 		<?php
-			$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('groups', 'newgroup', 'newgroup')) );
+			$mc = Event::trigger( 'hubzero.onGetMultiEntry', array(array('groups', 'newgroup', 'newgroup')) );
 			if (count($mc) > 0) {
 				echo $mc[0];
 			} else { ?>

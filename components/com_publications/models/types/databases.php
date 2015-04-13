@@ -397,7 +397,7 @@ class Databases extends Object
 				if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime )
 				{
 					// New database instance - need to clone again and get a new version number
-					$result 			= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
+					$result 			= Event::trigger( 'projects.clone_database', array( $database_name, $this->_project, $pPath) );
 					$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 					$objPA->modified_by = $uid;
 					$objPA->modified 	= \JFactory::getDate()->toSql();

@@ -403,9 +403,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Exclude any owners?
 		$view->exclude = array();
 
-		JPluginHelper::importPlugin( 'hubzero' );
-		$view->dispatcher = JDispatcher::getInstance();
-		$view->mc = $view->dispatcher->trigger( 'onGetSingleEntry', array(array('members', 'uid', 'uid')) );
+		$view->mc = Event::trigger( 'hubzero.onGetSingleEntry', array(array('members', 'uid', 'uid')) );
 
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
@@ -1123,9 +1121,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($uid)
 		{
 			// Send HUB message
-			JPluginHelper::importPlugin( 'xmessage' );
-			$dispatcher = JDispatcher::getInstance();
-			if ($dispatcher->trigger( 'onSendMessage', array( 'projects_member_added',
+			if (Event::trigger( 'xmessage.onSendMessage', array( 'projects_member_added',
 				$subject, $message, $from,
 				array($uid), $option ))) {
 				return true;

@@ -38,9 +38,6 @@ if (!$this->sub)
 $this->js('wiki.js', 'com_wiki')
      ->js('jquery.fileuploader.js', 'system');
 
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
 $tags = $this->page->tags('string') ? $this->page->tags('string') : Request::getVar('tags', '');
 
 if ($this->page->exists())
@@ -225,7 +222,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<label>
 				<?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
+				$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {

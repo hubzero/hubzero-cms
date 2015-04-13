@@ -106,7 +106,7 @@ $canedit = (
 			$model = new \Components\Publications\Models\Publication($this->pub);
 			if ($canedit)
 			{
-				echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 15, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
+				echo \Components\Wiki\Helpers\Editor::getInstance()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 15, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
 			}
 			else
 			{
@@ -147,7 +147,7 @@ $canedit = (
 						<label><?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span><?php } else { ?><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span><?php } ?>
 							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>:
 							<?php
-							echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 20, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
+							echo \Components\Wiki\Helpers\Editor::getInstance()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 20, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
 					</td>

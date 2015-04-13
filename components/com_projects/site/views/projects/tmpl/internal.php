@@ -60,19 +60,15 @@ else
 	$this->css('standard.css');
 }
 
-// Get project plugins
-\JPluginHelper::importPlugin( 'projects');
-$dispatcher = \JDispatcher::getInstance();
-
 // Get notifications
-$notification = $dispatcher->trigger('onProjectNotification',
+$notification = Event::trigger('projects.onProjectNotification',
 	array( $this->model, $this->active )
 );
 $notification 	= $notification && !empty($notification)
 	? $notification[0] : NULL;
 
 // Get side content
-$sideContent = $dispatcher->trigger('onProjectExtras',
+$sideContent = Event::trigger('projects.onProjectExtras',
 	array( $this->model, $this->active )
 );
 $sideContent 	= $sideContent && !empty($sideContent)

@@ -91,10 +91,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 					<input type="hidden" name="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 					<label>
 					<?php
-						JPluginHelper::importPlugin( 'hubzero');
-						$dispatcher = JDispatcher::getInstance();
-
-						$mc = $dispatcher->trigger( 'onGetSingleEntry', array(array('members', 'newmember', 'newmember', '', '')) );
+						$mc = Event::trigger( 'hubzero.onGetSingleEntry', array(array('members', 'newmember', 'newmember', '', '')) );
 
 						if (count($mc) > 0) {
 							echo $mc[0];

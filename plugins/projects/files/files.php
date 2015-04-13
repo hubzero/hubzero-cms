@@ -2113,8 +2113,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * @param   int  	$projectid
 	 * @return  void
 	 */
-	public function serve( $projectid = 0, $query = '')
+	public function serve( $type = '', $projectid = 0, $query = '')
 	{
+		$this->_area = $this->onProjectAreas();
+		if ($type != $this->_area['name'])
+		{
+			return false;
+		}
 		$data = json_decode($query);
 
 		if (!isset($data->file) || !$projectid)
@@ -2129,12 +2134,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$repoName	= isset($data->repo) ? $data->repo : 'local';
 
 		// Instantiate a project
-		$model = \Components\Projects\Models\Project($projectid);
+		$model = new \Components\Projects\Models\Project($projectid);
 
 		if (!$model->exists() || ($limited == 1 && !$model->access('member')))
 		{
 			// Throw error
-			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED'), 403);
+			throw new Exception(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'), 403);
 			return;
 		}
 
@@ -2160,14 +2165,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$serve = $path . DS . $file;
+			$serve = $repo->get('path') . DS . $file;
 		}
 
 		// Ensure the file exist
 		if (!file_exists($serve))
 		{
 			// Throw error
-			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'), 404);
 			return;
 		}
 

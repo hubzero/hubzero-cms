@@ -161,7 +161,7 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 							}
 							else
 							{
-								echo \JFactory::getEditor()->display('description', $this->escape($model->describe('raw')), '', '', 35, 20, false, 'description', null, null, array('class' => 'minimal no-footer'));
+								echo \Components\Wiki\Helpers\Editor::getInstance()->display('description', $this->escape($model->describe('raw')), '', '', 35, 20, false, 'description', null, null, array('class' => 'minimal no-footer'));
 							}
 							?>
 						</td>

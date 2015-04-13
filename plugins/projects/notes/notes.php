@@ -716,8 +716,13 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 * @param   int  	$projectid
 	 * @return  void
 	 */
-	public function serve( $projectid = 0, $query = '')
+	public function serve( $type = '', $projectid = 0, $query = '')
 	{
+		$this->_area = $this->onProjectAreas();
+		if ($type != $this->_area['name'])
+		{
+			return false;
+		}
 		$data = json_decode($query);
 
 		if (!isset($data->pageid) || !$projectid)

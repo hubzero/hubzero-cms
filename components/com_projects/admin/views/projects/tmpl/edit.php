@@ -115,7 +115,7 @@ function submitbutton(pressbutton)
 				<label for="about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?>:</label>
 				<?php 
 					$project = new \Components\Projects\Models\Project($this->obj);
-					echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null);
+					echo \Components\Wiki\Helpers\Editor::getInstance()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null);
 				?>
 			</div>
 

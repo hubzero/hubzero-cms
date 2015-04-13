@@ -57,12 +57,9 @@ if ($items) {
 
 			// Get file extention
 			$ext = \Components\Projects\Helpers\Html::getFileExtension($ref->file);
-
-			if (is_file($serve))
-			{
 		?>
 		<li><a href="<?php echo $link . $item->stamp; ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /> <?php echo basename($ref->file); ?></li>
-		<?php }
+		<?php
 		} ?>
 	</ul>
 </div>

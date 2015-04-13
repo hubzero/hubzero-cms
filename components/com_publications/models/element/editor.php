@@ -63,6 +63,6 @@ class Editor extends Base
 		$classes .= $editorImages == 1 ? 'images ' : '';
 		$classes .= $editorMacros == 1 ? 'macros ' : '';
 
-		return '<span class="field-wrap">' . \JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
+		return '<span class="field-wrap">' . \Components\Wiki\Helpers\Editor::getInstance()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
 	}
 }

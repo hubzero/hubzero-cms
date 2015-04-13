@@ -73,17 +73,16 @@ class Get extends SiteController
 			return;
 		}
 
-		// Get plugin
-		\JPluginHelper::importPlugin( 'projects', $objSt->type );
-		$dispatcher = \JDispatcher::getInstance();
-
 		// Serve requested item
-		$content = $dispatcher->trigger('serve', array($objSt->projectid, $objSt->reference));
+		$content = Event::trigger('projects.serve', array($objSt->type, $objSt->projectid, $objSt->reference)); 
 
-		// Return content
-		if ($content[0])
+		// Output
+		foreach ($content as $out)
 		{
-			return $content[0];
+			if ($out)
+			{
+				return $out;
+			}
 		}
 
 		// Redirect if nothing fetched
