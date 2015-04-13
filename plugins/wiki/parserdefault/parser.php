@@ -1488,7 +1488,7 @@ class WikiParser
 		$this->macros = array();
 
 		// Get macros [[name(args)]]
-		return preg_replace_callback('/\[\[(?P<macroname>[\w]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
+		return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
 	}
 
 	/**
@@ -1529,14 +1529,23 @@ class WikiParser
 
 			if (!isset($_macros[$matches[1]]))
 			{
-				$path = __DIR__;
-				if (is_file($path . DS . 'macros' . DS . $matches[1] . '.php'))
+				// split macro by . (dot) char
+				$macroPieces = explode('.', strtolower($matches[1]));
+				$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+
+				if (is_file($macropath))
 				{
-					include_once($path . DS . 'macros' . DS . $matches[1] . '.php');
+					include_once($macropath);
 				}
 				else
 				{
 					return '';
+				}
+
+				if (!class_exists($macroname))
+				{
+					// build namespaced macro name
+					$macroname = '\\Plugins\\Wiki\\Parserdefault\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
 				}
 
 				if (class_exists($macroname))

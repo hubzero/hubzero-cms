@@ -107,12 +107,23 @@ class WikiMacro
 			}
 			else
 			{
-				$r = null;
-				if (!preg_match('/(.*)Macro/i', get_class($this), $r))
+				// Get the reflection info
+				$r = new ReflectionClass($this);
+
+				// Is it namespaced?
+				if ($r->inNamespace())
 				{
-					echo 'Controller::__construct() : Can\'t get or parse class name.';
+					// It is! This makes things easy.
+					$this->_name = strtolower($r->getShortName());
 				}
-				$this->_name = strtolower($r[1]);
+				else if (preg_match('/(.*)Macro/i', get_class($this), $r))
+				{
+					$this->_name = strtolower($r[1]);
+				}
+				else
+				{
+					throw new RuntimeException(__CLASS__ . '::__construct(); Can\'t get or parse class name.');
+				}
 			}
 		}
 	}
@@ -175,6 +186,16 @@ class WikiMacro
 	public function render()
 	{
 		// Abstract function for overloading
+	}
+
+	/**
+	 * Return the macro's name
+	 *
+	 * @return  string
+	 */
+	public function name()
+	{
+		return $this->_name;
 	}
 
 	/**
