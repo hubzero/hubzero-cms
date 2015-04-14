@@ -236,7 +236,7 @@ class Newsletter extends SiteController
 		if (file_exists('/usr/bin/phantomjs'))
 		{
 			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-			$fallback = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
+			$fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
 			if (!$cmd)
 			{
 				$cmd = $fallback;

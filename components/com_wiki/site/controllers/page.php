@@ -1063,8 +1063,8 @@ class Page extends SiteController
 
 		if (file_exists('/usr/bin/phantomjs'))
 		{
-			$rasterizeFile = PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-			$fallback = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $wikiPageUrl . ' ' . $wikiPagePdf . ' 8.5in*11in';
+			$rasterizeFile = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
+			$fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false ' . $rasterizeFile . ' ' . $wikiPageUrl . ' ' . $wikiPagePdf . ' 8.5in*11in';
 			if (!$cmd)
 			{
 				$cmd = $fallback;
