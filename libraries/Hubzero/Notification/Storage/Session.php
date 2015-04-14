@@ -121,7 +121,7 @@ class Session implements MessageStore
 	 */
 	private function key($domain)
 	{
-		$domain = (is_null($domain) ?: $domain . '.');
+		$domain = (!$domain ? '' : $domain . '.');
 
 		return $domain . 'application.queue';
 	}
