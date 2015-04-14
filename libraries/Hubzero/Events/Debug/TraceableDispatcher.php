@@ -287,6 +287,11 @@ class TraceableDispatcher implements DispatcherInterface
 	{
 		foreach ($this->dispatcher->getListeners($event) as $listener)
 		{
+			if ($listener instanceof TraceableListener)
+			{
+				continue;
+			}
+
 			$priority = $this->dispatcher->getListenerPriority($listener, $event);
 
 			//$this->dispatcher->removeListener($listener, $event);
