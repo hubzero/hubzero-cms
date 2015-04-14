@@ -33,8 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
-if (!$this->comment->get('anonymous')
-  && $this->obj->get('created_by') == $this->comment->get('created_by'))
+if (!$this->comment->get('anonymous') && $this->obj->get('created_by') == $this->comment->get('created_by'))
 {
 	$cls .= ' author';
 }
