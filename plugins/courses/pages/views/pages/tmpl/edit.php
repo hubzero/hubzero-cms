@@ -49,9 +49,9 @@ $base = $this->offering->link() . '&active=pages';
 <div class="pages-wrap">
 	<div class="pages-content">
 
-	<?php foreach ($this->notifications as $notification) { ?>
-		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-	<?php } ?>
+		<?php foreach ($this->notifications as $notification) { ?>
+			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+		<?php } ?>
 
 		<form action="<?php echo Route::url($base); ?>" method="post" id="pageform" class="full" enctype="multipart/form-data">
 			<fieldset>
@@ -74,22 +74,22 @@ $base = $this->offering->link() . '&active=pages';
 					</div>
 				</div>
 
-			<?php if ($this->offering->access('manage')) { ?>
-				<label for="field-section_id">
-					<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_SECTION'); ?>
-					<select name="fields[section_id]" id="field-section_id">
-						<option value="0"<?php if ($this->model->get('section_id') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS'); ?></option>
-					<?php foreach ($this->offering->sections() as $section) { ?>
-						<option value="<?php echo $section->get('id'); ?>"<?php if ($section->get('id') == $this->model->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-					<?php } ?>
-					</select>
-				</label>
-			<?php } ?>
+				<?php if ($this->offering->access('manage')) { ?>
+					<label for="field-section_id">
+						<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_SECTION'); ?>
+						<select name="fields[section_id]" id="field-section_id">
+							<option value="0"<?php if ($this->model->get('section_id') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS'); ?></option>
+						<?php foreach ($this->offering->sections() as $section) { ?>
+							<option value="<?php echo $section->get('id'); ?>"<?php if ($section->get('id') == $this->model->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+						<?php } ?>
+						</select>
+					</label>
+				<?php } ?>
 
 				<label for="fields_content">
 					<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_PAGES_REQUIRED'); ?></span>
 					<?php
-						echo \JFactory::getEditor()->display('fields[content]', $this->escape($this->model->content('raw')), '', '', 35, 50, false, 'field_content');
+						echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 50, 'field_content');
 					?>
 				</label>
 
@@ -116,9 +116,9 @@ $base = $this->offering->link() . '&active=pages';
 
 			<input type="hidden" name="fields[active]" value="<?php echo $this->model->get('active', 1); ?>" />
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
-		<?php if ($this->offering->access('manage', 'section') && !$this->offering->access('manage')) { ?>
-			<input type="hidden" name="fields[section_id]" value="<?php echo $this->offering->section()->get('id'); ?>" />
-		<?php } ?>
+			<?php if ($this->offering->access('manage', 'section') && !$this->offering->access('manage')) { ?>
+				<input type="hidden" name="fields[section_id]" value="<?php echo $this->offering->section()->get('id'); ?>" />
+			<?php } ?>
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->model->get('id'); ?>" />
 

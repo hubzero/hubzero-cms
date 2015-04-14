@@ -28,23 +28,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Plugins\Courses\Notes\Models;
 
-require_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'notes' . DS . 'tables' . DS . 'note.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+use CoursesModelAbstract as Base;
+use CoursesModelIterator;
+use User;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'note.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
  * Courses model class for a course note
  */
-class CoursesPluginModelNote extends CoursesModelAbstract
+class Note extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Courses\\Tables\\MemberNote';
+	protected $_tbl_name = '\\Plugins\\Courses\\Notes\\Tables\\Note';
 
 	/**
 	 * Object scope
@@ -70,8 +73,8 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	/**
 	 * Returns a reference to a course note model
 	 *
-	 * @param      integer $oid ID (int)
-	 * @return     object CoursesPluginModelNote
+	 * @param   integer  $oid  ID (int)
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -84,7 +87,7 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new CoursesPluginModelNote($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -93,15 +96,14 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	/**
 	 * Get a list or count of notes
 	 *
-	 * @param      array $filters Filters to apply
-	 * @return     object CoursesModelIterator
+	 * @param   array   $filters  Filters to apply
+	 * @return  object
 	 */
 	public function notes($filters=array())
 	{
 		if (!isset($filters['created_by']))
 		{
-			$juser = JFactory::getUser();
-			$filters['created_by'] = (int) $juser->get('id');
+			$filters['created_by'] = (int) User::get('id');
 		}
 		if (!isset($filters['state']))
 		{
@@ -121,7 +123,7 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesPluginModelNote($result);
+					$results[$key] = new self($result);
 				}
 			}
 			else

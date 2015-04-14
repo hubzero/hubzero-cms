@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,23 +23,27 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Courses\Tables;
+namespace Plugins\Courses\Notes\Tables;
+
+use Lang;
+use Date;
+use User;
 
 /**
- * Course announcement table class
+ * Course notes table class
  */
-class MemberNote extends \JTable
+class Note extends \JTable
 {
 	/**
-	 * Constructor method for JTable class
+	 * Constructor
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  $db
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,7 +53,7 @@ class MemberNote extends \JTable
 	/**
 	 * Override the check function to do a little input cleanup
 	 *
-	 * @return return true
+	 * @return  boolean  true
 	 */
 	public function check()
 	{
@@ -84,9 +88,8 @@ class MemberNote extends \JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = Date::toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = Date::toSql();
+			$this->created_by = User::get('id');
 			$this->state = 1;
 		}
 
@@ -96,8 +99,8 @@ class MemberNote extends \JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -161,8 +164,8 @@ class MemberNote extends \JTable
 	/**
 	 * Get a count of records
 	 *
-	 * @param     array $filters
-	 * @return    integer
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -176,8 +179,8 @@ class MemberNote extends \JTable
 	/**
 	 * Get an object list of records
 	 *
-	 * @param     array $filters
-	 * @return    array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{

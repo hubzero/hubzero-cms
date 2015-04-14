@@ -81,7 +81,7 @@ $this->js();
 		</div>
 	<?php } ?>
 
-	<?php if (($this->depth <= 1 && $this->params->get('access-review-comment') && !$comment->hasRated($this->obj->get('id'), $this->obj_type, $this->juser->get('id'))) || $edit) { ?>
+	<?php if (($this->depth <= 1 && $this->params->get('access-review-comment') && !$comment->hasRated($this->obj->get('id'), $this->obj_type, User::get('id'))) || $edit) { ?>
 	<div class="below section">
 		<h3 class="post-comment-title">
 		<?php if ($this->depth <= 1 && $this->params->get('access-review-comment')) { ?>
@@ -96,10 +96,10 @@ $this->js();
 					<span class="comment-anchor"></span>
 					<?php
 					$anonymous = 1;
-					if (!$this->juser->get('guest'))
+					if (!User::isGuest())
 					{
 						$jxuser = new \Hubzero\User\Profile();
-						$jxuser->load($this->juser->get('id'));
+						$jxuser->load(User::get('id'));
 						$anonymous = 0;
 					}
 					?>
@@ -107,7 +107,7 @@ $this->js();
 				</p>
 				<fieldset>
 				<?php
-				if (!$this->juser->get('guest'))
+				if (!User::isGuest())
 				{
 					if (($replyto = Request::getInt('replyto', 0)))
 					{
@@ -143,7 +143,7 @@ $this->js();
 				if ($edit)
 				{
 					$comment->load($edit);
-					/*if ($comment->created_by != $this->juser->get('id'))
+					/*if ($comment->created_by != User::get('id'))
 					{
 						$comment = new \Hubzero\Item\Comment($this->database);
 					}*/
@@ -222,7 +222,7 @@ $this->js();
 					<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
 					<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $comment->parent; ?>" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo ($comment->id ? $comment->created_by : $this->juser->get('id')); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo ($comment->id ? $comment->created_by : User::get('id')); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="action" value="save" />
 

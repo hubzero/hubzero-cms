@@ -77,15 +77,9 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 					AND c.id !=" . $database->Quote($course->get('id')) . " LIMIT " . (int) $this->params->get('display_limit', 3);
 
 		$database->setQuery($query);
-		if (($courses = $database->loadObjectList()))
+		if ($courses = $database->loadObjectList())
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'overview'
-				)
-			);
+			$view = $this->view('default', 'overview');
 			$view->option     = Request::getCmd('option', 'com_courses');
 			$view->controller = Request::getWord('controller', 'course');
 			$view->course     = $course;

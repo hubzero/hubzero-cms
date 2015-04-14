@@ -31,9 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
 /**
  * Courses Plugin class for user progress
@@ -97,7 +96,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		$this->member = $course->offering()->section()->member(JFactory::getUser()->get('id'));
+		$this->member = $course->offering()->section()->member(User::get('id'));
 		$this->course = $course;
 		$this->base   = $course->offering()->link();
 		$this->db     = JFactory::getDBO();
@@ -175,7 +174,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		$asset_id = Request::getInt('asset_id', false);
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
 		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id, $this->course->offering()->section()->get('id'));
 
@@ -221,14 +220,14 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 				$mems[] = array(
 					'id'        => $m->get('id'),
 					'user_id'   => $m->get('user_id'),
-					'name'      => JFactory::getUser($m->get('user_id'))->get('name'),
+					'name'      => User::getInstance($m->get('user_id'))->get('name'),
 					'thumb'     => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, true), DS),
 					'full'      => ltrim(\Hubzero\User\Profile\Helper::getMemberPhoto($m->get('user_id'), 0, false), DS),
 					'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
-										? JFactory::getDate(strtotime($m->get('enrolled')))->format('M j, Y')
+										? Date::of(strtotime($m->get('enrolled')))->format('M j, Y')
 										: 'unknown'),
-					'lastvisit' => ((JFactory::getUser($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
-										? JFactory::getDate(strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate')))->format('M j, Y')
+					'lastvisit' => ((User::getInstance($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
+										? Date::of(strtotime(Date::of($m->get('user_id'))->get('lastvisitDate')))->format('M j, Y')
 										: 'never')
 				);
 			}
@@ -332,7 +331,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		foreach ($members as $m)
 		{
-			$mems[] = array('id'=>$m->get('id'), 'name'=>JFactory::getUser($m->get('user_id'))->get('name'));
+			$mems[] = array('id'=>$m->get('id'), 'name'=>User::getInstance($m->get('user_id'))->get('name'));
 		}
 
 		// Refresh the grades
@@ -529,8 +528,8 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		foreach ($members as $m)
 		{
 			$row   = array();
-			$row[] = JFactory::getUser($m->get('user_id'))->get('name');
-			$row[] = JFactory::getUser($m->get('user_id'))->get('email');
+			$row[] = User::getInstance($m->get('user_id'))->get('name');
+			$row[] = User::getInstance($m->get('user_id'))->get('email');
 			foreach ($assets as $a)
 			{
 				$row[] = (isset($grades[$m->get('id')]['assets'][$a->id]['score'])) ? $grades[$m->get('id')]['assets'][$a->id]['score'] : '-';
@@ -549,26 +548,26 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 	 **/
 	private function downloadresponses()
 	{
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
 		// Only allow for instructors
 		if (!$this->course->offering()->section()->access('manage'))
 		{
-			JError::raiseError('403', 'Sorry, you don\'t have permission to do this');
+			App::abort(403, 'Sorry, you don\'t have permission to do this');
 		}
 
 		if (!$asset_ids = Request::getVar('assets', false))
 		{
-			JError::raiseError('422', 'Sorry, we don\'t know what results you\'re trying to retrieve');
+			App::abort(422, 'Sorry, we don\'t know what results you\'re trying to retrieve');
 		}
 
 		$protected = 'site' . DS . 'protected';
 		$tmp       = $protected . DS . 'tmp';
 
-		// We're going to temporarily house this in JPATH_ROOT/site/protected/tmp
+		// We're going to temporarily house this in PATH_APP/site/protected/tmp
 		if (!JFolder::exists($protected))
 		{
-			JError::raiseError('500', 'Missing temporary directory');
+			App::abort(500, 'Missing temporary directory');
 		}
 
 		// Make sure tmp folder exists
@@ -598,7 +597,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		// Set up our zip archive
 		$zip       = new ZipArchive();
-		$path      = JPATH_ROOT . DS . $tmp . DS . time() . '.responses.zip';
+		$path      = PATH_APP . DS . $tmp . DS . time() . '.responses.zip';
 		$zip->open($path, ZipArchive::CREATE);
 
 		// Loop through the assets
@@ -706,7 +705,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			$asset->set('type', 'gradebook');
 			$asset->set('subtype', 'auxiliary');
 			$asset->set('created', Date::toSql());
-			$asset->set('created_by', JFactory::getUser()->get('id'));
+			$asset->set('created_by', User::get('id'));
 			$asset->set('state', 1);
 			$asset->set('course_id', $this->course->get('id'));
 			$asset->set('graded', 1);
@@ -834,7 +833,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		$grade->set('override', $grade_value);
-		$grade->set('override_recorded', \Date::toSql());
+		$grade->set('override_recorded', Date::toSql());
 
 		if (!$grade->store())
 		{
@@ -907,7 +906,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if (!$this->course->offering()->section()->access('manage'))
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base, false),
 				'You don\'t have permission to do this!',
 				'warning'
@@ -919,7 +918,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base . '&active=progress', false),
 				'You don\'t have permission to do this!',
 				'warning'
@@ -944,7 +943,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Redirect with message
-				JFactory::getApplication()->redirect(
+				App::redirect(
 					Route::url($this->base . '&active=progress', false),
 					'The sum of all weights should be 100.',
 					'error'
@@ -976,7 +975,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if (!$gp->store())
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base . '&active=progress', false),
 				'Something went wrong!',
 				'error'
@@ -999,7 +998,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base . '&active=progress', false),
 				'Scoring policy successfully saved!',
 				'passed'
@@ -1019,7 +1018,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if (!$this->course->offering()->section()->access('manage'))
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base, false),
 				'You don\'t have permission to do this!',
 				'warning'
@@ -1031,7 +1030,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base . '&active=progress', false),
 				'You don\'t have permission to do this!',
 				'warning'
@@ -1077,7 +1076,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Redirect with message
-			JFactory::getApplication()->redirect(
+			App::redirect(
 				Route::url($this->base . '&active=progress', false),
 				'Scoring policy successfully restored to the default configuration!',
 				'passed'

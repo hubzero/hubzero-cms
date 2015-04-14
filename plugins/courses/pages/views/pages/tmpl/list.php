@@ -38,48 +38,49 @@ $section = Request::getInt('section_id', 0);
 $base = $this->offering->link() . '&active=pages';
 
 if (!$no_html) { ?>
-<script type="text/javascript">
-	function updateDir()
-	{
-		var allPaths = window.top.document.forms[0].dirPath.options;
-		for (i=0; i<allPaths.length; i++)
+	<script type="text/javascript">
+		function updateDir()
 		{
-			allPaths.item(i).selected = false;
-			if ((allPaths.item(i).value)== '<?php if (isset($this->listdir)) { echo $this->listdir ;} else { echo '/';}  ?>') {
-				allPaths.item(i).selected = true;
+			var allPaths = window.top.document.forms[0].dirPath.options;
+			for (i=0; i<allPaths.length; i++)
+			{
+				allPaths.item(i).selected = false;
+				if ((allPaths.item(i).value)== '<?php if (isset($this->listdir)) { echo $this->listdir ;} else { echo '/';}  ?>') {
+					allPaths.item(i).selected = true;
+				}
 			}
 		}
-	}
-	function deleteFile(file)
-	{
-		if (confirm("Delete file \""+file+"\"?")) {
-			return true;
-		}
+		function deleteFile(file)
+		{
+			if (confirm("Delete file \""+file+"\"?")) {
+				return true;
+			}
 
-		return false;
-	}
-	function deleteFolder(folder, numFiles)
-	{
-		if (numFiles > 0) {
-			alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
 			return false;
 		}
+		function deleteFolder(folder, numFiles)
+		{
+			if (numFiles > 0) {
+				alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+				return false;
+			}
 
-		if (confirm('Delete folder "'+folder+'"?')) {
-			return true;
+			if (confirm('Delete folder "'+folder+'"?')) {
+				return true;
+			}
+
+			return false;
 		}
+	</script>
+<?php } ?>
 
-		return false;
-	}
-</script>
-<?php } ?>
-	<div id="attachments">
-<?php if (!$no_html) { ?>
-		<form action="index.php" method="post" id="filelist">
-<?php } ?>
-<?php if (count($this->docs) == 0) { ?>
+<div id="attachments">
+	<?php if (!$no_html) { ?>
+		<form action="<?php echo Route::url($base); ?>" method="post" id="filelist">
+	<?php } ?>
+	<?php if (count($this->docs) == 0) { ?>
 			<p><?php echo Lang::txt('PLG_COURSES_PAGES_NO_FILES_FOUND'); ?></p>
-<?php } else { ?>
+	<?php } else { ?>
 			<table>
 				<tbody>
 				<?php
@@ -115,11 +116,11 @@ if (!$no_html) { ?>
 				?>
 				</tbody>
 			</table>
-<?php } ?>
-<?php if (!$no_html) { ?>
+	<?php } ?>
+	<?php if (!$no_html) { ?>
 		</form>
-<?php } ?>
-<?php if ($this->getError()) { ?>
+	<?php } ?>
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	</div>
+	<?php } ?>
+</div>

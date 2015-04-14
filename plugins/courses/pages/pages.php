@@ -122,7 +122,6 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->config     = $course->config();
-			$this->view->juser      = JFactory::getUser();
 
 			switch ($action)
 			{
@@ -215,10 +214,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _edit($model=null)
 	{
-		if ($this->view->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -284,10 +283,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _save()
 	{
-		if ($this->view->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -322,7 +321,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_edit($model);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url'))
 		);
 	}
@@ -334,10 +333,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _delete()
 	{
-		if ($this->view->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -359,26 +358,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->view->offering->link() . '&active=pages')
 		);
-	}
-
-	/**
-	 * Set redirect and message
-	 *
-	 * @param   string  $url   URL to redirect to
-	 * @param   string  $msg   Message to send
-	 * @param   string  $type  Message type (message, error, warning, info)
-	 * @return  void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-		$this->redirect($url);
 	}
 
 	/**
@@ -389,7 +371,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	public function _ajaxUpload()
 	{
 		// Check if they're logged in
-		if ($this->view->juser->get('guest'))
+		if (User::isGuest())
 		{
 			ob_clean();
 			header('Content-type: text/plain');
@@ -516,7 +498,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	public function _fileUpload()
 	{
 		// Check if they're logged in
-		if ($this->view->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_files();
 		}
@@ -581,7 +563,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	private function _path($page=null)
 	{
-		$path = JPATH_ROOT . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS;
+		$path = PATH_APP . DS . trim($this->view->config->get('filepath', '/site/courses'), DS) . DS;
 		if (is_object($page))
 		{
 			if (!$page->get('offering_id'))
@@ -631,7 +613,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	public function _fileDelete()
 	{
 		// Check if they're logged in
-		if ($this->view->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_files();
 		}
@@ -713,12 +695,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		$this->view->setLayout('files');
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->page = new CoursesModelPage(Request::getInt('page', 0));
@@ -781,12 +760,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$this->view->docs    = $docs;
 		$this->view->folders = $folders;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->setLayout('list');
@@ -801,8 +777,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->view->course->access('view'))
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Get the scope of the parent page the file is attached to
@@ -821,8 +796,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Ensure we have a path
 		if (empty($filename))
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
 		}
 
 		$page = $this->view->offering->page(Request::getVar('unit', ''));
@@ -861,8 +835,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 			if (!$found)
 			{
-				JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filepath);
-				return;
+				return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filepath);
 			}
 		}
 
@@ -875,12 +848,11 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, Lang::txt('COM_COURSES_SERVER_ERROR') . '[x]' . $filepath);
+			return App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR') . '[x]' . $filepath);
 		}
 		else
 		{
 			exit;
 		}
-		return;
 	}
 }

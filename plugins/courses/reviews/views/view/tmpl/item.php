@@ -31,36 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
+$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	$cls = isset($this->cls) ? $this->cls : 'odd';
+if (!$this->comment->get('anonymous')
+  && $this->obj->get('created_by') == $this->comment->get('created_by'))
+{
+	$cls .= ' author';
+}
 
-	if (!$this->comment->get('anonymous')
-	  && $this->obj->get('created_by') == $this->comment->get('created_by'))
-	{
-		$cls .= ' author';
-	}
+$rtrn = $this->url ? $this->url : Request::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
+if (!strstr($rtrn, 'index.php'))
+{
+	$rtrn .= '?';
+}
+else
+{
+	$rtrn .= '&';
+}
 
-	$rtrn = $this->url ? $this->url : Request::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
-	if (!strstr($rtrn, 'index.php'))
-	{
-		$rtrn .= '?';
-	}
-	else
-	{
-		$rtrn .= '&';
-	}
-
-	switch ($this->comment->get('rating'))
-	{
-		case 1:   $rating = ' one-stars';   $strs = '&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
-		case 2:   $rating = ' two-stars';   $strs = '&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;'; break;
-		case 3:   $rating = ' three-stars'; $strs = '&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;'; break;
-		case 4:   $rating = ' four-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;'; break;
-		case 5:   $rating = ' five-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;'; break;
-		case 0:
-		default:  $rating = ' no-stars';    $strs = '&#x2729;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
-	}
+switch ($this->comment->get('rating'))
+{
+	case 1:   $rating = ' one-stars';   $strs = '&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
+	case 2:   $rating = ' two-stars';   $strs = '&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;'; break;
+	case 3:   $rating = ' three-stars'; $strs = '&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;'; break;
+	case 4:   $rating = ' four-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;'; break;
+	case 5:   $rating = ' five-stars';  $strs = '&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;'; break;
+	case 0:
+	default:  $rating = ' no-stars';    $strs = '&#x2729;&#x2729;&#x2729;&#x2729;&#x2729;'; break;
+}
 ?>
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 			<p class="comment-member-photo">
@@ -126,18 +124,18 @@ defined('_JEXEC') or die('Restricted access');
 
 			<?php if ($this->comment->get('filename')) { ?>
 				<div class="attachment">
-					<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE'); ?> <a href="<?php echo JURI::base() . 'site/comments/' . $this->comment->get('filename'); ?>"><?php echo $this->escape($this->comment->get('filename')); ?></a></p>
+					<p><?php echo Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE'); ?> <a href="<?php echo Request::base() . 'site/comments/' . $this->comment->get('filename'); ?>"><?php echo $this->escape($this->comment->get('filename')); ?></a></p>
 				</div>
 			<?php } ?>
 
 			<?php if (!$this->comment->isReported()) { ?>
 				<p class="comment-options">
-				<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
+				<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment'); ?>"><!--
 						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
-				<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
+				<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_DELETE'); ?><!--
 					--></a>
@@ -164,7 +162,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
 							<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 							<input type="hidden" name="comment[created]" value="" />
-							<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+							<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="action" value="save" />
 
@@ -176,12 +174,12 @@ defined('_JEXEC') or die('Restricted access');
 							</label>
 
 							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-						<?php if ($this->params->get('comments_anon', 1)) { ?>
-								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-								<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
-						<?php } else { ?>
-								&nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" />
-						<?php } ?>
+								<?php if ($this->params->get('comments_anon', 1)) { ?>
+									<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+									<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
+								<?php } else { ?>
+									&nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" />
+								<?php } ?>
 							</label>
 
 							<p class="submit">
@@ -193,15 +191,15 @@ defined('_JEXEC') or die('Restricted access');
 			<?php } ?>
 			</div><!-- / .comment-content -->
 			<?php
-				$this->view('list')
-				     ->set('option', $this->option)
-				     ->set('comments', $this->comment->replies('list', array('state' => 1)))
-				     ->set('obj_type', $this->obj_type)
-				     ->set('obj', $this->obj)
-				     ->set('params', $this->params)
-				     ->set('depth', $this->depth)
-				     ->set('url', $this->url)
-				     ->set('cls', $cls)
-				     ->display();
+			$this->view('list')
+			     ->set('option', $this->option)
+			     ->set('comments', $this->comment->replies('list', array('state' => 1)))
+			     ->set('obj_type', $this->obj_type)
+			     ->set('obj', $this->obj)
+			     ->set('params', $this->params)
+			     ->set('depth', $this->depth)
+			     ->set('url', $this->url)
+			     ->set('cls', $cls)
+			     ->display();
 			?>
 		</li>

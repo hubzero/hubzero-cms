@@ -162,7 +162,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 			if (!$params->get('store_product_id', 0))
 			{
-				include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+				include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
 				$product = new StorefrontModelCourse();
 				$product->setName($title);
@@ -322,7 +322,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 		}
 		if ($isNew && Request::getInt('store_product', 0))
 		{
-			include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
+			include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
 
 			try
 			{
@@ -340,7 +340,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
 				//$section = new CorusesModelSection($model->get('section_id'));
 
-				include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+				include_once(PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
 				$product = new StorefrontModelCourse();
 				$product->set('course_id', $model->find('course'));

@@ -71,8 +71,7 @@ else
 	$this->item->set('vote', null);
 }
 
-$juser = JFactory::getUser();
-if (!$juser->get('guest'))
+if (!User::isGuest())
 {
 	$like_title    = Lang::txt('PLG_COURSES_REVIEWS_VOTE_UP', $this->item->get('positive', 0));
 	$dislike_title = Lang::txt('PLG_COURSES_REVIEWS_VOTE_DOWN', $this->item->get('negative', 0));
@@ -91,7 +90,7 @@ if (!$no_html) { ?>
 <p class="comment-voting voting">
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
-	<?php if ($juser->get('guest') || $this->item->get('vote') || $juser->get('id') == $this->item->get('created_by')) { ?>
+	<?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
 		<span class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 			<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
 		</span>
@@ -102,7 +101,7 @@ if (!$no_html) { ?>
 	<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
-	<?php if ($juser->get('guest') || $this->item->get('vote') || $juser->get('id') == $this->item->get('created_by')) { ?>
+	<?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
 		<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
 			<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
 		</span>

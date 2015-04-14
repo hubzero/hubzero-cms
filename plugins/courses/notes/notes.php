@@ -90,7 +90,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 				'search'     => Request::getVar('search', '')
 			);
 
-			$this->view->model = new CoursesPluginModelNote(0);
+			$this->view->model = new \Plugins\Courses\Notes\Models\Note(0);
 
 			if ($action = strtolower(Request::getWord('action', '')))
 			{
@@ -146,13 +146,12 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		$this->view = $this->view('default', 'lecture');
 
 		$this->database = JFactory::getDBO();
-		$this->juser    = JFactory::getUser();
 		$this->view->course   = $this->course   = $course;
 		$this->view->offering = $this->offering = $course->offering();
 		$this->view->unit     = $this->unit     = $unit;
 		$this->view->lecture  = $this->lecture  = $lecture;
 
-		$this->view->model = new CoursesPluginModelNote(0);
+		$this->view->model = new \Plugins\Courses\Notes\Models\Note(0);
 
 		return $this->view->loadTemplate();
 	}
@@ -211,7 +210,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			$this->view->setLayout('edit');
 		}
 
-		if ($model instanceof CoursesPluginModelNote)
+		if ($model instanceof \Plugins\Courses\Notes\Models\Note)
 		{
 			$this->view->model = $model;
 		}
@@ -219,7 +218,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$note_id = Request::getInt('note', 0);
 
-			$this->view->model = new CoursesPluginModelNote($note_id);
+			$this->view->model = new \Plugins\Courses\Notes\Models\Note($note_id);
 		}
 	}
 
@@ -232,7 +231,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	{
 		$note_id = Request::getInt('note', 0);
 
-		$model = new CoursesPluginModelNote($note_id);
+		$model = new \Plugins\Courses\Notes\Models\Note($note_id);
 
 		if ($scope = Request::getWord('scope', 'lecture'))
 		{
@@ -299,7 +298,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	{
 		$note_id = Request::getInt('note', 0);
 
-		$model = new CoursesPluginModelNote($note_id);
+		$model = new \Plugins\Courses\Notes\Models\Note($note_id);
 		if ($model->exists())
 		{
 			$model->set('state', 2);

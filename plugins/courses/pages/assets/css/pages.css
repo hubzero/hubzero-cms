@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/pages/pages.css
- * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @file        plugins/courses/pages/assets/css/pages.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -179,7 +179,7 @@
 	}
 
 	.course_pages .embedded-plugin {
-		background: url("/components/com_wiki/assets/img/checkered.png");
+		background: url("/plugins/courses/pages/assets/img/checkered.png");
 		text-align: center;
 		vertical-align: middle;
 	}
@@ -199,7 +199,7 @@
 		padding: 4px;
 	}
 	.course_pages .figure img {
-		margin: 0; /*.5em;*/
+		margin: 0;
 		padding: 0;
 		background: transparent;
 		text-align: center;

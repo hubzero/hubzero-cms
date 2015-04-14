@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -48,29 +48,29 @@ if ($notes)
 
 $base = $this->offering->link();
 
-	if ($results)
+if ($results)
+{
+	foreach ($results as $id => $notes)
 	{
-		foreach ($results as $id => $notes)
+		$lecture = new CoursesModelAssetgroup($id);
+		$unit = CoursesModelUnit::getInstance($lecture->get('unit_id'));
+
+		echo $this->escape(stripslashes($lecture->get('title'))) . "\n";
+		echo '--------------------------------------------------' . "\n";
+
+		foreach ($notes as $note)
 		{
-			$lecture = new CoursesModelAssetgroup($id);
-			$unit = CoursesModelUnit::getInstance($lecture->get('unit_id'));
+			echo '#' . $note->get('id');
 
- 			echo $this->escape(stripslashes($lecture->get('title'))) . "\n";
-			echo '--------------------------------------------------' . "\n";
-
-			foreach ($notes as $note)
+			if ($note->get('timestamp') != '00:00:00')
 			{
-				echo '#' . $note->get('id');
-
-				if ($note->get('timestamp') != '00:00:00')
-				{
-					echo ' video time: ' . $this->escape($note->get('timestamp'));
-				}
-				echo "\n";
-				echo $this->escape(stripslashes($note->get('content')));
-				echo "\n\n";
+				echo ' video time: ' . $this->escape($note->get('timestamp'));
 			}
-
 			echo "\n";
+			echo $this->escape(stripslashes($note->get('content')));
+			echo "\n\n";
 		}
+
+		echo "\n";
 	}
+}
