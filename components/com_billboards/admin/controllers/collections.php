@@ -32,6 +32,10 @@ namespace Components\BillBoards\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Collection;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Primary controller for the Billboards component
@@ -120,7 +124,7 @@ class Collections extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
 		);
@@ -154,22 +158,9 @@ class Collections extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel out of editing a billboard collection (i.e. just redirect back to the collections view)
-	 *
-	 * @return void
-	 */
-	public function cancelTask()
-	{
-		// Just redirect, no checkin necessary
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

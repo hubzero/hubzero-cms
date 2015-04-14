@@ -143,7 +143,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				$id = intval($id);
 				if (!$row->load($id))
 				{
-					$this->addComponentMessage(Lang::txt('COM_TOOLS_ERROR_FAILED_TO_LOAD_SESSION', $id), 'error');
+					Notify::error(Lang::txt('COM_TOOLS_ERROR_FAILED_TO_LOAD_SESSION', $id));
 					continue;
 				}
 
@@ -159,7 +159,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 					{
 						$msg .= $line . "\n";
 					}
-					$this->addComponentMessage($msg, 'error');
+					Notify::error($msg);
 				}
 
 				// Trigger any events that need to be called after session stop
@@ -185,7 +185,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	{
 		$retval = true; // Assume success.
 		$output = new stdClass();
-		$cmd = "/bin/sh " . JPATH_ROOT . "/components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
+		$cmd = "/bin/sh " . PATH_CORE . "/components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
 
@@ -260,9 +260,6 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	 */
 	public function classesTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
 			'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
@@ -380,9 +377,8 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		// Try to save
 		if (!$row->save($fields))
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Save class/access-group association
@@ -390,10 +386,8 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		{
 			if (!$row->setGroupIds($fields['groups']))
 			{
-				$this->view->task = 'edit';
-				$this->setError($row->getError());
-				$this->editTask($row);
-				return;
+				Notify::error($row->getError());
+				return $this->editTask($row);
 			}
 		}
 
@@ -404,6 +398,8 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 			$prefs->updateUsersByClassId($row->id);
 		}
 
+		Notify::success(Lang::txt('COM_TOOLS_SESSION_CLASS_SAVE_SUCCESSFUL'));
+
 		// Redirect
 		if ($this->_task == 'apply')
 		{
@@ -412,9 +408,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
-			Lang::txt('COM_TOOLS_SESSION_CLASS_SAVE_SUCCESSFUL'),
-			'message'
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false)
 		);
 	}
 

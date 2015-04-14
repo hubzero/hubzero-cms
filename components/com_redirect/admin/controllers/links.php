@@ -36,6 +36,11 @@ use Components\Redirect\Models\Link as Record;
 use Components\Redirect\Tables\Link;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Route;
+use User;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'redirect.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'links.php');
@@ -107,7 +112,7 @@ class Links extends AdminController
 		if (!(User::authorise('core.create', $this->_option))) // || count(User::getAuthorisedCategories($this->_option, 'core.create'))))
 		{
 			// Set the internal error and also the redirect error.
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
 				Lang::txt('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
 				'error'
@@ -179,7 +184,7 @@ class Links extends AdminController
 		// Access check.
 		if (!User::authorise('core.edit', $this->_option))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
 				Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'),
 				'error'
@@ -190,7 +195,7 @@ class Links extends AdminController
 		$link = new Link($this->database);
 		$link->load($recordId);
 
-		if ($data = \JFactory::getApplication()->getUserState($this->_option . '.edit.link.data'))
+		if ($data = User::getState($this->_option . '.edit.link.data'))
 		{
 			$link->bind($data);
 		}
@@ -217,7 +222,6 @@ class Links extends AdminController
 		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app     = \JFactory::getApplication();
 		$data    = Request::getVar('fields', array(), 'post', 'array');
 		$context = "$this->_option.edit.link";
 		$model   = new Link($this->database);
@@ -241,7 +245,7 @@ class Links extends AdminController
 		//if (!$this->allowSave($data, $key))
 		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
 				Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'),
 				'error'
@@ -257,17 +261,14 @@ class Links extends AdminController
 			// Push up to three validation messages out to the user.
 			foreach ($model->getErrors() as $error)
 			{
-				$app->enqueueMessage(
-					($error instanceof Exception ? $error->getMessage() : $error),
-					'warning'
-				);
+				Notify::warning(($error instanceof Exception ? $error->getMessage() : $error));
 			}
 
 			// Save the data in the session.
-			$app->setUserState($context . '.data', $data);
+			User::setState($context . '.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $urlVar), false)
 			);
 			return;
@@ -277,10 +278,10 @@ class Links extends AdminController
 		if (!$model->store())
 		{
 			// Save the data in the session.
-			$app->setUserState($context . '.data', $data);
+			User::setState($context . '.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $urlVar), false),
 				Lang::txt('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()),
 				'error'
@@ -295,7 +296,7 @@ class Links extends AdminController
 		{
 			case 'apply':
 				// Redirect back to the edit screen.
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=edit' . $this->getRedirectToItemAppend($recordId, $urlVar), false),
 					$msg
 				);
@@ -303,10 +304,10 @@ class Links extends AdminController
 
 			case 'save2new':
 				// Clear the record id and data from the session.
-				$app->setUserState($context . '.data', null);
+				User::setState($context . '.data', null);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=edit' . $this->getRedirectToItemAppend(null, $urlVar), false),
 					$msg
 				);
@@ -314,10 +315,10 @@ class Links extends AdminController
 
 			default:
 				// Clear the record id and data from the session.
-				$app->setUserState($context . '.data', null);
+				User::setState($context . '.data', null);
 
 				// Redirect to the list screen.
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
 					$msg
 				);
@@ -358,11 +359,13 @@ class Links extends AdminController
 			}
 			else
 			{
-				$this->setMessage(Lang::txts('COM_REDIRECT_N_LINKS_UPDATED', count($ids)));
+				Notify::success(Lang::txts('COM_REDIRECT_N_LINKS_UPDATED', count($ids)));
 			}
 		}
 
-		$this->setRedirect('index.php?option=' . $this->_option);
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option)
+		);
 	}
 
 	/**
@@ -384,8 +387,8 @@ class Links extends AdminController
 			'trash'     => -2,
 			'report'    => -3
 		);
-		$task = $this->_task;
-		$value = \JArrayHelper::getValue($data, $task, 0, 'int');
+
+		$value = \JArrayHelper::getValue($data, $this->_task, 0, 'int');
 
 		if (empty($cid))
 		{
@@ -422,11 +425,11 @@ class Links extends AdminController
 				{
 					$ntext = 'COM_REDIRECT_N_ITEMS_TRASHED';
 				}
-				$this->setMessage(Lang::txts($ntext, count($cid)));
+				Notify::success(Lang::txts($ntext, count($cid)));
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
@@ -438,7 +441,7 @@ class Links extends AdminController
 	 */
 	public function cancelTask()
 	{
-		\JFactory::getApplication()->setUserState($this->_option . '.edit.link.data', null);
+		User::setState($this->_option . '.edit.link.data', null);
 
 		parent::cancelTask();
 	}

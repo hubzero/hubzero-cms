@@ -188,17 +188,15 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$row = new MiddlewareModelZone($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		/*$vl = new MwZoneLocations($mwdb);
@@ -212,21 +210,16 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			$vl->location = $location;
 			if (!$vl->check())
 			{
-				$this->addComponentMessage($vl->getError(), 'error');
-				$this->editTask($row);
-				return;
+				Notify::error($vl->getError());
+				return $this->editTask($row);
 			}
 			if (!$vl->store())
 			{
-				$this->addComponentMessage($vl->getError(), 'error');
-				$this->editTask($row);
-				return;
+				Notify::error($vl->getError());
+				return $this->editTask($row);
 			}
 		}*/
-		$this->setMessage(
-			Lang::txt('COM_TOOLS_ITEM_SAVED'),
-			'message'
-		);
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -269,10 +262,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			$row->state = $state;
 			if (!$row->store())
 			{
-				$this->setMessage(
-					Lang::txt('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
-					'error'
-				);
+				Notify::error(Lang::txt('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'));
 			}
 		}
 
@@ -314,18 +304,6 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_DELETED'),
 			'message'
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

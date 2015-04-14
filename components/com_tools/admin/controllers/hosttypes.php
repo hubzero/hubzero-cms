@@ -249,9 +249,8 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
@@ -266,15 +265,11 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		if (!$result)
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		$this->setMessage(
-			Lang::txt('COM_TOOLS_ITEM_SAVED'),
-			'message'
-		);
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{

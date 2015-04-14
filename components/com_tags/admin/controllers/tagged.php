@@ -177,28 +177,25 @@ class Tagged extends AdminController
 		$row = new Object();
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Check content
 		if (!$row->check())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		$this->setMessage(Lang::txt('COM_TAGS_OBJECT_SAVED'));
+		Notify::success(Lang::txt('COM_TAGS_OBJECT_SAVED'));
 
 		// Redirect to main listing
 		if ($this->_task == 'apply')

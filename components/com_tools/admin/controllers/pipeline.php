@@ -189,18 +189,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		{
 			Request::setVar('id', $fields['id']);
 
-			$this->setMessage(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
-			$this->editTask();
-			return;
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+			return $this->editTask();
 		}
 
 		$row->title = trim($fields['title']);
 
 		if (!$row->title)
 		{
-			$this->setMessage(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'), 'error');
+			return $this->editTask($row);
 		}
 
 		$row->update();

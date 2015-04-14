@@ -32,6 +32,7 @@ namespace Components\Checkin\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
+use Submenu;
 use Request;
 use Route;
 use Lang;

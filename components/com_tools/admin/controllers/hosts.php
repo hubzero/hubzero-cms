@@ -283,9 +283,8 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$row = new MwHost($mwdb);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// $hostname is eventually used in a string passed to an exec call, we gotta
@@ -295,9 +294,8 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		if (!$row->hostname)
 		{
-			$this->setMessage(Lang::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error(Lang::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'));
+			return $this->editTask($row);
 		}
 
 		// Figure out the hosttype stuff.
@@ -332,23 +330,18 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store($insert, $fields['id']))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		$this->setMessage(
-			Lang::_('COM_TOOLS_ITEM_SAVED'),
-			'message'
-		);
+		Notify::success(Lang::_('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -382,10 +375,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$mwdb->setQuery($query);
 		if (!$mwdb->queryBatch())
 		{
-			$this->setMessage(
-				Lang::txt('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'),
-				'error'
-			);
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'));
 		}
 
 		App::redirect(

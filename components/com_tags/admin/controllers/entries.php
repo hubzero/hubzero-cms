@@ -36,6 +36,7 @@ use Components\Tags\Models\Tag;
 use Exception;
 use Request;
 use Config;
+use Notify;
 use Event;
 use Route;
 use Lang;
@@ -176,9 +177,8 @@ class Entries extends AdminController
 		$row = new Tag(intval($fields['id']));
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		$row->set('admin', 0);
@@ -190,12 +190,11 @@ class Entries extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
-		$this->setMessage(Lang::txt('COM_TAGS_TAG_SAVED'));
+		Notify::success(Lang::txt('COM_TAGS_TAG_SAVED'));
 
 		// Redirect to main listing
 		if ($this->getTask() == 'apply')
@@ -395,7 +394,7 @@ class Entries extends AdminController
 
 				if ($this->getError())
 				{
-					echo $this->getError();
+					Notify::error($this->getError());
 				}
 
 				App::redirect(

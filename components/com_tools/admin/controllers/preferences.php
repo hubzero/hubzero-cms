@@ -213,13 +213,12 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$user = JFactory::getUser($fields['user_id']);
+		$user = User::getInstance($fields['user_id']);
 
 		if (!is_object($user) || !$user->get('id'))
 		{
-			$this->setError(Lang::txt('COM_TOOLS_USER_PREFS_USER_NOT_FOUND'));
-			$this->editTask($row);
-			return;
+			Notify::error(Lang::txt('COM_TOOLS_USER_PREFS_USER_NOT_FOUND'));
+			return $this->editTask($row);
 		}
 
 		$fields['user_id'] = $user->get('id');
@@ -227,10 +226,11 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 		// Try to save
 		if (!$row->save($fields))
 		{
-			$this->setError($row->getError());
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
+		Notify::success(Lang::txt('COM_TOOLS_USER_PREFS_SAVE_SUCCESSFUL'));
 
 		// Redirect
 		if ($this->_task == 'apply')
@@ -240,9 +240,7 @@ class ToolsControllerPreferences extends \Hubzero\Component\AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_USER_PREFS_SAVE_SUCCESSFUL'),
-			'message'
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

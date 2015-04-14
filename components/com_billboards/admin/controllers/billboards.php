@@ -32,6 +32,10 @@ namespace Components\BillBoards\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Billboards\Models\Billboard;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Primary controller for the Billboards component
@@ -88,7 +92,7 @@ class BillBoards extends AdminController
 		// Fail if not checked out by current user
 		if ($billboard->isCheckedOut())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
 				'warning'
@@ -146,7 +150,7 @@ class BillBoards extends AdminController
 		{
 			// Build the upload path if it doesn't exist
 			$image_location  = $this->config->get('image_location', 'site' . DS . 'media' . DS . 'images' . DS . 'billboards');
-			$uploadDirectory = JPATH_ROOT . DS . trim($image_location, DS) . DS;
+			$uploadDirectory = PATH_APP . DS . trim($image_location, DS) . DS;
 
 			// Make sure upload directory exists and is writable
 			if (!is_dir($uploadDirectory))
@@ -190,7 +194,7 @@ class BillBoards extends AdminController
 		$billboard->checkin();
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
 		);
@@ -237,7 +241,7 @@ class BillBoards extends AdminController
 		$cache->clean();
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
 		);
@@ -271,7 +275,7 @@ class BillBoards extends AdminController
 				// Delete record
 				if (!$billboard->destroy())
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_BILLBOARDS_ERROR_CANT_DELETE')
 					);
@@ -281,7 +285,7 @@ class BillBoards extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
 		);
@@ -322,7 +326,7 @@ class BillBoards extends AdminController
 		$billboard->checkin();
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -365,7 +369,7 @@ class BillBoards extends AdminController
 			}
 			else
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
 					'warning'
@@ -375,7 +379,7 @@ class BillBoards extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

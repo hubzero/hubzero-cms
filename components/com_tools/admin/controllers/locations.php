@@ -196,17 +196,15 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		$row = new MiddlewareModelLocation($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		if ($tmpl == 'component')
@@ -222,10 +220,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setMessage(
-			Lang::_('COM_TOOLS_ITEM_SAVED'),
-			'message'
-		);
+		Notify::success(Lang::_('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{

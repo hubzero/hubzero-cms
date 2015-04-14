@@ -188,9 +188,8 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 			Request::setVar('id', $fields['id']);
 			Request::setVar('version', $fields['version']);
 
-			$this->setMessage(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
-			$this->editTask();
-			return;
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
+			return $this->editTask();
 		}
 
 		$row->vnc_command = trim($fields['vnc_command']);
@@ -201,9 +200,8 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 		if (!$row->vnc_command)
 		{
-			$this->setMessage(Lang::txt('COM_TOOLS_ERROR_MISSING_COMMAND'), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_COMMAND'));
+			return $this->editTask($row);
 		}
 
 		$row->hostreq = (is_array($row->hostreq) ? explode(',', $row->hostreq[0]) : explode(',', $row->hostreq));

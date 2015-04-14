@@ -34,6 +34,9 @@ use Components\Poll\Tables\Poll;
 use Hubzero\Component\AdminController;
 use Exception;
 use stdClass;
+use Request;
+use User;
+use Lang;
 
 /**
  * Controller class for polls
@@ -63,28 +66,27 @@ class Polls extends AdminController
 	 */
 	public function displayTask()
 	{
-		$app = \JFactory::getApplication();
 		$db  = \JFactory::getDBO();
 
-		$filter_order     = $app->getUserStateFromRequest(
+		$filter_order     = Request::getState(
 			$this->_option . '.' . $this->_controller . '.filter_order',
 			'filter_order',
 			'm.id',
 			'cmd'
 		);
-		$filter_order_Dir = $app->getUserStateFromRequest(
+		$filter_order_Dir = Request::getState(
 			$this->_option . '.' . $this->_controller . '.filter_order_Dir',
 			'filter_order_Dir',
 			'',
 			'word'
 		);
-		$filter_state     = $app->getUserStateFromRequest(
+		$filter_state     = Request::getState(
 			$this->_option . '.' . $this->_controller . '.filter_state',
 			'filter_state',
 			'',
 			'word'
 		);
-		$search           = $app->getUserStateFromRequest(
+		$search           = Request::getState(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			'',
@@ -96,13 +98,13 @@ class Polls extends AdminController
 		}
 		$search = \JString::strtolower($search);
 
-		$limit      = $app->getUserStateFromRequest(
+		$limit      = Request::getState(
 			'global.list.limit',
 			'limit',
 			$app->getCfg('list_limit'),
 			'int'
 		);
-		$limitstart = $app->getUserStateFromRequest(
+		$limitstart = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -250,7 +252,7 @@ class Polls extends AdminController
 		// Fail if checked out not by 'me'
 		if ($poll->isCheckedOut($user->get('id')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('DESCBEINGEDITTED', Lang::txt('The poll'), $poll->title),
 				'warning'
@@ -357,7 +359,7 @@ class Polls extends AdminController
 			break;
 		}
 
-		$this->setRedirect($link, $msg);
+		App::redirect($link, $msg);
 	}
 
 	/**
@@ -386,7 +388,7 @@ class Polls extends AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false),
 			$msg
 		);
@@ -410,7 +412,7 @@ class Polls extends AdminController
 		if (count($cid) < 1)
 		{
 			$action = $publish ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_POLL_SELECT_ITEM_TO', Lang::txt($action), true),
 				'warning'
@@ -439,7 +441,7 @@ class Polls extends AdminController
 			$row->checkin($cid[0]);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
@@ -462,7 +464,7 @@ class Polls extends AdminController
 		if (count($cid) < 1)
 		{
 			$action = $publish ? 'COM_POLL_OPEN' : 'COM_POLL_CLOSE';
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_POLL_SELECT_ITEM_TO', Lang::txt($action), true),
 				'warning'
@@ -491,7 +493,7 @@ class Polls extends AdminController
 			$row->checkin($cid[0]);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
@@ -513,7 +515,7 @@ class Polls extends AdminController
 			$row->checkin($id);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
