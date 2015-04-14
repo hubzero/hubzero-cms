@@ -140,7 +140,7 @@ class FileMacro extends WikiMacro
 		// Is it numeric?
 		if (is_numeric($file))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
 			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
@@ -163,7 +163,7 @@ class FileMacro extends WikiMacro
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
 			$attach = new \Components\Wiki\Tables\Attachment($this->_db);

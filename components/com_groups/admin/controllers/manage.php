@@ -43,37 +43,34 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['type']    = array(trim($app->getUserStateFromRequest(
+		$this->view->filters['type']    = array(trim(Request::getState(
 			$this->_option . '.browse.type',
 			'type',
 			'all'
 		)));
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
+		$this->view->filters['search']  = urldecode(trim(Request::getState(
 			$this->_option . '.browse.search',
 			'search',
 			''
 		)));
-		$this->view->filters['discoverability'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['discoverability'] = trim(Request::getState(
 			$this->_option . '.browse.discoverability',
 			'discoverability',
 			''
 		));
-		$this->view->filters['policy']  = trim($app->getUserStateFromRequest(
+		$this->view->filters['policy']  = trim(Request::getState(
 			$this->_option . '.browse.policy',
 			'policy',
 			''
 		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort']     = trim(Request::getState(
 			$this->_option . '.browse.sort',
 			'filter_order',
 			'cn'
 		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = trim(Request::getState(
 			$this->_option . '.browse.sortdir',
 			'filter_order_Dir',
 			'ASC'
@@ -117,13 +114,13 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$this->view->total = \Hubzero\User\Group::find($this->view->filters);
 
 		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
+		$this->view->filters['limit']  = Request::getState(
 			$this->_option . '.browse.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
+		$this->view->filters['start']  = Request::getState(
 			$this->_option . '.browse.limitstart',
 			'limitstart',
 			0,
@@ -392,7 +389,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_GROUPS_SAVED')
 		);
@@ -410,21 +407,21 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 		// get the source path
-		$srcPath = JPATH_ROOT . 'components' . DS . $this->_option . DS . 'super' . DS . 'default' . DS . '.';
+		$srcPath = dirname(dirname(__DIR__)) . DS . 'super' . DS . 'default' . DS . '.';
 
 		// create group folder if one doesnt exist
 		if (!is_dir($uploadPath))
 		{
 			if (!JFolder::create($uploadPath))
 			{
-				JFactory::getApplication()->enqueueMessage(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE'), 'error');
+				Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE'));
 			}
 		}
 
 		// make sure folder is writable
 		if (!is_writable($uploadPath))
 		{
-			JFactory::getApplication()->enqueueMessage(Lang::txt('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadpath), 'error');
+			Notify::error(Lang::txt('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadpath));
 			return;
 		}
 
@@ -458,22 +455,19 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
 			if (!$this->database->query())
 			{
-				JFactory::getApplication()
-					->enqueueMessage(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'), 'error');
+				Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
 			}
 		}
 		else
 		{
-			JFactory::getApplication()
-					->enqueueMessage(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'), 'error');
+			Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
 		}
 
 		// check to see if we have a super group db config
 		$supergroupDbConfigFile = DS . 'etc' . DS . 'supergroup.conf';
 		if (!file_exists($supergroupDbConfigFile))
 		{
-			JFactory::getApplication()
-				->enqueueMessage(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'), 'error');
+			Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'));
 		}
 		else
 		{
@@ -494,8 +488,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			{
 				if (!file_put_contents($dbConfigFile, $dbConfigContents))
 				{
-					JFactory::getApplication()
-						->enqueueMessage(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_WRITE_CONFIG'), 'error');
+					Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_WRITE_CONFIG'));
 				}
 			}
 		}
@@ -530,8 +523,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// make sure we have a url and key if repot management is on
 		if ($gitlabManagement && ($gitlabUrl == '' || $gitlabKey == ''))
 		{
-			JFactory::getApplication()
-					->enqueueMessage(Lang::txt('COM_GROUPS_GITLAB_NOT_SETUP'), 'warning');
+			Notify::warning(Lang::txt('COM_GROUPS_GITLAB_NOT_SETUP'));
 			return;
 		}
 
@@ -616,7 +608,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 		// build command to run via shell
 		// this will init the git repo, make the inital commit and push to the repo management machine
-		$cmd  = 'sh ' . JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
+		$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
 		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabProject['ssh_url_to_repo'] . ' 2>&1';
 
 		// execute command
@@ -625,8 +617,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// make sure everything went well
 		if (preg_match("/Host key verification failed/uis", $output))
 		{
-			JFactory::getApplication()
-					->enqueueMessage(Lang::txt('COM_GROUPS_GITLAB_NOT_SETUP_SSH'), 'warning');
+			Notify::warning(Lang::txt('COM_GROUPS_GITLAB_NOT_SETUP_SSH'));
 			return;
 		}
 
@@ -660,7 +651,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// empty list?
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -736,7 +727,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				}
 
 				// setup stage environment
-				$cmd  = 'sh ' . JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
+				$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
 				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $group->get('cn') . ' ' . $gitlabProject['ssh_url_to_repo'] . ' 2>&1';
 
 				// execute command
@@ -744,8 +735,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			}
 
 			// build command to run via shell
-			$cmd  = 'sh ' . JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_fetch.sh ';
-			$cmd .= $uploadPath . ' ' . JPATH_ROOT . ' 2>&1';
+			$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_fetch.sh ';
+			$cmd .= $uploadPath . ' ' . PATH_ROOT . ' 2>&1';
 
 			// execute command
 			$output = shell_exec($cmd);
@@ -797,7 +788,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// empty list?
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -841,8 +832,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 			// build command to run via shell
 			// this will run a "git pull --rebase origin master"
-			$cmd  = 'sh ' . JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_merge_and_migrate.sh ';
-			$cmd .= $uploadPath . ' ' . JPATH_ROOT . ' 2>&1';
+			$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_merge_and_migrate.sh ';
+			$cmd .= $uploadPath . ' ' . PATH_ROOT . ' 2>&1';
 
 			// execute command
 			$output = shell_exec($cmd);
@@ -960,7 +951,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect back to the groups page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_GROUPS_REMOVED')
 		);
@@ -973,7 +964,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -1025,7 +1016,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				));
 
 				// Output messsage and redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_GROUPS_PUBLISHED')
 				);
@@ -1080,7 +1071,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				));
 
 				// Output messsage and redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_GROUPS_UNPUBLISHED')
 				);
@@ -1133,7 +1124,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			}
 
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_GROUPS_APPROVED')
 			);
@@ -1196,7 +1187,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!$canDo->get($taskName) || (!$canDo->get('core.admin') && $task == 'edit' && $group->get('type') == 0))
 		{
 			// No access - redirect to main listing
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_GROUPS_NOT_AUTH'),
 				'error'

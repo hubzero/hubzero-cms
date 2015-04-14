@@ -439,7 +439,7 @@ class GroupsHelperView
 		$base = DS . trim($base, DS) . DS . $group->get('gidNumber') . DS . 'template';
 
 		// get all php files in template directory
-		$files = \JFolder::files(JPATH_ROOT . $base, '\\.php', false, true);
+		$files = \JFolder::files(PATH_APP . $base, '\\.php', false, true);
 
 		// check to see if any of our files are page templates
 		foreach ($files as $file)

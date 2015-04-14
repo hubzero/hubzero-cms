@@ -83,7 +83,7 @@ class plgCronGroups extends JPlugin
 		$groupUploadPath = ltrim($groupParameters->get('uploadpath', '/site/groups'), DS);
 
 		// get group folders
-		$groupFolders = JFolder::folders(JPATH_ROOT . DS . $groupUploadPath);
+		$groupFolders = JFolder::folders(PATH_APP . DS . $groupUploadPath);
 
 		// loop through each group folder
 		foreach ($groupFolders as $groupFolder)
@@ -95,7 +95,7 @@ class plgCronGroups extends JPlugin
 			if (!is_object($hubzeroGroup))
 			{
 				// delete folder
-				JFolder::delete(JPATH_ROOT . DS . $groupUploadPath . DS . $groupFolder);
+				JFolder::delete(PATH_APP . DS . $groupUploadPath . DS . $groupFolder);
 			}
 		}
 

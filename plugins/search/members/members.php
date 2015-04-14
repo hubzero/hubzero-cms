@@ -290,7 +290,7 @@ class plgSearchMembers extends \JPlugin
 					WHERE aa.user_id = " . $row->get('id')
 			);
 			$workp_assoc = $workp->to_associative();
-			//$added = array();
+
 			foreach ($workp_assoc as $wrow)
 			{
 				$link = $wrow->get_link();
@@ -323,9 +323,9 @@ class plgSearchMembers extends \JPlugin
 	 */
 	public static function onBeforeSearchRenderMembers($res)
 	{
-		if (!($href = $res->get('img_href')) || !is_file(JPATH_ROOT.$href))
+		if (!($href = $res->get('img_href')) || !is_file(PATH_APP . $href))
 		{
-			$href = rtrim(JURI::base(true), '/') . '/components/com_members/assets/img/profile_thumb.gif';
+			$href = rtrim(Request::base(true), '/') . '/components/com_members/assets/img/profile_thumb.gif';
 		}
 
 		return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';

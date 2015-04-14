@@ -266,8 +266,7 @@ class GroupsRouter extends \Hubzero\Component\Router\Base
 				$vars['option'] = 'com_groups';
 
 				// build url to redirect to based on vars
-				$app = JFactory::getApplication();
-				$app->redirect(Route::url('index.php?' . http_build_query($vars)), null, null, true);
+				App::redirect(Route::url('index.php?' . http_build_query($vars)), null, null, true);
 				exit();
 			}
 		}
@@ -303,7 +302,7 @@ class GroupsRouter extends \Hubzero\Component\Router\Base
 			$uploadPath = trim($groupsConfig->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 			// build path to component
-			$componentPath = JPATH_ROOT . DS . $uploadPath . DS . 'components' . DS . 'com_' . $vars['active'];
+			$componentPath = PATH_APP . DS . $uploadPath . DS . 'components' . DS . 'com_' . $vars['active'];
 
 			// make sure its a component
 			if (!is_dir($componentPath))

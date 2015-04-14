@@ -167,7 +167,7 @@ class plgCronSupport extends JPlugin
 				$usernames = array_map('trim', $usernames);
 				foreach ($usernames as $k => $username)
 				{
-					$user = JUser::getInstance($username);
+					$user = User::getInstance($username);
 					$usernames[$k] = $database->quote($user->get('id'));
 				}
 
@@ -258,37 +258,37 @@ class plgCronSupport extends JPlugin
 					// Created before (older than)
 					case '-day':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 day');
+						$timestamp = Date::modify('-1 day');
 					break;
 
 					case '-week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 week');
+						$timestamp = Date::modify('-1 week');
 					break;
 
 					case '-2week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-2 week');
+						$timestamp = Date::modify('-2 week');
 					break;
 
 					case '-3week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-3 week');
+						$timestamp = Date::modify('-3 week');
 					break;
 
 					case '-month':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 month');
+						$timestamp = Date::modify('-1 month');
 					break;
 
 					case '-6month':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-6 month');
+						$timestamp = Date::modify('-6 month');
 					break;
 
 					case '-year':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 year');
+						$timestamp = Date::modify('-1 year');
 					break;
 
 					case '--':
@@ -304,7 +304,7 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			$timestamp = JFactory::getDate('-2 week');
+			$timestamp = Date::modify('-2 week');
 			$where[] = "t.`created` <= " . $database->quote($timestamp->toSql());
 		}
 
@@ -328,18 +328,16 @@ class plgCronSupport extends JPlugin
 		$database->setQuery($upd);
 		if (!$database->query())
 		{
-			$logger = \JFactory::getLogger();
-			$logger->logError('CRON query failed: ' . $database->getErrorMsg());
+			Log::error('CRON query failed: ' . $database->getErrorMsg());
 		}
 		// If we're sending a message...
 		else if ($message_id && !empty($tickets))
 		{
-			$lang = JFactory::getLanguage();
-			$lang->load('com_support');
-			$lang->load('com_support', JPATH_BASE);
+			Lang::load('com_support');
+			Lang::load('com_support', JPATH_BASE);
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 			$message = new \Components\Support\Tables\Message($database);
 			$message->load($message_id);
@@ -347,11 +345,9 @@ class plgCronSupport extends JPlugin
 			// Make sure we have a message to send
 			if ($message->message)
 			{
-				$jconfig = JFactory::getConfig();
-
 				$from = array(
-					'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT'),
-					'email'     => $jconfig->getValue('config.mailfrom'),
+					'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
+					'email'     => Config::get('mailfrom'),
 					'multipart' => md5(date('U'))
 				);
 
@@ -365,8 +361,8 @@ class plgCronSupport extends JPlugin
 
 				$mailed = array();
 
-				$message->message = str_replace('{sitename}', $jconfig->getValue('config.sitename'), $message->message);
-				$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
+				$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
+				$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
 
 				$comment = new \Components\Support\Models\Comment();
 				$comment->set('created', Date::toSql());
@@ -382,11 +378,11 @@ class plgCronSupport extends JPlugin
 					if ($submitter->login)
 					{
 						// Get the user's account
-						$juser = JUser::getInstance($submitter->login);
-						if (is_object($juser) && $juser->get('id'))
+						$user = User::getInstance($submitter->login);
+						if (is_object($user) && $user->get('id'))
 						{
-							$name  = $juser->get('name');
-							$email = $juser->get('email');
+							$name  = $user->get('name');
+							$email = $user->get('email');
 						}
 					}
 
@@ -419,7 +415,7 @@ class plgCronSupport extends JPlugin
 					$comment->set('ticket', $row->get('id'));
 
 					$eview = new \Hubzero\Mail\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
+						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
 						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));
@@ -456,7 +452,7 @@ class plgCronSupport extends JPlugin
 					{
 						echo 'CRON email failed: ' . Lang::txt('Failed to mail %s', $email);
 						//$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
-						\JFactory::getLogger()->error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
+						Log::error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
 					}
 					$mailed[] = $email;
 				}
@@ -477,14 +473,11 @@ class plgCronSupport extends JPlugin
 		$params = $job->get('params');
 
 		$database = JFactory::getDBO();
-		$juri = JURI::getInstance();
 
-		$jconfig = JFactory::getConfig();
 		$sconfig = Component::params('com_support');
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_support');
-		$lang->load('com_support', JPATH_BASE);
+		Lang::load('com_support');
+		Lang::load('com_support', JPATH_BASE);
 
 		$sql = "SELECT * FROM `#__support_tickets` WHERE `open`=1 AND `status`!=2";
 
@@ -511,7 +504,7 @@ class plgCronSupport extends JPlugin
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 		if (is_object($params) && $params->get('support_ticketreminder_severity', 'all') != 'all')
 		{
@@ -519,7 +512,7 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
 			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
@@ -546,8 +539,8 @@ class plgCronSupport extends JPlugin
 		}
 
 		$from = array(
-			'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT'),
-			'email'     => $jconfig->getValue('config.mailfrom'),
+			'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
+			'email'     => Config::get('mailfrom'),
 			'multipart' => md5(date('U'))
 		);
 
@@ -564,20 +557,20 @@ class plgCronSupport extends JPlugin
 		foreach ($tickets as $owner => $usertickets)
 		{
 			// Get the user's account
-			$juser = JUser::getInstance($owner);
-			if (!$juser->get('id'))
+			$user = User::getInstance($owner);
+			if (!$user->get('id'))
 			{
 				continue;
 			}
 			// Try to ensure no duplicates
-			if (in_array($juser->get('username'), $mailed))
+			if (in_array($user->get('username'), $mailed))
 			{
 				continue;
 			}
 
 			// Plain text
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'tickets_plain'
 			));
@@ -600,7 +593,7 @@ class plgCronSupport extends JPlugin
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject($subject)
 			        ->addFrom($from['email'], $from['name'])
-			        ->addTo($juser->get('email'), $juser->get('name'))
+			        ->addTo($user->get('email'), $user->get('name'))
 			        ->addHeader('X-Component', 'com_support')
 			        ->addHeader('X-Component-Object', 'support_ticket_reminder');
 
@@ -613,7 +606,7 @@ class plgCronSupport extends JPlugin
 			{
 				$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
 			}
-			$mailed[] = $juser->get('username');
+			$mailed[] = $user->get('username');
 		}
 
 		return true;
@@ -630,14 +623,11 @@ class plgCronSupport extends JPlugin
 		$params = $job->get('params');
 
 		$database = JFactory::getDBO();
-		$juri = JURI::getInstance();
 
-		$jconfig = JFactory::getConfig();
 		$sconfig = Component::params('com_support');
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_support');
-		$lang->load('com_support', JPATH_BASE);
+		Lang::load('com_support');
+		Lang::load('com_support', JPATH_BASE);
 
 		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner`";
 
@@ -682,7 +672,7 @@ class plgCronSupport extends JPlugin
 				$usernames = array_map('trim', $usernames);
 				foreach ($usernames as $k => $username)
 				{
-					$user = JUser::getInstance($username);
+					$user = User::getInstance($username);
 					$usernames[$k] = $database->quote($user->get('id'));
 				}
 
@@ -773,73 +763,73 @@ class plgCronSupport extends JPlugin
 					// Created before (older than)
 					case '-day':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 day');
+						$timestamp = Date::modify('-1 day');
 					break;
 
 					case '-week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 week');
+						$timestamp = Date::modify('-1 week');
 					break;
 
 					case '-2week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-2 week');
+						$timestamp = Date::modify('-2 week');
 					break;
 
 					case '-3week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-3 week');
+						$timestamp = Date::modify('-3 week');
 					break;
 
 					case '-month':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 month');
+						$timestamp = Date::modify('-1 month');
 					break;
 
 					case '-6month':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-6 month');
+						$timestamp = Date::modify('-6 month');
 					break;
 
 					case '-year':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 year');
+						$timestamp = Date::modify('-1 year');
 					break;
 
 					// Created since (newer than)
 					case '+day':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-1 day');
+						$timestamp = Date::modify('-1 day');
 					break;
 
 					case '+week':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-1 week');
+						$timestamp = Date::modify('-1 week');
 					break;
 
 					case '+2week':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-2 week');
+						$timestamp = Date::modify('-2 week');
 					break;
 
 					case '+3week':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-3 week');
+						$timestamp = Date::modify('-3 week');
 					break;
 
 					case '+month':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-1 month');
+						$timestamp = Date::modify('-1 month');
 					break;
 
 					case '+6month':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-6 month');
+						$timestamp = Date::modify('-6 month');
 					break;
 
 					case '+year':
 						$op = '>=';
-						$timestamp = JFactory::getDate('-1 year');
+						$timestamp = Date::modify('-1 year');
 					break;
 				}
 
@@ -857,37 +847,37 @@ class plgCronSupport extends JPlugin
 					// Created before (older than)
 					case '-day':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 day');
+						$timestamp = Date::modify('-1 day');
 					break;
 
 					case '-week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 week');
+						$timestamp = Date::modify('-1 week');
 					break;
 
 					case '-2week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-2 week');
+						$timestamp = Date::modify('-2 week');
 					break;
 
 					case '-3week':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-3 week');
+						$timestamp = Date::modify('-3 week');
 					break;
 
 					case '-month':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 month');
+						$timestamp = Date::modify('-1 month');
 					break;
 
 					case '-6month':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-6 month');
+						$timestamp = Date::modify('-6 month');
 					break;
 
 					case '-year':
 						$op = '<=';
-						$timestamp = JFactory::getDate('-1 year');
+						$timestamp = Date::modify('-1 year');
 					break;
 
 					case 'all':
@@ -919,7 +909,7 @@ class plgCronSupport extends JPlugin
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 		if ($params->get('support_ticketlist_severity', 'all') != 'all')
 		{
@@ -927,13 +917,13 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
 			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
 		$from = array();
-		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT');
-		$from['email']     = $jconfig->getValue('config.mailfrom');
+		$from['name']      = Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT');
+		$from['email']     = Config::get('mailfrom');
 		$from['multipart'] = md5(date('U'));
 
 		// Set mail additional args (mail return path - used for bounces)
@@ -957,8 +947,8 @@ class plgCronSupport extends JPlugin
 		{
 			if ($owner == '{config.mailfrom}')
 			{
-				$name  = $jconfig->getValue('config.mailfrom');
-				$email = $jconfig->getValue('config.mailfrom');
+				$name  = Config::get('mailfrom');
+				$email = Config::get('mailfrom');
 			}
 			else if (strstr($owner, '@'))
 			{
@@ -968,14 +958,14 @@ class plgCronSupport extends JPlugin
 			else
 			{
 				// Get the user's account
-				$juser = JUser::getInstance($owner);
-				if (!is_object($juser) || !$juser->get('id'))
+				$user = User::getInstance($owner);
+				if (!is_object($user) || !$user->get('id'))
 				{
 					continue;
 				}
 
-				$name  = $juser->get('name');
-				$email = $juser->get('email');
+				$name  = $user->get('name');
+				$email = $user->get('email');
 			}
 
 			// Try to ensure no duplicates
@@ -985,7 +975,7 @@ class plgCronSupport extends JPlugin
 			}
 
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'ticketlist_plain'
 			));
@@ -1017,11 +1007,10 @@ class plgCronSupport extends JPlugin
 			$message->addPart($html, 'text/html');
 
 			// Send mail
-			$logger = \JFactory::getLogger();
 			if (!$message->send())
 			{
 				//$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
-				$logger->error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
+				Log::error('CRON email failed: ' . Lang::txt('Failed to mail %s', $email));
 			}
 			$mailed[] = $email;
 		}

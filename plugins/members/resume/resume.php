@@ -54,20 +54,19 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_jobs');
+		Lang::load('com_jobs');
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'admin.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'application.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'category.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'employer.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'prefs.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'resume.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'seeker.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'shortlist.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'admin.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'application.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'category.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'employer.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'prefs.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'resume.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'seeker.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'shortlist.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
 
 		$this->config = Component::params('com_jobs');
 	}
@@ -105,22 +104,21 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 		$employer = new \Components\Jobs\Tables\Employer($database);
-		$juser = JFactory::getUser();
 
 		// Check if they're a site admin (from Joomla)
-		if ($juser->authorise('core.admin', 'com_members.component'))
+		if (User::authorise('core.admin', 'com_members.component'))
 		{
 			return 1;
 		}
 
 		// determine who is veiwing the page
 		$emp = 0;
-		$emp = $employer->isEmployer($juser->get('id'));
+		$emp = $employer->isEmployer(User::get('id'));
 
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup'))
 		{
-			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0)
 			{
@@ -136,7 +134,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if ($member)
 		{
-			$my =  $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
+			$my =  $member->get('uidNumber') == User::get('id') ? 1 : 0;
 			$emp = $my && $emp ? 0 : $emp;
 		}
 
@@ -151,12 +149,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	public function isAdmin($admin = 0)
 	{
-		$juser = JFactory::getUser();
-
 		// check if they belong to a dedicated admin group
 		if ($this->config->get('admingroup'))
 		{
-			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			$ugs = $profile->getGroups('all');
 			if ($ugs && count($ugs) > 0)
 			{
@@ -224,7 +220,6 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		if ($return == 'html'  && $areas[0] == 'resume')
 		{
 			$database = JFactory::getDBO();
-			$juser = JFactory::getUser();
 
 			$task = Request::getVar('action','');
 
@@ -244,7 +239,6 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 		else if ($emp)
 		{
-			//$arr['metadata'] = '<p class="resume"><a href="'.Route::url($member->getLink() . '&active=resume').'">'.ucfirst(Lang::txt('Resume')).'</a></p>' . "\n";
 			$arr['metadata'] = '';
 		}
 
@@ -367,8 +361,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	protected function _view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
 	{
 		$out = '';
-		$juser = JFactory::getUser();
-		$self = $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
+
+		$self = $member->get('uidNumber') == User::get('id') ? 1 : 0;
 
 		// get job seeker info on the user
 		$js = new \Components\Jobs\Tables\JobSeeker($database);
@@ -404,7 +398,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if ($resume->loadResume($member->get('uidNumber')))
 		{
-			$file = JPATH_ROOT . $path . DS . $resume->filename;
+			$file = PATH_APP . $path . DS . $resume->filename;
 			if (!is_file($file))
 			{
 				$file = '';
@@ -438,12 +432,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$view->path = $path;
 		$view->params = $this->params;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -666,17 +657,16 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	public function shortlist($oid, $ajax=0)
 	{
-		$juser = JFactory::getUser();
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$database = JFactory::getDBO();
 
 			$shortlist = new \Components\Jobs\Tables\Shortlist($database);
-			$shortlist->loadEntry($juser->get('id'), $oid, 'resume');
+			$shortlist->loadEntry(User::get('id'), $oid, 'resume');
 
 			if (!$shortlist->id)
 			{
-				$shortlist->emp      = $juser->get('id');
+				$shortlist->emp      = User::get('id');
 				$shortlist->seeker   = $oid;
 				$shortlist->added    = Date::toSql();
 				$shortlist->category = 'resume';
@@ -692,7 +682,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			{
 				// get seeker info
 				$js = new \Components\Jobs\Tables\JobSeeker($database);
-				$seeker = $js->getSeeker($oid, $juser->get('id'));
+				$seeker = $js->getSeeker($oid, User::get('id'));
 
 				$view = new \Hubzero\Plugin\View(
 					array(
@@ -703,10 +693,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 					)
 				);
 				$view->seeker = $seeker[0];
-				$view->emp = 1;
-				$view->admin = 0;
+				$view->emp    = 1;
+				$view->admin  = 0;
 				$view->option = 'com_members';
-				$view->list = 1;
+				$view->list   = 1;
 				$view->params = $this->params;
 				$view->display();
 			}
@@ -764,7 +754,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
 		$lengths = array('60', '60', '24', '7', '4.35', '12', '10');
 
-		$now = strtotime(JFactory::getDate());
+		$now = strtotime(Date::getRoot());
 		$unix_date = strtotime($date);
 
 		// check validity of date
@@ -774,10 +764,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// is it future date or past date
-		if ($now > $unix_date) {
+		if ($now > $unix_date)
+		{
 			$difference = $now - $unix_date;
 			$tense = 'ago';
-
 		}
 		else
 		{
@@ -812,12 +802,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	protected function _download($member)
 	{
 		$database = JFactory::getDBO();
-		$juser    = JFactory::getUser();
 
 		// Ensure we have a database object
 		if (!$database)
 		{
-			JError::raiseError(500, Lang::txt('DATABASE_NOT_FOUND'));
+			App::abort(500, Lang::txt('DATABASE_NOT_FOUND'));
 			return;
 		}
 
@@ -836,12 +825,12 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if (!is_file($file))
 		{
-			JError::raiseError(404, Lang::txt('FILE_NOT_FOUND'));
+			App::abort(404, Lang::txt('FILE_NOT_FOUND'));
 			return;
 		}
 
 		// Use user name as file name
-		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
+		$default_title  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
 		$default_title .= substr($resume->filename, strripos($resume->filename, '.'));;
 
 		// Initiate a new content server and serve up the file
@@ -850,7 +839,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		// record view
 		$stats = new \Components\Jobs\Tables\JobStats($database);
-		if ($juser->get('id') != $uid)
+		if (User::get('id') != $uid)
 		{
 			$stats->saveView($uid, 'seeker');
 		}
@@ -862,7 +851,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if (!$result)
 		{
-			JError::raiseError(500, Lang::txt('SERVER_ERROR'));
+			App::abort(500, Lang::txt('SERVER_ERROR'));
 		}
 		else
 		{

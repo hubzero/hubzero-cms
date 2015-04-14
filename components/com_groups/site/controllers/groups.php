@@ -471,7 +471,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Path to group assets
-		$asset_path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->lid . DS . 'uploads';
+		$asset_path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->lid . DS . 'uploads';
 
 		// If path is a directory then load images
 		$this->view->logos = array();
@@ -639,7 +639,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$group->set('type', 1);
 			$group->set('published', 1);
 			$group->set('approved', $this->config->get('auto_approve', 1));
-			$group->set('created', JFactory::getDate());
+			$group->set('created', Date::toSql());
 			$group->set('created_by', User::get('id'));
 			$group->add('managers', array(User::get('id')));
 			$group->add('members', array(User::get('id')));
@@ -803,8 +803,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 				'pageid'     => $page->get('id'),
 				'version'    => 1,
 				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
-				'created'    => JFactory::getDate(),
-				'created_by' => JFactory::getUser()->get('id'),
+				'created'    => Date::toSql(),
+				'created_by' => User::get('id'),
 				'approved'   => 1
 			));
 			$version->store(false);
@@ -940,7 +940,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		//get request vars
 		$confirm_delete = Request::getInt('confirmdel', '');
-		$message 		= trim(Request::getVar('msg', '', 'post'));
+		$message = trim(Request::getVar('msg', '', 'post'));
 
 		//check to make sure we have confirmed
 		if (!$confirm_delete)
@@ -1304,7 +1304,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			//load wiki page from db
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 			$page = new \Components\Wiki\Tables\Page($this->database);
 
 			$pagename = Request::getVar('pagename');
@@ -1443,13 +1443,12 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		return;
 	}
 
-
 	/**
 	 * Check if a group alias is valid
 	 *
-	 * @param 		integer 	$cname 			Group alias
-	 * @param 		boolean		$allowDashes 	Allow dashes in cn
-	 * @return 		boolean		True if valid, false if not
+	 * @param   integer  $cname        Group alias
+	 * @param   boolean  $allowDashes  Allow dashes in cn
+	 * @return  boolean  True if valid, false if not
 	 */
 	private function _validCn($cn, $allowDashes = false)
 	{

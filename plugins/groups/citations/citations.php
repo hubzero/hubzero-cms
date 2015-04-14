@@ -32,15 +32,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed libs
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 
 /**
  * Groups plugin class for citations

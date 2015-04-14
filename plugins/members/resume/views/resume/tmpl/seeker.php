@@ -31,40 +31,39 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
-	$database = JFactory::getDBO();
+$database = JFactory::getDBO();
 
-	$jt = new \Components\Jobs\Tables\JobType($database);
-	$jc = new \Components\Jobs\Tables\JobCategory($database);
+$jt = new \Components\Jobs\Tables\JobType($database);
+$jc = new \Components\Jobs\Tables\JobCategory($database);
 
-	$profile = \Hubzero\User\Profile::getInstance($this->seeker->uid);
+$profile = \Hubzero\User\Profile::getInstance($this->seeker->uid);
 
-	$jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('PLG_MEMBERS_RESUME_TYPE_ANY')));
-	$jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('PLG_MEMBERS_RESUME_CATEGORY_ANY')));
+$jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('PLG_MEMBERS_RESUME_TYPE_ANY')));
+$jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('PLG_MEMBERS_RESUME_CATEGORY_ANY')));
 
-	$title = Lang::txt('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
+$title = Lang::txt('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
 
-	// Get the configured upload path
-		$base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);
+// Get the configured upload path
+$base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);
 
-		$path = $base_path . DS . \Hubzero\Utility\String::pad($this->seeker->uid);
+$path = $base_path . DS . \Hubzero\Utility\String::pad($this->seeker->uid);
 
-		if (!is_dir(PATH_APP . $path))
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(PATH_APP . $path))
-			{
-				$path = '';
-			}
-		}
+if (!is_dir(PATH_APP . $path))
+{
+	jimport('joomla.filesystem.folder');
+	if (!JFolder::create(PATH_APP . $path))
+	{
+		$path = '';
+	}
+}
 
-	$resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
+$resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
 ?>
-	<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
-		<div class="thumb">
-			<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
-		</div>
-		<div class="grid">
+<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
+	<div class="thumb">
+		<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
+	</div>
+	<div class="grid">
 		<div class="aboutlb col span5">
 			<?php echo $this->list ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : ''; ?>
 			<?php echo $this->seeker->name; ?>
@@ -78,7 +77,6 @@ defined('_JEXEC') or die('Restricted access');
 				</blockquote>
 			<?php } ?>
 		</div>
-
 		<div class="lookingforlb col span5 omega">
 			<?php echo Lang::txt('PLG_MEMBERS_RESUME_LOOKING_FOR'); ?>
 			<span class="jobprefs">
@@ -89,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo stripslashes($this->seeker->lookingfor); ?>
 			</span>
 		</div>
-		</div>
+	</div>
 
 	<?php if ($this->seeker->mine) { ?>
 		<span class="editbt">
@@ -102,9 +100,10 @@ defined('_JEXEC') or die('Restricted access');
 			</a>
 		</span>
 	<?php } ?>
-		<div class="clear leftclear"></div>
-		<span class="indented">
-	<?php if ($resume) { ?>
+
+	<div class="clear leftclear"></div>
+	<span class="indented">
+		<?php if ($resume) { ?>
 			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $title; ?>">
 				<?php echo ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')); ?>
 			</a>
@@ -123,8 +122,8 @@ defined('_JEXEC') or die('Restricted access');
 					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
 				</span>
 			<?php } ?>
-	<?php } else { ?>
+		<?php } else { ?>
 			<span class="unavail"><?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD'); ?></span>
-	<?php } ?>
-		</span>
-	</div>
+		<?php } ?>
+	</span>
+</div>

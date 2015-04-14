@@ -188,7 +188,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		// Is it numeric?
 		if (is_numeric($file))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
 			$attach = new \Components\Wiki\Tables\Attachment($this->_db);

@@ -69,7 +69,7 @@ if ($assets->total() > 0)
 		//$assets->rewind();
 		$first = array_shift($images);
 
-		list($originalWidth, $originalHeight) = getimagesize(JPATH_ROOT . $path . DS . ltrim($first->get('filename'), DS));
+		list($originalWidth, $originalHeight) = getimagesize(PATH_APP . $path . DS . ltrim($first->get('filename'), DS));
 		$ratio = $originalWidth / $originalHeight;
 		?>
 			<div class="holder">
@@ -113,7 +113,7 @@ if ($assets->total() > 0)
 					<span class="file-meta">
 						<span class="file-size">
 				<?php if ($asset->get('type') != 'link') { ?>
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(PATH_APP . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 				<?php } else { ?>
 							<?php
 							$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
@@ -132,7 +132,7 @@ if ($assets->total() > 0)
 						</span>
 				<?php if ($asset->get('description')) { ?>
 						<span class="file-description">
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(PATH_APP . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 						</span>
 				<?php } ?>
 					</span>

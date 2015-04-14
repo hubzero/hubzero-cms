@@ -49,7 +49,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		// Ensure we have a group ID
 		if (!$this->gid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
@@ -57,7 +57,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->group = \Hubzero\User\Group::getInstance( $this->gid );
+		$this->group = \Hubzero\User\Group::getInstance($this->gid);
 
 		parent::execute();
 	}
@@ -80,12 +80,9 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		$this->view->group = $this->group;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -109,15 +106,12 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
-		//set to edit layout
-		$this->view->setLayout('edit');
-
 		// get request vars
 		$ids = Request::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
 
 		// get the category object
-		$this->view->category = new GroupsModelPageCategory( $id );
+		$this->view->category = new GroupsModelPageCategory($id);
 
 		// are we passing a category object
 		if ($this->category)
@@ -135,7 +129,9 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -157,17 +153,15 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		// bind to our new results
 		if (!$this->category->bind($category))
 		{
-			$this->setNotification($this->category->getError(), 'error');
-			$this->editTask();
-			return;
+			Notify::error($this->category->getError());
+			return $this->editTask();
 		}
 
 		// Store new content
 		if (!$this->category->store(true))
 		{
-			$this->setNotification($this->category->getError(), 'error');
-			$this->editTask();
-			return;
+			Notify::error($this->category->getError());
+			return $this->editTask();
 		}
 
 		// log change
@@ -182,7 +176,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		));
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_CATEGORY_SAVED'),
 			'passed'
@@ -209,7 +203,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			// make sure this is our groups cat
 			if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 					Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_FAILED'),
 					'error'
@@ -220,7 +214,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			// delete row
 			if (!$category->delete())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 					$category->getError(),
 					'error'
@@ -238,7 +232,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		));
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_SUCCESS'),
 			'passed'
@@ -252,7 +246,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getVar('gid', ''), false)
 		);
 	}
@@ -264,7 +258,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 	 */
 	public function manageTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getVar('gid', ''), false)
 		);
 	}

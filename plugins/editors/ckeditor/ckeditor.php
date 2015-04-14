@@ -54,8 +54,8 @@ class plgEditorCkeditor extends JPlugin
 
 		// add ckeditor
 		$document = JFactory::getDocument();
-		$document->addScript(str_replace('/administrator', '', JURI::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
-		$document->addScript(str_replace('/administrator', '', JURI::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
+		$document->addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
+		$document->addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
 	}
 
 	/**
@@ -234,7 +234,7 @@ class plgEditorCkeditor extends JPlugin
 				if ($button->get('name'))
 				{
 					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
-					$href    = ($button->get('link')) ? ' href="'.JURI::base().$button->get('link').'"' : null;
+					$href    = ($button->get('link')) ? ' href="'.Request::base().$button->get('link').'"' : null;
 					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
 					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
@@ -447,13 +447,13 @@ class plgEditorCkeditor extends JPlugin
 			$templateCss = '/templates/' . $template . '/css/main.css';
 
 			// do we have a site.css
-			if (file_exists(JPATH_ROOT . $siteCss))
+			if (file_exists(PATH_APP . $siteCss))
 			{
 				array_push($css, $siteCss);
 			}
 
 			// do we have a template main.css
-			if (file_exists(JPATH_ROOT . $templateCss))
+			if (file_exists(PATH_ROOT . $templateCss))
 			{
 				array_push($css, $templateCss);
 			}
@@ -502,7 +502,7 @@ class plgEditorCkeditor extends JPlugin
 			foreach ($this->params->get('templates_files') as $name => $template)
 			{
 				//make sure templates exists
-				if (file_exists(JPATH_ROOT . $template))
+				if (file_exists(PATH_ROOT . $template))
 				{
 					// do we want to replace original ones
 					if ($this->params->get('templates_replace'))
@@ -535,7 +535,7 @@ class plgEditorCkeditor extends JPlugin
 		// set editor skin
 		$config->skin = $this->params->get('skin', 'moono');
 
-		if (JFactory::getUser()->authorise('core.manage', 'com_system'))
+		if (User::authorise('core.manage', 'com_system'))
 		{
 			$config->allowedContent = true;
 		}

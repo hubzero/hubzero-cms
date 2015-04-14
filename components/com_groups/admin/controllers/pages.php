@@ -49,7 +49,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// Ensure we have a group ID
 		if (!$this->gid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
@@ -58,7 +58,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// load group object
-		$this->group = \Hubzero\User\Group::getInstance( $this->gid );
+		$this->group = \Hubzero\User\Group::getInstance($this->gid);
 
 		// run parent execute
 		parent::execute();
@@ -85,7 +85,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 
 		// are we in the approvers
 		$this->view->needsAttention = new \Hubzero\Base\ItemList();
-		if (in_array($this->juser->get('username'), $approvers))
+		if (in_array(User::get('username'), $approvers))
 		{
 			// get group pages
 			$pageArchive = GroupsModelPageArchive::getInstance();
@@ -190,17 +190,15 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// bind new page properties
 		if (!$this->page->bind($page))
 		{
-			$this->setNotification($this->page->getError(), 'error');
-			$this->editTask();
-			return;
+			Notify::error($this->page->getError());
+			return $this->editTask();
 		}
 
 		// bind new page version properties
 		if (!$this->version->bind($version))
 		{
-			$this->setNotification($this->version->getError(), 'error');
-			$this->editTask();
-			return;
+			Notify::error($this->version->getError());
+			return $this->editTask();
 		}
 
 		// make sure page belongs to group
@@ -216,19 +214,18 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// save page settings
 		if (!$this->page->store(true))
 		{
-			$this->setNotification($this->page->getError(), 'error');
-			$this->editTask();
-			return;
+			Notify::error($this->page->getError());
+			return $this->editTask();
 		}
 
 		// set page version vars
 		$this->version->set('pageid', $this->page->get('id'));
 		$this->version->set('version', $this->version->get('version') + 1);
 		$this->version->set('created', Date::toSql());
-		$this->version->set('created_by', $this->juser->get('id'));
+		$this->version->set('created_by', User::get('id'));
 		$this->version->set('approved', 1);
 		$this->version->set('approved_on', Date::toSql());
-		$this->version->set('approved_by', $this->juser->get('id'));
+		$this->version->set('approved_by', User::get('id'));
 
 		// if we have php or script tags we must get page approved by admin
 		if (strpos($this->version->get('content'), '<?') !== false ||
@@ -244,9 +241,8 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		if (!$this->version->store(false, $this->group->isSuperGroup()))
 		{
-			$this->setNotification($this->version->getError(), 'error');
-			$this->editTask();
-			return;
+			Notify::error($this->version->getError());
+			return $this->editTask();
 		}
 
 		// get page children
@@ -290,7 +286,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			'comments'  => array('page' => $page, 'version' => $version)
 		));
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_SAVED'),
 			'passed'
@@ -311,12 +307,12 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		foreach ($ids as $pageid)
 		{
 			// load modules
-			$page = new GroupsModelPage( $pageid );
+			$page = new GroupsModelPage($pageid);
 
 			// cant delete home
 			if ($page->get('home') == 1)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 					Lang::txt('COM_GROUPS_PAGES_CANT_DELETE_HOME'),
 					'error'
@@ -333,7 +329,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			// save module
 			if (!$page->store(true))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 					$page->getError(),
 					'error'
@@ -350,7 +346,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		));
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_DELETED'),
 			'passed'
@@ -367,7 +363,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -379,7 +375,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$page = new GroupsModelPage( $id );
+		$page = new GroupsModelPage($id);
 
 		// load current version
 		$currentVersion = $page->version();
@@ -388,7 +384,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		if ($currentVersion->get('approved') == 1)
 		{
 			//inform user & redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
 				'warning'
@@ -445,7 +441,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$currentVersion->store(false, $this->group->isSuperGroup());
 
 		// were all set
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_NO_XSS'),
 			'passed'
@@ -462,7 +458,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -483,7 +479,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		if ($currentVersion->get('approved') == 1)
 		{
 			//inform user & redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
 				'warning'
@@ -528,7 +524,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		}, $file);
 
 		// were all set
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_NO_ERRORS'),
 			'passed'
@@ -545,7 +541,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -570,7 +566,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$currentVersion->store(false, $this->group->isSuperGroup());
 
 		// inform user and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_SCANNED'),
 			'passed'
@@ -587,7 +583,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -611,7 +607,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$currentVersion->store(false, $this->group->isSuperGroup());
 
 		// redirect to scan url
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id'), false)
 		);
 	}
@@ -627,7 +623,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -651,7 +647,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$currentVersion->store(false, $this->group->isSuperGroup());
 
 		//go back to error checker
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id'), false)
 		);
 	}
@@ -666,7 +662,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -687,7 +683,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		if ($currentVersion->get('approved') == 1)
 		{
 			//inform user & redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
 				'warning'
@@ -703,7 +699,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// save version with approved status
 		if (!$currentVersion->store(false, $this->group->isSuperGroup()))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				$currentVersion->getError(),
 				'error'
@@ -722,7 +718,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		));
 
 		// inform user and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 			Lang::txt('COM_GROUPS_PAGES_APPROVED'),
 			'passed'
@@ -740,7 +736,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -793,7 +789,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure we are approvers
 		if (!GroupsHelperPages::isPageApprover())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
 				Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
@@ -826,7 +822,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getVar('gid', ''), false)
 		);
 	}
@@ -838,7 +834,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 	 */
 	public function manageTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getVar('gid', ''), false)
 		);
 	}

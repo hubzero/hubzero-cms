@@ -209,7 +209,7 @@ class Attachment extends Model
 
 		if (!$path)
 		{
-			$path = JPATH_ROOT . '/site/comments';
+			$path = PATH_APP . '/site/comments';
 		}
 
 		// If it doesn't exist or isn't published
@@ -226,7 +226,7 @@ class Attachment extends Model
 
 			case 'permalink':
 			default:
-				$link = rtrim(\JURI::getInstance()->base(), '/') . '/site/comments/' . $this->get('comment_id') . '/' . $this->get('filename');
+				$link = rtrim(Request::base(), '/') . '/site/comments/' . $this->get('comment_id') . '/' . $this->get('filename');
 			break;
 		}
 

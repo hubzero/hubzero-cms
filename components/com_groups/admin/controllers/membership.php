@@ -45,12 +45,9 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'gid' => $app->getUserStateFromRequest(
+			'gid' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.gid',
 				'gid',
 				''
@@ -60,7 +57,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		// Ensure we have a group ID
 		if (!$this->view->filters['gid'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
@@ -79,35 +76,35 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		$this->view->filters['gidNumber'] = $group->get('gidNumber');
 
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
+		$this->view->filters['search']  = urldecode(trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		)));
-		$this->view->filters['status'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['status'] = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.status',
 			'status',
 			''
 		));
 		// Sorting options
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort']         = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.sort',
 			'filter_order',
 			'name'
 		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir']     = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
 		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
+		$this->view->filters['limit']  = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
+		$this->view->filters['start']  = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -276,8 +273,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_ADDED', $tbl)
 			);
 		}
@@ -357,8 +354,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_APPROVED')
 			);
 		}
@@ -429,8 +426,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_PROMOTED')
 			);
 		}
@@ -518,7 +515,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_DEMOTED')
 			);
@@ -605,7 +602,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_REMOVED')
 			);
@@ -690,7 +687,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_UNINVITED')
 			);
@@ -756,7 +753,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
 				Lang::txt('COM_GROUPS_MEMBER_DENIED')
 			);
