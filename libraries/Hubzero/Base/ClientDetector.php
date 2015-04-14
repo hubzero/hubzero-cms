@@ -77,16 +77,14 @@ class ClientDetector
 	 */
 	protected function detectWebEnvironment($environments)
 	{
-		//$path = str_replace('index.php', '', $this->request);
-		//$path = trim($path, '/');
-
-		$default = 'site';
+		$default = ClientManager::client('site', true);
 
 		foreach ($environments as $environment => $url)
 		{
 			if ($client = ClientManager::client($environment, true))
 			{
 				//$client->url = $url;
+
 				$const = 'JPATH_' . strtoupper($environment);
 
 				if (!defined($const)) continue;
@@ -94,8 +92,7 @@ class ClientDetector
 				// To determine the current environment, we'll simply iterate through the possible
 				// environments and look for the host that matches the host for this request we
 				// are currently processing here, then return back these environment's names.
-				//if (substr($path, 0, strlen($url)) == $url)
-				if (JPATH_BASE == constant($const)) return $environment;
+				if (JPATH_BASE == constant($const)) return $client;
 			}
 		}
 

@@ -58,7 +58,7 @@ class Loader
 	{
 		$result = $this->load($option, $strict);
 
-		return ($result->enabled | \JFactory::getApplication()->isAdmin());
+		return ($result->enabled | App::isAdmin());
 	}
 
 	/**
@@ -103,8 +103,8 @@ class Loader
 		// Load template language files.
 		$template = $app->getTemplate(true)->template;
 
-		$lang = \JFactory::getLanguage();
-		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true) || $lang->load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, true);
+		Lang::load('tpl_' . $template, JPATH_BASE, null, false, true) ||
+		Lang::load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, true);
 
 		if (empty($option))
 		{
@@ -124,7 +124,7 @@ class Loader
 		$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 		$file = substr($option, 4);
 
-		$client = ($app->isAdmin() ? 'admin' : 'site');
+		$client = (App::isAdmin() ? 'admin' : 'site');
 
 		// Get component path
 		if (is_dir(JPATH_SITE . '/components/' . $option . '/' . $client))
@@ -151,7 +151,9 @@ class Loader
 		}
 
 		// Load common and local language files.
-		$lang->load($option, JPATH_BASE, null, false, true) || $lang->load($option, JPATH_COMPONENT, null, false, true);
+		Lang::load($option, JPATH_BASE, null, false, true) ||
+		Lang::load($option, JPATH_COMPONENT, null, false, true) ||
+		Lang::load($option . '.' . $client, JPATH_COMPONENT, null, false, true);
 
 		// Handle template preview outlining.
 		$contents = null;

@@ -102,8 +102,6 @@ class Application extends Container
 		$this['request'] = ($request ?: Request::createFromGlobals());
 
 		$this->registerBaseServiceProviders();
-
-		//$this->registerBaseFacades();
 	}
 
 	/**
@@ -142,7 +140,7 @@ class Application extends Container
 		if (substr($method, 0, 2) == 'is')
 		{
 			$client = substr($method, 2);
-			return ($this['client'] == $client);
+			return ($this['client']->url == $client);
 		}
 
 		throw new RuntimeException(sprintf('Method [%s] not found.', $method));
@@ -317,10 +315,10 @@ class Application extends Container
 	{
 		if (JPROFILE)
 		{
-			$_PROFILER = \JProfiler::getInstance($this['client']);
+			$_PROFILER = \JProfiler::getInstance($this['client']->name);
 		}
 
-		$app = \JFactory::getApplication($this['client']);
+		$app = \JFactory::getApplication($this['client']->name);
 
 		// Mark afterLoad in the profiler.
 		JPROFILE ? $_PROFILER->mark('afterLoad') : null;
