@@ -136,7 +136,7 @@ class Application extends Container
 	 * @param   array   $args
 	 * @return  mixed
 	 */
-	/*public function __call($method, $args)
+	public function __call($method, $args)
 	{
 		$method = strtolower($method);
 		if (substr($method, 0, 2) == 'is')
@@ -146,7 +146,7 @@ class Application extends Container
 		}
 
 		throw new RuntimeException(sprintf('Method [%s] not found.', $method));
-	}*/
+	}
 
 	/**
 	 * Register all of the base service providers.
