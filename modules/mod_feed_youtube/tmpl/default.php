@@ -44,7 +44,7 @@ if ($this->feed)
 	$this->css();
 
 	$youtube_ima  = DS . trim($this->params->get('imagepath'), DS);
-	if (!is_file(JPATH_ROOT . $youtube_ima))
+	if (!is_file(PATH_APP . $youtube_ima))
 	{
 		$youtube_ima = '';
 	}
@@ -79,12 +79,12 @@ if ($this->feed)
 		$totalItems  = ($setItems > $actualItems ? $actualItems : $setItems);
 
 		$path = DS . trim($this->params->get('webpath', '/site/youtube'), DS);
-		if (!is_dir(JPATH_ROOT . $path))
+		if (!is_dir(PATH_APP . $path))
 		{
 			jimport('joomla.filesystem.folder');
-			JFolder::create(JPATH_ROOT . $path);
+			JFolder::create(PATH_APP . $path);
 		}
-		$isDir = is_dir(JPATH_ROOT . $path);
+		$isDir = is_dir(PATH_APP . $path);
 
 		$words = $this->params->def('word_count', 0);
 		for ($j = 0; $j < $totalItems; $j ++)
@@ -110,11 +110,11 @@ if ($this->feed)
 					$img_src = 'http://img.youtube.com/vi/' . $vid . '/default.jpg';
 					$thumb   = $path . DS . $vid . '.jpg';
 
-					if (!is_file(JPATH_ROOT . $thumb))
+					if (!is_file(PATH_APP . $thumb))
 					{
-						copy($img_src, JPATH_ROOT . $thumb);
+						copy($img_src, PATH_APP . $thumb);
 					}
-					if (!is_file(JPATH_ROOT . $thumb))
+					if (!is_file(PATH_APP . $thumb))
 					{
 						$vid = 0;
 					}

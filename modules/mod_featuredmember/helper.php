@@ -50,8 +50,8 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 		$database = JFactory::getDBO();
 		$this->row = null;
@@ -148,7 +148,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_poll' . DS . 'models' . DS . 'poll.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_poll' . DS . 'models' . DS . 'poll.php');
 
 		$model = new Poll();
 
@@ -79,7 +79,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

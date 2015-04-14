@@ -293,7 +293,7 @@ class Helper extends Module
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

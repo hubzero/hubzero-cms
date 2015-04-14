@@ -45,8 +45,8 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$database = \JFactory::getDBO();
 
@@ -83,7 +83,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . \JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

@@ -32,6 +32,7 @@ namespace Modules\Announcements;
 
 use Hubzero\Module\Module;
 use Lang;
+use Date;
 
 /**
  * Module class for displaying announcements
@@ -52,7 +53,7 @@ class Helper extends Module
 		$limit   = (int) $this->params->get('numitems', 0);
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
-		$now = \JFactory::getDate()->toMySQL();
+		$now = Date::toSql();
 
 		$nullDate = $db->getNullDate();
 

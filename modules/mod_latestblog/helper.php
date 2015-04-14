@@ -48,7 +48,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		$this->pullout   = $this->params->get('pullout', 'yes');
 		$this->feedlink  = $this->params->get('feedlink', 'yes');
@@ -126,7 +126,7 @@ class Helper extends Module
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

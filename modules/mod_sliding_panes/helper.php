@@ -74,7 +74,7 @@ class Helper extends Module
 		$limit   = (int) $this->params->get('limitslides', 0);
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
-		$date = JFactory::getDate();
+		$date = \Date::toSql();
 		$now  = $date->toMySQL();
 
 		$nullDate = $db->getNullDate();

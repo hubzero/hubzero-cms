@@ -56,7 +56,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 		$database = JFactory::getDBO();
 
@@ -97,14 +97,14 @@ class Helper extends Module
 			// Resource
 			$id = $row->id;
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
 			$path = \Components\Resources\Helpers\Html::build_path($row->created, $row->id, $path);
 
 			if ($row->type == 7)
 			{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$tv = new ToolVersion($database);
 
@@ -158,7 +158,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

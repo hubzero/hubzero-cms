@@ -32,6 +32,7 @@ namespace Modules\MyCourses;
 
 use Hubzero\Module\Module;
 use User;
+use Date;
 
 /**
  * Module class for displaying a list of courses for a user
@@ -59,7 +60,7 @@ class Helper extends Module
 					WHERE c.state IN (1, 3)
 					AND m.user_id=" . $db->quote($uid);
 
-		$now = \JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$db->setQuery($query);
 

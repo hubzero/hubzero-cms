@@ -65,7 +65,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;
 		}
 

@@ -33,8 +33,9 @@ namespace Modules\Quotes;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Tables\Quote;
-use Request;
 use Component;
+use Request;
+use Date;
 
 /**
  * Module class for displaying quotes
@@ -48,7 +49,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
 
 		$this->database = \JFactory::getDBO();
 
@@ -88,7 +89,7 @@ class Helper extends Module
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . \JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . Date::toSql() . ' -->';
 			return;
 		}
 

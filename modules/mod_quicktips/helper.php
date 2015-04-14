@@ -31,6 +31,7 @@
 namespace Modules\QuickTips;
 
 use Hubzero\Module\Module;
+use Date;
 use JFactory;
 
 /**
@@ -60,7 +61,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . Date::toSql() . ' -->';
 			return;
 		}
 
@@ -80,7 +81,7 @@ class Helper extends Module
 		$secid  = trim($this->params->get('secid'));
 		$method = trim($this->params->get('method'));
 
-		$now = JFactory::getDate();
+		$now = Date::toSql();
 
 		if ($method == 'random')
 		{

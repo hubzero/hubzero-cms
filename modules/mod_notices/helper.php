@@ -32,11 +32,11 @@
 namespace Modules\Notices;
 
 use Hubzero\Module\Module;
-use JModuleHelper;
 use JFactory;
 use Request;
 use Config;
 use Lang;
+use Date;
 
 /**
  * Module class for displaying site wide notices
@@ -158,7 +158,7 @@ class Helper extends Module
 		$database = JFactory::getDBO();
 
 		// Set today's time and date
-		$now = JFactory::getDate();
+		$now = Date::toSql();
 
 		$database->setQuery("SELECT publish_up, publish_down FROM `#__modules` WHERE id=" . $this->module->id);
 		$item = $database->loadObject();
@@ -167,9 +167,9 @@ class Helper extends Module
 
 		// Get some initial parameters
 		$start = $this->params->get('start_publishing', $this->module->publish_up);
-		//$start = JHTML::_('date', $start, Lang::txt('DATE_FORMAT_HZ1'));
+		//$start = Date::of($start)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		$stop  = $this->params->get('stop_publishing', $this->module->publish_down);
-		//$stop  = JHTML::_('date', $stop, Lang::txt('DATE_FORMAT_HZ1'));
+		//$stop  = Date::of($stop)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;
 		if (!$start || $start == $database->getNullDate())

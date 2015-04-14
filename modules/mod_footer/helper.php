@@ -52,7 +52,7 @@ class Helper extends Module
 		$params = $this->params;
 
 		$app  = JFactory::getApplication();
-		$date = JFactory::getDate();
+		$date = \Date::toSql();
 
 		$cur_year   = $date->format('Y');
 		$csite_name = $app->getCfg('sitename');

@@ -53,7 +53,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+		require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
 
 		// [!] Legacy compatibility
 		$params = $this->params;
@@ -95,7 +95,7 @@ class Helper extends Module
 		$userId = (int) $user->get('id');
 		$count  = intval($params->get('count', 5));
 		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$date   = JFactory::getDate();
+		$date   = \Date::toSql();
 
 		$option = Request::getCmd('option');
 		$view   = Request::getCmd('view');

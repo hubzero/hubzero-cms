@@ -32,6 +32,8 @@ namespace Modules\PopularQuestions;
 
 use Hubzero\Module\Module;
 use Components\Answers\Models\Question;
+use Request;
+use Date;
 
 /**
  * Module class for displaying popular questions
@@ -61,8 +63,8 @@ class Helper extends Module
 			default: $st = ""; break;
 		}
 
-		$this->tag   = \Request::getVar('tag', '', 'get');
-		$this->style = \Request::getVar('style', '', 'get');
+		$this->tag   = Request::getVar('tag', '', 'get');
+		$this->style = Request::getVar('style', '', 'get');
 
 		if ($this->tag)
 		{
@@ -88,7 +90,7 @@ class Helper extends Module
 
 		if ($this->rows)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 			foreach ($this->rows as $k => $row)
 			{
@@ -124,7 +126,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . \JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . Date::toSql() . ' -->';
 			return;
 		}
 

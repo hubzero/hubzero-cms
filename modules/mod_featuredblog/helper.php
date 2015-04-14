@@ -61,7 +61,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate()->toSql() . ' -->';
+			echo '<!-- cached ' . \Date::toSql()->toSql() . ' -->';
 			return;
 		}
 
@@ -75,7 +75,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
 		$database = JFactory::getDBO();
 
