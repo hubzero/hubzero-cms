@@ -333,7 +333,7 @@ class Tag extends \JTable
 	{
 		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
 		{
-			$query = "SELECT tj.tagid FROM `#__tags_object` AS tj 
+			$query = "SELECT tj.tagid FROM `#__tags_object` AS tj
 					INNER JOIN $this->_tbl As t ON t.id=tj.tagid
 					WHERE t.admin=0 GROUP BY tj.tagid ORDER BY tj.taggedon DESC";
 
@@ -348,11 +348,11 @@ class Tag extends \JTable
 			$this->_db->setQuery($query);
 			$data = $this->_db->loadResultArray();
 
-			$query  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon, 
-						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total, 
-						(SELECT COUNT(*) FROM `#__tags_substitute` AS s WHERE s.tag_id=t.id) AS substitutes 
-					FROM $this->_tbl AS t 
-					INNER JOIN `#__tags_object` AS tj ON t.id=tj.tagid 
+			$query  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon,
+						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total,
+						(SELECT COUNT(*) FROM `#__tags_substitute` AS s WHERE s.tag_id=t.id) AS substitutes
+					FROM $this->_tbl AS t
+					INNER JOIN `#__tags_object` AS tj ON t.id=tj.tagid
 					WHERE t.id=tj.tagid AND t.id IN (" . implode(',', $data) . ")
 					ORDER BY tj.taggedon DESC";
 
@@ -414,9 +414,13 @@ class Tag extends \JTable
 		{
 			$where[] = "tj.`objectid`=" . $this->_db->Quote((int) $filters['scope_id']);
 		}
-		if (isset($filters['label']) && $filters['label'])
+		if (isset($filters['label']) && $filters['label'] && $filters['label'] != '')
 		{
-			$where[] = "tj.`label`=" . $this->_db->Quote((string) $filters['label']);
+			$where[] = "tj.`label`=" . $this->_db->Quote((string) $filters['label']); // find labeled tags
+		}
+		if (isset($filters['label']) && $filters['label'] && $filters['label'] == '')
+		{
+			$where[] = "tj.`label`= ''"; // find non-labeled tags
 		}
 		if (isset($filters['admin']) && $filters['admin'] !== null)
 		{
