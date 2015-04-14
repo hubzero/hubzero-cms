@@ -304,6 +304,41 @@ class Repo extends Object
 	}
 
 	/**
+	 * Delete a file or a directory within repo
+	 *
+	 * @return  boolean
+	 */
+	public function deleteItem($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$type      = isset($params['type']) ? $params['type'] : 'file';
+
+		if (!$item)
+		{
+			return false;
+		}
+		$localPath = $dirPath ? $dirPath . DS . $item : $item;
+
+		// File object
+		$fileObject = new Models\File(trim($localPath), $path);
+		$fileObject->set('type', $type);
+		$params['file'] = $fileObject;
+
+		if ($type == 'file' && $this->call('deleteFile', $params))
+		{
+			return true;
+		}
+		elseif ($type == 'folder' && $this->call('deleteDirectory', $params))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Delete a directory within repo
 	 *
 	 * @return  boolean

@@ -34,7 +34,7 @@ $subdirPath = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 <tr class="mini faded mline">
 	<?php if ($this->model->access('content')) { ?>
 	<td>
-		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } ?>" />
+		<input type="checkbox" value="<?php echo urlencode($this->item->get('name')); ?>" name="<?php echo $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]'; ?>" class="checkasset js<?php echo $this->item->get('type') == 'folder' ? ' dirr' : ''; if ($this->item->get('untracked')) { echo ' untracked'; } if ($this->item->get('remote')) { echo ' remote'; } ?>" />
 	</td>
 	<?php } ?>
 	<td class="top_valign nobsp">

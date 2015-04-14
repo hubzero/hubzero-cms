@@ -1189,7 +1189,7 @@ HUB.ProjectFiles = {
 			}
 
 			// Sharing
-			if ($('#a-share').length && $('#a-share').hasClass('inactive') && dir == 0 && (untracked == 0))
+			if ($('#a-share').length && $('#a-share').hasClass('inactive') && dir == 0)
 			{
 				var selected = bselected[0];
 

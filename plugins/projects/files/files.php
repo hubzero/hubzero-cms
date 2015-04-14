@@ -203,6 +203,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
+				if (!$this->repo->exists())
+				{
+					// Default to local repo (will redirect to add repo page in the future)
+					$this->repo = new \Components\Projects\Models\Repo ($this->model, 'local');
+				}
 				$this->_path = $this->repo->get('path');
 			}
 
@@ -237,6 +242,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Get services the project is connected to
 				$this->_rServices = $this->_connect->getActive();
+
+				// Sync service is Google
+				if (!empty($this->_rServices) && $this->repo->isLocal())
+				{
+					$this->_remoteService = 'google';
+				}
 			}
 
 			// Include Git Helper
@@ -352,7 +363,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$arr['html'] 	= $this->_iniSync();
 					break;
 				case 'sync_status':
-					$arr['html'] 	= $this->_syncStatus();
+					$arr['html'] 	= $this->syncStatus();
 					break;
 				case 'sync_error':
 					$arr['html'] 	= $this->_syncError();
@@ -404,10 +415,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->services      = $this->_rServices;
 		$view->connections	 = $this->_connect->getConnections($this->_uid);
 
-		if (!empty($this->_rServices) && $this->repo->isLocal())
+		// Get stored remote connections
+		if (!empty($this->_remoteService))
 		{
 			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-			$remotes  = $objRFile->getRemoteEditFiles($this->model->get('id'), 'google', $this->subdir);
+			$remotes  = $objRFile->getRemoteEditFiles(
+				$this->model->get('id'),
+				$this->_remoteService,
+				$this->subdir
+			);
 
 			$view->sync 		 = $sync == 2 ? 0 : $view->oparams->get('google_sync_queue', 0);
 			$view->rSync 		 = $this->_rSync;
@@ -766,8 +782,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$url  = Route::url($this->_route . '&active=files');
-			$url .= $this->subdir ? '?subdir=' .urlencode($this->subdir) : '';
+			$url  = $this->_route . '&active=files';
+			$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+			$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
+			$url  = Route::url($url);
 		}
 
 		// Get quota
@@ -929,10 +947,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = Route::url($this->_route . '&active=files');
-		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
-		$this->_referer = $url;
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
 		return;
 	}
 
@@ -967,10 +985,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = Route::url($this->_route . '&active=files');
-		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
-		$this->_referer = $url;
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
 		return;
 	}
 
@@ -984,22 +1002,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get incoming array of items
 		$items = $this->_sortIncoming();
 
-		if (empty($items))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
-		}
-
-		$url 	= Route::url($this->_route . '&active=files');
-
 		// Confirm or process request
 		if ($this->_task == 'delete')
 		{
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'delete'
+					'folder'  =>'projects',
+					'element' =>'files',
+					'name'    =>'delete'
 				)
 			);
 
@@ -1014,95 +1025,91 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->subdir 		= $this->subdir;
-			$view->url			= $url;
+			$view->url			= Route::url($this->_route . '&active=files');
 			$view->path 		= $this->_path;
-			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
-			if ($this->getError())
+			if (empty($items))
 			{
-				$view->setError( $this->getError() );
+				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
 			}
+
 			return $view->loadTemplate();
 		}
-		else
+
+		// Set counts
+		$deleted = 0;
+
+		// Get stored remote connection to file
+		if (!empty($this->_remoteService))
 		{
-			// Set counts
-			$deleted 	= array();
-			$skipped 	= 0;
-			$failed 	= 0;
-			$sync 		= 0;
+			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
+			$remotes  = $objRFile->getRemoteEditFiles(
+				$this->model->get('id'),
+				$this->_remoteService,
+				$this->subdir
+			);
+		}
 
-			// Delete checked items
-			foreach ($items as $element)
+		// Delete checked items
+		foreach ($items as $element)
+		{
+			foreach ($element as $type => $item)
 			{
-				foreach ($element as $type => $item)
+				// Get type and item name
+				break;
+			}
+
+			// Must have a name
+			if (trim($item) == '')
+			{
+				continue;
+			}
+
+			// Start params
+			$params = array(
+				'subdir'            => $this->subdir,
+				'item'              => $item,
+				'type'              => $type
+			);
+
+			$localDirPath = $this->subdir ? $this->subdir . DS . $item : $item;
+
+			// Is this item synced?
+			$remote = !empty($remotes) && isset($remotes[$localDirPath]) ? $remotes[$localDirPath] : NULL;
+
+			// Is this a remote synced item?
+			if (!empty($remote) && $remote->remote_editing == 1)
+			{
+				// Delete remote converted file
+				if ($this->_connect->deleteRemoteItem(
+					$this->model->get('id'), $this->_remoteService, $this->model->get('owned_by_user'),
+					$remote->remote_id, false))
 				{
-					// Get type and item name
+					$this->registerUpdate('deleted', $item);
+					$deleted++;
 				}
-
-				// Must have a name
-				if (trim($item) == '')
+			}
+			else
+			{
+				if ($this->repo->deleteItem($params))
 				{
-					continue;
-				}
-
-				$item = $this->subdir ? $this->subdir . DS . $item : $item;
-
-				$remote 	= NULL;
-				$service 	= 'google';
-				if (!empty($this->_rServices) && $this->repo->isLocal())
-				{
-					foreach ($this->_rServices as $servicename)
-					{
-						// Get stored remote connection to file
-						$remote = $this->_getRemoteConnection($item, '', $servicename);
-						$service = $servicename;
-
-						if ($remote)
-						{
-							break;
-						}
-					}
-				}
-
-				if ($remote && $remote['converted'] == 1)
-				{
-					// Delete remote converted file
-					if ($this->_connect->deleteRemoteItem(
-						$this->model->get('id'), $service, $this->model->get('owned_by_user'),
-						$remote['id'], false))
-					{
-						// Include for syncing
-						$deleted[] = $item;
-					}
-				}
-				elseif ($this->_git->gitDelete($item, $type, $commitMsg))
-				{
-					$deleted[] = $item;
-
 					// Store in session
 					$this->registerUpdate('deleted', $item);
+					$deleted++;
 				}
 			}
-
-			// Success
-			if (count($deleted) > 0)
-			{
-				// Commit changes
-				$this->_git->gitCommit($commitMsg);
-			}
-
-			// Pass success or error message
-			if ($this->getError())
-			{
-				$this->_message = array('message' => $this->getError(), 'type' => 'error');
-			}
-
-			// Redirect to file list
-			$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
-			$this->_referer = $url;
-			return;
 		}
+
+		if ($deleted == 0)
+		{
+			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+		}
+
+		// Redirect to file list
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
+		return;
 	}
 
 	/**
@@ -1179,9 +1186,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url 	= Route::url($this->_route . '&active=files');
-		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-		$this->_referer = $url;
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
 		return;
 	}
 
@@ -2922,8 +2930,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	private function _getRemoteConnection($local_path = '', $id = 0, $service = '', $converted = 'na')
 	{
 		// Get remote connection
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-		$remote   = $objRFile->getConnection($this->model->get('id'), $id, $service, $local_path, $converted);
+		if (!isset($this->_remoteObj))
+		{
+			$this->_remoteObj = new \Components\Projects\Tables\RemoteFile ($this->_database);
+		}
+
+		$remote   = $this->_remoteObj->getConnection(
+			$this->model->get('id'),
+			$id,
+			$service,
+			$local_path,
+			$converted
+		);
 
 		return $remote;
 	}
@@ -3562,11 +3580,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$ajax)
 		{
-			return $this->browse();
+			return $this->_browse();
 		}
 		else
 		{
-			$this->_rSync['output'] = $this->browse();
+			$this->_rSync['output'] = $this->_browse();
 			return json_encode($this->_rSync);
 		}
 	}
@@ -4437,7 +4455,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$timecheck = date('c', time() - (1 * 1 * 60));
 			if ($synced >= $timecheck)
 			{
-				$status['output'] = $this->browse(2);
+				$status['output'] = $this->_browse(2);
 			}
 
 			// Timed sync?

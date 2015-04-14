@@ -462,6 +462,39 @@ class Git extends Models\Adapter
 	}
 
 	/**
+	 * Delete file
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function deleteFile ($params = array())
+	{
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		if (!($file instanceof Models\File) || $file->get('type') != 'file')
+		{
+			return false;
+		}
+
+		// Delete from Git
+		$this->_git->gitDelete($file->get('localPath'), 'file', $commitMsg);
+		$this->_git->gitCommit($commitMsg);
+
+		// Untracked?
+		if (!$this->get('remote') && file_exists($file->get('fullPath')))
+		{
+			// Remove file that is not in Git
+			if (!$this->fileSystem->delete($file->get('fullPath')))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Checkin file change
 	 *
 	 * @param      object	$file		Models\File

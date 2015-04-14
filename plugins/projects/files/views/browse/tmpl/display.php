@@ -102,6 +102,9 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 				<a href="<?php echo $this->url . '/?action=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
 				<a href="<?php echo $this->url . '/?action=delete' . $subdirlink; ?>" class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
 				<a href="<?php echo $this->url . '/?action=rename' . $subdirlink; ?>" class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span></a>
+				<?php if ($sharing && $connected) { ?>
+				<a href="<?php echo $this->url . '/?action=share' . $subdirlink; ?>" id="a-share" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo Lang::txt('PLG_PROJECTS_FILES_SHARE'); ?></span></a>
+				<?php } ?>
 				<?php if ($this->fileparams->get('latex')) { ?>
 				<a href="<?php echo $this->url . '/?action=compile' . $subdirlink; ?>" class="fmanage js" id="a-compile" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
 				<?php } ?>
