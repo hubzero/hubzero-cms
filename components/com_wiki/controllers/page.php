@@ -1094,13 +1094,14 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		if (file_exists('/usr/bin/phantomjs'))
 		{
-			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-			$fallback = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $wikiPageUrl . ' ' . $wikiPagePdf . ' 8.5in*11in';
+			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
+			$fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false ' . $rasterizeFile . ' ' . $wikiPageUrl . ' ' . $wikiPagePdf . ' 8.5in*11in';
 			if (!$cmd)
 			{
 				$cmd = $fallback;
 			}
 		}
+
 		if (isset($cmd))
 		{
 			// exec command
@@ -1117,7 +1118,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!file_exists($wikiPagePdf))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
+				JRoute::_('index.php?option=' . $this->_option . '&pagename=' . $wikiconfig['pagename']),
 				JText::_('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
 				'error'
 			);
