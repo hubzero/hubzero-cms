@@ -88,11 +88,22 @@ class Twitter extends Macro
 			return "(Please enter a valid Twitter Username/ID or Widget ID)";
 		}
 
-		// code for screename 
+		// code for screename
 		$widgetCode  = 'data-widget-id="346714310770302976"';
-		$widgetCode .= ' href="https://twitter.com/'. $screenName .'"';
+
+		// to account for different URL for hashtags?
+		if (strpos($screenName, '#') !== FALSE)
+		{
+			$screenName = str_replace('#', '', $screenName);
+			$widgetCode .= ' href="https://twitter.com/hastag/' . $screenName . '"';
+		}
+		else
+		{
+			$widgetCode .= ' href="https://twitter.com/'. $screenName .'"';
+		}
+
 		$widgetCode .= ' data-screen-name="' . $screenName . '"';
-		
+
 		// pass already configured widget
 		if ($widgetId)
 		{
