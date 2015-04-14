@@ -36,6 +36,7 @@ use Components\Blog\Models\Comment;
 use Components\Blog\Tables;
 use Request;
 use Config;
+use Notify;
 use Route;
 use User;
 use Lang;
@@ -227,12 +228,6 @@ class Comments extends AdminController
 			$this->view->row->set('created', Date::toSql());
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -256,18 +251,18 @@ class Comments extends AdminController
 		$row = new Comment($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
+		Notify::success(Lang::txt('COM_BLOG_COMMENT_SAVED'));
 
 		if ($this->_task == 'apply')
 		{
@@ -276,8 +271,7 @@ class Comments extends AdminController
 
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false),
-			Lang::txt('COM_BLOG_COMMENT_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false)
 		);
 	}
 
@@ -296,7 +290,7 @@ class Comments extends AdminController
 
 		if (count($ids) > 0)
 		{
-			$this->setMessage(Lang::txt('COM_BLOG_COMMENT_DELETED'));
+			$removed = 0;
 
 			// Loop through all the IDs
 			foreach ($ids as $id)
@@ -305,14 +299,18 @@ class Comments extends AdminController
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->setMessage($entry->getError(), 'error');
+					Notify::error($entry->getError());
+					continue;
 				}
+
+				$removed++;
 			}
 		}
 
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false),
+			($removed ? Lang::txt('COM_BLOG_COMMENT_DELETED') : null)
 		);
 	}
 

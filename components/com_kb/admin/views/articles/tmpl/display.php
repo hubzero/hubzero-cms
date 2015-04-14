@@ -105,10 +105,10 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -151,25 +151,6 @@ foreach ($this->rows as $row)
 		break;
 	}
 
-	/*if (!$row->get('access', 0))
-	{
-		$row->set('groupname', 'Public');
-		$color_access = 'public';
-		$task_access  = 'accessregistered';
-	}
-	elseif ($row->get('access', 0) == 1)
-	{
-		$row->set('groupname', 'Registered');
-		$color_access = 'registered';
-		$task_access  = 'accessspecial';
-	}
-	else
-	{
-		$row->set('groupname', 'Special');
-		$color_access = 'special';
-		$task_access  = 'accesspublic';
-	}*/
-
 	$tags = $row->tags('cloud');
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -196,7 +177,7 @@ foreach ($this->rows as $row)
 						<br /><span><?php echo Lang::txt('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&section=' . $this->filters['section']); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
 							<span><?php echo $alt; ?></span>
@@ -207,21 +188,15 @@ foreach ($this->rows as $row)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
-					<?php /*if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_CHANGE_ACCESS'); ?>">
-							<?php echo $row->get('groupname'); ?>
-						</a>
-					<?php } else {*/ ?>
-						<span class="access">
-							<?php echo $row->get('access_level'); ?>
-						</span>
-					<?php //} ?>
+				<td class="priority-4">
+					<span class="access">
+						<?php echo $row->get('access_level'); ?>
+					</span>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $this->escape($row->get('ctitle')); echo ($row->get('cctitle') ? ' (' . $this->escape($row->get('cctitle')) . ')' : ''); ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span>
 					<span style="color: red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>

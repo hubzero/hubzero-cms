@@ -35,8 +35,9 @@ use Components\Answers\Models\Question;
 use Components\Answers\Tables;
 use Exception;
 use Request;
-use Route;
 use Config;
+use Notify;
+use Route;
 use Lang;
 use App;
 
@@ -130,12 +131,6 @@ class Questions extends AdminController
 			}
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -158,12 +153,6 @@ class Questions extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = new Question($id);
-		}
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -191,17 +180,15 @@ class Questions extends AdminController
 
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Ensure we have at least one tag
 		if (!isset($fields['tags']) || !$fields['tags'])
 		{
-			$this->addComponentMessage(Lang::txt('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error(Lang::txt('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'));
+			return $this->editTask($row);
 		}
 
 		$row->set('email', (isset($fields['email']) ? 1 : 0));
@@ -210,13 +197,14 @@ class Questions extends AdminController
 		// Store content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Add the tag(s)
 		$row->tag($fields['tags'], User::get('id'));
+
+		Notify::success(Lang::txt('COM_ANSWERS_QUESTION_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -225,8 +213,7 @@ class Questions extends AdminController
 
 		// Redirect back to the full questions list
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_ANSWERS_QUESTION_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

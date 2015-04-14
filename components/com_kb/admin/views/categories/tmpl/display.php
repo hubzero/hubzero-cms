@@ -96,10 +96,10 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_TITLE', 'a.title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'a.state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'a.state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_SUB_CATEGORIES', 'cats', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_QUESTIONS', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_KB_QUESTIONS', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -148,53 +148,53 @@ foreach ($this->rows as $row)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_CATEGORY'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="glyph category">
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_CATEGORY'); ?>">
+							<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="glyph category">
+							<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+						</span>
+					<?php } ?>
 				</td>
-				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+				<td class="priority-3">
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<span class="access">
 						<?php echo $row->get('groupname'); ?>
 					</span>
 				</td>
 				<td>
-				<?php if ($row->get('categories', 0) > 0) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>">
-						<span><?php echo $row->get('categories', 0); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $row->get('categories', 0); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($row->get('categories', 0) > 0) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>">
+							<span><?php echo $row->get('categories', 0); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $row->get('categories', 0); ?></span>
+						</span>
+					<?php } ?>
 				</td>
-				<td>
-				<?php if ($row->get('articles', 0) > 0) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id') . '&category=-1')); ?>" title="<?php echo Lang::txt('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
-						<span><?php echo $row->get('articles', 0) . ' ' . Lang::txt('COM_KB_ARTICLES'); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $row->get('articles', 0); ?></span>
-					</span>
-				<?php } ?>
+				<td class="priority-2">
+					<?php if ($row->get('articles', 0) > 0) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id') . '&category=-1')); ?>" title="<?php echo Lang::txt('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
+							<span><?php echo $row->get('articles', 0) . ' ' . Lang::txt('COM_KB_ARTICLES'); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $row->get('articles', 0); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

@@ -35,6 +35,7 @@ use Components\Kb\Models\Archive;
 use Components\Kb\Models\Category;
 use Request;
 use Config;
+use Notify;
 use Route;
 use User;
 use Lang;
@@ -170,12 +171,6 @@ class Categories extends AdminController
 		$this->view->form = $m->getForm();
 		*/
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -210,7 +205,7 @@ class Categories extends AdminController
 
 		if (!$row->bind($fields))
 		{
-			\JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
+			Notify::error($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -218,7 +213,7 @@ class Categories extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			\JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
+			Notify::error($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -243,6 +238,7 @@ class Categories extends AdminController
 
 		if ($this->_task == 'apply')
 		{
+			Notify::success(Lang::txt('COM_KB_CATEGORY_SAVED'));
 			return $this->editTask($row);
 		}
 

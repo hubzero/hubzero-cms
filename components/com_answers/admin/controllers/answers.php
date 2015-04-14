@@ -36,6 +36,7 @@ use Components\Answers\Models\Response;
 use Components\Answers\Tables;
 use Exception;
 use Request;
+use Notify;
 use Config;
 use Route;
 use Lang;
@@ -128,12 +129,6 @@ class Answers extends AdminController
 			}
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -163,12 +158,6 @@ class Answers extends AdminController
 
 		$this->view->set('question', new Question($qid));
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->set('row', $row)
@@ -193,9 +182,8 @@ class Answers extends AdminController
 		$row = new Response(intval($answer['id']));
 		if (!$row->bind($answer))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Code cleaner
@@ -205,10 +193,11 @@ class Answers extends AdminController
 		// Store content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
+		Notify::success(Lang::txt('COM_ANSWERS_ANSWER_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -217,8 +206,7 @@ class Answers extends AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_ANSWERS_ANSWER_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

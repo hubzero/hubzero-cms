@@ -36,6 +36,7 @@ use Components\Kb\Models\Article;
 use Components\Kb\Tables;
 use Request;
 use Config;
+use Notify;
 use Route;
 use User;
 use Lang;
@@ -211,12 +212,6 @@ class Articles extends AdminController
 		$this->view->form = $m->getForm();
 		*/
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -240,7 +235,7 @@ class Articles extends AdminController
 		$row = new Article($fields['id']);
 		if (!$row->bind($fields))
 		{
-			\JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
+			Notify::error($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -263,12 +258,10 @@ class Articles extends AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			\JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
+			Notify::error($row->getError());
 			$this->editTask($row);
 			return;
 		}
-
-		//$row->checkin();
 
 		// Save the tags
 		$row->tag(
@@ -278,6 +271,7 @@ class Articles extends AdminController
 
 		if ($this->_task == 'apply')
 		{
+			Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
 			return $this->editTask($row);
 		}
 

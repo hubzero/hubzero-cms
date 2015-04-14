@@ -35,6 +35,7 @@ use Components\Blog\Models\Archive;
 use Components\Blog\Models\Entry;
 use Request;
 use Config;
+use Notify;
 use Route;
 use User;
 use Lang;
@@ -166,12 +167,6 @@ class Entries extends AdminController
 			$this->view->row->set('publish_up', Date::toSql());
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
@@ -204,21 +199,21 @@ class Entries extends AdminController
 		$row = new Entry($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->setMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Process tags
 		$row->tag(trim(Request::getVar('tags', '')));
+
+		Notify::success(Lang::txt('COM_BLOG_ENTRY_SAVED'));
 
 		if ($this->_task == 'apply')
 		{
@@ -227,8 +222,7 @@ class Entries extends AdminController
 
 		// Set the redirect
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BLOG_ENTRY_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -247,22 +241,28 @@ class Entries extends AdminController
 
 		if (count($ids) > 0)
 		{
+			$removed = 0;
+
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
 				$entry = new Entry(intval($id));
+
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->addComponentMessage($entry->getError(), 'error');
+					Notify::error($entry->getError());
+					continue;
 				}
+
+				$removed++;
 			}
 		}
 
 		// Set the redirect
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_BLOG_ENTRIES_DELETED')
+			($removed ? Lang::txt('COM_BLOG_ENTRIES_DELETED') : null)
 		);
 	}
 
@@ -304,7 +304,7 @@ class Entries extends AdminController
 			// Store new content
 			if (!$row->store())
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				Notify::error($row->getError());
 				continue;
 			}
 			$success++;
