@@ -33,7 +33,7 @@ namespace Components\Resources\Models\Import;
 use Hubzero\Base\Model;
 
 // included needed tables
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import' . DS . 'hook.php';
+require_once dirname(dirname(dirname(__DIR__))) . DS . 'tables' . DS . 'import' . DS . 'hook.php';
 
 /**
  * Import Runs Model

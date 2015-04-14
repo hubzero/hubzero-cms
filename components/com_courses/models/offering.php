@@ -33,19 +33,19 @@ defined('_JEXEC') or die('Restricted access');
 
 use Components\Courses\Tables;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'offering.php');
+require_once(__DIR__ . DS . 'abstract.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'student.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'manager.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'page.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once(__DIR__ . DS . 'iterator.php');
+require_once(__DIR__ . DS . 'section.php');
+require_once(__DIR__ . DS . 'unit.php');
+require_once(__DIR__ . DS . 'student.php');
+require_once(__DIR__ . DS . 'manager.php');
+require_once(__DIR__ . DS . 'announcement.php');
+require_once(__DIR__ . DS . 'page.php');
+require_once(__DIR__ . DS . 'gradebook.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'role.php');
 
 /**
  * Courses model class for a course

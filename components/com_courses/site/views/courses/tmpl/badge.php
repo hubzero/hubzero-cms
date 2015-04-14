@@ -50,14 +50,12 @@ switch ($this->action)
 			}
 			else
 			{
-				JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-				return;
+				return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
 			}
 		}
 		else
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
 		}
 
 		// Initiate a new content server and serve up the file
@@ -69,7 +67,7 @@ switch ($this->action)
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
+			App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
 		else
 		{
@@ -88,12 +86,12 @@ switch ($this->action)
 	case 'validation':
 		if (!$this->token)
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
+			App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
 		}
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
 
 		$db = \JFactory::getDBO();
 
@@ -102,7 +100,7 @@ switch ($this->action)
 
 		if (!$memberBadge->get('id'))
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
+			App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		$memberTbl = new \Components\Courses\Tables\Member($db);
@@ -115,7 +113,7 @@ switch ($this->action)
 		$title = Lang::txt('COM_COURSES_BADGE_VALIDATION');
 		$body  = "<img class=\"badge-img\" src=\"".$this->badge->get('img_url')."\" width=\"125\" />\n";
 		$body .= "<div class=\"badge-validation\">\n";
-		$body .= Lang::txt('COM_COURSES_BADGE_VALIDATION_TEXT', \JFactory::getUser($user_id)->get('name'), \JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y'));
+		$body .= Lang::txt('COM_COURSES_BADGE_VALIDATION_TEXT', User::getInstance($user_id)->get('name'), Date::of($memberBadge->get('earned_on'))->format('M d, Y'));
 		$body .= "</div>\n";
 		$body .= "<div class=\"badge-criteria\">\n";
 		$body .= $criteria->get('text');
@@ -123,7 +121,7 @@ switch ($this->action)
 	break;
 
 	default:
-		JError::raiseError(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
+		App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
 	break;
 }
 ?>

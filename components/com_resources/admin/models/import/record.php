@@ -37,7 +37,7 @@ use Exception;
 use stdClass;
 
 // include elements model
-include_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php';
+include_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php';
 
 /**
  * Resource Import Record Model

@@ -52,7 +52,7 @@ if ($mode != 'preview')
 
 $thumb = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id."_th.gif";
 $full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id.".gif";
-if (file_exists(PATH_CORE . $thumb))
+if (file_exists(PATH_APP . $thumb))
 {
 	$html .= '</br>';
 	$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';

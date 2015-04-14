@@ -1036,7 +1036,7 @@ class Tickets extends AdminController
 
 					// Plain text email
 					$eview = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
+						'base_path' => PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'site',
 						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));

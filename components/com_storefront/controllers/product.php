@@ -43,7 +43,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		require_once(dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
 		parent::execute();
@@ -73,7 +73,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$pageMessages = array();
 
 		// Get the cart
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
 		$cart = new CartModelCurrentCart();
 
 		// POST add to cart request
@@ -116,7 +116,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$this->view->product = $product;
 
 		// Run the auditor
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
 		$auditor = Audit::getAuditor($product, $cart->getCartInfo()->crtId);
 		$auditorResponse = $auditor->audit();
 		//print_r($auditor); die;
@@ -220,7 +220,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$allowedImgExt = array('jpg', 'gif', 'png');
 		$productImg = array();
 		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $pId;
-		$imgPath = JPATH_ROOT . $imgWebPath;
+		$imgPath = PATH_APP . $imgWebPath;
 
 		if (file_exists($imgPath))
 		{

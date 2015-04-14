@@ -71,10 +71,10 @@ class Group extends Base implements CommandInterface
 			$currentDirectory = getcwd();
 
 			// Remove web root
-			$currentDirectory = str_replace(JPATH_ROOT, '', $currentDirectory);
+			$currentDirectory = str_replace(PATH_APP, '', $currentDirectory);
 
 			// Get group upload directory
-			$groupsConfig     = \JComponentHelper::getParams('com_groups');
+			$groupsConfig     = \Component::params('com_groups');
 			$groupsDirectory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 
 			// Are we within the groups upload path
@@ -120,7 +120,7 @@ class Group extends Base implements CommandInterface
 	public function scaffolding()
 	{
 		// Get group config
-		$groupsConfig = \JComponentHelper::getParams('com_groups');
+		$groupsConfig = \Component::params('com_groups');
 
 		// Path to group folder
 		$directory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
@@ -155,10 +155,10 @@ class Group extends Base implements CommandInterface
 	public function update()
 	{
 		// Get group config
-		$groupsConfig = \JComponentHelper::getParams('com_groups');
+		$groupsConfig = \Component::params('com_groups');
 
 		// Path to group folder
-		$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+		$directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 		$directory .= DS . $this->group->get('gidNumber');
 
 		// Get task, defaults to update

@@ -544,9 +544,9 @@ class Sections extends AdminController
 					$data = array();
 					$data['Name']          = $course->get('title');
 					$data['Description']   = trim($course->get('title')) . ' Badge';
-					$data['CriteriaUrl']   = rtrim(\JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $badgeObj->get('id') . DS . 'criteria';
+					$data['CriteriaUrl']   = rtrim(Request::root(), '/') . '/courses/badge/' . $badgeObj->get('id') . '/criteria';
 					$data['Version']       = '1';
-					$data['BadgeImageUrl'] = rtrim(\JURI::root(), DS) . DS . trim($badgeObj->get('img_url'), DS);
+					$data['BadgeImageUrl'] = rtrim(Request::root(), '/') . '/' . trim($badgeObj->get('img_url'), '/');
 
 					if (!$credentials->consumer_key || !$credentials->consumer_secret)
 					{

@@ -29,9 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
 $no_html = Request::getInt('no_html', 0);
-$user_messaging = (JPluginHelper::isEnabled('members', 'messages') ? $this->config->get('user_messaging', 0) : 0);
+$user_messaging = (Plugin::isEnabled('members', 'messages') ? $this->config->get('user_messaging', 0) : 0);
 
 $prefix = $this->profile->get("name") . "'s";
 $edit = false;
@@ -48,7 +47,7 @@ switch ($user_messaging)
 		$messaging = false;
 		break;
 	case 1:
-		$common = \Hubzero\User\Helper::getCommonGroups($juser->get("id"), $this->profile->get('uidNumber'));
+		$common = \Hubzero\User\Helper::getCommonGroups(User::get("id"), $this->profile->get('uidNumber'));
 		if (count($common) > 0)
 		{
 			$messaging = true;
@@ -60,7 +59,7 @@ switch ($user_messaging)
 }
 
 //if user is this member turn on editing and password change, turn off messaging
-if ($this->profile->get('uidNumber') == $juser->get("id"))
+if ($this->profile->get('uidNumber') == User::get("id"))
 {
 	if ($this->tab == "profile")
 	{
@@ -72,7 +71,7 @@ if ($this->profile->get('uidNumber') == $juser->get("id"))
 }
 
 //no messaging if guest
-if ($juser->get("guest"))
+if (User::isGuest())
 {
 	$messaging = false;
 }
@@ -86,7 +85,7 @@ if (!$no_html)
 	<div id="page_container">
 		<div id="page_sidebar">
 			<div id="page_identity">
-				<?php $title = ($this->profile->get('uidNumber') == $juser->get('id')) ? Lang::txt('COM_MEMBERS_GO_TO_MY_DASHBOARD') : Lang::txt('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
+				<?php $title = ($this->profile->get('uidNumber') == User::get('id')) ? Lang::txt('COM_MEMBERS_GO_TO_MY_DASHBOARD') : Lang::txt('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
 				<a href="<?php echo Route::url($this->profile->getLink()); ?>" id="page_identity_link" title="<?php echo $title; ?>">
 					<img src="<?php echo $this->profile->getPicture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" class="profile-pic full" />
 				</a>
@@ -94,7 +93,7 @@ if (!$no_html)
 			<?php if ($messaging): ?>
 			<ul id="member_options">
 				<li>
-					<a class="message tooltips" title="<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?> :: <?php echo Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $this->escape(stripslashes($this->profile->get('name')))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
+					<a class="message tooltips" title="<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?> :: <?php echo Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $this->escape(stripslashes($this->profile->get('name')))); ?>" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
 						<?php echo Lang::txt('COM_MEMBERS_MESSAGE'); ?>
 					</a>
 				</li>
@@ -148,7 +147,7 @@ if (!$no_html)
 				$thumb = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '_th.gif';
 				$full = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
 			?>
-			<?php if (file_exists(JPATH_ROOT . $thumb)) : ?>
+			<?php if (file_exists(PATH_APP . $thumb)) : ?>
 				<a id="member-stats-graph" rel="lightbox" title="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
 					<img src="<?php echo $thumb; ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
 				</a>
@@ -160,7 +159,7 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->getLink() . '&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('uidNumber') == User::get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->getLink() . '&task=edit'); ?>">
 							<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
 						</a>
 					</li>
@@ -175,7 +174,7 @@ if (!$no_html)
 			</ul>
 <?php endif; ?>
 			<div id="page_header">
-				<?php if ($this->profile->get('uidNumber') == $juser->get('id')) : ?>
+				<?php if ($this->profile->get('uidNumber') == User::get('id')) : ?>
 					<?php
 						$cls = '';
 						$span_title = Lang::txt('COM_MEMBERS_PUBLIC_PROFILE_TITLE');

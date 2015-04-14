@@ -47,14 +47,14 @@ $pic = $this->profile->get("picture");
 $path = DS . trim($this->config->get("webpath", '/site/members'), DS) . DS . $uid . DS;
 
 //if we have a picture and it exists in the file system
-if ($pic && file_exists(JPATH_ROOT . $path . $pic))
+if ($pic && file_exists(PATH_APP . $path . $pic))
 {
-	$size = filesize(JPATH_ROOT . $path . $pic);
-	list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . $pic);
+	$size = filesize(PATH_APP . $path . $pic);
+	list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . $pic);
 
 	$picture->src = $path . $pic;
 	$picture->name = $pic;
-	$picture->size = \Hubzero\Utility\Number::formatBytes( $size );
+	$picture->size = \Hubzero\Utility\Number::formatBytes($size);
 	$picture->width = $width . " <abbr title=\"pixels\">px</abbr>";
 	$picture->height = $height . " <abbr title=\"pixels\">px</abbr>";
 }

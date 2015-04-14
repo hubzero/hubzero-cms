@@ -33,13 +33,13 @@ use Components\Courses\Tables;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
+require_once(__DIR__ . DS . 'abstract.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'code.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'badge.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+require_once(__DIR__ . DS . 'section' . DS . 'code.php');
+require_once(__DIR__ . DS . 'section' . DS . 'date.php');
+require_once(__DIR__ . DS . 'section' . DS . 'badge.php');
+require_once(__DIR__ . DS . 'member.php');
 
 /**
  * Courses model class for a course
@@ -546,7 +546,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 		if (!$this->get('course_id'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+			require_once(__DIR__ . DS . 'offering.php');
 			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}

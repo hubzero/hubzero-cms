@@ -90,7 +90,7 @@ $this->css('course.css')
 				<div class="preview" id="logo">
 					<div id="logo_picked">
 						<?php if ($this->course->get('logo')) { ?>
-							<img src="/site/courses/<?php echo $this->course->get('gidNumber'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo $this->course->get('cn') ?>" />
+							<img src="<?php echo Request::base(); ?>/site/courses/<?php echo $this->course->get('gidNumber'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo $this->course->get('cn') ?>" />
 						<?php } else { ?>
 							<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->course->get('cn') ?>" >
 						<?php } ?>
@@ -103,7 +103,7 @@ $this->css('course.css')
 			<legend>Course Main Content</legend>
 			<p>This is the content that appears on the main (overview tab) for each course. You can choose to use the default which is your course description and a selection of course members or you can also place custom content using wiki-syntax</p>
 			<div class="preview">
-				<img src="/components/com_courses/assets/img/course_overview_preview.jpg" alt="Course Overview Content" />
+				<img src="<?php echo Request::base(); ?>/components/com_courses/site/assets/img/course_overview_preview.jpg" alt="Course Overview Content" />
 			</div>
 
 			<fieldset>
@@ -125,7 +125,7 @@ $this->css('course.css')
 				<legend>Enter Custom Overview Content</legend>
 				<label for="field_description">
 					<?php
-						echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 50, false, 'field_description');
+						echo $this->editor('course[description]', $this->escape(stripslashes($this->course->get('description'))), 35, 50, 'field_description');
 					?>
 				</label>
 			</fieldset>

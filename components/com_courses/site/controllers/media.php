@@ -34,6 +34,10 @@ use Hubzero\Component\SiteController;
 use Components\Resources\Tables\MediaTrackingDetailed;
 use Components\Resources\Tables\MediaTracking;
 use stdClass;
+use Request;
+use Date;
+use User;
+use Lang;
 
 /**
  * Courses controller class for media
@@ -48,8 +52,8 @@ class Media extends SiteController
 	public function trackingTask()
 	{
 		// Include need media tracking library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
 
 		// Instantiate objects
 		$database = \JFactory::getDBO();
@@ -90,8 +94,8 @@ class Media extends SiteController
 			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
-			$trackingInformation->current_position_timestamp  = \Date::toSql();
-			$trackingInformation->farthest_position_timestamp = \Date::toSql();
+			$trackingInformation->current_position_timestamp  = Date::toSql();
+			$trackingInformation->farthest_position_timestamp = Date::toSql();
 			$trackingInformation->completed                   = 0;
 			$trackingInformation->total_views                 = 1;
 			$trackingInformation->total_viewing_time          = 0;
@@ -110,7 +114,7 @@ class Media extends SiteController
 
 			// Set the new current position
 			$trackingInformation->current_position           = $time;
-			$trackingInformation->current_position_timestamp = \Date::toSql();
+			$trackingInformation->current_position_timestamp = Date::toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -122,7 +126,7 @@ class Media extends SiteController
 			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
 			{
 				$trackingInformation->farthest_position           = $time;
-				$trackingInformation->farthest_position_timestamp = \Date::toSql();
+				$trackingInformation->farthest_position_timestamp = Date::toSql();
 			}
 
 			// If event type is start, means we need to increment view count
@@ -150,15 +154,15 @@ class Media extends SiteController
 			$trackingInformationDetailed->object_duration             = $duration;
 			$trackingInformationDetailed->current_position            = $time;
 			$trackingInformationDetailed->farthest_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp  = \Date::toSql();
-			$trackingInformationDetailed->farthest_position_timestamp = \Date::toSql();
+			$trackingInformationDetailed->current_position_timestamp  = Date::toSql();
+			$trackingInformationDetailed->farthest_position_timestamp = Date::toSql();
 			$trackingInformationDetailed->completed                   = 0;
 		}
 		else
 		{
 			// Set the new current position
 			$trackingInformationDetailed->current_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp = \Date::toSql();
+			$trackingInformationDetailed->current_position_timestamp = Date::toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -170,7 +174,7 @@ class Media extends SiteController
 			if (isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
-				$trackingInformationDetailed->farthest_position_timestamp = \Date::toSql();
+				$trackingInformationDetailed->farthest_position_timestamp = Date::toSql();
 			}
 
 			// If event type is end, we need to increment completed count

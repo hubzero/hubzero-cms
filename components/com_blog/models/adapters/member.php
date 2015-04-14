@@ -32,6 +32,7 @@ namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
+use Plugin;
 use Date;
 
 require_once(__DIR__ . DS . 'base.php');
@@ -65,9 +66,7 @@ class Member extends Base
 
 		$this->_item = Profile::getInstance($scope_id);
 
-		$config = new \JRegistry(
-			\JPluginHelper::getPlugin('members', 'blog')->params
-		);
+		$config = Plugin::params('members', 'blog');
 
 		$id = String::pad($this->get('scope_id'));
 

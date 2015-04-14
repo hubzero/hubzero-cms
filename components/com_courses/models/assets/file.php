@@ -64,9 +64,9 @@ class FileAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
+		require_once(dirname(__DIR__) . DS . 'asset.php');
 
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');

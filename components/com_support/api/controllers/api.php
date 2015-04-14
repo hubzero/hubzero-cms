@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 /**
  * API controller class for support tickets
@@ -55,7 +55,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$this->config = Component::params('com_support');
 		$this->database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
 		$this->acl = \Components\Support\Helpers\ACL::getACL();
 		$this->acl->setUser($userid);
 
@@ -775,7 +775,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		// Check if the notify list has eny entries
 		if (count($comment->to()))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
 
 			$allowEmailResponses = $ticket->config('email_processing');
 			if ($allowEmailResponses)
@@ -802,7 +802,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 
 			// Plain text email
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . '/components/com_support/site',
+				'base_path' => PATH_CORE . '/components/com_support/site',
 				'name'      => 'emails',
 				'layout'    => 'comment_plain'
 			));

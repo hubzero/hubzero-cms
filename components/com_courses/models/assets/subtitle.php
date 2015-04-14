@@ -59,9 +59,9 @@ class SubtitleAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
+		require_once(dirname(__DIR__) . DS . 'asset.php');
 
 		// joomla libs
 		jimport('joomla.filesystem.folder');
@@ -89,11 +89,7 @@ class SubtitleAssetHandler extends AssetHandler
 
 		// Max upload size
 		$sizeLimit = (int) $config->get('upload_maxsize');
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$sizeLimit = $sizeLimit * 1024 * 1024;
-		}
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// Check to make sure we have a file and its not too big
 		if ($size == 0)

@@ -78,13 +78,12 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		//instantiate view and pass needed vars
 		$this->view->setLayout('upload');
 		$this->view->config = $this->config;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -128,7 +127,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//define upload directory and make sure its writable
-		$uploadDirectory = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id) . DS;
+		$uploadDirectory = PATH_APP . DS . $this->filespace() . DS . \Hubzero\Utility\String::pad($id) . DS;
 
 		if (!is_dir($uploadDirectory))
 		{
@@ -333,7 +332,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		// Build upload path
 		$dir  = \Hubzero\Utility\String::pad($id);
-		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
+		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
 		if (!is_dir($path))
 		{
@@ -455,7 +454,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		// Build the file path
 		$dir  = \Hubzero\Utility\String::pad($id);
-		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
+		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
@@ -524,10 +523,10 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		// Build the file path
 		$dir  = \Hubzero\Utility\String::pad($id);
-		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
+		$path = PATH_APP . DS . $this->filespace() . DS . $dir;
 
 		// Output HTML
-		$this->view->webpath = DS . trim($this->config->get('webpath', '/site/members'), DS);
+		$this->view->webpath = '/' . $this->filespace();
 		$this->view->default_picture = $this->config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif');
 		$this->view->path = $dir;
 
@@ -555,15 +554,15 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
 
 		// Check if they're a site admin (from Joomla)
 		// Admin
-		$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-		$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+		$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+		$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 
 		if ($this->config->get('access-admin-' . $assetType))
 		{
@@ -614,8 +613,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$file = urldecode($file);
 
 		// build base path
-		$base_path = trim($this->config->get('webpath', '/site/members'), DS);
-		$base_path .= DS . \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber'));
+		$base_path = $this->filespace() . DS . \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber'));
 
 		//if we are on the blog
 		if (Request::getVar('active', 'profile') == 'blog')
@@ -632,8 +630,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			}*/
 
 			//get the params from the members blog plugin
-			$blog_config = JPluginHelper::getPlugin('members', 'blog');
-			$blog_params = new JRegistry($blog_config->params);
+			$blog_params = \Plugin::params('members', 'blog');
 
 			//build the base path to file based of upload path param
 			$base_path = str_replace('{{uid}}', \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber')), $blog_params->get('uploadpath'));
@@ -666,6 +663,16 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			exit;
 		}
 		return;
+	}
+
+	/**
+	 * Download a file
+	 *
+	 * @return     void
+	 */
+	private function filespace()
+	{
+		return trim($this->config->get('webpath', '/site/members'), DS);
 	}
 }
 

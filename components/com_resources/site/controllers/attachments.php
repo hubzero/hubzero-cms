@@ -37,6 +37,11 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\Validate;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Number;
+use Component;
+use Request;
+use Date;
+use Lang;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'resource.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'assoc.php');
@@ -60,10 +65,6 @@ class Attachments extends SiteController
 			App::abort(403, Lang::txt('You must be logged in to access.'));
 			return;
 		}
-
-		// Load the com_resources component config
-		$rconfig = Component::params('com_resources');
-		$this->rconfig = $rconfig;
 
 		parent::execute();
 	}
@@ -100,10 +101,10 @@ class Attachments extends SiteController
 		$asset = new Resource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $row->title;
-		$asset->created      = \Date::toSql();
+		$asset->created      = Date::toSql();
 		$asset->created_by   = User::get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = \Date::toSql();
+		$asset->publish_up   = Date::toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->path         = 'http://'; // make sure no path is specified just yet
@@ -173,10 +174,10 @@ class Attachments extends SiteController
 		$asset = new Resource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $asset->title;
-		$asset->created      = \Date::toSql();
+		$asset->created      = Date::toSql();
 		$asset->created_by   = User::get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = \Date::toSql();
+		$asset->publish_up   = Date::toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->access       = 0;
@@ -354,10 +355,10 @@ class Attachments extends SiteController
 		$row = new Resource($this->database);
 		$row->title        = $filename . '.' . $ext;
 		$row->introtext    = $row->title;
-		$row->created      = \Date::toSql();
+		$row->created      = Date::toSql();
 		$row->created_by   = User::get('id');
 		$row->published    = 1;
-		$row->publish_up   = \Date::toSql();
+		$row->publish_up   = Date::toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->access       = 0;
@@ -1103,7 +1104,7 @@ class Attachments extends SiteController
 		}
 
 		// Get the configured upload path
-		$base = DS . trim($this->rconfig->get('uploadpath', '/site/resources'), DS);
+		$base = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 		// Make sure the path doesn't end with a slash
 		$listdir = DS . trim($listdir, DS);

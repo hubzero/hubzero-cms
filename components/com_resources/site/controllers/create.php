@@ -45,6 +45,12 @@ use Hubzero\Component\SiteController;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 use Exception;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor.php');
 
@@ -70,9 +76,6 @@ class Create extends SiteController
 		$this->registerTask('discard', 'delete');
 		$this->registerTask('remove', 'delete');
 		$this->registerTask('start', 'draft');
-
-		// Load the com_resources component config
-		$this->config = Component::params('com_resources');
 
 		// Get the task at hand
 		$task = Request::getVar('task', '');
@@ -744,7 +747,7 @@ class Create extends SiteController
 		}
 		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
 
-		$row->created    = ($row->created)    ? $row->created    : \Date::toSql();
+		$row->created    = ($row->created)    ? $row->created    : Date::toSql();
 		$row->created_by = ($row->created_by) ? $row->created_by : User::get('id');
 
 		// Set status to "composing"
@@ -756,9 +759,9 @@ class Create extends SiteController
 		{
 			$row->published = ($row->published ?: 2);
 		}
-		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : \Date::toSql());
+		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : Date::toSql());
 		$row->publish_down = ($row->publish_down && $row->publish_down != '0000-00-00 00:00:00' ? $row->publish_down : '0000-00-00 00:00:00');
-		$row->modified     = \Date::toSql();
+		$row->modified     = Date::toSql();
 		$row->modified_by  = User::get('id');
 		$row->access       = ($row->access ?: 0);
 
@@ -881,7 +884,7 @@ class Create extends SiteController
 
 		// build path to temp upload folder and future permanent folder
 		$session = \JFactory::getSession();
-		$created = \JFactory::getDate()->format('Y-m-d 00:00:00');
+		$created = Date::format('Y-m-d 00:00:00');
 		$oldPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($created, $session->get('resources_temp_id') ,'');
 		$newPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $row->id, '');
 
@@ -1247,7 +1250,7 @@ class Create extends SiteController
 
 				// Set status to published
 				$resource->published = 1;
-				$resource->publish_up = \Date::toSql();
+				$resource->publish_up = Date::toSql();
 			}
 			else
 			{
@@ -1259,7 +1262,7 @@ class Create extends SiteController
 				{
 					// Set status to published
 					$resource->published = 1;
-					$resource->publish_up = \Date::toSql();
+					$resource->publish_up = Date::toSql();
 				}
 				else
 				{
@@ -1586,8 +1589,8 @@ class Create extends SiteController
 				$path = $this->_buildUploadPath($listdir, '');
 
 				$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-				$baseY = $base . '/'. \JFactory::getDate($child->created)->format("Y");
-				$baseM = $baseY . '/' . \JFactory::getDate($child->created)->format("m");
+				$baseY = $base . '/'. Date::of($child->created)->format("Y");
+				$baseM = $baseY . '/' . Date::of($child->created)->format("m");
 
 				// Check if the folder even exists
 				if (!is_dir($path) or !$path)
@@ -1915,13 +1918,13 @@ class Create extends SiteController
 		}
 		if ($date)
 		{
-			$dir_year  = \JFactory::getDate($date)->format('Y');
-			$dir_month = \JFactory::getDate($date)->format('m');
+			$dir_year  = Date::of($date)->format('Y');
+			$dir_month = Date::of($date)->format('m');
 		}
 		else
 		{
-			$dir_year  = \JFactory::getDate()->format('Y');
-			$dir_month = \JFactory::getDate()->format('m');
+			$dir_year  = Date::format('Y');
+			$dir_month = Date::format('m');
 		}
 		$dir_id = String::pad($id);
 

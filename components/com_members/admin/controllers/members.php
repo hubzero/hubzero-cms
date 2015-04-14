@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php');
 
 /**
  * Manage site members

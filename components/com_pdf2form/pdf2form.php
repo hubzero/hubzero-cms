@@ -703,7 +703,7 @@ class PdfForm
 	private static function imageBase()
 	{
 		$args = func_get_args();
-		array_unshift($args,  JPATH_BASE.'/site/pdf2form/images');
+		array_unshift($args, PATH_APP . '/site/pdf2form/images');
 		return implode('/', $args);
 	}
 

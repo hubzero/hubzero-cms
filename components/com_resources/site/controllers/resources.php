@@ -2418,7 +2418,7 @@ class Resources extends SiteController
 
 			case 'bibtex':
 			default:
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 
 				$bibtex = new \Structures_BibTex();
 				$addarray = array();
@@ -2603,7 +2603,7 @@ class Resources extends SiteController
 	{
 		if (!$user)
 		{
-			$user = \JFactory::getUser();
+			$user = \User::getRoot();
 		}
 		if (!$user->get('guest'))
 		{
@@ -2739,9 +2739,7 @@ class Resources extends SiteController
 			}
 		}
 
-		$juri = \JURI::getInstance();
-
-		return rtrim($juri->base(), DS) . $path;
+		return rtrim(Request::base(), '/') . $path;
 	}
 
 	/**

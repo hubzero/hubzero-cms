@@ -365,7 +365,7 @@ class Assets extends AdminController
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path))
+				if (!\JFolder::create($path))
 				{
 					$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
 					$this->editTask($row);

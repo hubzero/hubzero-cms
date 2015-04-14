@@ -32,7 +32,7 @@ namespace Components\Resources\Models\Import;
 
 use Hubzero\Base\Model;
 
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import' . DS . 'run.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import' . DS . 'run.php';
 
 /**
  * Import Runs Model

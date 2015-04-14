@@ -87,7 +87,7 @@ class Group extends Base
 			}
 			else
 			{
-				$this->_image = '/components/com_groups/assets/img/group_default_logo.png';
+				$this->_image = '/components/com_groups/site/assets/img/group_default_logo.png';
 			}
 		}
 		return $this->_image;

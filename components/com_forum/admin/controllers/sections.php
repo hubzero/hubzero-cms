@@ -36,6 +36,12 @@ use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Admin\Models\AdminSection;
 use Exception;
+use Request;
+use Notify;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for forum sections
@@ -45,38 +51,35 @@ class Sections extends AdminController
 	/**
 	 * Display all sections
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
-			'scopeinfo' => $app->getUserStateFromRequest(
+			'scopeinfo' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scopeinfo',
 				'scopeinfo',
 				''
@@ -103,12 +106,6 @@ class Sections extends AdminController
 		$this->view->results = $model->sections('list', $this->view->filters);
 
 		$this->view->forum = $model;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -155,14 +152,10 @@ class Sections extends AdminController
 		$m = new AdminSection();
 		$this->view->form = $m->getForm();
 
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -193,18 +186,18 @@ class Sections extends AdminController
 		$row = new Section($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
+
+		Notify::success(Lang::txt('COM_FORUM_SECTION_SAVED'));
 
 		if ($this->_task == 'apply')
 		{
@@ -212,10 +205,8 @@ class Sections extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_FORUM_SECTION_SAVED'),
-			'message'
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -273,7 +264,7 @@ class Sections extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . Request::getInt('section_id', 0), false),
 			Lang::txt('COM_FORUM_SECTIONS_DELETED')
 		);
@@ -282,7 +273,7 @@ class Sections extends AdminController
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -292,7 +283,7 @@ class Sections extends AdminController
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -319,7 +310,7 @@ class Sections extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_FORUM_UNPUBLISH') : Lang::txt('COM_FORUM_PUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
@@ -353,7 +344,7 @@ class Sections extends AdminController
 			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
@@ -377,7 +368,7 @@ class Sections extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
@@ -402,7 +393,7 @@ class Sections extends AdminController
 		}
 
 		// set message
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);

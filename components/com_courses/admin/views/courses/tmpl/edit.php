@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 			<div class="clr"></div>
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?>">
 				<label for="field-description"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
-				<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 40, 15, false, 'field-description'); ?>
+				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')), 40, 15, 'field-description'); ?>
 				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?></span>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?>">
@@ -171,7 +171,7 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 					<td><?php
-					$creator = JUser::getInstance($this->row->get('created_by'));
+					$creator = User::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
 			<?php } ?>

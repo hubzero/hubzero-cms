@@ -36,6 +36,9 @@ use Components\Resources\Tables\MediaTrackingDetailed;
 use Components\Resources\Helpers\Html;
 use Hubzero\Component\SiteController;
 use stdClass;
+use Request;
+use Date;
+use Lang;
 
 /**
  * Resources controller class for media
@@ -159,7 +162,7 @@ class Media extends SiteController
 		// allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
-			$row->created = \JFactory::getDate()->format('Y-m-d 00:00:00');
+			$row->created = Date::format('Y-m-d 00:00:00');
 		}
 
 		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $resource, '') . DS . 'media';
@@ -229,7 +232,7 @@ class Media extends SiteController
 		// allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
-			$row->created = \JFactory::getDate()->format('Y-m-d 00:00:00');
+			$row->created = Date::format('Y-m-d 00:00:00');
 		}
 
 		$this->view->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $this->view->resource, '') . DS . 'media';
@@ -367,8 +370,8 @@ class Media extends SiteController
 			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
-			$trackingInformation->current_position_timestamp  = \Date::toSql();
-			$trackingInformation->farthest_position_timestamp = \Date::toSql();
+			$trackingInformation->current_position_timestamp  = Date::toSql();
+			$trackingInformation->farthest_position_timestamp = Date::toSql();
 			$trackingInformation->completed                   = 0;
 			$trackingInformation->total_views                 = 1;
 			$trackingInformation->total_viewing_time          = 0;
@@ -387,7 +390,7 @@ class Media extends SiteController
 
 			// Set the new current position
 			$trackingInformation->current_position           = $time;
-			$trackingInformation->current_position_timestamp = \Date::toSql();
+			$trackingInformation->current_position_timestamp = Date::toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -399,7 +402,7 @@ class Media extends SiteController
 			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
 			{
 				$trackingInformation->farthest_position           = $time;
-				$trackingInformation->farthest_position_timestamp = \Date::toSql();
+				$trackingInformation->farthest_position_timestamp = Date::toSql();
 			}
 
 			// If event type is start, means we need to increment view count
@@ -427,15 +430,15 @@ class Media extends SiteController
 			$trackingInformationDetailed->object_duration             = $duration;
 			$trackingInformationDetailed->current_position            = $time;
 			$trackingInformationDetailed->farthest_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp  = \Date::toSql();
-			$trackingInformationDetailed->farthest_position_timestamp = \Date::toSql();
+			$trackingInformationDetailed->current_position_timestamp  = Date::toSql();
+			$trackingInformationDetailed->farthest_position_timestamp = Date::toSql();
 			$trackingInformationDetailed->completed                   = 0;
 		}
 		else
 		{
 			// Set the new current position
 			$trackingInformationDetailed->current_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp = \Date::toSql();
+			$trackingInformationDetailed->current_position_timestamp = Date::toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -447,7 +450,7 @@ class Media extends SiteController
 			if (isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
-				$trackingInformationDetailed->farthest_position_timestamp = \Date::toSql();
+				$trackingInformationDetailed->farthest_position_timestamp = Date::toSql();
 			}
 
 			// If event type is end, we need to increment completed count

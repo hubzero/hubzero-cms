@@ -33,8 +33,8 @@ use Components\Courses\Tables;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
+require_once(__DIR__ . DS . 'abstract.php');
 
 /**
  * Courses model class for a course

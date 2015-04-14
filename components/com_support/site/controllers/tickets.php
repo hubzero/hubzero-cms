@@ -49,8 +49,8 @@ use Lang;
 use User;
 use Date;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
 /**
  * Manage support tickets
@@ -2283,7 +2283,7 @@ class Tickets extends SiteController
 			$tmpPath = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $tmp;
 			if (is_dir($tmpPath))
 			{
-				if (!JFolder::move($tmpPath, $path))
+				if (!\JFolder::move($tmpPath, $path))
 				{
 					$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'));
 					throw new Exception(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'), 500);
@@ -2328,7 +2328,7 @@ class Tickets extends SiteController
 			return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
 		}
 
-		$filename = JFile::stripExt($file['name']);
+		$filename = \JFile::stripExt($file['name']);
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -2635,7 +2635,7 @@ class Tickets extends SiteController
 
 				foreach ($members as $member)
 				{
-					$u = \JUser::getInstance($member);
+					$u = User::getInstance($member);
 					if (!is_object($u))
 					{
 						continue;

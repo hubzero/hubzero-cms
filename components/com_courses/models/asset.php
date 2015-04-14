@@ -33,10 +33,10 @@ use Components\Courses\Tables;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.association.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
+require_once(__DIR__ . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 
 /**
  * Asset model class for a course
@@ -293,7 +293,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 */
 	public function logView($course=null)
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
+		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php');
 
 		if (!$course || !is_object($course))
 		{
@@ -529,9 +529,9 @@ class CoursesModelAsset extends CoursesModelAbstract
 		// If this is a form...
 		if ($forms && $this->get('type') == 'form')
 		{
-			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
-			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php';
-			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php';
+			require_once __DIR__ . DS . 'form.php';
+			require_once __DIR__ . DS . 'formDeployment.php';
+			require_once __DIR__ . DS . 'formRespondent.php';
 
 			// Copy the form as well...look up by asset_id
 			if ($form = PdfForm::loadByAssetId($originalId))

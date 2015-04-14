@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'contribute.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 
 /**
  * Controller class for contributing a tool
@@ -236,7 +236,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 		$listdir = \Components\Resources\Tables\Html::build_path($row->created, $row->id, '');
 		$path = $this->_buildUploadPath($listdir, '');
 
@@ -361,7 +361,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Get resource path
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 		$listdir = \Components\Resources\Helpers\Html::build_path($row->created, $id, '');
 
 		// Build the path

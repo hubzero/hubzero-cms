@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Helper class for handling course tags
@@ -117,7 +117,7 @@ class CoursesModelTags extends \Components\Tags\Models\Cloud
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . '/components/com_courses/site',
+						'base_path' => PATH_CORE . '/components/com_courses/site',
 						'name'      => 'courses',
 						'layout'    => '_tags'
 					));

@@ -38,6 +38,12 @@ use Components\Forum\Admin\Models\AdminThread;
 use Components\Forum\Models\Tags;
 use Components\Forum\Models\Manager;
 use Exception;
+use Request;
+use Notify;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for forum threads
@@ -51,52 +57,49 @@ class Threads extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'group' => $app->getUserStateFromRequest(
+			'group' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.group',
 				'group',
 				-1,
 				'int'
 			),
-			'section_id' => $app->getUserStateFromRequest(
+			'section_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.section_id',
 				'section_id',
 				-1,
 				'int'
 			),
-			'category_id' => $app->getUserStateFromRequest(
+			'category_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.category_id',
 				'category_id',
 				-1,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'c.id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
-			'scopeinfo' => $app->getUserStateFromRequest(
+			'scopeinfo' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scopeinfo',
 				'scopeinfo',
 				''
@@ -192,12 +195,6 @@ class Threads extends AdminController
 
 		$this->view->filters['category_id'] = is_array($this->view->filters['category_id']) ? -1 : $this->view->filters['category_id'];
 
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -209,53 +206,50 @@ class Threads extends AdminController
 	 */
 	public function threadTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.thread.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.thread.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'group' => $app->getUserStateFromRequest(
+			'group' => Request::getState(
 				$this->_option . '.thread.group',
 				'group',
 				-1,
 				'int'
 			),
-			'section_id' => $app->getUserStateFromRequest(
+			'section_id' => Request::getState(
 				$this->_option . '.thread.section_id',
 				'section_id',
 				-1,
 				'int'
 			),
-			'category_id' => $app->getUserStateFromRequest(
+			'category_id' => Request::getState(
 				$this->_option . '.thread.category_id',
 				'category_id',
 				-1,
 				'int'
 			),
-			'thread' => $app->getUserStateFromRequest(
+			'thread' => Request::getState(
 				$this->_option . '.thread.thread',
 				'thread',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.thread.sort',
 				'filter_order',
 				'c.id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.thread.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -336,12 +330,6 @@ class Threads extends AdminController
 
 		$model->load($this->view->filters['thread']);
 		$this->view->thread = $model;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -514,25 +502,22 @@ class Threads extends AdminController
 		$model = new Post($this->database);
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		// Check content
 		if (!$model->check())
 		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		// Store new content
 		if (!$model->store())
 		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		if ($fields['id'])
@@ -554,7 +539,7 @@ class Threads extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false),
 			$msg,
 			'message'
@@ -685,7 +670,7 @@ class Threads extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			Lang::txt('COM_FORUM_POSTS_DELETED')
 		);
@@ -735,7 +720,7 @@ class Threads extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_FORUM_UNPUBLISH') : Lang::txt('COM_FORUM_PUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
@@ -774,7 +759,7 @@ class Threads extends AdminController
 			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			$message
 		);
@@ -802,7 +787,7 @@ class Threads extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_FORUM_MAKE_NOT_STICKY') : Lang::txt('COM_FORUM_MAKE_STICKY');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
@@ -832,7 +817,7 @@ class Threads extends AdminController
 			$message = Lang::txt('COM_FORUM_ITEMS_UNSTUCK', count($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			$message
 		);
@@ -858,7 +843,7 @@ class Threads extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
@@ -879,7 +864,7 @@ class Threads extends AdminController
 		}
 
 		// set message
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
@@ -895,7 +880,7 @@ class Threads extends AdminController
 		$fields = Request::getVar('fields', array());
 		$parent = ($fields['parent']) ? $fields['parent'] : $fields['id'];
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent, false)
 		);
 	}

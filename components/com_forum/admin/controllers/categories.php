@@ -37,6 +37,12 @@ use Components\Forum\Tables\Post;
 use Components\Forum\Admin\Models\AdminCategory;
 use Components\Forum\Models\Manager;
 use Exception;
+use Request;
+use Notify;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Controller class for forum categories
@@ -50,46 +56,43 @@ class Categories extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get Joomla configuration
-		$app = \JFactory::getApplication();
-
 		// Filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'group' => $app->getUserStateFromRequest(
+			'group' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.group',
 				'group',
 				-1,
 				'int'
 			),
-			'section_id' => $app->getUserStateFromRequest(
+			'section_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.section_id',
 				'section_id',
 				-1,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
-			'scopeinfo' => $app->getUserStateFromRequest(
+			'scopeinfo' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scopeinfo',
 				'scopeinfo',
 				''
@@ -142,12 +145,6 @@ class Categories extends AdminController
 		$this->view->results = $model->getRecords($this->view->filters);
 
 		$this->view->forum = new Manager($this->view->filters['scope'], $this->view->filters['scope_id']);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -233,14 +230,10 @@ class Categories extends AdminController
 		$m = new AdminCategory();
 		$this->view->form = $m->getForm();
 
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -261,9 +254,8 @@ class Categories extends AdminController
 		$model = new Category($this->database);
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		if (!$model->scope)
@@ -277,21 +269,19 @@ class Categories extends AdminController
 		// Check content
 		if (!$model->check())
 		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		// Store new content
 		if (!$model->store())
 		{
-			$this->addComponentMessage($model->getError(), 'error');
-			$this->editTask($model);
-			return;
+			Notify::error($model->getError());
+			return $this->editTask($model);
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false),
 			Lang::txt('COM_FORUM_CATEGORY_SAVED')
 		);
@@ -340,7 +330,7 @@ class Categories extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 			Lang::txt('COM_FORUM_CATEGORIES_DELETED')
 		);
@@ -388,7 +378,7 @@ class Categories extends AdminController
 		{
 			$action = ($state == 1) ? Lang::txt('COM_FORUM_UNPUBLISH') : Lang::txt('COM_FORUM_PUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
@@ -418,7 +408,7 @@ class Categories extends AdminController
 			$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 			$message
 		);
@@ -444,7 +434,7 @@ class Categories extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 				Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
@@ -465,7 +455,7 @@ class Categories extends AdminController
 		}
 
 		// set message
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 			Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
@@ -480,7 +470,7 @@ class Categories extends AdminController
 	{
 		$fields = Request::getVar('fields', array());
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false)
 		);
 	}

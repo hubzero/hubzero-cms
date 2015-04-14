@@ -350,7 +350,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		if (($params = Request::getVar('params', false, 'post')) || !$id)
 		{
-			$p = new JRegistry('');
+			$p = new \JRegistry('');
 
 			$db = \JFactory::getDbo();
 			$query = $db->getQuery(true);

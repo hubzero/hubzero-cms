@@ -95,10 +95,10 @@ class Migration extends Base implements CommandInterface
 			if ($group && $group->isSuperGroup())
 			{
 				// Get group config
-				$groupsConfig = \JComponentHelper::getParams('com_groups');
+				$groupsConfig = \Component::params('com_groups');
 
 				// Path to group folder
-				$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+				$directory  = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 				$directory .= DS . $group->get('gidNumber');
 
 				// make sure we have migrations dir

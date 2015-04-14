@@ -211,7 +211,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 					$thumb .= DS . ltrim($row->picture, DS);
 					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 
-					if (file_exists(JPATH_ROOT . $thumb))
+					if (file_exists(PATH_APP . $thumb))
 					{
 						$picture = $thumb;
 					}
