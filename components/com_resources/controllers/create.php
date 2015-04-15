@@ -1822,8 +1822,8 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$text = str_replace("’","'", $text);
 		$text = str_replace("‘","'", $text);
 
-		$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
-		$text = preg_replace('/{.+?}/', '', $text);
+		//$text = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $text);
+		//$text = preg_replace('/{.+?}/', '', $text);
 		$text = preg_replace("'<style[^>]*>.*?</style>'si", '', $text);
 		$text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
 		$text = preg_replace('/<!--.+?-->/', '', $text);
