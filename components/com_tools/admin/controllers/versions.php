@@ -32,6 +32,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once dirname(dirname(dirname(__FILE__))) . DS . 'models' . DS . 'version' . DS . 'zone.php';
+require_once dirname(dirname(dirname(__FILE__))) . DS . 'tables' . DS . 'mw.zones.php';
+
+use Components\Tools\Models\Version\Zone;
+
 /**
  * Tools controller class for tool versions
  */
@@ -58,37 +63,34 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get Filters
-		$this->view->filters = array(
-			'id' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.versions.id',
-				'id',
-				0,
-				'int'
-			),
-			// Sorting
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort',
-				'filter_order',
-				'toolname'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir',
-				'filter_order_Dir',
-				'ASC'
-			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
+		$this->view->filters       = array();
+		$this->view->filters['id'] = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.id',
+			'id',
+			0,
+			'int'
+		);
+		$this->view->filters['sort']     = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort',
+			'filter_order',
+			'toolname'
+		);
+		$this->view->filters['sort_Dir'] = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir',
+			'filter_order_Dir',
+			'ASC'
+		);
+		$this->view->filters['limit']    = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit',
+			'limit',
+			Config::get('list_limit'),
+			'int'
+		);
+		$this->view->filters['start']    = Request::getState(
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart',
+			'limitstart',
+			0,
+			'int'
 		);
 
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
@@ -124,7 +126,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	 * @param   mixed  $row
 	 * @return  void
 	 */
-	public function editTask($row)
+	public function editTask($row=null)
 	{
 		Request::setVar('hidemainmenu', 1);
 
@@ -229,6 +231,145 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_TOOLS_ITEM_SAVED')
+		);
+	}
+
+	/**
+	 * Display a list of version zones
+	 *
+	 * @return     void
+	 */
+	public function displayZonesTask()
+	{
+		$this->view->setLayout('component');
+
+		// Get the version number
+		$version = Request::getInt('version', 0);
+
+		// Do we have an ID?
+		if (!$version)
+		{
+			$this->cancelTask();
+			return;
+		}
+
+		$this->view->rows    = Zone::whereEquals('tool_version_id', $version);
+		$this->view->version = $version;
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Display results
+		$this->view->display();
+	}
+
+	/**
+	 * Add a new zone
+	 *
+	 * @return     void
+	 */
+	public function addZoneTask()
+	{
+		$this->editZoneTask();
+	}
+
+	/**
+	 * Edit a zone
+	 *
+	 * @return     void
+	 */
+	public function editZoneTask($row=null)
+	{
+		Request::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('editZone');
+
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else
+		{
+			$this->view->row = Zone::oneOrNew(Request::getInt('id', 0));
+		}
+
+		if ($this->view->row->isNew())
+		{
+			$this->view->row->set('tool_version_id', Request::getInt('version', 0));
+		}
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Display results
+		$this->view->display();
+	}
+
+	/**
+	 * Save changes to version zone
+	 *
+	 * @return     void
+	 */
+	public function saveZoneTask()
+	{
+		// Check for request forgeries
+		Request::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$fields = Request::getVar('fields', [], 'post');
+		$row    = Zone::oneOrNew($fields['id'])->set($fields);
+
+		if (!$row->save())
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
+		Request::setVar('tmpl', 'component');
+
+		if ($this->getError())
+		{
+			echo '<p class="error">' . $this->getError() . '</p>';
+		}
+		else
+		{
+			echo '<p class="message">' . Lang::txt('COM_TOOLS_ITEM_SAVED') . '</p>';
+		}
+	}
+
+	/**
+	 * Delete zone entry
+	 *
+	 * @return     void
+	 */
+	public function removeZoneTask()
+	{
+		// Check for request forgeries
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+
+		$row = Zone::oneOrFail(Request::getInt('id', false));
+
+		if (!$row->destroy())
+		{
+			App::abort(500, $row->getError());
+			return;
+		}
+
+		App::redirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0),
+			Lang::txt('COM_TOOLS_ITEM_DELETED')
 		);
 	}
 }

@@ -329,6 +329,22 @@ function saveAndUpdate()
 		window.parent.$.fancybox.close();
 	}, 700);
 }
+
+jQuery(document).ready(function($)
+{
+	var from = $('#field-ipFROM');
+	var to   = $('#field-ipTO');
+
+	from.on('keyup', function(e) {
+		if ($(this).val().indexOf('/') !== -1) {
+			$('.ipTOrow').fadeTo(200, 0.3);
+			to.prop('disabled', true);
+		} else {
+			$('.ipTOrow').fadeTo(200, 1);
+			to.prop('disabled', false);
+		}
+	});
+});
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -361,11 +377,11 @@ function saveAndUpdate()
 				<tbody>
 					<tr>
 						<th class="key"><label for="field-ipFROM"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_FROM'); ?>:</label></th>
-						<td><input type="text" name="fields[ipFROM]" id="field-ipFROM" value="<?php echo $this->escape(stripslashes($this->row->get('ipFROM'))); ?>" /></td>
+						<td><input type="text" name="fields[ipFROM]" id="field-ipFROM" value="<?php echo $this->escape(stripslashes(long2ip($this->row->get('ipFROM')))); ?>" /></td>
 					</tr>
-					<tr>
+					<tr class="ipTOrow">
 						<th class="key"><label for="field-ipTO"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_TO'); ?>:</label></th>
-						<td><input type="text" name="fields[ipTO]" id="field-ipTO" value="<?php echo $this->escape(stripslashes($this->row->get('ipTO'))); ?>" /></td>
+						<td><input type="text" name="fields[ipTO]" id="field-ipTO" value="<?php echo $this->escape(stripslashes(long2ip($this->row->get('ipTO')))); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-continent"><?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>

@@ -87,14 +87,18 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('ipFROM'))); ?>
-					</a>
+					<?php if ($row->get('ipFROM') != 0000000000) : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
+						</a>
+					<?php endif; ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('ipTO'))); ?>
-					</a>
+					<?php if ($row->get('ipFROM') != 0000000000) : ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
+						</a>
+					<?php endif; ?>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">

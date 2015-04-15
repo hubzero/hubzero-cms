@@ -138,6 +138,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">ON</option>
 			<option value="2">ON (admin only)</option>
 		</field>
+		<field name="zones" type="radio" default="0" label="Zones" description="Allow tool session zones">
+			<option value="0">OFF</option>
+			<option value="1">ON</option>
+		</field>
 		<field name="mw_redirect" type="text" menu="hide" label="Redirect" default="/home" description="The URL to redirect to when middleware is OFF" />
 		<field name="mwDBDriver" type="text" menu="hide" label="Middleware DB Driver" default="" description="Middleware DB Driver" />
 		<field name="mwDBHost" type="text" menu="hide" label="Middleware DB Host" default="" description="Middleware DB Host" />
@@ -162,10 +166,6 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Yes</option>
 		</field>
 		<field name="launch_ipad_app" type="text" default="" label="iPad app name" description="iPad app name" />
-		<field name="zones" type="radio" default="0" label="Zones" description="Allow tool session zones">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
-		</field>
 	</fieldset>
 	<fieldset name="tool">
 		<field name="default_mw" type="text" menu="hide" default="narwhal" label="Default middleware" description="Name of default middleware" />

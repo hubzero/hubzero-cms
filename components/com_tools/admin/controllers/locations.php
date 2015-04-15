@@ -220,7 +220,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		Notify::success(Lang::_('COM_TOOLS_ITEM_SAVED'));
+		Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{

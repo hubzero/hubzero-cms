@@ -100,14 +100,18 @@ foreach ($this->rows as $row)
 				</td>
 			<?php } ?>
 				<td>
-					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
-						<?php echo $this->escape(stripslashes($row->get('ipFROM'))); ?>
-					</a>
+					<?php if ($row->get('ipFROM') != 0000000000) : ?>
+						<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+							<?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
+						</a>
+					<?php endif; ?>
 				</td>
 				<td>
-					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
-						<?php echo $this->escape(stripslashes($row->get('ipTO'))); ?>
-					</a>
+					<?php if ($row->get('ipTO') != 0000000000) : ?>
+						<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+							<?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
+						</a>
+					<?php endif; ?>
 				</td>
 				<td>
 					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
