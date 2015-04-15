@@ -32,6 +32,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'middleware.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.zones.php');
+
 /**
  * Tools controller class for tool versions
  */
@@ -257,6 +260,169 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	{
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
+
+	/**
+	 * Display a list of version zones
+	 *
+	 * @return     void
+	 */
+	public function displayZonesTask()
+	{
+		$this->view->setLayout('component');
+
+		// Get the version number
+		$version = JRequest::getInt('version', 0);
+
+		// Do we have an ID?
+		if (!$version)
+		{
+			$this->cancelTask();
+			return;
+		}
+
+		// Get the table
+		$db = \JFactory::getDbo();
+		$this->view->rows    = with(new ToolVersionZones($db))->loadByToolVersion($version);
+		$this->view->version = $version;
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Display results
+		$this->view->display();
+	}
+
+	/**
+	 * Add a new zone
+	 *
+	 * @return     void
+	 */
+	public function addZoneTask()
+	{
+		$this->editZoneTask();
+	}
+
+	/**
+	 * Edit a zone
+	 *
+	 * @return     void
+	 */
+	public function editZoneTask($row=null)
+	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('editZone');
+
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else
+		{
+			// Incoming
+			$id = JRequest::getInt('id', 0);
+			$db = \JFactory::getDbo();
+			$this->view->row = new ToolVersionZones($db);
+			$this->view->row->load($id);
+		}
+
+		if (!$this->view->row->get('tool_version_id'))
+		{
+			$this->view->row->set('tool_version_id', \JRequest::getInt('version', 0));
+		}
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Display results
+		$this->view->display();
+	}
+
+	/**
+	 * Save changes to version zone
+	 *
+	 * @return     void
+	 */
+	public function saveZoneTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		$db  = \JFactory::getDbo();
+		$row = new ToolVersionZones($db);
+
+		if (!$row->bind($fields))
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		// Store new content
+		if (!$row->store(true))
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		JRequest::setVar('tmpl', 'component');
+
+		if ($this->getError())
+		{
+			echo '<p class="error">' . $this->getError() . '</p>';
+		}
+		else
+		{
+			echo '<p class="message">' . JText::_('COM_TOOLS_ITEM_SAVED') . '</p>';
+		}
+	}
+
+	/**
+	 * Delete zone entry
+	 *
+	 * @return     void
+	 */
+	public function removeZoneTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		if ($id = JRequest::getInt('id', false))
+		{
+			$db  = \JFactory::getDbo();
+			$row = new ToolVersionZones($db);
+			$row->load($id);
+
+			if (!$row->delete())
+			{
+				JError::raiseError(500, $row->getError());
+				return;
+			}
+		}
+
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . JRequest::getInt('version', 0),
+			JText::_('COM_TOOLS_ITEM_DELETED'),
+			'message'
 		);
 	}
 }

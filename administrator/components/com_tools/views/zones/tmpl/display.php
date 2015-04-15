@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_ZONES'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
+JToolBarHelper::makeDefault('default', 'COM_TOOLS_MAKE_DEFAULT');
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
 JToolBarHelper::help('zones');
@@ -59,6 +60,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_DEFAULT', 'is_default', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_MASTER', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_SSH_KEY', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('COM_TOOLS_COL_LOCATIONS'); ?></th>
@@ -66,7 +68,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -95,13 +97,18 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
+					<a class="state <?php echo ($row->get('is_default')) ? 'default' : 'notdefault'; ?>">
+						<span><?php echo $this->escape(stripslashes($row->get('is_default'))); ?></span>
+					</a>
+				</td>
+				<td>
 					<?php echo $this->escape(stripslashes($row->get('master'))); ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->get('ssh_key_path'))); ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;zone=<?php echo $row->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;zone=<?php echo $row->get('id'); ?>&amp;tmpl=index">
 						<span><?php echo $row->locations('count'); ?></span>
 					</a>
 				</td>

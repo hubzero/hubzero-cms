@@ -143,6 +143,14 @@ class MwZoneLocations extends JTable
 			$this->setError(JText::_('No zone ID provided'));
 			return false;
 		}
+
+		if (strpos($this->ipFROM, '/') !== false)
+		{
+			$cidr         = explode('/', $this->ipFROM);
+			$this->ipFROM = ip2long($cidr[0]) & ((-1 << (32 - (int)$cidr[1])));
+			$this->ipTO   = ip2long($cidr[0]) + pow(2, (32 - (int)$cidr[1])) - 1;
+		}
+
 		if (strstr($this->ipFROM, '.'))
 		{
 			$this->ipFROM = ip2long($this->ipFROM);
