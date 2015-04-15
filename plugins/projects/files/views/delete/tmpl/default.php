@@ -25,13 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$f = 1;
-$i = 1;
-$skipped = 0;
-
-// Get remote connection
-$objRFile = new \Components\Projects\Tables\RemoteFile ($this->database);
-
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
@@ -59,46 +52,17 @@ if (!$this->getError()) {
 		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_FILES_CONFIRM'); ?></p>
 
 		<ul class="sample">
-		<?php foreach ($this->items as $element)
+		<?php foreach ($this->items as $file)
 		{
-			$skip 	= false;
-			$remote = NULL;
-
-			foreach ($element as $type => $item)
-			{
-				// Get type and item name
-			}
-
-			// Remote file?
-			if (!empty($this->services))
-			{
-				foreach ($this->services as $servicename)
-				{
-					// Get stored remote connection to file
-					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item;
-					$remote = $objRFile->getConnection($this->model->get('id'), '', $servicename, $fpath);
-					if ($remote)
-					{
-						break;
-					}
-				}
-			}
-
 			// Display list item with file data
 			$this->view('default', 'selected')
-			     ->set('skip', $skip)
-			     ->set('item', $item)
-			     ->set('remote', $remote)
-			     ->set('type', $type)
+			     ->set('skip', false)
+			     ->set('file', $file)
 			     ->set('action', 'delete')
 			     ->set('multi', 'multi')
 			     ->display();
 		} ?>
 		</ul>
-
-		<?php if (!empty($this->services) && $skipped > 0)  { ?>
-			<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_REMOTE_NEED_CONNECTION'); ?></p>
-		<?php } ?>
 
 		<p class="submitarea">
 			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?>" id="submit-ajaxform" />

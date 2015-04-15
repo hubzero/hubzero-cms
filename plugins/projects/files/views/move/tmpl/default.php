@@ -30,18 +30,18 @@ $i = 1;
 $skipped = 0;
 $maxlevel = 100;
 
-// Get remote connection
-$objRFile = new \Components\Projects\Tables\RemoteFile ($this->database);
-
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 // Get all parents
 $dirs = array();
-foreach ($this->list as $item)
+if ($this->list)
 {
-	if ($item->type == 'folder')
+	foreach ($this->list as $item)
 	{
-		$dirs[] = $item->localPath;
+		if ($item->type == 'folder')
+		{
+			$dirs[] = $item->localPath;
+		}
 	}
 }
 
@@ -53,9 +53,7 @@ foreach ($this->list as $item)
 if ($this->getError()) {
 	echo ('<p class="witherror">' . $this->getError() . '</p>');
 }
-?>
-<?php
-if (!$this->getError()) {
+else {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 	<fieldset >
@@ -69,37 +67,13 @@ if (!$this->getError()) {
 		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_FILES_CONFIRM'); ?></p>
 
 		<ul class="sample">
-		<?php foreach ($this->items as $element)
+		<?php foreach ($this->items as $file)
 		{
-			$remote = NULL;
-			$skip 	= false;
-			foreach ($element as $type => $item)
-			{
-				// Get type and item name
-			}
-
-			// Remote file?
-			if (!empty($this->services))
-			{
-				foreach ($this->services as $servicename)
-				{
-					// Get stored remote connection to file
-					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item;
-					$remote = $objRFile->getConnection($this->model->get('id'), '', $servicename, $fpath);
-					if ($remote)
-					{
-						break;
-					}
-				}
-			}
-
 			// Display list item with file data
 			$this->view('default', 'selected')
-			     ->set('skip', $skip)
-			     ->set('item', $item)
-			     ->set('remote', $remote)
-			     ->set('type', $type)
-			     ->set('action', 'delete')
+			     ->set('skip', false)
+			     ->set('file', $file)
+			     ->set('action', 'move')
 			     ->set('multi', 'multi')
 			     ->display();
 		} ?>
@@ -113,8 +87,10 @@ if (!$this->getError()) {
 					<input type="radio" name="newpath" value="" <?php if (!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
 				</li>
 			<?php
-			for ($i= 0; $i < count($dirs); $i++) {
+			for ($i= 0; $i < count($dirs); $i++)
+			{
 					$dir = $dirs[$i];
+
 					// Remove full path
 					$dir 			= trim(str_replace($this->path, "", $dir), DS);
 					$desect_path 	= explode(DS, $dir);

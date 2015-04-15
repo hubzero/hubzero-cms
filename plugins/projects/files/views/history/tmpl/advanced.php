@@ -40,7 +40,8 @@ $locals  = 0;
 $sLocals = 0;
 
 $candiff = count($this->versions);
-foreach ($this->versions as $version) {
+foreach ($this->versions as $version)
+{
 	if ($version['hide'] == 1 || $version['commitStatus'] == 'D' || $version['remote'])
 	{
 		$candiff--;
@@ -51,11 +52,9 @@ foreach ($this->versions as $version) {
 	}
 }
 
-$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
+$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40) . '</span></span>';
 
-$ext = \Components\Projects\Helpers\Html::getFileExtension($this->file);
-
-$allowDiff = ($this->binary || ($this->remote && $this->remote['converted'] == 1) || $candiff <= 1 ) ? 0 : 1;
+$allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candiff <= 1 ) ? 0 : 1;
 
 ?>
 <?php if ($this->ajax) { ?>
@@ -81,25 +80,20 @@ if ($this->getError()) {
 
 	<fieldset >
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
-		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
+		<input type="hidden" name="file" value="<?php echo $this->file->get('name'); ?>" />
 		<input type="hidden" name="action" value="diff" />
 			<ul class="sample">
 				<?php
-					// Display list item with file data
-					$view = $this->view('default', 'selected');
-					$view->skip 		= false;
-					$view->item 		= $this->file;
-					$view->subdir 		= $this->subdir;
-					$view->remote		= $this->remote;
-					$view->type			= 'file';
-					$view->action		= 'history';
-					$view->multi		= '';
+					$extras =  ($allowDiff && !$this->getError()) ? '<input type="submit" id="rundiff" value="' . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS') . '" class="btn rightfloat" />' : '';
 
-					if ($allowDiff && !$this->getError())
-					{
-						$view->extras = '<input type="submit" id="rundiff" value="' . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS') . '" class="btn rightfloat" />';
-					}
-					echo $view->loadTemplate();
+					// Display list item with file data
+					$this->view('default', 'selected')
+					     ->set('skip', false)
+					     ->set('file', $this->file)
+					     ->set('action', 'history')
+					     ->set('multi', 'multi')
+					     ->set('extras', $extras)
+					     ->display();
 				?>
 			</ul>
 
@@ -262,7 +256,6 @@ if ($this->getError()) {
 			} ?>
 		</fieldset>
 </form>
-
 <?php if ($this->ajax) { ?>
 </div>
 <?php } ?>

@@ -25,7 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$remoteControl = $this->remote && $this->remote['converted'] == 1 ? 1 : 0;
+$subdirlink    = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
+
+$remoteControl = false;
+if (!empty($this->file))
+{
+	$remoteControl = $this->file->get('converted') ? true : false;
+}
 
 ?>
 <div id="abox-content">
@@ -33,13 +39,10 @@ $remoteControl = $this->remote && $this->remote['converted'] == 1 ? 1 : 0;
 <?php
 // Display error or success message
 if ($this->getError()) {
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo ('<p class="witherror">' . $this->getError() . '</p>');
 }
-?>
-<?php
-if (!$this->getError()) {
-?>
-
+else
+{ ?>
 <form id="hubForm-ajax" method="post" class="" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')); ?>">
 	<p class="notice">
 	<?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : Lang::txt('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM');  ?>
@@ -50,72 +53,61 @@ if (!$this->getError()) {
 		<input type="hidden" name="action" value="shareit" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="repo" value="<?php echo $$this->repo->get('name'); ?>" />
+		<input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="service" value="<?php echo $this->remote['service']; ?>" />
+		<input type="hidden" name="service" value="<?php echo $this->service; ?>" />
 		<p class="send_to"><span class="<?php echo $remoteControl ? 'send_to_local' : 'send_to_remote'; ?>"><span>&nbsp;</span></span></p>
 		<ul class="sample">
 			<?php
 				// Display list item with file data
 				$this->view('default', 'selected')
 				     ->set('skip', false)
-				     ->set('item', $this->item)
-				     ->set('remote', $this->remote)
-				     ->set('type', 'file')
+				     ->set('file', $this->file)
 				     ->set('action', 'share')
 				     ->set('multi', 'multi')
 				     ->display();
 			?>
 		</ul>
-
+<?php // \Hubzero\Utility\Debug::stop('test'); ?>
 		<?php if ($remoteControl)
 		{
-			if ($this->remote['service'] == 'google')
+			$ext = $this->file->get('ext');
+			if ($this->file->get('originalPath'))
 			{
-				$ext = '';
+				$ext = \Components\Projects\Helpers\Google::getImportExt($this->file->get('originalPath'));
+			}
 
-				// Get original file
-				$original = $this->remote['original_path'];
+			$formats = \Components\Projects\Helpers\Google::getGoogleConversionFormat($this->file->get('mimeType'), false, false, true, $ext);
+			$first = isset($formats[$ext]) ? 0 : 1;
 
-				if ($original)
-				{
-					// Get file extention
-					$ext = \Components\Projects\Helpers\Google::getImportExt($original);
-				}
-
-				$formats = \Components\Projects\Helpers\Google::getGoogleConversionFormat($this->remote['mimeType'], false, false, true, $ext);
-
-				$first = isset($formats[$ext]) ? 0 : 1;
-
-				if (!empty($formats))
-				{
+			if (!empty($formats))
+			{
 			?>
 				<h4><?php echo Lang::txt('PLG_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
 				<div class="sharing-option-extra">
 			<?php
 				$i = 0;
-						foreach ($formats as $key => $value)
-						{
+				foreach ($formats as $key => $value)
+				{
 			?>
 				<label <?php if ($ext == $key) { echo 'class="original-format"'; } ?> >
 					<input type="radio" name="format" value="<?php echo $key; ?>" <?php if (($first && $i == 0) || $ext == $key) { echo 'checked="checked"'; } ?> />
 					<?php echo $value; ?> <?php if ($ext == $key) { echo '<span class="hint mini rightfloat"> [original format]</span>'; } ?>
 				</label>
 			<?php
-						$i++;
-						}
+				$i++;
+				}
 			?>
 				</div>
 			<?php
-				}
-			 }
+			}
 		}
 ?>
 		<p class="submitarea">
-			<?php echo $this->type == 'folder'
-				? '<input type="hidden" name="folder" value="'.$this->item.'" />'
-				: '<input type="hidden" name="asset" value="'.$this->item.'" />'; ?>
+			<?php echo $this->file->get('type') == 'folder'
+				? '<input type="hidden" name="folder" value="' . $this->file->get('name') . '" />'
+				: '<input type="hidden" name="asset" value="' . $this->file->get('name') . '" />'; ?>
 			<input type="submit" value="<?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_ACTION_UNSHARE') : Lang::txt('PLG_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 		</p>

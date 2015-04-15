@@ -419,13 +419,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!empty($this->_remoteService))
 		{
 			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-			$remotes  = $objRFile->getRemoteEditFiles(
+			$remotes  = $objRFile->getRemoteFiles(
 				$this->model->get('id'),
 				$this->_remoteService,
 				$this->subdir
 			);
 
-			$view->sync 		 = $sync == 2 ? 0 : $view->oparams->get('google_sync_queue', 0);
+			$view->sync 		 = $sync == 2 ? 0 : $this->model->params->get('google_sync_queue', 0);
 			$view->rSync 		 = $this->_rSync;
 			$view->sharing 		 = 1;
 		}
@@ -838,6 +838,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					}
 				}
 			}
+
+			// Force sync
+			if ($this->repo->isLocal())
+			{
+				$this->model->saveParam('google_sync_queue', 1);
+			}
 		}
 
 		// On error
@@ -993,6 +999,28 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get stored remote connections
+	 *
+	 * @return     array
+	 */
+	protected function _getRemoteConnections($remoteEdit = true)
+	{
+		$remotes = array();
+		if (!empty($this->_remoteService))
+		{
+			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
+			$remotes  = $objRFile->getRemoteFiles(
+				$this->model->get('id'),
+				$this->_remoteService,
+				$this->subdir,
+				$remoteEdit
+			);
+		}
+
+		return $remotes;
+	}
+
+	/**
 	 * Delete items
 	 *
 	 * @return     void, redirect
@@ -1001,6 +1029,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		// Get incoming array of items
 		$items = $this->_sortIncoming();
+
+		// Get stored remote connections
+		$remotes = $this->_getRemoteConnections();
+
+		// Params for repo call
+		$params = array(
+			'subdir'            => $this->subdir,
+			'remoteConnections' => $remotes
+		);
 
 		// Confirm or process request
 		if ($this->_task == 'delete')
@@ -1014,7 +1051,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->items 		= $items;
+			$view->items 		= array();
 			$view->services		= $this->_rServices;
 			$view->connections	= $this->_connect->getConnections();
 			$view->connect		= $this->_connect;
@@ -1031,6 +1068,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
 			}
+			else
+			{
+				foreach ($items as $element)
+				{
+					foreach ($element as $type => $item)
+					{
+						// Get type and item name
+						break;
+					}
+					// Build metadata object
+					$view->items[] = $this->repo->getMetadata($item, $type, $params);
+				}
+			}
 
 			return $view->loadTemplate();
 		}
@@ -1038,70 +1088,57 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set counts
 		$deleted = 0;
 
-		// Get stored remote connection to file
-		if (!empty($this->_remoteService))
-		{
-			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-			$remotes  = $objRFile->getRemoteEditFiles(
-				$this->model->get('id'),
-				$this->_remoteService,
-				$this->subdir
-			);
-		}
-
 		// Delete checked items
-		foreach ($items as $element)
+		if (!empty($items))
 		{
-			foreach ($element as $type => $item)
+			foreach ($items as $element)
 			{
-				// Get type and item name
-				break;
-			}
-
-			// Must have a name
-			if (trim($item) == '')
-			{
-				continue;
-			}
-
-			// Start params
-			$params = array(
-				'subdir'            => $this->subdir,
-				'item'              => $item,
-				'type'              => $type
-			);
-
-			$localDirPath = $this->subdir ? $this->subdir . DS . $item : $item;
-
-			// Is this item synced?
-			$remote = !empty($remotes) && isset($remotes[$localDirPath]) ? $remotes[$localDirPath] : NULL;
-
-			// Is this a remote synced item?
-			if (!empty($remote) && $remote->remote_editing == 1)
-			{
-				// Delete remote converted file
-				if ($this->_connect->deleteRemoteItem(
-					$this->model->get('id'), $this->_remoteService, $this->model->get('owned_by_user'),
-					$remote->remote_id, false))
+				foreach ($element as $type => $item)
 				{
-					$this->registerUpdate('deleted', $item);
-					$deleted++;
+					// Get type and item name
+					break;
 				}
-			}
-			else
-			{
-				if ($this->repo->deleteItem($params))
+
+				// Must have a name
+				if (trim($item) == '')
 				{
-					// Store in session
-					$this->registerUpdate('deleted', $item);
-					$deleted++;
+					continue;
+				}
+
+				$params['item'] = $item;
+				$params['type'] = $type;
+
+				// Build metadata object
+				$params['file'] = $this->repo->getMetadata($item, $type, $params);
+
+				// Is this a remote edited item?
+				if ($params['file']->get('converted'))
+				{
+					// Delete remote converted file
+					if ($this->_connect->deleteRemoteItem(
+						$this->model->get('id'), $this->_remoteService, $this->model->get('owned_by_user'),
+						$params['file']->get('remoteId'), false))
+					{
+						$this->registerUpdate('deleted', $item);
+						$deleted++;
+					}
+				}
+				else
+				{
+					if ($this->repo->deleteItem($params))
+					{
+						// Store in session
+						$this->registerUpdate('deleted', $item);
+						$deleted++;
+					}
 				}
 			}
 		}
 
-		if ($deleted == 0)
+		// Resync
+		if ($deleted && $this->repo->isLocal())
 		{
-			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+			$this->model->saveParam('google_sync_queue', 1);
 		}
 
 		// Redirect to file list
@@ -1203,12 +1240,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get incoming array of items
 		$items = $this->_sortIncoming();
 
-		if (empty($items))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
-		}
-
-		$url 	= Route::url($this->_route . '&active=files');
+		// Get stored remote connections
+		$remotes = $this->_getRemoteConnections();
 
 		// Confirmation screen
 		if ($this->_task == 'move')
@@ -1222,17 +1255,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$params = array(
-				'subdir'               => $this->subdir,
+			$listParams = array(
+				'subdir'               => NULL,
 				'sortby'               => 'localpath', // important for selector!
 				'showFullMetadata'     => false,
 				'getParents'           => true, // show folders
 				'getChildren'          => true, // look inside directories
 			);
 
-			$view->list			= $this->repo->filelist($params);
+			$view->list			= $this->repo->filelist($listParams);
 			$view->path 		= $this->_path;
-			$view->items 		= $items;
+			$view->items 		= array();
 			$view->database 	= $this->_database;
 			$view->services		= $this->_rServices;
 			$view->connections	= $this->_connect->getConnections();
@@ -1243,468 +1276,247 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->subdir 		= $this->subdir;
-			$view->url			= $url;
-			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
-			if ($this->getError())
+			$view->url			= Route::url($this->_route . '&active=files');
+			if (empty($items))
 			{
-				$view->setError( $this->getError() );
+				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
 			}
-			return $view->loadTemplate();
-		}
-		else
-		{
-			// Set counts
-			$moved  = array();
-			$failed = 0;
-			$sync 	= 0;
-
-			// cd
-			chdir($this->_path);
-
-			// Get new path
-			$newpath = trim(urldecode(Request::getVar('newpath', '')), DS);
-
-			// New directory to be created?
-			$newdir = Request::getVar('newdir', '');
-
-			// Clean up directory name
-			if ($newdir)
+			else
 			{
-				$newdir = stripslashes($newdir);
-				$newdir = \Components\Projects\Helpers\Html::makeSafeDir($newdir);
-				$newdir = $this->subdir ? $this->subdir . DS . $newdir : $newdir;
-			}
-			if ($newdir && !file_exists( $this->_path . DS . $newdir ))
-			{
-				// Create new directory
-				if (!\JFolder::create( $this->_path . DS . $newdir ))
-				{
-					$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
-				}
-			}
+				// Params for repo call
+				$params = array(
+					'subdir'            => $this->subdir,
+					'remoteConnections' => $remotes
+				);
 
-			// Process request
-			if (($newpath != $this->subdir || $newdir) && !$this->getError())
-			{
 				foreach ($items as $element)
 				{
 					foreach ($element as $type => $item)
 					{
 						// Get type and item name
+						break;
 					}
-
-					// Must have a name
-					if (trim($item) == '')
-					{
-						continue;
-					}
-
-					// Include subdir
-					$from = $this->subdir ? $this->subdir . DS . $item : $item;
-
-					// Set new path
-					if ($newdir)
-					{
-						$where = $newdir . DS . $item;
-					}
-					else
-					{
-						$where = $newpath ? $newpath . DS . $item : $item;
-					}
-
-					if ($this->_git->gitMove($from, $where, $type, $commitMsg))
-					{
-						$moved[] = $where;
-					}
+					// Build metadata object
+					$view->items[] = $this->repo->getMetadata($item, $type, $params);
 				}
-			}
-			elseif (!$this->getError())
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'));
-			}
-
-			// After successful move actions
-			if (!$this->getError())
-			{
-				// Delete original directory if empty
-				if ($this->subdir && file_exists( $this->_path . DS . $this->subdir))
-				{
-					$contents = scandir($this->_path. DS . $this->subdir);
-					if (count($contents) <= 2)
-					{
-						\JFolder::delete($this->_path. DS . $this->subdir);
-					}
-				}
-			}
-
-			// Success or failure message
-			if ($moved)
-			{
-				// Commit changes
-				$this->_git->gitCommit($commitMsg);
-
-				// Force sync
-				$sync = 1;
-
-				// Output message
-				$this->_msg = Lang::txt('PLG_PROJECTS_FILES_MOVED'). ' '
-					. count($moved) . ' ' . Lang::txt('PLG_PROJECTS_FILES_S');
-			}
-			elseif (empty($moved))
-			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION') );
-			}
-
-			// Pass success or error message
-			if ($this->getError())
-			{
-				$this->_message = array('message' => $this->getError(), 'type' => 'error');
-			}
-			elseif (isset($this->_msg) && $this->_msg)
-			{
-				$this->_message = array('message' => $this->_msg, 'type' => 'success');
-			}
-
-			// Redirect to file list
-			$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
-			if ($sync && $this->repo->isLocal())
-			{
-				$this->model->saveParam('google_sync_queue', 1);
-			}
-
-			$this->_referer = $url;
-			return;
-		}
-	}
-
-	/**
-	 * Send file back or from to remote service for remote editing
-	 *
-	 * @return     void, redirect
-	 */
-	protected function _share()
-	{
-		// Incoming
-		$converted  = Request::getInt('converted', 0);
-		$service 	= Request::getVar('service', 'google');
-
-		// Combine file and folder data
-		$items = $this->_sortIncoming();
-
-		if (empty($items))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
-		}
-
-		if (empty($this->_rServices))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_REMOTE_NOT_ENABLED'));
-		}
-
-		$type 	= key($items[0]);
-		$file 	= $items[0][$type];
-		$remote = NULL;
-		$fpath 	= $this->subdir ? $this->subdir. DS . $file : $file;
-		$shared = array();
-		$sync 	= 0;
-
-		// Are we syncing project home directory or other?
-		$localDir   = $this->_connect->getConfigParam($service, 'local_dir');
-		$localDir   = $localDir == '#home' ? '' : $localDir;
-
-		$localPath  =  $this->_path;
-		$localPath .= $localDir ? DS . $localDir : '';
-
-		// Check for remote connection
-		if (!empty($this->_rServices) && $this->repo->isLocal())
-		{
-			foreach ($this->_rServices as $servicename)
-			{
-				// Get stored remote connection to file
-				$remote = $this->_getRemoteConnection($fpath, '', $servicename, $converted);
-				if ($remote)
-				{
-					// Check user is connected
-					$connected = $this->_connect->getStoredParam($servicename . '_token', $this->_uid);
-					if (!$connected)
-					{
-						// Redirect to connect screen
-						$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
-							'type' => 'success');
-						$url  = Route::url('index.php?option=' . $this->_option
-							 . '&alias=' . $this->model->get('alias') . '&active=files');
-						$url .= '/?action=connect';
-						$this->_referer = $url;
-						return;
-					}
-
-					break;
-				}
-			}
-		}
-
-		if (!$remote)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_NO_REMOTE'));
-		}
-
-		// Confirmation screen
-		if ($this->_task == 'share')
-		{
-			// Output HTML
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'projects',
-					'element'=>'files',
-					'name'=>'share'
-				)
-			);
-
-			$view->type 		= $type;
-			$view->item 		= $file;
-			$view->remote		= $remote;
-			$view->connect		= $this->_connect;
-			$view->services		= $this->_rServices;
-			$view->option 		= $this->_option;
-			$view->model 		= $this->model;
-			$view->repo    		= $this->repo;
-			$view->uid 			= $this->_uid;
-			$view->subdir 		= $this->subdir;
-			$view->path 		= $this->_path;
-			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
-
-			if ($this->getError())
-			{
-				$view->setError( $this->getError() );
 			}
 			return $view->loadTemplate();
 		}
 
-		// Send file for remote editing on Google
-		if ($this->_task == 'shareit' && !$this->getError() && $service == 'google')
+		// Set counts
+		$moved  = 0;
+
+		// Incoming
+		$newpath = trim(urldecode(Request::getVar('newpath', '')), DS);
+		$newdir  = Request::getVar('newdir', '');
+		$target  = $newdir ? $newdir : $newpath;
+
+		// Set params for the move
+		$params = array(
+			'subdir'          => $this->subdir,
+			'path'            => $this->_path,
+			'targetDir'       => $target,
+			'createTargetDir' => $newdir ? true : false
+		);
+
+		// Move checked items
+		if (!empty($items))
 		{
-			// Get file extention
-			$ext   = \Components\Projects\Helpers\Html::getFileExtension($file);
-			$title = $file;
-
-			// Get convertable formats
-			$formats = \Components\Projects\Helpers\Google::getGoogleConversionExts();
-
-			// Import remote file
-			if ($remote['converted'] == 1)
+			foreach ($items as $element)
 			{
-				// Load remote resource
-				$resource = $this->_connect->loadRemoteResource($service, $this->_uid, $remote['id']);
-
-				if (!$resource)
+				foreach ($element as $type => $item)
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_NO_REMOTE'));
-				}
-				else
-				{
-					$originalPath   = $remote['original_path'];
-					$originalFormat = $remote['original_format'];
-
-					// Incoming
-					$importExt 	= Request::getVar('format', 'pdf', 'post');
-
-					// Remove Google native extension from title
-					if (in_array($ext, array('gdoc', 'gsheet', 'gslides', 'gdraw')))
-					{
-						$title = preg_replace("/." . $ext . "\z/", "", $title);
-					}
-
-					// Do we have extention in name already? - take it out
-					$n_parts = explode('.', $title);
-					$n_ext   = count($n_parts) > 1 ? array_pop($n_parts) : '';
-					$title   = implode($n_parts);
-					$title 	.= '.' . $importExt;
-
-					$newpath = $this->subdir ? $this->subdir. DS . $title : $title;
-
-					// Do we have original file present?
-					if ($originalPath && file_exists($localPath . DS . $originalPath))
-					{
-						// Rename in Git?
-						if (basename($originalPath) != $title)
-						{
-							// TBD
-						}
-					}
-
-					// Replacing file?
-					$exists = file_exists($this->_path. DS . $newpath) ? 1 : 0;
-
-					// Download remote file
-					if ($this->_connect->importFile($service, $this->_uid, $resource,
-						$newpath, $localPath, $importExt ))
-					{
-						// Git add & commit
-						$commitMsg = Lang::txt('PLG_PROJECTS_FILES_SHARE_IMPORTED') . "\n";
-						$this->_git->gitAdd($newpath, $commitMsg);
-						$this->_git->gitCommit($commitMsg);
-
-						$mTypeParts = explode(';', $this->mt->getMimeType($this->_path. DS . $newpath));
-
-						// Get local file information
-						$local = array(
-							'local_path' => $newpath,
-							'title'		 => $title,
-							'fullPath'   => $localPath . DS . $newpath,
-							'mimeType'	 => $mTypeParts[0],
-							'md5'	 	 => ''
-						);
-
-						// Remove remote resource
-						$deleted = $this->_connect->deleteRemoteItem(
-							$this->model->get('id'), $service, $this->_uid,
-							$remote['id'], false
-						);
-
-						// Create remote file for imported file
-						$created = '';
-						if (!$exists)
-						{
-							$created = $this->_connect->addRemoteFile(
-								$this->model->get('id'), $service, $this->_uid,
-								$local,  $remote['parent']
-							);
-						}
-
-						// Update connection record
-						$this->_connect->savePairing(
-							$this->model->get('id'), $service, $created,
-							$newpath, $remote['record_id'], $originalPath, $originalFormat, $remote['id']
-						);
-					}
-
-					// Output message
-					$this->_msg = Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title;
-
-					// Force sync
-					$sync = 1;
-				}
-			}
-			// Export local file
-			else
-			{
-				// Check that local file exists
-				if (!file_exists($localPath . DS . $remote['fpath']))
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
+					// Get type and item name
+					break;
 				}
 
-				$mTypeParts = explode(';', $this->mt->getMimeType($localPath . DS . $remote['fpath']));
-				$mimeType = $mTypeParts[0];
-
-				// LaTeX?
-				$tex = Components\Projects\Helpers\Compiler::isTexFile($file, $mimeType);
-
-				// Check format
-				if (!in_array($ext, $formats) && !$tex)
+				// Must have a name
+				if (trim($item) == '')
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_NOT_CONVERTABLE'));
+					continue;
 				}
 
-				if (!$this->getError())
+				// Build metadata object
+				$params['file'] = $this->repo->getMetadata($item, $type, $params);
+
+				if ($this->repo->moveItem($params))
 				{
-					if ($tex)
-					{
-						// LaTeX? Convert to text file first
-						$mimeType = 'text/plain';
-					}
-					if ($ext == 'wmf')
-					{
-						// WMF files need this mime type specified for conversion to Google drawing
-						$mimeType = 'application/x-msmetafile';
-					}
-					if ($ext == 'ppt' || $ext == 'pps' || $ext == 'pptx')
-					{
-						$mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
-					}
-
-					// Get local file information
-					$local = array(
-						'local_path' => $remote['fpath'],
-						'title'		 => $title,
-						'fullPath'   => $localPath . DS . $remote['fpath'],
-						'mimeType'	 => $mimeType,
-						'md5'	 	 => ''
-					);
-
-					// Convert file
-					$added = $this->_connect->addRemoteFile(
-						$this->model->get('id'), $service, $this->_uid,
-						$local, $remote['parent'], true
-					);
-
-					if ($added)
-					{
-						$shared[] = $added;
-
-						// Remove original local file
-						$commitMsg = Lang::txt('PLG_PROJECTS_FILES_SHARE_EXPORTED') . "\n";
-						$deleted = $this->_git->gitDelete($remote['fpath'], 'file', $commitMsg);
-						$this->_git->gitCommit($commitMsg);
-
-						// Remove original remote file
-						$deleted = $this->_connect->deleteRemoteItem(
-							$this->model->get('id'), $service, $this->_uid,
-							$remote['id'], false
-						);
-
-						$mTypeParts = explode(';', $this->mt->getMimeType( $localPath . DS . $remote['fpath']));
-						$mimeType = $mTypeParts[0];
-
-						// Update connection record
-						$this->_connect->savePairing(
-							$this->model->get('id'), $service, $added, '', $remote['record_id'],
-							$remote['fpath'], $mimeType, $remote['id']
-						);
-
-						// Output message
-						$this->_msg = Lang::txt('PLG_PROJECTS_FILES_SHARE_SUCCESS');
-
-						// Force sync
-						$sync = 1;
-					}
-					else
-					{
-						// Something went wrong
-						$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARE_ERROR_NO_CONVERT'));
-
-						if ($this->_connect->getError())
-						{
-							$this->setError($this->_connect->getError());
-						}
-					}
+					$moved++;
 				}
 			}
 		}
 
-		// Pass success or error message
-		if ($this->getError())
+		// Output message
+		if ($moved > 0)
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
+			$this->_msg = Lang::txt('PLG_PROJECTS_FILES_MOVED'). ' '
+				. $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S');
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+
+			// Force sync
+			if ($this->repo->isLocal())
+			{
+				$this->model->saveParam('google_sync_queue', 1);
+			}
+		}
+		else
+		{
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'), 'type' => 'error');
 		}
 
 		// Redirect to file list
-		$url  = Route::url('index.php?option=' . $this->_option
-			. '&alias=' . $this->model->get('alias') . '&active=files');
-		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
+		return;
+	}
 
-		if ($sync && $this->repo->isLocal())
+	/**
+	 * Show file history
+	 *
+	 * @return     void, redirect
+	 */
+	protected function _history()
+	{
+		// Combine file and folder data
+		$items = $this->_sortIncoming();
+
+		// Get stored remote connections
+		$remotes = $this->_getRemoteConnections();
+
+		// Params for repo call
+		$params = array(
+			'subdir'            => $this->subdir,
+			'remoteConnections' => $remotes
+		);
+
+		if (!$items)
 		{
-			$this->model->saveParam('google_sync_queue', 1);
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+		}
+		else
+		{
+			// Get selected item
+			foreach ($items[0] as $type => $item)
+			{
+				$params['file'] = $this->repo->getMetadata($item, $type, $params);
+				break;
+			}
 		}
 
-		$this->_referer = $url;
-		return;
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=> 'projects',
+				'element'	=> 'files',
+				'name'		=> 'history',
+				'layout' 	=> 'advanced'
+			)
+		);
+
+		// Redirect to file list
+		$view->url = Route::url($this->_route . '&active=files');
+
+		// Collective vars
+		$versions 		= array();
+		$timestamps 	= array();
+
+		// Make sure we have a file to work with
+		if (empty($params['file']))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+		}
+
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  =>'projects',
+					'element' =>'files',
+					'name'    =>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+
+		$view->file = $params['file'];
+
+		// Get remote revision history
+		$view->connected = false;
+		if (!empty($this->_remoteService))
+		{
+			if ($view->file->get('converted'))
+			{
+				$this->_connect->sortRemoteRevisions(
+					$view->file->get('remoteId'),
+					$view->file->get('converted'),
+					$view->file->get('author'),
+					$this->_uid,
+					$this->_remoteService,
+					$view->file->get('localPath'),
+					$versions,
+					$timestamps
+				);
+			}
+			elseif ($view->file->get('originalId'))
+			{
+				$this->_connect->sortRemoteRevisions(
+					$view->file->get('originalId'),
+					0,
+					'',
+					$this->_uid,
+					$this->_remoteService,
+					$view->file->get('localPath'),
+					$versions,
+					$timestamps,
+					1
+				);
+			}
+			$view->connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);;
+		}
+
+		$this->repo->versions($params, $versions, $timestamps);
+
+		// Get file previews
+		$i = 0;
+		foreach ($versions as $v)
+		{
+			$pr   		= $v['remote']  ? array('id' => $v['remote'],
+						'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
+			$hash 		= $v['remote'] ? NULL : $v['hash'];
+			$preview 	= $this->getFilePreview($v['file'], $hash, $this->_path, $this->subdir, $pr);
+
+			if ($preview)
+			{
+				$versions[$i]['preview'] = Route::url('index.php?option='
+					. $this->option . '&alias=' . $this->model->get('alias')
+					. '&task=media&media=' . basename($preview));
+			}
+			$i++;
+		}
+
+		$view->versions     = $versions;
+		$view->path 		= $this->_path;
+		$view->option 		= $this->_option;
+		$view->model 		= $this->model;
+		$view->repo    		= $this->repo;
+		$view->uid 			= $this->_uid;
+		$view->ajax			= Request::getInt( 'ajax');
+		$view->title		= $this->_area['title'];
+		$view->subdir 		= $this->subdir;
+
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
+		$view->msg = isset($this->_msg) ? $this->_msg : '';
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -1856,155 +1668,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Show file history
-	 *
-	 * @return     void, redirect
-	 */
-	protected function _history()
-	{
-		// Clean incoming data
-		$this->_cleanData();
-
-		// Incoming
-		$checked = Request::getVar( 'asset', '', 'request', 'array' );
-		$ajax 	 = Request::getInt('ajax', 0);
-
-		// Can only view history of one file at a time
-		if (empty($checked) or $checked[0] == '')
-		{
-			$file = urldecode(Request::getVar( 'asset', ''));
-		}
-		else
-		{
-			$file = urldecode($checked[0]);
-		}
-
-		// Collective vars
-		$versions 		= array();
-		$timestamps 	= array();
-		$local 	 		= NULL;
-		$remote 		= NULL;
-		$service		= NULL;
-		$connected 		= false;
-
-		// Make sure we have a file to work with
-		if (!$file)
-		{
-			$fpath = NULL;
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
-		}
-		else
-		{
-			$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
-
-			// Check for remote connection
-			if (!empty($this->_rServices) && $this->repo->isLocal())
-			{
-				foreach ($this->_rServices as $servicename)
-				{
-					// Get stored remote connection to file
-					$remote = $this->_getRemoteConnection($fpath, '', $servicename);
-					if ($remote)
-					{
-						$service   = $servicename;
-						$connected = $this->_connect->getStoredParam($servicename . '_token', $this->_uid);
-						break;
-					}
-				}
-			}
-
-			// Should history be paired with another file?
-			$local_path = NULL;
-			if ($remote && $remote['original_path'] && $remote['original_path'] != $fpath )
-			{
-				$local_path = $remote['original_path'];
-			}
-
-			// Local file present?
-			if (file_exists( $this->_path . DS . $fpath))
-			{
-				$this->_git->sortLocalRevisions($fpath, $versions, $timestamps);
-			}
-			if ($local_path && $local_path != $fpath)
-			{
-				$this->_git->sortLocalRevisions($local_path, $versions, $timestamps, 1);
-			}
-
-			// Get remote revision history
-			if ($remote && $remote['converted'] == 1)
-			{
-				$this->_connect->sortRemoteRevisions($remote['id'], $remote['converted'], $remote['author'],
-					$this->_uid, $service, $file, $versions, $timestamps);
-			}
-			elseif ($remote && $remote['original_id'])
-			{
-				$this->_connect->sortRemoteRevisions($remote['original_id'], 0, '', $this->_uid, $service,
-					$file, $versions, $timestamps, 1);
-			}
-
-			// Sort by time, most recent first
-			array_multisort($timestamps, SORT_DESC, $versions);
-		}
-
-		// Get status for each version
-		$versions = $this->_git->getVersionStatus($versions);
-
-		// Get file previews
-		$i = 0;
-		foreach ($versions as $v)
-		{
-			$pr   		= $v['remote']  ? array('id' => $v['remote'],
-						'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
-			$hash 		= $v['remote'] ? NULL : $v['hash'];
-			$preview 	= $this->getFilePreview($v['file'], $hash, $this->_path, $this->subdir, $pr);
-
-			if ($preview)
-			{
-				$versions[$i]['preview'] = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=media&media=' . basename($preview));
-			}
-			$i++;
-		}
-
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=> 'projects',
-				'element'	=> 'files',
-				'name'		=> 'history',
-				'layout' 	=> 'advanced'
-			)
-		);
-
-		// Redirect to file list
-		$view->url = Route::url($this->_route . '&active=files');
-
-		// Binary file?
-		$view->binary		= \Components\Projects\Helpers\Html::isBinary($this->_path . DS . $fpath);
-
-		$view->versions 	= $versions;
-		$view->path 		= $this->_path;
-		$view->file 		= $file;
-		$view->fpath 		= $fpath;
-		$view->option 		= $this->_option;
-		$view->model 		= $this->model;
-		$view->repo    		= $this->repo;
-		$view->uid 			= $this->_uid;
-		$view->ajax			= $ajax;
-		$view->title		= $this->_area['title'];
-		$view->subdir 		= $this->subdir;
-		$view->remote		= $remote;
-		$view->connected	= $connected;
-		$view->config		= $this->model->config();
-
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
-		$view->msg = isset($this->_msg) ? $this->_msg : '';
-		return $view->loadTemplate();
-	}
-
-	/**
 	 * Serve file (usually via public link)
 	 *
 	 * @param   int  	$projectid
@@ -2110,39 +1773,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _restore()
 	{
 		// Incoming
-		$file 	= urldecode(Request::getVar( 'asset', ''));
-		$hash 	= Request::getVar('hash', '');
+		$item = urldecode(Request::getVar( 'asset', ''));
+		$hash = Request::getVar('hash', '');
 
-		// Make sure we have a file to work with
-		if (!$file)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_NO_FILE_SELECTED'));
-		}
-		elseif (!is_file( $this->_path . DS . $file ))
-		{
-			// Checkout pre-delete revision
-			$this->_git->gitCheckout( $file, $hash . '^ ' );
-
-			// If restored
-			if (is_file( $this->_path . DS . $file))
-			{
-				// Git add & commit
-				$commitMsg = Lang::txt('PLG_PROJECTS_FILES_RESTORE_COMMIT_MESSAGE') . "\n";
-				$this->_git->gitAdd($file, $commitMsg, $new = false);
-				$this->_git->gitCommit($commitMsg);
-
-				// Store in session
-				$this->registerUpdate('restored', $file, false);
-			}
-			else
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED'));
-			}
-		}
+		// Params for repo call
+		$params = array('subdir'  => $this->subdir);
+		$params['file']    = $this->repo->getMetadata($item, 'file', $params);
+		$params['version'] = $hash;
 
 		// After successful action
-		if (!$this->getError())
+		if ($this->repo->restore($params))
 		{
+			// Store in session
+			$this->registerUpdate('restored', $item, false);
+
 			// Force sync
 			if ($this->repo->isLocal())
 			{
@@ -2151,16 +1795,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			$error = $this->repo->getError()
+				? $this->repo->getError()
+				: $this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED'));
+			$this->_message = array('message' => $error, 'type' => 'error');
 		}
 
 		// Redirect to file list
-		$url 	= Route::url($this->_route . '&active=files');
-		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
-		$this->_referer = $url;
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
 		return;
-
 	}
 
 	/**
@@ -2852,8 +2498,329 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-	// REMOTE SERVICES
-	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	/**
+	 * Send file back or from to remote service for remote editing
+	 * Local repo only
+	 *
+	 * @return     void, redirect
+	 */
+	protected function _share()
+	{
+		// Incoming
+		$converted  = Request::getInt('converted', 0);
+		$service 	= Request::getVar('service', 'google');
+		$sync		= false;
+		$shared     = 0;
+
+		// Get stored remote connections
+		$remotes = $this->_getRemoteConnections(false);
+
+		// Params for repo call
+		$params = array(
+			'subdir'            => $this->subdir,
+			'remoteConnections' => $remotes
+		);
+
+		// Combine file and folder data
+		$items = $this->_sortIncoming();
+
+		if (empty($items))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
+		}
+		else
+		{
+			// Sharing for a single file
+			$type 	= key($items[0]);
+			$item 	= $items[0][$type];
+
+			// Build metadata object
+			$file = $this->repo->getMetadata($item, $type, $params);
+		}
+
+		// Build return url
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+
+		// Check user is connected
+		if (!empty($this->_remoteService))
+		{
+			$connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
+			if (!$connected)
+			{
+				// Redirect to connect screen
+				$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
+					'type' => 'success');
+				$url  = Route::url('index.php?option=' . $this->_option
+					 . '&alias=' . $this->model->get('alias') . '&active=files');
+				$url .= '/?action=connect';
+				$this->_referer = $url;
+				return;
+			}
+		}
+		else
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_REMOTE_NOT_ENABLED'));
+		}
+
+		// Confirmation screen
+		if ($this->_task == 'share')
+		{
+			// Output HTML
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  =>'projects',
+					'element' =>'files',
+					'name'    =>'share'
+				)
+			);
+
+			$view->option 		= $this->_option;
+			$view->model 		= $this->model;
+			$view->repo    		= $this->repo;
+			$view->uid 			= $this->_uid;
+			$view->subdir 		= $this->subdir;
+			$view->path 		= $this->_path;
+
+			if ($this->getError())
+			{
+				$view->setError( $this->getError() );
+			}
+			else
+			{
+				$view->file 		= !empty($file) ? $file : NULL;
+				$view->connect		= $this->_connect;
+				$view->service		= $this->_remoteService;
+			}
+
+			return $view->loadTemplate();
+		}
+
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  =>'projects',
+					'element' =>'files',
+					'name'    =>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+
+		// Send file for remote editing on Google
+		if ($this->_task == 'shareit')
+		{
+			// Get convertable formats
+			$formats = \Components\Projects\Helpers\Google::getGoogleConversionExts();
+
+			// Import remote file
+			if ($file->get('converted'))
+			{
+				// Load remote resource
+				$resource = $this->_connect->loadRemoteResource($service, $this->_uid, $file->get('remoteId'));
+
+				if (!$resource)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_NO_REMOTE'));
+				}
+				else
+				{
+					// Incoming
+					$importExt = Request::getVar('format', 'pdf', 'post');
+
+					// Remove Google native extension from title
+					$title = $file->get('name');
+					if (in_array($file->get('ext'), array('gdoc', 'gsheet', 'gslides', 'gdraw')))
+					{
+						$title = preg_replace("/." . $file->get('ext') . "\z/", "", $file->get('name'));
+					}
+
+					// Do we have extention in name already? - take it out
+					$n_parts = explode('.', $title);
+					$n_ext   = count($n_parts) > 1 ? array_pop($n_parts) : '';
+					$title   = implode($n_parts);
+					$title  .= '.' . $importExt;
+
+					$newpath = $this->subdir ? $this->subdir. DS . $title : $title;
+					$file->set('localPath', $newpath);
+					$file->set('name', $title);
+					$file->set('fullPath', $this->_path. DS . $newpath);
+
+					// Replacing file?
+					$exists = file_exists($file->get('fullPath')) ? 1 : 0;
+
+					// Download remote file
+					if ($this->_connect->importFile($this->_remoteService, $this->_uid, $resource,
+						$file->get('localPath'), $this->repo->get('path'), $importExt ))
+					{
+						// Checkin into repo
+						$params['file'] = $file;
+						$this->repo->call('checkin', $params);
+
+						// Remove remote resource
+						$deleted = $this->_connect->deleteRemoteItem(
+							$this->model->get('id'),
+							$service, $this->_uid,
+							$file->get('remoteId'), false
+						);
+
+						// Create remote file for imported file
+						$created = NULL;
+						if (!$exists)
+						{
+							$created = $this->_connect->addRemoteFile(
+								$this->model->get('id'),
+								$this->_remoteService,
+								$this->_uid,
+								$file
+							);
+						}
+
+						// Update connection record
+						$this->_connect->savePairing(
+							$this->model->get('id'),
+							$this->_remoteService,
+							$created,
+							$file->get('localPath'),
+							$file->get('recordId'),
+							$file->get('originalPath'),
+							$file->get('originalFormat'),
+							$file->get('remoteId')
+						);
+					}
+
+					// Output message
+					$this->_msg = Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title;
+
+					// Force sync
+					$sync = true;
+				}
+			}
+			// Export local file
+			else
+			{
+				// Check that local file exists
+				if (!$this->repo->fileExists($file->get('localPath')))
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
+				}
+				else
+				{
+					// LaTeX?
+					$tex = Components\Projects\Helpers\Compiler::isTexFile($file->get('name'), $file->getMimeType());
+
+					// Check format
+					if (!in_array($file->get('ext'), $formats) && !$tex)
+					{
+						$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_NOT_CONVERTABLE'));
+					}
+
+					if (!$this->getError())
+					{
+						if ($tex)
+						{
+							// LaTeX? Convert to text file first
+							$file->set('mimeType', 'text/plain');
+						}
+						if ($file->get('ext') == 'wmf')
+						{
+							// WMF files need this mime type specified for conversion to Google drawing
+							$file->set('mimeType', 'application/x-msmetafile');
+						}
+						if ($file->get('ext') == 'ppt' || $file->get('ext') == 'pps' || $file->get('ext') == 'pptx')
+						{
+							$file->set('mimeType', 'application/vnd.openxmlformats-officedocument.presentationml.presentation');
+						}
+
+						// Convert file
+						$added = $this->_connect->addRemoteFile(
+							$this->model->get('id'),
+							$this->_remoteService,
+							$this->_uid,
+							$file,
+							$file->get('remoteParent'),
+							true
+						);
+
+						if ($added)
+						{
+							// Remove original local file
+							$params['file'] = $file;
+							$this->repo->deleteItem($params);
+
+							// Remove original remote file
+							$deleted = $this->_connect->deleteRemoteItem(
+								$this->model->get('id'),
+								$this->_remoteService,
+								$this->_uid,
+								$file->get('remoteId'),
+								false
+							);
+
+							$file->clear('mimeType');
+							$file->setMimeType();
+
+							// Update connection record
+							$this->_connect->savePairing(
+								$this->model->get('id'),
+								$this->_remoteService,
+								$added,
+								'',
+								$file->get('recordId'),
+								$file->get('originalPath'),
+								$file->get('mimeType'),
+								$file->get('remoteId')
+							);
+
+							// Output message
+							$this->_msg = Lang::txt('PLG_PROJECTS_FILES_SHARE_SUCCESS');
+
+							// Force sync
+							$sync = true;
+						}
+						else
+						{
+							// Something went wrong
+							$this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARE_ERROR_NO_CONVERT'));
+
+							if ($this->_connect->getError())
+							{
+								$this->setError($this->_connect->getError());
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Pass success or error message
+		if ($this->getError())
+		{
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+		}
+		elseif (isset($this->_msg) && $this->_msg)
+		{
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+		}
+
+		// Force sync
+		if ($sync && $this->repo->isLocal())
+		{
+			$this->model->saveParam('google_sync_queue', 1);
+		}
+
+		// Redirect to file list
+		$this->_referer = Route::url($url);
+		return;
+	}
 
 	/**
 	 * Write sync status to file
@@ -2946,8 +2913,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		return $remote;
 	}
 
-	// SUPPORTING FUNCTIONS
-
 	/**
 	 * Get file preview
 	 *
@@ -2967,12 +2932,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		$image = NULL;
 
-		$rthumb	= NULL;
+		$rthumb = NULL;
 		if ($remote)
 		{
 			$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';
 		}
-		$hash  	= $hash ? substr($hash, 0, 10) : '';
+		$hash = $hash ? substr($hash, 0, 10) : '';
 
 		if (!$hashed)
 		{
@@ -3275,14 +3240,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get deleted files
-		$view->files = $this->_git->listDeleted();
+		$view->files  = $this->repo->getTrash();
 
-		$view->option 	= $this->_option;
-		$view->model 	= $this->model;
-		$view->ajax 	= Request::getInt('ajax', 0);
+		$view->option = $this->_option;
+		$view->model  = $this->model;
+		$view->ajax   = Request::getInt('ajax', 0);
 
 		// Build URL
-		$view->url = Route::url($this->_route . '&active=files');
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$view->url    = $url;
 		$view->subdir = $this->subdir;
 
 		if ($this->getError())
@@ -3973,7 +3941,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 									// Create remote file
 									$created = $this->_connect->addRemoteFile(
 										$this->model->get('id'), $service, $projectOwner,
-										$local,  $parentId
+										$local, $parentId
 									);
 
 									$output .= '++ added new file to remote: '. $filename . "\n";
@@ -4635,7 +4603,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterUpdate()
 	{
-		$sync     = 0;
 		$activity = '';
 		$message  = '';
 		$ref	  = '';
@@ -4672,8 +4639,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif ($uploaded || $updated || $expanded)
 		{
-			$sync = 1;
-
 			$uploadParts = explode(',', $uploaded);
 			$updateParts = explode(',', $updated);
 
@@ -4735,8 +4700,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$delParts = explode(',', $deleted);
 
-			$sync = 1;
-
 			$what = count($delParts) == 1 ? $deleted : count($delParts)
 				. ' ' . Lang::txt('PLG_PROJECTS_FILES_ITEMS');
 
@@ -4751,19 +4714,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$resParts = explode(',', $restored);
 
-			$sync = 1;
-
 			$activity = 'restored deleted file ' . basename($resParts[0]);
 
 			// Output message
 			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED')
 				. ' ' . basename($resParts[0]), 'type' => 'success');
-		}
-
-		// Force sync
-		if ($sync)
-		{
-			$this->model->saveParam('google_sync_queue', 1);
 		}
 
 		// Add activity to feed

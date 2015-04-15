@@ -831,6 +831,18 @@ class Project extends Model
 	}
 
 	/**
+	 * Get params
+	 *
+	 * @param      boolean 	$refresh
+	 *
+	 * @return     void
+	 */
+	public function getParams($refresh = true)
+	{
+		return $this->params;
+	}
+
+	/**
 	 * Get a count of new activity
 	 *
 	 * @return  integer

@@ -86,7 +86,7 @@ $i = 0;
 			<?php }
 			 elseif ($service['active'] || $connected) { ?>
 			<p class="green prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_ACTIVE'); ?></p>
-			<p><span class="prominent darker"><?php echo count($numConnected) . ' ' . Lang::txt('PLG_PROJECTS_OUT_OF') . ' ' . $teamCount . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_FILES_CONNECTED'); ?></span></p>
+			<p><span class="prominent darker"><?php echo count($numConnected) . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $teamCount . ' ' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_FILES_CONNECTED'); ?></span></p>
 			<p>
 				<span><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_REMOTE_DIR'); ?>:</span> <span class="prominent darker"><?php echo $service['remote_dir']; ?></span> <?php if ($connected && $openUrl) { ?><span><a href="<?php echo $openUrl; ?>" rel="external">[open]</a></span><?php } ?>
 			</p>

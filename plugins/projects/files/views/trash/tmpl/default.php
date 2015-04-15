@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
-
 ?>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETED_FILES'); ?></h3>
@@ -64,7 +62,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 						<?php echo \Components\Projects\Helpers\Html::formatTime($file['date'], true, true); ?>
 						<span class="block"><?php echo $file['author']; ?></span>
 					</td>
-					<td><a href="<?php echo $this->url . '/?action=restore&amp;asset=' . urlencode($filename) . '&amp;hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
+					<td><a href="<?php echo Route::url($this->url . '&action=restore&asset=' . urlencode($filename) . '&hash=' . $file['hash']);  ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
 				</tr>
 			<?php } ?>
 			</tbody>

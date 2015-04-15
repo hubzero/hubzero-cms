@@ -818,21 +818,15 @@ class Connect extends Object {
 	 * @param	   integer	$projectid	Project ID
 	 * @param	   string	$service	Service name (google or dropbox)
 	 * @param	   integer	$uid		User ID
-	 * @param	   array	$local		Array of local file info
-	 * @param	   string	$parentId	Parent folder ID
+	 * @param	   object	$file		Models\File
 	 * @param	   boolean	$convert	Convert for remote editing? (Google only)
 	 *
 	 * @return	   array
 	 */
 	public function addRemoteFile (
 		$projectid = NULL, $service = 'google', $uid = 0,
-		$local,	 $parentId = 0, $convert = false)
+		$file = NULL, $parentId = 0, $convert = false)
 	{
-		if (!$projectid || !$parentId || empty($local))
-		{
-			return false;
-		}
-
 		// Get api
 		$apiService = $this->getAPI($service, $uid);
 
@@ -845,10 +839,27 @@ class Connect extends Object {
 		$newItemId = 0;
 
 		// Parse incoming
-		$title		= $local['title'];
-		$localPath	= $local['fullPath'];
-		$fpath		= $local['local_path'];
-		$mimeType	= $local['mimeType'];
+		if ($file instanceof \Components\Projects\Models\File)
+		{
+			$title		= $file->get('name');
+			$localPath	= $file->get('fullPath');
+			$fpath		= $file->get('localPath');
+			$mimeType	= $file->getMimeType();
+			$md5	    = $file->getMd5Hash();
+			$parentId   = $parentId ? $parentId : $file->get('remoteParent');
+		}
+		else
+		{
+			$title		= $file['title'];
+			$localPath	= $file['fullPath'];
+			$fpath		= $file['local_path'];
+			$mimeType	= $file['mimeType'];
+			$md5	    = $file['md5'];
+		}
+		if (!$parentId)
+		{
+			return false;
+		}
 
 		// Collector for created item metadata
 		$metadata = array();
@@ -903,7 +914,7 @@ class Connect extends Object {
 
 		$update = $objRFile->updateRecord( $projectid, $service, $newItemId,
 			$fpath, 'file', $this->_uid, $parentId, $title, $remote_md5,
-			$local['md5'], $converted, $remote_format, $local['mimeType'], $remote_modified
+			$md5, $converted, $remote_format, $mimeType, $remote_modified
 		);
 
 		return $newItemId;
@@ -1550,7 +1561,7 @@ class Connect extends Object {
 					'change'		=> '',
 					'movedTo'		=> '',
 					'size'			=> '',
-					'name'			=> Lang::txt('PLG_PROJECTS_FILES_FILES_REMOTE_FILE_' . strtoupper($service)),
+					'name'			=> Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE_' . strtoupper($service)),
 					'order'			=> $order,
 					'count'			=> count($revisions),
 					'commitStatus'	=> $r == count($revisions) ? 'A' : 'M'

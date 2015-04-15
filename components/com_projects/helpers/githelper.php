@@ -685,7 +685,7 @@ class Git extends Object
 		{
 			return false;
 		}
-		if (!$item || !$hash)
+		if (!$item)
 		{
 			return false;
 		}

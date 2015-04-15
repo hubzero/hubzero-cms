@@ -133,7 +133,7 @@ class RemoteFile extends \JTable
 	 * @param      integer 	$projectid		Project ID
 	 * @return     array
 	 */
-	public function getRemoteEditFiles ($projectid = NULL, $service = '', $subdir = '')
+	public function getRemoteFiles ($projectid = NULL, $service = '', $subdir = '', $remoteEdit = false)
 	{
 		if (!$projectid)
 		{
@@ -143,7 +143,10 @@ class RemoteFile extends \JTable
 		$query  = "SELECT * FROM $this->_tbl";
 		$query .= " WHERE projectid=$projectid  ";
 		$query .= " AND service='" . $service . "' ";
-		$query .= " AND remote_editing=1 ";
+		if ($remoteEdit)
+		{
+			$query .= " AND remote_editing=1 ";
+		}
 		$query .= " AND local_dirpath='" . $subdir . "' ";
 
 		$this->_db->setQuery( $query );

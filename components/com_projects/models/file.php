@@ -218,10 +218,34 @@ class File extends Object
 	 */
 	public function setMd5Hash()
 	{
-		if (!$this->get('md5Hash') && is_file($this->get('fullPath')))
+		if (is_file($this->get('fullPath')))
 		{
 			$this->set('md5Hash', hash_file('md5', $this->get('fullPath')));
 		}
+	}
+
+	/**
+	 * Set md5Hash
+	 *
+	 * @return  mixed
+	 */
+	public function getMd5Hash()
+	{
+		if (!$this->get('md5Hash'))
+		{
+			$this->setMd5Hash();
+		}
+		return $this->get('md5Hash');
+	}
+
+	/**
+	 * Is binary?
+	 *
+	 * @return  mixed
+	 */
+	public function isBinary()
+	{
+		return \Components\Projects\Helpers\Html::isBinary($this->get('fullPath'));
 	}
 
 	/**
@@ -369,6 +393,10 @@ class File extends Object
 		{
 			$this->set('icon', $icon);
 			return $this->get('icon');
+		}
+		if ($this->get('type') == 'folder')
+		{
+			$ext = 'folder';
 		}
 
 		// Directory where images are stored

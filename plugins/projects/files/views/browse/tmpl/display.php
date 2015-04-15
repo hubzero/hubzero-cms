@@ -180,6 +180,13 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 			?>
 		</tbody>
 	</table>
+	<?php
+	// Show directory as empty
+	if (count($this->items) == 0 ) { ?>
+		<p class="noresults">
+		<?php echo ($this->subdir) ? Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY') : Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?>
+		</p>
+	<?php } ?>
 	<p class="extras">
 		<?php if ($this->repo->get('name') == 'local') { ?>
 		<span class="leftfloat">

@@ -25,62 +25,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->type == 'folder')
+if ($this->file->get('converted'))
 {
-	$ext  = 'folder';
-	$name = $this->item;
+	$slabel = $this->file->get('type') == 'folder' ? Lang::txt('PLG_PROJECTS_FILES_REMOTE_FOLDER') : Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE');
 }
-else
-{
-	$ext = \Components\Projects\Helpers\Html::getFileExtension($this->item);
-	$name = $this->item;
-}
-
-// Is this a duplicate remote?
-if ($this->remote && $this->item != $this->remote['title'])
-{
-	$append = \Components\Projects\Helpers\Html::getAppendedNumber($this->item);
-
-	if ($append > 0)
-	{
-		$ext = \Components\Projects\Helpers\Html::getFileExtension($this->item);
-
-		$name = \Components\Projects\Helpers\Html::fixFileName($this->remote['title'], ' (' . $append . ')', $ext );
-	}
-}
-
-// Do not display Google native extension
-$native = \Components\Projects\Helpers\Google::getGoogleNativeExts();
-if (in_array($ext, $native))
-{
-	$name = preg_replace("/.".$ext."\z/", "", $name);
-}
-
-if ($this->remote && $this->remote['converted'] == 1)
-{
-	$slabel = $this->type == 'folder' ? Lang::txt('PLG_PROJECTS_FILES_REMOTE_FOLDER') : Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE');
-	if ($this->remote['service'] == 'google')
-	{
-		$slabel = $this->type == 'folder' ? Lang::txt('PLG_PROJECTS_FILES_REMOTE_FOLDER_GOOGLE') : Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE_GOOGLE');
-	}
-}
-
-$img = $this->remote && $this->remote['converted'] == 1 ? \Components\Projects\Helpers\Html::getGoogleIcon($this->remote['mimeType']) : \Components\Projects\Helpers\Html::getFileIcon($ext);
 
 $multi = isset($this->multi) && $this->multi ? '[]' : '';
 
-$fpath = isset($this->subdir) && $this->subdir ? $this->subdir. DS . urldecode($name) : urldecode($name);
-
 ?>
-<li><img src="<?php echo $img; ?>" alt="<?php echo $name; ?>" />
-<?php echo $fpath; ?>
-<?php if ($this->remote && $this->remote['converted'] == 1) { echo '<span class="remote-file">' . $slabel . '</span>'; } ?>
-<?php if ($this->remote && $this->remote['original_path'] && $this->remote['converted'] == 1) { echo '<span class="remote-file faded">' . Lang::txt('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->remote['original_path']); if ($this->remote['original_format']) { echo ' (' . $this->remote['original_format']. ')'; } echo '</span>'; } ?>
+<li><img src="<?php echo $this->file->getIcon(); ?>" alt="<?php echo $this->file->get('name'); ?>" />
+<?php echo $this->file->get('name'); ?>
+<?php if ($this->file->get('converted')) { echo '<span class="remote-file">' . $slabel . '</span>'; } ?>
+<?php if ($this->file->get('converted') && $this->file->get('originalPath')) { echo '<span class="remote-file faded">' . Lang::txt('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->file->get('originalPath')); if ($this->file->get('originalFormat')) { echo ' (' . $this->file->get('originalPath') . ')'; } echo '</span>'; } ?>
 
 <?php if (isset($this->skip) && $this->skip == true) { echo '<span class="file-skipped">' . Lang::txt('PLG_PROJECTS_FILES_SKIPPED') . '</span>'; } ?>
-<?php echo $this->type == 'folder'
-	? '<input type="hidden" name="folder' . $multi . '" value="'.$this->item.'" />'
-	: '<input type="hidden" name="asset' . $multi . '" value="'.$this->item.'" />'; ?>
+<?php echo $this->file->get('type') == 'folder'
+	? '<input type="hidden" name="folder' . $multi . '" value="' . urlencode($this->file->get('name')) . '" />'
+	: '<input type="hidden" name="asset' . $multi . '" value="' . urlencode($this->file->get('name')) . '" />'; ?>
 
 <?php if (isset($this->extras)) { echo $this->extras; } ?>
 </li>

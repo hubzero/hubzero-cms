@@ -244,7 +244,7 @@ class Git extends Models\Adapter
 				$syncRecord = $remotes[$file->get('localPath')];
 				$file->set('remote', $syncRecord->service);
 				$file->set('author', $syncRecord->remote_author);
-				$file->set('modified', $syncRecord->remote_modified);
+				$file->set('date', date ('c', strtotime($syncRecord->remote_modified . ' UTC')));
 				$file->set('mimeType', $syncRecord->remote_format);
 			}
 
@@ -371,10 +371,36 @@ class Git extends Models\Adapter
 	 *
 	 * @return     array
 	 */
-	public function history ($params = array())
+	public function history ($params = array(), &$versions, &$timestamps)
 	{
-		$dirPath  = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$file = isset($params['file']) ? $params['file'] : NULL;
 
+		if (!($file instanceof Models\File))
+		{
+			return false;
+		}
+
+		// Local file present?
+		if (file_exists($file->get('fullPath')))
+		{
+			$this->_git->sortLocalRevisions($file->get('localPath'), $versions, $timestamps);
+		}
+		if ($file->get('originalPath') && $file->get('originalPath') != $file->get('localPath'))
+		{
+			// Should history be paired with another file?
+			$this->_git->sortLocalRevisions($file->get('originalPath'), $versions, $timestamps, 1);
+		}
+		return true;
+	}
+
+	/**
+	 * Get trashed items
+	 *
+	 * @return  boolean
+	 */
+	public function getTrash()
+	{
+		return $this->_git->listDeleted();
 	}
 
 	/**
@@ -554,7 +580,43 @@ class Git extends Models\Adapter
 		}
 
 		// Checkout
-		$this->_git->checkout($file->get('localPath'));
+		$this->_git->gitCheckout($file->get('localPath'));
+	}
+
+	/**
+	 * Restore file revision
+	 *
+	 * @param      object	$file		Models\File
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function restore ($params = array())
+	{
+		$file = isset($params['file']) ? $params['file'] : NULL;
+		$hash = isset($params['version']) ? $params['version'] : NULL;
+
+		if (!$this->isGit())
+		{
+			return false;
+		}
+		if (!($file instanceof Models\File) || !$hash)
+		{
+			return false;
+		}
+
+		// Checkout pre-delete revision
+		$this->_git->gitCheckout( $file->get('localPath'), $hash . '^ ' );
+
+		// If restored
+		if (is_file( $file->get('fullPath')))
+		{
+			// Git add & commit
+			$this->_git->gitAdd($file->get('localPath'), $commitMsg, $new = false);
+			$this->_git->gitCommit($commitMsg);
+		}
+
+		return true;
 	}
 
 	/**

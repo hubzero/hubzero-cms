@@ -304,6 +304,51 @@ class Repo extends Object
 	}
 
 	/**
+	 * Build file metadata object
+	 *
+	 * @return  object
+	 */
+	public function getMetadata($item = NULL, $type = 'file', $params = array())
+	{
+		if ($item === NULL)
+		{
+			return false;
+		}
+
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$remotes   = isset($params['remoteConnections']) ? $params['remoteConnections'] : array();
+
+		$localPath = $dirPath ? $dirPath . DS . $item : $item;
+		$file = new Models\File(trim($localPath), $path);
+		$file->set('type', $type);
+		if ($type == 'folder')
+		{
+			$file->clear('ext');
+		}
+
+		// Synced file?
+		if (!empty($remotes) && isset($remotes[$file->get('localPath')]))
+		{
+			// Pick up data from sync record
+			$syncRecord = $remotes[$file->get('localPath')];
+			$file->set('remote', $syncRecord->service);
+			$file->set('remoteId', $syncRecord->remote_id);
+			$file->set('remoteParent', $syncRecord->remote_parent);
+			$file->set('author', $syncRecord->remote_author);
+			$file->set('modified', $syncRecord->remote_modified);
+			$file->set('mimeType', $syncRecord->remote_format);
+			$file->set('converted', $syncRecord->remote_editing);
+			$file->set('originalId', $syncRecord->original_id);
+			$file->set('originalPath', $syncRecord->original_path);
+			$file->set('originalFormat', $syncRecord->original_format);
+			$file->set('recordId', $syncRecord->id);
+		}
+
+		return $file;
+	}
+
+	/**
 	 * Delete a file or a directory within repo
 	 *
 	 * @return  boolean
@@ -312,19 +357,23 @@ class Repo extends Object
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+
+		// Name and type
 		$item      = isset($params['item']) ? $params['item'] : NULL;
 		$type      = isset($params['type']) ? $params['type'] : 'file';
 
-		if (!$item)
-		{
-			return false;
-		}
-		$localPath = $dirPath ? $dirPath . DS . $item : $item;
+		// OR -- file object itself
+		$file = isset($params['file']) ? $params['file'] : NULL;
 
-		// File object
-		$fileObject = new Models\File(trim($localPath), $path);
-		$fileObject->set('type', $type);
-		$params['file'] = $fileObject;
+		if (!($file instanceof Models\File))
+		{
+			// File object
+			$params['file'] = $this->getMetadata($item, $type, $params);
+		}
+		else
+		{
+			$type = $file->get('type');
+		}
 
 		if ($type == 'file' && $this->call('deleteFile', $params))
 		{
@@ -358,9 +407,7 @@ class Repo extends Object
 		}
 
 		// File object
-		$fileObject = new Models\File(trim($localDirPath), $path);
-		$fileObject->set('type', 'folder');
-		$params['file'] = $fileObject;
+		$params['file'] = $this->getMetadata($dir, 'folder', $params);
 
 		// Adapter call
 		if ($this->call('deleteDirectory', $params))
@@ -373,7 +420,6 @@ class Repo extends Object
 			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
 			return false;
 		}
-
 	}
 
 	/**
@@ -385,10 +431,10 @@ class Repo extends Object
 	{
 		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
-		$newDir    = isset($params['newDir']) ? $params['newDir'] : NULL;
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
 
-		$newDir = \Components\Projects\Helpers\Html::makeSafeDir($newDir);
+		$newDir    = isset($params['newDir']) ? $params['newDir'] : NULL; // New directory name
+		$newDir    = \Components\Projects\Helpers\Html::makeSafeDir($newDir);
 		$localDirPath = $dirPath ? $dirPath . DS . $newDir : $newDir;
 
 		// Check that we have directory to create
@@ -414,20 +460,191 @@ class Repo extends Object
 		}
 
 		// File object
-		$fileObject = new Models\File(trim($localDirPath), $path);
-		$fileObject->set('type', 'folder');
-		$params['file']    = $fileObject;
+		$params['file']    = $this->getMetadata($newDir, 'folder', $params);
 		$params['replace'] = false;
 
 		// Adapter call
 		if ($this->call('makeDirectory', $params))
 		{
-			return true;
+			return $params['file'];
 		}
 		else
 		{
 			// Failed to create directory
 			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
+			return false;
+		}
+	}
+
+	/**
+	 * Get file history
+	 *
+	 * @return  boolean
+	 */
+	public function versions($params = array(), &$versions = array(), &$timestamps = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+
+		// Name and type
+		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$type      = isset($params['type']) ? $params['type'] : 'file';
+
+		// OR -- file object itself
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		// Source item metadata
+		if (!($file instanceof Models\File))
+		{
+			// File object
+			$params['file'] = $this->getMetadata($item, $type, $params);
+		}
+		else
+		{
+			$type = $file->get('type');
+		}
+
+		$this->_adapter->history($params, $versions, $timestamps);
+
+		// Sort by time, most recent first
+		array_multisort($timestamps, SORT_DESC, $versions);
+
+		// Get status for each version
+		$versions = $this->_getVersionStatus($versions);
+
+		return true;
+	}
+
+	/**
+	 * Get trashed items
+	 *
+	 * @return  boolean
+	 */
+	public function getTrash()
+	{
+		return $this->_adapter->getTrash();
+	}
+
+	/**
+	 * Restore version
+	 *
+	 * @return  boolean
+	 */
+	public function restore($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$version   = isset($params['version']) ? $params['version'] : NULL;
+
+		// Name and type
+		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$type      = isset($params['type']) ? $params['type'] : 'file';
+
+		// OR -- file object itself
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		// Source item metadata
+		if (!($file instanceof Models\File))
+		{
+			// File object
+			$params['file'] = $this->getMetadata($item, $type, $params);
+		}
+		else
+		{
+			$type = $file->get('type');
+		}
+
+		// Make sure we have a file to work with
+		if (!$file || !$version)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_NO_FILE_SELECTED'));
+			return false;
+		}
+		if (!$this->fileExists($file->get('localPath')))
+		{
+			$this->call('restore', $params);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Move a file or folder within repo
+	 *
+	 * @return  boolean
+	 */
+	public function moveItem($params = array())
+	{
+		$path      = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$targetDir = isset($params['targetDir']) ? $params['targetDir'] : NULL;
+		$create    = isset($params['createTargetDir']) ? $params['createTargetDir'] : NULL;
+
+		// Name and type
+		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$type      = isset($params['type']) ? $params['type'] : 'file';
+
+		// OR -- file object itself
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		// Source item metadata
+		if (!($file instanceof Models\File))
+		{
+			// File object
+			$params['file'] = $this->getMetadata($item, $type, $params);
+		}
+		else
+		{
+			$type = $file->get('type');
+		}
+
+		// No new location
+		if ($targetDir == $dirPath)
+		{
+			return false;
+		}
+
+		// Need to provision directory?
+		if ($create == true)
+		{
+			$localDirPath = $dirPath ? $dirPath . DS . $targetDir : $targetDir;
+			if (!$this->dirExists($localDirPath))
+			{
+				$newDirParams = array(
+					'subdir' => $dirPath,
+					'path'   => $path,
+					'newDir' => $targetDir
+				);
+				$target = $this->makeDirectory($newDirParams);
+				if (!$target)
+				{
+					// Could not create target directory
+					return false;
+				}
+			}
+			$targetDir = $localDirPath;
+		}
+
+		// Target item metadata
+		$targetParams = array(
+			'subdir' => $targetDir,
+			'path'   => $path
+		);
+		$targetFile = $this->getMetadata($item, $type, $targetParams);
+
+		// Do the move
+		$moveParams = array(
+			'fromFile' => $params['file'],
+			'toFile'   => $targetFile,
+			'type'     => $type
+		);
+		if ($this->call('move', $moveParams))
+		{
+			return true;
+		}
+		else
+		{
+			// Failed
 			return false;
 		}
 	}
@@ -529,7 +746,7 @@ class Repo extends Object
 		}
 		else
 		{
-			// Failed to create directory
+			// Failed
 			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME') );
 			return false;
 		}
@@ -1043,5 +1260,102 @@ class Repo extends Object
 				return $commits;
 				break;
 		}
+	}
+
+	/**
+	 * Parse status for each file revision
+	 *
+	 * @param      array	$versions	Array of file version data
+	 * @return     array
+	 */
+	protected function _getVersionStatus( $versions = array())
+	{
+		if (count($versions) == 0)
+		{
+			return $versions;
+		}
+
+		// Go through versions in reverse (from oldest to newest)
+		for ($k = (count($versions) - 1); $k >= 0; $k--)
+		{
+			$current 	= $versions[$k];
+			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
+			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
+
+			// Deleted?
+			if ($current['commitStatus'] == 'D')
+			{
+				$current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_DELETED');
+			}
+
+			// First sdded?
+			if ($current['commitStatus'] == 'A' && $k == (count($versions) - 1))
+			{
+				$current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_ADDED');
+			}
+
+			// Modified?
+			if ($current['commitStatus'] == 'M')
+			{
+				if (($next && $next['local'] && $current['local'])
+					|| ($next && $next['remote'] && $next['remote']) || !$next
+				)
+				{
+					$current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_MODIFIED');
+				}
+			}
+
+			// Check renames
+			if ($versions[$k]['rename'] == 1
+				&& $previous && $previous['commitStatus'] == 'A'
+			)
+			{
+				if ($versions[$k - 1]['size'] != $versions[$k]['size'])
+				{
+					$versions[$k - 1]['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_RENAMED_AND_MODIFIED');
+				}
+				else
+				{
+					$versions[$k - 1]['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_RENAMED');
+				}
+				$versions[$k - 1]['commitStatus'] = 'R';
+			}
+
+			if (preg_match("/\bRenamed\b/i", $current['message']) && $current['commitStatus'] == 'A')
+			{
+				$current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_RENAMED');
+				$current['commitStatus'] = 'R';
+			}
+
+			// Check restored after deletion
+			if ($versions[$k]['commitStatus'] == 'D'
+				&& ($k - 1) >= 0 && $versions[$k - 1]['commitStatus'] == 'A'
+				&& $versions[$k]['local'] && $versions[$k - 1]['local']
+			)
+			{
+				$versions[$k - 1]['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_RESTORED');
+			}
+
+			if (preg_match("/" . Lang::txt('PLG_PROJECTS_FILES_FILES_SHARE_EXPORTED') . "/", $current['message']) && $next)
+			{
+				$versions[$k + 1]['change']  = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_SENT_REMOTE');
+				$versions[$k + 1]['movedTo'] = 'remote';
+				$versions[$k + 1]['author']	 = $current['author'];
+				$current['hide'] = 1;
+			}
+			if (preg_match("/" . Lang::txt('PLG_PROJECTS_FILES_FILES_SHARE_IMPORTED') . "/", $current['message']))
+			{
+				$current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_SENT_LOCAL');
+				$current['movedTo'] = 'local';
+			}
+			if ($current['remote'] && $current['commitStatus'] == 'M')
+			{
+				$current['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_MODIFIED');
+			}
+
+			$versions[$k] = $current;
+		}
+
+		return $versions;
 	}
 }
