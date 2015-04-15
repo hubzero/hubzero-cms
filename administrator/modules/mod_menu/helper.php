@@ -31,9 +31,11 @@
 namespace Modules\Menu;
 
 use Hubzero\Module\Module;
+use Hubzero\Utility\Arr;
 use Request;
 use Lang;
 use User;
+use App;
 
 /**
  * Module class for displaying the admin menu
@@ -54,7 +56,7 @@ class Helper extends Module
 		}
 
 		// Initialise variables.
-		$lang    = \JFactory::getLanguage();
+		$lang    = App::get('language');
 		$user    = User::GetRoot();
 		$menu    = new Tree();
 		$enabled = Request::getInt('hidemainmenu') ? false : true;
@@ -102,7 +104,7 @@ class Helper extends Module
 	public static function getComponents($authCheck = true)
 	{
 		// Initialise variables.
-		$lang   = \JFactory::getLanguage();
+		$lang   = App::get('language');
 		$user   = User::getRoot();
 		$db     = \JFactory::getDbo();
 		$query  = $db->getQuery(true);
@@ -155,8 +157,9 @@ class Helper extends Module
 					{
 						// Load the core file then
 						// Load extension-local file.
-						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false)
-						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false)
+						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false) // [ROOT]/administrator
+						|| $lang->load($component->element . '.sys', JPATH_SITE . '/components/' . $component->element . '/admin', null, false, false) // [ROOT]/components/[COMPONENT]/admin
+						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false) // [ROOT]/administrator/components/[COMPONENT]
 						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
 						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
 					}
@@ -178,7 +181,7 @@ class Helper extends Module
 			}
 		}
 
-		$result = \JArrayHelper::sortObjects($result, 'text', 1, true, $lang->getLocale());
+		$result = Arr::sortObjects($result, 'text', 1, true, $lang->getLocale());
 
 		return $result;
 	}
