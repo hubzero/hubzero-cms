@@ -85,6 +85,11 @@ abstract class Button extends Object
 	{
 		// Initialise some variables
 		$html   = null;
+		$cls    = array();
+		if (isset($definition[9]))
+		{
+			$cls = array_pop($definition);
+		}
 		$id     = call_user_func_array(array(&$this, 'fetchId'), $definition);
 		$action = call_user_func_array(array(&$this, 'fetchButton'), $definition);
 
@@ -95,7 +100,7 @@ abstract class Button extends Object
 		}
 
 		// Build the HTML Button
-		$html .= '<li class="button ' . implode(' ', $definition[9]) . '" ' . $id . ">\n";
+		$html .= '<li class="button ' . implode(' ', $cls) . '" ' . $id . ">\n";
 		$html .= $action;
 		$html .= "</li>\n";
 
