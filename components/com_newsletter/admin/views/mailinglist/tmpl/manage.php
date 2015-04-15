@@ -31,10 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//set title
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list.png');
-
-//add buttons to toolbar
 Toolbar::addNew('addemail', 'COM_NEWSLETTER_TOOLBAR_ADDEMAILS');
 Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAILS_CHECK', 'deleteemail', 'COM_NEWSLETTER_TOOLBAR_REMOVE');
 Toolbar::spacer();
@@ -134,18 +131,18 @@ Toolbar::cancel();
 								else
 								{
 									$resendLink = Route::url('index.php?option=com_newsletter&controller=mailinglist&task=sendconfirmation&id='.$le->id.'&mid='.$this->list->id);
-									echo Lang::txt('JNO') . '(<a href="'.$resendLink.'">Send Confirmation</a>)';
+									echo Lang::txt('JNO') . '(<a href="'.$resendLink.'">' . Lang::txt('Send Confirmation') . '</a>)';
 								}
 							?>
 						</td>
 						<td>
-							<?php echo JFactory::getDate($le->date_added)->format('l, F d, Y @ g:ia'); ?>
+							<?php echo Date::of($le->date_added)->format('l, F d, Y @ g:ia'); ?>
 						</td>
 						<td>
 							<?php
 								if ($le->date_confirmed && $le->date_confirmed != '0000-00-00 00:00:00')
 								{
-									echo JFactory::getDate($le->date_confirmed)->format('l, F d, Y @ g:ia');
+									echo Date::of($le->date_confirmed)->format('l, F d, Y @ g:ia');
 								}
 								else
 								{

@@ -39,6 +39,7 @@ use Hubzero\Component\AdminController;
 use Exception;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use User;
@@ -362,7 +363,7 @@ class Jobs extends AdminController
 
 			if (!Event::trigger('xmessage.onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option)))
 			{
-				$this->setError(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
+				Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
 			}
 		}
 

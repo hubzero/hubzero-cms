@@ -45,56 +45,53 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'search_field' => urldecode($app->getUserStateFromRequest(
+			'search_field' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search_field',
 				'search_field',
 				'name'
 			)),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'registerDate'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
-			'registerDate' => $app->getUserStateFromRequest(
+			'registerDate' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.registerDate',
 				'registerDate',
 				''
 			),
-			'emailConfirmed' => $app->getUserStateFromRequest(
+			'emailConfirmed' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.emailConfirmed',
 				'emailConfirmed',
 				0,
 				'int'
 			),
-			'public' => $app->getUserStateFromRequest(
+			'public' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.public',
 				'public',
 				-1,
 				'int'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -133,12 +130,13 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('add');
-		$this->view->display();
+		$this->view
+			->setLayout('add')
+			->display();
 	}
 
 	/**
@@ -173,7 +171,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		if (!\Hubzero\Utility\Validate::username($p['username']))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
-			$this->addTask(1);
+			$this->addTask();
 			return;
 		}
 
@@ -181,7 +179,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		if (!\Hubzero\Utility\Validate::email($p['email']))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
-			$this->addTask(1);
+			$this->addTask();
 			return;
 		}
 
@@ -189,14 +187,13 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
 		$name .= trim($p['surname']);
 
-		$date = JFactory::getDate();
 		$user = User::getRoot();
 		$user->set('username', trim($p['username']));
 		$user->set('name', $name);
 		$user->set('email', trim($p['email']));
 		$user->set('id', 0);
 		$user->set('groups', array($newUsertype));
-		$user->set('registerDate', $date->toMySQL());
+		$user->set('registerDate', Date::toSql());
 		$user->set('password', trim($p['password']));
 		$user->set('password_clear', trim($p['password']));
 		$user->save();
@@ -231,7 +228,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Did we successfully create/update an account?
 		if (!$result)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$user->getError(),
 				'error'
@@ -240,7 +237,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option='.$this->_option.'&controller='.$this->_controller.'&task=edit&id[]='.$profile->get('uidNumber'), false),
 			Lang::txt('COM_MEMBERS_MEMBER_SAVED')
 		);
@@ -472,7 +469,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Save the changes
 		if (!$profile->update())
 		{
-			JError::raiseWarning('', $profile->getError());
+			App::abort(500, $profile->getError());
 			return false;
 		}
 
@@ -560,7 +557,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		if ($redirect)
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option='.$this->_option),
 				Lang::txt('COM_MEMBERS_MEMBER_SAVED')
 			);
@@ -616,7 +613,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_REMOVED')
 		);
@@ -659,7 +656,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Do we have an ID?
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_NO_ID'),
 				'error'
@@ -685,7 +682,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 			if (!$profile->update())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$profile->getError(),
 					'error'
@@ -694,7 +691,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_CONFIRMATION_CHANGED')
 		);
@@ -707,7 +704,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	 */
 	public function autocompleteTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}

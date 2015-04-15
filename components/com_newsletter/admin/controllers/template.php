@@ -33,6 +33,10 @@ namespace Components\Newsletter\Admin\Controllers;
 use Components\Newsletter\Tables\Template as NewsletterTemplate;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Newsletter stories Controller
@@ -154,7 +158,7 @@ class Template extends AdminController
 		}
 
 		//inform user of successful save and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_NEWSLETTER_TEMPLATE_SAVED_SUCCESS')
 		);
@@ -202,7 +206,7 @@ class Template extends AdminController
 		}
 
 		//redirect back to campaigns list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_NEWSLETTER_TEMPLATE_DELETE_SUCCESS')
 		);
@@ -248,7 +252,7 @@ class Template extends AdminController
 		}
 
 		//set success message & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_NEWSLETTER_TEMPLATE_DUPLICATE_SUCCESS')
 		);

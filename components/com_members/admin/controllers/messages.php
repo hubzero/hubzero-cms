@@ -43,34 +43,31 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'component' => urldecode($app->getUserStateFromRequest(
+			'component' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.component',
 				'component',
 				''
 			)),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'c.name'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -134,7 +131,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
@@ -150,19 +147,18 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 	 */
 	public function applyTask()
 	{
-		$this->saveTask(0);
+		$this->saveTask();
 	}
 
 	/**
 	 * Save an entry and redirect to main listing
 	 *
-	 * @param      integer $redirect Redirect after save?
 	 * @return     void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming profile edits
 		$fields = Request::getVar('fields', array(), 'post');
@@ -192,6 +188,8 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		Notify::success(Lang::txt('Message Action saved'));
+
 		// Redirect
 		if ($this->_task == 'apply')
 		{
@@ -199,10 +197,8 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('Message Action saved'),
-			'message'
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -214,7 +210,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -242,7 +238,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('Message Action removed')
 		);

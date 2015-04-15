@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-content', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 15, 'field-content', array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>
@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_BLOG_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->get('created_by'));
+						$editor = User::getInstance($this->row->get('created_by'));
 						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />

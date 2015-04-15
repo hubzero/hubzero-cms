@@ -35,6 +35,10 @@ use Components\Newsletter\Tables\MailingRecipient;
 use Components\Newsletter\Tables\MailingRecipientAction;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Newsletter Mailings Controller
@@ -273,7 +277,7 @@ class Mailing extends AdminController
 		}
 
 		//inform and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_NEWSLETTER_MAILING_STOPPED')
 		);

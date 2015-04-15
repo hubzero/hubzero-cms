@@ -63,40 +63,37 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'ordering'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
-			'state' => $app->getUserStateFromRequest(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				'',
 				'word'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				'',
@@ -215,7 +212,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$plugin)
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('Please select a plugin to manage.')
 			);
@@ -292,7 +289,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		if (count($id) < 1)
 		{
 			$action = $state ? Lang::txt('publish') : Lang::txt('unpublish');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				Lang::txt('Select a plugin to ' . $action),
 				'error'
@@ -307,7 +304,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$this->database->setQuery($query);
 		if (!$this->database->query())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				$this->database->getErrorMsg(),
 				'error'
@@ -321,7 +318,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			$row->checkin($id[0]);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false)
 		);
 	}
@@ -358,7 +355,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		Request::checkToken() or Request::checkToken('get') or jexit('Invalid Token');
 
 		$cid    = Request::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$uid    = $cid[0];
 		$inc    = ($this->_task == 'orderup' ? -1 : 1);
@@ -378,7 +375,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$row->load($uid);
 		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -426,7 +423,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$cid = Request::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		// Load the object
 		$row = JTable::getInstance('extension');
@@ -438,7 +435,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		// Check data
 		if (!$row->check())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -449,7 +446,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		// Store data
 		if (!$row->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -458,7 +455,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -474,11 +471,11 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		Request::checkToken() or Request::checkToken('get') or jexit('Invalid Token');
 
 		$cid = Request::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$total = count($cid);
 		$order = Request::getVar('order', array(0), 'post', 'array');
-		JArrayHelper::toInteger($order, array(0));
+		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
 		$row = JTable::getInstance('extension');
 
@@ -493,7 +490,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 				$row->ordering = $order[$i];
 				if (!$row->store())
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						$this->database->getErrorMsg(),
 						'error'
@@ -523,7 +520,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('New ordering saved')
 		);

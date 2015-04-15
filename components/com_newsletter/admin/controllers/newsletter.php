@@ -38,6 +38,14 @@ use Components\Newsletter\Tables\PrimaryStory;
 use Components\Newsletter\Tables\SecondaryStory;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Config;
+use Notify;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
 /**
  * Newsletters controller
@@ -238,7 +246,7 @@ class Newsletter extends AdminController
 		if (!isset($newsletter['id']))
 		{
 			//update the modified info
-			$newsletter['created']    = \Date::toSql();
+			$newsletter['created']    = Date::toSql();
 			$newsletter['created_by'] = User::get('id');
 		}
 		else
@@ -281,7 +289,7 @@ class Newsletter extends AdminController
 		}
 
 		//update the modified info
-		$newsletter['modified']    = \Date::toSql();
+		$newsletter['modified']    = Date::toSql();
 		$newsletter['modified_by'] = User::get('id');
 
 		// if no plain text was entered lets take the html content
@@ -318,7 +326,7 @@ class Newsletter extends AdminController
 			$this->newsletter->modified_by   = $newsletterNewsletter->modified_by;
 			$this->newsletter->params        = $newsletterNewsletter->params;
 
-			//set the id so we can pick up the stories
+			// set the id so we can pick up the stories
 			Request::setVar('id', array($this->newsletter->id));
 
 			$this->setError($newsletterNewsletter->getError());
@@ -327,16 +335,16 @@ class Newsletter extends AdminController
 		}
 		else
 		{
-			//set success message
-			$this->setMessage(Lang::txt('COM_NEWSLETTER_SAVED_SUCCESS'));
+			// set success message
+			Notify::success(Lang::txt('COM_NEWSLETTER_SAVED_SUCCESS'));
 
-			//redirect back to campaigns list
-			$this->setRedirect(Route::url('index.php?option=com_newsletter&controller=newsletter', false));
+			// redirect back to campaigns list
+			App::redirect(Route::url('index.php?option=com_newsletter&controller=newsletter', false));
 
-			//if we just created campaign go back to edit form so we can add content
+			// if we just created campaign go back to edit form so we can add content
 			if (!isset($newsletter['id']) || $apply)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $newsletterNewsletter->id, false)
 				);
 			}
@@ -350,23 +358,23 @@ class Newsletter extends AdminController
 	 */
 	public function duplicateTask()
 	{
-		//get the request vars
+		// get the request vars
 		$ids = Request::getVar("id", array());
 
-		//make sure we have ids
+		// make sure we have ids
 		if (isset($ids) && count($ids) > 0)
 		{
-			//delete each newsletter
+			// delete each newsletter
 			foreach ($ids as $id)
 			{
-				//instantiate newsletter object
+				// instantiate newsletter object
 				$newsletterNewsletter = new Letter($this->database);
 				$newsletterNewsletter->duplicate($id);
 			}
 		}
 
-		//redirect back to campaigns list
-		$this->setRedirect(
+		// redirect back to campaigns list
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter', false),
 			Lang::txt('COM_NEWSLETTER_DUPLICATED_SUCCESS')
 		);
@@ -379,23 +387,23 @@ class Newsletter extends AdminController
 	 */
 	public function deleteTask()
 	{
-		//get the request vars
+		// get the request vars
 		$ids = Request::getVar("id", array());
 
-		//make sure we have ids
+		// make sure we have ids
 		if (isset($ids) && count($ids) > 0)
 		{
-			//delete each newsletter
+			// delete each newsletter
 			foreach ($ids as $id)
 			{
-				//instantiate newsletter object
+				// instantiate newsletter object
 				$newsletterNewsletter = new Letter($this->database);
 				$newsletterNewsletter->load($id);
 
-				//mark as deleted
+				// mark as deleted
 				$newsletterNewsletter->deleted = 1;
 
-				//save campaign marking as deleted
+				// save campaign marking as deleted
 				if (!$newsletterNewsletter->save($newsletterNewsletter))
 				{
 					$this->setError(Lang::txt('COM_NEWSLETTER_DELETE_FAIL'));
@@ -405,8 +413,8 @@ class Newsletter extends AdminController
 			}
 		}
 
-		//redirect back to campaigns list
-		$this->setRedirect(
+		// redirect back to campaigns list
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter', false),
 			Lang::txt('COM_NEWSLETTER_DELETE_SUCCESS')
 		);
@@ -469,7 +477,7 @@ class Newsletter extends AdminController
 		$msg = ($publish) ? 'COM_NEWSLETTER_PUBLISHED_SUCCESS' : 'COM_NEWSLETTER_UNPUBLISHED_SUCCESS';
 
 		//redirect back to campaigns list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter', false),
 			Lang::txt($msg)
 		);
@@ -605,7 +613,7 @@ class Newsletter extends AdminController
 		}
 
 		//redirect after sent
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter', false),
 			$message,
 			$type
@@ -751,7 +759,7 @@ class Newsletter extends AdminController
 		if ($newsletterNewsletter->save($newsletterNewsletter))
 		{
 			//redirect after sent
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_newsletter&controller=newsletter', false),
 				Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletterNewsletter->name, number_format($count))
 			);
@@ -875,7 +883,7 @@ class Newsletter extends AdminController
 
 		if ($scheduler == '1')
 		{
-			$scheduledDate = \Date::toSql();
+			$scheduledDate = Date::toSql();
 		}
 		else
 		{
@@ -887,7 +895,7 @@ class Newsletter extends AdminController
 			//make sure we have at least the date or we use now
 			if (!$schedulerDate)
 			{
-				$scheduledDate = \Date::toSql();
+				$scheduledDate = Date::toSql();
 			}
 
 			//break apart parts of date
@@ -902,7 +910,7 @@ class Newsletter extends AdminController
 			//build scheduled time
 			$scheduledTime  = $schedulerDateParts[2] . '-' . $schedulerDateParts[0] . '-' . $schedulerDateParts[1];
 			$scheduledTime .= ' ' . $schedulerHour . ':' . $schedulerMinute . ':00';
-			$scheduledDate = \JFactory::getDate(strtotime($scheduledTime))->toSql();
+			$scheduledDate = Date::of(strtotime($scheduledTime))->toSql();
 		}
 
 		//create mailing object
@@ -945,7 +953,7 @@ class Newsletter extends AdminController
 		$values = array();
 
 		// create date object once
-		$date = \Date::toSql();
+		$date = Date::toSql();
 
 		// create new record for each email
 		foreach ($emails as $email)

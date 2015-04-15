@@ -32,7 +32,9 @@ namespace Components\Jobs\Admin\Controllers;
 
 use Components\Jobs\Tables\JobType;
 use Hubzero\Component\AdminController;
+use Exception;
 use Request;
+use Notify;
 use Config;
 use Route;
 use Lang;
@@ -114,13 +116,11 @@ class Types extends AdminController
 			{
 				if (!$jt->bind($d))
 				{
-					$this->setError($jt->getError());
-					return false;
+					throw new Exception($jt->getError());
 				}
 				if (!$jt->store())
 				{
-					$this->setError($jt->getError());
-					return false;
+					throw new Exception($jt->getError());
 				}
 			}
 
@@ -166,14 +166,10 @@ class Types extends AdminController
 
 		$this->view->row = $row;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -190,17 +186,15 @@ class Types extends AdminController
 		$row = new JobType($this->database);
 		if (!$row->bind($_POST))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Redirect

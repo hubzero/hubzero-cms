@@ -33,9 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'editEmail' ? Lang::txt('Edit') : Lang::txt('New'));
-Toolbar::title(Lang::txt('Newsletter Mailing List Email') . ': ' . $text, 'list.png');
 
-//add toolbar buttons
+Toolbar::title(Lang::txt('Newsletter Mailing List Email') . ': ' . $text, 'list.png');
 Toolbar::save('saveemail');
 Toolbar::cancel('cancelemail');
 ?>
@@ -50,16 +49,16 @@ Toolbar::cancel('cancelemail');
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-50">
 		<fieldset class="adminform">
-			<legend><?php echo $text; ?> Mailing List Email</legend>
+			<legend><?php echo Lang::txt('%s Mailing List Email', $text); ?></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key" width="200px">Mailing List:</td>
-						<td><strong><?php echo $this->list->name; ?></strong></td>
+						<td class="key" width="200px"><?php echo Lang::txt('Mailing List'); ?>:</td>
+						<td><strong><?php echo $this->escape($this->list->name); ?></strong></td>
 					</tr>
 					<tr>
-						<td class="key">Email:</td>
-						<td><input type="text" name="email[email]" value="<?php echo $this->email->email; ?>" /></td>
+						<td class="key"><?php echo Lang::txt('Email'); ?>:</td>
+						<td><input type="text" name="email[email]" value="<?php echo $this->escape($this->email->email); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -69,17 +68,17 @@ Toolbar::cancel('cancelemail');
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th>Date Added:</th>
-					<td><?php echo date("F d, Y @ g:ia", strtotime($this->email->date_added)); ?></td>
+					<th><?php echo Lang::txt('Date Added'); ?>:</th>
+					<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_added)); ?></td>
 				</tr>
 				<tr>
-					<th>Confirmed?</th>
-					<td><?php echo ($this->email->confirmed) ? 'Yes' : 'No'; ?></td>
+					<th><?php echo Lang::txt('Confirmed?'); ?></th>
+					<td><?php echo ($this->email->confirmed) ? Lang::txt('JYes') : Lang::txt('JNo'); ?></td>
 				</tr>
 				<?php if ($this->email->confirmed) : ?>
 					<tr>
-						<th>Date Confirmed:</th>
-						<td><?php echo date("F d, Y @ g:ia", strtotime($this->email->date_confirmed)); ?></td>
+						<th><?php echo Lang::txt('Date Confirmed'); ?>:</th>
+						<td><?php echo gmdate("F d, Y @ g:ia", strtotime($this->email->date_confirmed)); ?></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>

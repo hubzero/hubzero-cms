@@ -32,6 +32,7 @@ namespace Components\Newsletter\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Image\Mozify;
+use Request;
 
 /**
  * Newsletter tools Controller

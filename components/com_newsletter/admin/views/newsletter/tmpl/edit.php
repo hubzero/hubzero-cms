@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+Request::setVar('hidemainmenu', 1);
+
 $this->js()
      ->js('jquery.formwatcher', 'system');
 
@@ -217,7 +219,7 @@ function submitbutton(pressbutton)
 			</table>
 
 			<?php
-				$params = new JParameter($this->newsletter->params);
+				$params = new JRegistry($this->newsletter->params);
 			?>
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>

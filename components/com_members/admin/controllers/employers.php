@@ -58,35 +58,32 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
 			// Get paging variables
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort_Dir',
 				'filter_order_Dir',
 				'ASC'
@@ -102,12 +99,6 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 
 		// Get records
 		$this->view->rows  = $obj->find('list', $this->view->filters);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -144,7 +135,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
@@ -170,7 +161,6 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		if (!$model->bind($_POST))
 		{
 			App::abort(500, $model->getError());
-			return;
 		}
 
 		// Check content
@@ -189,15 +179,16 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		Notify::success(Lang::txt('COM_MEMBERS_ORGTYPE_SAVED'));
+
 		if ($this->_task == 'apply')
 		{
 			return $this->editTask($model);
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_ORGTYPE_SAVED')
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -229,7 +220,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_ORGTYPE_REMOVED')
 		);

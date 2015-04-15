@@ -104,7 +104,7 @@ JHtml::_('behavior.framework');
 	<div class="col width-50 fltrt">
 		<?php if ($this->code != '') : ?>
 			<h3 style="padding-top: 0"><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_ORIGINAL'); ?></h3>
-			<img src="<?php echo str_replace(JPATH_ROOT, '', $this->original); ?>" />
+			<img src="<?php echo str_replace(PATH_APP, '', $this->original); ?>" alt="" />
 
 			<h3><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_MOZIFIED'); ?></h3>
 			<iframe id="preview-iframe" style="border:1px solid transparent"></iframe>

@@ -35,6 +35,10 @@ use Components\Newsletter\Tables\PrimaryStory;
 use Components\Newsletter\Tables\SecondaryStory;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Newsletter stories Controller
@@ -141,7 +145,7 @@ class Story extends AdminController
 		}
 
 		//inform and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $newsletterStory->nid, false),
 			Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS')
 		);
@@ -224,7 +228,7 @@ class Story extends AdminController
 		}
 
 		//redirect back to campaigns list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $id . '#' . $type . '-stories', false),
 			Lang::txt('COM_NEWSLETTER_STORY_REORDER_SUCCESS')
 		);
@@ -267,7 +271,7 @@ class Story extends AdminController
 		}
 
 		//redirect back to campaigns list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $id, false),
 			Lang::txt('COM_NEWSLETTER_STORY_DELETE_SUCCESS')
 		);
@@ -283,7 +287,7 @@ class Story extends AdminController
 	{
 		$story = Request::getVar("story", array());
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $story['nid'], false)
 		);
 	}

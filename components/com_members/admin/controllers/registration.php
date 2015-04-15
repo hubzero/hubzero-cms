@@ -77,8 +77,8 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 
 		if (!is_array($settings) || empty($settings))
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_REGISTRATION_ERROR_MISSING_DATA'),
 				'error'
 			);
@@ -102,7 +102,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 		$component->params = $params->__toString();
 		$component->store();
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_REGISTRATION_SAVED')
 		);

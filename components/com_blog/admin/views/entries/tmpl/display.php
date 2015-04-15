@@ -165,15 +165,15 @@ function submitbutton(pressbutton)
 $k = 0;
 $i = 0;
 
-$now    = JFactory::getDate();
+$now    = Date::of('now');
 $db     = JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
 
 foreach ($this->rows as $row)
 {
-	$publish_up   = JFactory::getDate($row->get('publish_up'));
-	$publish_down = JFactory::getDate($row->get('publish_down'));
+	$publish_up   = Date::of($row->get('publish_up'));
+	$publish_down = Date::of($row->get('publish_down'));
 	$publish_up->setOffset(Config::get('offset'));
 	$publish_down->setOffset(Config::get('offset'));
 

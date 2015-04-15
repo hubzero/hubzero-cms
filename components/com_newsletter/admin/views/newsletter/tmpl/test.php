@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 						<tr>
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
 							<td>
-								<?php echo $this->newsletter->name; ?>
+								<?php echo $this->escape($this->newsletter->name); ?>
 							</td>
 						</tr>
 						<tr>

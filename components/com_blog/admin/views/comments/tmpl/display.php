@@ -107,11 +107,6 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 
-$now    = JFactory::getDate();
-$db     = JFactory::getDBO();
-
-$nullDate = $db->getNullDate();
-
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];

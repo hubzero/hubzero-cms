@@ -43,29 +43,26 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'ordering'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort_Dir',
 				'filter_order_Dir',
 				'ASC'
@@ -189,6 +186,8 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'));
+
 		// Redirect
 		if ($this->_task == 'apply')
 		{
@@ -196,10 +195,8 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'),
-			'message'
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -216,7 +213,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$this->orderTask(1);
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
 		);
@@ -235,7 +232,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$this->orderTask(0);
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
 		);
@@ -272,12 +269,12 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 
 		// Get the id's
 		$cid = Request::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		// Get total and order values
 		$total = count($cid);
 		$order = Request::getVar('order', array(0), 'post', 'array');
-		JArrayHelper::toInteger($order, array(0));
+		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
 		// Get password rules object
 		$row = new MembersPasswordRules($this->database);
@@ -297,7 +294,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		}
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
 		);
@@ -335,7 +332,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		}
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_RULES_TOGGLE_ENABLED')
 		);
@@ -355,7 +352,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$obj->defaultContent(1);
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_RULES_RESTORED')
 		);
@@ -395,7 +392,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		else // no rows were selected
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_NO_ROW_SELECTED'),
 				'warning'
@@ -403,7 +400,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_SUCCESS')
 		);

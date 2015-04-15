@@ -47,7 +47,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	{
 		if (!\Components\Members\Helpers\Permissions::getActions('component')->get('core.admin'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Rute::url('index.php?option=com_members', false),
 				Lang::txt('Not authorized'),
 				'warning'
@@ -67,17 +67,15 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -167,7 +165,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// check token
-		Request::checkToken() or die('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Get request vars
 		$import = Request::getVar('import', array());
@@ -276,7 +274,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_IMPORT_CREATED'),
 			'passed'
@@ -291,7 +289,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// check token
-		Request::checkToken() or die('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// get request vars
 		$ids = Request::getVar('id', array());
@@ -309,7 +307,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			// attempt to delete import
 			if (!$resourceImport->delete())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$resourceImport->getError(),
 					'error'
@@ -319,7 +317,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_MEMBERS_IMPORT_REMOVED'),
 			'passed'
@@ -379,7 +377,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function doRunTask()
 	{
 		// Check token
-		//Request::checkToken() or die('Invalid Token');
+		//Request::checkToken() or exit('Invalid Token');
 
 		// Start of import
 		$start = microtime(true);

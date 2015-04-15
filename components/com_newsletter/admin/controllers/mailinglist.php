@@ -35,6 +35,11 @@ use Components\Newsletter\Tables\MailinglistEmail;
 use Components\Newsletter\Tables\Mailinglist as MailList;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Notify;
+use Route;
+use Lang;
+use App;
 
 /**
  * Newsletter Mailing List Controller
@@ -135,7 +140,7 @@ class Mailinglist extends AdminController
 		// save mailing list
 		if ($newsletterMailinglist->save($list))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_newsletter&controller=mailinglist', false),
 				Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_SUCCESS')
 			);
@@ -182,7 +187,7 @@ class Mailinglist extends AdminController
 		}
 
 		// redirect back to campaigns list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=mailinglist', false),
 			Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_SUCCESS')
 		);
@@ -302,9 +307,6 @@ class Mailinglist extends AdminController
 		$filters = array('status' => 'all');
 		$currentEmails = array_keys($newsletterMailinglist->getListEmails($this->mid, $key ='email', $filters));
 
-		// get the applicaton
-		$application = \JFactory::getApplication();
-
 		// get com_media params
 		$config = Component::params('com_media');
 
@@ -397,28 +399,19 @@ class Mailinglist extends AdminController
 			$this->database->query();
 
 			// inform user of successfully addes
-			$application->enqueueMessage(
-				Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_SUCCESS', count($emails), implode('<br />&mdash; ', $emails)),
-				'success'
-			);
+			Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_SUCCESS', count($emails), implode('<br />&mdash; ', $emails)));
 		}
 
 		// if we had an duplicate emails
 		if (count($duplicateEmails) > 0)
 		{
-			$application->enqueueMessage(
-				Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_DUPLICATE', count($duplicateEmails), implode('<br />&mdash; ', $duplicateEmails)),
-				'warning'
-			);
+			Notify::warning(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_DUPLICATE', count($duplicateEmails), implode('<br />&mdash; ', $duplicateEmails)));
 		}
 
 		// if we had an issue with emails
 		if (count($badEmails) > 0)
 		{
-			$application->enqueueMessage(
-				Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_FAILED', count($badEmails), implode('<br />&mdash; ', $badEmails)),
-				'error'
-			);
+			Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_FAILED', count($badEmails), implode('<br />&mdash; ', $badEmails)));
 		}
 
 		// send confirmation emails
@@ -433,7 +426,7 @@ class Mailinglist extends AdminController
 		}
 
 		// redirect back to mailing list manage page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $this->mid, false)
 		);
 	}
@@ -489,7 +482,7 @@ class Mailinglist extends AdminController
 		// save email
 		if ($newsletterMailinglistEmail->save($email))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $email['mid'], false),
 				Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_SUCCESS')
 			);
@@ -541,7 +534,7 @@ class Mailinglist extends AdminController
 		}
 
 		// inform and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mailinglistId, false),
 			Lang::txt('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAIL_SUCCESS')
 		);
@@ -570,7 +563,7 @@ class Mailinglist extends AdminController
 		// delete mailing list email
 		if ($newsletterMailinglistEmail->save($newsletterMailinglistEmail))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid, false),
 				Lang::txt('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS')
 			);
@@ -606,7 +599,7 @@ class Mailinglist extends AdminController
 		Helper::sendMailinglistConfirmationEmail($newsletterMailinglistEmail->email, $newsletterMailinglist, false);
 
 		// inform user and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid, false),
 			Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_SENT', $newsletterMailinglistEmail->email)
 		);
@@ -661,7 +654,7 @@ class Mailinglist extends AdminController
 
 		$mid = ($email['mid']) ? $email['mid'] : Request::getInt('mid');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false)
 		);
 	}

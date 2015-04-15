@@ -31,12 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//set title
 Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_MAILINGS' ), 'mailing.png');
-
-//add buttons to toolbar
-//Toolbar::custom('process', 'options', '', 'Process', false);
-//Toolbar::custom('processips', 'refresh', '', 'IPs', false);
 Toolbar::spacer();
 Toolbar::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');
 Toolbar::custom('stop', 'trash', '', 'COM_NEWSLETTER_TOOLBAR_STOP');
@@ -72,8 +67,8 @@ Joomla.submitbutton = function(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->mailings); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_DATE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_DATE'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -86,10 +81,10 @@ Joomla.submitbutton = function(pressbutton)
 						<td>
 							<?php echo $mailing->newsletter_name; ?>
 						</td>
-						<td>
+						<td class="priority-3">
 							<?php echo Date::of($mailing->mailing_date)->toLocal("F d, Y @ g:ia"); ?>
 						</td>
-						<td>
+						<td class="priority-2">
 							<?php
 								if ($mailing->emails_total != 0)
 								{

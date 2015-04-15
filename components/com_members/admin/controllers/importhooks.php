@@ -56,17 +56,15 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -124,7 +122,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
@@ -193,16 +191,16 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 			$this->hook->store();
 		}
 
+		Notify::success(Lang::txt('COM_MEMBERS_IMPORTHOOK_CREATED'));
+
 		// Inform user & redirect
 		if ($this->_task == 'apply')
 		{
 			return $this->editTask($this->import);
 		}
 
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			Lang::txt('COM_MEMBERS_IMPORTHOOK_CREATED'),
-			'passed'
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false)
 		);
 	}
 
@@ -269,7 +267,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 
 			if (!$hook->store(true))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$hook->getError(),
 					'error'
@@ -279,7 +277,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_MEMBERS_IMPORTHOOK_REMOVED'),
 			'passed'

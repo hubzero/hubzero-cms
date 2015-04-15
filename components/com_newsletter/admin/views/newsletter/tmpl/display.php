@@ -92,11 +92,11 @@ Joomla.submitbutton = function(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->newsletters); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PUBLIC'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PUBLIC'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SENT'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TRACKING'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TRACKING'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -107,8 +107,8 @@ Joomla.submitbutton = function(pressbutton)
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td><?php echo $this->escape($newsletter->name); ?></td>
-						<td><?php echo ($newsletter->type == 'html') ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML') : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?></td>
-						<td>
+						<td class="priority-3"><?php echo ($newsletter->type == 'html') ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML') : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?></td>
+						<td class="priority-4">
 							<?php
 								$activeTemplate = '';
 								if ($newsletter->template == '-1')
@@ -129,25 +129,25 @@ Joomla.submitbutton = function(pressbutton)
 								echo ($activeTemplate) ? $activeTemplate : Lang::txt('COM_NEWSLETTER_NO_TEMPLATE_FOUND');
 							?>
 						</td>
-						<td>
+						<td class="priority-2">
 							<?php if ($newsletter->published) : ?>
-								<span style="color: green;"><?php echo Lang::txt('JYES'); ?></span>
+								<span class="state yes"><span><?php echo Lang::txt('JYES'); ?></span></span>
 							<?php else : ?>
-								<span style="color: red;"><?php echo Lang::txt('JNO'); ?></span>
+								<span class="state no"><span><?php echo Lang::txt('JNO'); ?></span></span>
 							<?php endif; ?>
 						</td>
 						<td>
 							<?php if ($newsletter->sent) : ?>
-								<span style="color: green;"><?php echo Lang::txt('JYES'); ?></span>
+								<span class="state yes"><span><?php echo Lang::txt('JYES'); ?></span></span>
 							<?php else : ?>
-								<span style="color: red;"><?php echo Lang::txt('JNO'); ?></span>
+								<span class="state no"><span><?php echo Lang::txt('JNO'); ?></span></span>
 							<?php endif; ?>
 						</td>
-						<td>
+						<td class="priority-3">
 							<?php if ($newsletter->tracking) : ?>
-								<strong><?php echo Lang::txt('JYES'); ?></strong>
+								<span class="state yes"><span><?php echo Lang::txt('JYES'); ?></span></span>
 							<?php else : ?>
-								<em><span style="color: red;"><?php echo Lang::txt('JNO'); ?></span></em>
+								<span class="state no"><span><?php echo Lang::txt('JNO'); ?></span></span>
 							<?php endif; ?>
 						</td>
 					</tr>

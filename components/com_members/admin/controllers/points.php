@@ -49,8 +49,8 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 		$BT = new \Hubzero\Bank\Transaction($this->database);
 
-		$thismonth = JFactory::getDate()->format('Y-m');
-		$lastmonth = JFactory::getDate(time() - (32 * 24 * 60 * 60))->format('Y-m');
+		$thismonth = Date::of('now')->format('Y-m');
+		$lastmonth = Date::of(time() - (32 * 24 * 60 * 60))->format('Y-m');
 
 		// Get overall earnings
 		$this->view->stats[] = array(
@@ -252,7 +252,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -347,7 +347,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=edit&uid=' . $row->uid, false),
 			Lang::txt('User info saved')
 		);
@@ -403,7 +403,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=config', false),
 			Lang::txt('Config Saved')
 		);
@@ -498,22 +498,21 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 					$err = $MH->getError();
 				}
 
-				$this->_message = Lang::txt('Batch transaction was processed successfully.');
+				Notify::success(Lang::txt('Batch transaction was processed successfully.'));
 			}
 			else
 			{
-				$this->_message = Lang::txt('This batch transaction was already processed earlier. Use a different identifier if you need to run it again.');
+				Notify::warning(Lang::txt('This batch transaction was already processed earlier. Use a different identifier if you need to run it again.'));
 			}
 		}
 		else
 		{
-			$this->_message = Lang::txt('Could not process. Some required fields are missing.');
+			Notify::error(Lang::txt('Could not process. Some required fields are missing.'));
 		}
 
 		// show output if run manually
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=batch', false),
-			Lang::txt($this->_message)
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=batch', false)
 		);
 	}
 
@@ -537,9 +536,9 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		}
 
 		// What month/year is it now?
-		$curmonth = JFactory::getDate()->format("F");
-		$curyear = JFactory::getDate()->format("Y-m");
-		$ref = 	strtotime($curyear);
+		$curmonth = Date::of('now')->format("F");
+		$curyear = Date::of('now')->format("Y-m");
+		$ref = strtotime($curyear);
 		$this->_message = 'Royalties on Answers for '.$curyear.' were distributed successfully.';
 		$rmsg = 'Royalties on Reviews for '.$curyear.' were distributed successfully.';
 		$resmsg = 'Royalties on Resources for '.$curyear.' were distributed successfully.';
@@ -551,13 +550,13 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
 
 		// Include economy classes
-		if (is_file(JPATH_ROOT . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
+		if (is_file(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php');
+			require_once(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php');
 		}
-		if (is_file(JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php'))
+		if (is_file(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
+			require_once(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
 		}
 
 		$AE = new AnswersEconomy($this->database);
@@ -616,8 +615,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			$reviews = $RE->getReviews();
 
 			// do we have ratings on reviews enabled?
-			$param = JPluginHelper::getPlugin('resources', 'reviews');
-			$plparam = new JRegistry($param->params);
+			$plparam = Plugin::params('resources', 'reviews');
 			$voting = $plparam->get('voting');
 
 			$accumulated = 0;
@@ -716,7 +714,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		if (!$auto)
 		{
 			// show output if run manually
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt($this->_message)
 			);

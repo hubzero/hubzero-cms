@@ -31,10 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//set title
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
-
-//add buttons to toolbar
 Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
@@ -50,9 +47,9 @@ Toolbar::preferences($this->option, '550');
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->lists); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NAME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_TOTAL_SUBSCRIBERS'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_TOTAL_SUBSCRIBERS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,15 +62,15 @@ Toolbar::preferences($this->option, '550');
 						<td>
 							<?php echo $this->escape($list->name); ?>
 						</td>
-						<td>
+						<td class="priority-3">
 							<span class="access <?php echo ($list->private) ? 'private' : 'public'; ?>">
 								<?php echo ($list->private) ? Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PRIVATE') : Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PUBLIC'); ?>
 							</span>
 						</td>
-						<td>
+						<td class="priority-2">
 							<?php echo $list->active_count; ?>
 						</td>
-						<td>
+						<td class="priority-2">
 							<?php echo $list->total_count; ?>
 						</td>
 					</tr>

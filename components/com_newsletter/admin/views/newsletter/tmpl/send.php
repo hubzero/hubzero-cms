@@ -49,7 +49,7 @@ $this->js();
 function submitbutton(pressbutton)
 {
 	//are we trying to send newsletter
-	if(pressbutton == 'dosendnewsletter')
+	if (pressbutton == 'dosendnewsletter')
 	{
 		//check to make sure we all set to go
 		if (!HUB.Administrator.Newsletter.sendNewsletterCheck())
@@ -99,8 +99,8 @@ function submitbutton(pressbutton)
 										<?php
 											$status = 'In Progress';
 											$color = 'DarkGoldenRod';
-											$sent = JFactory::getDate($mailing->date);
-											$now  = JFactory::getDate('now');
+											$sent = Date::of($mailing->date);
+											$now  = Date::of('now');
 
 											// is mailing scheduled?
 											if ($sent > $now)
@@ -181,7 +181,7 @@ function submitbutton(pressbutton)
 									<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_NULL'); ?></option>
 									<option value="-1"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_DEFAULT'); ?></option>
 									<?php foreach ($this->mailinglists as $list) : ?>
-										<option value="<?php echo $list->id; ?>"><?php echo $list->name; ?></option>
+										<option value="<?php echo $list->id; ?>"><?php echo $this->escape($list->name); ?></option>
 									<?php endforeach; ?>
 								</select>
 								<br /><br />

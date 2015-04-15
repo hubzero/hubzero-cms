@@ -43,43 +43,40 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.quotas.search',
 				'search',
 				''
 			)),
-			'search_field' => urldecode($app->getUserStateFromRequest(
+			'search_field' => urldecode(Request::getState(
 				$this->_option . '.quotas.search_field',
 				'search_field',
 				'name'
 			)),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.quotas.sort',
 				'filter_order',
 				'user_id'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.quotas.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
-			'class_alias' => $app->getUserStateFromRequest(
+			'class_alias' => Request::getState(
 				$this->_option . '.quotas.class_alias',
 				'class_alias',
 				''
 			),
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.quotas.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.quotas.limitstart',
 				'limitstart',
 				0,
@@ -97,12 +94,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->classes = $classes->getRecords();
 
 		$this->view->config = $this->config;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -244,7 +235,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'),
 			'message'
@@ -282,7 +273,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				if (!$class->id)
 				{
 					// Output message and redirect
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
 						'error'
@@ -302,7 +293,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		else // no rows were selected
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'),
 				'warning'
@@ -310,7 +301,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_QUOTA_SET_TO_DEFAULT')
 		);
@@ -327,13 +318,10 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 */
 	public function displayClassesTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
-			'start' => $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+			'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
+			'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
 		);
 
 		$obj = new MembersQuotasClasses($this->database);
@@ -404,7 +392,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
@@ -466,6 +454,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$quotas = new UsersQuotas($this->database);
 		$quotas->updateUsersByClassId($row->id);
 
+		Notify::success(Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'));
+
 		// Redirect
 		if ($this->_task == 'applyClass')
 		{
@@ -473,10 +463,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
-			Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'),
-			'message'
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false)
 		);
 	}
 
@@ -508,7 +496,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				if ($row->alias == 'default')
 				{
 					// Output message and redirect
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
 						Lang::txt('COM_MEMBERS_QUOTA_CLASS_DONT_DELETE_DEFAULT'),
 						'warning'
@@ -528,7 +516,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		else // no rows were selected
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
 				Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'),
 				'warning'
@@ -536,7 +524,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
 			Lang::txt('COM_MEMBERS_QUOTA_DELETE_SUCCESSFUL')
 		);
@@ -549,7 +537,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 */
 	public function cancelClassTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false)
 		);
 	}
@@ -657,9 +645,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 */
 	public function importTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		$this->view->config = $this->config;
 
 		// Set any errors
@@ -686,7 +671,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		if (empty($qfile))
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=import', false),
 				Lang::txt('COM_MEMBERS_QUOTA_NO_CONF_TEXT'),
 				'warning'
@@ -774,7 +759,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_QUOTA_CONF_IMPORT_SUCCESSFUL'),
 			'passed'
@@ -804,7 +789,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			if (!$class->id)
 			{
 				// Output message and redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=import', false),
 					Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
 					'error'
@@ -834,7 +819,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Output message and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_SUCCESSFUL', $updates),
 			'passed'

@@ -43,29 +43,26 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'word'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort_Dir',
 				'filter_order_Dir',
 				'ASC'
@@ -173,7 +170,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		if (!$row->save($fields))
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -188,7 +185,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_SAVE_SUCCESS'),
 			'message'
@@ -226,7 +223,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		else // no rows were selected
 		{
 			// Output message and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'),
 				'warning'
@@ -234,7 +231,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_SUCCESS')
 		);

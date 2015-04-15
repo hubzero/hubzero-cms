@@ -32,8 +32,10 @@ namespace Components\Jobs\Admin\Controllers;
 
 use Components\Jobs\Tables\JobCategory;
 use Hubzero\Component\AdminController;
+use Hubzero\Utility\Arr;
 use Request;
 use Config;
+use Notify;
 use Route;
 use Lang;
 use App;
@@ -100,7 +102,7 @@ class Categories extends AdminController
 
 		// Incoming
 		$order = Request::getVar('order', array(), 'post', 'array');
-		\JArrayHelper::toInteger($order);
+		Arr::toInteger($order);
 
 		// Instantiate an object
 		$jc = new JobCategory($this->database);
@@ -153,14 +155,10 @@ class Categories extends AdminController
 
 		$this->view->row = $row;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -177,17 +175,15 @@ class Categories extends AdminController
 		$row = new JobCategory($this->database);
 		if (!$row->bind($_POST))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
+			Notify::error($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Redirect

@@ -31,72 +31,56 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//set title
+Request::setVar('hidemainmenu', 1);
+
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
-Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_'.strtoupper($this->type)) . ': ' . $text, 'addedit.png');
+
+Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)) . ': ' . $text, 'addedit.png');
 Toolbar::save();
 Toolbar::cancel();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
-		<legend><?php echo Lang::txt('COM_NEWSLETTER_STORY_'.strtoupper($this->type)); ?></legend>
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</td>
-					<td><strong><?php echo $this->newsletter->name; ?></strong></td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_STORY_TYPE'); ?>:</td>
-					<td>
-						<?php echo Lang::txt('COM_NEWSLETTER_STORY_' . ucfirst($this->type));?>
-						<input type="hidden" name="type" value="<?php echo strtolower($this->type) ;?>" />
-						<input type="hidden" name="story[id]" value="<?php echo $this->story->id; ?>" />
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
-					<td><input type="text" name="story[title]" value="<?php echo $this->escape($this->story->title); ?>" style="width:100%" /></td>
-				</tr>
-				<?php if ($this->story->id) : ?>
-					<tr>
-						<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
-						<td>
-							<input type="hidden" name="story[order]" value="<?php echo $this->story->order; ?>" />
-							<?php echo $this->story->order; ?>
-							<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER_HINT'); ?></span>
-						</td>
-					</tr>
-				<?php endif; ?>
-				<tr>
-					<td class="key" width="200px">
-						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:
-						<br /><br />
-						<span class="hint">
-							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT1'); ?>
-						</span>
-						<br /><br />
-						<span class="hint">
-							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT2'); ?>
-						</span>
-					</td>
-					<td>
-						<?php echo JFactory::getEditor()->display("story[story]", $this->escape($this->story->story), '100%', '300px', '50', '10', true, '', '', '', array('full_paths' => true)); ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?></td>
-					<td>
-						<input type="text" name="story[readmore_title]" value="<?php echo $this->story->readmore_title; ?>" style="width:30%;margin-right:2%" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER'); ?>" />
-						<input type="text" name="story[readmore_link]" value="<?php echo $this->story->readmore_link; ?>" style="width:67.5%" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER'); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<legend><?php echo Lang::txt('COM_NEWSLETTER_STORY_' . strtoupper($this->type)); ?></legend>
+
+		<div class="input-wrap">
+			<label for="field-nid"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</label>
+			<strong class="pseudo-input"><?php echo $this->escape($this->newsletter->name); ?></strong>
+			<input type="hidden" name="story[nid]" id="field-nid" value="<?php echo $this->newsletter->id; ?>" />
+		</div>
+		<div class="input-wrap">
+			<label for="field-type"><?php echo Lang::txt('COM_NEWSLETTER_STORY_TYPE'); ?>:</label>
+			<span class="pseudo-input"><?php echo Lang::txt('COM_NEWSLETTER_STORY_' . ucfirst($this->type)); ?></span>
+			<input type="hidden" name="type" id="field-type" value="<?php echo $this->escape(strtolower($this->type)); ?>" />
+		</div>
+		<div class="input-wrap">
+			<label for="field-title"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</label>
+			<input type="text" name="story[title]" id="field-title" value="<?php echo $this->escape($this->story->title); ?>" />
+		</div>
+		<?php if ($this->story->id) : ?>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER_HINT'); ?>">
+				<label for="field-order"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</label>
+				<input type="text" name="story[order]" id="field-order" disabled="disabled" value="<?php echo $this->story->order; ?>" />
+				<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER_HINT'); ?></span>
+			</div>
+		<?php endif; ?>
+		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT1'); ?>">
+			<label for="field-story"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</label>
+			<?php echo $this->editor("story[story]", $this->escape($this->story->story), 50, 10, 'field-story', array('full_paths' => true)); ?>
+			<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT1'); ?></span>
+			<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT2'); ?></span>
+		</div>
+		<fieldset>
+			<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?></legend>
+			<div class="input-wrap">
+				<input type="text" name="story[readmore_title]" value="<?php echo $this->escape($this->story->readmore_title); ?>" style="width:30%;margin-right:2%" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER'); ?>" />
+				<input type="text" name="story[readmore_link]" value="<?php echo $this->escape($this->story->readmore_link); ?>" style="width:67.5%" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER'); ?>" />
+			</div>
+		</fieldset>
 	</fielset>
 
-	<input type="hidden" name="story[nid]" value="<?php echo $this->newsletter->id; ?>" />
+	<input type="hidden" name="story[id]" value="<?php echo $this->story->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
