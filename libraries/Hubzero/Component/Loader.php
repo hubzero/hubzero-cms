@@ -30,10 +30,9 @@
 
 namespace Hubzero\Component;
 
+use Hubzero\Container\Container;
 use Exception;
 use stdClass;
-use Lang;
-use App;
 
 /**
  * Component helper class
@@ -41,11 +40,31 @@ use App;
 class Loader
 {
 	/**
+	 * The application implementation.
+	 *
+	 * @var  object
+	 */
+	protected $app;
+
+	/**
 	 * The component list cache
 	 *
 	 * @var  array
 	 */
 	protected static $components = array();
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $app
+	 * @return  void
+	 */
+	public function __construct(Container $app)
+	{
+		self::$components = array();
+
+		$this->app = $app;
+	}
 
 	/**
 	 * Checks if the component is enabled
@@ -58,7 +77,7 @@ class Loader
 	{
 		$result = $this->load($option, $strict);
 
-		return ($result->enabled | App::isAdmin());
+		return ($result->enabled | $this->app->isAdmin());
 	}
 
 	/**
@@ -81,6 +100,7 @@ class Loader
 	 */
 	public function canonical($option)
 	{
+		$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 		if (substr($option, 0, strlen('com_')) != 'com_')
 		{
 			$option = 'com_' . $option;
@@ -103,13 +123,14 @@ class Loader
 		// Load template language files.
 		$template = $app->getTemplate(true)->template;
 
-		Lang::load('tpl_' . $template, JPATH_BASE, null, false, true) ||
-		Lang::load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, true);
+		$lang = $this->app['language'];
+		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true) ||
+		$lang->load('tpl_' . $template, JPATH_THEMES . DS . $template, null, false, true);
 
 		if (empty($option))
 		{
 			// Throw 404 if no component
-			App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
+			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
 		}
 
 		$option = $this->canonical($option);
@@ -121,38 +142,37 @@ class Loader
 		$app->scope = $option;
 
 		// Build the component path.
-		$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
-		$file = substr($option, 4);
+		$file   = substr($option, 4);
 
-		$client = (App::isAdmin() ? 'admin' : 'site');
+		$client = ($this->app->isAdmin() ? 'admin' : 'site');
 
 		// Get component path
-		if (is_dir(JPATH_SITE . '/components/' . $option . '/' . $client))
+		if (is_dir(JPATH_SITE . DS . 'components' . DS . $option . DS . $client))
 		{
 			// Set path and constants for combined components
-			define('JPATH_COMPONENT', JPATH_SITE . '/components/' . $option . '/' . $client);
-			define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option . '/site');
-			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_SITE . '/components/' . $option . '/admin');
+			define('JPATH_COMPONENT', JPATH_SITE . DS . 'components' . DS . $option . DS . $client);
+			define('JPATH_COMPONENT_SITE', JPATH_SITE . DS . 'components' . DS . $option . DS . 'site');
+			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_SITE . DS . 'components' . DS . $option . DS . 'admin');
 		}
 		else
 		{
 			// Set path and constants for legacy components
-			define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
-			define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
-			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
+			define('JPATH_COMPONENT', JPATH_BASE . DS . 'components' . DS . $option);
+			define('JPATH_COMPONENT_SITE', JPATH_SITE . DS . 'components' . DS . $option);
+			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . DS . 'components' . DS . $option);
 		}
 
-		$path = JPATH_COMPONENT . '/' . $file . '.php';
+		$path = JPATH_COMPONENT . DS . $file . '.php';
 
 		// If component is disabled throw error
 		if (!$this->isEnabled($option) || !file_exists($path))
 		{
-			App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
+			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
 		}
 
 		// Load common and local language files.
-		Lang::load($option, JPATH_BASE, null, false, true) ||
-		Lang::load($option, JPATH_COMPONENT, null, false, true);
+		$lang->load($option, JPATH_COMPONENT, null, false, true) ||
+		$lang->load($option, JPATH_BASE, null, false, true);
 
 		// Handle template preview outlining.
 		$contents = null;
@@ -212,7 +232,7 @@ class Loader
 
 		if ($error = $db->getErrorMsg())// || empty(self::$components[$option]))
 		{
-			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING', $option, $error), 500);
+			throw new Exception($this->app['language']->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING', $option, $error), 500);
 		}
 
 		if (empty(self::$components[$option]))

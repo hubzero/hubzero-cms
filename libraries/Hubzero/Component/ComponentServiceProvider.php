@@ -44,9 +44,9 @@ class ComponentServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app['component'] = function()
+		$this->app['component'] = function($app)
 		{
-			return new Loader();
+			return new Loader($app);
 		};
 	}
 }
