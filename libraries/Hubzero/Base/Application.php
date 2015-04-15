@@ -147,6 +147,16 @@ class Application extends Container
 	}
 
 	/**
+	 * Get the version number of the application.
+	 *
+	 * @return  string
+	 */
+	public function version()
+	{
+		return static::VERSION;
+	}
+
+	/**
 	 * Register all of the base service providers.
 	 *
 	 * @return  void

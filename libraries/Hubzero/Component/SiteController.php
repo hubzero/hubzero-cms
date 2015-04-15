@@ -452,10 +452,18 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Method to redirect the application to a new URL and optionally include a message
 	 *
-	 * @return	void
+	 * @param   string  $url   URL to redirect to. Optional.
+	 * @param   string  $msg   Message to display on redirect. Optional.
+	 * @param   string  $type  Message type. Optional, defaults to 'message'.
+	 * @return  void
 	 */
-	public function redirect()
+	public function redirect($url=null, $msg=null, $type=null)
 	{
+		if ($url)
+		{
+			$this->setRedirect($url, $msg, $type);
+		}
+
 		if ($this->_redirect != NULL)
 		{
 			// Preserve component messages after redirect

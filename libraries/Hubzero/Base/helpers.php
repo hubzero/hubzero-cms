@@ -28,6 +28,67 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+if ( ! function_exists('app'))
+{
+	/**
+	 * Get the root Facade application instance.
+	 *
+	 * @param   string  $key
+	 * @return  mixed
+	 */
+	function app($key = null)
+	{
+		if (!is_null($key))
+		{
+			return app()->get($key);
+		}
+
+		return \Hubzero\Facades\Facade::getApplication();
+	}
+}
+
+if ( ! function_exists('config'))
+{
+	/**
+	 * Get the specified configuration value.
+	 *
+	 * @param   mixed  $key      array|string
+	 * @param   mixed  $default  Default value if key isn't found
+	 * @return  mixed
+	 */
+	function config($key = null, $default = null)
+	{
+		if (is_null($key))
+		{
+			return app('config');
+		}
+
+		return app('config')->get($key, $default);
+	}
+}
+
+if ( ! function_exists('csrf_token'))
+{
+	/**
+	 * Get the CSRF token value.
+	 *
+	 * @param   boolean  $forceNew  Force creation of a new token.
+	 * @return  string
+	 * @throws  RuntimeException
+	 */
+	function csrf_token($forceNew = false)
+	{
+		//$session = app('session');
+
+		if (isset($session))
+		{
+			return \JSession::getFormToken(); //$session->getToken($forceNew);
+		}
+
+		throw new RuntimeException('Application session store not set.');
+	}
+}
+
 if ( ! function_exists('ddie'))
 {
 	/**
@@ -59,6 +120,23 @@ if ( ! function_exists('dlog'))
 		foreach (func_get_args() as $var)
 		{
 			\Hubzero\Utility\Debug::log($var);
+		}
+	}
+}
+
+if ( ! function_exists('dump'))
+{
+	/**
+	 * Dump the passed variables.
+	 *
+	 * @param   mixed
+	 * @return  void
+	 */
+	function dump($var)
+	{
+		foreach (func_get_args() as $var)
+		{
+			\Hubzero\Utility\Debug::dump($var);
 		}
 	}
 }
