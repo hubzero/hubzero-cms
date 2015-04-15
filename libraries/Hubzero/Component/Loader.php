@@ -152,8 +152,7 @@ class Loader
 
 		// Load common and local language files.
 		Lang::load($option, JPATH_BASE, null, false, true) ||
-		Lang::load($option, JPATH_COMPONENT, null, false, true) ||
-		Lang::load($option . '.' . $client, JPATH_COMPONENT, null, false, true);
+		Lang::load($option, JPATH_COMPONENT, null, false, true);
 
 		// Handle template preview outlining.
 		$contents = null;
