@@ -83,14 +83,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_RULE', 'rule', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_RULE', 'rule', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ORDERING', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 					<?php echo JHTML::_('grid.order',  $this->rows); ?>
 				</th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ENABLED', 'enabled', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ENABLED', 'enabled', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -120,10 +120,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $this->escape(stripslashes($row->rule)); ?>
 				</td>
 				<td>
@@ -137,7 +137,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
-				<td>
+				<td class="priority-2">
 					<a class="state <?php echo ($row->enabled) ? 'yes': 'no'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->id); ?>">
 						<span><?php echo Lang::txt(($row->enabled ? 'JYES': 'JNO')); ?></span>
 					</a>

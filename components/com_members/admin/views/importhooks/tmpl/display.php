@@ -77,8 +77,8 @@ function submitbutton(pressbutton)
 			<thead>
 				<tr>
 					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->hooks->count(); ?>);" /></th>
-					<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
-					<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
+					<th scope="col" class="priority-3"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
+					<th scope="col" class="priority-2"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
 				</tr>
 			</thead>
@@ -103,22 +103,22 @@ function submitbutton(pressbutton)
 					<?php foreach ($this->hooks as $i => $hook) : ?>
 						<tr>
 							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="isChecked(this.checked);" />
 							</td>
-							<td>
+							<td class="priority-3">
 								<?php echo $this->escape($hook->get('name')); ?> <br />
 								<span class="hint">
 									<?php echo nl2br($this->escape($hook->get('notes'))); ?>
 								</span>
 							</td>
-							<td>
+							<td class="priority-2">
 								<?php
 									switch ($hook->get('event'))
 									{
-										case 'postconvert':    echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT');    break;
-										case 'postmap':        echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');        break;
+										case 'postconvert': echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT'); break;
+										case 'postmap':     echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');     break;
 										case 'postparse':
-										default:               echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTPARSE');      break;
+										default:            echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTPARSE');   break;
 									}
 								?>
 							</td>

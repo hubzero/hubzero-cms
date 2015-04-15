@@ -84,10 +84,10 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -128,10 +128,10 @@ function submitbutton(pressbutton)
 								<?php echo nl2br($this->escape($import->get('notes'))); ?>
 							</span>
 						</td>
-						<td>
+						<td class="priority-4">
 							<?php echo $this->escape($import->get('count', 0)); ?>
 						</td>
-						<td>
+						<td class="priority-3">
 							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_ON'); ?></strong>
 							<time datetime="<?php echo $import->get('created_at'); ?>"><?php echo JHTML::_('date', $import->get('created_at'), 'm/d/Y @ g:i a'); ?></time><br />
 							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
@@ -164,7 +164,7 @@ function submitbutton(pressbutton)
 								n/a
 							<?php endif; ?>
 						</td>
-						<td>
+						<td class="priority-4">
 							<?php
 								$runs = $import->runs('list', array(
 									'import'  => $import->get('id'),

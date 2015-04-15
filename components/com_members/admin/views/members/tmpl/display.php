@@ -109,14 +109,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_NAME', 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_CONTRIBUTIONS', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -213,7 +213,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->uidNumber; ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $row->uidNumber; ?>
 				</td>
 				<td>
@@ -221,23 +221,23 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php echo $this->escape(stripslashes($row->surname)) . ', ' . $this->escape(stripslashes($row->givenName)) . ' ' . $this->escape(stripslashes($row->middleName)); ?>
 					</a>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $this->escape($row->username); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if (trim($row->email)) { ?>
 						<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<a class="state <?php echo $state; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->uidNumber . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_SET_TASK', $task); ?>">
 						<span class="text"><?php echo $alt; ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-3">
 					<time datetime="<?php echo $row->registerDate; ?>"><?php echo JHTML::_('date', $row->registerDate, 'Y-m-d'); ?></time>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $lvisit; ?>
 				</td>
 			</tr>

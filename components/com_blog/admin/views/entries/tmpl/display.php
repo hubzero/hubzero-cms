@@ -174,8 +174,8 @@ foreach ($this->rows as $row)
 {
 	$publish_up   = Date::of($row->get('publish_up'));
 	$publish_down = Date::of($row->get('publish_down'));
-	$publish_up->setOffset(Config::get('offset'));
-	$publish_down->setOffset(Config::get('offset'));
+	//$publish_up->setTimezone(Config::get('offset'));
+	//$publish_down->setTimezone(Config::get('offset'));
 
 	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1)
 	{

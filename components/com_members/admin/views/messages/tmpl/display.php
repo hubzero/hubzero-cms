@@ -32,8 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
-$juser =  JFactory::getUser();
-
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_MENU_MESSAGING'), 'user.png');
 if ($canDo->get('core.create'))
 {
@@ -81,10 +79,10 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_COMPONENT', 'component', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_COMPONENT', 'component', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ACTION', 'action', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -116,10 +114,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<span class="component">
 						<span><?php echo $this->escape(stripslashes($row->component)); ?></span>
 					</span>
@@ -135,7 +133,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span class="description">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>

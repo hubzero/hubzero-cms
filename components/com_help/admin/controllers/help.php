@@ -32,6 +32,11 @@ namespace Components\Help\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Help\Helpers\Finder;
+use Request;
+use Route;
+use Lang;
+use User;
+use App;
 
 /**
  * Help controller class
