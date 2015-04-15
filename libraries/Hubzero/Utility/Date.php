@@ -324,6 +324,11 @@ class Date extends DateTime
 	 */
 	public function setTimezone($tz)
 	{
+		if (!($tz instanceof DateTimeZone))
+		{
+			$tz = new DateTimeZone($tz);
+		}
+
 		$this->_tz = $tz;
 
 		return parent::setTimezone($tz);
