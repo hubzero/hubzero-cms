@@ -35,6 +35,7 @@ use Hubzero\Component\AdminController;
 use Exception;
 use stdClass;
 use Request;
+use Config;
 use User;
 use Lang;
 
@@ -101,7 +102,7 @@ class Polls extends AdminController
 		$limit      = Request::getState(
 			'global.list.limit',
 			'limit',
-			$app->getCfg('list_limit'),
+			Config::get('list_limit'),
 			'int'
 		);
 		$limitstart = Request::getState(

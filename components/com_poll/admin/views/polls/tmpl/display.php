@@ -53,11 +53,11 @@ if ($canDo->get('core.delete'))
 }
 if ($canDo->get('core.edit'))
 {
-	Toolbar::editListX();
+	Toolbar::editList();
 }
 if ($canDo->get('core.create'))
 {
-	Toolbar::addNewX();
+	Toolbar::addNew();
 }
 Toolbar::spacer();
 Toolbar::help('polls');

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $cid  = Request::getVar('cid', array(0), '', 'array');
 $edit = Request::getVar('edit', true );
-JArrayHelper::toInteger($cid, array(0));
+\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 $canDo = \Components\Poll\Helpers\Permissions::getActions('component');
 
