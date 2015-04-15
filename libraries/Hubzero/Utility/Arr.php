@@ -470,11 +470,11 @@ class Arr
 			}
 			elseif ($caseSensitive)
 			{
-				$cmp = strcmp($va, $vb, $locale);
+				$cmp = \JString::strcmp($va, $vb, $locale);
 			}
 			else
 			{
-				$cmp = strcasecmp($va, $vb, $locale);
+				$cmp = \JString::strcasecmp($va, $vb, $locale);
 			}
 
 			if ($cmp > 0)
