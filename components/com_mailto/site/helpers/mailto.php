@@ -26,7 +26,7 @@ abstract class MailtoHelper
 		self::cleanHashes();
 		$session = JFactory::getSession();
 		$mailto_links = $session->get('com_mailto.links', array());
-		if(!isset($mailto_links[$hash]))
+		if (!isset($mailto_links[$hash]))
 		{
 			$mailto_links[$hash] = new stdClass();
 		}
@@ -48,7 +48,7 @@ abstract class MailtoHelper
 		$session = JFactory::getSession();
 		self::cleanHashes();
 		$mailto_links = $session->get('com_mailto.links', array());
-		if(isset($mailto_links[$hash]))
+		if (isset($mailto_links[$hash]))
 		{
 			$retval = $mailto_links[$hash]->link;
 		}
@@ -64,14 +64,14 @@ abstract class MailtoHelper
 	{
 		// flag for if we've cleaned on this cycle
 		static $cleaned = false;
-		if(!$cleaned)
+		if (!$cleaned)
 		{
 			$past = time() - $lifetime;
 			$session = JFactory::getSession();
 			$mailto_links = $session->get('com_mailto.links', array());
-			foreach($mailto_links as $index=>$link)
+			foreach ($mailto_links as $index=>$link)
 			{
-				if($link->expiry < $past)
+				if ($link->expiry < $past)
 				{
 					unset($mailto_links[$index]);
 				}
@@ -79,7 +79,5 @@ abstract class MailtoHelper
 			$session->set('com_mailto.links', $mailto_links);
 			$cleaned = true;
 		}
-
-
 	}
 }
