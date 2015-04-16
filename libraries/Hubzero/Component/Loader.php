@@ -121,7 +121,7 @@ class Loader
 		$app = \JFactory::getApplication();
 
 		// Load template language files.
-		$template = $app->getTemplate(true)->template;
+		$template = $this->app['template']->template;
 
 		$lang = $this->app['language'];
 		$lang->load('tpl_' . $template, JPATH_BASE, null, false, true) ||

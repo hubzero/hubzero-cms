@@ -253,6 +253,12 @@ class JAdministrator extends JApplication
 	 */
 	public function getTemplate($params = false)
 	{
+		// [!] Hubzero
+		if (class_exists('\\App'))
+		{
+			return ($params ? \App::get('template') : \App::get('template')->template);
+		}
+
 		static $template;
 
 		if (!isset($template))

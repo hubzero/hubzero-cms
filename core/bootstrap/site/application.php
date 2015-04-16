@@ -440,6 +440,12 @@ final class JSite extends JApplication
 	 */
 	public function getTemplate($params = false)
 	{
+		// [!] Hubzero
+		if (class_exists('\\App'))
+		{
+			return ($params ? \App::get('template') : \App::get('template')->template);
+		}
+
 		if (is_object($this->template))
 		{
 			if ($params) {

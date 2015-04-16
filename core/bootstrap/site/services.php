@@ -32,4 +32,5 @@ return array(
 	'Hubzero\Module\ModuleServiceProvider',
 	'Hubzero\Pathway\PathwayServiceProvider',
 	'Hubzero\Notification\NotificationServiceProvider',
+	'Hubzero\Template\TemplateServiceProvider',
 );

@@ -1,4 +1,33 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 namespace Hubzero\Http;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -189,11 +218,12 @@ class Request extends BaseRequest
 	/**
 	 * Get the root URL for the application.
 	 *
+	 * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
 	 * @return  string
 	 */
-	public function root()
+	public function root($pathonly = false)
 	{
-		$root = rtrim($this->getSchemeAndHttpHost() . $this->getBasePath(), '/');
+		$root = rtrim(($pathonly ? '' : $this->getSchemeAndHttpHost()) . $this->getBasePath(), '/');
 		$root = explode('/', $root);
 		if (in_array(end($root), array('administrator', 'api')))
 		{
@@ -208,7 +238,7 @@ class Request extends BaseRequest
 	 *
 	 * @return  string
 	 */
-	public function url()
+	public function current()
 	{
 		return rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/');
 	}
@@ -333,9 +363,9 @@ class Request extends BaseRequest
 	/**
 	 * Retrieve an input item from the request.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return string
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
 	 */
 	public function input($key = null, $default = null)
 	{
@@ -345,11 +375,21 @@ class Request extends BaseRequest
 	}
 
 	/**
+	 * Get the input source for the request.
+	 *
+	 * @return  object  \Symfony\Component\HttpFoundation\ParameterBag
+	 */
+	protected function getInputSource()
+	{
+		return $this->getMethod() == 'GET' ? $this->query : $this->request;
+	}
+
+	/**
 	 * Retrieve a post item from the request.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return string
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
 	 */
 	public function request($key = null, $default = null)
 	{
@@ -359,9 +399,9 @@ class Request extends BaseRequest
 	/**
 	 * Retrieve a query string item from the request.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return string
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
 	 */
 	public function query($key = null, $default = null)
 	{
@@ -371,9 +411,9 @@ class Request extends BaseRequest
 	/**
 	 * Retrieve a cookie from the request.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return string
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
 	 */
 	public function cookie($key = null, $default = null)
 	{
@@ -383,9 +423,9 @@ class Request extends BaseRequest
 	/**
 	 * Retrieve a header from the request.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return string
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
 	 */
 	public function header($key = null, $default = null)
 	{
@@ -395,12 +435,32 @@ class Request extends BaseRequest
 	/**
 	 * Retrieve a server variable from the request.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $default
-	 * @return string
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
 	 */
 	public function server($key = null, $default = null)
 	{
 		return $this->retrieveItem('server', $key, $default);
+	}
+
+	/**
+	 * Retrieve a parameter item from a given source.
+	 *
+	 * @param   string  $source
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  string
+	 */
+	protected function retrieveItem($source, $key, $default)
+	{
+		if (is_null($key))
+		{
+			return $this->$source->all();
+		}
+		else
+		{
+			return $this->$source->get($key, $default, true);
+		}
 	}
 }
