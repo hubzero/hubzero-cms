@@ -14,7 +14,7 @@
 		display: block;
 		font-size: 1em;
 		margin: 0 0 0 0;
-		background-color: #777;
+		background: #777;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 		zoom: 1;
 
@@ -48,7 +48,7 @@
 			ul {
 				width: 100%;
 				display: none;
-				background: #373737;
+				background: #5c5c5c;
 				padding: 0;
 				border: none;
 			}
@@ -57,15 +57,6 @@
 			li:hover,
 			li:focus {
 				color: #FF9966;
-			}
-			&>li.active>a,
-			li.active a {
-				color: #333;
-				background: #5c5c5c;
-			}
-			li.active li a {
-				color: #000;
-				background: transparent;
 			}
 			&>li.active>ul,
 			li.active>ul {
@@ -162,7 +153,6 @@
 					float: none;
 					padding: 0 10px;
 					margin: 0;
-					background: #373737;
 					font-weight: normal;
 					border: none;
 				}
@@ -173,9 +163,16 @@
 				}
 			}
 
+			&>li.active>ul,
+			li.active>ul {
+				display: none;
+			}
+
 			// Drop-Down Menu Theme
 			li:hover,
-			li:focus {
+			li:focus,
+			li.active:hover,
+			li.active:focus {
 				&>ul,
 				&>ul {
 					display: block;
@@ -213,7 +210,6 @@
 				position: absolute;
 				right: 1em;
 			}
-			//#header .user-options .disabled .logout,
 			&.disabled li a,
 			&.disabled>li:hover > a,
 			&.disabled>li:focus > a,
