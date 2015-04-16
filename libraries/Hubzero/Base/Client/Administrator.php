@@ -50,6 +50,13 @@ class Administrator implements ClientInterface
 	public $name = 'administrator';
 
 	/**
+	 * Alias
+	 *
+	 * @var string
+	 */
+	public $alias = 'admin';
+
+	/**
 	 * A url to init this client.
 	 *
 	 * @var string

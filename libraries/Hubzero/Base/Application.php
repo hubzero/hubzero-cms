@@ -140,7 +140,13 @@ class Application extends Container
 		if (substr($method, 0, 2) == 'is')
 		{
 			$client = substr($method, 2);
-			return ($this['client']->url == $client);
+
+			$name = $this['client']->name;
+			if (isset($this['client']->alias))
+			{
+				$name = $this['client']->alias;
+			}
+			return ($name == $client);
 		}
 
 		throw new RuntimeException(sprintf('Method [%s] not found.', $method));
