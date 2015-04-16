@@ -48,34 +48,31 @@ class Codes extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'section' => $app->getUserStateFromRequest(
+			'section' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.section',
 				'section',
 				0
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'redeemed' => $app->getUserStateFromRequest(
+			'redeemed' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.redeemed',
 				'redeemed',
 				'-1'
 			),
 			// Filters for returning results
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -86,7 +83,7 @@ class Codes extends AdminController
 		$this->view->section = \CoursesModelSection::getInstance($this->view->filters['section']);
 		if (!$this->view->section->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
@@ -200,7 +197,7 @@ class Codes extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $model->get('section_id'), false),
 			Lang::txt('COM_COURSES_CODE_SAVED')
 		);
@@ -252,7 +249,7 @@ class Codes extends AdminController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
 			Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
 		);
@@ -298,7 +295,7 @@ class Codes extends AdminController
 
 		if (!Request::getInt('no_html', 0))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false)
 			);
 		}
@@ -374,7 +371,7 @@ class Codes extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false)
 		);
 	}
@@ -424,7 +421,7 @@ class Codes extends AdminController
 
 		if (!$section)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
 				Lang::txt('No section specified'),
 				'warning'
@@ -439,7 +436,7 @@ class Codes extends AdminController
 		// Do we have any IDs?
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
 				Lang::txt('No codes selected'),
 				'warning'

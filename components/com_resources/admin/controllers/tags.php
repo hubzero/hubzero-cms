@@ -34,6 +34,10 @@ use Components\Resources\Tables\Resource;
 use Components\Resources\Helpers\Tags as TagCloud;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage resource entry tags
@@ -118,7 +122,7 @@ class Tags extends AdminController
 		$tagging->setTags($tags, $this->juser->get('id'), 1);
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=items', false),
 			Lang::txt('COM_RESOURCES_TAGS_UPDATED', $id)
 		);
@@ -131,7 +135,7 @@ class Tags extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=items', false)
 		);
 	}

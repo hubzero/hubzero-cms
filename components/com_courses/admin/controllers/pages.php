@@ -66,35 +66,32 @@ class Pages extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'active' => $app->getUserStateFromRequest(
+			'active' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.active',
 				'active',
 				'-1'
 			),
 			// Filters for returning results
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'offering' => $app->getUserStateFromRequest(
+			'offering' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.offering',
 				'offering',
 				0
@@ -104,7 +101,7 @@ class Pages extends AdminController
 		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
 		if ($this->view->offering->exists())
 		{
-			$this->view->filters['course']    = $app->getUserStateFromRequest(
+			$this->view->filters['course']    = Request::getState(
 				$this->_option . '.' . $this->_controller . '.course',
 				'course',
 				$this->view->offering->get('course_id')
@@ -113,7 +110,7 @@ class Pages extends AdminController
 		else
 		{
 			$using = 'course';
-			$this->view->filters['course']    = $app->getUserStateFromRequest(
+			$this->view->filters['course']    = Request::getState(
 				$this->_option . '.' . $this->_controller . '.course',
 				'course',
 				0
@@ -236,7 +233,7 @@ class Pages extends AdminController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $fields['course_id'] . '&offering=' . $fields['offering_id'], false),
 			Lang::txt('COM_COURSES_ITEM_SAVED')
 		);
@@ -262,7 +259,7 @@ class Pages extends AdminController
 		if (empty($ids))
 		{
 			// Redirect with error message
-			$this->setRedirect(
+			App::redirect(
 				$rtrn,
 				Lang::txt('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
 				'error'
@@ -289,14 +286,14 @@ class Pages extends AdminController
 		// Redirect
 		if ($i)
 		{
-			$this->setRedirect(
+			App::redirect(
 				$rtrn,
 				Lang::txt('COM_COURSES_ITEMS_REMOVED', $i)
 			);
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			$rtrn,
 			$this->getError(),
 			'error'
@@ -310,7 +307,7 @@ class Pages extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0) . '&offering=' . Request::getInt('offering', 0), false)
 		);
 	}
@@ -883,7 +880,7 @@ class Pages extends AdminController
 
 		if ($this->getErrors())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				implode('<br />', $this->getErrors()),
 				'error'
@@ -892,7 +889,7 @@ class Pages extends AdminController
 		else
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);

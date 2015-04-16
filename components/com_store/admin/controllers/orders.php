@@ -72,29 +72,26 @@ class Orders extends AdminController
 		// Instantiate a new view
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.items.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.items.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'filterby' => $app->getUserStateFromRequest(
+			'filterby' => Request::getState(
 				$this->_option . '.orders.filterby',
 				'filterby',
 				'all'
 			),
-			'sortby' => $app->getUserStateFromRequest(
+			'sortby' => Request::getState(
 				$this->_option . '.orders.sortby',
 				'sortby',
 				'm.id DESC'
@@ -177,7 +174,7 @@ class Orders extends AdminController
 			}
 			else
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('Order empty, cannot generate receipt'),
 					'error'
@@ -185,11 +182,11 @@ class Orders extends AdminController
 				return;
 			}
 
-			$customer = \JUser::getInstance($row->uid);
+			$customer = User::getInstance($row->uid);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('Need order ID to issue a receipt'),
 				'error'
@@ -320,7 +317,7 @@ class Orders extends AdminController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('There was an error creating a receipt'),
 				'error'
@@ -553,7 +550,7 @@ class Orders extends AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$statusmsg
 		);

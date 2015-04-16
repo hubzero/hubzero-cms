@@ -32,6 +32,8 @@ namespace Components\Resources\Admin\Controllers;
 
 use Components\Resources\Helpers\Utilities;
 use Hubzero\Component\AdminController;
+use Request;
+use Lang;
 
 /**
  * Methods for listing and managing files and folders

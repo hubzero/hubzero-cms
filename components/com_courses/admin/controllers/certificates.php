@@ -120,7 +120,7 @@ class Certificates extends AdminController
 		if ($redirect)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false), //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
 				Lang::txt('COM_COURSES_SETTINGS_SAVED')
 			);
@@ -141,7 +141,7 @@ class Certificates extends AdminController
 		$certificate = \CoursesModelCertificate::getInstance(Request::getInt('certificate', 0));
 		if (!$certificate->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
 				Lang::txt('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
 				'error'
@@ -348,7 +348,7 @@ class Certificates extends AdminController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
 			Lang::txt('COM_COURSES_ITEM_REMOVED')
 		);
@@ -361,7 +361,7 @@ class Certificates extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 		);
 	}

@@ -33,6 +33,11 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Tables\Type;
 use Hubzero\Component\AdminController;
 use stdClass;
+use Request;
+use Config;
+use Route;
+use Lang;
+use App;
 
 /**
  * Manage resource types
@@ -59,34 +64,31 @@ class Types extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.types.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.types.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.types.sort',
 				'filter_order',
 				'category'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.types.sortdir',
 				'filter_order_Dir',
 				'DESC'
 			),
-			'category' => $app->getUserStateFromRequest(
+			'category' => Request::getState(
 				$this->_option . '.types.category',
 				'category',
 				27,
@@ -212,7 +214,7 @@ class Types extends AdminController
 				}
 			}
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 			$re = new \Components\Resources\Models\Elements($elements);
 			$row->customFields = $re->toString();
 		}
@@ -253,7 +255,7 @@ class Types extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_RESOURCES_ITEM_SAVED')
 		);
@@ -294,7 +296,7 @@ class Types extends AdminController
 		if (empty($ids))
 		{
 			// Redirect with error message
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
@@ -312,7 +314,7 @@ class Types extends AdminController
 			if ($total > 0)
 			{
 				// Redirect with error message
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_RESOURCES_TYPE_BEING_USED', $id),
 					'error'
@@ -325,7 +327,7 @@ class Types extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
@@ -357,7 +359,7 @@ class Types extends AdminController
 			$option
 		);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 		$elements = new \Components\Resources\Models\Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}

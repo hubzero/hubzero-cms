@@ -113,7 +113,7 @@ class Comments extends AdminController
 		$this->view->filters['sortby'] = $this->view->filters['sort'];
 		if (!$this->view->filters['wish'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('Missing wish ID'),
 				'error'
@@ -244,7 +244,7 @@ class Comments extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			Notify::error($error);
 		}
 
 		// Output the HTML
@@ -281,7 +281,7 @@ class Comments extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -289,10 +289,12 @@ class Comments extends AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
+
+		Notify::success(Lang::txt('COM_WISHLIST_COMMENT_SAVED'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -301,8 +303,7 @@ class Comments extends AdminController
 
 		// Redirect
 		App::redirect(
-			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id, false),
-			Lang::txt('COM_WISHLIST_COMMENT_SAVED')
+			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id, false)
 		);
 	}
 

@@ -34,6 +34,12 @@ use Components\Resources\Models;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
+use Request;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
 /**
  * Resource importer
@@ -174,8 +180,8 @@ class Import extends AdminController
 			$isNew = true;
 
 			// set the created by/at
-			$this->import->set('created_by', \JFactory::getUser()->get('id'));
-			$this->import->set('created_at', \Date::toSql());
+			$this->import->set('created_by', User::get('id'));
+			$this->import->set('created_at', Date::toSql());
 		}
 
 		// do we have a data file
@@ -225,7 +231,7 @@ class Import extends AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_RESOURCES_IMPORT_CREATED'),
 			'passed'
@@ -257,7 +263,7 @@ class Import extends AdminController
 			// attempt to delete import
 			if (!$resourceImport->delete())
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$resourceImport->getError(),
 					'error'
@@ -267,7 +273,7 @@ class Import extends AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_RESOURCES_IMPORT_REMOVED'),
 			'passed'

@@ -45,29 +45,13 @@ class Time extends AdminController
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Cancel a task
-	 *
-	 * @return     void
-	 */
-	public function cancel()
-	{
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-		);
 	}
 }
 

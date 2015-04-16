@@ -70,46 +70,43 @@ class Sections extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'offering' => $app->getUserStateFromRequest(
+			'offering' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.offering',
 				'offering',
 				0
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'state' => $app->getUserStateFromRequest(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				'-1'
 			),
 			// Filters for returning results
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('config.list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Get sorting variables
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'title'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
@@ -119,7 +116,7 @@ class Sections extends AdminController
 		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
 		if (!$this->view->offering->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
@@ -597,7 +594,7 @@ class Sections extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'), false),
 			Lang::txt('COM_COURSES_ITEM_SAVED')
 		);
@@ -674,7 +671,7 @@ class Sections extends AdminController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id, false),
 			Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
 		);
@@ -700,7 +697,7 @@ class Sections extends AdminController
 		$row->makeDefault();
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
 		);
 	}
@@ -751,7 +748,7 @@ class Sections extends AdminController
 
 		if ($this->getErrors())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				implode('<br />', $this->getErrors()),
 				'error'
@@ -760,7 +757,7 @@ class Sections extends AdminController
 		else
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
 				($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
@@ -774,7 +771,7 @@ class Sections extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
 		);
 	}

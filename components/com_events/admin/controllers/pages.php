@@ -51,30 +51,27 @@ class Pages extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false)
 			);
 			return;
 		}
 
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['event_id'] = $ids[0];
-		$this->view->filters['search']   = urldecode($app->getUserStateFromRequest(
+		$this->view->filters['search']   = urldecode(Request::getState(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		));
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
+		$this->view->filters['start']    = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -207,7 +204,7 @@ class Pages extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $row->event_id, false),
 			Lang::txt('COM_EVENTS_PAGE_SAVED')
 		);
@@ -247,7 +244,7 @@ class Pages extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $event, false),
 			Lang::txt('EVENTS_PAGES_REMOVED')
 		);
@@ -292,7 +289,7 @@ class Pages extends AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_EVENTS_PAGE_NO_ID'),
 				'error'
@@ -303,7 +300,7 @@ class Pages extends AdminController
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_EVENTS_PAGE_NO_EVENT_ID'),
 				'error'
@@ -345,7 +342,7 @@ class Pages extends AdminController
 		$page2->store();
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $pid, false)
 		);
 	}
@@ -357,7 +354,7 @@ class Pages extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . Request::getInt('event', 0), false)
 		);
 	}

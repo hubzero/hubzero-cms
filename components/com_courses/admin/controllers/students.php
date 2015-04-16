@@ -50,34 +50,31 @@ class Students extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'offering' => $app->getUserStateFromRequest(
+			'offering' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.offering',
 				'offering',
 				0
 			),
-			'section_id' => $app->getUserStateFromRequest(
+			'section_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.section',
 				'section',
 				0
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
 			// Filters for returning results
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -89,7 +86,7 @@ class Students extends AdminController
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		/*if (!$this->view->offering->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
@@ -329,7 +326,7 @@ class Students extends AdminController
 		if ($redirect)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'], false),
 				($c > 0 ? Lang::txt('COM_COURSES_STUDENTS_SAVED', $c) : null)
 			);
@@ -385,7 +382,7 @@ class Students extends AdminController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false),
 			($num > 0 ? Lang::txt('COM_COURSES_STUDENTS_REMOVED', $num) : null)
 		);
@@ -401,7 +398,7 @@ class Students extends AdminController
 		$offering_id = Request::getInt('offering', 0);
 		$section_id  = Request::getInt('section', 0);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false)
 		);
 	}
@@ -417,12 +414,12 @@ class Students extends AdminController
 		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
-			'offering' => $app->getUserStateFromRequest(
+			'offering' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.offering',
 				'offering',
 				0
 			),
-			'section_id' => $app->getUserStateFromRequest(
+			'section_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.section',
 				'section',
 				0

@@ -49,25 +49,24 @@ class Repository extends AdminController
 		$this->view->filters = array();
 
 		// Paging
-		$app = \JFactory::getApplication();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			Config::getValue('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['status'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['status'] = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.status',
 			'status',
 			'upcoming'
 		));
-		$this->view->filters['search'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['search'] = trim(Request::getState(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
@@ -119,12 +118,9 @@ class Repository extends AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -138,7 +134,7 @@ class Repository extends AdminController
 	 */
 	public function updateTask()
 	{
-		$env         = Config::getValue('config.application_env', 'production');
+		$env         = Config::get('application_env', 'production');
 		$source      = Component::params('com_update')->get('git_repository_source', null);
 		$autoPushRef = Component::params('com_update')->get('git_auto_push_ref', null);
 		$allowNonFf  = ($env == 'production') ? false : true;
@@ -175,7 +171,7 @@ class Repository extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			$message,
 			$type
@@ -202,7 +198,7 @@ class Repository extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			$message,
 			$type

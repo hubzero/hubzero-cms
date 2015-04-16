@@ -37,6 +37,7 @@ use Config;
 use Event;
 use Route;
 use Lang;
+use App;
 
 /**
  * Manage resource types
@@ -80,40 +81,37 @@ class Plugins extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'sort' => $app->getUserStateFromRequest(
+			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				'ordering'
 			),
-			'sort_Dir' => $app->getUserStateFromRequest(
+			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
-			'state' => $app->getUserStateFromRequest(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				'',
 				'word'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				'',
@@ -224,7 +222,7 @@ class Plugins extends AdminController
 		if (!$plugin)
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED')
 			);
@@ -262,18 +260,6 @@ class Plugins extends AdminController
 	}
 
 	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
 	 * Edit a plugin
 	 *
 	 * @param      object $row JPluginTable
@@ -284,7 +270,7 @@ class Plugins extends AdminController
 		$cid = Request::getVar('cid', array(0), '', 'array');
 		\JArrayHelper::toInteger($cid, array(0));
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources', false)
 		);
 	}
@@ -337,7 +323,7 @@ class Plugins extends AdminController
 		switch ($this->_task)
 		{
 			case 'apply':
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid=' . $row->id, false),
 					Lang::txt('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
@@ -345,7 +331,7 @@ class Plugins extends AdminController
 
 			case 'save':
 			default:
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 					Lang::txt('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
@@ -375,7 +361,7 @@ class Plugins extends AdminController
 		{
 			$action = $state ? Lang::txt('COM_RESOURCES_PUBLISH') : Lang::txt('COM_RESOURCES_UNPUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $action),
 				'error'
@@ -390,7 +376,7 @@ class Plugins extends AdminController
 		$this->database->setQuery($query);
 		if (!$this->database->query())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				$this->database->getErrorMsg(),
 				'error'
@@ -404,7 +390,7 @@ class Plugins extends AdminController
 			$row->checkin($id[0]);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false)
 		);
 	}
@@ -441,7 +427,7 @@ class Plugins extends AdminController
 		$row->load($uid);
 		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -477,7 +463,7 @@ class Plugins extends AdminController
 		// Check data
 		if (!$row->check())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -488,7 +474,7 @@ class Plugins extends AdminController
 		// Store data
 		if (!$row->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
@@ -497,7 +483,7 @@ class Plugins extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -532,7 +518,7 @@ class Plugins extends AdminController
 				$row->ordering = $order[$i];
 				if (!$row->store())
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						$this->database->getErrorMsg(),
 						'error'
@@ -562,7 +548,7 @@ class Plugins extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_RESOURCES_ORDERING_SAVED')
 		);

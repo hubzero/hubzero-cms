@@ -62,41 +62,38 @@ class Assets extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'tmpl' => $app->getUserStateFromRequest(
+			'tmpl' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tmpl',
 				'tmpl',
 				''
 			),
-			'asset_scope' => $app->getUserStateFromRequest(
+			'asset_scope' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scope',
 				'scope',
 				'asset_group'
 			),
-			'asset_scope_id' => $app->getUserStateFromRequest(
+			'asset_scope_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.scope_id',
 				'scope_id',
 				0,
 				'int'
 			),
-			'course_id' => $app->getUserStateFromRequest(
+			'course_id' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.course_id',
 				'course_id',
 				0,
 				'int'
 			),
 			// Filters for returning results
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -175,7 +172,7 @@ class Assets extends AdminController
 			$this->setError($tbl->getError());
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : 'message')
@@ -220,7 +217,7 @@ class Assets extends AdminController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : 'message')
@@ -436,7 +433,7 @@ class Assets extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false)
 		);
 	}
@@ -472,7 +469,7 @@ class Assets extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
 		);
 	}
@@ -489,7 +486,7 @@ class Assets extends AdminController
 		$scope_id  = Request::getInt('scope_id', 0);
 		$course_id = Request::getInt('course_id', 0);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
 		);
 	}

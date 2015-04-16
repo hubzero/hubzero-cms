@@ -62,10 +62,8 @@ class Categories extends AdminController
 	{
 		$this->view->section = $this->_option;
 
-		$app = \JFactory::getApplication();
-
 		// Incoming
-		$limit = $app->getUserStateFromRequest(
+		$limit = Request::getState(
 			$this->_option . '.limit',
 			'limit',
 			Config::get('list_limit'),
@@ -178,7 +176,7 @@ class Categories extends AdminController
 		// Fail if checked out not by 'me'
 		if ($this->view->row->checked_out && $this->view->row->checked_out <> $this->juser->get('id'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_CHECKEDOUT')
 			);
@@ -343,7 +341,7 @@ class Categories extends AdminController
 		//}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -368,7 +366,7 @@ class Categories extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -384,7 +382,7 @@ class Categories extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_PUBLISHED')
 		);
@@ -410,7 +408,7 @@ class Categories extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -426,7 +424,7 @@ class Categories extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_UNPUBLISHED')
 		);
@@ -452,7 +450,7 @@ class Categories extends AdminController
 		$row->move(-1, "section='$row->section'");
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -477,7 +475,7 @@ class Categories extends AdminController
 		$row->move(1, "section='$row->section'");
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -502,7 +500,7 @@ class Categories extends AdminController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -533,7 +531,7 @@ class Categories extends AdminController
 
 		if (count($cids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_NOTEMPTY', implode("\', \'", $cids)),
 				'warning'
@@ -542,7 +540,7 @@ class Categories extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_EVENTS_CAL_LANG_CATEGORY_REMOVED')
 		);
@@ -560,7 +558,7 @@ class Categories extends AdminController
 		$row->bind($_POST);
 		$row->checkin();
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

@@ -170,7 +170,7 @@ class Respondents extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . $workshop, false),
 			Lang::txt('COM_EVENTS_RESPONDENT_REMOVED')
 		);

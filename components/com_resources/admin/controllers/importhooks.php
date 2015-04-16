@@ -33,6 +33,12 @@ namespace Components\Resources\Admin\Controllers;
 use Components\Resources\Models;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
+use Request;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Resource importer
@@ -130,8 +136,8 @@ class ImportHooks extends AdminController
 			$isNew = true;
 
 			// set the created by/at
-			$this->hook->set('created_by', \JFactory::getUser()->get('id'));
-			$this->hook->set('created', \Date::toSql());
+			$this->hook->set('created_by', User::get('id'));
+			$this->hook->set('created', Date::toSql());
 		}
 
 		// attempt to save
@@ -158,7 +164,7 @@ class ImportHooks extends AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_RESOURCES_IMPORTHOOK_CREATED'),
 			'passed'
@@ -227,7 +233,7 @@ class ImportHooks extends AdminController
 			$hook->set('state', 2);
 			if (!$hook->store(true))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$hook->getError(),
 					'error'
@@ -237,7 +243,7 @@ class ImportHooks extends AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			Lang::txt('COM_RESOURCES_IMPORTHOOK_REMOVED'),
 			'passed'

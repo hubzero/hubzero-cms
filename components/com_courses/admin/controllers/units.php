@@ -67,34 +67,31 @@ class Units extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
-			'offering' => $app->getUserStateFromRequest(
+			'offering' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.offering',
 				'offering',
 				0
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
 			)),
-			'state' => $app->getUserStateFromRequest(
+			'state' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.state',
 				'state',
 				'-1'
 			),
 			// Filters for returning results
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -105,7 +102,7 @@ class Units extends AdminController
 		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
 		if (!$this->view->offering->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
@@ -235,7 +232,7 @@ class Units extends AdminController
 		}
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
 			Lang::txt('COM_COURSES_ITEM_SAVED')
 		);
@@ -259,7 +256,7 @@ class Units extends AdminController
 
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
 				Lang::txt('COM_COURSES_ERROR_NO_ID'),
 				'error'
@@ -271,7 +268,7 @@ class Units extends AdminController
 		if (!$unit->copy())
 		{
 			// Redirect back to the courses page
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $unit->get('offering_id'), false),
 				Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $unit->getError(),
 				'error'
@@ -280,7 +277,7 @@ class Units extends AdminController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $unit->get('offering_id'), false),
 			Lang::txt('COM_COURSES_ITEM_COPIED')
 		);
@@ -340,7 +337,7 @@ class Units extends AdminController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
 			Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
 		);
@@ -362,7 +359,7 @@ class Units extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
 				($state == 1 ? Lang::txt('COM_COURSES_SELECT_PUBLISH') : Lang::txt('COM_COURSES_SELECT_UNPUBLISH')),
 				'error'
@@ -394,7 +391,7 @@ class Units extends AdminController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
 			$message
 		);
@@ -426,7 +423,7 @@ class Units extends AdminController
 			$unit->store();
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
 		);
 	}
@@ -438,7 +435,7 @@ class Units extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
 		);
 	}
