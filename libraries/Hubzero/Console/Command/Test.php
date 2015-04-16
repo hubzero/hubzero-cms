@@ -78,7 +78,7 @@ class Test extends Base implements CommandInterface
 		{
 			case 'lib':
 				unset($parts[0]);
-				$path .= 'libraries' . DS . 'Hubzero' . DS . implode(DS, $parts) . DS . 'Tests';
+				$path .= 'libraries' . DS . 'Hubzero' . DS . ucfirst(implode(DS, $parts)) . DS . 'Tests';
 				break;
 
 			default:
