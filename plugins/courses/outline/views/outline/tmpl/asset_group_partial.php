@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<li class="asset-group-item <?= ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>" id="assetgroupitem_<?= $this->ag->get('id') ?>">
+<li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>" id="assetgroupitem_<?php echo $this->ag->get('id') ?>">
 	<div class="asset-group-controls">
 		<div class="sortable-handle"></div>
 		<div class="asset-group-edit"></div>
@@ -47,9 +47,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input class="input-type" type="hidden" name="type" value="link" />
 				<input class="aux-attachments-submit" type="submit" value="Add" />
 				<input class="aux-attachments-cancel" type="reset" value="Cancel" />
-				<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
-				<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
-				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id'); ?>" />
+				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+				<input type="hidden" name="scope_id" value="<?php echo $this->ag->get('id'); ?>" />
 				<a href="<?php echo Request::base(true); ?>/help/courses/builder" target="_blank" class="help-info">help</a>
 			</form>
 			<a href="#" title="Attach a link" class="attach-link"></a>
@@ -59,21 +59,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div>
 		<form action="<?php echo Request::base(true); ?>/api/courses/asset/new" class="uploadfiles-form">
 			<input type="file" name="files[]" class="fileupload" multiple />
-			<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
-			<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
-			<input type="hidden" name="scope_id" value="<?= $this->ag->get('id'); ?>" />
+			<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+			<input type="hidden" name="scope_id" value="<?php echo $this->ag->get('id'); ?>" />
 		</form>
 	</div>
 	<div class="asset-group-item-container">
-		<div class="asset-group-item-title title toggle-editable"><?= $this->ag->get('title') ?></div>
+		<div class="asset-group-item-title title toggle-editable"><?php echo $this->ag->get('title') ?></div>
 		<div class="title-edit">
 			<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save" class="assetgroup-title-form">
-				<input class="title-text" name="title" type="text" value="<?= $this->ag->get('title'); ?>" />
+				<input class="title-text" name="title" type="text" value="<?php echo $this->ag->get('title'); ?>" />
 				<input class="assetgroup-title-save" type="submit" value="Save" />
 				<input class="assetgroup-title-reset" type="reset" value="Cancel" />
-				<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
-				<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
-				<input type="hidden" name="id" value="<?= $this->ag->get('id'); ?>" />
+				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->ag->get('id'); ?>" />
 			</form>
 		</div>
 <?php

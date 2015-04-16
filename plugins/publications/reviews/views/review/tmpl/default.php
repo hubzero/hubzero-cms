@@ -1,33 +1,42 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->review->id) {
+if ($this->review->id)
+{
 	$title = Lang::txt('PLG_PUBLICATION_REVIEWS_EDIT_YOUR_REVIEW');
-} else {
+}
+else
+{
 	$title = Lang::txt('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW');
 }
 ?>
@@ -39,24 +48,19 @@ if ($this->review->id) {
 	</h3>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->review->publication_id . '&active=reviews'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
-<?php
-			if (!$this->juser->get('guest')) 
-			{
-				$jxuser = new \Hubzero\User\Profile();
-				$jxuser->load( $this->juser->get('id') );
-				$thumb = plgPublicationsReviews::getMemberPhoto($jxuser, 0);
-			} 
-			else 
-			{
-				$config = Component::params( 'com_members' );
-				$thumb = $config->get('defaultpic');
-				if (substr($thumb, 0, 1) != DS) 
+				<?php
+				if (!$this->juser->get('guest'))
 				{
-					$thumb = DS.$dfthumb;
+					$jxuser = new \Hubzero\User\Profile();
+					$jxuser->load($this->juser->get('id'));
+					$thumb = plgPublicationsReviews::getMemberPhoto($jxuser, 0);
 				}
-				$thumb = plgPublicationsReviews::thumbit($thumb);
-			}
-?>
+				else
+				{
+					$thumb = DS . ltrim(Component::params('com_members')->get('defaultpic'), DS);
+					$thumb = plgPublicationsReviews::thumbit($thumb);
+				}
+				?>
 				<img src="<?php echo $thumb; ?>" alt="" />
 			</p>
 			<fieldset>
@@ -102,7 +106,8 @@ if ($this->review->id) {
 
 				<label for="review_comments">
 					<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_FORM_COMMENTS');
-					if ($this->banking) {
+					if ($this->banking)
+					{
 						echo ' ( <span class="required">'.Lang::txt('PLG_PUBLICATION_REVIEWS_REQUIRED').'</span> '.Lang::txt('PLG_PUBLICATION_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.Lang::txt('PLG_PUBLICATION_REVIEWS_EARN_POINTS').'</a> )';
 					}
 					?>
