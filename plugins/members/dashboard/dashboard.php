@@ -348,7 +348,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// make sure we have modules
 		if ($modules == '')
 		{
-			JError::raiseError(500,'Unable to save the users modules.');
+			App::abort(500,'Unable to save the users modules.');
 			exit();
 		}
 
@@ -370,7 +370,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// attempt to save
 		if (!$membersDashboardModelPreferences->store())
 		{
-			JError::raiseError(500,'Unable to save the users modules.');
+			App::abort(500,'Unable to save the users modules.');
 			exit();
 		}
 

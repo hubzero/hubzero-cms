@@ -31,23 +31,20 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
-$doc = JFactory::getDocument();
-
 JHTML::_('behavior.framework', true);
 
 // Load CSS
-$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');
-$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/icons.css');
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/icons.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
-	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $browser = new \Hubzero\Browser\Detector();
@@ -62,9 +59,9 @@ $v = $browser->major();
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="j25 <?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
-<?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
-		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
-<?php } ?>
+		<?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+		<?php } ?>
 		<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js" type="text/javascript"></script>
 		<!--[if IE 7]>
 			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
@@ -78,36 +75,31 @@ $v = $browser->major();
 	<body id="minwidth-body">
 		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
-			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
+			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
 
 			<ul class="user-options">
 				<?php
-					//Display an harcoded logout
-					$task = JRequest::getCmd('task');
-					if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu'))
-					{
-						$logoutLink = '';
-					}
-					else
-					{
-						$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
-					}
-					$hideLinks= JRequest::getBool('hidemainmenu');
-					$output = array();
-					// Print the Preview link to Main site.
-					//$juser = JFactory::getUser();
-					//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
-					//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
-					// Print the logout link.
-					$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="' . $logoutLink . '">') . JText::_('TPL_HUBBASICADMIN_LOGOUT') . ($hideLinks ? '</span></li>' : '</a></li>');
-					// Reverse rendering order for rtl display.
-					if ($this->direction == "rtl") :
-						$output = array_reverse($output);
-					endif;
-					// Output the items.
-					foreach ($output as $item) :
+				//Display an harcoded logout
+				$task = Request::getCmd('task');
+				$hideLinks = Request::getInt('hidemainmenu');
+
+				$logoutLink = Route::url('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+				if ($task == 'edit' || $task == 'editA' || $hideLinks) :
+					$logoutLink = '';
+				endif;
+
+				$output = array();
+				$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="' . $logoutLink . '">') . Lang::txt('TPL_HUBBASICADMIN_LOGOUT') . ($hideLinks ? '</span></li>' : '</a></li>');
+
+				// Reverse rendering order for rtl display.
+				if ($this->direction == "rtl") :
+					$output = array_reverse($output);
+				endif;
+
+				// Output the items.
+				foreach ($output as $item) :
 					echo $item;
-					endforeach;
+				endforeach;
 				?>
 			</ul>
 
@@ -128,20 +120,20 @@ $v = $browser->major();
 					<jdoc:include type="modules" name="toolbar" />
 				</div><!-- / #toolbar-box -->
 
-				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
+				<section id="main" class="<?php echo Request::getCmd('option', ''); ?>">
 					<!-- Notifications begins -->
 					<jdoc:include type="message" />
 					<!-- Notifications ends -->
-					<?php if (!JRequest::getInt('hidemainmenu') && $this->countModules('submenu')): ?>
-					<nav role="navigation" class="sub-navigation">
-						<jdoc:include type="modules" name="submenu" />
-					</nav><!-- / .sub-navigation -->
+					<?php if (!$hideLinks && $this->countModules('submenu')): ?>
+						<nav role="navigation" class="sub-navigation">
+							<jdoc:include type="modules" name="submenu" />
+						</nav><!-- / .sub-navigation -->
 					<?php endif; ?>
 					<!-- Content begins -->
 					<jdoc:include type="component" />
 					<!-- Content ends -->
 					<noscript>
-						<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 					</noscript>
 					<div class="clr"></div>
 				</section><!-- / #main -->
@@ -153,10 +145,10 @@ $v = $browser->major();
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<?php echo JText::sprintf('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . JURI::root() . '">'. $app->getCfg('sitename') . '</a>', date("Y")); ?>
+					<?php echo Lang::txt('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . Request::root() . '">'. Config::get('sitename') . '</a>', date("Y")); ?>
 				</p>
 				<p class="promotion">
-					<?php echo JText::sprintf('TPL_HUBBASICADMIN_POWERED_BY', \Hubzero\Version\Version::VERSION); ?>
+					<?php echo Lang::txt('TPL_HUBBASICADMIN_POWERED_BY', App::version()); ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->

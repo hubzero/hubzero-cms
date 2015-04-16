@@ -301,7 +301,7 @@ class Provider extends AbstractService
 			return false;
 		}
 
-		$response = $this->_sendRequest('blog=' . \JURI::base() . '&' . $this->_getQueryString(), $this->apiKey . '.rest.akismet.com', '/' . $this->akismetVersion . '/comment-check');
+		$response = $this->_sendRequest('blog=' . \Request::base() . '&' . $this->_getQueryString(), $this->apiKey . '.rest.akismet.com', '/' . $this->akismetVersion . '/comment-check');
 
 		if ($response[1] == 'invalid' && !$this->isKeyValid())
 		{

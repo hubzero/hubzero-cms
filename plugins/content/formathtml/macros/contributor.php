@@ -100,7 +100,7 @@ class Contributor extends Macro
 			{
 				// No, then we must have a username
 				// Get user's name
-				$cuser = JUser::getInstance($n);
+				$cuser = User::getInstance($n);
 				if (is_object($cuser))
 				{
 					$name = $cuser->get('name');
@@ -110,7 +110,9 @@ class Contributor extends Macro
 				{
 					return '(contributor:' . $et . ' not found)';
 				}
-			} else {
+			}
+			else
+			{
 				$bits = explode(' ',$n);
 				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM `#__xprofiles` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
 				// Perform query

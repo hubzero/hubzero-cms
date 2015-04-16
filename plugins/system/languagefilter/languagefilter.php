@@ -301,7 +301,7 @@ class plgSystemLanguageFilter extends JPlugin
 				if ($app->input->getMethod() != "POST" || count($post) == 0)
 				{
 					$app = JFactory::getApplication();
-					$app->redirect(JURI::base(true).'/index.php?'.$uri->getQuery());
+					$app->redirect(Request::base(true).'/index.php?'.$uri->getQuery());
 				}
 			}
 		}

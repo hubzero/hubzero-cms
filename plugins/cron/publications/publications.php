@@ -155,7 +155,7 @@ class plgCronPublications extends JPlugin
 		foreach ($authors as $author)
 		{
 			// Get the user's account
-			$juser = JUser::getInstance($author->user_id);
+			$juser = User::getInstance($author->user_id);
 			if (!$juser->get('id'))
 			{
 				// Skip if not registered
@@ -381,7 +381,7 @@ class plgCronPublications extends JPlugin
 				foreach ($admins as $admin)
 				{
 					// Get the user's account
-					$juser = JUser::getInstance($admin);
+					$juser = User::getInstance($admin);
 					if (!$juser->get('id'))
 					{
 						continue;

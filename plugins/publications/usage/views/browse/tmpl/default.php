@@ -36,16 +36,16 @@ $database = JFactory::getDBO();
 ?>
 <h3>
 	<a name="usage"></a>
-	<?php echo JText::_('PLG_PUBLICATION_USAGE'); ?>
+	<?php echo Lang::txt('PLG_PUBLICATION_USAGE'); ?>
 </h3>
 <div id="sub-sub-menu">
 	<ul>
-		<li<?php if ($this->period == '14') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=14&dthis=' . $this->dthis); ?>"><span><?php echo JText::_('PLG_PUBLICATION_USAGE_PERIOD_OVERALL'); ?></span></a></li>
-		<li<?php if ($this->period == 'prior12' || $this->period == '12') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=12&dthis=' . $this->dthis); ?>"><span><?php echo JText::_('PLG_PUBLICATION_USAGE_PERIOD_PRIOR12'); ?></span></a></li>
-		<li<?php if ($this->period == 'month' || $this->period == '1') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=1&dthis=' . $this->dthis); ?>"><span><?php echo JText::_('PLG_PUBLICATION_USAGE_PERIOD_MONTH'); ?></span></a></li>
-		<li<?php if ($this->period == 'qtr' || $this->period == '3') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>"><span><?php echo JText::_('PLG_PUBLICATION_USAGE_PERIOD_QTR'); ?></span></a></li>
-		<li<?php if ($this->period == 'year' || $this->period == '0') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=0&dthis=' . $this->dthis); ?>"><span><?php echo JText::_('PLG_PUBLICATION_USAGE_PERIOD_YEAR'); ?></span></a></li>
-		<li<?php if ($this->period == 'fiscal' || $this->period == '13') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>"><span><?php echo JText::_('PLG_PUBLICATION_USAGE_PERIOD_FISCAL'); ?></span></a></li>
+		<li<?php if ($this->period == '14') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=14&dthis=' . $this->dthis); ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_USAGE_PERIOD_OVERALL'); ?></span></a></li>
+		<li<?php if ($this->period == 'prior12' || $this->period == '12') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=12&dthis=' . $this->dthis); ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_USAGE_PERIOD_PRIOR12'); ?></span></a></li>
+		<li<?php if ($this->period == 'month' || $this->period == '1') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=1&dthis=' . $this->dthis); ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_USAGE_PERIOD_MONTH'); ?></span></a></li>
+		<li<?php if ($this->period == 'qtr' || $this->period == '3') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_USAGE_PERIOD_QTR'); ?></span></a></li>
+		<li<?php if ($this->period == 'year' || $this->period == '0') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=0&dthis=' . $this->dthis); ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_USAGE_PERIOD_YEAR'); ?></span></a></li>
+		<li<?php if ($this->period == 'fiscal' || $this->period == '13') { echo ' class="active"'; } ?>><a href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_USAGE_PERIOD_FISCAL'); ?></span></a></li>
 	</ul>
 </div>
 <form method="get" action="<?php echo Route::url($url); ?>">

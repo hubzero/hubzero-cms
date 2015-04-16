@@ -75,7 +75,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		if ($model->_category->_params->get('plg_reviews') && $extended && $model->access('view-all'))
 		{
 			$areas = array(
-				'reviews' => JText::_('PLG_PUBLICATION_REVIEWS')
+				'reviews' => Lang::txt('PLG_PUBLICATION_REVIEWS')
 			);
 		}
 
@@ -158,11 +158,11 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			// If so, they need to be logged in first.
 			if (!$h->loggedin)
 			{
-				$rtrn = JRequest::getVar('REQUEST_URI',
+				$rtrn = Request::getVar('REQUEST_URI',
 					Route::url('index.php?option=' . $option . '&id='.$model->id.'&active=reviews&v=' . $model->version_number), 'server');
 				$this->redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-					JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE'),
+					Lang::txt('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE'),
 					'warning'
 				);
 				return;
@@ -340,8 +340,7 @@ class PlgPublicationsReviewsHelper extends JObject
 	{
 		if ($this->_redirect != NULL)
 		{
-			$app = JFactory::getApplication();
-			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
+			App::redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
 
@@ -353,14 +352,14 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function execute()
 	{
 		// Incoming action
-		$action = JRequest::getVar( 'action', '' );
+		$action = Request::getVar( 'action', '' );
 
 		$this->loggedin = true;
 
-		if ($action) {
+		if ($action)
+		{
 			// Check the user's logged-in status
-			$juser = JFactory::getUser();
-			if ($juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->loggedin = false;
 				return;
@@ -388,27 +387,25 @@ class PlgPublicationsReviewsHelper extends JObject
 	private function savereply()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$juser = JFactory::getUser();
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Is the user logged in?
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
 		}
 
 		// Incoming
-		$id      = JRequest::getInt('id', 0 );
+		$id = Request::getInt('id', 0 );
 
 		// Trim and addslashes all posted items
-		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		if (!$id)
 		{
 			// Cannot proceed
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
 			return;
 		}
 
@@ -425,9 +422,9 @@ class PlgPublicationsReviewsHelper extends JObject
 		$row->content    = \Hubzero\Utility\Sanitize::clean($row->content);
 		//$row->content    = nl2br($row->content);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created    = ($row->id ? $row->created : JFactory::getDate()->toSql());
+		$row->created    = ($row->id ? $row->created : Date::toSql());
 		$row->state      = ($row->id ? $row->state : 0);
-		$row->created_by = ($row->id ? $row->created_by : $juser->get('id'));
+		$row->created_by = ($row->id ? $row->created_by : User::get('id'));
 
 		// Check for missing (required) fields
 		if (!$row->check())
@@ -455,19 +452,19 @@ class PlgPublicationsReviewsHelper extends JObject
 		$publication = $this->publication;
 
 		// Incoming
-		$replyid = JRequest::getInt( 'refid', 0 );
+		$replyid = Request::getInt( 'refid', 0 );
 
 		// Do we have a review ID?
 		if (!$replyid)
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
 			return;
 		}
 
 		// Do we have a publication ID?
 		if (!$publication->id)
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
 
@@ -493,14 +490,13 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function rateitem()
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
-		$id   = JRequest::getInt( 'refid', 0 );
-		$ajax = JRequest::getInt( 'ajax', 0 );
-		$cat  = JRequest::getVar( 'category', 'review' );
-		$vote = JRequest::getVar( 'vote', '' );
-		$ip   = JRequest::ip();
-		$rid  = JRequest::getInt( 'rid', 0, 'get' );
+		$id   = Request::getInt( 'refid', 0 );
+		$ajax = Request::getInt( 'ajax', 0 );
+		$cat  = Request::getVar( 'category', 'review' );
+		$vote = Request::getVar( 'vote', '' );
+		$ip   = Request::ip();
+		$rid  = Request::getInt( 'rid', 0, 'get' );
 
 		if (!$id)
 		{
@@ -509,13 +505,13 @@ class PlgPublicationsReviewsHelper extends JObject
 		}
 
 		// Is the user logged in?
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI',
+			$rtrn = Request::getVar('REQUEST_URI',
 				Route::url('index.php?option=' . $this->option . '&id='.$rid.'&active=reviews'), 'server');
 			$this->redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_VOTE'),
+				Lang::txt('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_VOTE'),
 				'warning'
 			);
 			return;
@@ -525,17 +521,17 @@ class PlgPublicationsReviewsHelper extends JObject
 			// Load answer
 			$rev = new \Components\Publications\Tables\Review( $database );
 			$rev->load( $id );
-			$voted = $rev->getVote ($id, $cat, $juser->get('id'));
-			//&& $rev->created_by != $juser->get('id')
+			$voted = $rev->getVote($id, $cat, User::get('id'));
+			//&& $rev->created_by != User::get('id')
 			if (!$voted && $vote)
 			{
-				require_once( JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
+				require_once( PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
 				$v = new Vote( $database );
 				$v->referenceid = $id;
 				$v->category = $cat;
-				$v->voter = $juser->get('id');
+				$v->voter = User::get('id');
 				$v->ip = $ip;
-				$v->voted = JFactory::getDate()->toSql();
+				$v->voted = Date::toSql();
 				$v->helpful = $vote;
 
 				if (!$v->check())
@@ -553,7 +549,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			// update display
 			if ($ajax)
 			{
-				$response = $rev->getRating( $rid, $juser->get('id'));
+				$response = $rev->getRating( $rid, User::get('id'));
 				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'publications',
@@ -581,10 +577,9 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function editreview()
 	{
 		// Is the user logged in?
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
 		}
 
@@ -594,22 +589,22 @@ class PlgPublicationsReviewsHelper extends JObject
 		if (!$publication->id)
 		{
 			// No - fail! Can't do anything else without an ID
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
 
 		// Incoming
-		$myr = JRequest::getInt( 'myrating', 0 );
+		$myr = Request::getInt( 'myrating', 0 );
 
 		$database = JFactory::getDBO();
 
 		$review = new \Components\Publications\Tables\Review( $database );
-		$review->loadUserReview( $publication->id, $juser->get('id'), $publication->version_id  );
+		$review->loadUserReview( $publication->id, User::get('id'), $publication->version_id  );
 
 		if (!$review->id)
 		{
 			// New review, get the user's ID
-			$review->created_by = $juser->get('id');
+			$review->created_by = User::get('id');
 			$review->publication_id = $publication->id;
 			$review->publication_version_id = $publication->version_id;
 			$review->tags = '';
@@ -637,21 +632,20 @@ class PlgPublicationsReviewsHelper extends JObject
 	public function savereview()
 	{
 		// Is the user logged in?
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
 		}
 
 		// Incoming
-		$publication_id = JRequest::getInt( 'publication_id', 0 );
+		$publication_id = Request::getInt( 'publication_id', 0 );
 
 		// Do we have a publication ID?
 		if (!$publication_id)
 		{
 			// No ID - fail! Can't do anything else without an ID
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
 
@@ -666,12 +660,12 @@ class PlgPublicationsReviewsHelper extends JObject
 		}
 
 		// Perform some text cleaning, etc.
-		$row->id        = JRequest::getInt( 'reviewid', 0 );
+		$row->id        = Request::getInt( 'reviewid', 0 );
 		$row->comment   = \Hubzero\Utility\Sanitize::stripAll($row->comment);
 		//$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
-		$row->created_by = $juser->get('id');
+		$row->created   = ($row->created) ? $row->created : Date::toSql();
+		$row->created_by = User::get('id');
 
 		// Check for missing (required) fields
 		if (!$row->check())
@@ -694,7 +688,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$pub->updateRating();
 
 		// Process tags
-		$tags = trim(JRequest::getVar( 'review_tags', '' ));
+		$tags = trim(Request::getVar( 'review_tags', '' ));
 		if ($tags)
 		{
 			$rt = new \Components\Publications\Helpers\Tags( $database );
@@ -706,10 +700,9 @@ class PlgPublicationsReviewsHelper extends JObject
 		$users = $pa->getAuthors($publication->version_id, 1, 1, true );
 
 		// Build the subject
-		$subject = Config::get('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
+		$subject = Config::get('config.sitename').' '.Lang::txt('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
 
 		// Message
-		$juser = JFactory::getUser();
 		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'publications',
@@ -718,20 +711,18 @@ class PlgPublicationsReviewsHelper extends JObject
 			)
 		);
 		$eview->option = $this->_option;
-		$eview->juser = $juser;
+		$eview->juser = User::getRoot();
 		$eview->publication = $publication;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
 		// Build the "from" data for the e-mail
 		$from = array();
-		$from['name']  = Config::get('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
+		$from['name']  = Config::get('config.sitename').' '.Lang::txt('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
 		$from['email'] = Config::get('config.mailfrom');
 
 		// Send message
-		JPluginHelper::importPlugin( 'xmessage' );
-		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array(
+		if (!Event::trigger( 'xmessage.onSendMessage', array(
 				'publications_new_comment',
 				$subject,
 				$message,
@@ -741,7 +732,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			)
 		))
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_FAILED_TO_MESSAGE') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_FAILED_TO_MESSAGE') );
 		}
 	}
 
@@ -756,19 +747,19 @@ class PlgPublicationsReviewsHelper extends JObject
 		$publication = $this->publication;
 
 		// Incoming
-		$reviewid = JRequest::getInt( 'reviewid', 0 );
+		$reviewid = Request::getInt( 'reviewid', 0 );
 
 		// Do we have a review ID?
 		if (!$reviewid)
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_NO_ID') );
 			return;
 		}
 
 		// Do we have a publication ID?
 		if (!$publication->id)
 		{
-			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
+			$this->setError( Lang::txt('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
 

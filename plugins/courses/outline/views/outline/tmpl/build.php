@@ -91,7 +91,7 @@ $base = $this->course->offering()->link();
 				<div class="clear"></div>
 				<div class="unit-edit">
 					<div class="unit-edit-wrap">
-						<form action="<?php echo JURI::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
+						<form action="<?php echo Request::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
 							<label for="title">Title:</label>
 							<input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
 							<input class="unit-edit-save" type="submit" value="Save" />
@@ -129,7 +129,7 @@ $base = $this->course->offering()->link();
 								<div class="asset-group-title-edit edit">edit</div>
 								<div class="title"><?php echo $agt->get('title'); ?></div>
 							</div>
-							<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save">
+							<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
 								<div class="label-input-pair">
 									<label for="title">Title:</label>
 									<input class="" name="title" type="text" value="<?php echo $agt->get('title') ?>" />
@@ -181,7 +181,7 @@ $base = $this->course->offering()->link();
 
 								<li class="add-new asset-group-item">
 									Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
-									<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save">
+									<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
 										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 										<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
@@ -222,7 +222,7 @@ $base = $this->course->offering()->link();
 
 		<li class="add-new unit-item">
 			Add a new unit
-			<form action="<?php echo JURI::base(true); ?>/api/courses/unit/save">
+			<form action="<?php echo Request::base(true); ?>/api/courses/unit/save">
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
 				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />

@@ -36,7 +36,7 @@ $pubParams = new JParameter( $this->publication->params );
 <div class="supportingdocs">
 <h3>
 	<a name="supportingdocs"></a>
-	<?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS'); ?>
+	<?php echo Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS'); ?>
 </h3>
 
 <?php
@@ -58,12 +58,12 @@ if ($useBlocks && $pubParams->get('curated') != 2)
 			$this->publication,
 			$this->authorized
 		);
-		echo $list ? $list : '<p class="noresults">' . JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND') . '</p>';
+		echo $list ? $list : '<p class="noresults">' . Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND') . '</p>';
 	}
 	else
 	{
 		?>
-		<p class="noresults"><?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
+		<p class="noresults"><?php echo Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
 <?php	}
 }
 elseif ($this->docs) {
@@ -156,6 +156,6 @@ elseif ($this->docs) {
 	echo $dls;
 ?>
 <?php } else { ?>
-	<p class="noresults"><?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
 <?php } ?>
 </div><!-- / .supportingdocs -->

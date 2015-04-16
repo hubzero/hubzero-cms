@@ -356,7 +356,7 @@ class UsersModelReset extends JModelForm
 		// Make sure the user has not exceeded the reset limit
 		if (!$this->checkResetLimit($user)) {
 			$resetLimit = (int) JFactory::getApplication()->getParams()->get('reset_time');
-			$this->setError(JText::plural('COM_USERS_REMIND_LIMIT_ERROR_N_HOURS', $resetLimit));
+			$this->setError(Lang::txts('COM_USERS_REMIND_LIMIT_ERROR_N_HOURS', $resetLimit));
 			return false;
 		}
 		// Set the confirmation token.

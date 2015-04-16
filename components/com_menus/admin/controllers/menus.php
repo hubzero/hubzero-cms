@@ -70,7 +70,7 @@ class MenusControllerMenus extends JControllerLegacy
 			if (!$model->delete($cid)) {
 				$this->setMessage($model->getError());
 			} else {
-			$this->setMessage(JText::plural('COM_MENUS_N_MENUS_DELETED', count($cid)));
+			$this->setMessage(Lang::txts('COM_MENUS_N_MENUS_DELETED', count($cid)));
 			}
 		}
 

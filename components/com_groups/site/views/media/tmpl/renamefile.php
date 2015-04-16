@@ -37,7 +37,7 @@ $fileInfo = pathinfo($this->file);
 
 <form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=dorenamefile&no_html=1'); ?>" method="post" class="hubForm">
 	<fieldset>
-		<legend><?php echo JTexT::_('COM_GROUPS_MEDIA_RENAME_FILE'); ?></legend>
+		<legend><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME_FILE'); ?></legend>
 		<label>
 			<?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME_CURRENT_NAME'); ?>:<br />
 			<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
@@ -45,7 +45,7 @@ $fileInfo = pathinfo($this->file);
 			<input type="text" name="name" value="<?php echo $fileInfo['basename']; ?>" />
 		</label>
 		<p class="controls">
-			<button type="submit" class="btn icon-edit"><?php echo JTexT::_('COM_GROUPS_MEDIA_RENAME'); ?></button>
+			<button type="submit" class="btn icon-edit"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></button>
 		</p>
 	</fieldset>
 </form>

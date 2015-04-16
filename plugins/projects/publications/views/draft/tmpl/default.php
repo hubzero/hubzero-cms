@@ -32,7 +32,7 @@ $site 	 = Config::get('config.live_site')
 	? Config::get('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 // Get creator name
 $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);

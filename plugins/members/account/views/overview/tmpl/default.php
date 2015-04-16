@@ -59,7 +59,7 @@ $this->css()
 				foreach ($this->hzalaccounts as $hzala)
 				{
 					// Get the display name for the current plugin being used
-					$plugin       = JPluginHelper::getPlugin('authentication', $hzala['auth_domain_name']);
+					$plugin       = Plugin::byType('authentication', $hzala['auth_domain_name']);
 					$pparams      = new JRegistry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 					?>
@@ -83,7 +83,7 @@ $this->css()
 				foreach ($this->domains_unused as $domain)
 				{
 					// Get the display name for the current plugin being used
-					$plugin       = JPluginHelper::getPlugin('authentication', $domain->name);
+					$plugin       = Plugin::byType('authentication', $domain->name);
 					$pparams      = new JRegistry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($domain->name));
 					?>

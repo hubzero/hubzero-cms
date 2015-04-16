@@ -73,7 +73,7 @@ $this->css()
 			<span class="input-cell">
 				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GO'); ?>" />
 			</span>
-			<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-collection')) { ?>
+			<?php if (!User::isGuest() && !$this->params->get('access-create-collection')) { ?>
 				<span class="input-cell">
 					<?php if ($this->model->isFollowing()) { ?>
 						<a class="unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=unfollow'); ?>">
@@ -88,7 +88,7 @@ $this->css()
 			<?php } ?>
 		</div>
 	</fieldset> */ ?>
-	<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-collection')) { ?>
+	<?php if (!User::isGuest() && !$this->params->get('access-create-collection')) { ?>
 		<p class="guest-options">
 			<?php if ($this->model->isFollowing()) { ?>
 				<a class="unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=unfollow'); ?>">
@@ -103,8 +103,8 @@ $this->css()
 	<?php } ?>
 
 <?php if ($this->rows->total() > 0) { ?>
-	<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
-	<?php if (!$this->juser->get('guest')) { ?>
+	<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>">
+	<?php if (!User::isGuest()) { ?>
 		<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 			<div class="post new-collection">
 				<a class="icon-add add" href="<?php echo Route::url($base . '&task=new'); ?>">
@@ -132,8 +132,8 @@ $this->css()
 						</span>
 					</p>
 					<div class="actions">
-						<?php if (!$this->juser->get('guest')) { ?>
-							<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == $this->juser->get('id')) { ?>
+						<?php if (!User::isGuest()) { ?>
+							<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == User::get('id')) { ?>
 								<?php if ($this->params->get('access-edit-collection')) { ?>
 									<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/edit'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
@@ -168,7 +168,7 @@ $this->css()
 						<?php } ?>
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
-				<?php if ($row->get('object_type') == 'member' && $row->get('object_id') != $this->juser->get('id')) { ?>
+				<?php if ($row->get('object_type') == 'member' && $row->get('object_id') != User::get('id')) { ?>
 				<div class="convo attribution clearfix">
 					<?php
 					$name = $this->escape(stripslashes($row->creator('name')));

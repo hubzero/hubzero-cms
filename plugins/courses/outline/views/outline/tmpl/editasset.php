@@ -65,7 +65,7 @@ $tool_path = $config->get('tool_path');
 <div class="edit-asset">
 	<h3>Edit Asset</h3>
 
-	<form action="<?php echo JURI::base(true); ?>/api/courses/asset/save" method="POST" class="edit-form">
+	<form action="<?php echo Request::base(true); ?>/api/courses/asset/save" method="POST" class="edit-form">
 
 		<p>
 			<label for="title">Title:</label>

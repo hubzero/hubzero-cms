@@ -36,11 +36,11 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
 ?>
 <h3>
 	<a name="versions"></a>
-	<?php echo JText::_('PLG_PUBLICATION_VERSIONS'); ?>
+	<?php echo Lang::txt('PLG_PUBLICATION_VERSIONS'); ?>
 </h3>
 <?php if ($this->authorized && $this->contributable) { ?>
-	<p class="info statusmsg"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_ONLY_PUBLIC_SHOWN'); ?>
-		<a href="<?php echo $url . '?action=versions'; ?>"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_VIEW_ALL'); ?></a>
+	<p class="info statusmsg"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_ONLY_PUBLIC_SHOWN'); ?>
+		<a href="<?php echo $url . '?action=versions'; ?>"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW_ALL'); ?></a>
 	</p>
 <?php } ?>
 <?php
@@ -50,10 +50,10 @@ if ($this->versions && count($this->versions) > 0) {
 <table class="resource-versions">
 	<thead>
 		<tr>
-			<th><?php echo JText::_('PLG_PUBLICATION_VERSIONS_VERSION'); ?></th>
-			<th><?php echo JText::_('PLG_PUBLICATION_VERSIONS_RELEASED'); ?></th>
-			<th><?php echo JText::_('PLG_PUBLICATION_VERSIONS_DOI_HANDLE'); ?></th>
-			<th><?php echo JText::_('PLG_PUBLICATION_VERSIONS_STATUS'); ?></th>
+			<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_VERSION'); ?></th>
+			<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_RELEASED'); ?></th>
+			<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_DOI_HANDLE'); ?></th>
+			<th><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_STATUS'); ?></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -68,11 +68,11 @@ if ($this->versions && count($this->versions) > 0) {
 		<tr class="<?php echo $cls; ?>">
 			<td <?php if ($v->version_number == $this->publication->version_number) { echo 'class="active"'; }  ?>><?php echo $v->version_label; ?></td>
 			<td><?php echo ($v->published_up && $v->published_up!='0000-00-00 00:00:00') ? JHTML::_('date',$v->published_up, 'M d, Y') : 'N/A'; ?></td>
-			<td><?php echo $v->doi ? $v->doi : JText::_('COM_PUBLICATIONS_NA'); ?></td>
-			<td class="<?php echo $v->state == 1 ? 'state_published' : 'state_unpublished'; ?>"><?php echo $v->state == 1 ? JText::_('PLG_PUBLICATION_VERSIONS_PUBLISHED') : JText::_('PLG_PUBLICATION_VERSIONS_UNPUBLISHED'); ?></td>
+			<td><?php echo $v->doi ? $v->doi : Lang::txt('COM_PUBLICATIONS_NA'); ?></td>
+			<td class="<?php echo $v->state == 1 ? 'state_published' : 'state_unpublished'; ?>"><?php echo $v->state == 1 ? Lang::txt('PLG_PUBLICATION_VERSIONS_PUBLISHED') : Lang::txt('PLG_PUBLICATION_VERSIONS_UNPUBLISHED'); ?></td>
 			<td><a href="<?php echo Route::url('index.php?option='
 			. $this->option . '&id=' .
-			$this->publication->id . '&v=' . $v->version_number); ?>"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_VIEW'); ?></a></td>
+			$this->publication->id . '&v=' . $v->version_number); ?>"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW'); ?></a></td>
 		</tr>
 <?php
 	}
@@ -80,5 +80,5 @@ if ($this->versions && count($this->versions) > 0) {
 	</tbody>
 </table>
 <?php } else { ?>
-	<p class="nocontent"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_NO_VERIONS_FOUND'); ?></p>
+	<p class="nocontent"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_NO_VERIONS_FOUND'); ?></p>
 <?php } ?>

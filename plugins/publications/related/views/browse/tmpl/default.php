@@ -36,7 +36,7 @@ $pa = new \Components\Publications\Tables\Author( $database );
 $authorlist = '';
 
 ?>
-<h3><?php echo JText::_('PLG_PUBLICATION_RELATED_HEADER'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PUBLICATION_RELATED_HEADER'); ?></h3>
 <?php if ($this->related) { ?>
 <table class="related-publications">
 	<tbody>
@@ -95,7 +95,7 @@ foreach ($this->related as $line)
 <?php }
 
 else { ?>
-	<?php if ($line->section == 'Series') { echo JText::_('PLG_PUBLICATION_RELATED_PART_OF'); } ?>
+	<?php if ($line->section == 'Series') { echo Lang::txt('PLG_PUBLICATION_RELATED_PART_OF'); } ?>
 				<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
 				<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
 					<h4><?php echo stripslashes($line->title); ?></h4>
@@ -103,22 +103,22 @@ else { ?>
 						<table>
 							<tbody>
 								<tr>
-									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_TYPE'); ?></th>
+									<th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_TYPE'); ?></th>
 									<td><?php echo $line->section; ?></td>
 								</tr>
 <?php if ($authorlist) { ?>
 								<tr>
-									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_CONTRIBUTORS'); ?></th>
+									<th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_CONTRIBUTORS'); ?></th>
 									<td><?php echo $authorlist; ?></td>
 								</tr>
 <?php } ?>
 								<tr>
-									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_DATE'); ?></th>
+									<th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_DATE'); ?></th>
 									<td><?php echo JHTML::_('date',$line->published_up, 'd M, Y'); ?></td>
 								</tr>
 								<tr>
-									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>
-									<td><span class="avgrating<?php echo $class; ?>"><span><?php echo JText::sprintf('OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+									<th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>
+									<td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
 								</tr>
 							</tbody>
 						</table>
@@ -133,5 +133,5 @@ else { ?>
 	</tbody>
 </table>
 <?php } else { ?>
-<p><?php echo JText::_('PLG_PUBLICATION_RELATED_NO_RESULTS_FOUND'); ?></p>
+<p><?php echo Lang::txt('PLG_PUBLICATION_RELATED_NO_RESULTS_FOUND'); ?></p>
 <?php } ?>

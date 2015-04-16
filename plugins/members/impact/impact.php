@@ -219,7 +219,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$areas = array();
 
 		// Load contributions plugin parameters
-		$this->_cPlugin = JPluginHelper::getPlugin('members', 'contributions');
+		$this->_cPlugin = Plugin::byType('members', 'contributions');
 		$this->_cParams = new JParameter($this->_cPlugin->params);
 
 		if ($this->_cParams->get('include_publications', 0) == 1)

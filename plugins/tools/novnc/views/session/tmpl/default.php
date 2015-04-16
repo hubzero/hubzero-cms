@@ -45,7 +45,7 @@ else
 	     ->js('./novnc/util.js')
 	     ->js('./novnc/ui-hubzero.js');
 
-	$base = rtrim(JURI::base(true), '/');
+	$base = rtrim(Request::base(true), '/');
 
 	$img = $base . '/plugins/tools/novnc/assets/novnc/images';
 ?>

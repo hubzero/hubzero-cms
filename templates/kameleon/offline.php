@@ -37,7 +37,7 @@ $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
 
-$this->setTitle(Config::get('sitename') . ' - ' . JText::_('Down for maintenance'));
+$this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('Down for maintenance'));
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->

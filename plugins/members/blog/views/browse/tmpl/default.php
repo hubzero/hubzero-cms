@@ -29,8 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-$live_site = rtrim(JURI::base(),'/');
+$live_site = rtrim(Request::base(),'/');
 
 $first = $this->model->entries('first');
 
@@ -40,7 +39,7 @@ $this->css()
      ->js();
 ?>
 
-<?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
+<?php if (User::get('id') == $this->member->get('uidNumber')) : ?>
 <ul id="page_options">
 	<li>
 		<a class="icon-add add btn" href="<?php echo Route::url($base . '&task=new'); ?>">
@@ -55,7 +54,7 @@ $this->css()
 </ul>
 <?php endif; ?>
 
-<?php if ($juser->get('id') == $this->member->get('uidNumber') && !$this->filters['year'] && !$this->filters['search'] && !$this->model->entries('count', $this->filters)) { ?>
+<?php if (User::get('id') == $this->member->get('uidNumber') && !$this->filters['year'] && !$this->filters['search'] && !$this->model->entries('count', $this->filters)) { ?>
 
 	<div class="introduction">
 		<div class="introduction-message">
@@ -182,13 +181,13 @@ $this->css()
 								</span>
 							</dd>
 						<?php } ?>
-						<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+						<?php if (User::get('id') == $row->get('created_by')) { ?>
 							<dd class="state <?php echo $row->state('text'); ?>">
 								<?php echo Lang::txt('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
 							</dd>
 						<?php } ?>
 						<dd class="entry-options">
-						<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+						<?php if (User::get('id') == $row->get('created_by')) { ?>
 							<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
 								<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>
 							</a>

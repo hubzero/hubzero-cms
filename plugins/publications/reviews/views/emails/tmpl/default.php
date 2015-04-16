@@ -32,9 +32,9 @@ if (substr($sef,0,1) == '/')
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::_('PLG_PUBLICATION_REVIEWS_SOMEONE_POSTED_REVIEW') . "\n\n";
+$message  = Lang::txt('PLG_PUBLICATION_REVIEWS_SOMEONE_POSTED_REVIEW') . "\n\n";
 $message .= stripslashes($this->publication->title) . "\n\n";
-$message .= JText::_('PLG_PUBLICATION_REVIEWS_TO_VIEW_COMMENT') . "\n";
+$message .= Lang::txt('PLG_PUBLICATION_REVIEWS_TO_VIEW_COMMENT') . "\n";
 $message .= $juri->base().$sef . "\n";
 
 echo $message;

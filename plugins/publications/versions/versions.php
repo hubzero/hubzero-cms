@@ -57,7 +57,7 @@ class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
 		if ($publication->_category->_params->get('plg_versions'))
 		{
 			$areas = array(
-				'versions' => JText::_('PLG_PUBLICATION_VERSIONS')
+				'versions' => Lang::txt('PLG_PUBLICATION_VERSIONS')
 			);
 		}
 		return $areas;

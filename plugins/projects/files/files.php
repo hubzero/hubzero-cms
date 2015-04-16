@@ -4384,7 +4384,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Debug output
 		$temp = $this->_logPath;
-		$this->_writeToFile($output, $temp . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log', true);
+		$this->_writeToFile($output, $temp . DS . 'sync.' . \Date::format('Y-m') . '.log', true);
 
 		// Record sync status
 		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE_UPDATE_VIEW') );

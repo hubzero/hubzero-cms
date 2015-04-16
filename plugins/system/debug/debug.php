@@ -77,7 +77,7 @@ class plgSystemDebug extends JPlugin
 	 */
 	public function onAfterDispatch()
 	{
-		$base = str_replace('/administrator', '', rtrim(\JURI::base(true), '/'));
+		$base = str_replace('/administrator', '', rtrim(\Request::base(true), '/'));
 
 		// Only if debugging or language debug is enabled
 		if (JDEBUG || \Config::get('debug_lang'))

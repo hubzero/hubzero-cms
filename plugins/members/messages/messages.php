@@ -587,7 +587,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$mbrs = Request::getVar('to', array());
 		foreach ($mbrs as $mbr)
 		{
-			$mem = JUser::getInstance($mbr);
+			$mem = User::getInstance($mbr);
 			$tos[] = $mem->get('name') . ' (' . $mem->get('id') . ')';
 		}
 
@@ -652,7 +652,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		if (substr($xmessage->type, -8) == '_message')
 		{
-			$u = JUser::getInstance($xmessage->created_by);
+			$u = User::getInstance($xmessage->created_by);
 			$from = '<a href="'.Route::url('index.php?option=' . $option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
 		}
 		else
@@ -1089,7 +1089,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				$this->addPluginMessage(Lang::txt('You must select a message recipient and enter a message.'), 'error');
 				return $this->redirect(Route::url($member->getLink() . '&active=messages&action=new'));
 			}
-			return JError::raiseError(500, Lang::txt('You must select a message recipient and enter a message.'));
+			return App::abort(500, Lang::txt('You must select a message recipient and enter a message.'));
 		}
 
 		// Build the "from" data for the e-mail

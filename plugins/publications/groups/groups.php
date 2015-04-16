@@ -52,7 +52,7 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 	public function &onPublicationSubAreas( $publication )
 	{
 		$areas = array(
-			'groups' => JText::_('PLG_PUBLICATIONS_GROUPS')
+			'groups' => Lang::txt('PLG_PUBLICATIONS_GROUPS')
 		);
 		return $areas;
 	}

@@ -43,12 +43,13 @@ class plgQuickiconJoomlaupdate extends JPlugin
 	 */
 	public function onGetIcons($context)
 	{
-		if ($context != $this->params->get('context', 'mod_quickicon') || !JFactory::getUser()->authorise('core.manage', 'com_installer')) {
+		if ($context != $this->params->get('context', 'mod_quickicon') || !User::authorise('core.manage', 'com_installer'))
+		{
 			return;
 		}
 
 		$cur_template = JFactory::getApplication()->getTemplate();
-		$ajax_url = JURI::base().'index.php?option=com_installer&view=update&task=update.ajax';
+		$ajax_url = Request::base().'index.php?option=com_installer&view=update&task=update.ajax';
 		$script = "var plg_quickicon_joomlaupdate_ajax_url = '$ajax_url';\n";
 		$script .= 'var plg_quickicon_jupdatecheck_jversion = "'.JVERSION.'";'."\n";
 		$script .= 'var plg_quickicon_joomlaupdate_text = {"UPTODATE" : "'.
@@ -56,12 +57,12 @@ class plgQuickiconJoomlaupdate extends JPlugin
 			Lang::txt('PLG_QUICKICON_JOOMLAUPDATE_UPDATEFOUND', true).'", "ERROR": "'.
 			Lang::txt('PLG_QUICKICON_JOOMLAUPDATE_ERROR', true)."\"};\n";
 		$script .= 'var plg_quickicon_joomlaupdate_img = {"UPTODATE" : "'.
-			JURI::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-jupdate-uptodate.png'.'", "ERROR": "'.
-			JURI::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-deny.png'.'", "UPDATEFOUND": "'.
-			JURI::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-jupdate-updatefound.png'."\"};\n";
+			Request::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-jupdate-uptodate.png'.'", "ERROR": "'.
+			Request::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-deny.png'.'", "UPDATEFOUND": "'.
+			Request::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-jupdate-updatefound.png'."\"};\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
-		$document->addScript(JURI::base().'../media/plg_quickicon_joomlaupdate/jupdatecheck.js');
+		$document->addScript(Request::base().'../media/plg_quickicon_joomlaupdate/jupdatecheck.js');
 
 		return array(array(
 			'link' => 'index.php?option=com_joomlaupdate',

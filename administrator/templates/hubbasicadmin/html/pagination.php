@@ -1,15 +1,33 @@
 <?php
 /**
- * @version		$Id: pagination.php 9764 2007-12-30 07:48:11Z ircmaxell $
- * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -28,7 +46,6 @@ defined('_JEXEC') or die('Restricted access');
  *
  * NOTE: If you override pagination_item_active OR pagination_item_inactive you MUST override them both
  */
-
 function pagination_list_footer($list)
 {
 	$html = array();
@@ -36,7 +53,7 @@ function pagination_list_footer($list)
 	$html[] = '<ul class="list-footer">';
 
 	$html[] = '<li class="counter">' . $list['pagescounter'] . '</li>';
-	$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . JText::_('JGLOBAL_DISPLAY_NUM') . '</label> ' . $list['limitfield'] . '</li>';
+	$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . Lang::txt('JGLOBAL_DISPLAY_NUM') . '</label> ' . $list['limitfield'] . '</li>';
 	$html[] = $list['pageslinks'];
 
 	$html[] = '</ul>';

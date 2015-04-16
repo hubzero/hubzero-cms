@@ -385,7 +385,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$objM->projectid      = $this->model->get('id');
 			$objM->blogentry      = $entry;
 			$objM->managers_only  = $managers;
-			$objM->posted         = JFactory::getDate()->toSql();
+			$objM->posted         = Date::toSql();
 			$objM->posted_by      = $this->_uid;
 
 			// Save new blog entry
@@ -977,7 +977,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$objC->tbl 				= $tbl;
 			$objC->parent_activity  = $parent_activity;
 			$objC->comment 			= $comment;
-			$objC->created 			= JFactory::getDate()->toSql();
+			$objC->created 			= Date::toSql();
 			$objC->created_by 		= $this->_uid;
 			if (!$objC->store())
 			{

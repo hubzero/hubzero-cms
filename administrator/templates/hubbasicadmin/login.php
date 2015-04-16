@@ -31,20 +31,17 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
-$doc = JFactory::getDocument();
-
 // Load CSS
-$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css');
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
-	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $browser = new \Hubzero\Browser\Detector();
@@ -52,16 +49,16 @@ $b = $browser->name();
 $v = $browser->major();
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie9"> <![endif]-->
+<!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="j25 <?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
-<?php if ($b == 'firefox' && intval($v) < 4) { ?>
-		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
-<?php } ?>
+		<?php if ($b == 'firefox' && intval($v) < 4) { ?>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+		<?php } ?>
 		<!--[if IE 7]>
 			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
 			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
@@ -88,17 +85,17 @@ $v = $browser->major();
 	<body id="login-body">
 		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
-			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
+			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
 			<div class="clr"></div>
 		</header><!-- / header -->
 
 		<div id="wrap">
 			<section id="component-content">
 				<div id="toolbar-box">
-					<h2><?php echo JText::_('Administration Login') ?></h2>
+					<h2><?php echo Lang::txt('Administration Login') ?></h2>
 				</div>
 
-				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
+				<section id="main" class="<?php echo Request::getCmd('option', ''); ?>">
 					<!-- Notifications begins -->
 					<jdoc:include type="message" />
 					<!-- Notifications ends -->
@@ -106,7 +103,7 @@ $v = $browser->major();
 					<jdoc:include type="component" />
 					<!-- Content ends -->
 					<noscript>
-						<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 					</noscript>
 					<div class="clr"></div>
 				</section><!-- / #main -->

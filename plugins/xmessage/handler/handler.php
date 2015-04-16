@@ -230,7 +230,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				$notify = new \Hubzero\Message\Notify($database);
 				$methods = $notify->getRecords($uid, $type);
 
-				//$user = JUser::getInstance($uid);
+				//$user = User::getInstance($uid);
 				$user = \Hubzero\User\Profile::getInstance($uid);
 				if (!is_object($user) || !$user->get('username'))
 				{

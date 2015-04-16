@@ -56,7 +56,7 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		if ($publication->_category->_params->get('plg_citations'))
 		{
 			$areas = array(
-				'citations' => JText::_('PLG_PUBLICATION_CITATIONS')
+				'citations' => Lang::txt('PLG_PUBLICATION_CITATIONS')
 			);
 		}
 		else
@@ -103,10 +103,10 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Get a needed library
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 		// Get citations for this publication
 		$c = new \Components\Citations\Tables\Citation( $database );

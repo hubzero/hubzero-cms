@@ -29,7 +29,7 @@ $this->css('assets/css/recommendations.css');
 
 ?>
 <div id="recommendations">
-	<h3><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_HEADER'); ?></h3>
+	<h3><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_HEADER'); ?></h3>
 <?php if ($this->results) { ?>
 	<ul>
 <?php
@@ -48,7 +48,7 @@ $this->css('assets/css/recommendations.css');
 <?php } ?>
 	</ul>
 <?php } else { ?>
-	<p><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
+	<p><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
 <?php } ?>
-	<p id="credits"><a href="/about/hubzero#recommendations"><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
+	<p id="credits"><a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
 </div>

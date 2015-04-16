@@ -33,21 +33,18 @@ $this->css()
      ->js()
      ->js('jquery.fileuploader.js', 'system');
 
-//get user object
-$juser = JFactory::getUser();
-
 //flags for not logged in and not user
 $loggedin = false;
 $isUser = false;
 
 //if we are logged in set logged in flag
-if (!$juser->get('guest'))
+if (!User::isGuest())
 {
 	$loggedin = true;
 }
 
 //if we are this user set user flag
-if ($juser->get("id") == $this->profile->get("uidNumber"))
+if (User::get("id") == $this->profile->get("uidNumber"))
 {
 	$isUser = true;
 }
@@ -161,7 +158,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			<form action="index.php" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
 				<h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
 				<div id="usage-agreement-box">
-					<iframe id="usage-agreement" src="<?php echo JURI::base(true); ?>/legal/terms?tmpl=component"></iframe>
+					<iframe id="usage-agreement" src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>
 					<div id="usage-agreement-last-chance">
 						<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ARE_YOU_SURE'); ?></h3>
 						<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ARE_YOU_SURE_EXPLANATION'); ?></p>
@@ -179,7 +176,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<input type="hidden" name="usageAgreement" value="1" />
 				<input type="hidden" name="field_to_check[]" value="usageAgreement" />
 				<input type="hidden" name="option" value="com_members" />
-				<input type="hidden" name="id" value="<?php echo $juser->get("id"); ?>" />
+				<input type="hidden" name="id" value="<?php echo User::get("id"); ?>" />
 				<input type="hidden" name="task" value="save" />
 			</form>
 		</div>
@@ -502,7 +499,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<label>
 						' . Lang::txt('PLG_MEMBERS_PROFILE_ORCID') . '
 						<input type="text" class="input-text" name="orcid" id="orcid" value="'. $this->escape($this->profile->get('orcid')) .'" />
-						<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(JURI::base(true), '/') . '" />
+						<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />
 					</label>
 				</div>
 				<div class="col span3 omega">

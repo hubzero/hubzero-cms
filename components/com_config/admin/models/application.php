@@ -30,7 +30,6 @@
 
 namespace Components\Config\Models;
 
-use JComponentHelper;
 use JArrayHelper;
 use JModelForm;
 use JAccessRules;
@@ -39,7 +38,7 @@ use JFactory;
 use JConfig;
 use JError;
 use JPath;
-use JText;
+use Lang;
 use JTable;
 use JRegistry;
 use JFile;

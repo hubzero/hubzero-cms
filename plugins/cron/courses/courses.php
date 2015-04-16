@@ -233,7 +233,7 @@ class plgCronCourses extends JPlugin
 							foreach ($managers as $manager)
 							{
 								// Get the user's account
-								$juser = JUser::getInstance($manager->get('user_id'));
+								$juser = User::getInstance($manager->get('user_id'));
 								if (!$juser->get('id'))
 								{
 									continue;

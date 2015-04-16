@@ -19,7 +19,7 @@ if ($this->limits)
  */
 function paginator_item_active($item, $prefix)
 {
-	if (JFactory::getApplication()->isAdmin())
+	if (App::isAdmin())
 	{
 		return '<a title="' . $item->text . '" onclick="document.adminForm.' . $prefix . 'limitstart.value=' . ($item->base > 0 ? $item->base : 0) . '; Joomla.submitform();return false;">' . $item->text . '</a>';
 	}
@@ -57,13 +57,13 @@ function paginator_item_active($item, $prefix)
 			?>
 		</li>
 		<li class="limit">
-			<label for="<?php echo $this->prefix; ?>limit"><?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?></label> 
+			<label for="<?php echo $this->prefix; ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label> 
 			<?php
 			// Build the select list.
 			$selected = $this->viewall ? 0 : $this->limit;
 
 			$attr = 'class="inputbox" size="1" onchange="this.form.submit()"';
-			if (JFactory::getApplication()->isAdmin())
+			if (App::isAdmin())
 			{
 				$attr = 'class="inputbox" size="1" onchange="Joomla.submitform();"';
 			}

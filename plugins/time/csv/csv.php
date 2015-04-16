@@ -68,7 +68,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 
 		$view->hub_id = Request::getInt('hub_id', null);
 		$view->start  = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$view->end    = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$view->end    = Request::getCmd('end_date', Date::format('Y-m-d'));
 		$records      = Record::all()->where('date', '>=', $view->start)
 		                              ->where('date', '<=', $view->end);
 		                              // @FIXME: order by non-native field
@@ -99,7 +99,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 
 		$hub_id    = Request::getInt('hub_id', null);
 		$start     = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$end       = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$end       = Request::getCmd('end_date', Date::format('Y-m-d'));
 		$records   = Record::all()->where('date', '>=', $start)
 		                           ->where('date', '<=', $end);
 		                           // @FIXME: order by non-native field

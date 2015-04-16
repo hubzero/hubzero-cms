@@ -38,9 +38,9 @@ $i = 1;
 $limit = intval($this->_params->get('icons_limit')) ? $this->_params->get('icons_limit') : 0;
 
 $popup = '<ol class="sharelinks">';
-$title = JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING', Config::get('config.sitename'),stripslashes($this->publication->title));
+$title = Lang::txt('PLG_PUBLICATION_SHARE_VIEWING', Config::get('config.sitename'),stripslashes($this->publication->title));
 $metadata  = '<div class="share">'."\n";
-$metadata .= "\t".JText::_('PLG_PUBLICATION_SHARE').': ';
+$metadata .= "\t".Lang::txt('PLG_PUBLICATION_SHARE').': ';
 
 // Available options
 $sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit');
@@ -76,7 +76,7 @@ if ($limit > 0)
 	$metadata .= '<dl class="shareinfo">'."\n";
 	$metadata .= "\t".'<dd>'."\n";
 	$metadata .= "\t\t".'<p>'."\n";
-	$metadata .= "\t\t\t".JText::_('PLG_PUBLICATION_SHARE_RESOURCE')."\n";
+	$metadata .= "\t\t\t".Lang::txt('PLG_PUBLICATION_SHARE_RESOURCE')."\n";
 	$metadata .= "\t\t".'</p>'."\n";
 	$metadata .= "\t\t".'<div>'."\n";
 	$metadata .= $popup;

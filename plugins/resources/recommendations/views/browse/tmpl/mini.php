@@ -47,6 +47,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php } ?>
 
 	<p id="credits">
-		<a href="<?php echo JURI::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a>
+		<a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a>
 	</p>
 </div>

@@ -56,7 +56,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 		if ($publication->_category->_params->get('plg_supportingdocs'))
 		{
 			$areas = array(
-				'supportingdocs' => JText::_('PLG_PUBLICATION_SUPPORTINGDOCS')
+				'supportingdocs' => Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS')
 			);
 		}
 		else

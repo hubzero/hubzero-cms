@@ -55,7 +55,7 @@ class LanguagesControllerOverrides extends JControllerAdmin
 			// Remove the items
 			if ($model->delete($cid))
 			{
-				$this->setMessage(JText::plural($this->text_prefix.'_N_ITEMS_DELETED', count($cid)));
+				$this->setMessage(Lang::txts($this->text_prefix.'_N_ITEMS_DELETED', count($cid)));
 			}
 			else
 			{

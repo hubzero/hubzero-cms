@@ -31,7 +31,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
@@ -44,7 +43,7 @@ $app = JFactory::getApplication();
 			<jdoc:include type="message" />
 			<jdoc:include type="component" />
 			<noscript>
-				<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+				<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 			</noscript>
 		</div>
 	</body>

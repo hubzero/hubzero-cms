@@ -43,16 +43,16 @@ foreach ($this->reviews as $k => $review)
 $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_PUBLICATION_REVIEWS'); ?>
+	<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS'); ?>
 </h3>
 <p class="section-options">
 	<?php if ($juser->get('guest')) { ?>
 			<a href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
-				<?php echo JText::_('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
+				<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
 			</a>
 	<?php } else { ?>
 			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews&action=addreview#reviewform'); ?>" class="icon-add add btn">
-				<?php echo JText::_('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
+				<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
 			</a>
 	<?php } ?>
 </p>
@@ -77,7 +77,7 @@ if ($this->reviews->total() > 0)
 }
 else
 {
-	echo '<p class="noresults">'.JText::_('PLG_PUBLICATION_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
+	echo '<p class="noresults">'.Lang::txt('PLG_PUBLICATION_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
 }
 
 // Display the review form if needed

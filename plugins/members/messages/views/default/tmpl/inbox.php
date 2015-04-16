@@ -141,7 +141,7 @@ $this->css()
 							<?php
 							if (substr($row->type, -8) == '_message')
 							{
-								$u = JUser::getInstance($row->created_by);
+								$u = User::getInstance($row->created_by);
 								echo '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
 							}
 							else

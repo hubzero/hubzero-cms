@@ -52,7 +52,7 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 	public function &onPublicationSubAreas( $publication )
 	{
 		$areas = array(
-			'recommendations' => JText::_('PLG_PUBLICATION_RECOMMENDATIONS')
+			'recommendations' => Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS')
 		);
 		return $areas;
 	}
@@ -74,7 +74,7 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get some needed libraries
-		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'publications' . DS . 'recommendations' . DS . 'publication.recommendation.php');
+		include_once(PATH_CORE . DS . 'plugins' . DS . 'publications' . DS . 'recommendations' . DS . 'publication.recommendation.php');
 
 		// Set some filters for returning results
 		$filters = array(

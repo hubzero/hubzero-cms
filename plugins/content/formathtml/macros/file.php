@@ -685,7 +685,7 @@ class File extends Macro
 						$html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
 						if (isset($attr['created_by']))
 						{
-							$user = \JUser::getInstance($attr['created_by']);
+							$user = \User::getInstance($attr['created_by']);
 							$html .= ', ' . \Lang::txt('uploaded by %s ', stripslashes($user->get('name')));
 						}
 						if (isset($attr['created']))

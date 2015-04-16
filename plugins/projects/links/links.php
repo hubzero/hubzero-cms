@@ -330,7 +330,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$citation->created 		= $new == true ? JFactory::getDate()->toSql() : $citation->created;
+				$citation->created 		= $new == true ? Date::toSql() : $citation->created;
 				$citation->uid			= $new == true ? $this->_uid : $citation->uid;
 				$citation->published	= 1;
 
@@ -508,7 +508,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				// Load citation record with the same DOI if present
 				if (!$c->loadByDoi($doi))
 				{
-					$c->created 	= JFactory::getDate()->toSql();
+					$c->created 	= Date::toSql();
 					$c->title   	= $doi;
 					$c->uid			= $actor;
 					$c->affiliated 	= 1;

@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	$name = JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
+	$name = Lang::txt('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
 	$huser = new \Hubzero\User\Profile;
 
 	if (!$this->comment->get('anonymous'))
@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($this->comment->isReported())
 	{
-		$comment = '<p class="warning">' . JText::_('PLG_PUBLICATION_REVIEWS_NOTICE_POSTING_REPORTED') . '</p>';
+		$comment = '<p class="warning">' . Lang::txt('PLG_PUBLICATION_REVIEWS_NOTICE_POSTING_REPORTED') . '</p>';
 	}
 	else
 	{
@@ -88,23 +88,23 @@ defined('_JEXEC') or die('Restricted access');
 
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
-				<a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">
+				<a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">
 					<span class="comment-date-at">@</span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-					<span class="comment-date-on"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_ON'); ?></span>
+					<span class="comment-date-on"><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 				</a>
 			</p>
 			<?php if ($this->comment->get('publication_id')) { ?>
 			<p>
-				<span class="avgrating<?php echo $class; ?>"><span><?php echo JText::sprintf('PLG_PUBLICATION_REVIEWS_OUT_OF_5_STARS', $this->comment->get('rating', 0)); ?></span></span>
+				<span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_OUT_OF_5_STARS', $this->comment->get('rating', 0)); ?></span></span>
 			</p>
 			<?php } ?>
 
-	<?php if (JRequest::getWord('action') == 'edit' && JRequest::getInt('comment') == $this->comment->get('id')) { ?>
+	<?php if (Request::getWord('action') == 'edit' && Request::getInt('comment') == $this->comment->get('id')) { ?>
 			<form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 				<fieldset>
-					<legend><span><?php echo JText::_('PLG_PUBLICATION_REVIEWS_EDIT'); ?></span></legend>
+					<legend><span><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_EDIT'); ?></span></legend>
 
 					<input type="hidden" name="comment[id]" value="<?php echo $this->comment->get('id'); ?>" />
 					<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
@@ -121,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JHTML::_('form.token'); ?>
 
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-						<span class="label-text"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_ENTER_COMMENTS'); ?></span>
+						<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_ENTER_COMMENTS'); ?></span>
 						<?php
 						echo JFactory::getEditor()->display('comment[content]', $this->comment->content('raw'), '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
 						?>
@@ -129,11 +129,11 @@ defined('_JEXEC') or die('Restricted access');
 
 					<label id="comment-anonymous-label" for="comment-anonymous">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('PLG_PUBLICATION_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
+						<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
 					</label>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
+						<input type="submit" value="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
 					</p>
 				</fieldset>
 			</form>
@@ -145,42 +145,42 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
 				<?php /*if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_DELETE'); ?><!--
+						--><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_DELETE'); ?><!--
 					--></a>
 				<?php }*/ ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_EDIT'); ?><!--
+						--><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_EDIT'); ?><!--
 					--></a>
 			<?php } ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?><!--
+					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
 					<a class="icon-abuse abuse" href="<?php echo Route::url($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?><!--
+					--><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 		<?php } ?>
 			</p>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if ($juser->get('guest')) { ?>
 				<p class="warning">
-					<?php echo JText::sprintf('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . JText::_('PLG_PUBLICATION_REVIEWS_LOGIN') . '</a>'); ?>
+					<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_PUBLICATION_REVIEWS_LOGIN') . '</a>'); ?>
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo JText::sprintf('PLG_PUBLICATION_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_PUBLICATION_REVIEWS_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
@@ -197,7 +197,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JHTML::_('form.token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_ENTER_COMMENTS'); ?></span>
+							<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_ENTER_COMMENTS'); ?></span>
 							<?php
 							echo JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
 							?>
@@ -205,11 +205,11 @@ defined('_JEXEC') or die('Restricted access');
 
 						<label id="comment-anonymous-label" for="comment-anonymous">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo JText::_('PLG_PUBLICATION_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
+							<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

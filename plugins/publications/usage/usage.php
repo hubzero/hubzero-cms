@@ -57,7 +57,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		if ($publication->_category->_params->get('plg_usage') && $extended)
 		{
 			$areas = array(
-				'usage' => JText::_('PLG_PUBLICATION_USAGE')
+				'usage' => Lang::txt('PLG_PUBLICATION_USAGE')
 			);
 		}
 
@@ -117,15 +117,15 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 
 		if (!in_array($table, $tables))
 		{
-			$arr['html'] 	 = '<p class="error">' . JText::_('PLG_PUBLICATION_USAGE_MISSING_TABLE') . '</p>';
+			$arr['html'] 	 = '<p class="error">' . Lang::txt('PLG_PUBLICATION_USAGE_MISSING_TABLE') . '</p>';
 			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">'
-							. JText::_('PLG_PUBLICATION_USAGE_DETAILED') . '</a></p>';
+							. Lang::txt('PLG_PUBLICATION_USAGE_DETAILED') . '</a></p>';
 			return $arr;
 		}
 
 		// Get/set some variables
-		$dthis  = JRequest::getVar('dthis', date('Y') . '-' . date('m'));
-		$period = JRequest::getInt('period', $this->params->get('period', 14));
+		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
+		$period = Request::getInt('period', $this->params->get('period', 14));
 
 		include_once( JPATH_ROOT . DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
@@ -173,8 +173,8 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			if ($stats->users)
 			{
 				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
-				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s user(s)',$stats->users);
-				$arr['metadata'].= $stats->downloads ? ' | ' . JText::sprintf($action, $stats->downloads) : '';
+				$arr['metadata'] = '<p class="usage">' . Lang::txt('%s user(s)',$stats->users);
+				$arr['metadata'].= $stats->downloads ? ' | ' . Lang::txt($action, $stats->downloads) : '';
 				$arr['metadata'].= '</p>';
 			}
 		}
@@ -198,19 +198,19 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	{
 		if ($time < 60)
 		{
-			$data = round($time,2). ' ' .JText::_('PLG_PUBLICATION_USAGE_SECONDS');
+			$data = round($time,2). ' ' .Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
 		}
 		else if ($time > 60 && $time < 3600)
 		{
-			$data = round(($time/60), 2) . ' ' .JText::_('PLG_PUBLICATION_USAGE_MINUTES');
+			$data = round(($time/60), 2) . ' ' .Lang::txt('PLG_PUBLICATION_USAGE_MINUTES');
 		}
 		else if ($time >= 3600 && $time < 86400)
 		{
-			$data = round(($time/3600), 2). ' ' .JText::_('PLG_PUBLICATION_USAGE_HOURS');
+			$data = round(($time/3600), 2). ' ' .Lang::txt('PLG_PUBLICATION_USAGE_HOURS');
 		}
 		else if ($time >= 86400)
 		{
-			$data = round(($time/86400),2). ' ' .JText::_('PLG_PUBLICATION_USAGE_DAYS');
+			$data = round(($time/86400),2). ' ' .Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
 		}
 
 		return $data;

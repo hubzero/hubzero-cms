@@ -311,13 +311,13 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');
 
-				if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php'))
+				if (is_file(PATH_CORE . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php'))
 				{
-					include_once(JPATH_ROOT . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php');
+					include_once(PATH_CORE . DS . 'plugins' . DS . 'usage' . DS . 'maps' . DS . $type . '.php');
 				}
 				else
 				{
-					JError::raiseError(500, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
+					App::abort(500, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
 					return;
 				}
 
@@ -325,9 +325,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$pathway->addItem(Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
+		Pathway::append(Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
 
 		$html  = '<h3>' . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
 		$html .= '<p><a class="map" href="' . Route::url('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . Lang::txt('PLG_USAGE_MAPS_RESET') . '</a></p>';

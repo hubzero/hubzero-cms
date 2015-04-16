@@ -1142,7 +1142,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$objPD->source_revision = $hash;
 				$objPD->description 	= $desc;
 				$objPD->data_definition = $dd;
-				$objPD->updated 		= JFactory::getDate()->toSql();
+				$objPD->updated 		= Date::toSql();
 				$objPD->updated_by 		= $this->_uid;
 				$msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_DATABASE') . ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
 			}
@@ -1156,7 +1156,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$objPD->source_revision = $hash;
 				$objPD->description 	= $desc;
 				$objPD->data_definition = $dd;
-				$objPD->created 		= JFactory::getDate()->toSql();
+				$objPD->created 		= Date::toSql();
 				$objPD->created_by 		= $this->_uid;
 
 				$msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED_DATABASE')

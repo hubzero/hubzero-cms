@@ -20,9 +20,7 @@ class plgSystemSef extends JPlugin
 	 */
 	public function onAfterRender()
 	{
-		$app = JFactory::getApplication();
-
-		if ($app->getName() != 'site' || Config::get('sef')=='0')
+		if (!App::isSite() || Config::get('sef')=='0')
 		{
 			return true;
 		}
@@ -90,7 +88,7 @@ class plgSystemSef extends JPlugin
 				default:
 					$message = "Unknown PCRE error calling PCRE function";
 			}
-			JError::raiseError(500, $message);
+			App::abort(500, $message);
 		}
 	}
 

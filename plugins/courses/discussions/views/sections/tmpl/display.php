@@ -206,7 +206,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 			if (is_object($this->lastpost))
 			{
 				$lname = Lang::txt('Anonymous');
-				$lastposter = JUser::getInstance($this->lastpost->created_by);
+				$lastposter = User::getInstance($this->lastpost->created_by);
 				if (is_object($lastposter))
 				{
 					$lname = '<a href="' . Route::url('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';

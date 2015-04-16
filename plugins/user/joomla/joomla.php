@@ -258,7 +258,7 @@ class plgUserJoomla extends JPlugin
 	 */
 	protected function _getUser($user, $options = array())
 	{
-		$instance = JUser::getInstance();
+		$instance = User::getInstance();
 		if ($id = intval(JUserHelper::getUserId($user['username'])))  {
 			$instance->load($id);
 			return $instance;

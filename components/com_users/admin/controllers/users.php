@@ -97,11 +97,11 @@ class UsersControllerUsers extends JControllerAdmin
 			{
 				if ($value == 1)
 				{
-					$this->setMessage(JText::plural('COM_USERS_N_USERS_BLOCKED', count($ids)));
+					$this->setMessage(Lang::txts('COM_USERS_N_USERS_BLOCKED', count($ids)));
 				}
 				elseif ($value == 0)
 				{
-					$this->setMessage(JText::plural('COM_USERS_N_USERS_UNBLOCKED', count($ids)));
+					$this->setMessage(Lang::txts('COM_USERS_N_USERS_UNBLOCKED', count($ids)));
 				}
 			}
 		}
@@ -140,7 +140,7 @@ class UsersControllerUsers extends JControllerAdmin
 			}
 			else
 			{
-				$this->setMessage(JText::plural('COM_USERS_N_USERS_ACTIVATED', count($ids)));
+				$this->setMessage(Lang::txts('COM_USERS_N_USERS_ACTIVATED', count($ids)));
 			}
 		}
 
@@ -176,7 +176,7 @@ class UsersControllerUsers extends JControllerAdmin
 			}
 			else
 			{
-				$this->setMessage(JText::plural('COM_USERS_N_USERS_APPROVED', count($ids)));
+				$this->setMessage(Lang::txts('COM_USERS_N_USERS_APPROVED', count($ids)));
 			}
 		}
 

@@ -42,12 +42,13 @@ class plgQuickiconExtensionupdate extends JPlugin
 	 */
 	public function onGetIcons($context)
 	{
-		if ($context != $this->params->get('context', 'mod_quickicon') || !JFactory::getUser()->authorise('core.manage', 'com_installer')) {
+		if ($context != $this->params->get('context', 'mod_quickicon') || !User::authorise('core.manage', 'com_installer'))
+		{
 			return;
 		}
 
 		$cur_template = JFactory::getApplication()->getTemplate();
-		$ajax_url = JURI::base().'index.php?option=com_installer&view=update&task=update.ajax';
+		$ajax_url = Request::base().'index.php?option=com_installer&view=update&task=update.ajax';
 		$script = "var plg_quickicon_extensionupdate_ajax_url = '$ajax_url';\n";
 		$script .= 'var plg_quickicon_extensionupdate_text = {"UPTODATE" : "'.
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_UPTODATE', true).'", "UPDATEFOUND": "'.
@@ -55,7 +56,7 @@ class plgQuickiconExtensionupdate extends JPlugin
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_ERROR', true)."\"};\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
-		$document->addScript(JURI::base().'../media/plg_quickicon_extensionupdate/extensionupdatecheck.js');
+		$document->addScript(Request::base().'../media/plg_quickicon_extensionupdate/extensionupdatecheck.js');
 
 		return array(array(
 			'link' => 'index.php?option=com_installer&view=update',

@@ -32,14 +32,14 @@
 defined('_JEXEC') or die;
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/component.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css?v=' . filemtime(__DIR__ . DS . 'css' . DS . 'component.css'));
 // Load theme
 if ($theme = $this->params->get('theme'))
 {
 	if ($theme == 'custom')
 	{
 		$color = $this->params->get('color');
-		$this->addStyleDeclaration(include_once(__DIR__ . '/css/themes/custom.php'));
+		$this->addStyleDeclaration(include_once(__DIR__ . DS . 'css' . DS . 'themes' . DS . 'custom.php'));
 	}
 	else if ($theme != 'gray')
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,12 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
 defined('_JEXEC') or die;
-
-$app = JFactory::getApplication();
 
 $browser = new \Hubzero\Browser\Detector();
 ?>
@@ -42,15 +40,15 @@ $browser = new \Hubzero\Browser\Detector();
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
-		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/error.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . DS . 'css' . DS . 'error.css'); ?>" />
 
-	<?php if ($this->direction == 'rtl') : ?>
-		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/rtl.css" />
-	<?php endif; ?>
+		<?php if ($this->direction == 'rtl') : ?>
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/rtl.css" />
+		<?php endif; ?>
 
-	<?php if (JDEBUG) : ?>
-		<link type="text/css" rel="stylesheet" href="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/media/cms/css/debug.css" />
-	<?php endif; ?>
+		<?php if (Config::get('debug')) : ?>
+			<link type="text/css" rel="stylesheet" href="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/media/cms/css/debug.css" />
+		<?php endif; ?>
 
 		<!--[if lt IE 9]>
 			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
@@ -65,33 +63,31 @@ $browser = new \Hubzero\Browser\Detector();
 	</head>
 	<body id="error-body">
 		<header id="header" role="banner">
-			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
+			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
 
 			<ul class="user-options">
-				<li data-title="<?php echo JText::_('TPL_KAMELEON_LOG_OUT'); ?>">
+				<li data-title="<?php echo Lang::txt('TPL_KAMELEON_LOG_OUT'); ?>">
 					<?php
-						//Display an harcoded logout
-						$task = JRequest::getCmd('task');
-						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
-							$logoutLink = '';
-						} else {
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
-						}
-						$output = array();
-						// Print the Preview link to Main site.
-						//$juser = JFactory::getUser();
-						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
-						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
-						// Print the logout link.
-						$output[] = '<a class="logout" href="' . $logoutLink . '">' . JText::_('TPL_KAMELEON_LOG_OUT') . '</a>';
-						// Reverse rendering order for rtl display.
-						if ($this->direction == "rtl") :
-							$output = array_reverse($output);
-						endif;
-						// Output the items.
-						foreach ($output as $item) :
+					//Display an harcoded logout
+					$task = Request::getCmd('task');
+
+					$logoutLink = Route::url('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+					if ($task == 'edit' || $task == 'editA' || Request::getInt('hidemainmenu')) :
+						$logoutLink = '';
+					endif;
+
+					$output = array();
+					$output[] = '<a class="logout" href="' . $logoutLink . '">' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '</a>';
+
+					// Reverse rendering order for rtl display.
+					if ($this->direction == 'rtl') :
+						$output = array_reverse($output);
+					endif;
+
+					// Output the items.
+					foreach ($output as $item) :
 						echo $item;
-						endforeach;
+					endforeach;
 					?>
 				</li>
 			</ul>
@@ -101,8 +97,8 @@ $browser = new \Hubzero\Browser\Detector();
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
 					<ul id="menu">
-						<li><a href="index.php"><?php echo JText::_('TPL_KAMELEON_CONTROL_PANEL') ?></a></li>
-						<li><a href="index.php?option=com_admin&amp;view=help"><?php echo JText::_('TPL_KAMELEON_HELP'); ?></a></li>
+						<li><a href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?></a></li>
+						<li><a href="<?php echo Route::url('index.php?option=com_admin&view=help'); ?>"><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></a></li>
 					</ul>
 				</div>
 			</nav><!-- / .navigation -->
@@ -110,7 +106,7 @@ $browser = new \Hubzero\Browser\Detector();
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<div class="pagetitle icon-48-alert">
-						<h2><?php echo JText::_('TPL_KAMELEON_ERROR_OCCURRED'); ?></h2>
+						<h2><?php echo Lang::txt('TPL_KAMELEON_ERROR_OCCURRED'); ?></h2>
 					</div>
 				</div><!-- / #toolbar-box -->
 
@@ -124,14 +120,14 @@ $browser = new \Hubzero\Browser\Detector();
 					<div class="clr"></div>
 				</div>
 
-			<?php if ($this->debug) { ?>
-				<div class="backtrace-wrap">
-					<?php echo $this->renderBacktrace(); ?>
-				</div>
-			<?php } ?>
+				<?php if ($this->debug) { ?>
+					<div class="backtrace-wrap">
+						<?php echo $this->renderBacktrace(); ?>
+					</div>
+				<?php } ?>
 
 				<noscript>
-					<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+					<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 				</noscript>
 			</section>
 		</div>
@@ -139,10 +135,10 @@ $browser = new \Hubzero\Browser\Detector();
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<?php echo JText::sprintf('TPL_KAMELEON_COPYRIGHT', JURI::root(), $app->getCfg('sitename'), date("Y")); ?>
+					<?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), date("Y")); ?>
 				</p>
 				<p class="promotion">
-					<?php echo JText::sprintf('TPL_KAMELEON_POWERED_BY', \Hubzero\Version\Version::VERSION); ?>
+					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', App::version()); ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->

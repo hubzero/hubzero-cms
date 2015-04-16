@@ -57,7 +57,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 
 		if ($publication->_category->_params->get('plg_wishlist') && $extended)
 		{
-			$areas['wishlist'] = JText::_('Wishlist');
+			$areas['wishlist'] = Lang::txt('Wishlist');
 		}
 
 		return $areas;
@@ -133,8 +133,8 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			if ($publication->title && $publication->state == 1)
 			{
 				$rtitle = isset($publication->alias) && $publication->alias
-				? JText::_('COM_WISHLIST_NAME_RESOURCE') . ' ' . $publication->alias
-				: JText::_('COM_WISHLIST_NAME_PUB_ID') . ' ' . $publication->id;
+				? Lang::txt('COM_WISHLIST_NAME_RESOURCE') . ' ' . $publication->alias
+				: Lang::txt('COM_WISHLIST_NAME_PUB_ID') . ' ' . $publication->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $publication->title);
 			}
 		}
@@ -144,7 +144,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 
 		if (!$wishlist)
 		{
-			$html = '<p class="error">' . JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUND') . '</p>';
+			$html = '<p class="error">' . Lang::txt('COM_WISHLIST_ERROR_LIST_NOT_FOUND') . '</p>';
 		}
 		else
 		{
@@ -173,7 +173,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			elseif (!$wishlist->public && $rtrn != 'metadata')
 			{
 				// not authorized
-				JError::raiseError(403, JText::_('COM_WISHLIST_ERROR_ALERTNOTAUTH'));
+				JError::raiseError(403, Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'));
 				return;
 			}
 
@@ -184,10 +184,10 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
 
-				$title = ($admin) ?  JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
+				$title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit'])
 				{
-					$title.= ' (<a href="' . Route::url('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . JText::_('view all') . ' ' . $items . '</a>)';
+					$title.= ' (<a href="' . Route::url('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . Lang::txt('view all') . ' ' . $items . '</a>)';
 				}
 				else
 				{

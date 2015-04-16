@@ -29,9 +29,9 @@ $this->js()
 	 ->css('assets/css/recommendations.css');
 
 ?>
-<h3><a name="recommendations"></a><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_HEADER'); ?></h3>
+<h3><a name="recommendations"></a><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_HEADER'); ?></h3>
 <div class="aside">
-	<p><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_EXPLANATION'); ?></p>
+	<p><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_EXPLANATION'); ?></p>
 </div>
 <div class="subject" id="recommendations-subject">
 <?php if ($this->results) { ?>
@@ -52,7 +52,7 @@ $this->js()
 <?php } ?>
 	</ul>
 <?php } else { ?>
-	<p><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
+	<p><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
 <?php } ?>
-	<p id="credits"><a href="/about/hubzero#recommendations"><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
+	<p id="credits"><a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
 </div>

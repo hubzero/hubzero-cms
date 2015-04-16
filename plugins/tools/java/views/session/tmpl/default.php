@@ -108,7 +108,7 @@ $base = rtrim(Request::base(true), '/');
 				'Version 1.6.0 Update 02 (and earlier) will work ' +
 				'but 1.6.0 Update 03 and 04 do not.<br>' +
 				'3) Use a browser other than Firefox.<br>' +
-				'(<a href="<?php echo JURI::base(); ?>/kb/tools/unable_to_connect_error_in_firefox/">More information</a>)  ';
+				'(<a href="<?php echo Request::base(); ?>/kb/tools/unable_to_connect_error_in_firefox/">More information</a>)  ';
 
 	if (!deployJava.versionCheck("1.6.0+")) {
 		HUB.Mw.noJava();

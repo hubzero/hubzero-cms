@@ -631,7 +631,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		if ($this->juser->get('id') == $this->member->get('uidNumber'))
 		{
-			JError::raiseError(500, Lang::txt('Your cannot follow your own content.'));
+			App::abort(500, Lang::txt('Your cannot follow your own content.'));
 			return;
 		}
 
@@ -698,7 +698,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Is it a private board?
 		if ($this->juser->get('id') == $this->member->get('uidNumber'))
 		{
-			JError::raiseError(500, Lang::txt('Your cannot unfollow your own content.'));
+			App::abort(500, Lang::txt('Your cannot unfollow your own content.'));
 			return;
 		}
 

@@ -41,12 +41,12 @@ $logo = $this->group->getLogo();
 	<?php if ($logo) { ?>
 		<p class="group-img">
 			<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">
-				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo JText::sprintf('PLG_PUBLICATIONS_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
+				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo Lang::txt('PLG_PUBLICATIONS_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
 			</a>
 		</p>
-		<p class="group-description group-withlogo"><?php echo JText::sprintf('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-description group-withlogo"><?php echo Lang::txt('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 	<?php } else { ?>
-		<p class="group-description"><?php echo JText::sprintf('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-description"><?php echo Lang::txt('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 	<?php } ?>
 	</div>
 </div>

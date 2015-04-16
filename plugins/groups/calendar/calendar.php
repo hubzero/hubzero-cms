@@ -158,9 +158,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			\Hubzero\Document\Assets::addPluginScript('groups','calendar');
 
 			//get the request vars
-			$this->month    = Request::getInt('month', JFactory::getDate()->format("m") ,'get');
+			$this->month    = Request::getInt('month', Date::format("m") ,'get');
 			$this->month    = (strlen($this->month) == 1) ? '0'.$this->month : $this->month;
-			$this->year     = Request::getInt('year', JFactory::getDate()->format("Y"), 'get');
+			$this->year     = Request::getInt('year', Date::format("Y"), 'get');
 			$this->calendar = Request::getInt('calendar', 0, 'get');
 
 			// make sure month is always two digets
@@ -1089,7 +1089,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//make sure registration is open
-		$now        = JFactory::getDate()->toUnix();
+		$now        = Date::toUnix();
 		$registerby = JFactory::getDate($view->event->get('registerby'))->toUnix();
 
 		if ($registerby >= $now)
@@ -1880,7 +1880,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=".$this->group->get('gidNumber')."
 				AND state=1
-				AND (publish_up >= '".Date::toSql()."' OR publish_down >='".Date::toSql()."') AND publish_up <= '".JFactory::getDate()->format("Y-m-t 23:59:59")."'";
+				AND (publish_up >= '".Date::toSql()."' OR publish_down >='".Date::toSql()."') AND publish_up <= '".Date::format("Y-m-t 23:59:59")."'";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}

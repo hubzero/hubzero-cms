@@ -386,7 +386,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			|| $view->filters['enduploaddate'] == '0000-00-00 00:00:00'
 			|| $view->filters['enduploaddate'] == '')
 		{
-			$view->filters['enduploaddate'] = JFactory::getDate()->modify('+1 DAY')->format('Y-m-d 00:00:00');
+			$view->filters['enduploaddate'] = Date::modify('+1 DAY')->format('Y-m-d 00:00:00');
 		}
 		else
 		{

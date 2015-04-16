@@ -147,7 +147,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$rparams = new JRegistry($this->member->get('params'));
 
 		//get profile plugin's params
-		//$plugin = JPluginHelper::getPlugin("members", "profile");
+		//$plugin = Plugin::byType("members", "profile");
 		$params = $this->params; //new JRegistry($plugin->params);
 		$params->merge($rparams);
 

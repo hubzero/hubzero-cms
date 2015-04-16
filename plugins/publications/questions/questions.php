@@ -56,7 +56,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		if ($publication->_category->_params->get('plg_questions') && $extended)
 		{
 			$areas = array(
-				'questions' => JText::_('PLG_PUBLICATION_QUESTIONS')
+				'questions' => Lang::txt('PLG_PUBLICATION_QUESTIONS')
 			);
 		}
 		else
@@ -104,7 +104,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$this->option   		= $option;
 
 		// Get a needed library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this publication
 		$this->a = new \Components\Answers\Tables\Question($this->database);
@@ -219,17 +219,15 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Login required
 		if (User::isGuest())
 		{
-			$app = JFactory::getApplication();
-			$app->redirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
-				JText::_('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
+				Lang::txt('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
 				'warning'
 			);
 			return;
 		}
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_answers');
+		Lang::load('com_answers');
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -259,9 +257,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$view->funds = 0;
 		if ($view->banking)
 		{
-			$juser = JFactory::getUser();
-
-			$BTL = new \Hubzero\Bank\Teller($this->database, $juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
@@ -304,13 +300,13 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			// Is it an actual number?
 			if (!is_numeric($reward))
 			{
-				JError::raiseError(500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
+				App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 				return;
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds)
 			{
-				JError::raiseError(500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS'));
+				App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 				return;
 			}
 		}
@@ -334,7 +330,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		/* Make tags optional
 		if (!$tags)
 		{
-			$this->setError(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
+			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			return $this->_new($row);
 		}
 		*/
@@ -352,7 +348,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		if ($reward && $this->banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
-			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
+			$BTL->hold($reward, Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
 		}
 
 		// Add the tags

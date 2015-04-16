@@ -106,7 +106,7 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
-		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>" data-update="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . JUtility::getToken() . '=1'); ?>" class="view-<?php echo $viewas; ?>">
+		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-update="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . JUtility::getToken() . '=1'); ?>" class="view-<?php echo $viewas; ?>">
 			<?php if ($this->params->get('access-create-item') && !Request::getInt('no_html', 0)) { ?>
 				<div class="post new-post" id="post_0">
 					<a class="icon-add add" href="<?php echo Route::url($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">

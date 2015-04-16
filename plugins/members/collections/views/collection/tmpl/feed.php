@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
-$this->juser = JFactory::getUser();
-
 $base = $this->member->getLink() . '&active=' . $this->name;
 
 $this->css()
@@ -66,7 +63,7 @@ $this->css()
 	?>
 
 <?php if ($this->rows->total() > 0) { ?>
-	<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
+	<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>">
 		<?php
 		foreach ($this->rows as $row)
 		{
@@ -102,8 +99,8 @@ $this->css()
 							</span>
 						</p>
 						<div class="actions">
-							<?php if (!$this->juser->get('guest')) { ?>
-								<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+							<?php if (!User::isGuest()) { ?>
+								<?php if ($item->get('created_by') == User::get('id')) { ?>
 									<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
 									</a>
@@ -118,7 +115,7 @@ $this->css()
 									<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 									</a>
-								<?php if ($row->get('original') && $item->get('created_by') == $this->juser->get('id')) { ?>
+								<?php if ($row->get('original') && $item->get('created_by') == User::get('id')) { ?>
 									<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
 									</a>

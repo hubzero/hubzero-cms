@@ -1160,7 +1160,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$mastertype = in_array($base, $choices) ? $base : 'files';
 
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Need to provision a project
 		if (!is_object($this->_project) or !$this->_project->id)
@@ -1171,7 +1171,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->_project->title 	 			= $this->_project->alias;
 			$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
 			$this->_project->state   			= 1;
-			$this->_project->created 			= JFactory::getDate()->toSql();
+			$this->_project->created 			= Date::toSql();
 			$this->_project->created_by_user 	= $this->_uid;
 			$this->_project->owned_by_user 		= $this->_uid;
 			$this->_project->setup_stage 		= 3;
@@ -2381,7 +2381,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$sparams = Component::params('com_support');
 
 				$row = new \Components\Support\Tables\Ticket( $this->_database );
-				$row->created = JFactory::getDate()->toSql();
+				$row->created = Date::toSql();
 				$row->login = $juser->get('username');
 				$row->email = $juser->get('email');
 				$row->name = $juser->get('name');
@@ -2586,7 +2586,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load default version
 		$row->loadVersion($pid, 'default');
 		$oldid = $row->id;
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Can't start a new version if there is a finalized or submitted draft
 		if ($row->state == 4 || $row->state == 5 || $row->state == 7)
@@ -3080,7 +3080,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$layout 	= $section;
 		$newpub 	= 0;
 		$newversion = 0;
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Check that version exists
 		$row = new \Components\Publications\Tables\Version( $this->_database );
@@ -3140,7 +3140,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_project->title 	 			= $this->_project->alias;
 					$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
 					$this->_project->state   			= 1;
-					$this->_project->created 			= JFactory::getDate()->toSql();
+					$this->_project->created 			= Date::toSql();
 					$this->_project->created_by_user 	= $this->_uid;
 					$this->_project->owned_by_user 		= $this->_uid;
 					$this->_project->setup_stage 		= 3;
@@ -3851,7 +3851,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$model->version->submitted = JFactory::getDate()->toSql();
+			$model->version->submitted = Date::toSql();
 
 			// Save submitter
 			$pa = new \Components\Publications\Tables\Author( $this->_database );
@@ -3888,11 +3888,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$model->version->rating 		= '0.0';
 			$model->version->published_up   = $this->_task == 'republish'
-				? $model->version->published_up : JFactory::getDate()->toSql();
+				? $model->version->published_up : Date::toSql();
 			$model->version->published_up  	= $pubdate ? $pubdate : $model->version->published_up;
 			$model->version->published_down = '';
 		}
-		$model->version->modified    = JFactory::getDate()->toSql();
+		$model->version->modified    = Date::toSql();
 		$model->version->modified_by = $this->_uid;
 
 		// Issue DOI
@@ -4159,9 +4159,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pubdate = JFactory::getDate(gmmktime(0, 0, 0, $month, $day, $year))->toSql();
 				}
 				// Prevent date before current
-				if ($pubdate < JFactory::getDate()->toSql())
+				if ($pubdate < Date::toSql())
 				{
-					$pubdate = JFactory::getDate()->toSql();
+					$pubdate = Date::toSql();
 				}
 			}
 		}
@@ -4248,8 +4248,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				if ($pub->state == 1)
 				{
 					// Unpublish published version
-					$row->published_down 	= JFactory::getDate()->toSql();
-					$row->modified 			= JFactory::getDate()->toSql();
+					$row->published_down 	= Date::toSql();
+					$row->modified 			= Date::toSql();
 					$row->modified_by 		= $this->_uid;
 					$row->state 			= 0;
 
@@ -4514,7 +4514,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$selections = $this->_parseSelections($selections);
 		$this->_processContent( $pid, $vid, $selections, $role );
 
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 		if ($objPA->loadAttachment( $vid, $item ))
@@ -4534,7 +4534,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$objPA->path 					= $item;
 			$objPA->type 					= $type;
 			$objPA->created_by 				= $this->_uid;
-			$objPA->created 				= JFactory::getDate()->toSql();
+			$objPA->created 				= Date::toSql();
 			$objPA->title 					= $title ? $title : '';
 			$objPA->role 					= $role;
 		}
@@ -4884,7 +4884,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _processAuthors( $vid, $selections )
 	{
 		$pAuthor = new \Components\Publications\Tables\Author( $this->_database );
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Get original authors
 		$oauthors = $pAuthor->getAuthors($vid, 2);
@@ -5179,7 +5179,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->_processAuthors($vid, $selections);
 		}
 
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 		if (!$vid)
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
@@ -5245,7 +5245,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$objO->projectid = $this->_project->id;
 				$objO->userid = $uid;
 				$objO->status = $uid ? 1 : 0;
-				$objO->added = JFactory::getDate()->toSql();
+				$objO->added = Date::toSql();
 				$objO->role = 2;
 				$objO->invited_email = $email;
 				$objO->invited_name = $name;
@@ -5515,7 +5515,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$pAudience->created = JFactory::getDate()->toSql();
+		$pAudience->created = Date::toSql();
 		$pAudience->created_by = $this->_uid;
 
 		if (!$pAudience->store())
@@ -5604,7 +5604,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _processGallery( $pid, $vid, $selections )
 	{
 		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		// Get original screenshots
 		$originals = $pScreenshot->getScreenshots( $vid );
@@ -6032,7 +6032,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$selections = Request::getVar( 'selections', '', 'post' );
 		$selections = $this->_parseSelections($selections);
 		$this->_processGallery( $pid, $vid, $selections );
-		$now = JFactory::getDate()->toSql();
+		$now = Date::toSql();
 
 		if (!$vid || !$pid)
 		{
@@ -7122,7 +7122,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				$readme .= str_replace($mFolder . DS, '', $rmFile) . "\n ";
 				$readme .= '#####################################' . "\n ";
-				$readme .= 'Archival package produced ' . JFactory::getDate()->toSql();
+				$readme .= 'Archival package produced ' . Date::toSql();
 
 				$handle  = fopen($tmpReadme, 'w');
 				fwrite($handle, $readme);

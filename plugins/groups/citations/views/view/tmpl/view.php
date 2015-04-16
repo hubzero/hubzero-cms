@@ -169,7 +169,7 @@ $area = Request::getVar('area', 'about');
 						{
 							if (is_numeric($matches[1]))
 							{
-								$user = JUser::getInstance($matches[1]);
+								$user = User::getInstance($matches[1]);
 								if (is_object($user))
 								{
 									$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
@@ -682,7 +682,7 @@ $area = Request::getVar('area', 'about');
 	//get hub url and name
 	$jconfig = JFactory::getConfig();
 	$hubName = $jconfig->getValue('config.sitename');
-	$hubUrl = rtrim(JURI::base(), '/');
+	$hubUrl = rtrim(Request::base(), '/');
 
 	//get the type of resource for coins
 	switch (strtolower($type[0]['type_title']))

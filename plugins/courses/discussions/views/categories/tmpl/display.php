@@ -79,7 +79,7 @@ $base = $this->offering->link() . '&active=forum';
 						$name = Lang::txt('Anonymous');
 						if (!$row->anonymous)
 						{
-							$creator = JUser::getInstance($row->created_by);
+							$creator = User::getInstance($row->created_by);
 							if (is_object($creator))
 							{
 								$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
@@ -124,7 +124,7 @@ $base = $this->offering->link() . '&active=forum';
 									if (is_object($lastpost))
 									{
 										$lname = Lang::txt('Anonymous');
-										$lastposter = JUser::getInstance($lastpost->created_by);
+										$lastposter = User::getInstance($lastpost->created_by);
 										if (is_object($lastposter))
 										{
 											$lname = '<a href="' . Route::url('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';

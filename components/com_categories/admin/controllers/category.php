@@ -40,7 +40,7 @@ class CategoriesControllerCategory extends JControllerForm
 	{
 		parent::__construct($config);
 
-		// Guess the JText message prefix. Defaults to the option.
+		// Guess the Lang message prefix. Defaults to the option.
 		if (empty($this->extension))
 		{
 			$this->extension = Request::getCmd('extension', 'com_content');

@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p>Drag files here to upload</p>
 		<p>or</p>
 		<div class="aux-attachments">
-			<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" class="aux-attachments-form attach-link">
+			<form action="<?php echo Request::base(true); ?>/api/courses/asset/new" class="aux-attachments-form attach-link">
 				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
 				<textarea class="input-content" name="content" placeholder="" rows="5"></textarea>
 				<input class="input-type" type="hidden" name="type" value="link" />
@@ -50,14 +50,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
 				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id'); ?>" />
-				<a href="<?php echo JURI::base(true); ?>/help/courses/builder" target="_blank" class="help-info">help</a>
+				<a href="<?php echo Request::base(true); ?>/help/courses/builder" target="_blank" class="help-info">help</a>
 			</form>
 			<a href="#" title="Attach a link" class="attach-link"></a>
 			<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>
 			<a href="#" title="Include a wiki page" class="attach-wiki"></a>
 			<a href="#" title="Browse for files" class="browse-files"></a>
 		</div>
-		<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" class="uploadfiles-form">
+		<form action="<?php echo Request::base(true); ?>/api/courses/asset/new" class="uploadfiles-form">
 			<input type="file" name="files[]" class="fileupload" multiple />
 			<input type="hidden" name="course_id" value="<?= $this->course->get('id'); ?>" />
 			<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
@@ -67,7 +67,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="asset-group-item-container">
 		<div class="asset-group-item-title title toggle-editable"><?= $this->ag->get('title') ?></div>
 		<div class="title-edit">
-			<form action="<?php echo JURI::base(true); ?>/api/courses/assetgroup/save" class="assetgroup-title-form">
+			<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save" class="assetgroup-title-form">
 				<input class="title-text" name="title" type="text" value="<?= $this->ag->get('title'); ?>" />
 				<input class="assetgroup-title-save" type="submit" value="Save" />
 				<input class="assetgroup-title-reset" type="reset" value="Cancel" />

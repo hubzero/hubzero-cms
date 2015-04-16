@@ -35,7 +35,7 @@ $this->js();
 ?>
 <div id="recommendations">
 	<h3><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_HEADER'); ?></h3>
-	<div class="subject" id="recommendations-subject" data-base="<?php echo JURI::base(true); ?>">
+	<div class="subject" id="recommendations-subject" data-base="<?php echo Request::base(true); ?>">
 		<?php if ($this->results) { ?>
 			<ul>
 			<?php foreach ($this->results as $line) { ?>
@@ -49,7 +49,7 @@ $this->js();
 		<?php } ?>
 
 		<p id="credits">
-			<a href="<?php echo JURI::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a>
+			<a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a>
 		</p>
 	</div>
 	<div class="aside">

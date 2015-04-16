@@ -399,7 +399,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 					if ($asker)
 					{
-						$quser = JUser::getInstance($asker);
+						$quser = User::getInstance($asker);
 						if (is_object($quser))
 						{
 							$asker_id = $quser->get('id');

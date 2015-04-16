@@ -32,17 +32,18 @@ namespace Members\Models\Import;
 
 use Exception;
 use stdClass;
-use JText;
+use Component;
+use Request;
+use Config;
+use Lang;
+use User;
+use Date;
 use JFactory;
-use JUser;
-use JRoute;
-use JURI;
 use JParameter;
-use JComponentHelper;
 
-include_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php';
-include_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php';
-include_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
+include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php';
+include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php';
+include_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
 
 /**
  * Member Record importer
@@ -73,7 +74,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		// Core objects
 		$this->_database = JFactory::getDBO();
-		$this->_user     = JFactory::getUser();
+		$this->_user     = User::getRoot();
 
 		// Create objects
 		$this->record = new stdClass;
@@ -330,7 +331,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				$newUsertype = $db->loadResult();
 			}
 
-			$date = JFactory::getDate();
+			$date = Date::of('now');
 			$user = User::getRoot();
 			$user->set('username', $this->_profile->get('username'));
 			$user->set('name', $this->_profile->get('name'));
@@ -375,7 +376,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if (!$this->_profile->store())
 		{
-			throw new Exception(\Lang::txt('Unable to save the entry data.'));
+			throw new Exception(Lang::txt('Unable to save the entry data.'));
 		}
 
 		if ($password = $this->raw->password)
@@ -395,23 +396,23 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		if ($isNew && $this->_options['emailnew'] == 1)
 		{
 			$eview = new \Hubzero\Component\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'site',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'confirm'
 			));
 			$eview->option       = 'com_members';
 			$eview->controller   = 'register';
-			$eview->sitename     = \Config::get('sitename');
+			$eview->sitename     = Config::get('sitename');
 			$eview->login        = $this->_profile->get('username');
 			$eview->name         = $this->_profile->get('name');
 			$eview->registerDate = $this->_profile->get('registerDate');
 			$eview->confirm      = $this->_profile->get('emailConfirmed');
-			$eview->baseURL      = \Request::base();
+			$eview->baseURL      = Request::base();
 
 			$msg = new \Hubzero\Mail\Message();
-			$msg->setSubject(\Config::get('sitename') . ' ' . \Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
+			$msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
 			    ->addTo($this->_profile->get('email'))
-			    ->addFrom(\Config::get('mailfrom'), \Config::get('sitename') . ' Administrator')
+			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', 'com_members');
 
 			$message = $eview->loadTemplate();
@@ -427,7 +428,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			if (!$msg->send())
 			{
-				array_push($this->record->errors, \Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
+				array_push($this->record->errors, Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
 			}
 		}
 	}

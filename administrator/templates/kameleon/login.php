@@ -31,17 +31,15 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
-
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/login.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . DS . 'css' . DS . 'login.css'));
 // Load theme
 if ($theme = $this->params->get('theme'))
 {
 	if ($theme == 'custom')
 	{
 		$color = $this->params->get('color');
-		$this->addStyleDeclaration(include_once(__DIR__ . '/css/themes/custom.php'));
+		$this->addStyleDeclaration(include_once(__DIR__ . DS . 'css' . DS . 'themes' . DS . 'custom.php'));
 	}
 	else if ($theme != 'gray')
 	{
@@ -105,16 +103,16 @@ $browser = new \Hubzero\Browser\Detector();
 		<jdoc:include type="modules" name="notices" />
 
 		<header id="header" role="banner">
-			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
+			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::Get('sitename'); ?></a></h1>
 		</header><!-- / header -->
 
 		<div id="wrap">
 			<section id="component-content">
 				<div id="toolbar-box">
-					<h2><?php echo JText::_('TPL_KAMELEON_ADMIN_LOGIN'); ?></h2>
+					<h2><?php echo Lang::txt('TPL_KAMELEON_ADMIN_LOGIN'); ?></h2>
 				</div>
 
-				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
+				<section id="main" class="<?php echo Request::getCmd('option', ''); ?>">
 					<!-- Notifications begins -->
 					<jdoc:include type="message" />
 					<!-- Notifications ends -->
@@ -122,7 +120,7 @@ $browser = new \Hubzero\Browser\Detector();
 					<jdoc:include type="component" />
 					<!-- Content ends -->
 					<noscript>
-						<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 					</noscript>
 				</section><!-- / #main -->
 			</section><!-- / #component-content -->
@@ -134,7 +132,7 @@ $browser = new \Hubzero\Browser\Detector();
 			$m = 11;
 			if ($this->params->get('login') == 2)
 			{
-				$m = intval(JFactory::getDate()->format('m'));
+				$m = intval(Date::format('m'));
 			}
 			if ($m < 4 || $m > 10)
 			{

@@ -664,7 +664,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Delete the auth_link
 		if (!$hzal->delete())
 		{
-			JError::raiseError(500, Lang::txt('PLG_MEMBERS_UNLINK_FAILED'));
+			App::abort(500, Lang::txt('PLG_MEMBERS_UNLINK_FAILED'));
 			return;
 		}
 
@@ -739,7 +739,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// First, make sure webdav is there and that the necessary folders are there
 		if (!JFolder::exists($base))
 		{
-			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
+			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
 			return;
 		}
 		if (!JFolder::exists($homeDir))
@@ -749,7 +749,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
 			{
-				JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
+				App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
 				return;
 			}
 		}
@@ -758,7 +758,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
 			if (!JFolder::create($base . $user . $ssh, 0700))
 			{
-				JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
+				App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
 				return;
 			}
 		}
@@ -769,7 +769,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Write to the file
 		if (!JFile::write($base . $user . $ssh . $auth, $content) && $content != '')
 		{
-			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
+			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
 			return;
 		}
 
@@ -888,7 +888,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Save the token
 		if (!$db->query())
 		{
-			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_DATABASE_ERROR_TOKEN_NOT_SAVED'));
+			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_DATABASE_ERROR_TOKEN_NOT_SAVED'));
 			return;
 		}
 
@@ -919,7 +919,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$jconfig = JFactory::getConfig();
 
 		// Create the email with the new token
-		$url      = rtrim(JURI::base(),'/');
+		$url      = rtrim(Request::base(),'/');
 		$return   = $url . Route::url($this->member->getLink() . '&acitve=account&task=confirmtoken');
 		$subject  = 'Set local password, confirmation token for ' . $url;
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
@@ -934,7 +934,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Send the email
 		if (!$msg->send())
 		{
-			JError::raiseError(500, Lang::txt('PLG_MEMBERS_ACCOUNT_CONFIRMATION_EMAIL_NOT_SENT'));
+			App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_CONFIRMATION_EMAIL_NOT_SENT'));
 			return;
 		}
 

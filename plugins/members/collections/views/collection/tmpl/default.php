@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->juser = JFactory::getUser();
-
 $base = $this->member->getLink() . '&active=' . $this->name;
 
 if (!$this->collection->get('layout'))
@@ -78,7 +76,7 @@ $this->css()
 			<span class="posts count">
 				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_POSTS', $this->total); ?>
 			</span>
-			<?php if (!$this->juser->get('guest')) { ?>
+			<?php if (!User::isGuest()) { ?>
 				<?php if (!$this->params->get('access-create-item')) { ?>
 					<?php if ($this->collection->isFollowing()) { ?>
 						<a class="unfollow btn tooltips" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/unfollow'); ?>">
@@ -102,7 +100,7 @@ $this->css()
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
-		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>" data-update="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . JUtility::getToken() . '=1'); ?>" class="view-<?php echo $viewas; ?>">
+		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-update="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . JUtility::getToken() . '=1'); ?>" class="view-<?php echo $viewas; ?>">
 			<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 				<div class="post new-post" id="post_0">
 					<a class="icon-add add" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
@@ -117,7 +115,7 @@ $this->css()
 			?>
 			<div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>">
 				<div class="content">
-					<?php if (!$this->juser->get('guest') && $this->params->get('access-create-item') && $this->collection->get('sort') == 'ordering') { ?>
+					<?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->collection->get('sort') == 'ordering') { ?>
 						<div class="sort-handle tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRAB_TO_REORDER'); ?>"></div>
 					<?php } ?>
 					<?php
@@ -147,9 +145,9 @@ $this->css()
 							</span>
 						</p>
 						<div class="actions">
-							<?php if (!$this->juser->get('guest')) { ?>
-								<?php //if ($item->get('created_by') == $this->juser->get('id')) { ?>
-								<?php if ($row->get('created_by') == $this->juser->get('id')) { ?>
+							<?php if (!User::isGuest()) { ?>
+								<?php //if ($item->get('created_by') == User::get('id')) { ?>
+								<?php if ($row->get('created_by') == User::get('id')) { ?>
 									<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
 									</a>
@@ -164,11 +162,11 @@ $this->css()
 									<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 									</a>
-								<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+								<?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
 									<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
 									</a>
-								<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+								<?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
 									<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_REMOVE'); ?></span>
 									</a>

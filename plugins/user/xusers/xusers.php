@@ -75,7 +75,7 @@ class plgUserXusers extends JPlugin
 		{
 			// joomla user plugin hasn't run or something went very badly
 
-			$plugins = JPluginHelper::getPlugin('user');
+			$plugins = Plugin::byType('user');
 			$xuser_order = false;
 			$joomla_order = false;
 			$i = 0;
@@ -230,8 +230,8 @@ class plgUserXusers extends JPlugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
 			$quota = new UsersQuotas($this->database);
 			$quota->load(array('user_id'=>$juser->get('id')));
@@ -283,8 +283,7 @@ class plgUserXusers extends JPlugin
 			if (empty($hubHomeDir))
 			{
 				// try to deduce a viable home directory based on sitename or live_site
-				$jconfig = JFactory::getConfig();
-				$sitename = strtolower($jconfig->getValue('config.sitename'));
+				$sitename = strtolower(Config::get('sitename'));
 				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
 				$sitename = trim($sitename,'/ ');
 				$sitename_e = explode('.', $sitename, 2);
@@ -298,7 +297,7 @@ class plgUserXusers extends JPlugin
 				}
 				if (empty($sitename))
 				{
-					$sitename = strtolower(JURI::base());
+					$sitename = strtolower(Request::base());
 					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
 					$sitename = trim($sitename,'/ ');
 					$sitename_e = explode('.', $sitename, 2);

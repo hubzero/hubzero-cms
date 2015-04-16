@@ -153,7 +153,7 @@ class plgAuthenticationShibboleth extends JPlugin
 		static $inst = NULL;
 		if ($inst === NULL)
 		{
-			$plugin = JPluginHelper::getPlugin('authentication', 'shibboleth');
+			$plugin = Plugin::byType('authentication', 'shibboleth');
 			$inst = json_decode(json_decode($plugin->params)->institutions, TRUE);
 			$inst = $inst['activeIdps'];
 		}
@@ -194,23 +194,16 @@ class plgAuthenticationShibboleth extends JPlugin
 
 	private static function getLoginParams()
 	{
-		$service = rtrim(JURI::base(),'/');
+		$service = rtrim(Request::base(),'/');
 
 		if (empty($service))
 		{
 			$service = $_SERVER['HTTP_HOST'];
 		}
-		$juser = JFactory::getUser();
-		if (version_compare(JVERSION, '2.5', 'ge'))
-		{
-			$com_user = 'com_users';
-			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
-		}
-		else
-		{
-			$com_user = 'com_user';
-			$task     = ($juser->get('guest')) ? 'login' : 'link';
-		}
+
+		$com_user = 'com_users';
+		$task     = (User::isGuest()) ? 'user.login' : 'user.link';
+
 		return array($service, $com_user, $task);
 	}
 
@@ -223,15 +216,14 @@ class plgAuthenticationShibboleth extends JPlugin
 	public static function onGetSubsequentLoginDescription($return)
 	{
 		// look up id provider
-		if (isset($_COOKIE['shib-entity-id']) &&
-			($idp = self::getInstitutionByEntityId($_COOKIE['shib-entity-id'], 'label')))
-			{
+		if (isset($_COOKIE['shib-entity-id']) && ($idp = self::getInstitutionByEntityId($_COOKIE['shib-entity-id'], 'label')))
+		{
 			return '<input type="hidden" name="idp" value="'.$idp['id'].'" />Sign in with '.htmlentities($idp);
 		}
 
 		// if we couldn't figure out where they want to go to log in, we can't really help, so we redirect them with ?reset to get the full log-in provider list
 		list($service, $com_user, $task) = self::getLoginParams();
-		JFactory::getApplication()->redirect($service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 	}
 
 	private static function htmlify()
@@ -245,7 +237,7 @@ class plgAuthenticationShibboleth extends JPlugin
 	public static function onRenderOption($return, $title = 'With an affiliated institution:')
 	{
 		// hide the login box if the plugin is in "debug mode" and the special key is not set in the request
-		$params = new JParameter(JPluginHelper::getPlugin('authentication', 'shibboleth')->params);
+		$params = new JParameter(Plugin::byType('authentication', 'shibboleth')->params);
 		if (($testKey = $params->get('testkey', NULL)) && !array_key_exists($testKey, $_GET))
 		{
 			return '<span />';
@@ -285,7 +277,7 @@ class plgAuthenticationShibboleth extends JPlugin
 
 		// make a dropdown/button combo that (hopefully) gets prettied up client-side into a bootstrap dropdown
 		$html = array();
-		$html[] = '<form class="shibboleth account incommon-color" action="'.JRoute::_('index.php?option=com_users&view=login').'" method="get">';
+		$html[] = '<form class="shibboleth account incommon-color" action="'.Route::url('index.php?option=com_users&view=login').'" method="get">';
 		$html[] = '<div class="default-icon"></div>';
 		$html[] = '<select title="'.$a($title).'" name="idp">';
 		$html[] = '<option class="placeholder">'.$h($title).'</option>';
@@ -316,7 +308,7 @@ class plgAuthenticationShibboleth extends JPlugin
 		list($service) = self::getLoginParams();
 
 		$return = '/';
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
 
@@ -328,7 +320,7 @@ class plgAuthenticationShibboleth extends JPlugin
 			$return = '/' . ltrim($return, '/');
 		}
 
-		JFactory::getApplication()->redirect($return);
+		App::redirect($return);
 	}
 
 	/**
@@ -356,7 +348,7 @@ class plgAuthenticationShibboleth extends JPlugin
 	 */
 	public function login(&$credentials, &$options)
 	{
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
 			if (!JURI::isInternal($return))
@@ -541,7 +533,7 @@ class plgAuthenticationShibboleth extends JPlugin
 
 			if (!empty($hzal->user_id))
 			{
-				$user = JUser::getInstance($hzal->user_id); // Bring this in line with the rest of the system
+				$user = User::getInstance($hzal->user_id); // Bring this in line with the rest of the system
 
 				$response->username = $user->username;
 				$response->email    = $user->email;
@@ -589,9 +581,6 @@ class plgAuthenticationShibboleth extends JPlugin
 	 */
 	public function link($options = array())
 	{
-		$app = JFactory::getApplication();
-		$juser = JFactory::getUser();
-
 		if (($status = $this->status()))
 		{
 			$this->log('link', $status);
@@ -602,14 +591,16 @@ class plgAuthenticationShibboleth extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				$this->log('already linked', array('domain' => $hzad->id, 'username' => $username));
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					'This account appears to already be linked to a hub account',
-					'error');
+					'error'
+				);
 			}
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
-				$hzal->user_id = $juser->get('id');
+				$hzal->user_id = User::get('id');
 				$this->log('setting link', $hzal);
 				$hzal->update();
 			}
@@ -617,7 +608,7 @@ class plgAuthenticationShibboleth extends JPlugin
 		else
 		{
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 'There was an error linking your account, please try again later.', 'error');
+			App::redirect(Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'), 'There was an error linking your account, please try again later.', 'error');
 		}
 	}
 }

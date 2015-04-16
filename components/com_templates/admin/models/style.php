@@ -452,7 +452,7 @@ class TemplatesModelStyle extends JModelAdmin
 			$n += $db->getAffectedRows();
 			if ($n > 0) {
 				$app = JFactory::getApplication();
-				$app->enQueueMessage(JText::plural('COM_TEMPLATES_MENU_CHANGED', $n));
+				$app->enQueueMessage(Lang::txts('COM_TEMPLATES_MENU_CHANGED', $n));
 			}
 		}
 

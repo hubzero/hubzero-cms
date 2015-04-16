@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="text" name="name" />
 		</label>
 		<label>
-			<?php echo JTexT::_('Create in: '); ?>
+			<?php echo Lang::txt('Create in: '); ?>
 			<?php echo $this->folderList; ?>
 		</label>
 		<p class="controls">

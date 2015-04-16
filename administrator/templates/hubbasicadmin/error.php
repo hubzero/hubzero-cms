@@ -31,9 +31,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication();
-$doc = JFactory::getDocument();
-
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
@@ -48,13 +45,13 @@ $v = $browser->major();
 		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/template.css" rel="stylesheet" type="text/css" />
 		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/icons.css" rel="stylesheet" type="text/css" />
 		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css" rel="stylesheet" type="text/css" />
-<?php if ($this->direction == 'rtl') : ?>
-		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/rtl.css" rel="stylesheet" type="text/css" />
-<?php endif; ?>
+		<?php if ($this->direction == 'rtl') : ?>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/rtl.css" rel="stylesheet" type="text/css" />
+		<?php endif; ?>
 
-<?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
-		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
-<?php } ?>
+		<?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+		<?php } ?>
 		<!--[if IE 7]>
 			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
 			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
@@ -66,39 +63,34 @@ $v = $browser->major();
 	</head>
 	<body id="error-body">
 		<header id="header" role="banner">
-			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
+			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
 
 			<ul class="user-options">
 				<li>
 					<?php
-						//Display an harcoded logout
-						$task = JRequest::getCmd('task');
-						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu'))
-						{
-							$logoutLink = '';
-						}
-						else
-						{
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
-						}
-						$output = array();
-						// Print the Preview link to Main site.
-						//$juser = JFactory::getUser();
-						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
-						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
-						// Print the logout link.
-						$output[] = '<a class="logout" href="' . $logoutLink . '">' . JText::_('TPL_HUBBASICADMIN_LOGOUT') . '</a>';
-						// Reverse rendering order for rtl display.
-						if ($this->direction == "rtl") :
-							$output = array_reverse($output);
-						endif;
-						// Output the items.
-						foreach ($output as $item) :
+					//Display an harcoded logout
+					$task = Request::getCmd('task');
+
+					$logoutLink = Route::url('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+					if ($task == 'edit' || $task == 'editA' || Request::getInt('hidemainmenu')) :
+						$logoutLink = '';
+					endif;
+
+					$output = array();
+					$output[] = '<a class="logout" href="' . $logoutLink . '">' . Lang::txt('TPL_HUBBASICADMIN_LOGOUT') . '</a>';
+
+					// Reverse rendering order for rtl display.
+					if ($this->direction == 'rtl') :
+						$output = array_reverse($output);
+					endif;
+
+					// Output the items.
+					foreach ($output as $item) :
 						echo $item;
-						endforeach;
+					endforeach;
 					?>
 				</li>
-  			</ul>
+			</ul>
 
 			<div class="clear"></div>
 		</header><!-- / header -->
@@ -107,8 +99,8 @@ $v = $browser->major();
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
 					<ul id="menu">
-						<li><a href="index.php"><?php echo JText::_('Site') ?></a></li>
-						<li><a href="index.php?option=com_admin&amp;view=help"><?php echo JText::_('Help'); ?></a></li>
+						<li><a href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('Site') ?></a></li>
+						<li><a href="<?php echo Route::url('index.php?option=com_admin&view=help'); ?>"><?php echo Lang::txt('Help'); ?></a></li>
 					</ul>
 				</div>
 				<div class="clr"><!-- We need this for the drop downs --></div>
@@ -117,7 +109,7 @@ $v = $browser->major();
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<div class="header icon-48-alert">
-						<?php echo JText::_('An error has occurred'); ?>
+						<?php echo Lang::txt('An error has occurred'); ?>
 					</div>
 				</div><!-- / #toolbar-box -->
 
@@ -136,7 +128,7 @@ $v = $browser->major();
 				endif; ?>
 
 				<noscript>
-					<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
+					<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 				</noscript>
 			</section>
 		</div>
@@ -144,10 +136,10 @@ $v = $browser->major();
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<?php echo JText::sprintf('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . JURI::root() . '">'. $app->getCfg('sitename') . '</a>', date("Y")); ?>
+					<?php echo Lang::txt('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . Request::root() . '">'. Config::get('sitename') . '</a>', date("Y")); ?>
 				</p>
 				<p class="promotion">
-					<?php echo JText::sprintf('TPL_HUBBASICADMIN_POWERED_BY', \Hubzero\Version\Version::VERSION); ?>
+					<?php echo Lang::txt('TPL_HUBBASICADMIN_POWERED_BY', App::version()); ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->

@@ -35,15 +35,15 @@ $this->css();
 ?>
 <h3 class="section-header">
 	<a name="questions"></a>
-	<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
+	<?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
 </h3>
 <div class="container">
 	<p class="section-options">
-		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
+		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
 	</p>
 	<table class="questions entries">
 		<caption>
-			<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
+			<?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
 			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
 		</caption>
 		<tbody>
@@ -63,17 +63,17 @@ $this->css();
 			$i++;
 
 			// author name
-			$name = JText::_('PLG_PUBLICATION_QUESTIONS_ANONYMOUS');
+			$name = Lang::txt('PLG_PUBLICATION_QUESTIONS_ANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
-				$user = JUser::getInstance($row->get('created_by'));
+				$user = User::getInstance($row->get('created_by'));
 				if (is_object($user))
 				{
 					$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
 				}
 				else
 				{
-					$name = JText::_('PLG_PUBLICATION_QUESTIONS_UNKNOWN');
+					$name = Lang::txt('PLG_PUBLICATION_QUESTIONS_UNKNOWN');
 				}
 			}
 
@@ -89,19 +89,19 @@ $this->css();
 				<?php if (!$row->isReported()) { ?>
 					<a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a><br />
 				<?php } else { ?>
-					<span class="entry-title"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
+					<span class="entry-title"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
 				<?php } ?>
 					<span class="entry-details">
-						<?php echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span>
+						<?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span>
 						<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="entry-date-on">on</span>
 						<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-state">
-							<?php echo ($row->get('state') == 1) ? JText::_('Closed') : JText::_('Open'); ?>
+							<?php echo ($row->get('state') == 1) ? Lang::txt('Closed') : Lang::txt('Open'); ?>
 						</span>
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-comments">
-							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('There are %s responses to this question.', $row->get('rcount')); ?>">
+							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('There are %s responses to this question.', $row->get('rcount')); ?>">
 								<?php echo $row->get('rcount'); ?>
 							</a>
 						</span>
@@ -110,7 +110,7 @@ $this->css();
 			<?php if ($this->banking) { ?>
 				<td class="reward">
 				<?php if ($row->get('reward') == 1 && $this->banking) { ?>
-					<span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>">Points</a></span>
+					<span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>">Points</a></span>
 				<?php } ?>
 				</td>
 			<?php } ?>
@@ -132,7 +132,7 @@ $this->css();
 <?php } else { ?>
 			<tr class="noresults">
 				<td>
-					<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_NO_QUESTIONS_FOUND'); ?>
+					<?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NO_QUESTIONS_FOUND'); ?>
 				</td>
 			</tr>
 <?php } ?>

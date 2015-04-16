@@ -114,7 +114,7 @@ class MenusControllerItems extends JControllerAdmin
 				else {
 					$ntext = 'COM_MENUS_ITEMS_UNSET_HOME';
 				}
-				$this->setMessage(JText::plural($ntext, count($cid)));
+				$this->setMessage(Lang::txts($ntext, count($cid)));
 			}
 		}
 

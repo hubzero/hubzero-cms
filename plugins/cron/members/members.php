@@ -79,8 +79,8 @@ class plgCronMembers extends JPlugin
 		$action = 'royalty';
 
 		// What month/year is it now?
-		$curmonth = JFactory::getDate()->format("F");
-		$curyear = JFactory::getDate()->format("Y-m");
+		$curmonth = Date::format("F");
+		$curyear = Date::format("Y-m");
 		$ref = strtotime($curyear);
 
 		$this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
@@ -160,7 +160,7 @@ class plgCronMembers extends JPlugin
 			$reviews = $RE->getReviews();
 
 			// do we have ratings on reviews enabled?
-			$param = JPluginHelper::getPlugin('resources', 'reviews');
+			$param = Plugin::byType('resources', 'reviews');
 			$plparam = new JRegistry($param->params);
 			$voting = $plparam->get('voting');
 

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = JURI::base();
+$base = Request::base();
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 {
 	$base = str_replace('http://', 'https://', $base);

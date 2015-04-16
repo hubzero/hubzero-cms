@@ -52,7 +52,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 	public function &onPublicationSubAreas( $publication )
 	{
 		$areas = array(
-			'related' => JText::_('PLG_PUBLICATION_RELATED')
+			'related' => Lang::txt('PLG_PUBLICATION_RELATED')
 		);
 		return $areas;
 	}
@@ -83,17 +83,16 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				OR v.pagetext LIKE '%[[Resource(".$publication->id.",%' OR v.pagetext LIKE '%[/Resource/".$publication->id." %'";
 
 		$sql1 .= ($publication->alias) ? " OR v.pagetext LIKE '%[[Resource(".$publication->alias."%') " : ") ";
-		$juser = JFactory::getUser();
 
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			if ($juser->authorize('com_publications', 'manage') || $juser->authorize('com_groups', 'manage'))
+			if (User::authorize('com_publications', 'manage') || User::authorize('com_groups', 'manage'))
 			{
 				$sql1 .= '';
 			}
 			else
 			{
-				$ugs = \Hubzero\User\Helper::getGroups( $juser->get('id'), 'members' );
+				$ugs = \Hubzero\User\Helper::getGroups( User::get('id'), 'members' );
 				$groups = array();
 				if ($ugs && count($ugs) > 0)
 				{
@@ -104,7 +103,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				}
 				$g = "'".implode("','",$groups)."'";
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='".$juser->get('id')."'))) ";
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='".User::get('id')."'))) ";
 			}
 		}
 		else

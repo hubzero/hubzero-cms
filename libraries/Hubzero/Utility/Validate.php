@@ -700,12 +700,12 @@ class Validate
 		$className = ucwords($classPrefix) . 'Validation';
 		if (!class_exists($className))
 		{
-			trigger_error(JText::sprintf('Could not find %s class, unable to complete validation.', $className), E_USER_WARNING);
+			trigger_error(\Lang::txt('Could not find %s class, unable to complete validation.', $className), E_USER_WARNING);
 			return false;
 		}
 		if (!method_exists($className, $method))
 		{
-			trigger_error(JText::sprintf('Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
+			trigger_error(\Lang::txt('Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
 			return false;
 		}
 		$check = (array)$check;

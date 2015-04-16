@@ -55,7 +55,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	public static function render()
 	{
 		// Load language
-		JFactory::getLanguage()->load('plg_time_summary', JPATH_ADMINISTRATOR);
+		Lang::load('plg_time_summary', JPATH_ADMINISTRATOR);
 
 		// Create view
 		$view = new \Hubzero\Plugin\View(
@@ -70,12 +70,12 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		$permissions   = new Permissions('com_time');
 		$view->hub_id  = Request::getInt('hub_id', null);
 		$view->task_id = Request::getInt('task_id', null);
-		$view->start   = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$view->end     = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$view->start   = Request::getCmd('start_date', Date::of(strtotime('today - 1 month'))->format('Y-m-d'));
+		$view->end     = Request::getCmd('end_date', Date::format('Y-m-d'));
 		$view->hubs    = array();
 
-		$records = Record::where('date', '>=', JFactory::getDate($view->start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql())
-		                 ->where('date', '<=', JFactory::getDate($view->end   . ' 23:59:59', JFactory::getConfig()->get('offset'))->toSql());
+		$records = Record::where('date', '>=', Date::of($view->start . ' 00:00:00', Config::get('offset'))->toSql())
+		                 ->where('date', '<=', Date::of($view->end   . ' 23:59:59', Config::get('offset'))->toSql());
 
 		if (isset($view->task_id) && $view->task_id > 0)
 		{
@@ -148,8 +148,8 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		$permissions = new Permissions('com_time');
 		$hub_id      = Request::getInt('hub_id',  null);
 		$task_id     = Request::getInt('task_id', null);
-		$start       = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$end         = Request::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$start       = Request::getCmd('start_date', Date::of(strtotime('today - 1 month'))->format('Y-m-d'));
+		$end         = Request::getCmd('end_date', Date::format('Y-m-d'));
 
 		$tasks   = Task::blank();
 		$records = Record::all();
@@ -158,8 +158,8 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		                   ->select('task_id')
 		                   ->select($tasks->getQualifiedFieldName('name'))
 		                   ->join($tasks->getTableName(), 'task_id', $tasks->getQualifiedFieldName('id'))
-		                   ->where('date', '>=', JFactory::getDate($start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql())
-		                   ->where('date', '<=', JFactory::getDate($end   . ' 23:59:59', JFactory::getConfig()->get('offset'))->toSql())
+		                   ->where('date', '>=', Date::of($start . ' 00:00:00', Config::get('offset'))->toSql())
+		                   ->where('date', '<=', Date::of($end   . ' 23:59:59', Config::get('offset'))->toSql())
 		                   ->order('hours', 'asc')
 		                   ->group('task_id');
 

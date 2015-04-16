@@ -35,7 +35,7 @@ $this->css();
 ?>
 <h3 class="section-header">
 	<a name="questions"></a>
-	<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
+	<?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?>
 </h3>
 <div class="section">
 	<?php foreach ($this->getErrors() as $error) { ?>
@@ -43,7 +43,7 @@ $this->css();
 	<?php } ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
-			<legend><?php echo JText::_('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
+			<legend><?php echo Lang::txt('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->escape($this->publication->id); ?>" />
@@ -61,15 +61,13 @@ $this->css();
 
 			<label for="field-anonymous">
 				<input class="option" type="checkbox" name="question[anonymous]" id="field-anonymous" value="1" />
-				<?php echo JText::_('COM_ANSWERS_POST_QUESTION_ANON'); ?>
+				<?php echo Lang::txt('COM_ANSWERS_POST_QUESTION_ANON'); ?>
 			</label>
 
 			<label>
-				<?php echo JText::_('COM_ANSWERS_TAGS'); ?>:<br />
+				<?php echo Lang::txt('COM_ANSWERS_TAGS'); ?>:<br />
 				<?php
-				JPluginHelper::importPlugin('hubzero');
-
-				$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->row->get('tags', ''))));
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->row->get('tags', ''))));
 				$tf = implode("\n", $tf);
 
 				echo $tf ? $tf : '<textarea name="tags" id="actags" rows="6" cols="35">' . $this->escape($this->row->get('tags', '')) . '</textarea>';
@@ -77,12 +75,12 @@ $this->css();
 			</label>
 
 			<label for="field-subject">
-				<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
+				<?php echo Lang::txt('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED'); ?></span><br />
 				<input type="text" name="question[subject]" id="field-subject" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" />
 			</label>
 
 			<label for="field-question">
-				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
+				<?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
 				<?php
 				echo JFactory::getEditor()->display('question[question]', $this->escape(stripslashes($this->row->get('question'))), '', '', 50, 10, false, 'field-question');
 				?>
@@ -92,15 +90,15 @@ $this->css();
 			</label>
 		<?php if ($this->banking) { ?>
 			<label for="field-reward">
-				<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
+				<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
 				<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
-				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
+				<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 		<?php } else { ?>
 			<input type="hidden" name="question[reward]" value="0" />
 		<?php } ?>
 		</fieldset>
 
-		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" /></p>
+		<p class="submit"><input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" /></p>
 	</form>
 </div><!-- / .section -->

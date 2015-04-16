@@ -614,7 +614,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 						$author = Lang::txt('COM_KB_ANONYMOUS');
 						if (!$reply->anonymous)
 						{
-							$cuser  = JUser::getInstance($reply->created_by);
+							$cuser  = User::getInstance($reply->created_by);
 							$author = $cuser->get('name');
 						}
 
@@ -660,7 +660,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								$author = Lang::txt('COM_KB_ANONYMOUS');
 								if (!$response->anonymous)
 								{
-									$cuser  = JUser::getInstance($response->created_by);
+									$cuser  = User::getInstance($response->created_by);
 									$author = $cuser->get('name');
 								}
 

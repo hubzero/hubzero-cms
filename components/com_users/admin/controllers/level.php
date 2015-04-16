@@ -70,7 +70,7 @@ class UsersControllerLevel extends JControllerForm
 				JError::raiseWarning(500, $model->getError());
 			}
 			else {
-				$this->setMessage(JText::plural('COM_USERS_N_LEVELS_DELETED', count($ids)));
+				$this->setMessage(Lang::txts('COM_USERS_N_LEVELS_DELETED', count($ids)));
 			}
 		}
 

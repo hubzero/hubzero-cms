@@ -46,7 +46,7 @@ class MailtoController extends JControllerLegacy
 		$timeout = $session->get('com_mailto.formtime', 0);
 		if ($timeout == 0 || time() - $timeout < 20)
 		{
-			JError::raiseNotice(500, JText:: _ ('COM_MAILTO_EMAIL_NOT_SENT'));
+			JError::raiseNotice(500, Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
 			return $this->mailto();
 		}
 
@@ -60,7 +60,7 @@ class MailtoController extends JControllerLegacy
 		if (!$link || !JURI::isInternal($link))
 		{
 			//Non-local url...
-			JError::raiseNotice(500, JText:: _ ('COM_MAILTO_EMAIL_NOT_SENT'));
+			JError::raiseNotice(500, Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
 			return $this->mailto();
 		}
 

@@ -40,13 +40,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php
 			if ($this->count == 1)
 			{
-				echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_NUM_QUESTION', $this->count);
+				echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NUM_QUESTION', $this->count);
 			}
 			else
 			{
-				echo JText::sprintf('PLG_PUBLICATION_QUESTIONS_NUM_QUESTIONS', $this->count);
+				echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NUM_QUESTIONS', $this->count);
 			}
 		?>
 	</a>
-	(<a href="/publications/<?php echo $this->publication->id; ?>/questions/?action=new"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+	(<a href="<?php echo Request::base(true); ?>/publications/<?php echo $this->publication->id; ?>/questions/?action=new"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>

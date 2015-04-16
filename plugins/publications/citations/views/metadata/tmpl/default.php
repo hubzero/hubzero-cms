@@ -33,5 +33,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <p class="citation">
-	<a href="<?php echo $this->url; ?>"><?php echo JText::sprintf('PLG_PUBLICATION_CITATIONS_COUNT',count($this->citations)); ?></a>
+	<a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATION_CITATIONS_COUNT',count($this->citations)); ?></a>
 </p>

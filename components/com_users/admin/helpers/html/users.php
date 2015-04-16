@@ -98,7 +98,7 @@ class JHtmlUsers
 			return '';
 		}
 
-		$title = JText::plural('COM_USERS_N_USER_NOTES', $count);
+		$title = Lang::txts('COM_USERS_N_USER_NOTES', $count);
 
 		return '<a class="modal state notes"' .
 			' href="' . Route::url('index.php?option=com_users&view=notes&tmpl=component&layout=modal&u_id=' . (int) $userId) . '"' .

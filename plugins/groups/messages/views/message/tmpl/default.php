@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (substr($this->xmessage->type, -8) == '_message') {
-	$u = JUser::getInstance($this->xmessage->created_by);
+	$u = User::getInstance($this->xmessage->created_by);
 	$from = '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
 } else {
 	$from = 'System ('.$this->xmessage->component.')';

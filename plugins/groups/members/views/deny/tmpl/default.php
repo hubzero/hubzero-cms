@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $names = array();
 foreach ($this->users as $user)
 {
-	$u = JUser::getInstance($user);
+	$u = User::getInstance($user);
 	$names[] = $this->escape($u->get('name'));
 ?>
 			<input type="hidden" name="users[]" value="<?php echo $this->escape($user); ?>" />

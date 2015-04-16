@@ -386,7 +386,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if (!$objTD->loadTodo($this->model->get('id'), $todoid))
 		{
 			$objTD->created_by	= $this->_uid;
-			$objTD->created		= JFactory::getDate()->toSql();
+			$objTD->created		= Date::toSql();
 			$objTD->projectid	= $this->model->get('id');
 			$assigned			= $assigned;
 			$new				= 1;
@@ -511,7 +511,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				$objTD->state = $state;
 				if ($state == 1)
 				{
-					$objTD->closed = JFactory::getDate()->toSql();
+					$objTD->closed = Date::toSql();
 					$objTD->closed_by = $this->_uid;
 				}
 				// Store content
@@ -547,7 +547,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			{
 				$objTD				= new \Components\Projects\Tables\Todo( $this->_database );
 				$objTD->created_by	= $this->_uid;
-				$objTD->created		= JFactory::getDate()->toSql();
+				$objTD->created		= Date::toSql();
 				$objTD->projectid	= $this->model->get('id');
 				$objTD->content		= 'provisioned';
 				$objTD->state		= 2; // inactive
@@ -880,7 +880,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objC->tbl             = 'todo';
 			$objC->parent_activity = $parent_activity;
 			$objC->comment         = $comment;
-			$objC->created         = JFactory::getDate()->toSql();
+			$objC->created         = Date::toSql();
 			$objC->created_by      = $this->_uid;
 			if (!$objC->store())
 			{

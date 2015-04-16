@@ -38,7 +38,7 @@ $site 	 = Config::get('config.live_site')
 	? Config::get('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
 // Build our citation object
 $citation = '';

@@ -42,7 +42,7 @@ $assets = array();
 <div class="wiki-edit">
 	<h3>Create a wiki page</h3>
 
-	<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" method="POST" class="edit-form">
+	<form action="<?php echo Request::base(true); ?>/api/courses/asset/new" method="POST" class="edit-form">
 		<div class="title-error error">Please provide a title first</div>
 
 		<p>

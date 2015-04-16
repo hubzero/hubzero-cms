@@ -92,7 +92,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		$mediaUrl = $juri->base() . trim($sef, DS) . DS . $publication->version_id . DS . 'Image:master';
 
 		// Incoming action
-		$sharewith = JRequest::getVar('sharewith', '');
+		$sharewith = Request::getVar('sharewith', '');
 		if ($sharewith && $sharewith != 'email')
 		{
 			$this->share($sharewith, $url, $mediaUrl, $publication, $version);
@@ -155,7 +155,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
+				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_PUBLICATION_SHARE_VIEWING',
 						Config::get('config.sitename'),
 						stripslashes($publication->title) . ' ' . $url));
 				break;

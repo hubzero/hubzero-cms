@@ -45,7 +45,7 @@ foreach ($this->users as $user)
 	if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $user)) {
 		$names[] = $user;
 	} else {
-		$u = JUser::getInstance($user);
+		$u = User::getInstance($user);
 		$names[] = $this->escape($u->get('name'));
 	}
 ?>

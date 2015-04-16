@@ -127,7 +127,7 @@ $this->css()
 						//get who the message is from
 						if (substr($row->type, -8) == '_message')
 						{
-							$u = JUser::getInstance($row->created_by);
+							$u = User::getInstance($row->created_by);
 							$from = "<a href=\"" . Route::url('index.php?option='.$this->option.'&id='.$u->get('id')) . "\">" . $u->get("name") . "</a>";
 						}
 						else
