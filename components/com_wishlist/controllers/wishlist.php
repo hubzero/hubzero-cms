@@ -402,50 +402,55 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// Get list filters
 		$filters = self::getFilters($wish->get('admin'));
 
-		$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
+			// Update average value for importance (this is tricky MySQL)
+		//	if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
+		//	{
+				//$objR = new WishRank($this->database);
+				$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
 
-		// first consider votes by list owners
-		if ($votes && count($votes) > 0)
-		{
-			$imp 		= 0;
-			$divisor 	= 0;
-			$co_adv 	= 0.8;
-			$co_reg 	= 0.2;
-			$effort		= 0;
-			$counter    = 0;
-
-			foreach ($votes as $vote)
-			{
-				if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $wishlist->owners('advisory')))
+				// first consider votes by list owners
+				if ($votes && count($votes) > 0)
 				{
-					$imp += $vote->get('importance') * $co_adv;
-					$divisor += $co_adv;
-				}
-				else
-				{
-					$imp += $vote->get('importance') * $co_reg;
-					$divisor += $co_reg;
-				}
-				if ($vote->get('effort') != 6)
-				{
-					$effort += $vote->get('effort');
-					$counter++;
-				}
-			}
+					$imp 		= 0;
+					$divisor 	= 0;
+					$co_adv 	= 0.8;
+					$co_reg 	= 0.2;
+					$effort		= 0;
+					$counter    = 0;
 
-			// weighted average
-			$wish->set('average_imp', ($imp/$divisor));
+					foreach ($votes as $vote)
+					{
+						if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $wishlist->owners('advisory')))
+						{
+							$imp += $vote->get('importance') * $co_adv;
+							$divisor += $co_adv;
+						}
+						else
+						{
+							$imp += $vote->get('importance') * $co_reg;
+							$divisor += $co_reg;
+						}
+						if ($vote->get('effort') != 6)
+						{
+							$effort += $vote->get('effort');
+							$counter++;
+						}
+					}
 
-			// Set average effort
-			if ($counter)
-			{
-				$wish->set('average_effort', ($effort/$counter));
-			}
-			else
-			{
-				$wish->set('average_effort', 7);
-			}
-		}
+					// weighted average
+					$wish->set('average_imp', ($imp/$divisor));
+
+					// Set average effort
+					if ($counter)
+					{
+						$wish->set('average_effort', ($effort/$counter));
+					}
+					else
+					{
+						$wish->set('average_effort', 7);
+					}
+				}
+		//	}
 
 			// Build owners drop-down for assigning wishes
 			$wish->set('assignlist', $this->userSelect('assigned', $wishlist->owners('individuals'), $wish->get('assigned'), 1));
@@ -1051,63 +1056,59 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// Add/change the tags
 		$row->tag($tags);
 
-		// are email notifications enabled for this wishlist?
-		if ($wishlist->get('notify'))
+		// send message about a new wish
+		if (!$wishid)
 		{
-			// send message about a new wish
-			if (!$wishid)
+			// Build e-mail components
+			$jconfig = JFactory::getConfig();
+			$admin_email = $jconfig->getValue('config.mailfrom');
+
+			// Get author name
+			$name  = $row->proposer('name', JText::_('COM_WISHLIST_UNKNOWN'));
+			$login = $row->proposer('username', JText::_('COM_WISHLIST_UNKNOWN'));
+
+			if ($row->get('anonymous'))
 			{
-				// Build e-mail components
-				$jconfig = JFactory::getConfig();
-				$admin_email = $jconfig->getValue('config.mailfrom');
+				$name  = JText::_('COM_WISHLIST_ANONYMOUS');
+				$login = JText::_('COM_WISHLIST_ANONYMOUS');
+			}
 
-				// Get author name
-				$name  = $row->proposer('name', JText::_('COM_WISHLIST_UNKNOWN'));
-				$login = $row->proposer('username', JText::_('COM_WISHLIST_UNKNOWN'));
+			$this->_list_title = $wishlist->get('title');
 
-				if ($row->get('anonymous'))
-				{
-					$name  = JText::_('COM_WISHLIST_ANONYMOUS');
-					$login = JText::_('COM_WISHLIST_ANONYMOUS');
-				}
+			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '. $this->_list_title.' '.JText::_('from').' '.$name;
+			$from = array(
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+				'email' => $jconfig->getValue('config.mailfrom')
+			);
 
-				$this->_list_title = $wishlist->get('title');
+			$message = array();
 
-				$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '. $this->_list_title.' '.JText::_('from').' '.$name;
-				$from = array(
-					'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
-					'email' => $jconfig->getValue('config.mailfrom')
-				);
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'wish_plain'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->wish       = $row;
+			$eview->wishlist   = $wishlist;
+			$eview->action     = 'created';
 
-				$message = array();
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
-				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
-					'name'   => 'emails',
-					'layout' => 'wish_plain'
-				));
-				$eview->option     = $this->_option;
-				$eview->controller = $this->_controller;
-				$eview->wish       = $row;
-				$eview->wishlist   = $wishlist;
-				$eview->action     = 'created';
+			// HTML email
+			$eview->setLayout('wish_html');
 
-				$message['plaintext'] = $eview->loadTemplate();
-				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				// HTML email
-				$eview->setLayout('wish_html');
+			JPluginHelper::importPlugin('xmessage');
+			$dispatcher = JDispatcher::getInstance();
 
-				$message['multipart'] = $eview->loadTemplate();
-				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-
-				JPluginHelper::importPlugin('xmessage');
-				$dispatcher = JDispatcher::getInstance();
-
-				if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $wishlist->owners('individuals'), $this->_option)))
-				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
-				}
+			if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $wishlist->owners('individuals'), $this->_option)))
+			{
+				$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 			}
 		}
 
@@ -1543,6 +1544,16 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$wishid = JRequest::getInt('wish', 0);
 		$amount = JRequest::getInt('amount', 0);
 
+		// missing wish id
+		/*if (!$wishid or !$listid)
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+			return;
+		}*/
+
+		//$objWishlist = new Wishlist($this->database);
+		//$objWish = new Wish($this->database);
+
 		$wishlist = new WishlistModelWishlist(JRequest::getInt('wishlist', 0));
 		if (!$wishlist->exists())
 		{
@@ -1734,6 +1745,40 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		//$objWishlist = new Wishlist($this->database);
+		//$objWish = new Wish($this->database);
+		//$objR = new WishRank($this->database);
+
+		// figure list id
+		/*if ($category && $refid)
+		{
+			$listid = $objWishlist->get_wishlistID($refid, $category);
+		}
+
+		// cannot rank a wish if list/wish is not found
+		if (!$listid or !$wishid)
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
+			return;
+		}
+
+		$wishlist = $objWishlist->get_wishlist($listid);
+		$item = $objWish->get_wish($wishid, $juser->get('id'));
+
+		// cannot proceed if wish id is not found
+		if (!$wishlist or !$item)
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
+			return;
+		}
+
+		// is this wish on correct list?
+		if ($listid != $wishlist->id)
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
+			return;
+		}*/
+
 		// get vote
 		$effort     = JRequest::getVar('effort', '', 'post');
 		$importance = JRequest::getVar('importance', '', 'post');
@@ -1741,6 +1786,10 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// Login required
 		if ($this->juser->get('guest'))
 		{
+			// Set page title
+			/*$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
+						? 'tool "' . $wishlist->resource->alias . '"'
+						: $wishlist->title;*/
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 			{
 				$this->_list_title = '';
@@ -1753,6 +1802,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$this->loginTask();
 			return;
 		}
+
+		// get admin priviliges
+		//$this->authorize_admin($listid);
 
 		// Need to be list admin
 		if (!$wishlist->access('manage'))
@@ -1772,6 +1824,17 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// is the wish ranked already?
+		/*if (isset($item->ranked) && !$item->ranked)
+		{
+			$objR->wishid = $wishid;
+			$objR->userid = $juser->get('id');
+		}
+		else
+		{
+			// edit rating
+			$objR->load_vote($juser->get('id'), $wishid);
+		}*/
 		if (!$wish->rank($effort, $importance))
 		{
 			$this->setRedirect(

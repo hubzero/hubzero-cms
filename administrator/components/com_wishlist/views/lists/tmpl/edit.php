@@ -151,11 +151,6 @@ function submitbutton(pressbutton)
 				<input type="checkbox" name="fields[public]" id="field-public" value="1" <?php echo $this->row->public ? 'checked="checked"' : ''; ?> />
 				<label for="field-public"><?php echo JText::_('COM_WISHLIST_PUBLIC'); ?></label>
 			</div>
-
-			<div class="input-wrap">
-				<input type="checkbox" name="fields[notify]" id="field-notify" value="1" <?php echo $this->row->notify ? 'checked="checked"' : ''; ?> />
-				<label for="field-public"><?php echo JText::_('COM_WISHLIST_NOTIFY'); ?></label>
-			</div>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

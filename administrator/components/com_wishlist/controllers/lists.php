@@ -200,7 +200,6 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		}
 		$row->state  = (isset($fields['state']))  ? 1 : 0;
 		$row->public = (isset($fields['public'])) ? 1 : 0;
-		$row->notify = (isset($fields['notify'])) ? 1 : 0;
 
 		// Check content
 		if (!$row->check())
