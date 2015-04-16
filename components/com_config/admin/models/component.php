@@ -128,6 +128,7 @@ class Component extends \JModelForm
 
 		// Load common and local language files.
 		Lang::load($option, JPATH_BASE, null, false, true)
+		|| Lang::load($option, JPATH_SITE . "/components/$option/admin", null, false, true)
 		|| Lang::load($option, JPATH_BASE . "/components/$option", null, false, true);
 
 		return \Component::load($option);

@@ -123,7 +123,7 @@ class Component extends AdminController
 		$option = Request::getCmd('component');
 
 		// Check if the user is authorized to do this.
-		if (!$this->juser->authorise('core.admin', $option))
+		if (!User::authorise('core.admin', $option))
 		{
 			$this->setRedirect('index.php', \Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
