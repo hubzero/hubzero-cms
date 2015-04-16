@@ -136,7 +136,11 @@ $browser = new \Hubzero\Browser\Detector();
 			}
 			if ($m < 4 || $m > 10)
 			{
-				?><script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/login.js"></script><?php
+				?><script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/snow.js"></script><?php
+			}
+			if ($m > 3 && $m < 6)
+			{
+				?><script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/rain.js"></script><?php
 			}
 		}
 		?>
