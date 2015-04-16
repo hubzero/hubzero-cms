@@ -181,7 +181,7 @@ class plgSystemHubzero extends JPlugin
 
 		// all page loads set apache log data
 
-		if (php_sapi_name() == 'apache')
+		if (strpos(php_sapi_name(),'apache') !== false)
 		{
 			apache_note('jsession', $session->getId());
 
