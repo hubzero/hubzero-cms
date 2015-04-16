@@ -216,6 +216,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		$html = '';
 
+		// No suggestions for read-only users
+		if (!$model->access('content'))
+		{
+			return false;
+		}
+
 		$database = JFactory::getDBO();
 
 		$limit = $model->config()->get('sidebox_limit', 3);
