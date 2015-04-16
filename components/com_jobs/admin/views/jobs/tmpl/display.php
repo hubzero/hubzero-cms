@@ -84,13 +84,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_JOBS_COL_CODE'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_COL_CODE'); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_COMPANY', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_COMPANY', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_OWNER', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_ADDED', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_JOBS_COL_APPLICATIONS'); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_OWNER', 'adminposting', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_ADDED', 'added', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_JOBS_COL_APPLICATIONS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -173,7 +173,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo JHTML::_('grid.id', $i, $row->id, false, 'id'); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->code); ?>
 				</td>
 				<td>
@@ -187,7 +187,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span class="glyph company"><?php echo $this->escape($row->companyName); ?></span>, <br />
 					<span class="glyph location"><?php echo $this->escape($row->companyLocation); ?></span>
 				</td>
@@ -196,15 +196,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $alt; ?></span>
 					</span>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span <?php echo $adminclass; ?>>
 						<span><?php echo ($admin ? Lang::txt('COM_JOBS_ADMIN') : ''); ?></span>
 					</span>
 				</td>
-				<td>
+				<td class="priority-4">
 					<time datetime="<?php echo $row->added; ?>"><?php echo JHTML::_('date', $row->added, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $row->applications; ?>
 				</td>
 			</tr>
