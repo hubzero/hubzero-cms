@@ -34,6 +34,10 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Hubzero\Utility\String;
 
+/**
+ * Request handler replaces the default PHP global variables 
+ * and functions by an object-oriented layer.
+ */
 class Request extends BaseRequest
 {
 	/**
@@ -47,6 +51,68 @@ class Request extends BaseRequest
 		'cmd'   => '/[^A-Z0-9_\.-]/i',
 		'word'  => '/[^A-Z_]/i'
 	);
+
+	/**
+	 * Set a variable in one of the request variables.
+	 *
+	 * @param   string   $name       Name
+	 * @param   string   $value      Value
+	 * @param   string   $hash       Hash
+	 * @param   boolean  $overwrite  Boolean
+	 * @return  string   Previous value
+	 */
+	public function setVar($name, $value = null, $hash = 'method', $overwrite = true)
+	{
+		// If overwrite is true, makes sure the variable hasn't been set yet
+		if (!$overwrite && $this->has($name))
+		{
+			return $this->getVar($name);
+		}
+
+		// Get the request hash value
+		$hash = strtolower($hash);
+		if ($hash === 'method')
+		{
+			$hash = strtolower($this->getMethod());
+		}
+
+		switch ($hash)
+		{
+			case 'server':
+				$hash = 'server';
+			break;
+
+			case 'cookie':
+			case 'cookies':
+				$hash = 'cookies';
+			break;
+
+			case 'file':
+			case 'files':
+				$hash = 'files';
+			break;
+
+			case 'post':
+			case 'request':
+				$hash = 'request';
+			break;
+
+			case 'get':
+			case 'query':
+				$hash = 'query';
+			break;
+
+			case 'header':
+			case 'headers':
+				$hash = 'headers';
+			break;
+
+			default:
+			break;
+		}
+
+		return $this->$method->set($key, $default);
+	}
 
 	/**
 	 * Get var
