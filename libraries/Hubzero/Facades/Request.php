@@ -78,6 +78,16 @@ class Request extends \JRequest
 	}
 
 	/**
+	 * Returns the path.
+	 *
+	 * @return  string
+	 */
+	public static function path()
+	{
+		return \JURI::getInstance()->getPath();
+	}
+
+	/**
 	 * Temporary placeholder
 	 *
 	 * @return  void

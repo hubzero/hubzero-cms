@@ -330,7 +330,7 @@ class Request extends BaseRequest
 	{
 		$pattern = trim($this->getPathInfo(), '/');
 
-		return $pattern == '' ? '/' : $pattern;
+		return $pattern == '' ? '/' : '/' . $pattern;
 	}
 
 	/**
