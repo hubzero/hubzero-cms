@@ -96,7 +96,6 @@ class Tags extends \TagsHandler
 	 */
 	public function get_tags_with_objects($id=0, $category=0, $tag='')
 	{
-		$juser = \JFactory::getUser();
 		$now = Date::toSql();
 
 		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t,
@@ -129,7 +128,7 @@ class Tags extends \TagsHandler
 			$sql .= "AND r.category=" . $category . " ";
 		}
 
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$sql .= "AND (V.access=0 OR V.access=1 OR V.access=2) ";
 		}
@@ -205,7 +204,6 @@ class Tags extends \TagsHandler
 	 */
 	public function get_objects_on_tag($tag='', $id=0, $category=0, $sortby='title', $tag2='', $filterby=array())
 	{
-		$juser = \JFactory::getUser();
 		$now  = Date::toSql();
 
 		if ($tag || $tag2)
@@ -244,12 +242,12 @@ class Tags extends \TagsHandler
 
 		$query .= "WHERE V.state = 1 ";
 		if ($category) {
-			$query .= "AND C.category=".$category." ";
+			$query .= "AND C.category=" . $category . " ";
 		}
-		$query .= "AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '".$now."') ";
-		$query .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') AND ";
+		$query .= "AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
+		$query .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') AND ";
 
-		$query .= (!$juser->get('guest'))
+		$query .= (!User::isGuest())
 			   ? "(C.access=0 OR C.access=1) "
 			   : "(C.access=0) ";
 

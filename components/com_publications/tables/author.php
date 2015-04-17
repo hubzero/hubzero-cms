@@ -284,8 +284,6 @@ class Author extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
-
 		// Get name/org
 		$author = $this->getAuthorByUid( $vid, $by );
 
@@ -308,14 +306,14 @@ class Author extends \JTable
 		{
 			$this->bind( $result );
 			$this->modified 	= Date::toSql();
-			$this->modified_by 	= $juser->get('id');
+			$this->modified_by 	= User::get('id');
 		}
 		else
 		{
 			$this->publication_version_id 	= $vid;
 			$this->role 					= 'submitter';
 			$this->created 					= Date::toSql();
-			$this->created_by 				= $juser->get('id');
+			$this->created_by 				= User::get('id');
 			$this->ordering 				= 1;
 		}
 

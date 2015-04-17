@@ -496,9 +496,8 @@ class Publication extends Object
 		}
 		if (!isset($this->_owner))
 		{
-			$juser = \JFactory::getUser();
 			$objO = new \Components\Projects\Tables\Owner($this->_db);
-			$this->_owner = $objO->isOwner($juser->get('id'), $this->publication->project_id);
+			$this->_owner = $objO->isOwner(User::get('id'), $this->publication->project_id);
 		}
 
 		return $this->_owner;
@@ -676,10 +675,8 @@ class Publication extends Object
 	 */
 	private function _authorize()
 	{
-		$juser = \JFactory::getUser();
-
 		// NOT logged in
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			// If the resource is published and public
 			if ($this->published() && $this->publication->access == 0)
@@ -696,8 +693,8 @@ class Publication extends Object
 		}
 
 		// Check if they're a site admin (from Joomla)
-		$this->params->set('access-admin-publication', $juser->authorise('core.admin', null));
-		$this->params->set('access-manage-publication', $juser->authorise('core.manage', null));
+		$this->params->set('access-admin-publication', User::authorise('core.admin', null));
+		$this->params->set('access-manage-publication', User::authorise('core.manage', null));
 
 		if ($this->params->get('access-admin-publication')
 		 || $this->params->get('access-manage-publication'))
@@ -715,7 +712,7 @@ class Publication extends Object
 		}
 
 		// Get user groups
-		$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
+		$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 		$usersgroups = $this->getGroupProperty($ugs);
 
 		// If they're not an admin
@@ -756,7 +753,7 @@ class Publication extends Object
 		}
 
 		// Curator
-		if ($this->version->curator && $juser->get('id') == $this->version->curator)
+		if ($this->version->curator && User::get('id') == $this->version->curator)
 		{
 			$this->params->set('access-curator-publication', true);
 			$this->params->set('access-curator-assigned-publication', true);

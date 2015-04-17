@@ -254,8 +254,6 @@ class Authors extends Base
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
 
-		$juser = \JFactory::getUser();
-
 		if (!$pub->_authors)
 		{
 			return false;
@@ -274,7 +272,7 @@ class Authors extends Base
 			$pAuthor->project_owner_id 			= $author->project_owner_id;
 			$pAuthor->publication_version_id 	= $newVersion->id;
 			$pAuthor->created 					= Date::toSql();
-			$pAuthor->created_by 				= $juser->get('id');
+			$pAuthor->created_by 				= User::get('id');
 			if (!$pAuthor->createAssociation())
 			{
 				continue;

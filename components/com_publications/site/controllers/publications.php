@@ -1018,27 +1018,6 @@ class Publications extends SiteController
 		$this->publication = $publication;
 		$this->version     = $version;
 
-		// Check if the resource is for logged-in users only and the user is logged-in
-		if (($token = Request::getVar('token', '', 'get')))
-		{
-			$token = base64_decode($token);
-
-			jimport('joomla.utilities.simplecrypt');
-			$crypter = new \JSimpleCrypt();
-			$session_id = $crypter->decrypt($token);
-
-			$session = Hubzero\Session\Helper::getSession($session_id);
-
-			$juser = \JFactory::getUser($session->userid);
-			$juser->guest = 0;
-			$juser->id = $session->userid;
-			$juser->usertype = $session->usertype;
-		}
-		else
-		{
-			$juser = \JFactory::getUser();
-		}
-
 		// Check if user has access to content
 		if ($this->_checkRestrictions($publication, $version))
 		{
@@ -2149,7 +2128,7 @@ class Publications extends SiteController
 		$authorized = false;
 
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage'))
+		if (User::authorize($this->_option, 'manage'))
 		{
 			$authorized = 'admin';
 		}
@@ -2217,7 +2196,7 @@ class Publications extends SiteController
 		if (!User::isGuest())
 		{
 			// Check if they're a site admin (from Joomla)
-			if ($this->juser->authorize($this->_option, 'manage'))
+			if (User::authorize($this->_option, 'manage'))
 			{
 				return false;
 			}

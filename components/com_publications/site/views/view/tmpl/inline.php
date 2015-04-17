@@ -81,8 +81,8 @@ $docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx',
 $html5video = array("mp4","m4v","webm","ogv");
 
 $token = '';
-$juser = \JFactory::getUser();
-if (!$juser->get('guest'))
+
+if (!User::isGuest())
 {
 	$session = JFactory::getSession();
 

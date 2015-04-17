@@ -267,8 +267,7 @@ class Doi extends Object
 		// Use acting user info
 		if (empty($name))
 		{
-			$juser = \JFactory::getUser();
-			$name  = $juser->get('name');
+			$name  = User::get('name');
 		}
 
 		// Format name

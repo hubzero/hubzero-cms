@@ -212,14 +212,12 @@ class Tool extends Base
 	public function transferData( $elementparams, $elementId, $pub, $blockParams,
 			$attachments, $oldVersion, $newVersion)
 	{
-		$juser = \JFactory::getUser();
-
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
 			// Make new attachment record
 			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id') ))
 			{
 				continue;
 			}
@@ -336,14 +334,6 @@ class Tool extends Base
 			}
 		}
 
-		// Get actor
-		$juser = \JFactory::getUser();
-		$uid   = $juser->get('id');
-		if (!$uid)
-		{
-			return false;
-		}
-
 		// Counters
 		$i = 0;
 		$a = 0;
@@ -359,7 +349,7 @@ class Tool extends Base
 			$a++;
 			$ordering = $i + 1;
 
-			if ($this->addAttachment($identifier, $pub, $configs, $uid, $elementId, $element, $ordering))
+			if ($this->addAttachment($identifier, $pub, $configs, User::get('id'), $elementId, $element, $ordering))
 			{
 				$i++;
 			}
@@ -410,9 +400,6 @@ class Tool extends Base
 		$title 	= Request::getVar( 'title', '' );
 		$thumb 	= Request::getInt( 'makedefault', 0 );
 
-		$juser = \JFactory::getUser();
-		$uid   = $juser->get('id');
-
 		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
 
@@ -424,7 +411,7 @@ class Tool extends Base
 
 		// Update label
 		$row->title 		= $title;
-		$row->modified_by 	= $uid;
+		$row->modified_by 	= User::get('id');
 		$row->modified 		= Date::toSql();
 
 		// Update record

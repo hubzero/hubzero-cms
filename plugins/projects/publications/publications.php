@@ -2375,16 +2375,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					. DS . 'com_support' . DS . 'tables' . DS . 'ticket.php' );
 				include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
 					. DS . 'com_support' . DS . 'tables' . DS . 'comment.php' );
-				$juser = JFactory::getUser();
 
 				// Load the support config
 				$sparams = Component::params('com_support');
 
 				$row = new \Components\Support\Tables\Ticket( $this->_database );
 				$row->created = Date::toSql();
-				$row->login = $juser->get('username');
-				$row->email = $juser->get('email');
-				$row->name = $juser->get('name');
+				$row->login = User::get('username');
+				$row->email = User::get('email');
+				$row->name  = User::get('name');
 				$row->summary = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW');
 
 				$report 	 	= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE') . ': '. $l_title ."\r\n";
@@ -3003,13 +3002,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$paccess = new \Components\Publications\Tables\Access( $this->_database );
 		$view->access_groups = $paccess->getGroups($pub->version_id, $pub->id, $version, $cn);
 
-		// Get gallery images
-		/*
-		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
-		$gallery = $pScreenshot->getScreenshots( $pub->version_id );
-		$view->shots = \Components\Publications\Helpers\Html::showGallery($gallery, $gallery_path, $pub->id, $pub->version_id);
-		*/
-
 		// Get JS
 		\Hubzero\Document\Assets::addComponentScript('com_publications', 'assets/js/publications');
 
@@ -3018,7 +3010,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
 		$view->uid 			= $this->_uid;
-		$view->juser		= JFactory::getUser();
+		$view->juser		= User::getRoot();
 		$view->pid 			= $pid;
 		$view->version 		= $version;
 		$view->pub 			= $pub;
@@ -3867,8 +3859,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$apu = explode(',', $apu);
 				$apu = array_map('trim',$apu);
 
-				$juser = JFactory::getUser();
-				if (in_array($juser->get('username'),$apu))
+				if (in_array(User::get('username'),$apu))
 				{
 					// Set status to published
 					$state = 1;
@@ -6345,9 +6336,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function contribute()
 	{
-		// Get user info
-		$juser = JFactory::getUser();
-
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
@@ -6359,20 +6347,20 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option  		= $this->_option;
 		$view->pubconfig 	= $this->_pubconfig;
 		$view->outside  	= 1;
-		$view->juser   		= $juser;
+		$view->juser   		= User::getRoot();
 		$view->uid 			= $this->_uid;
 		$view->database		= $this->_database;
 
 		// Get publications
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$view->filters = array();
 
 			// Get user projects
 			$obj = new \Components\Projects\Tables\Project( $this->_database );
-			$view->filters['projects']  = $obj->getUserProjectIds($juser->get('id'), 0, 1);
+			$view->filters['projects']  = $obj->getUserProjectIds(User::get('id'), 0, 1);
 
-			$view->filters['mine']		= $juser->get('id');
+			$view->filters['mine']		= User::get('id');
 			$view->filters['dev']		= 1;
 			$view->filters['sortby']	= 'mine';
 			$view->filters['limit']  	= Request::getInt( 'limit', 3 );

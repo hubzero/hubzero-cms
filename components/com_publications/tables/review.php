@@ -143,8 +143,7 @@ class Review extends \JTable
 		}
 		if (!$uid)
 		{
-			$juser = \JFactory::getUser();
-			$uid = $juser->get('id');
+			$uid = User::get('id');
 		}
 
 		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "
@@ -181,8 +180,7 @@ class Review extends \JTable
 
 		if (!$uid)
 		{
-			$juser = \JFactory::getUser();
-			$uid = $juser->get('id');
+			$uid = User::get('id');
 		}
 
 		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "

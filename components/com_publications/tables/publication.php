@@ -119,7 +119,6 @@ class Publication extends \JTable
 	 */
 	public function buildQuery( $filters = array(), $usergroups = array(), $admin = false )
 	{
-		$juser 		= \JFactory::getUser();
 		$now 		= Date::toSql();
 		$groupby 	= ' GROUP BY C.id ';
 
@@ -193,11 +192,11 @@ class Publication extends \JTable
 			{
 				if ($filters['curator'] == 'owner')
 				{
-					$query .=" AND V.curator = " . $juser->get('id');
+					$query .=" AND V.curator = " . User::get('id');
 				}
 				if ($filters['curator'] == 'other')
 				{
-					$query .=" AND V.curator != " . $juser->get('id');
+					$query .=" AND V.curator != " . User::get('id');
 				}
 			}
 		}
@@ -263,7 +262,7 @@ class Publication extends \JTable
 			{
 				$query .= " AND (1=1";
 			}
-			$query .= " OR V.curator = " . $juser->get('id') . ") ";
+			$query .= " OR V.curator = " . User::get('id') . ") ";
 		}
 
 		if (isset($filters['minranking']) && $filters['minranking'] != '' && $filters['minranking'] > 0)

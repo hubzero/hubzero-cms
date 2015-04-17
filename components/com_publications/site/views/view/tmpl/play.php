@@ -91,8 +91,7 @@ if (is_file(PATH_CORE . $firstattach->url))
 	}
 	else if (in_array(strtolower($firstattach->ext), $files)) {
 		$token = '';
-		$juser = JFactory::getUser();
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$session = JFactory::getSession();
 

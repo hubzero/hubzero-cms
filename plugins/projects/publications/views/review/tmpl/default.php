@@ -195,7 +195,7 @@ $append .= '</span>';
 				if ($this->submitter->user_id != $this->uid)
 				{
 					$submitter  = '<select name="submitter">' . "\n";
-					$submitter .= '<option value="' . $this->uid . '" selected="selected">' . $this->juser->get('name')
+					$submitter .= '<option value="' . $this->uid . '" selected="selected">' . User::get('name')
 						. '</option>' . "\n";
 					$submitter .= '<option value="' . $this->submitter->user_id . '">' . $this->submitter->name . '</option>' . "\n";
 					$submitter .= '</select>';

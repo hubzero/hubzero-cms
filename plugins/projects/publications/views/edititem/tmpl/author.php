@@ -33,8 +33,7 @@ $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this
 // Get profile thumb image
 $profile = \Hubzero\User\Profile::getInstance($this->row->user_id);
 
-$juser = JFactory::getUser();
-$actor   = \Hubzero\User\Profile::getInstance($juser->get('id'));
+$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
 
 $thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 

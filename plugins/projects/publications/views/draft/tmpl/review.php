@@ -58,8 +58,6 @@ $complete = $this->pub->_curationModel->_progress->complete;
 $requireDoi   = isset($manifest->params->require_doi) ? $manifest->params->require_doi : 0;
 $showArchival = isset($manifest->params->show_archival) ? $manifest->params->show_archival : 0;
 
-$juser = JFactory::getUser();
-
 // Get hub config
 $juri 	 = JURI::getInstance();
 $site 	 = Config::get('config.live_site')
@@ -179,10 +177,10 @@ $termsUrl = $config->get('deposit_terms', '');
 						$submitter = $this->pub->_submitter->name;
 						$submitter.= $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : '';
 						$submitter.= '<input type="hidden" name="submitter" value="' . $this->pub->_submitter->user_id. '" />';
-						if ($this->pub->_submitter->user_id != $juser->get('id'))
+						if ($this->pub->_submitter->user_id != User::get('id'))
 						{
 							$submitter  = '<select name="submitter">' . "\n";
-							$submitter .= '<option value="' . $juser->get('id') . '" selected="selected">' . $juser->get('name')
+							$submitter .= '<option value="' . User::get('id') . '" selected="selected">' . User::get('name')
 								. '</option>' . "\n";
 							$submitter .= '<option value="' . $this->pub->_submitter->user_id . '">' . $this->pub->_submitter->name . '</option>' . "\n";
 							$submitter .= '</select>';
