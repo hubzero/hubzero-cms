@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 	<ul class="module-list-content">
 		<?php foreach ($this->modules as $module) : ?>
-			<?php $xml = JFactory::getXML(JPATH_ROOT . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml'); ?>
+			<?php $xml = JFactory::getXML(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml'); ?>
 			<li class="<?php echo $module->id; ?>">
 				<div class="module-title-bar">
 
@@ -74,7 +74,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<dd><?php
 						if (!strstr($xml->description, ' '))
 						{
-							JFactory::getLanguage()->load($module->module, JPATH_SITE);
+							Lang::load($module->module, PATH_CORE) ||
+							Lang::load($module->module, PATH_CORE . DS . 'modules' . DS . $module->module);
 							$xml->description = Lang::txt($xml->description);
 						}
 						echo $xml->description; ?></dd>

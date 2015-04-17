@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
-$this->juser = JFactory::getUser();
-
 $base = $this->member->getLink() . '&active=' . $this->name;
 
 $this->css()

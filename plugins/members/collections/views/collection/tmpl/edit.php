@@ -67,7 +67,7 @@ $this->css();
 
 		<label for="field-description">
 			<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
-			<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
+			<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'minimal no-footer')); ?>
 		</label>
 
 		<div class="grid">

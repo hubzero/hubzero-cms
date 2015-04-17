@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
-$this->juser = JFactory::getUser();
-
 $base = $this->member->getLink() . '&active=' . $this->name;
 
 $this->css();
@@ -48,7 +45,7 @@ $this->css();
 		<span class="posts count">
 			<?php echo Lang::txt('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
-<?php if (!$this->juser->get('guest')) { ?>
+<?php if (!User::isGuest()) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
 		<a class="add btn tooltips" title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
 			<?php echo Lang::txt('New post'); ?>
@@ -109,9 +106,9 @@ if ($this->rows->total() > 0)
 							<?php echo Lang::txt('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
-			<?php if (!$this->juser->get('guest')) { ?>
+			<?php if (!User::isGuest()) { ?>
 					<div class="actions">
-				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+				<?php if ($item->get('created_by') == User::get('id')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
 							<span><?php echo Lang::txt('Edit'); ?></span>
 						</a>
@@ -126,11 +123,11 @@ if ($this->rows->total() > 0)
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
 							<span><?php echo Lang::txt('Collect'); ?></span>
 						</a>
-				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+				<?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
 							<span><?php echo Lang::txt('Delete'); ?></span>
 						</a>
-				<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+				<?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
 						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
 							<span><?php echo Lang::txt('Remove'); ?></span>
 						</a>
@@ -151,8 +148,8 @@ if ($this->rows->total() > 0)
 						posted
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo Date::of('date', $item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -172,8 +169,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JDate::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

@@ -95,7 +95,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		$this->database = JFactory::getDBO();
 		$this->member = $member;
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 		$model = CoursesModelOffering::getInstance();
 		$roles = $model->roles();
 
@@ -116,29 +116,20 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		// Build the HTML
 		if ($returnhtml)
 		{
-			$this->app = JFactory::getApplication();
-			$this->jconfig = JFactory::getConfig();
-
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'display'
-				)
-			);
+			$view = $this->view('default', 'display');
 			$view->option   = $option;
 			$view->member   = $member;
 			$view->roles    = $roles;
 			$view->hasRoles = $hasRoles;
 
 			$view->filters = array();
-			$view->filters['limit'] = $this->app->getUserStateFromRequest(
+			$view->filters['limit'] = Request::getState(
 				$option . '.plugin.courses.limit',
 				'limit',
-				$this->jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			);
-			$view->filters['start'] = $this->app->getUserStateFromRequest(
+			$view->filters['start'] = Request::getState(
 				$option . '.plugin.courses.limitstart',
 				'limitstart',
 				0,
@@ -202,12 +193,9 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				$view->filters['limit']
 			);
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getError() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			$arr['html'] = $view->loadTemplate();
@@ -469,7 +457,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
 
 		// Instantiate some needed objects
 		$tbl = new \Components\Courses\Tables\Course($database);

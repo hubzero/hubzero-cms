@@ -37,9 +37,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="index.php" method="post">
 		<fieldset class="adminform">
 			<div class="input-wrap">
-				<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?> <span class="required">required</span></label><br />
+				<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?> <span class="required"><?php echo Lang::txt('required'); ?></span></label><br />
 				<select name="module">
-					<option value="">- Select Module to Push &mdash;</option>
+					<option value=""><?php echo Lang::txt('- Select Module to Push -'); ?></option>
 					<?php foreach ($this->modules as $module) : ?>
 						<option value="<?php echo $module->id; ?>"><?php echo $module->title; ?></option>
 					<?php endforeach; ?>
@@ -59,8 +59,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_POSITION'); ?></label><br />
 					<select name="position">
-						<option value="first">First</option>
-						<option value="last">Last</option>
+						<option value="first"><?php echo Lang::txt('First'); ?></option>
+						<option value="last"><?php echo Lang::txt('Last'); ?></option>
 					</select>
 				</div>
 			</div>

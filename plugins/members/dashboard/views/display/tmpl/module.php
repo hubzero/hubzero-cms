@@ -34,11 +34,11 @@ $params = new JRegistry($this->module->params);
 
 // load module params fields
 $fields = new JForm($this->module->module);
-$fields->loadFile(JPATH_ROOT . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml', true, 'config/fields');
+$fields->loadFile(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml', true, 'config/fields');
 
 // This is done first as the 'renderModule' method loads the language file
 // which is needed when rendering the params below
-$module = JModuleHelper::renderModule($this->module, array('style' => 'none'));
+$module = Module::render($this->module, array('style' => 'none'));
 
 // create settings sub view
 $view = $this->view('parameters');

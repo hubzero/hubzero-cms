@@ -59,7 +59,7 @@ if (!$dir)
 	$dir = 'tmp' . time(); // . rand(0, 100);
 }
 
-$jbase = rtrim(JURI::getInstance()->base(true), '/');
+$jbase = rtrim(Request::base(true), '/');
 
 $this->css()
      ->js();
@@ -86,7 +86,7 @@ $this->css()
 								</noscript>
 							</div>
 							<script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script>
-							<script src="<?php echo $jbase; ?>/plugins/members/collections/fileupload.js"></script>
+							<script src="<?php echo $jbase; ?>/plugins/members/collections/assets/js/fileupload.js"></script>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">
 							<div id="link-adder" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-txt-delete="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo Lang::txt('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
@@ -160,9 +160,9 @@ $this->css()
 				<label for="field_description">
 					<?php echo Lang::txt('Description'); ?>
 					<?php if ($this->entry->get('original')) { ?>
-						<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 					<?php } else { ?>
-						<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 					<?php } ?>
 				</label>
 				<?php if ($this->task == 'save' && !$item->get('description')) { ?>

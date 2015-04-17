@@ -90,8 +90,8 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		}
 
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		$applicants = $member->getGroups('applicants');
@@ -118,7 +118,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				$groups[$mem->description] = $mem;
 			}
 		}
-		/* SORT_NATURAL is PHP 5.4+ */
+		// SORT_NATURAL is PHP 5.4+
 		if (PHP_VERSION_ID > 50400)
 		{
 			ksort($groups, SORT_NATURAL|SORT_FLAG_CASE);
@@ -131,13 +131,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml)
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'summary'
-				)
-			);
+			$view = $this->view('default', 'summary');
 			$view->total  = count($groups);
 			$view->filter = strtolower(Request::getWord('filter', '', 'get'));
 
@@ -193,12 +187,10 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 			$view->groups = $groups;
 			$view->member = $member;
 			$view->option = 'com_groups';
-			if ($this->getError())
+
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			$arr['html'] = $view->loadTemplate();

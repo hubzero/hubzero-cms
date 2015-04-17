@@ -29,9 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//get the database object
-$database = JFactory::getDBO();
-
 $this->css()
      ->js();
 ?>
@@ -137,34 +134,14 @@ $this->css()
 						}
 
 						//date received
-						$date = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));
+						$date = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 						//delete link
 						$del_link = Route::url($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive');
 						$delete = '<a title="' . Lang::txt('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . Lang::txt('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
-
-						//special action
-						/*if ($row->actionid)
-						{
-							$xma = new \Hubzero\Message\Action( $database );
-							$xma->load( $row->actionid );
-							if ($xma)
-							{
-								$url = Route::url(stripslashes($xma->description));
-							}
-
-							if ($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00')
-							{
-								//we dont want them to be able to move
-								$check = "";
-
-								//we dont want them to be able to delete
-								$delete = "";
-							}
-						}*/
 					?>
 
-					<tr<?php /*if ($row->actionid) { echo ' class="actionitem"'; }*/ ?>>
+					<tr>
 						<td class="check"><?php echo $check; ?></td>
 						<td class="status"><?php echo $status; ?></td>
 						<td><?php echo $subject; ?></td>

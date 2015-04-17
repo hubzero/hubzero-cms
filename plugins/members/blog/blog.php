@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -83,7 +85,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		// Get our model
 		$this->model = new \Components\Blog\Models\Archive('member', $member->get('uidNumber'));
@@ -177,13 +179,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'created_by' => $member->get('uidNumber')
 		);
 
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$filters['state'] = 'public';
 		}
 		// Logged-in non-owner
-		else if ($juser->get('id') != $member->get('uidNumber'))
+		else if (User::get('id') != $member->get('uidNumber'))
 		{
 			$filters['state'] = 'registered';
 		}
@@ -212,12 +213,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$path)
 		{
-			$juri = JURI::getInstance();
-			$path = $juri->getPath();
-
-			$path = str_replace($juri->base(true), '', $path);
+			$path = Request::path();
+			$path = str_replace(Request::base(true), '', $path);
 			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
+			$path = '/' . trim($path, '/');
 
 			$blog = '/members/' . $this->member->get('uidNumber') . '/' . $this->_name;
 
@@ -227,7 +226,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				return $path;
 			}
 
-			$path = ltrim($path, DS);
+			$path = ltrim($path, '/');
 			$path = explode('/', $path);
 
 			/*while ($path[0] != 'members' && !empty($path));
@@ -266,23 +265,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->config = $this->params;
 		$view->model  = $this->model;
 
-		$jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$view->filters = array(
-			'limit'      => Request::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'limit'      => Request::getInt('limit', Config::get('list_limit')),
 			'start'      => Request::getInt('limitstart', 0),
 			'created_by' => $this->member->get('uidNumber'),
 			'year'       => Request::getInt('year', 0),
@@ -294,8 +285,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// See what information we can get from the path
-		$juri = JURI::getInstance();
-		$path = $juri->getPath();
+		$path = Request::path();
 		if (strstr($path, '/'))
 		{
 			$bits = $this->_parseUrl();
@@ -305,13 +295,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check logged-in status
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$view->filters['state'] = 'public';
 		}
 		// Logged-in non-owner
-		else if ($juser->get('id') != $this->member->get('uidNumber'))
+		else if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$view->filters['state'] = 'registered';
 		}
@@ -320,7 +309,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		{
 			$view->filters['state'] = 'all';
 		}
-		if ($juser->get('id') == $this->member->get('uidNumber'))
+		if (User::get('id') == $this->member->get('uidNumber'))
 		{
 			$view->filters['authorized'] = $this->member->get('uidNumber');
 		}
@@ -350,7 +339,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = JFactory::getDocument();
@@ -360,12 +349,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$doc = new JDocumentFeed;
 		$doc->link = Route::url($this->member->getLink() . '&active=' . $this->_name);
 
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$filters = array(
-			'limit'      => Request::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'limit'      => Request::getInt('limit', Config::get('list_limit')),
 			'start'      => Request::getInt('limitstart', 0),
 			'year'       => Request::getInt('year', 0),
 			'month'      => Request::getInt('month', 0),
@@ -375,7 +361,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'created_by' => $this->member->get('uidNumber')
 		);
 
-		$path = JURI::getInstance()->getPath();
+		$path = Request::path();
 		if (strstr($path, '/'))
 		{
 			$bits = $this->_parseUrl();
@@ -385,10 +371,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build some basic RSS document information
-		$jconfig = JFactory::getConfig();
-		$doc->title       = $jconfig->getValue('config.sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . Lang::txt('Blog');
-		$doc->description = Lang::txt('PLG_MEMBERS_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'),stripslashes($this->member->get('name')));
-		$doc->copyright   = Lang::txt('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->title       = Config::get('sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . Lang::txt('Blog');
+		$doc->description = Lang::txt('PLG_MEMBERS_BLOG_RSS_DESCRIPTION', Config::get('sitename'),stripslashes($this->member->get('name')));
+		$doc->copyright   = Lang::txt('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('PLG_MEMBERS_BLOG_RSS_CATEGORY');
 
 		$filters['state'] = 'public';
@@ -433,13 +418,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _entry()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'entry'
-			)
-		);
+		$view = $this->view('default', 'entry');
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->config = $this->params;
@@ -451,7 +430,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$path = JURI::getInstance()->getPath();
+			$path = Request::path();
 			$alias = '';
 			if (strstr($path, '/'))
 			{
@@ -465,16 +444,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$view->row->exists())
 		{
-			JError::raiseError(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
-			return; //return $this->_browse(); Can cause infinite loop.
+			App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
+			return;
 		}
 
 		// Check authorization
-		$juser = JFactory::getUser();
-		if (($view->row->get('state') == 2 && $juser->get('guest'))
-		 || ($view->row->get('state') == 0 && $juser->get('id') != $this->member->get('uidNumber')))
+		if (($view->row->get('state') == 2 && User::isGuest())
+		 || ($view->row->get('state') == 0 && User::get('id') != $this->member->get('uidNumber')))
 		{
-			JError::raiseError(403, Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTH'));
+			App::abort(403, Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTH'));
 			return;
 		}
 
@@ -487,13 +465,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'created_by' => $this->member->get('uidNumber')
 		);
 
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$view->filters['state'] = 'public';
 		}
 		else
 		{
-			if ($juser->get('id') != $this->member->get('uidNumber'))
+			if (User::get('id') != $this->member->get('uidNumber'))
 			{
 				$view->filters['state'] = 'registered';
 			}
@@ -535,27 +513,20 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	private function _edit($row=null)
 	{
 		// Login check
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
-		if ($juser->get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
 		}
 
 		// Instantiate view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'edit'
-			)
-		);
+		$view = $this->view('default', 'edit');
 		$view->option = $this->option;
 		$view->member = $this->member;
 		$view->task   = $this->task;
@@ -600,14 +571,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Login check
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
-		if ($juser->get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -617,12 +587,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
-			$entry['publish_up']   = JFactory::getDate($entry['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
 		}
 
 		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
 		{
-			$entry['publish_down'] = JFactory::getDate($entry['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_down'] = Date::of($entry['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		// make sure we dont want to turn off comments
@@ -662,14 +632,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _delete()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return;
 		}
 
-		if ($juser->get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -697,13 +666,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'delete'
-				)
-			);
+			$view = new \Hubzero\Plugin\View('default', 'delete');
 			$view->option = $this->option;
 			$view->member = $this->member;
 			$view->task   = $this->task;
@@ -727,7 +690,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Return the topics list
-		$this->redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
+		App::redirect(Route::url($this->member->getLink() . '&active=' . $this->_name));
 	}
 
 	/**
@@ -738,8 +701,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	private function _savecomment()
 	{
 		// Ensure the user is logged in
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
@@ -766,15 +728,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		/*
 		if ($row->get('created_by') != $this->member->get('uidNumber))
 		{
-			$this->entry = new BlogModelEntry($row->get('entry_id'));
-
-			// Get the site configuration
-			$jconfig = JFactory::getConfig();
+			$this->entry = new \Components\Blog\Models\Entry($row->get('entry_id'));
 
 			// Build the "from" data for the e-mail
 			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename').' '.Lang::txt('PLG_MEMBERS_BLOG');
-			$from['email'] = $jconfig->getValue('config.mailfrom');
+			$from['name']  = Config::get('sitename').' '.Lang::txt('PLG_MEMBERS_BLOG');
+			$from['email'] = Config::get('mailfrom');
 
 			$subject = Lang::txt('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
 
@@ -803,8 +762,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	private function _deletecomment()
 	{
 		// Ensure the user is logged in
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return;
@@ -840,27 +798,20 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _settings()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
 			return;
 		}
 
-		if ($juser->get('id') != $this->member->get('uidNumber'))
+		if (User::get('id') != $this->member->get('uidNumber'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
 		}
 
 		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'settings'
-			)
-		);
+		$view = $this->view('default', 'settings');
 		$view->option   = $this->option;
 		$view->member   = $this->member;
 		$view->task     = $this->task;
@@ -886,14 +837,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _savesettings()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('MEMBERS_LOGIN_NOTICE'));
 			return;
 		}
 
-		if ($juser->get("id") != $this->member->get("uidNumber"))
+		if (User::get('id') != $this->member->get("uidNumber"))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 			return $this->_browse();
@@ -909,7 +859,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		$p = new JParameter('');
-		$p->bind(Request::getVar('params', '', 'post'));
+		$p->bind(Request::getVar('params', array(), 'post'));
 
 		$row->params = $p->toString();
 
@@ -927,7 +877,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_settings();
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url($this->member->getLink() . '&active=' . $this->_name . '&task=settings'),
 			Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_SAVED')
 		);

@@ -44,7 +44,7 @@ if ($this->params->get('allow_customization', 1) == 0)
 <?php if ($customizable) : ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-add btn add-module" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=dashboard&action=add' ); ?>">
+		<a class="icon-add btn add-module" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard&action=add' ); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
 		</a>
 	</li>
@@ -55,7 +55,7 @@ if ($this->params->get('allow_customization', 1) == 0)
 	<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 </noscript>
 
-<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo $this->juser->get('id'); ?>">
+<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo User::get('id'); ?>">
 	<?php
 		foreach ($this->modules as $module)
 		{

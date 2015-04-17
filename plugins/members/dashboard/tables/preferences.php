@@ -31,15 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Table class for dashboard preferences
+ */
 class MembersDashboardTablePreferences extends JTable
 {
-	var $id;
-	var $uidNumber;
-	var $preferences;
-	var $modified;
-
-	public function __construct( &$db )
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $db
+	 * @return  void
+	 */
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xprofiles_dashboard_preferences', 'id', $db );
+		parent::__construct('#__xprofiles_dashboard_preferences', 'id', $db);
 	}
 }

@@ -29,9 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//get the database object
-$database = JFactory::getDBO();
-
 $this->css()
      ->js();
 ?>
@@ -120,9 +117,7 @@ $this->css()
 						$subject_cls = "message-link";
 						$subject_cls .= ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
 
-						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}";
-						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
-						$subject .= "</a>";
+						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}</a>";
 
 						//get who the message is from
 						if (substr($row->type, -8) == '_message')
@@ -136,23 +131,9 @@ $this->css()
 						}
 
 						//date received
-						$date = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));
-
-						//special action
-						/*if ($row->actionid) {
-							$xma = new \Hubzero\Message\Action( $database );
-							$xma->load( $row->actionid );
-							if ($xma) {
-								$url = Route::url(stripslashes($xma->description));
-							}
-
-							if ($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00') {
-								//we dont want them to be able to move
-								$check = "";
-							}
-						}*/
+						$date = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 					?>
-					<tr<?php /*if ($row->actionid) { echo ' class="actionitem"'; }*/ ?>>
+					<tr>
 						<td class="check"><?php echo $check; ?></td>
 						<td class="status"><?php echo $status; ?></td>
 						<td><?php echo $subject; ?></td>

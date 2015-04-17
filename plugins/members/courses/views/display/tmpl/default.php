@@ -137,10 +137,10 @@ $this->css();
 								<?php echo $dateText; ?>
 								<!--
 								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo Date::of($row->enrolled)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 								-->
 								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo Date::of($row->enrolled)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php if ($row->section_title) { ?>
 								<span class="entry-section">
 									 &mdash; <strong><?php echo Lang::txt('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
@@ -161,9 +161,9 @@ $this->css();
 							<span class="entry-details">
 							<?php if ($row->starts != '0000-00-00 00:00:00') { ?>
 								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 							<?php } else { ?>
 								<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
 							<?php } ?>
@@ -176,9 +176,9 @@ $this->css();
 							<span class="entry-details">
 								<?php if ($row->ends != '0000-00-00 00:00:00') { ?>
 								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php } else { ?>
 									<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
 								<?php } ?>

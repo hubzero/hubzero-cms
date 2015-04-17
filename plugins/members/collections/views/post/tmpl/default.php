@@ -32,10 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $item = $this->post->item();
-
-$database = JFactory::getDBO();
-$this->juser = JFactory::getUser();
-
 $base = $this->member->getLink() . '&active=' . $this->name;
 
 $this->css()
@@ -86,11 +82,11 @@ $this->css()
 		     ->set('row', $this->post)
 		     ->display();
 		?>
-	<?php if (count($item->tags()) > 0) { ?>
-		<div class="tags-wrap">
-			<?php echo $item->tags('render'); ?>
-		</div>
-	<?php } ?>
+		<?php if (count($item->tags()) > 0) { ?>
+			<div class="tags-wrap">
+				<?php echo $item->tags('render'); ?>
+			</div>
+		<?php } ?>
 		<div class="meta">
 			<p class="stats">
 				<span class="likes">
@@ -125,60 +121,61 @@ $this->css()
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php
-if ($item->get('comments'))
-{
-	?>
-		<div class="commnts">
+
 	<?php
-	foreach ($item->comments() as $comment)
+	if ($item->get('comments'))
 	{
-		$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
 		?>
-			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
-				</a>
-				<p>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
-					said
-					<br />
-					<span class="entry-date">
-						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
-					</span>
-				</p>
-				<blockquote>
-					<p><?php echo stripslashes($comment->content); ?></p>
-				</blockquote>
-			</div>
+		<div class="commnts">
+			<?php
+			foreach ($item->comments() as $comment)
+			{
+				$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
+				?>
+				<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
+						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
+					</a>
+					<p>
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
+						said
+						<br />
+						<span class="entry-date">
+							<span class="entry-date-at">@</span>
+							<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+							<span class="entry-date-on">on</span>
+							<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+						</span>
+					</p>
+					<blockquote>
+						<p><?php echo stripslashes($comment->content); ?></p>
+					</blockquote>
+				</div>
+				<?php
+			}
+			?>
+		</div>
 		<?php
 	}
-	?>
-		</div>
-	<?php
-}
 
-	if (!$this->juser->get('guest'))
+	if (!User::isGuest())
 	{
-		$now = JFactory::getDate();
-	?>
+		$now = Date::of('now');
+		?>
 		<div class="commnts">
 			<div class="comment convo clearfix">
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>" />
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="img-link">
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes(User::get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>
 					will say
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<form action="<?php echo Route::url($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
@@ -202,7 +199,7 @@ if ($item->get('comments'))
 				</form>
 			</div>
 		</div>
-	<?php
+		<?php
 	}
 	?>
 	</div><!-- / .content -->

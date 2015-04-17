@@ -124,18 +124,17 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// include dasboard models
-			include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'models' . DS . 'preferences.php';
+			include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
 
 			// add assets
-			\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
-			\Hubzero\Document\Assets::addPluginScript('members', 'dashboard');
-			\Hubzero\Document\Assets::addSystemScript('gridster');
-			\Hubzero\Document\Assets::addSystemScript('resizeEnd.min');
+			$this->css();
+			$this->js();
+			$this->js('gridster', 'system');
+			$this->js('resizeEnd.min', 'system');
 
 			// set up some vars
 			$this->member   = $member;
 			$this->params   = $this->params;
-			$this->juser    = JFactory::getUser();
 			$this->database = JFactory::getDBO();
 			$this->option   = $option;
 			$this->action   = Request::getVar('action', 'display');
@@ -165,13 +164,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function displayAction()
 	{
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'display',
-			)
-		);
+		$view = $this->view('default', 'display');
 
 		// load dashboard modules
 		$dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
@@ -208,9 +201,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$application  = JFactory::getApplication();
-		$view->admin  = $application->isAdmin();
-		$view->juser  = $this->juser;
+		$view->admin  = App::isAdmin();
 		$view->params = $this->params;
 
 		// return rendered view
@@ -266,14 +257,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'display',
-				'layout'  => 'module'
-			)
-		);
+		$view = $this->view('module', 'display');
 
 		// get application location
 		$application  = JFactory::getApplication();
@@ -312,13 +296,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function addAction()
 	{
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'add',
-			)
-		);
+		$view = $this->view('default', 'add');
 
 		// load dashboard modules
 		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
@@ -327,7 +305,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$preferences = $this->_loadPreferences();
 
 		// get list of install member modules
-		$view->mymodules = array_map(function($mod) {
+		$view->mymodules = array_map(function($mod)
+		{
 			return $mod->module;
 		}, $preferences);
 
@@ -360,10 +339,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// load member preferences
-		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
+		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser(User::get('id'));
 
 		// update the user preferences
-		$membersDashboardModelPreferences->set('uidNumber', $this->juser->get('id'));
+		$membersDashboardModelPreferences->set('uidNumber', User::get('id'));
 		$membersDashboardModelPreferences->set('preferences', $modules);
 		$membersDashboardModelPreferences->set('modified', Date::toSql());
 
@@ -406,18 +385,17 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$this->controller = $controller;
 		$this->action     = $action;
 		$this->database   = JFactory::getDBO();
-		$this->juser      = JFactory::getUser();
 
 		// include dasboard models
-		include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'models' . DS . 'preferences.php';
+		include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
 
 		// add assets
 		JHTML::_('behavior.modal');
-		\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
-		\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard', 'dashboard.admin');
-		\Hubzero\Document\Assets::addPluginScript('members', 'dashboard', 'dashboard.admin');
-		\Hubzero\Document\Assets::addSystemScript('gridster');
-		\Hubzero\Document\Assets::addSystemScript('resizeEnd.min');
+		$this->css();
+		$this->css('dashboard.admin');
+		$this->js('dashboard.admin');
+		$this->js('gridster', 'system');
+		$this->js('resizeEnd.min', 'system');
 
 		// build method name and call action
 		$methodName = 'Manage' . ucfirst(strtolower($action)) . 'Action';
@@ -432,13 +410,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function manageDefaultAction()
 	{
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'manage',
-			)
-		);
+		$view = $this->view('default', 'manage');
 
 		// var to hold modules
 		$view->modules = array();
@@ -494,7 +466,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$this->params->set('defaults', $modules);
 
 		// save
-		$query = "UPDATE #__extensions SET params=" . $this->database->quote($this->params->toString()) . " WHERE `folder`='members' AND `element`='dashboard'";
+		$query = "UPDATE `#__extensions` SET params=" . $this->database->quote($this->params->toString()) . " WHERE `folder`='members' AND `element`='dashboard'";
 		$this->database->setQuery($query);
 		if ($this->database->query())
 		{
@@ -513,13 +485,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function manageAddAction()
 	{
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'add',
-			)
-		);
+		$view = $this->view('default', 'add');
 
 		// load dashboard modules
 		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
@@ -529,7 +495,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$preferences = json_decode($preferences);
 
 		// get list of default modules
-		$view->mymodules = array_map(function($mod) {
+		$view->mymodules = array_map(function($mod)
+		{
 			return $mod->module;
 		}, $preferences);
 
@@ -563,23 +530,14 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		}
 
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'display',
-				'layout'  => 'module'
-			)
-		);
+		$view = $this->view('module', 'display');
 
 		// get application location
-		$application  = JFactory::getApplication();
-		$view->admin  = $application->isAdmin();
+		$view->admin  = App::isAdmin();
 		$view->module = $module;
-		$content      = $view->loadTemplate();
 
 		// return content
-		echo json_encode(array('html' => $content));
+		echo json_encode(array('html' => $view->loadTemplate()));
 		exit();
 	}
 
@@ -591,14 +549,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	public function managePushAction()
 	{
 		// create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'dashboard',
-				'name'    => 'manage',
-				'layout'  => 'push'
-			)
-		);
+		$view = $this->view('push', 'manage');
 
 		// get list of modules
 		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
@@ -624,7 +575,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// make sure we have a module
 		if ($module == 0 || $module == null)
 		{
-			JError::raiseError(406, 'You must provide a module.');
+			App::abort(406, 'You must provide a module.');
 			return;
 		}
 
@@ -643,7 +594,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			}
 
 			// get a list of installed modules
-			$modules = array_map(function($param) {
+			$modules = array_map(function($param)
+			{
 				return $param->module;
 			}, $params);
 
@@ -741,7 +693,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// use logged in user
 		if ($uidNumber == null)
 		{
-			$uidNumber = $this->juser->get('id');
+			$uidNumber = User::get('id');
 		}
 
 		// load member preferences

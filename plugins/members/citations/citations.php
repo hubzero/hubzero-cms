@@ -32,10 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include needed libs
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+
 foreach (array('citation', 'association', 'author', 'secondary', 'sponsor', 'tags', 'format', 'type') as $inc)
 {
-	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . $inc . '.php');
+	require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . $inc . '.php');
 }
 
 /**
@@ -108,11 +109,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		//if we want to return content
 		if ($returnhtml)
 		{
-			$this->user     = $user;
 			$this->member   = $member;
 			$this->option   = $option;
 
-			if ($this->user->get('id') == $this->member->get('uidNumber'))
+			if (User::get('id') == $this->member->get('uidNumber'))
 			{
 				$this->params->set('access-manage', true);
 			}
@@ -151,7 +151,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->option            = $this->option;
 		$view->grand_total       = $this->grand_total;
 		$view->database          = $this->database;
-		$view->config            = \Component::params('com_citations');
+		$view->config            = Component::params('com_citations');
 		$view->isAdmin           = $this->params->get('access-manage');
 
 		// Instantiate a new citations object
@@ -163,7 +163,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$view->filters = array(
 			// Paging filters
-			'limit'           => Request::getInt('limit', \JFactory::getConfig()->getValue('config.list_limit')),
+			'limit'           => Request::getInt('limit', Config::get('list_limit')),
 			'start'           => Request::getInt('limitstart', 0, 'get'),
 			// Search/filtering params
 			'scope'           => 'member',
@@ -242,7 +242,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['startuploaddate'] = JFactory::getDate($view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
+			$view->filters['startuploaddate'] = Date::of($view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
 		}
 		if ($view->filters['enduploaddate'] == '0000-00-00'
 			|| $view->filters['enduploaddate'] == '0000-00-00 00:00:00'
@@ -252,13 +252,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['enduploaddate'] = JFactory::getDate($view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
+			$view->filters['enduploaddate'] = Date::of($view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
 		}
 
 		//Make sure the end date for the upload search isn't before the start date
 		if ($view->filters['startuploaddate'] > $view->filters['enduploaddate'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=browse'),
 				Lang::txt('PLG_MEMBERS_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
 				'error'
@@ -353,14 +353,14 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function editAction($row=null)
 	{
 		// Check if they're logged in
-		if ($this->user->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginAction();
 		}
 
 		if (!$this->params->get('access-manage'))
 		{
-			throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+			throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
 		}
 
 		// Create view object
@@ -369,7 +369,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$view->member   = $this->member;
 		$view->option   = $this->option;
 		$view->database = $this->database;
-		$view->config   = \Component::params('com_citations');
+		$view->config   = Component::params('com_citations');
 
 		// Get the citation types
 		$citationsType = new \Components\Citations\Tables\Type($this->database);
@@ -421,15 +421,14 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			: $view->row->title;
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
 		if ($id && $id != 0)
 		{
-			$pathway->addItem($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
-			$pathway->addItem(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
+			Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
+			Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'));
 		}
 		else
 		{
-			$pathway->addItem(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
+			Pathway::append(Lang::txt('PLG_MEMBERS_CITATIONS_ADD'));
 		}
 
 		// Set the page title
@@ -446,7 +445,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		// Set the ID of the creator
 		if (!$id)
 		{
-			$view->row->uid = $this->user->get('id');
+			$view->row->uid = User::get('id');
 
 			// It's new - no associations to get
 			$view->assocs = array();
@@ -477,12 +476,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$assoc = new CitationsAssociation($this->database);
+			$assoc = new \Components\Citations\Tables\Association($this->database);
 			$view->assocs = $assoc->getRecords(array('cid' => $id), true);
 
 			//tags & badges
-			$view->tags   = CitationFormat::citationTags($view->row, $this->database, false);
-			$view->badges = CitationFormat::citationBadges($view->row, $this->database, false);
+			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
+			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
 		}
 
 		// Output HTML
@@ -502,7 +501,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function saveAction()
 	{
 		// Check if they're logged in
-		if ($this->user->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginAction();
 		}
@@ -592,7 +591,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$a = array_map('trim', $a);
 
 			// Initiate extended database class
-			$assoc = new CitationsAssociation($this->database);
+			$assoc = new \Components\Citations\Tables\Association($this->database);
 
 			//check to see if we should delete
 			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
@@ -645,7 +644,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			unset($c['tags']);
 
 			$ct1 = new \Components\Citations\Tables\Tags($row->id);
-			$ct1->setTags($tags, $this->user->get('id'), 0, 1, '');
+			$ct1->setTags($tags, User::get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
@@ -656,11 +655,11 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			unset($c['badges']);
 
 			$ct2 = new \Components\Citations\Tables\Tags($row->id);
-			$ct2->setTags($badges, $this->user->get('id'), 0, 1, 'badge');
+			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 		}
 
 		// resdirect after save
-		$this->redirect(
+		App::redirect(
 			Route::url($this->member->getLink() . '&active=' . $this->_name),
 			($this->getError() ? $this->getError() : Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_SAVED')),
 			($this->getError() ? 'error' : 'success')
@@ -676,7 +675,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function deleteAction()
 	{
 		// Check if they're logged in
-		if ($this->user->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginAction();
 		}
@@ -697,7 +696,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			if (!$row->delete())
 			{
-				$this->redirect(
+				App::redirect(
 					Route::url($this->member->getLink() . '&active=' . $this->_name),
 					$row->getError(),
 					'error'
@@ -712,7 +711,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$assoc->deleteForCitation($id);
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url($this->member->getLink() . '&active=' . $this->_name),
 			Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
 			'success'
@@ -727,7 +726,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function loginAction()
 	{
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->getLink() . '&active=' . $this->_name . '&action=' . $this->action, false, true))),
 			Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'

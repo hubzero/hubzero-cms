@@ -29,9 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//get the database object
-$database = JFactory::getDBO();
-
 $this->css()
      ->js();
 ?>
@@ -100,9 +97,6 @@ $this->css()
 						//get the component that created message
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component, 4) : $row->component;
 
-						//url to view message
-						//$url = Route::url($this->member->getLink() . '&active=messages&msg=' . $row->id);
-
 						//get the message subject
 						$subject = $row->subject;
 
@@ -114,16 +108,9 @@ $this->css()
 							$subject = implode(' ', $fg);
 						}
 
-						//get the message
-						//$preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(stripslashes($row->message)) : '';
-
 						//subject link
 						$subject_cls  = 'message-link';
 						$subject_cls .= ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
-
-						//$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}";
-						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
-						//$subject .= "</a>";
 					?>
 					<tr>
 						<td class="check">

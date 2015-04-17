@@ -55,42 +55,42 @@ $this->css();
 					<select name="collection_id" id="field-collection_id">
 						<option value="0"><?php echo Lang::txt('Select ...'); ?></option>
 						<optgroup label="<?php echo Lang::txt('My collections'); ?>">
-<?php
-if ($this->myboards)
-{
-	foreach ($this->myboards as $board)
-	{
-		if ($board->id == $this->collection_id)
-		{
-			continue;
-		}
-?>
-							<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
-<?php
-	}
-}
-?>
+						<?php
+						if ($this->myboards)
+						{
+							foreach ($this->myboards as $board)
+							{
+								if ($board->id == $this->collection_id)
+								{
+									continue;
+								}
+								?>
+								<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+								<?php
+							}
+						}
+						?>
 						</optgroup>
-<?php
-if ($this->groupboards)
-{
-	foreach ($this->groupboards as $optgroup => $boards)
-	{
-?>
-						<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
-<?php
-		foreach ($boards as $board)
-		{
-?>
-							<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
-<?php
-		}
-?>
-						</optgroup>
-<?php
-	}
-}
-?>
+						<?php
+						if ($this->groupboards)
+						{
+							foreach ($this->groupboards as $optgroup => $boards)
+							{
+								?>
+								<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
+									<?php
+									foreach ($boards as $board)
+									{
+										?>
+										<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+										<?php
+									}
+									?>
+								</optgroup>
+								<?php
+							}
+						}
+						?>
 					</select>
 				</label>
 			</div>
@@ -105,7 +105,7 @@ if ($this->groupboards)
 
 		<label for="field_description">
 			<?php echo Lang::txt('Add a description'); ?>
-			<?php echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+			<?php echo $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 

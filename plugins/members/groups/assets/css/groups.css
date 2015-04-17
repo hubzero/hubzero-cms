@@ -106,16 +106,16 @@
 	}
 	/* Table row */
 	.groups tbody tr.pending {
-		background: #ffe url("images/light-stripes.png");
+		background: #ffe url("../img/light-stripes.png");
 	}
 	.groups tbody tr.member {
-		background: #F3FDF0 url("images/light-stripes.png");
+		background: #F3FDF0 url("../img/light-stripes.png");
 	}
 	.groups tbody tr.manager {
-		background: #FFF2EF url("images/light-stripes.png");
+		background: #FFF2EF url("../img/light-stripes.png");
 	}
 	.groups tbody tr.invitee {
-		background: #F9F9F9 url("images/light-stripes.png");
+		background: #F9F9F9 url("../img/light-stripes.png");
 	}
 /* Join Policies */
 	.groups tbody .join-policy {

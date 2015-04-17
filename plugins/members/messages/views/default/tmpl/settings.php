@@ -61,14 +61,14 @@ $this->css()
 			$cls = 'even';
 
 			$sheader = '';
-			$lang    = JFactory::getLanguage();
 			foreach ($this->components as $component)
 			{
-				if ($component->name != $sheader) {
+				if ($component->name != $sheader)
+				{
 					$sheader = $component->name;
 					$lang->load($component->name);
 
-					$display_header = $lang->hasKey($component->name) ? Lang::txt($component->name) : ucfirst(str_replace('com_', '', $component->name));
+					$display_header = Lang::hasKey($component->name) ? Lang::txt($component->name) : ucfirst(str_replace('com_', '', $component->name));
 				?>
 				<tr class="section-header">
 					<th scope="col"><?php echo $this->escape($display_header); ?></th>

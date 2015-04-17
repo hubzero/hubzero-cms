@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +21,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->entry->tags('string'))));
+$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->entry->tags('string'))));
 
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00')
 {
@@ -69,7 +71,7 @@ $this->css('jquery.datepicker.css', 'system')
 			<label for="entrycontent">
 				<?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
 				<?php
-				echo JFactory::getEditor()->display('entry[content]', $this->entry->content('raw'), '', '', 50, 30, false, 'entrycontent');
+				echo $this->editor('entry[content]', $this->entry->content('raw'), 50, 30, 'entrycontent');
 				?>
 			</label>
 			<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
@@ -79,17 +81,17 @@ $this->css('jquery.datepicker.css', 'system')
 			<fieldset>
 				<legend><?php echo Lang::txt('Uploaded files'); ?></legend>
 				<div class="field-wrap">
-					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id=' . $this->member->get('uidNumber') . '&scope=member&tmpl=component'; ?>"></iframe>
+					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('uidNumber') . '&scope=member&tmpl=component'; ?>"></iframe>
 				</div>
 			</fieldset>
 
 			<label>
 				<?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_TAGS'); ?>
-			<?php if (count($tf) > 0) {
-				echo implode("\n", $tf);
-			} else { ?>
-				<input type="text" name="tags" value="<?php echo $this->escape($this->entry->tags('string')); ?>" />
-			<?php } ?>
+				<?php if (count($tf) > 0) {
+					echo implode("\n", $tf);
+				} else { ?>
+					<input type="text" name="tags" value="<?php echo $this->escape($this->entry->tags('string')); ?>" />
+				<?php } ?>
 				<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_TAGS_HINT'); ?></span>
 			</label>
 
@@ -116,14 +118,14 @@ $this->css('jquery.datepicker.css', 'system')
 				<div class="col span6">
 					<label for="field-publish_up">
 						<?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
-						<input type="text" name="entry[publish_up]" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up') ? $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')) : ''); ?>" />
+						<input type="text" name="entry[publish_up]" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up') ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''); ?>" />
 						<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>
 				<div class="col span6 omega">
 					<label for="field-publish_down">
 						<?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-						<input type="text" name="entry[publish_down]" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
+						<input type="text" name="entry[publish_down]" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''); ?>" />
 						<span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>

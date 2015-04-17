@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'tables' . DS . 'preferences.php';
+include_once dirname(__DIR__) . DS . 'tables' . DS . 'preferences.php';
 
 class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 {
 	/**
-	 * JTable
+	 * Table
 	 *
 	 * @var string
 	 */

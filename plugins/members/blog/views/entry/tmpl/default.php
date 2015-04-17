@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +21,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juser = JFactory::getUser();
 
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);
@@ -41,7 +41,7 @@ $this->css()
 ?>
 
 <ul id="page_options">
-<?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
+<?php if (User::get('id') == $this->member->get('uidNumber')) : ?>
 	<li>
 		<a class="icon-add add btn" href="<?php echo Route::url($base . '&task=new'); ?>">
 			<?php echo Lang::txt('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?>
@@ -110,7 +110,7 @@ $this->css()
 					</span>
 				</dd>
 			<?php } ?>
-			<?php if ($juser->get('id') == $this->row->get('created_by')) { ?>
+			<?php if (User::get('id') == $this->row->get('created_by')) { ?>
 				<dd class="state">
 					<?php echo Lang::txt('PLG_MEMBERS_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 				</dd>
@@ -206,14 +206,14 @@ $this->css()
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-					$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
+					$user = \Hubzero\User\Profile::getInstance(User::get('id'));
 					$anon = 1;
-					if (!$juser->get('guest'))
+					if (!User::isGuest())
 					{
 						$anon = 0;
 					}
 					?>
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($user, $anon); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php
@@ -246,8 +246,8 @@ $this->css()
 					<label>
 						<?php echo Lang::txt(($replyto->exists() ? 'Your reply' : 'Your comments')); ?>: <span class="required"><?php echo Lang::txt('PLG_MEMBERS_BLOG_REQUIRED'); ?></span>
 						<?php
-						if (!$juser->get('guest')) {
-							echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
+						if (!User::isGuest()) {
+							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
 						} else {
 						?>
 						<p class="warning">
@@ -256,7 +256,7 @@ $this->css()
 						<?php } ?>
 					</label>
 
-				<?php if (!$juser->get('guest')) { ?>
+				<?php if (!User::isGuest()) { ?>
 					<label id="comment-anonymous-label">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 						<?php echo Lang::txt('PLG_MEMBERS_BLOG_POST_ANONYMOUS'); ?>
@@ -271,7 +271,7 @@ $this->css()
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="active" value="blog" />

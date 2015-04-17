@@ -76,8 +76,6 @@ if (isset($this->messages))
 		echo '<p class="' . $message['type'] . '">' . $message['message'] . '</p>';
 	}
 }
-
-$juser = JFactory::getUser();
 ?>
 <div id="content-header-extra">
 	<?php if ($this->isAdmin) : ?>
@@ -89,7 +87,7 @@ $juser = JFactory::getUser();
 
 <div class="frm" id="browsebox">
 
-<?php if ($juser->get('id') == $this->member->get('uidNumber') && !$this->grand_total) { ?>
+<?php if (User::get('id') == $this->member->get('uidNumber') && !$this->grand_total) { ?>
 
 	<div class="introduction">
 		<div class="introduction-message">
@@ -193,9 +191,11 @@ $juser = JFactory::getUser();
 										<?php if ($label != "none") : ?>
 											<td class="citation-label <?php echo $citations_label_class; ?>">
 												<?php
-													$type = "";
-													foreach ($this->types as $t) {
-														if ($t['id'] == $cite->type) {
+													$type = '';
+													foreach ($this->types as $t)
+													{
+														if ($t['id'] == $cite->type)
+														{
 															$type = $t['type_title'];
 														}
 													}

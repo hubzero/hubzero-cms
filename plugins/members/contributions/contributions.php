@@ -207,14 +207,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 				$active = '';
 			}
 
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'display'
-				)
-			);
-			//$view->authorized = $authorized;
+			$view = $this->view('default', 'display');
 			$view->totals  = $totals;
 			$view->results = $results;
 			$view->cats    = $cats;
@@ -235,11 +228,8 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 		// Build the metadata
 		$arr['metadata'] = array();
-		$prefix = "";
+		$prefix = '';
 		$total = 0;
-
-		//user object
-		$juser = JFactory::getUser();
 
 		//count all members contributions
 		foreach ($cats as $cat)
@@ -250,7 +240,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		//do we have a total?
 		if ($total > 0)
 		{
-			$prefix = ($juser->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
+			$prefix = (User::get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
 			$title = $prefix . " {$total} resources.";
 			$arr['metadata']['count'] = $total;
 		}

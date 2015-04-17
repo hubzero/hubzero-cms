@@ -28,6 +28,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 $this->css()
      ->js();
 ?>
@@ -41,7 +42,7 @@ $this->css()
 		<tbody>
 			<tr>
 				<th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DATE_RECEIVED'); ?></th>
-				<td><?php echo JHTML::_('date', $this->xmessage->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+				<td><?php echo Date::of($this->xmessage->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 			<tr>
 				<th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?></th>

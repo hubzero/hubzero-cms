@@ -35,20 +35,19 @@ $this->css()
      ->js();
 
 //remove $this
-$juser = $this->juser;
-$config = $this->config;
+$config   = $this->config;
 $database = $this->database;
 $citation = $this->citation;
 
 //load user profile
-$profile = \Hubzero\User\Profile::getInstance( $citation->uid );
+$profile = \Hubzero\User\Profile::getInstance($citation->uid);
 
 //get citation type
-$ct = new CitationsType($database);
+$ct = new \Components\Citations\Tables\Type($database);
 $type = $ct->getType( $citation->type );
 
 //get citation sponsors
-$cs = new CitationsSponsor($database);
+$cs = new \Components\Citations\Tables\Sponsor($database);
 $sponsors = $cs->getSponsorsForCitationWithId( $citation->id );
 
 //determine the separator
@@ -119,8 +118,8 @@ $params = new JParameter($citation->params);
 $showThisAbstract = $params->get('rollover', $showAbstract);
 
 //get tags and badges
-$tags 	= CitationFormat::citationTags($citation, $database, false);
-$badges = CitationFormat::citationBadges($citation, $database, false);
+$tags 	= \Components\Citations\Helpers\Format::citationTags($citation, $database, false);
+$badges = \Components\Citations\Helpers\Format::citationBadges($citation, $database, false);
 
 //are we allowed to show tags and badges
 $showTags 	= $config->get('citation_show_tags', 'yes');
@@ -151,7 +150,7 @@ $area = Request::getVar('area', 'about');
 	<div class="content-header-left">
 		<h2>
 			<?php echo $citation->title; ?>
-			<?php if ($juser->get('id') == $citation->uid) : ?>
+			<?php if (User::get('id') == $citation->uid) : ?>
 				<a class="edit" href="<?php echo Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id); ?>">Edit</a>
 			<?php endif; ?>
 		</h2>
@@ -534,7 +533,7 @@ $area = Request::getVar('area', 'about');
 					<tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_TAGS'); ?></th>
 						<td>
-							<?php echo CitationFormat::citationTags($citation, JFactory::getDBO()); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationTags($citation, JFactory::getDBO()); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -543,7 +542,7 @@ $area = Request::getVar('area', 'about');
 					<tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_BADGES'); ?></th>
 						<td>
-							<?php echo CitationFormat::citationBadges($citation, JFactory::getDBO()); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationBadges($citation, JFactory::getDBO()); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -629,7 +628,7 @@ $area = Request::getVar('area', 'about');
 							<ul class="secondary openurl">
 								<?php if ($this->openUrl) : ?>
 									<li>
-										<?php echo CitationFormat::citationOpenUrl($this->openUrl, $citation); ?>
+										<?php echo \Components\Citations\Helpers\Format::citationOpenUrl($this->openUrl, $citation); ?>
 									</li>
 								<?php endif; ?>
 							</ul>
@@ -680,8 +679,7 @@ $area = Request::getVar('area', 'about');
 	 */
 
 	//get hub url and name
-	$jconfig = JFactory::getConfig();
-	$hubName = $jconfig->getValue('config.sitename');
+	$hubName = Config::get('sitename');
 	$hubUrl = rtrim(Request::base(), '/');
 
 	//get the type of resource for coins

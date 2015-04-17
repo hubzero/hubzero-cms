@@ -83,7 +83,7 @@ $this->css()
 							</span>
 						</td>
 						<td>
-							<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 					</tr>
 				<?php } ?>
