@@ -136,7 +136,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$scope = 'projects' . DS . $model->get('alias') . DS . 'notes';
 
 		// Include note model
-		include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model
@@ -214,7 +214,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			$this->_masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 			// Include note model
-			include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 				. DS . 'models' . DS . 'note.php');
 
 			// Get our model
@@ -386,7 +386,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$basePath = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site';
 		if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save')
 		{
-			$basePath = PATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'notes';
+			$basePath = PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'notes';
 			if (!$this->model->access('content'))
 			{
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
@@ -747,7 +747,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$scope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 		// Include note model
-		include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model

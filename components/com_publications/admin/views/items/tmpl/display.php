@@ -33,16 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 $this->js();
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
-JToolBarHelper::preferences($this->option, '550');
-JToolBarHelper::spacer();
-JToolBarHelper::editList();
-JToolBarHelper::spacer();
-JToolBarHelper::deleteList();
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
+Toolbar::preferences($this->option, '550');
+Toolbar::spacer();
+Toolbar::editList();
+Toolbar::spacer();
+Toolbar::deleteList();
 
 JHTML::_('behavior.tooltip');
-//jimport('joomla.html.html.grid');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
+
+include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

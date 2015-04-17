@@ -304,14 +304,14 @@ class Batchcreate extends AdminController
 			$elementSupportId 	= !empty($elements2) ? $elements2[0]->id : $elementSupportId;
 		}
 
-		require_once( PATH_ROOT . DS .'components' . DS . 'com_publications'
+		require_once( PATH_CORE . DS .'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'types.php' );
 
 		// Get project repo path
 		$this->projectPath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
 
 		// Git helper
-		include_once( PATH_ROOT . DS . 'components' . DS .'com_projects'
+		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
 		$this->_git = new \Components\Projects\Helpers\Git($this->projectPath);
 

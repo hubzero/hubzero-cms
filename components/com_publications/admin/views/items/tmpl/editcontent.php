@@ -36,10 +36,10 @@ $tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS').': [ ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #'
+	Toolbar::title(Lang::txt('COM_PUBLICATIONS').': [ ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #'
 	. $this->pub->id . ' (v.' . $this->pub->version_label . ')' . ' ]', 'groups.png');
-	JToolBarHelper::save('savecontent');
-	JToolBarHelper::cancel();
+	Toolbar::save('savecontent');
+	Toolbar::cancel();
 }
 
 ?>

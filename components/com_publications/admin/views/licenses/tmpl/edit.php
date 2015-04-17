@@ -31,13 +31,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_LICENSE') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_LICENSE') . ': [ ' . $text . ' ]', 'addedit.png');
 if ($this->row->id)
 {
-	JToolBarHelper::apply();
+	Toolbar::apply();
 }
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::save();
+Toolbar::cancel();
 
 $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
 

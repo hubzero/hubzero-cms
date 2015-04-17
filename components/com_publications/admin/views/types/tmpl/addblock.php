@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK') . ' ]', 'addedit.png');
-JToolBarHelper::save('saveblock');
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK') . ' ]', 'addedit.png');
+Toolbar::save('saveblock');
+Toolbar::cancel();
 
 $params = new JRegistry($this->row->params);
 $manifest  = $this->curation->_manifest;

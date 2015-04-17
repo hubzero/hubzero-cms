@@ -31,10 +31,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . $text . ' ]', 'addedit.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::apply();
+Toolbar::save();
+Toolbar::cancel();
 
 // Determine whether master type is supported in current version of hub code
 $aClass  = 'item_off';

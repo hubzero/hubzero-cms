@@ -32,9 +32,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
-JToolBarHelper::title( Lang::txt( 'Projects' ), 'user.png' );
-JToolBarHelper::preferences('com_projects', '550');
-JToolBarHelper::editList();
+Toolbar::title( Lang::txt( 'Projects' ), 'user.png' );
+Toolbar::preferences('com_projects', '550');
+Toolbar::editList();
 
 JHTML::_('behavior.tooltip');
 

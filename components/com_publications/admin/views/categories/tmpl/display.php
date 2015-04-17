@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_CATEGORIES') . ']', 'addedit.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_CATEGORIES') . ']', 'addedit.png');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
 
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">

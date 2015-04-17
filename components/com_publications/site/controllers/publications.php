@@ -1446,10 +1446,10 @@ class Publications extends SiteController
 		if ($this->_curated)
 		{
 			// We need our curation model to parse elements
-			if (PATH_ROOT . DS . 'components' . DS . 'com_publications'
+			if (PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'curation.php')
 			{
-				include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications'
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 					. DS . 'models' . DS . 'curation.php');
 			}
 			else

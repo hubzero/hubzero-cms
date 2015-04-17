@@ -312,9 +312,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$new  = $cite['id'] ? false : true;
 
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 
 		if (!$pid || !$cite['type'] || !$cite['title'])
@@ -388,11 +388,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false)
 	{
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( PATH_ROOT . DS . 'components' . DS . 'com_citations'
+		include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
 
 		if (!$cid || !$pid)
@@ -447,13 +447,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function attachCitation($pid = 0, $doi = NULL, $format = 'apa',
 		$actor = 0, $returnStatus = false)
 	{
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-		include_once( PATH_ROOT . DS . 'components' . DS . 'com_citations'
+		include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
 
 		$out = array('error' => NULL, 'success' => NULL );
@@ -737,9 +737,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$cid    = Request::getInt( 'cid', 0 );
 
-			include_once( PATH_ROOT . DS . 'components'
+			include_once( PATH_CORE . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-			include_once( PATH_ROOT . DS . 'components'
+			include_once( PATH_CORE . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 			// Load the object
@@ -832,9 +832,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-		include_once( PATH_ROOT . DS . 'components'
+		include_once( PATH_CORE . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 		// Load the object
@@ -1037,7 +1037,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			if ($content)
 			{
-				require_once( PATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'links'
+				require_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'links'
 							. DS . 'helpers' . DS . 'simple_html_dom.php');
 
 				$out = '';
@@ -1158,7 +1158,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function getDoiMetadata($doi, $citation = false, &$url, $rawData = false, $format = 'apa')
 	{
 		// Include metadata model
-		include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications'
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'metadata.php');
 
 		$format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';

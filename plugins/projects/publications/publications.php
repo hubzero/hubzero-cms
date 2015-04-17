@@ -4293,7 +4293,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					jimport('joomla.filesystem.folder');
 
 					// Build publication path
-					$path    =  JPATH_ROOT . DS . trim($this->_pubconfig->get('webpath'), DS)
+					$path    =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS)
 							. DS .  \Hubzero\Utility\String::pad( $pid );
 
 					// Build version path
@@ -5072,7 +5072,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					else
 					{
 						// Instantiate a new registration object
-						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+						include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 						$xregistration = new MembersModelRegistration();
 
 						$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
@@ -5180,7 +5180,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 		$xregistration = new MembersModelRegistration();
 
 		// Get current owners
@@ -5852,7 +5852,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Get project file path
 			$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
-			$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
+			$prefix = $this->_config->get('offroot', 0) ? '' : PATH_CORE ;
 			$from_path = $prefix . $fpath;
 
 			// Include Git Helper
@@ -5919,17 +5919,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$thumb = \Components\Projects\Helpers\Html::createThumbName($filename, '-'.substr($hash, 0, 6) . '_tn', $extension = 'png');
 
 		// Make sure the path exist
-		if (!is_dir( JPATH_ROOT.$gallery_path ))
+		if (!is_dir( PATH_APP . $gallery_path ))
 		{
 			jimport('joomla.filesystem.folder');
-			JFolder::create( JPATH_ROOT . $gallery_path );
+			JFolder::create( PATH_APP . $gallery_path );
 		}
 		jimport('joomla.filesystem.file');
 		if (!file_exists($from_path. DS .$ima))
 		{
 			return false;
 		}
-		if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT . $gallery_path. DS .$hashed))
+		if (!JFile::copy($from_path . DS . $ima, PATH_APP . $gallery_path . DS . $hashed))
 		{
 			return false;
 		}
@@ -5940,14 +5940,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if (in_array(strtolower($ext), $this->_image_ext))
 			{
 				// Also create a thumbnail
-				JFile::copy($from_path . DS .$ima, JPATH_ROOT . $gallery_path . DS . $thumb);
-				if (is_file(JPATH_ROOT . $gallery_path . DS . $thumb))
+				JFile::copy($from_path . DS .$ima, PATH_APP . $gallery_path . DS . $thumb);
+				if (is_file(PATH_APP . $gallery_path . DS . $thumb))
 				{
-					$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $gallery_path . DS . $thumb);
+					$hi = new \Hubzero\Image\Processor(PATH_APP . $gallery_path . DS . $thumb);
 					if (count($hi->getErrors()) == 0)
 					{
 						$hi->resize(100, false, false, true);
-						$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
+						$hi->save(PATH_APP . $gallery_path . DS . $thumb);
 						$src = $gallery_path. DS . $thumb;
 					}
 					else
@@ -5968,7 +5968,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';
 					$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 					$to_path = $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
-					if ($rthumb && is_file(JPATH_ROOT. DS . $to_path . DS . $rthumb))
+					if ($rthumb && is_file(PATH_APP. DS . $to_path . DS . $rthumb))
 					{
 						$default = $to_path . DS . $rthumb;
 					}
@@ -5978,14 +5978,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$default = $default ? $default
 						: trim($this->_pubconfig->get('video_thumb', 'components/com_publications/images/video_thumb.gif'), DS);
 
-				if (is_file(JPATH_ROOT . DS . $default))
+				if (is_file(PATH_APP . DS . $default))
 				{
-					JFile::copy(JPATH_ROOT . DS . $default, JPATH_ROOT . $gallery_path . DS . $thumb);
-					$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $gallery_path . DS . $thumb);
+					JFile::copy(PATH_APP . DS . $default, PATH_APP . $gallery_path . DS . $thumb);
+					$hi = new \Hubzero\Image\Processor(PATH_APP . $gallery_path . DS . $thumb);
 					if (count($hi->getErrors()) == 0)
 					{
 						$hi->resize(100, false, false, true);
-						$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
+						$hi->save(PATH_APP . $gallery_path . DS . $thumb);
 						$src = $gallery_path. DS . $thumb;
 					}
 					else
@@ -6552,7 +6552,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'citations')
 			{
 				// Check citations
-				include_once( JPATH_ROOT . DS . 'components'
+				include_once( PATH_CORE . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 
 				$assoc 	= new \Components\Citations\Tables\Association($this->_database);
@@ -6778,7 +6778,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		mb_internal_encoding('UTF-8');
 
 		// component path for "com_dataviewer"
-		$dv_com_path = JPATH_ROOT . DS . 'components' . DS . 'com_dataviewer';
+		$dv_com_path = PATH_CORE . DS . 'components' . DS . 'com_dataviewer';
 
 		require_once($dv_com_path . DS . 'dv_config.php');
 		require_once($dv_com_path . DS . 'lib' . DS . 'db.php');
@@ -7150,7 +7150,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!isset($this->_git))
 		{
 			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+			include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 				. DS . 'helpers' . DS . 'githelper.php' );
 			$this->_git = new \Components\Projects\Helpers\Git($path);
 		}

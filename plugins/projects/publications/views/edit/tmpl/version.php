@@ -44,7 +44,7 @@ $now = Date::toSql();
 $citation = '';
 if ($this->pub->doi)
 {
-	include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
+	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 
 	$cite 		 	= new stdClass();
 	$cite->title 	= $this->pub->title;

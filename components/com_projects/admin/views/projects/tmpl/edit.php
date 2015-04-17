@@ -9,11 +9,11 @@ $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
-JToolBarHelper::title( Lang::txt( 'Projects' ) . ': '.stripslashes($this->obj->title).' ('.$this->obj->alias.', #'.$this->obj->id.')', 'addedit.png' );
-JToolBarHelper::spacer();
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title( Lang::txt( 'Projects' ) . ': '.stripslashes($this->obj->title).' ('.$this->obj->alias.', #'.$this->obj->id.')', 'addedit.png' );
+Toolbar::spacer();
+Toolbar::apply();
+Toolbar::save();
+Toolbar::cancel();
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 

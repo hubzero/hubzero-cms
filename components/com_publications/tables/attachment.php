@@ -520,7 +520,7 @@ class Attachment extends \JTable
 				. " AND type=" . $this->_db->Quote($type);
 
 		// Import required models
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
+		require_once( PATH_CORE . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 
 		// Get types helper
 		$typeHelper = new \Components\Publications\Models\Types($this->_db);
@@ -597,7 +597,7 @@ class Attachment extends \JTable
 		}
 
 		// Import required models
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
+		require_once( PATH_CORE . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 
 		// Get types helper
 		$typeHelper = new \Components\Publications\Models\Types($this->_db);

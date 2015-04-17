@@ -30,11 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES') . ']', 'addedit.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::spacer();
-JToolBarHelper::deleteList();
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES') . ']', 'addedit.png');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::spacer();
+Toolbar::deleteList();
 
 // Use new curation flow?
 $useBlocks  = $this->config->get('curation', 0);

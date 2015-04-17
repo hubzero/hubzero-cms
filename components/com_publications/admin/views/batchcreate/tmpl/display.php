@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_BATCH_CREATE') . ']', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_BATCH_CREATE') . ']', 'addedit.png');
 
 $this->css('batchcreate');
 $this->js('batchcreate');

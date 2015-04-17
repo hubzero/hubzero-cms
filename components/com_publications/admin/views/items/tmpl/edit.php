@@ -43,11 +43,11 @@ $text = ($this->task == 'edit'
 	? Lang::txt('JACTION_EDIT') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
 	: Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': [ ' . $text . ' ]', 'addedit.png');
-JToolBarHelper::spacer();
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::spacer();
+Toolbar::apply();
+Toolbar::save();
+Toolbar::cancel();
 
 $database = JFactory::getDBO();
 
@@ -73,7 +73,7 @@ if ($this->useBlocks)
 	$customFields = $this->pub->_curationModel->getMetaSchema();
 }
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
 $elements 	= new \Components\Publications\Models\Elements($data, $customFields);
 $fields 	= $elements->render();

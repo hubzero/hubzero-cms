@@ -37,9 +37,9 @@ use Components\Publications\Helpers;
 use stdClass;
 use Exception;
 
-include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
-include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
-require_once( PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
+require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
@@ -909,7 +909,7 @@ class Curation extends SiteController
 			return;
 		}
 		// Add message to project
-		require_once( PATH_ROOT . DS . 'components'
+		require_once( PATH_CORE . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 
 		$activity = $status == 1

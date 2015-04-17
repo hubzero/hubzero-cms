@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . Lang::txt('COM_PUBLICATIONS_VERSIONS') , 'addedit.png');
-JToolBarHelper::spacer();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . Lang::txt('COM_PUBLICATIONS_VERSIONS') , 'addedit.png');
+Toolbar::spacer();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

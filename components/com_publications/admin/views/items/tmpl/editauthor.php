@@ -38,11 +38,11 @@ $tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS').': [ ' . $pageTitle . ' '
+	Toolbar::title(Lang::txt('COM_PUBLICATIONS').': [ ' . $pageTitle . ' '
 	. Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #'
 	. $this->pub->id . ' (v.' . $this->row->version_label . ')' . ' ]', 'groups.png');
-	JToolBarHelper::save('saveauthor');
-	JToolBarHelper::cancel();
+	Toolbar::save('saveauthor');
+	Toolbar::cancel();
 }
 
 $name 		= $this->author->name ? $this->author->name : NULL;

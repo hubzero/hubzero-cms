@@ -31,13 +31,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': [ ' . $text . ' ]', 'addedit.png');
+Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': [ ' . $text . ' ]', 'addedit.png');
 if ($this->row->id)
 {
-	JToolBarHelper::apply();
+	Toolbar::apply();
 }
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::save();
+Toolbar::cancel();
 
 $dcTypes = array(
 	'Collection' , 'Dataset' , 'Event' , 'Image' ,
@@ -228,7 +228,7 @@ function submitbutton(pressbutton)
 				</tfoot>
 				<tbody id="field-items">
 				<?php
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 					. DS . 'models' . DS . 'elements.php');
 				$elements = new \Components\Publications\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();

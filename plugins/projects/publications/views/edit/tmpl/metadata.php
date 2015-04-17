@@ -51,7 +51,7 @@ if (count($matches) > 0)
 
 $customFields = $this->customFields && $this->customFields != '{"fields":[]}' ? $this->customFields : '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
 $elements 	= new \Components\Publications\Models\Elements($data, $customFields);
 $fields 	= $elements->render();
