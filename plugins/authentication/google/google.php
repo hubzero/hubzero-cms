@@ -146,7 +146,7 @@ class plgAuthenticationGoogle extends JPlugin
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				'To log in via Google, you must authorize the ' . Config::get('sitename') . ' app.',
 				'error'
 			);
@@ -314,13 +314,13 @@ class plgAuthenticationGoogle extends JPlugin
 		$client->setRedirectUri($service . '/index.php?option=com_users&task=user.link&authenticator=google');
 
 		// Create OAuth2 Instance
-		$oauth2 = new Google_Auth_OAuth2($client);
+		$oauth2 = new Google_Service_OAuth2($client);
 
 		// If we have this code, we know we have a successful return from google
-		if (Request::getVar('code', NULL))
+		if ($code = Request::getVar('code', NULL))
 		{
 			// Authenticate the user
-			$client->authenticate();
+			$client->authenticate($code);
 		}
 
 		// If we have an access token set, carry on
