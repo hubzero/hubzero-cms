@@ -335,7 +335,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Is user sustem user?
-	 * 
+	 *
 	 * @param  [type]  $userid [description]
 	 * @return boolean         [description]
 	 */
@@ -1116,40 +1116,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		);
 	}
 
-	/**
-	 * Add a member role
-	 *
-	 * @return     void
-	 */
-	/*
-	private function addrole()
-	{
-		$app = JFactory::getApplication();
-
-		if ($this->membership_control == 0)
-		{
-			return false;
-		}
-
-		$role = Request::getVar('role', '');
-		$gid = Request::getVar('gid', '');
-
-		if (!$role || !$gid)
-		{
-			return false;
-		}
-
-		$db = JFactory::getDBO();
-		$sql = "INSERT INTO #__xgroups_roles(gidNumber,role) VALUES(".$db->Quote($gid).",".$db->Quote($role).")";
-		$db->setQuery($sql);
-		if (!$db->query())
-		{
-			$this->setError('An error occurred while trying to add the member role. Please try again.');
-		}
-
-		$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
-	}
-	*/
 	/**
 	 * Remove a member role
 	 *

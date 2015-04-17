@@ -206,18 +206,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// appends view override if this is a supergroup
-		if ($this->group->isSuperGroup())
-		{
-			$view->addTemplatePath($this->_superGroupViewOverride('dashboard'));
-		}
-
-		// only show on dashboard for super groups who override it
-		if (!file_exists($this->_superGroupViewOverride('dashboard')))
-		{
-			return $this->_browse();
-		}
-
 		// load citation object
 		$citations = new \Components\Citations\Tables\Citation($this->database);
 
