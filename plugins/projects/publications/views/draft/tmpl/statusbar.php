@@ -32,10 +32,10 @@ $active 		= $this->active ? $this->active : 'status';
 $activenum 		= $this->activenum ? $this->activenum : NULL;
 
 // Build url
-$route = $this->pub->_project->provisioned
+$route = $this->pub->_project->isProvisioned()
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->alias . '&active=publications';
+				. $this->pub->_project->get('alias') . '&active=publications';
 
 // Are we in draft flow?
 $move = ($this->pub->state == 3 || $this->pub->state == 4) ? '&move=continue' : '';

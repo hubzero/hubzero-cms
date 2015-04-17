@@ -35,7 +35,7 @@ $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
 $coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->sequence, $this->active, $this->elementId);
 $last   = ($this->order == $this->total) ? 1 : 0;
 $max 	= $this->manifest->params->max;
-$prov 	= $this->pub->_project->provisioned == 1 ? 1 : 0;
+$prov 	= $this->pub->_project->isProvisioned() ? 1 : 0;
 
 $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
 
@@ -55,7 +55,7 @@ $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->ele
 
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
 $this->editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Get curator status

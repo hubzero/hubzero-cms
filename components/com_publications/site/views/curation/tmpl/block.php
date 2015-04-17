@@ -28,10 +28,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 $project = $this->pub->_project;
 
 // Build url
-$route = $this->pub->_project->provisioned
+$route = $this->pub->_project->isProvisioned()
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->alias . '&active=publications';
+				. $this->pub->_project->get('alias') . '&active=publications';
 
 $url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
 

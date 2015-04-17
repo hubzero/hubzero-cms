@@ -117,7 +117,7 @@ class File extends Base
 		}
 
 		// Get project path
-		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
+		$configs->path 	= $pub->_project->repo()->get('path');
 
 		// Get publication paths
 		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', '', 1);

@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->provisioned == 1 ? 1 : 0;
+$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
 
 // Get block properties
 $step 	  = $this->step;
@@ -38,7 +38,7 @@ $props = $name . '-' . $this->step;
 // Build url
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
 $selectUrl   = $prov
 		? Route::url( $route) . '?active=team&action=select' . '&p=' . $props . '&amp;vid=' . $this->pub->version_id
 		: Route::url( $route . '&active=team&action=select') .'/?p=' . $props . '&amp;pid='
@@ -129,25 +129,17 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				</p>
 			</div>
 		<?php }
-			if (($showGroupOwner && $this->groups) || $this->pub->_project->owned_by_group)
+			if (($showGroupOwner && $this->groups) || $this->pub->_project->groupOwner())
 			{
-				$group = new \Hubzero\User\Group();
+				if ($this->pub->_project->groupOwner())
+				{
+					$this->groups[] = $this->pub->_project->groupOwner();
+				}
 				$used = array();
-				if ($this->pub->_project->owned_by_group && \Hubzero\User\Group::exists($this->pub->_project->owned_by_group))
-				{
-					$group = \Hubzero\User\Group::getInstance( $this->pub->_project->owned_by_group );
-				}
-				if ($this->pub->group_owner)
-				{
-					$group = \Hubzero\User\Group::getInstance( $this->pub->group_owner );
-					if ($group)
-					{
-						$this->groups[] = $group;
-					}
-				}
+
 				?>
-			<div class="submitter groupowner"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->owned_by_group) { echo $group->description . '(' . $group->cn . ')'; } ?></p>
-				<?php if (!$this->pub->_project->owned_by_group) { ?>
+			<div class="submitter groupowner"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->groupOwner()) { echo $this->pub->_project->groupOwner('description') . '(' . $this->pub->_project->groupOwner('cn') . ')'; } ?></p>
+				<?php if (!$this->pub->_project->groupOwner()) { ?>
 					<select name="group_owner">
 						<option value=""><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
 						<?php foreach ($this->groups as $g) {
@@ -157,13 +149,13 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 							}
 							$used[] = $g->gidNumber;
 							?>
-							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->group_owner == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->_project->groupOwner('id') == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
 						<?php } ?>
 					</select>
 				<?php } else { ?>
-				<input type="hidden" name="group_owner" value="<?php echo $this->pub->group_owner; ?>" />
+				<input type="hidden" name="group_owner" value="<?php echo $this->pub->_project->groupOwner('id'); ?>" />
 				<?php } ?>
-				<p class="hint">* <?php echo $this->pub->_project->owned_by_group ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT'); ?></p>
+				<p class="hint">* <?php echo $this->pub->_project->groupOwner() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT'); ?></p>
 			</div>
 		<?php }
 		?>

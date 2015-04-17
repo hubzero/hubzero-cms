@@ -201,8 +201,7 @@ class Items extends AdminController
 		}
 
 		// Load publication project
-		$this->view->pub->_project = new \Components\Projects\Tables\Project($this->database);
-		$this->view->pub->_project->load($this->view->pub->project_id);
+		$this->view->pub->_project = new \Components\Projects\Models\Project($this->view->pub->project_id);
 
 		// Load version
 		$vid = $this->view->pub->version_id;
@@ -369,8 +368,7 @@ class Items extends AdminController
 		else
 		{
 			// Load publication project
-			$this->view->pub->_project = new \Components\Projects\Tables\Project($this->database);
-			$this->view->pub->_project->load($this->view->pub->project_id);
+			$this->view->pub->_project = new \Components\Projects\Models\Project($this->view->pub->project_id);
 
 			// Get master type info
 			$mt = new Tables\MasterType( $this->database );
@@ -1749,8 +1747,7 @@ class Items extends AdminController
 			$pub->version 	= $pub->version_number;
 
 			// Load publication project
-			$pub->_project = new \Components\Projects\Tables\Project($this->database);
-			$pub->_project->load($pub->project_id);
+			$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
 
 			// Get master type info
 			$mt = new Tables\MasterType( $this->database );

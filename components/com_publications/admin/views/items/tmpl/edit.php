@@ -380,7 +380,7 @@ function popratings()
 		// Draw group selector
 		$this->view('_selectgroup')
 		     ->set('groups', $this->groups)
-		     ->set('groupOwner', $this->pub->_project->owned_by_group)
+		     ->set('groupOwner', $this->pub->_project->groupOwner())
 		     ->set('value', $this->pub->group_owner)
 		     ->display(); ?>
 	</div>

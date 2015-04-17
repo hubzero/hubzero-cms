@@ -55,8 +55,7 @@ class Tool extends Base
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 		// Get project path
-		$config 		= Component::params( 'com_projects' );
-		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
+		$configs->path 	= $pub->_project->repo()->get('path');
 
 		$pubconfig = Component::params( 'com_publications' );
 		$base = $pubconfig->get('webpath');

@@ -364,7 +364,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->model->project();
+		$view->publication->_project 	= $this->model;
 
 		// Get curation model
 		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);

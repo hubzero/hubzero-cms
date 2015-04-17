@@ -171,6 +171,23 @@ class Project extends Model
 	}
 
 	/**
+	 * Get project local repo
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function repo()
+	{
+		require_once(__DIR__ . DS . 'repo.php');
+		if (!isset($this->_repo))
+		{
+			$this->_repo = new \Components\Projects\Models\Repo ($this, 'local');
+		}
+
+		return $this->_repo;
+	}
+
+	/**
 	 * Return a formatted created timestamp
 	 *
 	 * @param      string $as What data to return
@@ -611,6 +628,10 @@ class Project extends Model
 	 */
 	public function groupOwner($property=null)
 	{
+		if (!$this->get('owned_by_group'))
+		{
+			return false;
+		}
 		if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group))
 		{
 			$this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('owned_by_group'));

@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov 	= $this->pub->_project->provisioned == 1 ? 1 : 0;
+$prov 	= $this->pub->_project->isProvisioned() ? 1 : 0;
 
 switch ($this->type)
 {
@@ -42,7 +42,7 @@ switch ($this->type)
 }
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
 $selectUrl   = $prov
 		? Route::url( $route) . '?active=' . $active . '&action=select&p=' . $this->props
 			. '&vid=' . $this->pub->version_id

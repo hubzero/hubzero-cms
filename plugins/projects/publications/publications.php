@@ -474,7 +474,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   							= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project	= $this->_project;
+		$view->publication->_project	= $this->model;
 
 		// Get curation model
 		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
@@ -599,7 +599,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   							= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project	= $this->_project;
+		$view->publication->_project	= $this->model;
 
 		// Get curation model
 		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
@@ -814,7 +814,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		$pub->version 	= $version;
-		$pub->_project 	= $this->_project;
+		$pub->_project 	= $this->model;
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Get type info
@@ -1369,7 +1369,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$pub->_project 	= $this->_project;
+		$pub->_project 	= $this->model;
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Main version
@@ -1561,7 +1561,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   			= new \Components\Publications\Tables\MasterType( $this->_database );
 		$pub->_type   	= $mt->getType($pub->base);
-		$pub->_project 	= $this->_project;
+		$pub->_project 	= $this->model;
 
 		// Get curation model
 		$pub->_curationModel = new \Components\Publications\Models\Curation($pub->_type->curation);
@@ -2560,7 +2560,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   			= new \Components\Publications\Tables\MasterType( $this->_database );
 		$pub->_type   	= $mt->getType($pub->base);
-		$pub->_project 	= $this->_project;
+		$pub->_project 	= $this->model;
 
 		// Get curation model
 		$pub->_curationModel = new \Components\Publications\Models\Curation($pub->_type->curation);

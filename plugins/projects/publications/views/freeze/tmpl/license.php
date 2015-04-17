@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->provisioned == 1 ? 1 : 0;
+$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
 
 // Get block properties
 $step 	  = $this->step;
@@ -38,7 +38,7 @@ $props = $name . '-' . $this->step;
 // Build url
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
 $selectUrl   = $prov
 		? Route::url( $route) . '?active=publications&action=select'
 		: Route::url( $route . '&active=publications&action=select') .'/?p=' . $props . '&amp;pid='

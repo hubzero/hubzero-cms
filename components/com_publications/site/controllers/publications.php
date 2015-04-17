@@ -759,8 +759,7 @@ class Publications extends SiteController
 		$this->publication->version = $this->version;
 
 		// Load publication project
-		$this->publication->_project = new \Components\Projects\Tables\Project($this->database);
-		$this->publication->_project->load($this->publication->project_id);
+		$this->publication->_project = new \Components\Projects\Models\Project($this->publication->project_id);
 
 		// Get attachments
 		$pContent = new Tables\Attachment( $this->database );
@@ -1477,8 +1476,7 @@ class Publications extends SiteController
 			$pub->version 	= $pub->version_number;
 
 			// Load publication project
-			$pub->_project = new \Components\Projects\Tables\Project($this->database);
-			$pub->_project->load($pub->project_id);
+			$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
 
 			// Get master type info
 			$mt = new Tables\MasterType( $this->database );

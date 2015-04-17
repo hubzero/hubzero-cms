@@ -307,8 +307,7 @@ class Publication extends Object
 	{
 		if (empty($this->_project))
 		{
-			$this->_project = new \Components\Projects\Tables\Project($this->_db);
-			$this->_project->load($this->publication->project_id);
+			$this->_project = new \Components\Projects\Models\Project($this->publication->project_id);
 			$this->_project->_params = new \JParameter( $this->_project->params );
 		}
 

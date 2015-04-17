@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->provisioned == 1 ? 1 : 0;
+$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
 
 // Get block properties
 $step 	  = $this->step;

@@ -81,7 +81,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 
 $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
 
-if ($this->pub->_project->provisioned == 1 && isset($this->manifest->aboutProv))
+if ($this->pub->_project->isProvisioned() && isset($this->manifest->aboutProv))
 {
 	$aboutText = $this->manifest->aboutProv;
 }

@@ -63,7 +63,7 @@ class Dataselector extends Base
 		$html = '';
 
 		// Get project path
-		$this->path = \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
+		$this->path = $pub->_project->repo()->get('path');
 
 		$showElement 	= $master->props['showElement'];
 		$total 			= $master->props['total'];

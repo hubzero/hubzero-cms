@@ -375,11 +375,11 @@ class Authors extends Base
 		$owner = NULL;
 		if ($uid)
 		{
-			$owner = $objO->getOwnerId( $pub->_project->id, $uid );
+			$owner = $objO->getOwnerId( $pub->_project->get('id'), $uid );
 		}
 		elseif ($email)
 		{
-			$owner = $objO->checkInvited( $pub->_project->id, $email );
+			$owner = $objO->checkInvited( $pub->_project->get('id'), $email );
 		}
 
 		if ($owner && $objO->load($owner))
@@ -397,7 +397,7 @@ class Authors extends Base
 		{
 			$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
-			$objO->projectid 	 = $pub->_project->id;
+			$objO->projectid 	 = $pub->_project->get('id');
 			$objO->userid 		 = $uid;
 			$objO->status 		 = $uid ? 1 : 0;
 			$objO->added 		 = Date::toSql();
@@ -462,7 +462,7 @@ class Authors extends Base
 		if ($sendInvite && $email)
 		{
 			// Get project model
-			$project = new \Components\Projects\Models\Project($pub->_project->id);
+			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
 			// Plugin params
 			$plugin_params = array(
@@ -513,7 +513,7 @@ class Authors extends Base
 		$xregistration = new \MembersModelRegistration();
 
 		// Get current owners
-		$owners = $objO->getIds($pub->_project->id, 'all', 1);
+		$owners = $objO->getIds($pub->_project->get('id'), 'all', 1);
 
 		$email 		= Request::getVar( 'email', '', 'post' );
 		$firstName 	= Request::getVar( 'firstName', '', 'post' );
@@ -552,7 +552,7 @@ class Authors extends Base
 		if ($uid && !$row->user_id)
 		{
 			// Do we have an owner with this user id?
-			$owner = $objO->getOwnerId( $pub->_project->id, $uid );
+			$owner = $objO->getOwnerId( $pub->_project->get('id'), $uid );
 
 			if ($owner)
 			{
@@ -588,7 +588,7 @@ class Authors extends Base
 		// Update project owner (invited)
 		if ($email && !$row->user_id && $objO->load($row->project_owner_id))
 		{
-			$invitee = $objO->checkInvited( $pub->_project->id, $email );
+			$invitee = $objO->checkInvited( $pub->_project->get('id'), $email );
 
 			// Do we have a registered user with this email?
 			$user = $xregistration->getEmailId($email);
@@ -616,7 +616,7 @@ class Authors extends Base
 		if ($sendInvite && $email)
 		{
 			// Get project model
-			$project = new \Components\Projects\Models\Project($pub->_project->id);
+			$project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
 			// Plugin params
 			$plugin_params = array(
@@ -698,7 +698,7 @@ class Authors extends Base
 		}
 
 		// Get creator groups
-		$view->groups = \Hubzero\User\Helper::getGroups($pub->_project->owned_by_user, 'members', 1);
+		$view->groups = \Hubzero\User\Helper::getGroups($pub->_project->get('owned_by_user'), 'members', 1);
 
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
@@ -706,7 +706,7 @@ class Authors extends Base
 
 		// Get team members
 		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
-		$view->teamids = $objO->getIds( $pub->_project->id, 'all', 0, 0 );
+		$view->teamids = $objO->getIds( $pub->_project->get('id'), 'all', 0, 0 );
 
 		if ($this->getError())
 		{

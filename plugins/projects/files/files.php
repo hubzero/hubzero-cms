@@ -534,7 +534,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   				= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->model->project();
+		$view->publication->_project 	= $this->model;
 
 		// Get attachments
 		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );

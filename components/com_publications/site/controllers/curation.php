@@ -264,9 +264,9 @@ class Curation extends SiteController
 			return;
 		}
 
-		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
-		$pub->_project->load($pub->project_id);
-		$pub->_type    	= $mt->getType($pub->base);
+		// Load publication project
+		$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
+		$pub->_type    = $mt->getType($pub->base);
 
 		// Check authorization
 		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
@@ -387,9 +387,9 @@ class Curation extends SiteController
 			return;
 		}
 
-		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
-		$pub->_project->load($pub->project_id);
-		$pub->_type    	= $mt->getType($pub->base);
+		// Load publication project
+		$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
+		$pub->_type    = $mt->getType($pub->base);
 
 		// Check authorization
 		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
@@ -732,9 +732,9 @@ class Curation extends SiteController
 			return;
 		}
 
-		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
-		$pub->_project->load($pub->project_id);
-		$pub->_type    	= $mt->getType($pub->base);
+		// Load publication project
+		$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
+		$pub->_type    = $mt->getType($pub->base);
 
 		// Check authorization
 		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
@@ -838,9 +838,9 @@ class Curation extends SiteController
 			return;
 		}
 
-		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
-		$pub->_project->load($pub->project_id);
-		$pub->_type    	= $mt->getType($pub->base);
+		// Load publication project
+		$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
+		$pub->_type    = $mt->getType($pub->base);
 
 		// Check authorization
 		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
@@ -927,7 +927,7 @@ class Curation extends SiteController
 		. $pubtitle . '" ';
 
 		// Build return url
-		$link 	= '/projects/' . $pub->_project->alias . '/publications/'
+		$link 	= '/projects/' . $pub->_project->get('alias') . '/publications/'
 				. $pub->id . '/?version=' . $pub->version_number;
 
 		// Record activity
@@ -948,7 +948,7 @@ class Curation extends SiteController
 		$juri 	 = \JURI::getInstance();
 		$sef	 = 'publications' . DS . $pub->id . DS . $pub->version_number;
 		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
-		$manage  = rtrim($juri->base(), DS) . DS . 'projects' . DS . $pub->_project->alias . DS . 'publications' . DS . $pub->id . DS . $pub->version_number;
+		$manage  = rtrim($juri->base(), DS) . DS . 'projects' . DS . $pub->_project->get('alias') . DS . 'publications' . DS . $pub->id . DS . $pub->version_number;
 		$message  = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
 		if ($status != 1)

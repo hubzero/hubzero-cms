@@ -758,14 +758,14 @@ class Html
 		// Show message to publication owners
 		elseif ($publication->access('manage'))
 		{
-			if ($publication->_project->provisioned == 0)
+			if ($publication->_project->isProvisioned() == 0)
 			{
 				$project  = Lang::txt('COM_PUBLICATIONS_FROM_PROJECT');
 				$project .= $publication->access('owner')
 					? ' <a href="' . Route::url('index.php?option=com_projects&alias='
-					. $publication->_project->alias) .'">'
+					. $publication->_project->get('alias')) .'">'
 					: ' <strong>';
-				$project .= \Hubzero\Utility\String::truncate($publication->_project->title, 50);
+				$project .= \Hubzero\Utility\String::truncate($publication->_project->get('title'), 50);
 				$project .= $publication->access('owner') ? '</a>' : '</strong>';
 				$msg .= ' <span class="fromproject">' . $project . '</span>';
 			}
@@ -833,9 +833,9 @@ class Html
 			if ($publication->access('owner'))
 			{
 				// Build pub url
-				$route = $publication->_project->provisioned == 1
+				$route = $publication->_project->isProvisioned() == 1
 						? 'index.php?option=com_publications&task=submit'
-						: 'index.php?option=com_projects&alias=' . $publication->_project->alias . '&active=publications';
+						: 'index.php?option=com_projects&alias=' . $publication->_project->get('alias') . '&active=publications';
 
 				$msg .= ' <a href="' . Route::url($route . '&pid=' . $publication->id) . '?version=' . $publication->versionAlias . '">' . Lang::txt('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION') . '</a>.';
 			}

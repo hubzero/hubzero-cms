@@ -102,10 +102,10 @@ class Description extends Base
 		}
 
 		// Build url
-		$route = $pub->_project->provisioned
+		$route = $pub->_project->isProvisioned()
 					? 'index.php?option=com_publications&task=submit'
 					: 'index.php?option=com_projects&alias='
-						. $pub->_project->alias . '&active=publications';
+						. $pub->_project->get('alias') . '&active=publications';
 
 		$pub->url = Route::url($route . '&pid=' . $pub->id . '&section='
 			. $this->_name . '&step=' . $sequence . '&move=continue');
