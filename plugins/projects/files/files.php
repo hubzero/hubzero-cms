@@ -720,6 +720,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _upload()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$ajax 	= Request::getInt('ajax', 0);
 
@@ -767,6 +774,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$json       = Request::getVar('json', 0);
 		$no_html    = Request::getVar('no_html', 0);
@@ -926,6 +940,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _saveDir()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Set params
 		$params = array(
 			'subdir'  => $this->subdir,
@@ -964,6 +985,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _deleteDir()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Set params
 		$params = array(
 			'subdir'  => $this->subdir,
@@ -996,34 +1024,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get stored remote connections
-	 *
-	 * @return     array
-	 */
-	protected function _getRemoteConnections($remoteEdit = true)
-	{
-		$remotes = array();
-		if (!empty($this->_remoteService))
-		{
-			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-			$remotes  = $objRFile->getRemoteFiles(
-				$this->model->get('id'),
-				$this->_remoteService,
-				$this->subdir,
-				$remoteEdit
-			);
-		}
-
-		return $remotes;
-	}
-
-	/**
 	 * Delete items
 	 *
 	 * @return     void, redirect
 	 */
 	protected function _delete()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Get incoming array of items
 		$items = $this->_sortIncoming();
 
@@ -1153,6 +1166,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _rename()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Confirm request
 		if ($this->_task == 'rename')
 		{
@@ -1234,6 +1254,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _move()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Get incoming array of items
 		$items = $this->_sortIncoming();
 
@@ -1689,6 +1716,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _restore()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$item = urldecode(Request::getVar( 'asset', ''));
 		$hash = Request::getVar('hash', '');
@@ -1744,7 +1778,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$items = $this->_sortIncoming();
 
 		// Get stored remote connections
-		$remotes = $this->_getRemoteConnections();
+		$remotes = $this->_getRemoteConnections(false);
 
 		// Params for repo call
 		$params = array(
@@ -2348,6 +2382,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _share()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$converted  = Request::getInt('converted', 0);
 		$service 	= Request::getVar('service', 'google');
@@ -2665,261 +2706,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Write sync status to file
-	 *
-	 * @return   void
-	 */
-	protected function _writeToFile($content = '', $filename = '', $append = false, $dir = 'logs' )
-	{
-		// Get temp path
-		if (!$filename)
-		{
-			if (empty($this->_logPath))
-			{
-				return false;
-			}
-			if (!is_dir($this->_logPath))
-			{
-				$this->fileSystem->makeDirectory($this->_logPath);
-			}
-			$sfile 	 = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
-		}
-		else
-		{
-			$sfile = $filename;
-		}
-
-		$place   = $append == true ? 'a' : 'w';
-		$content = $append ? $content . "\n" : $content;
-
-		$handle  = fopen($sfile, $place);
-		fwrite($handle, $content);
-		fclose($handle);
-	}
-
-	/**
-	 * Read sync status from file (last line)
-	 *
-	 * @return   void
-	 */
-	protected function _readFile($filename = '', $dir = 'logs', $readAll = false)
-	{
-		// Get temp path
-		if (!$filename)
-		{
-			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
-		}
-		else
-		{
-			$sfile = $filename;
-		}
-
-		if (is_file($sfile))
-		{
-			if ($readAll == true)
-			{
-				return file_get_contents($sfile);
-			}
-			else
-			{
-				// Return last line
-				return exec('tail -n 1 ' . $sfile);
-			}
-		}
-
-		return NULL;
-	}
-
-	/**
-	 * Get file preview
-	 *
-	 * @param      string	$file
-	 * @param      string  	$hash
-	 * @param      object  	$remote
-	 * @param      string  	$path
-	 * @param      string  	$subdir
-	 *
-	 * @return     array or false
-	 */
-	public function getFilePreview(
-		$file, $hash, $path = '', $subdir = '',
-		$remote = NULL, $medium = false, $to_path = NULL,
-		$hashed = NULL, $width = 180, $height = 180
-	)
-	{
-		$image = NULL;
-
-		$rthumb = NULL;
-		if ($remote)
-		{
-			$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';
-		}
-		$hash = $hash ? substr($hash, 0, 10) : '';
-
-		if (!$hashed)
-		{
-			$filename = basename($file);
-			$hashed = $hash ? \Components\Projects\Helpers\Html::createThumbName($filename, '-' . $hash, 'png') : NULL;
-			$hashed = $medium ? md5($filename . '-' . $hash) . '.png' : $hashed;
-		}
-
-		if (!$to_path)
-		{
-			$imagepath = trim($this->model->config()->get('imagepath', '/site/projects'), DS);
-			$to_path = PATH_APP . DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'preview';
-		}
-
-		$from_path = $path . DS;
-		$from_path = $subdir ? $from_path . $subdir . DS : $from_path;
-
-		$maxWidth 	= $medium == true ? 600 : $width;
-		$maxHeight 	= $medium == true ? 600 : $height;
-
-		if ($hashed && is_file($to_path . DS . $hashed))
-		{
-			// First check locally generated thumbnail
-			$image = str_replace(PATH_APP, '', $to_path . DS . $hashed);
-		}
-		elseif ($rthumb && is_file($to_path . DS . $rthumb))
-		{
-			// Check remotely generated thumbnail
-			$image = str_replace(PATH_APP, '', $to_path . DS . $rthumb);
-
-			// Copy this over as local thumb
-			if ($hashed && \JFile::copy($to_path . DS . $rthumb, $to_path . DS . $hashed))
-			{
-				\JFile::delete($to_path . DS . $rthumb);
-			}
-		}
-		elseif ($hashed)
-		{
-			// Generate thumbnail locally
-			if (!file_exists( $to_path ))
-			{
-				\JFolder::create( $to_path );
-			}
-
-			// Get file extention
-			$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
-
-			// Image formats
-			$image_formats = array('png', 'gif', 'jpg', 'jpeg', 'tiff', 'bmp');
-
-			// Make sure it's an image file
-			if (!in_array(strtolower($ext), $image_formats) || !is_file($from_path. $file))
-			{
-				return false;
-			}
-
-			if (!\JFile::copy($from_path. $file, $to_path . DS . $hashed))
-			{
-				return false;
-			}
-
-			// Resize the image if necessary
-			$hi = new \Hubzero\Image\Processor($to_path . DS . $hashed);
-			$hi->resize($maxWidth, false, false, true);
-			$hi->save($to_path . DS . $hashed);
-			$image = str_replace(PATH_APP, '', $to_path . DS . $hashed);
-		}
-
-		return $image;
-	}
-
-	/**
-	 * Archive files
-	 *
-	 * @param      array 	$files
-	 * @param      array  	$folders
-	 * @param      string  	$projectPath
-	 * @param      string  	$subdir
-	 *
-	 * @return     array or false
-	 */
-	private function _archiveFiles( $items, $projectPath = '', $subdir = '' )
-	{
-		if (!extension_loaded('zip'))
-		{
-			return false;
-		}
-
-		if (!$projectPath || !is_dir($projectPath))
-		{
-			return false;
-		}
-
-		if (empty($items))
-		{
-			return false;
-		}
-
-		$maxDownload 	= intval($this->params->get('maxDownload', 104857600));
-
-		// Get temp directory
-		$base_path 		= sys_get_temp_dir();
-		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
-		$path 			= $subdir ? $projectPath. DS . $subdir : $projectPath;
-		$combinedSize  	= 0;
-		$tarpath        =  $base_path . DS . $tarname;
-
-		$zip = new ZipArchive;
-
-		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === TRUE)
-		{
-			$i = 0;
-
-			foreach ($items as $element)
-			{
-				foreach ($element as $type => $item)
-				{
-					if ($type != 'file')
-					{
-						continue;
-					}
-					else
-					{
-						$fpath = $path . DS . $item;
-
-						if (!is_file($fpath))
-						{
-							continue;
-						}
-
-						$combinedSize = $combinedSize + filesize($fpath);
-
-						// Check against maximum allowable size
-						if ($combinedSize > $maxDownload)
-						{
-							$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT') );
-							return false;
-						}
-
-						$zip->addFile($fpath, basename($item));
-						$i++;
-					}
-				}
-			}
-
-		    $zip->close();
-
-			if ($i == 0)
-			{
-				$this->setError( Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR') );
-				return false;
-			}
-
-			$archive = array();
-			$archive['path'] = $tarpath;
-			$archive['name'] = $tarname;
-			return $archive;
-		}
-		else
-		{
-		    return false;
-		}
-	}
-
-	/**
 	 * Optimize repository
 	 *
 	 * @param      object  	$model Project model
@@ -3064,128 +2850,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get member files (provisioned project)
-	 *
-	 * @param      string	$path
-	 * @param      string  	$subdir
-	 * @param      boolean  $recurse
-	 *
-	 * @return     array
-	 */
-	protected function _getMemberFiles($recurse = true)
-	{
-		// Check path format
-		$subdir = trim($this->subdir, DS);
-		$fullpath = $subdir ? $this->_path. DS . $subdir : $this->_path;
-
-		$get = $this->fileSystem->files($fullpath);
-
-		$files = array();
-		if ($get)
-		{
-			foreach ($get as $file)
-			{
-				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
-				{
-					$file = str_replace($this->_path . DS, '', $file);
-					$entry = new \Components\Projects\Models\File(trim($file), $this->_path);
-					$files[] = $entry;
-				}
-			}
-		}
-
-		return $files;
-	}
-
-	/**
-	 * Clean incoming data
-	 *
-	 * @return     array
-	 */
-	protected function _cleanData()
-	{
-		// Clean up empty values
-		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
-		$folders 	= Request::getVar( 'folder', '', 'request', 'array' );
-
-		foreach ($checked as $key => $value)
-		{
-			$value = trim($value);
-			if ($value == '')
-			{
-				unset($checked[$key]);
-			}
-			else
-			{
-				$checked[$key] = trim($value);
-			}
-		}
-
-		foreach ($folders as $key => $value)
-		{
-			$value = trim($value);
-			if ($value == '')
-			{
-				unset($folders[$key]);
-			}
-			else
-			{
-				$folders[$key] = trim($value);
-			}
-		}
-
-		Request::setVar( 'asset', $checked);
-		Request::setVar( 'folder', $folders);
-	}
-
-	/**
-	 * Sort incoming file/folder data
-	 *
-	 * @return     array
-	 */
-	protected function _sortIncoming()
-	{
-		// Clean incoming data
-		$this->_cleanData();
-
-		// Incoming
-		$checked = Request::getVar( 'asset', '', 'request', 'array' );
-		$folders = Request::getVar( 'folder', '', 'request', 'array' );
-
-		$combined = array();
-		if (!empty($checked))
-		{
-			foreach ($checked as $ch)
-			{
-				if (trim($ch) != '')
-				{
-					$combined[] = array('file' => urldecode($ch));
-				}
-			}
-		}
-		elseif ($file = Request::getVar( 'asset', ''))
-		{
-			$combined[] = array('file' => urldecode($file));
-		}
-		if (!empty($folders))
-		{
-			foreach ($folders as $f)
-			{
-				if (trim($f) != '')
-				{
-					$combined[] = array('folder' => urldecode($f));
-				}
-			}
-		}
-		elseif ($folder = Request::getVar( 'folder', ''))
-		{
-			$combined[] = array('folder' => urldecode($folder));
-		}
-
-		return $combined;
-	}
-
-	/**
 	 * Manage connections to outside services
 	 *
 	 * @param      string	$service	Service name (google/dropbox)
@@ -3267,14 +2931,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->connect		= $this->_connect;
 
 		// Get refreshed params
-		$obj = new \Components\Projects\Tables\Project( $this->_database );
-		$obj->load($this->model->get('id'));
-		$view->params = new \JParameter( $obj->params );
+		$this->model->reloadProject();
+		$view->params = new \JParameter( $this->model->table()->params );
 
 		// Get connection details for user
-		$objO = new \Components\Projects\Tables\Owner( $this->_database );
-		$objO->loadOwner ($this->model->get('id'), $this->_uid);
-		$view->oparams = new \JParameter( $objO->params );
+		$member = $this->model->member();
+		$view->oparams = new \JParameter( $member->params );
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -3297,8 +2959,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$auto 	 = Request::getInt('auto', 0);
 		$queue 	 = Request::getInt('queue', 0);
 
-		$pparams = $this->model->params;
-
 		// Timed sync?
 		$autoSync = $this->params->get('auto_sync', 0);
 
@@ -3312,7 +2972,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_rSync['service'] = $servicename;
 
 				// Get time of last sync
-				$synced = $pparams->get($servicename . '_sync');
+				$synced = $this->model->params->get($servicename . '_sync');
 
 				// Stop if auto sync request and not enough time passed
 				if ($auto && $autoSync && !$queue)
@@ -3392,10 +3052,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_writeToFile(ucfirst($service) . ' '. Lang::txt('PLG_PROJECTS_FILES_SYNC_STARTED') );
 
 		// Get time of last sync
-		$obj = new \Components\Projects\Tables\Project( $this->_database );
-		$obj->load($this->model->get('id'));
-		$pparams = new \JParameter( $obj->params );
-		$synced = $pparams->get($service . '_sync', 1);
+		$synced = $this->model->params->get($service . '_sync', 1);
 
 		// Get disk usage
 		$diskUsage = $this->repo->call('getDiskUsage',
@@ -3405,18 +3062,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$quota 	   = $pparams->get('quota')
-					? $pparams->get('quota')
+		$quota 	   = $this->model->params->get('quota')
+					? $this->model->params->get('quota')
 					: \Components\Projects\Helpers\Html::convertSize( floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
 		$avail 	   = $quota - $diskUsage;
 
 		// Last synced remote/local change
-		$lastRemoteChange = $pparams->get($service . '_last_remote_change', NULL);
-		$lastLocalChange  = $pparams->get($service . '_last_local_change', NULL);
+		$lastRemoteChange = $this->model->params->get($service . '_last_remote_change', NULL);
+		$lastLocalChange  = $this->model->params->get($service . '_last_local_change', NULL);
 
 		// Get last change ID for project creator
-		$lastSyncId = $pparams->get($service . '_sync_id', NULL);
-		$prevSyncId = $pparams->get($service . '_prev_sync_id', NULL);
+		$lastSyncId = $this->model->params->get($service . '_sync_id', NULL);
+		$prevSyncId = $this->model->params->get($service . '_prev_sync_id', NULL);
 
 		// User ID of project owner
 		$projectOwner = $this->model->get('owned_by_user');
@@ -3992,13 +3649,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 								// Download remote file
 								if ($this->_connect->downloadFileCurl(
 									$service,
+									$projectOwner,
 									$remote['url'],
 									$this->_path . DS . $remote['local_path'])
 								)
 								{
-									// Git add & commit
-									$this->_git->gitAdd($filename, $commitMsg);
-									$this->_git->gitCommit($commitMsg, $author, $cDate);
+									// Checkin into repo
+									$this->repo->call('checkin', array(
+										'file'   => $this->repo->getMetadata($filename, 'file', array()),
+										'author' => $author,
+										'date'   => $cDate
+										)
+									);
 
 									$output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
 									$output .= '++ sent update from remote to local: '. $filename . "\n";
@@ -4062,6 +3724,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							// Download remote file
 							if ($this->_connect->downloadFileCurl(
 								$service,
+								$projectOwner,
 								$remote['url'],
 								$this->_path . DS . $remote['local_path'])
 							)
@@ -4107,11 +3770,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$this->_connect->generateThumbnail($service, $projectOwner, $remote,
 							$this->model->config(), $this->model->get('alias'));
 					}
-
-					// Generate local preview
-					$pr  = array('id' => $remote['remoteid'], 'modified' => $remote['modified']);
-					$hash = $this->_git->gitLog($filename, '' , 'hash');
-					$this->getFilePreview($filename, $hash, $this->_path, '', $pr);
 				}
 
 				$processedRemote[$filename] = $remote;
@@ -4140,23 +3798,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$nextSyncId  = ($newSyncId > $lastSyncId || count($remotes) > 0) ? ($newSyncId + 1) : $lastSyncId;
 		}
 
-		// Save sync time and last sync ID
-		$obj = new \Components\Projects\Tables\Project( $this->_database );
-
 		// Save sync time
-		$obj->saveParam($this->model->get('id'), $service . '_sync', $endTime);
+		$this->model->saveParam($service . '_sync', $endTime);
 
 		// Save change id for next sync
-		$obj->saveParam($this->model->get('id'), $service . '_sync_id', ($nextSyncId));
+		$this->model->saveParam($service . '_sync_id', ($nextSyncId));
 		$output .= 'Next sync ID: ' . $nextSyncId . "\n";
 
-		$obj->saveParam($this->model->get('id'), $service . '_prev_sync_id', $lastSyncId);
+		$this->model->saveParam($service . '_prev_sync_id', $lastSyncId);
 
 		$output .= 'Saving last synced remote change at: ' . $lastRemoteChange . "\n";
-		$obj->saveParam($this->model->get('id'), $service . '_last_remote_change', $lastRemoteChange);
+		$this->model->saveParam($service . '_last_remote_change', $lastRemoteChange);
 
 		$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
-		$obj->saveParam($this->model->get('id'), $service . '_last_local_change', $lastLocalChange);
+		$this->model->saveParam($service . '_last_local_change', $lastLocalChange);
 
 		// Debug output
 		$temp = $this->_logPath;
@@ -4213,11 +3868,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		elseif ($service)
 		{
 			// Get time of last sync
-			$obj = new \Components\Projects\Tables\Project( $this->_database );
-			$obj->load($pid);
-			$pparams 	= new \JParameter( $obj->params );
-			$synced 	= $pparams->get($service . '_sync');
-			$syncLock 	= $pparams->get($service . '_sync_lock', '');
+			$this->model->reloadProject();
+
+			$synced 	= $this->model->params->get($service . '_sync');
+			$syncLock 	= $this->model->params->get($service . '_sync_lock', '');
 
 			// Report last sync time
 			$msg = $synced && $synced != 1
@@ -4266,9 +3920,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _checkSyncLock ($service = 'google')
 	{
-		$pparams 	= $this->model->params;
-		$syncLock 	= $pparams->get($service . '_sync_lock', '');
-
+		$syncLock = $this->model->params->get($service . '_sync_lock', '');
 		return $syncLock ? true : false;
 	}
 
@@ -4280,10 +3932,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _lockSync ($service = 'google', $unlock = false, $queue = 0 )
 	{
-		$obj = new \Components\Projects\Tables\Project( $this->_database );
-		$obj->load($this->model->get('id'));
-
-		$pparams 	= new \JParameter( $obj->params );
+		$pparams 	= $this->model->params;
 		$synced 	= $pparams->get($service . '_sync');
 		$syncLock 	= $pparams->get($service . '_sync_lock');
 		$syncQueue 	= $pparams->get($service . '_sync_queue', 0);
@@ -4291,7 +3940,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Request to unlock sync
 		if ($unlock == true)
 		{
-			$obj->saveParam($this->model->get('id'), $service . '_sync_lock', '');
+			$this->model->saveParam($service . '_sync_lock', '');
 			$this->_rSync['status'] = 'complete';
 
 			// Clean up status
@@ -4301,7 +3950,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if ($syncQueue > 0)
 			{
 				// Clean up queue
-				$obj->saveParam($this->model->get('id'), $service . '_sync_queue', 0);
+				$this->model->saveParam($service . '_sync_queue', 0);
 			}
 
 			return true;
@@ -4325,7 +3974,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Add request to queue
 			if ($queue && $syncQueue == 0)
 			{
-				$obj->saveParam($this->model->get('id'), $service . '_sync_queue', 1);
+				$this->model->saveParam($service . '_sync_queue', 1);
 				return false;
 			}
 
@@ -4340,9 +3989,124 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Lock sync
-		$obj->saveParam($this->model->get('id'), $service . '_sync_lock', $this->_uid);
+		$this->model->saveParam($service . '_sync_lock', $this->_uid);
 		$this->_rSync['status'] = 'progress';
 		return true;
+	}
+
+	/**
+	 * Archive files
+	 *
+	 * @param      array 	$files
+	 * @param      array  	$folders
+	 * @param      string  	$projectPath
+	 * @param      string  	$subdir
+	 *
+	 * @return     array or false
+	 */
+	private function _archiveFiles( $items, $projectPath = '', $subdir = '' )
+	{
+		if (!extension_loaded('zip'))
+		{
+			return false;
+		}
+
+		if (!$projectPath || !is_dir($projectPath))
+		{
+			return false;
+		}
+
+		if (empty($items))
+		{
+			return false;
+		}
+
+		$maxDownload 	= intval($this->params->get('maxDownload', 104857600));
+
+		// Get temp directory
+		$base_path 		= sys_get_temp_dir();
+		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
+		$path 			= $subdir ? $projectPath. DS . $subdir : $projectPath;
+		$combinedSize  	= 0;
+		$tarpath        =  $base_path . DS . $tarname;
+
+		$zip = new ZipArchive;
+
+		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === TRUE)
+		{
+			$i = 0;
+
+			foreach ($items as $element)
+			{
+				foreach ($element as $type => $item)
+				{
+					if ($type != 'file')
+					{
+						continue;
+					}
+					else
+					{
+						$fpath = $path . DS . $item;
+
+						if (!is_file($fpath))
+						{
+							continue;
+						}
+
+						$combinedSize = $combinedSize + filesize($fpath);
+
+						// Check against maximum allowable size
+						if ($combinedSize > $maxDownload)
+						{
+							$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT') );
+							return false;
+						}
+
+						$zip->addFile($fpath, basename($item));
+						$i++;
+					}
+				}
+			}
+
+		    $zip->close();
+
+			if ($i == 0)
+			{
+				$this->setError( Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR') );
+				return false;
+			}
+
+			$archive = array();
+			$archive['path'] = $tarpath;
+			$archive['name'] = $tarname;
+			return $archive;
+		}
+		else
+		{
+		    return false;
+		}
+	}
+
+	/**
+	 * Get stored remote connections
+	 *
+	 * @return     array
+	 */
+	protected function _getRemoteConnections($remoteEdit = true)
+	{
+		$remotes = array();
+		if (!empty($this->_remoteService))
+		{
+			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
+			$remotes  = $objRFile->getRemoteFiles(
+				$this->model->get('id'),
+				$this->_remoteService,
+				$this->subdir,
+				$remoteEdit
+			);
+		}
+
+		return $remotes;
 	}
 
 	/**
@@ -4369,6 +4133,40 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		return PATH_APP . $path;
+	}
+
+	/**
+	 * Get member files (provisioned project)
+	 *
+	 * @param      string	$path
+	 * @param      string  	$subdir
+	 * @param      boolean  $recurse
+	 *
+	 * @return     array
+	 */
+	protected function _getMemberFiles($recurse = true)
+	{
+		// Check path format
+		$subdir = trim($this->subdir, DS);
+		$fullpath = $subdir ? $this->_path. DS . $subdir : $this->_path;
+
+		$get = $this->fileSystem->files($fullpath);
+
+		$files = array();
+		if ($get)
+		{
+			foreach ($get as $file)
+			{
+				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
+				{
+					$file = str_replace($this->_path . DS, '', $file);
+					$entry = new \Components\Projects\Models\File(trim($file), $this->_path);
+					$files[] = $entry;
+				}
+			}
+		}
+
+		return $files;
 	}
 
 	/**
@@ -4583,5 +4381,159 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				. '&alias=' . $this->model->get('alias') . '&active=files'), 'files', 1
 			);
 		}
+	}
+
+	/**
+	 * Clean incoming data
+	 *
+	 * @return     array
+	 */
+	protected function _cleanData()
+	{
+		// Clean up empty values
+		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
+		$folders 	= Request::getVar( 'folder', '', 'request', 'array' );
+
+		foreach ($checked as $key => $value)
+		{
+			$value = trim($value);
+			if ($value == '')
+			{
+				unset($checked[$key]);
+			}
+			else
+			{
+				$checked[$key] = trim($value);
+			}
+		}
+
+		foreach ($folders as $key => $value)
+		{
+			$value = trim($value);
+			if ($value == '')
+			{
+				unset($folders[$key]);
+			}
+			else
+			{
+				$folders[$key] = trim($value);
+			}
+		}
+
+		Request::setVar( 'asset', $checked);
+		Request::setVar( 'folder', $folders);
+	}
+
+	/**
+	 * Sort incoming file/folder data
+	 *
+	 * @return     array
+	 */
+	protected function _sortIncoming()
+	{
+		// Clean incoming data
+		$this->_cleanData();
+
+		// Incoming
+		$checked = Request::getVar( 'asset', '', 'request', 'array' );
+		$folders = Request::getVar( 'folder', '', 'request', 'array' );
+
+		$combined = array();
+		if (!empty($checked))
+		{
+			foreach ($checked as $ch)
+			{
+				if (trim($ch) != '')
+				{
+					$combined[] = array('file' => urldecode($ch));
+				}
+			}
+		}
+		elseif ($file = Request::getVar( 'asset', ''))
+		{
+			$combined[] = array('file' => urldecode($file));
+		}
+		if (!empty($folders))
+		{
+			foreach ($folders as $f)
+			{
+				if (trim($f) != '')
+				{
+					$combined[] = array('folder' => urldecode($f));
+				}
+			}
+		}
+		elseif ($folder = Request::getVar( 'folder', ''))
+		{
+			$combined[] = array('folder' => urldecode($folder));
+		}
+
+		return $combined;
+	}
+
+	/**
+	 * Write sync status to file
+	 *
+	 * @return   void
+	 */
+	protected function _writeToFile($content = '', $filename = '', $append = false, $dir = 'logs' )
+	{
+		// Get temp path
+		if (!$filename)
+		{
+			if (empty($this->_logPath))
+			{
+				return false;
+			}
+			if (!is_dir($this->_logPath))
+			{
+				$this->fileSystem->makeDirectory($this->_logPath);
+			}
+			$sfile 	 = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+		}
+		else
+		{
+			$sfile = $filename;
+		}
+
+		$place   = $append == true ? 'a' : 'w';
+		$content = $append ? $content . "\n" : $content;
+
+		$handle  = fopen($sfile, $place);
+		fwrite($handle, $content);
+		fclose($handle);
+	}
+
+	/**
+	 * Read sync status from file (last line)
+	 *
+	 * @return   void
+	 */
+	protected function _readFile($filename = '', $dir = 'logs', $readAll = false)
+	{
+		// Get temp path
+		if (!$filename)
+		{
+			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+		}
+		else
+		{
+			$sfile = $filename;
+		}
+
+		if (is_file($sfile))
+		{
+			if ($readAll == true)
+			{
+				return file_get_contents($sfile);
+			}
+			else
+			{
+				// Return last line
+				return exec('tail -n 1 ' . $sfile);
+			}
+		}
+
+		return NULL;
 	}
 }

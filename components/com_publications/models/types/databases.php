@@ -567,13 +567,12 @@ class Databases extends Object
 
 				// Generate thumbnail
 				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
-				$tpath  = dirname($thumb) == '.' ? $publishPath : $publishPath . DS . dirname($thumb);
 				\JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
 
 				$hi = new \Hubzero\Image\Processor($publishPath . DS . $thumb);
 				if (count($hi->getErrors()) == 0)
 				{
-					$hi->resize(100, false, false, true);
+					$hi->resize(100, false, false, false);
 					$hi->save($publishPath . DS . $thumb);
 				}
 				else
@@ -583,14 +582,13 @@ class Databases extends Object
 
 				// Generate medium image
 				$med 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
-				$mpath  = dirname($med) == '.' ? $publishPath : $publishPath . DS . dirname($med);
 				\JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
 
 				$hi = new \Hubzero\Image\Processor($publishPath . DS . $med);
 				if (count($hi->getErrors()) == 0)
 				{
-					$hi->resize(800, false, false, true);
-					$hi->save($publishPath . DS . $thumb);
+					$hi->resize(800, false, false, false);
+					$hi->save($publishPath . DS . $med);
 				}
 				else
 				{

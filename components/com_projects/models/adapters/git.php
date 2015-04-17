@@ -549,6 +549,8 @@ class Git extends Models\Adapter
 		$file      = isset($params['file']) ? $params['file'] : NULL;
 		$new       = isset($params['replace']) && !$params['replace'] ? true : false;
 		$commitMsg = isset($params['message']) ? $params['message'] : NULL;
+		$author    = isset($params['author']) ? $params['author'] : NULL;
+		$date      = isset($params['date']) ? $params['date'] : NULL;
 
 		if (!$this->isGit())
 		{
@@ -570,7 +572,7 @@ class Git extends Models\Adapter
 
 		// Git add
 		$this->_git->gitAdd($file->get('localPath'), $commitMsg, $new);
-		$this->_git->gitCommit($commitMsg);
+		$this->_git->gitCommit($commitMsg, $author, $date);
 		return true;
 	}
 

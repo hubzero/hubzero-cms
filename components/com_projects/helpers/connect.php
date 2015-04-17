@@ -1854,12 +1854,10 @@ class Connect extends Object {
 			return false;
 		}
 
-		// Get api
-		$apiService = $this->getAPI($service, $uid);
-
-		if (!$apiService)
+		// Need service client
+		$client = $this->startClient($service, $uid, true);
+		if (!$client)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1869,7 +1867,6 @@ class Connect extends Object {
 			$request = new Google_Http_Request($url, 'GET', null, null);
 
 			// Get remote content
-			$client  = $this->_client[$service];
 			$request = $client->getAuth()->sign($request);
 			$httpRequest = $client->getIo()->makeRequest($request);
 
@@ -1895,19 +1892,17 @@ class Connect extends Object {
 	 * @param	   string	$path			Project repo path
 	 * @return	   string or boolean
 	 */
-	public function downloadFileCurl ($service = 'google', $url = '', $path = '')
+	public function downloadFileCurl ($service = 'google', $uid = 0, $url = '', $path = '')
 	{
 		if (!$url || !$path)
 		{
 			return false;
 		}
 
-		// Get api
-		$apiService = $this->getAPI($service, $this->model->owner('id'));
-
-		if (!$apiService)
+		// Need service client
+		$client = $this->startClient($service, $uid, true);
+		if (!$client)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1916,7 +1911,6 @@ class Connect extends Object {
 		// Make Http request
 		$request = new Google_Http_Request($url, 'GET', null, null);
 
-		$client  = $this->_client[$service];
 		$request = $client->getAuth()->sign($request);
 		$request = $client->getIo()->makeRequest($request);
 

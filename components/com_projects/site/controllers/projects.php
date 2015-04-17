@@ -989,17 +989,19 @@ class Projects extends Base
 		$json	=  base64_decode($state);
 		$json 	=  json_decode($json);
 
-		$service = $json->service ? $json->service : 'google';
+		$this->_identifier = $json->alias;
+		$this->model = new Models\Project($this->_identifier);
 
-		if (!$this->model->exists())
-		{
-			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
-			return;
-		}
+		$service = $json->service ? $json->service : 'google';
 
 		// Successful authorization grant, fetch the access token
 		if ($code)
 		{
+			if (!$this->model->exists())
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
+				return;
+			}
 			$return  = Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->model->get('alias') . '&active=files&action=connect&service='
 				. $service . '&code=' . $code);

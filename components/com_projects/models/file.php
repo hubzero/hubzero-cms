@@ -163,7 +163,7 @@ class File extends Object
 	 *
 	 * @return  mixed
 	 */
-	public function getPreview($model, $hash = '', $get = 'name', $render = '')
+	public function getPreview($model, $hash = '', $get = 'name', $render = '', $hashed = NULL)
 	{
 		if (!($model instanceof Project))
 		{
@@ -173,29 +173,32 @@ class File extends Object
 		$fileSystem = new \Hubzero\Filesystem\Filesystem();
 		$image = NULL;
 
-		$hash = $hash ? $hash : $this->get('hash');
-		$hash = $hash ? substr($hash, 0, 10) : '';
-
-		// Determine name and size
-		switch ($render)
+		if (!$hashed)
 		{
-			case 'medium':
-				$hashed = md5($this->get('name') . '-' . $hash) . '.png';
-				$maxWidth  = 600;
-				$maxHeight = 600;
-				break;
+			$hash = $hash ? $hash : $this->get('hash');
+			$hash = $hash ? substr($hash, 0, 10) : '';
 
-			case 'thumb':
-				$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : NULL;
-				$maxWidth  = 80;
-				$maxHeight = 80;
-				break;
+			// Determine name and size
+			switch ($render)
+			{
+				case 'medium':
+					$hashed = md5($this->get('name') . '-' . $hash) . '.png';
+					$maxWidth  = 600;
+					$maxHeight = 600;
+					break;
 
-			default:
-				$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : NULL;
-				$maxWidth  = 180;
-				$maxHeight = 180;
-				break;
+				case 'thumb':
+					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : NULL;
+					$maxWidth  = 80;
+					$maxHeight = 80;
+					break;
+
+				default:
+					$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : NULL;
+					$maxWidth  = 180;
+					$maxHeight = 180;
+					break;
+			}
 		}
 
 		// Target directory
@@ -204,7 +207,7 @@ class File extends Object
 
 		$remoteThumb = NULL;
 		if ($this->get('remoteId') && $this->get('modified'))
-		{
+		{ 
 			$remoteThumb = substr($this->get('remoteId'), 0, 20) . '_' . strtotime($this->get('modified')) . '.png';
 		}
 
@@ -662,7 +665,7 @@ class File extends Object
 			case 'gdoc':
 				$icon = 'google/doc';
 				break;
-			case 'gslide':
+			case 'gslides':
 				$icon = 'google/presentation';
 				break;
 			case 'gdraw':

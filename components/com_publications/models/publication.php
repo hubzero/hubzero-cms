@@ -50,6 +50,8 @@ require_once( dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 // Projects
 require_once( PATH_CORE . DS . 'components'.DS
 	.'com_projects' . DS . 'models' . DS . 'project.php');
+require_once( PATH_CORE . DS . 'components'.DS
+	.'com_projects' . DS . 'models' . DS . 'repo.php');
 
 // Common models
 require_once(__DIR__ . DS . 'curation.php');

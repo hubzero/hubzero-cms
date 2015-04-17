@@ -145,7 +145,17 @@ class Project extends Model
 	}
 
 	/**
-	 * (Temp) get project object
+	 * Reload project
+	 *
+	 * @return   void
+	 */
+	public function reloadProject()
+	{
+		$this->_tbl->loadProject($this->get('id'));
+	}
+
+	/**
+	 * Get project object
 	 *
 	 * @param      string $as What data to return
 	 * @return     string

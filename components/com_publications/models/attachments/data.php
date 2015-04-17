@@ -926,6 +926,7 @@ class Data extends Base
 		// Copy files from repo to published location
 		if (!empty($files))
 		{
+			$fileSystem = new \Hubzero\Filesystem\Filesystem();
 			foreach ($files as $file)
 			{
 				if (!file_exists( $repoPath . DS . $file))
@@ -936,21 +937,41 @@ class Data extends Base
 				// If parent dir does not exist, we must create it
 				if (!file_exists(dirname($configs->dataPath . DS . $file)))
 				{
-					\JFolder::create(dirname($configs->dataPath . DS . $file));
+					$fileSystem->makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
 				}
 
-				\JFile::copy($repoPath . DS . $file, $configs->dataPath . DS . $file);
+				if ($fileSystem->copy($repoPath . DS . $file, $configs->dataPath . DS . $file))
+				{
+					// Generate thumbnail
+					$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
+					$fileSystem->copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
 
-				// Generate thumbnails for images
-				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
-				Event::trigger( 'projects.getFilePreview', array(
-					$file, '', $repoPath, '', NULL, false, $configs->dataPath, $thumb, 180, 180)
-				);
-				// Medium size thumb
-				$medium 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
-				Event::trigger( 'projects.getFilePreview', array(
-					$file, '', $repoPath, '', NULL, true, $configs->dataPath, $medium)
-				);
+					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
+					if (count($hi->getErrors()) == 0)
+					{
+						$hi->resize(180, false, false, false);
+						$hi->save($configs->dataPath . DS . $thumb);
+					}
+					else
+					{
+						return false;
+					}
+
+					// Generate medium image
+					$med 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
+					$fileSystem->copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
+
+					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);
+					if (count($hi->getErrors()) == 0)
+					{
+						$hi->resize(800, false, false, false);
+						$hi->save($configs->dataPath . DS . $med);
+					}
+					else
+					{
+						return false;
+					}
+				}
 			}
 		}
 	}
