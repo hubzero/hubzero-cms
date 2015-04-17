@@ -43,21 +43,27 @@ class plgAuthenticationShibboleth extends JPlugin
 	private function log($msg, $data = '')
 	{
 		static $fh = NULL;
-		if ($fh === NULL) {
+		if ($fh === NULL)
+		{
 			$fh = fopen($this->params->get('debug_location', '/var/log/apache2/php/shibboleth.log'), 'a+');
 		}
-		if (!isset($_COOKIE['shib-dbg-token'])) {
+		if (!isset($_COOKIE['shib-dbg-token']))
+		{
 			$token = base64_encode(uniqid());
 			setcookie('shib-dbg-token', $token, time()+60*60*24);
 		}
-		else {
-			$token =$_COOKIE['shib-dbg-token'];
+		else
+		{
+			$token = $_COOKIE['shib-dbg-token'];
 		}
-		if (@fwrite($fh, "$token - $msg")) {
-			if ($data !== '') {
-				@fwrite($fh, ":\t".(is_string($data) ? $data : json_encode($data))."\n");
+		if (@fwrite($fh, "$token - $msg"))
+		{
+			if ($data !== '')
+			{
+				@fwrite($fh, ":\t" . (is_string($data) ? $data : json_encode($data)) . "\n");
 			}
-			else {
+			else
+			{
 				@fwrite($fh, "\n");
 			}
 		}
@@ -237,7 +243,7 @@ class plgAuthenticationShibboleth extends JPlugin
 	public static function onRenderOption($return, $title = 'With an affiliated institution:')
 	{
 		// hide the login box if the plugin is in "debug mode" and the special key is not set in the request
-		$params = new JParameter(Plugin::byType('authentication', 'shibboleth')->params);
+		$params = Plugin::params('authentication', 'shibboleth');
 		if (($testKey = $params->get('testkey', NULL)) && !array_key_exists($testKey, $_GET))
 		{
 			return '<span />';
@@ -359,7 +365,7 @@ class plgAuthenticationShibboleth extends JPlugin
 		$options['return'] = $return;
 
 		// extract variables set by mod_shib, if any
-		https://www.incommon.org/federation/attributesummary.html
+		// https://www.incommon.org/federation/attributesummary.html
 		if (($sid = isset($_SERVER['REDIRECT_Shib-Session-ID']) ? $_SERVER['REDIRECT_Shib-Session-ID'] : (isset($_SERVER['Shib-Session-ID']) ? $_SERVER['Shib-Session-ID'] : NULL)))
 		{
 			$attrs = array(
@@ -511,9 +517,10 @@ class plgAuthenticationShibboleth extends JPlugin
 		// eppn is eduPersonPrincipalName and is the absolute lowest common
 		// denominator for InCommon attribute exchanges. we can't really do
 		// anything without it
-		if (isset($options['shibboleth']['eppn'])) {
+		if (isset($options['shibboleth']['eppn']))
+		{
 			$this->log('auth with', $options['shibboleth']);
-			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', FALSE)) ? 'find_or_create' : 'find';
+			$method = (\Component::params('com_users')->get('allowUserRegistration', FALSE)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'shibboleth', $options['shibboleth']['idp'], $options['shibboleth']['eppn']);
 
 			if ($hzal === FALSE)

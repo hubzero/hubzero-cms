@@ -185,7 +185,7 @@
 		background: #FFF;
 		z-index: 88888;
 		position: absolute; 
-		background: #FFF url("/plugins/members/profile/images/updating.gif") no-repeat 50% 50%;
+		background: #FFF url("/plugins/members/profile/assets/img/updating.gif") no-repeat 50% 50%;
 		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 		filter: alpha(opacity=70);
 		opacity:0.7;
@@ -536,10 +536,10 @@
 	}
 	#award-info strong {
 		padding-left: 17px;
-		background: url('/components/com_store/assets/img/coin.gif') no-repeat top left;
+		background: url('/components/com_store/site/assets/img/coin.gif') no-repeat top left;
 	}
 	#award-info .opt-out {
-		background: url('/components/com_support/assets/img/delete.png') no-repeat top left #f3f3f3;
+		background: url('/components/com_support/site/assets/img/delete.png') no-repeat top left #f3f3f3;
 		padding-left: 20px;
 		margin-left: auto;
 		margin-right: auto;
@@ -549,7 +549,7 @@
 		position: fixed;
 		bottom: 1em;
 		right: 1em;
-		background: url('/components/com_store/assets/img/wallet.png') no-repeat 10px -12px #fdf6ba;
+		background: url('/components/com_store/site/assets/img/wallet.png') no-repeat 10px -12px #fdf6ba;
 		padding-left: 65px;
 		border: 2px solid #ffba00;
 		width: 100px;
@@ -560,7 +560,7 @@
 	}
 	#wallet span {
 		padding-left: 17px;
-		background: url('/components/com_store/assets/img/coin.gif') no-repeat 0 4px;
+		background: url('/components/com_store/site/assets/img/coin.gif') no-repeat 0 4px;
 		line-height: 40px;
 	}
 

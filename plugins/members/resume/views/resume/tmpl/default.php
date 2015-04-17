@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 $this->css('jobs', 'com_jobs');
 ?>
 
@@ -161,7 +159,7 @@ $this->css('jobs', 'com_jobs');
 		if ($this->js->active && $this->file)
 		{
 			// get seeker info
-			$seeker = $this->js->getSeeker($this->member->get('uidNumber'), $juser->get('id'));
+			$seeker = $this->js->getSeeker($this->member->get('uidNumber'), User::get('id'));
 
 			if (!$seeker or count($seeker)==0)
 			{

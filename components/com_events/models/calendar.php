@@ -35,14 +35,16 @@ use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use DateInterval;
 use DateTimezone;
-use Lang;
 use Config;
+use Lang;
+use Date;
+use User;
 
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'calendar.php';
 
 // include icalendar file reader
-require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
+require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
 
 /**
  * Event calendar model
@@ -139,7 +141,7 @@ class Calendar extends Model
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function events( $rtrn = 'list', $filters = array(), $clear = false )
+	public function events($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{
@@ -147,10 +149,11 @@ class Calendar extends Model
 				if (!$this->_events_count || $clear)
 				{
 					$tbl = new Tables\Event($this->_db);
-					$this->_events_count = $tbl->count( $filters );
+					$this->_events_count = $tbl->count($filters);
 				}
 				return $this->_events_count;
-				break;
+			break;
+
 			case 'repeating':
 				if (!($this->_events_repeating instanceof ItemList) || $clear)
 				{
@@ -162,18 +165,18 @@ class Calendar extends Model
 
 					// capture publish up/down
 					// remove for now as we want all events that have a repeating rule
-					$start = \JFactory::getDate($filters['publish_up']);
-					$end   = \JFactory::getDate($filters['publish_down']);
+					$start = Date::of($filters['publish_up']);
+					$end   = Date::of($filters['publish_down']);
 					unset($filters['publish_up']);
 					unset($filters['publish_down']);
 
 					// find any events that match our filters
 					$tbl = new Tables\Event($this->_db);
-					if ($results = $tbl->find( $filters ))
+					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$start = \JFactory::getDate($result->publish_up);
+							$start = Date::of($result->publish_up);
 
 							// get the repeating & pass start date
 							$rule = new \Recurr\Rule($result->repeating_rule, $start);
@@ -189,7 +192,7 @@ class Calendar extends Model
 							$diff = new DateInterval('P0Y0DT0H0M');
 							if ($result->publish_down != '0000-00-00 00:00:00')
 							{
-								$diff = date_diff(\JFactory::getDate($result->publish_up), \JFactory::getDate($result->publish_down));
+								$diff = date_diff(Date::of($result->publish_up), Date::of($result->publish_down));
 							}
 
 							// create new event for each reoccurrence
@@ -205,7 +208,8 @@ class Calendar extends Model
 					$this->_events_repeating = new ItemList($repeats);
 				}
 				return $this->_events_repeating;
-				break;
+			break;
+
 			case 'list':
 			default:
 				if (!($this->_events instanceof ItemList) || $clear)
@@ -250,12 +254,11 @@ class Calendar extends Model
 		}
 
 		// get refresh interval
-		$params = \Hubzero\Plugin\Plugin::getParams('calendar','groups');
-		$interval = $params->get('import_subscription_interval', 60);
+		$interval = \Plugin::params('calendar', 'groups')->get('import_subscription_interval', 60);
 
 		// get datetimes needed to refresh
-		$now             = \JFactory::getDate();
-		$lastRefreshed   = \JFactory::getDate($this->get('last_fetched_attempt'));
+		$now             = Date::of('now');
+		$lastRefreshed   = Date::of($this->get('last_fetched_attempt'));
 		$refreshInterval = new DateInterval("PT{$interval}M");
 
 		// add refresh interval to last refreshed
@@ -297,7 +300,7 @@ class Calendar extends Model
 		if (!strstr($statusCode, '200 OK'))
 		{
 			$this->set('failed_attempts', $this->failed_attempts + 1);
-			$this->set('last_fetched_attempt', \Date::toSql());
+			$this->set('last_fetched_attempt', Date::toSql());
 			$this->store(true);
 			$this->setError($this->get('title'));
 			return false;
@@ -399,7 +402,7 @@ class Calendar extends Model
 					{
 						$incomingEvent['RRULE']['UNTIL'] .= 'T000000Z';
 					}
-					$until = \JFactory::getDate($incomingEvent['RRULE']['UNTIL']);
+					$until = Date::of($incomingEvent['RRULE']['UNTIL']);
 					$rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
 				}
 			}
@@ -416,8 +419,8 @@ class Calendar extends Model
 			$event->set('content', stripslashes(str_replace('\n', "\n", $event->get('content'))));
 			$event->set('adresse_info', isset($incomingEvent['LOCATION']) ? $incomingEvent['LOCATION'] : '');
 			$event->set('extra_info', isset($incomingEvent['URL']) ? $incomingEvent['URL'] : '');
-			$event->set('modified', \Date::toSql());
-			$event->set('modified_by', \JFactory::getUser()->get('id'));
+			$event->set('modified', Date::toSql());
+			$event->set('modified_by', User::get('id'));
 			$event->set('publish_up', $publish_up);
 			$event->set('publish_down', $publish_down);
 			$event->set('allday', $allday);
@@ -432,8 +435,8 @@ class Calendar extends Model
 				$event->set('scope', $this->get('scope'));
 				$event->set('scope_id', $this->get('scope_id'));
 				$event->set('state', 1);
-				$event->set('created', \Date::toSql());
-				$event->set('created_by', \JFactory::getUser()->get('id'));
+				$event->set('created', Date::toSql());
+				$event->set('created_by', User::get('id'));
 				$event->set('time_zone', -5);
 				$event->set('registerby', '0000-00-00 00:00:00');
 				$event->set('params', '');
@@ -445,8 +448,8 @@ class Calendar extends Model
 
 		// mark as fetched
 		// clear failed attempts
-		$this->set('last_fetched', \Date::toSql());
-		$this->set('last_fetched_attempt', \Date::toSql());
+		$this->set('last_fetched', Date::toSql());
+		$this->set('last_fetched_attempt', Date::toSql());
 		$this->set('failed_attempts', 0);
 		$this->store(true);
 		return true;

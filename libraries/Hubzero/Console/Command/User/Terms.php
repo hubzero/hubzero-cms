@@ -100,7 +100,7 @@ class Terms extends Base implements CommandInterface
 			$dbo = \JFactory::getDbo();
 
 			// Update registration config value to require re-agreeing upon next login
-			$params = \JComponentHelper::getParams('com_members');
+			$params = \Component::params('com_members');
 			$currentTOU = $params->get('registrationTOU','RHRH');
 			$newTOU     = substr_replace($currentTOU, 'R', 3);
 			$params->set('registrationTOU', $newTOU);

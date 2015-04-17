@@ -107,5 +107,17 @@ trait ErrorBag
 		}
 		return $this;
 	}
+
+	/**
+	 * Set the list of errors
+	 *
+	 * @param   array   $errors  List of Error message.
+	 * @return  object
+	 */
+	public function setErrors($errors)
+	{
+		$this->_errors = $errors;
+		return $this;
+	}
 }
 

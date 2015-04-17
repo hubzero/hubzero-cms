@@ -49,7 +49,7 @@ $this->css()
 	<?php endif; ?>
 	<fieldset>
 		<legend><?php echo ($this->address->id != 0) ? Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_EDIT') : Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_ADD'); ?></legend>
-		<p><?php echo Jtext::sprintf('PLG_MEMBERS_PROFILE_ADDRESS_LOCATE', 'javascript:;'); ?></p>
+		<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_LOCATE', 'javascript:;'); ?></p>
 		<label>
 			<?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_TO'); ?>
 			<input type="text" name="address[addressTo]" value="<?php echo $this->escape($this->address->addressTo); ?>" />

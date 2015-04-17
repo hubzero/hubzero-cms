@@ -72,7 +72,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 		$response->data['site'] = $this->_obj('Name', $tmpl);
 
 		$overrides = array();
-		$path = JPATH_ROOT . '/templates/' . $tmpl . '/html';
+		$path = PATH_CORE . '/templates/' . $tmpl . '/html';
 
 		if (is_dir($path))
 		{
@@ -84,7 +84,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
-				$overrides[] = str_replace(JPATH_ROOT . '/templates/' . $tmpl . '/html', '', $name);
+				$overrides[] = str_replace(PATH_CORE . '/templates/' . $tmpl . '/html', '', $name);
 			}
 
 		}

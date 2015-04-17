@@ -100,13 +100,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		if ($returnhtml)
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'summary'
-				)
-			);
+			$view = $this->view('default', 'summary');
 
 			$view->member = $member;
 			$view->option = $option;
@@ -146,12 +140,9 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->andmore_total_12 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 12);
 			$view->andmore_total_14 = $this->get_total_stats($member->get('uidNumber'), 'andmore_users', 14);
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			$arr['html'] = $view->loadTemplate();

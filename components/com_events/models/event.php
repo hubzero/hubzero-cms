@@ -34,7 +34,9 @@ use Hubzero\Base\Model;
 use Hubzero\User\Group;
 use DateTimezone;
 use DateTime;
+use Route;
 use Lang;
+use Date;
 
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
@@ -173,7 +175,7 @@ class Event extends Model
 			// until
 			if (preg_match('/UNTIL=(.*)/u', $part, $matches))
 			{
-				$date = \JFactory::getDate($matches[1]);
+				$date = Date::of($matches[1]);
 				$repeating['until'] = $date->format('m/d/Y');
 				$repeating['end']   = 'until';
 				unset($parts[$k]);

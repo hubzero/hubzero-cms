@@ -38,13 +38,13 @@ $conf['com_path'] = $com_path;
 $conf['app_title'] = 'Dataviewer';
 
 // Base directory
-$db_params = JComponentHelper::getParams('com_databases');
+$db_params = Component::params('com_databases');
 $conf['dir_base'] = $db_params->get('base_dir');
 if ($conf['dir_base'] == NULL || $conf['dir_base'] == '') {
 	$conf['dir_base'] = '/db/databases';
 }
 
-$mode_db_enabled =  JComponentHelper::getParams('com_dataviewer')->get('mode_db') == '1' ? true : false;
+$mode_db_enabled =  Component::params('com_dataviewer')->get('mode_db') == '1' ? true : false;
 $conf['modes']['db'] = array('enabled' => $mode_db_enabled);
 
 // ACL

@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -37,6 +39,8 @@ $this->css()
 $loggedin = false;
 $isUser = false;
 
+$database = JFactory::getDBO();
+
 //if we are logged in set logged in flag
 if (!User::isGuest())
 {
@@ -44,7 +48,7 @@ if (!User::isGuest())
 }
 
 //if we are this user set user flag
-if (User::get("id") == $this->profile->get("uidNumber"))
+if (User::get('id') == $this->profile->get("uidNumber"))
 {
 	$isUser = true;
 }
@@ -149,7 +153,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						</script>';
 			echo $increm;
 
-			\Hubzero\Document\Assets::addComponentScript('assets/js/incremental');
+			$this->js('incremental', 'com_members');
 		}
 	?>
 
@@ -214,7 +218,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			</li>
 		<?php endif; ?>
 
-		<?php if (!JPluginHelper::isEnabled('members', 'account')) : ?>
+		<?php if (!Plugin::isEnabled('members', 'account')) : ?>
 			<?php if ($isUser) : ?>
 				<li class="profile-password section hidden">
 					<div class="section-content">
@@ -289,8 +293,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						<?php
 							//get list of organizations from db
-							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
-							$database = JFactory::getDBO();
+							include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
+
 							$xo = new MembersTableOrganization($database);
 							$orgs = $xo->find('list');
 
@@ -357,8 +361,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMPLOYMENT_TYPE'); ?></div>
 						<?php
 							//get organization types from db
-							include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
-							$database = JFactory::getDBO();
+							include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
+
 							$xot = new MembersTableOrganizationType($database);
 							$orgtypes = $xot->find('list');
 
@@ -745,7 +749,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="value"><?php echo $bio; ?></div>
 					<br class="clear" />
 					<?php
-						$bio = \JFactory::getEditor()->display('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), '', '', 100, 15, false, 'profile_bio', null, null, array('class' => 'minimal no-footer'));
+						$bio = $this->editor('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), 100, 15, 'profile_bio',array('class' => 'minimal no-footer'));
 
 						$this->view('default', 'edit')
 						     ->set('registration_field', 'bio')
@@ -776,7 +780,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				) : ?>
 				<?php
 					$cls = '';
-					$database = JFactory::getDBO();
+
 					$mt = new MembersModelTags($this->profile->get('uidNumber'));
 					$tags = $mt->render();
 					$tag_string = $mt->render('string');
@@ -866,7 +870,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							$img = '';
 							$citizenship = '';
-							if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
+							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
 							{
 								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
@@ -967,7 +971,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							$img = '';
 							$residence = '';
-							if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
+							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
 							{
 								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}

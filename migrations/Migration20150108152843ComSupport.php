@@ -17,7 +17,14 @@ class Migration20150108152843ComSupport extends Base
 	{
 		if ($this->db->tableExists('#__extensions'))
 		{
-			$params = \JComponentHelper::getParams('com_support');
+			if (class_exists('\\Component'))
+			{
+				$params = \Component::params('com_support');
+			}
+			else
+			{
+				$params = \JComponentHelper::getParams('com_support');
+			}
 
 			$defs = str_replace("\r", '', $params->get('emails', '{config.mailfrom}'));
 			$defs = str_replace('\n', "\n", $defs);
@@ -39,7 +46,14 @@ class Migration20150108152843ComSupport extends Base
 	{
 		if ($this->db->tableExists('#__extensions'))
 		{
-			$params = \JComponentHelper::getParams('com_support');
+			if (class_exists('\\Component'))
+			{
+				$params = \Component::params('com_support');
+			}
+			else
+			{
+				$params = \JComponentHelper::getParams('com_support');
+			}
 
 			$defs = explode(',', $params->get('emails', '{config.mailfrom}'));
 			$defs = array_map('trim', $defs);

@@ -31,7 +31,6 @@
 namespace Components\Citations\Download;
 
 use Components\Citations\Tables\Type;
-use Hubzero\Plugin\Plugin;
 
 include_once(__DIR__ . DS . 'downloadable.php');
 
@@ -261,7 +260,7 @@ class Endnote extends Downloadable
 
 		//get the endnote import params
 		//we want to get the endnote key used for importing badges to export them
-		$endnote_import_plugin_params = Plugin::getParams('endnote', 'citation');
+		$endnote_import_plugin_params = \Plugin::params('endnote', 'citation');
 		$custom_tags = explode("\n", $endnote_import_plugin_params->get('custom_tags'));
 
 		$citation_endnote_tags = array();

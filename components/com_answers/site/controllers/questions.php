@@ -1440,10 +1440,10 @@ class Questions extends SiteController
 		$mid = Request::getInt("m", 0);
 
 		//get module params
-		$params = \Hubzero\Module\Helper::getParams($mid);
+		$params = \Module::params($mid);
 
 		//include feed lib
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		//force mime type of document to be rss
 		$jdoc->setMimeEncoding('application/rss+xml');
@@ -1485,7 +1485,7 @@ class Questions extends SiteController
 		foreach ($questions as $question)
 		{
 			//get the authors name
-			$a = \JFactory::getUser($question['created_by']);
+			$a = User::getInstance($question['created_by']);
 			$author = ($a) ? $a->get("name") : "";
 			$author = ($question['anonymous']) ? "Anonymous" : $author;
 

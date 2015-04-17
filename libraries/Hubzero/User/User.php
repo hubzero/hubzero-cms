@@ -60,13 +60,13 @@ class User extends \Hubzero\Database\Relational
 	 **/
 	public function hasExceededResetLimit()
 	{
-		$params     = \JComponentHelper::getParams('com_users');
+		$params     = \Component::params('com_users');
 		$resetCount = (int)$params->get('reset_count', 10);
 		$resetHours = (int)$params->get('reset_time', 1);
 		$result     = true;
 
 		// Get the user's tokens
-		$threshold = date("Y-m-d H:i:s", strtotime(\JFactory::getDate()->toSql() . " {$resetHours} hours ago"));
+		$threshold = date("Y-m-d H:i:s", strtotime(\Date::toSql() . " {$resetHours} hours ago"));
 		$tokens    = $this->tokens()->where('created', '>=', $threshold)->rows();
 
 		if ($tokens->count() < $resetCount)

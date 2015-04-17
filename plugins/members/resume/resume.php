@@ -409,17 +409,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$jobstats = new \Components\Jobs\Tables\JobStats($database);
 		$stats = $jobstats->getStats($member->get('uidNumber'), 'seeker');
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => $this->_name
-			)
-		);
+		$view = $this->view('default', 'resume');
 		$view->self   = $self;
 		$view->js     = $js;
-		$view->jt = $jt;
-		$view->jc = $jc;
+		$view->jt     = $jt;
+		$view->jc     = $jc;
 		$view->resume = $resume;
 		$view->file   = $file;
 		$view->stats  = $stats;
@@ -684,14 +678,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$js = new \Components\Jobs\Tables\JobSeeker($database);
 				$seeker = $js->getSeeker($oid, User::get('id'));
 
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => $this->_type,
-						'element' => $this->_name,
-						'name'    => $this->_name,
-						'layout'  => 'seeker'
-					)
-				);
+				$view = $this->view('seeker', 'resume');
 				$view->seeker = $seeker[0];
 				$view->emp    = 1;
 				$view->admin  = 0;

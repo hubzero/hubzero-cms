@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -82,8 +84,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//include address library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 
 		$arr = array(
 			'html' => '',
@@ -121,10 +123,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	private function display()
 	{
-		$app = JFactory::getApplication();
-
 		// Find out which fields are hidden, optional, or required
-		$registration = new JObject();
+		$registration = new \Hubzero\Base\Object();
 		$registration->Fullname     = $this->_registrationField('registrationFullname','RRRR','edit');
 		$registration->Email        = $this->_registrationField('registrationEmail','RRRR','edit');
 		$registration->URL          = $this->_registrationField('registrationURL','HHHH','edit');
@@ -147,17 +147,10 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$rparams = new JRegistry($this->member->get('params'));
 
 		//get profile plugin's params
-		//$plugin = Plugin::byType("members", "profile");
-		$params = $this->params; //new JRegistry($plugin->params);
+		$params = $this->params;
 		$params->merge($rparams);
 
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'index'
-			)
-		);
+		$this->view = $this->view('default', 'index');
 
 		$registration_update = null;
 
@@ -165,23 +158,22 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		if ($session->get('registration.incomplete'))
 		{
 			$xreg = new MembersModelRegistration();
-			$juser =  JFactory::getUser();
-			$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
+			$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			if (is_object($xprofile))
 			{
 				$xreg->loadProfile($xprofile);
 			}
 			else
 			{
-				$xreg->loadAccount($juser);
+				$xreg->loadAccount(User::getRoot());
 			}
 
 			$check = $xreg->check('update');
 			if ($check)
 			{
 				$session->set('registration.incomplete', 0);
-				$app->redirect($_SERVER['REQUEST_URI']);
+				App::redirect($_SERVER['REQUEST_URI']);
 			}
 			else
 			{
@@ -287,7 +279,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		);
 
 		//unset errors from the fields object
-		unset($fields->_errors);
+		$fields->setErrors(array());
 
 		//load the user profile
 		$registration = new MembersModelRegistration();
@@ -347,20 +339,14 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	public function editAddress()
 	{
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'members',
-				'element' => 'profile',
-				'name'    => 'address',
-				'layout'  => 'edit'
-			)
-		);
+		$this->view = $this->view('edit', 'address');
 
 		//get request vars
 		$this->view->addressId = Request::getInt('addressid', 0);
 
 		//get member addresses
-		$this->view->address = new MembersAddress(JFactory::getDBO());
+		$database = JFactory::getDBO();
+		$this->view->address = new MembersAddress($database);
 		$this->view->address->load($this->view->addressId);
 
 		//are we passing back the vars from save
@@ -391,14 +377,13 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$address = Request::getVar('address', array());
 
 		//set up objects
-		$database       = JFactory::getDBO();
-		$juser          = JFactory::getUser();
+		$database = JFactory::getDBO();
 		$membersAddress = new MembersAddress($database);
 
 		//create object from vars
 		$addressObj = new stdClass;
 		$addressObj->id               = $address['id'];
-		$addressObj->uidNumber        = $juser->get('id');
+		$addressObj->uidNumber        = User::get('id');
 		$addressObj->addressTo        = $address['addressTo'];
 		$addressObj->address1         = $address['address1'];
 		$addressObj->address2         = $address['address2'];
@@ -418,8 +403,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//inform and redirect
-		$this->redirect(
-			Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
+		App::redirect(
+			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
 			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
 			'passed'
 		);
@@ -437,8 +422,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$addressId = Request::getInt('addressid', 0);
 
 		//set up objects
-		$database       = JFactory::getDBO();
-		$juser          = JFactory::getUser();
+		$database = JFactory::getDBO();
 		$membersAddress = new MembersAddress($database);
 
 		//load address object
@@ -451,7 +435,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//make sure user can delete this address
-		if ($membersAddress->uidNumber != $juser->get('id'))
+		if ($membersAddress->uidNumber != User::get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
 			return $this->view();
@@ -472,8 +456,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//inform and redirect
-		$this->redirect(
-			Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
+		App::redirect(
+			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
 			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
 			'passed'
 		);

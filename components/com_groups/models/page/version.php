@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed jtables
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
 
 /**
  * Group page version model class
@@ -149,7 +149,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 					$group = \Hubzero\User\Group::getInstance(Request::getVar('cn', Request::getVar('gid', '')));
 
 					// get base path
-					$basePath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+					$basePath = Component::params( 'com_groups' )->get('uploadpath');
 
 					// build config
 					$config = array(
@@ -159,7 +159,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 						'pageid'         => 0,
 						'filepath'       => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
 						'domain'         => $group->get('cn'),
-						'alt_macro_path' => JPATH_ROOT . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
+						'alt_macro_path' => PATH_APP . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
 					);
 
 					$content = stripslashes($this->get('content'));

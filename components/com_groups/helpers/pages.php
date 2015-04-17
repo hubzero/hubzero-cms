@@ -131,9 +131,6 @@ class GroupsHelperPages
 	 */
 	private static function getCurrentPathSegments()
 	{
-		// get current path
-		$uri  = JURI::getInstance();
-
 		// get group
 		$cn = Request::getVar('cn','');
 		$group = Hubzero\User\Group::getInstance($cn);
@@ -141,10 +138,10 @@ class GroupsHelperPages
 		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
 		$base = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
 
-		if (preg_match("/\/?groups\/(.*?)/i", $uri->getPath()))
+		if (preg_match("/\/?groups\/(.*?)/i", Request::path()))
 		{
 			// remove /groups/{group_cname} from path
-			$path = trim(str_replace($base, '', $uri->getPath()), '/');
+			$path = trim(str_replace($base, '', Request::path()), '/');
 
 			if ($path == 'index.php')
 			{
@@ -158,7 +155,7 @@ class GroupsHelperPages
 			// Try to find a menu item
 			$item = \JFactory::getApplication()->getMenu(true)->getActive();
 			// Strip the menu route from the URI
-			$up = ltrim($uri->getPath(), '/');
+			$up = ltrim(Request::path(), '/');
 			$path = trim(substr($up, strlen($item->route)), '/');
 			// Check if the first segment is the group name.
 			// Due to the way some paths are built, a menu item can result
@@ -247,7 +244,7 @@ class GroupsHelperPages
 	 */
 	public static function isPageApprover($username = null)
 	{
-		$username  = (!is_null($username)) ? $username : JFactory::getUser()->get('username');
+		$username  = (!is_null($username)) ? $username : User::get('username');
 		return (in_array($username, self::getPageApprovers())) ? true : false;
 	}
 
@@ -382,7 +379,7 @@ class GroupsHelperPages
 
 		// build html email
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'site',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'site',
 			'name'   => 'emails',
 			'layout' => $type
 		));
@@ -501,11 +498,10 @@ class GroupsHelperPages
 	{
 		// get joomla objects
 		$db   = JFactory::getDBO();
-		$user = JFactory::getUser();
 
 		// get person who has page checkedout
 		$sql = "SELECT * FROM `#__xgroups_pages_checkout`
-			    WHERE `userid`<>" . $user->get('id') . " AND `pageid`=" . $db->quote($pageid) . " ORDER BY `when` LIMIT 1";
+			    WHERE `userid`<>" . User::get('id') . " AND `pageid`=" . $db->quote($pageid) . " ORDER BY `when` LIMIT 1";
 		$db->setQuery($sql);
 		return $db->loadObject();
 	}
@@ -520,14 +516,13 @@ class GroupsHelperPages
 	{
 		// get needed joomla objects
 		$db   = JFactory::getDBO();
-		$user = JFactory::getUser();
 
 		// check in other pages
 		self::checkinForUser();
 
 		// mark page as checked out
 		$sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`)
-			    VALUES(".$db->quote($pageid).",".$db->quote($user->get('id')).", '".Date::toSql()."');";
+			    VALUES(".$db->quote($pageid).",".$db->quote(User::get('id')).", '".Date::toSql()."');";
 		$db->setQuery($sql);
 		$db->query();
 	}
@@ -557,11 +552,10 @@ class GroupsHelperPages
 	public static function checkinForUser()
 	{
 		// get joomla objects
-		$user = JFactory::getUser();
 		$db   = JFactory::getDBO();
 
 		// check in all pages for this user
-		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote($user->get('id'));
+		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote(User::get('id'));
 		$db->setQuery($sql);
 		$db->query();
 	}
@@ -603,12 +597,11 @@ class GroupsHelperPages
 		if ($group->isSuperGroup())
 		{
 			$base = $group->getBasePath();
-			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template' . DS . 'pages');
+			$view->addTemplatePath(PATH_APP . $base . DS . 'template' . DS . 'pages');
 		}
 
 		// get needed vars
 		$database    = JFactory::getDBO();
-		$juser       = JFactory::getUser();
 		$authorized  = GroupsHelperView::authorize($group);
 		$version     = ($page) ? $page->approvedVersion() : null;
 
@@ -650,7 +643,7 @@ class GroupsHelperPages
 			$pageHit            = new stdClass;
 			$pageHit->gidNumber = $group->get('gidNumber');
 			$pageHit->pageid    = $page->get('id');
-			$pageHit->userid    = $juser->get('id');
+			$pageHit->userid    = User::get('id');
 			$pageHit->date      = date('Y-m-d H:i:s');
 			$pageHit->ip        = $_SERVER['REMOTE_ADDR'];
 			$groupsTablePageHit->save($pageHit);
@@ -667,7 +660,7 @@ class GroupsHelperPages
 		$version->set('content', trim($content));
 
 		// set vars to view
-		$view->juser      = $juser;
+		$view->juser      = User::getRoot();
 		$view->group      = $group;
 		$view->page       = $page;
 		$view->version    = $version;
@@ -692,9 +685,9 @@ class GroupsHelperPages
 		if (self::_isWiki($content))
 		{
 			// create path
-			$path = JComponentHelper::getparams('com_groups')->get('uploadpath');
+			$path = Component::params('com_groups')->get('uploadpath');
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
 			// build wiki config
 			$wikiConfig = array(
@@ -707,7 +700,7 @@ class GroupsHelperPages
 			);
 
 			// create wiki parser
-			$wikiParser = WikiHelperParser::getInstance();
+			$wikiParser = \Components\Wiki\Helpers\Parser::getInstance();
 
 			// parse content
 			$content = $wikiParser->parse("\n" . $content, $wikiConfig, $fullparse);

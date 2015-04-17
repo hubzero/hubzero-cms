@@ -64,7 +64,7 @@ class Database extends Base implements CommandInterface
 		$prefix   = $db->getPrefix();
 		$excludes = array();
 		$config   = new \JConfig();
-		$now      = \JFactory::getDate();
+		$now      = new \Hubzero\Utility\Date();
 		$exclude  = '';
 		$includes = ($this->arguments->getOpt('include-table')) ? (array)$this->arguments->getOpt('include-table') : array();
 
@@ -127,11 +127,11 @@ class Database extends Base implements CommandInterface
 
 		// First, set some things aside that we need to reapply after the update
 		$params                           = array();
-		$params['com_system']             = \JComponentHelper::getParams('com_system');
-		$params['com_tools']              = \JComponentHelper::getParams('com_tools');
-		$params['com_usage']              = \JComponentHelper::getParams('com_usage');
-		$params['com_users']              = \JComponentHelper::getParams('com_users');
-		$params['plg_projects_databases'] = \JPluginHelper::getPlugin('projects', 'databases')->params;
+		$params['com_system']             = \Component::params('com_system');
+		$params['com_tools']              = \Component::params('com_tools');
+		$params['com_usage']              = \Component::params('com_usage');
+		$params['com_users']              = \Component::params('com_users');
+		$params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
 
 		$db     = \JFactory::getDbo();
 		$tables = $db->getTableList();

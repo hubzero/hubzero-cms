@@ -49,7 +49,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		$this->_config   = JComponentHelper::getParams('com_projects');
+		$this->_config   = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_action   = $this->segments[1] ? $this->segments[1] : 'list';
 

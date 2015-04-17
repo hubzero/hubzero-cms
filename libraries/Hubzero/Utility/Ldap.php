@@ -70,7 +70,7 @@ class Ldap
 			return $conn;
 		}
 
-		$ldap_params = \JComponentHelper::getParams('com_system');
+		$ldap_params = \Component::params('com_system');
 
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');
@@ -107,7 +107,7 @@ class Ldap
 		{
 			if ($debug)
 			{
-				\JFactory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
+				\Log::debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
 			}
 
 			return false;
@@ -115,14 +115,14 @@ class Ldap
 
 		if ($debug)
 		{
-			\JFactory::getLogger()->debug("getLDO(): ldap_connect($pldap,$port) success. ");
+			\Log::debug("getLDO(): ldap_connect($pldap,$port) success. ");
 		}
 
 		if (ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3) == false)
 		{
 			if ($debug)
 			{
-				\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
+				\Log::debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($conn));
 			}
 
 			$conn = false;
@@ -131,14 +131,14 @@ class Ldap
 
 		if ($debug)
 		{
-			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
+			\Log::debug("getLDO(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
 		}
 
 		if (ldap_set_option($conn, LDAP_OPT_RESTART, 1) == false)
 		{
 			if ($debug)
 			{
-				\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
+				\Log::debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($conn));
 			}
 
 			$conn = false;
@@ -147,14 +147,14 @@ class Ldap
 
 		if ($debug)
 		{
-			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
+			\Log::debug("getLDO(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
 		}
 
 		if (!ldap_set_option($conn, LDAP_OPT_REFERRALS, false))
 		{
 			if ($debug)
 			{
-				\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
+				\Log::debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) failed: " . ldap_error($conn));
 			}
 
 			$conn = false;
@@ -163,7 +163,7 @@ class Ldap
 
 		if ($debug)
 		{
-			\JFactory::getLogger()->debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
+			\Log::debug("getLDO(): ldap_set_option(LDAP_OPT_REFERRALS, 0) success.");
 		}
 
 		if ($negotiate_tls)
@@ -172,7 +172,7 @@ class Ldap
 			{
 				if ($debug)
 				{
-					\JFactory::getLogger()->debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
+					\Log::debug("getLDO(): ldap_start_tls() failed: " . ldap_error($conn));
 				}
 
 				$conn = false;
@@ -181,7 +181,7 @@ class Ldap
 
 			if ($debug)
 			{
-				\JFactory::getLogger()->debug("getLDO(): ldap_start_tls() success.");
+				\Log::debug("getLDO(): ldap_start_tls() success.");
 			}
 		}
 
@@ -193,7 +193,7 @@ class Ldap
 
 			if ($debug)
 			{
-				\JFactory::getLogger()->debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
+				\Log::debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
 			}
 
 			$conn = false;
@@ -202,7 +202,7 @@ class Ldap
 
 		if ($debug)
 		{
-			\JFactory::getLogger()->debug("getLDO(): ldap_bind() success.");
+			\Log::debug("getLDO(): ldap_bind() success.");
 		}
 
 		return $conn;
@@ -265,7 +265,7 @@ class Ldap
 			$dbinfo['host'] = $db->loadResultArray();
 		}
 
-		$ldap_params = \JComponentHelper::getParams('com_system');
+		$ldap_params = \Component::params('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if (is_numeric($user) && $user >= 0)
@@ -515,7 +515,7 @@ class Ldap
 			$dbinfo['memberUid'] = $db->loadResultArray();
 		}
 
-		$ldap_params = \JComponentHelper::getParams('com_system');
+		$ldap_params = \Component::params('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if (isset($dbinfo['gidNumber']) || (is_numeric($group) && $group >= 0))
@@ -751,7 +751,7 @@ class Ldap
 			return false;
 		}
 
-		$ldap_params = \JComponentHelper::getParams('com_system');
+		$ldap_params = \Component::params('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if (is_numeric($group) && $group >= 0)
@@ -969,7 +969,7 @@ class Ldap
 		}
 
 		// delete all old hubGroup schema based group entries
-		$ldap_params = \JComponentHelper::getParams('com_system');
+		$ldap_params = \Component::params('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		$dn = "ou=groups," . $hubLDAPBaseDN;
@@ -1118,7 +1118,7 @@ class Ldap
 		}
 
 		// delete all old hubAccount schema based user entries
-		$ldap_params = \JComponentHelper::getParams('com_system');
+		$ldap_params = \Component::params('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		$dn = "ou=users," . $hubLDAPBaseDN;
