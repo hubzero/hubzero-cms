@@ -46,10 +46,39 @@ class Login extends AdminController
 	 */
 	public function displayTask()
 	{
+		// If authenticator is specified, call the plugin display method,
+		// otherwise (or if method does not exist) use default
+		$authenticator = Request::getVar('authenticator', '', 'method');
+
+		\JPluginHelper::importPlugin('authentication');
+
+		$plugins = \JPluginHelper::getPlugin('authentication');
+
+		foreach ($plugins as $plugin)
+		{
+			$className = 'plg' . $plugin->type . $plugin->name;
+			$params    = json_decode($plugin->params);
+
+			if (class_exists($className) && isset($params->admin_login) && $params->admin_login)
+			{
+				$myplugin = new $className($this, (array)$plugin);
+
+				if ($plugin->name != $authenticator) continue;
+
+				if (method_exists($className, 'display'))
+				{
+					$this->view->return = Request::getVar('return', null, 'method', 'base64');
+
+					$result = $myplugin->display($this->view, null);
+
+					return $result;
+				}
+			}
+		}
+
 		// Special treatment is required for this plugin, as this view may be called
 		// after a session timeout. We must reset the view and layout prior to display
 		// otherwise an error will occur.
-
 		\Request::setVar('view', 'login');
 		//\Request::setVar('layout', 'default');
 
@@ -65,14 +94,45 @@ class Login extends AdminController
 	 */
 	public function loginTask()
 	{
-		// Check for request forgeries.
-		\JSession::checkToken('request') or jexit(\Lang::txt('JINVALID_TOKEN'));
-
 		$model = new Model();
 		$model->setState('task', $this->_task);
 
 		$credentials = $model->getState('credentials');
 		$return      = $model->getState('return');
+
+		// If a specific authenticator is specified try to call the login method for that plugin
+		if ($authenticator = Request::getVar('authenticator', false, 'method'))
+		{
+			\JPluginHelper::importPlugin('authentication');
+
+			$plugins = \JPluginHelper::getPlugin('authentication');
+
+			foreach ($plugins as $plugin)
+			{
+				$className = 'plg' . $plugin->type . $plugin->name;
+
+				if ($plugin->name != $authenticator) continue;
+
+				if (class_exists($className))
+				{
+					if (method_exists($className, 'login'))
+					{
+						$myplugin = new $className($this, (array)$plugin);
+
+						$myplugin->login($credentials, $options);
+
+						if (isset($options['return']))
+						{
+							$return = $options['return'];
+						}
+					}
+
+					$options['authenticator'] = $authenticator;
+
+					break;
+				}
+			}
+		}
 
 		$app = \JFactory::getApplication();
 		$result = $app->login($credentials, array('action' => 'core.login.admin'));
@@ -112,5 +172,9 @@ class Login extends AdminController
 		}
 
 		$this->displayTask();
+	}
+
+	public function attach()
+	{
 	}
 }

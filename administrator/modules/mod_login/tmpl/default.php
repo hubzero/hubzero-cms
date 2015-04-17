@@ -31,35 +31,65 @@
 // No direct access.
 defined('_JEXEC') or die;
 
+$this->css('login')
+     ->css('providers', 'com_users')
+     ->js('login');
+
 JHtml::_('behavior.keepalive');
 ?>
-<form action="<?php echo Route::url('index.php', true, $params->get('usesecure')); ?>" method="post" id="form-login">
-	<fieldset>
-		<legend><?php echo Lang::txt('MOD_LOGIN_LOGIN'); ?></legend>
 
-		<div class="input-wrap">
-			<label id="mod-login-username-lbl" for="mod-login-username"><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></label>
-			<input name="username" id="mod-login-username" type="text" class="inputbox" size="15" />
+<div class="hz_user">
+	<div class="auth">
+		<div class="default" style="display:<?php echo count($authenticators) == 0 ? 'none' : 'block'; ?>;">
+			<div class="instructions"><?php echo Lang::txt('COM_LOGIN_CHOOSE_METHOD'); ?></div>
+			<div class="options">
+				<?php foreach ($authenticators as $a) : ?>
+					<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_login&task=authDisplay&authenticator=' . $a['name'] . $returnQueryString); ?>">
+						<div class="signin"><?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_METHOD', $a['display']); ?></div>
+					</a>
+				<?php endforeach; ?>
+			</div>
+			<?php if (isset($basic) && $basic) : ?>
+				<div class="or"></div>
+				<div class="local">
+					<a href="#">
+						<?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_ACCOUNT', $site_display); ?>
+					</a>
+				</div>
+			<?php endif; ?>
 		</div>
+		<div class="hz" style="display:<?php echo count($authenticators) == 0 ? 'block' : 'none'; ?>;">
+			<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
+				<label id="mod-login-username-lbl" for="mod-login-username">
+					<span><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></span>
+					<input name="username" id="mod-login-username" class="input-username" type="text" size="15" placeholder="<?php echo Lang::txt('JGLOBAL_USERNAME'); ?>" />
+				</label>
 
-		<div class="input-wrap">
-			<label id="mod-login-password-lbl" for="mod-login-password"><?php echo Lang::txt('JGLOBAL_PASSWORD'); ?></label>
-			<input name="passwd" id="mod-login-password" type="password" class="inputbox" size="15" />
+				<label id="mod-login-password-lbl" for="mod-login-password">
+					<span><?php echo Lang::txt('JGLOBAL_PASSWORD'); ?></span>
+					<input name="passwd" id="mod-login-password" class="input-password" type="password" size="15" placeholder="<?php echo Lang::txt('JGLOBAL_PASSWORD'); ?>" />
+				</label>
+
+				<div class="button-holder">
+					<input type="submit" class="btn" value="<?php echo Lang::txt('MOD_LOGIN_LOGIN'); ?>" />
+				</div>
+
+				<?php if (count($authenticators) > 0) : ?>
+					<div class="or"></div>
+					<div class="multi-auth">
+						<a href="#">
+							<?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_OTHER'); ?>
+						</a>
+					</div>
+				<?php endif; ?>
+
+				<input type="hidden" name="option"        value="com_login" />
+				<input type="hidden" name="authenticator" value="hubzero" />
+				<input type="hidden" name="task"          value="login" />
+				<input type="hidden" name="return"        value="<?php echo $return; ?>" />
+				<input type="hidden" name="freturn"       value="<?php echo $freturn; ?>" />
+				<?php echo JHTML::_('form.token'); ?>
+			</form>
 		</div>
-
-		<div class="input-wrap">
-			<label id="mod-login-language-lbl" for="lang"><?php echo Lang::txt('MOD_LOGIN_LANGUAGE'); ?></label>
-			<?php echo $langs; ?>
-		</div>
-
-		<div class="button-holder">
-			<input type="submit" value="<?php echo Lang::txt('MOD_LOGIN_LOGIN'); ?>" />
-		</div>
-
-		<input type="hidden" name="option" value="com_login" />
-		<input type="hidden" name="task" value="login" />
-		<input type="hidden" name="return" value="<?php echo $return; ?>" />
-
-		<?php echo JHtml::_('form.token'); ?>
-	</fieldset>
-</form>
+	</div>
+</div>

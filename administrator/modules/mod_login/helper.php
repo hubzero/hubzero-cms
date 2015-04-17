@@ -45,13 +45,34 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		// [!] Legacy compatibility
-		$params = $this->params;
+		$return  = self::getReturnURI();
+		$freturn = base64_encode('index.php' . \JFactory::getURI()->toString(array('query')));
 
-		$langs  = self::getLanguageList();
-		$return = self::getReturnURI();
+		$returnQueryString = (!empty($return)) ? "&return={$return}" : '';
+		$authenticators    = [];
+		$plugins           = \JPluginHelper::getPlugin('authentication');
 
-		require $this->getLayoutPath($params->get('layout', 'default'));
+		foreach ($plugins as $p)
+		{
+			$pparams = new \JRegistry($p->params);
+
+			// Make sure it supports admin login
+			if (!$pparams->get('admin_login', false)) continue;
+
+			// If it's the default hubzero plugin, don't include it in the list (we'll include it separately)
+			if ($p->name == 'hubzero')
+			{
+				$site_display = $pparams->get('display_name', Config::get('sitename'));
+				$basic = true;
+			}
+			else
+			{
+				$display = $pparams->get('display_name', ucfirst($p->name));
+				$authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
+			}
+		}
+
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 
 	/**
