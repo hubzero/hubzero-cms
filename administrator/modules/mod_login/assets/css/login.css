@@ -162,7 +162,7 @@
 .auth .certificate:before {
 	content: "\f040";
 	font-family: "fontcons";
-	font-size: 30px;
+	font-size: 20px;
 	left: 5px;
 }
 .certificate { background: #999; }
