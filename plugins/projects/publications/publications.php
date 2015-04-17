@@ -6956,11 +6956,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$base_path = $pubconfig->get('webpath');
 		$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path);
 
-		$galleryPath = JPATH_ROOT . $path . DS . 'gallery';
-		$dataPath 	 = JPATH_ROOT . $path . DS . 'data';
-		$contentPath = JPATH_ROOT . $path . DS . $objV->secret;
+		$galleryPath = PATH_APP . $path . DS . 'gallery';
+		$dataPath 	 = PATH_APP . $path . DS . 'data';
+		$contentPath = PATH_APP . $path . DS . $objV->secret;
 
-		$tarpath = JPATH_ROOT . $path . DS . $tarname;
+		$tarpath = PATH_APP . $path . DS . $tarname;
 
 		$zip = new ZipArchive;
 		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === TRUE)
@@ -7090,7 +7090,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				// Add CSV file
 				if ($db_name && $db_version)
 				{
-					$tmpFile 	= JPATH_ROOT . $path . DS . 'data.csv';
+					$tmpFile 	= PATH_APP . $path . DS . 'data.csv';
 					$csvFile 	= $mFolder . DS . 'data.csv';
 					$csv 		= $this->_getCsvData($db_name, $db_version, $tmpFile);
 
@@ -7105,7 +7105,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			if ($i > 0 && $readme)
 			{
-				$tmpReadme = JPATH_ROOT . $path . DS . 'README.txt';
+				$tmpReadme = PATH_APP . $path . DS . 'README.txt';
 				$rmFile  = $mFolder . DS . 'README.txt';
 
 				$readme .= str_replace($mFolder . DS, '', $rmFile) . "\n ";
