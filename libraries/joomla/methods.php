@@ -451,7 +451,7 @@ class JText
 		if ($string !== null)
 		{
 			// Normalize the key and translate the string.
-			self::$strings[strtoupper($string)] = JFactory::getLanguage()->_($string, $jsSafe, $interpretBackSlashes);
+			self::$strings[strtoupper($string)] = self::_($string, $jsSafe, $interpretBackSlashes);
 		}
 
 		return self::$strings;
