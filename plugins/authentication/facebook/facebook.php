@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class plgAuthenticationFacebook extends JPlugin
+class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 {
 	/**
 	 * Perform logout (not currently used)
@@ -498,9 +498,6 @@ class plgAuthenticationFacebook extends JPlugin
 			$service = $_SERVER['HTTP_HOST'];
 		}
 
-		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$task = (User::isGuest()) ? 'user.login' : 'user.link';
-
 		// Check if a return is specified
 		$rtrn = '';
 		if (isset($return) && !empty($return))
@@ -512,8 +509,6 @@ class plgAuthenticationFacebook extends JPlugin
 			$rtrn = '&return=' . $return;
 		}
 
-		$url = $service . '/index.php?option=com_users&task=' . $task . '&authenticator=facebook' . $rtrn;
-
-		return $url;
+		return self::getRedirectUri('facebook') . $rtrn;
 	}
 }

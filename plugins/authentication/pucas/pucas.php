@@ -31,14 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php');
 
 /**
  * Authentication Plugin class for PUCAS
  */
-class plgAuthenticationPUCAS extends JPlugin
+class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 {
 	/**
 	 * Actions to perform when logging out a user session
@@ -154,28 +152,11 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
-		$service = rtrim(Request::base(),'/');
-
-		if (empty($service))
-		{
-			$service = $_SERVER['HTTP_HOST'];
-		}
-
-		$return = '';
-
-		if ($view->return)
-		{
-			$return = '&return=' . $view->return;
-		}
-
-		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$task = (User::isGuest()) ? 'user.login' : 'user.link';
-
-		phpCAS::setFixedServiceURL($service . '/index.php?option=com_users&task=' . $task . '&authenticator=pucas' . $return);
+		phpCAS::setFixedServiceURL(self::getRedirectUri('pucas') . $return);
 		phpCAS::setNoCasServerValidation();
 		phpCAS::forceAuthentication();
 
-		$app->redirect($service . '/index.php?option=com_users&task=' . $task . '&authenticator=pucas' . $return);
+		$app->redirect(self::getRedirectUri('pucas') . $return);
 	}
 
 	/**

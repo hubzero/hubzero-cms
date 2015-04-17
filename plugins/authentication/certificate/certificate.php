@@ -103,10 +103,21 @@ class plgAuthenticationCertificate extends JPlugin
 			$return = '&return=' . $view->return;
 		}
 
-		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$task  = (User::isGuest()) ? 'user.login' : 'user.link';
+		// Get the hub url
+		$service = trim(Request::base(), DS);
 
-		App::redirect('/index.php?option=com_users&task=' . $task . '&authenticator=certificate' . $return);
+		if (substr($service, -13) == 'administrator')
+		{
+			$scope = '/index.php?option=com_login&task=login&authenticator=certificate';
+		}
+		else
+		{
+			// If someone is logged in already, then we're linking an account
+			$task  = (User::isGuest()) ? 'user.login' : 'user.link';
+			$scope = '/index.php?option=com_users&task=' . $task . '&authenticator=certificate';
+		}
+
+		App::redirect($scope . $return);
 	}
 
 	/**

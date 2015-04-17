@@ -34,7 +34,7 @@ defined('_JEXEC') or die();
 // Include LinkedIn php library
 require_once(join(DS, array(PATH_CORE, 'libraries', 'simplelinkedin-php', 'linkedin_3.2.0.class.php')));
 
-class plgAuthenticationLinkedIn extends JPlugin
+class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 {
 	/**
 	 * Perform logout (not currently used)
@@ -117,7 +117,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		// Set up linkedin configuration
 		$linkedin_config['appKey']      = $this->params->get('api_key');
 		$linkedin_config['appSecret']   = $this->params->get('app_secret');
-		$linkedin_config['callbackUrl'] = trim(Request::base(), '/') . '/index.php?option=com_users&view=login';
+		$linkedin_config['callbackUrl'] = self::getRedirectUri('linkedin');
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
@@ -164,13 +164,9 @@ class plgAuthenticationLinkedIn extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		// If someone is logged in already, then we're linking an account
-		$task = (User::isGuest()) ? 'user.login' : 'user.link';
-
 		// Set up the redirect URL
-		$service     = trim(Request::base(), DS);
 		$return      = isset($view->return) ? '&return=' . $view->return : '';
-		$redirect_to = "{$service}/index.php?option=com_users&task={$task}&authenticator=linkedin{$return}";
+		$redirect_to = self::getRedirectUri('linkedin') . $return;
 
 		// User initiated LinkedIn connection, setup linkedin configuration
 		$config = array(
@@ -237,7 +233,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$config = array(
 				'appKey'      => $this->params->get('api_key'),
 				'appSecret'   => $this->params->get('app_secret'),
-				'callbackUrl' => trim(Reuest::base(), DS) . DS . "index.php?option=com_users&view=login"
+				'callbackUrl' => self::getRedirectUri('linkedin')
 			);
 
 			// Create the object

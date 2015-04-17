@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 // Include php library
 require_once(join(DS, array( JPATH_ROOT, 'libraries', 'twitteroauth', 'twitteroauth.php' )));
 
-class plgAuthenticationTwitter extends JPlugin
+class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 {
 	/**
 	 * Perform logout (not currently used)
@@ -76,14 +76,13 @@ class plgAuthenticationTwitter extends JPlugin
 		}
 
 		$options['return'] = $b64dreturn;
-		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Check to make sure they didn't deny our application permissions
 		if (Request::getWord('denied', false))
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=' . $com_user . '&view=login&return=' . $return),
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				'To log in via Twitter, you must authorize the ' . Config::get('sitename') . ' app.',
 				'error'
 			);
@@ -100,29 +99,17 @@ class plgAuthenticationTwitter extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		// Get the hub url
-		$service = trim(Request::base(), DS);
-
-		if (empty($service))
-		{
-			$service = $_SERVER['HTTP_HOST'];
-		}
-
 		// Check if a return is specified
 		if ($view->return)
 		{
 			$return = '&return=' . $view->return;
 		}
 
-		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$task = (User::isGuest()) ? 'user.login' : 'user.link';
-
 		// Build twitter object
 		$twitter = new TwitterOAuth($this->params->get('app_id'), $this->params->get('app_secret'));
 
 		// Set callback url and get temp credentials
-		$callback = $service . '/index.php?option=com_users&task=' . $task . '&authenticator=twitter' . $return;
-		$temporary_credentials = $twitter->getRequestToken($callback);
+		$temporary_credentials = $twitter->getRequestToken(self::getRedirectUri('twitter') . $return);
 
 		// Store temp credentials in session for use after authentication redirect from twitter
 		JFactory::getSession()->set('twitter.oauth.token', $temporary_credentials['oauth_token']);

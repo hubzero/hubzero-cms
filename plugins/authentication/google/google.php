@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class plgAuthenticationGoogle extends JPlugin
+class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 {
 	/**
 	 * Perform logout (handled via JS)
@@ -120,17 +120,11 @@ class plgAuthenticationGoogle extends JPlugin
 
 		$options['return'] = $b64dreturn;
 
-		// Get the hub url
-		$service = trim(Request::base(), DS);
-
-		// If someone is logged in already, then we're linking an account
-		$task  = (User::isGuest()) ? 'user.login' : 'user.link';
-
 		// Set up the config for the google api instance
 		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
-		$client->setRedirectUri($service . '/index.php?option=com_users&task=' . $task . '&authenticator=google');
+		$client->setRedirectUri(self::getRedirectUri('google'));
 
 		// If we have a code comeing back, the user has authorized our app, and we can authenticate
 		if ($code = Request::getVar('code', NULL))
@@ -162,24 +156,15 @@ class plgAuthenticationGoogle extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		// Get the hub url
-		$service = trim(Request::base(), DS);
-
-		// If someone is logged in already, then we're linking an account
-		$task = (User::isGuest()) ? 'user.login' : 'user.link';
-
 		// Set up the config for the google api instance
 		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
-		$client->setRedirectUri($service . '/index.php?option=com_users&task=' . $task . '&authenticator=google');
+		$client->setRedirectUri(self::getRedirectUri('google'));
 		$client->setAccessType('online');
 		$client->setState($view->return);
 		$client->setApprovalPrompt('auto');
 		$client->setScopes('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
-
-		// Create Oauth2 instance
-		$oauth2 = new Google_Auth_OAuth2($client);
 
 		// Create and follow the authorization URL
 		App::redirect($client->createAuthUrl());
@@ -304,14 +289,11 @@ class plgAuthenticationGoogle extends JPlugin
 	 */
 	public function link($options=array())
 	{
-		// Get the hub url
-		$service = trim(Request::base(), DS);
-
 		// Set up the config for the google api instance
 		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
-		$client->setRedirectUri($service . '/index.php?option=com_users&task=user.link&authenticator=google');
+		$client->setRedirectUri(self::getRedirectUri('google'));
 
 		// Create OAuth2 Instance
 		$oauth2 = new Google_Service_OAuth2($client);
