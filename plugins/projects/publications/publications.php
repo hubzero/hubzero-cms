@@ -2408,7 +2408,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$ticketid = $row->id;
 
 					// Notify project admins
-					$message  = $row->name . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTED')."\r\n";;
+					$message  = $row->name . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTED')."\r\n";
 					$message .= '----------------------------'."\r\n";
 					$message .=	$report;
 					$message .= '----------------------------'."\r\n";

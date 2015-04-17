@@ -125,24 +125,24 @@ if ($this->getError()) {
 				$origin		= $version['remote']
 					? Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_REMOTE')
 					: Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_LOCAL');
-				if (!$version['remote'] && preg_match("/[SFTP]/", $version['message']))
+				if (!$version['remote'] && preg_match("/SFTP/", $version['message']))
 				{
 					$origin = 'SFTP';
 				}
 				$status = '<span class="commit-type">[' . $origin . ']</span> ';
-				$name		= $version['remote'] && $this->remote ? $this->remote['title'] : $version['name'];
+				$name   = $version['remote'] && $this->file->get('remote') ? $this->file->get('remoteTitle') : $version['name'];
 
 				// Get url, name and status
 				if ($version['remote'])
 				{
 					$url = $this->url
-						. '/?action=open&amp;subdir='.urlencode($this->subdir)
-						. '&amp;file='.urlencode($version['file']);
+						. '/?action=open&amp;subdir=' . urlencode($this->subdir)
+						. '&amp;file=' . urlencode($version['file']);
 
 					if ($this->connected && $last == true)
 					{
-						$action  = '<a href="' . $url .'" class="open_file" title="'
-							. Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') .'" target="_blank">&nbsp;</a>';
+						$action  = '<a href="' . $url . '" class="open_file" title="'
+							. Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank">&nbsp;</a>';
 					}
 					else
 					{

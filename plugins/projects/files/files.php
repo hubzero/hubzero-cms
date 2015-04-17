@@ -250,9 +250,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			// Include Git Helper
-			$this->_getGitHelper();
-
 			// File actions
 			switch ($this->_task)
 			{
@@ -1478,7 +1475,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					1
 				);
 			}
-			$view->connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);;
+			$view->connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
 		}
 
 		$this->repo->versions($params, $versions, $timestamps);
@@ -1487,17 +1484,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$i = 0;
 		foreach ($versions as $v)
 		{
-			$pr   		= $v['remote']  ? array('id' => $v['remote'],
-						'modified' => gmdate('Y-m-d H:i:s', strtotime($v['date']))) : NULL;
-			$hash 		= $v['remote'] ? NULL : $v['hash'];
-			$preview 	= $this->getFilePreview($v['file'], $hash, $this->_path, $this->subdir, $pr);
-
-			if ($preview)
+			$revision = $view->file;
+			$revision->set('localPath', $v['base']);
+			$revision->set('name', $v['file']);
+			$revision->set('fullPath', $this->repo->get('path') . DS . $v['base']);
+			if ($v['remote'])
 			{
-				$versions[$i]['preview'] = Route::url('index.php?option='
-					. $this->option . '&alias=' . $this->model->get('alias')
-					. '&task=media&media=' . basename($preview));
+				$revision->set('remodeId', $v['remote']);
+				$revision->set('modified', gmdate('Y-m-d H:i:s', strtotime($v['date'])));
 			}
+
+			$hash 		= $v['remote'] ? NULL : $v['hash'];
+
+			$versions[$i]['preview'] = $revision->getPreview($this->model, $hash, 'url');
 			$i++;
 		}
 
@@ -2921,20 +2920,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get Git helper
-	 *
-	 *
-	 * @return     void
-	 */
-	protected function _getGitHelper()
-	{
-		if (!isset($this->_git))
-		{
-			$this->_git = new \Components\Projects\Helpers\Git($this->_path);
-		}
-	}
-
-	/**
 	 * Optimize repository
 	 *
 	 * @param      object  	$model Project model
@@ -3393,6 +3378,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			return false;
+		}
+
+		if (!isset($this->_git))
+		{
+			$this->_git = new \Components\Projects\Helpers\Git($this->_path);
 		}
 
 		// Clean up status
@@ -4546,19 +4536,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$parsedRef = '';
 
 			$selected = array();
-			foreach ($refParts as $file)
+			foreach ($refParts as $item)
 			{
-				if (is_file( $this->_path . DS . trim($file) ))
+				$file = $this->repo->getMetadata(trim($item));
+				$params = array('file' => $file);
+				if ($file->exists())
 				{
-					$hash   = $this->_git->gitLog(trim($file), '' , 'hash');
+					$hash = $this->repo->getLastRevision($params);
 					if ($hash)
 					{
-						$selected[] = substr($hash, 0, 10) . ':' . trim($file);
+						$selected[] = substr($hash, 0, 10) . ':' . trim($file->get('localPath'));
 
-						// Generate preview
-						$this->getFilePreview(trim($file), $hash, $this->_path, '');
-						// Generate medium-size preview
-						$this->getFilePreview(trim($file), $hash, $this->_path, '', '', true);
+						// Generate preview (regular and medium-size)
+						$file->getPreview($this->model, $hash);
+						$file->getPreview($this->model, $hash, '', 'medium');
 					}
 				}
 			}

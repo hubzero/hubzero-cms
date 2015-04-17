@@ -57,7 +57,7 @@ elseif (count($selected) >= 5)
 	$empty = ($rows * $cols) - count($selected);
 }
 
-$minHeight = round($this->minHeight/$cols);
+$minHeight = $cols > 3 ? round($this->minHeight/$cols) : $this->minHeight;
 $genStyle = 'min-height:' . $minHeight . 'px;';
 
 $colors = array('#909a9e', '#878795', '#a7a9a4', 'black', '#646d70', '#e2d8c5', '#d4cfd8');
