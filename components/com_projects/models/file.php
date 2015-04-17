@@ -142,7 +142,7 @@ class File extends Object
 
 		$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
 	}
-	
+
 	/**
 	 * Get file contents
 	 *
