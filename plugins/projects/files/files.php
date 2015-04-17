@@ -1526,109 +1526,30 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _diff()
 	{
-		// Incoming
-		$old 	 = urldecode(Request::getVar( 'old', ''));
-		$new 	 = urldecode(Request::getVar( 'new', ''));
-		$mode 	 = Request::getVar( 'mode', $this->params->get('diffmode', 'side-by-side'));
-		$file 	 = urldecode(Request::getVar( 'file', ''));
-		$full 	 = Request::getInt( 'full');
+		// Combine file and folder data
+		$items = $this->_sortIncoming();
 
-		$remote 		= NULL;
-		$service		= NULL;
-		$connected 		= false;
+		// Repo call params
+		$params = array('subdir' => $this->subdir);
 
-		$nParts = explode('@', $new);
-		$oParts = explode('@', $old);
-		$diff	= NULL;
-
-		$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
-
-		// Binary file?
-		$binary	= \Components\Projects\Helpers\Html::isBinary($this->_path . DS . $fpath);
-
-		// Do some checks
-		if (count($nParts) <= 2 || count($oParts) <= 2)
+		if (!$items)
 		{
-			$fpath = NULL;
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_DIFF_NO_CONTENT'));
-		}
-		elseif (!$file)
-		{
-			$fpath = NULL;
 			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
-		}
-		elseif ($binary)
-		{
-			$fpath = NULL;
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_DIFF_BINARY'));
 		}
 		else
 		{
-			$new = array('rev' => $nParts[0], 'hash' => $nParts[1], 'fpath' => $nParts[2], 'val' => urlencode($new) );
-			$old = array('rev' => $oParts[0], 'hash' => $oParts[1], 'fpath' => $oParts[2], 'val' => urlencode($old) );
-
-			// Check for remote connection
-			if (!empty($this->_rServices) && $this->repo->isLocal())
+			// Get selected item
+			foreach ($items[0] as $type => $item)
 			{
-				foreach ($this->_rServices as $servicename)
-				{
-					// Get stored remote connection to file
-					$remote = $this->_getRemoteConnection($fpath, '', $servicename);
-					if ($remote)
-					{
-						$service   = $servicename;
-						$connected = $this->_connect->getStoredParam($servicename . '_token', $this->_uid);
-						break;
-					}
-				}
-			}
-
-			// Get text blobs
-			$old['text'] = $this->_git->gitLog($old['fpath'], $old['hash'], 'blob');
-			$new['text'] = $this->_git->gitLog($new['fpath'], $new['hash'], 'blob');
-
-			// Diff class
-			include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS
-				. 'files' . DS . 'php-diff' . DS . 'Diff.php' );
-
-			$context = ($old['text'] == $new['text'] || $full == 1) ? count($old['text']) : 10;
-			$options = array(
-				'context' => $context
-			);
-
-			// Run diff
-			$objDiff = new Diff($old['text'], $new['text'], $options );
-
-			if ($mode == 'side-by-side')
-			{
-				include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
-					. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php' );
-
-				// Generate a side by side diff
-				$renderer = new Diff_Renderer_Html_SideBySide;
-				$diff = $objDiff->Render($renderer);
-			}
-			elseif ($mode == 'inline')
-			{
-				include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
-					. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php' );
-
-				// Generate inline diff
-				$renderer = new Diff_Renderer_Html_Inline;
-				$diff = $objDiff->Render($renderer);
-			}
-			else
-			{
-				// Print git diff
-				$mode = 'git';
-				$diff = $this->_git->gitDiff($old, $new);
-
-				if (is_array($diff))
-				{
-					$diff = implode("\n", $diff);
-				}
+				$params['file'] = $this->repo->getMetadata($item, $type, $params);
+				break;
 			}
 		}
+
+		$params['rev1']      = urldecode(Request::getVar( 'old', ''));
+		$params['rev2']      = urldecode(Request::getVar( 'new', ''));
+		$params['fullDiff']  = Request::getInt( 'full', 0);
+		$params['mode']      = urldecode(Request::getVar( 'mode', 'side-by-side'));
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -1640,10 +1561,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
+		// Run diff
+		$view->diff = $this->repo->diff($params);
+
 		$view->url 	        = Route::url($this->_route . '&active=files');
 		$view->config		= $this->model->config();
-		$view->file 		= $file;
-		$view->fpath 		= $fpath;
+		$view->file 		= $params['file'];
 		$view->option 		= $this->_option;
 		$view->model 		= $this->model;
 		$view->repo    		= $this->repo;
@@ -1651,12 +1574,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->title		= $this->_area['title'];
 		$view->subdir 		= $this->subdir;
 		$view->ajax			= 0;
-		$view->connected	= $connected;
-		$view->remote		= $remote;
-		$view->new			= $new;
-		$view->old			= $old;
-		$view->diff			= $diff;
-		$view->mode			= $mode;
+		$view->params		= $params;
 
 		if ($this->getError())
 		{
@@ -1817,149 +1735,61 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _download()
 	{
 		// Incoming
-		$render 	= Request::getVar('render', 'download');
-		$items 		= $this->_sortIncoming();
-		$file 	 	= trim(urldecode(Request::getVar('file', '')), DS);
-		$multifile	= 0;
-		$deleteTemp = 0;
-		$remote 	= NULL;
-		$revision 	= Request::getVar('revision', '');
+		$render    = Request::getVar('render', 'download');
+		$hash      = Request::getVar('hash', '');
 
-		if (!$file)
+		// Metadata collector
+		$collector = array();
+
+		// Combine file and folder data
+		$items = $this->_sortIncoming();
+
+		// Get stored remote connections
+		$remotes = $this->_getRemoteConnections();
+
+		// Params for repo call
+		$params = array(
+			'subdir'            => $this->subdir,
+			'remoteConnections' => $remotes
+		);
+
+		// Collect items
+		if (!$items)
 		{
-			if (empty($items))
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+		}
+		else
+		{
+			foreach ($items as $element)
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_SELECTIONS_TO_DOWNLOAD'));
-			}
-			elseif (count($items) == 1)
-			{
-				foreach ($items as $element)
+				foreach ($element as $type => $item)
 				{
-					foreach ($element as $type => $item)
-					{
-						if ($type == 'file')
-						{
-							$file = $item;
-						}
-					}
+					// Get type and item name
+					break;
 				}
-			}
-			elseif ($render == 'download')
-			{
-				// Multi-file download
-				$multifile = 1;
-				$archive = $this->_archiveFiles($items, $this->_path, $this->subdir);
 
-				if (!$archive)
+				// Must have a name
+				if (trim($item) == '')
 				{
-					$this->setError($this->getError() . ' ' .Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
+					continue;
 				}
+
+				// Build metadata object
+				$collector[] = $this->repo->getMetadata($item, $type, $params);
 			}
 		}
 
-		// Build file path and check for remote connection
-		if ($file)
+		// Check that we have item(s) to download
+		if (empty($collector))
 		{
-			$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
-			// Check for remote connection
-			if (!empty($this->_rServices) && $this->repo->isLocal())
-			{
-				foreach ($this->_rServices as $servicename)
-				{
-					// Get stored remote connection to file
-					$remote = $this->_getRemoteConnection($fpath, '', $servicename);
-
-					if ($remote)
-					{
-						break;
-					}
-				}
-			}
+			// Throw error
+			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404 );
+			return;
 		}
 
-		// Are we previewing or downloading?
-		if (($render == 'thumb' || $render == 'inline' || $render == 'medium') && $file
-			&& file_exists($this->_path . DS . $fpath))
+		// File preview?
+		if ($render == 'preview')
 		{
-			$hash   = ($remote && $remote['converted'] == 1) ? ''
-					: $this->_git->gitLog($fpath, '' , 'hash');
-			$medium = $render == 'medium' ? true : false;
-			$image  = ($render == 'thumb' || $render == 'medium')
-					? $this->getFilePreview($file, $hash, $this->_path, $this->subdir, $remote, $medium)
-					: $this->_path . DS . $fpath;
-			$image = ($render == 'thumb' || $render == 'medium') ? PATH_APP . $image : $image;
-
-			// Serve image
-			if ($image && file_exists($image))
-			{
-				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename($image);
-				$xserver->serve_inline($image);
-				exit;
-			}
-		}
-		elseif ($render == 'preview')
-		{
-			$content  = '';
-			$image	  = '';
-			$hash     = '';
-			$ok 	  = 1;
-			$filesize = 0;
-
-			// Need a file to preview
-			if (!$file)
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
-
-				// Output error
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'projects',
-						'element'=>'files',
-						'name'=>'error'
-					)
-				);
-
-				$view->title  = '';
-				$view->option = $this->_option;
-				$view->setError( $this->getError() );
-				return $view->loadTemplate();
-			}
-
-			// Need file in working tree
-			if ((!$remote || $remote['converted'] == 0) && !file_exists($this->_path . DS . $fpath))
-			{
-				$ok = 0;
-			}
-
-			// Get file extention
-			$ext = \Components\Projects\Helpers\Html::getFileExtension($fpath);
-
-			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
-			{
-				// Get git object
-				$hash  	  =  $this->_git->gitLog($fpath, '' , 'hash');
-				$filesize =  $this->_git->gitLog($fpath, '' , 'size');
-			}
-
-			// Get image preview
-			if (!$this->getError() && $ok == 1)
-			{
-				$image = $this->getFilePreview($file, $hash, $this->_path, $this->subdir, $remote);
-			}
-
-			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
-			{
-				$binary = \Components\Projects\Helpers\Html::isBinary($this->_path . DS . $fpath);
-
-				// If non-binary and below 10MB
-				if (!$binary && $filesize <= 10485760)
-				{
-					$content = $this->_git->showTextContent($fpath, 100);
-					$content = $content ? \Components\Projects\Helpers\Html::shortenText($content, 200) : '';
-				}
-			}
-
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -1969,128 +1799,167 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->image 		= $image;
-			$view->ext 			= isset($ext) ? $ext : NULL;
-			$view->title 		= $file;
-			$view->content 		= $content;
+			$view->file			= isset($collector[0]) ? $collector[0] : NULL;
+
+			// Get last revision
+			if (!$view->file->get('converted') && !$hash)
+			{
+				$params['file'] = $view->file;
+				$hash = $this->repo->getLastRevision($params);
+				$view->file->set('hash', $hash);
+			}
 			$view->option 		= $this->_option;
-			$view->filesize		= isset($filesize) ? \Hubzero\Utility\Number::formatBytes($filesize) : NULL;
-			$view->remote		= $remote;
 			$view->model		= $this->model;
 
-			if ($this->getError())
+			if (!($view->file instanceof \Components\Projects\Models\File))
 			{
-				$view->setError( $this->getError() );
+				$view->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND') );
 			}
 			return $view->loadTemplate();
 		}
-		elseif (!$this->getError())
-		{
-			// Which revision are we downloading?
-			$hash 	  = Request::getVar('hash', '');
-			$serveas  = basename($file);
 
-			// Multiple files selected
-			if ($multifile)
+		// Other rendering?
+		if ($render == 'thumb' || $render == 'inline' || $render == 'medium')
+		{
+			$file = isset($collector[0]) ? $collector[0] : NULL;
+			if (!($file instanceof \Components\Projects\Models\File))
 			{
-				$fullpath 	= $archive['path'];
-				$file  		= $archive['name'];
-				$serveas	= 'Project Files ' . Date::toSql() . '.zip';
-				$deleteTemp = 1;
+				throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404 );
+				return;
+			}
+			// Get last revision
+			if (!$file->get('converted') && !$hash)
+			{
+				$params['file'] = $file;
+				$hash = $this->repo->getLastRevision($params);
+			}
+
+			$image = $file->getPreview($this->model, $hash, 'fullPath', $render);
+
+			// Serve image
+			if ($image && is_file($image))
+			{
+				$xserver = new \Hubzero\Content\Server();
+				$xserver->filename($image);
+				$xserver->serve_inline($image);
+				exit;
+			}
+		}
+
+		// File download
+		if (count($items) > 1)
+		{
+			$archive = $this->_archiveFiles($items, $this->_path, $this->subdir);
+
+			if (!$archive)
+			{
+				$this->setError($this->getError() . ' ' .Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
 			}
 			else
 			{
-				// Open converted file
-				if ($remote && $this->_task == 'open')
+				$downloadPath   = $archive['path'];
+				$serveas        = 'Project Files ' . Date::toSql() . '.zip';
+			}
+		}
+		else
+		{
+			$file = isset($collector[0]) ? $collector[0] : NULL;
+			if (!($file instanceof \Components\Projects\Models\File))
+			{
+				throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404 );
+				return;
+			}
+			$serveas = $file->get('name');
+
+			// Open converted file
+			if (!empty($this->_remoteService) && $file->get('converted') && $this->_task == 'open')
+			{
+				// Is user connected?
+				$connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
+
+				if (!$connected)
 				{
-					// Is user connected?
-					$connected = $this->_connect->getStoredParam($remote['service'] . '_token', $this->_uid);
-
-					if (!$connected)
-					{
-						// Redirect to connect screen
-						$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
-							'type' => 'success');
-						$url  = Route::url('index.php?option=' . $this->_option
-							 . '&alias=' . $this->model->get('alias') . '&active=files');
-						$url .= '/?action=connect';
-						$this->_referer = $url;
-						return;
-					}
-
-					// Load remote resource
-					$this->_connect->setUser($this->model->get('owned_by_user'));
-					$resource = $this->_connect->loadRemoteResource($remote['service'],
-						$this->model->get('owned_by_user'), $remote['id']);
-
-					$openLink = $resource && isset($resource['alternateLink']) ? $resource['alternateLink'] : '';
-
-					if (!$openLink)
-					{
-						// Throw error
-						throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file, 404 );
-						return;
-					}
-					$this->_referer = $openLink;
+					// Redirect to connect screen
+					$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
+						'type' => 'success');
+					$url  = Route::url('index.php?option=' . $this->_option
+						 . '&alias=' . $this->model->get('alias') . '&active=files');
+					$url .= '/?action=connect';
+					$this->_referer = $url;
 					return;
 				}
 
-				// Import & download converted file
-				if ($remote && $remote['converted'] == 1 && $remote['service'] == 'google')
+				// Load remote resource
+				$this->_connect->setUser($this->model->get('owned_by_user'));
+				$resource = $this->_connect->loadRemoteResource($this->_remoteService,
+					$this->model->get('owned_by_user'), $file->get('remoteId'));
+
+				$openLink = $resource && isset($resource['alternateLink']) ? $resource['alternateLink'] : '';
+
+				if (!$openLink)
 				{
-					$temp_path = sys_get_temp_dir();
-
-					// Load remote resource
-					$this->_connect->setUser($this->model->get('owned_by_user'));
-					$resource = $this->_connect->loadRemoteResource($remote['service'],
-						$this->model->get('owned_by_user'), $remote['id']);
-
-					// Tex file?
-					$tex    = Components\Projects\Helpers\Compiler::isTexFile($remote['title'], $remote['original_format']);
-
-					$cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($resource['mimeType']);
-					$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
-
-					$data = $this->_connect->sendHttpRequest($remote['service'], $this->model->get('owned_by_user'), $url);
-
-					// Clean up data from Windows characters - important!
-					$data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data) : $data;
-
-					$ftname = \Components\Projects\Helpers\Google::getImportFilename($remote, $cExt);
-
-					$this->_connect->fetchFile($data, $ftname, $temp_path);
-					$fullpath = $temp_path . DS . $ftname;
-
-					// Delete temp file after download
-					$deleteTemp = 1;
+					// Throw error
+					throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file->get('name'), 404 );
+					return;
 				}
-				// Download local revision
-				elseif ($hash)
-				{
-					// Viewing revisions
-					$parts = explode('/', $file);
-					$serveas = trim(end($parts));
-
-					$temppath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
-					$fullpath = $this->_path . DS .$temppath;
-
-					// Get file content
-					$this->_git->getContent($file, $hash, $temppath);
-
-					// Delete temp file after download
-					$deleteTemp = 1;
-				}
-				else
-				{
-					// Viewing current file
-					$fpath 		= $this->subdir ? $this->subdir. DS . $file : $file;
-					$serveas 	= urldecode(Request::getVar('serveas', $file));
-					$fullpath	= $this->_path . DS . $fpath;
-				}
+				$this->_referer = $openLink;
+				return;
 			}
 
+			// Import & download converted file
+			if (!empty($this->_remoteService) && $file->get('converted'))
+			{
+				$temp_path = sys_get_temp_dir();
+
+				// Load remote resource
+				$this->_connect->setUser($this->model->get('owned_by_user'));
+				$resource = $this->_connect->loadRemoteResource($this->_remoteService,
+					$this->model->get('owned_by_user'), $file->get('remoteId'));
+
+				// Tex file?
+				$tex    = Components\Projects\Helpers\Compiler::isTexFile($file->get('remoteTitle'), $file->get('originalFormat'));
+
+				$cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($file->get('mimeType'));
+				$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
+
+				$data = $this->_connect->sendHttpRequest(
+					$this->_remoteService,
+					$this->model->get('owned_by_user'),
+					$url
+				);
+
+				// Clean up data from Windows characters - important!
+				$data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data) : $data;
+
+				$ftname = \Components\Projects\Helpers\Google::getImportFilename($file->get('remoteTitle'), $cExt);
+				$serveas = $ftname;
+
+				$this->_connect->fetchFile($data, $ftname, $temp_path);
+				$downloadPath = $temp_path . DS . $ftname;
+			}
+			// Download local revision
+			elseif ($hash)
+			{
+				$tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
+				$downloadPath = sys_get_temp_dir() . DS . $tempPath;
+
+				// Get file content
+				$params = array('fileName' => $file->get('localPath'), 'hash' => $hash, 'target' => $downloadPath);
+				$this->repo->getFileContent($params);
+			}
+			else
+			{
+				// Viewing current file
+				$serveas 	  = urldecode(Request::getVar('serveas', $file->get('name')));
+				$downloadPath = $file->get('fullPath');
+			}
+		}
+
+		// Now we can actually download
+		if (!empty($downloadPath))
+		{
 			// Ensure the file exist
-			if (!file_exists($fullpath))
+			if (!file_exists($downloadPath))
 			{
 				// Throw error
 				throw new Exception(Lang::txt('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
@@ -2098,14 +1967,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Cannot download zero byte files
-			if (filesize($fullpath) == 0)
+			if (filesize($downloadPath) == 0)
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_ZERO_BYTE'));
-				if ($deleteTemp)
-				{
-					// Delete downloaded temp file
-					\JFile::delete($fullpath);
-				}
 			}
 
 			// Proceed with download
@@ -2113,17 +1977,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				// Initiate a new content server and serve up the file
 				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename($fullpath);
+				$xserver->filename($downloadPath);
 				$xserver->disposition('attachment');
 				$xserver->acceptranges(false);
 				$xserver->saveas($serveas);
-				$result = $xserver->serve_attachment($fullpath, $serveas, false);
-
-				if ($deleteTemp)
-				{
-					// Delete downloaded temp file
-					\JFile::delete($fullpath);
-				}
+				$result = $xserver->serve_attachment($downloadPath, $serveas, false);
 
 				if (!$result)
 				{
@@ -2148,10 +2006,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = Route::url($this->_route . '&active=files');
-		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
-		$this->_referer = $url;
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$this->_referer = Route::url($url);
 		return;
 	}
 
@@ -2163,38 +2021,72 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _compile()
 	{
-		// Clean incoming data
-		$this->_cleanData();
+		// Combine file and folder data
+		$items = $this->_sortIncoming();
+
+		// Get stored remote connections
+		$remotes = $this->_getRemoteConnections();
+
+		// Params for repo call
+		$params = array(
+			'subdir'            => $this->subdir,
+			'remoteConnections' => $remotes
+		);
 
 		// Incoming
-		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
-		$commit  	= Request::getInt( 'commit', 0 );
-		$download  	= Request::getInt( 'download', 0 );
+		$commit     = Request::getInt( 'commit', 0 );
+		$download   = Request::getInt( 'download', 0 );
 
+		// Check that we have compile enabled
 		if (!$this->params->get('latex'))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_COMPILE_NOTALOWWED') );
+			$this->setError( Lang::txt('PLG_PROJECTS_FILES_COMPILE_NOTALLOWED') );
 			return;
 		}
 
-		// Can only view history of one file at a time
-		if (empty($checked) or $checked[0] == '')
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  =>'projects',
+				'element' =>'files',
+				'name'    =>'compiled'
+			)
+		);
+
+		// Get selected item
+		if (!$items)
 		{
-			$file = urldecode(Request::getVar( 'file', ''));
+			$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
+			return;
 		}
 		else
 		{
-			$file = urldecode($checked[0]);
+			foreach ($items as $element)
+			{
+				foreach ($element as $type => $item)
+				{
+					// Get our metadata
+					$file = $this->repo->getMetadata($item, 'file', $params);
+					break;
+				}
+			}
+		}
+
+		// We need a file
+		if (empty($file))
+		{
+			$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
+			return;
 		}
 
 		// Path for storing temp previews
-		$imagepath = trim($this->model->config()->get('imagepath', '/site/projects'), DS);
-		$outputDir = DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'compiled';
+		$imagePath = trim($this->model->config()->get('imagepath', '/site/projects'), DS);
+		$outputDir = DS . $imagePath . DS . strtolower($this->model->get('alias')) . DS . 'compiled';
 
 		// Make sure output dir exists
 		if (!is_dir( PATH_APP . DS . $outputDir ))
 		{
-			if (!\JFolder::create( PATH_APP . DS . $outputDir ))
+			if (!$this->fileSystem->makeDirectory( PATH_APP . DS . $outputDir ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -2205,162 +2097,121 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$compiler = new \Components\Projects\Helpers\Compiler();
 
 		// Tex compiler path
-		$texpath = DS . trim($this->params->get('texpath'), DS);
+		$texPath = DS . trim($this->params->get('texpath'), DS);
 
-		$remote 	= NULL;
-		$fpath 		= NULL;
-		$content	= NULL;
-		$filename 	= $file;
-		$data 		= NULL;
-		$tempBase 	= NULL;
-		$log 		= NULL;
-		$cType		= NULL;
-		$cExt		= 'pdf';
-		$ext 		= NULL;
-		$tex		= NULL;
-		$image		= NULL;
-		$binary		= false;
+		$view->file    = $file;
+		$view->oWidth  = '780';
+		$view->oHeight = '460';
+		$view->url	   = Route::url($this->_route . '&active=files');
+		$cExt          = 'pdf';
 
-		// Build URL
-		$url 	= Route::url($this->_route . '&active=files');
-
-		$formats = $compiler->getFormatsArray();
-
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'compiled'
-			)
-		);
-
-		$view->oWidth = '780';
-		$view->oHeight= '460';
-		$view->url	  = $url;
-
-		// Make sure we have a file to work with
-		if (!$file)
+		// Take out Google native extension if present
+		$fileName = $file->get('name');
+		if (in_array($file->get('ext'), \Components\Projects\Helpers\Google::getGoogleNativeExts()))
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
+			$fileName = preg_replace("/." . $file->get('ext') . "\z/", "", $file->get('name'));
+		}
+
+		// Tex file?
+		$tex = $compiler->isTexFile($fileName);
+
+		// Build temp name
+		$tempBase = $tex ? 'temp__' . \Components\Projects\Helpers\Html::takeOutExt($fileName) : $fileName;
+		$tempBase = str_replace(' ', '_', $tempBase);
+
+		// Get file contents
+		if (!empty($this->_remoteService) && $file->get('converted'))
+		{
+			// Load remote resource
+			$this->_connect->setUser($this->model->get('owned_by_user'));
+			$resource = $this->_connect->loadRemoteResource(
+				$this->_remoteService,
+				$this->model->get('owned_by_user'),
+				$file->get('remoteId')
+			);
+
+			$cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($resource['mimeType']);
+			$cExt   = in_array($cExt, array('tex', 'jpeg')) ? $cExt : 'pdf';
+			$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
+
+			// Get data
+			$data = $this->_connect->sendHttpRequest(
+				$this->_remoteService,
+				$this->model->get('owned_by_user'),
+				$url
+			);
+		}
+		elseif ($file->exists())
+		{
+			$data = $file->contents();
 		}
 		else
 		{
-			// Get file extention
-			$ext   = \Components\Projects\Helpers\Html::getFileExtension($file);
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_NO_DATA'));
+		}
 
-			// Take out Google native extension
-			$native = \Components\Projects\Helpers\Google::getGoogleNativeExts();
-			if (in_array($ext, $native))
+		// LaTeX file?
+		if ($tex && !empty($data))
+		{
+			// Clean up data from Windows characters - important!
+			$data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data);
+
+			// Compile and get path to PDF
+			$contentFile = $compiler->compileTex(
+				$file->get('fullPath'),
+				$data,
+				$texPath,
+				PATH_APP . $outputDir, 1, $tempBase
+			);
+
+			// Read log (to show in case of error)
+			$logFile = $tempBase . '.log';
+			if (file_exists(PATH_APP . $outputDir . DS . $logFile ))
 			{
-				$filename = preg_replace("/.".$ext."\z/", "", $file);
+				$log = $this->_readFile(PATH_APP . $outputDir . DS . $logFile, '', true);
 			}
 
-			$mTypeParts = explode(';', $this->mt->getMimeType($filename));
-			$cType = $mTypeParts[0];
-
-			// Include subdir in path
-			$fpath = $this->subdir ? $this->subdir. DS . $file : $file;
-
-			// Binary?
-			$binary = \Components\Projects\Helpers\Html::isBinary($this->_path . DS . $fpath);
-
-			// Check for remote connection
-			if (!empty($this->_rServices) && $this->repo->isLocal())
+			if (!$contentFile)
 			{
-				foreach ($this->_rServices as $servicename)
-				{
-					// Get stored remote connection to file
-					$remote = $this->_getRemoteConnection($fpath, '', $servicename);
-
-					if ($remote)
-					{
-						break;
-					}
-				}
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_TEX_FAILED'));
 			}
+		}
+		elseif ($file->get('converted') && !empty($data))
+		{
+			$tempBase = \Components\Projects\Helpers\Google::getImportFilename($file->get('name'), $cExt);
 
-			// Tex file?
-			$tex = $compiler->isTexFile($filename);
-
-			// Get file contents
-			if ($remote && $remote['service'] == 'google' && $remote['converted'] == 1)
+			// Write content to temp file
+			$this->_connect->fetchFile($data, $tempBase, PATH_APP . $outputDir);
+			$contentFile = $tempBase;
+		}
+		// Local file
+		elseif (!$this->getError() && !empty($data))
+		{
+			// Make sure we can handle preview of this type of file
+			if ($file->get('ext') == 'pdf' || $file->isImage() || !$file->isBinary())
 			{
-				// Load remote resource
-				$this->_connect->setUser($this->model->get('owned_by_user'));
-				$resource = $this->_connect->loadRemoteResource($remote['service'], $$this->model->get('owned_by_user'), $remote['id']);
-
-				$cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($resource['mimeType']);
-				$cExt  	= in_array($cExt, array('tex', 'jpeg')) ? $cExt : 'pdf';
-				$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
-
-				// Get data
-				$data = $this->_connect->sendHttpRequest($remote['service'], $this->model->get('owned_by_user'), $url);
-			}
-			elseif (file_exists($this->_path . DS . $fpath))
-			{
-				$data = file_get_contents($this->_path . DS . $fpath);
-			}
-			else
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_NO_DATA'));
-			}
-
-			// Build temp name
-			$tempBase = $tex ? 'temp__' . \Components\Projects\Helpers\Html::takeOutExt($filename) : $filename;
-			$tempBase = str_replace(' ', '_', $tempBase);
-
-			// LaTeX file?
-			if ($tex)
-			{
-				// Clean up data from Windows characters - important!
-				$data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data);
-
-				// Compile and get path to PDF
-				$content = $compiler->compileTex ($this->_path . DS . $fpath,
-					$data, $texpath, PATH_APP . $outputDir, 1, $tempBase);
-
-				// Read log (to show in case of error)
-				$logFile = $tempBase . '.log';
-				if (file_exists(PATH_APP . $outputDir . DS . $logFile ))
-				{
-					$log = $this->_readFile(PATH_APP . $outputDir . DS . $logFile, '', true);
-				}
-
-				if (!$content)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_TEX_FAILED'));
-				}
-			}
-			elseif ($remote && $remote['converted'] == 1)
-			{
-				$tempBase = \Components\Projects\Helpers\Google::getImportFilename($remote, $cExt);
-
-				// Write content to temp file
-				$this->_connect->fetchFile($data, $tempBase, PATH_APP . $outputDir);
-				$content = $tempBase;
-			}
-			// Local file
-			elseif (!$this->getError() && $data)
-			{
-				// Make sure we can handle preview of this type of file
-				if ($ext == 'pdf' || in_array($cType, $formats['images']) || !$binary)
-				{
-					\JFile::copy($this->_path . DS . $fpath, PATH_APP . $outputDir . DS . $tempBase);
-					$content = $tempBase;
-				}
+				$this->fileSystem->copy($file->get('fullPath'), PATH_APP . $outputDir . DS . $tempBase);
+				$contentFile = $tempBase;
 			}
 		}
 
-		if ($content && file_exists(PATH_APP . $outputDir . DS . $content))
+		$url  = $this->_route . '&active=files';
+		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+
+		// Parse output
+		if (!empty($contentFile) && file_exists(PATH_APP . $outputDir . DS . $contentFile))
 		{
-			$mTypeParts = explode(';', $this->mt->getMimeType(PATH_APP . $outputDir . DS . $content));
+			// Get compiled content mimetype
+			$helper = new \Hubzero\Content\Mimetypes();
+			$mTypeParts = explode(';', $helper->getMimeType(PATH_APP . $outputDir . DS . $contentFile));
 			$cType = $mTypeParts[0];
 
-			// Fix up object width & height
-			if (in_array($cType, $formats['images']))
+			// Is image?
+			if (strpos($cType, 'image/') !== false)
 			{
-				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $content);
+				// Fix up object width & height
+				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $contentFile);
 
 				$xRatio	= $view->oWidth / $width;
 				$yRatio	= $view->oHeight / $height;
@@ -2380,15 +2231,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Download compiled file?
 			if ($download)
 			{
-				$pdfName = $tex ? str_replace('temp__', '', basename($content)) : basename($content);
+				$pdfName = $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
 
 				// Serve up file
 				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename(PATH_APP . $outputDir . DS . $content);
+				$xserver->filename(PATH_APP . $outputDir . DS . $contentFile);
 				$xserver->disposition('attachment');
 				$xserver->acceptranges(false);
 				$xserver->saveas($pdfName);
-				$result = $xserver->serve_attachment(PATH_APP . $outputDir . DS . $content, $pdfName, false);
+				$result = $xserver->serve_attachment(PATH_APP . $outputDir . DS . $contentFile, $pdfName, false);
 
 				if (!$result)
 				{
@@ -2404,15 +2255,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Add compiled PDF to repository?
 			if ($commit && $tex)
 			{
-				$pdfName = str_replace('temp__', '', basename($content));
+				$pdfName = str_replace('temp__', '', basename($contentFile));
 				$where 	 = $this->subdir ? $this->subdir. DS . $pdfName : $pdfName;
 
-				if (\JFile::copy(PATH_APP . $outputDir . DS . $content, $this->_path . DS . $where))
+				if ($this->fileSystem->copy(PATH_APP . $outputDir . DS . $contentFile, $this->_path . DS . $where))
 				{
-					// Git add & commit
-					$commitMsg = Lang::txt('PLG_PROJECTS_FILES_COMPILED_COMMITTED') . "\n";
-					$this->_git->gitAdd($where, $commitMsg);
-					$this->_git->gitCommit($commitMsg);
+					// Checkin into repo
+					$params = array('subdir' => $this->subdir);
+					$params['file'] = $this->repo->getMetadata($pdfName, 'file', $params);
+					$this->repo->call('checkin', $params);
 
 					if ($this->repo->isLocal())
 					{
@@ -2424,10 +2275,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						'type'    => 'success'
 					);
 
-					$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
-
 					// Redirect to file list
-					$this->_referer = $url;
+					$this->_referer = Route::url($url);
 					return;
 				}
 			}
@@ -2441,8 +2290,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				{
 					$gspath = DS . $gspath . DS;
 
-					$pdfName 	= $tex ? str_replace('temp__', '', basename($content)) : basename($content);
-					$pdfPath 	= PATH_APP . $outputDir . DS . $content;
+					$pdfName 	= $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
+					$pdfPath 	= PATH_APP . $outputDir . DS . $contentFile;
 					$exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
 
 					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out );
@@ -2472,23 +2321,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_PREVIEW_FAILED'));
 		}
 
-		$view->item 		= $file;
+		$view->file 		= $file;
 		$view->outputDir	= $outputDir;
 		$view->log			= $log;
-		$view->embed		= $content;
+		$view->embed		= $contentFile;
 		$view->data			= $data;
 		$view->cType		= $cType;
-		$view->formats		= $formats;
-		$view->ext			= $ext;
-		$view->remote		= $remote;
 		$view->subdir 		= $this->subdir;
 		$view->option 		= $this->_option;
-		$view->image		= $image;
+		$view->image		= !empty($image) ? $image : NULL;
 		$view->model		= $this->model;
 		$view->repo    		= $this->repo;
-		$view->binary		= is_file ( PATH_APP . $outputDir . DS . $content )
-							? \Components\Projects\Helpers\Html::isBinary(PATH_APP . $outputDir . DS . $content)
-							: $binary;
 
 		if ($this->getError())
 		{
@@ -2889,31 +2732,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Get stored connection to remote file
-	 *
-	 *
-	 * @return     array or false
-	 */
-	private function _getRemoteConnection($local_path = '', $id = 0, $service = '', $converted = 'na')
-	{
-		// Get remote connection
-		if (!isset($this->_remoteObj))
-		{
-			$this->_remoteObj = new \Components\Projects\Tables\RemoteFile ($this->_database);
-		}
-
-		$remote   = $this->_remoteObj->getConnection(
-			$this->model->get('id'),
-			$id,
-			$service,
-			$local_path,
-			$converted
-		);
-
-		return $remote;
-	}
-
-	/**
 	 * Get file preview
 	 *
 	 * @param      string	$file
@@ -3043,7 +2861,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
 		$path 			= $subdir ? $projectPath. DS . $subdir : $projectPath;
 		$combinedSize  	= 0;
-		$tarpath =  $base_path . DS . $tarname;
+		$tarpath        =  $base_path . DS . $tarname;
 
 		$zip = new ZipArchive;
 
@@ -4352,7 +4170,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Debug output
 		$temp = $this->_logPath;
-		$this->_writeToFile($output, $temp . DS . 'sync.' . \Date::format('Y-m') . '.log', true);
+		$this->_writeToFile($output, $temp . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log', true);
 
 		// Record sync status
 		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE_UPDATE_VIEW') );

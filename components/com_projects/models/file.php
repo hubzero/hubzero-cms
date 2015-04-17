@@ -31,6 +31,7 @@
 namespace Components\Projects\Models;
 
 use Hubzero\Base\Object;
+use Components\Projects\Helpers;
 use stdClass;
 
 /**
@@ -114,6 +115,16 @@ class File extends Object
 	}
 
 	/**
+	 * Check if file exists
+	 *
+	 * @return     boolean
+	 */
+	public function exists()
+	{
+		return file_exists($this->get('fullPath')) ? true : false;
+	}
+
+	/**
 	 * Build basic metadata object
 	 *
 	 * @return  mixed
@@ -129,7 +140,133 @@ class File extends Object
 			$this->set('dirname', dirname($this->get('localPath')));
 		}
 
-		$this->set('ext', \Components\Projects\Helpers\Html::getFileExtension($this->get('localPath')));
+		$this->set('ext', Helpers\Html::getFileExtension($this->get('localPath')));
+	}
+	
+	/**
+	 * Get file contents
+	 *
+	 * @return     boolean
+	 */
+	public function contents()
+	{
+		if ($this->exists())
+		{
+			return file_get_contents($this->get('fullPath'));
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Get preview image
+	 *
+	 * @return  mixed
+	 */
+	public function getPreview($model, $hash = '', $get = 'name', $render = '')
+	{
+		if (!($model instanceof Project))
+		{
+			return false;
+		}
+
+		$fileSystem = new \Hubzero\Filesystem\Filesystem();
+		$image = NULL;
+
+		$hash = $hash ? $hash : $this->get('hash');
+		$hash = $hash ? substr($hash, 0, 10) : '';
+
+		// Determine name and size
+		switch ($render)
+		{
+			case 'medium':
+				$hashed = md5($this->get('name') . '-' . $hash) . '.png';
+				$maxWidth  = 600;
+				$maxHeight = 600;
+				break;
+
+			case 'thumb':
+				$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : NULL;
+				$maxWidth  = 80;
+				$maxHeight = 80;
+				break;
+
+			default:
+				$hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : NULL;
+				$maxWidth  = 180;
+				$maxHeight = 180;
+				break;
+		}
+
+		// Target directory
+		$target  = PATH_APP . DS . trim($model->config()->get('imagepath', '/site/projects'), DS);
+		$target .= DS . strtolower($model->get('alias')) . DS . 'preview';
+
+		$remoteThumb = NULL;
+		if ($this->get('remoteId') && $this->get('modified'))
+		{
+			$remoteThumb = substr($this->get('remoteId'), 0, 20) . '_' . strtotime($this->get('modified')) . '.png';
+		}
+
+		if ($hashed && is_file($target . DS . $hashed))
+		{
+			// First check locally generated thumbnail
+			$image = $target . DS . $hashed;
+		}
+		elseif ($remoteThumb && is_file($target . DS . $remoteThumb))
+		{
+			// Check remotely generated thumbnail
+			$image = $target . DS . $remoteThumb;
+
+			// Copy this over as local thumb
+			if ($hashed && $fileSystem->copy($target . DS . $remoteThumb, $target . DS . $hashed))
+			{
+				$fileSystem->delete($target . DS . $remoteThumb);
+			}
+		}
+		else
+		{
+			// Generate thumbnail locally
+			if (!file_exists( $target ))
+			{
+				$fileSystem->makeDirectory( $target, 0755, true, true);
+			}
+
+			// Make sure it's an image file
+			if (!$this->isImage() || !is_file($this->get('fullPath')))
+			{
+				return false;
+			}
+
+			if (!$fileSystem->copy($this->get('fullPath'), $target . DS . $hashed))
+			{
+				return false;
+			}
+
+			// Resize the image if necessary
+			$hi = new \Hubzero\Image\Processor($target . DS . $hashed);
+			$square = ($render == 'thumb') ? true : false;
+			$hi->resize($maxWidth, false, false, $square);
+			$hi->save($target . DS . $hashed);
+			$image = $target . DS . $hashed;
+		}
+
+		// Return image
+		if ($get == 'localPath')
+		{
+			return str_replace(PATH_APP, '', $image);
+		}
+		elseif ($get == 'fullPath')
+		{
+			return $image;
+		}
+		elseif ($get == 'url')
+		{
+			return Route::url('index.php?option=com_projects&alias='
+			. $model->get('alias') . '&controller=media&media=' . urlencode(basename($image)));
+		}
+
+		return basename($image);
 	}
 
 	/**
@@ -245,7 +382,18 @@ class File extends Object
 	 */
 	public function isBinary()
 	{
-		return \Components\Projects\Helpers\Html::isBinary($this->get('fullPath'));
+		return Helpers\Html::isBinary($this->get('fullPath'));
+	}
+
+	/**
+	 * Is image?
+	 *
+	 * @return  mixed
+	 */
+	public function isImage()
+	{
+		$mime = $this->getMimeType();
+		return strpos($mime, 'image/') !== false ? true : false;
 	}
 
 	/**

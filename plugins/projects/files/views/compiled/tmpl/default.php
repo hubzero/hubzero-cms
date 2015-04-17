@@ -49,27 +49,28 @@ if (!$this->getError()) {
 ?>
 <ul class="sample">
 	<?php
-		// Display list item with file data
-		$view = $this->view('default', 'selected');
-		$view->skip 		= false;
-		$view->item 		= $this->item;
-		$view->remote		= $this->remote;
-		$view->type			= 'file';
-		$view->action		= 'compile';
-		$view->multi		= NULL;
 
-		if ($this->ext == 'tex' && is_file(PATH_APP . $this->outputDir . DS . $this->embed))
+		$extras = NULL;
+		if ($this->file->get('ext') == 'tex' && is_file(PATH_APP . $this->outputDir . DS . $this->embed))
 		{
-			$view->extras  = '<span class="rightfloat">';
-			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item . '" class="i-download">' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . ' PDF</a> ';
-			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;file=' . $this->item . '" class="i-commit">' . Lang::txt('PLG_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
-			$view->extras .= '</span>';
+			$extras  = '<span class="rightfloat">';
+			$extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;asset=' . $this->file->get('name') . '" class="i-download">' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . ' PDF</a> ';
+			$extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;asset=' . $this->file->get('name') . '" class="i-commit">' . Lang::txt('PLG_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
+			$extras .= '</span>';
 		}
-		echo $view->loadTemplate();
+
+		// Display list item with file data
+		$this->view('default', 'selected')
+		     ->set('skip', false)
+		     ->set('file', $this->file)
+		     ->set('action', 'compile')
+		     ->set('multi', NULL)
+		     ->set('extras', $extras)
+		     ->display();
 	?>
 </ul>
 <?php } ?>
-<?php if ($this->data && !$this->binary && $this->cType != 'application/pdf') {
+<?php if ($this->data && $this->cType != 'application/pdf') {
 
 	// Clean up data from Windows characters - important!
 	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
@@ -81,7 +82,7 @@ if (!$this->getError()) {
 	<div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
 	  <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $source; ?>" id="pdf_content">
 		<embed src="<?php echo $source; ?>" type="application/pdf" />
-		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
+		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->file->get('name'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
 		<?php if ($this->image) { ?>
 			<img alt="" src="<?php echo Route::url('index.php?option=' . $this->option . '&task=media&alias=' . $this->model->get('alias') . '&media=Compiled:' . $this->image ); ?>" />
 		<?php } ?>

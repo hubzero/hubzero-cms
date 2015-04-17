@@ -69,7 +69,6 @@ else
 				     ->display();
 			?>
 		</ul>
-<?php // \Hubzero\Utility\Debug::stop('test'); ?>
 		<?php if ($remoteControl)
 		{
 			$ext = $this->file->get('ext');

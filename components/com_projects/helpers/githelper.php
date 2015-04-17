@@ -724,7 +724,7 @@ class Git extends Object
 	public function listDeleted()
 	{
 		// Call Git
-		$out = $this->callGit('log --diff-filter=D --pretty=format:">>>%ct||%an||%ae||%H||%s" --name-only ');
+		$out = $this->callGit('log --diff-filter=D --pretty=format:">>>%ct||%an||%ae||%H||%f" --name-only ');
 
 		$files = array();
 		if (empty($out) || count($out) == 0)
@@ -773,8 +773,8 @@ class Git extends Object
 			}
 
 			// File renamed/moved - skip
-			if (strstr(strtolower($gitData['message']), 'moved file ')
-				|| strstr(strtolower($gitData['message']), 'moved folder '))
+			if (strstr(strtolower($gitData['message']), 'moved-file ')
+				|| strstr(strtolower($gitData['message']), 'moved-folder '))
 			{
 				continue;
 			}
@@ -1142,7 +1142,7 @@ class Git extends Object
 				$date		= isset($gitData['date']) ? $gitData['date'] : NULL;
 				$author 	= isset($gitData['author']) ? $gitData['author'] : NULL;
 				$email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
-				$message 	= isset($gitData['message']) ? $gitData['message'] : NULL;
+				$message 	= $this->gitLog($name, $hash, 'message');
 				$content	= $binary ? NULL : $this->gitLog($name, $hash, 'content');
 
 				// SFTP?

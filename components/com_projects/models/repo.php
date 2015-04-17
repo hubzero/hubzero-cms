@@ -334,6 +334,7 @@ class Repo extends Object
 			$syncRecord = $remotes[$file->get('localPath')];
 			$file->set('remote', $syncRecord->service);
 			$file->set('remoteId', $syncRecord->remote_id);
+			$file->set('remoteTitle', $syncRecord->remote_title);
 			$file->set('remoteParent', $syncRecord->remote_parent);
 			$file->set('author', $syncRecord->remote_author);
 			$file->set('modified', $syncRecord->remote_modified);
@@ -569,6 +570,61 @@ class Repo extends Object
 	}
 
 	/**
+	 * Diff revisions
+	 *
+	 * @return  boolean
+	 */
+	public function diff($params = array())
+	{
+		$path        = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath     = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$rev1        = isset($params['rev1']) ? $params['rev1'] : NULL;
+		$rev2        = isset($params['rev2']) ? $params['rev2'] : NULL;
+
+		// Name and type
+		$item      = isset($params['item']) ? $params['item'] : NULL;
+		$type      = isset($params['type']) ? $params['type'] : 'file';
+
+		// OR -- file object itself
+		$file = isset($params['file']) ? $params['file'] : NULL;
+
+		if (!$file)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+			return false;
+		}
+
+		// Source item metadata
+		if (!($file instanceof Models\File))
+		{
+			// File object
+			$file = $this->getMetadata($item, $type, $params);
+			$params['file'] = $file;
+		}
+		if ($file->get('type') != 'file')
+		{
+			return false;
+		}
+
+		$rev1Parts = explode('@', $rev1);
+		$rev2Parts = explode('@', $rev2);
+
+		// Run some checks
+		if (count($rev1Parts) <= 2 || count($rev2Parts) <= 2)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_DIFF_NO_CONTENT'));
+			return false;
+		}
+		if ($file->isBinary())
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_DIFF_BINARY'));
+			return false;
+		}
+
+		return $this->_adapter->diff($params);
+	}
+
+	/**
 	 * Move a file or folder within repo
 	 *
 	 * @return  boolean
@@ -647,6 +703,21 @@ class Repo extends Object
 			// Failed
 			return false;
 		}
+	}
+
+	/**
+	 * Get last file revision
+	 *
+	 * @return  boolean
+	 */
+	public function getLastRevision($params = array())
+	{
+		$file = isset($params['file']) ? $params['file'] : NULL;
+		if (!($file instanceof Models\File))
+		{
+			return false;
+		}
+		return $this->_adapter->getLastRevision($params);
 	}
 
 	/**
@@ -1282,6 +1353,10 @@ class Repo extends Object
 			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
 			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
 
+			if (!$current['commitStatus'])
+			{
+				$current['commitStatus'] = 'A';
+			}
 			// Deleted?
 			if ($current['commitStatus'] == 'D')
 			{
@@ -1357,5 +1432,17 @@ class Repo extends Object
 		}
 
 		return $versions;
+	}
+
+	/**
+	 * Get file content and write to specified location
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function getFileContent($params = array())
+	{
+		return $this->call('content', $params);
 	}
 }

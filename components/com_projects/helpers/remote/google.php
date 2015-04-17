@@ -1234,15 +1234,8 @@ class Google extends Object
 	 *
 	 * @return	   string
 	 */
-	public static function getImportFilename ($remote = array(), $importExt = '')
+	public static function getImportFilename ($name = '', $importExt = '')
 	{
-		if (empty($remote))
-		{
-			return false;
-		}
-
-		$name = basename($remote['fpath']);
-
 		// Get file extention
 		$parts = explode('.', $name);
 		$ext   = count($parts) > 1 ? array_pop($parts) : '';
@@ -1253,7 +1246,7 @@ class Google extends Object
 
 		$result = implode('.', $parts);
 
-		return $result ? $result : $remote['title'];
+		return $result;
 	}
 
 	/**

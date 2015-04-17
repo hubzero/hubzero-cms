@@ -404,6 +404,22 @@ class Git extends Models\Adapter
 	}
 
 	/**
+	 * Get last file revision
+	 *
+	 * @return  boolean
+	 */
+	public function getLastRevision($params = array())
+	{
+		$file = isset($params['file']) ? $params['file'] : NULL;
+		if (!($file instanceof Models\File))
+		{
+			return false;
+		}
+
+		return $this->_git->gitLog($file->get('localPath'), '', 'hash');
+	}
+
+	/**
 	 * Move item
 	 *
 	 * @param      array	$params
@@ -620,6 +636,101 @@ class Git extends Models\Adapter
 	}
 
 	/**
+	 * Diff revisions
+	 *
+	 * @param      object	$file		Models\File
+	 * @param      array	$params
+	 *
+	 * @return     array
+	 */
+	public function diff ($params = array())
+	{
+		$file   = isset($params['file']) ? $params['file'] : NULL;
+		$rev1   = isset($params['rev1']) ? $params['rev1'] : NULL;
+		$rev2   = isset($params['rev2']) ? $params['rev2'] : NULL;
+		$full   = isset($params['fullDiff']) ? $params['fullDiff'] : NULL;
+		$mode   = isset($params['mode']) ? $params['mode'] : 'side-by-side';
+
+		if (!$this->isGit())
+		{
+			return false;
+		}
+		if (!($file instanceof Models\File))
+		{
+			return false;
+		}
+
+		$rev1Parts = explode('@', $rev1);
+		$rev2Parts = explode('@', $rev2);
+
+		// Run some checks
+		if (count($rev1Parts) <= 2 || count($rev2Parts) <= 2)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_DIFF_NO_CONTENT'));
+			return false;
+		}
+
+		$rev1 = array(
+			'rev'   => $rev1Parts[0],
+			'hash'  => $rev1Parts[1],
+			'fpath' => $rev1Parts[2],
+			'val'   => urlencode($rev1)
+		);
+
+		$rev2 = array(
+			'rev'   => $rev2Parts[0],
+			'hash'  => $rev2Parts[1],
+			'fpath' => $rev2Parts[2],
+			'val'   => urlencode($rev2)
+		);
+
+		// Get text blobs
+		$rev1['text'] = $this->_git->gitLog($rev1['fpath'], $rev1['hash'], 'blob');
+		$rev2['text'] = $this->_git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
+
+		// Diff class
+		include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS
+			. 'files' . DS . 'php-diff' . DS . 'Diff.php' );
+
+		$context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
+		$options = array('context' => $context);
+
+		// Run diff
+		$objDiff = new \Diff($rev1['text'], $rev2['text'], $options );
+
+		if ($mode == 'side-by-side')
+		{
+			include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
+				. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php' );
+
+			// Generate a side by side diff
+			$renderer = new \Diff_Renderer_Html_SideBySide;
+			$diff = $objDiff->Render($renderer);
+		}
+		elseif ($mode == 'inline')
+		{
+			include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
+				. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php' );
+
+			// Generate inline diff
+			$renderer = new \Diff_Renderer_Html_Inline;
+			$diff = $objDiff->Render($renderer);
+		}
+		else
+		{
+			// Print git diff
+			$diff = $this->_git->gitDiff($rev1, $rev2);
+
+			if (is_array($diff))
+			{
+				$diff = implode("\n", $diff);
+			}
+		}
+
+		return $diff;
+	}
+
+	/**
 	 * Get file data from Git and map to file object
 	 *
 	 * @param      object	$file	Models\File
@@ -653,7 +764,7 @@ class Git extends Models\Adapter
 		}
 		else
 		{
-			$log = $this->_git->gitLog($file->get('localPath'), $file->get('commitHash'), 'combined');
+			$log = $this->_git->gitLog($file->get('localPath'), $file->get('hash'), 'combined');
 		}
 
 		// Map data we got

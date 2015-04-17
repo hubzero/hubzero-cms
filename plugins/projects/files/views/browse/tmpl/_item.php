@@ -30,6 +30,16 @@ $me = ($this->item->get('email') == User::get('email')
 $when = $this->item->get('date') ? \Components\Projects\Helpers\Html::formatTime($this->item->get('date')) : 'N/A';
 $subdirPath = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
+// Do not display Google native extension
+$name = $this->item->get('name');
+if ($this->item->get('remote'))
+{
+	$native = \Components\Projects\Helpers\Google::getGoogleNativeExts();
+	if (in_array($this->item->get('ext'), $native))
+	{
+		$name = preg_replace("/." . $this->item->get('ext') . "\z/", "", $this->item->get('name'));
+	}
+}
 ?>
 <tr class="mini faded mline">
 	<?php if ($this->model->access('content')) { ?>
@@ -42,9 +52,9 @@ $subdirPath = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 		<?php if ($this->item->get('type') == 'file') { ?>
 		<a href="<?php echo $this->url
 		. '/?action=download' . $subdirPath
-		. '&amp;file=' . urlencode($this->item->get('name')); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
+		. '&amp;asset=' . urlencode($this->item->get('name')); ?>" class="preview file:<?php echo urlencode($this->item->get('name')); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?></a>
 		<?php } else { ?>
-			<a href="<?php echo $this->url. '/?action=browse&amp;subdir=' . $this->item->get('localPath'); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
+			<a href="<?php echo $this->url. '/?action=browse&amp;subdir=' . urlencode($this->item->get('localPath')); ?>" class="dir:<?php echo urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item->get('name'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item->get('name'), 60); ?></a>
 		<?php } ?>
 	</td>
 	<td class="shrinked"></td>
