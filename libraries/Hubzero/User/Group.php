@@ -299,12 +299,12 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'create'
-	 * Long description (if any) ...
+	 * Creates a new group in the CMS.
+	 * Creates a new entry under the #__xgroups table.
 	 *
-	 * @param unknown $cn Parameter description (if any) ...
-	 * @param unknown $gidNumber Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 *
+
+	 * @return mixed Returns false if error or gid upon success.
 	 */
 	public function create()
 	{
@@ -918,7 +918,8 @@ class Group extends Object
 	 * Short description for 'get'
 	 * Long description (if any) ...
 	 *
-	 * @param unknown $key Parameter description (if any) ...
+	 * @param unknown $key Parameter description (if any)
+	 * @param  unknown $default value when no match is found
 	 * @return unknown Return description (if any) ...
 	 */
 	public function get($key, $default=null)
@@ -1060,11 +1061,12 @@ class Group extends Object
 	}
 
 	/**
-	 * Short description for 'exists'
-	 * Long description (if any) ...
+	 * Check if a group exists.
+	 * Given the group id, returns true if group exists.
 	 *
-	 * @param unknown $group Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param integer $group the group id number (GID) of the group being verified.
+	 * @param boolean $check_system boolean for checking against POSIX user.
+	 * @return boolean returns false if group does not exist; true if group exists.
 	 */
 	static public function exists($group, $check_system = false)
 	{
@@ -1491,7 +1493,7 @@ class Group extends Object
 
 	/**
 	 * Get groups path
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function getBasePath()
@@ -1503,7 +1505,7 @@ class Group extends Object
 
 	/**
 	 * Return serve up path
-	 * 
+	 *
 	 * @param  string $path [description]
 	 * @return [type]       [description]
 	 */

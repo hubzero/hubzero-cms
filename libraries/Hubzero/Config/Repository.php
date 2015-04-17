@@ -33,6 +33,11 @@ namespace Hubzero\Config;
 use Closure;
 use ArrayAccess;
 
+/**
+ * Repository class
+ *
+ *
+ */
 class Repository extends \JRegistry implements ArrayAccess
 {
 	/**
