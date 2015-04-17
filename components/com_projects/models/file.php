@@ -207,7 +207,7 @@ class File extends Object
 
 		$remoteThumb = NULL;
 		if ($this->get('remoteId') && $this->get('modified'))
-		{ 
+		{
 			$remoteThumb = substr($this->get('remoteId'), 0, 20) . '_' . strtotime($this->get('modified')) . '.png';
 		}
 
