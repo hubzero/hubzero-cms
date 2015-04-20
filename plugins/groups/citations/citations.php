@@ -226,23 +226,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$view->filters = array();
 
-		// if a super group
-		if ($this->group->isSuperGroup() && file_exists($this->_superGroupViewOverride('browse')))
-		{
-			// add view override
-			$view->addTemplatePath($this->_superGroupViewOverride('browse'));
-
-			//paging filters
-			$view->filters['limit']   = Request::getInt('limit', 0, 'request');
-			$view->filters['start']   = Request::getInt('limitstart', 0, 'get');
-		}
-		else
-		{
-			//paging filters
-			$view->filters['limit']   = Request::getInt('limit', 50, 'request');
-			$view->filters['start']   = Request::getInt('limitstart', 0, 'get');
-		}
-
 		//search/filtering params
 		$view->filters['scope']           = 'group';
 		$view->filters['scope_id']        = $this->group->get('gidNumber');
