@@ -137,12 +137,7 @@ class Login extends AdminController
 		$app = \JFactory::getApplication();
 		$result = $app->login($credentials, array('action' => 'core.login.admin'));
 
-		if (!($result instanceof Exception))
-		{
-			$app->redirect($return);
-		}
-
-		$this->displayTask();
+		$app->redirect($return);
 	}
 
 	/**
