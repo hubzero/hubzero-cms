@@ -44,7 +44,7 @@ JHtml::_('behavior.keepalive');
 			<div class="instructions"><?php echo Lang::txt('COM_LOGIN_CHOOSE_METHOD'); ?></div>
 			<div class="options">
 				<?php foreach ($authenticators as $a) : ?>
-					<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_login&task=authDisplay&authenticator=' . $a['name'] . $returnQueryString); ?>">
+					<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_login&task=display&authenticator=' . $a['name'] . $returnQueryString); ?>">
 						<div class="signin"><?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_METHOD', $a['display']); ?></div>
 					</a>
 				<?php endforeach; ?>
