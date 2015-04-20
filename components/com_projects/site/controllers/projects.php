@@ -167,10 +167,6 @@ class Projects extends Base
 	 */
 	public function featuresTask()
 	{
-		// Get language file
-		$lang = \JFactory::getLanguage();
-		$lang->load('com_projects_features');
-
 		// Set the pathway
 		$this->_buildPathway();
 
