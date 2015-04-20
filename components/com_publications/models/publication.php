@@ -1348,7 +1348,7 @@ class Publication extends Object
 			break;
 
 			case 'edit':
-				$link = $this->_editBase; 
+				$link = $this->_editBase;
 			break;
 
 			case 'permalink':
@@ -1391,4 +1391,3 @@ class Publication extends Object
 		return $value;
 	}
 }
-
