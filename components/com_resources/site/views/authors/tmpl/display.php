@@ -165,7 +165,7 @@ if ($this->contributors) {
 					?></td>
 					<td class="t">
 						<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
-							<span><img src="/components/<?php echo $this->option; ?>/assets/img/trash.gif" alt="<?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?>" /></span>
+							<span><img src="/components/<?php echo $this->option; ?>/site/assets/img/trash.gif" alt="<?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?>" /></span>
 						</a>
 					</td>
 				</tr>
