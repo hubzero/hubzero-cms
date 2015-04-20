@@ -140,8 +140,8 @@ class PublicationStats extends JTable
 				FROM $this->_tbl
 				WHERE period = '" . $period . "'
 				AND publication_id = '" . $publication_id . "'";
-		$sql.= $dthis ? " AND datetime='" . $dthis . "-01 00:00:00'" : '';
-		$sql.= " ORDER BY processed_on DESC LIMIT 1";
+		$sql.= $dthis ? " AND datetime='" . $dthis . "-00 00:00:00'" : '';
+		$sql.= " ORDER BY datetime DESC LIMIT 1";
 
 		$this->_db->setQuery( $sql );
 
