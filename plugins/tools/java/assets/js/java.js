@@ -99,7 +99,7 @@ HUB.Mw = {
 		}
 
 		trouble
-			.text(JavaNotFound)
+			.html(JavaNotFound)
 			.removeClass('help')
 			.addClass('error');
 	},
@@ -114,7 +114,7 @@ HUB.Mw = {
 		}
 
 		trouble
-			.text(JavaBug)
+			.html(JavaBug)
 			.removeClass('help')
 			.addClass('error');
 	},
