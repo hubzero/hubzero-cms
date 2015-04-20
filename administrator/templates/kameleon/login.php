@@ -88,8 +88,12 @@ $browser = new \Hubzero\Browser\Detector();
 						}
 					});
 				})();
-				document.getElementById('form-login').username.select();
-				document.getElementById('form-login').username.focus();
+
+				if (document.getElementById('form-login'))
+				{
+					document.getElementById('form-login').username.select();
+					document.getElementById('form-login').username.focus();
+				}
 
 				$('input, textarea').placeholder();
 			});
@@ -103,7 +107,7 @@ $browser = new \Hubzero\Browser\Detector();
 		<jdoc:include type="modules" name="notices" />
 
 		<header id="header" role="banner">
-			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::Get('sitename'); ?></a></h1>
+			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
 		</header><!-- / header -->
 
 		<div id="wrap">
