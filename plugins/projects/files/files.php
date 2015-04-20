@@ -1189,7 +1189,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if (empty($items))
 			{
-				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+				$view->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 			}
 			else
 			{
@@ -4206,39 +4206,53 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     void
 	 */
-	public function onAfterUpdate()
+	public function onAfterUpdate($model = NULL, $changes = array())
 	{
 		$activity = '';
 		$message  = '';
 		$ref	  = '';
 
-		// Get session
-		$jsession = \JFactory::getSession();
+		$model = $model ? $model : $this->model;
 
-		// Get values from session
-		$updated 	= $jsession->get('projects.' . $this->model->get('alias') . '.updated');
-		$uploaded 	= $jsession->get('projects.' . $this->model->get('alias') . '.uploaded');
-		$failed 	= $jsession->get('projects.' . $this->model->get('alias') . '.failed');
-		$deleted 	= $jsession->get('projects.' . $this->model->get('alias') . '.deleted');
-		$restored 	= $jsession->get('projects.' . $this->model->get('alias') . '.restored');
-		$expanded 	= $jsession->get('projects.' . $this->model->get('alias') . '.expanded');
+		if (empty($changes))
+		{
+			// Get session
+			$jsession = \JFactory::getSession();
 
-		// Clean up session values
-		$jsession->set('projects.' . $this->model->get('alias') . '.failed', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.updated', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.deleted', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.restored', '');
-		$jsession->set('projects.' . $this->model->get('alias') . '.expanded', '');
+			// Get values from session
+			$updated 	= $jsession->get('projects.' . $this->model->get('alias') . '.updated');
+			$uploaded 	= $jsession->get('projects.' . $this->model->get('alias') . '.uploaded');
+			$failed 	= $jsession->get('projects.' . $this->model->get('alias') . '.failed');
+			$deleted 	= $jsession->get('projects.' . $this->model->get('alias') . '.deleted');
+			$restored 	= $jsession->get('projects.' . $this->model->get('alias') . '.restored');
+			$expanded 	= $jsession->get('projects.' . $this->model->get('alias') . '.expanded');
+
+			// Clean up session values
+			$jsession->set('projects.' . $this->model->get('alias') . '.failed', '');
+			$jsession->set('projects.' . $this->model->get('alias') . '.updated', '');
+			$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
+			$jsession->set('projects.' . $this->model->get('alias') . '.deleted', '');
+			$jsession->set('projects.' . $this->model->get('alias') . '.restored', '');
+			$jsession->set('projects.' . $this->model->get('alias') . '.expanded', '');
+		}
+		else
+		{
+			$updated 	= !empty($changes['updated']) ? $changes['updated'] : NULL;
+			$uploaded 	= !empty($changes['uploaded']) ? $changes['uploaded'] : NULL;
+			$failed 	= !empty($changes['failed']) ? $changes['failed'] : NULL;
+			$deleted 	= !empty($changes['deleted']) ? $changes['deleted'] : NULL;
+			$restored 	= !empty($changes['restored']) ? $changes['restored'] : NULL;
+			$expanded 	= !empty($changes['expanded']) ? $changes['expanded'] : NULL;
+		}
 
 		// Provisioned project?
-		if ($this->model->isProvisioned() || !$this->model->get('id'))
+		if ($model->isProvisioned() || !$model->get('id'))
 		{
 			return false;
 		}
 
 		// Pass success or error message
-		if ($failed && !$uploaded && !$uploaded)
+		if (!empty($failed) && !$uploaded && !$uploaded)
 		{
 			$this->_message = array('message' => 'Failed to upload ' . $failed, 'type' => 'error');
 		}
@@ -4265,9 +4279,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$message .= count($uploadParts) == $u ? '' : ', ';
 					}
 				}
-
-				// Clean up session values
-				$jsession->set('projects.' . $this->model->get('alias') . '.uploaded', '');
 
 				// Save referenced files
 				$ref = $uploaded;
@@ -4327,7 +4338,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add activity to feed
-		if ($activity && $this->repo->isLocal())
+		if ($activity && $model->repo()->isLocal())
 		{
 			$refParts  = explode(',', $ref);
 			$parsedRef = '';
@@ -4335,18 +4346,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$selected = array();
 			foreach ($refParts as $item)
 			{
-				$file = $this->repo->getMetadata(trim($item));
+				$file = $model->repo()->getMetadata(trim($item));
 				$params = array('file' => $file);
 				if ($file->exists())
 				{
-					$hash = $this->repo->getLastRevision($params);
+					$hash = $model->repo()->getLastRevision($params);
 					if ($hash)
 					{
 						$selected[] = substr($hash, 0, 10) . ':' . trim($file->get('localPath'));
 
 						// Generate preview (regular and medium-size)
-						$file->getPreview($this->model, $hash);
-						$file->getPreview($this->model, $hash, '', 'medium');
+						$file->getPreview($model, $hash);
+						$file->getPreview($model, $hash, '', 'medium');
 					}
 				}
 			}
@@ -4375,9 +4386,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$aid = $this->model->recordActivity( $activity, $parsedRef, 'project files',
+			$aid = $model->recordActivity( $activity, $parsedRef, 'project files',
 				Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias') . '&active=files'), 'files', 1
+				. '&alias=' . $model->get('alias') . '&active=files'), 'files', 1
 			);
 		}
 	}

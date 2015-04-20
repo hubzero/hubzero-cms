@@ -66,6 +66,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 					case 'list':
 					case 'get':
 					case 'insert':
+					case 'update':
 						$this->_manageFiles();
 						break;
 					default:
@@ -185,10 +186,26 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 						'type'        => 'string'
 					),
 				),
+				'update' => array(
+					'description' => Lang::txt('Insert a file into project.'),
+					'parameters'  => array(
+						'project_id' => array(
+							'description' => Lang::txt('Project alias or numeric id.'),
+							'type'        => 'string',
+							'default'     => '0',
+							'required'    => 'true'
+						),
+						'data_path' => array(
+							'description' => Lang::txt('Path to local or remote file.'),
+							'type'        => 'string',
+							'required'    => 'true'
+						),
+					),
+				),
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -214,17 +231,17 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 
 		// Set filters
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 0),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'sortby'     => JRequest::getWord('sortby', 'title'),
-			'sortdir'    => strtoupper(JRequest::getWord('sortdir', 'ASC')),
+			'limit'      => Request::getInt('limit', 0),
+			'start'      => Request::getInt('limitstart', 0),
+			'sortby'     => Request::getWord('sortby', 'title'),
+			'sortdir'    => strtoupper(Request::getWord('sortdir', 'ASC')),
 			'getowner'   => 1,
 			'updates'    => 1,
 			'mine'       => 1
 		);
 
 		// Incoming
-		$verbose = JRequest::getInt('verbose', 0);
+		$verbose = Request::getInt('verbose', 0);
 
 		$setupComplete = $this->_config->get('confirm_step', 0) ? 3 : 2;
 
@@ -312,6 +329,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			}
 		}
 
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 
 		return;
@@ -343,67 +361,170 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			$this->_errorMessage(
 				404,
 				Lang::txt('Missing required parameter: project_id.'),
-				JRequest::getWord('format', 'json')
+				Request::getWord('format', 'json')
 			);
 			return;
 		}
 
 		// Project did not load?
-		if (!$this->project)
+		if (!$this->project->exists())
 		{
 			// Set the error message
 			$this->_errorMessage(
 				404,
 				Lang::txt('Project not found.'),
-				JRequest::getWord('format', 'json')
+				Request::getWord('format', 'json')
 			);
 			return;
 		}
 
-		// Unauthorized
-		if (!$authorized['manage'])
+		// Check authorization
+		if (($this->_action == 'insert' && !$authorized['content']) || !$authorized['view'])
 		{
 			// Set the error message
 			$this->_errorMessage(
 				401,
 				Lang::txt('Unauthorized task.'),
-				JRequest::getWord('format', 'json')
+				Request::getWord('format', 'json')
 			);
 			return;
 		}
 
-		// Plugin params
-		$plugin_params = array(
-			$this->project_id,
-			$this->_action,
-			$this->user_id
-		);
-
-		// Perform action
-		$output = Event::trigger( 'projects.onProjectExternal', $plugin_params);
+		// Check for local repo
+		if (!$this->project->repo()->exists())
+		{
+			// Set the error message
+			$this->_errorMessage(
+				404,
+				Lang::txt('Project local repository does not exist'),
+				Request::getWord('format', 'json')
+			);
+			return;
+		}
 
 		$response 			= new stdClass;
 		$response->task 	= 'files';
 		$response->action 	= $this->_action;
 		$response->project 	= $this->project_id;
 
-		$output = empty($output) ? NULL : json_decode($output[0], TRUE);
-
-		if (!$output || (isset($output['error']) && $output['error'] == true))
+		switch ($this->_action)
 		{
-			$response->error 	= (isset($output['error']) && $output['error'] == true) ? $output['message'] : 'Failed to perform action';
-			$response->success 	= false;
+			case 'list':
+			default:
+				$response->results     = $this->project->repo()->filelist(array(
+					'subdir'           => Request::getVar('subdir', ''),
+					'filter'           => Request::getVar('filter', ''),
+					'limit'            => Request::getInt('limit', 0),
+					'start'            => Request::getInt('limitstart', 0),
+					'sortby'           => 'localpath',
+					'showFullMetadata' => true,
+					'getParents'       => true,
+					'getChildren'      => true
+					)
+				);
+				break;
+
+			case 'get':
+				$response->results     = $this->project->repo()->filelist(array(
+					'subdir'           => Request::getVar('subdir', ''),
+					'files'            => Request::getVar( 'asset', '', 'request', 'array' ),
+					'showFullMetadata' => true,
+					'getParents'       => true,
+					'getChildren'      => true
+					)
+				);
+				break;
+
+			case 'insert':
+			case 'update':
+
+				// Project plugin params
+				$fileParams = Plugin::params('projects', 'files');
+
+				// Get used space
+				$dirsize = $this->project->repo()->call(
+					'getDiskUsage',
+					$params = array('history' => $fileParams->get('disk_usage'))
+				);
+
+				// Get disk quota
+				$quota = $this->project->params->get('quota', \Components\Projects\Helpers\Html::convertSize(floatval($this->project->config()->get('defaultQuota', '1')), 'GB', 'b'));
+
+				// Insert file
+				$response->results     = $this->project->repo()->insert(
+					array(
+						'dataPath'    => Request::getVar( 'data_path', '' ),
+						'allowReplace'=> $this->_action == 'insert' ? false : true,
+						'update'      => $this->_action == 'insert' ? false : true,
+						'subdir'      => Request::getVar('subdir', ''),
+						'quota'       => $quota,
+						'dirsize'     => $dirsize,
+						'sizelimit'   => $fileParams->get('maxUpload', '104857600')
+					)
+				);
+
+				// Parse results
+				if (!empty($response->results))
+				{
+					$parsedResults = array();
+					$names = NULL;
+					foreach ($response->results as $updateType => $files)
+					{
+						foreach ($files as $file)
+						{
+							if ($updateType == 'uploaded' || $updateType == 'updated')
+							{
+								// Get metadata
+								$parsedResults[] = $this->project->repo()->getMetadata($file, 'file');
+								$names .= $names ? ', ' . $file : $file;
+							}
+						}
+					}
+
+					// Register event with the project
+					if (!empty($parsedResults))
+					{
+						$updateType = $this->_action == 'insert' ? 'uploaded' : 'updated';
+						// Plugin params
+						$plugin_params = array(
+							$this->project,
+							array($updateType => $names)
+						);
+
+						Event::trigger( 'projects.onAfterUpdate', $plugin_params);
+					}
+
+					$response->results = $parsedResults;
+				}
+				break;
+		}
+
+		// Get array of file metadata
+		if (!empty($response->results))
+		{
+			$results = array();
+			foreach ($response->results as $result)
+			{
+				// Access private _data container
+				$results[] = $result->getData();
+			}
+			$response->results = $results;
+		}
+
+		if ($this->project->repo()->getError())
+		{
+			$response->error   = $this->project->repo()->getError();
+			$response->success = false;
 		}
 		else
 		{
-			$response->success 	= true;
-			$response->error 	= NULL;
-			$response->items 	= isset($output['results']) ? $output['results'] : NULL;
-			$response->message 	= isset($output['message']) ? $output['message'] : NULL;
+			$response->success = true;
+			$response->error   = NULL;
 		}
 
 		$this->setMessage($response);
 
+		$this->setMessageType(Request::getWord('format', 'json'));
 		return;
 	}
 
@@ -415,12 +536,13 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 	private function _authorize()
 	{
 		// Get the project id
-		$this->project_id     = JRequest::getWord('project_id', 0);
-		$this->project 		  = NULL;
+		$this->project_id      = Request::getWord('project_id', 0);
+		$this->project 		   = NULL;
 
-		$authorized           = array();
-		$authorized['view']   = false;
-		$authorized['manage'] = false;
+		$authorized            = array();
+		$authorized['view']    = false;
+		$authorized['manage']  = false;
+		$authorized['content'] = false;
 
 		// Not logged in and/or not using OAuth
 		if (!is_numeric($this->user_id))
@@ -429,15 +551,14 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.php');
-		$objP = new Components\Projects\Tables\Project($this->_database);
+			. DS . 'models' . DS . 'project.php');
+		$this->project = new Components\Projects\Models\Project($this->project_id);
 
-		$this->project 	= $objP->getProject($this->project_id, $this->user_id);
-
-		if ($this->project)
+		if ($this->project->exists())
 		{
-			$authorized['view']   = true;
-			$authorized['manage'] = true;
+			$authorized['view']    = $this->project->access('member') ? true : false;
+			$authorized['manage']  = $this->project->access('manager') ? true : false;
+			$authorized['content'] = $this->project->access('content') ? true : false;
 		}
 
 		return $authorized;
@@ -452,20 +573,21 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 	 *
 	 * @return     void
 	 */
-	private function _errorMessage( $code, $message, $format = 'json' )
+	private function _errorMessage( $code = '404', $message, $format = 'json' )
 	{
 		//build error code and message
 		$object = new stdClass();
-		$object->error->code = $code;
+		$object->error = new stdClass();
+		$object->error->code    = $code;
 		$object->error->message = $message;
 
 		//set http status code and reason
-		$response = $this->getResponse();
-		$response->setErrorMessage( $object->error->code, $object->error->message );
+		$this->getResponse()
+		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		//add error to message body
-		$this->setMessageType( $format );
-		$this->setMessage( $object );
+		$this->setMessageType(Request::getWord('format', $format));
+		$this->setMessage($object);
 	}
 }
 

@@ -115,6 +115,17 @@ class File extends Object
 	}
 
 	/**
+	 * Return all properties
+	 *
+	 * @return     _data
+	 */
+	public function getData()
+	{
+		return $this->_data;
+	}
+
+
+	/**
 	 * Check if file exists
 	 *
 	 * @return     boolean

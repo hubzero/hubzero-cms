@@ -149,6 +149,7 @@
 	#preview-image {
 		text-align: center;
 		width: 100%;
+		padding-bottom: 2em;
 	}
 	#preview-window h4 {
 		vertical-align: middle;

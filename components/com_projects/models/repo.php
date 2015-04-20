@@ -194,7 +194,7 @@ class Repo extends Object
 	{
 		if ($call == NULL)
 		{
-			$this->setError(Lang::txt('Empty request'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_EMPTY_REQUEST'));
 			return false;
 		}
 		if (!isset($this->_adapter))
@@ -418,7 +418,7 @@ class Repo extends Object
 		else
 		{
 			// Failed to delete directory
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
 			return false;
 		}
 	}
@@ -435,28 +435,28 @@ class Repo extends Object
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
 
 		$newDir    = isset($params['newDir']) ? $params['newDir'] : NULL; // New directory name
-		$newDir    = \Components\Projects\Helpers\Html::makeSafeDir($newDir);
+		$newDir    = Helpers\Html::makeSafeDir($newDir);
 		$localDirPath = $dirPath ? $dirPath . DS . $newDir : $newDir;
 
 		// Check that we have directory to create
 		if (!$newDir)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_CREATE'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_NO_DIR_TO_CREATE'));
 			return false;
 		}
 
 		// Check that we directory name is not reserved for other purposes
 		if (dirname($localDirPath) == '.' && in_array(strtolower($newDir), $reserved))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
+			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
 			return false;
 		}
 
 		// Directory already exists ?
 		if ($this->dirExists($localDirPath))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". '
-			. Lang::txt('PLG_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS') );
+			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". '
+			. Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS') );
 			return false;
 		}
 
@@ -472,7 +472,7 @@ class Repo extends Object
 		else
 		{
 			// Failed to create directory
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
+			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
 			return false;
 		}
 	}
@@ -558,7 +558,7 @@ class Repo extends Object
 		// Make sure we have a file to work with
 		if (!$file || !$version)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_NO_FILE_SELECTED'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_RESTORE_NO_FILE_SELECTED'));
 			return false;
 		}
 		if (!$this->fileExists($file->get('localPath')))
@@ -735,30 +735,30 @@ class Repo extends Object
 
 		if (!$to)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_NAME'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_NAME'));
 			return false;
 		}
 
 		if (!$from)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 			return false;
 		}
 
 		// Make dir/file name safe
 		if ($type == 'folder')
 		{
-			$to = \Components\Projects\Helpers\Html::makeSafeDir($to);
+			$to = Helpers\Html::makeSafeDir($to);
 		}
 		else
 		{
-			$to = \Components\Projects\Helpers\Html::makeSafeFile($to);
+			$to = Helpers\Html::makeSafeFile($to);
 		}
 
 		// Compare new and old name
 		if ($from == $to)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
 			return false;
 		}
 
@@ -771,12 +771,12 @@ class Repo extends Object
 		{
 			if ($this->dirExists($toLocalPath))
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $to);
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $to);
 				return false;
 			}
 			if (!$this->dirExists($fromLocalPath))
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 				return false;
 			}
 		}
@@ -784,17 +784,17 @@ class Repo extends Object
 		{
 			if ($this->fileExists($toLocalPath))
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
 				return false;
 			}
 			if (!$this->fileExists($fromLocalPath))
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 				return false;
 			}
 
-			$newExt = \Components\Projects\Helpers\Html::getFileExtension($toLocalPath);
-			$fromExt = \Components\Projects\Helpers\Html::getFileExtension($fromLocalPath);
+			$newExt = Helpers\Html::getFileExtension($toLocalPath);
+			$fromExt = Helpers\Html::getFileExtension($fromLocalPath);
 
 			// Do not remove extension
 			$toLocalPath = $newExt && $newExt == $fromExt  ? $toLocalPath : $toLocalPath . '.' . $fromExt;
@@ -818,9 +818,21 @@ class Repo extends Object
 		else
 		{
 			// Failed
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_RENAME') );
+			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME') );
 			return false;
 		}
+	}
+
+	/**
+	 * Update file in the repo
+	 *
+	 * @return  boolean
+	 */
+	public function update($params = array())
+	{
+		$params['update']       = true;
+		$params['allowReplace'] = true;
+		return $this->insert($params);
 	}
 
 	/**
@@ -852,9 +864,30 @@ class Repo extends Object
 		$target.= $dirPath ? DS . $dirPath : '';
 
 		// Get incoming file(s)
-		if ($dataPath)
+		if (isset($params['dataPath']))
 		{
+			if (!$dataPath)
+			{
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_INSERT_NO_FILES'));
+				return false;
+			}
+
 			// Via remote/local copy
+			if ($item = $this->_insert($dataPath, $target, $available, $params))
+			{
+				if (!empty($item['replace']))
+				{
+					$results['updated'][] = $item['localPath'];
+				}
+				else
+				{
+					$results['uploaded'][] = $item['localPath'];
+				}
+			}
+			else
+			{
+				$results['failed'][] = $dataPath;
+			}
 		}
 		elseif ($ajaxUpload)
 		{
@@ -873,7 +906,7 @@ class Repo extends Object
 			}
 			else
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILE'));
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_UPLOAD_NO_FILES'));
 				return false;
 			}
 
@@ -901,7 +934,7 @@ class Repo extends Object
 
 			if (empty($upload['name']) or $upload['name'][0] == '')
 			{
-				$this->setError(Lang::txt('PLG_PROJECTS_FILES_NO_FILES'));
+				$this->setError(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'));
 				return false;
 			}
 
@@ -935,6 +968,130 @@ class Repo extends Object
 	}
 
 	/**
+	 * Insert/update remote file
+	 *
+	 * @return  mixed
+	 */
+	protected function _insert($dataPath, $target, &$available, $params)
+	{
+		$path         = isset($params['path']) ? $params['path'] : $this->get('path');
+		$dirPath      = isset($params['subdir']) ? $params['subdir'] : NULL;
+		$sizeLimit    = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
+		$quota        = isset($params['quota']) ? $params['quota'] : '104857600';
+		$dirsize      = isset($params['dirsize']) ? $params['dirsize'] : 0;
+		$caller       = isset($params['caller']) ? $params['caller'] : NULL;
+		$allowReplace = isset($params['allowReplace']) ? $params['allowReplace'] : true;
+		$update       = isset($params['update']) ? $params['update'] : true;
+
+		$file         = Helpers\Html::makeSafeFile(basename($dataPath));
+		$localPath    = $dirPath ? $dirPath . DS . $file : $file;
+
+		$where  = $target . DS . $file;
+		$exists = is_file($where) ? true : false;
+
+		if (!$allowReplace && $exists)
+		{
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_INSERT_ITEM_EXISTS'));
+			return false;
+		}
+		if ($update && !$exists)
+		{
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_INSERT_ITEM_NOT_EXISTS'));
+			return false;
+		}
+
+		//	\Hubzero\Utility\Debug::stop($dataPath);
+		// Local file not found? Try to download as remote
+		if (!is_file($dataPath))
+		{
+			$ch = curl_init();
+
+			$tempPath = sys_get_temp_dir() . DS . basename($dataPath); // temp
+			$tempFile = fopen($tempPath, 'w+');
+
+			if (!$tempFile)
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_TEMP_PATH'));
+				return false;
+			}
+
+			// Download file to a temp directory
+			if (curl_setopt($ch, CURLOPT_URL, $dataPath))
+			{
+				curl_setopt($ch, CURLOPT_FILE, $tempFile);
+				curl_exec ($ch);
+				$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if ($success !== 200)
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_DOWNLOAD_DATA'));
+					unlink($tempPath);
+					return false;
+				}
+			}
+			else
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ACCESS_DATA_PATH'));
+				return false;
+			}
+
+			// Close connections
+			curl_close ($ch);
+			fclose($tempFile);
+		}
+
+		$dataPath = $tempPath && is_file($tempPath) ? $tempPath : $dataPath;
+
+		// Have file?
+		if (!is_file($dataPath))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_SOURCE'));
+			return false;
+		}
+
+		// Run some checks
+		if (!$this->_check($dataPath, NULL, filesize($dataPath), $available, $sizeLimit))
+		{
+			return false;
+		}
+
+		// Destination directory exists?
+		if ($dirPath && !$this->dirExists($dirPath))
+		{
+			$newDirParams = array(
+				'path'   => $path,
+				'newDir' => $dirPath
+			);
+			$targetDir = $this->makeDirectory($newDirParams);
+			if (!$targetDir)
+			{
+				// Could not create target directory
+				return false;
+			}
+		}
+
+		// Proceed with copy
+		if (!$this->fileSystem->copy($dataPath, $where))
+		{
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_INSERT'));
+			return false;
+		}
+		elseif ($tempPath && is_file($tempPath))
+		{
+			unlink($tempPath);
+		}
+
+		// File object
+		$fileObject        = new Models\File(trim($localPath), $this->get('path'));
+		$params['file']    = $fileObject;
+		$params['replace'] = $exists;
+
+		// Success - check in change
+		$this->call('checkin', $params);
+
+		return array('localPath' => $localPath, 'replace' => $exists );
+	}
+
+	/**
 	 * Perform Upload
 	 *
 	 * @return  mixed
@@ -945,7 +1102,7 @@ class Repo extends Object
 		$sizeLimit   = isset($params['sizelimit']) ? $params['sizelimit'] : '104857600';
 		$expand      = isset($params['expand']) ? $params['expand'] : false;
 
-		$file        = \Components\Projects\Helpers\Html::makeSafeFile($file);
+		$file        = Helpers\Html::makeSafeFile($file);
 		$localPath   = $dirPath ? $dirPath . DS . $file : $file;
 		$exists      = false;
 
@@ -977,7 +1134,7 @@ class Repo extends Object
 			{
 				if (!move_uploaded_file($tmp_name, $where))
 				{
-					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_UPLOADING'));
+					$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_UPLOADING'));
 					return false;
 				}
 			}
@@ -995,28 +1152,6 @@ class Repo extends Object
 	}
 
 	/**
-	 * Is file zip?
-	 *
-	 * @return  boolean
-	 */
-	protected function _isZip($file)
-	{
-		$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
-		return in_array($ext, array('zip')) ? true : false;
-	}
-
-	/**
-	 * Is tar zip?
-	 *
-	 * @return  boolean
-	 */
-	protected function _isTar($file)
-	{
-		$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
-		return in_array($ext, array('tar', 'gz')) ? true : false;
-	}
-
-	/**
 	 * Expand archive
 	 *
 	 * @return  boolean
@@ -1028,7 +1163,7 @@ class Repo extends Object
 
 		$tempPath    = sys_get_temp_dir();
 		$archive     = $tempPath . DS . $file;
-		$extractPath = $tempPath . DS . \Components\Projects\Helpers\Html::generateCode (7, 7, 0, 1, 0);
+		$extractPath = $tempPath . DS . Helpers\Html::generateCode (7, 7, 0, 1, 0);
 
 		if (isset($_GET['qqfile']))
 		{
@@ -1117,9 +1252,9 @@ class Repo extends Object
 			}
 
 			// Clean up filename
-			$safe_dir  = $a_dir && $a_dir != '.' ? \Components\Projects\Helpers\Html::makeSafeDir($a_dir) : '';
+			$safe_dir  = $a_dir && $a_dir != '.' ? Helpers\Html::makeSafeDir($a_dir) : '';
 			$safe_dir  = trim($safe_dir, DS);
-			$safe_file = \Components\Projects\Helpers\Html::makeSafeFile($file);
+			$safe_file = Helpers\Html::makeSafeFile($file);
 
 			$skipDir = false;
 			if (is_array($reserved) && $safe_dir && in_array(strtolower($safe_dir), $reserved))
@@ -1177,23 +1312,23 @@ class Repo extends Object
 		// Check against upload size limit
 		if (intval($sizeLimit) && $size > intval($sizeLimit))
 		{
-			$this->setError( Lang::txt('PLG_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
+			$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
 				. \Hubzero\Utility\Number::formatBytes($sizeLimit) . '. '
-				. Lang::txt('PLG_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
+				. Lang::txt('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
 			return false;
 		}
 
 		// Check against quota
 		if ($size >= $available)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_OVER_QUOTA'));
 			return false;
 		}
 
 		// One last check
-		if ($tmp_name && \Components\Projects\Helpers\Html::virusCheck($tmp_name))
+		if ($tmp_name && Helpers\Html::virusCheck($tmp_name))
 		{
-			$this->setError(Lang::txt('Virus detected, refusing to upload'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
 			return false;
 		}
 
@@ -1214,7 +1349,7 @@ class Repo extends Object
 		{
 			if (!$this->fileSystem->makeDirectory($this->get('path'), 0755, true, true))
 			{
-				$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH') );
 				return false;
 			}
 		}
@@ -1278,7 +1413,7 @@ class Repo extends Object
 		// Compute size of local project repos
 		foreach ($aliases as $alias)
 		{
-			$path = \Components\Projects\Helpers\Html::getProjectRepoPath($alias, 'files', false);
+			$path = Helpers\Html::getProjectRepoPath($alias, 'files', false);
 
 			// Make sure there is .git directory
 			if (!is_dir($path) || !is_dir($path . DS . '.git'))
@@ -1298,7 +1433,7 @@ class Repo extends Object
 			}
 			else
 			{
-				$git = new \Components\Projects\Helpers\Git($path);
+				$git = new Helpers\Git($path);
 				if ($get == 'commitCount')
 				{
 					$nf = $git->callGit('ls-files --full-name ');
@@ -1456,5 +1591,27 @@ class Repo extends Object
 	public function getFileContent($params = array())
 	{
 		return $this->call('content', $params);
+	}
+
+	/**
+	 * Is file zip?
+	 *
+	 * @return  boolean
+	 */
+	protected function _isZip($file)
+	{
+		$ext = Helpers\Html::getFileExtension($file);
+		return in_array($ext, array('zip')) ? true : false;
+	}
+
+	/**
+	 * Is tar zip?
+	 *
+	 * @return  boolean
+	 */
+	protected function _isTar($file)
+	{
+		$ext = Helpers\Html::getFileExtension($file);
+		return in_array($ext, array('tar', 'gz')) ? true : false;
 	}
 }
