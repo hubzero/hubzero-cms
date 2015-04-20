@@ -33,4 +33,5 @@ return array(
 	'Submenu' => 'Hubzero\Facades\Submenu',
 	'Module'  => 'Hubzero\Facades\Module',
 	'Notify'  => 'Hubzero\Facades\Notify',
+	'Cache'   => 'Hubzero\Facades\Cache',
 );
