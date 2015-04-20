@@ -84,22 +84,23 @@ class Manager
 	 */
 	protected function resolve($name)
 	{
-		$config = $this->getConfig();
+		$config = $this->getConfig($name);
 
 		if (is_null($config))
 		{
 			throw new InvalidArgumentException("Cache config is not defined.");
 		}
 
-		$config['hash'] = md5($config['secret']);
+		$config['hash'] = md5($this->app['config']->get('secret'));
+		$config['cachebase'] = JPATH_CACHE;
 
-		if (isset($this->customCreators[$config['cache_handler']]))
+		if (isset($this->customCreators[$name]))
 		{
 			return $this->callCustomCreator($config);
 		}
 		else
 		{
-			$class = '\\Hubzero\\Cache\\Storage\\' . ucfirst($handler);
+			$class = __NAMESPACE__ . '\\Storage\\' . ucfirst($name);
 
 			if (!class_exists($class))
 			{
@@ -129,7 +130,7 @@ class Manager
 	 */
 	protected function getConfig($name)
 	{
-		return $this->app['config']; //["cache.storage.{$name}"];
+		return $this->app['config']->get($name, array());
 	}
 
 	/**
@@ -165,6 +166,41 @@ class Manager
 		$this->customCreators[$driver] = $callback;
 
 		return $this;
+	}
+
+	/**
+	 * Retrieve an item from the cache by key.
+	 *
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  mixed
+	 */
+	public function get($key, $default = null)
+	{
+		$value = $this->storage()->get($key);
+
+		if (!is_null($value))
+		{
+			return $value;
+		}
+
+		return $default instanceof Closure ? $default() : $default;
+	}
+
+	/**
+	 * Retrieve an item from the cache and delete it.
+	 *
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  mixed
+	 */
+	public function pull($key, $default = null)
+	{
+		$value = $this->get($key, $default);
+
+		$this->storage()->forget($key);
+
+		return $value;
 	}
 
 	/**

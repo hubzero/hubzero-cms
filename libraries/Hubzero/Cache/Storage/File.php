@@ -109,9 +109,9 @@ class File extends None
 		$file = $this->path($key);
 
 		$data = array(
-			'time' => time(),
-			'data' => $value,
-			'ttl'  => $this->expiration($minutes)
+			'time'  => time(),
+			'value' => $value,
+			'ttl'   => $this->expiration($minutes)
 		);
 
 		return $this->writeCacheFile($file, $data);
