@@ -42,7 +42,7 @@ if ($item->get('title')) { ?>
 		</h4>
 <?php }
 
-$path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
+$path = $item->filespace() . DS . $item->get('id');
 $href = 'index.php?option=com_collections&controller=media&post=';
 $base = 'index.php?option=' . $this->option;
 
@@ -69,14 +69,14 @@ if ($assets->total() > 0)
 		//$assets->rewind();
 		$first = array_shift($images);
 
-		list($originalWidth, $originalHeight) = getimagesize(JPATH_ROOT . $path . DS . ltrim($first->get('filename'), DS));
+		list($originalWidth, $originalHeight) = getimagesize($path . DS . $first->thumbnail());
 		$ratio = $originalWidth / $originalHeight;
 
 		$height = (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 260) / $ratio, 0, PHP_ROUND_HALF_UP) : ($originalHeight > 500 ? 500 : $originalHeight);
 		?>
 			<div class="holder">
 				<a data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS)); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo $height; ?>px;" />
+					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo $height; ?>px;" />
 				</a>
 			</div>
 		<?php
@@ -89,7 +89,7 @@ if ($assets->total() > 0)
 			{
 				?>
 				<a data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" width="50" height="50" class="img" />
+					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" width="50" height="50" class="img" />
 				</a>
 				<?php
 			}
@@ -115,14 +115,14 @@ if ($assets->total() > 0)
 				<span class="file-meta">
 					<span class="file-size">
 						<?php if ($asset->get('type') != 'link') { ?>
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php echo \Hubzero\Utility\Number::formatBytes(filesize($path . DS . ltrim($asset->get('filename'), DS))); ?>
 						<?php } else { ?>
 							<?php echo JText::_('COM_COLLECTIONS_ASSET_TYPE_LINK'); ?>
 						<?php } ?>
 					</span>
 					<?php if ($asset->get('description')) { ?>
 						<span class="file-description">
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+							<?php echo \Hubzero\Utility\Number::formatBytes(filesize($path . DS . ltrim($asset->get('filename'), DS))); ?>
 						</span>
 					<?php } ?>
 				</span>

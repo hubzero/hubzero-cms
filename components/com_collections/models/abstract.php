@@ -100,5 +100,22 @@ class CollectionsModelAbstract extends \Hubzero\Base\Model
 		}
 		return $this->_creator;
 	}
+
+	/**
+	 * Get the path to the file space
+	 *
+	 * @return  string
+	 */
+	public function filespace()
+	{
+		static $path;
+
+		if (!$path)
+		{
+			$path = JPATH_ROOT . DS . trim(JComponentHelper::getParams('com_collections')->get('filepath', '/site/collections'), DS);
+		}
+
+		return $path;
+	}
 }
 

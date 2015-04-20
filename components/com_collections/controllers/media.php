@@ -47,6 +47,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 	{
 		$file = JRequest::getVar('file', '');
 		$item = JRequest::getInt('post', 0);
+		$size = JRequest::getWord('size', '');
 
 		$post = CollectionsModelPost::getInstance($item);
 
@@ -81,8 +82,22 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		switch ($size)
+		{
+			case 'thumb':
+			case 'thumbnail':
+				$file = $asset->thumbnail();
+			break;
+
+			case 'orig':
+			case 'original':
+			default:
+				$file = $asset->get('filename');
+			break;
+		}
+
 		// Get the configured upload path
-		$filename = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
+		$filename = $asset->filespace() . DS . $asset->get('item_id') . DS . ltrim($file, DS);
 
 		// Ensure the file exist
 		if (!file_exists($filename))

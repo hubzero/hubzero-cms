@@ -125,6 +125,54 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	}
 
 	/**
+	 * Is an asset an image?
+	 *
+	 * @return  boolean True if image, false if not
+	 */
+	public function thumbnail()
+	{
+		if (!$this->image())
+		{
+			return $this->get('filename');
+		}
+
+		$path = $this->filespace() . DS . $this->get('item_id') . DS;
+		$file = ltrim($this->get('filename'), DS);
+
+		jimport('joomla.filesystem.file');
+		$ext = \JFile::getExt($file);
+
+		$thumb = \JFile::stripExt($file) . '_t.' . $ext;
+
+		if (!file_exists($path . $thumb))
+		{
+			list($originalWidth, $originalHeight) = getimagesize($path . $file);
+
+			if ($originalWidth > 400 || $originalHeight > 400)
+			{
+				$useHeight = ($originalHeight > $originalWidth) ? true : false;
+
+				// Resize image
+				$processor = new \Hubzero\Image\Processor($path . $file);
+				if (!$processor->getErrors())
+				{
+					$processor->resize(400, $useHeight);
+					if (!$processor->save($path . $thumb))
+					{
+						$thumb = $file;
+					}
+				}
+			}
+			else
+			{
+				$thumb = $file;
+			}
+		}
+
+		return $thumb;
+	}
+
+	/**
 	 * Remove a record
 	 *
 	 * @return  boolean True on success, false if errors
