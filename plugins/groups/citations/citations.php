@@ -38,9 +38,12 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+
+use Components\Tags\Models\Tag;
+use Components\Tags\Models\Cloud;
+
 
 /**
  * Groups plugin class for citations
@@ -741,18 +744,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->config = Component::params('com_citations');
-
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
-			$ct1 = new \Components\Citations\Tables\Tags($row->id);
+			$ct1 = new \Components\Tags\Models\Cloud($row->id, 'citations');
 			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
-			$ct2 = new \Components\Citations\Tables\Tags($row->id);
+			$ct1 = new \Components\Tags\Models\Cloud($row->id, 'citations');
 			$ct2->setTags($badges, $this->juser->get('id'), 0, 1, 'badge');
 		}
 

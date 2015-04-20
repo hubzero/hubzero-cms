@@ -40,7 +40,7 @@ use Date;
 require_once(__DIR__ . DS . 'tag.php');
 
 /**
- * Courses model class for a forum
+ * Cloud model for Tags
  */
 class Cloud extends Object
 {

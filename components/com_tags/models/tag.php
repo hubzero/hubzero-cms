@@ -564,6 +564,7 @@ class Tag extends Model
 		$to->set('objectid', (int) $scope_id);
 		$to->set('tagid', (int) $this->get('id'));
 		$to->set('strength', (int) $strength);
+
 		if ($label)
 		{
 			$to->set('label', (string) $label);
