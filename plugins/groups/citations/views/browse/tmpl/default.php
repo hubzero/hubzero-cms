@@ -189,9 +189,6 @@ if (isset($this->messages))
 											</td>
 										<?php endif; ?>
 										<td class="citation-container">
-											<?php if (isset($cite->custom3)) : ?>
-												<div class="identifier"><?php echo $cite->custom3; ?></div>
-											<?php endif; ?>
 											<?php
 												$formatted = $cite->formatted
 													? $cite->formatted
