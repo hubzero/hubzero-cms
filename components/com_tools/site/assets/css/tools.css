@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tools/assets/css/tools.css
+ * @file        components/com_tools/site/assets/css/tools.css
  * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -63,14 +63,14 @@
 	}
 	#small-page #filepath li.home a,
 	#small-page #filepath li.home span {
-		background: url("/components/com_tools/assets/img/home.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/home.gif") 0 0 no-repeat;
 		padding-left: 25px; 
 		padding-top: 0.2em;
 		padding-bottom: 0.2em;
 	}
 	#small-page #filepath li.folder a,
 	#small-page #filepath li.folder span {
-		background: url("/components/com_tools/assets/img/folder.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px; 
 	}
 	#small-page #filepath li.arrow {
@@ -188,11 +188,11 @@
 		margin: 0;
 		padding: 0 0 0 2px;
 		float: right;
-		background: url("/components/com_tools/assets/img/bg-nav-seperator.png") 0 0 repeat-y;
+		background: url("/components/com_tools/site/assets/img/bg-nav-seperator.png") 0 0 repeat-y;
 	}
 	#app-header ul#app-options {
 		float: left;
-		background: url("/components/com_tools/assets/img/bg-nav-seperator.png") right top repeat-y;
+		background: url("/components/com_tools/site/assets/img/bg-nav-seperator.png") right top repeat-y;
 	}
 	#app-header h2,
 	#app-header ul li a {
@@ -333,7 +333,7 @@
 		margin: 0;
 		padding: 0 0 0 2px;
 		float: left;
-		background: url("/components/com_tools/assets/img/bg-nav-seperator.png") 0 0 repeat-y;
+		background: url("/components/com_tools/site/assets/img/bg-nav-seperator.png") 0 0 repeat-y;
 	}
 	#app-footer ul li a {
 		display: block;
@@ -540,13 +540,13 @@
 	}
 
 	#app-header a.terminate span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -182px no-repeat;
+		background: url("/components/com_tools/site/assets/img/session.png") 8px -182px no-repeat;
 	}
 	#app-header a.terminate:hover span {
 		background-position: 8px -230px;
 	}
 	#app-header a.keep span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -278px no-repeat;
+		background: url("/components/com_tools/site/assets/img/session.png") 8px -278px no-repeat;
 	}
 	#app-header a.keep:hover span {
 		background-position: 8px -326px;
@@ -593,7 +593,7 @@
 		cursor: move;
 	}
 	#app-footer a.resize span {
-		background: url("/components/com_tools/assets/img/session.png") 8px 10px no-repeat;
+		background: url("/components/com_tools/site/assets/img/session.png") 8px 10px no-repeat;
 	}
 	#app-footer a.resize:hover span {
 		background-position: 8px -38px;
@@ -606,7 +606,7 @@
 		white-space: nowrap;
 	}
 	#app-footer a.popout span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -374px no-repeat;
+		background: url("/components/com_tools/site/assets/img/session.png") 8px -374px no-repeat;
 	}
 	#app-footer a.popout:hover span {
 		background-position: 8px -422px;
@@ -710,7 +710,7 @@
 	}
 	#app-share table thead th {
 		font-size: 115%;
-		background: #f8f8f8 url("/components/com_tools/assets/img/light-stripes.png");
+		background: #f8f8f8 url("/components/com_tools/site/assets/img/light-stripes.png");
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
@@ -741,7 +741,7 @@
 	#app-share table .entry-remove {
 		width: 16px;
 		height: 16px;
-		background: url("/components/com_tools/assets/img/close-light.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/close-light.gif") 0 0 no-repeat;
 		display: block;
 		overflow: hidden;
 		text-indent: -555em;
@@ -840,7 +840,7 @@
 		text-align: left;
 		border: 1px solid #EFCCC2; 
 		color: #CC0000;
-		background: #FFF2EF url("/components/com_tools/assets/img/error-large.png") 10px 10px no-repeat;
+		background: #FFF2EF url("/components/com_tools/site/assets/img/error-large.png") 10px 10px no-repeat;
 		-webkit-border-radius: 10px;
 		   -moz-border-radius: 10px;
 		    -ms-border-radius: 10px;
@@ -855,7 +855,7 @@
 	#error-box.code-403 {
 		border-color: #fbd894;
 		color: #CC6633; 
-		background: #FFFDEF url("/components/com_tools/assets/img/warning-large.png") 10px 10px no-repeat;
+		background: #FFFDEF url("/components/com_tools/site/assets/img/warning-large.png") 10px 10px no-repeat;
 	}
 	#error-box h2 {
 		margin: 0;
@@ -908,12 +908,12 @@
 	.com_tools table.sessions .disconnect {
 		width: 28px;
 		height: 14px;
-		background: url("/components/com_tools/assets/img/disconnect.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/disconnect.gif") 0 0 no-repeat;
 	}
 	.com_tools table.sessions .closetool {
 		width: 14px;
 		height: 14px;
-		background: url("/components/com_tools/assets/img/close-light.gif") 0 0 no-repeat;
+		background: url("/components/com_tools/site/assets/img/close-light.gif") 0 0 no-repeat;
 	}
 	.com_tools table.sessions .disconnect:hover {
 		background-position: 0 -14px;
