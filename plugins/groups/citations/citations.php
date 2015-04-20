@@ -326,6 +326,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Ensure limit has a value
+		if (!isset($view->filters['limit']))
+		{
+			$view->filters['limit'] = 10;
+		}
+		// Ensure start has a value
+		if (!isset($view->filters['start']))
+		{
+			$view->filters['start'] = 0;
+		}
+
+
 		// Get record count
 		$view->total     = $citations->getCount($view->filters, $view->isAdmin);
 
@@ -348,7 +360,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		$view->citations = $citations->getRecords($view->filters, $view->isAdmin);
 
-
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
@@ -370,7 +381,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			{
 				if ($view->filters['type'] == $type['id'])
 				{
-					$view->typeName = $type["type_title"];
+					$view->typeName = $type['type_title'];
 				}
 			}
 		}
