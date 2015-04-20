@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Component\Feedback\Site;
+namespace Components\Feedback\Site;
 
 use Hubzero\Component\Router\Base;
 
