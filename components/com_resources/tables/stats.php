@@ -91,7 +91,7 @@ class Stats extends \JTable
 				WHERE `period`=" . $this->_db->Quote($period) . " AND `resid`=" . $this->_db->Quote($resid);
 		if ($dthis)
 		{
-			$sql .= " AND `datetime`=" . $this->_db->quote($dthis . "-01 00:00:00");
+			$sql .= " AND `datetime`=" . $this->_db->quote($dthis . "-00 00:00:00");
 		}
 		else
 		{

@@ -83,8 +83,8 @@ class Stats extends \JTable
 				FROM $this->_tbl
 				WHERE period =" . $this->_db->Quote($period) . "
 				AND publication_id =" . $this->_db->Quote($publication_id);
-		$sql.= $dthis ? " AND datetime='" . $dthis . "-01 00:00:00'" : '';
-		$sql.= " ORDER BY processed_on DESC LIMIT 1";
+		$sql.= $dthis ? " AND datetime='" . $dthis . "-00 00:00:00'" : '';
+		$sql.= " ORDER BY datetime DESC LIMIT 1";
 
 		$this->_db->setQuery( $sql );
 
