@@ -206,6 +206,9 @@ class Helper
 		$count = 0;
 		$totalCount = 0;
 
+		//get current user object
+		$user = Hubzero\User::getInstance();
+
 		//loop through each group
 		foreach ($groups as $group)
 		{
