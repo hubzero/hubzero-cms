@@ -25,18 +25,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$pubParams = new JParameter( $this->publication->params );
+$pubParams = $this->publication->params;
 
 ?>
 <ul class="pub-selector" id="pub-selector">
 	<?php foreach ($this->selections as $item)
 	{
-		$selected = $this->publication->license_type && $this->publication->license_type == $item->id ? true : false;
+		$selected = $this->publication->get('license_type') && $this->publication->get('license_type') == $item->id ? true : false;
 		$liId = 'choice-' . $item->id;
 
 		$info = $item->info;
 		if ($item->url) {
-			$info .= ' <a href="'.$item->url.'" target="_blank">Read license terms &rsaquo;</a>';
+			$info .= ' <a href="' . $item->url . '" target="_blank">Read license terms &rsaquo;</a>';
 		}
 
 		?>
@@ -52,6 +52,6 @@ $pubParams = new JParameter( $this->publication->params );
 	<?php } ?>
 </ul>
 
-<?php if ($this->pubconfig->get('suggest_licence')) { ?>
-	<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN') ; ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->publication->version_number; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
+<?php if ($this->publication->config()->get('suggest_licence')) { ?>
+	<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN') ; ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->publication->get('version_number'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
 <?php } ?>

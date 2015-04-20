@@ -421,7 +421,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Parse props for curation
 		$parts   = explode('-', $props);
 		$block   = (isset($parts[0])) ? $parts[0] : 'content';
-		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		$blockId = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
 		// Output HTML
@@ -431,29 +431,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			'layout' => 'editor',
 		));
 
-		// Load classes
-		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
-		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
+		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
 
-		// Load publication version
-		$view->version->load($vid);
-		if (!$view->version->id)
+		if (!$view->publication->exists())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// Get publication
-		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->_project->id);
-
-		if (!$view->publication)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// On error
-		if ($this->getError())
-		{
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -469,22 +451,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Load master type
-		$mt   							= new \Components\Publications\Tables\MasterType( $this->_database );
-		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project	= $this->model;
-
-		// Get curation model
-		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
+		// Set curation
+		$view->publication->setCuration();
 
 		// Set block
-		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		if (!$view->publication->_curationModel->setBlock( $block, $blockId ))
 		{
 			$view->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
 		}
-
-		// Set pub assoc and load curation
-		$view->publication->_curationModel->setPubAssoc($view->publication);
 
 		// Load handler
 		$modelHandler = new \Components\Publications\Models\Handlers($this->_database);
@@ -512,7 +486,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->task			= $this->_task;
 		$view->element		= $element;
 		$view->block		= $block;
-		$view->step 		= $step;
+		$view->blockId 		= $blockId;
 		$view->props		= $props;
 		$view->config		= $this->_pubconfig;
 
@@ -542,7 +516,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Parse props for curation
 		$parts   = explode('-', $props);
 		$block   = (isset($parts[0])) ? $parts[0] : 'content';
-		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		$blockId = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
 		// Output HTML
@@ -554,29 +528,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Load classes
-		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
-		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
+		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
 
-		// Load publication version
-		$view->version->load($vid);
-		if (!$view->version->id)
+		if (!$view->publication->exists())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// Get publication
-		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->_project->id);
-
-		if (!$view->publication)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// On error
-		if ($this->getError())
-		{
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -594,16 +550,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/selector');
 
-		// Load master type
-		$mt   							= new \Components\Publications\Tables\MasterType( $this->_database );
-		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project	= $this->model;
-
-		// Get curation model
-		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
+		// Set curation
+		$view->publication->setCuration();
 
 		// Set block
-		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		if (!$view->publication->_curationModel->setBlock( $block, $blockId ))
 		{
 			// Output error
 			$view = new \Hubzero\Plugin\View(
@@ -620,21 +571,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Set pub assoc and load curation
-		$view->publication->_curationModel->setPubAssoc($view->publication);
-
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->project 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
 		$view->element		= $element;
 		$view->block		= $block;
-		$view->step 		= $step;
+		$view->blockId 		= $blockId;
 		$view->props		= $props;
 		$view->filter		= $filter;
-		$view->pubconfig	= $this->_pubconfig;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -658,32 +605,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$vid  	= Request::getInt('vid', 0);
 		$param  = Request::getVar('param', '');
 		$value  = urldecode(Request::getVar('value', ''));
-		$success= 0;
 
-		// Clean up incoming
-		$param  = \Hubzero\Utility\Sanitize::paranoid($param, array('-', '_'));
-		$value  = \Hubzero\Utility\Sanitize::clean($value);
-		$result = $value;
+		// Load publication
+		$publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
 
-		if (!$vid || !$param)
+		if ($result = $publication->saveParam($param, $value))
 		{
-			$this->setError(Lang::txt('Missing required input'));
-		}
-
-		$row = new \Components\Publications\Tables\Version( $this->_database );
-		if (!$row->load($vid))
-		{
-			$this->setError(Lang::txt('Failed to load version'));
+			return json_encode(array('success' => true, 'result' => $result));
 		}
 		else
 		{
-			if ($row->saveParam($vid, $param, $value))
-			{
-				$success = 1;
-			}
+			$this->setError(Lang::txt('Failed to save a setting'));
+			return json_encode(array('error' => $this->getError(), 'result' => $result));
 		}
-
-		return json_encode(array('success' => $success, 'error' => $this->getError(), 'result' => $result));
 	}
 
 	/**

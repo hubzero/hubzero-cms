@@ -245,6 +245,26 @@ class Publication extends Object
 	}
 
 	/**
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
+	 *
+	 * @param      string $key Config property to retrieve
+	 * @return     mixed
+	 */
+	public function config($key=null)
+	{
+		if (!isset($this->_config))
+		{
+			$this->_config = Component::params('com_publications');
+		}
+		if ($key)
+		{
+			return $this->_config->get($key);
+		}
+		return $this->_config;
+	}
+
+	/**
 	 * Check if the publication exists
 	 *
 	 * @param      mixed $idx Index value
@@ -1295,6 +1315,80 @@ class Publication extends Object
 		$result = $this->_db->loadObjectList();
 
 		return $result ? $result[0] : NULL;
+	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param      string $type The type of link to return
+	 * @return     boolean
+	 */
+	public function link($type = '')
+	{
+		if (!isset($this->_base))
+		{
+			$this->_base  = $this->get('alias')
+				? 'index.php?option=com_publications&alias=' . $this->get('alias')
+				: $this->get('id');
+		}
+		if (!isset($this->_editBase))
+		{
+			$this->_editBase  = $this->project()->isProvisioned()
+				? 'index.php?option=com_publications&task=submit'
+				: 'index.php?option=com_projects&alias=' . $this->project()->get('alias') . '&active=publications';
+			$this->_editBase .= '&pid=' . $this->get('id');
+		}
+
+		// If it doesn't exist or isn't published
+		switch (strtolower($type))
+		{
+			case 'serve':
+				$link = $this->_base . '&task=serve' . '&v=' . $this->version->get('id');
+			break;
+
+			case 'edit':
+				$link = $this->_editBase; 
+			break;
+
+			case 'permalink':
+			default:
+				$link = $this->_base;
+			break;
+		}
+
+		return $link;
+	}
+
+	/**
+	 * Save param
+	 *
+	 * @param      string 	$param
+	 * @param      string 	$value
+	 *
+	 * @return     void
+	 */
+	public function saveParam($param = '', $value = '')
+	{
+		// Clean up incoming
+		$param  = \Hubzero\Utility\Sanitize::paranoid($param, array('-', '_'));
+		$value  = \Hubzero\Utility\Sanitize::clean($value);
+
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!$param || !$value)
+		{
+			return false;
+		}
+
+		$this->version->saveParam(
+			$this->version->get('id'),
+			trim($param),
+			htmlentities($value)
+		);
+		return $value;
 	}
 }
 

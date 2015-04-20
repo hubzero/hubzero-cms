@@ -24,12 +24,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$route = $this->publication->_project->isProvisioned() == 1
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->publication->_project->get('alias');
-
-// Manage URL
-$url = $this->publication->_project->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->publication->_project->get('alias') . '&active=publications&pid=' . $this->publication->id);
+$url = Route::url($this->publication->link('edit'));
 
 ?>
 <div id="abox-content" class="handler-wrap">

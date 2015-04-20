@@ -25,24 +25,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->project->provisioned == 1
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->project->alias;
-
-// Save Selection URL
-$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = Route::url($this->publication->link('edit'));
 
 $title = Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block));
 $req   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block));
 
 $block   = $this->block;
-$step  	 = $this->step;
+$blockId = $this->blockId;
 $elId 	 = $this->element;
 
 // Get requirements
 $blocks   = $this->publication->_curationModel->_progress->blocks;
-$manifest = $blocks->$step->manifest;
+$manifest = $blocks->$blockId->manifest;
 
 $selections = NULL;
 $selected 	= NULL;
@@ -51,7 +45,7 @@ $selected 	= NULL;
 if ($block == 'license')
 {
 	$objL 			= new \Components\Publications\Tables\License( $this->database);
-	$selected 		= $objL->getPubLicense( $this->publication->version_id );
+	$selected 		= $objL->getPubLicense( $this->publication->get('version_id') );
 	$selections 	= $objL->getBlockLicenses( $manifest, $selected );
 
 	if (!$selections)
@@ -71,22 +65,22 @@ if ($block == 'license')
 			</span></h3>
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
 	<fieldset >
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
-		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
+		<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" id="p" name="p" value="<?php echo $this->props; ?>" />
-		<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
-		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
+		<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
+		<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
 		<input type="hidden" name="section" value="<?php echo $block; ?>" />
-		<input type="hidden" name="step" value="<?php echo $step; ?>" />
+		<input type="hidden" name="step" value="<?php echo $blockId; ?>" />
 		<input type="hidden" name="element" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
 		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />
 		<input type="hidden" name="move" value="continue" />
-		<?php if ($this->project->provisioned == 1) { ?>
+		<?php if ($this->project->isProvisioned()) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<input type="hidden" name="ajax" value="0" />
 		<?php }  ?>
@@ -118,7 +112,6 @@ if ($block == 'license')
 			$view->publication  = $this->publication;
 			$view->selected		= $selected;
 			$view->selections	= $selections;
-			$view->pubconfig	= $this->pubconfig;
 			$view->url			= $url;
 			echo $view->loadTemplate();
 		?>
