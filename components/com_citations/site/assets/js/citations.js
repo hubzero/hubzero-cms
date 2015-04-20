@@ -32,27 +32,27 @@ if (!jq) {
 
 HUB.Citations = {
 	jQuery: jq,
-	
+
 	initialize: function()
 	{
 		var $ = this.jQuery;
 
 		//citation import functionality
 		HUB.Citations.bulkimport();
-		
+
 		//citation download functionality
 		HUB.Citations.download();
-		
+
 		//citation add functionality
 		HUB.Citations.singleimport();
-		
+
 		// add rollovers
 		HUB.Citations.rollovers();
-		
+
 		// single citation
 		HUB.Citations.singleCitation();
 		//HUB.Citations.singleCitationTabs();
-		
+
 		// Checks the boxes of the already selected citations when the page is done loading
 		var checkList = $("input[name=idlist]").val();
 		if(checkList) {
@@ -75,14 +75,14 @@ HUB.Citations = {
 			}
 		}
 	},
-	
+
 	//-----
-	
+
 	addRow: function(id) {
 		var tbody = document.getElementById(id).tBodies[0];
 		var counter = tbody.rows.length;
 		var newNode = tbody.rows[0].cloneNode(true);
-		
+
 		var newField = newNode.childNodes;
 		for (var i=0;i<newField.length;i++)
 		{
@@ -106,13 +106,13 @@ HUB.Citations = {
 		tbody.appendChild(newNode);
 		return false;
 	},
-	
+
 	//-----
-	
+
 	bulkimport: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//click to show citation details
 		$(".upload-list .citation-title").each(function(i) {
 			$(this).on("click", function(e) {
@@ -166,13 +166,13 @@ HUB.Citations = {
 			}
 		});
 	},
-	
+
 	//-----
-	
+
 	download: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//check all
 		$(".checkall-download").on("click", function(e) {
 			var tbody = $(this).parents("table.citations").children("tbody");
@@ -313,7 +313,7 @@ HUB.Citations = {
 			{
 				$("#citeform").append("<input type=\"hidden\" name=\"task\" value=\"downloadbatch\" id=\"download-batch-input\" />");
 			}
-			
+
 			$("#citeform").attr("method", "POST");
 		});
 
@@ -335,13 +335,13 @@ HUB.Citations = {
 			return count;
 		}
 	},
-	
+
 	//-----
-	
+
 	singleimport: function()
 	{
 		var $ = this.jQuery;
-		
+
 		function hideCitationFields( display )
 		{
 			$(".add-citation fieldset:first label").each(function(i, el){
@@ -383,17 +383,17 @@ HUB.Citations = {
 			}
 		});
 	},
-	
+
 	//-----
-	
+
 	rollovers: function()
 	{
 		var $ = this.jQuery;
-		
+
 		$(".citation-container").each(function(index){
 			var $title = $(this).find(".citation-title"),
 				$note = $(this).find(".citation-notes");
-				
+
 			if ($note.length)
 			{
 				$title
@@ -405,7 +405,7 @@ HUB.Citations = {
 						{
 							$note.addClass('bottom');
 						}
-						
+
 						$note.fadeIn();
 					})
 					.on('mouseleave', function() {
@@ -414,13 +414,13 @@ HUB.Citations = {
 			}
 		});
 	},
-	
+
 	//-----
-	
+
 	singleCitation: function()
 	{
 		var $ = this.jQuery;
-		
+
 		$("#show-more-button").on('click', function(event){
 			event.preventDefault();
 			$(this).remove();
@@ -428,60 +428,60 @@ HUB.Citations = {
 			$(".show-more-text").fadeIn();
 		});
 	},
-	
+
 	//-----
-	
+
 	singleCitationTabs: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if( $("#sub-menu").length )
 		{
 			//add click event to top locate button
 			$('.locate').on('click', function(event) {
 				event.preventDefault();
-				
+
 				//open the locate this tab
 				openTabSection( $("#sub-menu a[rel=locate-this]") );
 			});
-			
+
 			//add click events to tabs
 			$("#sub-menu").find("li a").on("click", function(event) {
 				event.preventDefault();
-				
+
 				//open this clicked tab
 				openTabSection( $(this) );
 			});
-			
+
 			//handle location hash
 			var locationHash = window.location.hash.replace("#", "");
 			if(locationHash != '')
 			{
 				var tab = $("#sub-menu a[rel=" + locationHash + "]");
-				
+
 				//open the tab
 				openTabSection( tab );
 			}
-			
+
 			function openTabSection( tab )
 			{
 				//remove all active tabs
 				$("#sub-menu").find("li").removeClass('active');
-				
+
 				//mark the clicked tab as active
 				tab.parent().addClass('active');
-				
+
 				//hide all sections
 				$('.main').hide();
-				
+
 				//fade in requested section
 				$("#" + tab.attr("rel")).show();
-				
+
 				//update location without jumping to content
 				var s = $('body').scrollTop();
 				window.location.hash = tab.attr("rel");
 				$('html,body').scrollTop(s);
-				
+
 				//scroll body to tabs
 				$('body').animate({scrollTop:tab.offset().top - 15}, 'slow');
 			}
