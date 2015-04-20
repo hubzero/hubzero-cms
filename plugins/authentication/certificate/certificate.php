@@ -108,7 +108,7 @@ class plgAuthenticationCertificate extends JPlugin
 
 		if (substr($service, -13) == 'administrator')
 		{
-			$scope = '/index.php?option=com_login&task=login&authenticator=certificate';
+			$scope = '/administrator/index.php?option=com_login&task=login&authenticator=certificate';
 		}
 		else
 		{
