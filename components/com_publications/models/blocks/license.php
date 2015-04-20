@@ -151,7 +151,7 @@ class License extends Base
 		// Pre-select single available license
 		if (!$view->license && count($view->selections) == 1)
 		{
-			$view->license = new \Components\Publications\Tables\License( $this->_parent->_db );;
+			$view->license = new \Components\Publications\Tables\License( $this->_parent->_db );
 			$view->license->load($view->selections[0]->id);
 		}
 

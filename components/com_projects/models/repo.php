@@ -1210,7 +1210,19 @@ class Repo extends Object
 	 */
 	public function iniLocal()
 	{
-		// TBD
+		if ($this->get('path') && !is_dir($this->get('path')))
+		{
+			if (!$this->fileSystem->makeDirectory($this->get('path'), 0755, true, true))
+			{
+				$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				return false;
+			}
+		}
+
+		// Initialize
+		$this->_adapter->ini();
+
+		return true;
 	}
 
 	/**

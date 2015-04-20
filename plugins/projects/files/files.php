@@ -224,7 +224,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 										);
 
 			// Hubzero library classes
-			$this->mt = new \Hubzero\Content\Mimetypes();
 			$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
 
 			// Set routing

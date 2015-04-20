@@ -912,4 +912,17 @@ class Git extends Models\Adapter
 
 		return false;
 	}
+
+	/**
+	 * Initialize repository
+	 *
+	 * @param      array	$params
+	 *
+	 * @return     integer
+	 */
+	public function ini()
+	{
+		// Initialize
+		$this->_git->iniGit();
+	}
 }

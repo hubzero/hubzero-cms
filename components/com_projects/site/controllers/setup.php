@@ -34,6 +34,8 @@ use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Exception;
 
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
+
 /**
  * Projects setup controller class
  */
@@ -555,24 +557,12 @@ class Setup extends Base
 			return false;
 		}
 
-		// Build project repo path
-		$path = Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'files', false);
-
-		// Create project repo path
-		if (!is_dir( $path ))
+		// Create and initialize local repo
+		if (!$this->model->repo()->iniLocal())
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create( $path ))
-			{
-				$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
-			}
+			$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
+			return false;
 		}
-
-		// Git ini
-		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
-			. DS . 'helpers' . DS . 'githelper.php' );
-		$this->_git = new Helpers\Git($path);
-		$this->_git->iniGit();
 	}
 
 	/**
