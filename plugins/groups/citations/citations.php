@@ -171,7 +171,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				case 'delete':   $arr['html'] .= $this->_delete();			break;
 				case 'browse':	 $arr['html'] .= $this->_browse();	break;
 				case 'import': 	 $arr['html'] .= $this->_import(); 	break;
-				default:         $arr['html'] .= $this->_dashboard();
+				default:         $arr['html'] .= $this->_browse();
 			}
 		}
 
@@ -188,55 +188,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Return the output
 		return $arr;
-	}
-
-	/**
-	 * Display a list of all citations, with filtering&search options.
-	 *
-	 * @return     string HTML
-	 */
-	private function _dashboard()
-	{
-		//initialize the view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'dashboard'
-			)
-		);
-
-		// load citation object
-		$citations = new \Components\Citations\Tables\Citation($this->database);
-
-		// get citaton types
-		$ct = new \Components\Citations\Tables\Type($this->database);
-		$types = $ct->getType();
-
-		// Get type stats
-		$view->typestats = array();
-		foreach ($types as $t)
-		{
-			$view->typestats[$t['type_title']] = $citations->getCount(array(
-				'type'     => $t['id'],
-				'scope'    => 'group',
-				'scope_id' => $this->group->gidNumber
-			), false);
-		}
-
-		// get yearly stats
-		$view->yearlystats = $citations->getStats();
-
-		// push vars to view
-		$view->group             = $this->group;
-		$view->option            = $this->option;
-		$view->database          = $this->database;
-		$view->config            = Component::params('com_citations');
-		$view->allow_import      = $view->config->get('citation_import', 1);
-		$view->allow_bulk_import = $view->config->get('citation_bulk_import', 1);
-		$view->isAdmin           = ($this->authorized == 'manager') ? true : false;
-
-		return $view->loadTemplate();
 	}
 
 	/**
