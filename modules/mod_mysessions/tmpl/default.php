@@ -96,7 +96,10 @@ defined('_JEXEC') or die('Restricted access');
 									<span>Session Owner:</span>
 									<?php
 										$user = JUser::getInstance($session->username);
-										echo '<a href="/members/' . $user->get('id') . '" title="Go to ' . $user->get('name') . '\'s Profile">' . $user->get('name') . '</a>';
+										if ($user)
+										{
+											echo '<a href="' . Jroute::_('index.php?option=com_members&id=' . $user->get('id')) . '" title="Go to ' . $user->get('name') . '\'s Profile">' . $user->get('name') . '</a>';
+										}
 									?>
 								</div>
 							<?php endif; ?>
