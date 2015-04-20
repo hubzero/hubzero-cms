@@ -467,33 +467,49 @@ if ($this->getError()) { ?>
 				</label>
 			</fieldset>
 
+			<?php //if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
+			<div class="explaination">
+				<p>Tags allow your citation to be identified</p>
+			</div>
 			<fieldset>
-				<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CUSTOM_FIELDS'); ?></legend>
-				<label for="custom1">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_1'); ?>:
-					<input type="text" name="custom1" id="custom1" value="<?php echo (isset($this->row->custom1)) ? $this->row->custom1 : ''; ?>"/>
-				</label>
-				<label for="custom2">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_2'); ?>:
-					<input type="text"  name="custom2" id="custom2" value="<?php echo (isset($this->row->custom2)) ? $this->row->custom2 : ''; ?>"/>
-				</label>
-				<label for="custom3">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_3'); ?>:
-					<input type="text"  name="custom3" id="custom3" value="<?php echo (isset($this->row->custom3)) ? $this->row->custom3 : ''; ?>"/>
-				</label>
-				<label for="custom4">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_4'); ?>:
-					<input type="text"  name="custom4" id="custom4" value="<?php echo (isset($this->row->custom4)) ? $this->row->custom4 : ''; ?>"/>
-				</label>
-				<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
-				<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
-				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="option" value="com_groups" />
-				<input type="hidden" name="active" value="citations" />
-				<input type="hidden" name="action" value="save" />
-			</fieldset>
-			<p class="submit"><input class="btn btn-success" type="submit" name="create" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SAVE'); ?>" /></p>
-			<div class="clear"></div>
-		</form>
+				<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?></legend>
+				<?php //if ($allow_tags == "yes") : ?>
+					<label>
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>: <span class="optional">Optional</span>
+						<?php
+							if (count($tags_list) > 0) {
+								echo $tags_list[0];
+							} else {
+								echo "<input type=\"text\" name=\"tags\" value=\"{$tags}\" />";
+							}
+						?>
+						<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS_HINT'); ?></span>
+					</label>
+				<?php //endif; ?>
+
+				<?php //if ($allow_badges == "yes") : ?>
+					<label class="badges">
+						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES'); ?>: <span class="optional">Optional</span>
+						<?php
+							if (count($badges_list) > 0) {
+								echo $badges_list[0];
+							} else {
+								echo "<input type=\"text\" name=\"badges\" value=\"{$badges}\" />";
+							}
+						?>
+						<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_BADGES_HINT'); ?></span>
+					</label>
+				<?php //endif; ?>
+			</fieldset><div class="clear"></div>
+		<?php //endif; ?>
+			<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
+			<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="option" value="com_groups" />
+			<input type="hidden" name="active" value="citations" />
+			<input type="hidden" name="action" value="save" />
+		<p class="submit"><input class="btn btn-success" type="submit" name="create" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SAVE'); ?>" /></p>
+		<div class="clear"></div>
+	</form>
 	<!-- </section> -->
 </div>
