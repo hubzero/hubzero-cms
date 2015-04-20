@@ -358,10 +358,30 @@ class Asset extends \JTable
 
 		$path = $this->path($this->item_id);
 
+		$ext = \JFile::getExt($this->filename);
+		$thumb = \JFile::stripExt($this->filename) . '_t.' . $ext;
+		$removed = \JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
+
 		jimport('joomla.filesystem.file');
 		if (!\JFile::delete($path . DS . $this->filename))
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+		}
+
+		if (file_exists($path . DS . $thumb))
+		{
+			if (!\JFile::delete($path . DS . $thumb))
+			{
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+			}
+		}
+
+		if (file_exists($path . DS . $removed))
+		{
+			if (!\JFile::delete($path . DS . $removed))
+			{
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+			}
 		}
 
 		return parent::delete();
