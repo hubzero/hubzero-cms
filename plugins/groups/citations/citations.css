@@ -36,6 +36,10 @@
 	border: none;
 }
 
+#download-batch {
+	padding:10px;
+}
+
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1080px) {
 	.group_citations .aside,
