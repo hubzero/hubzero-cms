@@ -85,7 +85,7 @@ class Apc extends None
 		$key = $this->id($key);
 		$seconds = $minutes * 60;
 
-		return $this->apcu ? apcu_add($key, $value, $seconds); : apc_add($key, $value, $seconds);
+		return $this->apcu ? apcu_add($key, $value, $seconds) : apc_add($key, $value, $seconds);
 	}
 
 	/**

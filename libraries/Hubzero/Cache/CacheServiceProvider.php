@@ -47,11 +47,11 @@ class CacheServiceProvider extends ServiceProvider
 		$this->app['cache'] = function($app)
 		{
 			return new Manager($app);
-		});
+		};
 
 		$this->app['cache.store'] = function($app)
 		{
 			return $app['cache']->storage();
-		});
+		};
 	}
 }

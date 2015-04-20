@@ -31,7 +31,6 @@
 namespace Hubzero\Cache\Storage;
 
 use Hubzero\Error\Exception\RuntimeException;
-use Memcached;
 
 /**
  * MemcacheD storage for Cache manager
@@ -134,7 +133,7 @@ class Memcached extends None
 	 */
 	public function getEngine()
 	{
-		return new Memcached;
+		return new \Memcached;
 	}
 
 	/**

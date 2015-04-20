@@ -106,7 +106,7 @@ class Manager
 				throw new InvalidArgumentException("Cache store [{$name}] is not defined.");
 			}
 
-			return new $class(array $config);
+			return new $class((array) $config);
 		}
 	}
 
