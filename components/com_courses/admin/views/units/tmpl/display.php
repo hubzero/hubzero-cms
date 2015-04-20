@@ -104,11 +104,11 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ALIAS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
-				<th scope="col" colspan="2"><?php echo Lang::txt('COM_COURSES_COL_ORDERING'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_ALIAS'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col" class="priority-3" colspan="2"><?php echo Lang::txt('COM_COURSES_COL_ORDERING'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ASSET_GROUPS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ASSETS'); ?></th>
 			</tr>
@@ -162,7 +162,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
@@ -176,7 +176,7 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
@@ -187,7 +187,7 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&offering=' . $this->offering->get('id') . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
@@ -198,7 +198,7 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php
 					$prv = $this->rows->fetch('prev');
 					$prev = 0;
@@ -208,7 +208,7 @@ foreach ($this->rows as $row)
 					}
 					echo $pageNav->orderUpIcon( $i, ($row->get('ordering') != $prev) ); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php
 					$nxt = $this->rows->fetch('next');
 					$next = 0;

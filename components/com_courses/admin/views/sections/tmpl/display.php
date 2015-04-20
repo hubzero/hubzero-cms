@@ -100,16 +100,16 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_DEFAULT', 'is_default', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_DEFAULT', 'is_default', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php if ($canDo->get('core.edit.state')) { ?>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php } ?>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_STARTS', 'start_date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ENDS', 'end_date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_STARTS', 'start_date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ENDS', 'end_date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CODES'); ?></th>
 			</tr>
 		</thead>
@@ -145,7 +145,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
@@ -159,7 +159,7 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
@@ -170,7 +170,7 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=makedefault&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 					<?php if ($row->get('is_default')) { ?>
@@ -218,13 +218,13 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 			<?php } ?>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->get('start_date') && $row->get('start_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('start_date'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE'); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->get('end_date') && $row->get('end_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('end_date'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($canDo->get('core.manage') && $students > 0) { ?>
 						<a class="glyph list" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=students&offering=' . $row->get('offering_id') . '&section=' . $row->get('id')); ?>">
 							<?php echo $students; ?>

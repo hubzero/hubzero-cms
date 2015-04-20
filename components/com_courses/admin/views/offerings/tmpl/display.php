@@ -97,15 +97,15 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_SECTIONS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ENROLLMENT'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_ENROLLMENT'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_UNITS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_PAGES'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_PAGES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -156,7 +156,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
@@ -170,13 +170,13 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE'); ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->get('state') == 1) { ?>
 					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
@@ -222,7 +222,7 @@ foreach ($this->rows as $row)
 						<?php } ?>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($canDo->get('core.manage')) { ?>
 						<a class="glyph member" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=students&offering=' . $row->get('id') . '&section=0'); ?>">
 							<?php echo $students; ?>
@@ -248,7 +248,7 @@ foreach ($this->rows as $row)
 						<?php } ?>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($canDo->get('core.manage') && $pages > 0) { ?>
 						<a class="glyph list" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=pages&offering=' . $row->get('id')); ?>">
 							<?php echo $pages; ?>

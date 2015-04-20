@@ -96,12 +96,12 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_MANAGERS'); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_MANAGERS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_OFFERINGS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_PAGES'); ?></th>
 			</tr>
@@ -138,7 +138,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('alias'); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
@@ -152,7 +152,7 @@ foreach ($this->rows as $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-5">
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape($row->get('alias')); ?>
@@ -161,7 +161,7 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('alias')); ?>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->get('state') == 1) { ?>
 						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
@@ -190,7 +190,7 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php if ($row->certificate()->exists() && $row->certificate()->hasFile()) { ?>
 						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=certificates&course=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_COURSES_CERTIFICATE_SET'); ?>">
 							<span class="state yes">
@@ -205,7 +205,7 @@ foreach ($this->rows as $row)
 						</a>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span class="glyph member">
 						<?php echo $row->managers(array('count' => true)); ?>
 					</span>
