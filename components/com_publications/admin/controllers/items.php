@@ -62,46 +62,42 @@ class Items extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
-
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.publications.limit',
 			'limit',
-			$config->getValue('config.list_limit'),
+			Config::get('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
+		$this->view->filters['start']    = Request::getState(
 			$this->_option . '.publications.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['search']   = urldecode(trim($app->getUserStateFromRequest(
+		$this->view->filters['search']   = urldecode(trim(Request::getState(
 			$this->_option . '.publications.search',
 			'search',
 			''
 		)));
-		$this->view->filters['sortby']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sortby']     = trim(Request::getState(
 			$this->_option . '.publications.sortby',
 			'filter_order',
 			'created'
 			));
-		$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sortdir'] = trim(Request::getState(
 			$this->_option . '.publications.sortdir',
 			'filter_order_Dir',
 			'DESC'
 		));
-		$this->view->filters['status']   = trim($app->getUserStateFromRequest(
+		$this->view->filters['status']   = trim(Request::getState(
 			$this->_option . '.publications.status',
 			'status',
 			'all'
 		));
 		$this->view->filters['dev'] = 1;
-		$this->view->filters['category']  = trim($app->getUserStateFromRequest(
+		$this->view->filters['category']  = trim(Request::getState(
 			$this->_option . '.publications.category',
 			'category',
 			''
@@ -115,9 +111,7 @@ class Items extends AdminController
 		// Get publications
 		$this->view->rows = $model->getRecords($this->view->filters, NULL, true);
 
-		// Get component config
-		$pconfig = Component::params( $this->_option );
-		$this->view->config = $pconfig;
+		$this->view->config = $this->config;
 
 		// Get <select> of types
 		// Get types

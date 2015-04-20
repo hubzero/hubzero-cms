@@ -434,8 +434,7 @@ class Publications extends SiteController
 		$rr = new Tables\Publication( $this->database );
 
 		// Execute count query
-		$results = $rr->getCount( $this->view->filters );
-		$this->view->total = ($results && is_array($results)) ? count($results) : 0;
+		$this->view->total = $rr->getCount( $this->view->filters );
 
 		// Run query with limit
 		$this->view->results = $rr->getRecords( $this->view->filters );

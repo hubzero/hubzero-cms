@@ -46,46 +46,37 @@ class Categories extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
-
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.categories.limit',
 			'limit',
-			$config->getValue('config.list_limit'),
+			Config::get('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
+		$this->view->filters['start']    = Request::getState(
 			$this->_option . '.categories.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['search']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['search']     = trim(Request::getState(
 			$this->_option . '.categories.search',
 			'search',
 			''
 		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort']     = trim(Request::getState(
 			$this->_option . '.categories.sort',
 			'filter_order',
 			'id'
 		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = trim(Request::getState(
 			$this->_option . '.categories.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
 
 		$this->view->filters['state'] = 'all';
-
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-		. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
 		$rt = new \Components\Publications\Tables\Category($this->database);

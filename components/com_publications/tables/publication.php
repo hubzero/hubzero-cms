@@ -432,7 +432,7 @@ class Publication extends \JTable
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : $query;
 
 		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();
+		return count($this->_db->loadObjectList());
 	}
 
 	/**

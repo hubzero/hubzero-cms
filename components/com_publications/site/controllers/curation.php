@@ -129,8 +129,7 @@ class Curation extends SiteController
 		$this->view->rows = $objP->getRecords($filters);
 
 		// Get total count
-		$results = $objP->getCount($filters);
-		$this->view->total = ($results && is_array($results)) ? count($results) : 0;
+		$this->view->total = $objP->getCount($filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');

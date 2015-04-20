@@ -106,6 +106,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<td colspan="10"><?php 
 				jimport('joomla.html.pagination');
+
 				$pageNav = new JPagination(
 					$this->total,
 					$this->filters['start'],

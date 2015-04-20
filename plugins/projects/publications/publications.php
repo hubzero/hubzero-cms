@@ -131,7 +131,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$filters['ignore_access']   = 1;
 			$filters['dev']   	 		= 1;
 
-			$counts['publications'] = count($objP->getCount($filters));
+			$counts['publications'] = $objP->getCount($filters);
 			return $counts;
 		}
 	}
@@ -1647,8 +1647,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->rows = $objP->getRecords($filters);
 
 		// Get total count
-		$results = $objP->getCount($filters);
-		$view->total = ($results && is_array($results)) ? count($results) : 0;
+		$view->total = $objP->getCount($filters);
 
 		// Areas required for publication
 		$view->required = array('content', 'description', 'license', 'authors');
@@ -6368,14 +6367,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->mypubs = $objP->getRecords( $view->filters );
 
 			// Get pub count
-			$count = $objP->getCount( $view->filters );
-			$view->mypubs_count = ($count && is_array($count)) ? count($count) : 0;
+			$view->mypubs_count = $objP->getCount( $view->filters );
 
 			// Get other pubs that user can manage
 			$view->filters['coauthor'] = 1;
 			$view->coauthored = $objP->getRecords( $view->filters );
-			$coauthored = $objP->getCount( $view->filters );
-			$view->coauthored_count = ($coauthored && is_array($coauthored)) ? count($coauthored) : 0;
+			$view->coauthored_count = $objP->getCount( $view->filters );
 		}
 
 		return $view->loadTemplate();
@@ -6848,8 +6845,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						: \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
 
 		// Get total count
-		$results = $objP->getCount($filters);
-		$view->total = ($results && is_array($results)) ? count($results) : 0;
+		$view->total = $objP->getCount($filters);
 
 		$view->project 	= $model;
 		$view->option 	= $this->_option;
