@@ -56,18 +56,18 @@ class Tags extends Base
 	protected	$_manifest 	= NULL;
 
 	/**
-	* Step number
+	* Numeric block ID
 	*
 	* @var		integer
 	*/
-	protected	$_sequence = 0;
+	protected	$_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
+	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
@@ -75,8 +75,8 @@ class Tags extends Base
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
 
-		// Register sequence
-		$this->_sequence	= $sequence;
+		// Register blockId
+		$this->_blockId	= $blockId;
 
 		if ($viewname == 'curator')
 		{
@@ -107,7 +107,7 @@ class Tags extends Base
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
-		$view->step			= $sequence;
+		$view->step			= $blockId;
 		$view->showControls	= 2;
 
 		if ($this->getError())
@@ -138,7 +138,7 @@ class Tags extends Base
 
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
-		$view->step		= $this->_sequence;
+		$view->step		= $this->_blockId;
 
 		// Get tags
 		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
@@ -168,7 +168,7 @@ class Tags extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $sequence = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)

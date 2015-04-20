@@ -32,7 +32,7 @@ $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0
 $elName   		= 'element' . $this->elementId;
 
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->sequence, $this->active, $this->elementId);
+$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
 $last   = ($this->order == $this->total) ? 1 : 0;
 $max 	= $this->manifest->params->max;
 $prov 	= $this->pub->_project->isProvisioned() ? 1 : 0;
@@ -50,8 +50,8 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 }
 
 $section  = $this->master->block;
-$sequence = $this->master->sequence;
-$props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
+$blockId = $this->master->blockId;
+$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
 
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
@@ -59,7 +59,7 @@ $route = $prov
 $this->editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
 
 // Get attachment model
 $modelAttach = new \Components\Publications\Models\Attachments($this->database);

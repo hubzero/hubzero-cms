@@ -45,7 +45,7 @@ foreach ($this->blocks as $b)
 {
 	$masterBlocks[$b->block] = $b;
 }
-foreach ($blocks as $sequence => $block)
+foreach ($blocks as $blockId => $block)
 {
 	$blockSelection['active'][] = $block->name;
 }
@@ -82,8 +82,8 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-order"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_INSERT_BLOCK_BEFORE'); ?>:</label>
 					<select name="before" id="field-order">
-					<?php foreach ($blocks as $sequence => $block) { ?>
-						<option value="<?php echo $sequence; ?>"><?php echo $block->name; ?></option>
+					<?php foreach ($blocks as $blockId => $block) { ?>
+						<option value="<?php echo $blockId; ?>"><?php echo $block->name; ?></option>
 					<?php  } ?>
 					</select>
 				</div>

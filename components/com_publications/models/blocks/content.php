@@ -54,18 +54,18 @@ class Content extends Base
 	protected	$_manifest 		= NULL;
 
 	/**
-	* Step number
+	* Numeric block ID
 	*
 	* @var		integer
 	*/
-	protected	$_sequence = 0;
+	protected	$_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
+	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
@@ -73,8 +73,8 @@ class Content extends Base
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
 
-		// Register sequence
-		$this->_sequence	= $sequence;
+		// Register blockId
+		$this->_blockId	= $blockId;
 
 		// Get extra params
 		$params 	 = $this->_manifest->params;
@@ -112,7 +112,7 @@ class Content extends Base
 						. $pub->_project->get('alias') . '&active=publications';
 
 		$pub->url = Route::url($route . '&pid=' . $pub->id . '&section='
-			. $this->_name . '&step=' . $sequence . '&move=continue');
+			. $this->_name . '&step=' . $blockId . '&move=continue');
 
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
@@ -126,7 +126,7 @@ class Content extends Base
 		$status = self::getStatus($pub);
 
 		// Get block status review
-		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
+		$status->review = $pub->_curationModel->_progress->blocks->$blockId->review;
 
 		// Get block element model
 		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
@@ -134,7 +134,7 @@ class Content extends Base
 		// Properties object
 		$master 			= new stdClass;
 		$master->block 		= $this->_name;
-		$master->sequence 	= $this->_sequence;
+		$master->blockId 	= $this->_blockId;
 		$master->params		= $this->_manifest->params;
 		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
 
@@ -142,7 +142,7 @@ class Content extends Base
 		$view->content 		= self::buildContent( $pub, $viewname, $status, $master );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
-		$view->step			= $sequence;
+		$view->step			= $blockId;
 		$view->showControls	= isset($master->params->collapse_elements) && $master->params->collapse_elements == 1 ? 3 : 1;
 		$view->status		= $status;
 		$view->master		= $master;
@@ -159,7 +159,7 @@ class Content extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $sequence = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
@@ -197,7 +197,7 @@ class Content extends Base
 
 				if ($this->get('_update'))
 				{
-					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $sequence);
+					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $blockId);
 
 					// Record update time
 					$data 				= new stdClass;
@@ -211,7 +211,7 @@ class Content extends Base
 						$data->review_status = 0;
 						$data->update = '';
 					}
-					$pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $sequence);
+					$pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $blockId);
 				}
 			}
 		}
@@ -411,7 +411,7 @@ class Content extends Base
 	 *
 	 * @return  void
 	 */
-	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
+	public function saveItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
 		$aid = $aid ? $aid : Request::getInt( 'aid', 0 );
 
@@ -455,7 +455,7 @@ class Content extends Base
 	 *
 	 * @return  void
 	 */
-	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
+	public function deleteItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
 		$aid = $aid ? $aid : Request::getInt( 'aid', 0 );
 

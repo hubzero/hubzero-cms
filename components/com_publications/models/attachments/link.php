@@ -603,7 +603,7 @@ class Link extends Base
 		$data->ordering = $i;
 		$data->editUrl  = $view->editUrl;
 		$data->id		= $att->id;
-		$data->props	= $view->master->block . '-' . $view->master->sequence . '-' . $view->elementId;
+		$data->props	= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
 		$data->viewer	= $view->viewer;
 		$data->version	= $view->pub->version_number;
 		return $data;

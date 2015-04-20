@@ -86,7 +86,7 @@ class Blocks extends Object
 	 *
 	 * @return object
 	 */
-	public function getStatus($name, $pub = NULL, $manifest = NULL, $sequence = 0, $elementId = NULL)
+	public function getStatus($name, $pub = NULL, $manifest = NULL, $blockId = 0, $elementId = NULL)
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -110,7 +110,7 @@ class Blocks extends Object
 	 *
 	 * @return  object
 	 */
-	public function loadBlock( $name, $sequence = 0, $new = false )
+	public function loadBlock( $name, $blockId = 0, $new = false )
 	{
 		$signature = md5($name);
 
@@ -269,7 +269,7 @@ class Blocks extends Object
 	 * @param   string  $view   Name of rendering view (edit / curation / admin / review)
 	 * @return  string HTML
 	 */
-	public function renderBlock( $name, $viewname = 'edit', $manifest = NULL, $pub = NULL, $sequence = 0 )
+	public function renderBlock( $name, $viewname = 'edit', $manifest = NULL, $pub = NULL, $blockId = 0 )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -288,7 +288,7 @@ class Blocks extends Object
 						? 'freeze' : $viewname;
 
 			// Render
-			$html = $block->display($pub, $manifest, $viewname, $sequence);
+			$html = $block->display($pub, $manifest, $viewname, $blockId);
 		}
 
 		return $html;
@@ -316,7 +316,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function saveBlock( $name, $manifest, $sequence, $pub, $actor = 0, $elementId = 0 )
+	public function saveBlock( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -328,7 +328,7 @@ class Blocks extends Object
 		}
 		else
 		{
-			$block->save($manifest, $sequence, $pub, $actor, $elementId);
+			$block->save($manifest, $blockId, $pub, $actor, $elementId);
 
 			// Pick up error messages
 			if ($block->getError())
@@ -352,7 +352,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function reorder( $name, $manifest, $sequence, $pub, $actor = 0, $elementId = 0 )
+	public function reorder( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -364,7 +364,7 @@ class Blocks extends Object
 		}
 		else
 		{
-			$block->reorder($manifest, $sequence, $pub, $actor, $elementId);
+			$block->reorder($manifest, $blockId, $pub, $actor, $elementId);
 
 			// Pick up error messages
 			if ($block->getError())
@@ -388,7 +388,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function saveItem( $name, $manifest, $sequence, $pub, $actor = 0, $elementId = 0 )
+	public function saveItem( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -400,7 +400,7 @@ class Blocks extends Object
 		}
 		else
 		{
-			$block->saveItem($manifest, $sequence, $pub, $actor, $elementId);
+			$block->saveItem($manifest, $blockId, $pub, $actor, $elementId);
 
 			// Pick up error messages
 			if ($block->getError())
@@ -424,7 +424,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function deleteItem( $name, $manifest, $sequence, $pub, $actor = 0, $elementId = 0 )
+	public function deleteItem( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -436,7 +436,7 @@ class Blocks extends Object
 		}
 		else
 		{
-			$block->deleteItem($manifest, $sequence, $pub, $actor, $elementId);
+			$block->deleteItem($manifest, $blockId, $pub, $actor, $elementId);
 
 			// Pick up error messages
 			if ($block->getError())
@@ -460,7 +460,7 @@ class Blocks extends Object
 	 * @param   string  $name   Name of block to save
 	 * @return  string HTML
 	 */
-	public function addItem( $name, $manifest, $sequence, $pub, $actor = 0, $elementId = 0 )
+	public function addItem( $name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0 )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -472,7 +472,7 @@ class Blocks extends Object
 		}
 		else
 		{
-			$block->addItem($manifest, $sequence, $pub, $actor, $elementId);
+			$block->addItem($manifest, $blockId, $pub, $actor, $elementId);
 
 			// Pick up error messages
 			if ($block->getError())

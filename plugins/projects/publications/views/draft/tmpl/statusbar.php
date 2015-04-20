@@ -68,7 +68,7 @@ $i = 1;
 	}
 ?>
 	<ul id="status-bar" <?php if ($move) { echo 'class="moving"'; } ?>>
-		<?php foreach ($blocks as $sequence => $block ) {
+		<?php foreach ($blocks as $blockId => $block ) {
 
 			$blockname = $block->name;
 			$status    = $block->review && $block->review->status != 2
@@ -88,25 +88,25 @@ $i = 1;
 				$class = ($status > 0 || $this->pub->state == 1) ? 'c_passed' : 'c_failed';
 			}
 
-			$isComing = $this->pub->_curationModel->isBlockComing($blockname, $sequence, $activenum);
+			$isComing = $this->pub->_curationModel->isBlockComing($blockname, $blockId, $activenum);
 			if (($move && $isComing) && $this->active)
 			{
 				$class = 'c_pending';
 			}
 
-			if ($sequence == $activenum)
+			if ($blockId == $activenum)
 			{
 				$class = '';
 			}
 			$i++;
 
 			// Hide review block until in review
-			if ($blockname == 'review' && ($sequence != $activenum))
+			if ($blockname == 'review' && ($blockId != $activenum))
 			{
 				continue;
 			}
 		?>
-		<li<?php if ($sequence == $activenum) { echo ' class="active"'; } ?>><a href="<?php echo Route::url( $pubRoute . '&section=' . $blockname . '&step=' . $sequence . '&move=continue&version=' . $version); ?>" <?php echo $class ? 'class="' . $class . '"' : '' ; ?>><?php echo $block->manifest->label; ?></a></li>
+		<li<?php if ($blockId == $activenum) { echo ' class="active"'; } ?>><a href="<?php echo Route::url( $pubRoute . '&section=' . $blockname . '&step=' . $blockId . '&move=continue&version=' . $version); ?>" <?php echo $class ? 'class="' . $class . '"' : '' ; ?>><?php echo $block->manifest->label; ?></a></li>
 
 	<?php } ?>
 	</ul>

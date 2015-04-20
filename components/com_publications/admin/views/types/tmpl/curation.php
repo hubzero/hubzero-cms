@@ -166,16 +166,16 @@ function submitbutton(pressbutton)
 	<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span> <a class="editthis" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addblock&id=' . $this->row->id ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?>]</a></legend>
-			<?php foreach ($blocks as $sequence => $block) {
+			<?php foreach ($blocks as $blockId => $block) {
 				$blockMaster = $masterBlocks[$block->name];
 				?>
 			<fieldset class="adminform">
-				<legend><span class="block-sequence"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $sequence; ?> - <?php echo $block->name; ?></span></legend>
+				<legend><span class="block-id"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $blockId; ?> - <?php echo $block->name; ?></span></legend>
 				<div class="input-wrap">
 					<div class="col width-20 fltlft">
 						<div class="input-wrap">
-							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
-							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0 && !in_array($block->name, $blockSelection['active'])) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0 && !in_array($block->name, $blockSelection['active'])) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 						</div>
 						<div class="input-wrap tweakblock">
 							<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editblockorder&id=' . $this->row->id ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a></label>
@@ -184,28 +184,28 @@ function submitbutton(pressbutton)
 					<div class="col width-40 fltlft blockprop">
 						<h5><?php echo Lang::txt('COM_PUBLICATIONS_BLOCK_PROPERTIES'); ?></h5>
 						<div class="input-wrap">
-							<label for="field-block-<?php echo $sequence; ?>-label"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_LABEL'); ?>:</label>
-							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][label]" id="field-block-<?php echo $sequence; ?>-label" maxlength="255" value="<?php echo $block->label;  ?>" />
+							<label for="field-block-<?php echo $blockId; ?>-label"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_LABEL'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $blockId; ?>][label]" id="field-block-<?php echo $blockId; ?>-label" maxlength="255" value="<?php echo $block->label;  ?>" />
 						</div>
 						<div class="input-wrap">
-							<label for="field-block-<?php echo $sequence; ?>-title"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>:</label>
-							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][title]" id="field-block-<?php echo $sequence; ?>-title" maxlength="255" value="<?php echo $block->title;  ?>" />
+							<label for="field-block-<?php echo $blockId; ?>-title"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $blockId; ?>][title]" id="field-block-<?php echo $blockId; ?>-title" maxlength="255" value="<?php echo $block->title;  ?>" />
 						</div>
 						<div class="input-wrap">
-							<label for="field-block-<?php echo $sequence; ?>-draftHeading"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DRAFT_HEADING'); ?>:</label>
-							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][draftHeading]" id="field-block-<?php echo $sequence; ?>-draftHeading" maxlength="255" value="<?php echo $block->draftHeading;  ?>" />
+							<label for="field-block-<?php echo $blockId; ?>-draftHeading"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DRAFT_HEADING'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $blockId; ?>][draftHeading]" id="field-block-<?php echo $blockId; ?>-draftHeading" maxlength="255" value="<?php echo $block->draftHeading;  ?>" />
 						</div>
 						<div class="input-wrap">
-							<label for="field-block-<?php echo $sequence; ?>-draftTagline"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DRAFT_TAGLINE'); ?>:</label>
-							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][draftTagline]" id="field-block-<?php echo $sequence; ?>-draftTagline" maxlength="255" value="<?php echo $block->draftTagline;  ?>" />
+							<label for="field-block-<?php echo $blockId; ?>-draftTagline"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DRAFT_TAGLINE'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $blockId; ?>][draftTagline]" id="field-block-<?php echo $blockId; ?>-draftTagline" maxlength="255" value="<?php echo $block->draftTagline;  ?>" />
 						</div>
 						<div class="input-wrap">
-							<label for="field-block-<?php echo $sequence; ?>-about"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ABOUT'); ?>:</label>
-							<textarea name="curation[blocks][<?php echo $sequence; ?>][about]" id="field-block-<?php echo $sequence; ?>-about"><?php echo $block->about;  ?></textarea>
+							<label for="field-block-<?php echo $blockId; ?>-about"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ABOUT'); ?>:</label>
+							<textarea name="curation[blocks][<?php echo $blockId; ?>][about]" id="field-block-<?php echo $blockId; ?>-about"><?php echo $block->about;  ?></textarea>
 						</div>
 						<div class="input-wrap">
-							<label for="field-block-<?php echo $sequence; ?>-adminTips"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ADMIN_TIPS'); ?>:</label>
-							<textarea name="curation[blocks][<?php echo $sequence; ?>][adminTips]" id="field-block-<?php echo $sequence; ?>-adminTips"><?php echo $block->adminTips;  ?></textarea>
+							<label for="field-block-<?php echo $blockId; ?>-adminTips"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ADMIN_TIPS'); ?>:</label>
+							<textarea name="curation[blocks][<?php echo $blockId; ?>][adminTips]" id="field-block-<?php echo $blockId; ?>-adminTips"><?php echo $block->adminTips;  ?></textarea>
 						</div>
 					</div>
 					<div class="col width-40 fltlft blockparams">
@@ -217,22 +217,22 @@ function submitbutton(pressbutton)
 								if (is_array($paramvalue)) {
 								$val = implode(',', $paramvalue);
 							?>
-							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $val;  ?>" />
+							<input type="text" name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $val;  ?>" />
 							<?php } elseif (is_numeric($paramvalue)) { ?>
-							<select name="curation[blocks][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]">
+							<select name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]">
 								<option value="0" <?php echo $paramvalue == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
 								<option value="1" <?php echo $paramvalue == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
 							</select>
 							<?php } else { ?>
-								<input type="text" name="curation[blocks][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" />
+								<input type="text" name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" />
 							<?php } ?>
 						</div>
 						<?php } ?>
 						<?php if ($block->elements) { ?>
-						<h5><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?> <span class="editthis"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editelements&id=' . $this->row->id . '&bid=' . $sequence ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a></span></h5>
+						<h5><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?> <span class="editthis"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editelements&id=' . $this->row->id . '&bid=' . $blockId ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a></span></h5>
 						<?php foreach ($block->elements as $elementId => $element) { ?>
 							<div class="input-wrap">
-								<span class="block-sequence"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span>
+								<span class="block-id"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span>
 								<span class="el-details"><?php echo $element->label; ?></span>
 							</div>
 						<?php } ?>

@@ -54,11 +54,11 @@ class Notes extends Base
 	protected	$_manifest 			= NULL;
 
 	/**
-	* Step number
+	* Numeric block ID
 	*
 	* @var		integer
 	*/
-	protected	$_sequence 			= 0;
+	protected	$_blockId 			= 0;
 
 	/**
 	 * Get default manifest for the block

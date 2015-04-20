@@ -58,18 +58,18 @@ class Citations extends Base
 	protected	$_manifest 	= NULL;
 
 	/**
-	* Step number
+	* Numeric block ID
 	*
 	* @var		integer
 	*/
-	protected	$_sequence = 0;
+	protected	$_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
+	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $blockId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
@@ -77,8 +77,8 @@ class Citations extends Base
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
 
-		// Register sequence
-		$this->_sequence	= $sequence;
+		// Register blockId
+		$this->_blockId	= $blockId;
 
 		if ($viewname == 'curator')
 		{
@@ -109,7 +109,7 @@ class Citations extends Base
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
-		$view->step			= $sequence;
+		$view->step			= $blockId;
 		$view->showControls	= 2;
 
 		if ($this->getError())
@@ -155,7 +155,7 @@ class Citations extends Base
 
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
-		$view->step		= $this->_sequence;
+		$view->step		= $this->_blockId;
 
 		if ($this->getError())
 		{
@@ -169,7 +169,7 @@ class Citations extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $sequence = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
@@ -253,7 +253,7 @@ class Citations extends Base
 	 *
 	 * @return  void
 	 */
-	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	public function addItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
 		$cite = Request::getVar('cite', array(), 'post', 'none', 2);
 
@@ -309,9 +309,9 @@ class Citations extends Base
 	 *
 	 * @return  void
 	 */
-	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	public function saveItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$this->addItem($manifest, $sequence, $pub, $actor, $elementId, $cid);
+		$this->addItem($manifest, $blockId, $pub, $actor, $elementId, $cid);
 		return;
 	}
 
@@ -320,7 +320,7 @@ class Citations extends Base
 	 *
 	 * @return  void
 	 */
-	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	public function deleteItem ($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
 		$cid = $cid ? $cid : Request::getInt( 'cid', 0 );
 

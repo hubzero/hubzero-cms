@@ -67,10 +67,10 @@ function submitbutton(pressbutton)
 			<p class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ORDER_HINT'); ?></p>
 			<div class="input-wrap">
 				<ul class="orderlist" id="blockorder">
-					<?php foreach ($blocks as $sequence => $block) {
+					<?php foreach ($blocks as $blockId => $block) {
 						$blockMaster = $masterBlocks[$block->name];
 						?>
-						<li id="s-<?php echo $sequence; ?>" class="pick<?php if ($block->name != 'review') { echo ' reorder'; } ?>"><?php echo $block->name; ?></li>
+						<li id="s-<?php echo $blockId; ?>" class="pick<?php if ($block->name != 'review') { echo ' reorder'; } ?>"><?php echo $block->name; ?></li>
 					<?php } ?>
 				</ul>
 			</div>

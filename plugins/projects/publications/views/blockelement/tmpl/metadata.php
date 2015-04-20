@@ -60,7 +60,7 @@ $editorMinimal 	= isset($this->manifest->params->editorMinimal)
 $editorImages 	= isset($this->manifest->params->editorImages)
 				? $this->manifest->params->editorImages : 0;
 
-$props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
+$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
 
 // Metadata field?
 if ($field == 'metadata')
@@ -73,11 +73,11 @@ $class = $value ? ' be-complete' : '';
 
 // Determine if current element is active/ not yet filled/ last in order
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->sequence, $this->active, $this->elementId);
+$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
 $last   = ($this->order == $this->total) ? 1 : 0;
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
 
 $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
 

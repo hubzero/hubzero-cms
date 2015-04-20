@@ -1479,7 +1479,7 @@ class File extends Base
 		$data->ordering 	= $i;
 		$data->editUrl  	= $view->editUrl;
 		$data->id			= $att->id;
-		$data->props		= $view->master->block . '-' . $view->master->sequence . '-' . $view->elementId;
+		$data->props		= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
 		;
 		$data->pid			= $view->pub->id;
 		$data->vid			= $view->pub->version_id;

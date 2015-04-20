@@ -698,16 +698,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version 	= Request::getVar( 'version', 'default' );
 		$ajax 		= Request::getInt('ajax', 0);
 		$block  	= Request::getVar( 'section', '' );
-		$sequence  	= Request::getInt( 'step', 0 );
+		$blockId  	= Request::getInt( 'step', 0 );
 		$element  	= Request::getInt( 'element', 0 );
 		$props  	= Request::getVar( 'p', '' );
 		$parts   	= explode('-', $props);
 
 		// Parse props for curation
-		if (!$block || !$sequence)
+		if (!$block || !$blockId)
 		{
 			$block   	 = (isset($parts[0])) ? $parts[0] : 'content';
-			$sequence    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+			$blockId    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 			$element 	 = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 		}
 
@@ -737,12 +737,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($element && $block)
 		{
 			// Get block element status
-			$status = $pub->_curationModel->getElementStatus($block, $element, $pub, $sequence);
+			$status = $pub->_curationModel->getElementStatus($block, $element, $pub, $blockId);
 		}
 		elseif ($block)
 		{
 			// Getting block status
-			$status = $pub->_curationModel->getStatus($block, $pub, $sequence);
+			$status = $pub->_curationModel->getStatus($block, $pub, $blockId);
 		}
 
 		return json_encode($status);
@@ -759,7 +759,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$version 	= Request::getVar( 'version', '' );
 		$block  	= Request::getVar( 'section', '' );
-		$sequence  	= Request::getInt( 'step', 0 );
+		$blockId  	= Request::getInt( 'step', 0 );
 		$element  	= Request::getInt( 'element', 0 );
 		$next  		= Request::getInt( 'next', 0 );
 		$json  		= Request::getInt( 'json', 0 );
@@ -774,10 +774,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Parse props for curation
 		if ($this->_task == 'saveitem'
 			|| $this->_task == 'deleteitem'
-			|| (!$block || !$sequence))
+			|| (!$block || !$blockId))
 		{
 			$block   	 = (isset($parts[0])) ? $parts[0] : 'content';
-			$sequence    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+			$blockId    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 			$element 	 = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 		}
 
@@ -829,7 +829,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 		// Make sure block exists, else redirect to status
-		if (!$pub->_curationModel->setBlock( $block, $sequence ))
+		if (!$pub->_curationModel->setBlock( $block, $blockId ))
 		{
 			$block = 'status';
 		}
@@ -910,23 +910,23 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Get sequence
-		$sequence = $pub->_curationModel->_blockorder;
+		// Get blockId
+		$blockId = $pub->_curationModel->_blockorder;
 		$total	  = $pub->_curationModel->_blockcount;
 
 		// Get next element
 		if ($next)
 		{
-			$next = $pub->_curationModel->getNextElement($block, $sequence, $element);
+			$next = $pub->_curationModel->getNextElement($block, $blockId, $element);
 		}
 
 		// What's next?
-		$nextnum 	 = $pub->_curationModel->getNextBlock($block, $sequence);
+		$nextnum 	 = $pub->_curationModel->getNextBlock($block, $blockId);
 		$nextsection = isset($pub->_curationModel->_blocks->$nextnum)
 					 ? $pub->_curationModel->_blocks->$nextnum->name : 'status';
 
 		// Get previous section
-		$prevnum 	 = $pub->_curationModel->getPreviousBlock($block, $sequence);
+		$prevnum 	 = $pub->_curationModel->getPreviousBlock($block, $blockId);
 		$prevsection = isset($pub->_curationModel->_blocks->$prevnum)
 					 ? $pub->_curationModel->_blocks->$prevnum->name : 'status';
 
@@ -941,7 +941,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'apply' || !$move)
 		{
 			// Stay where you were
-			$route .= a . 'section=' . $block . '&step=' . $sequence;
+			$route .= a . 'section=' . $block . '&step=' . $blockId;
 
 			if ($next)
 			{
@@ -1312,7 +1312,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$version 	= Request::getVar( 'version', '' );
 		$block  	= Request::getVar( 'section', 'status' );
-		$sequence  	= Request::getInt( 'step', 0 );
+		$blockId  	= Request::getInt( 'step', 0 );
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -1337,12 +1337,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			// Get curation model
 			$curationModel = new \Components\Publications\Models\Curation($mType->curation);
-			$sequence 	   = $curationModel->getFirstBlock();
-			$firstBlock    = $curationModel->_blocks->$sequence->name;
+			$blockId 	   = $curationModel->getFirstBlock();
+			$firstBlock    = $curationModel->_blocks->$blockId->name;
 
 			// Redirect to first block
 			$this->_referer = Route::url($route . '&pid=' . $pub->id )
-				. '?move=continue&step=' . $sequence . '&section=' . $firstBlock;
+				. '?move=continue&step=' . $blockId . '&section=' . $firstBlock;
 			return;
 		}
 		else
@@ -1415,8 +1415,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'continue')
 		{
 			$blocks 	= $pub->_curationModel->_progress->blocks;
-			$sequence	= $pub->_curationModel->_progress->firstBlock;
-			$block		= $sequence ? $blocks->$sequence->name : 'status';
+			$blockId	= $pub->_curationModel->_progress->firstBlock;
+			$block		= $blockId ? $blocks->$blockId->name : 'status';
 		}
 
 		// Go to review screen
@@ -1424,7 +1424,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			|| ($this->_task == 'continue' && $pub->_curationModel->_progress->complete == 1)
 		)
 		{
-			$sequence	= $pub->_curationModel->_progress->lastBlock;
+			$blockId	= $pub->_curationModel->_progress->lastBlock;
 			$block		= 'review';
 		}
 
@@ -1432,11 +1432,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($pub->state == 5 || $pub->state == 0 || ($block == 'review' && $pub->state == 1))
 		{
 			$block = 'status';
-			$sequence = 0;
+			$blockId = 0;
 		}
 
 		// Make sure block exists, else redirect to status
-		if (!$pub->_curationModel->setBlock( $block, $sequence ))
+		if (!$pub->_curationModel->setBlock( $block, $blockId ))
 		{
 			$block = 'status';
 		}
@@ -3676,7 +3676,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$notify 	= 1;
 
 		$block  	= Request::getVar( 'section', '' );
-		$sequence  	= Request::getInt( 'step', 0 );
+		$blockId  	= Request::getInt( 'step', 0 );
 		$element  	= Request::getInt( 'element', 0 );
 
 		// Load review step

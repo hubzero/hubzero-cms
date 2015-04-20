@@ -92,7 +92,7 @@ $bundleUrl = Route::url('index.php?option=com_publications&task=serve&id='
 			. $this->pub->id . '&v=' . $this->pub->version_number )
 			. '?el=' . $this->elementId . '&amp;download=1';
 
-$props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
+$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
 
 // Build url
 $route = $this->pub->_project->isProvisioned()
@@ -107,7 +107,7 @@ if ($this->name == 'curator')
 {
 	$curatorStatus = $this->pub->_curationModel->getCurationStatus(
 		$this->pub,
-		$this->master->sequence,
+		$this->master->blockId,
 		$this->elementId,
 		'curator'
 	);

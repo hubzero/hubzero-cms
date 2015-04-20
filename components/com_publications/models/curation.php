@@ -70,11 +70,6 @@ class Curation extends Object
 	var $_db      		= NULL;
 
 	/**
-	* @var    object  Project
-	*/
-	var $_project      	= NULL;
-
-	/**
 	* @var    object  Publication
 	*/
 	var $_pub 			= NULL;
@@ -120,7 +115,7 @@ class Curation extends Object
 	var $_blockname 	= NULL;
 
 	/**
-	* @var    string Current block sequence
+	* @var    string Current block blockId
 	*/
 	var $_blockorder 	= NULL;
 
@@ -215,53 +210,53 @@ class Curation extends Object
 	 * Get active block
 	 *
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  boolean
 	 */
-	public function setBlock($name = NULL, $sequence = 0)
+	public function setBlock($name = NULL, $blockId = 0)
 	{
-		if ($sequence && (!isset($this->_blocks->$sequence) || $this->_blocks->$sequence->name != $name))
+		if ($blockId && (!isset($this->_blocks->$blockId) || $this->_blocks->$blockId->name != $name))
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			return false;
 		}
 
-		$this->_block 		= $this->_blocks->$sequence;
-		$this->_blockname 	= $this->_blocks->$sequence->name;
-		$this->_blockorder 	= $sequence;
+		$this->_block 		= $this->_blocks->$blockId;
+		$this->_blockname 	= $this->_blocks->$blockId->name;
+		$this->_blockorder 	= $blockId;
 		return true;
 	}
 
 	/**
-	 * Get block sequence
+	 * Get block blockId
 	 *
 	 * @param   string  $name	Block name
 	 * @return  integer
 	 */
-	public function getBlockSequence($name = NULL)
+	public function getBlockId($name = NULL)
 	{
-		$sequence = NULL;
+		$blockId = NULL;
 		$i = 1;
 		foreach ($this->_blocks as $block)
 		{
 			if ($block->name == $name)
 			{
-				$sequence = $i;
+				$blockId = $i;
 				break;
 			}
 			$i++;
 		}
 
-		return $sequence;
+		return $blockId;
 	}
 
 	/**
@@ -303,7 +298,7 @@ class Curation extends Object
 		$blocksModel = new Blocks($this->_db);
 
 		// Find all blocks of the same parent
-		foreach ($this->_blocks as $sequence => $block)
+		foreach ($this->_blocks as $blockId => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
@@ -350,7 +345,7 @@ class Curation extends Object
 		$elements = array();
 
 		// Find all blocks of the same parent
-		foreach ($this->_blocks as $sequence => $block)
+		foreach ($this->_blocks as $blockId => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
@@ -367,7 +362,7 @@ class Curation extends Object
 					{
 						$output 			= new stdClass;
 						$output->block 		= $block->params;
-						$output->sequence 	= $sequence;
+						$output->blockId 	= $blockId;
 						$output->id 		= $elId;
 						$output->manifest 	= $element;
 						$elements[] = $output;
@@ -402,7 +397,7 @@ class Curation extends Object
 		$blocksModel = new Blocks($this->_db);
 
 		// Find all blocks of the same parent
-		foreach ($this->_blocks as $sequence => $block)
+		foreach ($this->_blocks as $blockId => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
@@ -415,7 +410,7 @@ class Curation extends Object
 					{
 						$output = new stdClass;
 						$output->block 		= $block;
-						$output->sequence 	= $sequence;
+						$output->blockId 	= $blockId;
 						$output->element 	= $element;
 						return $output;
 					}
@@ -431,36 +426,36 @@ class Curation extends Object
 	 *
 	 * @param   string  $name		Who is viewing block content?
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  string HTML
 	 */
-	public function parseBlock( $viewer = 'edit', $name = NULL, $sequence = 0 )
+	public function parseBlock( $viewer = 'edit', $name = NULL, $blockId = 0 )
 	{
-		$sequence = $sequence ? $sequence : $this->_blockorder;
+		$blockId = $blockId ? $blockId : $this->_blockorder;
 
 		// Set the block
 		if ($name)
 		{
-			if (!$sequence)
+			if (!$blockId)
 			{
-				$sequence = $this->getBlockSequence($name);
+				$blockId = $this->getBlockId($name);
 			}
 
-			if (!$sequence)
+			if (!$blockId)
 			{
 				$this->setError( Lang::txt('Error loading block') );
 				return false;
 			}
 
-			$this->_block 		= $this->_blocks->$sequence;
-			$this->_blockname 	= $this->_blocks->$sequence->name;
-			$this->_blockorder 	= $sequence;
+			$this->_block 		= $this->_blocks->$blockId;
+			$this->_blockname 	= $this->_blocks->$blockId->name;
+			$this->_blockorder 	= $blockId;
 		}
 
 		// Get blocks model
 		$blocksModel = new Blocks($this->_db);
 
-		return $blocksModel->renderBlock($this->_blockname, $viewer, $this->_block, $this->_pub, $sequence);
+		return $blocksModel->renderBlock($this->_blockname, $viewer, $this->_block, $this->_pub, $blockId);
 	}
 
 	/**
@@ -823,7 +818,7 @@ class Curation extends Object
 		}
 
 		// Check status for each
-		foreach ($this->_blocks as $sequence => $block)
+		foreach ($this->_blocks as $blockId => $block)
 		{
 			if ($block->name == $name)
 			{
@@ -856,24 +851,24 @@ class Curation extends Object
 		$k = 0;
 
 		// Check status for each
-		foreach ($this->_blocks as $sequence => $block)
+		foreach ($this->_blocks as $blockId => $block)
 		{
 			// Skip inactive blocks
 			if (isset($block->active) && $block->active == 0)
 			{
 				continue;
 			}
-			$autoStatus 		= self::getStatus($block->name, $this->_pub, $sequence);
-			$reviewStatus		= self::getReviewStatus($block->name, $this->_pub, $sequence);
+			$autoStatus 		= self::getStatus($block->name, $this->_pub, $blockId);
+			$reviewStatus		= self::getReviewStatus($block->name, $this->_pub, $blockId);
 
-			$result->blocks->$sequence 				= new stdClass();
-			$result->blocks->$sequence->name 		= $block->name;
-			$result->blocks->$sequence->manifest 	= $block;
-			$result->blocks->$sequence->firstElement= self::getFirstElement($block->name, $this->_pub, $sequence);
+			$result->blocks->$blockId 				= new stdClass();
+			$result->blocks->$blockId->name 		= $block->name;
+			$result->blocks->$blockId->manifest 	= $block;
+			$result->blocks->$blockId->firstElement= self::getFirstElement($block->name, $this->_pub, $blockId);
 
 			if ($autoStatus->status > 0)
 			{
-				$result->lastBlock = $sequence;
+				$result->lastBlock = $blockId;
 			}
 
 			$k++;
@@ -903,18 +898,18 @@ class Curation extends Object
 			{
 				if ($reviewStatus->status == 0 && !$reviewStatus->lastupdate)
 				{
-					$result->firstBlock = $sequence;
+					$result->firstBlock = $blockId;
 				}
 				elseif ($reviewStatus->status == 2 && !$reviewStatus->lastupdate && $autoStatus->status == 0)
 				{
-					$result->firstBlock = $sequence;
+					$result->firstBlock = $blockId;
 				}
 			}
 
-			$result->blocks->$sequence->status 		= $autoStatus;
-			$result->blocks->$sequence->review      = $reviewStatus;
+			$result->blocks->$blockId->status 		= $autoStatus;
+			$result->blocks->$blockId->review      = $reviewStatus;
 		}
-		$result->firstBlock = $result->firstBlock ? $result->firstBlock : $sequence;
+		$result->firstBlock = $result->firstBlock ? $result->firstBlock : $blockId;
 
 		// Are all sections complete for submission?
 		$result->complete  = $i == $k ? 1 : 0;
@@ -935,7 +930,7 @@ class Curation extends Object
 		// Get blocks model
 		$blocksModel = new Blocks($this->_db);
 
-		foreach ($pub->_curationModel->_progress->blocks as $sequence => $block)
+		foreach ($pub->_curationModel->_progress->blocks as $blockId => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
@@ -959,20 +954,20 @@ class Curation extends Object
 	 *
 	 * @param   string  $name		Block name
 	 * @param   object  $pub		Publication object
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  object
 	 */
-	public function getStatus( $name, $pub, $sequence = 0)
+	public function getStatus( $name, $pub, $blockId = 0)
 	{
 		$pub = $pub ? $pub : $this->_pub;
 
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return false;
@@ -980,7 +975,7 @@ class Curation extends Object
 
 		// Get blocks model
 		$blocksModel = new Blocks($this->_db);
-		return $blocksModel->getStatus($name, $pub, $this->_blocks->$sequence);
+		return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId);
 
 		// Return status
 		return $status;
@@ -991,29 +986,29 @@ class Curation extends Object
 	 *
 	 * @param   string  $name		Block name
 	 * @param   object  $pub		Publication object
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  integer
 	 */
-	public function getFirstElement( $name, $pub, $sequence = 0)
+	public function getFirstElement( $name, $pub, $blockId = 0)
 	{
 		$pub = $pub ? $pub : $this->_pub;
 		$elementId = 0;
 
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return $elementId;
 		}
 
-		if ($this->_blocks->$sequence->elements)
+		if ($this->_blocks->$blockId->elements)
 		{
-			foreach ($this->_blocks->$sequence->elements as $id => $element)
+			foreach ($this->_blocks->$blockId->elements as $id => $element)
 			{
 				return $id;
 			}
@@ -1040,18 +1035,18 @@ class Curation extends Object
 	 * Get next block ID
 	 *
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  integer
 	 */
-	public function getNextBlock( $name, $sequence = 0, $activeId = 1)
+	public function getNextBlock( $name, $blockId = 0, $activeId = 1)
 	{
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
@@ -1065,38 +1060,38 @@ class Curation extends Object
 			{
 				continue;
 			}
-			if ($id == $sequence)
+			if ($id == $blockId)
 			{
 				$start = 1;
 			}
-			if ($start == 1 && $id != $sequence)
+			if ($start == 1 && $id != $blockId)
 			{
 				$remaining[] = $id;
 			}
 		}
 
 		// Return element ID
-		return empty($remaining) ? $sequence : $remaining[0];
+		return empty($remaining) ? $blockId : $remaining[0];
 	}
 
 	/**
 	 * Determine if block is coming
 	 *
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @param   integer $activeId	Active block ID
 	 * @param   integer $elementId	Element ID in question
 	 * @return  boolean
 	 */
-	public function isBlockComing( $name, $sequence = 0, $activeId = 1)
+	public function isBlockComing( $name, $blockId = 0, $activeId = 1)
 	{
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
@@ -1120,25 +1115,25 @@ class Curation extends Object
 			}
 		}
 
-		return in_array($sequence, $remaining) ? true : false;
+		return in_array($blockId, $remaining) ? true : false;
 	}
 
 	/**
 	 * Get previous block ID
 	 *
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  integer
 	 */
-	public function getPreviousBlock( $name, $sequence = 0, $activeId = 1)
+	public function getPreviousBlock( $name, $blockId = 0, $activeId = 1)
 	{
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
@@ -1152,37 +1147,37 @@ class Curation extends Object
 			{
 				continue;
 			}
-			if ($id == $sequence)
+			if ($id == $blockId)
 			{
 				$start = 1;
 			}
-			if ($start == 0 && $id != $sequence)
+			if ($start == 0 && $id != $blockId)
 			{
 				$remaining[] = $id;
 			}
 		}
 
 		// Return element ID
-		return empty($remaining) ? $sequence : end($remaining);
+		return empty($remaining) ? $blockId : end($remaining);
 	}
 
 	/**
 	 * Get next element ID
 	 *
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @param   integer $activeId	Active element ID
 	 * @return  integer
 	 */
-	public function getNextElement( $name, $sequence = 0, $activeId = 1)
+	public function getNextElement( $name, $blockId = 0, $activeId = 1)
 	{
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
@@ -1190,9 +1185,9 @@ class Curation extends Object
 
 		$remaining = array();
 		$start	   = 0;
-		if ($this->_blocks->$sequence->elements)
+		if ($this->_blocks->$blockId->elements)
 		{
-			foreach ($this->_blocks->$sequence->elements as $id => $element)
+			foreach ($this->_blocks->$blockId->elements as $id => $element)
 			{
 				if ($id == $activeId)
 				{
@@ -1213,20 +1208,20 @@ class Curation extends Object
 	 * Determine if element is coming
 	 *
 	 * @param   string  $name		Block name
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @param   integer $activeId	Active element ID
 	 * @param   integer $elementId	Element ID in question
 	 * @return  boolean
 	 */
-	public function isComing( $name, $sequence = 0, $activeId = 1, $elementId = 0)
+	public function isComing( $name, $blockId = 0, $activeId = 1, $elementId = 0)
 	{
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
@@ -1234,9 +1229,9 @@ class Curation extends Object
 
 		$remaining = array();
 		$start	   = 0;
-		if ($this->_blocks->$sequence->elements)
+		if ($this->_blocks->$blockId->elements)
 		{
-			foreach ($this->_blocks->$sequence->elements as $id => $element)
+			foreach ($this->_blocks->$blockId->elements as $id => $element)
 			{
 				if ($id == $activeId)
 				{
@@ -1258,20 +1253,20 @@ class Curation extends Object
 	 * @param   string  $name		Block name
 	 * @param   integer $elementId	Element ID in question
 	 * @param   object  $pub		Publication object
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  object
 	 */
-	public function getElementStatus( $name, $elementId = NULL, $pub, $sequence = 0)
+	public function getElementStatus( $name, $elementId = NULL, $pub, $blockId = 0)
 	{
 		$pub = $pub ? $pub : $this->_pub;
 
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$sequence)
+		if (!$blockId)
 		{
 			$this->setError( Lang::txt('Error loading block') );
 			return false;
@@ -1279,7 +1274,7 @@ class Curation extends Object
 
 		// Get blocks model
 		$blocksModel 	= new Blocks($this->_db);
-		return $blocksModel->getStatus($name, $pub, $this->_blocks->$sequence, $elementId );
+		return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId, $elementId );
 	}
 
 	/**
@@ -1332,10 +1327,10 @@ class Curation extends Object
 	 *
 	 * @param   string  $block		Block name
 	 * @param   object  $pub		Publication object
-	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $blockId	Numeric block ID
 	 * @return  object
 	 */
-	public function getReviewStatus( $block, $pub, $sequence = 0)
+	public function getReviewStatus( $block, $pub, $blockId = 0)
 	{
 		// Get status model
 		$status = new Status();
@@ -1345,7 +1340,7 @@ class Curation extends Object
 			$pub->reviewedItems = $this->getReviewedItems($pub->version_id);
 		}
 
-		$manifest = $this->_blocks->$sequence;
+		$manifest = $this->_blocks->$blockId;
 
 		// Get element status
 		if ($manifest->elements)
@@ -1359,7 +1354,7 @@ class Curation extends Object
 
 			foreach ($manifest->elements as $elementId => $element)
 			{
-				$props = $block . '-' . $sequence . '-' . $elementId;
+				$props = $block . '-' . $blockId . '-' . $elementId;
 
 				if (!isset($status->elements))
 				{
@@ -1403,7 +1398,7 @@ class Curation extends Object
 		}
 		else
 		{
-			$props = $block . '-' . $sequence;
+			$props = $block . '-' . $blockId;
 			return $this->getReviewItemStatus( $props, $pub->reviewedItems);
 		}
 
@@ -1473,7 +1468,7 @@ class Curation extends Object
 	 * Parse curation status for display
 	 *
 	 * @param   object  $pub	Publication object
-	 * @param   integer $step	Block order in curation
+	 * @param   integer $step	Numeric block ID
 	 * @param   integer $elId	Element ID in question
 	 * @param   string  $viewer	Author or curator
 	 * @return  object
@@ -1676,7 +1671,7 @@ class Curation extends Object
 						? '<p>Changes requested for sections: </p>'
 						: '<p>Updated sections include: </p>';
 			$changelog .= '<ul>';
-			foreach ($this->_progress->blocks as $sequence => $block)
+			foreach ($this->_progress->blocks as $blockId => $block)
 			{
 				if ($block->review && (($newStatus == 7 && $block->review->status == 0)
 					|| ($oldStatus == 7 && $block->review->lastupdate)))
@@ -1787,13 +1782,13 @@ class Curation extends Object
 	 * @param   integer  $elementId		Element ID
 	 * @param   string   $name			Block name
 	 * @param   object   $pub			Publication object
-	 * @param   integer  $sequence		Block order in curation
+	 * @param   integer  $blockId		Numeric block ID
 	 * @return boolean
 	 */
-	public function getLastUpdate( $elementId, $name, $pub, $sequence )
+	public function getLastUpdate( $elementId, $name, $pub, $blockId )
 	{
 		$curation = new Tables\Curation($this->_db);
-		return $curation->getRecord($pub->id, $pub->version_id, $name, $sequence, $elementId);
+		return $curation->getRecord($pub->id, $pub->version_id, $name, $blockId, $elementId);
 	}
 
 	/**
@@ -1803,10 +1798,10 @@ class Curation extends Object
 	 * @param   integer  $elementId		Element ID
 	 * @param   string   $name			Block name
 	 * @param   object   $pub			Publication object
-	 * @param   integer  $sequence		Block order in curation
+	 * @param   integer  $blockId		Numeric block ID
 	 * @return boolean
 	 */
-	public function saveUpdate( $data = NULL, $elementId, $name, $pub, $sequence )
+	public function saveUpdate( $data = NULL, $elementId, $name, $pub, $blockId )
 	{
 		if ($data === NULL)
 		{
@@ -1815,13 +1810,13 @@ class Curation extends Object
 
 		$name 	  = $name ? $name : $this->_blockname;
 		$pub 	  = $pub ? $pub : $this->_pub;
-		$sequence = $sequence ? $sequence : $this->_blockorder;
-		if (!$sequence)
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
 		{
-			$sequence = $this->getBlockSequence($name);
+			$blockId = $this->getBlockId($name);
 		}
 
-		if (!$pub || !$name || !$sequence)
+		if (!$pub || !$name || !$blockId)
 		{
 			return false;
 		}
@@ -1829,7 +1824,7 @@ class Curation extends Object
 		$curation = new Tables\Curation($this->_db);
 
 		// Load curation record if exists
-		if ($curation->loadRecord($pub->id, $pub->version_id, $name, $sequence, $elementId))
+		if ($curation->loadRecord($pub->id, $pub->version_id, $name, $blockId, $elementId))
 		{
 			// Record found - update
 		}
@@ -1839,7 +1834,7 @@ class Curation extends Object
 			$curation->publication_id 			= $pub->id;
 			$curation->publication_version_id 	= $pub->version_id;
 			$curation->block 					= $name;
-			$curation->step						= $sequence;
+			$curation->step						= $blockId;
 			$curation->element					= $elementId;
 		}
 

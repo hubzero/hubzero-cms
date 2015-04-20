@@ -46,46 +46,37 @@ class Types extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app 	= \JFactory::getApplication();
-		$config = \JFactory::getConfig();
-
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = Request::getState(
 			$this->_option . '.categories.limit',
 			'limit',
-			$config->getValue('config.list_limit'),
+			Config::get('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = Request::getState(
 			$this->_option . '.categories.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['search']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['search'] = trim(Request::getState(
 			$this->_option . '.categories.search',
 			'search',
 			''
 		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort'] = trim(Request::getState(
 			$this->_option . '.categories.sort',
 			'filter_order',
 			'id'
 		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = trim(Request::getState(
 			$this->_option . '.categories.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
 
 		$this->view->filters['state'] = 'all';
-
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
 		$rt = new \Components\Publications\Tables\MasterType($this->database);
@@ -408,7 +399,7 @@ class Types extends AdminController
 	{
 		// Incoming
 		$id 	  				= Request::getInt('id', 0);
-		$this->view->sequence 	= Request::getInt('bid', 0);
+		$this->view->blockId 	= Request::getInt('bid', 0);
 
 		$this->view->row 		= new \Components\Publications\Tables\MasterType($this->database);
 
@@ -457,7 +448,7 @@ class Types extends AdminController
 	{
 		// Incoming
 		$id 	  	= Request::getInt('id', 0);
-		$sequence 	= Request::getInt('bid', 0);
+		$blockId 	= Request::getInt('bid', 0);
 
 		$row 		= new \Components\Publications\Tables\MasterType($this->database);
 
@@ -487,9 +478,9 @@ class Types extends AdminController
 		$curation = Request::getVar('curation', array(), 'post', 'none', 2);
 
 		// Collect modifications
-		if (is_array($curation) && isset($curation['blocks'][$sequence]))
+		if (is_array($curation) && isset($curation['blocks'][$blockId]))
 		{
-			foreach ($curation['blocks'][$sequence]['elements'] as $elementId => $element)
+			foreach ($curation['blocks'][$blockId]['elements'] as $elementId => $element)
 			{
 				foreach ($element as $dataLabel => $dataValue)
 				{
@@ -503,7 +494,7 @@ class Types extends AdminController
 							{
 								foreach ($bpValue as $tpName => $tpValue)
 								{
-									if (is_array($manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName->$tpName))
+									if (is_array($manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName->$tpName))
 									{
 										$pval = trim($tpValue) ? explode(',', trim($tpValue)) : array();
 									}
@@ -511,24 +502,24 @@ class Types extends AdminController
 									{
 										$pval = trim($tpValue);
 									}
-									$manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName->$tpName = $pval;
+									$manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName->$tpName = $pval;
 								}
 							}
-							elseif (is_array($manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName))
+							elseif (is_array($manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName))
 							{
 								$pval = trim($bpValue) ? explode(',', trim($bpValue)) : array();
-								$manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName = $pval;
+								$manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName = $pval;
 							}
 							else
 							{
 								$pval = trim($bpValue);
-								$manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName = $pval;
+								$manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName = $pval;
 							}
 						}
 					}
 					else
 					{
-						$manifest->blocks->$sequence->elements->$elementId->$dataLabel = trim($dataValue);
+						$manifest->blocks->$blockId->elements->$elementId->$dataLabel = trim($dataValue);
 					}
 				}
 			}

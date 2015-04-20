@@ -59,7 +59,7 @@ else
 	$about = $aboutTxt;
 }
 
-$props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
+$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
 
 // Build url
 $route = $this->pub->_project->isProvisioned()
@@ -71,7 +71,7 @@ $url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::u
 
 // Get curator status
 if ($this->name == 'curator') {
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'curator');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'curator');
 }
 
 ?>

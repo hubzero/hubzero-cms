@@ -54,18 +54,18 @@ class Review extends Base
 	protected	$_manifest 		= NULL;
 
 	/**
-	* Step number
+	* Numeric block ID
 	*
 	* @var		integer
 	*/
-	protected	$_sequence 		= 0;
+	protected	$_blockId 		= 0;
 
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'review', $sequence = 0)
+	public function display( $pub = NULL, $manifest = NULL, $viewname = 'review', $blockId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
@@ -73,8 +73,8 @@ class Review extends Base
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
 
-		// Register sequence
-		$this->_sequence	= $sequence;
+		// Register blockId
+		$this->_blockId	= $blockId;
 
 		if ($viewname == 'curator')
 		{
@@ -100,7 +100,7 @@ class Review extends Base
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
-		$view->step			= $sequence;
+		$view->step			= $blockId;
 		$view->showControls	= 0;
 
 		if ($this->getError())
@@ -133,7 +133,7 @@ class Review extends Base
 
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
-		$view->step		= $this->_sequence;
+		$view->step		= $this->_blockId;
 
 		if ($this->getError())
 		{
@@ -147,7 +147,7 @@ class Review extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $sequence = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === NULL)

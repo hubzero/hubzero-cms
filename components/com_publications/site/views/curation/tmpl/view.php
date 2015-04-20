@@ -105,14 +105,14 @@ $by 	 = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('n
 			</div>
 		<?php } ?>
 		<div class="curation-blocks">
-<?php foreach ($blocks as $sequence => $block) {
+<?php foreach ($blocks as $blockId => $block) {
 
 	// Skip inactive blocks
 	if (isset($block->active) && $block->active == 0)
 	{
 		continue;
 	}
-	$this->pub->_curationModel->setBlock( $block->name, $sequence );
+	$this->pub->_curationModel->setBlock( $block->name, $blockId );
 
 	// Get block content
 	echo $block->name == 'review' ? NULL : $this->pub->_curationModel->parseBlock( 'curator' );
