@@ -206,6 +206,7 @@ foreach ($cats as $cat)
 								}
 								else
 								{
+									// @todo accomodate scope (aka) group citations
 									if (strstr($row->href, 'index.php'))
 									{
 										$row->href = Route::url($row->href);
