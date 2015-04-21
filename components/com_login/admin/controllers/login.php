@@ -145,6 +145,18 @@ class Login extends AdminController
 	}
 
 	/**
+	 * Multifactor authentication page
+	 *
+	 * @return void
+	 **/
+	public function factorsTask()
+	{
+		$result = Event::trigger('authfactors.onRenderChallenge');
+
+		$this->view->display();
+	}
+
+	/**
 	 * Method to log out a user.
 	 *
 	 * @return  void
