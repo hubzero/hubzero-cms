@@ -151,8 +151,6 @@ class Login extends AdminController
 	 */
 	public function logoutTask()
 	{
-		\JSession::checkToken('request') or jexit(\Lang::txt('JInvalid_Token'));
-
 		$app = \JFactory::getApplication();
 
 		$userid = \Request::getInt('uid', null);
