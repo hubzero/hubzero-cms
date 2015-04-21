@@ -134,8 +134,11 @@ class Login extends AdminController
 			}
 		}
 
-		$app = \JFactory::getApplication();
-		$result = $app->login($credentials, array('action' => 'core.login.admin'));
+		$app    = \JFactory::getApplication();
+		$result = $app->login($credentials, array(
+			'action'        => 'core.login.admin',
+			'authenticator' => $authenticator
+		));
 
 		$app->redirect($return);
 	}
