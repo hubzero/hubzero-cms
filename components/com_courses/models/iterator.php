@@ -228,7 +228,7 @@ class CoursesModelIterator implements Countable, Iterator
 
 	/**
 	 * Return the key for the current cursor position
-	 *
+	 * @param      integer $idx current cursor position
 	 * @return     mixed
 	 */
 	public function key($idx=null)
