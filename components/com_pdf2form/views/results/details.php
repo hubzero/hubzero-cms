@@ -1,4 +1,4 @@
-<?
+<?php
 $pdf = $dep->getForm();
 $title = 'Results: '.$pdf->getTitle();
 $doc->setTitle($title);
@@ -7,14 +7,14 @@ $resp = $dep->getRespondent();
 $record = $resp->getAnswers();
 $layout = $pdf->getPageLayout($record['summary']['version']);
 ?>
-<h2><?= $title ?></h2>
-<p>Completed <?= date('r', strtotime($resp->getEndTime())); ?></p>
-<p>Score <strong><?= $record['summary']['score'] ?>%</strong></p>
+<h2><?php echo $title ?></h2>
+<p>Completed <?php echo date('r', strtotime($resp->getEndTime())); ?></p>
+<p>Score <strong><?php echo $record['summary']['score'] ?>%</strong></p>
 <ol id="pages" class="complete">
-<? $pdf->eachPage(function($url, $idx) use($layout, $record) { ?>
+<?php $pdf->eachPage(function($url, $idx) use($layout, $record) { ?>
 	<li>
-		<img src="<?= $url ?>" />
-		<?
+		<img src="<?php echo $url ?>" />
+		<?php
 		if (isset($layout[$idx - 1])):
 			$qidx = 0;
 			foreach ($layout[$idx - 1] as $qid=>$group):
@@ -29,5 +29,5 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 			endforeach;
 		endif; ?>
 	</li>
-<? }); ?>
+<?php }); ?>
 </ol>
