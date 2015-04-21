@@ -46,6 +46,7 @@ class Posts extends SiteController
 	/**
 	 * Default component view
 	 *
+	 * @param   $posts mixed post objects
 	 * @return  void
 	 */
 	public function displayTask($posts = NULL)
