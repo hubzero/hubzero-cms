@@ -1,17 +1,17 @@
-<?
+<?php
 $doc->addScript('/components/com_pdf2form/resources/select.js');
 $doc->addScript('/components/com_pdf2form/resources/tablesorter/jquery.tablesorter.min.js');
 $doc->addStyleSheet('/components/com_pdf2form/resources/tablesorter/themes/blue/style.css');
 $doc->setTitle('PDF Forms');
 ?>
 <h2>Upload a PDF</h2>
-<? if ($errors): ?>
+<?php if ($errors): ?>
 	<ul class="errors">
-	<? foreach ($errors as $error): ?>
-		<li><?= $error; ?></li>
-	<? endforeach; ?>
+	<?php foreach ($errors as $error): ?>
+		<li><?php echo $error; ?></li>
+	<?php endforeach; ?>
 	</ul>
-<? endif; ?>
+<?php endif; ?>
 <form action="" method="post" enctype="multipart/form-data">
 	<input type="file" name="pdf" accept="application/pdf" required autofocus />
 	<input type="hidden" name="task" value="upload" />
@@ -23,36 +23,46 @@ $doc->setTitle('PDF Forms');
 		<tr><th>Title</th><th>Created</th><th>Updated</th></tr>
 	</thead>
 	<tbody>
-	<? foreach (PdfForm::getActiveList() as $form): ?>
+	<?php foreach (PdfForm::getActiveList() as $form): ?>
 		<tr>
 			<td>
-				<span class="title"><?= $form['title'] ?></span>
+				<span class="title"><?php echo $form['title'] ?></span>
 				<form action="/pdf2form" method="get">
 					<input type="hidden" name="task" value="deploy" />
-					<input type="hidden" name="formId" value="<?= $form['id'] ?>" />
+					<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
 					<button type="submit">Deploy</button>
 				</form>
 				<form action="/pdf2form" method="get">
 					<input type="hidden" name="task" value="layout" />
-					<input type="hidden" name="formId" value="<?= $form['id'] ?>" />
+					<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
 					<button type="submit">Edit</button>
 				</form>
 				<br />
-				<? if (($deps = PdfFormDeployment::forForm($form['id']))): ?>
+				<?php if (($deps = PdfFormDeployment::forForm($form['id']))): ?>
 				<table class="tablesorter nested">
 					<thead>
 						<tr><th>Deployment</th><th>User</th><th>Start date</th><th>End date</th></tr>
 					</thead>
 					<tbody>
-					<? foreach ($deps as $dep): ?>
-						<tr><td><span class="state"><?= $dep->getState() ?></span><a href="/pdf2form?task=showDeployment&id=<?= $dep->getId() ?>&formId=<?= $form['id'] ?>"><?= $dep->getLink() ?></a></td><td><?= htmlentities($dep->getUserName()) ?></td><td><?= date('Y-m-d H:i', strtotime($dep->getStartTime())) ?></td><td><?= date('Y-m-d H:i', strtotime($dep->getEndTime())) ?></td></tr>
-					<? endforeach; ?>
+					<?php foreach ($deps as $dep): ?>
+						<tr>
+							<td>
+								<span class="state"><?php echo $dep->getState() ?></span>
+								<a href="/pdf2form?task=showDeployment&id=<?php echo $dep->getId() ?>&formId=<?php echo $form['id'] ?>">
+									<?php echo $dep->getLink() ?>
+								</a>
+							</td>
+							<td><?php echo htmlentities($dep->getUserName()) ?></td>
+							<td><?php echo date('Y-m-d H:i', strtotime($dep->getStartTime())) ?></td>
+							<td><?php echo date('Y-m-d H:i', strtotime($dep->getEndTime())) ?></td>
+						</tr>
+					<?php endforeach; ?>
 					</tbody>
 				</table>
-				<? endif; ?>
+				<?php endif; ?>
 			</td>
-			<td><?= date('Y-m-d H:i', strtotime($form['created'])) ?></td>
-			<td><?= date('Y-m-d H:i', strtotime($form['updated'])) ?></td></tr>
-	<? endforeach; ?>
+			<td><?php echo date('Y-m-d H:i', strtotime($form['created'])) ?></td>
+			<td><?php echo date('Y-m-d H:i', strtotime($form['updated'])) ?></td></tr>
+	<?php endforeach; ?>
 	</tbody>
 </table>

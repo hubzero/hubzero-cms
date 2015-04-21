@@ -1,4 +1,4 @@
-<?
+<?php
 $title = 'Layout: '. $pdf->getTitle();
 $doc->addScript('/components/com_pdf2form/resources/layout.js');
 $path->addItem(($title ? htmlentities($title) : 'Layout: new form'), $_SERVER['REQUEST_URI']);
@@ -9,12 +9,12 @@ $path->addItem(($title ? htmlentities($title) : 'Layout: new form'), $_SERVER['R
 <form action="" method="post">
 <label>
 	<h2>Title</h2>
-	<input type="text" class="required" id="title" value="<?= str_replace('"', '&quot;', $title) ?>" />
+	<input type="text" class="required" id="title" value="<?php echo str_replace('"', '&quot;', $title) ?>" />
 	<p id="title-error" class="error"></p>
 </label>
 <h2>Layout</h2>
 <ol id="pages">
-	<?
+	<?php
 		$tabs = array();
 		$layout = $pdf->getPageLayout();
 		$pdf->eachPage(function($src, $idx) use(&$tabs, $layout) {
@@ -40,7 +40,7 @@ $path->addItem(($title ? htmlentities($title) : 'Layout: new form'), $_SERVER['R
 	}); ?>
 </ol>
 <ol id="page-tabs">
-	<? echo implode("\n", $tabs); ?>
+	<?php echo implode("\n", $tabs); ?>
 </ol>
 <p id="layout-error" class="error"></p>
 <button id="save">Save</button><span id="saved-notification">Save complete</span>

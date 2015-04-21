@@ -1,4 +1,4 @@
-<?
+<?php
 $pdf = $dep->getForm();
 $title = $pdf->getTitle();
 $doc->setTitle($title);
@@ -14,9 +14,9 @@ else:
 	if ($dep->getTimeLimit()):
 ?>
 <script type="text/javascript">
-	window.timeLeft = <? echo  max(($dep->getTimeLimit() * 60) - (time() - strtotime($resp->getStartTime())), 0); ?>;
+	window.timeLeft = <?php echo max(($dep->getTimeLimit() * 60) - (time() - strtotime($resp->getStartTime())), 0); ?>;
 </script>
-<?
+<?php
 	endif;
 	$layout = $pdf->getPageLayout();
 	if ($incomplete):
@@ -25,15 +25,18 @@ else:
 ?>
 <form action="" method="post">
 <ol id="pages" class="complete">
-<? $pdf->eachPage(function($url, $idx) use($layout, $progress, $incomplete) { ?>
+<?php $pdf->eachPage(function($url, $idx) use($layout, $progress, $incomplete) { ?>
 	<li>
-		<img src="<?= $url ?>" />
-		<?
+		<img src="<?php echo $url ?>" />
+		<?php
 		if (isset($layout[$idx - 1])):
 			$qidx = 0;
 			foreach ($layout[$idx - 1] as $qid=>$group):
 				foreach ($group['answers'] as $aidx=>$ans):
-					echo '<input name="question-'.$qid.'" value="'.$ans['id'].'" '.((isset($_POST['question-'.$qid]) && $_POST['question-'.$qid] == $ans['id']) || (!isset($_POST['question-'.$qid]) && isset($progress[$qid]) && $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '').'class="placeholder" type="radio" style="top: '.$ans['top'].'px; left: '.$ans['left'].'px" />';
+					echo '<input name="question-'.$qid.'" value="'.$ans['id'].'" '.((isset($_POST['question-'.$qid]) && $_POST['question-'.$qid] == $ans['id'])
+						|| (!isset($_POST['question-'.$qid])
+						&& isset($progress[$qid])
+						&& $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '').'class="placeholder" type="radio" style="top: '.$ans['top'].'px; left: '.$ans['left'].'px" />';
 					if (isset($incomplete[$qid])):
 						echo '<div class="incomplete-marker" style="top: '.$ans['top'].'px; left: '.($ans['left'] - 20).'px">*</div>';
 					endif;
@@ -42,14 +45,14 @@ else:
 			endforeach;
 		endif; ?>
 	</li>
-<? }); ?>
+<?php }); ?>
 </ol>
 <fieldset>
 	<p>
 		<input type="hidden" name="task" value="submit" />
-		<input type="hidden" name="crumb" value="<?= $dep->getCrumb() ?>" />
+		<input type="hidden" name="crumb" value="<?php echo $dep->getCrumb() ?>" />
 		<button type="submit">Submit</button>
 	</p>
 </fieldset>
 </form>
-<? endif;
+<?php endif;
