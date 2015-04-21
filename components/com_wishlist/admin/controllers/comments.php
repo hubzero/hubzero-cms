@@ -151,6 +151,7 @@ class Comments extends AdminController
 				$filters['sort_Dir'] = $this->view->filters['sort_Dir'];
 			}
 		}
+
 		if (isset($this->view->filters['limit']))
 		{
 			$filters['limit'] = $this->view->filters['limit'] ;
@@ -160,6 +161,11 @@ class Comments extends AdminController
 			$filters['start'] = $this->view->filters['start'];
 		}
 
+		/*
+		 * Load child comments of the parents in the first set.
+		 * This will result in a pagination limit break, but it provides
+		 * a clearer story of a wish
+		 */
 		$comments1 = $obj->find($filters, 1);
 		$comments = array();
 		if (count($comments1) > 0)
