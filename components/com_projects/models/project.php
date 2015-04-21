@@ -419,6 +419,7 @@ class Project extends Model
 	public function inSetup()
 	{
 		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
+
 		if ($this->get('setup_stage') < $setupComplete)
 		{
 			return true;
@@ -1069,5 +1070,22 @@ class Project extends Model
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get the project type
+	 *
+	 * @return     mixed
+	 */
+	public function type()
+	{
+		if (empty($this->_type))
+		{
+			$this->_type = new Tables\Type($this->_db);
+			$this->_type->load($this->get('type'));
+			$this->_type->_params = new \JParameter( $this->_type->params );
+		}
+
+		return $this->_type;
 	}
 }

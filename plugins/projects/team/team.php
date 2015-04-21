@@ -517,7 +517,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$invalid 	= array(); // collector for invalid names
 
 		// Setup stage?
-		$setup = $this->model->inSetup() ? 1 : 2;
+		$setup = $this->model->inSetup();
 
 		// Get owner class
 		$objO = $this->model->table('Owner');
@@ -529,7 +529,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Owner names not supplied
 		if (!$members && !$groups)
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_NO_NAMES_SUPPLIED') );
+			if (!$setup)
+			{
+				$this->setError( Lang::txt('COM_PROJECTS_NO_NAMES_SUPPLIED') );
+			}
 		}
 		else
 		{

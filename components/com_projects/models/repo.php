@@ -1000,7 +1000,6 @@ class Repo extends Object
 			return false;
 		}
 
-		//	\Hubzero\Utility\Debug::stop($dataPath);
 		// Local file not found? Try to download as remote
 		if (!is_file($dataPath))
 		{

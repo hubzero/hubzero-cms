@@ -307,6 +307,23 @@ class Setup extends Base
 		{
 			$this->model->set('setup_stage', $step);
 			$this->model->store();
+
+			// Did we actually complete setup?
+			if (!$this->model->inSetup())
+			{
+				// Complete project setup
+				if ($this->_finalize())
+				{
+					$this->_setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
+
+					// Some follow-up actions
+					$this->_onAfterProjectCreate();
+
+					$this->_redirect = Route::url('index.php?option=' . $this->_option
+						. '&alias=' . $this->model->get('alias'));
+					return;
+				}
+			}
 		}
 
 		// Don't go next in case of error
