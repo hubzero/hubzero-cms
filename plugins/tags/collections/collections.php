@@ -57,7 +57,7 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_COLLECTIONS'),
+			'title'   => Lang::txt('PLG_TAGS_COLLECTIONS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -68,7 +68,7 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 			return $response;
 		}
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -100,8 +100,8 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 			INNER JOIN #__collections_items AS i ON p.item_id=i.id
 			INNER JOIN #__tags_object AS t";
 		$e_where = " WHERE i.state=1 AND c.state=1 AND t.objectid=p.item_id AND t.tbl='bulletinboard' AND t.tagid IN ($ids)";
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+
+		if (User::isGuest())
 		{
 			$e_where .= " AND i.access=0 AND c.access=0";
 		}
@@ -144,7 +144,7 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 		$row->object_type     = $row->params;
 		$row->object_id     = $row->rcount;
@@ -158,7 +158,7 @@ class plgTagsCollections extends \Hubzero\Plugin\Plugin
 			'element' => 'collections',
 			'name'    => 'result'
 		));
-		$view->entry = new CollectionsModelPost($row);
+		$view->entry = new \Components\Collections\Models\Post($row);
 
 		return $view->loadTemplate();
 	}

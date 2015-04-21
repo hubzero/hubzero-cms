@@ -33,25 +33,25 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <li class="collections-entry">
 	<p class="title">
-		<a href="<?php echo JRoute::_($this->entry->link()); ?>">
+		<a href="<?php echo Route::url($this->entry->link()); ?>">
 			<?php if ($title = $this->entry->get('title')) { ?>
 				<?php echo $this->escape(stripslashes($title)); ?>
 			<?php } else { ?>
-				<?php echo JText::sprintf('PLG_TAGS_COLLECTIONS_POST_NUM', $this->entry->get('id')); ?>
+				<?php echo Lang::txt('PLG_TAGS_COLLECTIONS_POST_NUM', $this->entry->get('id')); ?>
 			<?php } ?>
 		</a>
 	</p>
 	<p class="details">
-		<?php echo JText::_('PLG_TAGS_COLLECTIONS'); ?>
+		<?php echo Lang::txt('PLG_TAGS_COLLECTIONS'); ?>
 		<span>|</span>
 		<?php echo $this->entry->created('date'); ?>
 		<span>|</span>
-		<?php echo JText::sprintf('PLG_TAGS_COLLECTIONS_POSTED_BY', '<cite><a href="' . JRoute::_('index.php?option=com_members&id=' . $this->entry->get('created_by')) . '">' . $this->escape(stripslashes($this->entry->creator('name'))) . '</a></cite>'); ?>
+		<?php echo Lang::txt('PLG_TAGS_COLLECTIONS_POSTED_BY', '<cite><a href="' . Route::url('index.php?option=com_members&id=' . $this->entry->get('created_by')) . '">' . $this->escape(stripslashes($this->entry->creator('name'))) . '</a></cite>'); ?>
 	</p>
 	<?php if ($content = $this->entry->description('clean', 200)) { ?>
 		<p><?php echo $content; ?></p>
 	<?php } ?>
 	<p class="href">
-		<?php echo rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_($this->entry->link()), '/'); ?>
+		<?php echo rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->entry->link()), '/'); ?>
 	</p>
 </li>
