@@ -177,10 +177,6 @@ class JAdministrator extends JApplication
 		$template	= $this->getTemplate(true);
 		$file		= JRequest::getCmd('tmpl', 'index');
 
-		if ($component == 'com_login') {
-			$file = 'login';
-		}
-
 		// Safety check for when configuration.php root_user is in use.
 		$config		= JFactory::getConfig();
 		$rootUser	= $config->get('root_user');

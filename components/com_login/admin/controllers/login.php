@@ -80,6 +80,7 @@ class Login extends AdminController
 		// after a session timeout. We must reset the view and layout prior to display
 		// otherwise an error will occur.
 		\Request::setVar('view', 'login');
+		\Request::setVar('tmpl', 'login');
 		//\Request::setVar('layout', 'default');
 
 		$this->view
