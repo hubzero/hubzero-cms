@@ -49,12 +49,14 @@ class PluginServiceProvider extends ServiceProvider
 		{
 			$loader = new Loader();
 
-			if ($app['dispatcher'] instanceof DispatcherInterface)
-			{
-				$app['dispatcher']->addListenerLoader($loader);
-			}
-
 			return $loader;
 		};
+
+		$this->app->extend('dispatcher', function($dispatcher, $app)
+		{
+			$dispatcher->addListenerLoader($app['plugin']);
+
+			return $dispatcher;
+		});
 	}
 }
