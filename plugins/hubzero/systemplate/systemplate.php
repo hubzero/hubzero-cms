@@ -41,8 +41,13 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  array
 	 */
-	public function onSystemOverview()
+	public function onSystemOverview($values = 'all')
 	{
+		if ($values != 'all')
+		{
+			return;
+		}
+
 		$response = new stdClass;
 		$response->name  = 'template';
 		$response->label = 'Template';

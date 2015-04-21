@@ -41,8 +41,13 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  array
 	 */
-	public function onSystemOverview()
+	public function onSystemOverview($values = 'all')
 	{
+		if ($values != 'all')
+		{
+			return;
+		}
+
 		$response = new stdClass;
 		$response->name  = 'tickets';
 		$response->label = 'Support Tickets';

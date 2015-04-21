@@ -28,6 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
  */
+use Components\Update\Helpers\Cli;
 
 /**
  * API controller class for forum posts
@@ -97,7 +98,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		$response = new stdClass;
 
-		$ip = Request::ip();
+		/*$ip = Request::ip();
 		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1'));
 		$ips = array_map('trim', $ips);
 		if (!in_array($ip, $ips))
@@ -113,7 +114,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		else
 		{
 			$sf = getenv('SERVER_SOFTWARE');
-		}
+		}*/
 
 		//$commit = shell_exec("git log -1 --pretty=format:'%H - %s (%ad)' --abbrev-commit");
 		//shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit git merge-base local-dev dev");
@@ -127,14 +128,26 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			'phpversion'  => phpversion(),
 			'server'      => $sf,
 			'last_update' => null, //$commit,
-			'last_core_update' => null
+			'last_core_update' => null,
+			'environment' => Config::get('application_env', 'production')
 		);
 
 		require_once PATH_CORE . DS . 'components' . DS . 'com_update' . DS . 'helpers' . DS . 'cli.php';
 
+		$source = Component::params('com_update')->get('git_repository_source', null);
+
+		//$response->system['repositoryVersion']   = json_decode(Cli::version());
+		//$response->system['repositoryVersion']   = $response->system['repositoryVersion'][0];
+		//$response->system['repositoryMechanism'] = json_decode(Cli::mechanism());
+		//$response->system['repositoryMechanism'] = $response->system['repositoryMechanism'][0];
+		//$response->system['status']    = json_decode(Cli::status());
+		$response->system['status']    = (count(json_decode(Cli::status())) > 0 ? 'dirty' : 'clean');
+		$response->system['upcoming']  = json_decode(Cli::update(true, false, $source));
+		$response->system['migration'] = json_decode(Cli::migration());
+
 		// Get the last update
 		$rows = json_decode(
-			\Components\Update\Helpers\Cli::log(
+			Cli::log(
 				1,
 				0,
 				'',
@@ -155,7 +168,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		// Get last core update
 		$rows = json_decode(
-			\Components\Update\Helpers\Cli::log(
+			Cli::log(
 				1,
 				0,
 				'Merge remote-tracking',
@@ -187,9 +200,18 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			$response->system = $data;
 		}
 
-		if ($values == 'all')
+		$results = Event::trigger('hubzero.onSystemOverview', array($values));
+		if ($results)
 		{
-			$response->overview = Event::trigger('hubzero.onSystemOverview');
+			$response->overview = array();
+
+			foreach ($results as $result)
+			{
+				if ($result)
+				{
+					$response->overview[] = $result;
+				}
+			}
 		}
 
 		$this->setMessage($response);
