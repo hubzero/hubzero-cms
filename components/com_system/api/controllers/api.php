@@ -120,14 +120,13 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		// System
 		$response->system = array(
-			'cms'         => \Hubzero\Version\Version::VERSION,
+			'cms'         => App::version(),
 			'php'         => php_uname(),
 			'dbversion'   => $this->database->getVersion(),
 			'dbcollation' => $this->database->getCollation(),
 			'phpversion'  => phpversion(),
 			'server'      => $sf,
-			//'last_commit' => $commit,
-			'last_update' => null,
+			'last_update' => null, //$commit,
 			'last_core_update' => null
 		);
 
