@@ -109,6 +109,7 @@ class Comment extends \JTable
 	 *
 	 * @param   string  $what     What type of data to return (count, one, first, all, list)
 	 * @param   array   $filters  An associative array of filters used to construct a query
+	 * @param   array   $select   SQL selection statement
 	 * @return  mixed
 	 */
 	public function find($what='', $filters=array(), $select=array('*'))

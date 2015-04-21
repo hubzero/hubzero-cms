@@ -212,8 +212,8 @@ class Author extends \JTable
 	/**
 	 * Saves a string of comma-separated usernames or IDs to authors table
 	 *
-	 * @param   integer  $page_id
-	 * @param   string   $authors
+	 * @param   integer  $page_id the id of the page
+	 * @param   string   $authors string of authors
 	 * @return  boolean  True if authors successfully saved
 	 */
 	public function updateAuthors($authors=NULL, $page_id=NULL)

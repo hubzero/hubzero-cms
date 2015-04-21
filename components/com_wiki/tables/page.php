@@ -58,7 +58,9 @@ class Page extends \JTable
 	 *
 	 * @param   string  $pagename  The page to load
 	 * @param   string  $scope     The page scope
+	 * @param   array   $config    *Unused? Configuration array
 	 * @return  object
+	 * @todo    Remove $config array()?
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
 	{
@@ -197,7 +199,7 @@ class Page extends \JTable
 
 	/**
 	 * Set the table key
-	 *
+	 * @param  string $key sets the column to key from
 	 * @return void
 	 */
 	public function setKey($key='id')
