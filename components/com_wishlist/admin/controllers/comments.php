@@ -203,7 +203,7 @@ class Comments extends AdminController
 			}
 		}
 
-		$this->view->total = count($comments);
+		$this->view->total = count($obj->find(array('item_type' => 'wish'), 1)); // for pagination
 		$this->view->rows  = $comments;
 
 		// Output the HTML
