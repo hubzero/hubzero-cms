@@ -15,7 +15,7 @@ class Migration20150421213254PlgAuthfactorsCertificate extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('authfactors', 'certificate');
+		$this->addPluginEntry('authfactors', 'certificate', 0);
 	}
 
 	/**
