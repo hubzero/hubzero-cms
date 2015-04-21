@@ -30,12 +30,6 @@
 
 namespace Components\Login\Admin;
 
-$task = \Request::getCmd('task');
-if ($task != 'login' && $task != 'logout')
-{
-	\Request::setVar('task', '');
-}
-
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'login.php');
 require_once(__DIR__ . DS . 'controllers' . DS . 'login.php');
 
