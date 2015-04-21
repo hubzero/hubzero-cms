@@ -175,7 +175,7 @@ class plgSystemHubzero extends JPlugin
 			$tracker['rsid'] = $session->get('tracker.rsid');
 			$tracker['ssid'] = $session->get('tracker.ssid');
 			$cookie = $crypt->encrypt(serialize($tracker));
-			$lifetime = time() + 365*24*60*60;
+			$lifetime = time() + 365*24*60*60*10;
 			setcookie($hash, $cookie, $lifetime, '/');
 		}
 
