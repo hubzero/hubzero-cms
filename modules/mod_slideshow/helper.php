@@ -29,13 +29,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Slideshow;
+
+use Hubzero\Document\Assets;
+use Hubzero\Module\Module;
+use Lang;
 
 /**
  * Module class for displaying a slideshow
  */
-class modSlideshow extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Path to find slideshow content
@@ -51,6 +54,9 @@ class modSlideshow extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
+		header("Cache-Control: cache, must-revalidate");
+		header("Pragma: public");
+
 		$image_dir = trim($this->params->get('image_dir', 'site/slideshow'), DS);
 
 		$alias          = $this->params->get('alias', '');
@@ -63,15 +69,15 @@ class modSlideshow extends \Hubzero\Module\Module
 		$noflash        = $this->params->get('stype', 0);
 		$noflash_link   = $this->params->get('noflash_link', '');
 
-		$swffile = rtrim(\Hubzero\Document\Assets::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
+		$swffile = rtrim(Assets::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
 
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
 		// check for directory
-		if (!is_dir( JPATH_ROOT . DS . $image_dir ))
+		if (!is_dir(PATH_APP . DS . $image_dir ))
 		{
-			if (!JFolder::create( JPATH_ROOT . DS . $image_dir ))
+			if (!\JFolder::create(PATH_APP . DS . $image_dir ))
 			{
 				echo Lang::txt('failed to create image directory') . ' ' . $image_dir;
 				$noflash = 1;
@@ -79,20 +85,20 @@ class modSlideshow extends \Hubzero\Module\Module
 			else
 			{
 				// use default images for this time
-				$image_dir = 'modules/mod_slideshow/images/images';
+				$image_dir = 'modules/mod_slideshow/assets/flash/images';
 			}
 		}
 
 		$images = array();
-		$files = JFolder::files(JPATH_ROOT . DS . $image_dir, '.', false, true, array());
+		$files = \JFolder::files(PATH_APP . DS . $image_dir, '.', false, true, array());
 		if (count($files)==0)
 		{
-			$image_dir = 'modules/mod_slideshow/images/images';
+			$image_dir = 'modules/mod_slideshow/assets/flash/images';
 		}
 
-		$noflash_file = 'modules/mod_slideshow/images/images/default_' . $width . 'x' . $height . '.jpg';
+		$noflash_file = 'modules/mod_slideshow/assets/flash/images/default_' . $width . 'x' . $height . '.jpg';
 
-		$d = @dir(JPATH_ROOT . DS . $image_dir);
+		$d = @dir(PATH_APP . DS . $image_dir);
 
 		if ($d)
 		{
@@ -100,7 +106,7 @@ class modSlideshow extends \Hubzero\Module\Module
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . DS . $image_dir . DS . $img_file)
+				if (is_file(PATH_APP . DS . $image_dir . DS . $img_file)
 				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
@@ -127,19 +133,20 @@ class modSlideshow extends \Hubzero\Module\Module
 				// start xml output
 				if (!$noflash)
 				{
-					$xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-					$xml.= " <slideshow>\n";
-					$xml.= " <timerdelay>" . $timerdelay . "</timerdelay>\n";
-					$xml.= " <transition>" . $transitiontype . "</transition>\n";
+					$xml  = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+					$xml .= " <slideshow>\n";
+					$xml .= " <timerdelay>" . $timerdelay . "</timerdelay>\n";
+					$xml .= " <transition>" . $transitiontype . "</transition>\n";
 					for ($i=0, $n=count( $images ); $i < $n; $i++)
 					{
-						if (is_file(JPATH_ROOT . DS . $image_dir . DS . $images[$i])) {
+						if (is_file(PATH_APP . DS . $image_dir . DS . $images[$i]))
+						{
 							$xml.= " <image src='" . htmlspecialchars($image_dir . DS . $images[$i]) . "'  />\n";
 						}
 					}
 					$xml.= " </slideshow>\n";
 
-					$xmlpath = JPATH_ROOT . DS . $this->homedir . DS . $xmlPrefix;
+					$xmlpath = PATH_APP . DS . $this->homedir . DS . $xmlPrefix;
 					$xmlpath.= $alias ? '-' . $alias : '';
 					$xmlpath.= '.xml';
 
@@ -169,6 +176,6 @@ class modSlideshow extends \Hubzero\Module\Module
 		$this->noflash_link = $noflash_link;
 		$this->noflash_file = $noflash_file;
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require($this->getLayoutPath());
 	}
 }

@@ -23,19 +23,19 @@ HUB.ModSlideshow = {
 	isIE: false,
 	isWin: false,
 	isOpera: false,
-	
+
 	detectBrowser: function() {
 		HUB.ModSlideshow.isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
 		HUB.ModSlideshow.isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
 		HUB.ModSlideshow.isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;	
 	},
-	
+
 	initialize: function() {
 		HUB.ModSlideshow.detectBrowser();
-		
-		if ( HUB.ModSlideshow.DetectFlashVer(8, 8, 8) ) {
-			var xfc = $('xflash-container');
-			
+
+		if (HUB.ModSlideshow.DetectFlashVer(8, 8, 8)) {
+			var xfc = $('#xflash-container');
+
 			// embed the Flash Content SWF when all tests are passed
 			var flashobj = HUB.ModSlideshow.FL_RunContentFP(
 				"src", HUB.ModSlideshow.src,
@@ -59,7 +59,7 @@ HUB.ModSlideshow = {
 			}
 		}
 	},
-	
+
 	ControlVersion: function() {
 		var version;
 		var axo;
@@ -122,7 +122,7 @@ HUB.ModSlideshow = {
 				version = -1;
 			}
 		}
-	
+
 		return version;
 	},
 
@@ -130,11 +130,11 @@ HUB.ModSlideshow = {
 	GetSwfVer: function() {
 		// NS/Opera version >= 3 check for Flash plugin in plugin array
 		var flashVer = -1;
-	
+
 		if (navigator.plugins != null && navigator.plugins.length > 0) {
 			if (navigator.plugins["Shockwave Flash 2.0"] || navigator.plugins["Shockwave Flash"]) {
 				var swVer2 = navigator.plugins["Shockwave Flash 2.0"] ? " 2.0" : "";
-				var flashDescription = navigator.plugins["Shockwave Flash" + swVer2].description;			
+				var flashDescription = navigator.plugins["Shockwave Flash" + swVer2].description;
 				var descArray = flashDescription.split(" ");
 				var tempArrayMajor = descArray[2].split(".");
 				var versionMajor = tempArrayMajor[0];
@@ -156,7 +156,7 @@ HUB.ModSlideshow = {
 		else if (navigator.userAgent.toLowerCase().indexOf("webtv") != -1) flashVer = 2;
 		else if ( HUB.ModSlideshow.isIE && HUB.ModSlideshow.isWin && !HUB.ModSlideshow.isOpera ) {
 			flashVer = HUB.ModSlideshow.ControlVersion();
-		}	
+		}
 		return flashVer;
 	},
 
@@ -166,11 +166,11 @@ HUB.ModSlideshow = {
 		if (versionStr == -1 ) {
 			return false;
 		} else if (versionStr != 0) {
-			if(HUB.ModSlideshow.isIE && HUB.ModSlideshow.isWin && !HUB.ModSlideshow.isOpera) {
+			if (HUB.ModSlideshow.isIE && HUB.ModSlideshow.isWin && !HUB.ModSlideshow.isOpera) {
 				// Given "WIN 2,0,0,11"
-				tempArray         = versionStr.split(" "); 	// ["WIN", "2,0,0,11"]
-				tempString        = tempArray[1];			// "2,0,0,11"
-				versionArray      = tempString.split(",");	// ['2', '0', '0', '11']
+				tempArray         = versionStr.split(" ");  // ["WIN", "2,0,0,11"]
+				tempString        = tempArray[1];           // "2,0,0,11"
+				versionArray      = tempString.split(",");  // ['2', '0', '0', '11']
 			} else {
 				versionArray      = versionStr.split(".");
 			}
@@ -178,7 +178,7 @@ HUB.ModSlideshow = {
 			var versionMinor      = versionArray[1];
 			var versionRevision   = versionArray[2];
 
-	        	// is the major.revision >= requested major.revision AND the minor version >= requested minor
+			// is the major.revision >= requested major.revision AND the minor version >= requested minor
 			if (versionMajor > parseFloat(reqMajorVer)) {
 				return true;
 			} else if (versionMajor == parseFloat(reqMajorVer)) {
@@ -192,14 +192,14 @@ HUB.ModSlideshow = {
 			return false;
 		}
 	},
-	
+
 	AddExtension: function(src, ext) {
 		if (src.indexOf('?') != -1)
 			return src.replace(/\?/, ext+'?'); 
 		else
 			return src + ext;
 	},
-	
+
 	Generateobj: function(objAttrs, params, embedAttrs) { 
 		var str = '';
 		if (HUB.ModSlideshow.isIE && HUB.ModSlideshow.isWin && !HUB.ModSlideshow.isOpera) {
@@ -217,32 +217,31 @@ HUB.ModSlideshow = {
 		}
 		return str;
 	},
-	
+
 	FL_RunContent: function() {
 		var ret = HUB.ModSlideshow.GetArgs(arguments, ".swf", "movie", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000", "application/x-shockwave-flash");
 		return HUB.ModSlideshow.Generateobj(ret.objAttrs, ret.params, ret.embedAttrs);
 	},
-	
+
 	FL_RunContentFP: function() {
-		
 		var swfurl = '.swf';
-		if(HUB.ModSlideshow.alias != '') {
-		var swfurl = ".swf?alias="+ HUB.ModSlideshow.alias;	
+		if (HUB.ModSlideshow.alias != '') {
+			var swfurl = ".swf?alias="+ HUB.ModSlideshow.alias;	
 		}
-		
+
 		var ret = HUB.ModSlideshow.GetArgs(arguments, swfurl, "movie", "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000", "application/x-shockwave-flash");
 		return HUB.ModSlideshow.Generateobj(ret.objAttrs, ret.params, ret.embedAttrs);
 	},
-	
+
 	GetArgs: function(args, ext, srcParamName, classid, mimeType) {
 		var ret = new Object();
 		ret.embedAttrs = new Object();
-		ret.params = new Object();
-		ret.objAttrs = new Object();
+		ret.params     = new Object();
+		ret.objAttrs   = new Object();
 		for (var i=0; i < args.length; i=i+2)
 		{
 			var currArg = args[i].toLowerCase();
-			
+
 			switch (currArg)
 			{
 				case "classid":
@@ -324,5 +323,6 @@ HUB.ModSlideshow = {
 
 //----------------------------------------------------------
 
-window.addEvent('domready', HUB.ModSlideshow.initialize);
-
+jQuery(document).ready(function($){
+	HUB.ModSlideshow.initialize();
+});
