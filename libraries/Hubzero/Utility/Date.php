@@ -439,7 +439,7 @@ class Date extends DateTime
 	 * @param   string  $time  An optional time to compare to, defaults to now
 	 * @return  string  The converted time string
 	 */
-	public static function relative($unit = null, $time = null)
+	public function relative($unit = null, $time = null)
 	{
 		if (is_null($time))
 		{
@@ -510,6 +510,7 @@ class Date extends DateTime
 
 		$text  = $parts[0] . ' ' . $parts[1];
 		$text .= ($parts[2]) ? ' ' . $parts[2] . ' ' . $parts[3] : '';
+
 		return sprintf('%s ago', $text);
 	}
 
