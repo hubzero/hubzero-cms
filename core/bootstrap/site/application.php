@@ -68,7 +68,7 @@ final class JSite extends JApplication
 					$app->close();
 				}
 			}
-		}, 'application.onBeforeSessionCreate');
+		}, 'application_onBeforeSessionCreate');
 
 		parent::__construct($config);
 	}
