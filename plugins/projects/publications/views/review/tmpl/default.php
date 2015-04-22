@@ -192,7 +192,7 @@ $append .= '</span>';
 			. $this->pubconfig->get('deposit_terms', 'https://localhost:5000/legal/termsofdeposit?no_html=1'). '" class="popup">'
 			. $sitename . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT') . '</a>.'; ?>
 		</p>
-		<?php if ($this->task == 'publish') { ?>
+		<?php if ($this->task == 'publish' || $this->task == 'review') { ?>
 
 		<p class="pubdate">
 			<?php if (isset($this->submitter)) {
