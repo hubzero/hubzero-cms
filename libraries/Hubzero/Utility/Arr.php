@@ -519,4 +519,44 @@ class Arr
 
 		return $myArray;
 	}
+
+	/**
+	 * Function to randomly append pirate phrases to 
+	 * strings in an array.
+	 *
+	 * @param   array  $data
+	 * @return  array
+	 */
+	public static function meMatey($data)
+	{
+		$pirate = array(
+			'Ahoy',
+			'Arrr!',
+			'Bilge Rat!',
+			'Feed the fishes',
+			'Davy Jones\' Locker',
+			'Jolly Roger',
+			'Scurvy dog!',
+			'Shiver me timbers!',
+			'Walk the plank',
+			'X Marks the spot',
+			'Yo-ho-ho'
+		);
+
+		$nqs = count($pirate);
+
+		foreach ($data as $key => $val)
+		{
+			if (is_string($val))
+			{
+				$use = rand(0, $nqs-1);
+
+				$val .= ' ' . $pirate[$use];
+			}
+
+			$data[$key] = $val;
+		}
+
+		return $data;
+	}
 }
