@@ -376,10 +376,8 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	private function _generateHash($input, $day)
 	{
-		$jconfig = JFactory::getConfig();
-
 		// Add date:
-		$input .= $jconfig->getValue('config.secret') . $day . date('ny');
+		$input .= Config::get('secret') . $day . date('ny');
 
 		// Get MD5 and reverse it
 		$enc = strrev(md5($input));
