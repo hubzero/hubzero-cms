@@ -273,24 +273,33 @@ class Registry implements ArrayAccess
 	/**
 	 * Merge a Registry object into this one
 	 *
-	 * @param   object   &$source  Source Registry object to merge.
+	 * @param   mixed    $source  Source data to merge.
 	 * @return  boolean  True on success
 	 */
-	public function merge(&$source)
+	public function merge($source)
 	{
-		if ($source instanceof Registry)
+		if (!$source)
 		{
-			// Load the variables into the registry's default namespace.
-			foreach ($source->toArray() as $k => $v)
-			{
-				if (($v !== null) && ($v !== ''))
-				{
-					$this->data->$k = $v;
-				}
-			}
-			return true;
+			return false;
 		}
-		return false;
+
+		// If the source isn't already a Registry
+		// we'll turn it into one
+		if (!($source instanceof Registry))
+		{
+			$source = new self($source);
+		}
+
+		// Load the variables into the registry's default namespace.
+		foreach ($source->toArray() as $k => $v)
+		{
+			if (($v !== null) && ($v !== ''))
+			{
+				$this->data->$k = $v;
+			}
+		}
+
+		return true;
 	}
 
 	/**

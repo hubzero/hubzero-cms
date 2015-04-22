@@ -30,8 +30,7 @@
 
 namespace Hubzero\Console;
 
-use Hubzero\Config\Processor\Yaml;
-use Hubzero\Config\Processor\Ini;
+use Hubzero\Config\Registry;
 use Hubzero\Error\Exception\RuntimeException;
 
 // Check to ensure this file is included in Joomla!
@@ -45,9 +44,9 @@ class Config
 	/**
 	 * Parsed config vars
 	 *
-	 * @var array
+	 * @var object
 	 **/
-	private $config = array();
+	private $config = null;
 
 	/**
 	 * Config file path
@@ -70,23 +69,12 @@ class Config
 		$path = $home . DS . '.muse';
 		$this->path = $path;
 
+		$this->config = new Registry();
+
 		// See if there's an existing file
 		if (is_file($path))
 		{
-			// Try to parse as Yaml and fall back to Ini if failed
-			try
-			{
-				// Parse the path
-				$this->config = Yaml::parse($path);
-			}
-			catch (RuntimeException $e)
-			{
-				// Parse the file as Ini
-				$this->config = Ini::parse($path);
-
-				// Now write it back out as Yaml for future use
-				$this->write();
-			}
+			$this->config->parse($path);
 		}
 	}
 
@@ -134,11 +122,11 @@ class Config
 		$instance = self::getInstance();
 
 		// Merge and make sure values are unique
-		$data = $instance->merge($instance->config, $data);
+		$data = $instance->merge($instance->config->toArray(), $data);
 		$data = $instance->unique($data);
 
 		// Set data back to the instance
-		$instance->config = $data;
+		$instance->config = new Registry($data);
 
 		// Actually write out the data
 		$instance->write();
@@ -153,7 +141,7 @@ class Config
 	 **/
 	private function write()
 	{
-		Yaml::write($this->config, $this->path);
+		$this->config->write($this->path, 'yaml');
 	}
 
 	/**

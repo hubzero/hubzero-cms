@@ -78,7 +78,7 @@ class Yaml extends Base
 			return $object;
 		}
 
-		return SymfonyYaml::dump($object, 2);
+		return SymfonyYaml::dump((array) $object, 2);
 	}
 
 	/**
