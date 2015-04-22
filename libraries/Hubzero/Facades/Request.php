@@ -88,6 +88,16 @@ class Request extends \JRequest
 	}
 
 	/**
+	 * Returns the path.
+	 *
+	 * @return  string
+	 */
+	public static function method()
+	{
+		return self::getMethod();
+	}
+
+	/**
 	 * Temporary placeholder
 	 *
 	 * @return  void
