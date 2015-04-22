@@ -36,15 +36,15 @@ $inDir	 = $dirname && $dirname != '.' ? ' in /' . \Components\Projects\Helpers\H
 <?php
 // Display error  message
 if ($this->getError()) {
-	echo ('<p class="error">'.$this->getError().'</p>');
+	echo ('<p class="error">' . $this->getError() . '</p>');
 } else { ?>
 
 	<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 			<fieldset >
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->vid; ?>" />
 				<input type="hidden" name="item" value="<?php echo $this->item; ?>" />
@@ -52,8 +52,8 @@ if ($this->getError()) {
 				<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />
 				<input type="hidden" name="selections" id="ajax-selections" value="" />
-				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-				<?php if ($this->project->provisioned == 1 ) { ?>
+				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
+				<?php if ($this->project->isProvisioned()) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
 			</fieldset>

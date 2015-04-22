@@ -1145,7 +1145,7 @@ class Html
 	}
 
 	/**
-	 * Show publication title
+	 * Show publication title in draft flow
 	 *
 	 * @param      object $pub
 	 * @param      string $url
@@ -1153,14 +1153,18 @@ class Html
 	 * @param      string $append
 	 * @return     string HTML
 	 */
-	public static function showPubTitle( $pub, $url, $tabtitle = '', $append = '' )
+	public static function showPubTitle( $pub, $tabtitle = '', $append = '' )
 	{
+		if ($pub->project()->isProvisioned())
+		{
+			return Html::showPubTitleProvisioned($pub, $append);
+		}
 		$typetitle = self::writePubCategory($pub->cat_alias, $pub->cat_name);
 		$tabtitle  = $tabtitle ? $tabtitle : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
-		$pubUrl    = Route::url($url . '&pid=' . $pub->id) .'?version=' . $pub->version_number;
+		$pubUrl    = Route::url($pub->link('editversion'));
 		?>
 		<div id="plg-header">
-			<h3 class="publications c-header"><a href="<?php echo $url; ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
+			<h3 class="publications c-header"><a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
 			<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
@@ -1175,11 +1179,11 @@ class Html
 	 * @param      string $append
 	 * @return     string HTML
 	 */
-	public static function showPubTitleProvisioned( $pub, $url, $append = '' )
+	public static function showPubTitleProvisioned( $pub, $append = '' )
 	{
 	?>
 		<h3 class="prov-header">
-			<a href="<?php echo $url; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"
+			<a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"
 			<?php if ($append) { echo $append; } ?>
 		</h3>
 	<?php

@@ -132,28 +132,33 @@ class Curation extends Object
 	/**
 	* Constructor
 	*
-	* @param      string  $manifest     Pup type manifest
+	* @param      string  $manifest         Publication manifest
+	* @param      string  $masterManifest   Master type manifest
 	* @return     void
 	*/
-	public function __construct( $manifest = NULL )
+	public function __construct( $manifest = NULL, $masterManifest = NULL )
 	{
 		$this->_db = \JFactory::getDBO();
-		$this->_manifest = json_decode($manifest);
 
 		// Parse blocks
-		$this->setBlocks();
+		$this->_setBlocks($manifest, $masterManifest);
 	}
 
 	/**
 	 * Get blocks in order
 	 *
-	 * @param   string  $manifest     Pub type manifest to parse
+	 * @param      string  $manifest         Publication manifest
+	 * @param      string  $masterManifest   Master type manifest
 	 * @return  boolean
 	 */
-	public function setBlocks($manifest = NULL)
+	private function _setBlocks($manifest = NULL, $masterManifest = NULL)
 	{
-		$manifest = $manifest ? $manifest : $this->_manifest;
 		$blocks   = array();
+
+		if ($masterManifest)
+		{
+			$masterManifest = json_decode($masterManifest);
+		}
 
 		// We need a manifest
 		if (!$manifest)
@@ -191,17 +196,48 @@ class Curation extends Object
 			$manifest->params->default_category = 1;
 			$manifest->params->require_doi 		= 1;
 			$manifest->params->show_archival 	= 1;
-			$this->_manifest 					= $manifest;
 		}
-
-		// Parse manifest (TBD)
-		$this->_blocks = $manifest ? $manifest->blocks : NULL;
-
-		// Get block count
-		foreach ($this->_blocks as $b)
+		else
 		{
-			$this->_blockcount++;
+			$manifest = json_decode($manifest);
 		}
+
+		if (empty($manifest))
+		{
+			return false;
+		}
+
+		// Additional parsing
+		foreach ($manifest->blocks as $blockId => $b)
+		{
+			// Get block count
+			$this->_blockcount++;
+
+			// Some values like published_editing should come from master manifest
+			// This is important for published drafts
+			if ($masterManifest)
+			{
+				if (isset($b->params->published_editing) && isset($masterManifest->blocks->$blockId->params->published_editing))
+				{
+					$b->params->published_editing = $masterManifest->blocks->$blockId->params->published_editing;
+				}
+
+				// Elements settings
+				if (!empty($b->elements) && !empty($masterManifest->blocks->$blockId->elements))
+				{
+					foreach ($b->elements as $elementId => $el)
+					{
+						if (isset($el->params) && isset($masterManifest->blocks->$blockId->elements->$elementId->params->published_editing))
+						{
+							$el->params->published_editing = $masterManifest->blocks->$blockId->elements->$elementId->params->published_editing;
+						}
+					}
+				}
+			}
+		}
+
+		$this->_manifest = $manifest;
+		$this->_blocks   = $manifest->blocks;
 
 		return true;
 	}

@@ -1855,7 +1855,7 @@ class Publications extends SiteController
 		$lang->load('com_projects');
 
 		// Instantiate a new view
-		$this->view = new \Hubzero\Component\View(array(
+		$this->view  = new \Hubzero\Component\View(array(
 			'name'   => 'submit',
 			'layout' => 'default'
 		));
@@ -1931,6 +1931,12 @@ class Publications extends SiteController
 			$this->view->title = $this->title;
 			$this->view->display();
 			return;
+		}
+
+		// No action requested ?
+		if (!$action)
+		{
+			$action = $pid ? 'publication' : 'contribute';
 		}
 
 		// Plugin params

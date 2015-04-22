@@ -25,39 +25,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get hub config
-$juri 	 = JURI::getInstance();
-
-$site 	 = Config::get('config.live_site')
-	? Config::get('config.live_site')
-	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-
-$now = Date::toSql();
-
 // Get creator name
-$profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
-$creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
+$creator = $this->pub->creator('name') . ' (' . $this->pub->creator('username') . ')';
 
 // Version status
 $status = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
 $class 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
 
 // Get block content
-$blockcontent = $this->pub->_curationModel->parseBlock( 'edit' );
+$blockcontent = $this->pub->_curationModel->parseBlock('edit');
 ?>
-<?php echo $this->project->provisioned == 1
-			? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
-			: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
+<?php 
+// Write title
+echo \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->title);
 
-<?php
-	// Draw status bar
-	echo $this->pub->_curationModel->drawStatusBar();
+// Draw status bar
+echo $this->pub->_curationModel->drawStatusBar();
 ?>
 <div id="pub-body">
 	<?php echo $blockcontent; ?>
  </div>
 <p class="rightfloat">
-	<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="public-page" rel="external" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+	<a href="<?php echo Route::url($this->pub->link('version')); ?>" class="public-page" rel="external" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 </p>
 <script>
 jQuery(document).ready(function($){

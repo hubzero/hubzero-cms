@@ -53,9 +53,6 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
 $showStats = false;
 
-// Use new curation flow?
-$useBlocks  = $this->pubconfig->get('curation', 0);
-
 $i = 1;
 
 ?>

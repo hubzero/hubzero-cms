@@ -37,19 +37,11 @@ $manifest = $this->pub->_curationModel->_manifest;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
+$route = $this->pub->link('editbase');
 $selectUrl   = $prov
 		? Route::url( $route) . '?active=team&action=select'
 		: Route::url( $route . '&active=team&action=select') .'/?p=' . $props . '&amp;pid='
 		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
-
-$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
-
-// Are we in draft flow?
-$move = Request::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
 
 $elName = "reviewPanel";
 
@@ -59,13 +51,10 @@ $requireDoi   = isset($manifest->params->require_doi) ? $manifest->params->requi
 $showArchival = isset($manifest->params->show_archival) ? $manifest->params->show_archival : 0;
 
 // Get hub config
-$juri 	 = JURI::getInstance();
-$site 	 = Config::get('config.live_site')
+$site = Config::get('config.live_site')
 	? Config::get('config.live_site')
-	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+	: trim(Request::base(), DS);
 $sitename = Config::get('config.sitename');
-
-$model = new \Components\Publications\Models\Publication($this->pub);
 
 // Build our citation object
 $citation = '';
@@ -77,13 +66,13 @@ if ($this->pub->doi)
 	$cite->title 	= $this->pub->title;
 	$date 			= ($this->pub->published_up && $this->pub->published_up != '0000-00-00 00:00:00')
 					? $this->pub->published_up : $this->pub->submitted;
-	$cite->year  	= JHTML::_('date', $date, 'Y');
+	$cite->year  	= Date::of($date)->format('Y');
 	$cite->location = '';
 	$cite->date 	= '';
 
-	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;
+	$cite->url = $site . DS . 'publications' . DS . $this->pub->id . '?v=' . $this->pub->version_number;
 	$cite->type = '';
-	$cite->author = $model->getUnlinkedContributors();
+	$cite->author = $this->pub->getUnlinkedContributors();
 	$cite->doi = $this->pub->doi;
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
 }
@@ -92,8 +81,7 @@ if ($this->pub->doi)
 $pubdate = Request::getVar('publish_date');
 
 // Get configs
-$config   = Component::params( 'com_publications' );
-$termsUrl = $config->get('deposit_terms', '');
+$termsUrl = $this->pub->config()->get('deposit_terms', '');
 
 ?>
 
@@ -104,7 +92,7 @@ $termsUrl = $config->get('deposit_terms', '');
 	<?php } else { ?>
 	<p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
 	<div class="submitarea">
-		<a href="<?php echo $editUrl; ?>/?action=continue&version=dev" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
+		<a href="<?php echo Route::url( $this->pub->link('editversion') . '&active=publications&action=continue'); ?>" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
 	</div>
 	<?php } ?>
 
@@ -119,7 +107,7 @@ $termsUrl = $config->get('deposit_terms', '');
 				<div class="element-instructions">
 					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
 					<div class="submitarea">
-						<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+						<a href="<?php echo Route::url($this->pub->link('version')); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -172,17 +160,17 @@ $termsUrl = $config->get('deposit_terms', '');
 						<span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 					</label>
 
-					<?php if (isset($this->pub->_submitter)) {
+					<?php if ($this->pub->submitter()) {
 						// Do we have a submitter choice?
-						$submitter = $this->pub->_submitter->name;
-						$submitter.= $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : '';
-						$submitter.= '<input type="hidden" name="submitter" value="' . $this->pub->_submitter->user_id. '" />';
-						if ($this->pub->_submitter->user_id != User::get('id'))
+						$submitter  = $this->pub->submitter()->name;
+						$submitter .= $this->pub->submitter()->organization ? ', ' . $this->pub->submitter()->organization : '';
+						$submitter .= '<input type="hidden" name="submitter" value="' . $this->pub->submitter()->user_id . '" />';
+						if ($this->pub->submitter()->user_id != User::get('id'))
 						{
 							$submitter  = '<select name="submitter">' . "\n";
 							$submitter .= '<option value="' . User::get('id') . '" selected="selected">' . User::get('name')
 								. '</option>' . "\n";
-							$submitter .= '<option value="' . $this->pub->_submitter->user_id . '">' . $this->pub->_submitter->name . '</option>' . "\n";
+							$submitter .= '<option value="' . $this->pub->submitter()->user_id . '">' . $this->pub->submitter()->name . '</option>' . "\n";
 							$submitter .= '</select>';
 						}
 					?>

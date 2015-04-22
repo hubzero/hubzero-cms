@@ -36,9 +36,6 @@ $url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.
 $config = Component::params( 'com_publications' );
 $citationFormat = $config->get('citation_format', 'apa');
 
-// Use new curation flow?
-$useBlocks  = $config->get('curation', 0);
-
 ?>
 <div id="abox-content" class="citation-edit">
 <script src="/plugins/projects/links/js/selector.js"></script>
@@ -57,7 +54,6 @@ $useBlocks  = $config->get('curation', 0);
 				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
 				<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
-				<?php if ($useBlocks) { ?>
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="additem" />
@@ -65,10 +61,6 @@ $useBlocks  = $config->get('curation', 0);
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
 				<?php }  ?>
-				<?php } else { ?>
-					<input type="hidden" name="active" value="links" />
-					<input type="hidden" name="action" value="savecite" />
-				<?php } ?>
 				<input type="hidden" name="cite[id]" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="cite[affiliated]" value="1" />
 			</fieldset>

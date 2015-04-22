@@ -98,7 +98,7 @@ class Publication extends Object
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid, $version = 'default', $vid = NULL)
+	public function __construct($oid = NULL, $version = 'default', $vid = NULL)
 	{
 		$this->_db = \JFactory::getDBO();
 
@@ -110,20 +110,21 @@ class Publication extends Object
 		}
 		else
 		{
-			// Load master entry
-			$this->publication = new Tables\Publication($this->_db);
-			$this->publication->loadPublication($oid);
-
 			// Load version
 			$this->version = new Tables\Version($this->_db);
 			if (intval($vid))
 			{
 				$this->version->load($vid);
+				$oid = $this->version->publication_id;
 			}
-			else
+			elseif ($oid)
 			{
-				$this->version->loadVersion($this->publication->id, $version);
+				$this->version->loadVersion($oid, $version);
 			}
+
+			// Load master entry
+			$this->publication = new Tables\Publication($this->_db);
+			$this->publication->loadPublication($oid);
 
 			// Version alternative label
 			$versionAlias = $this->version->main == 1
@@ -295,6 +296,20 @@ class Publication extends Object
 	}
 
 	/**
+	 * Is publication deleted?
+	 *
+	 * @return     boolean
+	 */
+	public function isDeleted()
+	{
+		if ($this->get('state') == 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param      string $as What data to return
@@ -370,6 +385,7 @@ class Publication extends Object
 
 	/**
 	 * Set curation
+	 * Get & apply manifest from saved record or master type)
 	 *
 	 * @return     mixed
 	 */
@@ -391,7 +407,7 @@ class Publication extends Object
 						: $this->_type->curation;
 
 			// Get curation model
-			$this->_curationModel = new Curation($manifest);
+			$this->_curationModel = new Curation($manifest, $this->_type->curation);
 
 			// Set pub assoc and load curation
 			$this->_curationModel->setPubAssoc($this);
@@ -1326,29 +1342,50 @@ class Publication extends Object
 	 */
 	public function link($type = '')
 	{
-		if (!isset($this->_base))
+		if (!isset($this->_pageBase))
 		{
-			$this->_base  = $this->get('alias')
-				? 'index.php?option=com_publications&alias=' . $this->get('alias')
-				: $this->get('id');
+			$this->_base  = 'index.php?option=com_publications';
+			$this->_base .= $this->get('alias')
+				? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
 		}
 		if (!isset($this->_editBase))
 		{
 			$this->_editBase  = $this->project()->isProvisioned()
 				? 'index.php?option=com_publications&task=submit'
 				: 'index.php?option=com_projects&alias=' . $this->project()->get('alias') . '&active=publications';
-			$this->_editBase .= '&pid=' . $this->get('id');
 		}
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
 			case 'serve':
-				$link = $this->_base . '&task=serve' . '&v=' . $this->version->get('id');
+				$link = $this->_base . '&task=serve' . '&v=' . $this->version->get('version_number');
+			break;
+
+			case 'version':
+				$link = $this->_base . '&v=' . $this->version->get('version_number');
 			break;
 
 			case 'edit':
+				$link = $this->_editBase . '&pid=' . $this->get('id');
+			break;
+
+			case 'editversion':
+				$link = $this->_editBase . '&pid=' . $this->get('id') . '&version=' . $this->version->get('version_number');
+			break;
+
+			case 'editversionid':
+				$link = $this->_editBase . '&pid=' . $this->get('id') . '&vid=' . $this->version->get('id');
+			break;
+
+			case 'editbase':
 				$link = $this->_editBase;
+			break;
+
+			case 'project':
+				$link = $this->project()->isProvisioned()
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->project()->get('alias');
 			break;
 
 			case 'permalink':

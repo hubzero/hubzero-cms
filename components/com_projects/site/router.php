@@ -307,6 +307,7 @@ class Router extends Base
 
 							$b = new \Components\Publications\Tables\Block($database);
 							$blocks = $b->getBlocks('block');
+							$blocks[] = 'status';
 						}
 
 						if (!empty($segments[3]) && in_array($segments[3], $blocks))
@@ -349,6 +350,13 @@ class Router extends Base
 								{
 									$vars['action'] = $segments[4];
 								}
+							}
+						}
+						else
+						{
+							if (!empty($segments[3]))
+							{
+								$vars['action'] = $segments[3];
 							}
 						}
 					}
@@ -436,6 +444,31 @@ class Router extends Base
 					}
 
 					return $vars;
+				}
+
+				// Links
+				if (!empty($segments[2]) && $vars['active'] == 'links')
+				{
+					if (!empty($segments[2]) && is_numeric($segments[2]))
+					{
+						$vars['pid'] = $segments[2];
+					}
+					if (!empty($segments[3]))
+					{
+						$vars['action'] = $segments[3];
+					}
+				}
+				// Team
+				if (!empty($segments[2]) && $vars['active'] == 'team')
+				{
+					if (!empty($segments[2]) && is_numeric($segments[2]))
+					{
+						$vars['pid'] = $segments[2];
+					}
+					if (!empty($segments[3]))
+					{
+						$vars['action'] = $segments[3];
+					}
 				}
 
 				// All other plugins

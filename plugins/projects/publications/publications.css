@@ -13,12 +13,16 @@
 	-- -- -- -- -- -- --
 */
 
-/* Compact Models
---------------------------------------------- */
+	#suggestions [class^="s-"] a:before {
+		content: "\f016";
+		color: #6897a4;
+		background: none;
+	}
 	#suggestions .s-compactmodels a:before,
 	.compactmodels:before
 	{
 		background: url("/plugins/projects/publications/images/cm.png") 0 0 no-repeat;
+		content: "";
 	}
 
 /* Publications

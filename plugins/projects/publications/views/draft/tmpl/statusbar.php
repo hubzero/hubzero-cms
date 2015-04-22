@@ -27,19 +27,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $versionLabel 	= $this->pub->version_label ? $this->pub->version_label : '1.0';
 $status 	  	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
-$version 		= $this->pub->version;
+$version 		= $this->pub->versionAlias;
 $active 		= $this->active ? $this->active : 'status';
 $activenum 		= $this->activenum ? $this->activenum : NULL;
-
-// Build url
-$route = $this->pub->_project->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->get('alias') . '&active=publications';
 
 // Are we in draft flow?
 $move = ($this->pub->state == 3 || $this->pub->state == 4) ? '&move=continue' : '';
 
+// Build url
+$route    = $this->pub->link('editbase');
 $pubRoute = $this->pub->id ? $route . '&pid=' . $this->pub->id : $route;
 
 $blocks = $this->pub->_curationModel->_progress->blocks;
@@ -52,10 +48,10 @@ $i = 1;
 ?>
 <?php if ($this->pub->id) { ?>
 	<p id="version-label" class="version-label<?php if ($active == 'status') { echo ' active'; } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) { echo ' nobar'; } ?>">
-		<a href="<?php echo Route::url( $pubRoute) .'/?action=versions'; ?>" class="versions" id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
-		<a href="<?php echo Route::url( $pubRoute . '&version=' . $version); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$versionLabel.' (' . $status . ')'; ?></a>
+		<a href="<?php echo Route::url( $pubRoute . '&action=versions'); ?>" class="versions" id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
+		<a href="<?php echo Route::url( $pubRoute . '&version=' . $version); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $versionLabel . ' (' . $status . ')'; ?></a>
 		<?php if (($this->pub->state == 3 || $this->pub->state == 7) && $complete) { ?>
-		- <a href="<?php echo Route::url( $pubRoute) . '/?action=review&amp;version='.$this->pub->version; ?>" class="readytosubmit"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
+		- <a href="<?php echo Route::url( $pubRoute . '&action=review&version=' . $version); ?>" class="readytosubmit"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
 		<?php } ?>
     </p>
 <?php } ?>
@@ -106,7 +102,8 @@ $i = 1;
 				continue;
 			}
 		?>
-		<li<?php if ($blockId == $activenum) { echo ' class="active"'; } ?>><a href="<?php echo Route::url( $pubRoute . '&section=' . $blockname . '&step=' . $blockId . '&move=continue&version=' . $version); ?>" <?php echo $class ? 'class="' . $class . '"' : '' ; ?>><?php echo $block->manifest->label; ?></a></li>
-
+		<li<?php if ($blockId == $activenum) { echo ' class="active"'; } ?>>
+			<a href="<?php echo Route::url( $pubRoute . '&section=' . $blockname . '&step=' . $blockId . '&move=continue&version=' . $version); ?>" <?php echo $class ? 'class="' . $class . '"' : '' ; ?>><?php echo $block->manifest->label; ?></a>
+		</li>
 	<?php } ?>
 	</ul>

@@ -62,16 +62,16 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_AUTHOR'); ?></h3>
 	<form id="hubForm-ajax" method="post" action="">
 			<fieldset>
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 				<input type="hidden" name="aid" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
 				<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
 				<input type="hidden" name="backUrl" value="<?php echo $this->backUrl; ?>" />
-				<?php if ($this->project->provisioned == 1 ) { ?>
+				<?php if ($this->project->isProvisioned()) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
 			</fieldset>

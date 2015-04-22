@@ -36,27 +36,15 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
-$selectUrl   = $prov
-		? Route::url( $route) . '?active=publications&amp;action=select&amp;p=' . $props . '&amp;vid=' . $this->pub->version_id
-		: Route::url( $route . '&active=publications&action=select') .'/?p=' . $props . '&amp;pid='
-		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
-
-$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
-
-// Are we in draft flow?
-$move = Request::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
+$route     = $this->pub->link('editbase');
+$selectUrl = Route::url( $this->pub->link('editversionid') . '&active=publications&action=select' . '&p=' . $props);
 
 $required 		= $this->manifest->params->required;
 
 $elName = "licensePick";
 
 // Get version params and extract agreement
-$versionParams 	= new JParameter( $this->pub->params );
-$agreed			= $versionParams->get('licenseagreement', 0);
+$agreed = $this->pub->params->get('licenseagreement', 0);
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
@@ -89,10 +77,13 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 							$info .= ' <div class="hidden">';
 							$info .= ' 	<div class="full-content" id="more-lic"><pre>' . preg_replace("/\r\n/", "\r", $text) . '</pre></div>';
 							$info .= ' </div>';
-						} ?>
+						} 
+					$icon = $this->license->icon;
+					$icon = str_replace('/com_publications/assets/img/', '/com_publications/site/assets/img/', $icon);
+				?>
 				<div class="chosenitem">
 						<p class="item-title">
-					<?php if ($this->license) { echo '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?><?php echo $this->license->title; ?> 						<span class="item-sub-details"><?php echo $info; ?></span></p>
+					<?php if ($this->license) { echo '<img src="' . $icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?><?php echo $this->license->title; ?> 						<span class="item-sub-details"><?php echo $info; ?></span></p>
 					<input type="hidden" name="license" id="license" value="<?php echo $this->license->id; ?>" />
 					<?php if ($this->license->customizable) { ?>
 					<div class="agreements">
@@ -123,7 +114,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 
 					<?php } ?>
 					<?php if ($this->license->agreement == 1) {
-							$txt = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_AGREED') . ' ' . $this->license->title.' '.Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE');
+							$txt = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_AGREED') . ' ' . $this->license->title . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE');
 							if ($this->license->url) {
 								 $txt = preg_replace("/license terms/", '<a href="' . $this->license->url . '" rel="external">license terms</a>', $txt);
 							}

@@ -36,22 +36,9 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
+$route = $this->pub->link('editbase');
 
-$selectUrl   = $prov
-		? Route::url( $route) . '?active=links&amp;action=select&amp;p=' . $props
-			. '&amp;vid=' . $this->pub->version_id
-		: Route::url( $route . '&active=links&action=select') .'/?p=' . $props . '&pid='
-			. $this->pub->id . '&vid=' . $this->pub->version_id;
-
-$delUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
-$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=links&pid=' . $this->pub->id);
-
-// Are we in draft flow?
-$move = Request::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
+$selectUrl = Route::url( $this->pub->link('project') . '&active=links&action=select' . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id);
 
 $required = $this->manifest->params->required;
 
@@ -88,8 +75,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 						 ?>
 						<li>
 							<span class="item-options">
-									<a href="<?php echo $editUrl . '/?action=newcite&amp;vid=' . $this->pub->version_id . '&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo $delUrl . '/?action=deleteitem&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<a href="<?php echo Roure::url($this->pub->link('project') . '&active=links&action=newcite&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+									<a href="<?php echo Roure::url($this->pub->link('project') . '&active=links&action=deleteitem&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>

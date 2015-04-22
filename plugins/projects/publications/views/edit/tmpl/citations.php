@@ -48,8 +48,8 @@ $newCiteUrl   = $this->project->provisioned == 1
 
 ?>
 <?php echo $this->project->provisioned == 1
-			? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route, $this->title)
-			: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route); ?>
+			? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->title)
+			: \Components\Publications\Helpers\Html::showPubTitle( $this->pub ); ?>
 <?php
 	// Draw status bar
 	\Components\Publications\Helpers\Html::drawStatusBar($this);

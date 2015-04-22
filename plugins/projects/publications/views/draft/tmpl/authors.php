@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
+$prov = $this->pub->project()->isProvisioned() ? 1 : 0;
 
 // Get block properties
 $step 	  = $this->step;
@@ -36,19 +36,8 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
-$selectUrl   = $prov
-		? Route::url( $route) . '?active=team&action=select' . '&p=' . $props . '&amp;vid=' . $this->pub->version_id
-		: Route::url( $route . '&active=team&action=select') .'/?p=' . $props . '&amp;pid='
-		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
-
-$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
-
-// Are we in draft flow?
-$move = Request::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
+$route     = $this->pub->link('editbase');
+$selectUrl = Route::url( $this->pub->link('editversionid') . '&active=team&action=select' . '&p=' . $props);
 
 $required 		= $this->manifest->params->required;
 $showSubmitter  = $this->manifest->params->submitter;
@@ -72,10 +61,10 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 		</label>
 		<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 	<div class="list-wrapper">
-	<?php if (count($this->pub->_authors) > 0) {
+	<?php if (count($this->pub->authors()) > 0) {
 		$i= 1; ?>
 			<ul class="itemlist" id="author-list">
-			<?php foreach ($this->pub->_authors as $author) {
+			<?php foreach ($this->pub->authors() as $author) {
 					$org = $author->organization ? $author->organization : $author->p_organization;
 					$name = $author->name ? $author->name : $author->p_name;
 					$name = trim($name) ? $name : $author->invited_name;
@@ -95,11 +84,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				<li class="reorder pick" id="pick-<?php echo $author->id; ?>">
 					<span class="item-options">
 						<span>
-							<?php if (count($this->pub->_authors) > 1) { ?>
+							<?php if (count($this->pub->authors()) > 1) { ?>
 							<span class="hint-reorder"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER'); ?></span>
 							<?php } ?>
-							<a href="<?php echo $editUrl . '/?action=editauthor&aid=' . $author->id . '&p=' . $props; ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-							<a href="<?php echo $editUrl . '/?action=deleteitem&aid=' . $author->id . '&p=' . $props; ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+							<a href="<?php echo Route::url( $this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+							<a href="<?php echo Route::url( $this->pub->link('editversion') . '&active=publications&action=deleteitem&aid=' . $author->id . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 						</span>
 					</span>
 					<span class="item-order"><?php echo $i; ?></span>
@@ -114,17 +103,17 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			</div>
 		</div>
 
-		<?php if (count($this->pub->_authors) > 1) { ?>
+		<?php if (count($this->pub->authors()) > 1) { ?>
 		<p class="hint">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
 		<?php } ?>
 
 		<?php
 			// Showing submitter?
-			if ($showSubmitter && $this->pub->_submitter)
+			if ($showSubmitter && $this->pub->submitter())
 			{ ?>
 
 			<div class="submitter"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
-				<?php echo $this->pub->_submitter->name; ?><?php echo $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : ''; ?></p>
+				<?php echo $this->pub->submitter()->name; ?><?php echo $this->pub->submitter()->organization ? ', ' . $this->pub->submitter()->organization : ''; ?></p>
 				<p class="hint">* <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?>
 				</p>
 			</div>

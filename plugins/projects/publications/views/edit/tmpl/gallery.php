@@ -37,8 +37,8 @@ else
 }
 ?>
 <?php echo $this->project->provisioned == 1
-			? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
-			: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
+			? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub )
+			: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->title); ?>
 
 <?php
 	// Draw status bar

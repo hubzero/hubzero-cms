@@ -39,11 +39,14 @@ $pubParams = $this->publication->params;
 			$info .= ' <a href="' . $item->url . '" target="_blank">Read license terms &rsaquo;</a>';
 		}
 
+		$icon = $item->icon;
+		$icon = str_replace('/com_publications/assets/img/', '/com_publications/site/assets/img/', $icon);
+
 		?>
 		<li class="type-license allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
 			<span class="item-info"></span>
 			<span class="item-wrap">
-			<?php if ($item->icon) { echo '<img src="' . $item->icon . '" alt="' . htmlentities($item->title) . '" />'; } ?><?php echo $item->title; ?>
+			<?php if ($item->icon) { echo '<img src="' . $icon . '" alt="' . htmlentities($item->title) . '" />'; } ?><?php echo $item->title; ?>
 			</span>
 			<span class="item-fullinfo">
 				<?php echo $info; ?>

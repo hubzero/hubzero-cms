@@ -27,13 +27,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 <div id="plg-header">
-<?php if ($this->project->provisioned == 1 ) { ?>
+<?php if ($this->project->isProvisioned()) { ?>
 <h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
 <h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
 <?php } ?>
 </div>
-<?php if ($this->project->provisioned == 1 ) { ?>
+<?php if ($this->project->isProvisioned()) { ?>
 <div class="grid">
 	<div class="col span9">
 <?php } ?>
@@ -44,28 +44,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 		{
 			$current = $this->choices[$i];
 			$action = 'publication';
-			// Check if type is supported (need a plugin)
-			if (isset($this->useBlocks) && !$this->useBlocks)
-			{
-				if (!Plugin::isEnabled('projects', $current->alias))
-				{
-					continue;
-				}
-				$action = 'new';
-			}
-			// Checks for curation
-			if (isset($this->useBlocks) && $this->useBlocks)
-			{
-				// TBD
-			}
+
 		?>
 		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo $this->url . '?action=' . $action . '&amp;base=' . $current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
-
 		<?php } ?>
 		<div class="clear"></div>
 	</div>
 </div>
-<?php if ($this->project->provisioned == 1 ) { ?>
+<?php if ($this->project->isProvisioned()) { ?>
 	</div><!-- / .subject -->
 	<div class="col span3 omega">
 		<div id="start-projectnote">

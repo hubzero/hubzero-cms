@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
 // Get block properties
 $step 	  = $this->step;
 $block	  = $this->pub->_curationModel->_progress->blocks->$step;
@@ -34,15 +32,6 @@ $complete = $block->status->status;
 $name	  = $block->name;
 
 $props = $name . '-' . $this->step;
-
-// Build url
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
-
-// Are we in draft flow?
-$move = Request::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
 
 $required 		= $this->manifest->params->required;
 
@@ -67,7 +56,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 						<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 
 						<?php
-						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
+						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
 
 						if (count($tf) > 0) {
 							echo $tf[0];
@@ -81,21 +70,16 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				</div>
 			</div>
 </div>
-<?php if ($this->categories && count($this->categories) > 1) {
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		?>
+<?php if ($this->categories && count($this->categories) > 1) { ?>
 <div class="blockelement el-optional el-complete">
 	<div class="element_editing grid">
 		<div class="pane-wrapper col span8">
 				<span class="checker">&nbsp;</span>
 				<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
-		<?php foreach ($this->categories as $cat) {
-			$params = new $paramsClass($cat->params);
+		<?php foreach ($this->categories as $cat)
+		{
+			$params = new JRegistry($cat->params);
+
 			// Skip inaplicable category
 			if (!$params->get('type_' . $this->pub->base, 1))
 			{

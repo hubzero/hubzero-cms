@@ -28,12 +28,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $prov = $this->pub->_project->isProvisioned() ? 1 : 0;
 
 // Build url
-$route = $this->pub->_project->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->get('alias') . '&active=publications';
-
-$url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
+$route = $this->pub->link('editbase');
+$url   = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
 
 // Are we in draft flow?
 //$move = Request::getVar( 'move', '' );
@@ -60,7 +56,7 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 	<form action="<?php echo $url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	 	 <fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->pub->_project->get('id'); ?>" id="projectid" />
-			<input type="hidden" name="version" id="version" value="<?php echo $this->pub->version; ?>" />
+			<input type="hidden" name="version" id="version" value="<?php echo $this->pub->versionAlias; ?>" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" id="action" value="save" />
 			<input type="hidden" name="complete" id="complete" value="<?php echo $complete; ?>" />

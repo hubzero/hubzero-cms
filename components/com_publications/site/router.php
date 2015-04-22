@@ -151,6 +151,18 @@ class Router extends Base
 				}
 			}
 		}
+		elseif (isset($segments[1]) && $segments[1] == 'submit')
+		{
+			// Links within projects publications plugin
+			$vars['task']   = 'submit';
+			$vars['active'] = $segments[0];
+			if (!empty($segments[2]) && is_numeric($segments[2]))
+			{
+				$vars['pid'] = $segments[2];
+			}
+
+			return $vars;
+		}
 		elseif (in_array($segments[0], $tasks))
 		{
 			$vars['task'] = $segments[0];

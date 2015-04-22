@@ -54,8 +54,8 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 
 ?>
 	<?php echo $this->project->provisioned == 1
-				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route, $this->title)
-				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->title)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub ); ?>
 
 <?php
 	// Draw status bar
