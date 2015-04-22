@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,145 +23,262 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Config\Processor;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Config\Processor as Base;
+use Exception;
+use stdClass;
 
 /**
- * Ini parser/writer
- **/
-class Ini
+ * INI format handler for Registry.
+ */
+class Ini extends Base
 {
 	/**
-	 * Raw config string
+	 * Cached strings
 	 *
-	 * @var string
-	 **/
-	private $raw = null;
+	 * @var  array
+	 */
+	protected static $cache = array();
 
 	/**
-	 * Parsed config values
+	 * Try to determine if the data can be parsed
 	 *
-	 * @var array
-	 **/
-	private $parsed = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @param  (string) - file/string/array/object of ini content
-	 * @return void
-	 **/
-	public function __construct($config)
+	 * @param   string   $data
+	 * @return  boolean
+	 */
+	public function canParse($data)
 	{
-		if (is_file($config) && is_readable($config))
+		$data = trim($data);
+
+		if ($data && strpos($data, '=') === false)
 		{
-			$contents = file_get_contents($config);
-			$this->raw = $contents;
+			return false;
 		}
-		else if (is_array($config) || is_object($config))
+
+		try
 		{
-			$this->parsed = (array)$config;
+			$obj = parse_ini_string($data);
 		}
-		else if (is_string($config))
+		catch (Exception $e)
 		{
-			$this->raw = $config;
+			return false;
 		}
+
+		return true;
 	}
 
 	/**
-	 * Parse ini content (file or string) - static method
+	 * Converts an object into an INI formatted string
 	 *
-	 * @param  (string) - file/string/array/object of ini content
-	 * @param  (bool)   - parse headings or keep flat
-	 * @return (array)  - parsed content
-	 **/
-	public static function parse($config, $headings=true)
-	{
-		static $instances = array();
-
-		$identifier = serialize($config).$headings;
-
-		if (!isset($instances[$identifier]))
-		{
-			$instances[$identifier] = new self($config);
-			$instances[$identifier]->_parse($headings);
-		}
-
-		return $instances[$identifier]->parsed;
-	}
-
-	/**
-	 * Parse ini content
+	 * Unfortunately, there is no way to have INI values nested further than two
+	 * levels deep.  Therefore we will only go through the first two levels of
+	 * the object.
 	 *
-	 * @param  (bool)  - include headings or keep flat
-	 * @return void
-	 **/
-	private function _parse($headings=true)
+	 * @param   object  $object   Data source object.
+	 * @param   array   $options  Options used by the formatter.
+	 * @return  string  INI formatted string.
+	 */
+	public function objectToString($object, $options = array())
 	{
-		if (isset($this->parsed))
-		{
-			return $this->parsed;
-		}
+		// Initialize variables.
+		$local  = array();
+		$global = array();
 
-		$content = $this->raw;
-		$lines   = explode("\n", $content);
-		$parsed  = array();
-		$heading = null;
-
-		if (count($lines) > 0)
+		// Iterate over the object to set the properties.
+		foreach (get_object_vars($object) as $key => $value)
 		{
-			foreach ($lines as $line)
+			// If the value is an object then we need to put it in a local section.
+			if (is_object($value))
 			{
-				$line = trim($line);
-				if (substr($line, 0, 1) == "#" || substr($line, 0, 1) == ";")
+				// Add the section line.
+				$local[] = '';
+				$local[] = '[' . $key . ']';
+
+				// Add the properties for this section.
+				foreach (get_object_vars($value) as $k => $v)
 				{
-					continue;
+					$local[] = $k . '=' . $this->getValueAsINI($v);
 				}
-
-				if (substr($line, 0, 1) == "[")
-				{
-					preg_match('/\[([[:alnum:]_-]*)\]/', $line, $match);
-
-					if (isset($match[1]) && $headings)
-					{
-						$heading = $match[1];
-					}
-					continue;
-				}
-
-				if (strpos($line, "=") !== false)
-				{
-					$parts = explode("=", $line, 2);
-					$key   = trim($parts[0]);
-					$value = trim($parts[1]);
-
-					if (substr($value, 0, 1) == '"')
-					{
-						$value = substr($value, 1, -1);
-					}
-
-					if (isset($heading))
-					{
-						$parsed[$heading][$key] = $value;
-					}
-					else
-					{
-						$parsed[$key] = $value;
-					}
-				}
+			}
+			else
+			{
+				// Not in a section so add the property to the global array.
+				$global[] = $key . '=' . $this->getValueAsINI($value);
 			}
 		}
 
-		if (!empty($parsed))
+		return implode("\n", array_merge($global, $local));
+	}
+
+	/**
+	 * Parse an INI formatted string and convert it into an object.
+	 *
+	 * @param   string  $data     INI formatted string to convert.
+	 * @param   mixed   $options  An array of options used by the formatter, or a boolean setting to process sections.
+	 * @return  object  Data object.
+	 */
+	public function stringToObject($data, $options = array())
+	{
+		// Initialise options.
+		if (is_bool($options))
 		{
-			$this->parsed = $parsed;
+			$options = array('processSections' => $options);
 		}
+
+		$sections = (isset($options['processSections'])) ? $options['processSections'] : false;
+
+		// Check the memory cache for already processed strings.
+		$hash = md5($data . ':' . (int) $sections);
+		if (isset(self::$cache[$hash]))
+		{
+			return self::$cache[$hash];
+		}
+
+		// If no lines present just return the object.
+		if (empty($data))
+		{
+			return new stdClass;
+		}
+
+		// Initialize variables.
+		$obj = new stdClass;
+		$section = false;
+		$lines = explode("\n", $data);
+
+		// Process the lines.
+		foreach ($lines as $line)
+		{
+			// Trim any unnecessary whitespace.
+			$line = trim($line);
+
+			// Ignore empty lines and comments.
+			if (empty($line) || ($line{0} == ';'))
+			{
+				continue;
+			}
+
+			if ($sections)
+			{
+				$length = strlen($line);
+
+				// If we are processing sections and the line is a section add the object and continue.
+				if (($line[0] == '[') && ($line[$length - 1] == ']'))
+				{
+					$section = substr($line, 1, $length - 2);
+					$obj->$section = new stdClass;
+					continue;
+				}
+			}
+			elseif ($line{0} == '[')
+			{
+				continue;
+			}
+
+			// Check that an equal sign exists and is not the first character of the line.
+			if (!strpos($line, '='))
+			{
+				// Maybe throw exception?
+				continue;
+			}
+
+			// Get the key and value for the line.
+			list ($key, $value) = explode('=', $line, 2);
+
+			// Validate the key.
+			if (preg_match('/[^A-Z0-9_]/i', $key))
+			{
+				// Maybe throw exception?
+				continue;
+			}
+
+			// If the value is quoted then we assume it is a string.
+			$length = strlen($value);
+			if ($length && ($value[0] == '"') && ($value[$length - 1] == '"'))
+			{
+				// Strip the quotes and Convert the new line characters.
+				$value = stripcslashes(substr($value, 1, ($length - 2)));
+				$value = str_replace('\n', "\n", $value);
+			}
+			else
+			{
+				// If the value is not quoted, we assume it is not a string.
+
+				// If the value is 'false' assume boolean false.
+				if ($value == 'false')
+				{
+					$value = false;
+				}
+				// If the value is 'true' assume boolean true.
+				elseif ($value == 'true')
+				{
+					$value = true;
+				}
+				// If the value is numeric than it is either a float or int.
+				elseif (is_numeric($value))
+				{
+					// If there is a period then we assume a float.
+					if (strpos($value, '.') !== false)
+					{
+						$value = (float) $value;
+					}
+					else
+					{
+						$value = (int) $value;
+					}
+				}
+			}
+
+			// If a section is set add the key/value to the section, otherwise top level.
+			if ($section)
+			{
+				$obj->$section->$key = $value;
+			}
+			else
+			{
+				$obj->$key = $value;
+			}
+		}
+
+		// Cache the string to save cpu cycles -- thus the world :)
+		self::$cache[$hash] = clone ($obj);
+
+		return $obj;
+	}
+
+	/**
+	 * Method to get a value in an INI format.
+	 *
+	 * @param   mixed   $value  The value to convert to INI format.
+	 * @return  string  The value in INI format.
+	 */
+	protected function getValueAsINI($value)
+	{
+		// Initialize variables.
+		$string = '';
+
+		switch (gettype($value))
+		{
+			case 'integer':
+			case 'double':
+				$string = $value;
+			break;
+
+			case 'boolean':
+				$string = $value ? 'true' : 'false';
+			break;
+
+			case 'string':
+				// Sanitize any CRLF characters..
+				$string = '"' . str_replace(array("\r\n", "\n"), '\\n', $value) . '"';
+			break;
+		}
+
+		return $string;
 	}
 }

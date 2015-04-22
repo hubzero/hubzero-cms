@@ -31,14 +31,11 @@
 namespace Hubzero\Config\Processor;
 
 use Hubzero\Config\Processor as Base;
-use Symfony\Component\Yaml\Yaml as SymfonyYaml;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Hubzero\Error\Exception\RuntimeException;
 
 /**
- * YAML Processor
+ * JSON processor for Registry.
  */
-class Yaml extends Base
+class Json extends Base
 {
 	/**
 	 * Try to determine if the data can be parsed
@@ -50,14 +47,14 @@ class Yaml extends Base
 	{
 		$data = trim($data);
 
-		try
+		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
-			// Parse config string
-			$parsed = SymfonyYaml::parse($data);
+			return false;
 		}
-		catch (ParseException $e)
+
+		$obj = json_decode($data);
+		if (json_last_error() != JSON_ERROR_NONE)
 		{
-			// Throw an exception Hubzero knows how to catch
 			return false;
 		}
 
@@ -65,11 +62,11 @@ class Yaml extends Base
 	}
 
 	/**
-	 * Converts an object into a YAML formatted string.
+	 * Converts an object into a JSON formatted string.
 	 *
 	 * @param   object  $object   Data source object.
 	 * @param   array   $options  Options used by the formatter.
-	 * @return  string  YAML formatted string.
+	 * @return  string  JSON formatted string.
 	 */
 	public function objectToString($object, $options = array())
 	{
@@ -78,37 +75,39 @@ class Yaml extends Base
 			return $object;
 		}
 
-		return SymfonyYaml::dump($object, 2);
+		return json_encode($object);
 	}
 
 	/**
-	 * Parse a YAML formatted string and convert it into an object.
+	 * Parse a JSON formatted string and convert it into an object.
 	 *
-	 * @param   string  $data     YAML formatted string to convert.
+	 * If the string is not in JSON format, this method will attempt to parse it as INI format.
+	 *
+	 * @param   string  $data     JSON formatted string to convert.
 	 * @param   array   $options  Options used by the formatter.
 	 * @return  object  Data object.
 	 */
-	public function stringToObject($data, $options = array())
+	public function stringToObject($data, $options = array('processSections' => false))
 	{
 		if (is_object($data))
 		{
 			return $data;
 		}
 
+		if (is_bool($options))
+		{
+			$options = array('processSections' => $options);
+		}
+
 		$data = trim($data);
-
-		// Try to parse, catching exception if it fails
-		try
+		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
-			// Parse config string
-			$parsed = SymfonyYaml::parse($data);
+			$obj = Base::instance('ini')->stringToObject($data, $options);
 		}
-		catch (ParseException $e)
+		else
 		{
-			// Throw an exception Hubzero knows how to catch
-			throw new RuntimeException("Failed to parse provided Yaml content.");
+			$obj = json_decode($data);
 		}
-
-		return $parsed;
+		return $obj;
 	}
 }
