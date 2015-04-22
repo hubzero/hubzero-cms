@@ -77,7 +77,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 							$info .= ' <div class="hidden">';
 							$info .= ' 	<div class="full-content" id="more-lic"><pre>' . preg_replace("/\r\n/", "\r", $text) . '</pre></div>';
 							$info .= ' </div>';
-						} 
+						}
 					$icon = $this->license->icon;
 					$icon = str_replace('/com_publications/assets/img/', '/com_publications/site/assets/img/', $icon);
 				?>
