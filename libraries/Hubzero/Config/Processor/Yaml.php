@@ -78,7 +78,32 @@ class Yaml extends Base
 			return $object;
 		}
 
-		return SymfonyYaml::dump((array) $object, 2);
+		return SymfonyYaml::dump((array) $this->asArray($object), 2);
+	}
+
+	/**
+	 * Method to recursively convert an object of data to an array.
+	 *
+	 * @param   object  $data  An object of data to return as an array.
+	 * @return  array   Array representation of the input object.
+	 */
+	protected function asArray($data)
+	{
+		$array = array();
+
+		foreach (get_object_vars((object) $data) as $k => $v)
+		{
+			if (is_object($v))
+			{
+				$array[$k] = $this->asArray($v);
+			}
+			else
+			{
+				$array[$k] = $v;
+			}
+		}
+
+		return $array;
 	}
 
 	/**
