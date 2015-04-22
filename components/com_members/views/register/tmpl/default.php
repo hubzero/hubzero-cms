@@ -109,6 +109,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 		{
 			// Check to see if third party auth plugins are enabled
 			$plugins        = JPluginHelper::getPlugin('authentication');
+			JPluginHelper::importPlugin('authentication');
 			$authenticators = array();
 
 			foreach ($plugins as $p)
@@ -135,11 +136,21 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 				<fieldset>
 					<legend>Connect With</legend>
 					<div id="providers" class="auth">
-						<?php foreach ($authenticators as $a) { ?>
+						<?php
+						foreach ($authenticators as $a) {
+							$refl = new \ReflectionClass('plgauthentication'.$a['name']);
+							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL))) {
+								echo is_array($html) ? implode("\n", $html) : $html;
+							}
+							else {
+						?>
 							<a class="<?php echo $a['name']; ?> account" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name']); ?>">
 								<div class="signin">Sign in with <?php echo $a['display']; ?></div>
 							</a>
-						<?php } ?>
+						<?php
+							}
+						}
+						?>
 					</div>
 				</fieldset>
 				<div class="clear"></div>

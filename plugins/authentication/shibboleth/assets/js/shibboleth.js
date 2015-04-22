@@ -1,7 +1,19 @@
 jQuery(function($) {
 	var sa = $('.shibboleth.account'),
-		sel = sa.children('select');
-	// if we make the select box multiple-select we can remove the placeholder 
+		sel = $('<select name="idp"">').attr('title', sa.data('placeholder'));
+
+	sel.append($('<option class="placeholder">').text(sa.data('placeholder')));
+	sa.find('li').each(function(_, li) {
+		li = $(li);
+		sel.append($('<option>')
+			.data('content', li.data('content'))
+			.val(li.data('entityid'))
+			.text(li.text())
+		);
+	});
+	sa.empty().append('<div class="default-icon">').append(sel);
+		//sel = sa.children('select');
+	// if we make the select box multiple-select we can remove the placeholder
 	// <option> and let selectpicker manage the label. since we're watching the
 	// change event anyway it doesn't matter whether selectpicker thinks it's
 	// operating as a single- or multiple-select
@@ -9,9 +21,10 @@ jQuery(function($) {
 		.prop('multiple', true)
 		.children('.placeholder')
 			.remove();
-	
+
+	var search = false;
 	// let people search if it seems like the list length warrants it
-	if (/[&?]shib-search/.test(location.search) || sel.find('option').length > 10) {
+	if ((search = /[&?]shib-search/.test(location.search) || sel.find('option').length > 10)) {
 		sel.data('live-search', true);
 	}
 
@@ -23,11 +36,11 @@ jQuery(function($) {
 			// workaround for using a multi-select control (for the otherwise hard-
 			// to-emulate "none-selected")
 			//
-			// if the value just changed to none-selected it is because the user 
-			// selected the item that was already active again from the list, 
+			// if the value just changed to none-selected it is because the user
+			// selected the item that was already active again from the list,
 			// possibly because they didn't notice it was filled out by default
-			// from a prior occasion. 
-			// 
+			// from a prior occasion.
+			//
 			// in this case we'd rather submit the form with the value they just
 			// clicked, which we will after redrawing the control
 			if (!sel.val()) {
@@ -42,16 +55,23 @@ jQuery(function($) {
 				priorVal = sp.val() ? sel.val()[0] : null;
 			}
 			sel.selectpicker('render');
+
 			// we've hidden the submit button, making a selection is sufficient to
 			// proceed
 			// setTimeout makes the UI slightly nicer in that it gives a chance for
 			// the selectpicker to update the selection before the browser starts
 			// to wait on the form submission
-			setTimeout(function() { sa.submit() }, 0);
-		});
+			setTimeout(function() {
+				var eid = sel.val();
+				if (eid && eid[0]) {
+					location = location.protocol + '//' + location.host + (location.port ? ':' + location.port : '') + '/login?authenticator=shibboleth&idp=' + encodeURIComponent(eid);
+				}
+			}, 0);
+		})
+		;
 	priorVal = sp.val() ? sel.val()[0] : null;
-	
-	// also submit the form if there is a default institution filled in and the 
+
+	// also submit the form if there is a default institution filled in and the
 	// user clicks the control (which does not fire 'change')
 	sa.find('.btn-default').click(function(evt) {
 		if (sel.val() && sel.val().length) {
@@ -59,8 +79,10 @@ jQuery(function($) {
 		}
 	});
 
+	sa.find('input').attr('placeholder', 'Search');
+
 	// the select control handles submission, the no-js fallback button can go away
-	sa	
+	sa
 		.addClass('selectpicked')
 		.children('button.submit')
 			.remove();

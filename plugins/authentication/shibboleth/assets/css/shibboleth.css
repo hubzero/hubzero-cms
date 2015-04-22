@@ -1,15 +1,44 @@
 .shibboleth.account:hover {
-	box-shadow: 0 0 transparent; 
+	box-shadow: 0 0 transparent;
+}
+.shibboleth.account .inner {
+	max-height: 300px !important;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.shibboleth.account li.active a {
+	color: #fff !important;
 }
 .shibboleth.account {
 	padding-left: 9px;
-	height: 86px;
+}
+.shibboleth.account .default-icon {
+	margin-left: 10px;
+}
+.auth .shibboleth.account {
+	padding: 0;
 }
 .shibboleth.account .selectpicker a img, .shibboleth.account .pull-left img {
 	border-radius: 3px;
 	border: 3px solid #fff;
 }
+.shibboleth.account h3 {
+	color: #fff;
+	margin: 0;
+	margin-left: 2em;
+}
+.shibboleth.account ol {
+	max-height: 200px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.shibboleth.account {
+ 	height: auto;
+	overflow: hidden;
+	max-height: 250px;
+}
 .shibboleth.account.selectpicked {
+	overflow: visible;
 	height: 50px;
 }
 .shibboleth.account.selectpicked .default-icon {
@@ -36,10 +65,11 @@
 	width: 298px;
 	border: 0;
 	font-weight: bold;
-	font-size: 17px;
+	font-size: 15px;
 	padding-top: 9px;
 	color: #fff;
 	text-shadow: none;
+	padding-left: 4px;
 	line-height: 26px;
 }
 .shibboleth.account button.submit {
@@ -52,8 +82,7 @@
 	width: 334px;
 }
 .shibboleth.account .bootstrap-select {
-	margin-top: 0;
-	height: 46px;
+	margin-top: -10px;
 	width: 300px !important;
 }
 .shibboleth.account .dropdown-menu {
@@ -62,8 +91,9 @@
 }
 .shibboleth.account .bootstrap-select img {
 	width: 32px;
+	margin-left: -8px;
 }
-.shibboleth.account .dropdown-menu, .incommon-color {
+.shibboleth.account .dropdown-menu, .incommon-color, .auth .shibboleth.account {
 	background: #007db1 !important; /* color from InCommon branding */
 }
 .shibboleth.account .dropdown-menu a, .incommon-color a {
@@ -77,29 +107,12 @@
 .shibboleth.account button .filter-option {
 	margin-top: -6px;
 }
-.shibboleth.account button .filter-option img {
-	height: 28px;
-}
 .shibboleth.account .bootstrap-select .caret {
 	border-top: 4px solid #fff;
 }
 .shibboleth.account .dropdown-menu li.no-results {
 	font-style: italic;
 	background: transparent;
-}
-.shibboleth.account .dropdown-menu li:after {
-    bottom: 0;
-    color: #ffffff;
-    content: "›";
-    font-family: fontcons;
-    font-size: 14px;
-    font-weight: normal;
-    margin-right: 5px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: -5px;
-    width: 1em;
 }
 .shibboleth.account .dropdown-menu li.no-results:after {
 	content: '';

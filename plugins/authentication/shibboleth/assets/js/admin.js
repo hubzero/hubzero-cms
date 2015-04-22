@@ -1,6 +1,6 @@
 // auth link invalidation form
 jQuery(function($) {
-	var prnt = $('.auth-links')
+	var prnt = $('.shibboleth')
 		serialized = prnt.children('.serialized'),
 		val = JSON.parse(serialized.val())
 		;
@@ -22,7 +22,7 @@ jQuery(function($) {
 jQuery(function($) {
 	$('#jform_params_institutions-lbl').hide();
 
-	var prnt = $('.shibboleth'), 
+	var prnt = $('.shibboleth'),
 		// control values are stored in a JSON string so they fit in the extensions table
 		serialized = $('.shibboleth input.serialized'),
 		// initialize from existing params
@@ -36,6 +36,7 @@ jQuery(function($) {
 			val.activeIdps = [];
 			var anyInvalid = false;
 			prnt.find('ul.active li').each(function(_, li) {
+				addedEntities = {}
 				var idp = {}, thisInvalid = false;
 				// copy form data to 'val'
 				$(li).find('input').each(function(_, inp) {
@@ -45,7 +46,7 @@ jQuery(function($) {
 					thisInvalid = thisInvalid || (name == 'entity_id' && !idp[name].replace(/\s/g, '')) || (name == 'label' && !idp[name].replace(/\s/g, ''));
 					anyInvalid = anyInvalid || thisInvalid;
 					if (name == 'logo') {
-						idp.logo_data = inp.data('logo_data');
+//						idp.logo_data = inp.data('logo_data');
 					}
 				});
 				if (!thisInvalid) {
@@ -83,7 +84,7 @@ jQuery(function($) {
 		}
 		var imgData;
 		li.find('.preview').remove();
-		if (true || href != logoInp.data('orig') || !(imgData = logoInp.data('logo_data'))) {
+		if (href != logoInp.data('orig') || !(imgData = logoInp.data('logo_data'))) {
 			$.ajax({
 				'url': prnt.data('iconify'),
 				'data': {'img': href},
@@ -110,9 +111,9 @@ jQuery(function($) {
 				updateIdps();
 			}))
 			[before === true ? 'prependTo' : 'appendTo'](existing);
-			if (before) {
-				li.animate('pulsate', 'slow');
-			}
+		if (before) {
+			li.animate('pulsate', 'slow');
+		}
 		for (var k in idp) {
 			if (k === 'logo_data' || k === 'logoData') {
 				continue;
@@ -134,15 +135,46 @@ jQuery(function($) {
 		updateLogo(li);
 	};
 
+	var normalizeUniversity = function(x) {
+		if (!x) {
+			return '';
+		}
+		return x.toLowerCase().replace(/^((the|of|university|college)\W)+/, '');
+	};
+
+	var addedEntities = {};
+	if (val.activeIdps) {
+		val.activeIdps.forEach(function(idp) {
+			addedEntities[idp.entity_id] = 1;
+		});
+	}
 	// list entities read from the shibboleth conf, if any
 	if (val.xmlRead) {
-		prnt.append($('<h4>ID providers in metadata</h4>'));
-		var ul = $('<ul class="metadata">').appendTo(prnt);
-		val.idps.forEach(function(idp) {
+		var ul = $('<ul class="metadata">');
+		var addAll = $('<button>Add all</button>').click(function(evt) {
+			evt.stopPropagation();
+			ul.find('.add.icon').click();
+			setTimeout(function() {
+				console.log(serialized.val());
+			}, 5000);
+			return false;
+		});
+		prnt.append($('<h4>ID providers in metadata</h4>').append(addAll));
+		ul.appendTo(prnt);
+		val.idps.sort(function(a, b) {
+			a = normalizeUniversity(a.label);
+			b = normalizeUniversity(b.label);
+			return a > b ? 1 : -1;
+		}).forEach(function(idp) {
+			if (idp.error || addedEntities[idp.entity_id]) {
+				return;
+			}
 			var li = $('<li>');
 			li.append($('<span class="add icon">').click(function() {
+				addedEntities[idp.entity_id] = 1;
 				newActiveIdp(idp, true);
 				updateIdps();
+				$(this).parent().remove();
 			}));
 			for (var k in idp) {
 				li.append($('<p>').append($('<label>').append($('<span>').text(keyToLabel(k))).append(document.createTextNode(idp[k]))))
@@ -190,4 +222,13 @@ jQuery(function($) {
 		.append(addNew);
 	var existing = $('<ul class="active">').sortable({'stop': updateIdps}).appendTo(prnt);
 	val.activeIdps.forEach(newActiveIdp);
+	$('<button>Sort</button>').appendTo(prnt).click(function(evt) {
+		evt.stopPropagation();
+		existing.children('li').sort(function(a, b) {
+			var lblA = $(a).find('input[name=label]').val();
+			var lblB = $(b).find('input[name=label]').val();
+			return normalizeUniversity(lblA) > normalizeUniversity(lblB) ? 1 : -1;
+		}).appendTo(existing);
+		return false;
+	});
 });

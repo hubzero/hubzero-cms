@@ -3,7 +3,6 @@ $schemes = array(
 	'http'  => 1,
 	'https' => 1
 );
-
 // thumbnail service
 if (isset($_GET['img']) && isset($schemes[parse_url($_GET['img'], \PHP_URL_SCHEME)]))
 {
@@ -48,6 +47,9 @@ jimport('joomla.form.formfield');
 
 class JFormFieldInstitutions extends JFormField
 {
+	private static $mdSource = 'https://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml';
+	private static $mdDest = '/www/tmp/InCommon-metadata-fallback.xml';
+
 	protected function getInput()
 	{
 		$doc = JFactory::getDocument();
@@ -127,7 +129,73 @@ class JFormFieldInstitutions extends JFormField
 			}
 			$rv[] = $item;
 		}
+		$rv = array_merge($rv, self::getResearchAndScholarshipIdps($curl));
 		curl_close($curl);
 		return array($mtime, $rv);
+	}
+
+	private static function getResearchAndScholarshipIdps($ch)
+	{
+		// fetch the latest InCommon metadata, if needed
+		curl_setopt($ch, CURLOPT_URL, self::$mdSource);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+		if (file_exists(self::$mdDest)) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, ['If-Modified-Since: '.gmdate('D, d M Y H:i:s \G\M\T', filemtime(self::$mdDest))]);
+			$xml = curl_exec($ch);
+			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 304) {
+				$xml = file_get_contents(self::$mdDest);
+			}
+			else {
+				file_put_contents(self::$mdDest, $xml);
+			}
+		}
+		else {
+			$xml = curl_exec($ch);
+			file_put_contents(self::$mdDest, curl_exec($ch));
+		}
+		curl_setopt($ch, CURLOPT_HTTPHEADER, []);
+
+		$xp = new \SimpleXMLElement($xml);
+		foreach ($xp->getNamespaces(TRUE) as $name=>$url) {
+			$xp->registerXPathNamespace($name ? $name : 'base', $url);
+		}
+		$rv = [];
+		// select entities having the saml attribute indicating that they are research & scholarship category members
+		// being members ourselves, we can get attributes about users released fromt these entities
+		foreach ($xp->xpath('//base:EntityDescriptor[
+			base:Extensions/
+				mdattr:EntityAttributes/
+					saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/
+						saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or text()="http://refeds.org/category/research-and-scholarship"]
+			]') as $entity) {
+			// easier to work with as an array, the SimpleXMLElement class is bizarre
+			$entity = (array)$entity;
+			$id = $entity['@attributes']['entityID'];
+			$title = (string)$xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:DisplayName')[0];
+			preg_match('/([^.:]+[.][^.]+?)(?:[\/]|$)/', $id, $ma);
+			$host = $ma[1];
+			$logo = $xp->xpath('//base:EntityDescriptor[attribute::entityID="'.$id.'"]//mdui:Logo');
+			$logo = isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico';
+//			curl_setopt($ch, CURLOPT_URL, isset($logo[0]) ? (string)$logo[0] : 'https://'.$host.'/favicon.ico');
+//			$iconData = curl_exec($ch);
+//			$icon = NULL;
+//			if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
+//				$ctype = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+//				if ($ctype == 'text/plain') {
+//					$ctype = 'image/x-icon';
+//				}
+//				$icon = 'data:'.$ctype.';base64,'.base64_encode($iconData);
+//			}
+			$rv[] = [
+				'entity_id' => $id,
+				'label'     => $title,
+				'host'      => $host,
+				'logo'      => $logo
+			];
+		}
+		return $rv;
 	}
 }
