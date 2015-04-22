@@ -188,7 +188,7 @@ $more = count($this->pubstats) - $this->limit;
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $headerBgColor; ?>; color: <?php echo $headerTextColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>; border-top: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $headerBgColor; ?>">
 										<tbody>
 											<tr>
-												<td width="20" height="30"></td>
+												<td width="20"></td>
 												<?php if ($this->image) { ?>
 												<td width="55">
 													<a href="<?php echo $base . $append; ?>">
@@ -198,19 +198,12 @@ $more = count($this->pubstats) - $this->limit;
 												<td width="10"></td>
 												<td width="425">
 												<?php } else { ?>
-												<td width="480">
+												<td width="500">
 												<?php } ?>
 													<p style="color: <?php echo $introTextColor; ?>; margin: 10px 0 3px 0; font-weight: bold;"><strong>Dear <?php echo $this->juser->get('name'); ?>,</strong></p>
 												<p style="margin: 0; font-size: 12px;">Here is a monthly usage report for your published datasets in <?php echo $jconfig->getValue('config.sitename'); ?>: <?php echo date('M Y'); ?> </p>
 												</td>
-												<td width="40">
-													<?php if ($profileThumb) { ?>
-													<a href="<?php echo $profileLink . DS . 'profile' . $append; ?>">
-														<img width="30" border="0" src="<?php echo $profileThumb; ?>" alt="" />
-													</a>
-													<?php } ?>
-												</td>
-												<td width="15"></td>
+												<td width="35"></td>
 											</tr>
 										</tbody>
 									</table>
@@ -254,50 +247,39 @@ $more = count($this->pubstats) - $this->limit;
 													$sefManage 	= $baseManage . DS . $stat->publication_id;
 													$sefView 	= $baseView . DS . $stat->publication_id;
 
-													$thumb = $baseView . DS . $stat->publication_id . DS . $stat->id . DS . 'Image:thumb';
+												//	$thumb = $baseView . DS . $stat->publication_id . DS . $stat->id . DS . 'Image:thumb';
 													$link  = $base . DS . trim($sefView, DS) . $append;
 													$manageLink  = $base . DS . trim($sefManage, DS) . $append;
 											?>
 											<tr>
-												<td width="25"></td>
-												<td width="75">
-													<a href="<?php echo $link; ?>"><img width="55" src="<?php echo $thumb; ?>" style="width:55px;" alt=""></a>
+												<td width="45"></td>
+												<td width="320">
+													<p style="color: #333; font-weight:bold;"><a href="http://dev33.hubzero.org/publications/31?from=sheilanamilo@gmail.com" style="color: #333; text-decoration: none;">My New Model</a></p>
+													<p style="color: #777; font-style: italic;"><a href="http://dev33.hubzero.org/publications/31?from=sheilanamilo@gmail.com" style="color: #33a9cf;">View publication</a> <br /> <a href="http://dev33.hubzero.org/publications/submit/31?from=sheilanamilo@gmail.com" style="color: #33a9cf;">Manage</a></p>
 												</td>
-												<td width="545">
-													<p style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><a href="<?php echo $link; ?>" style="color: <?php echo $titleLinkColor; ?>; text-decoration: none;"><?php echo $stat->title; ?></a></p>
+												<td width="320">
 													<table cellpadding="0" cellspacing="0" border="0" style="font-size: 12px; padding: 0; margin: 0;">
 				                                        <tbody>
 															<tr style="padding: 0; margin: 0;">
-																<td width="265">Page views last month:</td>
+																<td width="270">Page views last month:</td>
 																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_views; ?></td>
-																<td width="30"></td>
-																<td width="200"></td>
 															</tr>
 															<tr>
-																<td height="10" style="color: <?php echo $backgroundColor; ?> !important;background-color: <?php echo $backgroundColor; ?>;"><div style="height: 10px !important; visibility: hidden;">&nbsp;</div></td>
+																<td height="5" style="color: <?php echo $backgroundColor; ?> !important;background-color: <?php echo $backgroundColor; ?>;"><div style="height: 5px !important; visibility: hidden;">&nbsp;</div></td>
+																<td></td>
 															</tr>
 															<tr style="padding: 0; margin: 0;">
-
-																<td width="265">Downloads last month:</td>
+																<td width="270">Downloads last month:</td>
 																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_primary; ?></td>
-																<td width="30"></td>
-																<td width="200" style="padding: 0; margin: 0;">
-																</td>
-
 															</tr>
 															<tr>
-																<td height="10" style="color: <?php echo $backgroundColor; ?> !important;background-color: <?php echo $backgroundColor; ?>;"><div style="height: 10px !important; visibility: hidden;">&nbsp;</div></td>
-																<td></td>
-																<td></td>
+																<td height="5" style="color: <?php echo $backgroundColor; ?> !important;background-color: <?php echo $backgroundColor; ?>;"><div style="height: 5px !important; visibility: hidden;">&nbsp;</div></td>
 																<td></td>
 															</tr>
 															<tr style="padding: 0; margin: 0;">
 
-																<td width="265">Total downloads to date:</td>
+																<td width="270">Total downloads to date:</td>
 																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->total_primary; ?></td>
-																<td width="30"></td>
-																<td width="200" style="color: #777; font-style: italic;text-align: right;"><a href="<?php echo $link;  ?>" style="color: <?php echo $linkColor; ?>;">View publication</a> | <a href="<?php echo $manageLink; ?>" style="color: <?php echo $linkColor; ?>;">Manage</a></td>
-
 															</tr>
 				                                    	</tbody>
 													</table>
@@ -329,7 +311,7 @@ $more = count($this->pubstats) - $this->limit;
 										<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
 											<tbody>
 												<tr>
-													<td style="background-color: <?php echo $backgroundColor; ?>; text-align: center; font-size: 12px;"><p style="font-size: 12px; margin: 0">All of your published datasets have been downloaded a total of <span style="font-weight: bold;"><?php echo $this->totals->all_total_primary; ?></span> times to date. <a href="<?php echo $profileLink . '/impact' . $append; ?>" style="font-weight: bold; color: <?php echo $linkColor; ?>">View all usage</a><p></td>
+													<td style="background-color: <?php echo $backgroundColor; ?>; text-align: center; font-size: 12px;"><p style="font-size: 12px; margin: 0">All of your published datasets have been downloaded a total of <span style="font-weight: bold;"><?php echo $this->totals->all_total_primary; ?></span> times to date. <a href="<?php echo $profileLink . '/impact' . $append; ?>" style="font-weight: bold; color: <?php echo $linkColor; ?>">View all usage</a></p></td>
 												</tr>
 											</tbody>
 										</table>
