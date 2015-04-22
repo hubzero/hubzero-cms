@@ -66,7 +66,7 @@ if ($this->error) {
 					?>
 					<tr class="<?php echo $cls; ?>">
 						<td>
-							<time datetime="<?php echo $item->created; ?>"><?php echo JHTML::_('date', $item->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $this->escape($item->created); ?>"><?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
 							<?php echo $item->type; ?>

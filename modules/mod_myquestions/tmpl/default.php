@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Push the module CSS to the template
+$this->css();
 ?>
 <?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
 <ul class="module-nav">

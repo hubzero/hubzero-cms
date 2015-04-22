@@ -40,7 +40,7 @@ if ($this->getError())
 else if ($this->row)
 {
 	$row = new \Components\Blog\Models\Entry($this->row);
-	$base = rtrim(JURI::getInstance()->base(true), '/');
+	$base = rtrim(Request::base(true), '/');
 	?>
 	<div class="<?php echo $this->cls; ?>">
 		<p class="featured-img">
@@ -52,11 +52,10 @@ else if ($this->row)
 			<a href="<?php echo Route::url($row->link()); ?>">
 				<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 			</a>:
-		<?php if ($row->get('content')) { ?>
-			<?php echo $row->content('clean', $this->txt_length); ?>
-		<?php } ?>
+			<?php if ($row->get('content')) { ?>
+				<?php echo $row->content('clean', $this->txt_length); ?>
+			<?php } ?>
 		</p>
 	</div>
 	<?php
 }
-?>

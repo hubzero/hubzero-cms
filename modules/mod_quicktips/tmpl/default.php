@@ -42,4 +42,4 @@ if ($this->rows) { ?>
 			</p>
 		<?php } ?>
 	</div>
-<?php } ?>
+<?php }

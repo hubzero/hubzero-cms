@@ -30,6 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+// Push the module CSS to the template
+$this->css();
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
 	<h3><?php echo Lang::txt('MOD_WISHVOTERS_GIVING_MOST_INPUT'); ?></h3>

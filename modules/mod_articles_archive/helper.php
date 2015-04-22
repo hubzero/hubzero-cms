@@ -95,13 +95,13 @@ class Helper extends Module
 		$lists = array();
 		foreach ($rows as $row)
 		{
-			$date = JFactory::getDate($row->created);
+			$date = Date::of($row->created);
 
 			$created_month = $date->format('n');
 			$created_year  = $date->format('Y');
 
-			$created_year_cal = JHTML::_('date', $row->created, 'Y');
-			$month_name_cal   = JHTML::_('date', $row->created, 'F');
+			$created_year_cal = Date::of($row->created)->toLocal('Y');
+			$month_name_cal   = Date::of($row->created)->toLocal('F');
 
 			$lists[$i] = new stdClass;
 

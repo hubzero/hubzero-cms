@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 			foreach ($this->rows1 as $row)
 			{
-				$when = JHTML::_('date.relative', $row->proposed);
+				$when = Date::of($row->proposed)->relative();
 				$title = strip_tags($row->about) ? $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->about)), 160) : NULL;
 			?>
 			<li class="wishlist">
@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 			foreach ($this->rows2 as $row)
 			{
-				$when = JHTML::_('date.relative', $row->proposed);
+				$when = Date::of($row->proposed)->relative();
 				$title = strip_tags($row->about) ? $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->about)), 160) : NULL;
 			?>
 			<li class="wishlist">

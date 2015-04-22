@@ -32,7 +32,6 @@
 namespace Modules\Notices;
 
 use Hubzero\Module\Module;
-use JFactory;
 use Request;
 use Config;
 use Lang;
@@ -155,7 +154,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		// Set today's time and date
 		$now = Date::toSql();

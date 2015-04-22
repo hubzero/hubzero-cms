@@ -32,7 +32,6 @@ namespace Modules\MyTickets;
 
 use Hubzero\Module\Module;
 use Hubzero\User\Profile;
-use JFactory;
 
 /**
  * Module class for displaying a user's support tickets
@@ -46,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
 		$limit = intval($this->params->get('limit', 10));
@@ -119,11 +118,11 @@ class Helper extends Module
 			// Find support tickets on the user's contributions
 			$database->setQuery(
 				"SELECT id, summary, category, open, status, severity, owner, created, login, name,
-				 	(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-				 FROM `#__support_tickets` as st
-				 WHERE st.open=1 AND type=0 AND st.group IN ('$groups')
-				 ORDER BY created DESC
-				 LIMIT $limit"
+					(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+				FROM `#__support_tickets` as st
+				WHERE st.open=1 AND type=0 AND st.group IN ('$groups')
+				ORDER BY created DESC
+				LIMIT $limit"
 			);
 			$this->rows3 = $database->loadObjectList();
 			if ($database->getErrorNum())
@@ -132,9 +131,6 @@ class Helper extends Module
 				$this->rows3 = null;
 			}
 		}
-
-		// Push the module CSS to the template
-		$this->css();
 
 		require $this->getLayoutPath();
 	}

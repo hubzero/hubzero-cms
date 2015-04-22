@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Push the module CSS to the template
+$this->css();
+
 $total = count($this->courses);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>

@@ -33,8 +33,7 @@ namespace Modules\RandomImage;
 
 use Hubzero\Module\Module;
 use stdClass;
-use JString;
-use JURI;
+use Request;
 use Lang;
 
 /**
@@ -84,7 +83,7 @@ class Helper extends Module
 		$i      = count($images);
 		$random = mt_rand(0, $i - 1);
 		$image  = $images[$random];
-		$size   = getimagesize(JPATH_BASE . '/' . $image->folder . '/' . $image->name);
+		$size   = getimagesize(PATH_APP . DS . $image->folder . DS . $image->name);
 
 
 		if ($width == '')
@@ -136,7 +135,7 @@ class Helper extends Module
 		$files  = array();
 		$images = array();
 
-		$dir = JPATH_BASE . '/' . $folder;
+		$dir = PATH_APP . DS . $folder;
 
 		// check if directory exists
 		if (is_dir($dir))
@@ -156,7 +155,7 @@ class Helper extends Module
 			$i = 0;
 			foreach ($files as $img)
 			{
-				if (!is_dir($dir . '/' . $img))
+				if (!is_dir($dir . DS . $img))
 				{
 					if (preg_match('/' . $type . '/', $img))
 					{
@@ -175,24 +174,24 @@ class Helper extends Module
 	/**
 	 * Get a folder
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @return  string
 	 */
 	static function getFolder(&$params)
 	{
 		$folder = $params->get('folder');
 
-		$LiveSite = JURI::base();
+		$LiveSite = Request::base();
 
 		// if folder includes livesite info, remove
-		if (JString::strpos($folder, $LiveSite) === 0)
+		if (\JString::strpos($folder, $LiveSite) === 0)
 		{
 			$folder = str_replace($LiveSite, '', $folder);
 		}
 		// if folder includes absolute path, remove
-		if (JString::strpos($folder, JPATH_SITE) === 0)
+		if (\JString::strpos($folder, PATH_APP) === 0)
 		{
-			$folder= str_replace(JPATH_BASE, '', $folder);
+			$folder= str_replace(PATH_APP, '', $folder);
 		}
 		$folder = str_replace('\\', DIRECTORY_SEPARATOR, $folder);
 		$folder = str_replace('/', DIRECTORY_SEPARATOR, $folder);

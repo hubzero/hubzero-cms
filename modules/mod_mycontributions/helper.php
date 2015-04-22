@@ -31,7 +31,6 @@
 namespace Modules\MyContributions;
 
 use Hubzero\Module\Module;
-use JFactory;
 use User;
 
 /**
@@ -46,7 +45,7 @@ class Helper extends Module
 	 */
 	private function _getContributions()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 		$query .= "FROM `#__resource_types` AS rt, `#__resources` AS R ";
@@ -71,15 +70,15 @@ class Helper extends Module
 	 */
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		// Query filters defaults
 		$filters = array();
 		$filters['sortby'] = 'f.published DESC';
 		$filters['filterby'] = 'all';
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 		// Create a Tool object
 		$rows = \ToolsModelTool::getTools($filters, false);
@@ -278,9 +277,6 @@ class Helper extends Module
 
 		// how many tools to display?
 		$this->limit_other = intval($this->params->get('limit_other', 5));
-
-		// Push the module CSS to the template
-		$this->css();
 
 		// Tools in progress
 		$this->tools = ($this->show_tools) ? $this->_getToollist($this->show_questions, $this->show_wishes, $this->show_tickets, $this->limit_tools) : array();

@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,7 +32,6 @@ namespace Modules\RandomQuote;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Tables\Quote;
-use JFactory;
 
 /**
  * Module class for displaying a random quote
@@ -43,13 +41,13 @@ class Helper extends Module
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		//Get the admin configured settings
 		$this->charlimit  = $this->params->get('charlimit', 150);
@@ -84,7 +82,7 @@ class Helper extends Module
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -95,7 +93,7 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));

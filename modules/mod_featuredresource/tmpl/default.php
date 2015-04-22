@@ -37,7 +37,7 @@ if ($this->getError()) { ?>
 	if ($this->row) {
 ?>
 	<div class="<?php echo $this->cls; ?>">
-	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
+	<?php if (is_file(PATH_APP . $this->thumb)) { ?>
 		<p class="featured-img">
 			<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id); ?>">
 				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />

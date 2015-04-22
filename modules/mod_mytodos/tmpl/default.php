@@ -43,7 +43,6 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 			foreach ($this->rows as $row)
 			{
-				//$when = JHTML::_('date.relative', $row->proposed);
 				?>
 				<li class="todos">
 					<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&active=todo/view/?todoid=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->content)); ?></a><br />

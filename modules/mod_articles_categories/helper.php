@@ -67,7 +67,7 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+		require_once PATH_CORE . '/components/com_content/helpers/route.php';
 		jimport('joomla.application.categories');
 
 		$categories = JCategories::getInstance('Content');

@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Push the module CSS to the template
+$this->css();
+
 $projects = $this->rows;
 
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;

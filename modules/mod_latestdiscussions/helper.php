@@ -32,8 +32,8 @@ namespace Modules\LatestDiscussions;
 
 use Hubzero\Module\Module;
 use Components\Forum\Models\Manager;
+use Hubzero\User\Group;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying the latest forum posts
@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		//get the params
 		$this->limit = $this->params->get('limit', 5);
@@ -108,10 +108,10 @@ class Helper extends Module
 		{
 			if ($post->get('scope') == 'group')
 			{
-				$group = \Hubzero\User\Group::getInstance($post->get('scope_id'));
+				$group = Group::getInstance($post->get('scope_id'));
 				if (is_object($group))
 				{
-					$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
+					$forum_access = Group\Helper::getPluginAccess($group, 'forum');
 
 					if ($forum_access == 'nobody'
 					 || ($forum_access == 'registered' && User::isGuest())
@@ -198,7 +198,7 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 
 			// Module time is in seconds, setLifeTime() is in minutes

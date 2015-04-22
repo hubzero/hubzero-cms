@@ -35,7 +35,6 @@ use Hubzero\Module\Module;
 use ToolsHelperUtils;
 use MwSession;
 use Component;
-use JFactory;
 use User;
 
 /**
@@ -99,11 +98,11 @@ class Helper extends Module
 	public function display()
 	{
 		// Include mw libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
 
 		// Get database object
-		$this->database = JFactory::getDBO();
+		$this->database = \JFactory::getDBO();
 
 		// Get a connection to the middleware database
 		$mwdb = ToolsHelperUtils::getMWDBO();
@@ -126,19 +125,13 @@ class Helper extends Module
 		// only take snapshots if screenshots are on
 		if ($this->params->get('show_screenshots', 1))
 		{
-			$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
+			$cmd = "/bin/sh ". PATH_CORE . "/components/com_tools/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
 			exec($cmd, $results, $status);
 		}
 
 		// Get sessions
 		$session = new MwSession($mwdb);
 		$this->sessions = $session->getRecords(User::get('username'), '', false);
-
-		// Push the module CSS to the template
-		$this->css();
-
-		// Add the JavaScript that does the AJAX magic to the template
-		$this->js();
 
 		// Output module
 		require $this->getLayoutPath();

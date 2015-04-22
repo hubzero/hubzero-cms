@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Push the module CSS to the template
+$this->css();
+
 // Build the HTML
 $html  = '';
 $html .= "\t\t" . '<ul class="module-nav"><li><a class="icon-plus" href="' . Route::url('index.php?option=com_resources&task=draft') . '">' . Lang::txt('MOD_MYCONTRIBUTIONS_START_NEW') . '</a></li></ul>'."\n";

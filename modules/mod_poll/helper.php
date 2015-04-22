@@ -31,8 +31,6 @@
 namespace Modules\Poll;
 
 use Hubzero\Module\Module;
-use JException;
-use JFactory;
 
 /**
  * Module class for displaying a poll
@@ -46,7 +44,7 @@ class Helper extends Module
 	 */
 	public function getPoll($id)
 	{
-		$db     = JFactory::getDBO();
+		$db     = \JFactory::getDBO();
 		$result = null;
 
 		if ($id)
@@ -71,7 +69,7 @@ class Helper extends Module
 
 		if ($db->getErrorNum())
 		{
-			throw new JException($db->stderr(), 500);
+			throw new Exception($db->stderr(), 500);
 		}
 
 		return $result;
@@ -84,7 +82,7 @@ class Helper extends Module
 	 */
 	public function getPollOptions($id)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = 'SELECT id, text' .
 			' FROM #__poll_data' .
@@ -111,7 +109,7 @@ class Helper extends Module
 	{
 		$tabclass_arr = array('sectiontableentry2', 'sectiontableentry1');
 
-		$menu   = JFactory::getApplication()->getMenu();
+		$menu   = \JFactory::getApplication()->getMenu();
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 

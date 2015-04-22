@@ -29,7 +29,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
+if (Request::method() == 'POST')
 {
 	// Write to hubzero logs if available.
 	// Otherwise fallback to the Joomla logs.
@@ -73,7 +73,7 @@ jQuery(function($) {
 			// probably threw a recursive structure. oh well.
 		}
 
-		$.post('<?php echo rtrim(JURI::base(true), "/"); ?>/modules/mod_logjserrors/mod_logjserrors.php', {
+		$.post('<?php echo rtrim(Request::base(true), "/"); ?>/modules/mod_logjserrors/mod_logjserrors.php', {
 			'message': msg,
 			'file': file,
 			'line': line,

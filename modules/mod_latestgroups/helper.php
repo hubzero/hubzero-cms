@@ -31,8 +31,8 @@
 namespace Modules\LatestGroups;
 
 use Hubzero\Module\Module;
+use Hubzero\User\Group;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying the latest groups
@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$uid = User::get('id');
 
@@ -58,14 +58,14 @@ class Helper extends Module
 		$this->morelink = $this->params->get('morelink', '');
 
 		// Get popular groups
-		$popularGroups = \Hubzero\User\Group\Helper::getPopularGroups();
+		$popularGroups = Group\Helper::getPopularGroups();
 
 		$counter = 0;
 		$groupsToDisplay = array();
 		foreach ($popularGroups as $g)
 		{
 			// Get the group
-			$group = \Hubzero\User\Group::getInstance($g->gidNumber);
+			$group = Group::getInstance($g->gidNumber);
 
 			// Check join policy
 			$joinPolicy = $group->get('join_policy');
@@ -109,7 +109,7 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 
 			// Module time is in seconds, setLifeTime() is in minutes

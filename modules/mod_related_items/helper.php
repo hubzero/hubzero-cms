@@ -33,10 +33,8 @@ namespace Modules\RelatedItems;
 
 use Hubzero\Module\Module;
 use stdClass;
-use JModuleHelper;
 use ContentHelperRoute;
 use Request;
-use JFactory;
 use Route;
 use User;
 use Lang;
@@ -68,7 +66,7 @@ class Helper extends Module
 			'Itemid' => 'int'
 		);
 
-		$list = JModuleHelper::moduleCache($module, $params, $cacheparams);
+		$list = \Module::cache($module, $params, $cacheparams);
 
 		if (!count($list))
 		{
@@ -89,8 +87,8 @@ class Helper extends Module
 	 */
 	public static function getList($params)
 	{
-		$db     = JFactory::getDbo();
-		$app    = JFactory::getApplication();
+		$db     = \JFactory::getDbo();
+		$app    = \JFactory::getApplication();
 		$user   = User::getRoot();
 		$userId = (int) $user->get('id');
 		$count  = intval($params->get('count', 5));

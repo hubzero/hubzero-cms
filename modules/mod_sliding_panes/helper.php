@@ -31,7 +31,7 @@
 namespace Modules\SlidingPanes;
 
 use Hubzero\Module\Module;
-use JFactory;
+use Date;
 
 /**
  * Module class for displaying sliding panes of content
@@ -66,7 +66,7 @@ class Helper extends Module
 	 */
 	private function _getList()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$catid 	 = (int) $this->params->get('catid', 0);
 		$random  = $this->params->get('random', 0);
@@ -74,8 +74,7 @@ class Helper extends Module
 		$limit   = (int) $this->params->get('limitslides', 0);
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
-		$date = \Date::toSql();
-		$now  = $date->toMySQL();
+		$now  = Date::toSql();
 
 		$nullDate = $db->getNullDate();
 

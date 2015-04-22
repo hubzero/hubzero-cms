@@ -30,8 +30,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-?>
 
+// Push the module CSS to the template
+$this->css();
+
+// Add the JavaScript that does the AJAX magic to the template
+$this->js();
+
+$base = rtrim(Request::base(true), '/');
+?>
 <div class="<?php echo $this->params->get('moduleclass_sfx',''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
@@ -51,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 					$disconnectLink = Route::url('index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname);
 
 					//get snapshot
-					$snapshot = DS . 'api' . DS . 'tools' . DS . 'screenshot?sessionid=' . $session->sessnum . '&notfound=1';
+					$snapshot = $base . '/api/tools/screenshot?sessionid=' . $session->sessnum . '&notfound=1';
 				?>
 				<li class="session <?php echo $cls; ?>">
 					<div class="session-title-bar">

@@ -31,7 +31,6 @@
 namespace Modules\MyResources;
 
 use Hubzero\Module\Module;
-use JFactory;
 use Request;
 use User;
 
@@ -48,14 +47,8 @@ class Helper extends Module
 	public function display()
 	{
 		$this->no_html = Request::getInt('no_html', 0);
-		if (!$this->no_html)
-		{
-			// Push the module CSS to the template
-			$this->css();
-			$this->js();
-		}
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$this->limit = intval($this->params->get('limit', 5));
 

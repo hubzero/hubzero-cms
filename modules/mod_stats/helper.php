@@ -31,8 +31,9 @@
 namespace Modules\Stats;
 
 use Hubzero\Module\Module;
-use JFactory;
-use JHtml;
+use stdClass;
+use Config;
+use Date;
 use Lang;
 
 /**
@@ -67,8 +68,7 @@ class Helper extends Module
 	 */
 	static function &getList(&$params)
 	{
-		$app   = JFactory::getApplication();
-		$db    = JFactory::getDbo();
+		$db    = \JFactory::getDbo();
 		$rows  = array();
 		$query = $db->getQuery(true);
 
@@ -97,17 +97,17 @@ class Helper extends Module
 
 			$rows[$i] = new stdClass;
 			$rows[$i]->title = Lang::txt('MOD_STATS_TIME');
-			$rows[$i]->data  = JHtml::_('date', 'now', 'H:i');
+			$rows[$i]->data  = Date::of('now')->toLocal('H:i');
 			$i++;
 
 			$rows[$i] = new stdClass;
 			$rows[$i]->title = Lang::txt('MOD_STATS_CACHING');
-			$rows[$i]->data  = $app->getCfg('caching') ? Lang::txt('JENABLED') : Lang::txt('JDISABLED');
+			$rows[$i]->data  = Config::get('caching') ? Lang::txt('JENABLED') : Lang::txt('JDISABLED');
 			$i++;
 
 			$rows[$i] = new stdClass;
 			$rows[$i]->title = Lang::txt('MOD_STATS_GZIP');
-			$rows[$i]->data  = $app->getCfg('gzip') ? Lang::txt('JENABLED') : Lang::txt('JDISABLED');
+			$rows[$i]->data  = Config::get('gzip') ? Lang::txt('JENABLED') : Lang::txt('JDISABLED');
 			$i++;
 		}
 

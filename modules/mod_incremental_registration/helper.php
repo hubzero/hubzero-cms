@@ -34,9 +34,9 @@ use Hubzero\Module\Module;
 use ModIncrementalRegistrationOptions;
 use ModIncrementalRegistrationGroups;
 use ModIncrementalRegistrationAwards;
-use JDocument;
-use JFactory;
+use Request;
 use User;
+use App;
 
 /**
  * Incremental Registration Module controller class
@@ -65,10 +65,10 @@ class Helper extends Module
 	 */
 	public function media($path)
 	{
-		$this->tpl_path = '/templates/' . JFactory::getApplication()->getTemplate() . '/html/mod_incremental_registration';
+		$this->tpl_path = '/templates/' . App::get('template')->template . '/html/mod_incremental_registration';
 
-		$b = rtrim(JURI::base(true), '/');
-		return file_exists(JPATH_ROOT . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
+		$b = rtrim(Request::base(true), '/');
+		return file_exists(PATH_APP . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
 	}
 
 	/**
@@ -85,11 +85,11 @@ class Helper extends Module
 
 		$dbg = isset($_GET['dbg']);
 		$uid = (int) User::get('id');
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 
-		require_once JPATH_BASE . '/components/com_members/tables/incremental/awards.php';
-		require_once JPATH_BASE . '/components/com_members/tables/incremental/groups.php';
-		require_once JPATH_BASE . '/components/com_members/tables/incremental/options.php';
+		require_once PATH_CORE . '/components/com_members/tables/incremental/awards.php';
+		require_once PATH_CORE . '/components/com_members/tables/incremental/groups.php';
+		require_once PATH_CORE . '/components/com_members/tables/incremental/options.php';
 
 		$opts = new ModIncrementalRegistrationOptions;
 		if (!$opts->isEnabled($uid))
@@ -104,7 +104,7 @@ class Helper extends Module
 		}
 
 		// looks like an error page, don't show
-		if (JDocument::getInstance('error')->getTitle())
+		if (\JDocument::getInstance('error')->getTitle())
 		{
 			return;
 		}
@@ -118,7 +118,7 @@ class Helper extends Module
 
 		$groups = new ModIncrementalRegistrationGroups;
 
-		$hasCurl = file_exists(JPATH_BASE . '/media/media/images/bigcurl.png');
+		$hasCurl = file_exists(PATH_CORE . '/media/media/images/bigcurl.png');
 		if (($row = $groups->getActiveColumns($uid)) || $hasCurl)
 		{
 			if (!isset($_SESSION['return']) && !preg_match('/[.]/', $uri))

@@ -80,11 +80,11 @@ class Helper extends Module
 	public function run()
 	{
 		// Check the events component
-		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
+		if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
-			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
+			//include_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
 		}
 		else
 		{

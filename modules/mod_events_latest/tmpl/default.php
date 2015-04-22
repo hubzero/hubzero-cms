@@ -45,8 +45,8 @@ if ($this->getError()) { ?>
 			?>
 			<tr class="<?php echo $cls; ?>">
 				<td class="event-date">
-					<span class="month"><?php echo JHtml::_('date', $event->publish_up, 'M'); ?></span>
-					<span class="day"><?php echo JHtml::_('date', $event->publish_up, 'd'); ?></span>
+					<span class="month"><?php echo Date::of($event->publish_up)->toLocal('M'); ?></span>
+					<span class="day"><?php echo Date::of($event->publish_up)->toLocal('d'); ?></span>
 				</td>
 				<td class="event-title">
 					<a href="<?php echo Route::url('index.php?option=com_events&task=details&id=' . $event->id); ?>"><?php echo $this->escape(html_entity_decode(stripslashes($event->title))); ?></a>

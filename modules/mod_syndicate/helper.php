@@ -31,8 +31,7 @@
 namespace Modules\Syndicate;
 
 use Hubzero\Module\Module;
-use JArrayHelper;
-use JFactory;
+use Hubzero\Utility\Arr;
 
 /**
  * Module helper class for syndicating a feed
@@ -68,16 +67,16 @@ class Helper extends Module
 	/**
 	 * Get a link
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @return  string
 	 */
 	static function getLink(&$params)
 	{
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 
 		foreach ($document->_links as $link => $value)
 		{
-			$value = JArrayHelper::toString($value);
+			$value = Arr::toString($value);
 			if (strpos($value, 'application/' . $params->get('format') . '+xml'))
 			{
 				return $link;

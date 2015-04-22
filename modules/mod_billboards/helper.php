@@ -32,10 +32,9 @@ namespace Modules\Billboards;
 
 use Hubzero\Module\Module;
 use Component;
-use JFactory;
 use Components\Billboards\Models\Billboard;
 
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
 
 /**
  * Module helper class, used to query for billboards and contains the display method
@@ -78,8 +77,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$jdocument = JFactory::getDocument();
-
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
 		if (!self::$multiple_instances)

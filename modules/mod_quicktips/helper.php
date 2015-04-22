@@ -32,7 +32,6 @@ namespace Modules\QuickTips;
 
 use Hubzero\Module\Module;
 use Date;
-use JFactory;
 
 /**
  * Module class for displaying tips
@@ -50,7 +49,7 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 
 			// Module time is in seconds, setLifeTime() is in minutes
@@ -75,7 +74,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$catid  = trim($this->params->get('catid'));
 		$secid  = trim($this->params->get('secid'));

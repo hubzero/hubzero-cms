@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 ?>
 <?php if ($this->params->get('button', 0) == 1) { ?>
@@ -96,15 +96,15 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 					<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?> <span><?php echo $this->escape(stripslashes($quote->org)); ?></span></cite>
 				</p>
 				<?php
-				if (is_dir(JPATH_ROOT . DS .$this->path . $quote->id))
+				if (is_dir(PATH_APP . DS . $this->path . $quote->id))
 				{
-					$pictures = scandir(JPATH_ROOT . DS .$this->path . $quote->id);
+					$pictures = scandir(PATH_APP . DS .$this->path . $quote->id);
 					array_shift($pictures);
 					array_shift($pictures);
 
 					foreach ($pictures as $picture)
 					{
-						$file = JPATH_ROOT . DS . $this->path . $quote->id . DS . $picture;
+						$file = PATH_APP . DS . $this->path . $quote->id . DS . $picture;
 						if (file_exists($file))
 						{
 							$this_size = filesize($file);

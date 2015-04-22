@@ -32,7 +32,6 @@ namespace Modules\MyProjects;
 
 use Hubzero\Module\Module;
 use Component;
-use JFactory;
 use Project;
 use User;
 
@@ -48,7 +47,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		// Get the module parameters
 		$params = $this->params;
@@ -59,8 +58,8 @@ class Helper extends Module
 		$config = Component::params('com_projects');
 
 		// Load classes
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Set filters
 		$filters = array(
@@ -85,9 +84,6 @@ class Helper extends Module
 
 		// pass limit to view
 		$this->limit = $limit;
-
-		// Push the module CSS to the template
-		$this->css();
 
 		require $this->getLayoutPath();
 	}

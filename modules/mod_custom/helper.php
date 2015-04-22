@@ -32,8 +32,7 @@
 namespace Modules\Custom;
 
 use Hubzero\Module\Module;
-use JPluginHelper;
-use JHtml;
+use Plugin;
 
 /**
  * Module class for displaying custom HTML
@@ -53,8 +52,8 @@ class Helper extends Module
 
 		if ($params->def('prepare_content', 1))
 		{
-			JPluginHelper::importPlugin('content');
-			$module->content = JHtml::_('content.prepare', $module->content, '', 'mod_custom.content');
+			Plugin::import('content');
+			$module->content = \JHtml::_('content.prepare', $module->content, '', 'mod_custom.content');
 		}
 
 		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));

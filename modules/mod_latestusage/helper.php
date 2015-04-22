@@ -31,8 +31,6 @@
 namespace Modules\LatestUsage;
 
 use Hubzero\Module\Module;
-use JFactory;
-use UsageHelper;
 
 /**
  * Module class for displaying latest usage
@@ -46,10 +44,10 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_usage' . DS . 'helpers' . DS . 'helper.php');
-		$udb = UsageHelper::getUDBO();
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_usage' . DS . 'helpers' . DS . 'helper.php');
+		$udb = \Components\Usage\Helpers\Helper::getUDBO();
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 

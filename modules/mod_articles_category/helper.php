@@ -104,7 +104,7 @@ class Helper extends Module
 		$cacheparams->methodparams = $params;
 		$cacheparams->modeparams   = $cacheid;
 
-		$list = JModuleHelper::moduleCache($module, $params, $cacheparams);
+		$list = Module::cache($module, $params, $cacheparams);
 
 		if (!empty($list))
 		{
@@ -143,10 +143,10 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once JPATH_SITE . '/components/com_content/router.php';
-		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+		require_once PATH_CORE . '/components/com_content/router.php';
+		require_once PATH_CORE . '/components/com_content/helpers/route.php';
 
-		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/models', 'ContentModel');
 
 		// Get an instance of the generic articles model
 		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));

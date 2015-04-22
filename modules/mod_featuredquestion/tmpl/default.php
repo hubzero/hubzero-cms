@@ -45,11 +45,11 @@ if ($this->getError()) { ?>
 			}
 		}
 
-		$when = JHTML::_('date.relative', $this->row->created);
+		$when = Date::of($this->row->created)->relative();
 	?>
 	<div class="<?php echo $this->cls; ?>">
 		<h3><?php echo Lang::txt('MOD_FEATUREDQUESTION'); ?></h3>
-	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
+	<?php if (is_file(PATH_APP . $this->thumb)) { ?>
 		<p class="featured-img">
 			<a href="<?php echo Route::url('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
 				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />

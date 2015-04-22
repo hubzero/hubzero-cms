@@ -30,9 +30,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-?>
 
-<?php if (is_object($this->mailinglist)) : ?>
+$token = JUtility::getToken();
+
+if (is_object($this->mailinglist)) : ?>
 	<div class="mailinglist-details">
 		<span class="name">
 			<?php echo $this->mailinglist->name; ?>
@@ -49,17 +50,17 @@ defined('_JEXEC') or die('Restricted access');
 		<?php else : ?>
 			<label for="email">
 				<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-				<input type="text" name="email_<?php echo JUtility::getToken(); ?>" id="email" value="<?php echo User::get('email'); ?>" data-invalid="<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL_INVALID'); ?>" />
+				<input type="text" name="email_<?php echo $token; ?>" id="email" value="<?php echo User::get('email'); ?>" data-invalid="<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL_INVALID'); ?>" />
 			</label>
 
-			<label for="hp1_<?php echo JUtility::getToken(); ?>" id="hp1">
+			<label for="hp1_<?php echo $token; ?>" id="hp1">
 				<?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT'); ?> <span class="optional"><?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT_LEAVE_BLANK'); ?></span>
-				<input type="text" name="hp1" id="hp1_<?php echo JUtility::getToken(); ?>" value="" />
+				<input type="text" name="hp1" id="hp1_<?php echo $token; ?>" value="" />
 			</label>
 
 			<input type="submit" value="<?php echo Lang::txt('MOD_NEWSLETTER_SIGN_UP'); ?>" id="sign-up-submit" />
 
-			<input type="hidden" name="list_<?php echo JUtility::getToken(); ?>" value="<?php echo $this->mailinglist->id; ?>" />
+			<input type="hidden" name="list_<?php echo $token; ?>" value="<?php echo $this->mailinglist->id; ?>" />
 			<input type="hidden" name="option" value="com_newsletter" />
 			<input type="hidden" name="controller" value="mailinglist" />
 			<input type="hidden" name="subscriptionid" value="<?php echo $this->subscriptionId; ?>" />
@@ -74,4 +75,4 @@ defined('_JEXEC') or die('Restricted access');
 	<p class="warning">
 		<?php echo Lang::txt('MOD_NEWSLETTER_SETUP_INCOMPLETE'); ?>
 	</p>
-<?php endif; ?>
+<?php endif;

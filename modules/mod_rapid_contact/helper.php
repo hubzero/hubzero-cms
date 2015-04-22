@@ -37,7 +37,6 @@ use Hubzero\Mail\Message;
 use Request;
 use Config;
 use Lang;
-use JURI;
 
 /**
  * Module class for displaying a quick contact form
@@ -93,8 +92,8 @@ class Helper extends Module
 		$exact_url           = $this->params->get('exact_url', true);
 		if (!$exact_url)
 		{
-			//$this->url = $this->_cleanXss(filter_var(JURI::current(), FILTER_SANITIZE_URL));
-			$this->url = JURI::current();
+			//$this->url = $this->_cleanXss(filter_var(Request::current(), FILTER_SANITIZE_URL));
+			$this->url = Request::current();
 		}
 		else
 		{

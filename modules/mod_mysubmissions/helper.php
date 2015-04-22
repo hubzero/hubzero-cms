@@ -31,7 +31,6 @@
 namespace Modules\MySubmissions;
 
 use Hubzero\Module\Module;
-use JFactory;
 use User;
 
 /**
@@ -71,7 +70,7 @@ class Helper extends Module
 	{
 		if ($id)
 		{
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 			$ra = new \Components\Resources\Tables\Assoc($database);
 			$total = $ra->getCount($id);
 		}
@@ -92,7 +91,7 @@ class Helper extends Module
 	{
 		if ($id)
 		{
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 			$rc = new \Components\Resources\Tables\Contributor($database);
 			$contributors = $rc->getCount($id, 'resources');
 		}
@@ -112,7 +111,7 @@ class Helper extends Module
 	 */
 	public function step_tags_check($id)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$rt = new \Components\Resources\Helpers\Tags($id);
 		$tags = $rt->tags('count');
@@ -148,12 +147,12 @@ class Helper extends Module
 			return false;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$this->steps = array('Type','Compose','Attach','Authors','Tags','Review');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$rr = new \Components\Resources\Tables\Resource($database);
 		$rt = new \Components\Resources\Tables\Type($database);
@@ -167,9 +166,9 @@ class Helper extends Module
 
 		if ($this->rows)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		}
 
 		require $this->getLayoutPath();

@@ -32,10 +32,11 @@ namespace Modules\Spotlight;
 
 use Hubzero\Module\Module;
 use Component;
-use JFactory;
+use Request;
 use Route;
+use Date;
 use Lang;
-use JFile;
+use User;
 
 /**
  * Module class for showing content spotlight
@@ -53,11 +54,11 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . \Date::toSql() . ' -->';
+			echo '<!-- cached ' . Date::toSql() . ' -->';
 			return;
 		}
 
@@ -79,7 +80,7 @@ class Helper extends Module
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
-		$this->database = JFactory::getDBO();
+		$this->database = \JFactory::getDBO();
 
 		// Get the admin configured settings
 		$filters = array();
@@ -330,8 +331,8 @@ class Helper extends Module
 				}
 				else
 				{
-					$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
-					$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '">' . $row->title . '</a></span> ';
+					$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . Date::of($row->publish_up)->toLocal($yearFormat) . '/' . Date::of($row->publish_up)->toLocal($monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . rtrim(Request::base(true), '/') . $thumb . '" alt="' . htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+					$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . Date::of($row->publish_up)->toLocal($yearFormat) . '/' . Date::of($row->publish_up)->toLocal($monthFormat) . '/' . $row->alias) . '">' . $row->title . '</a></span> ';
 					$out .=  ' by <a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - ' . Lang::txt('in Blogs') . "\n";
 					$out .= '<div class="clear"></div>'."\n";
 				}
@@ -350,7 +351,7 @@ class Helper extends Module
 					$thumb = '/modules/mod_spotlight/assets/img/default.gif';
 				}
 
-				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . rtrim(Request::base(true), '/') . $thumb . '" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
 				$out .= '<span class="spotlight-item"><a href="' . $url . '">'.stripslashes($row->title) . '</a></span> ';
 				$out .=  ' - ' . Lang::txt('in') . ' <a href="' . Route::url('index.php?option=com_topics') . '">' . Lang::txt('Topics') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
@@ -376,7 +377,7 @@ class Helper extends Module
 						$name = $user->get('name');
 					}
 				}
-				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . rtrim(Request::base(true), '/') . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
 				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '">' . stripslashes($row->subject) . '</a></span> ';
 				$out .=  ' - ' . Lang::txt('asked by') . ' ' . $name . ', ' . Lang::txt('in') . ' <a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('Answers') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
@@ -458,7 +459,7 @@ class Helper extends Module
 				// resources
 				$out .= '<span class="spotlight-img">';
 				$out .= "\t" . '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->id) . '">' . "\n";
-				$out .= "\t\t" . '<img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities($row->title) . '" />' . "\n";
+				$out .= "\t\t" . '<img width="30" height="30" src="' . rtrim(Request::base(true), '/') . $thumb . '" alt="' . htmlentities($row->title) . '" />' . "\n";
 				$out .= "\t" . '</a>' . "\n";
 				$out .= '</span>' . "\n";
 				$out .= '<span class="spotlight-item">' . "\n";
@@ -643,9 +644,9 @@ class Helper extends Module
 	private function _thumbnail($pic)
 	{
 		jimport('joomla.filesystem.file');
-		$ext = JFile::getExt($pic);
+		$ext = \JFile::getExt($pic);
 
-		return JFile::stripExt($pic) . '-tn.gif';
+		return \JFile::stripExt($pic) . '-tn.gif';
 	}
 
 	/**

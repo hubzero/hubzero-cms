@@ -35,7 +35,6 @@ use Hubzero\Module\Module;
 use Hubzero\Bank\Teller;
 use Config;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying point total and recent transactions
@@ -49,7 +48,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));

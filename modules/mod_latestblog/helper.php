@@ -34,7 +34,6 @@ use Hubzero\Module\Module;
 use Hubzero\User\Group\Helper as GroupHelper;
 use Components\Blog\Models\Archive;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying the latest blog posts
@@ -122,9 +121,16 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . \Date::toSql() . ' -->';
 			return;

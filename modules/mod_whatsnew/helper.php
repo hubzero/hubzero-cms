@@ -34,11 +34,11 @@ namespace Modules\WhatsNew;
 use Hubzero\Module\Module;
 use Components\Whatsnew\Helpers\Period;
 use MembersModelTags;
+use Request;
 use Event;
 use Route;
 use Lang;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying what's new in a category of content
@@ -132,7 +132,7 @@ class Helper extends Module
 		$this->period = $this->params->get('period', 'resources:month');
 		$this->tagged = intval($this->params->get('tagged', 0));
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		// Build the feed link if necessary
 		if ($this->feed)
@@ -202,7 +202,7 @@ class Helper extends Module
 		$p = new Period($this->period);
 
 		// Get the search results
-		$results = event::trigger('whatsnew.onWhatsnew', array(
+		$results = Event::trigger('whatsnew.onWhatsnew', array(
 				$p,
 				$count,
 				0,
@@ -245,7 +245,7 @@ class Helper extends Module
 				}
 
 				// Get the search results
-				$results2 = \Event::trigger('onWhatsnew', array(
+				$results2 = Event::trigger('onWhatsnew', array(
 						$p,
 						$count,
 						0,
@@ -289,7 +289,7 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));

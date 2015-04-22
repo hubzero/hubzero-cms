@@ -33,7 +33,6 @@ namespace Modules\MyCuration;
 use Hubzero\Module\Module;
 use Publication;
 use Component;
-use JFactory;
 
 /**
  * Module class for displaying a user's publication curation tasks
@@ -47,12 +46,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$config   = Component::params('com_publications');
 
 		// Get some classes we need
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'master.type.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'master.type.php');
 
 		$this->moduleclass = $this->params->get('moduleclass');
 
@@ -73,9 +72,6 @@ class Helper extends Module
 
 		// Assigned curation
 		$this->rows = $objP->getRecords($filters);
-
-		// Push the module CSS to the template
-		$this->css();
 
 		require $this->getLayoutPath();
 	}

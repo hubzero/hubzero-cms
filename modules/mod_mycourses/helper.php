@@ -109,9 +109,6 @@ class Helper extends Module
 		// Get the user's groups
 		$this->courses = $this->_getCourses(User::get('id'), 'all');
 
-		// Push the module CSS to the template
-		$this->css();
-
 		require $this->getLayoutPath();
 	}
 }

@@ -34,12 +34,11 @@ use Hubzero\Module\Module;
 use ToolsModelVersion;
 use ToolsModelTool;
 use RecentTool;
-use Request;
-use JFactory;
 use Component;
+use Request;
+use Route;
 use Lang;
 use User;
-use Route;
 
 /**
  * Module class for displaying a user's recently used/favorite tools
@@ -49,44 +48,43 @@ class Helper extends Module
 	/**
 	 * Get a list of applications that the user might invoke.
 	 *
-	 * @param   array  $lst  Parameter description (if any) ...
+	 * @param   array  $lst  List of tools
 	 * @return  array  List of tools
 	 */
 	private function _getToollist($lst=NULL)
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 		$toollist = array();
 
 		// Create a Tool object
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		if (is_array($lst))
 		{
 			$tools = array();
+
 			// Check if the list is empty or not
 			if (!empty($lst))
 			{
-				ksort($lst);
-				$items = array();
-				// Get info for tools in the list
-				foreach ($lst as $item)
-				{
-					if (strstr($item, '_r'))
-					{
-						$bits = explode('_r', $item);
-						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
-						$item = trim(implode('_r', $bits));
-					}
+				return $tools;
+			}
 
-					$items[] = $item;
-				}
-				$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
-			}
-			else
+			ksort($lst);
+			$items = array();
+			// Get info for tools in the list
+			foreach ($lst as $item)
 			{
-				return array();
+				if (strstr($item, '_r'))
+				{
+					$bits = explode('_r', $item);
+					$rev  = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
+					$item = trim(implode('_r', $bits));
+				}
+
+				$items[] = $item;
 			}
+			$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
 		}
 		else
 		{
@@ -150,7 +148,7 @@ class Helper extends Module
 			$favs = $this->favs;
 		}
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$html  = "\t\t" . '<ul>' . "\n";
 		if (count($toollist) <= 0)
@@ -166,7 +164,7 @@ class Helper extends Module
 				{
 					// Prep the text for XHTML output
 					$tool->caption = $this->_prepText($tool->caption);
-					$tool->desc = $this->_prepText($tool->desc);
+					$tool->desc    = $this->_prepText($tool->desc);
 
 					// Get the tool's name without any revision attachments
 					// e.g. "qclab" instead of "qclab_r53"
@@ -174,23 +172,7 @@ class Helper extends Module
 
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-
-					//are we on the iPad
-					/*$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-
-					//get tool params
-					$params = Component::params('com_tools');
-					$launchOnIpad = $params->get('launch_ipad', 0);
-
-					//if we are on the ipad and we want to launch nanohub app
-					if ($isiPad && $launchOnIpad)
-					{
-						$url = 'nanohub://tools/invoke/' . $tool->toolname . '/' . $tool->revision;
-					}
-					else
-					{*/
-						$url = Route::url('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
-					//}
+					$url = Route::url('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
 
 					$cls = '';
 					// Build the HTML
@@ -243,10 +225,6 @@ class Helper extends Module
 		}
 		$html .= "\t\t" . '</ul>' . "\n";
 
-		// if ($type == 'favs')
-		// {
-		// 	$this->favs = $favs;
-		// }
 		return $html;
 	}
 
@@ -257,9 +235,9 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
-		include_once(JPATH_ROOT . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+		include_once(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
 
 		$params = $this->params;
 
@@ -281,10 +259,10 @@ class Helper extends Module
 		$rconfig = Component::params('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		if ($this->supportedtag)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 			$this->rt = new \Components\Resources\Helpers\Tags(0);
 			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}
@@ -301,7 +279,7 @@ class Helper extends Module
 		else
 		{
 			// Add the JavaScript that does the AJAX magic to the template
-			$document = JFactory::getDocument();
+			$document = \JFactory::getDocument();
 
 			// Get a list of recent tools
 			$rt = new RecentTool($database);

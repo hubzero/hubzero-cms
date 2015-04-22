@@ -32,7 +32,6 @@ namespace Modules\MyWishes;
 
 use Hubzero\Module\Module;
 use User;
-use JFactory;
 
 /**
  * Module class for displaying a user's wishes
@@ -46,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$limit = intval($this->params->get('limit', 10));
 

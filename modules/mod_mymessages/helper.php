@@ -32,7 +32,6 @@ namespace Modules\MyMessages;
 
 use Hubzero\Module\Module;
 use Hubzero\Message\Recipient;
-use JFactory;
 use User;
 
 /**
@@ -47,7 +46,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));
@@ -61,9 +60,6 @@ class Helper extends Module
 		{
 			$this->setError($recipient->getError());
 		}
-
-		// Push the module CSS to the template
-		$this->css();
 
 		require $this->getLayoutPath();
 	}

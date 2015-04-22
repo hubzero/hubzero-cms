@@ -194,7 +194,7 @@ class Helper extends Module
 			//show the logo based on your
 			if ($show_image)
 			{
-				if ($alt_image != '' && is_file(JPATH_ROOT . DS . $alt_image))
+				if ($alt_image != '' && is_file(PATH_APP . DS . $alt_image))
 				{
 					$html .= '<img class="logo" src="' . $alt_image . '" alt="Youtube" />';
 				}
@@ -272,7 +272,7 @@ class Helper extends Module
 		$feed = null;
 
 		// cache path
-		$cachePath = JPATH_ROOT . DS . 'cache' . DS . 'mod_youtube' . DS . $this->module->id;
+		$cachePath = PATH_APP . DS . 'cache' . DS . 'mod_youtube' . DS . $this->module->id;
 		$cacheFile = $cachePath . DS . $params->get('type') . '.txt';
 
 		// do we want to load a cached version
