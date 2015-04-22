@@ -264,7 +264,7 @@ class Request extends BaseRequest
 	/**
 	 * Return the Request instance.
 	 *
-	 * @return  object  \Hubzero\Http\Request
+	 * @return  object
 	 */
 	public function instance()
 	{
@@ -274,7 +274,7 @@ class Request extends BaseRequest
 	/**
 	 * Get the request method.
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function method()
 	{
@@ -336,6 +336,7 @@ class Request extends BaseRequest
 	/**
 	 * Get the current path info for the request.
 	 *
+	 * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
 	 * @return  string
 	 */
 	public function base($pathonly = false)
@@ -361,7 +362,7 @@ class Request extends BaseRequest
 	/**
 	 * Get all of the segments for the request path.
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function segments()
 	{
@@ -443,7 +444,7 @@ class Request extends BaseRequest
 	/**
 	 * Get the input source for the request.
 	 *
-	 * @return  object  \Symfony\Component\HttpFoundation\ParameterBag
+	 * @return  object
 	 */
 	protected function getInputSource()
 	{
@@ -524,9 +525,7 @@ class Request extends BaseRequest
 		{
 			return $this->$source->all();
 		}
-		else
-		{
-			return $this->$source->get($key, $default, true);
-		}
+
+		return $this->$source->get($key, $default, true);
 	}
 }
