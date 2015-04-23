@@ -92,7 +92,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 			return false;
 		}
 
-		$now = JFactory::getDate();
+		$now = Date::toSql();
 
 		// Is a publish up date set and, if so,
 		// is it after "now"?
@@ -129,11 +129,11 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $dt, Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $dt, Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -216,7 +216,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 						'scope'    => 'groups',
 						'pagename' => $this->group('cn'),
 						'pageid'   => 0,
-						'filepath' => JPATH_ROOT . DS . 'site' . DS . 'groups' . DS . $this->group('gidNumber'),
+						'filepath' => PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group('gidNumber'),
 						'domain'   => ''
 					);
 

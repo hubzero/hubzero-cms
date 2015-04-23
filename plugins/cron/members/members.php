@@ -94,14 +94,14 @@ class plgCronMembers extends JPlugin
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
 
 		// Include economy classes
-		if (is_file(JPATH_ROOT . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
+		if (is_file(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php');
+			require_once(PATH_CORE . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php');
 		}
 
-		if (is_file(JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php'))
+		if (is_file(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
+			require_once(PATH_CORE . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
 		}
 
 		$AE = new \Components\Answers\Helpers\Economy($this->database);

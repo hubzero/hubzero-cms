@@ -33,8 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!isset($this->link))
 {
-	$juri = JURI::getInstance();
-	$this->link = rtrim($juri->base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
+	$this->link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
 }
 
 $message  = Lang::txt('COM_ANSWERS_EMAIL_AUTO_GENERATED') . "\n";
@@ -44,7 +43,7 @@ $message .= strtoupper(Lang::txt('COM_ANSWERS_SUMMARY')) . ': ' . $this->questio
 $message .= strtoupper(Lang::txt('COM_ANSWERS_CREATED')) . ': ' . $this->question->get('created') . "\n";
 $message .= '----------------------------' . "\n\n";
 $message .= 'A new question #' . $this->question->get('id') . ' has been posted by: ';
-$message .= ($this->question->get('anonymous')) ? 'Anonymous' . "\n" : $this->juser->get('name') . "\n\n";
+$message .= ($this->question->get('anonymous')) ? 'Anonymous' . "\n" : $this->question->creator('name') . "\n\n";
 $message .= 'To view the full question and take actions, go to: ' . "\n";
 $message .= $this->link . "\n";
 

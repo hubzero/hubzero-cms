@@ -224,7 +224,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		$database = JFactory::getDBO();
 
@@ -264,7 +264,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		$database = JFactory::getDBO();
 
@@ -373,11 +373,9 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 							{
 								if (\Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email')) && $email)
 								{
-									$jconfig = JFactory::getConfig();
-
-									$admin_email = $jconfig->getValue('config.mailfrom');
-									$sub  = Lang::txt('PLG_SUPPORT_ANSWERS_SUBJECT', $jconfig->getValue('config.sitename'), $referenceid);
-									$from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', $jconfig->getValue('config.sitename'));
+									$admin_email = Config::get('mailfrom');
+									$sub  = Lang::txt('PLG_SUPPORT_ANSWERS_SUBJECT', Config::get('sitename'), $referenceid);
+									$from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
 									$hub  = array(
 										'email' => $admin_email,
 										'name'  => $from

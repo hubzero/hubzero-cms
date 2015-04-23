@@ -7,8 +7,8 @@ class Db
 	public static function getHandle()
 	{
 		if (!self::$dbh) {
-			$cfg = new JConfig;
-			self::$dbh = new PDO('mysql:host=localhost;dbname='.$cfg->db, $cfg->user, $cfg->password, array(
+			$cfg = new \Hubzero\Config\Repository;
+			self::$dbh = new PDO('mysql:host=localhost;dbname='.$cfg->get('db'), $cfg->get('user'), $cfg->get('password'), array(
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 			));
 		}

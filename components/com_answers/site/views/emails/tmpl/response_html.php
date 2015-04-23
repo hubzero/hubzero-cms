@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
 if ($this->question->isOpen() && !$this->question->isReported())
 {
 	$status = 'open';
@@ -46,7 +44,7 @@ else
 	$status = 'closed';
 }
 
-$link = rtrim($juri->base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
+$link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -57,7 +55,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(Route::url($this->question->link
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
-						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
+						<a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>
 					</span>
 					<br />
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
@@ -201,7 +199,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(Route::url($this->question->link
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>">question #<?php echo $this->question->get('id'); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>">question #<?php echo $this->question->get('id'); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 				</td>
 			</tr>
 		</tbody>

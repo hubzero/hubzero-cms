@@ -31,39 +31,35 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-$ih = new MembersImgHandler();
-
 $dateFormat = 'M d, Y';
 
 $baseManage = 'publications/submit';
 $baseView = 'publications';
 
-$base = trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
-$mconfig = Component::params( 'com_members' );
+$mconfig = Component::params('com_members');
 $pPath   = trim($mconfig->get('webpath'), DS);
 $profileThumb = NULL;
 
 // CSS
 $backgroundColor = '#FFFFFF';
 $introTextColor  = '#efd09c';
-$headerBgColor	 = '#000000';
+$headerBgColor   = '#000000';
 $headerTextColor = '#CCCCCC';
-$footerBgColor	 = '#f8f8f8';
-$borderColor	 = '#cbb185';
-$textColor		 = '#616161';
-$linkColor		 = '#33a9cf';
-$titleLinkColor	 = '#333';
+$footerBgColor   = '#f8f8f8';
+$borderColor     = '#cbb185';
+$textColor       = '#616161';
+$linkColor       = '#33a9cf';
+$titleLinkColor  = '#333';
 $footerTextColor = '#999999';
-$boxBgColor 	 = '#f6eddd';
+$boxBgColor      = '#f6eddd';
 
-$append = '?from=' . $this->juser->get('email');
+$append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
-$profileLink = $base . DS . 'members' . DS . $this->juser->get('id');
-$profileThumb= $base . DS . 'members' . DS . $this->juser->get('id') . DS . 'Image:thumb.png';
+$profileLink  = $base . DS . 'members' . DS . $this->user->get('id');
+$profileThumb = $base . DS . 'members' . DS . $this->user->get('id') . DS . 'Image:thumb.png';
 
 // More publications?
 $more = count($this->pubstats) - $this->limit;
@@ -200,8 +196,8 @@ $more = count($this->pubstats) - $this->limit;
 												<?php } else { ?>
 												<td width="480">
 												<?php } ?>
-													<p style="color: <?php echo $introTextColor; ?>; margin: 10px 0 3px 0; font-weight: bold;"><strong>Dear <?php echo $this->juser->get('name'); ?>,</strong></p>
-												<p style="margin: 0; font-size: 12px;">Here is a monthly usage report for your published datasets in <?php echo $jconfig->getValue('config.sitename'); ?>: <?php echo date('M Y'); ?> </p>
+													<p style="color: <?php echo $introTextColor; ?>; margin: 10px 0 3px 0; font-weight: bold;"><strong>Dear <?php echo $this->user->get('name'); ?>,</strong></p>
+												<p style="margin: 0; font-size: 12px;">Here is a monthly usage report for your published datasets in <?php echo Config::get('sitename'); ?>: <?php echo date('M Y'); ?> </p>
 												</td>
 												<td width="40">
 													<?php if ($profileThumb) { ?>
@@ -251,8 +247,8 @@ $more = count($this->pubstats) - $this->limit;
 														break;
 													}
 
-													$sefManage 	= $baseManage . DS . $stat->publication_id;
-													$sefView 	= $baseView . DS . $stat->publication_id;
+													$sefManage = $baseManage . DS . $stat->publication_id;
+													$sefView   = $baseView . DS . $stat->publication_id;
 
 													$thumb = $baseView . DS . $stat->publication_id . DS . $stat->id . DS . 'Image:thumb';
 													$link  = $base . DS . trim($sefView, DS) . $append;
@@ -266,7 +262,7 @@ $more = count($this->pubstats) - $this->limit;
 												<td width="545">
 													<p style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><a href="<?php echo $link; ?>" style="color: <?php echo $titleLinkColor; ?>; text-decoration: none;"><?php echo $stat->title; ?></a></p>
 													<table cellpadding="0" cellspacing="0" border="0" style="font-size: 12px; padding: 0; margin: 0;">
-				                                        <tbody>
+														<tbody>
 															<tr style="padding: 0; margin: 0;">
 																<td width="265">Page views last month:</td>
 																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_views; ?></td>
@@ -299,7 +295,7 @@ $more = count($this->pubstats) - $this->limit;
 																<td width="200" style="color: #777; font-style: italic;text-align: right;"><a href="<?php echo $link;  ?>" style="color: <?php echo $linkColor; ?>;">View publication</a> | <a href="<?php echo $manageLink; ?>" style="color: <?php echo $linkColor; ?>;">Manage</a></td>
 
 															</tr>
-				                                    	</tbody>
+														</tbody>
 													</table>
 												</td>
 												<td width="25"></td>
@@ -352,9 +348,9 @@ $more = count($this->pubstats) - $this->limit;
 												<td width="25"></td>
 												<td width="620">
 													<div style="font-size: 12px; line-height: 24px; color: #666666; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; background-color: <?php echo $boxBgColor; ?>; padding: 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; -webkit-border-radius:6px 6px 6px 6px; -webkit-font-smoothing: antialiased; text-align: center;">
-			                                        <p style="margin: 0;">Publishing your data on <?php echo $jconfig->getValue('config.sitename'); ?> increases access to and impact of your research!</p>
-													<div style=""><a href="<?php echo $base . DS . 'publications' . DS . 'submit' . $append; ?>" style="color: #ffffff; background-color: #000000; padding: 5px 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; text-decoration: none;">View all publications and publish more data</a></div>
-			                                    </div>
+														<p style="margin: 0;">Publishing your data on <?php echo Config::get('sitename'); ?> increases access to and impact of your research!</p>
+														<div style=""><a href="<?php echo $base . DS . 'publications' . DS . 'submit' . $append; ?>" style="color: #ffffff; background-color: #000000; padding: 5px 10px; border-radius:6px 6px 6px 6px; -moz-border-radius: 6px 6px 6px 6px; text-decoration: none;">View all publications and publish more data</a></div>
+													</div>
 												</td>
 												<td width="25"></td>
 											</tr>

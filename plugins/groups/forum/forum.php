@@ -1437,7 +1437,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$msg = array();
 
 				// create view object
-				$eview = $this->view('comment_plain', 'email');
+				$eview = new \Hubzero\Mail\View(array(
+					'base_path' => __DIR__,
+					'name'      => 'email',
+					'layout'    => 'comment_plain'
+				));
 
 				// plain text
 				$eview

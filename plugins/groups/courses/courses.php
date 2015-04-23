@@ -100,7 +100,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 		$this->group    = $group;
 		$this->database = JFactory::getDBO();
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 		$model = CoursesModelCourses::getInstance();
 
 		$filters = array(
@@ -114,39 +114,30 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 		// Build the HTML
 		if ($return == 'html')
 		{
-			$this->app = JFactory::getApplication();
-			$this->jconfig = JFactory::getConfig();
-
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'display'
-				)
-			);
+			$view = $this->view('default', 'display');
 			$view->option = $option;
 			$view->group  = $group;
 
 			$view->filters = $filters;
 			$view->filters['count'] = false;
-			$view->filters['limit'] = $this->app->getUserStateFromRequest(
+			$view->filters['limit'] = Request::getState(
 				$option . '.plugin.courses.limit',
 				'limit',
-				$this->jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			);
-			$view->filters['start'] = $this->app->getUserStateFromRequest(
+			$view->filters['start'] = Request::getState(
 				$option . '.plugin.courses.limitstart',
 				'limitstart',
 				0,
 				'int'
 			);
-			$view->filters['sortby'] = $this->app->getUserStateFromRequest(
+			$view->filters['sortby'] = Request::getState(
 				$option . '.plugin.courses.sortby',
 				'sortby',
 				''
 			);
-			$view->filters['search'] = $this->app->getUserStateFromRequest(
+			$view->filters['search'] = Request::getState(
 				$option . '.plugin.courses.search',
 				'search',
 				''

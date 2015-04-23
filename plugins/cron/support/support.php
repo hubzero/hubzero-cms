@@ -333,8 +333,8 @@ class plgCronSupport extends JPlugin
 		// If we're sending a message...
 		else if ($message_id && !empty($tickets))
 		{
-			Lang::load('com_support');
-			Lang::load('com_support', JPATH_BASE);
+			Lang::load('com_support') ||
+			Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
 
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
@@ -476,8 +476,8 @@ class plgCronSupport extends JPlugin
 
 		$sconfig = Component::params('com_support');
 
-		Lang::load('com_support');
-		Lang::load('com_support', JPATH_BASE);
+		Lang::load('com_support') ||
+		Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
 
 		$sql = "SELECT * FROM `#__support_tickets` WHERE `open`=1 AND `status`!=2";
 
@@ -626,8 +626,8 @@ class plgCronSupport extends JPlugin
 
 		$sconfig = Component::params('com_support');
 
-		Lang::load('com_support');
-		Lang::load('com_support', JPATH_BASE);
+		Lang::load('com_support') ||
+		Lang::load('com_support', PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'site');
 
 		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner`";
 

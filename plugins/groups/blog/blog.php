@@ -96,7 +96,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		$this->model = new \Components\Blog\Models\Archive('group', $group->get('gidNumber'));
 
@@ -105,9 +105,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
-
-			//Create user object
-			$juser = JFactory::getUser();
 
 			//get the group members
 			$members = $group->get('members');
@@ -120,12 +117,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -134,7 +131,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -143,7 +140,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			//user vars
-			$this->juser      = $juser;
 			$this->authorized = $authorized;
 
 			//group vars
@@ -206,8 +202,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'state'    => 'all'
 		);
 
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$filters['state'] = 'public';
 		}
@@ -236,7 +231,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	public function onGroupDelete($group)
 	{
 		// Import needed libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		$database = JFactory::getDBO();
 
@@ -285,7 +280,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		$database = JFactory::getDBO();
 
@@ -315,12 +310,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$path)
 		{
-			$juri = JURI::getInstance();
-			$path = $juri->getPath();
+			$path = Request::path();
 
-			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace(Request::base(true), '', $path);
 			$path = str_replace('index.php', '', $path);
-			$path = DS . trim($path, DS);
+			$path = '/' . trim($path, '/');
 
 			$blog = '/groups/' . $this->group->get('cn') . '/blog';
 
@@ -369,25 +363,17 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
-		$view->juser      = $this->juser;
+		$view = $this->view('default', 'browse');
+		$view->juser      = User::getRoot();
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
 		$view->model      = $this->model;
 
-		$jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$view->filters = array(
-			'limit'      => Request::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'limit'      => Request::getInt('limit', Config::get('list_limit')),
 			'start'      => Request::getInt('limitstart', 0),
 			'created_by' => Request::getInt('author', 0),
 			'year'       => Request::getInt('year', 0),
@@ -400,8 +386,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// See what information we can get from the path
-		$juri = JURI::getInstance();
-		$path = $juri->getPath();
+		$path = Request::path();
 		if (strstr($path, '/'))
 		{
 			$bits = $this->_parseUrl();
@@ -419,8 +404,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		$view->canpost = $this->_getPostingPermissions();
 
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$view->filters['state'] = 'public';
 		}
@@ -443,7 +427,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$view->filters['authorized'] = $juser->get('id');
+					$view->filters['authorized'] = User::get('id');
 				}
 			}
 		}
@@ -473,7 +457,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = JFactory::getDocument();
@@ -483,12 +467,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$doc = new JDocumentFeed;
 		$doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$filters = array(
-			'limit'      => Request::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'limit'      => Request::getInt('limit', Config::get('list_limit')),
 			'start'      => Request::getInt('limitstart', 0),
 			'year'       => Request::getInt('year', 0),
 			'month'      => Request::getInt('month', 0),
@@ -499,7 +480,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'state'      => 'public'
 		);
 
-		$path = JURI::getInstance()->getPath();
+		$path = Request::path();
 		if (strstr($path, '/'))
 		{
 			$bits = $this->_parseUrl();
@@ -509,10 +490,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build some basic RSS document information
-		$jconfig = JFactory::getConfig();
-		$doc->title       = $jconfig->getValue('config.sitename') . ': ' . Lang::txt('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . Lang::txt('Blog');
-		$doc->description = Lang::txt('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $this->group->get('cn'), $jconfig->getValue('config.sitename'));
-		$doc->copyright   = Lang::txt('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->title       = Config::get('sitename') . ': ' . Lang::txt('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . Lang::txt('Blog');
+		$doc->description = Lang::txt('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $this->group->get('cn'), Config::get('sitename'));
+		$doc->copyright   = Lang::txt('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('PLG_GROUPS_BLOG_RSS_CATEGORY');
 
 		$rows = $this->model->entries('list', $filters);
@@ -587,18 +567,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _entry()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'entry'
-			)
-		);
+		$view = $this->view('default', 'entry');
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
-		$view->juser      = $this->juser;
+		$view->juser      = User::getRoot();
 		$view->model      = $this->model;
 
 		if (isset($this->entry) && is_object($this->entry))
@@ -607,7 +581,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$path = JURI::getInstance()->getPath();
+			$path = Request::path();
 			if (strstr($path, '/'))
 			{
 				$bits = $this->_parseUrl();
@@ -620,23 +594,22 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$view->row->exists())
 		{
-			JError::raiseError(404, Lang::txt('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));
+			App::abort(404, Lang::txt('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));
 			return; // $this->_browse(); Can cause infinite loop
 		}
 
 		// Check authorization
-		$juser = JFactory::getUser();
-		if (($view->row->get('state') == 2 && $juser->get('guest'))
-		 || ($view->row->get('state') == 0 && $juser->get('id') != $view->row->get('created_by') && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin'))
+		if (($view->row->get('state') == 2 && User::isGuest())
+		 || ($view->row->get('state') == 0 && User::get('id') != $view->row->get('created_by') && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin'))
 		{
-			JError::raiseError(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
+			App::abort(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
 			return;
 		}
 
 		// make sure the group owns this
 		if ($view->row->get('scope_id') != $this->group->get('gidNumber'))
 		{
-			JError::raiseError(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
+			App::abort(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
 			return;
 		}
 
@@ -649,7 +622,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'created_by' => 0
 		);
 
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$view->filters['state'] = 'public';
 		}
@@ -660,13 +633,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		$view->canpost = $this->_getPostingPermissions();
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -687,12 +658,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _edit($row=null)
 	{
-		$juser = JFactory::getUser();
 		$blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog))
 			);
 			return;
@@ -700,7 +670,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$this->authorized || !$this->_getPostingPermissions())
 		{
-			$this->redirect(
+			App::redirect(
 				$blog,
 				Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'),
 				'error'
@@ -709,13 +679,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'edit'
-			)
-		);
+		$view = $this->view('default', 'edit');
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->task       = $this->action;
@@ -743,12 +707,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$view->entry->set('scope_id', $this->group->get('gidNumber'));
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -761,12 +722,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _save()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
 
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
 				Lang::txt('GROUPS_LOGIN_NOTICE'),
 				'warning'
@@ -790,12 +750,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
-			$entry['publish_up']   = JFactory::getDate($entry['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
 		}
 
 		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
 		{
-			$entry['publish_down'] = JFactory::getDate($entry['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_down'] = Date::of($entry['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		// make sure we dont want to turn off comments
@@ -835,7 +795,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_edit($row);
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url($row->link())
 		);
 	}
@@ -847,8 +807,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _delete()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
 			return;
@@ -888,13 +847,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'delete'
-				)
-			);
+			$view = $this->view('default', 'delete');
 			$view->option     = $this->option;
 			$view->group      = $this->group;
 			$view->task       = $this->action;
@@ -903,13 +856,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$view->authorized = $this->authorized;
 			$view->model      = $this->model;
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
+
 			return $view->loadTemplate();
 		}
 
@@ -932,12 +883,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	private function _savecomment()
 	{
 		// Ensure the user is logged in
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
 
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
 				Lang::txt('GROUPS_LOGIN_NOTICE'),
 				'warning'
@@ -974,8 +924,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	private function _deletecomment()
 	{
 		// Ensure the user is logged in
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
 			return;
@@ -1011,8 +960,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _settings()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
 			return;
@@ -1025,13 +973,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'settings'
-			)
-		);
+		$view = $this->view('default', 'settings');
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->task       = $this->action;
@@ -1044,13 +986,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$view->authorized = $this->authorized;
 		$view->message    = (isset($this->message)) ? $this->message : '';
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -1061,8 +1001,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _savesettings()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('GROUPS_LOGIN_NOTICE'));
 			return;
@@ -1103,7 +1042,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_settings();
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
 			Lang::txt('PLG_GROUPS_BLOG_SETTINGS_SAVED'),
 			'passed'

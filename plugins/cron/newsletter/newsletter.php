@@ -74,8 +74,8 @@ class plgCronNewsletter extends JPlugin
 	public function processMailings(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
 
 		// needed vars
 		$limit     = 25;
@@ -206,7 +206,7 @@ class plgCronNewsletter extends JPlugin
 	public function processIps(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
 
 		// get db
 		$database = JFactory::getDBO();

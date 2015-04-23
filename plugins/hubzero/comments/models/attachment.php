@@ -34,6 +34,7 @@ use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Request;
 
 /**
  * Model class for a forum post attachment

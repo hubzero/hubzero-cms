@@ -105,11 +105,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Make sure we're using a secure connection
-			$app = JFactory::getApplication();
-
 			if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
 			{
-				$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+				App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 				die('insecure connection and redirection failed');
 			}
 
@@ -916,8 +914,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function sendEmail($token)
 	{
-		$jconfig = JFactory::getConfig();
-
 		// Create the email with the new token
 		$url      = rtrim(Request::base(),'/');
 		$return   = $url . Route::url($this->member->getLink() . '&acitve=account&task=confirmtoken');
@@ -928,7 +924,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$msg = new \Hubzero\Mail\Message();
 		$msg->setSubject($subject)
 		    ->addTo($this->user->get('email'))
-		    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+		    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 		    ->setBody($message);
 
 		// Send the email

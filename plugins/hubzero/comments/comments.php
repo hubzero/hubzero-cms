@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -77,7 +77,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$this->view->database = $this->database = JFactory::getDBO();
-		$this->view->juser    = $this->juser    = JFactory::getUser();
+		$this->view->juser    = $this->juser    = User::getRoot();
 		$this->view->option   = $this->option   = $option;
 		$this->view->obj      = $this->obj      = $obj;
 		$this->view->obj_id   = $this->obj_id   = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
@@ -154,7 +154,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Logged in?
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			// Set comments to viewable
 			$this->params->set('access-view-' . $assetType, true);
@@ -167,8 +167,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			}
 
 			// Are they an admin?
-			$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->params->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->params->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			if ($this->params->get('access-admin-' . $assetType)
 			 || $this->params->get('access-manage-' . $assetType))
 			{
@@ -262,7 +262,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _login()
 	{
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 			Lang::txt('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 			'warning'
@@ -278,7 +278,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	protected function _vote()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -287,7 +287,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		// Get comments on this article
 		$v = new \Hubzero\Item\Vote($this->database);
-		$v->created_by = $this->juser->get('id');
+		$v->created_by = User::get('id');
 		$v->item_type  = 'comment';
 		//$v->item_id    = Request::getInt('comment', 0);
 		//$v->vote       = Request::getVar('vote', 'up');
@@ -317,7 +317,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		if ($this->getError() && !$no_html)
 		{
-			$this->redirect(
+			App::redirect(
 				$this->url,
 				$this->getError(),
 				'error'
@@ -345,7 +345,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		if (!$no_html)
 		{
-			$this->redirect(
+			App::redirect(
 				$this->url,
 				Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_SAVED'),
 				'message'
@@ -353,12 +353,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Ugly brute force method of cleaning output
@@ -389,12 +386,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// get the accepted file types
 		//$this->view->extensions = $this->comment->getAllowedExtensions();
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 	}
 
@@ -406,7 +400,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	protected function _save()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -423,7 +417,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// pass data to comment object
 		if (!$row->bind($comment))
 		{
-			$this->redirect(
+			App::redirect(
 				$this->url,
 				$row->getError(),
 				'error'
@@ -435,7 +429,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		if ($row->exists() && !$this->params->get('access-edit-comment'))
 		{
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 				Lang::txt('PLG_HUBZERO_COMMENTS_NOTAUTH'),
 				'warning'
@@ -450,7 +444,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$value = $row->content('raw');
 			JFactory::getApplication()->setUserState($key, $value);
 
-			$this->redirect(
+			App::redirect(
 				$this->url,
 				$row->getError(),
 				'error'
@@ -458,7 +452,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->redirect(
+		App::redirect(
 			$this->url,
 			Lang::txt('PLG_HUBZERO_COMMENTS_SAVED'),
 			'message'
@@ -474,7 +468,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	protected function _delete()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -489,10 +483,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// Initiate a blog comment object
 		$comment = new \Plugins\Hubzero\Comments\Models\Comment($id);
 
-		if ($this->juser->get('id') != $comment->get('created_by')
+		if (User::get('id') != $comment->get('created_by')
 		 && !$this->params->get('access-delete-comment'))
 		{
-			$this->redirect($this->url);
+			App::redirect($this->url);
 			return;
 		}
 
@@ -504,7 +498,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$this->setError($comment->getError());
 		}
 
-		$this->redirect(
+		App::redirect(
 			$this->url,
 			Lang::txt('PLG_HUBZERO_COMMENTS_REMOVED'),
 			'message'
@@ -525,14 +519,11 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
-
-		$jconfig = JFactory::getConfig();
-		//$app = JFactory::getApplication();
 
 		// Load the comments
 		$comment = new \Plugins\Hubzero\Comments\Models\Comment();
@@ -555,12 +546,12 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$doc = new JDocumentFeed;
 		$doc->link = Route::url($this->url);
 
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$doc->title .= ($title) ? ': ' . stripslashes($title) : '';
 		$doc->title .= ': ' . Lang::txt('PLG_HUBZERO_COMMENTS');
 
-		$doc->description = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), stripslashes($title));
-		$doc->copyright   = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->description = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION',Config::get('sitename'), stripslashes($title));
+		$doc->copyright   = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
 		// Start outputing results if any found
 		if ($comment->replies('list', $filters)->total() > 0)
@@ -619,7 +610,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 						}
 
 						// Prepare the title
-						$title = Lang::txt('Reply to comment #%s by %s', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $reply->created, Lang::txt('DATE_FORMAT_HZ1'));
+						$title = Lang::txt('Reply to comment #%s by %s', $row->id, $author) . ' @ ' . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 						// Strip html from feed item description text
 						if ($reply->reports)
@@ -665,7 +656,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								}
 
 								// Prepare the title
-								$title = Lang::txt('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date',$response->created, Lang::txt('DATE_FORMAT_HZ1'));
+								$title = Lang::txt('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date',$response->created, Lang::txt('DATE_FORMAT_HZ1'));
 
 								// Strip html from feed item description text
 								if ($response->reports)

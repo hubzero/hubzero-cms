@@ -426,9 +426,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 				'layout'    => 'question_plaintext'
 			));
 			$eview->option   = 'com_answers';
-			$eview->jconfig  = Config::getRoot();
 			$eview->sitename = Config::get('sitename');
-			$eview->juser    = User::getRoot();
 			$eview->question = $row;
 			$eview->id       = $row->get('id', 0);
 			$eview->boundary = $from['multipart'];

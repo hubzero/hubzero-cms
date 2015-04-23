@@ -56,7 +56,7 @@ class plgCronCache extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->_path = JPATH_ROOT . DS . 'cache';
+		$this->_path = PATH_APP . DS . 'cache';
 	}
 
 	/**

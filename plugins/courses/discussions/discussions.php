@@ -523,7 +523,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']    = Request::getInt('limit', 500); //$jconfig->getValue('config.list_limit'));
+		$view->filters['limit']    = Request::getInt('limit', 500);
 		$view->filters['start']    = Request::getInt('limitstart', 0);
 		$view->filters['section']  = Request::getVar('section', '');
 		$view->filters['category'] = Request::getVar('category', '');

@@ -169,10 +169,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->group    = $group;
-		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 		$this->model = new \Components\Collections\Models\Archive('group', $this->group->get('gidNumber'));
 
@@ -194,9 +193,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//Create user object
-			//$juser = JFactory::getUser();
-
 			//get the group members
 			$members = $group->get('members');
 
@@ -208,11 +204,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($this->juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -221,7 +217,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($this->juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -403,7 +399,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		$route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
 
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
 			Lang::txt('GROUPS_LOGIN_NOTICE'),
 			'warning'
@@ -427,17 +423,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->name        = $this->_name;
-		$view->juser       = $this->juser;
+		$view->juser       = User::getRoot();
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
 		$view->model       = $this->model;
 
-		$this->jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$view->filters = array(
-			'limit' => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'limit' => Request::getInt('limit', Config::get('list_limit')),
 			'start' => Request::getInt('limitstart', 0)
 		);
 
@@ -447,7 +441,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
 			$count['access'] = $view->filters['access'];
 		}
 
@@ -498,23 +492,21 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->name        = $this->_name;
-		$view->juser       = $this->juser;
+		$view->juser       = User::getRoot();
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
 		$view->model       = $this->model;
 
-		$this->jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$view->filters = array(
-			'limit' => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'limit' => Request::getInt('limit', Config::get('list_limit')),
 			'start' => Request::getInt('limitstart', 0)
 		);
 
 		// Filters for returning results
 		$filters = array(
-			'user_id' => $this->juser->get('id'),
+			'user_id' => User::get('id'),
 			'state'   => 1
 		);
 
@@ -581,19 +573,17 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->name    = $this->_name;
-		$view->juser   = $this->juser;
+		$view->juser   = User::getRoot();
 		$view->option  = $this->option;
 		$view->group   = $this->group;
 		$view->params  = $this->params;
 		$view->model   = $this->model;
 
-		$this->jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$view->filters = array(
-			'limit'         => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'limit'         => Request::getInt('limit', Config::get('list_limit')),
 			'start'         => Request::getInt('limitstart', 0),
-			'user_id'       => JFactory::getUser()->get('id'),
+			'user_id'       => User::get('id'),
 			'search'        => Request::getVar('search', ''),
 			'state'         => 1,
 			'collection_id' => Request::getVar('board', 0)
@@ -602,7 +592,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			JError::raiseError(400, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
+			App::abort(400, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
 			return;
 		}
 
@@ -615,7 +605,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
 			$count['access'] = $view->filters['access'];
 		}
 		if ($this->authorized)
@@ -649,13 +639,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', $view->collection->get('alias'));
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -667,7 +655,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _follow($what='collection')
 	{
 		// Is the board restricted to logged-in users only?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -687,7 +675,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$collection = $this->model->collection(Request::getVar('board', ''));
 				if (!$collection->exists())
 				{
-					JError::raiseError(400, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
+					App::abort(400, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
 					return;
 				}
 				$id = $collection->get('id');
@@ -695,7 +683,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			break;
 		}
 
-		if (!$this->model->follow($id, $what, $this->juser->get('id'), 'member'))
+		if (!$this->model->follow($id, $what, User::get('id'), 'member'))
 		{
 			$this->setError($this->model->getError());
 		}
@@ -727,7 +715,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _unfollow($what='collection')
 	{
 		// Is the board restricted to logged-in users only?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -747,7 +735,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$collection = $this->model->collection(Request::getVar('board', ''));
 				if (!$collection->exists())
 				{
-					JError::raiseError(400, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
+					App::abort(400, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
 					return;
 				}
 				$id = $collection->get('id');
@@ -755,7 +743,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			break;
 		}
 
-		if (!$this->model->unfollow($id, $what, $this->juser->get('id'), 'member'))
+		if (!$this->model->unfollow($id, $what, User::get('id'), 'member'))
 		{
 			$this->setError($this->model->getError());
 		}
@@ -800,17 +788,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->params  = $this->params;
 		$view->model   = $this->model;
 
-		$this->jconfig = JFactory::getConfig();
-
 		// Filters for returning results
 		$view->filters = array(
-			'limit'       => Request::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'limit'       => Request::getInt('limit', Config::get('list_limit')),
 			'start'       => Request::getInt('limitstart', 0),
 			'search'      => Request::getVar('search', ''),
 			'state'       => 1,
 			'object_type' => 'group',
 			'object_id'   => $this->group->get('gidNumber'),
-			'user_id'     => JFactory::getUser()->get('id')
+			'user_id'     => User::get('id')
 		);
 
 		// Filters for returning results
@@ -820,7 +806,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
 			$count['access'] = $view->filters['access'];
 		}
 		if ($this->authorized)
@@ -855,13 +841,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'posts');
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -882,9 +866,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
-		$view->juser       = $this->juser;
+		$view->juser       = User::getRoot();
 		$view->name        = $this->_name;
-		$view->model      = $this->model;
+		$view->model       = $this->model;
 
 		$post_id = Request::getInt('post', 0);
 
@@ -900,16 +884,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Check authorization
 		if (!$this->params->get('access-view-item'))
 		{
-			JError::raiseError(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
+			App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return;
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		$view->no_html = Request::getInt('no_html', 0);
@@ -919,10 +900,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->display();
 			exit;
 		}
-		else
-		{
-			return $view->loadTemplate();
-		}
+
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -942,14 +921,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _edit($entry=null)
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
 
 		if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item'))
 		{
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
 				Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
 				'error'
@@ -1024,10 +1003,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->display();
 			exit;
 		}
-		else
-		{
-			return $view->loadTemplate();
-		}
+
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -1041,7 +1018,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1125,7 +1102,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_edit($row);
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias'))
 		);
 	}
@@ -1137,7 +1114,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _repost()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1197,10 +1174,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$view->display();
 				exit;
 			}
-			else
-			{
-				return $view->loadTemplate();
-			}
+
+			return $view->loadTemplate();
 		}
 
 		// Check for request forgeries
@@ -1266,7 +1241,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _remove()
 	{
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1299,7 +1274,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			exit;
 		}
 
-		$this->redirect(
+		App::redirect(
 			$route,
 			$msg,
 			$type
@@ -1314,7 +1289,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _move()
 	{
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1342,7 +1317,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			exit;
 		}
 
-		$this->redirect($route);
+		App::redirect($route);
 	}
 
 	/**
@@ -1356,7 +1331,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		//Request::checkToken() or jexit('Invalid Token');
 
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1413,13 +1388,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->name     = $this->_name;
 			$view->collection = $collection;
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
+
 			return $view->loadTemplate();
 		}
 
@@ -1444,7 +1417,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			exit;
 		}
 
-		$this->redirect($route, $msg, $type);
+		App::redirect($route, $msg, $type);
 	}
 
 	/**
@@ -1458,7 +1431,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		Request::checkToken() or jexit('Invalid Token');
 
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1499,7 +1472,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _deletecomment()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1557,7 +1530,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Display the main listing
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'))
 		);
 	}
@@ -1580,7 +1553,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _editcollection($row=null)
 	{
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1588,7 +1561,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Access check
 		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection'))
 		{
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
 				Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
 				'error'
@@ -1625,12 +1598,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->entry->set('access', $this->params->get('access-plugin'));
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		if ($view->no_html)
@@ -1652,7 +1622,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
 
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1682,7 +1652,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to collection
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $row->get('alias'))
 		);
 	}
@@ -1695,7 +1665,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _deletecollection()
 	{
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1748,13 +1718,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->no_html    = $no_html;
 			$view->name       = $this->_name;
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
+
 			return $view->loadTemplate();
 		}
 
@@ -1774,7 +1742,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			exit;
 		}
 
-		$this->redirect($route);
+		App::redirect($route);
 	}
 
 	/**
@@ -1785,7 +1753,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _settings()
 	{
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1815,13 +1783,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->authorized  = $this->authorized;
 		$view->message     = (isset($this->message)) ? $this->message : '';
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -1833,7 +1799,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _savesettings()
 	{
 		// Login check
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_login();
 		}
@@ -1874,7 +1840,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_settings();
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
 			Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_SAVED'),
 			'passed'
@@ -1910,14 +1876,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Everyone can view by default
 		$this->params->set('access-view', true);
 		$this->params->set('access-can-follow', false);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$customParams = $this->_params($this->group->get('gidNumber'));
 			$this->params->merge($customParams);
 
 			// Set asset to viewable
 			$this->params->set('access-view-' . $assetType, false);
-			if (in_array($this->juser->get('id'), $this->members))
+			if (in_array(User::get('id'), $this->members))
 			{
 				$this->params->set('access-view-' . $assetType, true);
 			}

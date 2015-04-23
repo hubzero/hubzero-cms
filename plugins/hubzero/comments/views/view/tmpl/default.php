@@ -1,27 +1,32 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -50,7 +55,7 @@ $this->css()->js();
 							// Load the comment
 							$comment = new \Plugins\Hubzero\Comments\Models\Comment($edit);
 							// If the comment exists and the editor is NOT the creator and the editor is NOT a manager...
-							if ($comment->exists() && $comment->get('created_by') != $this->juser->get('id') && !$this->params->get('access-manage-comment'))
+							if ($comment->exists() && $comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
 							{
 								// Disallow editing
 								$comment = new \Plugins\Hubzero\Comments\Models\Comment(0);
@@ -59,15 +64,15 @@ $this->css()->js();
 							if (!$comment->exists())
 							{
 								$comment->set('parent', Request::getInt('commentreply', 0));
-								$comment->set('created_by', (!$this->juser->get('guest') ? $this->juser->get('id') : 0));
-								$comment->set('anonymous', (!$this->juser->get('guest') ? 0 : 1));
+								$comment->set('created_by', (!User::isGuest() ? User::get('id') : 0));
+								$comment->set('anonymous', (!User::isGuest() ? 0 : 1));
 							}
 							?>
 							<img src="<?php echo $comment->creator()->getPicture($comment->get('anonymous')); ?>" alt="" />
 						</p>
 						<fieldset>
 							<?php
-							if (!$this->juser->get('guest'))
+							if (!User::isGuest())
 							{
 								if ($replyto = Request::getInt('commentreply', 0))
 								{
@@ -96,7 +101,7 @@ $this->css()->js();
 							<label for="commentcontent">
 								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
 								<?php
-								if (!$this->juser->get('guest'))
+								if (!User::isGuest())
 								{
 									echo $this->editor('comment[content]', $this->escape($comment->content('raw')), 35, 15, 'commentcontent', array('class' => 'minimal no-footer'));
 								}

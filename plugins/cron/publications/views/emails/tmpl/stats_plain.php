@@ -31,22 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-$ih = new MembersImgHandler();
-
 $dateFormat = 'M d, Y';
 
 $baseManage = 'publications/submit';
-$baseView = 'publications';
+$baseView   = 'publications';
 
-$base = trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
-$mconfig = Component::params( 'com_members' );
+$mconfig = Component::params('com_members');
 $pPath   = trim($mconfig->get('webpath'), DS);
 $profileThumb = NULL;
 
-$append = '?from=' . $this->juser->get('email');
+$append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
 $message  = 'Here is the monthly update on your recent publications usage' . "\n";
@@ -62,8 +58,8 @@ for ($a = 0; $a < count($this->pubstats); $a++)
 
 	$stat = $this->pubstats[$a];
 
-	$sefManage 	= $baseManage . DS . $stat->publication_id . $append;
-	$sefView 	= $baseView . DS . $stat->publication_id . $append;
+	$sefManage = $baseManage . DS . $stat->publication_id . $append;
+	$sefView   = $baseView . DS . $stat->publication_id . $append;
 
 	$message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
 	$message .= 'View publication:          ' . $base . DS . trim($sefView, DS) . "\n";
@@ -71,8 +67,8 @@ for ($a = 0; $a < count($this->pubstats); $a++)
 
 	$message .= 'Usage in the past month... ' . "\n";
 	$message .= 'Page views:                ' . $stat->monthly_views. "\n";
-	$message .= 'Downloads:  				' . $stat->monthly_primary. "\n";
-	$message .= 'Total downloads to date: 	' . $stat->total_primary. "\n";
+	$message .= 'Downloads:                 ' . $stat->monthly_primary. "\n";
+	$message .= 'Total downloads to date:   ' . $stat->total_primary. "\n";
 
 	$message .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'."\n\n";
 }

@@ -31,14 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri    = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-
 // get the group
-$group = \Hubzero\User\Group::getInstance( $this->announcement->scope_id );
-$groupLink = rtrim($juri->base(), DS) . DS . 'groups' . DS . $group->get('cn');
+$group = \Hubzero\User\Group::getInstance($this->announcement->scope_id);
+$groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');
 
 echo Lang::txt('Group Announcement') . ' - ' . $group->get('description') . "\n";
 echo '-------------------------------------------------------' . "\n\n";
 echo strip_tags($this->announcement->content)  . "\n\n";
-echo $groupLink . DS . 'announcements';
+echo $groupLink . '/announcements';

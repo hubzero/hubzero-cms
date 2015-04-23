@@ -84,8 +84,8 @@ class plgCronCourses extends JPlugin
 
 		$badgesProvider->setCredentials($creds);
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
 		$coursesObj = new CoursesModelCourses();
 		$courses    = $coursesObj->courses();
 
@@ -105,7 +105,7 @@ class plgCronCourses extends JPlugin
 				{
 					foreach ($students as $student)
 					{
-						$emails[] = JFactory::getUser($student->get('user_id'))->get('email');
+						$emails[] = User::getInstance($student->get('user_id'))->get('email');
 					}
 				}
 
@@ -165,22 +165,20 @@ class plgCronCourses extends JPlugin
 	 */
 	public function emailInstructorDigest(\Components\Cron\Models\Job $job)
 	{
-		$lang     = JFactory::getLanguage();
-		$database = JFactory::getDBO();
-		$juri     = JURI::getInstance();
-		$jconfig  = JFactory::getConfig();
+		$database = \JFactory::getDBO();
 		$cconfig  = Component::params('com_courses');
 
-		$lang->load('com_courses');
-		$lang->load('com_courses', JPATH_ROOT);
+		Lang::load('com_courses') ||
+		Lang::load('com_courses', PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site');
 
-		$from = array();
-		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_COURSES');
-		$from['email']     = $jconfig->getValue('config.mailfrom');
+		$from = array(
+			'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
+			'email' => Config::get('mailfrom')
+		);
 
 		$subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
 
 		$course_id = 0;
 
@@ -233,14 +231,14 @@ class plgCronCourses extends JPlugin
 							foreach ($managers as $manager)
 							{
 								// Get the user's account
-								$juser = User::getInstance($manager->get('user_id'));
-								if (!$juser->get('id'))
+								$user = User::getInstance($manager->get('user_id'));
+								if (!$user->get('id'))
 								{
 									continue;
 								}
 
 								// Try to ensure no duplicates
-								if (in_array($juser->get('username'), $mailed))
+								if (in_array($user->get('username'), $mailed))
 								{
 									continue;
 								}
@@ -252,7 +250,7 @@ class plgCronCourses extends JPlugin
 								}
 
 								// Get discussion stats and posts
-								require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
+								require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
 
 								$postsTbl  = new \Components\Forum\Tables\Post($database);
 								$filters   = array(
@@ -286,7 +284,7 @@ class plgCronCourses extends JPlugin
 								}
 
 								$eview = new \Hubzero\Component\View(array(
-									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
+									'base_path' => PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site',
 									'name'      => 'emails',
 									'layout'    => 'digest_plain'
 								));
@@ -315,7 +313,7 @@ class plgCronCourses extends JPlugin
 								$message = new \Hubzero\Mail\Message();
 								$message->setSubject($subject)
 										->addFrom($from['email'], $from['name'])
-										->addTo($juser->get('email'), $juser->get('name'))
+										->addTo($user->get('email'), $user->get('name'))
 										->addHeader('X-Component', 'com_courses')
 										->addHeader('X-Component-Object', 'courses_instructor_digest');
 
@@ -325,10 +323,10 @@ class plgCronCourses extends JPlugin
 								// Send mail
 								if (!$message->send())
 								{
-									$this->setError('Failed to mail %s', $juser->get('email'));
+									$this->setError('Failed to mail %s', $user->get('email'));
 								}
 
-								$mailed[] = $juser->get('username');
+								$mailed[] = $user->get('username');
 							}
 						}
 					}

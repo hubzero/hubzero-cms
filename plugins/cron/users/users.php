@@ -68,7 +68,7 @@ class plgCronUsers extends JPlugin
 	 */
 	public function cleanAuthTempAccounts(\Components\Cron\Models\Job $job)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$query = "SELECT `id` FROM `#__users` WHERE `username` < 0;";
 		$db->setQuery($query);
@@ -80,17 +80,17 @@ class plgCronUsers extends JPlugin
 		{
 			foreach ($users as $u)
 			{
-				$juser = JFactory::getUser($u->id);
+				$user = User::getInstance($u->id);
 
-				if (is_object($juser) && strtotime($juser->get('lastvisitDate')) < $yesterday)
+				if (is_object($user) && strtotime($user->get('lastvisitDate')) < $yesterday)
 				{
-					if (is_numeric($juser->get('username')) && $juser->get('username') < 0)
+					if (is_numeric($user->get('username')) && $user->get('username') < 0)
 					{
 						// Further check to make sure this was an abandoned auth_link account
-						if (substr($juser->get('email'), -8) == '@invalid')
+						if (substr($user->get('email'), -8) == '@invalid')
 						{
 							// Delete the user
-							$juser->delete();
+							$user->delete();
 						}
 					}
 				}

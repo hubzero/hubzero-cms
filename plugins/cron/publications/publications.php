@@ -85,7 +85,6 @@ class plgCronPublications extends JPlugin
 	public function sendAuthorStats(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
-		$juri = JURI::getInstance();
 
 		$pconfig = Component::params('com_publications');
 
@@ -93,7 +92,8 @@ class plgCronPublications extends JPlugin
 		$limit = $pconfig->get('limitStats', 5);
 		$image = $pconfig->get('email_image', '');
 
-		Lang::load('com_publications', JPATH_BASE);
+		Lang::load('com_publications', PATH_CORE) ||
+		Lang::load('com_publications', PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site');
 
 		// Is logging enabled?
 		if (is_file(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php'))
@@ -107,7 +107,7 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Helpers
-		require_once(PATH_CORE . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
+		require_once(PATH_CORE . DS . 'components'. DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 		// Get all registered authors who subscribed to email
@@ -155,8 +155,8 @@ class plgCronPublications extends JPlugin
 		foreach ($authors as $author)
 		{
 			// Get the user's account
-			$juser = User::getInstance($author->user_id);
-			if (!$juser->get('id'))
+			$user = User::getInstance($author->user_id);
+			if (!$user->get('id'))
 			{
 				// Skip if not registered
 				continue;
@@ -183,7 +183,7 @@ class plgCronPublications extends JPlugin
 			);
 			$eview->option     = 'com_publications';
 			$eview->controller = 'publications';
-			$eview->juser      = $juser;
+			$eview->user       = $user;
 			$eview->pubstats   = $pubstats;
 			$eview->limit      = $limit;
 			$eview->image      = $image;
@@ -203,7 +203,7 @@ class plgCronPublications extends JPlugin
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject($subject)
 			        ->addFrom($from['email'], $from['name'])
-			        ->addTo($juser->get('email'), $juser->get('name'))
+			        ->addTo($user->get('email'), $user->get('name'))
 			        ->addHeader('X-Component', 'com_publications')
 			        ->addHeader('X-Component-Object', 'publications');
 
@@ -213,9 +213,9 @@ class plgCronPublications extends JPlugin
 			// Send mail
 			if (!$message->send())
 			{
-				$this->setError(Lang::txt('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $juser->get('email')));
+				$this->setError(Lang::txt('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $user->get('email')));
 			}
-			$mailed[] = $juser->get('email');
+			$mailed[] = $user->get('email');
 		}
 
 		return true;
@@ -229,18 +229,15 @@ class plgCronPublications extends JPlugin
 	 */
 	public function rollUserStats(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$pconfig  = Component::params('com_publications');
 
 		$numMonths = 1;
 		$includeCurrent = false;
 
-		require_once(JPATH_ROOT . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications'
-			. DS . 'models' . DS . 'log.php');
+		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(PATH_CORE . DS . 'components' . DS .'com_publications' . DS . 'models' . DS . 'log.php');
 
 		// Get log model
 		$modelLog = new \Components\Publications\Models\Log();
@@ -273,7 +270,7 @@ class plgCronPublications extends JPlugin
 	 */
 	public function runMkAip(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$config = Component::params('com_publications');
 
 		require_once(PATH_CORE . DS . 'components'. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
@@ -317,10 +314,10 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Start email message
-		$subject 	= Lang::txt('Update on recently archived publications');
-		$body 		= Lang::txt('The following publications passed the grace period and were archived:') . "\n";
-		$aipGroup 	= $config->get('aip_group');
-		$counter 	= 0;
+		$subject  = Lang::txt('Update on recently archived publications');
+		$body     = Lang::txt('The following publications passed the grace period and were archived:') . "\n";
+		$aipGroup = $config->get('aip_group');
+		$counter  = 0;
 
 		foreach ($rows as $row)
 		{
@@ -381,15 +378,15 @@ class plgCronPublications extends JPlugin
 				foreach ($admins as $admin)
 				{
 					// Get the user's account
-					$juser = User::getInstance($admin);
-					if (!$juser->get('id'))
+					$user = User::getInstance($admin);
+					if (!$user->get('id'))
 					{
 						continue;
 					}
 					$message = new \Hubzero\Mail\Message();
 					$message->setSubject($subject)
 					        ->addFrom($from['email'], $from['name'])
-					        ->addTo($juser->get('email'), $juser->get('name'))
+					        ->addTo($user->get('email'), $user->get('name'))
 					        ->addHeader('X-Component', 'com_publications')
 					        ->addHeader('X-Component-Object', 'publications');
 
@@ -447,7 +444,7 @@ class plgCronPublications extends JPlugin
 		foreach ($rows as $row)
 		{
 			// Load publication model
-			$model  = new \Components\Publications\Models\Publication( $row->publication_id, $row->id);
+			$model = new \Components\Publications\Models\Publication($row->publication_id, $row->id);
 
 			// Check to make sure we got result
 			if (!$model->exists())

@@ -31,12 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-
-$base = rtrim($juri->base(), DS);
+$base = rtrim(Request::base(), '/');
 $sef  = Route::url($this->thread->link());
-$link = $base . DS . trim($sef, DS);
+$link = $base . '/' . trim($sef, '/');
 
 // Build message
 $message = '';

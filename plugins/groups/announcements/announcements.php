@@ -67,7 +67,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function onBeforeGroup( $group, $authorized )
+	public function onBeforeGroup($group, $authorized)
 	{
 		//creat view object
 		$view = new \Hubzero\Plugin\View(
@@ -84,7 +84,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->option     = 'com_groups';
 		$view->group      = $group;
 		$view->name       = $this->_name;
-		$view->juser      = JFactory::getUser();
+		$view->juser      = User::getRoot();
 		$view->database   = JFactory::getDBO();
 
 		// get plugin access
@@ -94,8 +94,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//check if guest and force login if plugin access is registered or members
 		//check to see if user is member and plugin access requires members
 		if ($access == 'nobody'
-			|| ($view->juser->get('guest') && $access == 'registered')
-			|| (!in_array($view->juser->get('id'), $group->get('members')) && $access == 'members'))
+			|| (User::isGuest() && $access == 'registered')
+			|| (!in_array(User::get('id'), $group->get('members')) && $access == 'members'))
 		{
 			return '';
 		}
@@ -153,9 +153,6 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//Create user object
-		$this->juser = JFactory::getUser();
-
 		//creat database object
 		$this->database = JFactory::getDBO();
 
@@ -187,12 +184,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				}
 
 				//check if guest and force login if plugin access is registered or members
-				if ($this->juser->get('guest')
+				if (User::isGuest()
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
 					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 
-					$this->redirect(
+					App::redirect(
 						Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
 						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
@@ -201,7 +198,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				}
 
 				//check to see if user is member and plugin access requires members
-				if (!in_array($this->juser->get('id'), $members) && $group_plugin_acl == 'members')
+				if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
@@ -262,7 +259,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->name       = $this->_name;
-		$view->juser      = $this->juser;
+		$view->juser      = User::getRoot();
 
 		//build array of filters
 		$view->filters              = array();
@@ -287,12 +284,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->rows  = $hubzeroAnnouncement->find($view->filters);
 
 		//get any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		//display list of announcements
@@ -340,12 +334,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->name   = $this->_name;
 
 		//get any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Display edit form
@@ -388,7 +379,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$fields['scope']      = 'group';
 			$fields['scope_id']   = $this->group->get('gidNumber');
 			$fields['created']    = Date::toSql();
-			$fields['created_by'] = $this->juser->get('id');
+			$fields['created_by'] = User::get('id');
 		}
 
 		//do we want to mark sticky?
@@ -400,13 +391,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//format publish up
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
 		{
-			$fields['publish_up'] = JFactory::getDate(strtotime(str_replace('@', '', $fields['publish_up'])))->toSql();
+			$fields['publish_up'] = Date::of(strtotime(str_replace('@', '', $fields['publish_up'])))->toSql();
 		}
 
 		//format publish down
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00')
 		{
-			$fields['publish_down'] = JFactory::getDate(strtotime(str_replace('@', '', $fields['publish_down'])))->toSql();
+			$fields['publish_down'] = Date::of(strtotime(str_replace('@', '', $fields['publish_down'])))->toSql();
 		}
 
 		//announcement model
@@ -431,7 +422,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		//success!
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
 			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_CREATED'),
 			'success'
@@ -458,13 +449,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		//announcement model
 		$announcement = new \Hubzero\Item\Announcement($this->database);
-		$announcement->load( $id );
+		$announcement->load($id);
 
 		//load created by user profile
 		$profile = \Hubzero\User\Profile::getInstance($announcement->created_by);
 
 		//make sure we are the one who created it
-		if ($announcement->created_by != $this->juser->get('id'))
+		if ($announcement->created_by != User::get('id'))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $profile->get('name')));
 			return $this->_list();
@@ -480,7 +471,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'),
 			Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED'),
 			'success'

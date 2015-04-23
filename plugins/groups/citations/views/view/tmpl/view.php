@@ -41,15 +41,15 @@ $database = $this->database;
 $citation = $this->citation;
 
 //load user profile
-$profile = \Hubzero\User\Profile::getInstance( $citation->uid );
+$profile = \Hubzero\User\Profile::getInstance($citation->uid);
 
 //get citation type
 $ct = new \Components\Citations\Tables\Type($database);
-$type = $ct->getType( $citation->type );
+$type = $ct->getType($citation->type);
 
 //get citation sponsors
 $cs = new \Components\Citations\Tables\Sponsor($database);
-$sponsors = $cs->getSponsorsForCitationWithId( $citation->id );
+$sponsors = $cs->getSponsorsForCitationWithId($citation->id);
 
 //determine the separator
 $urlSeparator = PHP_EOL;
@@ -680,8 +680,7 @@ $area = Request::getVar('area', 'about');
 	 */
 
 	//get hub url and name
-	$jconfig = JFactory::getConfig();
-	$hubName = $jconfig->getValue('config.sitename');
+	$hubName = Config::get('sitename');
 	$hubUrl = rtrim(Request::base(), '/');
 
 	//get the type of resource for coins

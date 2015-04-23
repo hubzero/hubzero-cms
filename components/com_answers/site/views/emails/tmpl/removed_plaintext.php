@@ -33,8 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!isset($this->link))
 {
-	$juri = JURI::getInstance();
-	$this->link = rtrim($juri->base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
+	$this->link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
 }
 
 $message  = Lang::txt('COM_ANSWERS_EMAIL_AUTO_GENERATED') . "\n";

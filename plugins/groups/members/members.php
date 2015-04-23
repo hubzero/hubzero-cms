@@ -106,9 +106,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group = $group;
 		$this->_name = substr($option, 4, strlen($option));
 
-		//Create user object
-		$juser = JFactory::getUser();
-
 		// Only perform the following if this is the active tab/plugin
 		if ($returnhtml)
 		{
@@ -126,12 +123,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -140,7 +137,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -223,7 +220,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 				//get all member roles
 				$db = JFactory::getDBO();
-				$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber=".$db->quote($group->get('gidNumber'));
+				$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($group->get('gidNumber'));
 				$db->setQuery($sql);
 				$view->member_roles = $db->loadAssocList();
 
@@ -292,7 +289,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		//do we have any pending requests
 		$pending = $group->get("applicants");
-		if (count($pending) > 0 && in_array($juser->get('id'), $group->get("managers")))
+		if (count($pending) > 0 && in_array(User::get('id'), $group->get("managers")))
 		{
 			$title = Lang::txt('PLG_GROUPS_MEMBERS_GROUP_HAS_REQUESTS', $group->get('description'), count($pending));
 			$link = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=members&filter=pending');
@@ -543,7 +540,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$limit = Request::getVar("limit", 25);
 		$filter = Request::getVar("filter", "members");
 
-		$this->_redirect = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start)
+		);
 	}
 
 	/**
@@ -627,7 +626,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$limit = Request::getVar("limit", 25);
 		$filter = Request::getVar("filter", "members");
 
-		$this->_redirect = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start)
+		);
 	}
 
 	/**
@@ -652,23 +653,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'members',
-				'name'    => 'remove'
-			)
-		);
+		$view = $this->view('default', 'remove');
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->users = Request::getVar('users', array(0));
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		$this->_output = $view->loadTemplate();
@@ -739,7 +732,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$users_man[] = $uid;
 				}
 
-				require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
+				require_once __DIR__ . DS . 'role.php';
 				GroupsMembersRole::deleteRolesForUserWithId($uid);
 
 				$this->notifyUser($targetuser);
@@ -773,8 +766,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'action'    => 'membership_removed',
 			'comments'  => $users_mem
 		));
-		$app = JFactory::getApplication();
-		$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'));
+
+		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'));
 	}
 
 	/**
@@ -784,14 +777,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function add()
 	{
-		$app = JFactory::getApplication();
-
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
 		}
 
-		$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'),'','message',true);
+		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'),'','message',true);
 	}
 
 	/**
@@ -819,23 +810,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'members',
-				'name'    => 'deny'
-			)
-		);
+		$view = $this->view('default', 'deny');
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->users = Request::getVar('users', array(0));
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		$this->_output = $view->loadTemplate();
@@ -932,18 +915,13 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'members',
-				'name'    => 'cancel'
-			)
-		);
+		$view = $this->view('default', 'cancel');
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->users = Request::getVar('users', array(0));
-		if ($this->getError()) {
+		if ($this->getError())
+		{
 			$view->setError($this->getError());
 		}
 
@@ -1022,7 +1000,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$db = JFactory::getDBO();
 		foreach ($user_emails as $ue)
 		{
-			$sql = "DELETE FROM #__xgroups_inviteemails WHERE email=".$db->Quote($ue);
+			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $db->Quote($ue);
 			$db->setQuery($sql);
 			$db->query();
 		}
@@ -1034,25 +1012,27 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'comments'  => array_merge($users, $user_emails)
 		));
 
-		$app = JFactory::getApplication();
-		$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'),'','',true);
+		App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'),'','',true);
 	}
 
+	/**
+	 * Add a member role
+	 *
+	 * @return  void
+	 */
 	public function addRole()
 	{
 		$this->editRole();
 	}
 
+	/**
+	 * Edit a member role
+	 *
+	 * @return  void
+	 */
 	public function editRole()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'members',
-				'name'    => 'role',
-				'layout'  => 'add'
-			)
-		);
+		$view = $this->view('add', 'role');
 
 		// database object
 		$database = JFactory::getDBO();
@@ -1078,16 +1058,20 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->option     = $this->_option;
 		$view->group      = $this->group;
 		$view->authorized = $this->authorized;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		$this->_output = $view->loadTemplate();
 	}
 
+	/**
+	 * Save a member role
+	 *
+	 * @return  void
+	 */
 	public function saveRole()
 	{
 		// get request vars
@@ -1109,7 +1093,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_groups&cn='. $this->group->get('cn').'&active=members'),
 			Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SUCCESS'),
 			'passed'
@@ -1119,12 +1103,10 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Remove a member role
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function removerole()
 	{
-		$app = JFactory::getApplication();
-
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1138,20 +1120,20 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		$db = JFactory::getDBO();
-		$sql = "DELETE FROM #__xgroups_member_roles WHERE roleid=".$db->Quote($role);
-		$db->setQuery($sql);
+		$db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role));
 		$db->query();
 
-		$sql = "DELETE FROM #__xgroups_roles WHERE id=".$db->Quote($role);
-		$db->setQuery($sql);
-		$db->query();
-
+		$db->setQuery("DELETE FROM `#__xgroups_roles` WHERE id=" . $db->Quote($role));
 		if (!$db->query())
 		{
 			$this->setError('An error occurred while trying to remove the member role. Please try again.');
 		}
 
-		$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
+			($this->getError() ? $this->getError() : ''),
+			($this->getError() ? 'error' : 'message')
+		);
 	}
 
 	/**
@@ -1182,18 +1164,10 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'members',
-				'name'    => 'role',
-				'layout'  => 'assign'
-			)
-		);
+		$view = $this->view('assign', 'role');
 
 		$db = JFactory::getDBO();
-		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber=".$db->Quote($this->group->get('gidNumber'));
-		$db->setQuery($sql);
+		$db->setQuery("SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->Quote($this->group->get('gidNumber')));
 		$roles = $db->loadAssocList();
 
 		$view->option = $this->_option;
@@ -1202,12 +1176,10 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->uid = $uid;
 		$view->roles = $roles;
 		$view->no_html = Request::getInt('no_html', 0);
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		$this->_output = $view->loadTemplate();
@@ -1220,8 +1192,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function submitrole()
 	{
-		$app = JFactory::getApplication();
-
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1239,13 +1209,16 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		$db = JFactory::getDBO();
-		$sql = "INSERT INTO #__xgroups_member_roles(roleid,uidNumber) VALUES(" . $db->Quote($role) . "," . $db->Quote($uid) . ")";
-		$db->setQuery($sql);
+		$db->setQuery("INSERT INTO `#__xgroups_member_roles` (roleid,uidNumber) VALUES (" . $db->Quote($role) . "," . $db->Quote($uid) . ")");
 		$db->query();
 
 		if ($no_html == 0)
 		{
-			$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
+			App::redirect(
+				Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
+				($this->getError() ? $this->getError() : ''),
+				($this->getError() ? 'error' : 'message')
+			);
 		}
 	}
 
@@ -1256,8 +1229,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function deleterole()
 	{
-		$app = JFactory::getApplication();
-
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1272,17 +1243,17 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		$db = JFactory::getDBO();
-
-		$sql = "DELETE FROM #__xgroups_member_roles WHERE roleid=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid);
-		$db->setQuery($sql);
-		$db->query();
-
+		$db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid));
 		if (!$db->query())
 		{
 			$this->setError('An error occurred while trying to remove the members role. Please try again.');
 		}
 
-		$app->redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
+		App::redirect(
+			Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
+			($this->getError() ? $this->getError() : ''),
+			($this->getError() ? 'error' : 'message')
+		);
 	}
 
 	/**
@@ -1297,12 +1268,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$group = $this->group;
 
 		// Build the SEF referenced in the message
-		$juri = JURI::getInstance();
-		$sef  = Route::url('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
-		$sef  = ltrim($sef, DS);
-
-		// Get the site configuration
-		$jconfig = JFactory::getConfig();
+		$sef  = Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn'));
+		$sef  = ltrim($sef, '/');
 
 		// Start building the subject
 		$subject = '';
@@ -1318,7 +1285,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				// Message
 				$plain  = "Your request for membership in the " . $group->get('description') . " group has been approved.\r\n";
 				$plain .= "To view this group go to: \r\n";
-				$plain .= $juri->base() . $sef . "\r\n";
+				$plain .= Request::base() . $sef . "\r\n";
 			break;
 
 			case 'confirmdeny':
@@ -1337,7 +1304,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$plain .= "If you feel this is in error, you may try to join the group again, \r\n";
 				$plain .= "this time better explaining your credentials and reasons why you should be accepted.\r\n\r\n";
 				$plain .= "To join the group go to: \r\n";
-				$plain .= $juri->base() . $sef . "\r\n";
+				$plain .= Request::base() . $sef . "\r\n";
 			break;
 
 			case 'confirmremove':
@@ -1354,7 +1321,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$plain .= stripslashes($reason)."\r\n\r\n";
 				}
 				$plain .= "If you feel this is in error, you may try to join the group again by going to:\r\n";
-				$plain .= $juri->base() . $sef . "\r\n";
+				$plain .= Request::base() . $sef . "\r\n";
 			break;
 
 			case 'confirmcancel':
@@ -1371,14 +1338,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$plain .= stripslashes($reason)."\r\n\r\n";
 				}
 				$plain .= "If you feel this is in error, you may try to join the group by going to:\r\n";
-				$plain .= $juri->base() . $sef . "\r\n";
+				$plain .= Request::base() . $sef . "\r\n";
 			break;
 		}
 
 		// Build the "from" data for the e-mail
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-			'email' => $jconfig->getValue('config.mailfrom')
+			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+			'email' => Config::get('mailfrom')
 		);
 
 		// create message object
@@ -1404,20 +1371,16 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$group = $this->group;
 
 		// Build the SEF referenced in the message
-		$juri = JURI::getInstance();
 		$sef = Route::url('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
-		$sef = ltrim($sef, DS);
-
-		// Get the site configuration
-		$jconfig = JFactory::getConfig();
+		$sef = ltrim($sef, '/');
 
 		//get the reason
 		$reason = Request::getVar('reason', '', 'post');
 
 		// Build the "from" info for e-mails
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-			'email' => $jconfig->getValue('config.mailfrom')
+			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+			'email' => Config::get('mailfrom')
 		);
 
 		//create the subject
@@ -1430,7 +1393,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$plain .= stripslashes($reason)."\r\n\r\n";
 		}
 		$plain .= "If you feel this is in error, you may try to join the group by going to:\r\n";
-		$plain .= $juri->base() . $sef . "\r\n";
+		$plain .= Request::base() . $sef . "\r\n";
 
 		//send the message
 		if ($email)

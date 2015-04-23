@@ -79,18 +79,18 @@ class plgCronResources extends JPlugin
 		}
 
 		// Get all tool resources without master DOI
-		$sql  = "SELECT r.id, r.created_by, v.id as tool_version_id,
-						v.toolid, v.toolname, v.title, v.description,
-						v.instance, v.revision, v.released
-						FROM #__resources AS r, #__tool_version AS v
-						WHERE r.published=1
-						AND r.type=7
-						AND r.standalone=1
-						AND r.alias=v.toolname
-						AND v.state=1
-						AND (r.master_doi IS NULL OR r.master_doi=0)
-						GROUP BY r.id
-						ORDER BY v.title, v.toolname, v.revision DESC";
+		$sql = "SELECT r.id, r.created_by, v.id as tool_version_id,
+				v.toolid, v.toolname, v.title, v.description,
+				v.instance, v.revision, v.released
+				FROM #__resources AS r, #__tool_version AS v
+				WHERE r.published=1
+				AND r.type=7
+				AND r.standalone=1
+				AND r.alias=v.toolname
+				AND v.state=1
+				AND (r.master_doi IS NULL OR r.master_doi=0)
+				GROUP BY r.id
+				ORDER BY v.title, v.toolname, v.revision DESC";
 
 		$database->setQuery( $sql );
 		if (!($rows = $database->loadObjectList()))
@@ -100,10 +100,8 @@ class plgCronResources extends JPlugin
 		}
 
 		// Includes
-		require_once(PATH_CORE . DS . 'components'
-			. DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-			. DS . 'models' . DS . 'doi.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'doi.php');
 
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi();
@@ -127,8 +125,7 @@ class plgCronResources extends JPlugin
 			$doiService->mapUser($row->created_by, array(), 'creator');
 			$doiService->set('resourceType', 'Software');
 			$doiService->set('title', htmlspecialchars(stripslashes($row->title)));
-			$doiService->set('url', $doiService->_configs->livesite . DS
-				. 'resources' . DS . $row->toolname . DS . 'main');
+			$doiService->set('url', $doiService->_configs->livesite . DS . 'resources' . DS . $row->toolname . DS . 'main');
 
 			// Register DOI
 			$masterDoi = $doiService->register();

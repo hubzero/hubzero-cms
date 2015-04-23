@@ -30,7 +30,7 @@
 
 namespace Hubzero\Item;
 
-use Hubzero\Plugin\View;
+use Hubzero\Mail\View;
 use Hubzero\Mail\Message;
 use Hubzero\User\Profile;
 use Hubzero\User\Group;
@@ -297,10 +297,9 @@ class Announcement extends \JTable
 		// create view object
 		$eview = new View(
 			array(
-				'folder'  => 'groups',
-				'element' => 'announcements',
-				'name'    => 'email',
-				'layout'  => 'announcement_plain'
+				'base_path' => PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements',
+				'name'      => 'email',
+				'layout'    => 'announcement_plain'
 			)
 		);
 

@@ -106,11 +106,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \Lang::txt('DATE_FORMAT_HZ1'));
+				return \Date::of($this->get('created'))->toLocal(\Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \Lang::txt('TIME_FORMAT_HZ1'));
+				return \Date::of($this->get('created'))->toLocal(\Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -161,11 +161,11 @@ class Comment extends Model
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('modified'), \Lang::txt('DATE_FORMAT_HZ1'));
+				return \Date::of($this->get('modified'))->toLocal(\Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('modified'), \Lang::txt('TIME_FORMAT_HZ1'));
+				return \Date::of($this->get('modified'))->toLocal(\Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -491,7 +491,7 @@ class Comment extends Model
 	public function vote($how)
 	{
 		$v = new Vote($this->_db);
-		$v->created_by = \JFactory::getUser()->get('id');
+		$v->created_by = \User::get('id');
 		$v->item_type  = 'comment';
 		$v->vote       = $how;
 		$v->item_id    = $this->get('id');
