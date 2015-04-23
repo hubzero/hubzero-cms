@@ -190,8 +190,12 @@ class Config
 	{
 		if (is_array($var))
 		{
-			// Serialize vars, unique them, then unserialize
-			$var = array_map('unserialize', array_unique(array_map('serialize', $var)));
+			// We only want to get unique items if they aren't associative
+			if (isset($var[0]))
+			{
+				// Serialize vars, unique them, then unserialize
+				$var = array_map('unserialize', array_unique(array_map('serialize', $var)));
+			}
 
 			foreach ($var as &$sub)
 			{
