@@ -1188,7 +1188,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
-		$version 	= Request::getVar( 'version', 'dev' );
+		$version 	= Request::getVar( 'version', 'default' );
 		$block  	= Request::getVar( 'section', 'status' );
 		$blockId  	= Request::getInt( 'step', 0 );
 
@@ -1888,10 +1888,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$rows = $objP->getRecords(array('project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1));
 
 		// Get used space
-		$dirsize 	   = \Components\Publications\Helpers\Html::getDiskUsage($rows);
-		$params  	   = new JParameter( $this->_project->params );
-		$quota   	   = $params->get('pubQuota')
-						? $params->get('pubQuota')
+		$dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows);
+		$quota   = $this->model->params->get('pubQuota')
+				? $this->model->params->get('pubQuota')
 						: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
 
 		if (($quota - $dirsize) <= 0)
@@ -1929,63 +1928,53 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $this->editDraft();
 		}
 
-		// Start url
-		$route = $this->model->isProvisioned()
-					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias='
-						. $this->model->get('alias') . '&active=publications';
-
-		// Determine redirect path
-		$url = Route::url($route . '&pid=' . $pid);
-
-		// Agreement to terms is required
-		if ($confirm && !$agree)
-		{
-			$url .= '/?action= ' . $this->_task . '&version=' . $version;
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED') );
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-			// Redirect
-			$this->_referer = $url;
-			return;
-		}
-
-		// Check against quota
-		if ($this->_overQuota())
-		{
-			$url .= '/?action= ' . $this->_task . '&version=' . $version;
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-			// Redirect
-			$this->_referer = $url;
-			return;
-		}
-
 		// Load publication model
-		$model  = new \Components\Publications\Models\Publication( $pid, $version);
+		$pub  = new \Components\Publications\Models\Publication( $pid, $version);
 
 		// Error loading publication record
-		if (!$model->exists())
+		if (!$pub->exists())
 		{
-			$this->_referer = Route::url($route);
+			$this->_referer = Route::url($pub->link('editbase'));
 			$this->_message = array(
 				'message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
 			return;
 		}
 
-		$model->setCuration();
-		$complete = $model->_curationModel->_progress->complete;
+		// Agreement to terms is required
+		if ($confirm && !$agree)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED') );
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+
+			// Redirect
+			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
+			return;
+		}
+
+		// Check against quota
+		if ($this->_overQuota())
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+
+			// Redirect
+			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
+			return;
+		}
+
+		// Set curation
+		$pub->setCuration();
+		$complete = $pub->_curationModel->_progress->complete;
 
 		// Require DOI?
-		$requireDoi = isset($model->_curationModel->_manifest->params->require_doi)
-					? $model->_curationModel->_manifest->params->require_doi : 0;
+		$requireDoi = isset($pub->_curationModel->_manifest->params->require_doi)
+					? $pub->_curationModel->_manifest->params->require_doi : 0;
 
 		// Make sure the publication belongs to the project
-		if ($this->model->get('id') != $model->_project->id)
+		if ($this->model->get('id') != $pub->project()->get('id'))
 		{
-			$this->_referer = Route::url($route);
+			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
 			$this->_message = array(
 				'message' => Lang::txt('Oups! The publication you are trying to change is hosted by another project.'),
 				'type' => 'error');
@@ -1993,8 +1982,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check that version label was not published before
-		$used_labels = $model->version->getUsedLabels( $pid, $version );
-		if (!$model->version->version_label || in_array($model->version->version_label, $used_labels))
+		$used_labels = $pub->version->getUsedLabels( $pid, $version );
+		if (!$pub->version->version_label || in_array($pub->version->version_label, $used_labels))
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 		}
@@ -2007,11 +1996,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Is revert allowed?
 		$revertAllowed = $this->_pubconfig->get('graceperiod', 0);
-		if ($revertAllowed && $model->version->state == 1
-			&& $model->version->accepted && $model->version->accepted != '0000-00-00 00:00:00')
+		if ($revertAllowed && $pub->version->state == 1
+			&& $pub->version->accepted && $pub->version->accepted != '0000-00-00 00:00:00')
 		{
-			$monthFrom = JFactory::getDate($model->version->accepted . '+1 month')->toSql();
-			if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
+			$monthFrom = Date::of($pub->version->accepted . '+1 month')->toSql();
+			if (strtotime($monthFrom) < strtotime(Date::of()))
 			{
 				$revertAllowed = 0;
 			}
@@ -2020,9 +2009,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Embargo?
 		if ($pubdate)
 		{
-			$pubdate = $this->parseDate($pubdate);
+			$pubdate = $this->_parseDate($pubdate);
 
-			$tenYearsFromNow = JFactory::getDate(strtotime("+10 years"))->toSql();
+			$tenYearsFromNow = Date::of(strtotime("+10 years"))->toSql();
 
 			// Stop if more than 10 years from now
 			if ($pubdate > $tenYearsFromNow)
@@ -2032,19 +2021,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Main version?
-		$main = $this->_task == 'republish' ? $model->version->main : 1;
-		$main_vid = $model->version->getMainVersionId($pid); // current default version
+		$main = $this->_task == 'republish' ? $pub->version->main : 1;
+		$main_vid = $pub->version->getMainVersionId($pid); // current default version
 
 		// Save version before changes
-		$originalStatus = $model->version->state;
+		$originalStatus = $pub->version->state;
 
 		// Checks
-		if ($this->_task == 'republish' && $model->version->state != 0)
+		if ($this->_task == 'republish' && $pub->version->state != 0)
 		{
 			// Can only re-publish unpublished version
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
 		}
-		elseif ($this->_task == 'revert' && $model->version->state != 5 && !$revertAllowed)
+		elseif ($this->_task == 'revert' && $pub->version->state != 5 && !$revertAllowed)
 		{
 			// Can only revert a pending resource
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );
@@ -2054,7 +2043,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->getError())
 		{
 			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-			$this->_referer = $url;
+			$this->_referer = Route::url($pub->link('editversion') . '&action=' . $this->_task);
 			return;
 		}
 
@@ -2070,11 +2059,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$model->version->submitted = Date::toSql();
+			$pub->version->set('submitted', Date::toSql());
 
 			// Save submitter
 			$pa = new \Components\Publications\Tables\Author( $this->_database );
-			$pa->saveSubmitter($model->version->id, $submitter, $this->model->get('id'));
+			$pa->saveSubmitter($pub->version->id, $submitter, $this->model->get('id'));
 
 			if ($this->_pubconfig->get('autoapprove') == 1 )
 			{
@@ -2100,31 +2089,34 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save state
-		$model->version->state 		= $state;
-		$model->version->main 		= $main;
+		$pub->version->set('state', $state);
+		$pub->version->set('main', $main);
+
 		if ($this->_task != 'revert')
 		{
-			$model->version->rating 		= '0.0';
-			$model->version->published_up   = $this->_task == 'republish'
-				? $model->version->published_up : Date::toSql();
-			$model->version->published_up  	= $pubdate ? $pubdate : $model->version->published_up;
-			$model->version->published_down = '';
+			$publishedUp = $this->_task == 'republish'
+				? $pub->version->published_up : Date::toSql();
+			$publishedUp = $pubdate ? $pubdate : $publishedUp;
+
+			$pub->version->set('rating', '0.0');
+			$pub->version->set('published_up', $publishedUp);
+			$pub->version->set('published_down', '');
 		}
-		$model->version->modified    = Date::toSql();
-		$model->version->modified_by = $this->_uid;
+		$pub->version->set('modified', Date::toSql());
+		$pub->version->set('modified_by', $this->_uid);
 
 		// Issue DOI
-		if ($requireDoi > 0 && $this->_task == 'publish' && !$model->version->doi)
+		if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi)
 		{
 			// Get DOI service
-			$doiService = new \Components\Publications\Models\Doi($model);
+			$doiService = new \Components\Publications\Models\Doi($pub);
 			$extended = $state == 5 ? false : true;
 			$doi = $doiService->register($extended);
 
 			// Store DOI
 			if ($doi)
 			{
-				$model->version->doi = $doi;
+				$pub->version->set('doi', $doi);
 			}
 
 			// Can't proceed without a valid DOI
@@ -2140,31 +2132,31 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			if ($state == 1)
 			{
-				$model->version->curation = json_encode($this->model->_curationModel->_manifest);
+				$pub->version->set('curation', json_encode($this->model->_curationModel->_manifest));
 			}
 
 			// Save data
-			if (!$model->version->store())
+			if (!$pub->version->store())
 			{
 				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 				return;
 			}
 
 			// Remove main flag from previous default version
-			if ($main && $main_vid && $main_vid != $model->version->id)
+			if ($main && $main_vid && $main_vid != $pub->version->id)
 			{
-				$model->version->removeMainFlag($main_vid);
+				$pub->version->removeMainFlag($main_vid);
 			}
 
 			// Mark as curated
-			$model->version->saveParam($model->version->id, 'curated', 1);
+			$pub->version->saveParam($pub->version->id, 'curated', 1);
 		}
 
 		// OnAfterPublish
-		$this->onAfterChangeState( $model, $model->version, $originalStatus );
+		$this->onAfterChangeState( $pub, $originalStatus );
 
 		// Redirect
-		$this->_referer = $url;
+		$this->_referer = Route::url($pub->link('editversion'));
 		return;
 	}
 
@@ -2173,19 +2165,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function onAfterChangeState( $pub, $row, $originalStatus = 3 )
+	public function onAfterChangeState( $pub, $originalStatus = 3 )
 	{
-		$state  = $row->state;
 		$notify = 1; // Notify administrators/curators?
 
 		// Log activity in curation history
 		if (isset($pub->_curationModel))
 		{
-			$pub->_curationModel->saveHistory($pub, $this->_uid, $originalStatus, $state, 0 );
+			$pub->_curationModel->saveHistory($pub, $this->_uid, $originalStatus, $pub->version->get('state'), 0 );
 		}
 
 		// Display status message
-		switch ($state)
+		switch ($pub->version->get('state'))
 		{
 			case 1:
 			default:
@@ -2214,24 +2205,20 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
 				break;
 		}
-		$this->_msg .= ' <a href="'.Route::url('index.php?option=com_publications' . a .
-			    'id=' . $row->publication_id ) .'">'. Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT').'</a>';
+		$this->_msg .= ' <a href="' . Route::url($pub->link('version')) . '">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT') . '</a>';
 
-		$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
-		$action .= ' ' . $row->version_label . ' ';
-		$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . html_entity_decode($pubtitle).'"';
-		$action  = htmlentities($action, ENT_QUOTES, "UTF-8");
+		$pubtitle = \Hubzero\Utility\String::truncate($pub->version->get('title'), 100);
+		$action  .= ' ' . $pub->version->get('version_label') . ' ';
+		$action  .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION')
+					. ' "' . html_entity_decode($pubtitle).'"';
+		$action   = htmlentities($action, ENT_QUOTES, "UTF-8");
 
 		// Record activity
 		if (!$this->model->isProvisioned() && !$this->getError())
 		{
-			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
-			$aid = $objAA->recordActivity( $this->model->get('id'), $this->_uid,
-					$action, $row->publication_id, $pubtitle,
-					Route::url('index.php?option=' . $this->_option . a .
-					'alias=' . $this->model->get('alias') . '&active=publications' . a .
-					'pid=' . $row->publication_id) . '/?version=' . $row->version_number,
-					'publication', 1 );
+			$aid = $this->model->recordActivity(
+					$action, $pub->id, $pubtitle,
+					Route::url($pub->link('editversion')), 'publication', 1 );
 		}
 
 		// Send out notifications
@@ -2239,9 +2226,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$actor 	 = $profile
 				? $profile->get('name')
 				: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
-		$juri 	 = JURI::getInstance();
-		$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
-		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+		$sef	 = Route::url($pub->link('version'));
+		$link 	 = rtrim(Request::base(), DS) . DS . trim($sef, DS);
 		$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
 
 		// Notify admin group
@@ -2261,7 +2247,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				\Components\Projects\Helpers\Html::sendHUBMessage(
 					'com_projects',
 					$this->model->config(),
-					$this->_project,
+					$this->model->project(),
 					$admins,
 					Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
 					'projects_new_project_admin',
@@ -2271,9 +2257,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Notify curators by email
-			$curatorMessage = ($state == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . rtrim($juri->base(), DS) . DS . 'publications/curation' : $message;
+			$curatorMessage = ($pub->version->get('state') == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . rtrim($juri->base(), DS) . DS . 'publications/curation' : $message;
 
-			$curatorgroups = array($pub->_type->curatorgroup);
+			$curatorgroups = array($pub->masterType()->curatorgroup);
 			if ($this->_pubconfig->get('curatorgroup', ''))
 			{
 				$curatorgroups[] = $this->_pubconfig->get('curatorgroup', '');
@@ -2299,14 +2285,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Notify project managers (in all cases)
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 		$managers = $objO->getIds($this->model->get('id'), 1, 1);
 		if (!$this->model->isProvisioned() && !empty($managers))
 		{
 			\Components\Projects\Helpers\Html::sendHUBMessage(
 				'com_projects',
 				$this->model->config(),
-				$this->_project,
+				$this->model->project(),
 				$managers,
 				Lang::txt('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
 				'projects_admin_notice',
@@ -2316,7 +2302,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Produce archival package
-		if ($state == 1 || $state == 5)
+		if ($pub->version->get('state') == 1 || $pub->version->get('state') == 5)
 		{
 			$pub->_curationModel->package();
 		}
@@ -2339,7 +2325,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function parseDate( $pubdate )
+	private function _parseDate( $pubdate )
 	{
 		$date = explode('-', $pubdate);
 		if (count($date) == 3)
@@ -2360,7 +2346,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 				if (checkdate($month, $day, $year))
 				{
-					$pubdate = JFactory::getDate(gmmktime(0, 0, 0, $month, $day, $year))->toSql();
+					$pubdate = Date::of(gmmktime(0, 0, 0, $month, $day, $year))->toSql();
 				}
 				// Prevent date before current
 				if ($pubdate < Date::toSql())
@@ -2386,78 +2372,55 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version 	= Request::getVar('version', 'default');
 		$ajax 		= Request::getInt('ajax', 0);
 
-		// Determine redirect path
-		$route = $this->model->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
-		$url = Route::url($route . '&pid=' . $pid);
+		// Load publication model
+		$pub  = new \Components\Publications\Models\Publication( $pid, $version);
 
-		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
-
-		// If publication not found, raise error
-		$pub = $objP->getPublication($pid, $version, $this->model->get('id'));
-		if (!$pub)
-		{
-			if ($pid)
-			{
-				$this->_referer = $url;
-				return;
-			}
-			else
-			{
-				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
-				return;
-			}
-		}
-
-		// Instantiate publication version
-		$row = new \Components\Publications\Tables\Version( $this->_database );
-		if (!$row->loadVersion($pid, $version))
+		if (!$pub->exists())
 		{
 			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
 			return;
 		}
 
 		// Save version ID
-		$vid = $row->id;
+		$vid = $pub->version->get('id');
 
 		// Append breadcrumbs
 		if (!$ajax)
 		{
 			Pathway::append(
-				stripslashes($pub->title),
-				$url
+				stripslashes($pub->version->get('title')),
+				$pub->link('edit')
 			);
 		}
 
+		$baseUrl  = Route::url($pub->link('editbase'));
+		$baseEdit = Route::url($pub->link('edit'));
+
 		// Can only unpublish published version or delete a draft
-		if ($pub->state != 1 && $pub->state != 3 && $pub->state != 4)
+		if ($pub->version->get('state') != 1
+			&& $pub->version->get('state') != 3
+			&& $pub->version->get('state') != 4
+		)
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANT_DELETE'));
 		}
-
-		// Get published versions count
-		$objV = new \Components\Publications\Tables\Version( $this->_database );
-		$publishedCount = $objV->getPublishedCount($pid);
 
 		// Unpublish/delete version
 		if ($confirm)
 		{
 			if (!$this->getError())
 			{
-				$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
-				$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
+				$pubtitle = \Hubzero\Utility\String::truncate($pub->version->get('title'), 100);
 
-				if ($pub->state == 1)
+				if ($pub->version->get('state') == 1)
 				{
 					// Unpublish published version
-					$row->published_down 	= Date::toSql();
-					$row->modified 			= Date::toSql();
-					$row->modified_by 		= $this->_uid;
-					$row->state 			= 0;
+					$pub->version->set('published_down', Date::toSql());
+					$pub->version->set('modified', Date::toSql());
+					$pub->version->set('modified_by', $this->_uid);
+					$pub->version->set('state', 0);
 
-					if (!$row->store())
+					if (!$pub->version->store())
 					{
 						throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
 						return;
@@ -2468,23 +2431,23 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 						// Add activity
 						$action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
-						$action .= ' '.strtolower(Lang::txt('version')).' '.$row->version_label.' '
-						.Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF').' '.strtolower(Lang::txt('publication')).' "'
-						.$pubtitle.'" ';
+						$action .= ' '.strtolower(Lang::txt('version'))
+								. ' ' . $pub->version->get('version_label') . ' '
+								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF')
+								. ' ' . strtolower(Lang::txt('publication')) . ' "'
+								. $pubtitle . '" ';
 
-						$aid = $objAA->recordActivity( $this->model->get('id'), $this->_uid,
+						$aid = $this->model->recordActivity(
 							   $action, $pid, $pubtitle,
-							   Route::url('index.php?option=' . $this->_option . a .
-							   'alias=' . $this->model->get('alias') . '&active=publications' . a .
-							   'pid=' . $pid) . '/?version=' . $row->version_number, 'publication', 0 );
+							   Route::url($pub->link('editversion')), 'publication', 0 );
 					}
 				}
-				elseif ($pub->state == 3 || $pub->state == 4)
+				elseif ($pub->version->get('state') == 3 || $pub->version->get('state') == 4)
 				{
-					$vlabel = $row->version_label;
+					$vlabel = $pub->version->get('version_label');
 
 					// Delete draft version
-					if (!$row->delete())
+					if (!$pub->version->delete())
 					{
 						throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
 						return;
@@ -2502,11 +2465,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 					$pScreenshot->deleteScreenshots($vid);
 
-					jimport('joomla.filesystem.file');
-					jimport('joomla.filesystem.folder');
-
 					// Build publication path
-					$path    =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS)
+					$path =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS)
 							. DS .  \Hubzero\Utility\String::pad( $pid );
 
 					// Build version path
@@ -2515,7 +2475,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Delete all version files
 					if (is_dir($vPath))
 					{
-						JFolder::delete($vPath);
+						$this->fileSystem->deleteDirectory($vPath);
 					}
 
 					// Delete access accosiations
@@ -2527,30 +2487,28 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pAudience->deleteAudience($vid);
 
 					// Delete publication existence
-					if ($pub->versions == 0)
+					if ($pub->versionCount() == 0)
 					{
 						// Delete all files
 						if (is_dir($path))
 						{
-							JFolder::delete($path);
+							$this->fileSystem->delete($path);
 						}
 
-						$objP->delete($pid);
-						$objP->deleteExistence($pid);
-						$url  = Route::url($route);
+						$pub->publication->delete($pid);
+						$pub->publication->deleteExistence($pid);
 
 						// Delete related publishing activity from feed
-						$objAA = new \Components\Projects\Tables\Activity( $this->_database );
+						$objAA = $this->model->table('Activity');
 						$objAA->deleteActivityByReference($this->model->get('id'), $pid, 'publication');
 					}
 
 					// Add activity
 					$action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_DRAFT_DELETED');
-					$action .= ' '.$vlabel.' ';
-					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
+					$action .= ' ' . $vlabel . ' ';
+					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubtitle . '"';
 
-					$aid = $objAA->recordActivity( $this->model->get('id'), $this->_uid,
-						   $action, $pid, '', '', 'publication', 0 );
+					$aid = $this->model->recordActivity($action, $pid, '', '', 'publication', 0 );
 
 					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DRAFT_DELETED');
 				}
@@ -2560,27 +2518,24 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'projects',
-					'element'=>'publications',
-					'name'=>'cancel'
+					'folder'  =>'projects',
+					'element' =>'publications',
+					'name'    =>'cancel'
 				)
 			);
 
 			// Output HTML
 			$view->option 			= $this->_option;
 			$view->database 		= $this->_database;
-			$view->project 			= $this->_project;
+			$view->project 			= $this->model;
 			$view->uid 				= $this->_uid;
 			$view->pid 				= $pid;
-			$view->version 			= $version;
 			$view->pub 				= $pub;
-			$view->publishedCount 	= $publishedCount;
+			$view->publishedCount 	= $pub->version->getPublishedCount($pid);
 			$view->task 			= $this->_task;
 			$view->config 			= $this->model->config();
 			$view->pubconfig 		= $this->_pubconfig;
 			$view->ajax 			= $ajax;
-			$view->route			= $route;
-			$view->url 				= $url;
 			$view->title		  	= $this->_area['title'];
 
 			// Get messages	and errors
@@ -2602,8 +2557,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
-		$url.= $version != 'default' ? '?version='.$version : '';
-		$this->_referer = $url;
+		$this->_referer = $baseUrl;
 		return;
 	}
 
@@ -2818,13 +2772,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get disk space
 	 *
-	 * @param      string	$option
-	 * @param      object  	$project
-	 * @param      string  	$case
-	 * @param      integer  $by
-	 * @param      string  	$action
-	 * @param      object 	$config
-	 * @param      string  	$app
+	 * @param      object  	$model
 	 *
 	 * @return     string
 	 */

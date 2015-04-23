@@ -1130,6 +1130,16 @@ class Publication extends Object
 	}
 
 	/**
+	 * Get version count
+	 *
+	 * @return     void
+	 */
+	public function versionCount()
+	{
+		return $this->version->getCount($this->get('id'));
+	}
+
+	/**
 	 * Get citations
 	 *
 	 * @return     void

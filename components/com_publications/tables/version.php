@@ -380,6 +380,23 @@ class Version extends \JTable
 	}
 
 	/**
+	 * Get version count
+	 *
+	 * @param      integer  $pid 		Pub ID
+	 * @return     integer
+	 */
+	public function getCount( $pid = NULL )
+	{
+		if ($pid === NULL )
+		{
+			return false;
+		}
+		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();
+	}
+
+	/**
 	 * Get last public release
 	 *
 	 * @param      integer  $pid 		Pub ID

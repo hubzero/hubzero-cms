@@ -238,6 +238,6 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 		</span>
 	</div>
 	<?php } ?>
-	<input type="hidden" name="version" value="<?php echo $this->pub->version; ?>" />
+	<input type="hidden" name="version" value="<?php echo $this->pub->versionAlias; ?>" />
 	<input type="hidden" name="confirm" value="1" />
 </div>
