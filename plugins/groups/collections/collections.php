@@ -59,7 +59,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	public function onGroupDelete($group)
 	{
 		// Import needed libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 		// Get all the IDs for collections
 		$database = JFactory::getDBO();
@@ -107,7 +107,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGroupDeleteCount($group)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 		$database = JFactory::getDBO();
 		$database->setQuery("SELECT COUNT(*) FROM `#__collections` WHERE `object_type`=" . $database->quote('group') . " AND `object_id`=" . $database->quote($group->get('gidNumber')));
@@ -247,21 +247,20 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			//push the css to the doc
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', $this->_name);
+			$this->css();
 
 			$task = '';
 			$controller = 'board';
 			$id = 0;
 
-			$juri = JURI::getInstance();
-			$path = $juri->getPath();
+			$path = Request::path();
 			if (strstr($path, '/'))
 			{
-				$path = str_replace($juri->base(true), '', $path);
+				$path = str_replace(Request::base(true), '', $path);
 				$path = str_replace('index.php', '', $path);
-				$path = DS . trim($path, DS);
+				$path = '/' . trim($path, '/');
 				$path = str_replace('/groups/' . $this->group->get('cn') . '/' . $this->_name, '', $path);
-				$path = ltrim($path, DS);
+				$path = ltrim($path, '/');
 				$bits = explode('/', $path);
 
 				if (isset($bits[0]) && $bits[0])
@@ -414,14 +413,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _followers()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'follow',
-				'layout'  => 'followers'
-			)
-		);
+		$view = $this->view('followers', 'follow');
 		$view->name        = $this->_name;
 		$view->juser       = User::getRoot();
 		$view->option      = $this->option;
@@ -466,13 +458,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'followers');
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -483,14 +473,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _collections()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'collection',
-				'layout'  => 'collections'
-			)
-		);
+		$view = $this->view('collections', 'collection');
 		$view->name        = $this->_name;
 		$view->juser       = User::getRoot();
 		$view->option      = $this->option;
@@ -547,13 +530,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'all');
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -564,14 +545,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _collection()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'collection',
-				'layout'  => 'default'
-			)
-		);
+		$view = $this->view('default', 'collection');
 		$view->name    = $this->_name;
 		$view->juser   = User::getRoot();
 		$view->option  = $this->option;
@@ -774,14 +748,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _posts()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'collection',
-				'layout'  => 'default'
-			)
-		);
+		$view = $this->view('default', 'collection');
 		$view->name    = $this->_name;
 		$view->group   = $this->group;
 		$view->option  = $this->option;
@@ -856,13 +823,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _post()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'post'
-			)
-		);
+		$view = $this->view('default', 'post');
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
@@ -945,25 +906,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$type = 'file';
 			}
 
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'post',
-					'layout'  => 'edit_' . $type
-				)
-			);
+			$view = $this->view('edit_' . $type, 'post');
 		}
 		else
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'post',
-					'layout'  => 'edit'
-				)
-			);
+			$view = $this->view('edit', 'post');
 		}
 		$view->name        = $this->_name;
 		$view->option      = $this->option;
@@ -1149,14 +1096,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$item_id = $post->get('item_id');
 			}
 
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'post',
-					'layout'  => 'repost'
-				)
-			);
+			$view = $this->view('repost', 'post');
 
 			$view->myboards      = $this->model->mine();
 			$view->groupboards   = $this->model->mine('groups');
@@ -1371,14 +1311,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'post',
-					'layout'  => 'delete'
-				)
-			);
+			$view = $this->view('delete', 'post');
 			$view->option   = $this->option;
 			$view->group    = $this->group;
 			$view->task     = $this->action;
@@ -1702,14 +1635,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			// Output HTML
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'collection',
-					'layout'  => 'delete'
-				)
-			);
+			$view = $this->view('delete', 'collection');
 			$view->option     = $this->option;
 			$view->group      = $this->group;
 			$view->task       = $this->action;
@@ -1765,13 +1691,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'settings'
-			)
-		);
+		$view = $this->view('default', 'settings');
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->action      = $this->action;

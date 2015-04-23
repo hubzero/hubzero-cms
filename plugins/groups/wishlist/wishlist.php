@@ -96,9 +96,6 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//Create user object
-		$juser = JFactory::getUser();
-
 		//get the group members
 		$members = $group->get('members');
 
@@ -116,12 +113,12 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -130,12 +127,11 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">'
-					. Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 		}
@@ -144,7 +140,6 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Set some variables so other functions have access
-		$this->juser = $juser;
 		$this->database = $database;
 		$this->authorized = $authorized;
 		$this->members = $members;
@@ -153,14 +148,14 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$this->action = $action;
 
 		//include com_wishlist files
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Get the component parameters
 		$this->config = Component::params('com_wishlist');
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_wishlist');
+		Lang::load('com_wishlist') ||
+		Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');
 
 		//set some more vars
 		$gid = $this->group->get('gidNumber');
@@ -208,24 +203,24 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$owners = $objOwner->get_owners($id, $this->config->get('group'), $wishlist);
 
 		//if user is guest and wishlist isnt public
-		//if (!$wishlist->public && $juser->get('guest'))
+		//if (!$wishlist->public && User::isGuest())
 		//{
 		//	$arr['html'] = '<p class="warning">' . Lang::txt('The Group Wishlist is not a publicly viewable list.') . '</p>';
 		//	return $arr;
 		//}
 
 		// Authorize admins & list owners
-		if ($juser->authorize($option, 'manage'))
+		if (User::authorise($option, 'manage'))
 		{
 			$admin = 1;
 		}
 
 		//authorized based on wishlist
-		if (in_array($juser->get('id'), $owners['individuals']))
+		if (in_array(User::get('id'), $owners['individuals']))
 		{
 			$admin = 2;
 		}
-		else if (in_array($juser->get('id'), $owners['advisory']))
+		else if (in_array(User::get('id'), $owners['advisory']))
 		{
 			$admin = 3;
 		}
@@ -238,34 +233,26 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		if ($return == 'html')
 		{
 			// Get wishes
-			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
+			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getRoot());
 
 			// HTML output
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'browse'
-				)
-			);
+			$view = $this->view('default', 'browse');
 
 			// Pass the view some info
 			$view->option = $option;
 			//$view->owners = $owners;
 			$view->group = $this->group;
-			$view->juser = $juser;
+			$view->juser = User::getRoot();
 			$view->wishlist = $wishlist;
 			$view->items = $items;
 			$view->filters = $filters;
 			$view->admin = $admin;
 			$view->config = $this->config;
-			if ($this->getError())
+
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			// Return the output
@@ -283,7 +270,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	public function onGroupDeleteCount($group)
 	{
 		// include com_wishlist files
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
 		$database = JFactory::getDBO();
@@ -317,7 +304,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	public function onGroupDelete($group)
 	{
 		// include com_wishlist files
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
 
 		// Load some objects
 		$database = JFactory::getDBO();

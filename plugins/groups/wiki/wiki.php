@@ -95,9 +95,9 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
 		$book = new Components\Wiki\Models\Book($group->get('cn'));
 		$arr['metadata']['count'] = $book->pages('count');
@@ -118,9 +118,6 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//Create user object
-			$juser = JFactory::getUser();
-
 			//get the group members
 			$members = $group->get('members');
 
@@ -132,7 +129,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = $_SERVER['REQUEST_URI'];
@@ -141,7 +138,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 					$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
 				}
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -150,7 +147,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -213,20 +210,19 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 
 			Request::setVar('task', $action);
 
-			$lang = JFactory::getLanguage();
-			$lang->load('com_wiki');
+			Lang::load('com_wiki') || Lang::load('com_wiki', PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site');
 
 			//$controllerName = Request::getCmd('controller', 'page');
-			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php'))
+			if (!file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php'))
 			{
 				$controllerName = 'page';
 			}
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php');
 			$controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
 			// Instantiate controller
 			$controller = new $controllerName(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site',
 				'name'      => 'groups',
 				'sub'       => 'wiki',
 				'group'     => $group->get('cn')
@@ -298,7 +294,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		$ids = $this->getPageIDs($group->get('cn'));
 
 		// Import needed libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
 		// Instantiate a object
 		$database = JFactory::getDBO();

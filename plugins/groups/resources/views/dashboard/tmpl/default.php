@@ -32,83 +32,86 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->results) {
-	include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
+	include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
 	plgGroupsResources::documents();
 
 	$database = JFactory::getDBO();
-	$juser = JFactory::getUser();
 ?>
-	<table class="related-resources" summary="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_DASHBOARD_SUMMARY'); ?>">
+	<table class="related-resources">
 		<tbody>
-<?php
-	foreach ($this->results as $line)
-	{
-		switch ($line->rating)
-		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
-			case 0:
-			default:  $class = ' no-stars';      break;
-		}
+		<?php
+			foreach ($this->results as $line)
+			{
+				switch ($line->rating)
+				{
+					case 0.5: $class = ' half-stars';      break;
+					case 1:   $class = ' one-stars';       break;
+					case 1.5: $class = ' onehalf-stars';   break;
+					case 2:   $class = ' two-stars';       break;
+					case 2.5: $class = ' twohalf-stars';   break;
+					case 3:   $class = ' three-stars';     break;
+					case 3.5: $class = ' threehalf-stars'; break;
+					case 4:   $class = ' four-stars';      break;
+					case 4.5: $class = ' fourhalf-stars';  break;
+					case 5:   $class = ' five-stars';      break;
+					case 0:
+					default:  $class = ' no-stars';      break;
+				}
 
-		$helper = new \Components\Resources\Helpers\Helper( $line->id, $database );
-		$helper->getContributors();
+				$helper = new \Components\Resources\Helpers\Helper($line->id, $database);
+				$helper->getContributors();
 
-		// If the user is logged in, get their rating for this resource
-		if (!$juser->get('guest')) {
-			$mr = new \Components\Resources\Tables\Review( $database );
-			$myrating = $mr->loadUserRating( $line->id, $juser->get('id') );
-		} else {
-			$myrating = 0;
-		}
-		switch ($myrating)
-		{
-			case 0.5: $myclass = ' half-stars';      break;
-			case 1:   $myclass = ' one-stars';       break;
-			case 1.5: $myclass = ' onehalf-stars';   break;
-			case 2:   $myclass = ' two-stars';       break;
-			case 2.5: $myclass = ' twohalf-stars';   break;
-			case 3:   $myclass = ' three-stars';     break;
-			case 3.5: $myclass = ' threehalf-stars'; break;
-			case 4:   $myclass = ' four-stars';      break;
-			case 4.5: $myclass = ' fourhalf-stars';  break;
-			case 5:   $myclass = ' five-stars';      break;
-			case 0:
-			default:  $myclass = ' no-stars';      break;
-		}
+				// If the user is logged in, get their rating for this resource
+				if (!User::isGuest())
+				{
+					$mr = new \Components\Resources\Tables\Review($database);
+					$myrating = $mr->loadUserRating($line->id, User::get('id'));
+				}
+				else
+				{
+					$myrating = 0;
+				}
+				switch ($myrating)
+				{
+					case 0.5: $myclass = ' half-stars';      break;
+					case 1:   $myclass = ' one-stars';       break;
+					case 1.5: $myclass = ' onehalf-stars';   break;
+					case 2:   $myclass = ' two-stars';       break;
+					case 2.5: $myclass = ' twohalf-stars';   break;
+					case 3:   $myclass = ' three-stars';     break;
+					case 3.5: $myclass = ' threehalf-stars'; break;
+					case 4:   $myclass = ' four-stars';      break;
+					case 4.5: $myclass = ' fourhalf-stars';  break;
+					case 5:   $myclass = ' five-stars';      break;
+					case 0:
+					default:  $myclass = ' no-stars';      break;
+				}
 
-		// Encode some potentially troublesome characters
-		$line->title = $this->escape( $line->title );
+				// Encode some potentially troublesome characters
+				$line->title = $this->escape($line->title);
 
-		// Make sure we have an SEF, otherwise it's a querystring
-		if (strstr($line->href,'option=')) {
-			$d = '&amp;';
-		} else {
-			$d = '?';
-		}
+				// Make sure we have an SEF, otherwise it's a querystring
+				if (strstr($line->href,'option=')) {
+					$d = '&amp;';
+				} else {
+					$d = '?';
+				}
 
-		// Format the ranking
-		$line->ranking = round($line->ranking, 1);
-		$r = (10*$line->ranking);
-		if (intval($r) < 10) {
-			$r = '0'.$r;
-		}
-?>
+				// Format the ranking
+				$line->ranking = round($line->ranking, 1);
+				$r = (10*$line->ranking);
+				if (intval($r) < 10)
+				{
+					$r = '0' . $r;
+				}
+		?>
 			<tr>
-<?php if ($this->config->get('show_ranking')) { ?>
+			<?php if ($this->config->get('show_ranking')) { ?>
 				<td class="ranking"><?php echo number_format($line->ranking,1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
-<?php } elseif ($this->config->get('show_rating')) { ?>
+			<?php } elseif ($this->config->get('show_rating')) { ?>
 				<td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',$line->rating); ?></span>&nbsp;</span></td>
-<?php } ?>
+			<?php } ?>
 				<td>
 					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title ; ?></a>
 					<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
@@ -120,15 +123,15 @@ if ($this->results) {
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_TYPE'); ?></th>
 										<td><?php echo $line->section; ?></td>
 									</tr>
-<?php if ($helper->contributors) { ?>
+								<?php if ($helper->contributors) { ?>
 									<tr>
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_CONTRIBUTORS'); ?></th>
 										<td><?php echo $helper->contributors; ?></td>
 									</tr>
-<?php } ?>
+								<?php } ?>
 									<tr>
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_DATE'); ?></th>
-										<td><?php echo JHTML::_('date',$line->publish_up, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+										<td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 									</tr>
 									<tr>
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>
@@ -154,9 +157,9 @@ if ($this->results) {
 				</td>
 				<td class="type"><?php echo $line->area; ?></td>
 			</tr>
-<?php
-	}
-?>
+		<?php
+			}
+		?>
 		</tbody>
 	</table>
 <?php } else { ?>

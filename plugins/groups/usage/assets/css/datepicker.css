@@ -22,7 +22,7 @@ div.datepicker {
 	top: 0;
 	right: 10px;
 	height: 10px;
-	background: url(images/datepicker_t.png);
+	background: url('../img/datepicker_t.png');
 }
 .datepickerBorderB {
 	position: absolute;
@@ -30,7 +30,7 @@ div.datepicker {
 	bottom: 0;
 	right: 10px;
 	height: 10px;
-	background: url(images/datepicker_b.png);
+	background: url('../img/datepicker_b.png');
 }
 .datepickerBorderL {
 	position: absolute;
@@ -38,7 +38,7 @@ div.datepicker {
 	bottom: 10px;
 	top: 10px;
 	width: 10px;
-	background: url(images/datepicker_l.png);
+	background: url('../img/datepicker_l.png');
 }
 .datepickerBorderR {
 	position: absolute;
@@ -46,7 +46,7 @@ div.datepicker {
 	bottom: 10px;
 	top: 10px;
 	width: 10px;
-	background: url(images/datepicker_r.png);
+	background: url('../img/datepicker_r.png');
 }
 .datepickerBorderTL {
 	position: absolute;
@@ -54,7 +54,7 @@ div.datepicker {
 	left: 0;
 	width: 10px;
 	height: 10px;
-	background: url(images/datepicker_tl.png);
+	background: url('../img/datepicker_tl.png');
 }
 .datepickerBorderTR {
 	position: absolute;
@@ -62,7 +62,7 @@ div.datepicker {
 	right: 0;
 	width: 10px;
 	height: 10px;
-	background: url(images/datepicker_tr.png);
+	background: url('../img/datepicker_tr.png');
 }
 .datepickerBorderBL {
 	position: absolute;
@@ -70,7 +70,7 @@ div.datepicker {
 	left: 0;
 	width: 10px;
 	height: 10px;
-	background: url(images/datepicker_bl.png);
+	background: url('../img/datepicker_bl.png');
 }
 .datepickerBorderBR {
 	position: absolute;
@@ -78,7 +78,7 @@ div.datepicker {
 	right: 0;
 	width: 10px;
 	height: 10px;
-	background: url(images/datepicker_br.png);
+	background: url('../img/datepicker_br.png');
 }
 .datepickerHidden {
 	display: none;
@@ -192,12 +192,12 @@ td.datepickerSpecial.datepickerSelected a {
 
 .datepicker table {
 	border:none;
-	}
+}
 .datepicker table td,
 .datepicker table tbody th {
 	padding:0;
 	border:none;
-	}
+}
 
 .datepicker a:hover {
 	border:none;

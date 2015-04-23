@@ -39,48 +39,13 @@ define('GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION', 'receive-forum-email
 /**
  * Groups member options table class
  */
-class GroupsTableMemberoption extends JTable
+class GroupsTableMemberoption extends \JTable
 {
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $gidNumber = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $userid = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $optionname = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $optionvalue = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db Database
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -90,31 +55,32 @@ class GroupsTableMemberoption extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid, False if not
+	 * @return  boolean  True if data is valid, False if not
 	 */
 	public function check()
 	{
 		if (trim($this->gidNumber) == '')
 		{
 			$this->setError(Lang::txt('Please provide a gidNumber'));
-			return false;
 		}
 
 		if (trim($this->userid) == '')
 		{
 			$this->setError(Lang::txt('Please provide a userid'));
-			return false;
 		}
 
 		if (trim($this->optionname) == '')
 		{
 			$this->setError(Lang::txt('Please provide an optionname'));
-			return false;
 		}
 
 		if (trim($this->optionvalue) == '')
 		{
 			$this->setError(Lang::txt('Please provide an optionvalue'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -124,10 +90,10 @@ class GroupsTableMemberoption extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      unknown $gidNumber Parameter description (if any) ...
-	 * @param      unknown $userid Parameter description (if any) ...
-	 * @param      unknown $optionname Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $gidNumber
+	 * @param   integer  $userid
+	 * @param   string   $optionname
+	 * @return  boolean
 	 */
 	public function loadRecord($gidNumber=NULL, $userid=NULL, $optionname=NULL)
 	{

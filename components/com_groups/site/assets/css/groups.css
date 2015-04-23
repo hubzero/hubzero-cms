@@ -143,16 +143,16 @@
 	background-color: #aaaaaa;
 }
 .groups tbody tr.pending {
-	background: #ffe url("/components/com_groups/assets/img/light-stripes.png");
+	background: #ffe url("/components/com_groups/site/assets/img/light-stripes.png");
 }
 .groups tbody tr.member {
-	background: #F3FDF0 url("/components/com_groups/assets/img/light-stripes.png");
+	background: #F3FDF0 url("/components/com_groups/site/assets/img/light-stripes.png");
 }
 .groups tbody tr.manager {
-	background: #FFF2EF url("/components/com_groups/assets/img/light-stripes.png");
+	background: #FFF2EF url("/components/com_groups/site/assets/img/light-stripes.png");
 }
 .groups tbody tr.invitee {
-	background: #F9F9F9 url("/components/com_groups/assets/img/light-stripes.png");
+	background: #F9F9F9 url("/components/com_groups/site/assets/img/light-stripes.png");
 }
 .groups tbody .join-policy {
 	font-size: 85%;
@@ -400,7 +400,7 @@
 		width: 12px;
 		height: 31px; 
 		z-index: 444;
-		background:url("/components/com_groups/assets/img/menu-active.png") no-repeat 0 0;
+		background:url("/components/com_groups/site/assets/img/menu-active.png") no-repeat 0 0;
 	}
 	#page_menu li .meta {
 		position: absolute;
@@ -483,7 +483,7 @@
 		left: 5px;
 		width: 11px;
 		height: 6px;
-		background: url("/components/com_groups/assets/img/alert-arrow.png") no-repeat left bottom;
+		background: url("/components/com_groups/site/assets/img/alert-arrow.png") no-repeat left bottom;
 		z-index: 922;
 		padding-top: 5px;
 	}
@@ -1292,7 +1292,7 @@ body.group-page-preview {
 #logo { 
 	height: 208px; 
 	width: 273px; 
-	background: url('/components/com_groups/assets/img/group_logo_preview.png') no-repeat 50% 50%; 
+	background: url('/components/com_groups/site/assets/img/group_logo_preview.png') no-repeat 50% 50%; 
 	margin: 0;
 }
 #logo_picked { 
@@ -1343,7 +1343,7 @@ body.group-page-preview {
 	list-style: none;
 	margin: 0px;
 	padding: 10px;
-	background: #efefef url('/components/com_groups/assets/img/group_menu_preview.jpg') repeat-y top right;
+	background: #efefef url('/components/com_groups/site/assets/img/group_menu_preview.jpg') repeat-y top right;
 }	
 .preview #access img {
 	width:auto;
@@ -1614,7 +1614,7 @@ body.group-page-preview {
 	width: 20px;
 	height: 15px;
 	opacity: 0.5;
-	background: url('/components/com_groups/assets/img/grabber.png') no-repeat 0 0;
+	background: url('/components/com_groups/site/assets/img/grabber.png') no-repeat 0 0;
 }
 .item-list .item-mover:hover {
 	background: #efefef;
@@ -1913,7 +1913,7 @@ body.group-page-preview {
 .version-manager .toolbar {
 	padding: 0.8em 1em;
 	margin: 0 !important;
-	background: #666 url("/templates/hubbasic2013/images/layout/noise.png");
+	background: #666;
 	text-shadow: 0 -1px 1px #000;
 	color: #ECECEC;
 }

@@ -35,8 +35,7 @@ $this->css()
      ->js();
 
 //remove $this
-$juser = $this->juser;
-$config = $this->config;
+$config   = $this->config;
 $database = $this->database;
 $citation = $this->citation;
 
@@ -151,7 +150,7 @@ $area = Request::getVar('area', 'about');
 	<div class="content-header-left">
 		<h2>
 			<?php echo $citation->title; ?>
-			<?php if ($juser->get('id') == $citation->uid) : ?>
+			<?php if (User::get('id') == $citation->uid) : ?>
 				<a class="edit" href="<?php echo Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id); ?>">Edit</a>
 			<?php endif; ?>
 		</h2>

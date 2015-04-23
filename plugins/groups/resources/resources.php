@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,15 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 /**
  * Groups Plugin class for resources
@@ -122,9 +122,6 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		//set group members plugin access level
 		$group_plugin_acl = $access[$active];
 
-		//Create user object
-		$juser = JFactory::getUser();
-
 		//get the group members
 		$members = $group->get('members');
 
@@ -138,13 +135,13 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$area = Request::getWord('area', 'resource');
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -153,7 +150,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -161,18 +158,12 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
-			require_once JPATH_BASE . '/components/com_hubgraph/client.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'models' . DS . 'hubgraph' . DS . 'client.php';
 
-			$hgConf = HubgraphConfiguration::instance();
+			$hgConf = \Components\Search\Models\Hubgraph\Configuration::instance();
 			if ($hgConf->isOptionEnabled('com_groups'))
 			{
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'   => $this->_type,
-						'element'  => $this->_name,
-						'name'     => 'results'
-					)
-				);
+				$view =$this->view('default', 'results');
 				// Pass the view some info
 				$view->option = $option;
 				$view->group  = $group;
@@ -180,8 +171,13 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				ob_start();
 				$_GET['group'] = $group->gidNumber;
 				define('HG_INLINE', 1);
-				require JPATH_BASE . '/components/com_hubgraph/hubgraph.php';
+				require PATH_CORE . DS . 'components' . DS . 'com_search' . DS . 'controllers' . DS . 'hubgraph.php';
+				$controller = new \Components\Search\Controllers\Hubgraph();
+				$controller->execute();
+				$controller->redirect();
+
 				$view->hubgraphResponse = ob_get_clean();
+
 				return array(
 					'html' => $view->loadTemplate('hubgraph')
 				);
@@ -314,13 +310,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			case 'html':
 				// Instantiate a vew
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => $this->_type,
-						'element' => $this->_name,
-						'name'    => 'results'
-					)
-				);
+				$view = $this->view('default', 'results');
 
 				// Pass the view some info
 				$view->option = $option;
@@ -335,12 +325,10 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$view->total = $total;
 				$view->sort = $sort;
 				$view->access = $access;
-				if ($this->getError())
+
+				foreach ($this->getErrors() as $error)
 				{
-					foreach ($this->getErrors() as $error)
-					{
-						$view->setError($error);
-					}
+					$view->setError($error);
 				}
 
 				// Return the output

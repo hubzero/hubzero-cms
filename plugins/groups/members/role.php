@@ -34,41 +34,13 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for logging group actions
  */
-class GroupsMembersRole extends JTable
+class GroupsMembersRole extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $gidNumber = NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $name = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $permissions  = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,7 +50,7 @@ class GroupsMembersRole extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -86,13 +58,16 @@ class GroupsMembersRole extends JTable
 		if (trim($this->gidNumber) == '')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_GROUP_ID'));
-			return false;
 		}
 
 		// make sure we ahve role name
 		if (trim($this->name) == '')
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_ROLE_NAME'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -101,7 +76,8 @@ class GroupsMembersRole extends JTable
 
 	/**
 	 * Get Role Permisisons
-	 * @return [type] [description]
+	 *
+	 * @return  string
 	 */
 	public function getPermissions()
 	{
@@ -111,8 +87,8 @@ class GroupsMembersRole extends JTable
 	/**
 	 * Check to see if role has permission
 	 * 
-	 * @param  string  $permission [description]
-	 * @return boolean             [description]
+	 * @param   string   $permission  Permission name
+	 * @return  boolean
 	 */
 	public function hasPermission($permission = '')
 	{
@@ -129,13 +105,13 @@ class GroupsMembersRole extends JTable
 	/**
 	 * Delete Roles for user
 	 * 
-	 * @param  [type] $userId [description]
-	 * @return [type]         [description]
+	 * @param   integer  $userId
+	 * @return  boolean
 	 */
 	public static function deleteRolesForUserWithId($userId)
 	{
 		$database = JFactory::getDBO();
-		$sql = "DELETE FROM #__xgroups_member_roles WHERE uidNumber=" . $database->Quote($userId);
+		$sql = "DELETE FROM `#__xgroups_member_roles` WHERE uidNumber=" . $database->Quote($userId);
 		$database->setQuery($sql);
 		if (!$database->query())
 		{

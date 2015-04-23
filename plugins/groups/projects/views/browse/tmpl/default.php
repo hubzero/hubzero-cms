@@ -30,7 +30,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-$juser = $this->juser;
 
 $this->css();
 ?>
@@ -67,7 +66,7 @@ $this->css();
 					     ->set('option', $this->option)
 					     ->set('rows', $this->owned)
 					     ->set('config', $this->config)
-					     ->set('juser', $this->juser)
+					     ->set('user', User::getRoot())
 					     ->set('which', 'owned')
 					     ->display();
 				}
@@ -76,7 +75,7 @@ $this->css();
 				     ->set('option', $this->option)
 				     ->set('rows', $this->rows)
 				     ->set('config', $this->config)
-				     ->set('juser', $this->juser)
+				     ->set('user', User::getRoot())
 				     ->set('which', $this->filters['which'])
 				     ->display();
 				?>
@@ -92,7 +91,7 @@ $this->css();
 		<div class="container">
 			<h3>Your Projects</h3>
 			<p>View a list of all the projects you collaborate on.</p>
-			<p>Go to <a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=projects'); ?>">your projects</a></p>
+			<p>Go to <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects'); ?>">your projects</a></p>
 		</div>
 	</aside><!-- /.aside -->
 </section><!-- /.main section -->

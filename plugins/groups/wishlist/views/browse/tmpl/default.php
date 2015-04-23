@@ -54,7 +54,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 		</a>
 	</p>
 <?php } else { ?>
-	<?php if ($this->juser->get('guest')) { ?>
+	<?php if (User::isGuest()) { ?>
 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_LOGIN', Route::url('index.php?option=com_users&view=login&return=' . $url, false)); ?></p>
 	<?php } else { ?>
 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_BE_MEMBER'); ?></p>
@@ -130,9 +130,9 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 							<span class="entry-details">
 								<?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
 								<span class="entry-time-at"><?php echo Lang::txt('COM_WISHLIST_DATETIME_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 								<span class="entry-time-on"><?php echo Lang::txt('COM_WISHLIST_DATETIME_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								<span class="entry-details-divider">&bull;</span>
 								<span class="entry-comments">
 									<a href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo Lang::txt('COM_WISHLIST_COMMENTS'); ?>">
@@ -167,9 +167,9 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 						<td class="voting">
 							<?php
 								$view = new \Hubzero\Component\View(array(
+									'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site',
 									'name'      => 'wishlists',
-									'layout'    => '_vote',
-									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wishlist'
+									'layout'    => '_vote'
 								));
 								$view->set('option', 'com_wishlist')
 								     ->set('item',  new \Components\Wishlist\Models\Wish($item))
@@ -210,7 +210,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 									case 1:
 										$html .= '<span class="granted">'.Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
 										/*if ($item->granted != '0000-00-00 00:00:00') {
-											$html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.JHTML::_('date',$item->granted, Lang::txt('DATE_FORMAT_HZ1')).'</span>';
+											$html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
 										}*/
 									break;
 									case 3:

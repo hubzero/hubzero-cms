@@ -32,8 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<h3 class="section-header">
-	<a name="messages"></a>
+<h3 class="section-header" id="messages">
 	<?php echo Lang::txt('MESSAGES'); ?>
 </h3>
 
@@ -50,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="section">
 	<div class="container">
 		<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
-			<table class="groups entries" summary="Groups this person is a member of">
+			<table class="groups entries">
 				<caption><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?> <span>(<?php echo count($this->rows); ?>)</span></caption>
 				<thead>
 					<tr>
@@ -65,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 							<tr>
 								<td><a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=viewmessage&msg='.$row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a></td>
 								<td><a href="<?php echo Route::url('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
-								<td><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></td>
+								<td><time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></td>
 							</tr>
 						<?php } ?>
 					<?php } else { ?>
@@ -77,12 +76,12 @@ defined('_JEXEC') or die('Restricted access');
 			</table>
 		</form>
 
-	<?php
+		<?php
 		$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 		$this->pageNav->setAdditionalUrlParam('active', 'messages');
 
 		echo $this->pageNav->getListFooter();
-	?>
+		?>
 		<div class="clearfix"></div>
 	</div><!-- / .container -->
 </div><!-- / .section -->

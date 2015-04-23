@@ -71,8 +71,8 @@ if (!$identifier)
 
 		<p class="submit">
 			<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
-<?php if (!$this->no_html) { ?>
+		<?php if (!$this->no_html) { ?>
 			<a href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias')); ?>"><?php echo Lang::txt('Cancel'); ?></a>
-<?php } ?>
+		<?php } ?>
 		</p>
 	</form>

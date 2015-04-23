@@ -1,7 +1,35 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
@@ -49,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<?php if (Request::getWord('action') == 'editcomment'
 			&& Request::getInt('comment') == $this->comment->get('id')
-			&& ($this->config->get('access-edit-comment') || $juser->get('id') == $this->comment->get('created_by'))) { ?>
+			&& ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by'))) { ?>
 			<form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 				<fieldset>
 					<legend><span><?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENT_EDIT'); ?></span></legend>
@@ -94,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 				--></a>
 			<?php } ?>
 			<?php if (!$this->comment->isReported()) { ?>
-				<?php if ($this->config->get('access-edit-comment') || $juser->get('id') == $this->comment->get('created_by')) { ?>
+				<?php if ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=editcomment&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?><!--
 					--></a>
@@ -127,7 +155,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[entry_id]" value="<?php echo $this->comment->get('entry_id'); ?>" />
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
-						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[state]" value="1" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />

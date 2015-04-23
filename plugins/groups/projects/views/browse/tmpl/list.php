@@ -30,7 +30,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $projects = $this->rows;
-$juser = $this->juser;
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 switch ($this->which)
@@ -64,7 +63,7 @@ switch ($this->which)
 				{
 					$owned_by .= Lang::txt('PLG_GROUPS_GROUP').' <a href="">'.\Hubzero\Utility\String::truncate($row->groupname, 40).'</a> | ';
 				}
-				else if ($row->created_by_user == $juser->get('id'))
+				else if ($row->created_by_user == $this->user->get('id'))
 				{
 					//$owned_by .= Lang::txt('PLG_GROUPS_ME');
 				}

@@ -30,8 +30,6 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
 if ($this->post->exists())
@@ -75,7 +73,7 @@ $this->css()
 			<p class="comment-member-photo">
 				<?php
 				$jxuser = new \Hubzero\User\Profile();
-				$jxuser->load($juser->get('id'));
+				$jxuser->load(User::get('id'));
 				?>
 				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 			</p>

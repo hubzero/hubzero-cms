@@ -75,22 +75,22 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
+	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		// The output array we're returning
 		$arr = array(
 			'html' => ''
 		);
 
-		$user = JFactory::getUser();
+		$user = User::getRoot();
 		$this->group = $group;
 		$this->option = $option;
 
 		// Things we need from the form
-		$recvEmailOptionID = Request::getInt('memberoptionid', 0);
+		$recvEmailOptionID   = Request::getInt('memberoptionid', 0);
 		$recvEmailOptionValue = Request::getInt('recvpostemail', 0);
 
-		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
+		include_once(__DIR__ . DS . 'memberoption.class.php');
 
 		switch ($action)
 		{
@@ -124,18 +124,12 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	{
 		// HTML output
 		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		// Load the options
 		$database = JFactory::getDBO();
 		$recvEmailOption = new GroupsTableMemberoption($database);
-		$recvEmailOption->loadRecord( $group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+		$recvEmailOption->loadRecord($group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
 		if ($recvEmailOption->id)
 		{
@@ -203,14 +197,14 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 		if (!$postSaveRedirect)
 		{
-			$this->redirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit'),
 				Lang::txt('You have successfully updated your email settings')
 			);
 		}
 		else
 		{
-			$this->redirect(
+			App::redirect(
 				$postSaveRedirect,
 				Lang::txt('You have successfully updated your email settings')
 			);
@@ -229,9 +223,6 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		// get database
 		$database = JFactory::getDBO();
 
-		// get hubzero logger
-		$logger = JFactory::getLogger();
-
 		// get group
 		$group = \Hubzero\User\Group::getInstance($gidNumber);
 
@@ -239,7 +230,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		$discussion_email_autosubscribe = $group->get('discussion_email_autosubscribe');
 
 		// log variable
-		$logger->debug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);
+		Log::debug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);
 
 		// if were not auto-subscribed then stop
 		if (!$discussion_email_autosubscribe)
@@ -248,18 +239,18 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		}
 
 		// see if they've already got something, they shouldn't, but you never know
-		$query = "SELECT COUNT(userid) FROM #__xgroups_memberoption WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";
+		$query = "SELECT COUNT(userid) FROM `#__xgroups_memberoption` WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";
 		$database->setQuery($query);
 		$count = $database->loadResult();
 		if ($count)
 		{
-			$query = "UPDATE #__xgroups_memberoption SET optionvalue = 1 WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";
+			$query = "UPDATE `#__xgroups_memberoption` SET optionvalue = 1 WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";
 			$database->setQuery($query);
 			$database->query();
 		}
 		else
 		{
-			$query = "INSERT INTO #__xgroups_memberoption(gidNumber, userid, optionname, optionvalue) VALUES('" . $gidNumber . "', '" . $userid . "', 'receive-forum-email', '1')";
+			$query = "INSERT INTO `#__xgroups_memberoption` (gidNumber, userid, optionname, optionvalue) VALUES ('" . $gidNumber . "', '" . $userid . "', 'receive-forum-email', '1')";
 			$database->setQuery($query);
 			$database->query();
 		}

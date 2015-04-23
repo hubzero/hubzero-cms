@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $item = $this->post->item();
 
-$this->juser = JFactory::getUser();
-
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 <div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
@@ -97,9 +95,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<?php echo Lang::txt('%s reposts', $item->get('reposts', 0)); ?>
 				</span>
 			</p>
-	<?php /*if (!$this->juser->get('guest')) { ?>
+	<?php /*if (!User::isGuest()) { ?>
 			<div class="actions">
-		<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+		<?php if ($item->get('created_by') == User::get('id')) { ?>
 				<a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
 					<span><?php echo Lang::txt('Edit'); ?></span>
 				</a>
@@ -114,11 +112,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				<a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
 					<span><?php echo Lang::txt('Collect'); ?></span>
 				</a>
-		<?php if ($this->post->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+		<?php if ($this->post->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
 				<a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
 					<span><?php echo Lang::txt('Delete'); ?></span>
 				</a>
-		<?php } else if ($this->post->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+		<?php } else if ($this->post->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
 				<a class="unpost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/remove'); ?>">
 					<span><?php echo Lang::txt('Remove'); ?></span>
 				</a>
@@ -166,9 +164,9 @@ if ($item->get('comments'))
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<blockquote>
@@ -179,24 +177,23 @@ if ($item->get('comments'))
 <?php
 	}
 }
-	if (!$this->juser->get('guest'))
+	if (!User::isGuest())
 	{
-		$now = JFactory::getDate();
 		?>
 		<div class="commnts">
 			<div class="comment convo clearfix">
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>" />
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="img-link">
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes(User::get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>
 					will say
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on">on</span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<form action="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">

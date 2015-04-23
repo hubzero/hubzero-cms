@@ -69,7 +69,7 @@ $this->js()
 			<label for="field_content">
 				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
-				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
+				echo $this->editor('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), 35, 5, 'field_content', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 
@@ -84,7 +84,7 @@ $this->js()
 								$publish_up = $this->announcement->get('publish_up');
 								if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 								{
-									$publish_up = JHTML::_('date', $publish_up, 'Y-m-d H:i:s');
+									$publish_up = Date::of($publish_up)->format('Y-m-d H:i:s');
 									$publish_up = date("m/d/Y @ g:i a", strtotime($publish_up));
 								}
 							?>
@@ -99,7 +99,7 @@ $this->js()
 								$publish_down = $this->announcement->get('publish_down');
 								if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 								{
-									$publish_down = JHTML::_('date', $publish_down, 'Y-m-d H:i:s');
+									$publish_down = Date::of($publish_down)->format('Y-m-d H:i:s');
 									$publish_down = date("m/d/Y @ g:i a", strtotime($publish_down));
 								}
 							?>

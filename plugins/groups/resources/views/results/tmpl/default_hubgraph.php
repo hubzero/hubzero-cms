@@ -43,4 +43,4 @@ $this->css();
 	</li>
 </ul>
 
-<?php echo $this->hubgraphResponse ?>
+<?php echo $this->hubgraphResponse;

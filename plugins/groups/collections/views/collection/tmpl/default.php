@@ -35,8 +35,6 @@ $this->js('jquery.masonry.js', 'com_collections')
      ->js('jquery.infinitescroll.js', 'com_collections')
      ->js();
 
-$juser = JFactory::getUser();
-
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
 if (!$this->collection->get('layout'))
@@ -68,7 +66,7 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 	     ->display();
 	?>
 
-	<?php if (!$juser->get('guest') && $this->params->get('access-manage-collection')) { ?>
+	<?php if (!User::isGuest() && $this->params->get('access-manage-collection')) { ?>
 		<p class="guest-options">
 			<a class="icon-config config btn" href="<?php echo Route::url($base . '&scope=settings'); ?>">
 				<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS'); ?></span>
@@ -84,7 +82,7 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 			<span class="posts count">
 				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_STATS_POSTS', '<strong>' . $this->count . '</strong>'); ?>
 			</span>
-			<?php if (!$juser->get('guest')) { ?>
+			<?php if (!User::isGuest()) { ?>
 				<?php if ($this->collection->isFollowing()) { ?>
 					<a class="unfollow btn tooltips" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/unfollow'); ?>">
 						<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
@@ -121,7 +119,7 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 			?>
 				<div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $row->get('id')); ?>">
 					<div class="content">
-						<?php if (!$juser->get('guest') && $this->params->get('access-create-item') && $this->collection->get('sort') == 'ordering') { ?>
+						<?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->collection->get('sort') == 'ordering') { ?>
 							<div class="sort-handle tooltips" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GRAB_TO_REORDER'); ?>"></div>
 						<?php } ?>
 						<?php
@@ -151,8 +149,8 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 								</span>
 							</p>
 							<div class="actions">
-								<?php if (!$juser->get('guest')) { ?>
-									<?php if ($item->get('created_by') != $juser->get('id')) { ?>
+								<?php if (!User::isGuest()) { ?>
+									<?php if ($item->get('created_by') != User::get('id')) { ?>
 										<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/vote'); ?>">
 											<span><?php echo ($item->get('voted')) ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
 										</a>
@@ -163,16 +161,16 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 										<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/collect'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
 										</a>
-									<?php if ($item->get('created_by') == $juser->get('id') || $this->params->get('access-manage-collection')) { ?>
+									<?php if ($item->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
 										<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/edit'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?></span>
 										</a>
 									<?php } ?>
-									<?php if ($row->get('original') && ($item->get('created_by') == $juser->get('id') || $this->params->get('access-manage-collection'))) { ?>
+									<?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-manage-collection'))) { ?>
 										<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
 										</a>
-									<?php } else if ($row->get('created_by') == $juser->get('id') || $this->params->get('access-manage-collection')) { ?>
+									<?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
 										<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/remove'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_REMOVE'); ?></span>
 										</a>

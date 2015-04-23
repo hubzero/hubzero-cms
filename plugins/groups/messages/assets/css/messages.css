@@ -23,7 +23,7 @@
 		padding: 0 20px;
 	}
 	#message .mail { 
-		background: url('mail-send.png') no-repeat 100% 10px;
+		background: url('../img/mail-send.png') no-repeat 100% 10px;
 	}
 	#message .half {
 		width: 50%;
@@ -109,9 +109,10 @@
 	#sbox-content .hub-mail .smallinput {
 		width: 1px;
 	}
-	.message {  
-		background: url("/components/com_members/images/email_go.png") 0 0 no-repeat; 
-		padding-left: 20px;
+	.message:before {  
+		content: "\2709";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
 	.message-member a {
 		margin: 0;

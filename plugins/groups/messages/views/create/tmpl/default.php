@@ -32,9 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $group_statuses = array(
-	'all' => Lang::txt('All Group Members'),
-	'managers' => Lang::txt('All Group Managers'),
-	'invitees' => Lang::txt('All Group Invitees'),
+	'all'        => Lang::txt('All Group Members'),
+	'managers'   => Lang::txt('All Group Managers'),
+	'invitees'   => Lang::txt('All Group Invitees'),
 	'applicants' => Lang::txt('All Group Applicants')
 );
 
@@ -64,7 +64,7 @@ if ($role_id)
 		<fieldset class="hub-mail">
 			<div class="cont" style="background:#fff url('<?php echo $this->params->get('stamp_logo'); ?>') no-repeat 99% 4%;">
 				<h3><?php echo Lang::txt('Compose Message to Group'); ?></h3>
-				<label class="width-65"><?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?>  <span class="required">Required</span>
+				<label class="width-65"><?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?>  <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<select name="users[]" id="msg-recipient">
 						<optgroup label="Group Status">
 							<?php foreach ($group_statuses as $val => $name) { ?>
@@ -92,11 +92,11 @@ if ($role_id)
 					</select>
 				</label>
 				<label>
-					<?php echo Lang::txt('GROUP_MESSAGE_SUBJECT'); ?> <span class="required">Required</span>
+					<?php echo Lang::txt('GROUP_MESSAGE_SUBJECT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<input type="text" name="subject" id="msg-subject" value="" />
 				</label>
 				<label>
-					<?php echo Lang::txt('GROUP_MESSAGE'); ?> <span class="required">Required</span>
+					<?php echo Lang::txt('GROUP_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
 				</label>
 				<p class="submit">

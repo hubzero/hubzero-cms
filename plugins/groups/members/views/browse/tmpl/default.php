@@ -200,11 +200,8 @@ $option = 'com_groups';
 					</caption>
 					<tbody>
 						<?php
-						if ($this->groupusers) {
-							//$emailthumb = '/components/com_groups/assets/img/emailthumb.png';
-
-							// Some needed libraries
-							$juser = JFactory::getUser();
+						if ($this->groupusers)
+						{
 							// Loop through the results
 							$html = '';
 							if ($this->limit == 0)
@@ -226,7 +223,7 @@ $option = 'com_groups';
 								if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser))
 								{
 									$inviteemail = true;
-									$pic = rtrim(JURI::getInstance()->base(true), '/') . '/components/com_groups/assets/img/emailthumb.png';
+									$pic = rtrim(Request::base(true), '/') . '/components/com_groups/assets/img/emailthumb.png';
 								}
 								else if (!is_object($u))
 								{
@@ -259,7 +256,7 @@ $option = 'com_groups';
 									break;
 								}
 
-								if (is_object($u) && $juser->get('id') == $u->get('uidNumber'))
+								if (is_object($u) && User::get('id') == $u->get('uidNumber'))
 								{
 									$cls .= ' me';
 								}
@@ -339,7 +336,7 @@ $option = 'com_groups';
 									{
 										$html .= '<span class="reason" data-title="' . Lang::txt('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
 										$html .= '<span class="reason-reason">'.stripslashes($row->reason).'</span>';
-										$html .= '<span class="reason-date">'.JHTML::_('date', $row->date, 'F d, Y @ g:ia').'</span>';
+										$html .= '<span class="reason-date">'.Date::of($row->date)->toLocal('F d, Y @ g:ia').'</span>';
 										$html .= '</span>';
 									}
 								} else {
@@ -394,20 +391,20 @@ $option = 'com_groups';
 									$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 									$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 								}
-								if (is_object($u) && $juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
+								if (is_object($u) && User::get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
 									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
 									$membersParams = Component::params('com_members');
 									$userMessaging = $membersParams->get('user_messaging', 1);
 									if (!$inviteemail && $this->messages_acl != 'nobody')
 									{
-										if (in_array($juser->get('id'), $this->group->get('managers')))
+										if (in_array(User::get('id'), $this->group->get('managers')))
 										{
 											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
 										}
-										else if ($userMessaging == 2 || ($userMessaging == 1 && in_array($juser->get('id'), $this->group->get('members'))))
+										else if ($userMessaging == 2 || ($userMessaging == 1 && in_array(User::get('id'), $this->group->get('members'))))
 										{
-											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>';
+											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>';
 										}
 									}
 									else

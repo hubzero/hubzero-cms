@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<table class="activity" summary="<?php echo Lang::txt('PLG_GROUPS_BLOG_ENTRIES_TABLE_SUMMARY'); ?>">
+<table class="activity">
 	<tbody>
 <?php
 if ($this->entries) {
@@ -43,7 +43,7 @@ if ($this->entries) {
 			<th scope="row"><?php echo $area; ?></th>
 			<td class="author"><a href="<?php echo Route::url('index.php?option=com_members&id='.$entry->created_by); ?>"><?php echo stripslashes($name); ?></a></td>
 			<td class="action"><?php echo stripslashes($entry->title); ?></td>
-			<td class="date"><?php echo JHTML::_('date', $entry->publish_up, Lang::txt('DATE_FORMAT_HZ1') . ' @' . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
+			<td class="date"><?php echo Date::of($entry->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' @' . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
 		</tr>
 <?php
 	}

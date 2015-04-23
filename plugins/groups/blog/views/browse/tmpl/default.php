@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-
 $first = $this->model->entries('first');
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
@@ -90,11 +88,11 @@ $this->css()
 						$archiveDate .= '-01 00:00:00';
 						if ($this->month)
 						{
-							echo JFactory::getDate($archiveDate)->format('M Y');
+							echo Date::of($archiveDate)->format('M Y');
 						}
 						else
 						{
-							echo JFactory::getDate($archiveDate)->format('Y');
+							echo Date::of($archiveDate)->format('Y');
 						}
 					} ?>
 					<?php
@@ -126,7 +124,7 @@ $this->css()
 					$clse = '';
 					if (!$row->isAvailable())
 					{
-						if ($row->get('created_by') != JFactory::getUser()->get('id'))
+						if ($row->get('created_by') != User::get('id'))
 						{
 							continue;
 						}
@@ -187,13 +185,13 @@ $this->css()
 										</span>
 									</dd>
 								<?php } ?>
-								<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+								<?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 									<dd class="state <?php echo $row->state('text'); ?>">
 										<?php echo Lang::txt('PLG_GROUPS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
 									</dd>
 								<?php } ?>
 								<dd class="entry-options">
-									<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+									<?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 										<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
 											<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>
 										</a>
@@ -306,7 +304,7 @@ $this->css()
 					<ol>
 					<?php foreach ($popular as $row) { ?>
 						<?php
-							if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+							if (!$row->isAvailable() && $row->get('created_by') != User::get('id'))
 							{
 								continue;
 							}
@@ -329,7 +327,7 @@ $this->css()
 					<ol>
 					<?php foreach ($recent as $row) { ?>
 						<?php
-							if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+							if (!$row->isAvailable() && $row->get('created_by') != User::get('id'))
 							{
 								continue;
 							}

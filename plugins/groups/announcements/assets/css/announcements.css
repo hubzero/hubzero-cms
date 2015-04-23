@@ -262,7 +262,7 @@ dl.entry-meta dd.entry-options a.icon-delete {
 	height:20px;
 	border:none;
 	text-indent:-9999px;
-	background:#fff url('/components/com_groups/assets/img/search.png') no-repeat 50% 50%;
+	background:#fff url('/components/com_groups/site/assets/img/search.png') no-repeat 50% 50%;
 }
 .entry-search input {
 	width: 100%;

@@ -31,19 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (substr($this->xmessage->type, -8) == '_message') {
+if (substr($this->xmessage->type, -8) == '_message')
+{
 	$u = User::getInstance($this->xmessage->created_by);
-	$from = '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$u->get('id')).'">'.$u->get('name').'</a>';
-} else {
-	$from = 'System ('.$this->xmessage->component.')';
+	$from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
+}
+else
+{
+	$from = Lang::txt('System') . ' (' . $this->xmessage->component . ')';
 }
 
 ?>
-<!--
-<a name="messages"></a>
-<h3><?php echo Lang::txt('MESSAGES'); ?></h3>
--->
-
 <div class="subject">
 	<?php if (!$this->no_html): ?>
 	<ul class="entries-menu">
@@ -57,12 +55,12 @@ if (substr($this->xmessage->type, -8) == '_message') {
 
 	<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
 		<fieldset class="hub-mail" style="min-height:200px">
-			<table class="groups entries" summary="Groups this person is a member of">
+			<table class="groups entries">
 				<caption>
 					<?php echo Lang::txt('PLG_GROUPS_MESSAGE'); ?>
 					<?php if (!$this->no_html) : ?>
 						<span>
-							<small>( <a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small>
+							<small>( <a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><?php echo Lang::txt('&lsaquo; Back to Sent Messages'); ?></a> )</small>
 						</span>
 					<?php endif; ?>
 				</caption>

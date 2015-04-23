@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
-
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
 	$this->config->set('access-edit-post', false);
-	if ($juser->get('id') == $this->comment->get('created_by'))
+	if (User::get('id') == $this->comment->get('created_by'))
 	{
 		$this->config->set('access-edit-post', true);
 	}
@@ -142,7 +140,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="fields[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 						<input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
 						<input type="hidden" name="fields[created]" value="" />
-						<input type="hidden" name="fields[created_by]" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="fields[created_by]" value="<?php echo User::get('id'); ?>" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />

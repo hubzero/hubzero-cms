@@ -70,20 +70,16 @@ $pid = Request::getInt('publication', 0);
 
 <div id="browsebox" class="frm">
 	<!--  <section class="main section">  -->
-		<?php
-if ($pid) { ?>
-			<h3>
+	<?php if ($pid) { ?>
+		<h3>
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FOR'); ?>
 			<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLICATION') . ' #' . $pid; ?>
-			</h3>
-		<?php
-} ?>
-		<?php
-if ($this->getError()) { ?>
-			<p class="error"><?php
-	echo $this->getError(); ?></p>
-		<?php
-} ?>
+		</h3>
+	<?php } ?>
+
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
 
 		<form action="<?php echo Route::url($base . '?action=save'); ?>" method="post" id="hubForm" class="add-citation">
 			<div class="explaination">
@@ -176,7 +172,7 @@ if ($this->getError()) { ?>
 					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORS_HINT'); ?></span>
 				</label>
 				<label for="title">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TITLE_CHAPTER'); ?>:  <span class="required">Required</span>
+					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_TITLE_CHAPTER'); ?>:  <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<input type="text" name="title" id="title" size="30" maxlength="250" value="<?php echo $this->row->title; ?>" />
 				</label>
 				<label for="booktitle">
@@ -469,7 +465,7 @@ if ($this->getError()) { ?>
 
 			<?php //if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 			<div class="explaination">
-				<p>Tags allow your citation to be identified</p>
+				<p><?php echo Lang::txt('Tags allow your citation to be identified'); ?></p>
 			</div>
 			<fieldset>
 				<legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?></legend>

@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/groups/usage/usage.css
+ * @file        plugins/groups/usage/assets/css/usage.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -13,52 +13,52 @@
 
 */
 
-.group_usage {
-}
-.group_usage h3.heading {
-	display: none;
-}
-.group_usage .main,
-.group_usage .section {
-	border: none;
-	padding: 0;
-}
+	.group_usage {
+	}
+	.group_usage h3.heading {
+		display: none;
+	}
+	.group_usage .main,
+	.group_usage .section {
+		border: none;
+		padding: 0;
+	}
 
-#page_views {
-	border: 1px solid #ccc;
-	margin-bottom: 0px;
-}
-#page_views #page_views_heading {
-	background: #efefef;
-	border-bottom: 1px solid #CCC;
-	padding: 5px;
-	overflow: hidden;
-}
-#page_views_heading h3 {
-	margin: 2px 0 0 3px;
-	float: left;
-}
-#page_views_heading #page_view_settings {
-	float: right;
-	overflow: hidden;
-}
-#page_view_settings select {
-	float: left;
-	margin-right: 10px;
-}
-#page_view_settings #page_view_dates {
-	float: left;
-	width: 200px;
-	padding: 3px 0 4px 0;
-	text-align: center;
-	border: 1px solid #ccc;
-	font-weight: bold;
-	background: #FFF url('images/calendar_icon.png') no-repeat 183px 50%;
-}
-#page_view_settings input[type=submit] {
-	margin: 2px 0 0 10px;
-	float: left;
-}
+	#page_views {
+		border: 1px solid #ccc;
+		margin-bottom: 0px;
+	}
+	#page_views #page_views_heading {
+		background: #efefef;
+		border-bottom: 1px solid #CCC;
+		padding: 5px;
+		overflow: hidden;
+	}
+	#page_views_heading h3 {
+		margin: 2px 0 0 3px;
+		float: left;
+	}
+	#page_views_heading #page_view_settings {
+		float: right;
+		overflow: hidden;
+	}
+	#page_view_settings select {
+		float: left;
+		margin-right: 10px;
+	}
+	#page_view_settings #page_view_dates {
+		float: left;
+		width: 200px;
+		padding: 3px 0 4px 0;
+		text-align: center;
+		border: 1px solid #ccc;
+		font-weight: bold;
+		background: #FFF url('../img/calendar_icon.png') no-repeat 183px 50%;
+	}
+	#page_view_settings input[type=submit] {
+		margin: 2px 0 0 10px;
+		float: left;
+	}
 
 /* Data tables */
 	.data {

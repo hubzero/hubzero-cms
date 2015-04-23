@@ -772,19 +772,19 @@
 		margin-top: 8px; /*to align text with bg graphic*/
 	}
 	div.admon-tip { 
-		background-image: url("/components/com_wiki/assets/img/admon-tip.png"); 
+		background-image: url("/components/com_wiki/site/assets/img/admon-tip.png"); 
 	}
 	div.admon-note { 
-		background-image: url("/components/com_wiki/assets/img/admon-note.png"); 
+		background-image: url("/components/com_wiki/site/assets/img/admon-note.png"); 
 	}
 	div.admon-important { 
-		background-image: url("/components/com_wiki/assets/img/admon-important.png"); 
+		background-image: url("/components/com_wiki/site/assets/img/admon-important.png"); 
 	}
 	div.admon-caution { 
-		background-image: url("/components/com_wiki/assets/img/admon-caution.png"); 
+		background-image: url("/components/com_wiki/site/assets/img/admon-caution.png"); 
 	}
 	div.admon-warning { 
-		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
+		background-image: url("/components/com_wiki/site/assets/img/admon-warning.png"); 
 	}
 
 /* Wiki pages */
@@ -1035,7 +1035,7 @@
 	}
 
 	.wikipage .embedded-plugin {
-		background: url("/components/com_wiki/assets/img/checkered.png");
+		background: url("/components/com_wiki/site/assets/img/checkered.png");
 		text-align: center;
 		vertical-align: middle;
 	}

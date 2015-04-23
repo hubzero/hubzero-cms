@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
@@ -55,7 +57,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$this->_config = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$this->_juser = JFactory::getUser();
 		$this->_total = 0;
 		$this->_projects = array();
 	}
@@ -113,10 +114,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		require_once(PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Set filters
 		$filters = array();
@@ -125,7 +124,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		// Get a record count
 		$obj = new \Components\Projects\Tables\Project($this->_database);
-		$this->_projects = $obj->getGroupProjectIds($group->get('gidNumber'), $this->_juser->get('id'));
+		$this->_projects = $obj->getGroupProjectIds($group->get('gidNumber'), User::get('id'));
 
 		//if we want to return content
 		if ($return == 'html')
@@ -133,14 +132,10 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//Create user object
-			$juser = JFactory::getUser();
-
 			//get the group members
 			$members = $group->get('members');
 
 			// Set some variables so other functions have access
-			$this->juser      = $juser;
 			$this->authorized = $authorized;
 			$this->members    = $members;
 			$this->group      = $group;
@@ -155,12 +150,12 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -169,16 +164,14 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members) && $group_plugin_acl == 'members' && $authorized != 'admin')
+			if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members' && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">'
-					. Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
 			// Load classes
-			require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'html.php');
+			require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 			// Which view
 			$task = $action ? strtolower(trim($action)) : Request::getVar('action', '');
@@ -210,15 +203,13 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreGroup($group)
 	{
-		require_once(PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Get group projects
 		$obj  = new \Components\Projects\Tables\Project($this->_database);
 		$objO = new \Components\Projects\Tables\Owner( $this->_database );
-		$projects = $obj->getGroupProjects($group->get('gidNumber'), $this->_juser->get('id'));
+		$projects = $obj->getGroupProjects($group->get('gidNumber'), User::get('id'));
 
 		// Project-group sync
 		if ($projects)
@@ -260,12 +251,10 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		if ($which == 'all')
 		{
 			$filters['which'] = 'owned';
-			$view->owned = $obj->getGroupProjects($this->group->get('gidNumber'),
-				$this->_juser->get('id'), $filters, $this->_setup_complete);
+			$view->owned = $obj->getGroupProjects($this->group->get('gidNumber'), User::get('id'), $filters, $this->_setup_complete);
 
 			$filters['which'] = 'other';
-			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'),
-				$this->_juser->get('id'), $filters, $this->_setup_complete);
+			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), User::get('id'), $filters, $this->_setup_complete);
 		}
 		else
 		{
@@ -276,16 +265,15 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				$which = 'owned';
 			}
 			$filters['which'] = $which;
-			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'),
-				$this->_juser->get('id'), $filters, $this->_setup_complete);
+			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), User::get('id'), $filters, $this->_setup_complete);
 		}
 
 		// Get counts
 		$view->projectcount = count($this->_projects);
-		$view->newcount = $obj->getUpdateCount ($this->_projects, $this->_juser->get('id'));
+		$view->newcount = $obj->getUpdateCount($this->_projects, User::get('id'));
 
 		$view->which   = $which;
-		$view->juser   = $this->_juser;
+		$view->juser   = User::getRoot();
 		$view->filters = $filters;
 		$view->config  = $this->_config;
 		$view->option  = 'com_projects';
@@ -305,12 +293,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _updates()
 	{
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'comment.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'todo.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'microblog.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
 
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -331,30 +316,27 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		// Get all projects group has access to
 		$obj = new \Components\Projects\Tables\Project($this->_database);
-		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), $this->_juser->get('id'));
+		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), User::get('id'));
 		$view->projectcount = count($projects);
 
-		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'),
-			$this->_juser->get('id'), 1); // active only
-		$view->newcount = $obj->getUpdateCount($projects, $this->_juser->get('id'));
+		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), User::get('id'), 1); // active only
+		$view->newcount = $obj->getUpdateCount($projects, User::get('id'));
 
 		// Get activity class
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'activity.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();
-		$view->total = $objAC->getActivities(0, $afilters, 1, $this->_juser->get('id'), $projects);
+		$view->total = $objAC->getActivities(0, $afilters, 1, User::get('id'), $projects);
 		$view->limit = 25;
 
 		$afilters['limit'] = Request::getVar('limit', 25, 'request');
 		$view->filters = $afilters;
 
-		$activities = $objAC->getActivities(0, $afilters, 0, $this->_juser->get('id'), $projects);
-		$view->activities = $this->prepActivities($activities, 'com_projects',
-			$this->_juser->get('id'), $view->filters, $view->limit);
+		$activities = $objAC->getActivities(0, $afilters, 0, User::get('id'), $projects);
+		$view->activities = $this->prepActivities($activities, 'com_projects', User::get('id'), $view->filters, $view->limit);
 
-		$view->uid      = $this->_juser->get('id');
+		$view->uid      = User::et('id');
 		$view->config   = $this->_config;
 		$view->option   = 'com_projects';
 		$view->database = $this->_database;
@@ -551,7 +533,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		//push vars to the view
 		$view->projects = $projects;
 		$view->group    = $this->group;
-		$view->user     = $this->juser;
+		$view->user     = User::getRoot();
 
 		//return the view
 		return $view->loadTemplate();

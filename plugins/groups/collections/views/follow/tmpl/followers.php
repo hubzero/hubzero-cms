@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->js();
 
-$juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
@@ -60,7 +59,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	     ->display();
 	?>
 
-	<?php if (!$juser->get('guest') && $this->params->get('access-manage-collection')) { ?>
+	<?php if (!User::isGuest() && $this->params->get('access-manage-collection')) { ?>
 		<p class="guest-options">
 			<a class="icon-config config btn" href="<?php echo Route::url($base . '&scope=settings'); ?>">
 				<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS'); ?></span>
@@ -91,7 +90,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								</span>
 							</td>
 							<td>
-								<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+								<time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 							</td>
 						</tr>
 					<?php } ?>

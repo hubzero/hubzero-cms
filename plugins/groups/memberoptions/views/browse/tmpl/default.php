@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
 $params = $params =  Component::params('com_groups');
 
 $allowEmailResponses = $params->get('email_comment_processing');
@@ -61,18 +60,13 @@ if ($allowEmailResponses)
 			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) { echo 'checked="checked"'; } ?> />
 			<label for="recvpostemail"><?php echo Lang::txt('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
 		</div>
-	<?php
-	}
-	?>
+	<?php } ?>
 
 	<?php if ($atLeastOneOption) { ?>
 		<div style="padding-top:25px;">
 			<input type="submit" value="Save" />
 		</div>
-	<?php
-	}
-	else{
-		echo Lang::txt('GROUP_MEMBEROPTIONS_NONE');
-	}
-	?>
+	<?php } else { ?>
+		<?php echo Lang::txt('GROUP_MEMBEROPTIONS_NONE'); ?>
+	<?php } ?>
 </form>

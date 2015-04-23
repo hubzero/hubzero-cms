@@ -48,7 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset>
 		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
 		<label>
-			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME'); ?>: <span class="required">Required</span>
+			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME'); ?>: <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 			<input type="text" name="role[name]" value="<?php echo $this->role->name; ?>" >
 		</label>
 		<fieldset>
@@ -63,11 +63,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</fieldset>
 	</fieldset>
 	<div class="clear"></div>
+
 	<input type="hidden" name="role[id]" value="<?php echo $this->role->id; ?>" >
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="saverole" />
+
 	<p class="submit">
 		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
 	</p>

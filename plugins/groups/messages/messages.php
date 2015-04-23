@@ -101,14 +101,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			//get group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//Create user object
-			$juser = JFactory::getUser();
-
 			//get the group members
 			$members = $group->get('members');
 
 			// Set some variables so other functions have access
-			$this->juser = $juser;
 			$this->authorized = $authorized;
 			$this->members = $members;
 			$this->group = $group;
@@ -123,12 +119,12 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -137,7 +133,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -146,8 +142,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			}
 
 			//push styles to the view
-			\Hubzero\Document\Assets::addPluginStylesheet('groups','messages');
-			\Hubzero\Document\Assets::addPluginScript('groups','messages');
+			$this->css()
+			     ->js();
 
 			$task = strtolower(trim($action));
 
@@ -177,10 +173,11 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT'));
 
 		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = Request::getInt('limit', 10);
-		$filters['start'] = Request::getInt('limitstart', 0);
-		$filters['group_id'] = $this->group->get('gidNumber');
+		$filters = array(
+			'limit'    => Request::getInt('limit', 10),
+			'start'    => Request::getInt('limitstart', 0),
+			'group_id' => $this->group->get('gidNumber')
+		);
 
 		// Instantiate our message object
 		$database = JFactory::getDBO();
@@ -200,13 +197,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'messages',
-				'name'    => 'sent'
-			)
-		);
+		$view = $this->view('default', 'sent');
 
 		// Pass some info to the view
 		$view->option = $this->_option;
@@ -214,12 +205,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$view->authorized = $this->authorized;
 		$view->rows = $rows;
 		$view->pageNav = $pageNav;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Return the output
@@ -260,13 +249,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate the view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'messages',
-				'name'    => 'message'
-			)
-		);
+		$view = $this->view('default', 'message');
 
 		// Pass the view some info
 		$view->option = $this->_option;
@@ -274,12 +257,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$view->authorized = $this->authorized;
 		$view->xmessage = $xmessage;
 		$view->no_html = Request::getInt('no_html', 0);
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Return the output
@@ -304,17 +285,11 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt('PLG_GROUPS_MESSAGES_SEND'));
 
 		// Instantiate a vew
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'messages',
-				'name'    => 'create'
-			)
-		);
+		$view = $this->view('default', 'create');
 
 		//get all member roles
 		$db = JFactory::getDBO();
-		$sql = "SELECT * FROM #__xgroups_roles WHERE gidNumber=".$db->quote($this->group->get('gidNumber'));
+		$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($this->group->get('gidNumber'));
 		$db->setQuery($sql);
 		$member_roles = $db->loadAssocList();
 
@@ -331,12 +306,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$view->members = $members;
 		$view->users = Request::getVar('users', array('all'));
 		$view->no_html = Request::getInt('no_html', 0);
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Return the output
@@ -351,8 +324,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	protected function _send()
 	{
 		// Ensure the user is logged in
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
@@ -451,19 +423,17 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// define from details
-		$config = JFactory::getConfig();
 		$from = array(
-			'name'  => $this->group->get('description') . " Group on " . $config->getValue("fromname"),
-			'email' => $config->getValue("mailfrom")
+			'name'  => $this->group->get('description') . " Group on " . Config::get("fromname"),
+			'email' => Config::get("mailfrom")
 		);
 
 		// create url
-		$juri = JURI::getInstance();
 		$sef = Route::url('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
-		$sef = ltrim($sef, DS);
+		$sef = ltrim($sef, '/');
 
 		// create subject
-		$subject = $s . " [Email sent on Behalf of " . $juser->get('name') . "]";
+		$subject = $s . " [Email sent on Behalf of " . User::get('name') . "]";
 
 		//message
 		$plain  = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
@@ -471,7 +441,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$plain .= $m;
 
 		// create message
-		$plain .= "\r\n\r\n------------------------------------------------\r\n". $juri->base().$sef . "\r\n";
+		$plain .= "\r\n\r\n------------------------------------------------\r\n". Request::base() . $sef . "\r\n";
 
 		// create message object
 		$message = new \Hubzero\Mail\Message();
@@ -506,7 +476,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			GroupsModelLog::log(array(
 				'gidNumber' => $this->group->get('gidNumber'),
 				'action'    => $action,
-				'comments'  => array($juser->get('id'))
+				'comments'  => array(User::get('id'))
 			));
 		}
 

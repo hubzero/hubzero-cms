@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include role lib
-require_once JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'members'.DS.'role.php';
+require_once __DIR__ . DS . 'role.php';
 
 /**
  * Groups Plugin class for group members
@@ -104,7 +104,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->action = $action;
 		$this->_option = $option;
 		$this->group = $group;
-		$this->_name = substr($option, 4, strlen($option));
+		$this->name = substr($option, 4, strlen($option));
 
 		// Only perform the following if this is the active tab/plugin
 		if ($returnhtml)
@@ -147,10 +147,10 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 			// Set the page title
 			$document = JFactory::getDocument();
-			$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
+			$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
 
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'members');
-			\Hubzero\Document\Assets::addPluginScript('groups', 'members');
+			$this->css('members.css')
+			     ->js('members.js');
 
 			$gparams = new JRegistry($group->get('params'));
 			$this->membership_control = $gparams->get('membership_control', 1);
@@ -650,7 +650,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
 		$view = $this->view('default', 'remove');
@@ -732,7 +732,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$users_man[] = $uid;
 				}
 
-				require_once __DIR__ . DS . 'role.php';
 				GroupsMembersRole::deleteRolesForUserWithId($uid);
 
 				$this->notifyUser($targetuser);
@@ -807,7 +806,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'deny');
@@ -912,7 +911,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'cancel');
@@ -1161,7 +1160,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
 		$view = $this->view('assign', 'role');
@@ -1344,7 +1343,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// Build the "from" data for the e-mail
 		$from = array(
-			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
 			'email' => Config::get('mailfrom')
 		);
 
@@ -1379,7 +1378,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		// Build the "from" info for e-mails
 		$from = array(
-			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
 			'email' => Config::get('mailfrom')
 		);
 

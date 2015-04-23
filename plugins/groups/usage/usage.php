@@ -94,9 +94,6 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//Create user object
-			$juser = JFactory::getUser();
-
 			//get the group members
 			$members = $group->get('members');
 
@@ -108,12 +105,12 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest')
+			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
-				$this->redirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
@@ -122,7 +119,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members)
+			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
 			 && $authorized != 'admin')
 			{
@@ -140,22 +137,22 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$doc = JFactory::getDocument();
 
 			//add usage stylesheet to view
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'usage');
+			$this->css();
 
 			//add datepicker stylesheet to view
-			$doc->addStyleSheet('plugins' . DS . 'groups' . DS . 'usage' . DS . 'datepicker.css');
+			$this->css('datepicker.css');
 
 			//add google js-api
 			$doc->addScript('https://www.google.com/jsapi');
 
 			//add jquery from google cdn
-			$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
+			//$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
 
 			//add usage custom script
-			$doc->addScript('plugins' . DS . 'groups' . DS . 'usage' . DS . 'usage.js');
+			$this->js('usage.js');
 
 			//add datepicker script
-			$doc->addScript('plugins' . DS . 'groups' . DS . 'usage' . DS . 'datepicker.js');
+			$this->js('datepicker.js');
 
 			//get the page id if we want to view stats on a specific page
 			$pid = Request::getVar('pid', '');
@@ -181,13 +178,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$doc->addScriptDeclaration($script);
 
 			//import and create view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'groups',
-					'element' => 'usage',
-					'name'    => 'index'
-				)
-			);
+			$view = $this->view('default', 'index');
 
 			//get the group pages
 			$query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber=" . $database->quote($group->get('gidNumber'));
@@ -203,12 +194,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$view->start = $start;
 			$view->end = $end;
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
 
 			$arr['html'] = $view->loadTemplate();
@@ -232,7 +220,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		}
 		$database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 		$rr = new \Components\Resources\Tables\Resource($database);
 
 		$database->setQuery("SELECT COUNT(*) FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid));
@@ -308,7 +296,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		}
 		$database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 		$filters = array();
 		$filters['authorized'] = $authorized;
@@ -501,7 +489,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
 
 		$filters = array();
 		$filters['scope'] = 'group';

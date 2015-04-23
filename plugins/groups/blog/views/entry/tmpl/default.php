@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
 $this->css()
@@ -109,7 +107,7 @@ $this->css()
 					</span>
 				</dd>
 			<?php } ?>
-			<?php if ($this->juser->get('id') == $this->row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+			<?php if (User::get('id') == $this->row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 				<dd class="state">
 					<?php echo Lang::txt('PLG_GROUPS_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 				</dd>
@@ -251,9 +249,9 @@ $this->css()
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-						$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
+						$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
 						$anon = 1;
-						if (!$juser->get('guest'))
+						if (!User::isGuest())
 						{
 							$anon = 0;
 						}
@@ -287,7 +285,7 @@ $this->css()
 					</blockquote>
 					<?php } ?>
 
-					<?php if (!$this->juser->get('guest')) { ?>
+					<?php if (!User::isGuest()) { ?>
 						<label for="comment_content">
 							Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
 							<?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
@@ -312,7 +310,7 @@ $this->css()
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="active" value="blog" />

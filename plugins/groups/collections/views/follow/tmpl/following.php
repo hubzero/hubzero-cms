@@ -32,12 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 $database = JFactory::getDBO();
-$this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
-<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<?php if (!User::isGuest() && !$this->params->get('access-create-item')) { ?>
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
@@ -70,10 +69,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div class="container">
-			<table class="following entries" summary="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_TBL_SUMMARY'); ?>">
-				<!-- <caption>
-					<?php echo Lang::txt('People and collections you are following'); ?>
-				</caption> -->
+			<table class="following entries">
 				<tbody>
 		<?php foreach ($this->rows as $row) { ?>
 					<tr class="<?php echo $row->get('following_type'); ?>">
@@ -118,10 +114,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<?php } else { ?>
 			<div id="collection-introduction">
 				<div class="instructions">
-		<?php if ($this->params->get('access-manage-collection')) { ?>
-					<!-- <p>
-						<?php echo Lang::txt('This group is not following anyone or any collections.'); ?>
-					</p> -->
+			<?php if ($this->params->get('access-manage-collection')) { ?>
 					<ol>
 						<li><?php echo Lang::txt('Find a member or collection you like.'); ?></li>
 						<li><?php echo Lang::txt('Click on the "follow" button.'); ?></li>
@@ -134,12 +127,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<p><?php echo Lang::txt('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
 					<p><?php echo Lang::txt('You can unfollow other people or collections at any time.'); ?></p>
 				</div>
-		<?php } else { ?>
+			<?php } else { ?>
 					<p>
 						<?php echo Lang::txt('This group is not following anyone or any collections.'); ?>
 					</p>
 				</div><!-- / .instructions -->
-		<?php } ?>
+			<?php } ?>
 			</div><!-- / #collection-introduction -->
 	<?php } ?>
 	<div class="clear"></div>

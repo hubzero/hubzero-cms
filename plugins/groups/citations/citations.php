@@ -110,9 +110,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//Create user object
-		$this->juser = JFactory::getUser();
-
 		//creat database object
 		$this->database = JFactory::getDBO();
 
@@ -144,12 +141,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 
 				//check if guest and force login if plugin access is registered or members
-				if ($this->juser->get('guest')
+				if (User::isGuest()
 				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
 					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 
-					$this->redirect(
+					App::redirect(
 						Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
 						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
@@ -158,7 +155,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 
 				//check to see if user is member and plugin access requires members
-				if (!in_array($this->juser->get('id'), $members) && $group_plugin_acl == 'members')
+				if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
@@ -305,7 +302,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['startuploaddate'] = JFactory::getDate($view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
+			$view->filters['startuploaddate'] = Date::of($view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
 		}
 		if ($view->filters['enduploaddate'] == '0000-00-00'
 			|| $view->filters['enduploaddate'] == '0000-00-00 00:00:00'
@@ -315,13 +312,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->filters['enduploaddate'] = JFactory::getDate($view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
+			$view->filters['enduploaddate'] = Date::of($view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
 		}
 
 		//Make sure the end date for the upload search isn't before the start date
 		if ($view->filters['startuploaddate'] > $view->filters['enduploaddate'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_citations&task=browse'),
 				Lang::txt('PLG_GROUPS_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
 				'error'
@@ -485,7 +482,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_loginTask();
 		}
@@ -498,10 +495,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// are we allowing user to add citation
 		$allowImport = $view->config->get('citation_import', 1);
 		if ($allowImport == 0
-			|| ($allowImport == 2 && $this->juser->get('usertype') != 'Super Administrator'))
+			|| ($allowImport == 2 && User::get('usertype') != 'Super Administrator'))
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&active=' . $this->_name . '&action=browse', false),
 				Lang::txt('PLG_GROUPS_CITATION_EDIT_NOTALLOWED'),
 				'warning'
@@ -597,7 +594,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Set the ID of the creator
 		if (!$id)
 		{
-			$view->row->uid = $this->juser->get('id');
+			$view->row->uid = User::get('id');
 
 			// It's new - no associations to get
 			$view->assocs = array();
@@ -614,12 +611,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -633,7 +627,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_loginTask();
 		}
@@ -748,18 +742,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
 			$ct1 = new \Components\Tags\Models\Cloud($row->id, 'citations');
-			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
+			$ct1->setTags($tags, User::get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
 			$ct1 = new \Components\Tags\Models\Cloud($row->id, 'citations');
-			$ct2->setTags($badges, $this->juser->get('id'), 0, 1, 'badge');
+			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 		}
 
 		// resdirect after save
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_groups' . DS . $this->group->cn . DS .'citations'),
 			Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
 			'success'
@@ -800,7 +794,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				{
 					$objO = new \Components\Projects\Tables\Owner($this->database);
 
-					if ($objO->isOwner($this->juser->get('id'), $objP->project_id))
+					if ($objO->isOwner(User::get('id'), $objP->project_id))
 					{
 						return true;
 					}
@@ -855,7 +849,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _loginTask()
 	{
-		$this->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS. $this->_name .'&action=' . $this->action, false, true))),
 			Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
@@ -870,7 +864,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _import()
 	{
-		$this->redirect(Route::url('index.php?option=com_citations&controller=import&group=' . $group->get('gidNumber')));
+		App::redirect(Route::url('index.php?option=com_citations&controller=import&group=' . $group->get('gidNumber')));
 		return;
 	}
 

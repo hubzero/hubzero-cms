@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
 
 $database = JFactory::getDBO();
 
@@ -51,16 +51,15 @@ $params->merge($rparams);
 switch ($params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
-	case 1: $thedate = JHTML::_('date', $this->row->created,'d M Y');    break;
-	case 2: $thedate = JHTML::_('date', $this->row->modified, 'd M Y');   break;
-	case 3: $thedate = JHTML::_('date', $this->row->publish_up, 'd M Y'); break;
+	case 1: $thedate = Date::of($this->row->created)->toLocal('d M Y');    break;
+	case 2: $thedate = Date::of($this->row->modified)->toLocal('d M Y');   break;
+	case 3: $thedate = Date::of($this->row->publish_up)->toLocal('d M Y'); break;
 }
 
 if (strstr($this->row->href, 'index.php'))
 {
 	$this->row->href = Route::url($this->row->href);
 }
-$juri = JURI::getInstance();
 
 switch ($this->row->access)
 {
@@ -150,5 +149,5 @@ switch ($this->row->access)
 	echo \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($text)), 200) . "\n";
 	?>
 
-	<p class="href"><?php echo $juri->base() . ltrim($this->row->href, DS); ?></p>
+	<p class="href"><?php echo Request::base() . ltrim($this->row->href, '/'); ?></p>
 </li>

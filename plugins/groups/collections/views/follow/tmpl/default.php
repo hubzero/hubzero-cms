@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $database = JFactory::getDBO();
-$this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
@@ -46,17 +45,17 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<span class="posts count">
 			<?php echo Lang::txt('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
-<?php if (!$this->juser->get('guest')) { ?>
-	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-		<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
-			<?php echo Lang::txt('New post'); ?>
-		</a>
-	<?php } else { ?>
-		<a class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>" href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
-			<?php echo Lang::txt('Follow'); //Repost collection ?>
-		</a>
-	<?php } ?>
-<?php } ?>
+		<?php if (!User::isGuest()) { ?>
+			<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
+				<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+					<?php echo Lang::txt('New post'); ?>
+				</a>
+			<?php } else { ?>
+				<a class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>" href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
+					<?php echo Lang::txt('Follow'); //Repost collection ?>
+				</a>
+			<?php } ?>
+		<?php } ?>
 		<span class="clear"></span>
 	</p>
 
@@ -106,34 +105,34 @@ if ($this->rows->total() > 0)
 							<?php echo Lang::txt('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
-			<?php if (!$this->juser->get('guest')) { ?>
-					<div class="actions">
-				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
-						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
-							<span><?php echo Lang::txt('Edit'); ?></span>
-						</a>
-				<?php } else { ?>
-						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
-							<span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
-						</a>
-				<?php } ?>
-						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
-							<span><?php echo Lang::txt('Comment'); ?></span>
-						</a>
-						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
-							<span><?php echo Lang::txt('Collect'); ?></span>
-						</a>
-				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
-						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
-							<span><?php echo Lang::txt('Delete'); ?></span>
-						</a>
-				<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
-						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
-							<span><?php echo Lang::txt('Remove'); ?></span>
-						</a>
-				<?php } ?>
-					</div><!-- / .actions -->
-			<?php } ?>
+					<?php if (!User::isGuest()) { ?>
+						<div class="actions">
+						<?php if ($item->get('created_by') == User::get('id')) { ?>
+							<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
+								<span><?php echo Lang::txt('Edit'); ?></span>
+							</a>
+						<?php } else { ?>
+							<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
+								<span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
+							</a>
+						<?php } ?>
+							<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
+								<span><?php echo Lang::txt('Comment'); ?></span>
+							</a>
+							<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
+								<span><?php echo Lang::txt('Collect'); ?></span>
+							</a>
+						<?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
+							<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
+								<span><?php echo Lang::txt('Delete'); ?></span>
+							</a>
+						<?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
+							<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
+								<span><?php echo Lang::txt('Remove'); ?></span>
+							</a>
+						<?php } ?>
+						</div><!-- / .actions -->
+					<?php } ?>
 				</div><!-- / .meta -->
 
 			<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
@@ -148,8 +147,8 @@ if ($this->rows->total() > 0)
 						posted
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -169,8 +168,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -184,24 +183,20 @@ else
 {
 ?>
 		<div id="collection-introduction">
-	<?php if ($this->params->get('access-create-item')) { ?>
-			<div class="instructions">
-				<ol>
-					<li><?php echo Lang::txt('Find images, files, links or text you want to share.'); ?></li>
-					<li><?php echo Lang::txt('Click on "New post" button.'); ?></li>
-					<li><?php echo Lang::txt('Add anything extra you want (tags are nice).'); ?></li>
-					<li><?php echo Lang::txt('Done!'); ?></li>
-				</ol>
-			</div><!-- / .instructions -->
-			<!-- <div class="questions">
-				<p><strong>What is the "Collect" button for?</strong></p>
-				<p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
-			</div><!- / .post-type -->
-	<?php } else { ?>
-			<div class="instructions">
-				<p><?php echo Lang::txt('No posts available for this collection.'); ?></p>
-			</div><!-- / .instructions -->
-	<?php } ?>
+			<?php if ($this->params->get('access-create-item')) { ?>
+				<div class="instructions">
+					<ol>
+						<li><?php echo Lang::txt('Find images, files, links or text you want to share.'); ?></li>
+						<li><?php echo Lang::txt('Click on "New post" button.'); ?></li>
+						<li><?php echo Lang::txt('Add anything extra you want (tags are nice).'); ?></li>
+						<li><?php echo Lang::txt('Done!'); ?></li>
+					</ol>
+				</div><!-- / .instructions -->
+			<?php } else { ?>
+				<div class="instructions">
+					<p><?php echo Lang::txt('No posts available for this collection.'); ?></p>
+				</div><!-- / .instructions -->
+			<?php } ?>
 		</div><!-- / #collection-introduction -->
 <?php
 }

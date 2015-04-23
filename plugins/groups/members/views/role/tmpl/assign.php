@@ -35,8 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-
-<form action="index.php" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset>
 		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
 
@@ -71,11 +70,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</select>
 		</label>
 	</fieldset>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="action" value="submitrole" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
+
 	<p class="submit">
 		<input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?>" />
 	</p>

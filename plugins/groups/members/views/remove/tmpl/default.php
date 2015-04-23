@@ -38,17 +38,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset>
 		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_MEMBERSHIP'); ?></legend>
 
-<?php
-$names = array();
-foreach ($this->users as $user)
-{
-	$u = User::getInstance($user);
-	$names[] = $this->escape($u->get('name'));
-?>
+		<?php
+		$names = array();
+		foreach ($this->users as $user)
+		{
+			$u = User::getInstance($user);
+			$names[] = $this->escape($u->get('name'));
+			?>
 			<input type="hidden" name="users[]" value="<?php echo $this->escape($user); ?>" />
-<?php
-}
-?>
+			<?php
+		}
+		?>
 
 		<label>
 			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_USERS'); ?><br />
@@ -60,10 +60,12 @@ foreach ($this->users as $user)
 			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
 		</label>
 	</fieldset><div class="clear"></div>
+
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="confirmremove" />
+
 	<p class="submit">
 		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
 	</p>

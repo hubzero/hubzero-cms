@@ -86,7 +86,7 @@ if (isset($this->messages))
 </div>
 
 <div class="frm" id="browsebox">
-	<form action="<?php echo Route::url(JURI::current()); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
+	<form action="<?php echo Route::url(Request::current()); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 		<section class="main section">
 			<div class="subject">
 				<div class="container data-entry">
