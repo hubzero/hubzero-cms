@@ -39,33 +39,33 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 <?php
 // Display error  message
 if ($this->getError()) {
-	echo ('<p class="error">'.$this->getError().'</p>');
+	echo ('<p class="error">' . $this->getError() . '</p>');
 } ?>
 
 <?php if (!$this->ajax) { ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=publications'); ?>" method="post" id="plg-form" >
+<form action="<?php echo Route::url($this->pub->link('editbase')); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
-	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></h3>
+	<?php if ($this->project->isProvisioned()) { ?>
+		<h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a><span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></span>
+		<h3 class="publications"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo $this->title; ?></a><span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></span>
 		</h3>
 	<?php } ?>
 	</div>
 	<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_FOR_NEXT_PUB'); ?></h4>
 <?php } else { ?>
-<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->pub->link('edit')); ?>">
 <?php } ?>
 	<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_HOW'); ?></p>
 	<fieldset>
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
+		<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" id="projectid" />
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="save_license" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
-		<input type="hidden" name="version" id="version" value="<?php echo $this->version; ?>" />
-		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if ($this->project->provisioned == 1 ) { ?>
+		<input type="hidden" name="version" id="version" value="<?php echo $this->pub->versionAlias; ?>" />
+		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
+		<?php if ($this->project->isProvisioned()) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
@@ -87,8 +87,8 @@ if ($this->getError()) {
 			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
 			<?php if ($this->ajax) { ?>
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
-			<?php } else { ?>
-			<a href="<?php echo $this->url . '?section=license&version=' . $this->version; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
+			<?php } else { $rtn = Request::getVar('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server'); ?>
+			<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 </form>

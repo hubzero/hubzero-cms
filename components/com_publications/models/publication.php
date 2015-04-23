@@ -296,6 +296,30 @@ class Publication extends Object
 	}
 
 	/**
+	 * Check if the publication belongs to project
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function belongsToProject( $projectId = NULL)
+	{
+		if (!$projectId)
+		{
+			return false;
+		}
+		if (empty($this->publication) || !$this->publication->id)
+		{
+			return false;
+		}
+		if ($this->publication->project_id != $projectId)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Is publication deleted?
 	 *
 	 * @return     boolean
@@ -1352,7 +1376,7 @@ class Publication extends Object
 	 */
 	public function link($type = '')
 	{
-		if (!isset($this->_pageBase))
+		if (!isset($this->_base))
 		{
 			$this->_base  = 'index.php?option=com_publications';
 			$this->_base .= $this->get('alias')
@@ -1382,6 +1406,14 @@ class Publication extends Object
 
 			case 'editversion':
 				$link = $this->_editBase . '&pid=' . $this->get('id') . '&version=' . $this->version->get('version_number');
+			break;
+
+			case 'editdev':
+				$link = $this->_editBase . '&pid=' . $this->get('id') . '&version=dev';
+			break;
+
+			case 'editdefault':
+				$link = $this->_editBase . '&pid=' . $this->get('id') . '&version=default';
 			break;
 
 			case 'editversionid':

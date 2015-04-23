@@ -1451,7 +1451,12 @@ class File extends Base
 	public function buildDataObject($att, $view, $i = 1)
 	{
 		// Get configs
-		$configs  = $this->getConfigs($view->manifest->params, $view->elementId, $view->pub, $view->master->params);
+		$configs  = $this->getConfigs(
+			$view->manifest->params,
+			$view->elementId,
+			$view->pub,
+			$view->master->params
+		);
 
 		$data 		= new stdClass;
 		$data->path = str_replace($configs->path . DS, '', $att->path);
@@ -1477,10 +1482,10 @@ class File extends Base
 							? $att->title : $dTitle;
 
 		$data->ordering 	= $i;
-		$data->editUrl  	= $view->editUrl;
+		$data->editUrl  	= $view->pub->link('editversion');
 		$data->id			= $att->id;
-		$data->props		= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
-		;
+		$data->props		= $view->master->block . '-' . $view->master->blockId
+							. '-' . $view->elementId;
 		$data->pid			= $view->pub->id;
 		$data->vid			= $view->pub->version_id;
 		$data->version		= $view->pub->version_number;
@@ -1490,9 +1495,8 @@ class File extends Base
 		$data->md5		    = $att->content_hash;
 		$data->viewer	    = $view->viewer;
 		$data->allowRename  = $allowRename;
-		$data->downloadUrl  = Route::url('index.php?option=com_publications&task=serve&id='
-							. $view->pub->id . '&v=' . $view->pub->version_number )
-							. '?el=' . $view->elementId . '&amp;a=' . $att->id . '&amp;download=1';
+		$data->downloadUrl  = Route::url($view->pub->link('serve')
+							. '&el=' . $view->elementId . '&a=' . $att->id . '&download=1' );
 
 		// Is attachment (image) also publication thumbnail
 		$params = new \JParameter( $att->params );

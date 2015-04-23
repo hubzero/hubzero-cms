@@ -956,7 +956,6 @@ class Curation extends Object
 	/**
 	 * Transfer content from one version to another
 	 *
-	 * @param   object  $pub	Publication object
 	 * @param   object  $old	Transfer from version record
 	 * @param   object  $new	Transfer to version record
 	 * @return  boolean

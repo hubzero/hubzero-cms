@@ -36,8 +36,8 @@ $viewer 	= $this->data->viewer;
 		<span class="item-options">
 		<?php if ($viewer == 'edit') { ?>
 			<span>
-				<a href="<?php echo $data->editUrl . '/?action=edititem&amp;aid=' . $data->id . '&amp;p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>
-				<a href="<?php echo $data->editUrl . '/?action=deleteitem&amp;aid=' . $data->id . '&amp;version=' . $data->version . '&amp;p=' . $data->props; ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+				<a href="<?php echo Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props); ?>" class="showinbox item-edit" title="<?php echo strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>
+				<a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 		<?php } ?>
 		</span>

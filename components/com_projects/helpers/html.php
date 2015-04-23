@@ -1508,8 +1508,7 @@ class Html extends Object
 	 * Send hub message
 	 *
 	 * @param      string 	$option
-	 * @param      array 	$config
-	 * @param      object 	$project
+	 * @param      object 	$project    Models\Project
 	 * @param      array 	$addressees
 	 * @param      string 	$subject
 	 * @param      string 	$component
@@ -1519,7 +1518,7 @@ class Html extends Object
 	 * @return     void
 	 */
 	public static function sendHUBMessage(
-		$option, $config, $project,
+		$option, $project,
 		$addressees = array(), $subject = '',
 		$component = '', $layout = '',
 		$message = '', $reviewer = '')
@@ -1530,7 +1529,7 @@ class Html extends Object
 		}
 
 		// Is messaging turned on?
-		if ($config->get('messaging') != 1)
+		if ($project->config()->get('messaging') != 1)
 		{
 			return false;
 		}
@@ -1544,25 +1543,23 @@ class Html extends Object
 		$from['multipart'] = md5(date('U'));
 
 		// Get message body
-		$eview = new \Hubzero\Component\View(array(
+		$eview          = new \Hubzero\Component\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
-			'name'   => 'emails',
-			'layout' => $layout . '_plain'
+			'name'      => 'emails',
+			'layout'    => $layout . '_plain'
 		));
 
 		$eview->option 			= $option;
 		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->project 		= $project;
-		$eview->params 			= new \JParameter( $project->params );
-		$eview->config 			= $config;
+		$eview->params 			= $project->params;
+		$eview->config 			= $project->config();
 		$eview->message			= $message;
 		$eview->reviewer		= $reviewer;
 
 		// Get profile of author group
-		if ($project->owned_by_group)
-		{
-			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group );
-		}
+		$eview->nativegroup = $project->groupOwner();
+
 		$body = array();
 		$body['plaintext'] 	= $eview->loadTemplate();
 		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);

@@ -51,8 +51,8 @@ else
 				<?php if (!$data->gone) { ?>
 				<a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
 				<?php } ?>
-				<a href="<?php echo $data->editUrl . '/?action=edititem&amp;aid=' . $data->id . '&amp;p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
-				<a href="<?php echo $data->editUrl . '/?action=deleteitem&amp;version=' . $data->version . '&amp;aid=' . $data->id . '&amp;p=' . $data->props; ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+				<a href="<?php echo Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props); ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
+				<a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 			<?php } else { ?>
 				<span><a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>

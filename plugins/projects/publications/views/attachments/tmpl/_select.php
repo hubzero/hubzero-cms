@@ -40,14 +40,13 @@ switch ($this->type)
 		$active = 'links';
 		break;
 }
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
+
+$route = $this->pub->link('editbase');
 $selectUrl   = $prov
-		? Route::url( $route) . '?active=' . $active . '&action=select&p=' . $this->props
-			. '&vid=' . $this->pub->version_id
-		: Route::url( $route . '&active=' . $active . '&action=select') .'/?p=' . $this->props . '&amp;pid='
-			. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
+		? Route::url( $route) . '?active=' . $active . '&amp;action=select&amp;p=' . $this->props
+			. '&amp;vid=' . $this->pub->version_id
+		: Route::url( $route . '&active=' . $active . '&action=select') .'/?p=' . $this->props . '&amp;pid=' . $this->pub->id . '&amp;vid=' . $this->pub->version_id;
+
 ?>
 <div class="item-new">
 	<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox nox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECT_' . strtoupper($this->type)); ?></a></span>

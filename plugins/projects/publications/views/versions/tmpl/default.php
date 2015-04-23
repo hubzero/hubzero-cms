@@ -26,15 +26,15 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get publication properties
-$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
 
 ?>
-<form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
+<form action="<?php echo Route::url($this->pub->link('editbase')); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
-	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></h3>
+	<?php if ($this->project->isProvisioned()) { ?>
+		<h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></span>
+		<h3 class="publications c-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->pub->title; ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></span>
 		</h3>
 	<?php } ?>
 	</div>
@@ -56,7 +56,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 		 <tbody>
 		<?php foreach ($this->versions as $v) {
 			// Get DOI
-			$doi = $v->doi ? 'doi:'.$v->doi : '';
+			$doi = $v->doi ? 'doi:' . $v->doi : '';
 			$doi_notice = $doi ? $doi : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA');
 
 			// Version status
@@ -64,11 +64,11 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 			$class  = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
 			$date   = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
 
-			$options = '<a href="' . $this->url . '?version=' . $v->version_number . '">'
+			$options = '<a href="' . Route::url($this->pub->link('edit') . '&version=' . $v->version_number) . '">'
 			. Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION') . '</a>';
 
 			$options .= '<span class="block"><a href="' . Route::url('index.php?option=com_publications'
-			. '&id=' . $this->pid) . '?v=' . $v->version_number . '">'
+			. '&id=' . $this->pid . '&v=' . $v->version_number) . '">'
 			. Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE') . '</a></span>';
 
 			?>

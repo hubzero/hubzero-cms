@@ -541,8 +541,7 @@ class Setup extends Base
 			{
 				Helpers\Html::sendHUBMessage(
 					$this->_option,
-					$this->config,
-					$this->model->project(),
+					$this->model,
 					$admins,
 					Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 					'projects_new_project_admin',
@@ -787,8 +786,7 @@ class Setup extends Base
 								{
 									Helpers\Html::sendHUBMessage(
 										$this->_option,
-										$this->config,
-										$this->model->project(),
+										$this->model,
 										$admins,
 										Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 										'projects_new_project_admin',

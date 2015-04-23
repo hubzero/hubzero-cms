@@ -104,7 +104,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&el=' . $this->elementId . '#element' . $this->elementId; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo Lang::txt('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->versionAlias . '&el=' . $this->elementId . '#element' . $this->elementId; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 			<?php if (!$coming && $value) {
 				// Parse editor text

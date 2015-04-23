@@ -32,28 +32,16 @@ $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.
 
 $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
-$juri 	 = JURI::getInstance();
-
-$config  = Component::params( 'com_projects' );
 $hubShortName = Config::get('config.sitename');
 
-$base 	 = rtrim($juri->base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base 		= substr($base, 0, strlen($base)-13);
-	$sef 		= 'projects/' . $this->project->alias;
-	$sef_browse = 'projects/browse';
-}
-else
-{
-	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
-}
+$base       = rtrim(Request::base(), DS);
+$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
+$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
 
 $link 		= rtrim($base, DS) . DS . trim($sef, DS);
 $projectUrl = $link;
 $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
-$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
+$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->get('alias') . '/media';
 
 // Page title
 $title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
@@ -79,7 +67,7 @@ if ($comment)
 	$comment = '<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">' . $comment . '</p>';
 }
 
-if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive')
+if ($this->project->config()->get('restricted_data', 0) && $this->reviewer == 'sensitive')
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') . '</li>';
@@ -91,7 +79,7 @@ if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive')
 	}
 	$comment .= '</ul>';
 }
-if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored')
+if ($this->project->config()->get('grantinfo', 0) && $this->reviewer == 'sponsored')
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') . '</li>';
@@ -101,13 +89,13 @@ if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored')
 	$comment .= '</ul>';
 }
 
-if ($this->config->get('ginfo_group', 0) && $this->reviewer == 'sponsored')
+if ($this->project->config()->get('ginfo_group', 0) && $this->reviewer == 'sponsored')
 {
 	$comment .= '<p>' . Lang::txt('COM_PROJECTS_EMAIL_LINK_SPS') . '<br />';
 	$comment .= $browseLink . '?reviewer=sponsored' . '</p>';
 }
 
-if ($this->config->get('sdata_group', 0) && $this->reviewer == 'sensitive')
+if ($this->project->config()->get('sdata_group', 0) && $this->reviewer == 'sensitive')
 {
 	$comment .= '<p>' . Lang::txt('COM_PROJECTS_EMAIL_LINK_HIPAA') . '<br />';
 	$comment .= $browseLink . '?reviewer=sensitive' . '</p>';
@@ -259,7 +247,7 @@ $showThumb = $config->get('showthumbemail', 0);
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-															<a href="<?php echo $juri->base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $juri->base(); ?></a>
+															<a href="<?php echo Request::base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::base(); ?></a>
 														</span>
 														<br />
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.MetaDesc'); ?></span>
@@ -324,11 +312,11 @@ $showThumb = $config->get('showthumbemail', 0);
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Title:</th>
-																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->title; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->get('title'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Alias:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->alias; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->get('alias'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
@@ -372,7 +360,7 @@ $showThumb = $config->get('showthumbemail', 0);
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

@@ -25,28 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri 	 = JURI::getInstance();
-
-$base 	 = rtrim($juri->base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base 		= substr($base, 0, strlen($base)-13);
-	$sef 		= 'projects/' . $this->project->alias;
-	$sef_browse = 'projects/browse';
-}
-else
-{
-	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
-}
+$base 	    = rtrim(Request::base(), DS);
+$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
+$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 
 $message  = $this->project->fullname. ' ' .Lang::txt('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
-$message .= ' "' . $this->project->title. '"' ."\n";
+$message .= ' "' . $this->project->get('title'). '"' ."\n";
 $message .= '-------------------------------' ."\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias . ')' . "\n";
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') . ')' . "\n";
 $message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
 		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' '
 		 . Lang::txt('COM_PROJECTS_BY') . ' ';
@@ -65,7 +54,7 @@ $message .= $this->project->private == 1
 			? Lang::txt('COM_PROJECTS_EMAIL_PRIVATE') ."\n"
 			: Lang::txt('COM_PROJECTS_EMAIL_PUBLIC') ."\n";
 
-if ($this->config->get('restricted_data', 0))
+if ($this->project->config()->get('restricted_data', 0))
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') ."\n";
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->params->get('ferpa_data') ."\n";
@@ -76,7 +65,7 @@ if ($this->config->get('restricted_data', 0))
 	}
 	$message .= '-------------------------------' ."\n\n";
 }
-if ($this->config->get('grantinfo', 0))
+if ($this->project->config()->get('grantinfo', 0))
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') ."\n";
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->params->get('grant_PI') ."\n";
@@ -85,13 +74,13 @@ if ($this->config->get('grantinfo', 0))
 }
 $message .= '-------------------------------' ."\n\n";
 
-if ($this->config->get('ginfo_group', 0))
+if ($this->project->config()->get('ginfo_group', 0))
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_LINK_SPS') ."\n";
 	$message .= $browseLink . '?reviewer=sponsored' . "\n\n";
 }
 
-if ($this->config->get('sdata_group', 0))
+if ($this->project->config()->get('sdata_group', 0))
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_LINK_HIPAA') ."\n";
 	$message .= $browseLink . '?reviewer=sensitive' . "\n";

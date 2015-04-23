@@ -25,9 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->pub)
+$this->css('css/impact');
+
+if ($this->pub->exists())
 {
-	$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+	$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
 }
 
 $thisMonth = date('M Y');
@@ -74,17 +76,17 @@ tooltip: true,
 
 ?>
 <div id="plg-header">
-<?php if ($this->project->provisioned == 1 ) { ?>
-<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> <?php if ($this->pub) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url . '?version=' . $this->version; ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
+<?php if ($this->project->isProvisioned() ) { ?>
+<h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> <?php if ($this->pub->exists()) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
 <?php } else { ?>
-<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> <?php if ($this->pub) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url . '?version=' . $this->version; ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></span></h3>
+<h3 class="publications c-header"><a href="<?php echo Route::url($this->project->link('publications')); ?>"><?php echo $this->title; ?></a> <?php if ($this->pub->exists()) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></span></h3>
 <?php } ?>
 </div>
 
 <div class="pubstats">
 <?php if ($this->pubstats) {
 ?>
-<?php if (!$this->pub && $this->totals && count($this->pubstats) > 1) { ?>
+<?php if (!$this->pub->exists() && $this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES'); ?>.</p>
 <?php } ?>
 <script src="/media/system/js/flot/jquery.flot.min.js"></script>
@@ -94,7 +96,7 @@ tooltip: true,
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <?php if ($this->pub) { ?>
-<p class="viewallstats"><a href="<?php echo $this->route . '?action=stats'; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS'); ?> &raquo;</a></p>
+<p class="viewallstats"><a href="<?php echo Route::url($this->pub->link('editbase') . '&action=stats'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS'); ?> &raquo;</a></p>
 <?php } ?>
 
 <?php
@@ -111,7 +113,7 @@ tooltip: true,
 			<table class="pubstats-wrap">
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
-					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
+					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number); ?>"><?php echo $stat->title; ?></a></span>
 					<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, 'M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
 				</td></tr>
 				<tr>

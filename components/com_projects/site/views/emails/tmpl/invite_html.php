@@ -27,26 +27,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
-$juri 	 = JURI::getInstance();
-$config  = Component::params( 'com_projects' );
-
+$config       = Component::params( 'com_projects' );
 $hubShortName = Config::get('config.sitename');
 
-$base = rtrim($juri->base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base = substr($base, 0, strlen($base)-13);
-	$sef = 'projects/' . $this->project->alias;
-}
-else
-{
-	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-}
+$base = rtrim(Request::base(), DS);
+$sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 
 $projectUrl  = rtrim($base, DS) . DS . trim($sef, DS);
 $sef 		.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link        = rtrim($base, DS) . DS . trim($sef, DS);
-$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
+$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->get('alias') . '/media';
 
 // Page title
 $title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
@@ -59,7 +49,7 @@ if ($this->uid == $this->project->created_by_user)
 else {
 	$subtitle  = $this->project->fullname.' ';
 	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$subtitle .= ' "'.$this->project->title.'" '.Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
+	$subtitle .= ' "'.$this->project->get('title').'" '.Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
 	$subtitle .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 }
 
@@ -226,7 +216,7 @@ $bdcolor = '#e1e1e1';
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-															<a href="<?php echo $juri->base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $juri->base(); ?></a>
+															<a href="<?php echo Request::base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::base(); ?></a>
 														</span>
 														<br />
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.MetaDesc'); ?></span>
@@ -291,11 +281,11 @@ $bdcolor = '#e1e1e1';
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Title:</th>
-																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->title; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->get('title'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Alias:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->alias; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->get('alias'); ?></td>
 																</tr>																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
@@ -348,7 +338,7 @@ $bdcolor = '#e1e1e1';
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

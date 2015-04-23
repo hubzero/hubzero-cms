@@ -53,10 +53,7 @@ $section  = $this->master->block;
 $blockId = $this->master->blockId;
 $props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
 
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
-$this->editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
+$this->editUrl = $this->pub->link('editversion');
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
@@ -97,7 +94,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&amp;el=' . $this->elementId . '#' . $elName; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->versionAlias . '&el=' . $this->elementId . '#' . $elName; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 		</div>
 		<div class="block-aside-omega"></div>
@@ -167,9 +164,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					$versionParams 	= new JParameter( $this->pub->params );
 					$bundleName		= $versionParams->get($elName . 'bundlename', 'bundle');
 
-					$bundleUrl = Route::url('index.php?option=com_publications&task=serve&id='
-								. $this->pub->id . '&amp;v=' . $this->pub->version_number )
-								. '?el=' . $this->elementId . '&download=1';
+					$bundleUrl = Route::url($this->pub->link('serve') . '&el='
+						. $this->elementId . '&download=1');
 
 					?>
 					<div class="handler-controls block">
@@ -179,7 +175,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 							<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
 								<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
 								<span class="save-param-status"></span>
-								<span class="save-param-wrap"><a href="<?php echo $prov ? Route::url( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : Route::url( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&amp;vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
+								<span class="save-param-wrap"><a href="<?php echo Route::url($this->pub->link('editversionid') . '&action=saveparam'); ?>" class="btn save-param"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
 							</label>
 						</div>
 					</div>

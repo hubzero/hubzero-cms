@@ -25,24 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri 	 = JURI::getInstance();
-
-$base 	 = rtrim($juri->base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base 		= substr($base, 0, strlen($base)-13);
-	$sef 		= 'projects/' . $this->project->alias;
-}
-else
-{
-	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-}
+$base = rtrim(Request::base(), DS);
+$sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 $message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') ."\n";
 $message .= '-------------------------------' ."\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias ;
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
 if ($this->project->provisioned == 1)
 {
 	$message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');

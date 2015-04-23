@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $dateFormat = 'm/d/Y';
 
-$site 	 = Config::get('config.live_site')
+$site = Config::get('config.live_site')
 	? Config::get('config.live_site')
 	: trim(Request::base(), DS);
 
@@ -269,7 +269,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT')
 								. '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR') . '</span>';
 								}
-								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion') . '" class="showinbox btn icon-add">'
+								echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1') . '" class="showinbox btn icon-add">'
 							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ;  ?>
 								</span>
 								</p></li>

@@ -1088,4 +1088,39 @@ class Project extends Model
 
 		return $this->_type;
 	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 *
+	 * @param      string $type The type of link to return
+	 * @return     boolean
+	 */
+	public function link($type = '')
+	{
+		if (!isset($this->_base))
+		{
+			$this->_base  = 'index.php?option=com_projects';
+			$this->_base .= '&alias=' . $this->get('alias');
+		}
+
+		// If it doesn't exist or isn't published
+		switch (strtolower($type))
+		{
+			case 'publications':
+				$link = $this->_base . '&active=publications';
+			break;
+
+			case 'files':
+				$link = $this->_base . '&active=files';
+			break;
+
+			case 'permalink':
+			default:
+				$link = $this->_base;
+			break;
+		}
+
+		return $link;
+	}
 }
