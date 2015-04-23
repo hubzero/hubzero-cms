@@ -33,6 +33,8 @@ namespace Components\Login\Admin\Controllers;
 use Components\Login\Models\Login as Model;
 use Hubzero\Component\AdminController;
 use Exception;
+use Hubzero\Notification\Handler;
+use Hubzero\Notification\Storage\Cookie;
 
 /**
  * Login Controller
@@ -82,6 +84,16 @@ class Login extends AdminController
 		\Request::setVar('view', 'login');
 		\Request::setVar('tmpl', 'login');
 		//\Request::setVar('layout', 'default');
+
+		// See if we have any messages available by cookie
+		$handler = new Handler(new Cookie(1));
+		if ($handler->any())
+		{
+			foreach ($handler->messages() as $message)
+			{
+				Notify::{$message['type']}($message['message']);
+			}
+		}
 
 		$this->view
 			->setLayout('default')

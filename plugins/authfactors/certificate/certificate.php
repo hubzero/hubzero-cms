@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use \Hubzero\Notification\Handler;
+use \Hubzero\Notification\Storage\Cookie;
+
 /**
  * Factor Auth plugin for certificate based identity verification
  */
@@ -56,7 +59,10 @@ class plgAuthfactorsCertificate extends \Hubzero\Plugin\Plugin
 		{
 			// Update session and reload the current page
 			\JFactory::getSession()->set('authfactors.status', false);
-			Notify::error(Lang::txt('COM_LOGIN_FACTORS_FAILED'));
+
+			// Register an error with the cookie handler so that it outlives session termination
+			with(new Handler(new Cookie(1)))->error(Lang::txt('COM_LOGIN_FACTORS_FAILED'));
+
 			App::redirect(Request::current());
 		}
 	}
