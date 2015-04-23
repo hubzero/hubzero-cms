@@ -30,6 +30,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+$this->css('tools');
+
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_ZONES') . ': ' . $text, 'tools.png');
@@ -120,6 +122,69 @@ function submitbutton(pressbutton)
 					<?php echo JText::_('COM_TOOLS_FIELD_STATE'); ?>:<br />
 					<label for="field-state-up"><input class="option" type="radio" name="fields[state]" id="field-state-up" size="30" value="up"<?php if ($this->row->get('state') == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_UP'); ?></label>
 					<label for="field-state-down"><input class="option" type="radio" name="fields[state]" id="field-state-down" size="30" value="down"<?php if ($this->row->get('state') == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_DOWN'); ?></label>
+				</div>
+			</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('COM_TOOLS_FIEDSET_ZONES_PARAMS'); ?></span></legend>
+
+				<?php $hn = \Juri::getInstance()->toString(array('host')); ?>
+
+				<script>
+					jQuery(document).ready(function($)
+					{
+						$('#field-zone-params-websocket-enable').on('click', function()
+						{
+							$('.websocket').prop('disabled', function(i, v) { return !v; })
+							               .toggleClass('opaque');
+						});
+						$('#field-zone-params-vnc-enable').on('click', function()
+						{
+							$('.vnc').prop('disabled', function(i, v) { return !v; })
+							               .toggleClass('opaque');
+						});
+					});
+				</script>
+
+				<?php $websocketEnabled = $this->row->params->get('websocket_enable'); ?>
+				<?php $vncEnabled       = $this->row->params->get('vnc_enable'); ?>
+
+				<div class="input-wrap">
+					<label for="field-zone-params-websocket-enable"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_WEBSOCKET_PROXY_ENABLE'); ?>:</label>
+					<input type="hidden" name="zoneparams[websocket_enable]" value="0" />
+					<input type="checkbox" name="zoneparams[websocket_enable]" id="field-zone-params-websocket-enable" value="1"<?php if ($this->row->params->get('websocket_enable')) echo ' checked="checked"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-websocket-server" class="websocket<?php if (!$websocketEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_WEBSOCKET_PROXY_SERVER'); ?>:</label>
+					<input type="text" name="zoneparams[websocket_server]" class="websocket<?php if (!$websocketEnabled) echo ' opaque'; ?>" id="field-zone-params-websocket-server" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('websocket_server', 'ws://' . $hn . ':8080'))); ?>"<?php if (!$websocketEnabled) echo ' disabled="disabled"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-websocket-secure-server" class="websocket<?php if (!$websocketEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_WEBSOCKET_PROXY_SECURE_SERVER'); ?>:</label>
+					<input type="text" name="zoneparams[websocket_secure_server]" class="websocket<?php if (!$websocketEnabled) echo ' opaque'; ?>" id="field-zone-params-websocket-secure-server" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('websocket_secure_server', 'wss://' . $hn . ':8443'))); ?>"<?php if (!$websocketEnabled) echo ' disabled="disabled"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-vnc-enable"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_VNC_PROXY_ENABLE'); ?>:</label>
+					<input type="hidden" name="zoneparams[vnc_enable]" value="0" />
+					<input type="checkbox" name="zoneparams[vnc_enable]" id="field-zone-params-vnc-enable"  value="1"<?php if ($this->row->params->get('vnc_enable')) echo ' checked="checked"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-vnc-server" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_VNC_PROXY_SERVER'); ?>:</label>
+					<input type="text" name="zoneparams[vnc_server]" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>" id="field-zone-params-vnc-server" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('vnc_server', 'http://' . $hn . ':80'))); ?>"<?php if (!$vncEnabled) echo ' disabled="disabled"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-vnc-secure-server" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_VNC_PROXY_SECURE_SERVER'); ?>:</label>
+					<input type="text" name="zoneparams[vnc_secure_server]" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>" id="field-zone-params-vnc-secure-server" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('vnc_secure_server', 'https://' . $hn . ':80'))); ?>"<?php if (!$vncEnabled) echo ' disabled="disabled"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-vnc-applet" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_VNC_PROXY_APPLET'); ?>:</label>
+					<input type="text" name="zoneparams[vnc_applet]" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>" id="field-zone-params-vnc-applet" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('vnc_applet', '/components/com_tools/scripts/VncViewer-20150319-01.jar'))); ?>"<?php if (!$vncEnabled) echo ' disabled="disabled"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-vnc-applet-secure" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_VNC_PROXY_APPLET_SECURE'); ?>:</label>
+					<input type="text" name="zoneparams[vnc_applet_secure]" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>" id="field-zone-params-vnc-applet-secure" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('vnc_applet_secure', ' /components/com_tools/scripts/VncViewer-20150319-01.jar'))); ?>"<?php if (!$vncEnabled) echo ' disabled="disabled"'; ?> />
+				</div>
+				<div class="input-wrap">
+					<label for="field-zone-params-vnc-viewer-class" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_VNC_PROXY_VIEWER_CLASS'); ?>:</label>
+					<input type="text" name="zoneparams[vnc_viewer_class]" class="vnc<?php if (!$vncEnabled) echo ' opaque'; ?>" id="field-zone-params-vnc-viewer-class" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->params->get('vnc_viewer_class', 'VncViewer.class'))); ?>"<?php if (!$vncEnabled) echo ' disabled="disabled"'; ?> />
 				</div>
 			</fieldset>
 			</div>

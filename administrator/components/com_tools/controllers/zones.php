@@ -174,6 +174,8 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			$this->view->row->set('state', 'down');
 		}
 
+		$this->view->row->params = new \JRegistry($this->view->row->get('params'));
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -210,8 +212,11 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
+		$params = JRequest::getVar('zoneparams', array(), 'post');
+		$row    = new MiddlewareModelZone($fields['id']);
 
-		$row = new MiddlewareModelZone($fields['id']);
+		$fields['params'] = json_encode($params);
+
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
