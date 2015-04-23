@@ -34,7 +34,14 @@ HUBzero is a registered trademark of Purdue University.
 		<filename plugin="authfactors">authfactors.php</filename>
 	</files>
 	<config>
-
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="clients" type="checkboxes" default="1" label="Client enforcement" description="Which client types should this factor be enforced on?">
+					<option value="0">Site</option>
+					<option value="1">Administrator</option>
+				</field>
+			</fieldset>
+		</fields>
 	</config>
 </install>
 
