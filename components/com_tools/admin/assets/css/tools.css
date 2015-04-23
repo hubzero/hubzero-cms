@@ -52,3 +52,6 @@
 		color: #999;
 		padding-left: 1.1em;
 	}
+	.opaque {
+		opacity: 0.4;
+	}

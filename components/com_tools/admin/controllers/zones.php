@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Hubzero\Config\Registry;
+
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'middleware.php');
 
 /**
@@ -160,6 +162,8 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			$this->view->row->set('state', 'down');
 		}
 
+		$this->view->row->params = new Registry($this->view->row->get('params'));
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -184,6 +188,10 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
+		$params = Request::getVar('zoneparams', array(), 'post');
+		$row    = new MiddlewareModelZone($fields['id']);
+
+		$fields['params'] = json_encode($params);
 
 		$row = new MiddlewareModelZone($fields['id']);
 		if (!$row->bind($fields))
