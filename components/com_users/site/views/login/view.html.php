@@ -43,16 +43,6 @@ class UsersViewLogin extends JViewLegacy
 			die('insecure connection and redirection failed');
 		}
 
-		// Get and add the js and extra css to the page
-		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
-		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
-		\Hubzero\Document\Assets::addComponentScript('com_users', 'assets/js/login');
-
-		\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
-		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
-		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
-		\Hubzero\Document\Assets::addSystemScript('placeholder');
-
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			App::abort(500, implode('<br />', $errors));

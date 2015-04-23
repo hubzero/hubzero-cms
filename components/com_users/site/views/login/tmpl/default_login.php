@@ -31,6 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Get and add the js and extra css to the page
+\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
+\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
+\Hubzero\Document\Assets::addComponentScript('com_users', 'login');
+
+\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
+\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
+\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
+\Hubzero\Document\Assets::addSystemScript('placeholder');
+
 $hash  = JUtility::getHash(JFactory::getApplication()->getName().':authenticator');
 $crypt = new JSimpleCrypt();
 

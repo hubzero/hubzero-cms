@@ -105,7 +105,7 @@
 	width: 200px;
 	height: 20px;
 	margin: 15px auto;
-	background: url('/components/com_users/assets/img/line.png') 50% 50% repeat-x;
+	background: url('/components/com_users/site/assets/img/line.png') 50% 50% repeat-x;
 	overflow: hidden;
 	position: relative;
 }
