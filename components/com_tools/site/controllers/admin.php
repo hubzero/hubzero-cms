@@ -467,12 +467,10 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// Register DOI handle
 		if ($result && $this->config->get('new_doi', 0))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
-
-			$juri = JURI::getInstance();
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
 
 			// Collect metadata
-			$url = $juri->base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
+			$url = Request::base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
 
 			// Check if DOI exists for this revision
 			$objDOI = new \Components\Resources\Tables\Doi($this->database);

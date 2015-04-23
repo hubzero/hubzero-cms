@@ -158,7 +158,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = \JURI::getInstance();
+			$base = rtrim(Request::base(), '/');
 
 			foreach ($model->entries('list', $filters) as $i => $entry)
 			{
@@ -170,7 +170,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 				$obj->published = $entry->get('publish_up');
 				$obj->scope     = $entry->get('scope');
 				$obj->author    = $entry->creator('name');
-				$obj->url       = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($entry->link()), DS));
+				$obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), DS));
 				$obj->comments  = $entry->comments('count');
 
 				$response->posts[] = $obj;

@@ -168,9 +168,9 @@ class Items extends AdminController
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['category']   	= Request::getVar('category', '');
-		$this->view->return['sortby']   	= Request::getVar('sortby', '');
-		$this->view->return['status'] 		= Request::getVar('status', '');
+		$this->view->return['category'] = Request::getVar('category', '');
+		$this->view->return['sortby']   = Request::getVar('sortby', '');
+		$this->view->return['status']   = Request::getVar('status', '');
 
 		// Instantiate publication object
 		$objP = new Tables\Publication( $this->database );
@@ -333,9 +333,9 @@ class Items extends AdminController
 	public function editcontentTask()
 	{
 		// Incoming
-		$id 	= Request::getInt( 'id', 0 );
-		$el 	= Request::getInt( 'el', 0 );
-		$v 		= Request::getInt( 'v', 0 );
+		$id = Request::getInt( 'id', 0 );
+		$el = Request::getInt( 'el', 0 );
+		$v  = Request::getInt( 'v', 0 );
 
 		$objP = new Tables\Publication( $this->database );
 
@@ -640,8 +640,7 @@ class Items extends AdminController
 		$model->project();
 
 		// Get language file
-		$lang = \JFactory::getLanguage();
-		$lang->load('plg_projects_publications');
+		Lang::load('plg_projects_publications');
 
 		// Save via block
 		$blocksModel = new Models\Blocks($this->database);
@@ -726,8 +725,7 @@ class Items extends AdminController
 		$model->project();
 
 		// Get language file
-		$lang = \JFactory::getLanguage();
-		$lang->load('plg_projects_publications');
+		Lang::load('plg_projects_publications');
 
 		// Save via block
 		$blocksModel = new Models\Blocks($this->database);
@@ -930,10 +928,10 @@ class Items extends AdminController
 		}
 
 		$this->model->version->published_up  = $published_up
-							? \JFactory::getDate($published_up, \JFactory::getConfig()->get('offset'))->toSql()
+							? Date::of($published_up, Config::get('offset'))->toSql()
 							: '0000-00-00 00:00:00';
 		$this->model->version->published_down= $published_down && trim($published_down) != 'Never'
-							? \JFactory::getDate($published_down, \JFactory::getConfig()->get('offset'))->toSql()
+							? Date::of($published_down, Config::get('offset'))->toSql()
 							: '0000-00-00 00:00:00';
 
 		// Determine action (if status is flipped)

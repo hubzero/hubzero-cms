@@ -46,17 +46,17 @@ $path = $this->model->path($this->course->get('id'));
 // Ensure we have a path
 if (empty($path))
 {
-	JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+	App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
 	return;
 }
 
-// Add JPATH_ROOT
-$filename = JPATH_ROOT . $path;
+// Add PATH_APP
+$filename = PATH_APP . $path;
 
 // Ensure the file exist
 if (!file_exists($filename))
 {
-	JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
+	App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
 	return;
 }
 
@@ -78,7 +78,7 @@ $xserver->acceptranges(false); // @TODO fix byte range support
 if (!$xserver->serve())
 {
 	// Should only get here on error
-	JError::raiseError(500, Lang::txt('COM_COURSES_SERVER_ERROR'));
+	App::abort(500, Lang::txt('COM_COURSES_SERVER_ERROR'));
 }
 else
 {

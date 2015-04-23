@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri = JURI::getInstance();
-
 $bdcolor = array(
 	'critical' => '#e9bcbc',
 	'major'    => '#e9e1bc',
@@ -58,7 +56,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
-						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
+						<a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>
 					</span>
 					<br />
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
@@ -115,7 +113,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 				$sef = Route::url($base . $ticket->id);
-				$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+				$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
 				?>
 				<tr style="background: <?php echo $bgcolor[$ticket->severity]; ?>; border: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>">
 					<td style="text-align: left; padding: 0.7em;" valign="top" align="left"><a href="<?php echo $link; ?>">#<?php echo $ticket->id; ?></a></td>
@@ -148,7 +146,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 				</td>
 			</tr>
 		</tbody>

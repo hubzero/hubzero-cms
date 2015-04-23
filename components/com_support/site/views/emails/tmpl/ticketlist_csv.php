@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri = JURI::getInstance();
-
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
 
 $cells = array();
@@ -75,7 +73,7 @@ if (isset($this->tickets) && count($this->tickets) > 0)
 		$cells[] = '"' . ($ticket->name ? addslashes($ticket->name) : '--') . ($ticket->login ? ' (' . addslashes($ticket->login) . ')' : ' (--)') . '"';
 		$cells[] = '"' . ($ticket->owner ? addslashes($ticket->owner_name . ' (' . $ticket->owner . ')') : '--') . '"';
 		$cells[] = '"' . addslashes($ticket->severity) . '"';
-		$cells[] = '"' . rtrim($juri->base(), DS) . DS . trim($sef, DS) . '"';
+		$cells[] = '"' . rtrim(Request::base(), '/') . '/' . trim($sef, '/') . '"';
 
 		$message .= implode(", ", $cells) . "\n";
 	}

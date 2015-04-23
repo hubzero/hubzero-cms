@@ -32,7 +32,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 /**
  * API controller class for support tickets
@@ -227,7 +227,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
+			$base = rtrim(Request::base(), '/');
 
 			foreach ($book->pages('list', $filters) as $i => $entry)
 			{
@@ -236,7 +236,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 				$obj->title     = $entry->get('title');
 				$obj->name      = $entry->get('name');
 				$obj->scope     = $entry->get('scope');
-				$obj->url       = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($entry->link()), DS));
+				$obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), '/'));
 				$obj->revisions = $entry->revisions('count');
 
 				$response->pages[] = $obj;
@@ -275,7 +275,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 		$response->page->revision_id = $page->get('version_id');
 		$response->revisions = 0;
 
-		$response->page->url = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($page->link()), DS));
+		$response->page->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link()), '/'));
 
 		$response->success = true;
 

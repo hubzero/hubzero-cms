@@ -54,7 +54,6 @@ if (count($this->tags) == 1)
 }
 
 // Output the data.
-$juri = JURI::getInstance();
 $foundresults = false;
 $dopaging = false;
 $cats = $this->cats;
@@ -142,7 +141,7 @@ foreach ($this->results as $category)
 				$row->ftext = strip_tags($row->ftext);
 				$html .= "\t\t\t\t\t".'<description><![CDATA['.htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll($row->ftext)).']]></description>'."\n";
 			}
-			$html .= "\t\t\t\t\t".'<link>'.$juri->base().$row->href.'</link>'."\n";
+			$html .= "\t\t\t\t\t".'<link>'.Request::base().$row->href.'</link>'."\n";
 			$html .= "\t\t\t\t".'</item>'."\n";
 		}
 		$html .= "\t\t\t".'</items>'."\n";

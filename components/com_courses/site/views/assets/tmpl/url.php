@@ -33,4 +33,4 @@ defined('_JEXEC') or die('Restricted access');
 
 // @TODO: check for set and valid links
 
-\JFactory::getApplication()->redirect($this->model->path($this->course->get('id')));
+App::redirect($this->model->path($this->course->get('id')));

@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * API controller class for support tickets
@@ -184,7 +184,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = \JURI::getInstance();
+			$base = rtrim(Request::base(), '/');
 
 			foreach ($cloud->tags('list', $filters) as $i => $tag)
 			{
@@ -192,7 +192,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 				$obj->id    = $tag->get('id');
 				$obj->tag   = $tag->get('raw_tag');
 				$obj->title = $tag->get('tag');
-				$obj->url   = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($tag->link()), DS));
+				$obj->url   = str_replace('/api', '', $base . DS . ltrim(Route::url($tag->link()), DS));
 
 				$obj->substitutes_count = $tag->get('substitutes');
 				$obj->objects_count = $tag->get('total');
@@ -229,14 +229,12 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$juri = \JURI::getInstance();
-
 		$response->id    = $tag->get('id');
 		$response->tag   = $tag->get('raw_tag');
 		$response->title = $tag->get('tag');
 		$response->description = $tag->get('description');
 		$response->admin = $tag->get('admin');
-		$response->url   = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($tag->link()), DS));
+		$response->url   = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($tag->link()), DS));
 
 		$response->objects_count = $tag->objects('count');
 

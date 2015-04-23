@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,15 +23,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juri = JURI::getInstance();
 
 if (!($this->ticket instanceof \Components\Support\Models\Ticket))
 {
@@ -42,17 +40,17 @@ if (!($this->comment instanceof \Components\Support\Models\Comment))
 	$this->comment = new \Components\Support\Models\Comment($this->comment);
 }
 
-$base = rtrim($juri->base(), DS);
+$base = rtrim(Request::base(), '/');
 if (substr($base, -13) == 'administrator')
 {
-	$base = rtrim(substr($base, 0, strlen($base)-13), DS);
+	$base = rtrim(substr($base, 0, strlen($base)-13), '/');
 	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
 	$sef = Route::url($this->ticket->link());
 }
-$link = $base . DS . trim($sef, DS);
+$link = $base . '/' . trim($sef, '/');
 
 // Build message
 $message = '';
@@ -103,7 +101,7 @@ if ($this->comment->attachments()->total() > 0)
 	$message .= "\n\n";
 	foreach ($this->comment->attachments() as $attachment)
 	{
-		$message .= $base . DS . trim(Route::url($attachment->link()), DS) . "\n";
+		$message .= $base . '/' . trim(Route::url($attachment->link()), '/') . "\n";
 	}
 }
 

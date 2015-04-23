@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 /**
  * API controller class for support tickets
@@ -150,7 +150,7 @@ class AnswersControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = \JURI::getInstance();
+			$base = rtrim(Request::base(), '/');
 
 			foreach ($model->getResults($filters) as $i => $q)
 			{
@@ -161,7 +161,7 @@ class AnswersControllerApi extends \Hubzero\Component\ApiController
 				$obj->subject = $question->subject();
 				$obj->quesion = $question->content();
 				$obj->state   = $question->get('state');
-				$obj->url     = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($question->link()), DS));
+				$obj->url     = str_replace('/api', '', $base . '/' . ltrim(Route::url($question->link()), '/'));
 				$obj->responses = $question->comments('count');
 
 				$response->questions[] = $obj;

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,15 +23,13 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juri = JURI::getInstance();
 
 $bdcolor = array(
 	'critical' => '#e9bcbc',
@@ -78,7 +76,7 @@ if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 		$sef = Route::url($base . $ticket->id);
 
 		$message .= '#' . $ticket->id . ' "' . $ticket->summary . '"' . "\n";
-		$message .= rtrim($juri->base(), DS) . DS . trim($sef, DS) . "\n\n";
+		$message .= rtrim(Request::base(), '/') . '/' . trim($sef, '/') . "\n\n";
 	}
 }
 
@@ -109,7 +107,7 @@ if (isset($this->tickets['major']) && count($this->tickets['major']) > 0)
 		$sef = Route::url($base . $ticket->id);
 
 		$message .= '#' . $ticket->id . ' "' . $ticket->summary . '"' . "\n";
-		$message .= rtrim($juri->base(), DS) . DS . trim($sef, DS) . "\n\n";
+		$message .= rtrim(Request::base(), '/') . '/' . trim($sef, '/') . "\n\n";
 	}
 }
 
@@ -151,7 +149,7 @@ foreach ($this->tickets as $severity => $tickets)
 		$sef = Route::url($base . $ticket->id);
 
 		$message .= '#' . $ticket->id . ' "' . $ticket->summary . '"' . "\n";
-		$message .= rtrim($juri->base(), DS) . DS . trim($sef, DS) . "\n\n";
+		$message .= rtrim(Request::base(), '/') . '/' . trim($sef, '/') . "\n\n";
 		$i++;
 		// Subtract one from total for each ticket passed
 		$more--;

@@ -33,4 +33,4 @@ defined('_JEXEC') or die('Restricted access');
 
 $route = $this->course->offering()->link() . '&task=form.complete&crumb=' . $this->model->get('url');
 
-\JFactory::getApplication()->redirect(Route::url($route, false, false));
+App::redirect(Route::url($route, false, false));

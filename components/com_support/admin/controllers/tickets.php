@@ -503,9 +503,7 @@ class Tickets extends AdminController
 		$row->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
 		$row->set('tags', $row->tags('string'));
 
-		$juri = \JURI::getInstance();
-
-		$base = $juri->base();
+		$base = Request::base();
 		if (substr($base, -14) == 'administrator/')
 		{
 			$base = substr($base, 0, strlen($base)-14);
@@ -888,9 +886,7 @@ class Tickets extends AdminController
 		$email_submitter = Request::getInt('email_submitter', 0);
 		$email_owner = Request::getInt('email_owner', 0);
 
-		$juri    = \JURI::getInstance();
-
-		$base = $juri->base();
+		$base = Request::base();
 		if (substr($base, -14) == 'administrator/')
 		{
 			$base = substr($base, 0, strlen($base)-14);

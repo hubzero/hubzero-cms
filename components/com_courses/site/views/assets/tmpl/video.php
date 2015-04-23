@@ -180,26 +180,26 @@ if ($type == 'hubpresenter')
 	}
 
 	// Add the HUBpresenter stylesheet and scripts
-	\Hubzero\Document\Assets::addComponentStylesheet('com_resources', "/assets/css/hubpresenter.css");
-	\Hubzero\Document\Assets::addComponentStylesheet('com_courses', "/assets/css/hubpresenter.css");
+	$this->css("hubpresenter.css", 'com_resources');
+	$this->css("hubpresenter.css", 'com_courses');
 
-	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/hubpresenter");
-	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
+	$this->js("hubpresenter", 'com_resources');
+	$this->js("hubpresenter.plugins", 'com_resources');
 
-	\Hubzero\Document\Assets::addSystemScript('jquery.colpick');
-	\Hubzero\Document\Assets::addSystemStylesheet('jquery.colpick');
+	$this->js('jquery.colpick.js', 'system');
+	$this->css('jquery.colpick.css', 'system');
 
 }
 elseif ($type == 'html5')
 {
-	\Hubzero\Document\Assets::addComponentStylesheet('com_resources', "/assets/css/video.css");
-	\Hubzero\Document\Assets::addComponentStylesheet('com_courses', "/assets/css/video.css");
+	$this->css('video.css', 'com_resources');
+	$this->css('video.css', 'com_courses');
 
-	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/video");
-	\Hubzero\Document\Assets::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
+	$this->js('video.js', 'com_resources');
+	$this->js('hubpresenter.plugins.js', 'com_resources');
 
-	\Hubzero\Document\Assets::addSystemScript('jquery.colpick');
-	\Hubzero\Document\Assets::addSystemStylesheet('jquery.colpick');
+	$this->js('jquery.colpick.js', 'system');
+	$this->css('jquery.colpick.css', 'system');
 
 	$presentation = $manifest->presentation;
 
@@ -211,12 +211,12 @@ elseif ($type == 'html5')
 if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
-	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+	require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
 	$dbo = \JFactory::getDBO();
 	$mediaTracking = new ResourceMediaTracking($dbo);
 
 	// Get tracking for this user for this resource
-	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(\JFactory::getUser()->get('id'), $this->asset->id, 'course');
+	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $this->asset->id, 'course');
 
 	// Check to see if we already have a time query param
 	$hasTime = (Request::getVar('time', '') != '') ? true : false;
@@ -224,7 +224,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	// Do we want to redirect user with time added to url
 	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 	{
-		$redirect = JURI::current();
+		$redirect = Request::current();
 
 		// do we have tmpl=componet in url?
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
@@ -239,7 +239,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		$redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
 
 		// Redirect
-		\JFactory::getApplication()->redirect(Route::url($redirect, false), '','',false);
+		App::redirect(Route::url($redirect, false), '','',false);
 	}
 }
 

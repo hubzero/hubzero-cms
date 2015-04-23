@@ -10,7 +10,7 @@
 
 defined('_JEXEC') or die;
 
-if (JFactory::getConfig()->getValue('config.debug')) {
+if (\Config::get('debug')) {
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 	ini_set('display_startup_errors', '1');
@@ -18,11 +18,6 @@ if (JFactory::getConfig()->getValue('config.debug')) {
 	error_reporting(0);
 	ini_set('display_errors', '0');
 }
-
-
-// Session Timeout
-$config = JFactory::getConfig();
-$config->setValue('lifetime', '60');
 
 require_once(JPATH_COMPONENT . DS . 'config.php');
 

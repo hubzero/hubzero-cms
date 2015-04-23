@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,12 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juri = JURI::getInstance();
 
 $bdcolor = array(
 	'critical' => '#e9bcbc',
@@ -58,7 +56,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
-						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
+						<a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>
 					</span>
 					<br />
 					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
@@ -125,7 +123,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 			$sef = Route::url($base . $ticket->id);
-			$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+			$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
 
 			$st = new \Components\Support\Models\Tags($ticket->id);
 			$tags = $st->render('string');
@@ -216,7 +214,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 			$sef = Route::url($base . $ticket->id);
-			$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+			$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
 
 			$st = new \Components\Support\Models\Tags($ticket->id);
 			$tags = $st->render('string');
@@ -343,7 +341,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$ticket->summary = str_replace("\n", " ", $ticket->summary);
 
 			$sef = Route::url($base . $ticket->id);
-			$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+			$link = rtrim(Request::base(), '/') . '/' . trim($sef, '/');
 			?>
 			<table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor[$severity]; ?>; background: <?php echo $bgcolor[$severity]; ?>; font-size: 0.9em; line-height: 1.6em;
 				background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
@@ -420,7 +418,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 				</td>
 			</tr>
 		</tbody>
