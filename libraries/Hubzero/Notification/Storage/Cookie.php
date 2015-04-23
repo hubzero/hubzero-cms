@@ -31,7 +31,7 @@
 namespace Hubzero\Notification\Storage;
 
 use Hubzero\Notification\MessageStore;
-use Hubzero\Utility\Cookie;
+use Hubzero\Utility\Cookie as Monster;
 
 /**
  * Cookie storage handler.
@@ -68,7 +68,7 @@ class Cookie implements MessageStore
 		$messages   = (array) $this->retrieve($domain);
 		$messages[] = $data;
 
-		Cookie::bake($this->key($domain), $this->expires($this->lifetime), $messages);
+		Monster::bake($this->key($domain), $this->expires($this->lifetime), $messages);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Cookie implements MessageStore
 	 */
 	public function retrieve($domain)
 	{
-		if (!($messages = Cookie::eat($this->key($domain)))
+		if (!($messages = Monster::eat($this->key($domain))))
 		{
 			$messages = array();
 		}
@@ -101,7 +101,7 @@ class Cookie implements MessageStore
 	 */
 	public function clear($domain)
 	{
-		Cookie::bake($this->key($domain), $this->expires(0), array())
+		Monster::bake($this->key($domain), $this->expires(0), array());
 	}
 
 	/**
