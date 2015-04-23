@@ -1,0 +1,331 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_events/events.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_events CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.com_events #sub-menu {
+		margin-bottom: 0;
+	}
+/* Date navigation */
+	.com_events .aside fieldset {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+	}
+	#event-categories,
+	.calendarwrap {
+		background-color: #F6F6F6;
+		padding: 1em;
+		border: 1px solid #d4d4cd;
+		margin: 0 0 1em 0;
+	}
+	#event-categories fieldset {
+		background: transparent;
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+	.ecalendar {
+		border: none;
+		position: relative;
+		z-index: 1;
+	}
+	.ecalendar caption,
+	.datenav, .aside .datenav {
+		padding: 0;
+		text-align: right;
+		color: #555;
+		font-weight: bold;
+		margin: 0;
+	}
+	.ecalendar caption {
+		caption-side: top;
+		border: none;
+	}
+	.ecalendar caption a,
+	.datenav a {
+		background: transparent url("/components/com_events/assets/img/calendar-next.png") no-repeat;
+		margin-right: 1em;
+		padding: 15px 0 0 15px;
+		overflow: hidden;
+		float: left;
+		height: 0;
+		width: 0;
+		border: none;
+	}
+	.ecalendar caption a:first-child,
+	.datenav a:first-child {
+		background-image: url("/components/com_events/assets/img/calendar-previous.png");
+	}
+	.ecalendar caption a:hover,
+	.datenav a:hover {
+		background-position: left bottom;
+		border: none;
+	}
+	.ecalendar th {
+		padding: 1.25em 0 0 0;
+		text-align: center;
+		text-shadow: none;
+		font-size: 0.96em;
+		font-weight: normal;
+		color: #aa9;
+		border: none;
+	}
+	.ecalendar td {
+		padding: 0.4em 0;
+		border: 1px solid #d4d4cd;
+		width: 14.28%;
+		text-align: center;
+		color: #aa9;
+		font-size: 0.9em;
+	}
+	.ecalendar td a {
+		display: block;
+		margin: 0;
+		padding: 0 !important;
+		float: none;
+		text-decoration: none;
+		text-align: center;
+		border:none;
+	}
+	.ecalendar td a:hover {
+		border: none;
+		color: #000;
+	}
+	.ecalendar .selected td,
+	.ecalendar .selected {
+		background-color: #000;
+		color: #fff;
+		border-color: #333;
+	}
+	.ecalendar .selected td a,
+	.ecalendar .selected a {
+		color: #fff;
+	}
+	.ecalendar .selected td a:hover,
+	.ecalendar .selected a:hover {
+		color: #fff;
+	}
+	.ecalendar .today {
+		background: #fff;
+		border: 1px solid #887;
+		margin: -1px -1px -1px 0;
+		width: 100%;
+		float: right;
+		color: #222;
+	}
+	.ecalendar .today a {
+		color: #000;
+	}
+	.ecalendar .today a:hover {
+		color: #f60;
+	}
+/* Events listing */
+	.com_events ul.events {
+		list-style-type: none !important;
+		margin: 0;
+		padding-left: 0;
+		border-bottom: 1px solid #ddd;
+		list-style: none;
+	}
+	.com_events ul.events li {
+		list-style: none;
+	}
+	.com_events ul.events li ul.events {
+		margin: -1px 0 0 0;
+		padding: 0;
+		border-bottom: none;
+	}
+	.com_events ul.events > li {
+		clear: left;
+		margin: 0 !important;
+		padding: 0 0 1em 0;
+		border-top: 1px solid #ddd;
+		background: none;
+		list-style: none;
+	}
+	.com_events ul.events > li .ewrap:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: left;
+	}
+	.com_events ul.events > li ul.events li {
+		clear: none;
+	}
+	.com_events ul.events li li {
+		margin-left:  20px;
+	}
+	.com_events ul.events div.ewrap {
+		margin: 0 0 0 170px;
+	}
+	.com_events ul.events dl.event-details {
+		float: left;
+		margin: 1.1em 20px 2em 0 !important;
+		padding: 0;
+		width: 150px;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+	}
+	.com_events ul.events dl.event-details dt {
+		font-weight: bold;
+		color: #777;
+		font-size: 12px;
+		padding: 0;
+		margin: 1.1em 0 0 0;
+	}
+	.com_events ul.events dl.event-details dt:first-child {
+		margin: 0;
+	}
+	.com_events ul.events dl.event-details dd.starttime {
+		padding-bottom: 0;
+		margin: 0;
+	}
+	.com_events ul.events dl.event-details dd.endtime {
+		margin: 0;
+		padding: 0;
+	}
+	.com_events ul.events .title {
+		color: #777;
+		font-size: 12px;
+		font-weight: bold;
+	}
+/* Search results */
+	.results .event {
+		background-image: none;
+	}
+	.results .event p {
+		margin-left: 4em;
+	}
+	.results .event .title {
+		text-indent: 0em;
+	}
+	.results .event .event-date {
+		text-align: center;
+		float: left;
+		width: 3em;
+		display: block;
+		margin-left: 0;
+	}
+	.results .event .event-date span {
+		display: block;
+		float: left;
+		width: 100%;
+	}
+	.results .event .event-date span.year {
+		background: #ccc;
+		border: 1px solid #ccc;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+		text-align: center;
+	}
+	.results .event .event-date span.month {
+		background: #D51007;
+		border: 1px solid #D51007;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+		text-align: center;
+	}
+	.results .event .event-date span.day {
+		background: #fff;
+		border: 1px solid #ccc;
+		border-top: none;
+		color: #000;
+		font-size: 120%;
+		line-height: 1.4em;
+		font-weight: bold;
+		letter-spacing: -0.1em;
+	}
+	
+	table#event-info td a,
+	ul.events p.description a {
+		word-break: break-all;
+	}
+
+/* (sub) Tabs */
+	.com_events .main h3 {
+		margin: 0 0 1.5em 0;
+		padding: 0;
+	}
+	.com_events .noaside {
+		padding-top: 2em;
+	}
+	#sub-sub-menu {
+		height: 1.75em;
+		padding: 0 15px;
+		margin: 0 0 1em 0;
+		background: none;
+		border: none;
+		border-bottom: 1px solid #bbb;
+	}
+	#sub-sub-menu ul {
+		background: none;
+		border: none;
+		height: auto;
+		padding: 0;
+		margin: 0 0 -1px 0;
+	}
+	#sub-sub-menu li {
+		padding: 0;
+		float: left;
+		display: block;
+		margin: 0;
+		background-image: none;
+		border: none;
+	}
+	#sub-sub-menu li a {
+		background: #eee;
+		padding: 0.4em 1em;
+		line-height: 1em;
+		border: 1px solid #bbb;
+		-webkit-border-radius: 0.25em 0.25em 0 0;
+		-moz-border-radius: 0.25em 0.25em 0 0;
+		-ms-border-radius: 0.25em 0.25em 0 0;
+		-o-border-radius: 0.25em 0.25em 0 0;
+		border-radius: 0.25em 0.25em 0 0;
+	}
+	#sub-sub-menu li a:hover {
+		color: #fff;
+		background-color: #999;
+		border-color: #333;
+	}
+	#sub-sub-menu li a span {
+		background: none;
+		height: auto;
+		padding: 0;
+	}
+	#sub-sub-menu li.active {
+	}
+	#sub-sub-menu li.active a {
+		color: #333;
+		background-color: #fff;
+		border-color: #999;
+		border-bottom: 1px solid #fff;
+	}
+/* IE 7 hacks */
+	html>body .ecalendar .today {
+		*width: 13%;
+	}
+	html>body .ecalendar caption a:hover,
+	html>body .datenav a:hover {
+		*background-position: 0 -15px;
+	}

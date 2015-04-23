@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           administrator/components/com_events/events.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install type="component" version="1.5">
+	<name>Events</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description></description>
+	<files>
+	   	<filename>calendar.css</filename>
+		<filename>controller.php</filename>
+		<filename>events.category.php</filename>
+		<filename>events.css</filename>
+		<filename>events.date.php</filename>
+		<filename>events.repeat.php</filename>
+		<filename>router.php</filename>
+		<filename>events.php</filename>
+		<filename>events.html.php</filename>
+		<filename>events.class.php</filename>
+		<filename>events.tags.php</filename>
+		<filename>index.html</filename>
+		<filename>images/event.gif</filename>
+		<filename>images/calendar-hilite.gif</filename>
+		<filename>images/calendar-icon.gif</filename>
+		<filename>images/calendar-next.gif</filename>
+		<filename>images/calendar-next.png</filename>
+		<filename>images/calendar-prev.gif</filename>
+		<filename>images/calendar-previous.png</filename>
+		<filename>images/calendar-td.gif</filename>
+		<filename>images/calendar-valid.gif</filename>
+		<filename>images/calendar.png</filename>
+		<filename>images/tabs.png</filename>
+		<filename>images/tabs_bg.gif</filename>
+		<filename>js/calendar.rc4.js</filename>
+		<filename>js/events.js</filename>
+		<filename>events.config.php</filename>
+	</files>
+	<install>
+	    <sql>
+	        <file charset="utf8" driver="mysql">install.sql</file>
+		 </sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<installfile>install.events.php</installfile>
+	<uninstallfile>uninstall.events.php</uninstallfile>
+	<administration>
+		<menu>Events</menu>
+			<submenu>
+				<menu>Manage Events</menu>
+				<menu task="cats">Manage Events Categories</menu>
+				<menu task="configure">Edit Config</menu>
+			</submenu>
+		<files>
+			<filename>admin.controller.php</filename>
+			<filename>admin.events.php</filename>
+			<filename>admin.events.html.php</filename>
+			<filename>toolbar.events.php</filename>
+			<filename>toolbar.events.html.php</filename>
+			<filename>install.sql</filename>
+			<filename>index.html</filename>
+			<filename>images/help_ques.gif</filename>
+			<filename>images/help_ques_inact.gif</filename>
+		</files>
+                <languages folder="admin">
+                        <language tag="en-GB">en-GB.com_events.ini</language>
+                </languages>
+	</administration>
+	<languages>
+		<language tag="en-GB">en-GB.com_events.ini</language>
+	</languages>
+	<params>
+		<param name="show_affiliation" type="radio" default="1" label="COM_EVENTS_CONFIG_AFFILIATION" description="COM_EVENTS_CONFIG_AFFILIATION_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_title" type="radio" default="1" label="COM_EVENTS_CONFIG_TITLE" description="COM_EVENTS_CONFIG_TITLE_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_address" type="radio" default="1" label="COM_EVENTS_CONFIG_ADDRESS" description="COM_EVENTS_CONFIG_ADDRESS_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_telephone" type="radio" default="1" label="COM_EVENTS_CONFIG_TELEPHONE" description="COM_EVENTS_CONFIG_TELEPHONE_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_fax" type="radio" default="1" label="COM_EVENTS_CONFIG_FAX" description="COM_EVENTS_CONFIG_FAX_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_email" type="radio" default="1" label="COM_EVENTS_CONFIG_EMAIL" description="COM_EVENTS_CONFIG_EMAIL_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_website" type="radio" default="1" label="COM_EVENTS_CONFIG_WEBSITE" description="COM_EVENTS_CONFIG_WEBSITE_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_position" type="radio" default="1" label="COM_EVENTS_CONFIG_POSITION" description="COM_EVENTS_CONFIG_POSITION_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_degree" type="radio" default="1" label="COM_EVENTS_CONFIG_DEGREE" description="COM_EVENTS_CONFIG_DEGREE_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_gender" type="radio" default="1" label="COM_EVENTS_CONFIG_GENDER" description="COM_EVENTS_CONFIG_GENDER_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_race" type="radio" default="1" label="COM_EVENTS_CONFIG_RACE" description="COM_EVENTS_CONFIG_RACE_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_arrival" type="radio" default="1" label="COM_EVENTS_CONFIG_ARRIVAL" description="COM_EVENTS_CONFIG_ARRIVAL_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_departure" type="radio" default="1" label="COM_EVENTS_CONFIG_DEPARTURE" description="COM_EVENTS_CONFIG_DEPARTURE_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_disability" type="radio" default="1" label="COM_EVENTS_CONFIG_DISABILITY" description="COM_EVENTS_CONFIG_DISABILITY_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_dietary" type="radio" default="1" label="COM_EVENTS_CONFIG_DIETARY" description="COM_EVENTS_CONFIG_DIETARY_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_dinner" type="radio" default="1" label="COM_EVENTS_CONFIG_DINNER" description="COM_EVENTS_CONFIG_DINNER_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="show_abstract" type="radio" default="1" label="COM_EVENTS_CONFIG_ABSTRACT" description="COM_EVENTS_CONFIG_ABSTRACT_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+		<param name="abstract_text" label="COM_EVENTS_CONFIG_ABSTRACT_TEXT" type="textarea" rows="8" cols="40" default="" description="COM_EVENTS_CONFIG_ABSTRACT_TEXT_DESC" />
+		<param name="show_comments" type="radio" default="1" label="COM_EVENTS_CONFIG_COMMENTS" description="COM_EVENTS_CONFIG_COMMENTS_DESC">
+			<option value="0">COM_EVENTS_CONFIG_HIDE</option>
+			<option value="1">COM_EVENTS_CONFIG_SHOW</option>
+		</param>
+	</params>
+</install>
+

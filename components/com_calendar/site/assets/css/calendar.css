@@ -1,0 +1,549 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/groups/calendar/calendar.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Groups calendar plugin
+	-- -- -- -- -- -- --
+
+*/
+
+#calendar {
+	background-color: #FFFFFF;
+	padding: 10px;
+}
+
+#calendar table {
+	border-bottom: none;
+}
+#calendar .fc-loading {
+	margin-top: 5px;
+}
+#calendar .fc-left,
+#calendar .fc-right {
+	width: 40%;
+}
+#calendar .fc-right {
+
+}
+#calendar .fc-right .fs-dropdown {
+	float: right;
+	text-align: left;
+	max-width: 200px;
+	margin-left: 10px;
+}
+#calendar .fc-today-button {
+	float: right;
+}
+#calendar .fc-loading:before {
+	content: 'Loading Events...';
+	font-style: italic;
+	background: rgba(234, 206, 41, 0.75);
+	padding: 5px 10px;
+}
+#calendar .fc-event-time {
+	margin-right: 3px;
+}
+#calendar .fc-event {
+	background-color: #DBDBDB;
+	border-color: #666;
+	border-color: rgba(102, 102, 102, 0.5);
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	color: #333;
+	padding: 2px 3px;
+}
+#calendar .fc-event-yellow {
+	background-color: #F5EFCE;
+	border-color: #eace29;
+	border-color: rgba(234, 206, 41, 0.5);
+	color: #333;
+}
+#calendar .fc-event-red {
+	background-color: #EBCACE;
+	border-color: #c52337;
+	border-color: rgba(197, 35, 55, 0.5);
+	color: #333;
+}
+#calendar .fc-event-orange {
+	background-color: #F6D9CA;
+	border-color: #f6651d;
+	border-color: rgba(246, 101, 29, 0.5);
+	color: #333;
+}
+#calendar .fc-event-green {
+	background-color: #D7E9CB;
+	border-color: #00b43b;
+	border-color: rgba(88, 177, 27, 0.5);
+	color: #333;
+}
+#calendar .fc-event-blue {
+	background-color: #C7DBEA;
+	border-color: #1679c4;
+	border-color: rgba(22, 121, 196, 0.5);
+	color: #333;
+}
+#calendar .fc-event-brown {
+	background-color: #E6D3C9;
+	border-color: #993f0d;
+	border-color: rgba(153, 63, 13, 0.5);
+	color: #333;
+}
+#calendar .fc-event-purple {
+	background-color: #DCCCDD;
+	border-color: #843288;
+	border-color: rgba(132, 50, 136, 0.5);
+	color: #333;
+}
+#calendar .fc-event.active {
+	background-color: #666;
+	color: #FFF;
+}
+#calendar .fc-event-yellow.active {
+	background-color: #eace29;
+	color: #333;
+}
+#calendar .fc-event-green.active {
+	background-color: #00b43b;
+}
+#calendar .fc-event-blue.active {
+	background-color: #1679c4;
+}
+#calendar .fc-event-red.active {
+	background-color: #c52337;
+}
+#calendar .fc-event-orange.active {
+	background-color: #f6651d;
+}
+#calendar .fc-event-brown.active {
+	background-color: #993f0d;
+}
+#calendar .fc-event-purple.active {
+	background-color: #843288;
+}
+
+/* Events List */
+.group-calendar-subject {
+	margin-right: 0 !important;
+}
+ol.calendar-entries {
+	list-style-type: none !important;
+	border: 2px solid #e9e9e9;
+	border-top: none;
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	}
+ol.calendar-entries > li {
+	clear: left;
+	margin: 0 !important;
+	padding: 0 1em;
+	border-top: 1px solid #efefef;
+	position: relative;
+}
+ol.calendar-entries h4 {
+	margin: 1em 0;
+	line-height: 1em;
+	}
+ol.calendar-entries .entry-meta {
+	margin: 0.5em 0;
+	padding: 0;
+	color: rgb(153, 153, 153);
+	font-size: 11px;
+}
+.group_calendar .list-footer {
+	overflow: hidden;
+	margin-bottom: 0;
+}
+
+/* Subscribe */
+.subscribe .container {
+	margin-top: 2em;
+}
+.subscribe .container h3 .subscribe-help {
+	float:right;
+	font-size: 0.85em;
+}
+
+.subscribe-content {
+	padding: 10px;
+	background: #fff;
+	border: 2px solid #E9E9E9;
+	border-top: none;
+}
+.subscribe-content p.info {
+	margin: 0;
+}
+.subscribe-content label {
+	display: block;
+}
+.subscribe-content label.disabled {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	filter: alpha(opacity=80);
+	opacity: 0.8;
+}
+.subscribe-content label input[type="text"] {
+	width: 60%;
+	margin-right: 2%;
+}
+
+
+/* Edit Event */
+.group_calendar #hubForm fieldset {
+	margin-right: 0em;
+}
+.group_calendar #hubForm fieldset fieldset {
+	margin-right: 2em;
+}
+.group_calendar #hubForm .submit {
+	margin-right: auto;
+}
+.group_calendar #hubForm table.paramlist {
+	width: 96%;
+	border: none;
+	margin: 10px 2%;
+}
+.group_calendar #hubForm table.paramlist td {
+	border-color: #efefef;
+}
+.group_calendar #hubForm table.paramlist td input {
+	margin-right:0 !important;
+}
+.group_calendar #hubForm table.paramlist td label {
+	padding: 0 !important;
+}
+.group_calendar #hubForm table.paramlist td.paramlist_value label {
+	display: inline;
+}
+#hubForm .fs-dropdown {
+	width: 100%;
+}
+#hubForm .fs-dropdown ul {
+	margin: 0;
+	padding: 0;
+}
+#hubForm .fs-dropdown ul li {
+	margin: 0;
+	padding: 0;
+}
+
+.reccurance .ends label {
+	/* padding-left: 0 !important; */
+	padding: 0.3em 0 0 0 !important;
+}
+.reccurance input[type=text] {
+	font-size: 10px;
+}
+.reccurance .after-input {
+	width: 50px !important;
+}
+.reccurance .on-input {
+	width: 100px !important;
+}
+.reccurance .daily-days,
+.reccurance .weekly-weeks,
+.reccurance .monthly-months,
+.reccurance .yearly-years {
+	width: 50px !important;
+}
+
+
+/* Event Details View */
+
+.eventTitle {
+	color: #FFFFFF;
+	padding: 0 10px 0 10px;
+}
+
+.editLink {
+	color: #FFFFF4;
+    *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit">&#x270E;</small>' + this.innerHTML); /* ie7 */
+
+}
+
+.editLink::before {
+	font-family: "Fontcons";
+	    content: "  \270E  "; /* unicode characters must start with a backslash */
+
+}
+
+
+.event-title-bar {
+	display: block;
+	background: transparent;
+	margin: 0 0 30px 0;
+	padding: 0 0 10px 0;
+	position: relative;
+	border-bottom:1px solid #ddd;
+}
+.event-title-bar .event-title {
+	font-size: 24px;
+	font-weight: 100;
+}
+.event-title-bar .event-title span {
+	font-size: 16px;
+	font-weight: 100;
+	color: #aaa;
+}
+.event-title-bar a {
+	float: right;
+	margin-left: 10px;
+}
+/*.event-title-bar:before {
+	content: '';
+	position: absolute;
+	bottom: -20px;
+	left: 8px;
+	width: 0;
+	height: 0;
+	border-top: 10px solid #ddd;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+}
+.event-title-bar:after {
+	content: '';
+	position: absolute;
+	bottom: -18px;
+	left: 9px;
+	width: 0;
+	height: 0;
+	border-top: 9px solid #F7F7F7;
+	border-left: 9px solid transparent;
+	border-right: 9px solid transparent;
+	border-bottom: 9px solid transparent;
+}*/
+.event-sub-menu {
+	height: 1.75em;
+	padding: 0 15px;
+	margin: 0 0 1em 0;
+	background: none;
+	border: none;
+	border-bottom: 1px solid #bbb;
+}
+.event-sub-menu ul {
+	background: none;
+	border: none;
+	height: auto;
+	padding: 0;
+	margin: 0 0 -1px 0;
+}
+.event-sub-menu li {
+	padding: 0;
+	float: left;
+	display: block;
+	margin: 0;
+	background-image: none;
+	border: none;
+}
+.event-sub-menu li a {
+	background: #eee;
+	padding: 0.4em 1em;
+	line-height: 1em;
+	border: 1px solid #bbb;
+	-webkit-border-radius: 0.25em 0.25em 0 0;
+	-moz-border-radius: 0.25em 0.25em 0 0;
+	-ms-border-radius: 0.25em 0.25em 0 0;
+	-o-border-radius: 0.25em 0.25em 0 0;
+	border-radius: 0.25em 0.25em 0 0;
+}
+.event-sub-menu li a:hover {
+	color: #fff;
+	background-color: #999;
+	border-color: #333;
+	border-bottom: 1px solid #999;
+}
+.event-sub-menu li a span {
+	background: none;
+	height: auto;
+	padding: 0;
+}
+.event-sub-menu li.active {
+}
+.event-sub-menu li.active a {
+	color: #333;
+	background-color: #fff;
+	border-color: #999;
+	border-bottom: 1px solid #fff;
+}
+table.group-event-details {
+	border: none;
+}
+.group-event-details th {
+	font-size: 1.5em;
+	line-height: 1.0em;
+	width: 1px;
+	font-weight: 100;
+	padding:10px 5px;
+	border-right:1px solid #efefef;
+	border-bottom:1px solid #efefef;
+	color: #aaa;
+	text-align:center;
+}
+.group-event-details td {
+	padding:10px;
+	border-bottom:1px solid #efefef;
+}
+.date:before,
+.time:before,
+.url:before,
+.details:before,
+.location:before,
+.download:before,
+.subscribe-webcal:before,
+.import:before,
+.back:before,
+.author:before {
+	font-family: 'Fontcons';
+	margin-right: 0.2em;
+}
+.url:before {
+	content: '\2641';
+}
+.details:before {
+	content: '\f0f6';
+}
+.location:before {
+	content: '\f041';
+}
+.download:before {
+	content: '\f01a';
+}
+.subscribe-webcal:before {
+	content: '\f029';
+}
+.import:before {
+	content: '\f01b';
+}
+.back:before {
+	content: '\f08a';
+}
+.author:before {
+	content: '\f007';
+}
+.date:before {
+	content: '\f073';
+}
+.time:before {
+	content: '\f017';
+}
+.group-registrants tbody tr:nth-child(2n),
+.group-calendars tbody tr:nth-child(3n) {
+	background:#efefef;
+}
+.yes {
+	color:#01bc25;
+}
+.no {
+	color:#bc0101;
+}
+.calendar-url {
+	font-size: 11px;
+	color: #999;
+}
+.calendar-url span {
+	font-weight: bold;
+	color: #000;
+}
+a.refresh:before {
+	content: '\f021';
+	font-family: 'Fontcons';
+}
+.delete-confirm {
+	display: none;
+}
+.delete-confirm td {
+	text-align: center;
+	padding: 20px 0;
+}
+.delete-confirm h3 {
+	margin-top: 0;
+}
+
+/* Event Import */
+form[name=importevent]:before {
+	display:none !important;
+}
+form[name=importevent] fieldset {
+	float: none !important;
+	width: auto !important;
+}
+.upload {
+	position: relative;
+	clear: right;
+	margin: 0 20px;
+	border: 3px dashed #ccc;
+	padding: 100px 20px 20px 20px;
+}
+.upload:before {
+	content: '\f046';
+	position: absolute;
+	top: 40px;
+	left: 0;
+	right: 0;
+	font-family: 'Fontcons';
+	font-size: 80px;
+	text-align: center;
+	color: #ccc;
+}
+.upload .title {
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	font-size: 16px;
+	width: auto;
+	color: #555;
+	}
+.upload .description {
+	display: block;
+	text-align: center;
+	font-weight: normal;
+	font-size: 12px;
+	color: #aaa;
+}
+.upload .button-container {
+	display: block;
+	text-align: center;
+	padding: 10px 0 0 0;
+}
+.upload .button-container .btn {
+	padding: 5px 20px;
+}
+.upload .button-container .btn:hover {
+	cursor: pointer;
+	border: 1px solid #AAA;
+	-webkit-box-shadow: inset 0 0 1px #FFF, 0 0 2px rgba(0, 0, 0, 0.35);
+	box-shadow: inset 0 0 1px #FFF, 0 0 2px rgba(0, 0, 0, 0.35);
+}
+.upload .button-container .btn input[type=file] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.upload .button-container .btn input[type=file]:hover {
+	cursor: pointer;
+}
+.upload.over {
+	border: 3px dashed #aaa;
+	background: #fffff4;
+}
+
+#event_start_date,
+#event_start_time,
+#event_end_date,
+#event_end_time {
+	display: inline-block;
+	width: 49% !important;
+	max-width: 200px;
+}
