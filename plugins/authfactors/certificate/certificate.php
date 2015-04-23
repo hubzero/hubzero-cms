@@ -52,6 +52,13 @@ class plgAuthfactorsCertificate extends \Hubzero\Plugin\Plugin
 			\JFactory::getSession()->set('authfactors.status', true);
 			App::redirect(Request::current());
 		}
+		else
+		{
+			// Update session and reload the current page
+			\JFactory::getSession()->set('authfactors.status', false);
+			Notify::error(Lang::txt('COM_LOGIN_FACTORS_FAILED'));
+			App::redirect(Request::current());
+		}
 	}
 
 	/**
