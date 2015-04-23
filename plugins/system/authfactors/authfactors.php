@@ -43,33 +43,36 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		$exceptions = [
-			'com_login.logout'
-		];
-
-		$current = Request::getWord('option', '') . '.' . Request::getWord('task', '');
-
-		// If guest, proceed as normal and they'll land on the login page
-		if (!User::isGuest() && !in_array($current, $exceptions))
+		if (App::isAdmin())
 		{
-			// Get factor status
-			$status = \JFactory::getSession()->get('authfactors.status', null);
+			$exceptions = [
+				'com_login.logout'
+			];
 
-			if ($status === false)
-			{
-				// If not a guest, and auth factors checks are done and have failed,
-				// log out so we start over
-				Request::setVar('option', 'com_login');
-				Request::setVar('task', 'logout');
+			$current = Request::getWord('option', '') . '.' . Request::getWord('task', '');
 
-				return false;
-			}
-			else if ($status === null)
+			// If guest, proceed as normal and they'll land on the login page
+			if (!User::isGuest() && !in_array($current, $exceptions))
 			{
-				// If not a guest, but no factor verification has been completed,
-				// procede with auth factor checks as applicable
-				Request::setVar('option', 'com_login');
-				Request::setVar('task', 'factors');
+				// Get factor status
+				$status = \JFactory::getSession()->get('authfactors.status', null);
+
+				if ($status === false)
+				{
+					// If not a guest, and auth factors checks are done and have failed,
+					// log out so we start over
+					Request::setVar('option', 'com_login');
+					Request::setVar('task', 'logout');
+
+					return false;
+				}
+				else if ($status === null)
+				{
+					// If not a guest, but no factor verification has been completed,
+					// procede with auth factor checks as applicable
+					Request::setVar('option', 'com_login');
+					Request::setVar('task', 'factors');
+				}
 			}
 		}
 	}
