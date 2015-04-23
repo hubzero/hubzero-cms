@@ -50,6 +50,13 @@ class Site implements ClientInterface
 	public $name = 'site';
 
 	/**
+	 * Alias
+	 *
+	 * @var string
+	 */
+	public $alias = 'site';
+
+	/**
 	 * A url to init this client.
 	 *
 	 * @var string
