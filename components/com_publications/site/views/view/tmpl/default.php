@@ -126,10 +126,7 @@ else
 	}
 
 	// Sort out supporting docs
-	$bundlePath = $this->publication->bundlePath();
-	$html .= $this->tab != 'play' && $this->publication->state != 0
-		   ? \Components\Publications\Helpers\Html::sortSupportingDocs( $this->publication, $this->version, $this->option, $this->publication->_attachments[2], $this->restricted, $bundlePath )
-		   : '';
+	$html .= $this->tab != 'play' && $this->publication->state != 0 ? \Components\Publications\Helpers\Html::sortSupportingDocs( $this->publication, $this->option, $this->restricted) : '';
 
 	// Show version information
 	$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo( $this->publication, $this->version, $this->option, $this->config, $this->lastPubRelease ) : '';
