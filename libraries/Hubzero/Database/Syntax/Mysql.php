@@ -518,7 +518,7 @@ class Mysql
 
 		foreach ($this->set as $field => $value)
 		{
-			$updates[] = $this->connection->quoteName($field) . ' = ' . ((is_null($value)) ? 'NULL' : '?');
+			$updates[] = $this->connection->quoteName($field) . ' = ?';
 			$this->bind(is_string($value) ? trim($value) : $value);
 		}
 

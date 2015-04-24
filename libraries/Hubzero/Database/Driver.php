@@ -884,7 +884,7 @@ abstract class Driver
 
 		foreach (String::findLiteral('?', $query) as $placeholder)
 		{
-			$sub     = $this->quote($bindings[$index]);
+			$sub     = (is_null($bindings[$index])) ? 'NULL' : $this->quote($bindings[$index]);
 			$query   = substr_replace($query, $sub, $placeholder + $offset, 1);
 			$offset += (strlen($sub) - 1);
 			$index++;
