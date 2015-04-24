@@ -48,11 +48,11 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Make sure we're using a secure connection
 		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 		{
-			JFactory::getApplication()->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '', 'message', true);
+			App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '', 'message', true);
 			die('insecure connection and redirection failed');
 		}
 
-		$this->baseURL = rtrim(Request::base(), DS);
+		$this->baseURL = rtrim(Request::base(), '/');
 
 		$this->registerTask('__default', 'create');
 
@@ -70,8 +70,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
-
-		$app = JFactory::getApplication();
 
 		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$jsession = JFactory::getSession();
@@ -234,7 +232,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				// Redirect
 				$jsession->clear('session.return');
-				$app->redirect($return,'','message',true);
+				App::redirect($return,'','message',true);
 			}
 		}
 		else
@@ -298,7 +296,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				// Redirect
 				$jsession->clear('session.return');
-				$app->redirect($return,'','message',true);
+				App::redirect($return,'','message',true);
 			}
 		}
 
@@ -323,12 +321,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	public function updateTask()
 	{
 		// Check if the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
 		}
-
-		$app = JFactory::getApplication();
 
 		$force = false;
 		$updateEmail = false;
@@ -342,10 +338,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Instantiate a new registration object
 		$xregistration = new MembersModelRegistration();
 
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$jsession = JFactory::getSession();
 
-		$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
+		$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
 
 		if (Request::getMethod() == 'POST')
 		{
@@ -361,11 +357,11 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$xregistration->loadAccount($this->juser);
+				$xregistration->loadAccount(User::getRoot());
 			}
 
-			$username = $this->juser->get('username');
-			$email = $this->juser->get('email');
+			$username = User::get('username');
+			$email    = User::get('email');
 
 			if ($username[0] == '-' && is_object($hzal))
 			{
@@ -385,11 +381,11 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			if ($_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/register/update'
 			 || $_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/members/register/update')
 			{
-				$this->setRedirect(rtrim(Request::base(true), '/') . '/');
+				App::redirect(rtrim(Request::base(true), '/') . '/');
 			}
 			else
 			{
-				$this->setRedirect($_SERVER['REQUEST_URI']);
+				App::redirect($_SERVER['REQUEST_URI']);
 			}
 			return(true);
 		}
@@ -399,15 +395,16 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Before going any further, we need to do a sanity check to make sure username isn't being changed.
 			// This really only happens on a race condition where someone is creating the same account
 			// using a 3rd party auth service in two different browsers. Yes, it's crazy!
-			if ($xregistration->get('login') && substr($this->juser->get('username'), 0, 1) == '-')
+			if ($xregistration->get('login') && substr(User::get('username'), 0, 1) == '-')
 			{
 				// Make sure the username hasn't since been set in the database
-				if (substr(JUser::getInstance($this->juser->get('id'))->get('username'), 0, 1) != '-')
+				if (substr(User::getInstance(User::get('id'))->get('username'), 0, 1) != '-')
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=com_users&view=logout'),
-						'This account appears to already exist. Please try logging in again.',
-						'warning');
+						Lang::txt('This account appears to already exist. Please try logging in again.'),
+						'warning'
+					);
 					return;
 				}
 			}
@@ -461,24 +458,24 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$xprofile->loadRegistration($xregistration);
 			$xprofile->update();
 
-			// Update juser table
+			// Update user table
 			// TODO: only update if changed
-			$myjuser = JUser::getInstance($xprofile->get('uidNumber'));
-			$myjuser->set('username', $xprofile->get('username'));
-			$myjuser->set('email', $xprofile->get('email'));
-			$myjuser->set('name', $xprofile->get('name'));
-			$myjuser->save();
+			$myuser = User::getInstance($xprofile->get('uidNumber'));
+			$myuser->set('username', $xprofile->get('username'));
+			$myuser->set('email', $xprofile->get('email'));
+			$myuser->set('name', $xprofile->get('name'));
+			$myuser->save();
 
 			// Update current session if appropriate
 			// TODO: update all session of this user
 			// TODO: only update if changed
-			if ($myjuser->get('id') == $this->juser->get('id'))
+			if ($myuser->get('id') == User::get('id'))
 			{
-				$sjuser = $jsession->get('user');
-				$sjuser->set('username', $xprofile->get('username'));
-				$sjuser->set('email', $xprofile->get('email'));
-				$sjuser->set('name', $xprofile->get('name'));
-				$jsession->set('user', $sjuser);
+				$suser = $jsession->get('user');
+				$suser->set('username', $xprofile->get('username'));
+				$suser->set('email', $xprofile->get('email'));
+				$suser->set('name', $xprofile->get('name'));
+				$jsession->set('user', $suser);
 
 				// Get the session object
 				$table =  JTable::getInstance('session');
@@ -552,13 +549,13 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$suri = Request::getVar('REQUEST_URI', '/', 'server');
 				if ($suri == '/register/update' || $suri == '/members/update')
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&task=myaccount')
 					);
 				}
 				else
 				{
-					$this->setRedirect(
+					App::redirect(
 						$suri
 					);
 				}
@@ -596,7 +593,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	{
 		if (!User::isGuest() && !User::get('tmp_user'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=myaccount'),
 				Lang::txt('COM_MEMBERS_REGISTER_ERROR_NONGUEST_SESSION_CREATION'),
 				'warning'
@@ -712,7 +709,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$message = Lang::txt('REG_COMPLETE');
 					}
 
-					$this->setRedirect('index.php', $message);
+					App::redirect('index.php', $message);
 					*/
 
 					// Get some settings
@@ -884,18 +881,18 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						}
 					}
 
-					$this->juser->set('auth_link_id',null);
-					$this->juser->set('tmp_user',null);
-					$this->juser->set('username', $xregistration->get('login'));
-					$this->juser->set('email', $xregistration->get('email'));
-					$this->juser->set('id', $user->get('id'));
+					User::set('auth_link_id',null);
+					User::set('tmp_user',null);
+					User::set('username', $xregistration->get('login'));
+					User::set('email', $xregistration->get('email'));
+					User::set('id', $user->get('id'));
 
 					return;
 				}
 			}
 		}
 
-		if (Request::getMethod() == 'GET')
+		if (Request::method() == 'GET')
 		{
 			if (User::get('tmp_user'))
 			{
@@ -1002,7 +999,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->view->sitename = Config::get('sitename');
 
 		$username = Request::getVar('username', User::get('username'),'get');
-		$this->view->self = ($this->juser->get('username') == $username);
+		$this->view->self = (User::get('username') == $username);
 
 		// Get the registration object
 		if (!is_object($xregistration))
@@ -1075,7 +1072,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$this->view->registrationConfirmPassword = REG_HIDE;
 		}
 
-		if ($this->juser->get('auth_link_id') && $this->view->task == 'create')
+		if (User::get('auth_link_id') && $this->view->task == 'create')
 		{
 			$this->view->registrationPassword = REG_HIDE;
 			$this->view->registrationConfirmPassword = REG_HIDE;
@@ -1191,10 +1188,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Check if the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_RESEND'),
 				'warning'
@@ -1282,8 +1279,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	public function changeTask()
 	{
-		$app = JFactory::getApplication();
-
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -1291,10 +1286,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Check if the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_UPDATE'),
 				'warning'
@@ -1302,7 +1297,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
 		$email_confirmed = $xprofile->get('emailConfirmed');
@@ -1335,7 +1330,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				if ($pemail == $email)
 				{
 					// Addresses are the same! Redirect
-					$app->redirect($return,'','message',true);
+					App::redirect($return,'','message',true);
 				}
 				else
 				{
@@ -1348,9 +1343,9 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$xprofile->set('modifiedDate',$dtmodify);
 						if ($xprofile->update())
 						{
-							$juser = JUser::getInstance($login);
-							$juser->set('email', $pemail);
-							$juser->save();
+							$user = User::getInstance($login);
+							$user->set('email', $pemail);
+							$user->save();
 						}
 						else
 						{
@@ -1446,10 +1441,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		// Check if the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code, false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('Please login in so we can confirm your account.'),
 				'warning'
@@ -1457,15 +1452,13 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$app = JFactory::getApplication();
-
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Set the page title
 		$this->_buildTitle();
 
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
@@ -1540,7 +1533,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				}
 			}
 
-			$app->redirect($return,'','message',true);
+			App::redirect($return,'','message',true);
 		}
 		else
 		{
@@ -1568,7 +1561,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	public function unconfirmedTask()
 	{
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
 		// Incoming
@@ -1584,10 +1577,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$this->_buildTitle();
 
 			// Check if the user is logged in
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 					Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_CONFIRM'),
 					'warning'
@@ -1661,7 +1654,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	private function _cookie_check()
 	{
-		$app = JFactory::getApplication();
 		$jsession = JFactory::getSession();
 		$jcookie = $jsession->getName();
 
@@ -1672,7 +1664,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$juri = JURI::getInstance();
 				$juri->setVar('cookie', 'no');
 
-				$this->setRedirect($juri->toString());
+				App::redirect($juri->toString());
 				return;
 			}
 
@@ -1683,7 +1675,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$juri = JURI::getInstance();
 			$juri->delVar('cookie');
 
-			$this->setRedirect($juri->toString());
+			App::redirect($juri->toString());
 			return;
 		}
 

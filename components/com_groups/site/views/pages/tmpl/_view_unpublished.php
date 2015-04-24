@@ -38,5 +38,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php
 		$link = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$this->page->get('id'));
 	?>
-	<p><a href="<?php echo $link . '&return=' . base64_encode(JURI::getInstance()->toString()); ?>"><?php echo rtrim(Request::base(), DS) . $link; ?></a></p>
+	<p><a href="<?php echo $link . '&return=' . base64_encode(Request::current(true)); ?>"><?php echo rtrim(Request::base(), '/') . $link; ?></a></p>
 </div>

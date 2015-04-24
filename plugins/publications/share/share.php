@@ -53,7 +53,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 	 * @param      unknown $publication Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
+	public function &onPublicationAreas($publication, $version = 'default', $extended = true)
 	{
 		$areas = array();
 		return $areas;
@@ -70,7 +70,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 	 * @param      string $rtrn Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
+	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
 	{
 		$arr = array(
 			'html'=>'',
@@ -84,12 +84,11 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$juri = JURI::getInstance();
 		$sef = Route::url('index.php?option=' . $option . '&id=' . $publication->id);
-		$url = $juri->base() . trim($sef, DS);
+		$url = Request::base() . trim($sef, DS);
 		$url = $url . DS . '?v=' . $publication->version_number;
 
-		$mediaUrl = $juri->base() . trim($sef, DS) . DS . $publication->version_id . DS . 'Image:master';
+		$mediaUrl = Request::base() . trim($sef, DS) . DS . $publication->version_id . DS . 'Image:master';
 
 		// Incoming action
 		$sharewith = Request::getVar('sharewith', '');
@@ -103,23 +102,17 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'publications',
-					'element'=>'share',
-					'name'=>'options'
-				)
-			);
+			$view = $this->view('default', 'options');
 
 			// Pass the view some info
-			$view->option 		= $option;
-			$view->publication 	= $publication;
-			$view->version 		= $version;
-			$view->_params 		= $this->params;
-			$view->url 			= $url;
+			$view->option      = $option;
+			$view->publication = $publication;
+			$view->version     = $version;
+			$view->_params     = $this->params;
+			$view->url         = $url;
 			if ($this->getError())
 			{
-				$view->setError( $this->getError() );
+				$view->setError($this->getError());
 			}
 
 			// Return the output
@@ -185,8 +178,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 
 		if ($link)
 		{
-			$app = JFactory::getApplication();
-			$app->redirect($link, '', '');
+			App::redirect($link, '', '');
 		}
 	}
 }

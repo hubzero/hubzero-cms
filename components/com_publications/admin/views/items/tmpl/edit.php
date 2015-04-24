@@ -34,10 +34,9 @@ $this->css();
 $this->js();
 
 // Get hub config
-$juri 	 = JURI::getInstance();
-$site 	 = Config::get('config.live_site')
+$site = Config::get('config.live_site')
 	? Config::get('config.live_site')
-	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+	: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
 
 $text = ($this->task == 'edit'
 	? Lang::txt('JACTION_EDIT') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
@@ -200,7 +199,7 @@ function popratings()
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
 				<?php
-					echo JFactory::getEditor()->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
+					echo $this->editor('description', $this->escape(stripslashes($this->row->description)), '40', '10', 'pub_description');
 				?>
 			</div>
 		</fieldset>
@@ -214,10 +213,7 @@ function popratings()
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
-				<?php
-					echo JFactory::getEditor()->display('release_notes', $this->escape(stripslashes($this->row->release_notes))
-						, '', '', '20', '10', false
-						, 'notes', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('release_notes', $this->escape(stripslashes($this->row->release_notes)), '20', '10', 'notes', array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	<fieldset class="adminform">
@@ -340,7 +336,7 @@ function popratings()
 		</tr>
 		<tr>
 			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
-			<td><?php echo JHTML::_('date', $this->row->modified, Lang::txt('DATE_FORMAT_LC2')); ?></td>
+			<td><?php echo Date::of($this->row->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2')); ?></td>
 		</tr>
 		<tr>
 			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
@@ -386,7 +382,7 @@ function popratings()
 	</div>
 	<div class="input-wrap">
 		<label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-			<?php echo JHTML::_('calendar', ($this->row->published_up != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s')) : ''), 'published_up', 'published_up'); ?>
+			<?php echo JHTML::_('calendar', ($this->row->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->published_up)->toLocal('Y-m-d H:i:s')) : ''), 'published_up', 'published_up'); ?>
 	</div>
 		<div class="input-wrap">
 			<label for="publish_down"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
@@ -395,7 +391,7 @@ function popratings()
 				if (strtolower($this->row->published_down) != 'never')
 				{
 					$down = $this->row->published_down != '0000-00-00 00:00:00'
-						? JHTML::_('date', $this->row->published_down, 'Y-m-d H:i:s') : NULL;
+						? Date::of($this->row->published_down)->toLocal('Y-m-d H:i:s') : NULL;
 				}
 			?>
 			<?php echo JHTML::_('calendar', $down, 'published_down', 'published_down'); ?>

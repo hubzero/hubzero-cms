@@ -30,8 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juri = JURI::getInstance();
 ?>
 This is a reminder, sent out once a month, about your <?php echo $this->sitename; ?>
 support tickets.  It includes a list of tickets, highest to
@@ -52,7 +50,6 @@ foreach ($this->severities as $severity => $tickets)
 	{
 		$sef = Route::url('index.php?option=com_support&controller=tickets&task=ticket&id='. $ticket->id);
 
-		$msg .= '#' . $ticket->id . ' (' . $ticket->created . ') :: ' . $juri->base() . ltrim($sef, DS) . ' :: ' . stripslashes($ticket->summary) . "\n";
+		$msg .= '#' . $ticket->id . ' (' . $ticket->created . ') :: ' . Request::base() . ltrim($sef, DS) . ' :: ' . stripslashes($ticket->summary) . "\n";
 	}
 }
-?>

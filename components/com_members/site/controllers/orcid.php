@@ -117,7 +117,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	{
 		$srv = $this->config->get('orcid_service', 'members');
 
-		$url = JURI::getInstance()->getScheme() . '://' . $this->_services[$srv] . '/search/orcid-bio?q=';
+		$url = Request::scheme() . '://' . $this->_services[$srv] . '/search/orcid-bio?q=';
 		$tkn = $this->config->get('orcid_' . $srv . '_token', '8b9f8396-0e9d-4b74-96b0-fbcfdc678716');
 
 		$bits = array();
@@ -226,10 +226,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	private function _save($orcid)
 	{
-		$juser = JFactory::getUser();
-
 		// Instantiate a new profile object
-		$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		if ($profile)
 		{
 			$profile->set('orcid', $orcid);
@@ -335,7 +333,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		$output->message = '';
 
 		$srv = $this->config->get('orcid_service', 'members');
-		$url = JURI::getInstance()->getScheme() . '://' . $this->_services[$srv] . '/orcid-profile';
+		$url = Request::scheme() . '://' . $this->_services[$srv] . '/orcid-profile';
 		$tkn = $this->config->get('orcid_' . $srv . '_token');
 
 		if (!$tkn)
@@ -439,7 +437,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		if (!$client_id && !$client_secret)
 		{
-			throw new JException(Lang::txt('Missing client ID or secret'), 500);
+			throw new Exception(Lang::txt('Missing client ID or secret'), 500);
 		}
 
 		$initedCurl = curl_init($url);

@@ -1121,9 +1121,7 @@ class Items extends AdminController
 			// Message subject
 			$subject = Lang::txt('COM_RESOURCES_EMAIL_SUBJECT');
 
-			$juri = \JURI::getInstance();
-
-			$base = $juri->base();
+			$base = Request::base();
 			$base = trim($base, '/');
 			if (substr($base, -13) == 'administrator')
 			{

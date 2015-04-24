@@ -872,7 +872,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$citizenship = '';
 							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
+								$img = '<img src="' . rtrim(Request::base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name
@@ -973,7 +973,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$residence = '';
 							if (is_file(PATH_CORE . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
+								$img = '<img src="' . rtrim(Request::base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . Lang::txt('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name

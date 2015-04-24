@@ -38,7 +38,7 @@ $params = new JParameter($this->group->get('params'));
 $membership_control = $params->get('membership_control', 1);
 
 // build urls
-$currentUrl = JURI::getInstance()->toString();
+$currentUrl = Request::current(true);
 $groupUrl   = 'index.php?option=com_groups&cn='.$this->group->get('cn');
 
 // build login and logout links

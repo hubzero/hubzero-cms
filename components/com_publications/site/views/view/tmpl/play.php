@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-	 ->css('jquery.fancybox.css', 'system')
+     ->css('jquery.fancybox.css', 'system')
      ->js();
 
 $html = '';
@@ -50,13 +50,16 @@ $attributes = $attribs->get('attributes', '');
 $width = (intval($width) > 0) ? $width : 0;
 $height = (intval($height) > 0) ? $height : '400px';
 
-if ($attributes) {
+if ($attributes)
+{
 	$a = explode(',', $attributes);
 	$bits = array();
-	if ($a && is_array($a)) {
+	if ($a && is_array($a))
+	{
 		foreach ($a as $b)
 		{
-			if (strstr($b, ':')) {
+			if (strstr($b, ':'))
+			{
 				$b = explode(':', $b);
 				$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
 			}
@@ -86,10 +89,12 @@ if (is_file(PATH_CORE . $firstattach->url))
 		     ->set('width', $width)
 		     ->display();
 	}
-	else if (in_array(strtolower($firstattach->ext), $images)) {
+	else if (in_array(strtolower($firstattach->ext), $images))
+	{
 		$html .= '<img ' . $attributes . ' src="' . $firstattach->url . '" alt="Image" />'."\n";
 	}
-	else if (in_array(strtolower($firstattach->ext), $files)) {
+	else if (in_array(strtolower($firstattach->ext), $files))
+	{
 		$token = '';
 		if (!User::isGuest())
 		{
@@ -101,29 +106,32 @@ if (is_file(PATH_CORE . $firstattach->url))
 			$crypter = new JSimpleCrypt();
 			$token = base64_encode($crypter->encrypt($session_id));
 		}
-		$juri = JURI::getInstance();
+
 		$sef = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . basename($firstattach->id) . '&render=download&token=' . $token);
-		if (substr($sef,0,1) == '/') {
-			$sef = substr($sef,1,strlen($sef));
-		}
-		$html .= '<iframe src="https://docs.google.com/viewer?url='.urlencode($juri->base().$sef).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
-	} else {
+
+		$html .= '<iframe src="https://docs.google.com/viewer?url='.urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
+	}
+	else
+	{
 		$html .= '<applet ' . $attributes . ' archive="'. $firstattach->url .'" width="';
 		$html .= ($width > 0) ? $width : '';
 		$html .= '" height="';
 		$html .= ($height > 0) ? $height : '';
 		$html .= '">'."\n";
-		if ($width > 0) {
+		if ($width > 0)
+		{
 			$html .= ' <param name="width" value="'. $width .'" />'."\n";
 		}
-		if ($height > 0) {
+		if ($height > 0)
+		{
 			$html .= ' <param name="height" value="'. $height .'" />'."\n";
 		}
 		$html .= '</applet>'."\n";
 	}
-} else {
+}
+else
+{
 	$html .= '<p class="error">'.Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
 }
 
 echo $html;
-?>

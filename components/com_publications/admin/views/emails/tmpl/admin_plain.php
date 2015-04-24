@@ -25,9 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri    = JURI::getInstance();
-
-$base    = rtrim($juri->base(), DS);
+$base    = rtrim(Request::base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base   = substr($base, 0, strlen($base)-13);

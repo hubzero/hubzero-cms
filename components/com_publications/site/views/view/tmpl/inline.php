@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-	 ->css('jquery.fancybox.css', 'system')
+     ->css('jquery.fancybox.css', 'system')
      ->js();
 ?>
 
@@ -42,17 +42,17 @@ $oWidth = '780';
 $oHeight= '480';
 
 // Get some attributes
-$attribs 	= new JParameter( $this->primary->attribs );
-$width  	= $attribs->get( 'width', '' );
-$height 	= $attribs->get( 'height', '' );
+$attribs    = new JParameter($this->primary->attribs);
+$width      = $attribs->get( 'width', '' );
+$height     = $attribs->get( 'height', '' );
 $attributes = $attribs->get('attributes', '');
 
-$width 		= (intval($width) > 0) ? $width : $oWidth;
-$height 	= (intval($height) > 0) ? $height : $oHeight;
+$width  = (intval($width) > 0) ? $width : $oWidth;
+$height = (intval($height) > 0) ? $height : $oHeight;
 
 // Get mime type
 $mTypeParts = explode(';', $this->mimetype);
-$cType 		= $mTypeParts[0];
+$cType      = $mTypeParts[0];
 
 if ($attributes)
 {
@@ -73,7 +73,8 @@ if ($attributes)
 }
 
 // Formats that can be previewed via Google viewer
-$docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx',
+$docs = array(
+	'pdf', 'doc', 'docx', 'xls', 'xlsx',
 	'ppt', 'pptx', 'pages', 'ai',
 	'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg'
 );
@@ -93,15 +94,14 @@ if (!User::isGuest())
 	$token = base64_encode($crypter->encrypt($session_id));
 }
 
-$juri = JURI::getInstance();
-$downloadUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid='
-	  . $this->aid . '&render=download&token=' . $token);
+$downloadUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid . '&render=download&token=' . $token);
 
-$viewUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid='
-	  . $this->aid . '&render=download&disposition=inline&token=' . $token);
+$viewUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid . '&render=download&disposition=inline&token=' . $token);
 
 ?>
-<div class="sample"><p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>'; } ?></p></div>
+<div class="sample">
+	<p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>'; } ?></p>
+</div>
 
 <?php
 // Image?
@@ -112,34 +112,32 @@ if ($this->type == 'image')
 elseif (in_array(strtolower($this->ext), $docs) && $this->googleView)
 {
 	// View via Google
-	echo  '<iframe src="https://docs.google.com/viewer?url=' . urlencode($juri->base()
-			. $downloadUrl) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'
-			."\n";
+	echo '<iframe src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . $downloadUrl) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
 }
 else
-		// View in html5-browser
-		{ ?>
-			<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo $juri->base() . $downloadUrl; ?>">Download file</a>
-			</p>
-		<?php
-	if (strtolower($this->ext) == 'wmv') { ?>
-	<object type="video/x-ms-wmv"
-		  data="<?php echo $this->url; ?>" width="100%" height="<?php echo $height; ?>">
-		  <param name="src" value="<?php echo $this->url; ?>" />
-		  <param name="autostart" value="true" />
-		  <param name="controller" value="true" />
-	</object>
-<?php } else {
-	 ?>
-	<div class="video-container">
-		<object width="100%" height="<?php echo $height; ?>">
-		<param name="allowfullscreen" value="true" />
-		<param name="allowscriptaccess" value="always" />
-		<param name="movie" value="<?php echo $this->url; ?>" />
-		<param name="scale" value="aspect" />
-		<embed src="<?php echo $this->url; ?>" scale="aspect"></embed>
+// View in html5-browser
+{
+	?>
+	<p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo Request::base() . $downloadUrl; ?>">Download file</a></p>
+	<?php if (strtolower($this->ext) == 'wmv') { ?>
+		<object type="video/x-ms-wmv"
+			  data="<?php echo $this->url; ?>" width="100%" height="<?php echo $height; ?>">
+			  <param name="src" value="<?php echo $this->url; ?>" />
+			  <param name="autostart" value="true" />
+			  <param name="controller" value="true" />
 		</object>
-	</div>
-<?php }
-} ?>
+	<?php } else { ?>
+		<div class="video-container">
+			<object width="100%" height="<?php echo $height; ?>">
+			<param name="allowfullscreen" value="true" />
+			<param name="allowscriptaccess" value="always" />
+			<param name="movie" value="<?php echo $this->url; ?>" />
+			<param name="scale" value="aspect" />
+			<embed src="<?php echo $this->url; ?>" scale="aspect"></embed>
+			</object>
+		</div>
+	<?php } ?>
+	<?php
+}
+?>
 </div>

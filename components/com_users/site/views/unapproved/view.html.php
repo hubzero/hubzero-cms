@@ -46,8 +46,7 @@ class UsersViewUnapproved extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get the user and then check the database to see if the session and database are out of sync
-		$user = \JFactory::getUser();
-		$real = \JUser::getInstance($user->get('id'));
+		$real = User::getInstance(User::get('id'));
 
 		if ($real->get('approved'))
 		{
@@ -59,7 +58,7 @@ class UsersViewUnapproved extends JViewLegacy
 			$session->set('user', $sessionUser);
 
 			// Redirect
-			\JFactory::getApplication()->redirect(JURI::getInstance()->toString());
+			App::redirect(Request::current(true));
 		}
 
 		parent::display($tpl);

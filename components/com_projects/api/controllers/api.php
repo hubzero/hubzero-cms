@@ -254,17 +254,15 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		{
 			$projects = $objP->getRecords($filters, $admin = false, $this->user_id, 0, $setupComplete);
 
-			$juri = JURI::getInstance();
-
 			// Get config
 			$livesite = Config::get('config.live_site')
 				? Config::get('config.live_site')
-				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-			$livesite = trim(preg_replace('/\/api/', '', $juri->base()), DS);
+				: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
+			$livesite = trim(preg_replace('/\/api/', '', Request::base()), DS);
 
 			foreach ($projects as $i => $entry)
 			{
-				$obj 			= new stdClass;
+				$obj = new stdClass;
 				$obj->id        = $entry->id;
 				$obj->alias     = $entry->alias;
 				$obj->title     = $entry->title;
@@ -550,8 +548,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			return $authorized;
 		}
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'project.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'project.php');
 		$this->project = new Components\Projects\Models\Project($this->project_id);
 
 		if ($this->project->exists())

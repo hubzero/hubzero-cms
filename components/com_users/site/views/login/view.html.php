@@ -31,7 +31,7 @@ class UsersViewLogin extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get the view data.
-		$this->user		= JFactory::getUser();
+		$this->user		= User::getRoot();
 		$this->form		= $this->get('Form');
 		$this->state	= $this->get('State');
 		$this->params	= $this->state->get('params');
@@ -39,7 +39,7 @@ class UsersViewLogin extends JViewLegacy
 		// Make sure we're using a secure connection
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
 		{
-			JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die('insecure connection and redirection failed');
 		}
 
@@ -60,8 +60,7 @@ class UsersViewLogin extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$uri = JURI::getInstance();
-		$furl = base64_encode($uri->toString());
+		$furl = base64_encode(Request::current(true));
 		$this->freturn = $furl;
 
 		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
@@ -97,7 +96,7 @@ class UsersViewLogin extends JViewLegacy
 		// Figure out whether or not any of our third party auth plugins are turned on
 		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
 		$multiAuth      = false;
-		$plugins        = JPluginHelper::getPlugin('authentication');
+		$plugins        = Plugin::byType('authentication');
 		$authenticators = array();
 		$remember_me_default = 0;
 
@@ -114,7 +113,7 @@ class UsersViewLogin extends JViewLegacy
 			{
 				$pparams = new JRegistry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
-				$this->site_display  = $pparams->get('display_name', JFactory::getApplication()->getCfg('sitename'));
+				$this->site_display  = $pparams->get('display_name', Config::get('sitename'));
 			}
 		}
 
@@ -135,7 +134,7 @@ class UsersViewLogin extends JViewLegacy
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
 		$authenticator = Request::getVar('authenticator', '', 'method');
 
-		JPluginHelper::importPlugin('authentication');
+		Plugin::import('authentication');
 
 		foreach ($plugins as $plugin)
 		{
@@ -174,28 +173,33 @@ class UsersViewLogin extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
-		$user		= JFactory::getUser();
-		$login		= $user->get('guest') ? true : false;
+		$login		= User::isGuest() ? true : false;
 		$title 		= null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
-		if ($menu) {
+		if ($menu)
+		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', $login ? Lang::txt('JLOGIN') : Lang::txt('JLOGOUT'));
 		}
 
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
+		if (empty($title))
+		{
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 

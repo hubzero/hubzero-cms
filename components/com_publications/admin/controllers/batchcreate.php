@@ -449,10 +449,9 @@ class Batchcreate extends AdminController
 		elseif ($dryRun == 2)
 		{
 			// Get hub config
-			$juri 	 = \JURI::getInstance();
 			$this->site = Config::get('config.live_site')
 				? Config::get('config.live_site')
-				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+				: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
 
 			// Process batch
 			$out = NULL;

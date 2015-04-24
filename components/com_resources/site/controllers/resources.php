@@ -894,8 +894,7 @@ class Resources extends SiteController
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			$app = \JFactory::getApplication();
-			$app->redirect(Route::url($redirect, false), '','',false);
+			App::redirect(Route::url($redirect, false), '','',false);
 		}
 
 		//do we have javascript?
@@ -1006,8 +1005,7 @@ class Resources extends SiteController
 			$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			$app = \JFactory::getApplication();
-			$app->redirect(Route::url($redirect, false), '','',false);
+			App::redirect(Route::url($redirect, false), '','',false);
 		}
 
 		// Instantiate a new view
@@ -1022,13 +1020,11 @@ class Resources extends SiteController
 		$this->view->manifest = $manifest;
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -1225,7 +1221,6 @@ class Resources extends SiteController
 		$helper = new Helper($this->model->resource->id, $this->database);
 
 		// Build the pathway
-		$app = \JFactory::getApplication();
 		if ($this->model->inGroup())
 		{
 			// Alter the pathway to reflect a group owned resource
@@ -1478,8 +1473,7 @@ class Resources extends SiteController
 		{
 			if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $canonical))
 			{
-				$juri = \JURI::getInstance();
-				$canonical = rtrim($juri->base(), DS) . DS . ltrim($canonical, DS);
+				$canonical = rtrim(Request::base(), '/') . '/' . ltrim($canonical, '/');
 			}
 			$document->addHeadLink($canonical, 'canonical');
 		}
@@ -1497,9 +1491,8 @@ class Resources extends SiteController
 		// Determine the layout we're using
 		$layout = 'default';
 
-		$app = \JFactory::getApplication();
 		if ($type_alias
-		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
+		 && (is_file(PATH_CORE . DS . 'templates' . DS .  App::get('template')->template  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
 			|| is_file(dirname(__DIR__) . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php')))
 		{
 			$layout = $type_alias;
@@ -1540,7 +1533,7 @@ class Resources extends SiteController
 	 */
 	public function feedTask()
 	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = \JFactory::getDocument();
@@ -1620,8 +1613,7 @@ class Resources extends SiteController
 
 		$rows = $helper->getStandaloneChildren($filters);
 
-		$juri = \JURI::getInstance();
-		$base = rtrim($juri->base(), DS);
+		$base = rtrim(Request::base(), '/');
 
 		$title = $resource->title;
 		$feedtypes_abr = array(" ", "slides", "audio", "video", "sd_video", "hd_video");
@@ -1971,10 +1963,8 @@ class Resources extends SiteController
 			return '';
 		}
 
-		$juri = \JURI::getInstance();
-
 		// http://base/upath/path/img
-		return rtrim($juri->base(), DS) . $upath . $path . DS . $img;
+		return rtrim(Request::base(), '/') . $upath . $path . '/' . $img;
 	}
 
 	/**
@@ -2369,8 +2359,7 @@ class Resources extends SiteController
 		// Build the URL for this resource
 		$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $row->id);
 
-		$juri = \JURI::getInstance();
-		$url = $juri->base() . ltrim($sef, DS);
+		$url = Request::base() . ltrim($sef, '/');
 
 		// Choose the format
 		switch ($format)
@@ -2384,7 +2373,7 @@ class Resources extends SiteController
 						$doc .= "%0 " . Lang::txt('COM_RESOURCES_GENERIC') . "\r\n";
 						break; // generic
 				}
-				$doc .= "%D " . \JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
+				$doc .= "%D " . Date::of($thedate)->toLocal($yearFormat) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
 				$author_array = explode(';', $row->author);

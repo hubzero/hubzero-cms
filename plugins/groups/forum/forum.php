@@ -160,8 +160,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$this->limit = $limit;
 			$this->base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
 
-			$juri = JURI::getInstance();
-			$path = $juri->getPath();
+			$path = Request::path();
 			if (strstr($path, '/'))
 			{
 				$bits = $this->_parseUrl();
@@ -300,10 +299,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		if (!$path)
 		{
-			$juri = JURI::getInstance();
-			$path = $juri->getPath();
+			$path = Request::path();
 
-			$path = str_replace($juri->base(true), '', $path);
+			$path = str_replace(Request::base(true), '', $path);
 			$path = str_replace('index.php', '', $path);
 			$path = DS . trim($path, DS);
 

@@ -735,7 +735,7 @@ class GroupsHelperView
 		}
 
 		// get URI path
-		$path = JURI::getInstance()->getPath();
+		$path = Request::path();
 		$path = trim(str_replace('groups' . DS . $group->get('cn'), '', $path), DS);
 
 		// make sure we have a path. if no path means were attempting to access the home page

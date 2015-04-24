@@ -31,11 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
 $sef = Route::url('index.php?option='.$this->option.'&task=details&id='.$this->event->id);
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
 
 $message  = Lang::txt('EVENTS_CAL_LANG_ACT_DELETED_BY', $this->juser->get('name'), $this->juser->get('login'));
 $message .= ''."\n";
@@ -43,6 +39,6 @@ $message .= ''."\n";
 $message .= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE').': '.stripslashes($this->event->title)."\n";
 $message .= Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION').': '.stripslashes($this->event->content)."\n";
 $message .= ''."\n";
-//$message .= $juri->base().$sef."\n";
+//$message .= Request::base() . ltrim($sef, '/')."\n";
 
 echo $message;

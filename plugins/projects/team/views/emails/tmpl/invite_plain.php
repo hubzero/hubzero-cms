@@ -25,9 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
-$base = rtrim($juri->base(), DS);
+$base = rtrim(Request::base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
@@ -58,7 +56,7 @@ else
 	$message .= '-------------------------------' . "\n";
 	$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->model->get('title') . ' (' . $this->model->get('alias') . ')' . "\n";
 	$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
-			 .JHTML::_('date', $this->model->get('created'), 'M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
+			 .Date::of($this->model->get('created'))->toLocal('M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
 	$message .= $this->model->groupOwner()
 			 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 			 : $this->model->owner('name');
@@ -88,5 +86,3 @@ $message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo $message;
-
-?>

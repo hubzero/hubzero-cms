@@ -80,7 +80,6 @@ class Doi extends Object
 		if (empty($this->_configs))
 		{
 			$params   = Component::params( 'com_publications' );
-			$juri     = \JURI::getInstance();
 
 			$configs            = new stdClass;
 			$configs->shoulder  = $params->get('doi_shoulder');
@@ -90,7 +89,7 @@ class Doi extends Object
 			$configs->publisher = $params->get('doi_publisher', Config::get('config.sitename'));
 			$configs->livesite  = Config::get('config.live_site')
 				? Config::get('config.live_site')
-				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+				: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
 			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 
 			$this->_configs = $configs;

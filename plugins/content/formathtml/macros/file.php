@@ -536,14 +536,13 @@ class File extends Macro
 					$attr['alt'] .= '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
 				}*/
 
-				$juri = \JURI::getInstance();
 				$rand = rand(0, 100000);
 
-				$html  = '<script type="text/javascript" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js"></script>' . "\n";
+				$html  = '<script type="text/javascript" src="' . (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js"></script>' . "\n";
 				$html .= '<div id="unityPlayer' . $rand . '">
 							<div class="missing">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="' . ($juri->getScheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+									<img alt="Unity Web Player. Install now!" src="' . (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
 						</div>' . "\n";
@@ -574,8 +573,6 @@ class File extends Macro
 				}
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
-				$juri = \JURI::getInstance();
-
 				$rand = rand(0, 100000);
 
 				if (!array_key_exists('alt', $attr)
@@ -594,7 +591,7 @@ class File extends Macro
 					$attr['alt'] = '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a></div>';
 				}
 
-				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
+				$html  = '<script type="text/javascript" src="' . \Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
 				$html .= '<script type="text/javascript">';
 				//$html .= '<!--';
 				$html .= '	var cdf = new cdfplugin();';

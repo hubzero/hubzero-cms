@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
 ?>
 
 <div id="abox-content">
@@ -48,7 +46,7 @@ if (!$this->getError()) {
 		<input type="hidden" name="p" value="<?php echo $this->page->get('id'); ?>" />
 
 		<h4><?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LINK_TO_NOTE') . ' &ldquo;' . $this->page->get('title') . '&rdquo;:'; ?></h4>
-		<p class="publink"><?php echo trim($juri->base(), DS) . Route::url('index.php?option=' . $this->option . '&action=get&s=' . $this->publicStamp->stamp); ?></p>
+		<p class="publink"><?php echo trim(Request::base(), DS) . Route::url('index.php?option=' . $this->option . '&action=get&s=' . $this->publicStamp->stamp); ?></p>
 		<p class="about"><?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LINK_ABOUT'); ?></p>
 
 		<?php if ($this->project->isPublic()) { ?>

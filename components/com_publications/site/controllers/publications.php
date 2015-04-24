@@ -1626,21 +1626,17 @@ class Publications extends SiteController
 		}
 
 		// Build the URL for this resource
-		$sef = Route::url('index.php?option='.$this->_option.'&id='.$publication->id);
-		$sef.= $version != 'default' ? '?v='.$version : '';
-		if (substr($sef,0,1) == '/')
-		{
-			$sef = substr($sef,1,strlen($sef));
-		}
-		$juri = \JURI::getInstance();
-		$url = $juri->base().$sef;
+		$sef  = Route::url('index.php?option='.$this->_option.'&id='.$publication->id);
+		$sef .= $version != 'default' ? '?v='.$version : '';
+
+		$url = Request::base() . ltrim($sef, '/');
 
 		// Choose the format
 		switch ($format)
 		{
 			case 'endnote':
 				$doc  = "%0 ".Lang::txt('COM_PUBLICATIONS_GENERIC')."\r\n";
-				$doc .= "%D " . \JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
+				$doc .= "%D " . Date::of($thedate)->toLocal($yearFormat) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($publication->title)) . "\r\n";
 
 				if ($authors)
@@ -1663,7 +1659,7 @@ class Publications extends SiteController
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate)
 				{
-					$doc .= "%8 " . \JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
+					$doc .= "%8 " . Date::of($thedate)->toLocal($monthFormat) . "\r\n";
 				}
 				if ($publication->doi)
 				{

@@ -101,7 +101,7 @@ class UsersModelRegistration extends JModelForm
 			// Send mail to all users with users creating permissions and receiving system emails
 			foreach ($rows as $row)
 			{
-				$usercreator = JFactory::getUser($id = $row->id);
+				$usercreator = User::getInstance($id = $row->id);
 				if ($usercreator->authorise('core.create', 'com_users'))
 				{
 					$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBody);

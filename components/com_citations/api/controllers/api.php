@@ -30,14 +30,14 @@
 
 JLoader::import('Hubzero.Component.ApiController');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
 
 /**
  * API controller class for support tickets
@@ -194,10 +194,8 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		// Get records
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
-
 			$href = 'index.php?option=com_citations&task=view&id=';
-			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+			$base = str_replace('/api', '', rtrim(Request::base(), DS));
 
 			foreach ($obj->getRecords($filters) as $i => $entry)
 			{

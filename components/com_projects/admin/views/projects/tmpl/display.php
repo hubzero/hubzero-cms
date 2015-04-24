@@ -39,10 +39,9 @@ Toolbar::editList();
 JHTML::_('behavior.tooltip');
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-$now = JFactory::getDate()->toSql();
+$now = Date::toSql();
 
-$juri 	 = JURI::getInstance();
-$base 	 = rtrim($juri->base(), DS);
+$base = rtrim(Request::base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);

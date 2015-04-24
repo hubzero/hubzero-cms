@@ -39,7 +39,7 @@ use Exception;
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
-require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
@@ -64,8 +64,7 @@ class Curation extends SiteController
 		}
 
 		// Get language
-		$lang = \JFactory::getLanguage();
-		$lang->load('plg_projects_publications');
+		Lang::load('plg_projects_publications');
 
 		// Is curation enabled?
 		if (!$this->config->get('curation', 0))
@@ -525,16 +524,15 @@ class Curation extends SiteController
 				// Notify curator
 				if ($owner && $owner != $previousOwner)
 				{
-					$juri 	 = \JURI::getInstance();
 					$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
-					$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+					$link 	 = rtrim(Request::base(), DS) . DS . trim($sef, DS);
 
 					$item  =  '"' . html_entity_decode($row->title).'"';
 					$item .= ' v.' . $row->version_label . ' ';
 					$item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
 					$message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
-					$message.= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id . "\n" . "\n";
+					$message.= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim(Request::base(), DS) . '/publications/curation/' . $row->publication_id . "\n" . "\n";
 					$message.= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link;
 
 					// Instantiate project publication
@@ -944,10 +942,9 @@ class Curation extends SiteController
 		);
 
 		// Start message
-		$juri 	 = \JURI::getInstance();
 		$sef	 = 'publications' . DS . $pub->id . DS . $pub->version_number;
-		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
-		$manage  = rtrim($juri->base(), DS) . DS . 'projects' . DS . $pub->_project->get('alias') . DS . 'publications' . DS . $pub->id . DS . $pub->version_number;
+		$link 	 = rtrim(Request::base(), DS) . DS . trim($sef, DS);
+		$manage  = rtrim(Request::base(), DS) . DS . 'projects' . DS . $pub->_project->get('alias') . DS . 'publications' . DS . $pub->id . DS . $pub->version_number;
 		$message  = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
 		if ($status != 1)

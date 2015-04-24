@@ -125,9 +125,9 @@ function submitbutton(pressbutton)
 				</fieldset>
 				<fieldset class="adminform">
 					<legend><span><?php echo Lang::txt('COM_TOOLS_FIEDSET_ZONES_PARAMS'); ?></span></legend>
-	
-					<?php $hn = \Juri::getInstance()->toString(array('host')); ?>
-	
+
+					<?php $hn = Request::host(); ?>
+
 					<script>
 						jQuery(document).ready(function($)
 						{
@@ -143,10 +143,10 @@ function submitbutton(pressbutton)
 							});
 						});
 					</script>
-	
+
 					<?php $websocketEnabled = $this->row->params->get('websocket_enable'); ?>
 					<?php $vncEnabled       = $this->row->params->get('vnc_enable'); ?>
-	
+
 					<div class="input-wrap">
 						<label for="field-zone-params-websocket-enable"><?php echo Lang::txt('COM_TOOLS_FIELD_ZONE_WEBSOCKET_PROXY_ENABLE'); ?>:</label>
 						<input type="hidden" name="zoneparams[websocket_enable]" value="0" />
@@ -238,7 +238,7 @@ function submitbutton(pressbutton)
 							<tbody>
 								<tr>
 									<td rowspan="6">
-										<img id="img-display" src="<?php echo '..' . str_replace(JPATH_ROOT, '', $path) . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" />
+										<img id="img-display" src="<?php echo '..' . str_replace(PATH_APP, '', $path) . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" />
 									</td>
 									<td><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</td>
 									<td><span id="img-name"><?php echo $this->row->get('picture', Lang::txt('COM_TOOLS_IMAGE_NONE')); ?></span></td>

@@ -199,10 +199,8 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
-
 			$href = 'index.php?option=com_collections&controller=media&post=';
-			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+			$base = str_replace('/api', '', rtrim(Request::base(), '/'));
 
 			$filters['count'] = false;
 
@@ -216,7 +214,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 				$obj->type      = $item->get('type');;
 				$obj->posted    = $entry->get('created');
 				$obj->author    = $entry->creator()->get('name');
-				$obj->url       = $base . DS . ltrim(Route::url($entry->link()), DS);
+				$obj->url       = $base . '/' . ltrim(Route::url($entry->link()), '/');
 
 				$obj->tags      = $item->tags('string');
 				$obj->comments  = $item->get('comments', 0);
@@ -232,7 +230,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 						$a = new stdClass;
 						$a->title       = ltrim($asset->get('filename'), '/');
 						$a->description = $asset->get('description');
-						$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . DS . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), DS));
+						$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . '/' . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), '/'));
 
 						$obj->assets[] = $a;
 					}
@@ -277,8 +275,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
-			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+			$base = str_replace('/api', '', rtrim(Request::base(), '/'));
 
 			$filters['count'] = false;
 
@@ -293,7 +290,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 				$obj->type        = 'collection';
 				$obj->posted      = $entry->created();
 				$obj->author      = $entry->creator('name');
-				$obj->url         = $base . DS . ltrim(Route::url($collection->link()), DS);
+				$obj->url         = $base . '/' . ltrim(Route::url($collection->link()), '/');
 
 				$obj->files       = $collection->count('file');
 				$obj->links       = $collection->count('link');

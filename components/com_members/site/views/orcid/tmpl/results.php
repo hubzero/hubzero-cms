@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$orcid_uri = array_key_exists('uri', $record)         ? $record['uri'] : '';
 				$orcid     = array_key_exists('path', $record)        ? $record['path'] : '';
 
-				/*$scheme = JURI::getInstance()->getScheme();
+				/*$scheme = Request::scheme();
 				if ($orcid_uri && substr($orcid_uri, 0, strlen($scheme)) != $scheme)
 				{
 					$orcid_uri = preg_replace('/^([^:]+)/i', $scheme, $orcid_uri);

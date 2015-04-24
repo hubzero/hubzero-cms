@@ -88,10 +88,10 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 			<?php
 				$firstVersion     = $versions->last();
 				$currentVersion   = $this->version;
-				$createdDate      = ($firstVersion->get('created')) ? JHTML::_('date', $firstVersion->get('created'), 'D F j, Y') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
-				$modifiedDate     = ($currentVersion->get('created')) ? JHTML::_('date', $currentVersion->get('created'), 'D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
-				$createdProfile   = \Hubzero\User\Profile::getInstance( $firstVersion->get("created_by") );
-				$modifiedProfile  = \Hubzero\User\Profile::getInstance( $currentVersion->get("created_by") );
+				$createdDate      = ($firstVersion->get('created')) ? Date::of($firstVersion->get('created'))->toLocal('D F j, Y') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
+				$modifiedDate     = ($currentVersion->get('created')) ? Date::of($currentVersion->get('created'))->toLocal('D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
+				$createdProfile   = \Hubzero\User\Profile::getInstance($firstVersion->get("created_by"));
+				$modifiedProfile  = \Hubzero\User\Profile::getInstance($currentVersion->get("created_by"));
 				$createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 				$modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 
@@ -114,7 +114,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 				$overrideHomeLink = Route::url('index.php?option=com_help&component=groups&page=pages&cn='.$this->group->get('cn').'#grouphomepageoverride');
 
 				// current location
-				$editPageLink    .= '&return=' . base64_encode(JURI::getInstance()->toString());
+				$editPageLink    .= '&return=' . base64_encode(Request::current(true));
 				$setPageHomeLink .= '&return=' . base64_encode(Route::url('index.php?option=com_groups&cn='.$this->group->get('cn')));
 				$categoryLink     = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&filter=' . $category->get('id'));
 			?>
@@ -214,7 +214,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 				$params->set('access-vote-comment', 0);
 			}
 
-			if (in_array(JFactory::getUser()->get('id'), $this->group->get('managers')))
+			if (in_array(User::get('id'), $this->group->get('managers')))
 			{
 				$params->set('access-create-comment', 1);
 				$params->set('access-edit-comment', 1);

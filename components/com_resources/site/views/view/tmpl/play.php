@@ -122,11 +122,13 @@ $html = '';
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
-	else if (is_file(JPATH_ROOT . $url))
+	else if (is_file(PATH_APP . $url))
 	{
-		if (strtolower($type) == 'swf') {
+		if (strtolower($type) == 'swf')
+		{
 			$height = '400px';
-			if ($this->no_html) {
+			if ($this->no_html)
+			{
 				$height = '100%';
 			}
 			$html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="'.$height.'" id="SlideContent" VIEWASTEXT>'."\n";
@@ -137,9 +139,13 @@ $html = '';
 			$html .= ' <param name="scale" value="showall" />'."\n";
 			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
 			$html .= '</object>'."\n";
-		} else if (in_array(strtolower($type), $images)) {
+		}
+		else if (in_array(strtolower($type), $images))
+		{
 			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
-		} else if (in_array(strtolower($type), $files)) {
+		}
+		else if (in_array(strtolower($type), $files))
+		{
 			$token = '';
 
 			if (!User::isGuest())
@@ -152,22 +158,24 @@ $html = '';
 				$crypter = new JSimpleCrypt();
 				$token = base64_encode($crypter->encrypt($session_id));
 			}
-			$juri = JURI::getInstance();
+
 			$sef = Route::url('index.php?option=com_resources&id='.$this->activechild->id.'&task=download&file='.basename($this->activechild->path).'&token='.$token);
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef,1,strlen($sef));
-			}
-			$html .= '<iframe src="https://docs.google.com/viewer?url='.urlencode($juri->base().$sef).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
-		} else {
+
+			$html .= '<iframe src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
+		}
+		else
+		{
 			$html .= '<applet ' . $attributes . ' archive="'. $url .'" width="';
 			$html .= ($width > 0) ? $width : '';
 			$html .= '" height="';
 			$html .= ($height > 0) ? $height : '';
 			$html .= '">'."\n";
-			if ($width > 0) {
+			if ($width > 0)
+			{
 				$html .= ' <param name="width" value="'. $width .'" />'."\n";
 			}
-			if ($height > 0) {
+			if ($height > 0)
+			{
 				$html .= ' <param name="height" value="'. $height .'" />'."\n";
 			}
 			$html .= '</applet>'."\n";

@@ -37,7 +37,7 @@ $threeMonth = date('M', strtotime("-3 month"));
 
 $i = 0;
 
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 $xticks = "[0, '" . $threeMonth . "'], [1, '" . $twoMonth . "'], [2, '" . $oneMonth . "'], [3, '" . $nowMonth . "']";
 

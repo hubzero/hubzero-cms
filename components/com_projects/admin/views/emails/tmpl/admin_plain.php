@@ -25,9 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri 	 = JURI::getInstance();
-
-$base 	 = rtrim($juri->base(), DS);
+$base 	 = rtrim(Request::base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base 		= substr($base, 0, strlen($base)-13);
@@ -46,7 +44,7 @@ $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title.' ('.$this->project->alias . ', id #' . $this->project->id.')' . "\n";
-$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' ' . JHTML::_('date', $this->project->created, 'M d, Y').' ' . Lang::txt('COM_PROJECTS_BY').' ';
+$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' ' . Date::of($this->project->created)->toLocal('M d, Y').' ' . Lang::txt('COM_PROJECTS_BY').' ';
 $message .= $this->project->owned_by_group ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP') : $this->project->fullname;
 $message .= "\n";
 $message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
@@ -63,4 +61,3 @@ $message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo $message;
-?>
