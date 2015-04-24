@@ -1104,7 +1104,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		);
 
 		$eview->option 			= $option;
-		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->model 		    = $model;
 		$eview->code 			= $code;
 		$eview->email 			= $email;

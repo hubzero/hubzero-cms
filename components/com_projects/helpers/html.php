@@ -1550,15 +1550,9 @@ class Html extends Object
 		));
 
 		$eview->option 			= $option;
-		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->project 		= $project;
-		$eview->params 			= $project->params;
-		$eview->config 			= $project->config();
 		$eview->message			= $message;
 		$eview->reviewer		= $reviewer;
-
-		// Get profile of author group
-		$eview->nativegroup = $project->groupOwner();
 
 		$body = array();
 		$body['plaintext'] 	= $eview->loadTemplate();

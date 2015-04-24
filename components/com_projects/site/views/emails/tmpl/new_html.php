@@ -32,23 +32,19 @@ $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.
 
 $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
-$config  = Component::params( 'com_projects' );
-$hubShortName = Config::get('config.sitename');
-
-$base 	    = rtrim(Request::base(), DS);
+$base 	    = Request::root();
 $sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 $sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
 
 $link 		= rtrim($base, DS) . DS . trim($sef, DS);
 $projectUrl = $link;
 $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
-$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->get('alias') . '/media';
 
 // Page title
-$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
+$title = Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Main message
-$subtitle  = $this->project->fullname. ' ' .Lang::txt('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
+$subtitle  = $this->project->owner('name') . ' ' .Lang::txt('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
 $subtitle .= ' "' . $this->project->get('title'). '"';
 
 // Get the actual message
@@ -57,22 +53,22 @@ $comment = '';
 if ($this->project->config()->get('restricted_data', 0))
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') . '</li>';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->params->get('ferpa_data') . '</li>';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') . '</li>';
-	if ($this->params->get('followup'))
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->project->params->get('hipaa_data') . '</li>';
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->project->params->get('ferpa_data') . '</li>';
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->project->params->get('export_data') . '</li>';
+	if ($this->project->params->get('followup'))
 	{
-		$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') . '</li>';
+		$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->project->params->get('followup') . '</li>';
 	}
 	$comment .= '</ul>';
 }
 if ($this->project->config()->get('grantinfo', 0))
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') . '</li>';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->params->get('grant_PI') . '</li>';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->params->get('grant_agency') . '</li>';
-	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->params->get('grant_budget') . '</li>';
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->project->params->get('grant_title') . '</li>';
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->project->params->get('grant_PI') . '</li>';
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->project->params->get('grant_agency') . '</li>';
+	$comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->project->params->get('grant_budget') . '</li>';
 	$comment .= '</ul>';
 }
 
@@ -89,12 +85,9 @@ if ($this->project->config()->get('sdata_group', 0))
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
-		 : $this->project->fullname;
-
-$showThumb = $config->get('showthumbemail', 0);
-
+$owner   = $this->project->groupOwner()
+		 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+		 : $this->project->owner('name');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -280,20 +273,13 @@ $showThumb = $config->get('showthumbemail', 0);
 																		background-size: 30px 30px;">
 											<thead>
 												<tr>
-													<th <?php echo $showThumb ? 'colspan="2"' : ''; ?> style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
+													<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
 														<?php echo $subtitle; ?>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<?php if ($showThumb) { ?>
-													<td id="project-thumb" style="padding: 8px; text-align: left;" align="left">
-														<div style="text-align: center; padding: 1em; width:50px; height: 50px; background: #FFFFFF;">
-															<img width="50" border="0" src="<?php echo $thumb; ?>" alt="" />
-														</div>
-													</td>
-													<?php } ?>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
@@ -307,7 +293,7 @@ $showThumb = $config->get('showthumbemail', 0);
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@<?php echo Date::of($this->project->get('created'))->toLocal('g:i a'); ?> on <?php echo Date::of($this->project->get('created'))->format('M d, Y'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>

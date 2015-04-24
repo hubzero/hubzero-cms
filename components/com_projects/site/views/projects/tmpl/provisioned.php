@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $route = 'index.php?option=com_publications&task=submit';
-$url = Route::url($route . '&pid=' . $this->pub->id);
+$url   = Route::url($route . '&pid=' . $this->pub->id);
 
 $this->css()
 	->js()

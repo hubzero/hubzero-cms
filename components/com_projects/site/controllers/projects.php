@@ -418,7 +418,7 @@ class Projects extends Base
 				throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 				return;
 			}
-			$this->view->pub 	   = isset($pub) ? $pub : '';
+			$this->view->pub 	   = $pub;
 			$this->view->team 	   = $this->model->_tblOwner->getOwnerNames($this->model->get('id'));
 			$this->view->suggested = Helpers\Html::suggestAlias($pub->title);
 			$this->view->verified  = $this->model->check($this->view->suggested, $this->model->get('id'), 0);

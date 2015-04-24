@@ -27,36 +27,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
-$config       = Component::params( 'com_projects' );
-$hubShortName = Config::get('config.sitename');
-
-$base = rtrim(Request::base(), DS);
+$base = Request::root();
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 
 $projectUrl  = rtrim($base, DS) . DS . trim($sef, DS);
 $sef 		.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link        = rtrim($base, DS) . DS . trim($sef, DS);
-$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->get('alias') . '/media';
 
 // Page title
-$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
+$title = Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Main message
-if ($this->uid == $this->project->created_by_user)
+if ($this->uid == $this->project->get('created_by_user'))
 {
 	$subtitle  = Lang::txt('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
 }
 else {
-	$subtitle  = $this->project->fullname.' ';
+	$subtitle  = $this->project->owner('name') . ' ';
 	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$subtitle .= ' "'.$this->project->get('title').'" '.Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
+	$subtitle .= ' "' . $this->project->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
 	$subtitle .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
-		 : $this->project->fullname;
+$owner   = $this->project->groupOwner()
+		 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+		 : $this->project->owner('name');
 
 // Get the actual message
 $comment = '';
@@ -66,13 +62,11 @@ if ($this->uid)
 }
 else
 {
-	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
+	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . Config::get('config.sitename') . ' ';
 	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 
-$comment .= $link ."\n\n";
-
-$showThumb = $config->get('showthumbemail', 0);
+$comment .= $link . "\n\n";
 
 // Set some styles
 $bgcolor = '#f1f1f1';
@@ -262,20 +256,13 @@ $bdcolor = '#e1e1e1';
 																		background-size: 30px 30px;">
 											<thead>
 												<tr>
-													<th <?php echo $showThumb ? 'colspan="2"' : ''; ?> style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
+													<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
 														<?php echo $subtitle; ?>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<?php if ($showThumb) { ?>
-													<td id="project-thumb" style="padding: 8px; text-align: left;" align="left">
-														<div style="text-align: center; padding: 1em; width:50px; height: 50px; background: #FFFFFF;">
-															<img width="50" border="0" src="<?php echo $thumb; ?>" alt="" />
-														</div>
-													</td>
-													<?php } ?>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
@@ -288,7 +275,7 @@ $bdcolor = '#e1e1e1';
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->get('alias'); ?></td>
 																</tr>																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@<?php echo Date::of($this->project->get('created'))->toLocal('g:i a'); ?> on <?php echo Date::of($this->project->get('created'))->format('M d, Y'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>

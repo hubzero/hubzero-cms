@@ -488,23 +488,12 @@ class Base extends SiteController
 			return false;
 		}
 
-		// Check required
-		if (!$this->_identifier)
-		{
-			return false;
-		}
-
 		$message = array();
 
 		// Get project
-		if (!isset($this->project) || !is_object($this->project) || !$this->project->alias)
+		if (empty($this->model) || !$this->model->exists())
 		{
-			$obj 		= new Tables\Project( $this->database );
-			$this->project 	= $obj->getProject($this->_identifier, User::get('id'));
-			if (!$this->project)
-			{
-				return false;
-			}
+			return false;
 		}
 
 		// Set up email config
@@ -519,8 +508,8 @@ class Base extends SiteController
 			$filters['role'] = 1;
 		}
 		// Get team
-		$objO = new Tables\Owner( $this->database );
-		$team = $objO->getOwners( $this->_identifier, $filters );
+		$objO = $this->model->table('Owner');
+		$team = $objO->getOwners( $this->model->get('id'), $filters );
 
 		// Must have addressees
 		if (empty($team))
@@ -528,23 +517,14 @@ class Base extends SiteController
 			return false;
 		}
 
-		$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $this->project->alias;
-		$subject_pending = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->project->alias;
+		$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $this->model->get('alias');
+		$subject_pending = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->model->get('alias');
 
 		// Message body
 		$eview = new \Hubzero\Component\View( array('name'=>'emails', 'layout' =>'invite_plain') );
 		$eview->option 			= $this->_option;
-		$eview->hubShortName 	= Config::get('config.sitename');
-		$eview->project 		= $this->project;
-		$eview->goto 			= 'alias=' . $this->project->alias;
-		$eview->user 			= User::get('id');
+		$eview->project 		= $this->model;
 		$eview->delimiter  		= '';
-
-		// Get profile of author group
-		if ($this->project->owned_by_group)
-		{
-			$eview->nativegroup = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
-		}
 
 		// Send out message/email
 		foreach ($team as $member)
@@ -562,10 +542,10 @@ class Base extends SiteController
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 				// Creator
-				if ($member->userid == $this->project->created_by_user)
+				if ($member->userid == $this->model->get('created_by_user'))
 				{
 					$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
-					. ' ' . $this->project->alias . '!';
+					. ' ' . $this->model->get('alias') . '!';
 				}
 
 				// Send HUB message

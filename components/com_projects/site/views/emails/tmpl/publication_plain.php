@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = rtrim(Request::base(), DS);
+$base = Request::root();
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
@@ -33,24 +33,26 @@ $link = rtrim($base, DS) . DS . trim($sef, DS);
 $message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') ."\n";
 $message .= '-------------------------------' ."\n";
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
-if ($this->project->provisioned == 1)
+
+if ($this->project->isProvisioned())
 {
 	$message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
 }
 
 $message .= ')' . "\n";
-if (!$this->project->provisioned)
+
+if (!$this->project->isProvisioned())
 {
-$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
-		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' '
+	$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
+		 . Date::of($this->project->get('created'))->format('M d, Y') . ' '
 		 . Lang::txt('COM_PROJECTS_BY') . ' ';
-$message .= $this->project->owned_by_group
-			? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
-			: $this->project->fullname;
+	$message .= $this->project->groupOwner()
+			 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+			 : $this->project->owner('name');
 }
 $message .= "\n";
 
-if ($this->project->private == 0)
+if ($this->project->isPublic())
 {
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 }

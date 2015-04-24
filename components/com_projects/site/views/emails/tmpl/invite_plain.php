@@ -25,36 +25,36 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = rtrim(Request::base(), DS);
+$base = Request::root();
 $sef  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias'));
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-if ($this->uid == $this->project->created_by_user)
+if ($this->uid == $this->project->get('created_by_user'))
 {
 	$message  = Lang::txt('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 }
 else {
-	$message  = $this->project->fullname.' ';
+	$message  = $this->project->owner('name').' ';
 	$message .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$message .= ' "'.$this->project->get('title').'" '.Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
+	$message .= ' "' . $this->project->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
 	$message .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 }
 
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title')
-		 . ' (' . $this->project->get('alias').')' . "\n";
+		 . ' (' . $this->project->get('alias') . ')' . "\n";
 $message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
-		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY').' ';
-$message .= $this->project->owned_by_group
-			? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
-			: $this->project->fullname;
+		 . Date::of($this->project->get('created'))->format('M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
+$message .= $this->project->groupOwner()
+			 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+			 : $this->project->owner('name');
 $message .= "\n";
 $message .= Lang::txt('COM_PROJECTS_EMAIL_URL').': ' . $link . "\n\n";
 
-$sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
+$sef .= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 if ($this->uid)
@@ -63,7 +63,7 @@ if ($this->uid)
 }
 else
 {
-	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName.' ';
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . Config::get('config.sitename') . ' ';
 	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 $message .= $link ."\n\n";
