@@ -157,7 +157,7 @@ $saveOrder = $listOrder == 'fp.ordering';
 					<?php endif; ?>
 				</td>
 				<td class="center nowrap priority-5">
-					<?php echo JHtml::_('date', $item->created, Lang::txt('DATE_FORMAT_LC4')); ?>
+					<?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
 				</td>
 				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<td class="center">

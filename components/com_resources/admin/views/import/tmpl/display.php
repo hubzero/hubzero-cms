@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 						<td>
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
 							<?php
-								$created_on = JHTML::_('date', $import->get('created_at'), 'm/d/Y @ g:i a');
+								$created_on = Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a');
 								echo $created_on . '<br />';
 							?>
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
@@ -118,7 +118,7 @@ function submitbutton(pressbutton)
 							<?php if ($lastRun) : ?>
 								<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
 								<?php
-									$created_on = JHTML::_('date', $lastRun->get('ran_at'), 'm/d/Y @ g:i a');
+									$created_on = Date::of($lastRun->get('ran_at'))->toLocal('m/d/Y @ g:i a');
 									echo $created_on . '<br />';
 								?>
 								<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>

@@ -49,26 +49,26 @@ if (!empty($this->fields)) {
 	$this->row->content = trim($this->row->content);
 }
 
-$start_date = JHTML::_('date',$this->row->publish_up, 'd M Y', $timezone);
-$stop_date  = JHTML::_('date',$this->row->publish_down, 'd M Y', $timezone);
+$start_date = Date::of($this->row->publish_up, $timezone)->toLocal('d M Y');
+$stop_date  = Date::of($this->row->publish_down, $timezone)->toLocal('d M Y');
 
 $html  = "\t".'<li id="event'.$this->row->id.'">'."\n";
 $html .= "\t\t".'<dl class="event-details">'."\n";
 if ($start_date == $stop_date) {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt>'.JHTML::_('date',$this->row->publish_up, 'd M Y', $timezone).'</dt>'."\n";
+		$html .= "\t\t\t".'<dt>'.Date::of($this->row->publish_up, $timezone)->toLocal('d M Y').'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, 'g:i a T', $timezone).'&nbsp;' .'</dd>'."\n";
-	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.Date::of($this->row->publish_up, $timezone)->toLocal('g:i a T').'&nbsp;' .'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.Date::of($this->row->publish_down, $timezone)->toLocal('g:i a T').'&nbsp;'.'</dd>'."\n";
 } else {
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="starttime">'.JHTML::_('date',$this->row->publish_up, Lang::txt('DATE_FORMAT_HZ1'), $timezone).'</dt>'."\n";
+		$html .= "\t\t\t".'<dt class="starttime">'.Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="starttime">'.JHTML::_('date',$this->row->publish_up, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="starttime">'.Date::of($this->row->publish_up, $timezone)->toLocal('g:i a T').'&nbsp;'.'</dd>'."\n";
 	if ($this->showdate) {
-		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.JHTML::_('date',$this->row->publish_down, Lang::txt('DATE_FORMAT_HZ1'), $timezone).'</dt>'."\n";
+		$html .= "\t\t\t".'<dt class="endtime">'.strtolower(Lang::txt('EVENTS_CAL_LANG_TO')).' '.Date::of($this->row->publish_down, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</dt>'."\n";
 	}
-	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
+	$html .= "\t\t\t".'<dd class="endtime">'.Date::of($this->row->publish_down, $timezone)->toLocal('g:i a T').'&nbsp;'.'</dd>'."\n";
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
 $html .= "\t\t".'<p class="title"><a href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. $this->escape(stripslashes($this->row->title)) .'</a></p>'."\n";

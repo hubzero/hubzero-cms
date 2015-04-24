@@ -160,13 +160,13 @@ $this->css()
 
 			if (date("Y-m-d", strtotime($publish_up)) == date("Y-m-d", strtotime($publish_down)))
 			{
-				$html .= JHTML::_('date', $publish_up, 'l d F, Y', $timezone) . ', ';
-				$html .= JHTML::_('date', $publish_up, 'g:i a T', $timezone) . ' - ' . JHTML::_('date', $publish_down, 'g:i a T', $timezone);
+				$html .= Date::of($publish_up, $timezone)->toLocal('l d F, Y') . ', ';
+				$html .= Date::of($publish_up, $timezone)->toLocal('g:i a T') . ' - ' . Date::of($publish_down, $timezone)->toLocal('g:i a T');
 			}
 			else
 			{
-				$html .= JHTML::_('date', $publish_up, 'l d F, Y g:i a T', $timezone) . ' - ';
-				$html .= JHTML::_('date', $publish_down, 'l d F, Y g:i a T', $timezone);
+				$html .= Date::of($publish_up, $timezone)->toLocal('l d F, Y g:i a T') . ' - ';
+				$html .= Date::of($publish_down, $timezone)->toLocal('l d F, Y g:i a T');
 			}
 
 			$html .= '   </td>'."\n";

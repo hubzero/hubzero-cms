@@ -9,11 +9,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
-if (JFactory::getApplication()->isSite()) {
+if (App::isSite())
+{
 	JSession::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
 }
 
-require_once JPATH_ROOT . '/components/com_content/helpers/route.php';
+require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
@@ -123,7 +124,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php endif;?>
 				</td>
 				<td class="center nowrap">
-					<?php echo JHtml::_('date', $item->created, Lang::txt('DATE_FORMAT_LC4')); ?>
+					<?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
 				</td>
 				<td class="center">
 					<?php echo (int) $item->id; ?>

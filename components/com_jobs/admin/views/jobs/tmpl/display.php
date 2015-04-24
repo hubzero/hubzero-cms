@@ -202,7 +202,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				</td>
 				<td class="priority-4">
-					<time datetime="<?php echo $row->added; ?>"><?php echo JHTML::_('date', $row->added, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+					<time datetime="<?php echo $row->added; ?>"><?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td class="priority-2">
 					<?php echo $row->applications; ?>

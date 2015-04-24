@@ -168,13 +168,13 @@ $loggeduser = User::getRoot();
 				</td>
 				<td class="center">
 					<?php if ($item->lastvisitDate!='0000-00-00 00:00:00'):?>
-						<?php echo JHtml::_('date', $item->lastvisitDate, 'Y-m-d H:i:s'); ?>
+						<?php echo Date::of($item->lastvisitDate)->toLocal('Y-m-d H:i:s'); ?>
 					<?php else:?>
 						<?php echo Lang::txt('JNEVER'); ?>
 					<?php endif;?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('date', $item->registerDate, 'Y-m-d H:i:s'); ?>
+					<?php echo Date::of($item->registerDate)->toLocal('Y-m-d H:i:s'); ?>
 				</td>
 				<td class="center">
 					<?php echo (int) $item->id; ?>

@@ -191,7 +191,7 @@ class Usage
 		$html .= '   <td colspan="2">Google/IEEE';
 		if ($this->lastcite)
 		{
-			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat);
+			$html .= ': updated '.Date::of($this->lastcite)->toLocal($this->dateFormat);
 		}
 		$html .= '</td>' . "\n";
 		$html .= '  </tr>' . "\n";

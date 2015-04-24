@@ -62,7 +62,7 @@ if ($this->row->standalone == 1)
 	$this->row->fulltxt = trim($this->row->fulltxt);
 	$this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)): trim(stripslashes($this->row->introtext));
 
-	include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+	include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 }
 
 // Build the path for uploading files
@@ -72,10 +72,6 @@ if ($this->row->id) {
 } else {
 	$dir_id = time().rand(0,10000);
 }
-
-// Instantiate the sliders object
-//jimport('joomla.html.pane');
-//$tabs = JPane::getInstance('sliders');
 
 $time = $this->attribs->get('timeof', '');
 $time = strtotime($time) === false ? NULL : $time;
@@ -221,7 +217,7 @@ function popratings()
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
 					<label for="attrib-timeof"><?php echo Lang::txt('COM_RESOURCES_FIELD_TIME'); ?>:</label><br />
-					<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? JHTML::_('date', $time, 'Y-m-d H:i:s') : ''; ?>" placeholder="<?php echo JHTML::_('date', time(), 'Y-m-d H:i:s'); ?>" />
+					<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? Date::of($time)->toLocal('Y-m-d H:i:s') : ''; ?>" placeholder="<?php echo Date::of('not')->toLocal('Y-m-d H:i:s'); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
@@ -323,7 +319,7 @@ function popratings()
 				<tr>
 					<th><?php echo Lang::txt('COM_RESOURCES_FIELD_MODIFIED'); ?></th>
 					<td>
-						<?php echo JHTML::_('date', $this->row->modified, Lang::txt('DATE_FORMAT_LC2')); ?>
+						<?php echo Date::of($this->row->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2')); ?>
 					</td>
 				</tr>
 				<tr>
@@ -415,7 +411,7 @@ function popratings()
 			<?php // if ($this->row->standalone == 1) { ?>
 				<div class="input-wrap">
 					<label for="publish_up"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
-					<?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->row->publish_up, 'Y-m-d H:i:s') : ''); ?>
+					<?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s') : ''); ?>
 					<?php echo JHTML::_('calendar', $up, 'publish_up', 'publish_up', "Y-m-d H:i:s", array('class' => 'inputbox')); ?>
 				</div>
 				<div class="input-wrap">
@@ -424,7 +420,7 @@ function popratings()
 						$down = 'Never';
 						if (strtolower($this->row->publish_down) != 'never')
 						{
-							$down = JHTML::_('date', $this->row->publish_down, 'Y-m-d H:i:s');
+							$down = Date::of($this->row->publish_down)->toLocal('Y-m-d H:i:s');
 						}
 					?>
 					<?php echo JHTML::_('calendar', $down, 'publish_down', 'publish_down', "Y-m-d H:i:s", array('class' => 'inputbox')); ?>

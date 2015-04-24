@@ -247,14 +247,14 @@ class Events extends AdminController
 				$this->view->row->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
 			}
 
-			$start_publish = \JHTML::_('date', $this->view->row->publish_up, 'Y-m-d');
-			$start_time = \JHTML::_('date', $this->view->row->publish_up, 'H:i');
+			$start_publish = Date::of($this->view->row->publish_up)->toLocal('Y-m-d');
+			$start_time = Date::of($this->view->row->publish_up)->toLocal('H:i');
 
 			// make sure the never setting doesn't throw an error
 			if ($this->view->row->publish_down != 'Never')
 			{
-				$stop_publish = \JHTML::_('date', $this->view->row->publish_down, 'Y-m-d');
-				$end_time = \JHTML::_('date', $this->view->row->publish_down, 'H:i');
+				$stop_publish = Date::of($this->view->row->publish_down)->toLocal('Y-m-d');
+				$end_time = Date::of($this->view->row->publish_down)->toLocal('H:i');
 			}
 			else
 			{

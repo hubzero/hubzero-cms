@@ -352,19 +352,19 @@ class Html
 		}
 		if ($date)
 		{
-			$dir_year  = \JFactory::getDate($date)->format('Y');
-			$dir_month = \JFactory::getDate($date)->format('m');
+			$dir_year  = Date::of($date)->format('Y');
+			$dir_month = Date::of($date)->format('m');
 
 			if (!is_dir($base . DS . $dir_year . DS . $dir_month . DS . $dir_id) && intval($dir_year) <= 2013 && intval($dir_month) <= 11)
 			{
-				$dir_year  = \JHTML::_('date', $date, 'Y');
-				$dir_month = \JHTML::_('date', $date, 'm');
+				$dir_year  = Date::of($date)->toLocal('Y');
+				$dir_month = Date::of($date)->toLocal('m');
 			}
 		}
 		else
 		{
-			$dir_year  = \JFactory::getDate()->format('Y');
-			$dir_month = \JFactory::getDate()->format('m');
+			$dir_year  = Date::format('Y');
+			$dir_month = Date::format('m');
 		}
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;

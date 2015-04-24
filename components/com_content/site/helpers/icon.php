@@ -102,7 +102,7 @@ class JHtmlIcon
 		{
 			$checkoutUser = User::getInstance($article->checked_out);
 			$button  = JHtml::_('image', 'system/checked_out.png', NULL, NULL, true);
-			$date    = JHtml::_('date', $article->checked_out_time);
+			$date    = Date::of($article->checked_out_time)->toLocal();
 			$tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT').' :: '.Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name).' <br /> '.$date;
 			return '<span class="hasTip" title="'.htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8').'">'.$button.'</span>';
 		}
@@ -123,7 +123,7 @@ class JHtmlIcon
 			$overlib = Lang::txt('JPUBLISHED');
 		}
 
-		$date = JHtml::_('date', $article->created);
+		$date = Date::of($article->created)->toLocal();
 		$author = $article->created_by_alias ? $article->created_by_alias : $article->author;
 
 		$overlib .= '&lt;br /&gt;';

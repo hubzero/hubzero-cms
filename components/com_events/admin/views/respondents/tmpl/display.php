@@ -78,7 +78,7 @@ for ($i=0, $n=count( $rows ); $i < $n; $i++)
 				<td><input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=respondent&id=' . $row->id . '&event_id=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->last_name . ', ' . $row->first_name)); ?></a></td>
 				<td><a href="mailto:<?php echo $row->email ?>"><?php echo $this->escape($row->email); ?></a></td>
-				<td><?php echo JHTML::_('date', $row->registered, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+				<td><?php echo Date::of($row->registered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 				<td><?php
 				if (!empty($row->dietary_needs))
 				{

@@ -43,6 +43,13 @@ use Hubzero\Component\View;
 use DateTimezone;
 use DateTime;
 use Exception;
+use Request;
+use Pathway;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
 /**
  * Controller class for events
@@ -252,7 +259,7 @@ class Events extends SiteController
 		$this->month    = Request::getVar('month', strftime("%m", time()+($this->offset*60*60)));
 		$this->day      = Request::getVar('day',   strftime("%d", time()+($this->offset*60*60)));
 		$this->category = Request::getInt('category', 0);
-		$this->gid      = intval($this->juser->get('gid'));
+		$this->gid      = intval(User::get('gid'));
 
 		// fix single digit day & month
 		if ($this->day <= 9 && preg_match("/(^[1-9]{1})/", $this->day))
@@ -392,8 +399,8 @@ class Events extends SiteController
 		// Set some dates
 		$select_date = $year . '-' . $month . '-01 00:00:00';
 		$select_date_fin = $year . '-' . $month . '-' . date("t",mktime(0, 0, 0, ($month+1), 0, (int) $year)) . ' 23:59:59';
-		$select_date = \JFactory::getDate($select_date, Config::get('offset'));
-		$select_date_fin = \JFactory::getDate($select_date_fin, Config::get('offset'));
+		$select_date = Date::of($select_date, Config::get('offset'));
+		$select_date_fin = Date::of($select_date_fin, Config::get('offset'));
 
 		// Set some filters
 		$filters = array();
@@ -477,8 +484,8 @@ class Events extends SiteController
 		$this_enddate = clone($this_date);
 		$this_enddate->addDays(+6);
 
-		$sdt = \JHTML::_('date', $this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00', $this->dateFormatShort);
-		$edt = \JHTML::_('date', $this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00', $this->dateFormatShort);
+		$sdt = Date::of($this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00')->toLocal($this->dateFormatShort);
+		$edt = Date::of($this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00')->toLocal($this->dateFormatShort);
 
 		$this_currentdate = $this_date;
 
@@ -505,8 +512,8 @@ class Events extends SiteController
 
 			$select_date     = sprintf("%4d-%02d-%02d 00:00:00", $week['year'], $week['month'], $week['day']);
 			$select_date_fin = sprintf("%4d-%02d-%02d 23:59:59", $week['year'], $week['month'], $week['day']);
-			$select_date     = \JFactory::getDate($select_date, Config::get('offset'));
-			$select_date_fin = \JFactory::getDate($select_date_fin, Config::get('offset'));
+			$select_date     = Date::of($select_date, Config::get('offset'));
+			$select_date_fin = Date::of($select_date_fin, Config::get('offset'));
 
 			$filters['select_date'] = $select_date->toSql();
 			$filters['select_date_fin'] = $select_date_fin->toSql();
@@ -581,8 +588,8 @@ class Events extends SiteController
 
 		$select_date     = sprintf("%4d-%02d-%02d 00:00:00", $year, $month, $day);
 		$select_date_fin = sprintf("%4d-%02d-%02d 23:59:59", $year, $month, $day);
-		$select_date     = \JFactory::getDate($select_date, Config::get('offset'));
-		$select_date_fin = \JFactory::getDate($select_date_fin, Config::get('offset'));
+		$select_date     = Date::of($select_date, Config::get('offset'));
+		$select_date_fin = Date::of($select_date_fin, Config::get('offset'));
 		$filters['select_date'] = $select_date->toSql();
 		$filters['select_date_fin'] = $select_date_fin->toSql();
 
@@ -948,7 +955,7 @@ class Events extends SiteController
 		// Ensure we have an ID
 		if (!$id)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -1018,10 +1025,10 @@ class Events extends SiteController
 		$now = time();
 
 		$register = array();
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$profile = new \Hubzero\User\Profile();
-			$profile->load($this->juser->get('id'));
+			$profile->load(User::get('id'));
 
 			$register['firstname']   = $profile->get('givenName');
 			$register['lastname']    = $profile->get('surname');
@@ -1113,7 +1120,7 @@ class Events extends SiteController
 		// Ensure we have an ID
 		if (!$id)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -1125,7 +1132,7 @@ class Events extends SiteController
 		// Ensure we have an event
 		if (!$event->title)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -1136,10 +1143,10 @@ class Events extends SiteController
 		}
 
 		$bits = explode('-', $event->publish_up);
-		$eyear = $bits[0];
+		$eyear  = $bits[0];
 		$emonth = $bits[1];
 		$edbits = explode(' ', $bits[2]);
-		$eday = $edbits[0];
+		$eday   = $edbits[0];
 
 		$page = new Page($this->database);
 		$page->alias = $this->_task;
@@ -1383,7 +1390,7 @@ class Events extends SiteController
 	public function loginTask()
 	{
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			Lang::txt('EVENTS_LOGIN_NOTICE'),
 			'warning'
@@ -1443,10 +1450,10 @@ class Events extends SiteController
 
 			// Are they authorized to make edits?
 			if (!$this->_authorize($row->created_by)
-				&& !($this->juser->get('id') == $row->created_by))
+				&& !(User::get('id') == $row->created_by))
 			{
 				// Not authorized - redirect
-				$this->_redirect = Route::url('index.php?option=' . $this->_option);
+				App::redirect(Route::url('index.php?option=' . $this->_option));
 				return;
 			}
 
@@ -1454,17 +1461,17 @@ class Events extends SiteController
 			$timezone = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
 
 			// get start date and time
-			$start_publish = \JHTML::_('date', $row->publish_up, 'Y-m-d', $timezone);
-			$start_time = \JHTML::_('date', $row->publish_up, 'H:i', $timezone);
+			$start_publish = Date::of($row->publish_up, $timezone)->toLocal('Y-m-d');
+			$start_time = Date::of($row->publish_up, $timezone)->toLocal('H:i');
 
 			// get end date and time
-			$stop_publish = \JHTML::_('date', $row->publish_down, 'Y-m-d', $timezone);
-			$end_time = \JHTML::_('date', $row->publish_down, 'H:i', $timezone);
+			$stop_publish = Date::of($row->publish_down, $timezone)->toLocal('Y-m-d');
+			$end_time = Date::of($row->publish_down, $timezone)->toLocal('H:i');
 
 			$time_zone = $row->time_zone;
 
-			$registerby_date = \JHTML::_('date', $row->registerby, 'Y-m-d', $timezone);
-			$registerby_time = \JHTML::_('date', $row->registerby, 'H:i', $timezone);
+			$registerby_date = Date::of($row->registerby, $timezone)->toLocal('Y-m-d');
+			$registerby_time = Date::of($row->registerby, $timezone)->toLocal('H:i');
 
 			$arr = array(
 				\JHTML::_('select.option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
@@ -1521,7 +1528,7 @@ class Events extends SiteController
 
 			// If user hits refresh, try to maintain event form state
 			$row->bind($_POST);
-			$row->created_by = $this->juser->get('id');
+			$row->created_by = User::get('id');
 
 			$lists = '';
 		}
@@ -1687,9 +1694,9 @@ class Events extends SiteController
 
 		// Are they authorized to delete this event? Do they own it? Own it!
 		if (!$this->_authorize($event->created_by)
-			&& !($this->juser->get('id') == $event->created_by))
+			&& !(User::get('id') == $event->created_by))
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -1727,7 +1734,7 @@ class Events extends SiteController
 		));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = $this->juser;
+		$eview->juser = User::getRoot();
 		$eview->event = $event;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1736,7 +1743,7 @@ class Events extends SiteController
 		$this->_sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
 
 		// Go back to the default front page
-		$this->_redirect = Route::url('index.php?option=' . $this->_option);
+		App::redirect(Route::url('index.php?option=' . $this->_option));
 	}
 
 	/**
@@ -1779,9 +1786,9 @@ class Events extends SiteController
 
 			// Existing - update modified info
 			$row->modified = strftime("%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
-			if ($this->juser->get('id'))
+			if (User::get('id'))
 			{
-				$row->modified_by = $this->juser->get('id');
+				$row->modified_by = User::get('id');
 			}
 		}
 		else
@@ -1790,9 +1797,9 @@ class Events extends SiteController
 
 			// New - set created info
 			$row->created = strftime("%Y-%m-%d %H:%M:%S", time()+($offset*60*60));
-			if ($this->juser->get('id'))
+			if (User::get('id'))
 			{
-				$row->created_by = $this->juser->get('id');
+				$row->created_by = User::get('id');
 			}
 		}
 
@@ -1973,7 +1980,7 @@ class Events extends SiteController
 
 		// Save the tags
 		$rt = new Tags($row->id);
-		$rt->setTags($tags, $this->juser->get('id'));
+		$rt->setTags($tags, User::get('id'));
 
 		// Build the message to be e-mailed
 		if ($state == 'add')
@@ -1990,7 +1997,7 @@ class Events extends SiteController
 		}
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = $this->juser;
+		$eview->juser = User::getRoot();
 		$eview->row = $row;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1999,7 +2006,7 @@ class Events extends SiteController
 		$this->_sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
 
 		// Redirect to the details page for the event we just created
-		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $row->id);
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $row->id));
 	}
 
 	/**
@@ -2201,7 +2208,7 @@ class Events extends SiteController
 		// Check against events configuration
 		if (!$this->config->getCfg('adminlevel'))
 		{
-			if ($id && $id == $this->juser->get('id'))
+			if ($id && $id == User::get('id'))
 			{
 				return true;
 			}

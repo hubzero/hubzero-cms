@@ -63,7 +63,7 @@ if ($canDo->get('core.delete'))
 $this->css();
 
 JHTML::_('behavior.tooltip');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
+include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 
 if ($this->filters['parent_id'] > 0)
 {
@@ -136,7 +136,6 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 
-$juser = JFactory::getUser();
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
@@ -172,7 +171,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				$task  = 'unpublish';
 			}
 
-			$info .= Lang::txt('JPUBLISHED') . ': ' . JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+			$info .= Lang::txt('JPUBLISHED') . ': ' . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
 			break;
 		case 2:
 			$alt   = Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -246,12 +245,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// See if it's checked out or not
-	if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id'))
+	if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != User::get('id'))
 	{
 		//$checked = JHTML::_('grid.checkedOut', $row, $i);
 		$checked = JHtml::_('image', 'admin/checked_out.png', null, null, true);
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
-				 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . JHTML::_('date', $row->checked_out_time, Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
+				 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
 				 : '';
 		if ($row->editor)
 		{
@@ -271,7 +270,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->child_id; ?>
 				</td>
 				<td>
-					<?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id')) || !$canDo->get('core.edit')) { ?>
+					<?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
 						<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</span>

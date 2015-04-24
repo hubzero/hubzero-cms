@@ -243,8 +243,8 @@ function submitbutton(pressbutton)
 					<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE'); ?>
 				</label>
 				<select name="params[titlematch]" id="param-titlematch">
-					<option value="0">No</option>
-					<option value="1" <?php if ($this->params->get('titlematch', 0) == 1) { echo 'selected="selected"'; } ?>>Yes</option>
+					<option value="0"><?php echo Lang::txt('JNo'); ?></option>
+					<option value="1" <?php if ($this->params->get('titlematch', 0) == 1) { echo 'selected="selected"'; } ?>><?php echo Lang::txt('JYes'); ?></option>
 				</select>
 				<span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT'); ?></span>
 			</div>
@@ -289,7 +289,7 @@ function submitbutton(pressbutton)
 						<th><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
 						<td>
 							<?php
-								echo JHTML::_('date', $this->import->get('created_at'), 'm/d/Y @ g:i a');
+								echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
 							?>
 						</td>
 					</tr>

@@ -69,9 +69,9 @@ if (!$this->line->publish_up || $this->line->publish_up == '0000-00-00 00:00:00'
 switch ($params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
-	case 1: $thedate = JHTML::_('date', $this->line->created, Lang::txt('DATE_FORMAT_HZ1'));    break;
-	case 2: $thedate = JHTML::_('date', $this->line->modified, Lang::txt('DATE_FORMAT_HZ1'));   break;
-	case 3: $thedate = JHTML::_('date', $this->line->publish_up, Lang::txt('DATE_FORMAT_HZ1')); break;
+	case 1: $thedate = Date::of($this->line->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
+	case 2: $thedate = Date::of($this->line->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));   break;
+	case 3: $thedate = Date::of($this->line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); break;
 }
 
 switch ($this->line->access)

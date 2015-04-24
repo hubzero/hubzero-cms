@@ -152,7 +152,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$license = $rparams->get('license');
 
 	// Build some publishing info
-	$info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+	$info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
 	$info .= Lang::txt('COM_RESOURCES_CREATED_BY') . ': ' . $this->escape($row->created_by) . '<br />';
 
 	// Get the published status
@@ -183,7 +183,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				$task  = 'unpublish';
 			}
 
-			$info .= Lang::txt('JPUBLISHED') . ': ' . JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+			$info .= Lang::txt('JPUBLISHED') . ': ' . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
 			break;
 		case 2:
 			$alt   = Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -248,14 +248,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	// See if it's checked out or not
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
-		$date = JHtml::_('date', $row->checked_out_time, Lang::txt('DATE_FORMAT_LC1'));
-		$time = JHtml::_('date', $row->checked_out_time, 'H:i');
+		$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
+		$time = Date::of($row->checked_out_time)->toLocal('H:i');
 
 		$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
 		$checked .= JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
 
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
-				 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . JHTML::_('date', $row->checked_out_time, Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
+				 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
 				 : '';
 		if ($row->editor)
 		{
@@ -292,7 +292,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td style="white-space: nowrap">
 					<?php if ($row->modified == '0000-00-00 00:00:00') { echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); } else { ?>
 						<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
-							<?php echo JHTML::_('date', ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created), Lang::txt('DATE_FORMAT_HZ1')); ?>
+							<?php echo Date::of($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 						</time>
 					<?php } ?>
 				</td>

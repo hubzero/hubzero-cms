@@ -130,14 +130,14 @@ if ($mode != 'preview')
 						$versiontext .= $thistool->version.'</strong>';
 						if ($this->model->resource->revision!='dev') {
 							$versiontext .=  '<br /> '.ucfirst(Lang::txt('COM_RESOURCES_PUBLISHED_ON')).' ';
-							$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $thistool->released, Lang::txt('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
-							$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.Lang::txt('COM_RESOURCES_UNPUBLISHED_ON').' '.JHTML::_('date', $thistool->unpublished, Lang::txt('DATE_FORMAT_HZ1')): '';
+							$versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? Date::of($thistool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')): Date::of($this->model->resource->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+							$versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', '.Lang::txt('COM_RESOURCES_UNPUBLISHED_ON').' '.Date::of($thistool->unpublished)->toLocal(Lang::txt('DATE_FORMAT_HZ1')): '';
 						} else {
 							$versiontext .= ' ('.Lang::txt('COM_RESOURCES_IN_DEVELOPMENT').')';
 						}
 					} else if ($curtool) {
 						$versiontext .= $curtool->version.'</strong> - '.Lang::txt('COM_RESOURCES_PUBLISHED_ON').' ';
-						$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, Lang::txt('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
+						$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? Date::of($curtool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')): Date::of($this->model->resource->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 					}
 
 					if (!$thistool)

@@ -122,7 +122,7 @@ class Tools extends Base
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . Lang::txt('updated') . ' ' . \JHTML::_('date', $this->datetime, $this->dateFormat);
+				$html .= ': ' . Lang::txt('updated') . ' ' . Date::of($this->datetime)->toLocal($this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";

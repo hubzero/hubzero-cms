@@ -45,13 +45,13 @@ if ($this->getError()) { ?>
 		{
 			if (intval($row->created) <> 0)
 			{
-				$thedate = JHTML::_('date', $row->created);
+				$thedate = Date::of($row->created)->toLocal();
 			}
-			$juser = JUser::getInstance($row->user_id);
+			$user = User::getInstance($row->user_id);
 		?>
 			<tr>
 				<th><?php echo Lang::txt('COM_RESOURCES_RATING_USER'); ?>:</th>
-				<td><?php echo $this->escape($juser->get('name')); ?></td>
+				<td><?php echo $this->escape($user->get('name')); ?></td>
 			</tr>
 			<tr>
 				<th><?php echo Lang::txt('COM_RESOURCES_RATING_VALUE'); ?>:</th>

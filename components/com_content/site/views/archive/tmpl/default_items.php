@@ -55,17 +55,17 @@ $params = &$this->params;
 <?php endif; ?>
 <?php if ($params->get('show_create_date')) : ?>
 		<dd class="create">
-		<?php echo Lang::txt('COM_CONTENT_CREATED_DATE_ON', JHtml::_('date', $item->created, Lang::txt('DATE_FORMAT_LC2'))); ?>
+		<?php echo Lang::txt('COM_CONTENT_CREATED_DATE_ON', Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
 		</dd>
 <?php endif; ?>
 <?php if ($params->get('show_modify_date')) : ?>
 		<dd class="modified">
-		<?php echo Lang::txt('COM_CONTENT_LAST_UPDATED', JHtml::_('date', $item->modified, Lang::txt('DATE_FORMAT_LC2'))); ?>
+		<?php echo Lang::txt('COM_CONTENT_LAST_UPDATED', Date::of($item->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
 		</dd>
 <?php endif; ?>
 <?php if ($params->get('show_publish_date')) : ?>
 		<dd class="published">
-		<?php echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', JHtml::_('date', $item->publish_up, Lang::txt('DATE_FORMAT_LC2'))); ?>
+		<?php echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', Date::of($item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
 		</dd>
 <?php endif; ?>
 <?php if ($params->get('show_author') && !empty($item->author )) : ?>
@@ -74,9 +74,7 @@ $params = &$this->params;
 		<?php $author = ($item->created_by_alias ? $item->created_by_alias : $author);?>
 
 			<?php if (!empty($item->contactid ) &&  $params->get('link_author') == true):?>
-				<?php 	echo Lang::txt('COM_CONTENT_WRITTEN_BY' ,
-				 JHtml::_('link', Route::url('index.php?option=com_contact&view=contact&id='.$item->contactid), $author)); ?>
-
+				<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', JHtml::_('link', Route::url('index.php?option=com_contact&view=contact&id='.$item->contactid), $author)); ?>
 			<?php else :?>
 				<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
 			<?php endif; ?>

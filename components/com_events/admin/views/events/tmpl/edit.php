@@ -43,9 +43,9 @@ $xprofilem = \Hubzero\User\Profile::getInstance($this->row->modified_by);
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 
-$params = new JParameter($this->row->params, JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'events.xml');
+$params = new JParameter($this->row->params, PATH_CORE . DS . 'components' . DS . $this->option . DS . 'events.xml');
 ?>
-<script type="text/javascript" src="../components/<?php echo $this->option; ?>/js/calendar.rc4.js"></script>
+<script type="text/javascript" src="../components/<?php echo $this->option; ?>/site/assets/js/calendar.rc4.js"></script>
 <script type="text/javascript">
 var HUB = {};
 
@@ -74,7 +74,7 @@ var HUB = {};
 
 			<div class="input-wrap">
 				<label for="field-econtent"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ACTIVITY'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('econtent', $this->row->content, '', '', '45', '10', false, 'field-econtent'); ?></td>
+				<?php echo $this->editor('econtent', $this->row->content, '45', '10', 'field-econtent'); ?></td>
 			</div>
 
 			<div class="input-wrap">
@@ -173,12 +173,12 @@ var HUB = {};
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>
-					<td><?php echo $this->row->created ? JHTML::_('date', $this->row->created, 'F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$userc : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?></td>
+					<td><?php echo $this->row->created ? Date::of($this->row->created)->toLocal('F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$userc : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?></td>
 				</tr>
 			<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
 				<tr>
 					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
-					<td><?php echo $this->row->modified ? JHTML::_('date', $this->row->modified, 'F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$userm : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?></td>
+					<td><?php echo $this->row->modified ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$userm : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>

@@ -197,8 +197,8 @@ class Calendar extends SiteController
 		$calendarId = Request::getInt('calender_id', 'null');
 
 		// format date/times
-		$start = \JFactory::getDate($start . ' 00:00:00');
-		$end   = \JFactory::getDate($end . ' 00:00:00');
+		$start = Date::of($start . ' 00:00:00');
+		$end   = Date::of($end . ' 00:00:00');
 		$end->modify('-1 second');
 
 		// get calendar events
@@ -223,19 +223,19 @@ class Calendar extends SiteController
 		// loop through each event to return it
 		foreach ($rawEvents as $rawEvent)
 		{
-			$up   = \JFactory::getDate($rawEvent->get('publish_up'));
-			$down = \JFactory::getDate($rawEvent->get('publish_down'));
+			$up   = Date::of($rawEvent->get('publish_up'));
+			$down = Date::of($rawEvent->get('publish_down'));
 			$event            = new \stdClass;
 			$event->id        = $rawEvent->get('id');
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url 	  = Route::url('index.php?option=com_calendar&task=details&event='.$event->id, false);
-			$event->start     = \JHTML::_('date', $rawEvent->get('publish_up'), 'Y-m-d\TH:i:sO');
+			$event->start     = Date::of($rawEvent->get('publish_up'))->toLocal('Y-m-d\TH:i:sO');
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
 
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = \JHTML::_('date', $rawEvent->get('publish_down'), 'Y-m-d\TH:i:sO');
+				$event->end = Date::of($rawEvent->get('publish_down'))->toLocal('Y-m-d\TH:i:sO');
 			}
 
 			// add start & end for displaying dates user clicked on
@@ -287,6 +287,5 @@ class Calendar extends SiteController
 		echo json_encode($events);
 		exit();
 	}
-
 }
 

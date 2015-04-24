@@ -2392,7 +2392,7 @@ class Resources extends SiteController
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate)
 				{
-					$doc .= "%8 " . \JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
+					$doc .= "%8 " . Date::of($thedate, $tz)->toLocal($monthFormat) . "\r\n";
 				}
 				//$doc .= "\r\n";
 				if ($handle)
@@ -2437,9 +2437,9 @@ class Resources extends SiteController
 						$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
 					}
 				}
-				$addarray['month'] = \JHTML::_('date', $thedate, $monthFormat, $tz);
+				$addarray['month'] = Date::of($thedate, $tz)->toLocal($monthFormat);
 				$addarray['url']   = $url;
-				$addarray['year']  = \JHTML::_('date', $thedate, $yearFormat, $tz);
+				$addarray['year']  = Date::of($thedate, $tz)->toLocal($yearFormat);
 				if ($handle)
 				{
 					$addarray['doi'] = $handle;
@@ -2592,7 +2592,7 @@ class Resources extends SiteController
 	{
 		if (!$user)
 		{
-			$user = \User::getRoot();
+			$user = User::getRoot();
 		}
 		if (!$user->get('guest'))
 		{
