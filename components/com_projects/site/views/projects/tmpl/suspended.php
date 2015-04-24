@@ -28,20 +28,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 
-// Do some text cleanup
-$this->project->title = $this->escape($this->project->title);
+// Check who suspended project
+$suspended = $this->model->table('Activity')->checkActivity( $this->model->get('id'), JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+
 ?>
 <div id="project-wrap">
 	<section class="main section">
-		<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+		<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
 			<fieldset >
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="task" value="reinstate" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 				<?php
 					$this->view('_header')
-					     ->set('project', $this->project)
+					     ->set('model', $this->model)
 					     ->set('showPic', 1)
 					     ->set('showPrivacy', 0)
 					     ->set('goBack', 0)
@@ -51,10 +52,10 @@ $this->project->title = $this->escape($this->project->title);
 				?>
 
 				<p class="warning">
-					<?php echo $this->suspended == 2 ? Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT') : Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN'); ?> <?php if ($this->project->role != 1 && $this->suspended == 2) { ?><?php echo Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php } ?>
+					<?php echo $suspended == 2 ? Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT') : Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN'); ?> <?php if (!$this->model->access('manager') && $suspended == 2) { ?><?php echo Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php } ?>
 				</p>
 
-				<?php if ($this->project->role == 1 && $this->suspended == 2) { ?>
+				<?php if ($this->model->access('manager') && $suspended == 2) { ?>
 					<h4><?php echo Lang::txt('COM_PROJECTS_CANCEL_WANT_TO_REINSTATE'); ?></h4>
 					<p>
 						<span><input type="submit" class="confirm" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL_YES_REINSTATE'); ?>" /></span>
