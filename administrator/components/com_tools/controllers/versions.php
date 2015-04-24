@@ -368,6 +368,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		$db  = \JFactory::getDbo();
 		$row = new ToolVersionZones($db);
 
+		if (empty($fields['publish_up'])) $fields['publish_up'] = null;
+		if (empty($fields['publish_down'])) $fields['publish_down'] = null;
+
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
