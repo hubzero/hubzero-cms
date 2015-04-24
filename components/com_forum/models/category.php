@@ -357,10 +357,10 @@ class ForumModelCategory extends ForumModelAbstract
 	* Verifies no duplicate aliases within a secton's categories listing.
 	* Returns true if duplicate detected.
 	*
-	*
+	*@param int $id ID of the record being saved.
 	* @return boolean
 	*/
-	public function uniqueAliasCheck()
+	public function uniqueAliasCheck($id)
 	{
 		$alias = $this->get('alias');
 		$section = new ForumModelSection($this->get('section_id'));
@@ -372,7 +372,7 @@ class ForumModelCategory extends ForumModelAbstract
 		foreach ($categories as $category)
 		{
 			$existing = $category->get('alias');
-			if ($alias == $existing)
+			if ($alias == $existing && $category->get('id') != $id)
 			{
 				$this->setError(JText::_('The alias must be unique within a section.'));
 				return true;

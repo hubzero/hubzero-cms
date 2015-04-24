@@ -970,7 +970,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		//check for alias duplicates within section?
-		if ($model->uniqueAliasCheck())
+		if ($model->uniqueAliasCheck($model->get('id')))
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
