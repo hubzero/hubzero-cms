@@ -304,9 +304,9 @@ class Request extends BaseRequest
 	 *
 	 * @return  string
 	 */
-	public function current()
+	public function current($query = false)
 	{
-		return rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/');
+		return ($query ? $this->getUri() : rtrim(preg_replace('/\?.*/', '', $this->getUri()), '/'));
 	}
 
 	/**
@@ -314,12 +314,12 @@ class Request extends BaseRequest
 	 *
 	 * @return  string
 	 */
-	public function fullUrl()
+	/*public function fullUrl()
 	{
 		$query = $this->getQueryString();
 
-		return $query ? $this->url() . '?' . $query : $this->url();
-	}
+		return $query ? $this->current() . '?' . $query : $this->current();
+	}*/
 
 	/**
 	 * Get the current path info for the request.
@@ -399,6 +399,26 @@ class Request extends BaseRequest
 	public function ip()
 	{
 		return $this->getClientIp();
+	}
+
+	/**
+	 * Get the request scheme.
+	 *
+	 * @return  string
+	 */
+	public function scheme()
+	{
+		return $this->getScheme();
+	}
+
+	/**
+	 * Get the HTTP host.
+	 *
+	 * @return  string
+	 */
+	public function host()
+	{
+		return $this->getHost();
 	}
 
 	/**

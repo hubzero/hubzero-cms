@@ -72,9 +72,9 @@ class Request extends \JRequest
 	 *
 	 * @return  string
 	 */
-	public static function current()
+	public static function current($query = false)
 	{
-		return \JURI::current();
+		return \JURI::current() . ($query ? '?' . \JURI::getInstance()->getQuery() : '');
 	}
 
 	/**
@@ -95,6 +95,26 @@ class Request extends \JRequest
 	public static function method()
 	{
 		return self::getMethod();
+	}
+
+	/**
+	 * Returns the scheme.
+	 *
+	 * @return  string
+	 */
+	public static function scheme()
+	{
+		return \JURI::getInstance()->toString(array('scheme'));
+	}
+
+	/**
+	 * Returns the host.
+	 *
+	 * @return  string
+	 */
+	public static function host()
+	{
+		return \JURI::getInstance()->toString(array('host'));
 	}
 
 	/**
