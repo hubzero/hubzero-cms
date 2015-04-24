@@ -117,7 +117,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$expires .= Lang::txt( 'COM_JOBS_YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.Lang::txt( 'COM_JOBS_SUBSCRIPTION' ).' ';
 						if ($this->subscription->status==1) {
 							$expires .= $this->subscription->expires > $now ? strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' )) ;
-							$expires .= ' '.Lang::txt( 'COM_JOBS_ON' ).' '.JHTML::_('date', $this->subscription->expires, Lang::txt('DATE_FORMAT_HZ1')).'.';
+							$expires .= ' '.Lang::txt( 'COM_JOBS_ON' ).' '.Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'.';
 						}
 						else {
 							$expires .= Lang::txt( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;

@@ -185,8 +185,8 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 							<td style="text-align:center;"><?php echo $task->priority; ?></td>
 							<td><?php echo $task->assignee->name; ?></td>
 							<td><?php echo $task->liaison->name; ?></td>
-							<td><?php echo ($task->start_date != '0000-00-00') ? JHTML::_('date', $task->start_date, 'm/d/y', null) : ''; ?></td>
-							<td><?php echo ($task->end_date != '0000-00-00') ? JHTML::_('date', $task->end_date, 'm/d/y', null) : ''; ?></td>
+							<td><?php echo ($task->start_date != '0000-00-00') ? Date::of($task->start_date)->toLocal('m/d/y') : ''; ?></td>
+							<td><?php echo ($task->end_date != '0000-00-00') ? Date::of($task->end_date)->toLocal('m/d/y') : ''; ?></td>
 						</tr>
 					<?php endforeach; ?>
 					<?php if (!$this->tasks->count()) : ?>

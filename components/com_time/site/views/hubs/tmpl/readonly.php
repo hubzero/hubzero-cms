@@ -89,7 +89,7 @@ $this->css()
 
 					<div class="grouping anniversary-grouping">
 						<label for="anniversary_date"><?php echo Lang::txt('COM_TIME_HUBS_ANNIVERSARY_DATE'); ?>:</label>
-						<?php echo ($this->row->anniversary_date != '0000-00-00') ? JHTML::_('date', $this->row->anniversary_date, 'm/d/y', null) : ''; ?>
+						<?php echo ($this->row->anniversary_date != '0000-00-00') ? Date::of($this->row->anniversary_date)->toLocal('m/d/y') : ''; ?>
 					</div>
 
 					<div class="grouping support-grouping">

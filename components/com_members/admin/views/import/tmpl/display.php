@@ -133,7 +133,7 @@ function submitbutton(pressbutton)
 						</td>
 						<td class="priority-3">
 							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_ON'); ?></strong>
-							<time datetime="<?php echo $import->get('created_at'); ?>"><?php echo JHTML::_('date', $import->get('created_at'), 'm/d/Y @ g:i a'); ?></time><br />
+							<time datetime="<?php echo $import->get('created_at'); ?>"><?php echo Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
 							<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
 							<?php
 								if ($created_by = Hubzero\User\Profile::getInstance($import->get('created_by')))
@@ -152,7 +152,7 @@ function submitbutton(pressbutton)
 							?>
 							<?php if ($lastRun) : ?>
 								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_ON'); ?></strong>
-								<time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo JHTML::_('date', $lastRun->get('ran_at'), 'm/d/Y @ g:i a'); ?></time><br />
+								<time datetime="<?php echo $import->get('ran_at'); ?>"><?php echo Date::of($lastRun->get('ran_at'))->toLocal('m/d/Y @ g:i a'); ?></time><br />
 								<strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_DISPLAY_BY'); ?></strong>
 								<?php
 									if ($created_by = Hubzero\User\Profile::getInstance($lastRun->get('ran_by')))

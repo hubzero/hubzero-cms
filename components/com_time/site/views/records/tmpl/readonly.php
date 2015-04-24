@@ -108,7 +108,7 @@ $this->css()
 
 					<div class="grouping date-group">
 						<label for="date"><?php echo Lang::txt('COM_TIME_RECORDS_DATE'); ?>:</label>
-						<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, 'm/d/y') : ''; ?>
+						<?php echo ($this->row->date != '0000-00-00 00:00:00') ? Date::of($this->row->date)->toLocal('m/d/y') : ''; ?>
 					</div>
 				</div>
 

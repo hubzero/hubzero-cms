@@ -129,7 +129,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$curcat  = $row->cid > 0  ? $jc->getCat($row->cid)   : '';
 
 	// Build some publishing info
-	$info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . JHTML::_('date', $row->added, Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+	$info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
 	$info .= Lang::txt('COM_JOBS_FIELD_CREATOR') . ': ' . $row->addedBy;
 	$info .= $admin ? ' ' . Lang::txt('COM_JOBS_ADMIN') : '';
 	$info .= '<br />';

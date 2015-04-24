@@ -132,7 +132,7 @@ function submitbutton(pressbutton)
 						<th><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_CREATEDON'); ?></th>
 						<td>
 							<?php
-								echo JHTML::_('date', $this->hook->get('created_at'), 'm/d/Y @ g:i a');
+								echo Date::of($this->hook->get('created_at'))->toLocal('m/d/Y @ g:i a');
 							?>
 						</td>
 					</tr>

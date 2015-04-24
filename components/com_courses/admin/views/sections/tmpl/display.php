@@ -219,10 +219,10 @@ foreach ($this->rows as $row)
 				</td>
 			<?php } ?>
 				<td class="priority-4">
-					<?php echo ($row->get('start_date') && $row->get('start_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('start_date'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE'); ?>
+					<?php echo ($row->get('start_date') && $row->get('start_date') != '0000-00-00 00:00:00') ? Date::of($row->get('start_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE'); ?>
 				</td>
 				<td class="priority-4">
-					<?php echo ($row->get('end_date') && $row->get('end_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('end_date'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
+					<?php echo ($row->get('end_date') && $row->get('end_date') != '0000-00-00 00:00:00') ? Date::of($row->get('end_date')->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.manage') && $students > 0) { ?>

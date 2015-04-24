@@ -1810,7 +1810,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Compose Message
 		$message  = strtoupper(Lang::txt('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
 		$message .= strtoupper(Lang::txt('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
-		$message .= strtoupper(Lang::txt('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', Date::toSql(), Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
+		$message .= strtoupper(Lang::txt('COM_TOOLS_WHEN')) . ' ' . Date::of(Date::toSql())->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
 		$message .= strtoupper(Lang::txt('COM_TOOLS_BY')) . ': ' . User::get('username') . "\r\n";
 		$message .= '----------------------------' . "\r\n\r\n";
 		if ($comment)

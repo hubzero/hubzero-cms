@@ -110,7 +110,7 @@ $this->css()
 
 				<div class="grouping clearfix" id="date-group">
 					<label for="date"><?php echo Lang::txt('COM_TIME_RECORDS_DATE'); ?>:</label>
-					<?php $date = JHTML::_('date', $this->row->get('date', JFactory::getDate()->format('Y-m-d H:00')), 'Y-m-d H:i'); ?>
+					<?php $date = Date::of($this->row->get('date', Date::format('Y-m-d H:00')))->toLocal('Y-m-d H:i'); ?>
 					<input type="text" name="date" id="datepicker" class="hadTimepicker" value="<?php echo $date; ?>" tabindex="3" />
 				</div>
 

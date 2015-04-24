@@ -42,8 +42,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$job->cat = $job->cat ? $job->cat : 'unspecified';
 	$job->type = $job->type ? $job->type : 'unspecified';
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
 
 	$model = new \Components\Jobs\Models\Job($job);
 
@@ -124,11 +124,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$html .= '<div class="clear"></div>'."\n";
 		$html .= '<div class="apply"><p>'."\n";
 		if ($job->applied) {
-			$html .= '<span class="alreadyapplied">'.Lang::txt('COM_JOBS_JOB_APPLIED_ON').' '.JHTML::_('date', $job->applied, Lang::txt('DATE_FORMAT_HZ1')).'<span>'."\n";
+			$html .= '<span class="alreadyapplied">'.Lang::txt('COM_JOBS_JOB_APPLIED_ON').' '.Date::of($job->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'<span>'."\n";
 			$html .= '<span><a href="'.Route::url('index.php?option='.$this->option.'&task=editapp&code='.$job->code).'">'.Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION').'</a> | <a href="'.Route::url('index.php?option='.$this->option.'&task=withdraw&code='.$job->code).'" id="showconfirm">'.Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION').'</a><span>'."\n";
 		}
 		else if ($job->withdrawn) {
-			$html .= '<span class="withdrawn">'.Lang::txt('COM_JOBS_JOB_WITHDREW_ON').' '.JHTML::_('date', $job->withdrawn, Lang::txt('DATE_FORMAT_HZ1')).'<span>'."\n";
+			$html .= '<span class="withdrawn">'.Lang::txt('COM_JOBS_JOB_WITHDREW_ON').' '.Date::of($job->withdrawn)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'<span>'."\n";
 			$html .= '<span><a href="'.Route::url('index.php?option='.$this->option.'&task=apply&code='.$job->code).'">'.Lang::txt('COM_JOBS_ACTION_REAPPLY').'</a><span>'."\n";
 		}
 		else {

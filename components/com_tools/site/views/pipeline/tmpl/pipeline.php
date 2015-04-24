@@ -169,7 +169,7 @@ $this->css('pipeline.css')
 							</a><br />
 							<span class="entry-details">
 								<?php echo Lang::txt('COM_TOOLS_REGISTERED'); ?>
-								<span class="entry-date"><?php echo JHTML::_('date', $row->registered, Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+								<span class="entry-date"><?php echo Date::of($row->registered)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 							</span>
 						</td>
 						<td>

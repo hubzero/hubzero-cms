@@ -237,7 +237,7 @@ function submitbutton(pressbutton)
 						<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
 						<td>
 							<?php
-								echo JHTML::_('date', $this->import->get('created_at'), 'm/d/Y @ g:i a');
+								echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
 							?>
 						</td>
 					</tr>

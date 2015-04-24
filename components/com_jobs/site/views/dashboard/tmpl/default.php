@@ -67,7 +67,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				? ' <span class="no">('.$this->subscription->pendingunits.' '.Lang::txt('COM_JOBS_ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.Lang::txt('COM_JOBS_MONTHS_PENDING').')</span>'
 				: '';
 	$expiredate = $this->subscription->expires
-				? JHTML::_('date', $this->subscription->expires, Lang::txt('DATE_FORMAT_HZ1'))
+				? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
 				: Lang::txt('N/A');
 
 	// site admins

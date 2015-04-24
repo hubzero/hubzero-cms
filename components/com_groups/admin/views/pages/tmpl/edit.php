@@ -183,7 +183,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
-						<td><?php echo JHTML::_('date', $this->firstversion->get('created'), 'F j, Y @ g:ia'); ?></td>
+						<td><?php echo Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
@@ -196,7 +196,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED'); ?></th>
-						<td><?php echo JHTML::_('date', $this->version->get('created'), 'F j, Y @ g:ia'); ?></td>
+						<td><?php echo Date::of($this->version->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
@@ -231,7 +231,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 									<?php
 										$profile = \Hubzero\User\Profile::getInstance($version->get('created_by'));
 										$name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
-										echo Lang::txt('COM_GROUPS_PAGES_VERSION_CREATED_DETAILS', $name, JHTML::_('date', $version->get('created')));
+										echo Lang::txt('COM_GROUPS_PAGES_VERSION_CREATED_DETAILS', $name, Date::of($version->get('created'))->toLocal());
 									?>
 								</td>
 								<td>
@@ -240,7 +240,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 										{
 											$profile = \Hubzero\User\Profile::getInstance($version->get('approved_by'));
 											$name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
-											echo Lang::txt('COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS', $name, JHTML::_('date', $version->get('approved_on')));
+											echo Lang::txt('COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS', $name, Date::of($version->get('approved_on'))->toLocal());
 										}
 										else
 										{

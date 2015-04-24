@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =  JFactory::getUser();
-
 $this->css('pipeline.css')
      ->js('pipeline.js');
 ?>
@@ -122,7 +120,7 @@ $this->css('pipeline.css')
 						</td>
 						<td>
 							<?php if ($t->state != 3) { ?>
-								<?php echo $t->released ? JHTML::_('date', $t->released, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+								<?php echo $t->released ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
 							<?php } else { ?>
 								<span class="yes"><?php echo Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT'); ?></span>
 							<?php } ?>

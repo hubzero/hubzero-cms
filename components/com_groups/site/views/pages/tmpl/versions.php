@@ -104,7 +104,7 @@ $this->css()
 							$created = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
 							if ($pageVersion->get('created') != null)
 							{
-								$created = JHTML::_('date', $pageVersion->get('created'), 'F d, Y @ g:ia');
+								$created = Date::of($pageVersion->get('created'))->toLocal('F d, Y @ g:ia');
 							}
 
 							$created_by = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
@@ -121,7 +121,7 @@ $this->css()
 							$approved_on = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
 							if ($pageVersion->get('approved_on') != null)
 							{
-								$approved_on = JHTML::_('date', $pageVersion->get('approved_on'), 'F d, Y @ g:ia');
+								$approved_on = Date::of($pageVersion->get('approved_on'))->toLocal('F d, Y @ g:ia');
 							}
 
 							$approved_by = Lang::txt('COM_GROUPS_PAGES_PAGE_NA');

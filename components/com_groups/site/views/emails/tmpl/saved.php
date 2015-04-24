@@ -228,7 +228,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Updated:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', 'now', Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', 'now', Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Updated By:</th>

@@ -49,10 +49,10 @@ $record = $resp->getAnswers();
 </header>
 
 <section class="main section">
-	<p>Completed <?php echo JHTML::_('date', $resp->getEndTime(), 'r'); ?></p>
+	<p>Completed <?php echo Date::of($resp->getEndTime())->toLocal('r'); ?></p>
 	<p>Score <strong><?php echo $record['summary']['score'] ?>%</strong></p>
 	<?php if ($this->dep->getResultsClosed() == 'details'): ?>
-		<p>More detailed results will be available <?php echo ($dep->getEndTime()) ? JHTML::_('date', $dep->getEndTime(), 'r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(\JFactory::getDate())) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
+		<p>More detailed results will be available <?php echo ($dep->getEndTime()) ? Date::of($dep->getEndTime())->toLocal('r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(Date::of('now'))) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
 	<?php endif; ?>
 	<?php if ($this->dep->getAllowedAttempts() > 1) : ?>
 		<?php $attempt = $resp->getAttemptNumber(); ?>

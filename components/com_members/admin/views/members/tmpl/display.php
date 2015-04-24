@@ -193,7 +193,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	else
 	{
-		$lvisit = '<time datetime="' . $row->lastvisitDate . '">' . JHTML::_('date', $row->lastvisitDate, 'Y-m-d') . '</time>';
+		$lvisit = '<time datetime="' . $row->lastvisitDate . '">' . Date::of($row->lastvisitDate)->toLocal('Y-m-d') . '</time>';
 	}
 
 	if ($row->picture)
@@ -235,7 +235,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td class="priority-3">
-					<time datetime="<?php echo $row->registerDate; ?>"><?php echo JHTML::_('date', $row->registerDate, 'Y-m-d'); ?></time>
+					<time datetime="<?php echo $row->registerDate; ?>"><?php echo Date::of($row->registerDate)->toLocal('Y-m-d'); ?></time>
 				</td>
 				<td class="priority-4">
 					<?php echo $lvisit; ?>

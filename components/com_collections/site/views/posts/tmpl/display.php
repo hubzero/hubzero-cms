@@ -417,9 +417,9 @@ if (!$no_html) {
 								<br />
 								<span class="entry-date">
 									<span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-									<span class="time"><?php echo JHTML::_('date', $collection->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?></span>
+									<span class="time"><?php echo Date::of($collection->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
 									<span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-									<span class="date"><?php echo JHTML::_('date', $collection->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+									<span class="date"><?php echo Date::of($collection->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
 								</span>
 							</p>
 						</div><!-- / .attribution -->

@@ -167,7 +167,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$model = new JobsModelJob($jobs[$i]);
 
 						//$txt = $model->content('parsed');
-						$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$jobs[$i]->closedate, 'd&\nb\sp;M&\nb\sp;y') : 'ASAP';
+						$closedate = ($jobs[$i]->closedate && $jobs[$i]->closedate !='0000-00-00 00:00:00') ? Date::of($jobs[$i]->closedate)->toLocal('d&\nb\sp;M&\nb\sp;y') : 'ASAP';
 						if ($jobs[$i]->closedate !='0000-00-00 00:00:00' && $jobs[$i]->closedate < $now)
 						{
 							$closedate = 'closed';
@@ -227,16 +227,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<td class="secondary"><?php echo $curcat; ?></td>
 							<td class="secondary"><?php echo $curtype; ?></td>
 							<td class="secondary">
-								<span class="datedisplay"><?php echo JHTML::_('date', $jobs[$i]->added, 'd&\nb\sp;M&\nb\sp;y'); ?></span>
+								<span class="datedisplay"><?php echo Date::of($jobs[$i]->added)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
 							</td>
 							<td>
 								<?php if ($jobs[$i]->applied) { ?>
 									<span class="alreadyapplied">
-										<?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON'); ?> <span class="datedisplay"><?php echo JHTML::_('date', $jobs[$i]->applied, 'd&\nb\sp;M&\nb\sp;y'); ?></span>
+										<?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON'); ?> <span class="datedisplay"><?php echo Date::of($jobs[$i]->applied)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
 									</span>
 								<?php } else if ($jobs[$i]->withdrawn) { ?>
 									<span class="withdrawn">
-										<?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON'); ?> <span class="datedisplay"><?php echo JHTML::_('date', $jobs[$i]->withdrawn, 'd&\nb\sp;M&\nb\sp;y'); ?></span>
+										<?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON'); ?> <span class="datedisplay"><?php echo Date::of($jobs[$i]->withdrawn)->toLocal('d&\nb\sp;M&\nb\sp;y'); ?></span>
 									</span>
 								<?php } else { ?>
 									<?php echo $closedate ? '<span class="datedisplay">'.$closedate.'</span>' : ''; ?>

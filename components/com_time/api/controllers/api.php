@@ -168,7 +168,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		// Incoming posted data (grab individually for added security)
 		$r = [];
 		$r['task_id']     = Request::getInt('task_id');
-		$r['date']        = \JFactory::getDate(Request::getVar('date'))->toSql();
+		$r['date']        = Date::of(Request::getVar('date'))->toSql();
 		$r['description'] = Request::getVar('description');
 		$r['time']        = Request::getVar('time');
 		$r['user_id']     = JFactory::getApplication()->getAuthn('user_id');
@@ -461,7 +461,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Process any overrides
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
 		$values = Filters::filtersOverrides($values, $column);
 
 		// Create object with values
@@ -491,8 +491,8 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Create object and get records
 		$records = Record::whereEquals('user_id', \JFactory::getApplication()->getAuthn('user_id'))
-                         ->where('date', '>=', \JFactory::getDate(strtotime('today'))->toSql())
-                         ->where('date', '<', \JFactory::getDate(strtotime('today+1day'))->toSql());
+                         ->where('date', '>=', Date::of(strtotime('today'))->toSql())
+                         ->where('date', '<', Date::of(strtotime('today+1day'))->toSql());
 
 		$results = array();
 
@@ -502,8 +502,8 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			$results[] = array(
 				'id'          => $r->id,
 				'title'       => $r->task->name,
-				'start'       => \JHtml::_('date', $r->date, DATE_RFC2822),
-				'end'         => \JHtml::_('date', $r->end, DATE_RFC2822),
+				'start'       => Date::of($r->date)->toLocal(DATE_RFC2822),
+				'end'         => Date::of($r->end)->toLocal(DATE_RFC2822),
 				'description' => $r->description,
 				'task_id'     => $r->task->id,
 				'hub_id'      => $r->task->hub->id,
@@ -533,12 +533,12 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get the day of the week
-		$today = \JFactory::getDate()->format('N') - 1;
+		$today = Date::format('N') - 1;
 
 		// Create object and get records
 		$records = Record::whereEquals('user_id', \JFactory::getApplication()->getAuthn('user_id'))
-                         ->where('date', '>=',    \JFactory::getDate(strtotime("today-{$today}days"))->toSql())
-                         ->where('date', '<',     \JFactory::getDate(strtotime("today+" . (8-$today) . 'days'))->toSql());
+                         ->where('date', '>=',    Date::of(strtotime("today-{$today}days"))->toSql())
+                         ->where('date', '<',     Date::of(strtotime("today+" . (8-$today) . 'days'))->toSql());
 
 		$results = array();
 
@@ -573,8 +573,8 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		// Incoming posted data (grab individually for added security)
 		$r = [];
 		$r['task_id']     = Request::getInt('task_id');
-		$r['date']        = \JFactory::getDate(Request::getVar('start'))->toSql();
-		$r['end']         = \JFactory::getDate(Request::getVar('end'))->toSql();
+		$r['date']        = Date::of(Request::getVar('start'))->toSql();
+		$r['end']         = Date::of(Request::getVar('end'))->toSql();
 		$r['description'] = Request::getVar('description');
 		$r['time']        = (strtotime($r['end']) - strtotime($r['date'])) / 3600;
 		$r['user_id']     = \JFactory::getApplication()->getAuthn('user_id');

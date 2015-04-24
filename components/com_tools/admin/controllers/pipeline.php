@@ -281,7 +281,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				if ($results)
 				{
 					$title = $results[0]->title ? $results[0]->title : $resource->title;
-					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, $yearFormat)) : date('Y');
+					$pubyear = $results[0]->released ? trim(Date::of($results[0]->released)->toLocal($yearFormat)) : date('Y');
 				}
 				else
 				{

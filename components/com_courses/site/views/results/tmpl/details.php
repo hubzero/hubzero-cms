@@ -53,7 +53,7 @@ $version = $record['summary']['version'];
 </header>
 
 <section class="main section">
-	<p>Completed <?php echo JHTML::_('date', $resp->getEndTime(), 'r'); ?></p>
+	<p>Completed <?php echo Date::of($resp->getEndTime())->toLocal('r'); ?></p>
 	<p>Score <strong><?php echo $record['summary']['score'] ?>%</strong></p>
 
 	<?php if ($this->dep->getAllowedAttempts() > 1) : ?>

@@ -181,7 +181,7 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 										<table id="course-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #F3F3F3; border: 1px solid #DDDDDD;">
 											<tr>
 												<td width="85" style="padding: 0 0 0 15px; opacity: 0.8">
-													<?php $cap_path = rtrim(Request::root(), '/') . '/components/com_courses/assets/img/cap.png'; ?>
+													<?php $cap_path = rtrim(Request::root(), '/') . '/components/com_courses/site/assets/img/cap.png'; ?>
 													<img width="80" src="<?php echo $cap_path; ?>" />
 												</td>
 												<td width="565" style="padding: 14px; border-bottom: 1px solid #CCCCCC;">
@@ -267,7 +267,7 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 													Latest Discussions
 												</td>
 												<td style="text-align: right;">
-													<a href="<?php echo $base . DS . $this->offering->get('alias') . DS . 'discussions'; ?>"><?php echo $base . DS . $this->offering->get('alias') . DS . 'discussions'; ?></a>
+													<a href="<?php echo $base . '/' . $this->offering->get('alias') . '/discussions'; ?>"><?php echo $base . '/' . $this->offering->get('alias') . '/discussions'; ?></a>
 												</td>
 											</tr>
 										</table>
@@ -285,13 +285,13 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 																transform:rotate(45deg); -ms-transform:rotate(45deg); -webkit-transform:rotate(45deg);"></div>
 															<div style="background: #FFFFFF; width: 11px; height: 23px; position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
 															<div style="color: #AAAAAA; font-size: 11px; text-align:center;">
-																<?php echo \JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a'); ?>
+																<?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
 															</div>
 															<div>
 																<?php echo $post->comment; ?>
 															</div>
 															<div style="color: #AAAAAA; font-size: 11px; text-align:center;">
-																<?php $reply  = $base . DS . $this->offering->get('alias') . DS . 'discussions'; ?>
+																<?php $reply  = $base . '/' . $this->offering->get('alias') . '/discussions'; ?>
 																<?php $thread = ($post->parent) ? $post->parent : $post->id; ?>
 																<a href="<?php echo $reply . '?thread='.$thread.'&reply='.$post->id; ?>">reply</a>
 															</div>

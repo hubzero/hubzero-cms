@@ -102,7 +102,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 							</a>
 						</td>
 						<td><?php echo $hub->liaison; ?></td>
-						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? JHTML::_('date', $hub->anniversary_date, 'm/d/y', null) : ''; ?></td>
+						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? Date::of($hub->anniversary_date)->toLocal('m/d/y') : ''; ?></td>
 						<td><?php echo $hub->support_level; ?></td>
 					</tr>
 					<?php endforeach; ?>

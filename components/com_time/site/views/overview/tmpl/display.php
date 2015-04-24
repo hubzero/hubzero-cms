@@ -46,11 +46,11 @@ $this->css()
 \Hubzero\Document\Assets::addSystemScript('moment.min');
 \Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
 
-$utc   = JFactory::getDate();
-$now   = JHTML::_('date', $utc, Lang::txt('g:00a'));
-$then  = JHTML::_('date', strtotime($now . ' + 1 hour'), Lang::txt('g:00a'));
-$start = JHTML::_('date', $utc, Lang::txt('G'));
-$end   = JHTML::_('date', strtotime($now . ' + 1 hour'), Lang::txt('G'));
+$utc   = Date::of('now');
+$now   = Date::of($utc)->toLocal(Lang::txt('g:00a'));
+$then  = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('g:00a'));
+$start = Date::of($utc)->toLocal(Lang::txt('G'));
+$end   = Date::of(strtotime($now . ' + 1 hour'))->toLocal(Lang::txt('G'));
 
 ?>
 

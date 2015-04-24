@@ -34,9 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 
-//get objects
-$database = JFactory::getDBO();
-
 //get no_html request var
 $no_html = Request::getInt( 'no_html', 0 );
 ?>
@@ -59,10 +56,10 @@ $no_html = Request::getInt( 'no_html', 0 );
 
 				<?php
 					// output group options
-					echo GroupsHelperView::displayToolbar( $this->group );
+					echo GroupsHelperView::displayToolbar($this->group);
 
 					// output group menu
-					echo GroupsHelperView::displaySections( $this->group );
+					echo GroupsHelperView::displaySections($this->group);
 				?>
 
 				<div id="page_info">
@@ -86,7 +83,7 @@ $no_html = Request::getInt( 'no_html', 0 );
 						}
 
 						// use created date
-						$created = JHTML::_('date', $this->group->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+						$created = Date::of($this->group->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 					?>
 					<div class="group-info">
 						<ul>

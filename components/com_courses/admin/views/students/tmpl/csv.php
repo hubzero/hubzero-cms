@@ -49,7 +49,7 @@ foreach ($this->rows as $row)
 	echo encodeCSVField($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE');
 	echo ',';
 	if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') {
-		echo encodeCSVField(JHTML::_('date', $row->get('enrolled'), Lang::txt('DATE_FORMAT_HZ1')));
+		echo encodeCSVField(Date::of($row->get('enrolled'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 	}
 	else {
 		echo encodeCSVField(Lang::txt('COM_COURSES_UNKNOWN'));

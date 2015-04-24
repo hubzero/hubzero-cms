@@ -60,7 +60,7 @@ $this->css()
 	}
 
 	$this->wish->set('status', ($this->wish->get('accepted')==1 && $this->wish->get('status')==0 ? 6 : $this->wish->get('status')));
-	$due  = ($this->wish->get('due') !='0000-00-00 00:00:00') ? JHTML::_('date', $this->wish->get('due'), Lang::txt('DATE_FORMAT_HZ1')) : '';
+	$due  = ($this->wish->get('due') !='0000-00-00 00:00:00') ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
 ?>
 	<header id="content-header">
 		<h2><?php echo $this->title . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $this->wish->get('id'); ?></h2>

@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_MODULES_CREATED'); ?></th>
-						<td><?php echo JHTML::_('date', $this->module->get('created'), 'F j, Y @ g:ia'); ?></td>
+						<td><?php echo Date::of($this->module->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_MODULES_CREATED_BY'); ?></th>
@@ -171,7 +171,7 @@ function submitbutton(pressbutton)
 								$modified = '--';
 								if ($this->module->get('modified_by') != null)
 								{
-									$modified = JHTML::_('date', $this->module->get('modified'), 'F j, Y @ g:ia');
+									$modified = Date::of($this->module->get('modified'))->toLocal('F j, Y @ g:ia');
 								}
 								echo $modified;
 							?>

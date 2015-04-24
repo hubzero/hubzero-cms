@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 		{
 ?>
 				<tr>
-					<td><?php echo JHTML::_('date',$item->created, Lang::txt('DATE_FORMAT_HZ1') . ' ' . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
+					<td><?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' ' . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
 					<td><?php echo $item->description; ?></td>
 					<td><?php echo $item->category; ?></td>
 					<td><?php echo $item->type; ?></td>

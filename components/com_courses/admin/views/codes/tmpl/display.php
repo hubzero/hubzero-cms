@@ -137,7 +137,7 @@ foreach ($this->rows as $i => $row)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('id')); ?>
@@ -154,15 +154,15 @@ foreach ($this->rows as $i => $row)
 				<?php } ?>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+					<time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
-					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
+					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? Date::of($row->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
 			<?php if ($row->get('redeemed')) { ?>
 				<td>
 					<span class="state <?php echo (($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') || $row->get('redeemed_by')) ? 'yes' : 'no'; ?>">
-						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . JHTML::_('date', $row->get('redeemed'), Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
+						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . Date::of($row->get('redeemed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
 					</span>
 				</td>
 				<td>

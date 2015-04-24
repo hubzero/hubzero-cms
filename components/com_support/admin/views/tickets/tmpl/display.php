@@ -206,7 +206,7 @@ $this->css();
 
 					$tid = Request::getInt('ticket', 0);
 
-					$tsformat = JFactory::getDBO()->getDateFormat();
+					$tsformat = $database->getDateFormat();
 
 					if (count($this->rows) > 0)
 					{
@@ -255,7 +255,7 @@ $this->css();
 									</span>
 									<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 										<span class="ticket-activity">
-											<time datetime="<?php echo $lastcomment; ?>"><?php echo JHTML::_('date.relative', $lastcomment); ?></time>
+											<time datetime="<?php echo $lastcomment; ?>"><?php echo Date::of($lastcomment)->relative(); ?></time>
 										</span>
 									<?php } ?>
 								</p>
