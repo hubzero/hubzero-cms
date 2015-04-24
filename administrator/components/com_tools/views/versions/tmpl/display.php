@@ -55,7 +55,8 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="6">
-					<?php echo $this->escape($this->tool->id); ?> - <?php echo $this->escape(stripslashes($this->tool->title)); ?> (<?php echo $this->escape($this->tool->toolname); ?>)
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=pipeline">Pipeline</a> >
+					<?php echo $this->escape(stripslashes($this->tool->title)); ?> (<?php echo $this->escape($this->tool->toolname); ?>)
 				</th>
 			</tr>
 			<tr>

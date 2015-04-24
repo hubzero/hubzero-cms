@@ -114,7 +114,7 @@ jQuery(document).ready(function($){
 					</tr>
 					<tr>
 						<th class="key"><label for="field-publish-up"><?php echo JText::_('COM_TOOLS_FIELD_PUBLISH_UP'); ?>:</label></th>
-						<td><input class="datetime" type="text" name="fields[publish_up]" id="field-publish-up" value="<?php echo $this->escape(stripslashes($this->row->get('publish_up'))); ?>" /></td>
+						<td><input class="datetime" type="text" name="fields[publish_up]" id="field-publish-up" value="<?php echo $this->escape(stripslashes($this->row->get('publish_up', JHTML::_('date', null, 'Y-m-d H:i:s')))); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-publish-down"><?php echo JText::_('COM_TOOLS_FIELD_PUBLISH_DOWN'); ?>:</label></th>
