@@ -696,7 +696,7 @@ class Sanitizer
 	{
 		$whitelist = array_flip($whitelist);
 		$out = array();
-		foreach($attribs as $attribute => $value)
+		foreach ($attribs as $attribute => $value)
 		{
 			if (!isset($whitelist[$attribute]))
 			{
@@ -1484,7 +1484,8 @@ class Sanitizer
 	{
 		global $wgHtmlEntities;
 		$out = "<!DOCTYPE html [\n";
-		foreach($wgHtmlEntities as $entity => $codepoint) {
+		foreach ($wgHtmlEntities as $entity => $codepoint)
+		{
 			$out .= "<!ENTITY $entity \"&#$codepoint;\">";
 		}
 		$out .= "]>\n";
