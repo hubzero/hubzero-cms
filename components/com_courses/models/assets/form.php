@@ -57,7 +57,7 @@ class FormAssetHandler extends ContentAssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
 
 		// Check to make sure a file was provided
 		if (isset($_FILES['files']))
@@ -203,7 +203,7 @@ class FormAssetHandler extends ContentAssetHandler
 	public function preview($asset)
 	{
 		// Get form object
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
 		$form = PdfForm::loadByAssetId($asset->get('id'));
 
 		// Make sure we got a proper object

@@ -227,7 +227,7 @@ class Entries extends SiteController
 
 		if (!$alias)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
@@ -302,7 +302,7 @@ class Entries extends SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
@@ -353,7 +353,7 @@ class Entries extends SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
@@ -400,7 +400,7 @@ class Entries extends SiteController
 			return $this->editTask($row);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($row->link())
 		);
 	}
@@ -415,7 +415,7 @@ class Entries extends SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
@@ -425,7 +425,7 @@ class Entries extends SiteController
 
 		if (!$this->config->get('access-delete-entry'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_BLOG_NOT_AUTHORIZED'),
 				'error'
@@ -462,13 +462,12 @@ class Entries extends SiteController
 			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
 			$this->view->entry  = $entry;
 			$this->view->config = $this->config;
-			if ($this->getError())
+
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
+				$this->view->setError($error);
 			}
+
 			$this->view->display();
 			return;
 		}
@@ -484,7 +483,7 @@ class Entries extends SiteController
 		}
 
 		// Return the topics list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
 		return;
@@ -499,13 +498,13 @@ class Entries extends SiteController
 	{
 		if (!$this->config->get('feeds_enabled'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = \JFactory::getDocument();
@@ -593,7 +592,7 @@ class Entries extends SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
@@ -685,7 +684,7 @@ class Entries extends SiteController
 
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
 			);
 			return;
@@ -697,7 +696,7 @@ class Entries extends SiteController
 
 		if (User::get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
 			);
 			return;
@@ -707,7 +706,7 @@ class Entries extends SiteController
 		$comment->setState($id, 2);
 
 		// Return the topics list
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : null)
@@ -726,7 +725,7 @@ class Entries extends SiteController
 			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$jdoc = \JFactory::getDocument();

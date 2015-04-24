@@ -112,7 +112,7 @@ jQuery(document).ready(function($){
 						<select name="fields[offering_id]" id="offering_id">
 							<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 							<?php
-								require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+								require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 								$model = CoursesModelCourses::getInstance();
 								if ($model->courses()->total() > 0)
 								{
@@ -234,7 +234,7 @@ jQuery(document).ready(function($){
 						<tr>
 							<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 							<td><?php
-								$creator = JUser::getInstance($this->row->get('created_by'));
+								$creator = User::getInstance($this->row->get('created_by'));
 								echo $this->escape(stripslashes($creator->get('name'))); ?>
 							</td>
 						</tr>
@@ -807,10 +807,9 @@ jQuery(document).ready(function($){
 								<th class="key"><label for="badge-criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>:</label></th>
 								<td>
 									<?php
-										$editor = \JFactory::getEditor();
-										echo $editor->display('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), '100%', '200px', '', '', false, 'badge-criteria');
+										echo $this->editor('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), 35, 5, 'badge-criteria');
 									?>
-									<a target="_blank" href="/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
+									<a target="_blank" href="<?php echo Request::base(true); ?>/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
 								</td>
 							</tr>
 						</tbody>

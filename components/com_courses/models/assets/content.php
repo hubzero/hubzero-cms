@@ -59,8 +59,8 @@ class ContentAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 
 		// Create our asset table object
 		$asset = new CoursesModelAsset();
@@ -158,7 +158,7 @@ class ContentAssetHandler extends AssetHandler
 	public function save()
 	{
 		// Include needed files
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 
 		// Create our asset object
 		$id    = Request::getInt('id', null);
@@ -219,7 +219,7 @@ class ContentAssetHandler extends AssetHandler
 		if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
 		{
 			// Create asset assoc object
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 			$assoc = new Tables\AssetAssociation($this->db);
 
 			if (!$assoc->loadByAssetScope($asset->get('id'), $original_scope_id, $scope))

@@ -357,7 +357,7 @@ class Articles extends SiteController
 		if (User::isGuest())
 		{
 			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
@@ -417,7 +417,7 @@ class Articles extends SiteController
 		{
 			if ($type == 'entry')
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url($row->link())
 				);
 				return;
@@ -438,7 +438,7 @@ class Articles extends SiteController
 		if (User::isGuest())
 		{
 			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
@@ -467,7 +467,7 @@ class Articles extends SiteController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($row->link() . '#comments')
 		);
 	}
@@ -499,7 +499,7 @@ class Articles extends SiteController
 			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
 		$document = \JFactory::getDocument();

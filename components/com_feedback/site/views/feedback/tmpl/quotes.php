@@ -114,15 +114,15 @@ $base = rtrim(Request::base(true), '/');
 							<?php } ?>
 						<?php } ?>
 						<?php
-						if (is_dir(JPATH_ROOT . DS . $this->path . $quote->id))
+						if (is_dir(PATH_APP . DS . $this->path . $quote->id))
 						{
-							$pictures = scandir(JPATH_ROOT . DS . $this->path . $quote->id);
+							$pictures = scandir(PATH_APP . DS . $this->path . $quote->id);
 							array_shift($pictures);
 							array_shift($pictures);
 
 							foreach ($pictures as $picture)
 							{
-								$file = JPATH_ROOT . DS . $this->path . $quote->id . DS . $picture;
+								$file = PATH_APP . DS . $this->path . $quote->id . DS . $picture;
 								if (file_exists($file))
 								{
 									$this_size = filesize($file);

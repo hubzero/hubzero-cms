@@ -203,7 +203,7 @@ class Wishlists extends SiteController
 		if ($cat && !preg_replace("/" . $cat . "/", '', $cats) && !$plugin)
 		{
 			// oups, this looks like a wrong URL
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -226,7 +226,7 @@ class Wishlists extends SiteController
 		// cannot find this list
 		if (!$model->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -533,7 +533,7 @@ class Wishlists extends SiteController
 		// Make sure we have list id
 		if (!$listid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -565,7 +565,7 @@ class Wishlists extends SiteController
 			// update priority on all wishes
 			$wishlist->rank();
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url($wishlist->link('', '&saved=1'))
 			);
 			return;
@@ -602,7 +602,7 @@ class Wishlists extends SiteController
 		// update priority on all wishes
 		$wishlist->rank();
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($wishlist->link('', '&saved=1'))
 		);
 	}
@@ -807,7 +807,7 @@ class Wishlists extends SiteController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($objWish->link('plan'))
 		);
 	}
@@ -1105,7 +1105,7 @@ class Wishlists extends SiteController
 		}
 
 		$saved = $wishid ? 2 : 3;
-		$this->setRedirect(
+		App::redirect(
 			Route::url($row->link('permalink', array('saved' => $saved)))
 		);
 	}
@@ -1301,7 +1301,7 @@ class Wishlists extends SiteController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($wish->link())
 		);
 	}
@@ -1573,7 +1573,7 @@ class Wishlists extends SiteController
 			$wish->get('id')
 		);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($wish->link())
 		);
 	}
@@ -1654,7 +1654,7 @@ class Wishlists extends SiteController
 		}
 
 		// go back to the wishlist
-		$this->setRedirect(
+		App::redirect(
 			$wishlist->link(),
 			$this->getError(),
 			($this->getError() ? 'error' : null)
@@ -1748,7 +1748,7 @@ class Wishlists extends SiteController
 		// did user make selections?
 		if (!$effort or !$importance)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($wish->link()),
 				Lang::txt('Please be sure to provide both an importance and an effort'),
 				'error'
@@ -1759,7 +1759,7 @@ class Wishlists extends SiteController
 		// is the wish ranked already?
 		if (!$wish->rank($effort, $importance))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($wish->link()),
 				$wish->getError(),
 				'error'
@@ -1773,7 +1773,7 @@ class Wishlists extends SiteController
 			throw new Exception($wishlist->getError(), 500);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($wish->link())
 		);
 	}
@@ -1971,7 +1971,7 @@ class Wishlists extends SiteController
 			}
 		} // -- end if id & category
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($objWish->link())
 		);
 	}
@@ -1997,7 +1997,7 @@ class Wishlists extends SiteController
 
 		if ($row->get('added_by') != User::get('id'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Request::getVar('HTTP_REFERER', NULL, 'server'),
 				Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
@@ -2014,7 +2014,7 @@ class Wishlists extends SiteController
 		}
 
 		// Go back to the page
-		$this->setRedirect(
+		App::redirect(
 			Request::getVar('HTTP_REFERER', NULL, 'server')
 		);
 	}
@@ -2113,13 +2113,13 @@ class Wishlists extends SiteController
 
 		if ($page == 'wishlist')
 		{
-			$this->setRedirect(
+			App::redirect(
 				str_replace('&amp;', '&', Route::url($wishlist->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				str_replace('&amp;', '&', Route::url($wish->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
 			);
 		}
@@ -2318,7 +2318,7 @@ class Wishlists extends SiteController
 		else
 		{
 			// Scan for viruses
-			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			$path = $path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
 
 			if (!\JFile::isSafe($path))
 			{
@@ -2370,7 +2370,7 @@ class Wishlists extends SiteController
 			throw new Exception(Lang::txt('Unknown file type.'), 404);
 		}
 
-		// Add JPATH_ROOT
+		// Add PATH_CORE
 		$filename = $attachment->link('file');
 
 		// Ensure the file exist

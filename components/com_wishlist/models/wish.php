@@ -45,7 +45,7 @@ require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'plan.php');
 require_once(__DIR__ . DS . 'vote.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 
 /**
  * Wishlist model class for a wish

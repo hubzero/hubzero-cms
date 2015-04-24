@@ -106,7 +106,7 @@ class Forum extends GenericItem
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
 		$thread = new Post($id);
 

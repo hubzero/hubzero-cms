@@ -78,9 +78,9 @@ jimport('joomla.filesystem.file');
 				{
 					$num_files = 0;
 
-					if (is_dir(JPATH_ROOT . DS . $folder))
+					if (is_dir(PATH_APP . DS . $folder))
 					{
-						$d = @dir(JPATH_ROOT . DS . $folder);
+						$d = @dir(PATH_APP . DS . $folder);
 
 						while (false !== ($entry = $d->read()))
 						{

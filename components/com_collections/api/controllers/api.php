@@ -31,7 +31,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 /**
  * API controller class for support tickets

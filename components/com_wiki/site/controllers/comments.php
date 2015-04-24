@@ -102,7 +102,7 @@ class Comments extends SiteController
 
 		if (in_array($this->page->get('namespace'), array('image', 'file')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'
 			);
 			return;
@@ -206,7 +206,7 @@ class Comments extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -281,7 +281,7 @@ class Comments extends SiteController
 		}
 
 		// Redirect to Comments page
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link('comments'))
 		);
 	}
@@ -317,7 +317,7 @@ class Comments extends SiteController
 		}
 
 		// Redirect to Comments page
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link('comments')),
 			$msg,
 			$cls

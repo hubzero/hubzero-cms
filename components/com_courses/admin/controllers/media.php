@@ -283,7 +283,7 @@ class Media extends AdminController
 				$batch = Request::getInt('batch', 0, 'post');
 				if ($batch)
 				{
-					/*require_once(JPATH_ROOT . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
+					/*require_once(PATH_CORE . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
 
 					if (!extension_loaded('zlib'))
 					{
@@ -455,7 +455,7 @@ class Media extends AdminController
 		$this->view->subdir = Request::getVar('subdir', '');
 
 		// Build the path
-		//$this->view->path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->course_id . DS . $this->view->listdir;
+		//$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->course_id . DS . $this->view->listdir;
 		$this->view->path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
 
 		// Get list of directories

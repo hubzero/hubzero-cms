@@ -76,7 +76,7 @@ function submitbutton(pressbutton)
 				<option value="0"><?php echo Lang::txt('COM_COURSES_OFFERING_SELECT'); ?></option>
 				<?php
 				$offerings = array();
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 				$model = CoursesModelCourses::getInstance();
 				if ($model->courses()->total() > 0)
 				{
@@ -222,7 +222,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
-						<time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo JHTML::_('date', $row->get('enrolled'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+						<time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo Date::of($row->get('enrolled'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					<?php } else { ?>
 						<?php echo Lang::txt('COM_COURSES_UNKNOWN'); ?>
 					<?php } ?>

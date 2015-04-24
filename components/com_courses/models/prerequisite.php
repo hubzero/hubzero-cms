@@ -33,10 +33,10 @@ use Components\Courses\Tables;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php');
 
 /**
  * Courses model class for prerequisites

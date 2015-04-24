@@ -166,7 +166,7 @@ class Feedback extends SiteController
 		if (User::isGuest())
 		{
 			$here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
 				Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
 				'warning'
@@ -245,7 +245,7 @@ class Feedback extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task)
 			);
 			return;
@@ -395,7 +395,7 @@ class Feedback extends SiteController
 	 */
 	public function suggestionsTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_wishlist')
 		);
 	}

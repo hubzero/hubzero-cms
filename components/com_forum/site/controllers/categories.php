@@ -180,7 +180,7 @@ class Categories extends SiteController
 		if ($this->view->category->get('access') > 0 && User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'], false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
@@ -305,7 +305,7 @@ class Categories extends SiteController
 		if (User::isGuest())
 		{
 			$return = Route::url('index.php?option=' . $this->_option, false, true);
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
@@ -335,7 +335,7 @@ class Categories extends SiteController
 		}
 		elseif ($this->view->category->get('created_by') != User::get('id') && !$this->config->get('access-create-category'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -383,7 +383,7 @@ class Categories extends SiteController
 		if (!$this->config->get('access-edit-category'))
 		{
 			// Set the redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
@@ -399,7 +399,7 @@ class Categories extends SiteController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
 	}
@@ -414,7 +414,7 @@ class Categories extends SiteController
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
@@ -431,7 +431,7 @@ class Categories extends SiteController
 		// Make the sure the category exist
 		if (!$category->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_FORUM_MISSING_ID'),
 				'error'
@@ -443,7 +443,7 @@ class Categories extends SiteController
 		$this->_authorize('category', $category->get('id'));
 		if (!$this->config->get('access-delete-category'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
@@ -462,7 +462,7 @@ class Categories extends SiteController
 		$category->set('state', 2);  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$category->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				$category->getError(),
 				'error'
@@ -471,7 +471,7 @@ class Categories extends SiteController
 		}
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option),
 			Lang::txt('COM_FORUM_CATEGORY_DELETED'),
 			'message'

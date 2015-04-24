@@ -101,7 +101,7 @@ class History extends SiteController
 
 		if (in_array($this->page->get('namespace'), array('image', 'file')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'
 			);
 			return;
@@ -255,7 +255,7 @@ class History extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -266,7 +266,7 @@ class History extends SiteController
 
 		if (!$id || !$this->page->access('delete'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link('history'))
 			);
 			return;
@@ -278,7 +278,7 @@ class History extends SiteController
 		if ($this->page->revisions('count', array('approved' => 1)) <= 1)
 		{
 			// Can't delete - it's the only approved version!
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link('history'))
 			);
 			return;
@@ -289,7 +289,7 @@ class History extends SiteController
 
 		if (!$revision->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link('history')),
 				Lang::txt('COM_WIKI_ERROR_REMOVING_REVISION'),
 				'error'
@@ -303,7 +303,7 @@ class History extends SiteController
 		$this->page->set('version_id', $this->page->revisions()->current()->get('id'));
 		$this->page->store(false, 'revision_removed');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link('history'))
 		);
 	}
@@ -319,7 +319,7 @@ class History extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -330,7 +330,7 @@ class History extends SiteController
 
 		if (!$id || !$this->page->access('manage'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link())
 			);
 			return;
@@ -358,7 +358,7 @@ class History extends SiteController
 			$this->page->log('revision_approved');
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link())
 		);
 	}

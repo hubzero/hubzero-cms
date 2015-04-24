@@ -108,7 +108,7 @@ class Tags extends SiteController
 		{
 			if (Request::getWord('task', '', 'get'))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option)
 				);
 				return;
@@ -752,7 +752,7 @@ class Tags extends SiteController
 	{
 		$return = Request::getVar('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($return)
 		);
 	}
@@ -798,7 +798,7 @@ class Tags extends SiteController
 		$search = urldecode(Request::getString('search', ''));
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . urlencode($search) . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start)
 		);
 	}
@@ -826,7 +826,7 @@ class Tags extends SiteController
 		// Make sure we have an ID
 		if (empty($ids))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=browse')
 			);
 			return;
@@ -854,7 +854,7 @@ class Tags extends SiteController
 		$count  = Request::getInt('count', 1);
 
 		// Redirect back to browse mode
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . $search . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count)
 		);
 	}
@@ -880,7 +880,7 @@ class Tags extends SiteController
 			return true;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=browse')
 		);
 	}

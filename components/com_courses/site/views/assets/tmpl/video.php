@@ -675,7 +675,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										data-autoplay="<?php echo $sub->autoplay; ?>"
 										data-type="subtitle"
 										data-lang="<?php echo $sub->name; ?>"
-										data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime( JPATH_ROOT . DS . $sub->source ); ?>"></div>
+										data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime( PATH_CORE . DS . $sub->source ); ?>"></div>
 								<?php endforeach; ?>
 							<?php endif; ?>
 

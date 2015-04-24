@@ -33,9 +33,9 @@ use Components\Courses\Tables;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'manager.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'student.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'manager.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'student.php');
 
 /**
  * Courses model class for course permissions

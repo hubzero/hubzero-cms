@@ -102,7 +102,7 @@ if (!$this->sub)
 			if ($this->page->comments('list', $filters)->total())
 			{
 				$this->view('_list', 'comments')
-				     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+				     ->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
 				     ->set('parent', 0)
 				     ->set('page', $this->page)
 				     ->set('option', $this->option)

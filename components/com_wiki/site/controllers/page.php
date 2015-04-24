@@ -113,7 +113,7 @@ class Page extends SiteController
 
 		if (in_array($this->page->get('namespace'), array('image', 'file')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'
 			);
 			return;
@@ -171,7 +171,7 @@ class Page extends SiteController
 			// Ensure the special page exists
 			if (!in_array(strtolower($this->view->layout), $this->book->special()))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&scope=' . $this->view->page->get('scope'))
 				);
 				return;
@@ -208,7 +208,7 @@ class Page extends SiteController
 
 		if ($this->page->get('group_cn') && !$this->_group)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_groups&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename'))
 			);
 			return;
@@ -353,7 +353,7 @@ class Page extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -362,7 +362,7 @@ class Page extends SiteController
 		// Check if the page is locked and the user is authorized
 		if ($this->page->get('state') == 1 && !$this->page->access('manage'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link()),
 				Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
 				'warning'
@@ -373,7 +373,7 @@ class Page extends SiteController
 		// Check if the page is group restricted and the user is authorized
 		if (!$this->page->access('edit') && !$this->page->access('modify'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link()),
 				Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
 				'warning'
@@ -545,7 +545,7 @@ class Page extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -733,7 +733,7 @@ class Page extends SiteController
 		$this->page->tag(Request::getVar('tags', ''));
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link())
 		);
 	}
@@ -749,7 +749,7 @@ class Page extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -757,7 +757,7 @@ class Page extends SiteController
 
 		if (!is_object($this->page))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link('base')),
 				Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'),
 				'error'
@@ -768,7 +768,7 @@ class Page extends SiteController
 		// Make sure they're authorized to delete
 		if (!$this->page->access('delete'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link('base')),
 				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
@@ -837,7 +837,7 @@ class Page extends SiteController
 			break;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link('base'))
 		);
 	}
@@ -853,7 +853,7 @@ class Page extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -862,7 +862,7 @@ class Page extends SiteController
 		// Make sure they're authorized to delete
 		if (!$this->page->access('edit'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->page->link('base')),
 				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
@@ -928,7 +928,7 @@ class Page extends SiteController
 		if (User::isGuest())
 		{
 			$url = Request::getVar('REQUEST_URI', '', 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
@@ -951,7 +951,7 @@ class Page extends SiteController
 		}
 
 		// Redirect to the newly named page
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->page->link())
 		);
 	}
@@ -1037,7 +1037,7 @@ class Page extends SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($wikiPageFolder))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&id=' . $id),
 					Lang::txt('Unable to create the filepath.'),
 					'error'
@@ -1085,7 +1085,7 @@ class Page extends SiteController
 				//make sure we have a file to output
 		if (!file_exists($wikiPagePdf))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&id=' . $id),
 				Lang::txt('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
 				'error'

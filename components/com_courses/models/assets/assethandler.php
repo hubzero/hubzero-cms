@@ -259,7 +259,7 @@ class AssetHandler
 	public function doEdit($id)
 	{
 		// Look up asset type from id
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 		$asset = new CoursesModelAsset($id);
 
 		// Classname
@@ -291,7 +291,7 @@ class AssetHandler
 	public function preview($id)
 	{
 		// Look up asset type from id
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 		$asset = new CoursesModelAsset($id);
 
 		// Classname

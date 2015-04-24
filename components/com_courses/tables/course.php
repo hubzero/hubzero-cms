@@ -30,6 +30,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Courses table
  */
@@ -140,7 +144,7 @@ class Course extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
@@ -262,7 +266,7 @@ class Course extends \JTable
 
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
+			include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 			$tagging = new CoursesModelTags();
 			$tags = $tagging->parseTags($filters['tag']);
 

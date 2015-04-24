@@ -195,7 +195,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 			$this->view('_list', 'comments')
-			     ->setBasePath(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site')
+			     ->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('page', $this->page)
 			     ->set('option', $this->option)

@@ -139,7 +139,7 @@ class Sections extends SiteController
 		$section = new Section($fields['id']);
 		if (!$section->bind($fields))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				$section->getError(),
 				'error'
@@ -150,7 +150,7 @@ class Sections extends SiteController
 		// Store new content
 		if (!$section->store(true))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				$section->getError(),
 				'error'
@@ -159,7 +159,7 @@ class Sections extends SiteController
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
 	}
@@ -174,7 +174,7 @@ class Sections extends SiteController
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
@@ -188,7 +188,7 @@ class Sections extends SiteController
 		// Make the sure the section exist
 		if (!$section->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_FORUM_MISSING_ID'),
 				'error'
@@ -201,7 +201,7 @@ class Sections extends SiteController
 
 		if (!$this->config->get('access-delete-section'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
@@ -214,7 +214,7 @@ class Sections extends SiteController
 
 		if (!$section->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				$model->getError(),
 				'error'
@@ -223,7 +223,7 @@ class Sections extends SiteController
 		}
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option),
 			Lang::txt('COM_FORUM_SECTION_DELETED'),
 			'message'

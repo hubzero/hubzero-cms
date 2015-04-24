@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
  * Announcement model class for a course
@@ -100,11 +100,11 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $dt, Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $dt, Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

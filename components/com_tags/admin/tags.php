@@ -60,7 +60,7 @@ $task = \Request::getCmd('task', '');
 	\Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
 );
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
 	\Submenu::addEntry(

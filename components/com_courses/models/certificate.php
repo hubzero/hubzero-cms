@@ -325,8 +325,8 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		}
 		$course = CoursesModelCourse::getInstance($this->get('course_id'));
 
-		require_once(JPATH_ROOT . DS . 'libraries' . DS . 'fpdf16' . DS . 'fpdf.php');
-		require_once(JPATH_ROOT . DS . 'libraries' . DS . 'fpdi' . DS . 'fpdi.php');
+		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdf16' . DS . 'fpdf.php');
+		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdi' . DS . 'fpdi.php');
 
 		// Get the pdf and draw on top of it
 		$pdf = new FPDI();

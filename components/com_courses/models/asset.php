@@ -417,7 +417,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$filename = $base_path . $filename;
 		}
 
-		// Add JPATH_ROOT
+		// Add PATH_CORE
 		$filename = PATH_APP . $filename;
 
 		// Ensure the file exist

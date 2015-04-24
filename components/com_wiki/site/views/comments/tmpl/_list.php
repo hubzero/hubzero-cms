@@ -48,7 +48,7 @@ if ($this->comments instanceof \Hubzero\Base\ItemList)
 		$comment->set('pageid', $this->page->get('id'));
 
 		$this->view('_comment', 'comments')
-		     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+		     ->setBasePath(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site')
 		     ->set('option', $this->option)
 		     ->set('comment', $comment)
 		     ->set('config', $this->config)

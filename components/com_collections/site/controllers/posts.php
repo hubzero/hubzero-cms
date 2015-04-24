@@ -80,7 +80,7 @@ class Posts extends SiteController
 
 		if (!$this->view->post->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
 			);
 			return;
@@ -260,7 +260,7 @@ class Posts extends SiteController
 		}
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=collections')
 		);
 	}
@@ -377,7 +377,7 @@ class Posts extends SiteController
 		}
 
 		// Display the main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
 		);
 	}
@@ -485,7 +485,7 @@ class Posts extends SiteController
 		}
 
 		// Display the main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
 		);
 	}
@@ -531,7 +531,7 @@ class Posts extends SiteController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 				Lang::txt('COM_COLLECTIONS_POSTS_REORDERED')
 			);
@@ -559,7 +559,7 @@ class Posts extends SiteController
 		if (!Request::getInt('no_html', 0))
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;

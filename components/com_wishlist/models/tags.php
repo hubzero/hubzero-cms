@@ -118,7 +118,7 @@ class Tags extends Cloud
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'site',
+						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site',
 						'name'      => 'wishlists',
 						'layout'    => '_tags'
 					));

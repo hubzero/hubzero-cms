@@ -140,7 +140,7 @@ class Questions extends SiteController
 	{
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 		);
 	}
@@ -277,7 +277,7 @@ class Questions extends SiteController
 			}
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . Request::getInt('rid', 0))
 		);
 	}
@@ -306,7 +306,7 @@ class Questions extends SiteController
 		if (!$id)
 		{
 			// Cannot proceed
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -316,7 +316,7 @@ class Questions extends SiteController
 		if (!$cat)
 		{
 			// Cannot proceed
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $id)
 			);
 			return;
@@ -361,7 +361,7 @@ class Questions extends SiteController
 			// cannot proceed
 			if (!$no_html)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option),
 					Lang::txt('No ID provided.'),
 					'error'
@@ -380,7 +380,7 @@ class Questions extends SiteController
 		{
 			if (!$no_html)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $qid),
 					Lang::txt('Cannot vote for your own entries.'),
 					'warning'
@@ -394,7 +394,7 @@ class Questions extends SiteController
 		{
 			if (!$no_html)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $qid),
 					Lang::txt('No vote provided.'),
 					'warning'
@@ -522,7 +522,7 @@ class Questions extends SiteController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $qid)
 			);
 		}
@@ -979,7 +979,7 @@ class Questions extends SiteController
 		}
 
 		// Redirect to the question
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $row->get('id')),
 			Lang::txt('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS')
 		);
@@ -1017,7 +1017,7 @@ class Questions extends SiteController
 		// Check if user is authorized to delete
 		if ($question->get('created_by') != User::get('id'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($question->link() . '&note=3')
 			);
 			return;
@@ -1025,7 +1025,7 @@ class Questions extends SiteController
 
 		if ($question->get('state') == 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($question->link() . '&note=2')
 			);
 			return;
@@ -1101,7 +1101,7 @@ class Questions extends SiteController
 		}
 
 		// Redirect to the question
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
 	}
@@ -1220,7 +1220,7 @@ class Questions extends SiteController
 		}
 
 		// Redirect to the question
-		$this->setRedirect(
+		App::redirect(
 			Route::url($question->link()),
 			Lang::txt('COM_ANSWERS_NOTICE_POSTED_THANKS'),
 			'success'
@@ -1261,7 +1261,7 @@ class Questions extends SiteController
 		}
 
 		// Redirect to the question
-		$this->setRedirect(
+		App::redirect(
 			Route::url($question->link() . '&note=10'),
 			Lang::txt('COM_ANSWERS_NOTICE_QUESTION_CLOSED'),
 			'success'
@@ -1306,7 +1306,7 @@ class Questions extends SiteController
 			}
 			else
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url($row->link()),
 					$row->getError(),
 					'warning'
@@ -1332,7 +1332,7 @@ class Questions extends SiteController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($row->link())
 			);
 		}

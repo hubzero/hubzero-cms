@@ -181,11 +181,11 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// If we have dates coming in, save those
 		if ($publish_up = Request::getVar('publish_up', false))
 		{
-			$unit->set('publish_up', \JFactory::getDate($publish_up, $offset)->toSql());
+			$unit->set('publish_up', \Date::of($publish_up, $offset)->toSql());
 		}
 		if ($publish_down = Request::getVar('publish_down', false))
 		{
-			$unit->set('publish_down', \JFactory::getDate($publish_down, $offset)->toSql());
+			$unit->set('publish_down', \Date::of($publish_down, $offset)->toSql());
 		}
 
 		// When creating a new unit
@@ -1758,7 +1758,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$this->section_id     = Request::getInt('section_id', '');
 
 		// Load the course page
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 		$course = CoursesModelCourse::getInstance($this->course_id);
 		$offering = $course->offering($this->offering_alias);
 		$course->offering()->section($this->section_id);

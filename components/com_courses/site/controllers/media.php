@@ -623,7 +623,7 @@ class Media extends SiteController
 			}
 
 			//load wiki page from db
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 			$page = new \Components\Wiki\Tables\Page($this->database);
 			$page->load(Request::getVar('pagename'), $course->get('cn') . DS . 'wiki');
 

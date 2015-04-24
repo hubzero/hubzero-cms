@@ -92,9 +92,9 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 					$folder_name = key($folders);
 
 					$num_files = 0;
-					if (is_dir(JPATH_ROOT.DS.$folders[$folder_name]))
+					if (is_dir(PATH_APP.DS.$folders[$folder_name]))
 					{
-						$d = @dir(JPATH_ROOT.DS.$folders[$folder_name]);
+						$d = @dir(PATH_APP.DS.$folders[$folder_name]);
 
 						while (false !== ($entry = $d->read()))
 						{
@@ -130,7 +130,7 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 					$doc_name = key($docs);
 					$iconfile = $this->config->get('iconpath').DS.substr($doc_name,-3).'.png';
 
-					if (file_exists(JPATH_ROOT.$iconfile))
+					if (file_exists(PATH_APP.$iconfile))
 					{
 						$icon = $iconfile;
 					}

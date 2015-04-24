@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php';
 
 ?>
 
@@ -59,7 +59,7 @@ Latest Discussions:
 <?php foreach ($this->latest as $post) : ?>
 ----------------------------------------
 <?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
-<?php echo \JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a') . "\n"; ?>
+<?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
 <?php echo $postObj->content('raw') . "\n"; ?>
 ----------------------------------------
 

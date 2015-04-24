@@ -167,7 +167,7 @@ class Threads extends SiteController
 		if ($this->view->thread->get('access') > 0 && User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
@@ -208,8 +208,6 @@ class Threads extends SiteController
 	public function latestTask()
 	{
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
-		$app = \JFactory::getApplication();
 
 		// Set the mime encoding for the document
 		$jdoc = \JFactory::getDocument();
@@ -324,7 +322,7 @@ class Threads extends SiteController
 				$description = String::truncate($description, 300, 0);
 
 				// Get author
-				$juser = \JUser::getInstance($row['created_by']);
+				$juser = User::getInstance($row['created_by']);
 				$author = stripslashes($juser->get('name'));
 
 				// Get date
@@ -377,7 +375,7 @@ class Threads extends SiteController
 			{
 				$return = Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
 			}
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -415,7 +413,7 @@ class Threads extends SiteController
 		}
 		elseif ($this->view->post->get('created_by') != User::get('id') && !$this->config->get('access-edit-thread'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
@@ -454,7 +452,7 @@ class Threads extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option)))
 			);
 			return;
@@ -487,7 +485,7 @@ class Threads extends SiteController
 		$this->_authorize($assetType, intval($fields['id']));
 		if (!$this->config->get('access-edit-' . $assetType) && !$this->config->get('access-create-' . $assetType))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -553,7 +551,7 @@ class Threads extends SiteController
 		$category = new Category($model->get('category_id'));
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $parent . '#c' . $model->get('id')),
 			$message,
 			'message'
@@ -573,7 +571,7 @@ class Threads extends SiteController
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
@@ -591,7 +589,7 @@ class Threads extends SiteController
 		// Make the sure the category exist
 		if (!$model->id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 				Lang::txt('COM_FORUM_MISSING_ID'),
 				'error'
@@ -603,7 +601,7 @@ class Threads extends SiteController
 		$this->_authorize('thread', $id);
 		if (!$this->config->get('access-delete-thread'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
@@ -624,7 +622,7 @@ class Threads extends SiteController
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 				$model->getError(),
 				'error'
@@ -636,7 +634,7 @@ class Threads extends SiteController
 		$this->markForDelete($id);
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
 			Lang::txt('COM_FORUM_THREAD_DELETED'),
 			'message'
@@ -693,7 +691,7 @@ class Threads extends SiteController
 		if ($row->access > 0 && User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread . '&post=' . $post . '&file=' . $file));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
@@ -733,7 +731,7 @@ class Threads extends SiteController
 			}
 		}
 
-		// Add JPATH_ROOT
+		// Add PATH_CORE
 		$filename = PATH_APP . $file;
 
 		// Ensure the file exist
