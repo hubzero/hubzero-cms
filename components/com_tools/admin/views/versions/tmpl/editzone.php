@@ -114,7 +114,7 @@ jQuery(document).ready(function($){
 					</tr>
 					<tr>
 						<th class="key"><label for="field-publish-up"><?php echo Lang::txt('COM_TOOLS_FIELD_PUBLISH_UP'); ?>:</label></th>
-						<td><input class="datetime" type="text" name="fields[publish_up]" id="field-publish-up" value="<?php echo $this->escape(stripslashes($this->row->get('publish_up', Date::of()->toLocal()))); ?>" /></td>
+						<td><input class="datetime" type="text" name="fields[publish_up]" id="field-publish-up" value="<?php echo $this->escape(stripslashes($this->row->publish_up)); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-publish-down"><?php echo Lang::txt('COM_TOOLS_FIELD_PUBLISH_DOWN'); ?>:</label></th>

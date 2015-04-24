@@ -331,6 +331,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		$fields = Request::getVar('fields', [], 'post');
 		$row    = Zone::oneOrNew($fields['id'])->set($fields);
 
+		if (empty($fields['publish_up'])) $row->set('publish_up', null);
+		if (empty($fields['publish_down'])) $row->set('publish_down', null);
+
 		if (!$row->save())
 		{
 			Notify::error($row->getError());
