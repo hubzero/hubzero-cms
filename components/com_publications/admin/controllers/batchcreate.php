@@ -57,7 +57,7 @@ class Batchcreate extends AdminController
 		$filters['sortby']  	= 'title';
 		$filters['sortdir'] 	= 'DESC';
 		$filters['authorized'] 	= true;
-		$this->view->projects = $project->getRecords( $filters, true, 0, 1 );
+		$this->view->projects   = $project->getRecords( $filters, true, 0, 1 );
 
 		// Set any errors
 		if ($this->getError())
@@ -158,6 +158,9 @@ class Batchcreate extends AdminController
 		$dryRun = Request::getInt('dryrun', 1);
 
 		$this->data = NULL;
+
+		// Filesystem
+		$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
 
 		// Project ID must be supplied
 		$this->project = new \Components\Projects\Models\Project($id);
@@ -308,12 +311,7 @@ class Batchcreate extends AdminController
 			. DS . 'models' . DS . 'types.php' );
 
 		// Get project repo path
-		$this->projectPath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
-
-		// Git helper
-		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
-			. DS . 'helpers' . DS . 'githelper.php' );
-		$this->_git = new \Components\Projects\Helpers\Git($this->projectPath);
+		$this->projectPath = $this->project->repo()->get('path');
 
 		// Parse data
 		$items = array();
@@ -337,7 +335,7 @@ class Batchcreate extends AdminController
 				$item['publication'] = new \Components\Publications\Tables\Publication( $this->database );
 				$item['publication']->master_type 		= $mType->id;
 				$item['publication']->category 			= $catId ? $catId : $cat;
-				$item['publication']->project_id 		= $this->project->id;
+				$item['publication']->project_id 		= $this->project->get('id');
 				$item['publication']->created_by 		= $this->_uid;
 				$item['publication']->created 			= Date::toSql();
 				$item['publication']->access 			= 0;
@@ -437,21 +435,21 @@ class Batchcreate extends AdminController
 		// Show what you'll get
 		if ($dryRun == 1)
 		{
-			$eview 	= new \Hubzero\Component\View( array(
-				'name'=>'batchcreate',
+			$eview       = new \Hubzero\Component\View( array(
+				'name'   =>'batchcreate',
 				'layout' => 'dryrun'
 				)
 			);
-			$eview->option 	= $this->_option;
-			$eview->items = $items;
-			$output .= $eview->loadTemplate();
+			$eview->option = $this->_option;
+			$eview->items  = $items;
+			$output       .= $eview->loadTemplate();
 		}
 		elseif ($dryRun == 2)
 		{
 			// Get hub config
 			$this->site = Config::get('config.live_site')
 				? Config::get('config.live_site')
-				: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
+				: trim(Request::base(), DS);
 
 			// Process batch
 			$out = NULL;
@@ -525,9 +523,6 @@ class Batchcreate extends AdminController
 		$version->secret = $item['version']->secret;
 		$version->id = $vid;
 		$version->publication_id = $pid;
-
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
 
 		// Create attachments records and attach files
 		foreach ($item['files'] as $fileRecord)
@@ -612,10 +607,10 @@ class Batchcreate extends AdminController
 
 		// Add file record
 		$fileRecord = array(
-			'type' => $type,
-			'attachment' => $attach,
+			'type'        => $type,
+			'attachment'  => $attach,
 			'projectPath' => $filePath,
-			'error' => $error
+			'error'       => $error
 		);
 
 		$item['files'][] = $fileRecord;
@@ -743,15 +738,15 @@ class Batchcreate extends AdminController
 
 		if (!is_dir( PATH_APP . $gallery_path ))
 		{
-			\JFolder::create( PATH_APP . $gallery_path );
+			$this->fileSystem->makeDirectory( PATH_APP . $gallery_path, 0755, true, true );
 		}
-		if (!\JFile::copy($fileRecord['projectPath'], PATH_APP . $gallery_path. DS . $hashed))
+		if (!$this->fileSystem->copy($fileRecord['projectPath'], PATH_APP . $gallery_path. DS . $hashed))
 		{
 			return false;
 		}
 		else
 		{
-			\JFile::copy($fileRecord['projectPath'], PATH_APP . $gallery_path. DS . $thumb);
+			$this->fileSystem->copy($fileRecord['projectPath'], PATH_APP . $gallery_path. DS . $thumb);
 
 			$hi = new \Hubzero\Image\Processor(PATH_APP . $gallery_path . DS . $thumb);
 			if (count($hi->getErrors()) == 0)
@@ -791,7 +786,7 @@ class Batchcreate extends AdminController
 		{
 			$objO = new \Components\Projects\Tables\Owner( $this->database );
 
-			$objO->projectid 	 = $this->project->id;
+			$objO->projectid 	 = $this->project->get('id');
 			$objO->userid 		 = $author->user_id;
 			$objO->status 		 = $author->user_id ? 1 : 0;
 			$objO->added 		 = Date::toSql();
@@ -863,8 +858,8 @@ class Batchcreate extends AdminController
 		$pAuthor->name 				= trim($pAuthor->firstName . ' ' . $pAuthor->lastName);
 
 		// Check if project member
-		$objO   = new \Components\Projects\Tables\Owner( $this->database );
-		$owner  = $objO->getOwnerId( $this->project->id, $uid, $pAuthor->name );
+		$objO   = $this->project->table('Owner');
+		$owner  = $objO->getOwnerId( $this->project->get('id'), $uid, $pAuthor->name );
 		$pAuthor->project_owner_id 	= $owner;
 
 		if (!$pAuthor->name)
@@ -919,7 +914,7 @@ class Batchcreate extends AdminController
 	 */
 	public function getSchema()
 	{
-		return JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'publications.xsd';
+		return 'import' . DS . 'publications.xsd';
 	}
 
 	/**

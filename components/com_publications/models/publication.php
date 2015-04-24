@@ -344,11 +344,11 @@ class Publication extends Object
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal('M d, Y');
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal('g:i a');
 			break;
 
 			default:
@@ -360,7 +360,7 @@ class Publication extends Object
 	/**
 	 * Get the home project of this entry
 	 *
-	 * @return     mixed
+	 * @return  object Models\Project
 	 */
 	public function project()
 	{
@@ -464,18 +464,40 @@ class Publication extends Object
 	 */
 	public function authors()
 	{
+		if (!isset($this->_tblAuthors))
+		{
+			$this->_tblAuthors = new Tables\Author( $this->_db );
+		}
 		if (!$this->exists())
 		{
 			return array();
 		}
 		if (!isset($this->_authors))
 		{
-			$objA = new Tables\Author( $this->_db );
-			$this->_authors = $objA->getAuthors($this->version->id);
-			$this->_submitter = $objA->getSubmitter($this->version->id, $this->version->created_by);
+			$this->_authors   = $this->_tblAuthors->getAuthors($this->version->id);
+			$this->_submitter = $this->_tblAuthors->getSubmitter($this->version->id, $this->version->created_by);
 		}
 
 		return $this->_authors;
+	}
+
+	/**
+	 * Get publication table
+	 *
+	 * @return  object
+	 */
+	public function table($name = NULL)
+	{
+		if ($name == 'Author')
+		{
+			if (!isset($this->_tblAuthor))
+			{
+				$this->_tblAuthor = new Tables\Author( $this->_db );
+			}
+			return $this->_tblAuthor;
+		}
+
+		return $this->_tbl;
 	}
 
 	/**

@@ -758,8 +758,7 @@ class Items extends AdminController
 				$doiService = new Models\Doi($model);
 
 				// Get updated authors
-				$pAuthor = new Tables\Author( $this->database );
-				$authors = $pAuthor->getAuthors($model->version->id);
+				$authors = $model->table('Author')->getAuthors($model->version->id);
 				$doiService->set('authors', $authors);
 
 				// Update DOI
@@ -865,7 +864,7 @@ class Items extends AdminController
 		// Save publication record
 		$this->model->publication->alias    = trim(Request::getVar( 'alias', '', 'post' ));
 		$this->model->publication->category = trim(Request::getInt( 'category', 0, 'post' ));
-		if (!$project->owned_by_group)
+		if (!$project->get('owned_by_group'))
 		{
 			$this->model->publication->group_owner = $group_owner;
 		}
@@ -1131,13 +1130,14 @@ class Items extends AdminController
 						  . $pubtitle.'" ';
 
 				// Build return url
-				$link 	= '/projects/' . $project->alias . '/publications/'
+				$link 	= '/projects/' . $project->get('alias') . '/publications/'
 						. $id . '/?version=' . $this->model->version->version_number;
 
 				if ($action != 'message' && !$this->getError())
 				{
-					$aid = $objAA->recordActivity( $project->id, User::get('id'),
-						$activity, $id, $pubtitle, $link, 'publication', 0, $admin = 1 );
+					$aid = $project->recordActivity(
+						$activity, $id, $pubtitle, $link, 'publication', 0, $admin = 1
+					);
 					$sendmail = $this->config->get('email') ? 1 : 0;
 
 					// Append comment to activity
@@ -1165,15 +1165,14 @@ class Items extends AdminController
 							$objC->checkin();
 						}
 
-						$objAA = new \Components\Projects\Tables\Activity ( $this->database );
-
 						if ( $objC->id )
 						{
 							$what = Lang::txt('COM_PROJECTS_AN_ACTIVITY');
 							$curl = '#tr_'.$aid; // same-page link
-							$caid = $objAA->recordActivity( $pub->project_id, User::get('id'),
+							$caid = $project->recordActivity(
 							Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON')
-								. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1 );
+								. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1
+							);
 
 							// Store activity ID
 							if ($caid)
@@ -1209,10 +1208,9 @@ class Items extends AdminController
 		if ($sendmail && !$this->getError())
 		{
 			// Get ids of publication authors with accounts
-			$objA   = new Tables\Author( $this->_db );
-			$notify = $objA->getAuthors($this->model->version->id, 1, 1, 1, true);
+			$notify   = $this->model->table('Author')->getAuthors($this->model->version->id, 1, 1, 1, true);
 			$notify[] = $this->model->version->created_by;
-			$notify = array_unique($notify);
+			$notify   = array_unique($notify);
 
 			$this->_emailContributors($this->model->version, $project, $subject, $message, $notify, $action);
 		}
@@ -1445,8 +1443,6 @@ class Items extends AdminController
 		}
 
 		$version = count($ids) == 1 ? Request::getVar( 'version', 'all' ) : 'all';
-
-		jimport('joomla.filesystem.folder');
 
 		require_once(PATH_CORE . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');

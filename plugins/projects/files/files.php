@@ -3536,9 +3536,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
-				if ($remote['status'] != 'D' && $local_dir && !\JFolder::exists( $this->_path . DS . $local_dir ))
+				if ($remote['status'] != 'D' && $local_dir && !is_dir( $this->_path . DS . $local_dir ))
 				{
-					if (\JFolder::create( $this->_path . DS . $local_dir ))
+					if ($this->fileSystem->makeDirectory( $this->_path . DS . $local_dir ))
 					{
 						$created = $this->_git->makeEmptyFolder($local_dir, false);
 						$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
@@ -3685,7 +3685,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Add item from remote to local (new)
 						if ($remote['type'] == 'folder')
 						{
-							if (\JFolder::create( $this->_path . DS . $filename ))
+							if ($this->fileSystem->makeDirectory( $this->_path . DS . $filename, 0755, true, true ))
 							{
 								$created = $this->_git->makeEmptyFolder($filename, false);
 								$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
@@ -4124,7 +4124,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!is_dir( PATH_APP . $path ))
 		{
-			if (!\JFolder::create( PATH_APP . $path ))
+			if (!$this->fileSystem->makeDirectory( PATH_APP . $path, 0755, true, true ))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
