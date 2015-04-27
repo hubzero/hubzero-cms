@@ -82,19 +82,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		switch ($size)
-		{
-			case 'thumb':
-			case 'thumbnail':
-				$file = $asset->thumbnail();
-			break;
-
-			case 'orig':
-			case 'original':
-			default:
-				$file = $asset->get('filename');
-			break;
-		}
+		$file = $asset->file($size);
 
 		// Get the configured upload path
 		$filename = $asset->filespace() . DS . $asset->get('item_id') . DS . ltrim($file, DS);
