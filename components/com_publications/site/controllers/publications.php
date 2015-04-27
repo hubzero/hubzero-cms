@@ -400,7 +400,7 @@ class Publications extends SiteController
 		$this->view->filters = array(
 			'category'   	=> Request::getVar('category', ''),
 			'sortby' 		=> Request::getCmd('sortby', $default_sort),
-			'limit'  		=> Request::getInt('limit', Config::get('config.list_limit')),
+			'limit'  		=> Request::getInt('limit', Config::get('list_limit')),
 			'start'  		=> Request::getInt('limitstart', 0),
 			'search' 		=> Request::getVar('search', ''),
 			'tag'    		=> trim(Request::getVar('tag', '', 'request', 'none', 2)),
@@ -1590,7 +1590,7 @@ class Publications extends SiteController
 		$publication = $objP->getPublication($id, $version);
 
 		// Get HUB configuration
-		$sitename = Config::get('config.sitename');
+		$sitename = Config::get('sitename');
 
 		// Make sure we got a result from the database
 		if (!$publication)

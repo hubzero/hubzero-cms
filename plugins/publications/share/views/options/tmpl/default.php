@@ -38,7 +38,7 @@ $i = 1;
 $limit = intval($this->_params->get('icons_limit')) ? $this->_params->get('icons_limit') : 0;
 
 $popup = '<ol class="sharelinks">';
-$title = Lang::txt('PLG_PUBLICATION_SHARE_VIEWING', Config::get('config.sitename'),stripslashes($this->publication->title));
+$title = Lang::txt('PLG_PUBLICATION_SHARE_VIEWING', Config::get('sitename'), stripslashes($this->publication->title));
 $metadata  = '<div class="share">'."\n";
 $metadata .= "\t".Lang::txt('PLG_PUBLICATION_SHARE').': ';
 

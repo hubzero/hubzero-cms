@@ -498,8 +498,8 @@ class Base extends SiteController
 
 		// Set up email config
 		$from 			= array();
-		$from['name']  	= Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
-		$from['email'] 	= Config::get('config.mailfrom');
+		$from['name']  	= Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
+		$from['email'] 	= Config::get('mailfrom');
 
 		// Get team/managers
 		$filters = array( 'select'=> 'o.userid, o.invited_code, o.invited_email, o.role ', 'sortby' => 'status' );
@@ -574,7 +574,7 @@ class Base extends SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				Helpers\Html::email($member->invited_email, Config::get('config.sitename')
+				Helpers\Html::email($member->invited_email, Config::get('sitename')
 					. ': ' . $subject_pending, $message, $from);
 			}
 		}

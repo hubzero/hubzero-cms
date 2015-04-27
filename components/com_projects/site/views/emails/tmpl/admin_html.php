@@ -103,7 +103,7 @@ $owner   = $this->project->groupOwner()
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title><?php echo Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS'); ?></title>
+		<title><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS'); ?></title>
 		<style type="text/css">
 		/* Client-specific Styles */
 		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
@@ -231,14 +231,14 @@ $owner   = $this->project->groupOwner()
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-														<?php echo Config::get('config.sitename'); ?>
+														<?php echo Config::get('sitename'); ?>
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 															<a href="<?php echo Request::base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::base(); ?></a>
 														</span>
 														<br />
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.MetaDesc'); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
 														<?php echo Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS'); ?>
@@ -301,7 +301,7 @@ $owner   = $this->project->groupOwner()
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@<?php echo Date::of($this->project->get('created'))->toLocal('g:i a'); ?> on <?php echo Date::of($this->project->get('created'))->format('M d, Y'); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@<?php echo Date::of($this->project->get('created'))->toLocal('g:i a'); ?> on <?php echo Date::of($this->project->get('created'))->toLocal('M d, Y'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>
@@ -341,7 +341,7 @@ $owner   = $this->project->groupOwner()
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

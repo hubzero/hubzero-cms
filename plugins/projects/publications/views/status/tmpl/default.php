@@ -27,9 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $dateFormat = 'm/d/Y';
 
-$site = Config::get('config.live_site')
-	? Config::get('config.live_site')
-	: trim(Request::base(), DS);
+$site = trim(Request::base(), DS);
 
 $now 	= Date::toSql();
 $v 		= $this->pub->versionAlias == 'default' ? '' : '?v=' . $this->pub->versionAliasAlias;

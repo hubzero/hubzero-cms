@@ -89,7 +89,7 @@ class Projects extends AdminController
 			'limit' => Request::getState(
 				$this->_option . '.projects.limit',
 				'limit',
-				Config::get('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => Request::getState(
@@ -205,10 +205,9 @@ class Projects extends AdminController
 		}
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
-		$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
-		$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'files.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'css/diskspace.css');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'js/diskspace.js');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files');
 
 		$this->view = $this->view;
 		$this->view->config = $this->config;
@@ -285,7 +284,7 @@ class Projects extends AdminController
 		$this->view->tags = $cloud->render('string');
 
 		// Output the HTML
-		$this->view->obj = $model->project();
+		$this->view->model = $model;
 		$this->view->publishing	= $this->_publishing;
 		$this->view->display();
 	}
@@ -314,18 +313,15 @@ class Projects extends AdminController
 		// Config
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
-		// Get some needed classes
-		$objAA = new Tables\Activity ( $this->database );
-
 		// Incoming
 		$formdata 	= $_POST;
 		$id 		= Request::getVar( 'id', 0 );
 		$action 	= Request::getVar( 'admin_action', '' );
 		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar( 'message', '' )));
 
-		// Initiate extended database class
-		$obj = new Tables\Project( $this->database );
-		if (!$id or !$obj->loadProject($id))
+		// Load model
+		$model = new Models\Project( $id );
+		if (!$model->exists())
 		{
 			App::redirect('index.php?option=' . $this->_option,
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
@@ -333,29 +329,29 @@ class Projects extends AdminController
 			return;
 		}
 
-		$obj->title 		= $formdata['title'] ? rtrim($formdata['title']) : $obj->title;
-		$obj->about 		= rtrim(\Hubzero\Utility\Sanitize::clean($formdata['about']));
-		$obj->type 			= isset($formdata['type']) ? $formdata['type'] : 1;
-		$obj->modified 		= Date::toSql();
-		$obj->modified_by 	= User::get('id');
-		$obj->private 		= Request::getVar( 'private', 0 );
+		$title = $formdata['title'] ? rtrim($formdata['title']) : $model->get('title');
+		$type  = isset($formdata['type']) ? $formdata['type'] : 1;
+		$model->set('title', $title);
+		$model->set('about', rtrim(\Hubzero\Utility\Sanitize::clean($formdata['about'])));
+		$model->set('type', $type);
+		$model->set('modified', Date::toSql());
+		$model->set('modified_by', User::get('id'));
+		$model->set('private', Request::getVar( 'private', 0 ));
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
 		// Was project suspended?
 		$suspended = false;
-		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
+		if ($model->isInactive())
 		{
-			$suspended = $objAA->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$suspended = $model->table('Activity')->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
-		$subject 		= Lang::txt('COM_PROJECTS_PROJECT').' "'.$obj->alias.'" ';
+		$subject 		= Lang::txt('COM_PROJECTS_PROJECT') . ' "' . $model->get('alias') . '" ';
 		$sendmail 		= 0;
-		$project 		= $obj->getProject($id, User::get('id'));
 
 		// Get project managers
-		$objO = new Tables\Owner( $this->database );
-		$managers = $objO->getIds( $id, 1, 1 );
+		$managers = $model->table('Owner')->getIds( $id, 1, 1 );
 
 		// Admin actions
 		if ($action)
@@ -363,21 +359,21 @@ class Projects extends AdminController
 			switch ($action)
 			{
 				case 'delete':
-					$obj->state = 2;
-					$what = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
-					$subject .= Lang::txt('COM_PROJECTS_MSG_ADMIN_DELETED');
+					$model->set('state', 2);
+					$what           = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
+					$subject       .= Lang::txt('COM_PROJECTS_MSG_ADMIN_DELETED');
 					$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_DELETED');
 				break;
 
 				case 'suspend':
-					$obj->state = 0;
-					$what = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
-					$subject .= Lang::txt('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
+					$model->set('title', 0);
+					$what           = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
+					$subject       .= Lang::txt('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
 					$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SUSPENDED');
 				break;
 
 				case 'reinstate':
-					$obj->state = 1;
+					$model->set('title', 1);
 					$what = $suspended
 						? Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED')
 						: Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_ACTIVATED');
@@ -392,7 +388,7 @@ class Projects extends AdminController
 			}
 
 			// Add activity
-			$objAA->recordActivity( $obj->id, User::get('id'), $what, 0, '', '', 'project', 0, $admin = 1 );
+			$model->recordActivity($what, 0, '', '', 'project', 0, $admin = 1 );
 			$sendmail = 1;
 		}
 		elseif ($message)
@@ -403,9 +399,9 @@ class Projects extends AdminController
 		}
 
 		// Save changes
-		if (!$obj->store())
+		if (!$model->store())
 		{
-			$this->setError( $obj->getError() );
+			$this->setError( $model->getError() );
 			return false;
 		}
 
@@ -413,11 +409,11 @@ class Projects extends AdminController
 		$tags = Request::getVar('tags', '', 'post');
 
 		// Save the tags
-		$cloud = new Models\Tags($obj->id);
+		$cloud = new Models\Tags($model->get('id'));
 		$cloud->setTags($tags, User::get('id'), 1);
 
 		// Save params
-		$incoming   = Request::getVar( 'params', array() );
+		$incoming = Request::getVar( 'params', array() );
 		if (!empty($incoming))
 		{
 			foreach ($incoming as $key=>$value)
@@ -428,11 +424,12 @@ class Projects extends AdminController
 					$value = Helpers\Html::convertSize( floatval($value), 'GB', 'b');
 				}
 
-				$obj->saveParam($id, $key, htmlentities($value));
+				$model->saveParam($key, $value);
 			}
 		}
 
 		// Add members if specified
+		$this->model = $model;
 		$this->_saveMember();
 
 		// Send message
@@ -440,8 +437,8 @@ class Projects extends AdminController
 		{
 			// Email config
 			$from 			= array();
-			$from['name']  	= Config::get('config.sitename').' ' . Lang::txt('COM_PROJECTS');
-			$from['email'] 	= Config::get('config.mailfrom');
+			$from['name']  	= Config::get('sitename').' ' . Lang::txt('COM_PROJECTS');
+			$from['email'] 	= Config::get('mailfrom');
 
 			// Html email
 			$from['multipart'] = md5(date('U'));
@@ -451,7 +448,7 @@ class Projects extends AdminController
 			$eview->option 			= $this->_option;
 			$eview->subject 		= $subject;
 			$eview->action 			= $action;
-			$eview->project 		= $project;
+			$eview->project 		= $model;
 			$eview->message			= $message;
 
 			$body = array();
@@ -489,10 +486,6 @@ class Projects extends AdminController
 		// New member added?
 		$members 	= urldecode(trim(Request::getVar( 'newmember', '', 'post'  )));
 		$role 		= Request::getInt( 'role', 0 );
-		$id 		= Request::getVar( 'id', 0 );
-
-		// Get owner class
-		$objO = new Tables\Owner($this->database);
 
 		$mbrs = explode(',', $members);
 
@@ -504,7 +497,7 @@ class Projects extends AdminController
 			// Ensure we found an account
 			if ($profile)
 			{
-				$objO->saveOwners ( $id, User::get('id'), $profile->get('uidNumber'), 0, $role, $status = 1, 0);
+				$this->model->table('Owner')->saveOwners ( $this->model->get('id'), User::get('id'), $profile->get('uidNumber'), 0, $role, $status = 1, 0);
 			}
 		}
 	}

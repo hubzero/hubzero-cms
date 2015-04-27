@@ -9,7 +9,7 @@ $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
-Toolbar::title( Lang::txt( 'Projects' ) . ': '.stripslashes($this->obj->title).' ('.$this->obj->alias.', #'.$this->obj->id.')', 'addedit.png' );
+Toolbar::title( Lang::txt( 'Projects' ) . ': ' . stripslashes($this->model->get('title')) . ' (' . $this->model->get('alias') . ', #' . $this->model->get('id') . ')', 'addedit.png' );
 Toolbar::spacer();
 Toolbar::apply();
 Toolbar::save();
@@ -17,41 +17,38 @@ Toolbar::cancel();
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
-// Get creator profile
-$profile = \Hubzero\User\Profile::getInstance($this->obj->created_by_user);
-
 // Determine status & options
 $status = '';
-$row = $this->obj;
-if ($row->state == 1 && $row->setup_stage >= $setup_complete)
+
+if ($this->model->isActive())
 {
-	$status   = '<span class="active">' . Lang::txt('COM_PROJECTS_ACTIVE').'</span> ' . Lang::txt('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_LC2'));
+	$status   = '<span class="active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span> ' . Lang::txt('COM_PROJECTS_SINCE') . ' ' . Date::of($this->model->get('created'))->toLocal();
 }
-elseif ($row->state == 2)
+elseif ($this->model->isDeleted())
 {
 	$status  = '<span class="deleted">' . Lang::txt('COM_PROJECTS_DELETED').'</span> ';
 }
-elseif ($row->setup_stage < $setup_complete)
+elseif ($this->model->inSetup())
 {
 	$status  = '<span class="setup">' . Lang::txt('Setup').'</span> ' . Lang::txt('in progress');
 }
-elseif ($row->state == 0)
+elseif ($this->model->isInactive())
 {
 	$text = $this->suspended ? Lang::txt('COM_PROJECTS_SUSPENDED') : Lang::txt('COM_PROJECTS_INACTIVE');
-	$status = '<span class="inactive">'.$text.'</span> ';
+	$status = '<span class="inactive">' . $text . '</span> ';
 	if ($this->suspended)
 	{
 		$status .= $this->suspended == 1
-			? ' (' . Lang::txt('COM_PROJECTS_BY_ADMIN') .')'
-			: ' (' . Lang::txt('COM_PROJECTS_BY_PROJECT_MANAGER').')';
+			? ' (' . Lang::txt('COM_PROJECTS_BY_ADMIN') . ')'
+			: ' (' . Lang::txt('COM_PROJECTS_BY_PROJECT_MANAGER') . ')';
 	}
 }
-elseif ($row->state == 5)
+elseif ($this->model->isPending())
 {
-	$status  = '<span class="inactive">' . Lang::txt('COM_PROJECTS_PENDING_APPROVAL').'</span> ';
+	$status  = '<span class="inactive">' . Lang::txt('COM_PROJECTS_PENDING_APPROVAL') . '</span> ';
 }
 
-$sysgroup 	= $this->config->get('group_prefix', 'pr-').$this->obj->alias;
+$sysgroup 	= $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
 $quota 		= $this->params->get('quota');
 $quota 		= $quota ? $quota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
@@ -103,19 +100,18 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>:</label>
-				<input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo $this->escape(stripslashes($this->obj->title)); ?>" />
+				<input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
 			</div>
 
 			<div class="input-wrap">
 				<label for="alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>:</label>
-				<span><?php echo stripslashes($this->obj->alias); ?></span>
+				<span><?php echo stripslashes($this->model->get('alias')); ?></span>
 			</div>
 
 			<div class="input-wrap">
 				<label for="about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?>:</label>
 				<?php 
-					$project = new \Components\Projects\Models\Project($this->obj);
-					echo \Components\Wiki\Helpers\Editor::getInstance()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null);
+					echo JFactory::getEditor()->display('about', $this->escape($this->model->about('raw')), '', '', 35, 25, false, 'about', null, null);
 				?>
 			</div>
 
@@ -140,7 +136,7 @@ function submitbutton(pressbutton)
 							($type->id == 2 && !Plugin::isEnabled('projects', 'tools'))) {
 								continue;
 							}
-							$selected = $type->id == $this->obj->type ? ' selected="selected"' : '';
+							$selected = $type->id == $this->model->get('type') ? ' selected="selected"' : '';
 							?>
 							<option value="<?php echo $type->id; ?>" <?php echo $selected; ?>><?php echo $type->type ?></option>
 						<?php } ?>
@@ -151,12 +147,11 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<?php echo Lang::txt('COM_PROJECTS_OWNER'); ?>:
 				<?php
-				if ($this->obj->owned_by_group)
+				if ($this->model->get('owned_by_group'))
 				{
-					$group = \Hubzero\User\Group::getInstance( $this->obj->owned_by_group );
-					if ($group)
+					if ($this->model->groupOwner())
 					{
-						$ownedby = '<span class="i_group">'.$group->get('cn').'</span>';
+						$ownedby = '<span class="i_group">' . $this->model->groupOwner('cn') . '</span>';
 					}
 					else
 					{
@@ -165,9 +160,8 @@ function submitbutton(pressbutton)
 				}
 				else
 				{
-					$profile = \Hubzero\User\Profile::getInstance($this->obj->owned_by_user);
-					$ownedby = $profile->get('name') ? $profile->get('name') : Lang::txt('COM_PROJECTS_INFO_UNKNOWN_USER');
-					$ownedby = '<span class="i_user">'.$ownedby.'</span>';
+					$ownedby = $this->model->owner('name') ? $this->model->owner('name') : Lang::txt('COM_PROJECTS_INFO_UNKNOWN_USER');
+					$ownedby = '<span class="i_user">' . $ownedby . '</span>';
 				}
 				echo $ownedby;
 				?>
@@ -185,8 +179,8 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
 				<select name="private">
-					<option value="0" <?php if ($this->obj->private == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
-					<option value="1" <?php if ($this->obj->private == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
+					<option value="0" <?php if ($this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
+					<option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
 				</select>
 			</div>
 
@@ -245,7 +239,7 @@ function submitbutton(pressbutton)
 			<?php } ?>
 		</fieldset>
 
-		<?php if ($row->setup_stage >= $setup_complete) { ?>
+		<?php if (!$this->model->inSetup()) { ?>
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('COM_PROJECTS_FILES'); ?></legend>
 
@@ -265,14 +259,14 @@ function submitbutton(pressbutton)
 					</div>
 				<?php } ?>
 				<div class="input-wrap">
-					<?php echo Lang::txt('Maintenance options:'); ?> &nbsp; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id=' . $this->obj->id); ?>"><?php echo Lang::txt('git gc --aggressive'); ?></a> [<?php echo Lang::txt('Takes minutes to run'); ?>]
+					<?php echo Lang::txt('Maintenance options:'); ?> &nbsp; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('git gc --aggressive'); ?></a> [<?php echo Lang::txt('Takes minutes to run'); ?>]
 				</div>
 
 				<?php if ($cEnabled) { ?>
 					<div class="input-wrap">
 						<?php echo Lang::txt('COM_PROJECTS_CONNECTIONS'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
 						<?php if ($connected) { ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fixsync&id=' . $this->obj->id); ?>"><?php echo Lang::txt('download sync log'); ?></a> &nbsp; [<?php echo Lang::txt('Also fixes stalled sync'); ?>]
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fixsync&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('download sync log'); ?></a> &nbsp; [<?php echo Lang::txt('Also fixes stalled sync'); ?>]
 						<?php } ?>
 					</div>
 				<?php } ?>
@@ -284,7 +278,7 @@ function submitbutton(pressbutton)
 			<tbody>
 				<tr>
 					<th><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?>:</th>
-					<td><?php echo $this->obj->created; ?> <?php echo Lang::txt('COM_PROJECTS_BY').' '.$profile->get('name').' ('.$profile->get('username').')'; ?></td>
+					<td><?php echo $this->model->get('created'); ?> <?php echo Lang::txt('COM_PROJECTS_BY').' ' . $this->model->creator('name') . ' (' . $this->model->creator('username') . ')'; ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>
@@ -338,12 +332,12 @@ function submitbutton(pressbutton)
 
 					<input type="hidden" name="admin_action" value="" />
 					<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
-				<?php if ($row->state == 1 && $row->setup_stage >= $setup_complete) { ?>
+				<?php if ($this->model->isActive()) { ?>
 					<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" onclick="javascript: submitbutton('suspend')" />
-				<?php } else if ($row->state == 2 || ($row->state == 0 && $row->setup_stage >= $setup_complete)) { ?>
+				<?php } else if ($this->model->isInactive() || $this->model->isDeleted()) { ?>
 					<input type="submit" value="<?php echo $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reisnate" onclick="javascript: submitbutton('reinstate')" />
 				<?php } ?>
-				<?php if ($row->state != 2) { ?>
+				<?php if (!$this->model->isDeleted()) { ?>
 					<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" onclick="javascript: submitbutton('delete')" />
 				<?php } ?>
 			</div>
@@ -388,10 +382,10 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<div class="width-100">
-		<p class="notice"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->obj->id); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
+		<p class="notice"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
 	</div>
 
-	<input type="hidden" name="id" value="<?php echo $this->obj->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="apply" />
 

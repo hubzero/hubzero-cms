@@ -447,9 +447,7 @@ class Batchcreate extends AdminController
 		elseif ($dryRun == 2)
 		{
 			// Get hub config
-			$this->site = Config::get('config.live_site')
-				? Config::get('config.live_site')
-				: trim(Request::base(), DS);
+			$this->site = trim(Request::base(), DS);
 
 			// Process batch
 			$out = NULL;

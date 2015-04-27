@@ -619,6 +619,29 @@ class Project extends Model
 	}
 
 	/**
+	 * Get the creator of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire User object
+	 *
+	 * @return     mixed
+	 */
+	public function creator($property=null)
+	{
+		if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\Profile))
+		{
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by_user'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_creator->get($property);
+		}
+		return $this->_creator;
+	}
+
+	/**
 	 * Get the group owner of this entry
 	 *
 	 * Accepts an optional property name. If provided

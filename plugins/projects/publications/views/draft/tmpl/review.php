@@ -51,10 +51,8 @@ $requireDoi   = isset($manifest->params->require_doi) ? $manifest->params->requi
 $showArchival = isset($manifest->params->show_archival) ? $manifest->params->show_archival : 0;
 
 // Get hub config
-$site = Config::get('config.live_site')
-	? Config::get('config.live_site')
-	: trim(Request::base(), DS);
-$sitename = Config::get('config.sitename');
+$site     = trim(Request::base(), DS);
+$sitename = Config::get('sitename');
 
 // Build our citation object
 $citation = '';

@@ -139,7 +139,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 			$view->publication 	= $publication;
 			$view->config 		= $config;
 			$view->version 		= $version;
-			$view->live_site 	= Config::get('config.live_site') . DS;
+			$view->live_site 	= Request::base();
 			$view->authorized	= $authorized;
 			if ($this->getError())
 			{

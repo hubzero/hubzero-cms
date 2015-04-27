@@ -1536,8 +1536,8 @@ class Html extends Object
 
 		// Set up email config
 		$from = array();
-		$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
-		$from['email'] = Config::get('config.mailfrom');
+		$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
+		$from['email'] = Config::get('mailfrom');
 
 		// Html email
 		$from['multipart'] = md5(date('U'));

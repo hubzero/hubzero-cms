@@ -34,9 +34,7 @@ $this->css();
 $this->js();
 
 // Get hub config
-$site = Config::get('config.live_site')
-	? Config::get('config.live_site')
-	: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
+$site = trim(Request::base(), DS);
 
 $text = ($this->task == 'edit'
 	? Lang::txt('JACTION_EDIT') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'

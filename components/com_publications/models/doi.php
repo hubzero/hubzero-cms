@@ -86,10 +86,8 @@ class Doi extends Object
 			$configs->service   = trim($params->get('doi_service'), DS);
 			$configs->prefix    = $params->get('doi_prefix');
 			$configs->userpw    = $params->get('doi_userpw');
-			$configs->publisher = $params->get('doi_publisher', Config::get('config.sitename'));
-			$configs->livesite  = Config::get('config.live_site')
-				? Config::get('config.live_site')
-				: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
+			$configs->publisher = $params->get('doi_publisher', Config::get('sitename'));
+			$configs->livesite  = trim(Request::base(), DS);
 			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 
 			$this->_configs = $configs;

@@ -25,29 +25,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base 	 = rtrim(Request::base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base 		= substr($base, 0, strlen($base)-13);
-	$sef 		= 'projects/' . $this->project->alias;
-	$sef_browse = 'projects/browse';
-}
-else
-{
-	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
-}
-
-$link = rtrim($base, DS) . DS . trim($sef, DS);
-$browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
+$projectUrl = rtrim(Request::base(), DS) . DS . trim(Route::url($this->project->link()), DS);
 
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title.' ('.$this->project->alias . ', id #' . $this->project->id.')' . "\n";
-$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' ' . Date::of($this->project->created)->toLocal('M d, Y').' ' . Lang::txt('COM_PROJECTS_BY').' ';
-$message .= $this->project->owned_by_group ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP') : $this->project->fullname;
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
+
+if ($this->project->isProvisioned())
+{
+	$message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
+}
+
+$message .= ')' . "\n";
+
+if (!$this->project->isProvisioned())
+{
+	$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
+		 . Date::of($this->project->get('created'))->toLocal('M d, Y') . ' '
+		 . Lang::txt('COM_PROJECTS_BY') . ' ';
+	$message .= $this->project->groupOwner()
+			 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+			 : $this->project->owner('name');
+}
+
 $message .= "\n";
-$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
+$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $projectUrl . "\n";
 $message .= '-------------------------------' . "\n";
 
 // Append a message

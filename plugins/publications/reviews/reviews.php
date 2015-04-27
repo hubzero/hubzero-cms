@@ -700,7 +700,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$users = $pa->getAuthors($publication->version_id, 1, 1, true );
 
 		// Build the subject
-		$subject = Config::get('config.sitename').' '.Lang::txt('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
+		$subject = Config::get('sitename').' '.Lang::txt('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
 
 		// Message
 		$eview = new \Hubzero\Plugin\View(
@@ -718,8 +718,8 @@ class PlgPublicationsReviewsHelper extends JObject
 
 		// Build the "from" data for the e-mail
 		$from = array();
-		$from['name']  = Config::get('config.sitename').' '.Lang::txt('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
-		$from['email'] = Config::get('config.mailfrom');
+		$from['name']  = Config::get('sitename').' '.Lang::txt('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
+		$from['email'] = Config::get('mailfrom');
 
 		// Send message
 		if (!Event::trigger( 'xmessage.onSendMessage', array(

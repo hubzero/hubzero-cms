@@ -50,7 +50,7 @@ class Licenses extends AdminController
 		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.licenses.limit',
 			'limit',
-			Config::get('config.list_limit'),
+			Config::get('list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = Request::getState(

@@ -36,7 +36,7 @@ $message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NOTIFICATION') ."\n";
 $message .= '-------------------------------' . "\n";
 $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') . ')' . "\n";
 $message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
-		 . Date::of($this->project->get('created'))->format('M d, Y') . ' '
+		 . Date::of($this->project->get('created'))->toLocal('M d, Y') . ' '
 		 . Lang::txt('COM_PROJECTS_BY') . ' ';
 $message .= $this->project->groupOwner()
 		 ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')

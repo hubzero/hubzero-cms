@@ -67,7 +67,7 @@ class Items extends AdminController
 		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.publications.limit',
 			'limit',
-			Config::get('config.list_limit'),
+			Config::get('list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = Request::getState(
@@ -987,9 +987,7 @@ class Items extends AdminController
 		if ($action)
 		{
 			$output = '';
-			require_once( PATH_CORE . DS . 'components'
-				. DS . 'com_projects'. DS . 'tables' . DS . 'activity.php');
-			$objAA = new \Components\Projects\Tables\Activity ( $this->database );
+
 			switch ($action)
 			{
 				case 'publish':
@@ -1212,7 +1210,7 @@ class Items extends AdminController
 			$notify[] = $this->model->version->created_by;
 			$notify   = array_unique($notify);
 
-			$this->_emailContributors($this->model->version, $project, $subject, $message, $notify, $action);
+			$this->_emailContributors($subject, $message, $notify, $action);
 		}
 
 		// Append any errors
@@ -1291,14 +1289,12 @@ class Items extends AdminController
 	/**
 	 * Sends a message to authors (or creator) of a publication
 	 *
-	 * @param      object $row      Publication
-	 * @param      object $project  Project
 	 * @return     void
 	 */
-	private function _emailContributors($row, $project, $subject = '', $message = '',
+	private function _emailContributors($subject = '', $message = '',
 		$authors = array(), $action = 'publish')
 	{
-		if (!$row || !$project)
+		if (!$this->model->exists() || !$this->model->project()->exists())
 		{
 			return false;
 		}
@@ -1306,14 +1302,13 @@ class Items extends AdminController
 		// Get pub authors' ids
 		if (empty($authors))
 		{
-			$pa = new Tables\Author( $this->database );
-			$authors = $pa->getAuthors($row->id, 1, 1, 1);
+			$authors = $this->model->table('Author')->getAuthors($this->model->version->id, 1, 1, 1);
 		}
 
 		// No authors – send to publication creator
 		if (count($authors) == 0)
 		{
-			$authors = array($row->created_by);
+			$authors = array($this->model->version->created_by);
 		}
 
 		// Make sure there are no duplicates
@@ -1323,8 +1318,8 @@ class Items extends AdminController
 		{
 			// Email all the contributors
 			$from = array();
-			$from['email'] = Config::get('config.mailfrom');
-			$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt('PUBLICATIONS');
+			$from['email'] = Config::get('mailfrom');
+			$from['name']  = Config::get('sitename') . ' ' . Lang::txt('PUBLICATIONS');
 
 			$subject = $subject
 				? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
@@ -1334,9 +1329,9 @@ class Items extends AdminController
 			$eview->option 			= $this->_option;
 			$eview->subject 		= $subject;
 			$eview->action 			= $action;
-			$eview->row 			= $row;
+			$eview->model 			= $this->model;
 			$eview->message			= $message;
-			$eview->project			= $project;
+			$eview->project			= $this->model->project();
 
 			$body = array();
 			$body['plaintext'] 	= $eview->loadTemplate();

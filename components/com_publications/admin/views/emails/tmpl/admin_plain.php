@@ -25,37 +25,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base    = rtrim(Request::base(), DS);
-if (substr($base, -13) == 'administrator')
+$link 	 = rtrim(Request::base(), DS) . DS . trim(Route::url($this->model->link('editversion')), DS);
+$pubLink = rtrim(Request::base(), DS) . DS . trim(Route::url($this->model->link('version')), DS);
+
+$message  = $this->subject . "\n";
+$message .= '-------------------------------' . "\n";
+$message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' "' . $this->model->title . '" (id #' . $this->model->id . ')' . "\n";
+$message .= Lang::txt('COM_PUBLICATIONS_EMAIL_URL') . ': ' . $pubLink . "\n";
+$message .= '-------------------------------' . "\n";
+$message .= Lang::txt('COM_PUBLICATIONS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
+
+if ($this->project->isProvisioned())
 {
-	$base   = substr($base, 0, strlen($base)-13);
-	$sef    = 'projects/' . $this->project->alias;
-	$pubSef = 'publications' . DS . $this->row->publication_id . DS . $this->row->version_number;
-}
-else
-{
-	$sef    = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$pubSef = Route::url('index.php?option=' . $this->option . '&id=' . $this->row->publication_id . '&v=' . $this->row->version_number);
+	$message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
 }
 
-$link 	 = rtrim($base, DS) . DS . trim($sef, DS);
-$pubLink = rtrim($base, DS) . DS . trim($pubSef, DS);
+$message .= ')' . "\n";
 
-$message  = $this->subject."\n";
-$message .= '-------------------------------'."\n";
-$message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION').' "'.$this->row->title.'" (id #'.$this->row->publication_id.')'."\n";
-$message .= Lang::txt('COM_PUBLICATIONS_EMAIL_URL').': ' . $pubLink . "\n";
-$message .= '-------------------------------'."\n";
-$message .= Lang::txt('COM_PUBLICATIONS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.', id #'.$this->project->id.')'."\n";
-$message .= "\n";
 $message .= Lang::txt('COM_PUBLICATIONS_EMAIL_PROJECT_URL') . ': ' . $link . "\n";
-$message .= '-------------------------------'."\n";
+$message .= '-------------------------------' . "\n";
 
 // Append a message
 if ($this->message)
 {
 	$message .= Lang::txt('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
-	$message .= $this->message ."\n";
+	$message .= $this->message . "\n";
 }
 
 $message = str_replace('<br />', '', $message);

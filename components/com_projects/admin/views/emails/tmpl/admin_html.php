@@ -32,29 +32,11 @@ $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.
 
 $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
-$config  = Component::params( 'com_projects' );
-$hubShortName = Config::get('config.sitename');
-
-$base 	 = rtrim(Request::base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base 		= substr($base, 0, strlen($base)-13);
-	$sef 		= 'projects/' . $this->project->alias;
-	$sef_browse = 'projects/browse';
-}
-else
-{
-	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
-}
-
-$link 		= rtrim($base, DS) . DS . trim($sef, DS);
-$projectUrl = $link;
-$browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
-$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
+$projectUrl = rtrim(Request::base(), DS) . DS . trim(Route::url($this->project->link()), DS);
+$browseLink = rtrim(Request::base(), DS) . DS . trim(Route::url('index.php?option=' . $this->option . '&task=browse'), DS);
 
 // Page title
-$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
+$title = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Main message
 $subtitle  = $this->subject;
@@ -78,12 +60,16 @@ if ($comment)
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
-		 : $this->project->fullname;
-
-$showThumb = $config->get('showthumbemail', 0);
-
+if ($this->project->isProvisioned())
+{
+	$owner = NULL;
+}
+else
+{
+	$owner = $this->project->groupOwner()
+			? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+			: $this->project->owner('name');
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -219,14 +205,14 @@ $showThumb = $config->get('showthumbemail', 0);
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-														<?php echo Config::get('config.sitename'); ?>
+														<?php echo Config::get('sitename'); ?>
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 															<a href="<?php echo Request::base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::base(); ?></a>
 														</span>
 														<br />
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.MetaDesc'); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
 														<?php echo $title; ?>
@@ -269,34 +255,27 @@ $showThumb = $config->get('showthumbemail', 0);
 																		background-size: 30px 30px;">
 											<thead>
 												<tr>
-													<th <?php echo $showThumb ? 'colspan="2"' : ''; ?> style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
+													<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
 														<?php echo $subtitle; ?>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<?php if ($showThumb) { ?>
-													<td id="project-thumb" style="padding: 8px; text-align: left;" align="left">
-														<div style="text-align: center; padding: 1em; width:50px; height: 50px; background: #FFFFFF;">
-															<img width="50" border="0" src="<?php echo $thumb; ?>" alt="" />
-														</div>
-													</td>
-													<?php } ?>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Title:</th>
-																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->title; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em; font-weight: bold; font-size: 1.3em" align="left"><?php echo $this->project->get('title'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Alias:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->alias; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->get('alias'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@<?php echo Date::of($this->project->get('created'))->toLocal('g:i a'); ?> on <?php echo Date::of($this->project->get('created'))->toLocal('M d, Y'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>
@@ -304,7 +283,7 @@ $showThumb = $config->get('showthumbemail', 0);
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">URL:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $projectUrl; ?></a></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $projectUrl; ?>"><?php echo $projectUrl; ?></a></td>
 																</tr>
 															</tbody>
 														</table>
@@ -336,7 +315,7 @@ $showThumb = $config->get('showthumbemail', 0);
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

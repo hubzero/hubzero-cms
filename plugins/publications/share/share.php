@@ -149,7 +149,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 
 			case 'twitter':
 				$link = 'http://twitter.com/home?status=' . urlencode(Lang::txt('PLG_PUBLICATION_SHARE_VIEWING',
-						Config::get('config.sitename'),
+						Config::get('sitename'),
 						stripslashes($publication->title) . ' ' . $url));
 				break;
 

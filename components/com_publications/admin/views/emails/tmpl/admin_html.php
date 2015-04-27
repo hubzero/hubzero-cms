@@ -32,34 +32,11 @@ $ulStyle = 'list-style: none; font-size: 0.9em; margin: 0.5em 0; line-height: 1.
 
 $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
-$config         = Component::params( 'com_projects' );
-$pubconfig      = Component::params( 'com_publications' );
-$hubShortName   = Config::get('config.sitename');
-$showThumb      = $config->get('showthumbemail', 0);
-
-$base 	 = rtrim(Request::base(), DS);
-if (substr($base, -13) == 'administrator')
-{
-	$base 		= substr($base, 0, strlen($base)-13);
-	$sef 		= 'projects/' . $this->project->alias;
-	$pubSef		= 'publications' . DS . $this->row->publication_id . DS . $this->row->version_number;
-	$imaSef     = 'publications' . DS . $this->row->publication_id . DS . $this->row->id;
-}
-else
-{
-	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$pubSef		= Route::url('index.php?option=' . $this->option . '&id='
-				. $this->row->publication_id . '&v=' . $this->row->version_number);
-	$imaSef		= Route::url('index.php?option=' . $this->option . '&id='
-				. $this->row->publication_id . '&v=' . $this->row->id);
-}
-
-$link 	 = rtrim($base, DS) . DS . trim($sef, DS);
-$pubLink = rtrim($base, DS) . DS . trim($pubSef, DS);
-$thumb   = rtrim($base, DS) . DS . trim($imaSef, DS);
+$link 	 = rtrim(Request::base(), DS) . DS . trim(Route::url($this->model->link('editversion')), DS);
+$pubLink = rtrim(Request::base(), DS) . DS . trim(Route::url($this->model->link('version')), DS);
 
 // Page title
-$title = $hubShortName . ' ' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
+$title = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
 
 // Main message
 $subtitle  = $this->subject;
@@ -217,14 +194,14 @@ if ($comment)
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-														<?php echo Config::get('config.sitename'); ?>
+														<?php echo Config::get('sitename'); ?>
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 															<a href="<?php echo Request::base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::base(); ?></a>
 														</span>
 														<br />
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.MetaDesc'); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
 														<?php echo $title; ?>
@@ -267,37 +244,30 @@ if ($comment)
 																		background-size: 30px 30px;">
 											<thead>
 												<tr>
-													<th colspan="<?php echo $showThumb ? 3 : 2; ?>" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
+													<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left; background: #fbf7ee;" align="left">
 														<?php echo $subtitle; ?>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<?php if ($showThumb) { ?>
-													<td id="project-thumb" style="padding: 8px; text-align: left;" align="left">
-														<div style="text-align: center; padding: 1em; width:50px; height: 50px; background: #FFFFFF;">
-															<img width="50" border="0" src="<?php echo $thumb; ?>" alt="" />
-														</div>
-													</td>
-													<?php } ?>
 													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
-														<?php echo '#' . $this->row->publication_id; ?>
+														<?php echo '#' . $this->model->id; ?>
 													</td>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Title:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->row->title; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->model->title; ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Version:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->row->version_label; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->model->version_label; ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Project:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->title . '( ' . $this->project->alias . ' )'; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->get('title'); ?> (<?php echo $this->project->get('alias'); ?> <?php echo $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : ''; ?>)</td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">URL:</th>
@@ -333,7 +303,7 @@ if ($comment)
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

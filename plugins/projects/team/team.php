@@ -1068,8 +1068,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Set up email config
 		$from = array();
-		$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt(strtoupper($option));
-		$from['email'] = Config::get('config.mailfrom');
+		$from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($option));
+		$from['email'] = Config::get('mailfrom');
 
 		// Email message subject
 		if ($model->isProvisioned())
@@ -1131,7 +1131,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			if (\Components\Projects\Helpers\Html::email($email, Config::get('config.sitename') . ': ' . $subject, $message, $from))
+			if (\Components\Projects\Helpers\Html::email($email, Config::get('sitename') . ': ' . $subject, $message, $from))
 			{
 				return true;
 			}

@@ -255,9 +255,6 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			$projects = $objP->getRecords($filters, $admin = false, $this->user_id, 0, $setupComplete);
 
 			// Get config
-			$livesite = Config::get('config.live_site')
-				? Config::get('config.live_site')
-				: trim(preg_replace('/\/administrator/', '', Request::base()), DS);
 			$livesite = trim(preg_replace('/\/api/', '', Request::base()), DS);
 
 			foreach ($projects as $i => $entry)
