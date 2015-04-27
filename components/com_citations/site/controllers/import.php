@@ -282,7 +282,7 @@ class Import extends SiteController
 		$this->_buildPathway();
 
 		// include tag handler
-		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+		//require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 		// Instantiate a new view
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));

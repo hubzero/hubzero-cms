@@ -152,7 +152,7 @@ class ToolGroup extends  JTable
 			return false;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 		$membergroups = ToolsModelTool::getToolGroups($toolid);
 		$membergroups = ToolsHelperUtils::transform($membergroups, 'cn');

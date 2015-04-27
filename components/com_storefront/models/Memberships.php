@@ -99,7 +99,7 @@ class StorefrontModelMemberships
 	public static function getSubscriptionObject($type, $pId, $uId)
 	{
 		// Find if there is a corresponding object
-		$lookupPath  = JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes';
+		$lookupPath  = PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes';
 		$lookupPath .= DS . 'Subscriptions';
 
 		$objectClass = str_replace(' ', '_', ucwords(strtolower($type))) . '_Subscription';

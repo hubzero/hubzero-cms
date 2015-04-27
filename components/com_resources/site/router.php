@@ -135,7 +135,7 @@ class Router extends Base
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 			$database = \JFactory::getDBO();
 

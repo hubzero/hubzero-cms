@@ -214,7 +214,7 @@ class Orders extends AdminController
 			$webpath = str_replace(':/', '://', $webpath);
 		}
 
-		//require_once(JPATH_ROOT . DS . 'libraries/tcpdf/tcpdf.php');
+		//require_once(PATH_CORE . DS . 'libraries/tcpdf/tcpdf.php');
 		$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		$receipt_title  = $this->config->get('receipt_title')  ? $this->config->get('receipt_title')  : 'Your Order' ;
@@ -239,9 +239,9 @@ class Orders extends AdminController
 
 		// Use header image? tcpdf config needs to be adjusted
 		/*
-		if (is_file(JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png'))
+		if (is_file(PATH_CORE . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png'))
 		{
-			$logo = JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png';
+			$logo = PATH_CORE . DS . 'templates' . DS . $tmpl . DS . 'images' . DS . 'hub-store-logo.png';
 		}
 		else
 		{

@@ -293,7 +293,7 @@ class ToolsHelperUtils
 	public static function getResourcePath($createdDate, $resourceId, $versionId)
 	{
 		//include the resources html helper file
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		//get resource upload path
 		$resourceParams = Component::params('com_resources');
@@ -322,9 +322,9 @@ class ToolsHelperUtils
 	public static function getToolAccess($tool, $login = '')
 	{
 		//include tool models
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 		//instantiate objects
 		$access = new stdClass();
@@ -561,8 +561,8 @@ class ToolsHelperUtils
 	public static function recordToolUsage($tool, $userid = '')
 	{
 		//include needed files
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
 
 		//instantiate needed objects
 		$database = JFactory::getDBO();

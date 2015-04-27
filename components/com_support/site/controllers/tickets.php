@@ -2029,7 +2029,7 @@ class Tickets extends SiteController
 		$sessnum = '';
 		if ($sess = Request::getVar('sesstoken', ''))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 			$mwdb = \ToolsHelperUtils::getMWDBO();
 
 			// retrieve the username and IP from session with this session token

@@ -182,7 +182,7 @@ class UsersModelReset extends JModelForm
 			$msg = array();
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php');
 
 		if (!$password1 || !$password2) {
 			$this->setError( Lang::txt('you must enter your new password twice to ensure we have it correct') );

@@ -271,7 +271,7 @@ class Results extends SiteController
 	 */
 	public function feedTask()
 	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		$app = \JFactory::getApplication();
 

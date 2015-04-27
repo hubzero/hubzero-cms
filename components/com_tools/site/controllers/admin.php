@@ -163,7 +163,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$command .= ' -title "' . $status['title'] . '"';
 		$command .= ' -description "' . $status['description'] . '"';
 		$command .= ' -password "' . $pw . '"';
-		$command .= ' -hubdir ' . JPATH_ROOT;
+		$command .= ' -hubdir ' . PATH_CORE;
 
 		$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
 
@@ -230,7 +230,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		}
 
 		// Build the exec command
-		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . JPATH_ROOT . ' ' . $status['toolname'];
+		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . PATH_CORE . ' ' . $status['toolname'];
 		error_log($command);
 		// Invoke the script
 		if ($this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED')))
@@ -706,7 +706,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$tarball_path = $this->config->get('sourcecodePath','site/protected/source');
 		if ($tarball_path[0] != DS)
 		{
-			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+			$tarball_path = rtrim(PATH_CORE . DS . $tarball_path, DS);
 		}
 
 		$xlog->debug("finalizeTool(): checkpoint 2");
@@ -734,7 +734,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			fclose($handle);
 			chmod($fname, 0664);
 
-			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . JPATH_ROOT . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
+			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . PATH_CORE . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
 			$xlog->debug("finalizeTool(): checkpoint 3: $command");
 
 			if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_VERSION_FINALIZED')))

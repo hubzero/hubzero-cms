@@ -763,7 +763,7 @@ class PEAR
 }
 
 if (PEAR_ZE2) {
-    include_once JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'PEAR5.php';
+    include_once PATH_CORE.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'PEAR5.php';
 }
 
 // {{{ _PEAR_call_destructors()

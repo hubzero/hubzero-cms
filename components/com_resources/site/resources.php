@@ -40,9 +40,9 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'resources'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

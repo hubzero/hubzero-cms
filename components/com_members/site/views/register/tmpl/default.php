@@ -444,7 +444,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$message = (!empty($this->xregistration->_invalid['orgtype'])) ? '<span class="error">' . $this->xregistration->_invalid['orgtype'] . '</span>' : '';
 					$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 					$database = JFactory::getDBO();
 					$rot = new MembersTableOrganizationType($database);
 					$types = $rot->find('list');
@@ -468,7 +468,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$orgtext = $this->registration['org'];
 					$org_known = 0;
 
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
 					$database = JFactory::getDBO();
 					$xo = new MembersTableOrganization($database);
 					$orgs = $xo->find('list');

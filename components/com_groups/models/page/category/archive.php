@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed modelss
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category.php';
 
 /**
  * Group page category archive model class

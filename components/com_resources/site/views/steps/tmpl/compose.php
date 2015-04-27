@@ -49,7 +49,7 @@ if (count($matches) > 0)
 $this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
 $this->row->fulltxt = trim($this->row->fulltxt);
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
 $elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();

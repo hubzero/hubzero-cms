@@ -1461,7 +1461,7 @@ class Tickets extends AdminController
 		else
 		{
 			// Scan for viruses
-			//$path = $file_path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			//$path = $file_path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
 
 			if (!\JFile::isSafe($finalfile))
 			{

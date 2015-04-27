@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions' . DS . 'BaseSubscription.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions' . DS . 'BaseSubscription.php');
 
 class Access_Group_Membership_Subscription extends BaseSubscription
 {

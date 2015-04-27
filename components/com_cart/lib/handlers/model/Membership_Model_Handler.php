@@ -49,7 +49,7 @@ class Membership_Model_Handler extends Model_Handler
         $uId = CartModelCart::getCartUser($this->crtId);
 
         // Get product type
-        require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+        require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
         $warehouse = new StorefrontModelWarehouse();
         $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
         $type = $pType['ptName'];

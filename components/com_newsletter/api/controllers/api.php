@@ -44,10 +44,10 @@ class NewsletterControllerApi extends \Hubzero\Component\ApiController
 		//JLoader::import('joomla.environment.request');
 		//JLoader::import('joomla.application.component.helper');
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'newsletter.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'template.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'primary.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'secondary.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'newsletter.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'template.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'primary.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'secondary.php');
 
 		switch ($this->segments[0])
 		{

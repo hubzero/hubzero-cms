@@ -43,8 +43,8 @@ use Route;
 use Lang;
 use User;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
 /**
  * Support controller class for ticket queries

@@ -32,13 +32,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed models
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'menu.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'menu.php';
 
 /**
  * Group module archive model class
  */
-class GroupsModelModuleArchive extends JObject
+class GroupsModelModuleArchive extends \Hubzero\Base\Object
 {
 	/**
 	 * \Hubzero\Base\Model

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php');
 
 /**
  * Description for ''REG_HIDE''
@@ -454,13 +454,13 @@ class MembersModelRegistration
 		}
 
 		//get user tags
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php' );
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php' );
 		$database = JFactory::getDBO();
 		$mt = new MembersModelTags($xprofile->get('uidNumber'));
 		$tag_string = $mt->render('string');
 
 		//get member addresses
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
 		$membersAddress = new MembersAddress($database);
 		$addresses = $membersAddress->getAddressesForMember($xprofile->get("uidNumber"));
 

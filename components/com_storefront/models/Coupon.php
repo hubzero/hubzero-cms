@@ -325,7 +325,7 @@ class StorefrontModelCoupon
 	{
 		$this->verify();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		return($warehouse->addCoupon($this));

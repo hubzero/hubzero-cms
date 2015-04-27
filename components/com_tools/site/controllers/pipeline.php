@@ -1269,7 +1269,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$ldap_params = Component::params('com_system');
 			$pw = $ldap_params->get('ldap_searchpw','');
 
-			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
+			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . PATH_CORE;
 
 			if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output))
 			{
@@ -2351,7 +2351,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		fwrite($handle, $this->_output);
 		fclose($handle);
 
-		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir ' . JPATH_ROOT . ' -type raw -license ' . $fname . ' ' . $toolname;
+		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir ' . PATH_CORE . ' -type raw -license ' . $fname . ' ' . $toolname;
 
 		if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output))
 		{

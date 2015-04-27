@@ -732,8 +732,8 @@ class Items extends AdminController
 			// Build <select> of groups
 			$this->view->lists['groups'] = Html::selectGroup($groups, $this->view->row->group_owner);
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 			// Get all contributors
 			$mp = new \MembersProfile($this->database);
@@ -889,7 +889,7 @@ class Items extends AdminController
 			$type = new Type($this->database);
 			$type->load($row->type);
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 			$elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
 			$schema = $elements->getSchema();
 

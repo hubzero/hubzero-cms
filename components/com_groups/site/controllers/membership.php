@@ -665,7 +665,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// delete member roles
-		require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
+		require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
 		GroupsMembersRole::deleteRolesForUserWithId(User::get('id'));
 
 		// Log the membership cancellation

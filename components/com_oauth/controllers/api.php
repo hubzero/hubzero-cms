@@ -215,7 +215,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			jimport('joomla.application.component.view');
 
 			$this->view = new \Hubzero\Component\View(array(
-					'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_oauth',
+					'base_path' => PATH_CORE . DS . 'components' . DS . 'com_oauth',
 					'name' => 'authorize',
 					'layout' => 'authorize'));
 

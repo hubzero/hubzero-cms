@@ -754,7 +754,7 @@ class Attachments extends SiteController
 			Completely unnecessary code?
 			if ($row->type == 38)
 			{
-				require_once(JPATH_ROOT . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
+				require_once(PATH_CORE . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
 
 				if (!extension_loaded('zlib'))
 				{

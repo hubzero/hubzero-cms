@@ -437,8 +437,8 @@ class Citations extends SiteController
 
 		// Build paths to type specific overrides
 		$application = \JFactory::getApplication();
-		$componentTypeOverride = JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
-		$tempalteTypeOverride  = JPATH_ROOT . DS . 'templates' . DS . $application->getTemplate() . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
+		$componentTypeOverride = PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
+		$tempalteTypeOverride  = PATH_CORE . DS . 'templates' . DS . $application->getTemplate() . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
 
 		//if we found an override use it
 		if (file_exists($tempalteTypeOverride) || file_exists($componentTypeOverride))

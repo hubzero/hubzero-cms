@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 				<tr>
 					<td rowspan="6">
-						<img src="<?php echo '../' . substr($path, strlen(JPATH_ROOT . '/')) . DS . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
+						<img src="<?php echo '../' . substr($path, strlen(PATH_CORE . '/')) . DS . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
 					</td>
 					<th><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</th>
 					<td><?php echo $file; ?></td>

@@ -71,7 +71,7 @@ class Cart_ProductHandler
         // Run both product model handler and type handler if needed.
         // Model handlers must go first for type handlers to potentially use their updates
 
-        $handlersPath = JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'handlers';
+        $handlersPath = PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'handlers';
 
         // MODEL HANDLER
         $modelHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptModel']))) . '_Model_Handler';

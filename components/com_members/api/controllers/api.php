@@ -188,8 +188,8 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		// Include middleware utilities
 		JLoader::import("joomla.database.table");
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
 
 		// Get db connection
 		$db = JFactory::getDBO();
@@ -335,7 +335,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$supportedtag = $rconfig->get('supportedtag', '');
 
 		// Get supportedtag usage
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$this->rt = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 
@@ -476,7 +476,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		if ($result === false) return $this->not_found();
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 		$du = ToolsHelperUtils::getDiskUsage($result->get('username'));
 		if (count($du) <=1)
 		{
@@ -541,10 +541,10 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Incoming
-		$user = JUser::getInstance();
+		$user = User::getRoot();
 		$user->set('id', 0);
 		$user->set('groups', array($newUsertype));
-		$user->set('registerDate', JFactory::getDate()->toMySQL());
+		$user->set('registerDate', Date::toSql());
 
 		/*$user->set('name', Request::getVar('name', '', 'post'));
 		if (!$user->get('name'))

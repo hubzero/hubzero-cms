@@ -119,7 +119,7 @@ if(navigator.userAgent.contains("Mozilla"))
 						if (substr($subtitle->source, 0, 4) != 'http')
 						{
 							$source   = $base . $source;
-							$modified = filemtime( JPATH_ROOT . $source );
+							$modified = filemtime( PATH_CORE . $source );
 						}
 						else
 						{

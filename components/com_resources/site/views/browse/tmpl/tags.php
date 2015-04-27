@@ -124,7 +124,7 @@ $this->css()
 		{
 			$database = JFactory::getDBO();
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 			$tag = new \Components\Tags\Tables\Tag($database);
 			$tag->loadTag($this->supportedtag);

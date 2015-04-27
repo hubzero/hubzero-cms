@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
 
 /**
  * Current user shopping cart
@@ -1357,7 +1357,7 @@ class CartModelCurrentCart extends CartModelCart
 				$itemInfo = $item['info'];
 
 				// Get product type
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 				$warehouse = new StorefrontModelWarehouse();
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
@@ -1785,7 +1785,7 @@ class CartModelCurrentCart extends CartModelCart
 		else
 		{
 			// Get a static instance of the users' cart
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'UserCart.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'UserCart.php');
 			$userCart = new CartModelUserCart($userCartId);
 			// Get items from the user's cart to see if it is empty or nor
 			$userCartItems = $userCart->getCartItems();

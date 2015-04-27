@@ -204,7 +204,7 @@ if (!$tmpl && !$no_html) {
 				<select name="fields[folder_id]" id="field-folder_id">
 					<?php
 					$database = JFactory::getDBO();
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
 					$sr = new \Components\Support\Tables\QueryFolder($database);
 					$folders = $sr->find('list', array(

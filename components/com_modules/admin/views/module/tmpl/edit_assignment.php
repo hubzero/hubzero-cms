@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 // Initiasile related data.
-require_once JPATH_ROOT.'/components/com_menus/admin/helpers/menus.php';
+require_once PATH_CORE.'/components/com_menus/admin/helpers/menus.php';
 $menuTypes = MenusHelper::getMenuLinks();
 ?>
 		<script type="text/javascript">

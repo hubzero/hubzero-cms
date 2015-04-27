@@ -385,7 +385,7 @@ class Resource extends \JTable
 		}
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 			$tagging = new \Components\Resources\Helpers\Tags();
 			$tags = $tagging->parseTags($filters['tag']);
 

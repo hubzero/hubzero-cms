@@ -10,13 +10,13 @@
  */
 
 // define base path
-$base = str_replace(JPATH_ROOT, '', __DIR__);
+$base = str_replace(PATH_CORE, '', __DIR__);
 
 // add stylesheets and scripts
 JFactory::getDocument()
-	->addStyleSheet( $base . DS . 'assets/css/main.css' )
-	->addStyleSheet( $base . DS . 'assets/css/error.css' )
-	->addScript( $base . DS . 'assets/js/main.js' );
+	->addStyleSheet($base . DS . 'assets/css/main.css')
+	->addStyleSheet($base . DS . 'assets/css/error.css')
+	->addScript($base . DS . 'assets/js/main.js');
 ?>
 <script>
 	jQuery(document).ready(function(jq) {
@@ -33,10 +33,10 @@ JFactory::getDocument()
 				<a class="back" title="Go Back" href="javascript: history.go(-1);">Back</a>
 			</li>
 			<li>
-				<a class="group" title="Go to Group Home Page" href="/groups/<?php echo $this->group->get('cn'); ?>">Go to Group Home Page</a>
+				<a class="group" title="Go to Group Home Page" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">Go to Group Home Page</a>
 			</li>
 			<li>
-				<a class="report" title="Report a Problem" href="/support/ticket/new">Report a Problem</a>
+				<a class="report" title="Report a Problem" href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>">Report a Problem</a>
 			</li>
 		</ul>
 	</div>

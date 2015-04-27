@@ -28,8 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors' . DS . 'BaseAuditor.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors' . DS . 'BaseAuditor.php');
 
 class Audit
 {
@@ -53,7 +53,7 @@ class Audit
         $model = $pType['ptModel'];
 
         // Find if there are auditors for this product's type and model
-        $auditorsPath = JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors';
+        $auditorsPath = PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors';
 
         $auditorClass = str_replace(' ', '_', ucwords(strtolower($model))) . '_Auditor';
         if (file_exists($auditorsPath . DS . $auditorClass . '.php'))

@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors' . DS . 'BaseAuditor.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors' . DS . 'BaseAuditor.php');
 
 class Membership_Auditor extends BaseAuditor
 {
@@ -59,7 +59,7 @@ class Membership_Auditor extends BaseAuditor
         $jUser = JFactory::getUser();
         if (!$jUser->get('guest')) {
             // Check if there is a limitation on when the subscription can be extended
-            require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
+            require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
             $subscriptionMaxLen = StorefrontModelProduct::getMeta($this->pId, 'subscriptionMaxLen');
             if ($subscriptionMaxLen) {
                 /* Check if the current user has the existing subscription and how much is left on it
@@ -77,7 +77,7 @@ class Membership_Auditor extends BaseAuditor
                  */
 
                 // Get the proper product type subscription object reference
-                require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+                require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
                 $subscription = StorefrontModelMemberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
 
                 // Get the expiration for the current subscription (if any)

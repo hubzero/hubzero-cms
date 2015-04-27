@@ -773,7 +773,7 @@ class Create extends SiteController
 		$type = new Type($this->database);
 		$type->load($row->type);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 		$elements = new Elements(array(), $type->customFields);
 		$schema = $elements->getSchema();
 

@@ -213,7 +213,7 @@ class Help extends AdminController
 		}
 
 		// Path to help pages
-		$helpPagesPath  = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
+		$helpPagesPath  = PATH_CORE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
 		$helpPagesPath2 = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . Lang::getTag();
 
 		// Make sure directory exists

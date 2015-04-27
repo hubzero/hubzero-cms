@@ -220,8 +220,8 @@ class AdminModelSysInfo extends JModelLegacy
 			$this->_addDirectory('cache', JPATH_SITE.'/cache', 'COM_ADMIN_CACHE_DIRECTORY');
 			$this->_addDirectory('administrator/cache', JPATH_CACHE, 'COM_ADMIN_CACHE_DIRECTORY');
 
-			$this->_addDirectory(Config::get('log_path', JPATH_ROOT . '/log'), Config::get('log_path', JPATH_ROOT.'/log'), 'COM_ADMIN_LOG_DIRECTORY');
-			$this->_addDirectory(Config::get('tmp_path', JPATH_ROOT . '/tmp'), Config::get('tmp_path', JPATH_ROOT.'/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
+			$this->_addDirectory(Config::get('log_path', PATH_CORE . '/log'), Config::get('log_path', PATH_CORE.'/log'), 'COM_ADMIN_LOG_DIRECTORY');
+			$this->_addDirectory(Config::get('tmp_path', PATH_CORE . '/tmp'), Config::get('tmp_path', PATH_CORE.'/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
 		}
 		return $this->directories;
 	}

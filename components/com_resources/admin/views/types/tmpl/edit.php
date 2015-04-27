@@ -178,7 +178,7 @@ function submitbutton(pressbutton)
 				</tfoot>
 				<tbody id="field-items">
 				<?php
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 				$elements = new \Components\Resources\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
 

@@ -725,7 +725,7 @@ class Html
 	 */
 	public static function citation($option, $cite, $id, $citations, $type, $rev='')
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
 		$html  = '<p>' . Lang::txt('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
 		if (trim($citations))
@@ -940,7 +940,7 @@ class Html
 					$lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
 				}
 
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 				// Create some tool objects
 				$hztv = \ToolsModelVersion::getInstance($resource->tool);

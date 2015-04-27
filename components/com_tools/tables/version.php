@@ -464,7 +464,7 @@ class ToolVersion extends  JTable
 
 		if ($versions)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 			foreach ($versions as $version)
 			{
@@ -604,12 +604,12 @@ class ToolVersion extends  JTable
 		$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
 
 		// Get some needed libraries
-		//include_once(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php');
+		//include_once(PATH_CORE.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php');
 		$resource->tarname = $resource->alias.'-r'.$resource->revision.'.tar.gz';
 		$tarball_path = $config->get('sourcecodePath','site/protected/source');
 		if ($tarball_path[0] != DS)
 		{
-			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+			$tarball_path = rtrim(PATH_CORE . DS . $tarball_path, DS);
 		}
 		$resource->tarpath = $tarball_path.DS.$resource->alias.DS;
 		// Is tarball available?

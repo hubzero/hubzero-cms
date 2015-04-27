@@ -145,7 +145,7 @@ function submitbutton(pressbutton)
 				<select name="profile[orgtype]" id="field-orgtype">
 					<option value=""<?php if (!$this->profile->get('orgtype')) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
 					<?php
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 
 					$database = JFactory::getDBO();
 					$rot = new MembersTableOrganizationType($database);
@@ -237,7 +237,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-bio"><?php echo Lang::txt('COM_MEMBERS_FIELD_BIOGRAPHY'); ?>:</label><br />
 				<?php
-					echo JFactory::getEditor()->display('profile[bio]', $this->escape($this->profile->getBio('raw')), '', '', 40, 10, false, 'field-bio');
+					echo $this->editor('profile[bio]', $this->escape($this->profile->getBio('raw')), 40, 10, 'field-bio');
 				?>
 			</div>
 			<div class="input-wrap">

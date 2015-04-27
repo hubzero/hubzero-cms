@@ -51,7 +51,7 @@ if (count($matches) > 0)
 $this->status['fulltxt'] = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->status['fulltxt']);
 $this->status['fulltxt'] = trim($this->status['fulltxt']);
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
 $elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();

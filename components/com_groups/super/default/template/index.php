@@ -10,7 +10,7 @@
  */
 
 // define base path (without doc root)
-$base = rtrim(str_replace(JPATH_ROOT, '', __DIR__), DS);
+$base = rtrim(str_replace(PATH_CORE, '', __DIR__), DS);
 
 // define base url for links
 $baseLink = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
@@ -20,8 +20,8 @@ $no_html = Request::getInt('no_html', 0);
 
 // add stylesheets and scripts
 JFactory::getDocument()
-	->addStyleSheet( $base . DS . 'assets/css/main.css' )
-	->addScript( $base . DS . 'assets/js/main.js' );
+	->addStyleSheet($base . DS . 'assets/css/main.css')
+	->addScript($base . DS . 'assets/js/main.js');
 ?>
 
 <?php if (!$no_html) : ?>

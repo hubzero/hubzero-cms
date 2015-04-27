@@ -34,8 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
 
 /**
  * Controller class for contributing a tool
@@ -178,7 +178,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 		$listdir  = \Components\Resources\Helpers\Html::build_path($row->created, $pid, '') . DS . $vid;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir;
 		$this->view->upath = $this->_buildUploadPath($listdir, '');
@@ -307,7 +307,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		// Build the path
 		$listdir  = \Components\Resources\Helpers\Html::build_path($row->created, $pid, '');
@@ -455,7 +455,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 		$listdir  = \Components\Resources\Helpers\Html::build_path($resource->created, $pid, '');
 		$listdir .= DS . $vid;
 		$path = $this->_buildUploadPath($listdir, '');
@@ -533,7 +533,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	 */
 	private function _createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
 	{
-		$imorig = imagecreatefromjpeg(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
+		$imorig = imagecreatefromjpeg(PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
 		$x = imageSX($imorig);
 		$y = imageSY($imorig);
 
@@ -723,7 +723,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$shots = $ss->getFiles($rid, $sourceid);
 
 		// Build the path
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		$listdir = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
 		$srcdir  = $listdir . DS . $sourceid;
@@ -813,10 +813,10 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->view->shots = $ss->getScreenshots($rid, $vid);
 
 		// Build paths
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		$path = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
-		$this->view->upath = JPATH_ROOT . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
+		$this->view->upath = PATH_CORE . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		if ($vid)
 		{

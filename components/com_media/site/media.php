@@ -24,7 +24,7 @@ if (!$asset or
 }
 
 // Set the path definitions
-define('COM_MEDIA_BASE', JPATH_ROOT.'/'.$params->get('image_path', 'images'));
+define('COM_MEDIA_BASE', PATH_CORE.'/'.$params->get('image_path', 'images'));
 define('COM_MEDIA_BASEURL', Request::root().'/'.$params->get('image_path', 'images'));
 
 	Lang::load('com_media', JPATH_ADMINISTRATOR, null, false, true)

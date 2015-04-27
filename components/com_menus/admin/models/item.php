@@ -947,7 +947,7 @@ class MenusModelItem extends JModelAdmin
 
 			// We don't have a component. Load the form XML to get the help path
 
-			$xmlFile = JPath::find(JPATH_ROOT . '/components/com_menus/admin/models/forms', 'item_' . $type . '.xml');
+			$xmlFile = JPath::find(PATH_CORE . '/components/com_menus/admin/models/forms', 'item_' . $type . '.xml');
 
 
 

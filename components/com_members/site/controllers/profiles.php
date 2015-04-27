@@ -954,7 +954,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			switch ($k)
 			{
 				case 'sessions':
-					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+					include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 					$preferences = new ToolsTablePreferences($this->database);
 					$preferences->loadByUser($profile->get('uidNumber'));

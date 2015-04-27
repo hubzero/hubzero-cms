@@ -122,10 +122,10 @@ $parts = explode(DS, JPATH_BASE);
 array_pop($parts);
 array_pop($parts);
 array_pop($parts);
-define('JPATH_ROOT', implode(DS, $parts));
-define('JPATH_SITE', JPATH_ROOT);
-define('JPATH_LIBRARIES', JPATH_ROOT . DS . 'libraries');
-define('JPATH_CONFIGURATION',     JPATH_ROOT);
+define('PATH_CORE', implode(DS, $parts));
+define('JPATH_SITE', PATH_CORE);
+define('JPATH_LIBRARIES', PATH_CORE . DS . 'libraries');
+define('JPATH_CONFIGURATION',     PATH_CORE);
 require_once(JPATH_LIBRARIES . DS . 'loader.php');
 jimport('joomla.common.abstract.object');
 jimport('joomla.factory');
@@ -138,19 +138,19 @@ if (!file_exists("../../../configuration.php")) {
 	exit();
 }
 
-require_once(JPATH_ROOT . DS . "globals.php");
-require_once(JPATH_ROOT . DS . "configuration.php");
+require_once(PATH_CORE . DS . "globals.php");
+require_once(PATH_CORE . DS . "configuration.php");
 include_once($mosConfig_absolute_path . "/language/".$mosConfig_lang.".php");
 
 $database = new database($mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix);
 $database->debug($mosConfig_debug);
 */
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'economy.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'economy.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'controllers' . DS . 'points.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'controllers' . DS . 'points.php');
 
 echo "_______________________________________________\n";
 echo date(DATE_RFC822)."\n";

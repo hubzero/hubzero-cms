@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Helper.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Helper.php');
 
 /**
  * Core shopping cart
@@ -629,7 +629,7 @@ abstract class CartModelCart
 		// Extract transaction items
 		$transactionItems = unserialize($tInfo->info->tiItems);
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'ProductHandler.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'ProductHandler.php');
 
 		// Handle each item in the transaction
 		foreach ($transactionItems as $sId => $item)

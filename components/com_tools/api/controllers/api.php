@@ -608,9 +608,9 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Include needed tool libraries
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
 
 		// Create database object
 		JLoader::import("joomla.database.table");
@@ -686,7 +686,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$jobs = $ms->getCount($profile->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 		$preferences = new ToolsTablePreferences($database);
 		$preferences->loadByUser($profile->get('uidNumber'));
@@ -731,7 +731,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			if (!\JFolder::exists($homeDir))
 			{
 				// Try to create their home directory
-				require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+				require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 
 				if (!ToolsHelperUtils::createHomeDirectory($profile->get('username')))
 				{
@@ -798,8 +798,8 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
 		$ms = new MwSession($mwdb);
 		if (!$ms->checkSession($session))
 		{
@@ -869,8 +869,8 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Make sure it's a valid sesssion number and the user is/was the owner of it
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
 		$ms = new MwSession($mwdb);
 		if (!$ms->checkSession($session))
 		{
@@ -915,9 +915,9 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($result === false) return $this->not_found();
 
 		//include needed tool libs
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate db objects
 		$database = JFactory::getDBO();
@@ -1021,7 +1021,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($result === false) return $this->not_found();
 
 		//include needed libraries
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
 
 		//instantiate middleware database object
 		$mwdb = ToolsHelperUtils::getMWDBO();
@@ -1089,7 +1089,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		if ($result === false) return $this->not_found();
 
 		//include needed libraries
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 
 		//instantiate middleware database object
 		$mwdb = ToolsHelperUtils::getMWDBO();
@@ -1139,7 +1139,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$format = Request::getVar('format', 'json');
 
 		//get storage quota
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 		$disk_usage = ToolsHelperUtils::getDiskUsage($result->get('username'));
 
 		//get the tools storage path

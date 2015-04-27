@@ -67,7 +67,7 @@ class Finder
 		// If we have an extension
 		if ($extension)
 		{
-			$paths[2] = JPATH_ROOT . DS . 'plugins' . DS . $name . DS . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
+			$paths[2] = PATH_CORE . DS . 'plugins' . DS . $name . DS . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
 			$paths[0] = JPATH_BASE . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
 		}
 
@@ -93,7 +93,7 @@ class Finder
 	 */
 	private static function path($component)
 	{
-		$client = \JFactory::getApplication()->isAdmin() ? 'admin' : 'site';
+		$client = \App::isAdmin() ? 'admin' : 'site';
 		if (file_exists(PATH_ROOT . DS . 'components' . DS . $component . DS . $client))
 		{
 			return PATH_ROOT . DS . 'components' . DS . $component . DS . $client;

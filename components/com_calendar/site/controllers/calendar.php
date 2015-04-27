@@ -30,13 +30,13 @@
 
 namespace Components\Calendar\Site\Controllers;
 
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'event.php' );
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar' . DS . 'archive.php' );
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'tags.php');
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'event.php' );
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar' . DS . 'archive.php' );
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'tags.php');
 
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'respondent.php' );
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'category.php' );
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php' );
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'respondent.php' );
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'category.php' );
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php' );
 
 
 

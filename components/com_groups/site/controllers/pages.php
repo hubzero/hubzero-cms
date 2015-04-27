@@ -441,7 +441,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 	 */
 	public function versionsTask()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
 
 		//set to edit layout
 		$this->view->setLayout('versions');

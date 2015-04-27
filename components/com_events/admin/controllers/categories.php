@@ -219,7 +219,7 @@ class Categories extends AdminController
 			false
 		);
 
-		$imgFiles = $this->readDirectory(JPATH_ROOT . DS . 'site' . DS . 'media' . DS . 'images');
+		$imgFiles = $this->readDirectory(PATH_CORE . DS . 'site' . DS . 'media' . DS . 'images');
 		$images = array(\JHTML::_('select.option', '', Lang::txt('Select Image'), 'value', 'text'));
 		foreach ($imgFiles as $file)
 		{

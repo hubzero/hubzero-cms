@@ -224,8 +224,8 @@ switch ($this->level)
 		$xtra = '';
 
 		if ($params->get('show_audience')) {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audience.php');
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audiencelevel.php');
+			include_once(PATH_CORE.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audience.php');
+			include_once(PATH_CORE.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audiencelevel.php');
 			$ra = new \Components\Resources\Tables\Audience($database);
 			$audience = $ra->getAudience($resource->id, 0, 1, 4);
 
@@ -237,7 +237,7 @@ switch ($this->level)
 			$xtra .= $view->loadTemplate();
 		}
 		if ($this->bits['supportedtag'] && $supported) {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
+			include_once(PATH_CORE.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 			$tag = new \Components\Tags\Tables\Tag($database);
 			$tag->loadTag($config->get('supportedtag'));
 
