@@ -187,32 +187,10 @@ class Calendar extends SiteController
 		exit();
 	}
 
-	public function summaryTask()
-	{
-
-		$id = Request::getVar('event');
-		$event = new Event($this->database);
-		$event->load($id);
-
-		$event->url = Route::url('index.php?option=com_calendar&task=details&event='.$event->id, false);
-
-		// get category
-		$catid = $event->catid;
-		$category = new Category($this->database);
-		$category->load($catid);
-		$event->category = $category->title;
-
-		$this->view->row = $event;
-
-		$html = '<a href="#" class="btn">Link</a>';
-
-
-		$json = array('html' => $html);
-		echo json_encode($json);
-		exit();
-
-	}
-
+	/**
+	 * eventsTask() used by the fullcalendar.js to return json set of events
+	 * @return json set of events and their details.
+	 */
 	public function eventsTask()
 	{
 		// array to hold events
