@@ -72,11 +72,11 @@ Toolbar::help('billboards');
 		// See if the billboard is being edited by someone else
 		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 		{
-			$checked = JHtml::_('jgrid.checkedout', $row, User::getInstance($row->checked_out)->get('name'), $row->checked_out_time);
+			$checked = $this->grid('checkedout', $row, User::getInstance($row->checked_out)->get('name'), $row->checked_out_time);
 		}
 		else
 		{
-			$checked = JHTML::_('grid.id', $i, $row->id, false, 'cid');
+			$checked = $this->grid('id', $i, $row->id, false, 'cid');
 		}
 
 		$task  = $row->published ? 'unpublish' : 'publish';

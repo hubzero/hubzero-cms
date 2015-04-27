@@ -60,14 +60,14 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-				<th scope="col"><?php echo JHtml::_('grid.sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder); ?></th>
-				<th scope="col"><?php echo JHtml::_('grid.sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($this->items as $table => $count): $i=0; ?>
 				<tr class="row<?php echo $i%2; ?>">
-					<td><?php echo JHtml::_('grid.id', $i, $table); ?></td>
+					<td><?php echo $this->grid('id', $i, $table); ?></td>
 					<td><?php echo Lang::txt('COM_CHECKIN_TABLE', $table); ?></td>
 					<td><?php echo $count; ?></td>
 				</tr>

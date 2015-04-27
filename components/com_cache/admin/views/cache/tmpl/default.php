@@ -65,13 +65,13 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th scope="col" class="title nowrap">
-					<?php echo JHtml::_('grid.sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
+					<?php echo $this->grid('sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center nowrap priority-2">
-					<?php echo JHtml::_('grid.sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
+					<?php echo $this->grid('sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center">
-					<?php echo JHtml::_('grid.sort', 'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
+					<?php echo $this->grid('sort', 'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -100,7 +100,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo $item->count; ?>
 					</td>
 					<td class="center">
-						<?php echo JHtml::_('number.bytes', $item->size*1024); ?>
+						<?php echo \Hubzero\Utility\Number::format('bytes', $item->size * 1024); ?>
 					</td>
 				</tr>
 			<?php $i++; endforeach; ?>
