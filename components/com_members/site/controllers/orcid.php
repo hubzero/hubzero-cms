@@ -117,7 +117,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	{
 		$srv = $this->config->get('orcid_service', 'members');
 
-		$url = Request::scheme() . '://' . $this->_services[$srv] . '/search/orcid-bio?q=';
+		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v1.2/search/orcid-bio?q=';
 		$tkn = $this->config->get('orcid_' . $srv . '_token', '8b9f8396-0e9d-4b74-96b0-fbcfdc678716');
 
 		$bits = array();
@@ -363,8 +363,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 					'<orcid-message'.
 						' xmlns="http://www.orcid.org/ns/orcid"'.
 						' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'.
-						' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.1.xsd">'.
-						'<message-version>1.1</message-version>'.
+						' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.2.xsd">'.
+						'<message-version>1.2</message-version>'.
 						'<orcid-profile>'.
 							'<orcid-bio>'.
 								'<personal-details>'.
