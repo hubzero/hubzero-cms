@@ -32,17 +32,15 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'model
 
 class Access_Group_Membership_Subscription extends BaseSubscription
 {
+	public function __construct($pId, $uId)
+	{
+		parent::__construct($pId, $uId);
+	}
 
-    public function __construct($pId, $uId)
-    {
-        parent::__construct($pId, $uId);
-    }
-
-    public function _getExpiration()
-    {
-        // This will get expiration from the correct place
-        echo 'ff';
-        throw new Exception('not implemented');
-    }
-
+	public function _getExpiration()
+	{
+		// This will get expiration from the correct place
+		echo 'ff';
+		throw new Exception('not implemented');
+	}
 }

@@ -132,7 +132,7 @@ switch ($this->level)
 		$html .= '</ul>';
 		if ($type == 7 && $params->get('show_ranking')) {
 			$this->bits['filter'] = is_array ($this->bits['filter']) ? $this->bits['filter'] : array();
-			if(!empty($filters)) {
+			if (!empty($filters)) {
 				$html .= '<div id="filteroptions">';
 				$html .= ' <div>'.Lang::txt('Show:');
 				foreach ($filters as $avalue => $alabel)
@@ -141,7 +141,7 @@ switch ($this->level)
 					$html .= in_array($avalue, $this->bits['filter']) ? 'checked="checked"' : '';
 					$html .= ' /> '.$alabel.'</label>';
 				}
-				if($params->get('audiencelink')) {
+				if ($params->get('audiencelink')) {
 					$html .= ' <span>'.Lang::txt('COM_RESOURCES_WHATS_THIS').' <a href="'.$params->get('audiencelink').'">'.Lang::txt('About audience levels').' &rsaquo;</a></span>';
 				}
 				$html .= ' </div>';

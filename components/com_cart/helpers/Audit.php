@@ -34,38 +34,37 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS .
 class Audit
 {
 
-    /**
-     * Constructor
-     * @param 	Object  Product info
-     * @param   int     Cart ID
-     * @param   int     User ID
-     * @return 	Void
-     */
-    public static function getAuditor($pInfo, $crtId)
-    {
-        $pId = $pInfo->pId;
+	/**
+	 * Constructor
+	 * @param 	Object  Product info
+	 * @param   int     Cart ID
+	 * @param   int     User ID
+	 * @return 	Void
+	 */
+	public static function getAuditor($pInfo, $crtId)
+	{
+		$pId = $pInfo->pId;
 
-        $warehouse = new StorefrontModelWarehouse();
-        // Get product type
-        $pType = $warehouse->getProductTypeInfo($pInfo->ptId);
+		$warehouse = new StorefrontModelWarehouse();
+		// Get product type
+		$pType = $warehouse->getProductTypeInfo($pInfo->ptId);
 
-        $type = $pType['ptName'];
-        $model = $pType['ptModel'];
+		$type = $pType['ptName'];
+		$model = $pType['ptModel'];
 
-        // Find if there are auditors for this product's type and model
-        $auditorsPath = PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors';
+		// Find if there are auditors for this product's type and model
+		$auditorsPath = PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'auditors';
 
-        $auditorClass = str_replace(' ', '_', ucwords(strtolower($model))) . '_Auditor';
-        if (file_exists($auditorsPath . DS . $auditorClass . '.php'))
-        {
-            // Include the auditor file
-            include_once($auditorsPath . DS . $auditorClass . '.php');
-            return new $auditorClass($type, $pId, $crtId);
-        }
-        else
-        {
-            return new BaseAuditor($type);
-        }
-    }
-
+		$auditorClass = str_replace(' ', '_', ucwords(strtolower($model))) . '_Auditor';
+		if (file_exists($auditorsPath . DS . $auditorClass . '.php'))
+		{
+			// Include the auditor file
+			include_once($auditorsPath . DS . $auditorClass . '.php');
+			return new $auditorClass($type, $pId, $crtId);
+		}
+		else
+		{
+			return new BaseAuditor($type);
+		}
+	}
 }

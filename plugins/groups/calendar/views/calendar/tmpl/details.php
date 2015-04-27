@@ -149,9 +149,9 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo Date::of($publish_up)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_up->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
+					<?php echo Date::of($publish_up)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_up)->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
 					&mdash;
-					<?php echo Date::of($publish_down)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_down->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
+					<?php echo Date::of($publish_down)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_down)->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
 				</td>
 			</tr>
 		<?php else : ?>
