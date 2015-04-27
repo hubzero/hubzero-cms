@@ -41,6 +41,13 @@ require_once(JPATH_ROOT . '/components/com_oaipmh/models/provider.php');
 class Miner extends Object implements Provider
 {
 	/**
+	 * Base URL
+	 * 
+	 * @var  string
+	 */
+	protected static $base = null;
+
+	/**
 	 * Database connection
 	 * 
 	 * @var  object
@@ -84,6 +91,11 @@ class Miner extends Object implements Provider
 		}
 
 		$this->database = $db;
+
+		if (is_null(self::$base))
+		{
+			self::$base = rtrim(\JURI::base(), '/');
+		}
 	}
 
 	/**
@@ -324,6 +336,56 @@ class Miner extends Object implements Provider
 		);
 		$record->subject = $this->database->loadResultArray();
 
+		$record->relation = array();
+
+		$this->database->setQuery(
+			"SELECT r.id, r.title, r.type, r.logical_type AS logicaltype, r.created, r.created_by,
+			r.published, r.publish_up, r.path, r.access, t.type AS logicaltitle, rt.type AS typetitle, r.standalone
+			FROM `#__resources` AS r
+			INNER JOIN `#__resource_types` AS rt ON r.type=rt.id
+			INNER JOIN `#__resource_assoc` AS a ON r.id=a.child_id
+			LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
+			WHERE r.published=1 AND a.parent_id=" . $this->database->quote($id) . "
+			ORDER BY a.ordering, a.grouping"
+		);
+		if ($children = $this->database->loadObjectList())
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+
+			foreach ($children as $child)
+			{
+				$uri = \ResourcesHtml::processPath('com_resources', $child, $id, 3);
+				if (substr($uri, 0, 4) != 'http')
+				{
+					$uri = self::$base . '/' . ltrim($uri, '/');
+				}
+
+				$record->relation[] = array(
+					'type'  => 'hasPart',
+					'value' => $uri
+				);
+			}
+		}
+
+		$this->database->setQuery(
+			"SELECT DISTINCT r.id
+			FROM `#__resources` AS r
+			INNER JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
+			WHERE r.published=1 AND a.child_id=" . $this->database->quote($id) . "
+			ORDER BY a.ordering, a.grouping"
+		);
+		if ($parents = $this->database->loadObjectList())
+		{
+			foreach ($parents as $parent)
+			{
+				$record->relation[] = array(
+					'type'  => 'isPartOf',
+					'value' => $this->identifier($parent->id, 0)
+				);
+			}
+		}
+
 		if ($isTool)
 		{
 			if ($revision)
@@ -340,8 +402,6 @@ class Miner extends Object implements Provider
 				);
 				$record->creator = $this->database->loadResultArray();
 			}
-
-			$record->relation = array();
 
 			if ($revision)
 			{
@@ -409,7 +469,7 @@ class Miner extends Object implements Provider
 		}
 		else
 		{
-			$identifier = rtrim(\JURI::base(), '/') . '/' . ltrim(\JRoute::_('index.php?option=com_resources&id=' . $id . ($rev ? '&rev=' . $rev : '')), '/');
+			$identifier = self::$base . '/' . ltrim(\JRoute::_('index.php?option=com_resources&id=' . $id . ($rev ? '&rev=' . $rev : '')), '/');
 		}
 
 		return $identifier;
