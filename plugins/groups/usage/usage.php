@@ -493,7 +493,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 		$filters = array();
 		$filters['scope'] = 'group';
-		$filters['group_id'] = $gid;
+		$filters['scope_id'] = $gid;
 
 		$gb = new \Components\Blog\Tables\Entry($database);
 
@@ -517,7 +517,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.group_id=" . $database->quote($gid) . " AND be.id=bc.entry_id";
+		$query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.scope_id=" . $database->quote($gid) . " AND be.id=bc.entry_id";
 		$database->setQuery($query);
 
 		$count = $database->loadResult();
