@@ -197,7 +197,7 @@ class Content extends Base
 
 				if ($this->get('_update'))
 				{
-					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $blockId);
+					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $blockId);
 
 					// Record update time
 					$data 				= new stdClass;

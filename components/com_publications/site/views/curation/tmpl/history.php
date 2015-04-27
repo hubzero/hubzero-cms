@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 
-$history = $this->pub->_curationModel->getHistory($this->pub, 1);
+$history = $this->pub->_curationModel->getHistory();
 
 if (!$this->ajax)
 {
@@ -58,7 +58,7 @@ if (!$this->ajax)
 			?>
 			<div class="history-block <?php echo $trClass; ?> grid">
 				<div class="changelog-time col span3">
-					<?php echo JHTML::_('date', $event->created, 'M d, Y H:iA'); ?>
+					<?php echo Date::of($event->created)->toLocal('M d, Y H:iA'); ?>
 					<span class="block"><?php echo $this->escape(stripslashes($author->get('name'))); ?></span>
 					<span class="block">(
 					<?php echo ($event->curator)

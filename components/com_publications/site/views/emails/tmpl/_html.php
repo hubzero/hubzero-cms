@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$hubShortName = Config::get('config.sitename');
-
 // Set some styles
 $bgcolor = '#f1f1f1';
 $bdcolor = '#e1e1e1';
@@ -59,7 +57,7 @@ if ($comment)
 }
 
 // Page title
-$title = $hubShortName . ' ' . Lang::txt('Publications');
+$title = Config::get('config.sitename') . ' ' . Lang::txt('Publications');
 
 ?>
 

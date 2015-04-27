@@ -556,7 +556,7 @@ class Html
 			$text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>'
 			      . $publication->version_label . '</strong> (' . Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT') . ')';
 			$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_CREATED') . ' ';
-			$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . Date::of($publication->created)->format($dateFormat) . '</span>';
+			$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . Date::of($publication->created)->toLocal($dateFormat) . '</span>';
 		}
 		else
 		{
@@ -574,13 +574,13 @@ class Html
 						? Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
 						: strtolower(Lang::txt('COM_PUBLICATIONS_PUBLISHED'));
 					$text .= ' ' . Lang::txt('COM_PUBLICATIONS_ON').' '
-						  . Date::of($publication->published_up)->format($dateFormat) . ' ';
+						  . Date::of($publication->published_up)->toLocal($dateFormat) . ' ';
 					break;
 				case 4:
 					$text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_READY')) . ')';
 					$text .= '<span class="block">'.Lang::txt('COM_PUBLICATIONS_FINALIZED').' ';
 					$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
-						. Date::of($publication->published_up)->format($dateFormat).'</span>';
+						. Date::of($publication->published_up)->toLocal($dateFormat).'</span>';
 					$class = 'ready';
 					break;
 				case 5:
@@ -590,13 +590,13 @@ class Html
 							: ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_PENDING_WIP')) . ')';
 					$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_SUBMITTED') . ' ';
 					$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
-						. Date::of($publication->submitted)->format($dateFormat) . '</span>';
+						. Date::of($publication->submitted)->toLocal($dateFormat) . '</span>';
 					if ($publication->published_up > $now)
 					{
 						$text .= '<span class="block">';
 						$text .= Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
 							. ' ' . Lang::txt('COM_PUBLICATIONS_ON') . ' '
-							. Date::of($publication->published_up)->format($dateFormat);
+							. Date::of($publication->published_up)->toLocal($dateFormat);
 						$text .= '</span>';
 					}
 					$class = 'pending';
@@ -605,7 +605,7 @@ class Html
 					$text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ')';
 					$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_RELEASED') . ' ';
 					$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
-						. Date::of($publication->published_up)->format($dateFormat) . '</span>';
+						. Date::of($publication->published_up)->toLocal($dateFormat) . '</span>';
 					$class = $publication->main == 1 ? 'unpublished' : 'archive';
 					break;
 			}
@@ -624,7 +624,7 @@ class Html
 			{
 				$text .= "\t\t" . '<span class="archival-notice archived">'
 					. Lang::txt('COM_PUBLICATIONS_VERSION_ARCHIVED_ON_DATE')
-					. ' ' . Date::of($publication->archived)->format($dateFormat) . "\n";
+					. ' ' . Date::of($publication->archived)->toLocal($dateFormat) . "\n";
 			}
 			elseif ($config->get('graceperiod', 0))
 			{
@@ -633,7 +633,7 @@ class Html
 				// Skip notice if archive date passed
 				if (strtotime($archiveDate) > Date::toUnix())
 				{
-					$text .= $archiveDate ? "\t\t".'<span class="archival-notice unarchived">'. Lang::txt('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . Date::of($archiveDate)->format($dateFormat) . "\n" : '';
+					$text .= $archiveDate ? "\t\t".'<span class="archival-notice unarchived">'. Lang::txt('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . Date::of($archiveDate)->toLocal($dateFormat) . "\n" : '';
 				}
 			}
 		}
@@ -724,7 +724,7 @@ class Html
 					if ($publication->published_up > $now)
 					{
 						$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO')
-							. ' ' . Date::of($publication->published_up)->format('m d, Y');
+							. ' ' . Date::of($publication->published_up)->toLocal('m d, Y');
 					}
 
 					break;
@@ -1210,7 +1210,7 @@ class Html
 				$class  = 'unpublished';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
-					.' ' . Date::of($row->published_down)->format($dateFormat);
+					.' ' . Date::of($row->published_down)->toLocal($dateFormat);
 				break;
 
 			case 1:
@@ -1218,7 +1218,7 @@ class Html
 				$status.= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
 				$date   = $row->published_up > $now ? Lang::txt('to be') . ' ' : '';
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-					.' ' . Date::of($row->published_up)->format($dateFormat);
+					.' ' . Date::of($row->published_up)->toLocal($dateFormat);
 				break;
 
 			case 3:
@@ -1226,7 +1226,7 @@ class Html
 				$class = 'draft';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
-					.' ' . Date::of($row->created)->format($dateFormat);
+					.' ' . Date::of($row->created)->toLocal($dateFormat);
 				break;
 
 			case 4:
@@ -1235,13 +1235,13 @@ class Html
 				{
 					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_REVERTED');
 					$date = strtolower(Lang::txt('COM_PUBLICATIONS_ACCEPTED'))
-						.' ' . Date::of($row->accepted)->format($dateFormat);
+						.' ' . Date::of($row->accepted)->toLocal($dateFormat);
 				}
 				else
 				{
 					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_READY');
 					$date = strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-						.' ' . Date::of($row->published_up)->format($dateFormat);
+						.' ' . Date::of($row->published_up)->toLocal($dateFormat);
 				}
 
 				break;
@@ -1250,14 +1250,14 @@ class Html
 				$class  = 'pending';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-					.' ' . Date::of($row->submitted)->format($dateFormat);
+					.' ' . Date::of($row->submitted)->toLocal($dateFormat);
 				break;
 
 			case 7:
 				$class  = 'wip';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-					.' ' . Date::of($row->submitted)->format($dateFormat);
+					.' ' . Date::of($row->submitted)->toLocal($dateFormat);
 				break;
 		}
 
@@ -1491,14 +1491,13 @@ class Html
 	/**
 	 * Send email
 	 *
-	 * @param      array 	$config
-	 * @param      object 	$publication
+	 * @param      object 	$publication   Models\Publication
 	 * @param      array 	$addressees
 	 * @param      string 	$subject
 	 * @param      string 	$message
 	 * @return     void
 	 */
-	public static function notify( $config, $publication, $addressees = array(),
+	public static function notify( $publication, $addressees = array(),
 		$subject = NULL, $message = NULL, $hubMessage = false)
 	{
 		if (!$subject || !$message || empty($addressees))
@@ -1507,15 +1506,15 @@ class Html
 		}
 
 		// Is messaging turned on?
-		if ($config->get('email') != 1)
+		if ($publication->config('email') != 1)
 		{
 			return false;
 		}
 
 		// Set up email config
 		$from = array();
-		$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
-		$from['email'] = Config::get('config.mailfrom');
+		$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
+		$from['email'] = Config::get('mailfrom');
 
 		// Html email
 		$from['multipart'] = md5(date('U'));
@@ -1562,7 +1561,7 @@ class Html
 			// Send email
 			foreach ($addressees as $userid)
 			{
-				$user = \Hubzero\User\Profile::getInstance($userid);
+				$user = \Hubzero\User\Profile::getInstance(trim($userid));
 				if ($user === false)
 				{
 					continue;

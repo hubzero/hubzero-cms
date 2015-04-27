@@ -34,19 +34,9 @@ $this->css()
 // Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 
-$now = Date::toSql();
-
-// Get creator name
-$profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
-$creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
-
-// Version status
 $status    = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
 $class 	   = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
-$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
-
-$profile = \Hubzero\User\Profile::getInstance($this->pub->modified_by);
-$by 	 = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
 
 ?>
 <div id="content-header">
@@ -71,9 +61,9 @@ $by 	 = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('n
 	</div>
 	<p class="instruct">
 		<span class="pubimage"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb'; ?>" alt="" /></span>
-		<strong class="block"><?php echo $this->pub->reviewed ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED') : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); echo ' ' . JHTML::_('date', $this->pub->submitted, 'M d, Y') . $by; ?></strong>
-		<?php if ($this->pub->curator && $ownerProfile  = \Hubzero\User\Profile::getInstance($this->pub->curator)) { ?>
-		<span class="block"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $ownerProfile->get('name') . ' (' . $ownerProfile->get('username') . ')</strong>';  ?></span>
+		<strong class="block"><?php echo $this->pub->reviewed ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED') : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $this->pub->modifier('name'); ?></strong>
+		<?php if ($this->pub->curator()) { ?>
+		<span class="block"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->pub->curator('name') . ' (' . $this->pub->curator('username') . ')</strong>';  ?></span>
 		<?php } ?>
 	<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>
 	<span class="legend">

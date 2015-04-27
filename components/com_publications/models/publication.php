@@ -901,6 +901,56 @@ class Publication extends Object
 	}
 
 	/**
+	 * Get the author of last change to this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire User object
+	 *
+	 * @return     mixed
+	 */
+	public function modifier($property=null)
+	{
+		if (!($this->_modifier instanceof \Hubzero\User\Profile))
+		{
+			$this->_modifier = \Hubzero\User\Profile::getInstance($this->version->get('modified_by'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_modifier ? $this->_modifier->get($property) : NULL;
+		}
+		return $this->_modifier;
+	}
+
+	/**
+	 * Get the assigned curator
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire User object
+	 *
+	 * @return     mixed
+	 */
+	public function curator($property=null)
+	{
+		if (!$this->version->get('curator'))
+		{
+			return false;
+		}
+		if (!($this->_curator instanceof \Hubzero\User\Profile))
+		{
+			$this->_curator = \Hubzero\User\Profile::getInstance($this->version->get('curator'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_curator ? $this->_curator->get($property) : NULL;
+		}
+		return $this->_curator;
+	}
+
+	/**
 	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
@@ -1416,6 +1466,10 @@ class Publication extends Object
 		{
 			case 'serve':
 				$link = $this->_base . '&task=serve' . '&v=' . $this->version->get('version_number');
+			break;
+
+			case 'curate':
+				$link = $this->_base . '&task=curate' . '&version=' . $this->version->get('version_number');
 			break;
 
 			case 'version':

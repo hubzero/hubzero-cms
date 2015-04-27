@@ -35,16 +35,15 @@ if (!$this->ajax)
 	<h3><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_VIEW'); ?></h3>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" method="post" id="hubForm-ajax" name="curation-form" class="curation-history">
 		<fieldset>
-			<input type="hidden" name="id" value="<?php echo $this->row->publication_id; ?>" />
-			<input type="hidden" name="vid" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
+			<input type="hidden" name="vid" value="<?php echo $this->pub->version->id; ?>" />
 			<input type="hidden" name="task" value="assign" />
 			<input type="hidden" name="confirm" value="1" />
 		</fieldset>
 		<p class="info"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_INSTRUCT'); ?></p>
 		<label><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_CHOOSE'); ?>
 		<?php
-			$ownerProfile  = $this->row->curator ? \Hubzero\User\Profile::getInstance($this->row->curator) : NULL;
-			$selected = $ownerProfile ? $ownerProfile->get('name') : '';
+			$selected = $this->pub->curator() ? $this->pub->curator('name') : '';
 			$mc = Event::trigger( 'hubzero.onGetSingleEntryWithSelect', array(array('members', 'owner', 'owner', '', $selected,'','owner')) );
 			if (count($mc) > 0) {
 				echo $mc[0];
@@ -52,7 +51,7 @@ if (!$this->ajax)
 				<input type="text" name="owner" id="owner" value="" size="35" maxlength="200" />
 			<?php } ?>
 			<?php if ($selected) { ?>
-				<input type="hidden" name="selected" value="<?php echo $this->row->curator; ?>" />
+				<input type="hidden" name="selected" value="<?php echo $this->pub->curator; ?>" />
 			<?php } ?>
 		</label>
 		<p class="submitarea">

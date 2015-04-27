@@ -2106,7 +2106,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Log activity in curation history
 		if (isset($pub->_curationModel))
 		{
-			$pub->_curationModel->saveHistory($pub, $this->_uid, $originalStatus, $pub->version->get('state'), 0 );
+			$pub->_curationModel->saveHistory($this->_uid, $originalStatus, $pub->version->get('state'), 0 );
 		}
 
 		// Display status message
@@ -2209,7 +2209,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 			}
 			\Components\Publications\Helpers\Html::notify(
-				$this->_pubconfig,
 				$pub,
 				$admins,
 				Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),

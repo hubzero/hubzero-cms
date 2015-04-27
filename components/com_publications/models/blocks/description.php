@@ -243,7 +243,7 @@ class Description extends Base
 				}
 				if ($row->$field != $value)
 				{
-					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $blockId);
+					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $blockId);
 					$changed++;
 
 					// Record update time

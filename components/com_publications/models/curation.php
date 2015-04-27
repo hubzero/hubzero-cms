@@ -85,16 +85,6 @@ class Curation extends Object
 	var $_manifest 		= NULL;
 
 	/**
-	* @var    integer Version ID
-	*/
-	var $_vid 			= NULL;
-
-	/**
-	* @var    integer Pub ID
-	*/
-	var $_pid 			= NULL;
-
-	/**
 	* @var    object Blocks
 	*/
 	var $_blocks 		= array();
@@ -296,27 +286,6 @@ class Curation extends Object
 	}
 
 	/**
-	 * Set association with publication and load curation
-	 *
-	 * @param   object  $pub	Publication
-	 * @return  void
-	 */
-	public function setPubAssoc($pub = NULL)
-	{
-		// Set version alias (e.f. 'dev' or 'default')
-		if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version))
-		{
-			$pub->versionAlias = $pub->version;
-		}
-		$this->_pub		= $pub;
-		$this->_vid		= $pub->version_id;
-		$this->_pid		= $pub->id;
-
-		// Set progress
-		$this->setProgress();
-	}
-
-	/**
 	 * Get schema for metadata elements
 	 *
 	 * @return  array
@@ -495,13 +464,35 @@ class Curation extends Object
 	}
 
 	/**
-	 * Reorder attached items
+	 * Set association with publication and load curation
+	 *
+	 * @param   object  $pub	Models\Publication
+	 * @return  void
+	 */
+	public function setPubAssoc($pub = NULL)
+	{
+		// Set version alias (e.f. 'dev' or 'default')
+		if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version))
+		{
+			$pub->versionAlias = $pub->version;
+		}
+		$this->_pub = $pub;
+
+		// Set progress
+		$this->setProgress();
+	}
+
+	/*----------------------------
+		ITEM MANAGEMENT
+	*/
+	/**
+	 * Attach new record
 	 *
 	 * @param   integer  $actor			Actor user ID
 	 * @param   integer  $elementId		Element ID
 	 * @return  boolean
 	 */
-	public function reorder ($actor = 0, $elementId = 0)
+	public function addItem ($actor = 0, $elementId = 0)
 	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
@@ -511,7 +502,7 @@ class Curation extends Object
 		// Get blocks model
 		$blocksModel = new Blocks($this->_db);
 
-		$blocksModel->reorder($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+		$blocksModel->addItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
 
 		// Set error
 		if ($blocksModel->getError())
@@ -627,6 +618,53 @@ class Curation extends Object
 	}
 
 	/**
+	 * Reorder attached items
+	 *
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
+	 */
+	public function reorder ($actor = 0, $elementId = 0)
+	{
+		if (!$this->_blocks || !$this->_block || !$this->_pub)
+		{
+			return false;
+		}
+
+		// Get blocks model
+		$blocksModel = new Blocks($this->_db);
+
+		$blocksModel->reorder($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+
+		// Set error
+		if ($blocksModel->getError())
+		{
+			$this->setError($blocksModel->getError());
+		}
+
+		// Set success message
+		if ($blocksModel->get('_message'))
+		{
+			$this->set('_message', $blocksModel->get('_message'));
+		}
+
+		// Record update requested?
+		if ($blocksModel->get('_update'))
+		{
+			// Record update time
+			$data 				= new stdClass;
+			$data->updated 		= Date::toSql();
+			$data->updated_by 	= $actor;
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+		}
+
+		return true;
+	}
+
+	/*----------------------------
+		CORRESPONDENCE WITH CURATOR
+	*/
+	/**
 	 * Dispute request for change
 	 *
 	 * @param   integer  $actor			Actor user ID
@@ -723,148 +761,9 @@ class Curation extends Object
 		return true;
 	}
 
-	/**
-	 * Attach new record
-	 *
-	 * @param   integer  $actor			Actor user ID
-	 * @param   integer  $elementId		Element ID
-	 * @return  boolean
-	 */
-	public function addItem ($actor = 0, $elementId = 0)
-	{
-		if (!$this->_blocks || !$this->_block || !$this->_pub)
-		{
-			return false;
-		}
-
-		// Get blocks model
-		$blocksModel = new Blocks($this->_db);
-
-		$blocksModel->addItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-
-		// Set error
-		if ($blocksModel->getError())
-		{
-			$this->setError($blocksModel->getError());
-		}
-
-		// Set success message
-		if ($blocksModel->get('_message'))
-		{
-			$this->set('_message', $blocksModel->get('_message'));
-		}
-
-		// Record update requested?
-		if ($blocksModel->get('_update'))
-		{
-			// Record update time
-			$data 				= new stdClass;
-			$data->updated 		= Date::toSql();
-			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Save new block information
-	 *
-	 * @param   integer  $actor			Actor user ID
-	 * @param   integer  $elementId		Element ID
-	 * @return  boolean
-	 */
-	public function saveBlock($actor = 0, $elementId = 0)
-	{
-		if (!$this->_blocks || !$this->_block || !$this->_pub)
-		{
-			return false;
-		}
-
-		// Get blocks model
-		$blocksModel = new Blocks($this->_db);
-
-		// Save data
-		$blocksModel->saveBlock($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-
-		// Set error
-		if ($blocksModel->getError())
-		{
-			$this->setError($blocksModel->getError());
-		}
-
-		// Set success message
-		if ($blocksModel->get('_message'))
-		{
-			$this->set('_message', $blocksModel->get('_message'));
-		}
-
-		// Record update requested?
-		if ($blocksModel->get('_update'))
-		{
-			// Record update time
-			$data 				= new stdClass;
-			$data->updated 		= Date::toSql();
-			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Draw publication draft status bar
-	 *
-	 * @return  string HTML
-	 */
-	public function drawStatusBar()
-	{
-		if (!$this->_progress)
-		{
-			return false;
-		}
-
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'draft',
-				'layout'	=>'statusbar'
-			)
-		);
-		$view->pub 			 = $this->_pub;
-		$view->progress		 = $this->_progress;
-		$view->active		 = $this->_blockname;
-		$view->activenum	 = $this->_blockorder;
-		$view->database		 = $this->_db;
-		$view->display();
-	}
-
-	/**
-	 * Check if block is in manifest
-	 *
-	 * @param   string  $name	Block name
-	 * @return  boolean
-	 */
-	public function blockExists( $name = NULL )
-	{
-		if (!$this->_blocks || $name === NULL)
-		{
-			return false;
-		}
-
-		// Check status for each
-		foreach ($this->_blocks as $blockId => $block)
-		{
-			if ($block->name == $name)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
+	/*----------------------------
+	* BLOCK & ELEMENT MANAGEMENT
+	*/
 	/**
 	 * Set curation progress for publication
 	 *
@@ -895,7 +794,7 @@ class Curation extends Object
 				continue;
 			}
 			$autoStatus 		= self::getStatus($block->name, $this->_pub, $blockId);
-			$reviewStatus		= self::getReviewStatus($block->name, $this->_pub, $blockId);
+			$reviewStatus		= self::getReviewStatus($block->name, $blockId);
 
 			$result->blocks->$blockId 				= new stdClass();
 			$result->blocks->$blockId->name 		= $block->name;
@@ -954,103 +853,28 @@ class Curation extends Object
 	}
 
 	/**
-	 * Transfer content from one version to another
+	 * Check if block is in manifest
 	 *
-	 * @param   object  $old	Transfer from version record
-	 * @param   object  $new	Transfer to version record
+	 * @param   string  $name	Block name
 	 * @return  boolean
 	 */
-	public function transfer( $pub, $old, $new)
+	public function blockExists( $name = NULL )
 	{
-		// Get blocks model
-		$blocksModel = new Blocks($this->_db);
-
-		foreach ($pub->_curationModel->_progress->blocks as $blockId => $block)
+		if (!$this->_blocks || $name === NULL)
 		{
-			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
-
-			if (in_array($parentBlock, array('content', 'authors')))
-			{
-				$blocksModel->transferData($parentBlock, $block->manifest, $pub, $old, $new);
-			}
-		}
-
-		// Set error
-		if ($blocksModel->getError())
-		{
-			$this->setError($blocksModel->getError());
-		}
-
-		return true;
-	}
-
-	/**
-	 * Check block status (auto check)
-	 *
-	 * @param   string  $name		Block name
-	 * @param   object  $pub		Publication object
-	 * @param   integer $blockId	Numeric block ID
-	 * @return  object
-	 */
-	public function getStatus( $name, $pub, $blockId = 0)
-	{
-		$pub = $pub ? $pub : $this->_pub;
-
-		$blockId = $blockId ? $blockId : $this->_blockorder;
-		if (!$blockId)
-		{
-			$blockId = $this->getBlockId($name);
-		}
-
-		if (!$blockId)
-		{
-			$this->setError( Lang::txt('Error loading block') );
 			return false;
 		}
 
-		// Get blocks model
-		$blocksModel = new Blocks($this->_db);
-		return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId);
-
-		// Return status
-		return $status;
-	}
-
-	/**
-	 * Get first element ID
-	 *
-	 * @param   string  $name		Block name
-	 * @param   object  $pub		Publication object
-	 * @param   integer $blockId	Numeric block ID
-	 * @return  integer
-	 */
-	public function getFirstElement( $name, $pub, $blockId = 0)
-	{
-		$pub = $pub ? $pub : $this->_pub;
-		$elementId = 0;
-
-		$blockId = $blockId ? $blockId : $this->_blockorder;
-		if (!$blockId)
+		// Check status for each
+		foreach ($this->_blocks as $blockId => $block)
 		{
-			$blockId = $this->getBlockId($name);
-		}
-
-		if (!$blockId)
-		{
-			$this->setError( Lang::txt('Error loading block') );
-			return $elementId;
-		}
-
-		if ($this->_blocks->$blockId->elements)
-		{
-			foreach ($this->_blocks->$blockId->elements as $id => $element)
+			if ($block->name == $name)
 			{
-				return $id;
+				return true;
 			}
 		}
 
-		// Return status
-		return $elementId;
+		return false;
 	}
 
 	/**
@@ -1197,6 +1021,120 @@ class Curation extends Object
 	}
 
 	/**
+	 * Check block status (auto check)
+	 *
+	 * @param   string  $name		Block name
+	 * @param   object  $pub		Publication object
+	 * @param   integer $blockId	Numeric block ID
+	 * @return  object
+	 */
+	public function getStatus( $name, $pub, $blockId = 0)
+	{
+		$pub = $pub ? $pub : $this->_pub;
+
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
+		{
+			$blockId = $this->getBlockId($name);
+		}
+
+		if (!$blockId)
+		{
+			$this->setError( Lang::txt('Error loading block') );
+			return false;
+		}
+
+		// Get blocks model
+		$blocksModel = new Blocks($this->_db);
+		return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId);
+
+		// Return status
+		return $status;
+	}
+
+	/**
+	 * Save new block information
+	 *
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
+	 */
+	public function saveBlock($actor = 0, $elementId = 0)
+	{
+		if (!$this->_blocks || !$this->_block || !$this->_pub)
+		{
+			return false;
+		}
+
+		// Get blocks model
+		$blocksModel = new Blocks($this->_db);
+
+		// Save data
+		$blocksModel->saveBlock($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+
+		// Set error
+		if ($blocksModel->getError())
+		{
+			$this->setError($blocksModel->getError());
+		}
+
+		// Set success message
+		if ($blocksModel->get('_message'))
+		{
+			$this->set('_message', $blocksModel->get('_message'));
+		}
+
+		// Record update requested?
+		if ($blocksModel->get('_update'))
+		{
+			// Record update time
+			$data 				= new stdClass;
+			$data->updated 		= Date::toSql();
+			$data->updated_by 	= $actor;
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get first element ID
+	 *
+	 * @param   string  $name		Block name
+	 * @param   object  $pub		Publication object
+	 * @param   integer $blockId	Numeric block ID
+	 * @return  integer
+	 */
+	public function getFirstElement( $name, $pub, $blockId = 0)
+	{
+		$pub = $pub ? $pub : $this->_pub;
+		$elementId = 0;
+
+		$blockId = $blockId ? $blockId : $this->_blockorder;
+		if (!$blockId)
+		{
+			$blockId = $this->getBlockId($name);
+		}
+
+		if (!$blockId)
+		{
+			$this->setError( Lang::txt('Error loading block') );
+			return $elementId;
+		}
+
+		if ($this->_blocks->$blockId->elements)
+		{
+			foreach ($this->_blocks->$blockId->elements as $id => $element)
+			{
+				return $id;
+			}
+		}
+
+		// Return status
+		return $elementId;
+	}
+
+	/**
 	 * Get next element ID
 	 *
 	 * @param   string  $name		Block name
@@ -1312,67 +1250,24 @@ class Curation extends Object
 		return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId, $elementId );
 	}
 
-	/**
-	 * Save version label
-	 *
-	 * @param      int $uid
-	 * @return     boolean
-	 */
-	public function saveVersionLabel( $uid = 0 )
-	{
-		if (!$this->_pub)
-		{
-			return false;
-		}
-
-		$row = new Tables\Version( $this->_db );
-
-		// Incoming
-		$label = trim(Request::getVar( 'label', '', 'post' ));
-		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version_number );
-
-		if ($label && in_array($label, $used_labels))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
-			return false;
-		}
-		elseif ($label)
-		{
-			if (!$row->loadVersion($this->_pub->id, $this->_pub->version_number))
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
-				return false;
-			}
-
-			$row->version_label = $label;
-			if (!$row->store())
-			{
-				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
-			}
-		}
-
-		// Success message
-		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED'));
-
-		return true;
-	}
-
+	/*----------------------------
+	* CURATION REVIEW
+	*/
 	/**
 	 * Check status for curation review
 	 *
 	 * @param   string  $block		Block name
-	 * @param   object  $pub		Publication object
 	 * @param   integer $blockId	Numeric block ID
 	 * @return  object
 	 */
-	public function getReviewStatus( $block, $pub, $blockId = 0)
+	public function getReviewStatus( $block, $blockId = 0)
 	{
 		// Get status model
 		$status = new Status();
 
-		if (!isset($pub->reviewedItems))
+		if (!isset($this->_pub->reviewedItems))
 		{
-			$pub->reviewedItems = $this->getReviewedItems($pub->version_id);
+			$this->_pub->reviewedItems = $this->getReviewedItems();
 		}
 
 		$manifest = $this->_blocks->$blockId;
@@ -1395,7 +1290,7 @@ class Curation extends Object
 				{
 					$status->elements = new stdClass();
 				}
-				$status->elements->$elementId = $this->getReviewItemStatus( $props, $pub->reviewedItems);
+				$status->elements->$elementId = $this->getReviewItemStatus( $props, $this->_pub->reviewedItems);
 
 				// Store element label (for history tracking)
 				$status->elements->$elementId->label = $element->label;
@@ -1425,7 +1320,7 @@ class Curation extends Object
 			}
 
 			// Determine block status based on element status
-			$passed 	    	= ($success == $i || $pub->state == 1) ? 1 : 0;
+			$passed 	    	= ($success == $i || $this->_pub->state == 1) ? 1 : 0;
 			$status->status 	= $failed > 0 ? 0 : $passed;
 			$status->status 	= ($incomplete  && !$failed) ? 2 : $status->status; // unreviewed
 			$status->status 	= ($skipped > 0 && ($skipped + $incomplete) == $i) ? 3 : $status->status; // skipped
@@ -1434,7 +1329,7 @@ class Curation extends Object
 		else
 		{
 			$props = $block . '-' . $blockId;
-			return $this->getReviewItemStatus( $props, $pub->reviewedItems);
+			return $this->getReviewItemStatus( $props, $this->_pub->reviewedItems);
 		}
 
 		// Return status
@@ -1450,9 +1345,9 @@ class Curation extends Object
 	 */
 	public function getReviewItemStatus( $props = NULL, $items = NULL )
 	{
-		$status = new Status();
-		$status->status 		= 2; // unreviewed
-		$status->updated_by 	= 0;
+		$status             = new Status();
+		$status->status     = 2; // unreviewed
+		$status->updated_by = 0;
 
 		if ($props === NULL || $items === NULL)
 		{
@@ -1491,7 +1386,9 @@ class Curation extends Object
 			$status->lastupdate = $record->updated;
 			$status->updated_by = $record->updated_by;
 		}
-		if ($record->review_status == 3 || ($record->reviewed && $record->update && strtotime($record->updated) > strtotime($record->reviewed)))
+		if ($record->review_status == 3 || ($record->reviewed && $record->update
+			&& strtotime($record->updated) > strtotime($record->reviewed))
+		)
 		{
 			$status->message = $record->update;
 		}
@@ -1545,7 +1442,7 @@ class Curation extends Object
 			if ($status->status != 3)
 			{
 				$status->updatenotice 	= Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
-					. \JHTML::_('date', $status->updated, 'M d, Y H:i') . $by;
+					. Date::of($status->updated)->format('M d, Y H:i') . $by;
 			}
 			else
 			{
@@ -1631,17 +1528,20 @@ class Curation extends Object
 	 * @param   integer  $versionId
 	 * @return  array or boolean False
 	 */
-	public function getReviewedItems( $versionId = 0 )
+	public function getReviewedItems()
 	{
-		if (!$versionId)
+		if (empty($this->_pub->version_id))
 		{
 			return false;
 		}
 
 		$review = array();
 
-		$curation = new Tables\Curation($this->_db);
-		$results = $curation->getRecords($versionId);
+		if (!isset($this->_tbl))
+		{
+			$this->_tbl = new Tables\Curation($this->_db);
+		}
+		$results = $this->_tbl->getRecords($this->_pub->version_id);
 
 		if ($results)
 		{
@@ -1660,16 +1560,61 @@ class Curation extends Object
 		return $review;
 	}
 
+	/*----------------------------
+	* CURATION HISTORY
+	*/
+	/**
+	 * Get history logs
+	 *
+	 * @param   array $filters
+	 * @return  object or NULL
+	 */
+	public function getHistory($filters = array())
+	{
+		if (empty($this->_pub))
+		{
+			return false;
+		}
+		if (!isset($this->_tblHistory))
+		{
+			$this->_tblHistory = new Tables\CurationHistory($this->_db);
+		}
+
+		$history = $this->_tblHistory->getRecords($this->_pub->version_id, $filters);
+
+		return $history;
+	}
+
+	/**
+	 * Get last history log
+	 *
+	 * @return  object or NULL
+	 */
+	public function getLastHistoryRecord()
+	{
+		if (empty($this->_pub))
+		{
+			return false;
+		}
+		if (!isset($this->_tblHistory))
+		{
+			$this->_tblHistory = new Tables\CurationHistory($this->_db);
+		}
+
+		$history = $this->_tblHistory->getLastRecord($this->_pub->version_id);
+
+		return $history;
+	}
+
 	/**
 	 * Get change log
 	 *
-	 * @param   object  $pub		Publication object
 	 * @param   integer $oldStatus	Previous version state
 	 * @param   integer $newStatus	New version state
 	 * @param   integer $curator	Author or curator
 	 * @return  string
 	 */
-	public function getChangeLog( $pub, $oldStatus = 0, $newStatus = 0, $curator = 0 )
+	public function getChangeLog( $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
 		$changelog  = NULL;
 
@@ -1699,7 +1644,7 @@ class Curation extends Object
 		}
 
 		// Add details
-		if ($pub->_curationModel->_progress && ($newStatus == 7 || $oldStatus == 7))
+		if (!empty($this->_progress) && ($newStatus == 7 || $oldStatus == 7))
 		{
 			$changelog .= '<hr />';
 			$changelog .= $newStatus == 7
@@ -1755,20 +1700,24 @@ class Curation extends Object
 	/**
 	 * Save history log
 	 *
-	 * @param   object  $pub		Publication object
 	 * @param   integer $actor		Actor user ID
 	 * @param   integer $oldStatus	Previous version state
 	 * @param   integer $newStatus	New version state
 	 * @param   integer $curator	Author or curator
 	 * @return  boolean
 	 */
-	public function saveHistory( $pub, $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
+	public function saveHistory( $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
+		if (empty($this->_pub))
+		{
+			return false;
+		}
+
 		// Incoming
 		$comment = Request::getVar('comment', '', 'post');
 
 		// Collect details
-		$changelog = $this->getChangeLog($pub, $oldStatus, $newStatus, $curator);
+		$changelog = $this->getChangeLog($oldStatus, $newStatus, $curator);
 
 		if (!$changelog)
 		{
@@ -1778,7 +1727,7 @@ class Curation extends Object
 		$obj = new Tables\CurationHistory($this->_db);
 
 		// Create new record
-		$obj->publication_version_id 	= $pub->version_id;
+		$obj->publication_version_id 	= $this->_pub->version_id;
 		$obj->created 					= Date::toSql();
 		$obj->created_by				= $actor;
 		$obj->changelog					= $changelog;
@@ -1796,34 +1745,31 @@ class Curation extends Object
 	}
 
 	/**
-	 * Get history logs
-	 *
-	 * @param   object  $pub		Publication object
-	 * @param   integer $curator	Author or curator
-	 * @return  object or NULL
-	 */
-	public function getHistory( $pub, $curator = 0 )
-	{
-		$obj = new Tables\CurationHistory($this->_db);
-
-		$history = $obj->getRecords($pub->version_id);
-
-		return $history;
-	}
-
-	/**
-	 * Get last
+	 * Get last curation update
 	 *
 	 * @param   integer  $elementId		Element ID
 	 * @param   string   $name			Block name
-	 * @param   object   $pub			Publication object
 	 * @param   integer  $blockId		Numeric block ID
 	 * @return boolean
 	 */
-	public function getLastUpdate( $elementId, $name, $pub, $blockId )
+	public function getLastUpdate( $elementId, $name, $blockId )
 	{
-		$curation = new Tables\Curation($this->_db);
-		return $curation->getRecord($pub->id, $pub->version_id, $name, $blockId, $elementId);
+		if (empty($this->_pub))
+		{
+			return false;
+		}
+		if (!isset($this->_tbl))
+		{
+			$this->_tbl = new Tables\Curation($this->_db);
+		}
+
+		return $this->_tbl->getRecord(
+			$this->_pub->id,
+			$this->_pub->version_id,
+			$name,
+			$blockId,
+			$elementId
+		);
 	}
 
 	/**
@@ -1856,31 +1802,34 @@ class Curation extends Object
 			return false;
 		}
 
-		$curation = new Tables\Curation($this->_db);
+		if (!isset($this->_tbl))
+		{
+			$this->_tbl = new Tables\Curation($this->_db);
+		}
 
 		// Load curation record if exists
-		if ($curation->loadRecord($pub->id, $pub->version_id, $name, $blockId, $elementId))
+		if ($this->_tbl->loadRecord($pub->id, $pub->version_id, $name, $blockId, $elementId))
 		{
 			// Record found - update
 		}
 		else
 		{
 			// Create new record
-			$curation->publication_id 			= $pub->id;
-			$curation->publication_version_id 	= $pub->version_id;
-			$curation->block 					= $name;
-			$curation->step						= $blockId;
-			$curation->element					= $elementId;
+			$this->_tbl->publication_id 		= $pub->id;
+			$this->_tbl->publication_version_id = $pub->version_id;
+			$this->_tbl->block 					= $name;
+			$this->_tbl->step					= $blockId;
+			$this->_tbl->element				= $elementId;
 		}
 
 		// Insert incoming data
 		foreach ($data as $field => $value)
 		{
 			$field = trim($field);
-			$curation->$field = trim($value);
+			$this->_tbl->$field = trim($value);
 		}
 
-		if ($curation->store())
+		if ($this->_tbl->store())
 		{
 			return true;
 		}
@@ -1888,9 +1837,11 @@ class Curation extends Object
 		return false;
 	}
 
+	/*----------------------------
+	* PACKAGING
+	*/
 	/**
 	 * Produce publication package
-	 *
 	 *
 	 * @return     boolean
 	 */
@@ -1937,7 +1888,6 @@ class Curation extends Object
 
 	/**
 	 * Produce publication package
-	 *
 	 *
 	 * @return     boolean
 	 */
@@ -2086,6 +2036,9 @@ class Curation extends Object
 		return true;
 	}
 
+	/*----------------------------
+	* COVERSION, TRANSFER, MISC
+	*/
 	/**
 	 * Conversion for publications created in a non-curated flow
 	 *
@@ -2231,5 +2184,109 @@ class Curation extends Object
 		$row->saveParam($row->id, 'curated', 1);
 
 		return true;
+	}
+
+	/**
+	 * Transfer content from one version to another
+	 *
+	 * @param   object  $old	Transfer from version record
+	 * @param   object  $new	Transfer to version record
+	 * @return  boolean
+	 */
+	public function transfer( $pub, $old, $new)
+	{
+		// Get blocks model
+		$blocksModel = new Blocks($this->_db);
+
+		foreach ($pub->_curationModel->_progress->blocks as $blockId => $block)
+		{
+			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
+
+			if (in_array($parentBlock, array('content', 'authors')))
+			{
+				$blocksModel->transferData($parentBlock, $block->manifest, $pub, $old, $new);
+			}
+		}
+
+		// Set error
+		if ($blocksModel->getError())
+		{
+			$this->setError($blocksModel->getError());
+		}
+
+		return true;
+	}
+
+	/**
+	 * Save version label
+	 *
+	 * @param      int $uid
+	 * @return     boolean
+	 */
+	public function saveVersionLabel( $uid = 0 )
+	{
+		if (!$this->_pub)
+		{
+			return false;
+		}
+
+		$row = new Tables\Version( $this->_db );
+
+		// Incoming
+		$label = trim(Request::getVar( 'label', '', 'post' ));
+		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version_number );
+
+		if ($label && in_array($label, $used_labels))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+			return false;
+		}
+		elseif ($label)
+		{
+			if (!$row->loadVersion($this->_pub->id, $this->_pub->version_number))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
+				return false;
+			}
+
+			$row->version_label = $label;
+			if (!$row->store())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
+			}
+		}
+
+		// Success message
+		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED'));
+
+		return true;
+	}
+
+	/**
+	 * Draw publication draft status bar
+	 *
+	 * @return  string HTML
+	 */
+	public function drawStatusBar()
+	{
+		if (!$this->_progress)
+		{
+			return false;
+		}
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'publications',
+				'name'		=>'draft',
+				'layout'	=>'statusbar'
+			)
+		);
+		$view->pub 			 = $this->_pub;
+		$view->progress		 = $this->_progress;
+		$view->active		 = $this->_blockname;
+		$view->activenum	 = $this->_blockorder;
+		$view->database		 = $this->_db;
+		$view->display();
 	}
 }
