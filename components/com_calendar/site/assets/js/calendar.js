@@ -91,7 +91,22 @@ HUB.Plugins.GroupCalendar = {
 			},
 			eventMouseover: function(event, jsEvent, view)
 			{
-				$('.fc-event[href="'+event.url+'"').addClass('active');
+				$(this).addClass('active');
+			},
+			eventClick: function(event, jsEvent, view)
+			{
+				jsEvent.preventDefault();
+
+				url = $base + '?task=eventSummary&event=' + event.id;
+
+				$(this).webuiPopover({
+					placement:'top',
+					animation: 'pop',
+					title: 'Hello',
+					content: url,
+					closable: true
+
+				});
 			},
 			eventMouseout: function(event, jsEvent, view)
 			{

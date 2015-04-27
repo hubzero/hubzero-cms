@@ -187,6 +187,26 @@ class Calendar extends SiteController
 		exit();
 	}
 
+	public function eventSummaryTask()
+	{
+		$id = Request::getVar('event');
+		$this->view->row = new Event($this->database);
+		$this->view->row->load($id);
+
+		// get category
+		$catid = $this->view->row->catid;
+		$category = new Category($this->database);
+		$category->load($catid);
+		$this->view->row->category = $category->title;
+
+		$rt = new Tags($id);
+		$this->view->row->tags = $rt->render();
+		return var_dump("here!");
+		die;
+		$this->view->display();
+
+	}
+
 	public function eventsTask()
 	{
 		// array to hold events

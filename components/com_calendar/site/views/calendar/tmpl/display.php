@@ -32,7 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-     ->js();
+	 ->css('jquery.webui-popover.min.css')
+     ->js()
+     ->js('jquery.webui-popover.min');
 ?>
 
 <?php if ($this->getError()) { ?>
