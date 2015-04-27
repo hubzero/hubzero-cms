@@ -131,9 +131,9 @@ if ($this->categories) {
 				{
 					$cls = $category->alias;
 				}
-				else
+				elseif(substr($category->alias, -1) == 's')
 				{
-					$cls = rtrim($category->alias, 's');
+					$cls = substr($category->alias, 0, -1);
 				}
 				// Need to do some decoding to ensure escaped characters aren't encoded twice.
 				$category->description = html_entity_decode(strip_tags(stripslashes($this->escape($category->description))));
