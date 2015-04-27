@@ -724,7 +724,7 @@ class Html
 					if ($publication->published_up > $now)
 					{
 						$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO')
-							. ' ' . \JHTML::_('date', $publication->published_up, 'm d, Y');
+							. ' ' . Date::of($publication->published_up)->format('m d, Y');
 					}
 
 					break;
@@ -1210,7 +1210,7 @@ class Html
 				$class  = 'unpublished';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
-					.' ' . \JHTML::_('date', $row->published_down, $dateFormat);
+					.' ' . Date::of($row->published_down)->format($dateFormat);
 				break;
 
 			case 1:
@@ -1218,7 +1218,7 @@ class Html
 				$status.= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
 				$date   = $row->published_up > $now ? Lang::txt('to be') . ' ' : '';
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-					.' ' . \JHTML::_('date', $row->published_up, $dateFormat);
+					.' ' . Date::of($row->published_up)->format($dateFormat);
 				break;
 
 			case 3:
@@ -1226,7 +1226,7 @@ class Html
 				$class = 'draft';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
-					.' ' . \JHTML::_('date', $row->created, $dateFormat);
+					.' ' . Date::of($row->created)->format($dateFormat);
 				break;
 
 			case 4:
@@ -1235,13 +1235,13 @@ class Html
 				{
 					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_REVERTED');
 					$date = strtolower(Lang::txt('COM_PUBLICATIONS_ACCEPTED'))
-						.' ' . \JHTML::_('date', $row->accepted, $dateFormat);
+						.' ' . Date::of($row->accepted)->format($dateFormat);
 				}
 				else
 				{
 					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_READY');
 					$date = strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-						.' ' . \JHTML::_('date', $row->published_up, $dateFormat);
+						.' ' . Date::of($row->published_up)->format($dateFormat);
 				}
 
 				break;
@@ -1250,14 +1250,14 @@ class Html
 				$class  = 'pending';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-					.' ' . \JHTML::_('date', $row->submitted, $dateFormat);
+					.' ' . Date::of($row->submitted)->format($dateFormat);
 				break;
 
 			case 7:
 				$class  = 'wip';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-					.' ' . \JHTML::_('date', $row->submitted, $dateFormat);
+					.' ' . Date::of($row->submitted)->format($dateFormat);
 				break;
 		}
 
@@ -1366,7 +1366,7 @@ class Html
 	 * @param      string $url File path/name
 	 * @return     string
 	 */
-	public static function getFileExtension($url)
+	public static function getFileExtension($file)
 	{
 		if (!is_null($file))
 		{
