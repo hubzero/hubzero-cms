@@ -85,11 +85,43 @@ class Loader
 	 *
 	 * @param   string   $option  The option for the component.
 	 * @param   boolean  $strict  If set and the component does not exist, false will be returned
-	 * @return  JRegistry  A JRegistry object.
+	 * @return  object   A Registry object.
 	 */
 	public function params($option, $strict = false)
 	{
 		return $this->load($option, $strict)->params;
+	}
+
+	/**
+	 * Get the base path to a component
+	 *
+	 * @param   string  $option  The name of the component.
+	 * @return  string
+	 */
+	public function path($option)
+	{
+		$result = $this->load($option);
+
+		if (!isset($result->path))
+		{
+			$result->path = '';
+
+			$paths = array(
+				PATH_APP . DS . 'components' . DS . $result->option,
+				PATH_CORE . DS . 'components' . DS . $result->option
+			);
+
+			foreach ($paths as $path)
+			{
+				if (is_dir($path))
+				{
+					$result->path = $path;
+					break;
+				}
+			}
+		}
+
+		return $result->path;
 	}
 
 	/**
@@ -147,7 +179,7 @@ class Loader
 		$client = ($this->app->isAdmin() ? 'admin' : 'site');
 
 		// Get component path
-		if (is_dir(JPATH_SITE . DS . 'components' . DS . $option . DS . $client))
+		if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
 		{
 			// Set path and constants for combined components
 			define('JPATH_COMPONENT', JPATH_SITE . DS . 'components' . DS . $option . DS . $client);

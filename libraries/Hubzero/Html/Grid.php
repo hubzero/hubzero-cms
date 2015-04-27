@@ -32,6 +32,7 @@ namespace Hubzero\Html;
 
 use Hubzero\Utility\Date;
 use Lang;
+use User;
 
 /**
  * Utility class for creating HTML Grids
@@ -194,6 +195,7 @@ class Grid
 
 		return $href;
 	}
+
 	/**
 	 * Method to create a select list of states for filtering
 	 * By default the filter shows only published and unpublished items
@@ -234,6 +236,7 @@ class Grid
 			)
 		);
 	}
+
 	/**
 	 * Method to create an icon for saving a new ordering in a grid
 	 *
