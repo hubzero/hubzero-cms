@@ -131,7 +131,7 @@ if ($this->categories) {
 				{
 					$cls = $category->alias;
 				}
-				elseif(substr($category->alias, -1) == 's')
+				elseif (substr($category->alias, -1) == 's')
 				{
 					$cls = substr($category->alias, 0, -1);
 				}
