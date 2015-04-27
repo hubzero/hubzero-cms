@@ -112,7 +112,7 @@ class Asset extends Base
 	/**
 	 * Is an asset an image?
 	 *
-	 * @return  boolean True if image, false if not
+	 * @return  boolean  True if image, false if not
 	 */
 	public function image()
 	{
@@ -128,11 +128,12 @@ class Asset extends Base
 	}
 
 	/**
-	 * Is an asset an image?
+	 * Return the appropriate file name given a specified size
 	 *
-	 * @return  boolean True if image, false if not
+	 * @param   string  $size
+	 * @return  string
 	 */
-	public function thumbnail()
+	public function file($size = 'thumb')
 	{
 		if (!$this->image())
 		{
@@ -142,37 +143,90 @@ class Asset extends Base
 		$path = $this->filespace() . DS . $this->get('item_id') . DS;
 		$file = ltrim($this->get('filename'), DS);
 
-		jimport('joomla.filesystem.file');
-		$ext = \JFile::getExt($file);
-
-		$thumb = \JFile::stripExt($file) . '_t.' . $ext;
-
-		if (!file_exists($path . $thumb))
+		switch ($size)
 		{
-			list($originalWidth, $originalHeight) = getimagesize($path . $file);
+			case 't':
+			case 'tn':
+			case 'thumb':
+			case 'thumbnail':
+				jimport('joomla.filesystem.file');
+				$ext   = \JFile::getExt($file);
+				$thumb = \JFile::stripExt($file) . '_t.' . $ext;
 
-			if ($originalWidth > 400 || $originalHeight > 400)
+				if (!file_exists($path . $thumb))
+				{
+					if (!$this->resize($path . $file, $path . $thumb, 400))
+					{
+						$thumb = $file;
+					}
+				}
+
+				return $thumb;
+			break;
+
+			case 'm':
+			case 'med':
+			case 'medium':
+				jimport('joomla.filesystem.file');
+				$ext   = \JFile::getExt($file);
+				$thumb = \JFile::stripExt($file) . '_m.' . $ext;
+
+				if (!file_exists($path . $thumb))
+				{
+					if (!$this->resize($path . $file, $path . $thumb, 1024))
+					{
+						$thumb = $file;
+					}
+				}
+
+				return $thumb;
+			break;
+
+			case 'o':
+			case 'orig':
+			case 'original':
+			default:
+				return $file;
+			break;
+		}
+	}
+
+	/**
+	 * Resize an image
+	 *
+	 * @param   string   $orig
+	 * @param   string   $dest
+	 * @param   integer  $size
+	 * @return  boolean  True on success, false if errors
+	 */
+	private function resize($orig, $dest, $size)
+	{
+		if (!file_exists($dest))
+		{
+			list($originalWidth, $originalHeight) = getimagesize($orig);
+
+			if ($originalWidth > $size || $originalHeight > $size)
 			{
 				$useHeight = ($originalHeight > $originalWidth) ? true : false;
 
 				// Resize image
-				$processor = new Processor($path . $file);
+				$processor = new \Hubzero\Image\Processor($orig);
 				if (!$processor->getErrors())
 				{
-					$processor->resize(400, $useHeight);
-					if (!$processor->save($path . $thumb))
+					$processor->resize($size, $useHeight);
+					if (!$processor->save($dest))
 					{
-						$thumb = $file;
+						return false;
 					}
 				}
 			}
 			else
 			{
-				$thumb = $file;
+				return false;
 			}
 		}
 
-		return $thumb;
+		return true;
 	}
 
 	/**

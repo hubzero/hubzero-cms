@@ -87,19 +87,7 @@ class Media extends SiteController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND'), 404);
 		}
 
-		switch ($size)
-		{
-			case 'thumb':
-			case 'thumbnail':
-				$file = $asset->thumbnail();
-			break;
-
-			case 'orig':
-			case 'original':
-			default:
-				$file = $asset->get('filename');
-			break;
-		}
+		$file = $asset->file($size);
 
 		// Get the configured upload path
 		$filename = $asset->filespace() . DS . $asset->get('item_id') . DS . ltrim($file, DS);
