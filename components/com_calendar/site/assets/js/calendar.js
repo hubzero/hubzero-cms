@@ -92,21 +92,42 @@ HUB.Plugins.GroupCalendar = {
 			eventMouseover: function(event, jsEvent, view)
 			{
 				$(this).addClass('active');
+
+				//
+				var url = $base + '?task=details&event=' + event.id;
+				var html = '';
+
+				html = '<div style="text-align: center">';
+
+				if (event.friendlyStart)
+				{
+					html += '<b>Start: </b>' + event.friendlyStart + '<br/>';
+				}
+
+				if (event.friendlyEnd)
+				{
+					html += '<b>End: </b>' + event.friendlyEnd  + '<br/>';
+				}
+
+				if (event.location)
+				{
+					html += '<b>Location: </b><a href="https://google.com/maps/search/' + event.location + '">' + event.location + '</a><br/>';
+				}
+
+				html += '<br />'
+				html += '<a href="' + url + '" class="btn">View Details</a></div>';
+
+				$(this).webuiPopover({
+					animation:'pop',
+					position: 'top',
+					title: event.title,
+					content:html,
+					closeable: true
+				});
 			},
 			eventClick: function(event, jsEvent, view)
 			{
-				jsEvent.preventDefault();
-
-				url = $base + '?task=eventSummary&event=' + event.id;
-
-				$(this).webuiPopover({
-					placement:'top',
-					animation: 'pop',
-					title: 'Hello',
-					content: url,
-					closable: true
-
-				});
+				jsEvent.preventDefault(); //prevent going to the details link
 			},
 			eventMouseout: function(event, jsEvent, view)
 			{

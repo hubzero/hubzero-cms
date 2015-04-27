@@ -187,23 +187,29 @@ class Calendar extends SiteController
 		exit();
 	}
 
-	public function eventSummaryTask()
+	public function summaryTask()
 	{
+
 		$id = Request::getVar('event');
-		$this->view->row = new Event($this->database);
-		$this->view->row->load($id);
+		$event = new Event($this->database);
+		$event->load($id);
+
+		$event->url = Route::url('index.php?option=com_calendar&task=details&event='.$event->id, false);
 
 		// get category
-		$catid = $this->view->row->catid;
+		$catid = $event->catid;
 		$category = new Category($this->database);
 		$category->load($catid);
-		$this->view->row->category = $category->title;
+		$event->category = $category->title;
 
-		$rt = new Tags($id);
-		$this->view->row->tags = $rt->render();
-		return var_dump("here!");
-		die;
-		$this->view->display();
+		$this->view->row = $event;
+
+		$html = '<a href="#" class="btn">Link</a>';
+
+
+		$json = array('html' => $html);
+		echo json_encode($json);
+		exit();
 
 	}
 
@@ -252,6 +258,23 @@ class Calendar extends SiteController
 			$event->url 	  = Route::url('index.php?option=com_calendar&task=details&event='.$event->id, false);
 			$event->start     = Date::of($rawEvent->get('publish_up'))->toLocal('Y-m-d\TH:i:sO');
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
+
+			$serverTZ = date_default_timezone_get(); //get the default timezone
+
+			// convert UTC to local time zone
+			date_default_timezone_set('UTC'); // set up DateTime to use UTC
+			$start = new DateTime($rawEvent->get('publish_up')); // make the DateTime object
+			$end = new DateTime($rawEvent->get('publish_down')); // make the DateTime object
+			$registerby = new DateTime($rawEvent->get('registerby')); //make the DateTime object
+
+			$local = new DateTimeZone($serverTZ); // create the local timezone
+			$start->setTimezone($local); // convert the time to the local timezone
+			$end->setTimezone($local);
+			$registerby->setTimezone($local);
+
+			$event->friendlyStart = date_format($start, 'F d, Y g:ia T');
+			$event->friendlyEnd = date_format($end, 'F d, Y g:ia T');
+			$event->location = $rawEvent->get('adresse_info');
 
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{

@@ -273,6 +273,18 @@ ol.calendar-entries .entry-meta {
 
 }
 
+/*
+ Styles for summary
+ */
+
+.summary{
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.summary p {
+	margin: 1em 0;
+}
+
 
 .event-title-bar {
 	display: block;
