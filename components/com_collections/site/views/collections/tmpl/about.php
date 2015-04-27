@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->css();
+$this->css()
+     ->css('help.css');
 
 $base = 'index.php?option=' . $this->option;
 ?>
@@ -39,41 +40,23 @@ $base = 'index.php?option=' . $this->option;
 	<h2><?php echo Lang::txt('COM_COLLECTIONS'); ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="icon-info about btn" href="<?php echo Route::url($base . '&task=about'); ?>">
-					<span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+				<span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
+			</a>
+		</p>
 	</div>
 </header>
 
-<form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
-	<fieldset class="filters">
-		<div class="filters-inner">
-			<ul>
-				<li>
-					<a class="collections count" href="<?php echo Route::url($base . '&task=all'); ?>">
-						<span><?php echo Lang::txt('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
-					</a>
-				</li>
-				<li>
-					<a class="posts count" href="<?php echo Route::url($base . '&task=posts'); ?>">
-						<span><?php echo Lang::txt('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->total); ?></span>
-					</a>
-				</li>
-			</ul>
-			<div class="clear"></div>
-			<p>
-				<label for="filter-search">
-					<span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
-					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
-				</label>
-				<input type="submit" class="filter-submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
-			</p>
-		</div>
-	</fieldset>
+<form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=posts'); ?>" id="collections">
+	<?php
+	$this->view('_submenu')
+	     ->set('option', $this->option)
+	     ->set('active', 'about')
+	     ->set('collections', $this->collections)
+	     ->set('posts', $this->total)
+	     ->display();
+	?>
 
 	<section class="main section about">
 
