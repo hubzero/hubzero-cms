@@ -61,7 +61,7 @@ if (!$this->tagged)
 			$html .= ($row->area) ? Lang::txt(stripslashes($row->area)) : Lang::txt(strtoupper(stripslashes($row->section)));
 			if ($row->publish_up)
 			{
-				$html .= ', ' . JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
+				$html .= ', ' . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			}
 			$html .= '</span></li>' . "\n";
 
@@ -110,7 +110,7 @@ else
 			$html .= ($row2->section) ? Lang::txt($row2->area) : Lang::txt(strtoupper($row2->section));
 			if ($row2->publish_up)
 			{
-				$html .= ', ' . JHTML::_('date', $row2->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
+				$html .= ', ' . Date::of($row2->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			}
 			$html .= '</span></li>' . "\n";
 

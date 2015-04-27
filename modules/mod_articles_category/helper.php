@@ -143,10 +143,10 @@ class Helper extends Module
 	 */
 	public static function getList(&$params)
 	{
-		require_once PATH_CORE . '/components/com_content/router.php';
-		require_once PATH_CORE . '/components/com_content/helpers/route.php';
+		require_once PATH_CORE . '/components/com_content/site/router.php';
+		require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
 
-		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/models', 'ContentModel');
+		JModelLegacy::addIncludePath(PATH_CORE . '/components/com_content/site/models', 'ContentModel');
 
 		// Get an instance of the generic articles model
 		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
@@ -366,7 +366,7 @@ class Helper extends Module
 			$item->displayDate = '';
 			if ($show_date)
 			{
-				$item->displayDate = JHTML::_('date', $item->$show_date_field, $show_date_format);
+				$item->displayDate = Date::of($item->$show_date_field)->toLocal($show_date_format);
 			}
 
 			if ($item->catid)
@@ -561,7 +561,7 @@ class Helper extends Module
 		{
 			foreach ($grouped as $group => $items)
 			{
-				$date = new JDate($group);
+				$date = new \Hubzero\Utility\Date($group);
 				$formatted_group = $date->format($month_year_format);
 				$grouped[$formatted_group] = $items;
 				unset($grouped[$group]);

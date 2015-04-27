@@ -76,7 +76,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 				</span>
 			<?php if ($this->params->get('show_date', '')) { ?>
 				<span class="a-date">
-					<?php echo JHTML::_('date', $item->publish_up, Lang::txt('DATE_FORMAT_HZ1')); ?>
+					<?php echo Date::of($item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 				</span>
 			<?php } ?>
 			<?php if ($this->params->get('show_desc', '')) { ?>

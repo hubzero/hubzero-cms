@@ -69,7 +69,7 @@ defined('_JEXEC') or die;
 				<?php echo JHtml::_('jgrid.published', $item->state, $i, '', false); ?>
 			</td>
 			<td class="center">
-				<time datetime="<?php echo $item->created; ?>"><?php echo JHtml::_('date', $item->created, 'Y-m-d H:i:s'); ?></time>
+				<time datetime="<?php echo $item->created; ?>"><?php echo Date::of($item->created)->toLocal('Y-m-d H:i:s'); ?></time>
 			</td>
 			<td class="center">
 				<?php echo $item->author_name; ?>

@@ -37,8 +37,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<?php echo Lang::txt('MOD_SUPPORTACTIVITY_' . strtoupper($result->category), $result->ticket); ?>
 						</span>
 						<span class="activity-details">
-							<span class="activity-time"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-							<span class="activity-date"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+							<span class="activity-time"><time datetime="<?php echo $result->created; ?>"><?php echo Date::of($result->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+							<span class="activity-date"><time datetime="<?php echo $result->created; ?>"><?php echo Date::of($result->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 						</span>
 					</a>
 				</li>
