@@ -61,6 +61,10 @@ use Components\Events\Tables\Category;
 class Calendar extends SiteController
 {
 
+	/**
+	 * Runs before any other methods, used to set global variables.
+	 * @return null
+	 */
 	public function execute()
 	{
 		//get the request vars
@@ -135,6 +139,10 @@ class Calendar extends SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Method for displaying the details view of an event.
+	 * @return the details view
+	 */
 	public function detailsTask()
 	{
 		$id = \Request::getInt('event');
@@ -154,6 +162,10 @@ class Calendar extends SiteController
 
 	}
 
+	/**
+	 * eventsourcesTask returns a list of event sources or calendars
+	 * @return json a json-encoded list of calendars associated with this site scope.
+	 */
 	public function eventsourcesTask()
 	{
 		// array to hold sources
