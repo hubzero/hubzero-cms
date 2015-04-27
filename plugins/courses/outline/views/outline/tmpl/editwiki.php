@@ -99,8 +99,8 @@ $assets = array();
 			<div class="wiki-files-available-wrapper">
 				<div class="wiki-files-available">
 					<?php $path = $asset->path($this->course->get('id')); ?>
-					<?php if ($path && is_dir(JPATH_ROOT . $path)) : ?>
-						<?php $files = array_diff(scandir(JPATH_ROOT . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
+					<?php if ($path && is_dir(PATH_CORE . $path)) : ?>
+						<?php $files = array_diff(scandir(PATH_CORE . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
 						<ul class="wiki-files-list">
 							<?php foreach ($files as $file) : ?>
 								<li class="wiki-file">

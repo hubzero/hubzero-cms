@@ -100,8 +100,8 @@ $this->css();
 						<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 						<span class="entry-details">
 							<?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @
-							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span> <?php echo Lang::txt('COM_WISHLIST_on'); ?>
-							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span> <?php echo Lang::txt('COM_WISHLIST_on'); ?>
+							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 							<span class="entry-details-divider">&bull;</span>
 							<span class="entry-comments"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo Lang::txt('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 						</span>
@@ -127,7 +127,7 @@ $this->css();
 					<?php
 						$view = new \Hubzero\Component\View(array(
 							'name'      =>'wishlists',
-							'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'site',
+							'base_path' => PATH_CORE . DS . 'components' . DS . $this->option . DS . 'site',
 							'layout'    => '_vote'
 						));
 						$view->set('option', 'com_wishlist')
@@ -168,7 +168,7 @@ $this->css();
 							case 1:
 								$html .= '<span class="granted">'.Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
 								/*if ($item->granted != '0000-00-00 00:00:00') {
-									$html .= ' <span class="mini">'.strtolower(Lang::txt('COM_WISHLIST_ON')).' '.JHTML::_('date',$item->granted, Lang::txt('COM_WISHLIST_DATE_FORMAT_HZ1')).'</span>';
+									$html .= ' <span class="mini">'.strtolower(Lang::txt('COM_WISHLIST_ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('COM_WISHLIST_DATE_FORMAT_HZ1')).'</span>';
 								}*/
 							break;
 							case 3:

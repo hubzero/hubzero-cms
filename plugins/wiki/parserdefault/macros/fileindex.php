@@ -100,7 +100,7 @@ class FileIndexMacro extends WikiMacro
 				}
 				if ($row->created && $row->created != '0000-00-00 00:00:00')
 				{
-					$html .= JHTML::_('date.relative', Date::of($row->created)->toSql()) . '. ';
+					$html .= Date::of($row->created)->relative() . '. ';
 				}
 				$html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
 				$html .= '</li>' . "\n";

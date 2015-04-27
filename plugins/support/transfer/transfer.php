@@ -79,9 +79,9 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		$anonymous = 0;
 
 		// get needed scripts
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
 		$wconfig = Component::params('com_wishlist');
 		$admingroup = $wconfig->get('group') ? $wconfig->get('group') : 'hubadmin';
@@ -328,7 +328,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 					break;
 
 					case 'wish':
-						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
+						include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
 						$WE = new \Components\Wishlist\Helpers\Economy($database);
 						$WE->cleanupBonus($from_id);
 					break;

@@ -126,8 +126,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_up_time = '';
 							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up_date = JHTML::_('date', $publish_up, 'm/d/Y');
-								$publish_up_time = JHTML::_('date', $publish_up, 'g:i a');
+								$publish_up_date = Date::of($publish_up)->toLocal('m/d/Y');
+								$publish_up_time = Date::of($publish_up)->toLocal('g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -144,8 +144,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_down_time = '';
 							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down_date = JHTML::_('date', $publish_down, 'm/d/Y');
-								$publish_down_time = JHTML::_('date', $publish_down, 'g:i a');
+								$publish_down_date = Date::of($publish_down)->toLocal('m/d/Y');
+								$publish_down_time = Date::of($publish_down)->toLocal('g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -274,7 +274,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 								$register_by = '';
 								if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00')
 								{
-									$register_by = JHTML::_('date', $this->event->get('registerby'), 'm/d/Y @ g:i a');
+									$register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
 								}
 							?>
 							<input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $register_by; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />

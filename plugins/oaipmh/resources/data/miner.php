@@ -33,7 +33,7 @@ namespace Plugins\Oaipmh\Resources\Data;
 use Hubzero\Base\Object;
 use Components\Oaipmh\Models\Provider;
 
-require_once(JPATH_ROOT . '/components/com_oaipmh/models/provider.php');
+require_once(PATH_CORE . '/components/com_oaipmh/models/provider.php');
 
 /**
  * Data miner for resources to be used by OAI-PMH

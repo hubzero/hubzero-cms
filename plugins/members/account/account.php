@@ -743,7 +743,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 
 			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
 			{
@@ -813,7 +813,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 
 			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
 			{

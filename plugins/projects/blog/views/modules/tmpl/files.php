@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li>
 				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=files' . $this->goto).'/?action=download&amp;file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name']); ?></a>
 				<span class="block faded mini">
-					<?php echo $file['size']; ?> | <?php echo Lang::txt('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), 'M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file['author']); ?>
+					<?php echo $file['size']; ?> | <?php echo Lang::txt('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo Date::of(strtotime($file['date']))->toLocal('M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file['author']); ?>
 				</span>
 			</li>
 		<?php } ?>

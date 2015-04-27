@@ -66,7 +66,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
 		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category
 					FROM `#__blog_comments` AS rc
@@ -108,7 +108,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
 		$database = JFactory::getDBO();
 
@@ -135,7 +135,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
 		$database = JFactory::getDBO();
 
@@ -163,7 +163,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
 		$database = JFactory::getDBO();
 

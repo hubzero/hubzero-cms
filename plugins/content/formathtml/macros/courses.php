@@ -182,8 +182,8 @@ class Courses extends Macro
 						if ($section->get('id'))
 						{
 							$html .= '<span class="entry-time">';
-							$html .= \JHTML::_('date', $section->get('start_date'), 'F d', 'UTC') . ' - ';
-							$html .= \JHTML::_('date', $section->get('end_date'), 'F d, Y', 'UTC');
+							$html .= \Date::of($section->get('start_date'))->toLocal('F d') . ' - ';
+							$html .= \Date::of($section->get('end_date'))->toLocal('F d, Y');
 							$html .= '</span><br />';
 						}
 					}

@@ -84,7 +84,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
 		// Instantiate some needed objects
 		$wp = new \Components\Wiki\Tables\Page($database);

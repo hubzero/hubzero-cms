@@ -485,7 +485,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path)
+			'directory' => str_replace(PATH_CORE, '', $path)
 		));
 		exit();
 	}
@@ -812,7 +812,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			$page = isset($pages[0]) ? $pages[0] : null;
 		}
 
-		// Add JPATH_ROOT
+		// Add PATH_CORE
 		$filepath = $this->_path($page) . DS . ltrim($filename, DS);
 
 		// Ensure the file exist

@@ -59,7 +59,7 @@ class JFormFieldInstitutions extends JFormField
 			return str_replace('"', '&quot;', $str);
 		};
 		$val = json_decode($this->value, TRUE);
-		$html[] = '<div class="shibboleth" data-iconify="'.$a(preg_replace('#^'.preg_quote(JPATH_ROOT).'#', '', __FILE__)).'">';
+		$html[] = '<div class="shibboleth" data-iconify="'.$a(preg_replace('#^'.preg_quote(PATH_CORE).'#', '', __FILE__)).'">';
 		$html[] = '<p class="xml-source"><label>Shibboleth ID provider configuration file: <input type="text" name="xmlPath" value="'.$a($val['xmlPath']).'" /></label></p>';
 		list($val['xmlRead'], $val['idps']) = self::getIdpList($val);
 		$html[] = '<p class="info">Save your changes to retry loading ID providers from this file</p>';

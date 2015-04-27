@@ -218,9 +218,9 @@ class ParentsMacro extends WikiMacro
 	 */
 	private function _getPageByAlias($alias, $scope)
 	{
-		if (!class_exists('\\Components\\Wiki\\Tables\\Page') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php'))
+		if (!class_exists('\\Components\\Wiki\\Tables\\Page') && is_file(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php'))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		}
 
 		$page = new \Components\Wiki\Tables\Page($this->_db);

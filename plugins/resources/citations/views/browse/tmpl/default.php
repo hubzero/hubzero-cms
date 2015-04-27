@@ -38,7 +38,7 @@ $numnon = 0;
 if ($this->citations)
 {
 	// Get a needed library
-	include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+	include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
 	// Set some vars
 	$affiliated = '';

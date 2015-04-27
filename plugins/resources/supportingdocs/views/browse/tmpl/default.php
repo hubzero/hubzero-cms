@@ -217,7 +217,7 @@ else
 								}
 							}
 
-							// Add JPATH_ROOT
+							// Add PATH_CORE
 							$filename = PATH_APP . $filename;
 
 							list($width, $height) = getimagesize($filename);

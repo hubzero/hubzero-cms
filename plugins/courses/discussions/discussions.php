@@ -2664,7 +2664,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Add JPATH_ROOT
+		// Add PATH_CORE
 		$filename = PATH_APP . $file;
 
 		// Ensure the file exist

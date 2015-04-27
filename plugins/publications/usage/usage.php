@@ -127,8 +127,8 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
-		include_once( JPATH_ROOT . DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
+		include_once( PATH_CORE . DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
+		require_once( PATH_CORE . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
 
 		$stats = new \Components\Publications\Tables\Stats( $database );
 		$stats->loadStats( $publication->id, $period, $dthis );

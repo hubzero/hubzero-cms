@@ -94,7 +94,7 @@ $base = $this->offering->link();
 			</div>
 			<div class="col span9 omega">
 				<div class="dashboard-timeline-start">
-					<p><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAT_HZ1')); ?></p>
+					<p><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></p>
 				</div>
 				<?php if ($rows) { ?>
 					<ul class="dashboard-timeline">

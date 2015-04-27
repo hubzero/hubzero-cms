@@ -75,7 +75,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 						break;
 
 						case 'coursescomment':
-							require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
+							require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
 							$course = CoursesModelCourse::getInstance($parent);
 							$rows[$key]->href = Route::url($course->link() . '&active=reviews');
 						break;

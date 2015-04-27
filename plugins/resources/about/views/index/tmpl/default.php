@@ -68,7 +68,7 @@ if (count($matches) > 0)
 $this->model->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->model->resource->fulltxt);
 $this->model->resource->fulltxt = trim($this->model->resource->fulltxt);
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 
@@ -121,7 +121,7 @@ $maintext = $this->model->description('parsed');
 				<div class="col span-half omega">
 					<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
 					<p class="resource-content">
-						<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+						<time datetime="<?php echo $thedate; ?>"><?php echo Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					</p>
 				</div>
 			</div>
@@ -176,8 +176,8 @@ $maintext = $this->model->description('parsed');
 					// Build our citation object
 					$cite = new stdClass();
 					$cite->title    = $this->model->resource->title;
-					$cite->year     = JHTML::_('date', $thedate, 'Y');
-					$cite->location = Request::base() . ltrim($sef, DS);
+					$cite->year     = Date::of($thedate)->toLocal('Y');
+					$cite->location = Request::base() . ltrim($sef, '/');
 					$cite->date     = Date::toSql();
 					$cite->url      = '';
 					$cite->type     = '';
@@ -250,7 +250,7 @@ $maintext = $this->model->description('parsed');
 				if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-')
 				{
 					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')
-								  ? JHTML::_('date', $this->model->attribs->get('timeof', ''), $exp)
+								  ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
 								  : '';
 				}
 				else
@@ -273,7 +273,7 @@ $maintext = $this->model->description('parsed');
 				<div id="submitterlist">
 					<?php
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'site',
+						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'site',
 						'name'   => 'view',
 						'layout' => '_submitters',
 					));

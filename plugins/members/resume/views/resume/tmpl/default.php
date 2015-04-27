@@ -214,7 +214,7 @@ $this->css('jobs', 'com_jobs');
 						<?php } ?>
 						</td>
 						<td>
-							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $this->resume->created; ?>"><?php echo Date::of($this->resume->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
 							<a class="trash" href="<?php echo Route::url($this->member->getLink() . '&active=resume&action=deleteresume'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>">

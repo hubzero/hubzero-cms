@@ -106,7 +106,7 @@ $month = date("m", strtotime($this->event->publish_up));
 				<tr>
 					<td><?php echo $registrant->last_name . ', ' . $registrant->first_name; ?></td>
 					<td><?php echo $registrant->email; ?></td>
-					<td><?php echo JHTML::_('date', $registrant->registered, 'l, F d, Y @ g:i a'); ?></td>
+					<td><?php echo Date::of($registrant->registered)->toLocal('l, F d, Y @ g:i a'); ?></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php else : ?>

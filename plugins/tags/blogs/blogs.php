@@ -133,7 +133,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
 		$row->scope    = $row->rcount;
 		$row->scope_id = $row->data2;

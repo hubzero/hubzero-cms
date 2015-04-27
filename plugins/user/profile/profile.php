@@ -129,7 +129,7 @@ class plgUserProfile extends JPlugin
 		}
 		else
 		{
-			return JHtml::_('date', $value, null, null);
+			return Date::of($value)->format(Lang::txt('DATE_FORMAT_LC1'));
 		}
 	}
 
@@ -255,7 +255,7 @@ class plgUserProfile extends JPlugin
 				//Sanitize the date
 				if (!empty($data['profile']['dob']))
 				{
-					$date = new JDate($data['profile']['dob']);
+					$date = new \Hubzero\Utility\Date($data['profile']['dob']);
 					$data['profile']['dob'] = $date->format('Y-m-d');
 				}
 
@@ -286,7 +286,7 @@ class plgUserProfile extends JPlugin
 				}
 
 			}
-			catch (JException $e)
+			catch (Exception $e)
 			{
 				$this->_subject->setError($e->getMessage());
 				return false;
@@ -312,7 +312,7 @@ class plgUserProfile extends JPlugin
 			return false;
 		}
 
-		$userId	= JArrayHelper::getValue($user, 'id', 0, 'int');
+		$userId = JArrayHelper::getValue($user, 'id', 0, 'int');
 
 		if ($userId)
 		{
@@ -329,7 +329,7 @@ class plgUserProfile extends JPlugin
 					throw new Exception($db->getErrorMsg());
 				}
 			}
-			catch (JException $e)
+			catch (Exception $e)
 			{
 				$this->_subject->setError($e->getMessage());
 				return false;

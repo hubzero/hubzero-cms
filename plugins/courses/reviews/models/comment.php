@@ -111,11 +111,11 @@ class CoursesModelComment extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($field), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($field))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($field), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($field))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

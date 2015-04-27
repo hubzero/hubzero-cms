@@ -656,7 +656,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								}
 
 								// Prepare the title
-								$title = Lang::txt('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date',$response->created, Lang::txt('DATE_FORMAT_HZ1'));
+								$title = Lang::txt('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 								// Strip html from feed item description text
 								if ($response->reports)

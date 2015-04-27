@@ -157,17 +157,17 @@ class Events extends GroupMacro
 
 				if (date("z", strtotime($publishUp)) == date("z", strtotime($publishDown)))
 				{
-					$date  = \JHTML::_('date', $publishUp, 'm/d/Y @ g:i a');
-					$date .= ' &mdash; ' . \JHTML::_('date', $publishDown, 'g:i a');
+					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
 				}
 				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
 				{
-					$date  = \JHTML::_('date', $publishUp, 'm/d/Y @ g:i a');
-					$date .= ' &mdash; ' . \JHTML::_('date', $publishDown, 'm/d/Y @ g:i a');
+					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
 				}
 				else
 				{
-					$date  = \JHTML::_('date', $publishUp, 'm/d/Y @ g:i a');
+					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
 				}
 
 				//shorten content

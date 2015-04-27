@@ -159,7 +159,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'thread.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'thread.php');
 
 		$row->scope    = $row->rcount;
 		$row->scope_id = $row->data3;

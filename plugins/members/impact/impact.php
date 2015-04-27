@@ -82,13 +82,10 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		$this->_database = JFactory::getDBO();
 
-		require_once(PATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
-		require_once( PATH_ROOT . DS . 'components' .
-			DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once( PATH_ROOT . DS . 'components' .
-			DS .'com_publications' . DS . 'tables' . DS . 'author.php');
-		require_once( PATH_ROOT . DS . 'components' .
-			DS .'com_publications' . DS . 'tables' . DS . 'category.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 	}
 
 	/**
@@ -149,7 +146,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		if ($returnhtml)
 		{
-			require_once( PATH_ROOT . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 
 			$this->_option = $option;
 
@@ -355,8 +352,8 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$database 	= JFactory::getDBO();
-		$thedate 	= JHTML::_('date', $row->published_up, 'd M Y');
+		$database = JFactory::getDBO();
+		$thedate  = Date::of($row->published_up)->toLocal('d M Y');
 
 		// Get version authors
 		$pa = new \Components\Publications\Tables\Author( $database );

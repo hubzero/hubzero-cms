@@ -67,7 +67,7 @@ else
 				<tbody>
 					<tr>
 						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
-						<td><?php echo JHTML::_('date', $this->xmessage->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+						<td><?php echo Date::of($this->xmessage->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>

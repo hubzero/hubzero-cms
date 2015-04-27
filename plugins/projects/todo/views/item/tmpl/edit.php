@@ -96,7 +96,7 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 							</select>
 						</label>
 						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_DUE')); ?>
-							<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $this->row->due() ? JHTML::_('date', strtotime($this->row->due('date')), 'm/d/Y') : ''; ?>" />
+							<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $this->row->due() ? Date::of(strtotime($this->row->due('date')))->toLocal('m/d/Y') : ''; ?>" />
 						</label>
 						<p class="submitarea">
 							<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_SAVE'); ?>" class="btn" />

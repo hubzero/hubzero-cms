@@ -194,8 +194,8 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'review':
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'review.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'review.php');
 
 				// Delete the review
 				$review = new PublicationReview($database);

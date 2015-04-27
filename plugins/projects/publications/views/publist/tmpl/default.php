@@ -55,7 +55,7 @@ if ($items) {
 	<ul class="public-list">
 		<?php foreach ($items as $item) {
 		?>
-		<li><a href="<?php echo Route::url($route . '&id=' . $item->id);  ?>"><span class="pub-image"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $item->id . '&v=' . $item->version_id) . '/Image:thumb'; ?>" alt="" /></span> <?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . JHTML::_('date', $item->published_up, 'M d, Y') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url('index.php?option=com_publications&category=' . $item->cat_url) . '">' . $item->cat_name . '</a>'; ?></span></li>
+		<li><a href="<?php echo Route::url($route . '&id=' . $item->id);  ?>"><span class="pub-image"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $item->id . '&v=' . $item->version_id) . '/Image:thumb'; ?>" alt="" /></span> <?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . Date::of($item->published_up)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url('index.php?option=com_publications&category=' . $item->cat_url) . '">' . $item->cat_name . '</a>'; ?></span></li>
 		<?php
 		} ?>
 	</ul>

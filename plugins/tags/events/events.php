@@ -137,9 +137,9 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 	{
 		$row->href = Route::url($row->href);
 
-		$month = JHTML::_('date', $row->publish_up, 'M');
-		$day   = JHTML::_('date', $row->publish_up, 'd');
-		$year  = JHTML::_('date', $row->publish_up, 'Y');
+		$month = Date::of($row->publish_up)->toLocal('M');
+		$day   = Date::of($row->publish_up)->toLocal('d');
+		$year  = Date::of($row->publish_up)->toLocal('Y');
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="event">'."\n";

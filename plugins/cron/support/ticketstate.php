@@ -57,7 +57,7 @@ class JElementTicketstate extends JElement
 
 		$html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
 		$sr = new \Components\Support\Tables\Status($db);
 
 		$status = $sr->find('list', array('sort' => 'open', 'sort_Dir' => 'DESC'));

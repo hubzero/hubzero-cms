@@ -54,8 +54,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 	}
 
 	/**
@@ -290,8 +290,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
 
 		if ($row->alias)
 		{
@@ -324,9 +324,9 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		switch ($rparams->get('show_date', $config->get('show_date', 3)))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_HZ1'));   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1')); break;
+			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));   break;
+			case 3: $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); break;
 		}
 
 		if (strstr($row->href, 'index.php'))

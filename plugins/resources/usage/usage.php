@@ -117,7 +117,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		$dthis = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
+		include_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
 		if ($model->isTool())
 		{
 			$stats = new \Components\Resources\Tables\Stats\Tools($database);

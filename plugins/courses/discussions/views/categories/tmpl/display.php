@@ -96,7 +96,7 @@ $base = $this->offering->link() . '&active=forum';
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+										<time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 									</span>
 									<?php /*
 									<?php echo Lang::txt('by'); ?>
@@ -131,7 +131,7 @@ $base = $this->offering->link() . '&active=forum';
 										}
 									?>
 									<span class="entry-date">
-										<time datetime="<?php echo $lastpost->created; ?>"><?php echo JHTML::_('date', $lastpost->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time>
+										<time datetime="<?php echo $lastpost->created; ?>"><?php echo Date::of($lastpost->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time>
 									</span>
 									<?php echo Lang::txt('by'); ?>
 									<span class="entry-author">

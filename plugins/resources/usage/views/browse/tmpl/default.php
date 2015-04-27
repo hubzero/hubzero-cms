@@ -158,7 +158,7 @@ if ($results)
 				<h4><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
-					<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
+					<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
@@ -187,7 +187,7 @@ if ($results)
 					{
 						$height = ($highest) ? round(($result->users / $highest)*100) : 0;
 						$sparkline .= "\t" . '<span class="index">';
-						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, Lang::txt('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
+						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
 						$sparkline .= number_format($result->users); //trim($this->_fmt_result($result->value, $result->valfmt));
 						$sparkline .= '</span> ';
 						$sparkline .= '</span>' . "\n";
@@ -580,7 +580,7 @@ if ($results)
 					<h4><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
 					<p class="total">
 						<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
-						<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
+						<span><?php echo Lang::txt('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
 					</p>
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
@@ -607,7 +607,7 @@ if ($results)
 						{
 							$height = ($highest) ? round(($result->jobs / $highest)*100) : 0;
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
+							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
 							$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";

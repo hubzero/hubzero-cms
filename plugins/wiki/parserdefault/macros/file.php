@@ -686,7 +686,7 @@ class FileMacro extends WikiMacro
 						}
 						if (isset($attr['created']))
 						{
-							$html .= ' ' . JHTML::_('date.relative', $attr['created']);
+							$html .= ' ' . Date::of($attr['created'])->relative();
 						}
 						$html .= '</span>)';
 					}

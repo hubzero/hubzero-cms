@@ -45,17 +45,15 @@ $this->css('jquery.datepicker.css', 'system')
 		<fieldset>
 			<legend>
 				<?php if ($this->model->get('id')) { ?>
-						<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
+					<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
 				<?php } else { ?>
-						<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
+					<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
 				<?php } ?>
 			</legend>
 
 			<label for="field_content">
 				<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
-				<?php
-				echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 5, 'field_content', array('class' => 'minimal no-footer'));
-				?>
+				<?php echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 5, 'field_content', array('class' => 'minimal no-footer')); ?>
 			</label>
 
 			<fieldset>
@@ -65,14 +63,14 @@ $this->css('jquery.datepicker.css', 'system')
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
 							<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
-							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo ($this->model->get('publish_up') && $this->model->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_up'), JFactory::getDBO()->getDateFormat())) : ''); ?>" />
+							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo ($this->model->get('publish_up') && $this->model->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->get('publish_up'))->toSql()) : ''); ?>" />
 							<span class="hint"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-publish_down" id="priority-publish_down">
 							<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
-							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo ($this->model->get('publish_down') && $this->model->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_down'), JFactory::getDBO()->getDateFormat())) : ''); ?>" />
+							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo ($this->model->get('publish_down') && $this->model->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->get('publish_down'))->toSql()) : ''); ?>" />
 							<span class="hint"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>

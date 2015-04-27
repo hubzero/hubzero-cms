@@ -30,7 +30,7 @@
 
 namespace Plugins\Content\Formathtml\Macros\Group;
 
-require_once JPATH_ROOT.'/plugins/content/formathtml/macros/group.php';
+require_once PATH_CORE.'/plugins/content/formathtml/macros/group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 

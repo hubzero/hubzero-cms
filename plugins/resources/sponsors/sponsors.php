@@ -113,7 +113,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			$this->sponsors[$record->alias] = $record;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$rt = new \Components\Resources\Helpers\Tags($resource->id);
 		$tags = $rt->tags();
 
@@ -334,7 +334,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			return $this->editTask($row);
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
 
 		$t = new \Components\Tags\Tables\Tag($this->database);
 		$t->loadTag($row->alias);

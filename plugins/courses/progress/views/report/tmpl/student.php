@@ -111,7 +111,7 @@ foreach ($assets as $asset)
 		// Get the date the grade was entered
 		if (isset($grades[$this->member->get('id')]['assets'][$asset->id]) && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
 		{
-			$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
+			$date = Date::of($grades[$this->member->get('id')]['assets'][$asset->id]['date'])->format('r');
 		}
 		else
 		{
@@ -160,7 +160,7 @@ foreach ($assets as $asset)
 				// Get the date of the completion
 				if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
 				{
-					$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
+					$date = Date::of($grades[$this->member->get('id')]['assets'][$asset->id]['date'])->format('r');
 				}
 				else
 				{
@@ -193,7 +193,7 @@ foreach ($assets as $asset)
 					}
 
 					// Get the date of the completion
-					$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
+					$date = Date::of($grades[$this->member->get('id')]['assets'][$asset->id]['date'])->format('r');
 
 					// They have completed this form, therefor set increment_count_taken equal to true
 					$increment_count_taken = true;
@@ -329,7 +329,7 @@ $progress_timeline .= '</div>';
 	<?php endif; ?>
 
 	<h3>
-		<?php echo (Request::getInt('id', false)) ? JFactory::getUser($this->member->get('user_id'))->get('name') . ':' : '' ?>
+		<?php echo (Request::getInt('id', false)) ? User::getInstance($this->member->get('user_id'))->get('name') . ':' : '' ?>
 		<?php echo $h3 ?>
 	</h3>
 	<h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units) ?></h4>

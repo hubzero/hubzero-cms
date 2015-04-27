@@ -133,7 +133,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 									}
 									else
 									{
-										echo JHTML::_('date', $calendar->get('last_fetched'), 'm/d/Y @ g:ia');
+										echo Date::of($calendar->get('last_fetched'))->toLocal('m/d/Y @ g:ia');
 									}
 								?>
 							</span>

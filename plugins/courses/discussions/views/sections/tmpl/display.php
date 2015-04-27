@@ -229,9 +229,9 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 				?>
 				<span class="entry-date" data-href="<?php echo Route::url($base . '&b=' . $sec . '&c=' . $cat . '/' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo Date::of($this->lastpost->created)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 					<span class="entry-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo Date::of($this->lastpost->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 				</span>
 				<span class="entry-author">
 					<?php echo Lang::txt('by'); ?>

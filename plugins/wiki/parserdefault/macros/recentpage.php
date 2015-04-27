@@ -131,11 +131,11 @@ class RecentPageMacro extends WikiMacro
 				$html .= "\t" . '<p class="modified-date">';
 				if ($row->version > 1)
 				{
-					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_MODIFIED_ON', JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')));
+					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_MODIFIED_ON', Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 				}
 				else
 				{
-					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_CREATED_ON', JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')));
+					$html .= Lang::txt('PLG_WIKI_PARSERDEFAULT_CREATED_ON', Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')));
 				}
 				$html .= '</p>' . "\n";
 				$html .= $this->_shortenText($row->pagehtml);

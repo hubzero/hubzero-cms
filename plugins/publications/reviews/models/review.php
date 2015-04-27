@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'review.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'review.php');
 require_once(__DIR__ . '/comment.php');
 
 /**
@@ -140,11 +140,11 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

@@ -114,7 +114,7 @@ tooltip: true,
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
 					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number); ?>"><?php echo $stat->title; ?></a></span>
-					<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, 'M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
+					<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . Date::of($stat->published_up)->toLocal('M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
 				</td></tr>
 				<tr>
 					<td></td>
@@ -126,7 +126,7 @@ tooltip: true,
 
 					<td><?php echo '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
 
-					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' .JHTML::_('date', $toDate, 'M d, Y') . ' ' . '</span>';  ?></td>
+					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' .Date::of($toDate)->toLocal('M d, Y') . ' ' . '</span>';  ?></td>
 
 				</tr>
 				<tr>

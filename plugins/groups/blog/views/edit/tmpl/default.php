@@ -108,7 +108,7 @@ $this->css()
 			<div class="col span6">
 				<label for="field-publish_up">
 					<?php echo Lang::txt('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
-					<input type="text" name="entry[publish_up]" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
+					<input type="text" name="entry[publish_up]" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>
@@ -119,10 +119,10 @@ $this->css()
 						$down = '';
 						if ($this->entry->get('publish_down') != '')
 						{
-							$down = $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s'));
+							$down = $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s'));
 						}
 					?>
-					<input type="text" name="entry[publish_down]" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo $down; ?>" />
+					<input type="text" name="entry[publish_down]" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo $down; ?>" />
 					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>

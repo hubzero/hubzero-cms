@@ -142,16 +142,16 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 	{
 		// Start building the HTML
 		$html  = "\t" . '<li class="event">' . "\n";
-		$html .= "\t\t" . '<p class="event-date"><span class="month">' . JHTML::_('date', $row->publish_up, 'M') . '</span>';
-		$html .= '<span class="day">' . JHTML::_('date', $row->publish_up, 'd') . '</span> ';
-		$html .= '<span class="year">' . JHTML::_('date', $row->publish_up, 'Y') . '</span></p>' . "\n";
+		$html .= "\t\t" . '<p class="event-date"><span class="month">' . Date::of($row->publish_up)->toLocal('M') . '</span>';
+		$html .= '<span class="day">' . Date::of($row->publish_up)->toLocal('d') . '</span> ';
+		$html .= '<span class="year">' . Date::of($row->publish_up)->toLocal('Y') . '</span></p>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>'."\n";
 		if ($row->itext)
 		{
 			$row->itext = str_replace('[[BR]]', '', $row->itext);
 			$html .= "\t\t".'<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

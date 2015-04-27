@@ -72,7 +72,7 @@ $this->css();
 			<?php if ($this->hist) : ?>
 				<?php foreach ($this->hist as $item) : ?>
 					<tr>
-						<td><?php echo JHTML::_('date', $item->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+						<td><?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 						<td><?php echo $this->escape($item->description); ?></td>
 						<td><?php echo $this->escape($item->type); ?></td>
 					<?php if ($item->type == 'withdraw') : ?>

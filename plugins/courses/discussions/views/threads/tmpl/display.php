@@ -153,38 +153,36 @@ $base = $this->offering->link() . '&active=forum';
 		<form action="<?php echo Route::url($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
-				$juser = JFactory::getUser();
 				$anon = 1;
-				$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
-				if (!$juser->get('guest'))
+				$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
+				if (!User::isGuest())
 				{
 					$anon = 0;
 				}
-				$now = JFactory::getDate();
 				?>
 				<img src="<?php echo $jxuser->getPicture($anon); ?>" alt="" />
 			</p>
 
 			<fieldset>
-			<?php if ($juser->get('guest')) { ?>
+			<?php if (User::isGuest()) { ?>
 				<p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
 			<?php } else { ?>
 				<p class="comment-title">
 					<strong>
-						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
 					</strong>
 					<span class="permalink">
 						<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 					</span>
 				</p>
 
 				<label for="field_comment">
 					<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?>
 					<?php
-					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
+					echo $this->editor('fields[comment]', '', 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 

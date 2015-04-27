@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 // define path to macros
-$path = JPATH_ROOT . DS . 'plugins' . DS . 'content' . DS . 'formathtml' . DS . 'macros';
+$path = PATH_CORE . DS . 'plugins' . DS . 'content' . DS . 'formathtml' . DS . 'macros';
 
 // get all macro files
 $files = JFolder::files($path, '.', true, true, array('CVS', '.DS_Store', '__MACOSX', 'macro-assets'));

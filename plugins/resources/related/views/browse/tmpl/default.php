@@ -116,7 +116,7 @@ $database = JFactory::getDBO();
 								<?php } ?>
 									<tr>
 										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
-										<td><?php echo JHTML::_('date', $line->publish_up, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+										<td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 									</tr>
 									<tr>
 										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_AVG_RATING'); ?></th>

@@ -54,8 +54,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 	}
 
 	/**
@@ -187,7 +187,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 		$rt = new \Components\Publications\Tables\Category($database);
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
@@ -309,9 +309,9 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		switch ($config->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_HZ1'));    break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 1: $thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 3: $thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));    break;
 		}
 
 		if (strstr($row->href, 'index.php'))

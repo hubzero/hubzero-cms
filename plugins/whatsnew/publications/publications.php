@@ -75,9 +75,9 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
 	}
 
 	/**
@@ -229,7 +229,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$html  = "\t" . '<li class="publication">' . "\n";
 		$html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' . '" alt="" /></span>';
 		$html .= '<span class="pub-details"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>' . "\n";
-		$html .= "\t\t" . '<span class="block details">' . JHTML::_('date', $row->published_up, 'd M Y') . ' <span>|</span> ' . $row->cat_name;
+		$html .= "\t\t" . '<span class="block details">' . Date::of($row->published_up)->toLocal('d M Y') . ' <span>|</span> ' . $row->cat_name;
 		if ($authors)
 		{
 			$html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);

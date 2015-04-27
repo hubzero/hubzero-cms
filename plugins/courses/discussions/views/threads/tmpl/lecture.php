@@ -117,7 +117,7 @@ $base = $this->course->offering()->link();
 
 			<div class="comments-panel">
 				<div class="comments-toolbar">
-					<p><span class="comments" data-comments="%s comments" data-add="Start a discussion"><?php echo Lang::txt('Start a discussion'); ?></span></p>
+					<p><span class="comments" data-comments="<?php echo Lang::txt('%s comments'); ?>" data-add="<?php echo Lang::txt('Start a discussion'); ?>"><?php echo Lang::txt('Start a discussion'); ?></span></p>
 				</div>
 				<div class="comments-frame">
 
@@ -125,37 +125,35 @@ $base = $this->course->offering()->link();
 						<p class="comment-member-photo">
 							<a class="comment-anchor" name="commentform"></a>
 							<?php
-							$juser = JFactory::getUser();
 							$anone = 1;
-							if (!$juser->get('guest'))
+							if (!User::isGuest())
 							{
 								$anon = 0;
 							}
-							$now = Date::toSql();
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
+							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 						</p>
 
 						<fieldset>
-						<?php if ($juser->get('guest')) { ?>
+						<?php if (User::isGuest()) { ?>
 							<p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
 						<?php } else { ?>
 							<p class="comment-title">
 								<strong>
-									<a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
+									<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
 								</strong>
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 									<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
 
 							<label for="field_comment">
 								<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 								<?php
-								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
+								echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', array('class' => 'minimal no-footer'));
 								?>
 							</label>
 

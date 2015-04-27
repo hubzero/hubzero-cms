@@ -70,7 +70,7 @@ if (count($this->activities) > 0 ) {
 				</td>
 				<td>
 					<span class="rightfloat mini faded<?php echo $timeclass; ?>">
-						<?php echo JHTML::_('date.relative', $a->recorded); ?>
+						<?php echo Date::of($a->recorded)->relative(); ?>
 					</span>
 					<span class="project-name">
 						<a href="<?php echo Route::url('index.php?option=' . $this->option.'&task=view&'.$goto); ?>">
@@ -95,7 +95,7 @@ if (count($this->activities) > 0 ) {
 								?>
 								<li class="quote" id="c_<?php echo $comment->id; ?>">
 									<?php echo stripslashes(\Components\Projects\Helpers\Html::replaceUrls($comment->comment, 'external')); ?>
-									<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo JHTML::_('date.relative', $comment->created); ?></span></span>
+									<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo Date::of($comment->created)->relative(); ?></span></span>
 								</li>
 								<?php } ?>
 							</ol>

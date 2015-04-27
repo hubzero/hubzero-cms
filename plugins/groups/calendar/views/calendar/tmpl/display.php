@@ -62,7 +62,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<option value="0"><?php echo Lang::txt('All Calendars'); ?></option>
 	<?php foreach ($this->calendars as $calendar) : ?>
 		<?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
-		<option <?php echo $sel; ?> data-img="/plugins/groups/calendar/images/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
+		<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/plugins/groups/calendar/images/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
 	<?php endforeach; ?>
 </select>
 
@@ -85,16 +85,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 							</dd>
 							<?php if ($event->get('publish_down') != '0000-00-00 00:00:00') : ?>
 								<dd class="start-and-end">
-									<?php echo JHTML::_('date', $event->get('publish_up'), 'l, F d, Y @ g:i a'); ?>
+									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y @ g:i a'); ?>
 									&mdash;
-									<?php echo JHTML::_('date', $event->get('publish_down'), 'l, F d, Y @ g:i a'); ?>
+									<?php echo Date::of($event->get('publish_down'))->toLocal('l, F d, Y @ g:i a'); ?>
 								</dd>
 							<?php else : ?>
 								<dd class="date">
-									<?php echo JHTML::_('date',  $event->get('publish_up'), 'l, F d, Y'); ?>
+									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y'); ?>
 								<dd>
 								<dd class="time">
-									<?php echo JHTML::_('date',  $event->get('publish_up'), Lang::txt('TIME_FORMAT_HZ1')); ?>
+									<?php echo Date::of($event->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?>
 								<dd>
 							<?php endif; ?>
 						</dl>

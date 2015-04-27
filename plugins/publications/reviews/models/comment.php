@@ -89,11 +89,11 @@ class PublicationsModelComment extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -143,9 +143,9 @@ class PublicationsModelComment extends \Hubzero\Base\Model
 		// Reports hasn't been set
 		if ($this->get('reports', -1) == -1)
 		{
-			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
+			if (is_file(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new \Components\Support\Tables\ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
 					'id'       => $this->get('id'),

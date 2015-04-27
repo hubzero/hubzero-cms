@@ -114,7 +114,7 @@ else { ?>
 <?php } ?>
 								<tr>
 									<th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_DATE'); ?></th>
-									<td><?php echo JHTML::_('date',$line->published_up, 'd M, Y'); ?></td>
+									<td><?php echo Date::of($line->published_up)->toLocal('d M, Y'); ?></td>
 								</tr>
 								<tr>
 									<th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>

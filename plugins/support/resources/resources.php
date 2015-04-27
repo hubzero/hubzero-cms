@@ -198,7 +198,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
 		$database = JFactory::getDBO();
 
@@ -225,7 +225,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
 		$database = JFactory::getDBO();
 
@@ -260,8 +260,8 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'review':
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
 				// Delete the review
 				$review = new \Components\Resources\Tables\Review($database);

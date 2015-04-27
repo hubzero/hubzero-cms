@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
-
 $this->active = (isset($this->active) ? $this->active : '');
 
 if (!isset($this->instructors) || !is_array($this->instructors))
@@ -98,6 +96,7 @@ if (!$this->thread->thread)
 							$this->thread->instructor_replied = 0;
 							if (count($this->instructors))
 							{
+								$database = JFactory::getDBO();
 								$database->setQuery("SELECT COUNT(*) FROM `#__forum_posts` AS c WHERE c.thread=" . $this->thread->thread . " AND c.state=1 AND c.created_by IN (" . implode(',', $this->instructors) . ")");
 								$this->thread->instructor_replied = $database->loadResult();
 							}
@@ -114,7 +113,7 @@ if (!$this->thread->thread)
 							</p>
 							<?php } ?>
 							<p class="comment-title">
-								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo JHTML::_('date', $this->thread->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+								<span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 							</p>
 							<p class="comment-body">
 								<a href="<?php echo Route::url($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>

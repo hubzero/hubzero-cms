@@ -102,7 +102,7 @@ tooltip: true,
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
 					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications' . '&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
-					<span class="block mini faded"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, Lang::txt('DATE_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo Lang::txt('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo Route::url('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo \Hubzero\Utility\String::truncate($stat->project_title, 65); ?></a></span></span>
+					<span class="block mini faded"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . Date::of($stat->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo Lang::txt('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo Route::url('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo \Hubzero\Utility\String::truncate($stat->project_title, 65); ?></a></span></span>
 				</td></tr>
 				<tr>
 					<td></td>
@@ -114,7 +114,7 @@ tooltip: true,
 
 					<td><?php echo '<span class="pubstats-label">' . Lang::txt('PLG_MEMBERS_IMPACT_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
 
-					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, Lang::txt('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>
+					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_MEMBERS_IMPACT_SINCE') . ' ' .Date::of($toDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>
 				</tr>
 				<tr>
 					<td class="pubstats-sh"><?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_IMPACT_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>

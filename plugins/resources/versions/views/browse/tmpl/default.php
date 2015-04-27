@@ -72,7 +72,7 @@ $this->css();
 					<?php echo ($v->version) ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev=' . $v->revision) . '">' . $v->version . '</a>' : 'N/A'; ?>
 				</td>
 				<td>
-					<?php echo ($v->released && $v->released != '0000-00-00 00:00:00') ? JHTML::_('date', $v->released, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+					<?php echo ($v->released && $v->released != '0000-00-00 00:00:00') ? Date::of($v->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
 				</td>
 				<td>
 					<?php echo ($handle) ? $handle : 'N/A'; ?>

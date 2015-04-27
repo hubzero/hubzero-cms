@@ -117,8 +117,8 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 
 			if ($start || ($start && $end))
 			{
-				$publish_up   = JFactory::getDate($start)->toSql();
-				$publish_down = JFactory::getDate($end)->toSql();
+				$publish_up   = Date::of($start)->toSql();
+				$publish_down = Date::of($end)->toSql();
 			}
 		?>
 		<?php if ($allday_event) : ?>
@@ -128,15 +128,15 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				<td width="50%">
 					<?php
 						// check to see if its a single date all day event
-						$d1 = JHTML::_('date', $publish_up, 'm d');
-						$d2 = JHTML::_('date', $publish_down, 'm d');
+						$d1 = Date::of($publish_up)->toLocal('m d');
+						$d2 = Date::of($publish_down)->toLocal('m d');
 						if ($d1 == $d2 || $publish_down == '0000-00-00 00:00:00')
 						{
-							echo JHTML::_('date', $publish_up, 'l, F d, Y');
+							echo Date::of($publish_up)->toLocal('l, F d, Y');
 						}
 						else
 						{
-							echo JHTML::_('date', $publish_up, 'l, F d, Y') . ' - ' . JHTML::_('date', $publish_down, 'l, F d, Y');
+							echo Date::of($publish_up)->toLocal('l, F d, Y') . ' - ' . Date::of($publish_down)->toLocal('l, F d, Y');
 						}
 					?>
 				</td>
@@ -149,20 +149,20 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo JHTML::_('date', $publish_up, 'l, F d, Y @ g:i a') . JHTML::_('date', $publish_up, ' T', $timezone); ?>
+					<?php echo Date::of($publish_up)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_up->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
 					&mdash;
-					<?php echo JHTML::_('date', $publish_down, 'l, F d, Y @ g:i a') . JHTML::_('date', $publish_down, ' T', $timezone); ?>
+					<?php echo Date::of($publish_down)->toLocal('l, F d, Y @ g:i a') . Date::of($publish_down->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
 				</td>
 			</tr>
 		<?php else : ?>
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
-					<?php echo JHTML::_('date', $publish_up, 'l, F d, Y'); ?>
+					<?php echo Date::of($publish_up)->toLocal('l, F d, Y'); ?>
 				</td>
 				<th class="time"></th>
 				<td>
-					<?php echo JHTML::_('date', $publish_up, 'g:i a') . JHTML::_('date', $publish_up, ' T', $timezone); ?>
+					<?php echo Date::of($publish_up)->toLocal('g:i a') . Date::of($publish_up)->setTimeZone(new DateTimeZone($timezone))->format(' T'); ?>
 				</td>
 			</tr>
 		<?php endif; ?>
@@ -184,7 +184,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 		<?php if ($this->event->get('contact_info') != '') : ?>
 			<tr>
 				<th class="author"></th>
-				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText( $this->event->get('contact_info') ); ?></td>
+				<td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText($this->event->get('contact_info')); ?></td>
 			</tr>
 		<?php endif; ?>
 

@@ -63,7 +63,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 		$rows = $database->loadObjectList();
 		if ($rows)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 			foreach ($rows as $key => $row)
 			{
@@ -80,7 +80,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 				switch ($row->scope)
 				{
 					case 'course':
-						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 						$offering = CoursesModelOffering::getInstance($row->scope_id);
 						$course   = CoursesModelCourse::getInstance($offering->get('course_id'));
@@ -141,7 +141,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 		$database = JFactory::getDBO();
 
@@ -168,7 +168,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 		$database = JFactory::getDBO();
 
@@ -196,7 +196,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 		$database = JFactory::getDBO();
 

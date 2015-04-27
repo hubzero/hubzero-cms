@@ -129,7 +129,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 			return $types;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 
 		$database = JFactory::getDBO();
 
@@ -162,10 +162,10 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		$row->pages     = isset($row->data2)  ? $row->data2  : '';
 		$row->publisher = isset($row->data3)  ? $row->data3  : '';
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 		$config = \Component::params('com_citations');
 
 		switch ($config->get("citation_label", "number"))
@@ -218,7 +218,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		}
 		$html .= '</p>';
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
 		$db = \JFactory::getDBO();
 		$cc = new \Components\Citations\Tables\Citation($db);
 		$cc->load($row->id);

@@ -129,9 +129,9 @@ $this->js();
 						<p>
 							<strong><?php echo $name; ?></strong>
 							<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 							<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 						</p>
 						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->content), 300); ?></p>
 					</blockquote>
@@ -151,9 +151,9 @@ $this->js();
 					<p class="warning">
 						<?php echo Lang::txt('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />
 						<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 					</p>
 					<?php
 					if ($comment->parent)

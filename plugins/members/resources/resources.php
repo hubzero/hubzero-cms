@@ -324,8 +324,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	public static function out($row)
 	{
 		$authorized = false;
-		$juser = JFactory::getUser();
-		if ($juser->authorize('com_resources', 'manage'))
+		if (User::authorise('core.manage', 'com_resources'))
 		{
 			$authorized = true;
 		}
@@ -346,9 +345,9 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		switch ($rparams->get('show_date', $config->get('show_date')))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, 'd M Y');    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, 'd M Y');   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, 'd M Y'); break;
+			case 1: $thedate = Date::of($row->created)->toLocal('d M Y');    break;
+			case 2: $thedate = Date::of($row->modified)->toLocal('d M Y');   break;
+			case 3: $thedate = Date::of($row->publish_up)->toLocal('d M Y'); break;
 		}
 
 		$html  = "\t" . '<li class="';
@@ -363,7 +362,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		}
 		$html .= ' resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>';
-		if ($authorized || $row->created_by == $juser->get('id'))
+		if ($authorized || $row->created_by == User::get('id'))
 		{
 			switch ($row->state)
 			{

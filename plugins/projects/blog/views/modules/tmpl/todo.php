@@ -43,10 +43,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$due = '';
 			if ($todo->duedate && $todo->duedate != '0000-00-00 00:00:00' && $todo->duedate <= date( 'Y-m-d H:i:s') ) {
 				$overdue = ' urgency';
-				$due = Lang::txt('COM_PROJECTS_OVERDUE').' '.Lang::txt('COM_PROJECTS_BY').' ' . JHTML::_('date.relative', $todo->duedate);
+				$due = Lang::txt('COM_PROJECTS_OVERDUE').' '.Lang::txt('COM_PROJECTS_BY').' ' . Date::of($todo->duedate)->relative();
 			}
 			else if ($todo->duedate && $todo->duedate != '0000-00-00 00:00:00') {
-				$due = Lang::txt('COM_PROJECTS_DUE').' '.Lang::txt('COM_PROJECTS_IN').' '. JHTML::_('date.relative', $todo->duedate);
+				$due = Lang::txt('COM_PROJECTS_DUE').' '.Lang::txt('COM_PROJECTS_IN').' '. Date::of($todo->duedate)->relative();
 			}
 		?>
 	<li>

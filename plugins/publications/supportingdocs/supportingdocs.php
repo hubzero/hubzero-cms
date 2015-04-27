@@ -122,7 +122,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 			$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => array(1,0,2), 'order' => 'a.role DESC, a.ordering ASC'));
 
 			// Get projects html helper
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
+			require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 
 			// Build publication path
 			$base_path 	= $config->get('webpath');

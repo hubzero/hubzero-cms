@@ -132,7 +132,7 @@ class plgCronProjects extends JPlugin
 			return true;
 		}
 
-		$prefix = $pconfig->get('offroot', 0) ? '' : JPATH_ROOT;
+		$prefix = $pconfig->get('offroot', 0) ? '' : PATH_CORE;
 		$webdir = DS . trim($pconfig->get('webpath'), DS);
 
 		Request::setVar('auto', 1);

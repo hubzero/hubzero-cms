@@ -687,7 +687,7 @@ class File extends Macro
 						}
 						if (isset($attr['created']))
 						{
-							$html .= ' ' . \JHTML::_('date.relative', \Date::of($attr['created'])->toSql());
+							$html .= ' ' . \Date::of($attr['created'])->relative();
 						}
 						$html .= '</span>)';
 					}

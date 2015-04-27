@@ -59,8 +59,8 @@ class plgUserMiddleware extends JPlugin
 				// Quota class
 				//
 
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php');
 
 				$row = new UsersQuotas($db);
 
@@ -129,8 +129,8 @@ class plgUserMiddleware extends JPlugin
 				// Session limits
 				//
 
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 				$row = new ToolsTablePreferences($db);
 

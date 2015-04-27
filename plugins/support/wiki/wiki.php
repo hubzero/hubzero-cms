@@ -66,7 +66,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
 		$query  = "SELECT rc.id, rc.pageid AS entry_id, rc.chtml as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
 					FROM `#__wiki_comments` AS rc
@@ -108,7 +108,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
 		$database = JFactory::getDBO();
 
@@ -135,7 +135,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
 		$database = JFactory::getDBO();
 
@@ -163,7 +163,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
 		$database = JFactory::getDBO();
 
