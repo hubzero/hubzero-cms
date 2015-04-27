@@ -465,7 +465,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => Request::getVar('q', ''),
-			//'section_id' => 0,
 			'state'      => 1,
 			'access'     => 0
 		);
@@ -952,11 +951,21 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 			//set it
 			$model->set('alias', $alias);
+
+		}
+
+		if ($model->get('section_id') == NULL || $model->get('section_id') == 0)
+		{
+			$this->addPluginMessage(Lang::txt('PLG_GROUPS_FORUM_SECTION_REQUIRED'), 'error');
+			return $this->editcategory($model);
 		}
 
 		//check for alias duplicates within section?
-		if ($model->uniqueAliasCheck())
+		if ($model->uniqueAliasCheck($model->get('id')))
 		{
+			$model->set('alias', ''); //reset alias
+			$model->set('section_id', (int) $model->get('section_id'));
+			Request::setVar('section_id', $model->get('section_id'));
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}

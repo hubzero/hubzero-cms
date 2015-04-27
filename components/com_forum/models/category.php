@@ -360,10 +360,11 @@ class Category extends Base
 	* Verifies no duplicate aliases within a secton's categories listing.
 	* Returns true if duplicate detected.
 	*
+	* @param integer $id the id of the category object
 	*
 	* @return boolean
 	*/
-	public function uniqueAliasCheck()
+	public function uniqueAliasCheck($id = null)
 	{
 		$alias = $this->get('alias');
 		$section = new Section($this->get('section_id'));
@@ -375,7 +376,8 @@ class Category extends Base
 		foreach ($categories as $category)
 		{
 			$existing = $category->get('alias');
-			if ($alias == $existing)
+			if ($alias == $existing
+				&& ($category->get('id') != $id))
 			{
 				$this->setError(Lang::txt('The alias must be unique within a section.'));
 				return true;

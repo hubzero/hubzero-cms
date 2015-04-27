@@ -34,6 +34,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 $this->css()
      ->js();
+
+if ($this->category->get('section_id') == 0)
+{
+	$this->category->set('section_id', Request::getVar('section_id'));
+}
+
 ?>
 <ul id="page_options">
 	<li>
@@ -60,6 +66,7 @@ $this->css()
 
 			<label for="field-section_id">
 				<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION'); ?>
+				<span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?>
 				<select name="fields[section_id]" id="field-section_id">
 					<option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
 				<?php foreach ($this->model->sections() as $section) { ?>
