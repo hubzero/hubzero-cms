@@ -59,6 +59,7 @@ $url = Route::url($this->project->link('publications'));
 	<div id="plg-header">
 		<h3 class="publications"><?php echo $this->title; ?></h3>
 	</div>
+	<?php if ($this->project->access('content')) { ?>
 	<ul id="page_options" class="pluginOptions">
 		<li>
 			<a class="icon-add btn" href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>">
@@ -66,6 +67,7 @@ $url = Route::url($this->project->link('publications'));
 			</a>
 		</li>
 	</ul>
+	<?php } ?>
 	<div class="container">
 		<div class="list-menu">
 		<p class="msg-total"><?php echo ucfirst(Lang::txt('COM_PROJECTS_SHOWING')); ?> <?php if ($this->total <= count($this->rows)) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if ($this->total > count($this->rows)) { echo Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $this->total; } ?> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?></p>
@@ -121,12 +123,12 @@ $url = Route::url($this->project->link('publications'));
 				. '">&raquo; '. Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
 				. ' <strong>' . $row->dev_version_label.'</strong></a> '
 				. Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
-				if ($this->pubconfig->get('curation', 0))
+				if ($this->pubconfig->get('curation', 0) && $this->project->access('content'))
 				{
 					echo ' <span class="block"><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->id . '&action=continue&version=dev') . '" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 				}
 
-				} elseif ($row->state == 3 && $this->pubconfig->get('curation', 0))
+				} elseif ($row->state == 3 && $this->pubconfig->get('curation', 0) && $this->project->access('content'))
 				{
 					echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->id . '&action=continue&version=dev') . '" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 				} elseif ($row->state == 7) { echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->id . '&action=continue&version=' . $row->version_number) . '" class="btn mini icon-next btn-action">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>'; } ?></td>

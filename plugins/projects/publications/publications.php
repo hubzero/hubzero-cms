@@ -607,6 +607,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$param  = Request::getVar('param', '');
 		$value  = urldecode(Request::getVar('value', ''));
 
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Load publication
 		$publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
 
@@ -701,6 +708,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$new	 = false;
 		$props   = Request::getVar( 'p', '' );
 		$parts   = explode('-', $props);
+
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
 
 		// Parse props for curation
 		if ($this->_task == 'saveitem'
@@ -988,6 +1002,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->model->set('provisioned', 1);
 		}
 
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -1044,6 +1065,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$base = Request::getVar( 'base', 'files' );
+
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -1279,7 +1307,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make sure block exists, else redirect to status
-		if (!$pub->_curationModel->setBlock( $block, $blockId ))
+		if (!$pub->_curationModel->setBlock( $block, $blockId ) || !$this->model->access('content'))
 		{
 			$block = 'status';
 		}
@@ -1659,6 +1687,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$ajax  = Request::getInt('ajax', 0);
 		$label = trim(Request::getVar( 'version_label', '', 'post' ));
 
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Load default version
 		$pub = new \Components\Publications\Models\Publication( $pid, 'default' );
 		if (!$pub->exists())
@@ -1854,6 +1889,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$block  	= Request::getVar( 'section', '' );
 		$blockId  	= Request::getInt( 'step', 0 );
 		$element  	= Request::getInt( 'element', 0 );
+
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
 
 		// Load review step
 		if (!$confirm && $this->_task != 'revert')
@@ -2302,6 +2344,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$confirm 	= Request::getInt('confirm', 0);
 		$version 	= Request::getVar('version', 'default');
 		$ajax 		= Request::getInt('ajax', 0);
+
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
 
 		// Load publication model
 		$pub  = new \Components\Publications\Models\Publication( $pid, $version);

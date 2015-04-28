@@ -50,15 +50,15 @@ $i = 1;
 	<p id="version-label" class="version-label<?php if ($active == 'status') { echo ' active'; } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) { echo ' nobar'; } ?>">
 		<a href="<?php echo Route::url( $pubRoute . '&action=versions'); ?>" class="versions" id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
 		<a href="<?php echo Route::url( $pubRoute . '&version=' . $version); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $versionLabel . ' (' . $status . ')'; ?></a>
-		<?php if (($this->pub->state == 3 || $this->pub->state == 7) && $complete) { ?>
+		<?php if (($this->pub->state == 3 || $this->pub->state == 7) && $complete && $this->pub->project()->access('content')) { ?>
 		- <a href="<?php echo Route::url( $pubRoute . '&action=review&version=' . $version); ?>" class="readytosubmit"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
 		<?php } ?>
     </p>
 <?php } ?>
 
 <?php
-	// No bar when unpublished or pending review
-	if ($this->pub->state == 5 || $this->pub->state == 0)
+	// No bar when unpublished or pending review (or no editing access)
+	if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->access('content'))
 	{
 		return false;
 	}

@@ -25,15 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = 'm/d/Y';
+$dateFormat = 'M d, Y';
 
 $site = trim(Request::base(), DS);
 
-$now 	= Date::toSql();
-$v 		= $this->pub->versionAlias == 'default' ? '' : '?v=' . $this->pub->versionAliasAlias;
-
 // Build our citation object
-$citation = '';
 if ($this->pub->doi)
 {
 	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
@@ -42,14 +38,14 @@ if ($this->pub->doi)
 	$cite->title 	= $this->pub->title;
 	$date 			= ($this->pub->published_up && $this->pub->published_up != '0000-00-00 00:00:00')
 					? $this->pub->published_up : $this->pub->submitted;
-	$cite->year  	= Date::of($date)->format('Y');
+	$cite->year  	= Date::of($date)->toLocal('Y');
 	$cite->location = '';
 	$cite->date 	= '';
+	$cite->type     = '';
+	$cite->author   = $this->pub->getUnlinkedContributors();
+	$cite->doi      = $this->pub->doi;
+	$cite->url      = $site . Route::url($this->pub->link('version'));
 
-	$cite->url = $site . DS . 'publications' . DS . $this->pub->id . '?v=' . $this->pub->versionAlias_number;
-	$cite->type = '';
-	$cite->author = $this->pub->getUnlinkedContributors();
-	$cite->doi = $this->pub->doi;
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
 }
 
@@ -79,8 +75,8 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 		$revertAllowed = 0;
 	}
 }
-$allowArchive = \Components\Publications\Helpers\Utilities::archiveOn();
 
+$allowArchive = \Components\Publications\Helpers\Utilities::archiveOn();
 $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:00:00' ? Date::of($this->pub->accepted . '+1 month')->toSql() : NULL;
 ?>
 
@@ -107,10 +103,17 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 	echo $this->pub->_curationModel->drawStatusBar();
 ?>
 
+<?php if ($this->project->access('content')) { ?>
 <div id="pub-body" class="<?php echo $this->pub->versionAlias; ?>">
+<?php } ?>
 	<div id="pub-editor">
+		<?php if (!$this->project->access('content')) { ?>
+		<div id="c-pane" class="columns">
+			<div class="c-inner draftflow">
+		<?php } else { ?>
 		<div class="two columns first" id="c-selector">
 		 	<div class="c-inner">
+		<?php } ?>
 				<h4><?php echo $this->pub->title . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION')
 					. ' ' . $this->pub->get('version_label') . ' (' . $status . ')</span>'; ?>
 				</h4>
@@ -122,15 +125,15 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL'); ?>:</td>
-							<td class="tbl-input"><span <?php if (($this->pub->versionAlias == 'dev' || $this->pub->state == 4) && $this->task != 'edit') { echo 'id="edit-vlabel" class="pub-edit"'; } ?>><?php echo $this->pub->get('version_label');  ?></span> <?php if ($this->pub->main == 1) { echo '<span id="v-label">(' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT') . ')</span>'; } ?></td>
+							<td class="tbl-input"><span <?php if (($this->pub->versionAlias == 'dev' || $this->pub->state == 4) && $this->task != 'edit' && ($this->project->access('content'))) { echo 'id="edit-vlabel" class="pub-edit"'; } ?>><?php echo $this->pub->get('version_label');  ?></span> <?php if ($this->pub->main == 1) { echo '<span id="v-label">(' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT') . ')</span>'; } ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_NUMBER'); ?>:</td>
-							<td class="tbl-input"><span><?php echo $this->pub->version_number;  ?></span>&nbsp; &nbsp;<span >[<a href="<?php echo Route::url($this->pub->link('edit') . '&active=versions'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_VERSIONS'); ?></a>]</span></td>
+							<td class="tbl-input"><span><?php echo $this->pub->version_number;  ?></span>&nbsp; &nbsp;<span >[<a href="<?php echo Route::url($this->pub->link('edit') . '&action=versions'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_VERSIONS'); ?></a>]</span></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')); ?>:</td>
-							<td class="tbl-input"><?php echo Date::of($this->pub->created)->format($dateFormat) .  ' (' . \Components\Projects\Helpers\Html::timeAgo($this->pub->created) . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
+							<td class="tbl-input"><?php echo Date::of($this->pub->created)->toLocal($dateFormat) .  ' (' . \Components\Projects\Helpers\Html::timeAgo($this->pub->created) . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED_BY')); ?>:</td>
@@ -144,8 +147,8 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>:</td>
 							<td class="tbl-input">
 								<span class="<?php echo $class; ?>"> <?php echo $status; ?></span>
-								<?php if ($this->pub->published_up > $now ) { ?>
-								<span class="embargo"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMBARGO') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_UNTIL') . ' ' . Date::of($this->pub->published_up)->format($dateFormat); ?></span>
+								<?php if ($this->pub->published_up > Date::toSql()) { ?>
+								<span class="embargo"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMBARGO') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_UNTIL') . ' ' . Date::of($this->pub->published_up)->toLocal($dateFormat); ?></span>
 								<?php } ?>
 							</td>
 						</tr>
@@ -159,41 +162,42 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php } if ($this->pub->submitted && $this->pub->submitted != '0000-00-00 00:00:00')  { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'); ?>:</td>
-							<td class="tbl-input"><?php echo Date::of($this->pub->submitted)->format($dateFormat); ?></td>
+							<td class="tbl-input"><?php echo Date::of($this->pub->submitted)->toLocal($dateFormat); ?></td>
 						</tr>
 						<?php }  if ($this->pub->accepted && $this->pub->accepted != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'); ?>:</td>
-							<td class="tbl-input"><?php echo Date::of($this->pub->accepted)->format($dateFormat) . ' (' . \Components\Projects\Helpers\Html::timeAgo($this->pub->accepted) . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
+							<td class="tbl-input"><?php echo Date::of($this->pub->accepted)->toLocal($dateFormat) . ' (' . \Components\Projects\Helpers\Html::timeAgo($this->pub->accepted) . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
 						</tr>
 						<?php } if ($this->pub->published_up && $this->pub->published_up != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELEASE_DATE'); ?>:</td>
-							<td class="tbl-input"><?php echo Date::of($this->pub->published_up)->format($dateFormat); ?></td>
+							<td class="tbl-input"><?php echo Date::of($this->pub->published_up)->toLocal($dateFormat); ?></td>
 						</tr>
 						<?php } if ($this->pub->archived && $this->pub->archived != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED'); ?>:</td>
-							<td class="tbl-input"><?php echo Date::of($this->pub->archived)->format($dateFormat); ?></td>
+							<td class="tbl-input"><?php echo Date::of($this->pub->archived)->toLocal($dateFormat); ?></td>
 						</tr>
 						<?php } if ($this->pub->state == 0) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED')); ?>:</td>
-							<td class="tbl-input"><?php echo Date::of($this->pub->published_down)->format($dateFormat) . ' (' . \Components\Projects\Helpers\Html::timeAgo($this->pub->published_down) . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
+							<td class="tbl-input"><?php echo Date::of($this->pub->published_down)->toLocal($dateFormat) . ' (' . \Components\Projects\Helpers\Html::timeAgo($this->pub->published_down) . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
 						</tr>
 						<?php } ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_URL'); ?>:</td>
-							<td class="tbl-input"><a href="<?php echo Route::url($this->pub->link() . $v); ?>"><?php echo trim($site, DS) . '/publications/' . $this->pub->id . $v; ?></a></td>
+							<td class="tbl-input"><a href="<?php echo Route::url($this->pub->link('version')); ?>"><?php echo trim($site, DS) . Route::url($this->pub->link('version')); ?></a></td>
 						</tr>
 					</tbody>
 				</table>
 
-				<?php if ($this->pub->versionAlias == 'dev') { ?>
+				<?php if ($this->pub->versionAlias == 'dev' && $this->project->access('content')) { ?>
 					<p class="c-instruct "><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_HINT_LABEL'); ?></p>
 				<?php } ?>
 			</div>
 		</div>
+		<?php if ($this->project->access('content')) { ?>
 		<div class="two columns second" id="c-output">
 		 	<div class="c-inner">
 				<h4>
@@ -248,7 +252,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 							<li id="next-citation"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_ADD_CITATIONS');  ?>
 								<span class="block italic"><a href="<?php echo Route::url($this->pub->link('edit') . '&section=citations&version=' . $this->pub->versionAlias); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS'); ?> &raquo;</a></span></p></li>
 							<?php } ?>
-							<?php if ($this->pub->archived && $this->pub->archived != '0000-00-00 00:00:00') { echo '<li id="next-archive"><p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_ON') . ' <strong class="highlighted">' . Date::of($this->pub->archived)->format($dateFormat) . '</strong>. ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_NO_CHANGE') . '</p></li>'; } ?>
+							<?php if ($this->pub->archived && $this->pub->archived != '0000-00-00 00:00:00') { echo '<li id="next-archive"><p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_ON') . ' <strong class="highlighted">' . Date::of($this->pub->archived)->toLocal($dateFormat) . '</strong>. ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_NO_CHANGE') . '</p></li>'; } ?>
 							<?php if ($this->pub->dev_version_label && $this->pub->dev_version_label != $this->pub->versionAlias_label) { ?>
 							<li id="next-draft"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
 							. ' (<strong>v.'
@@ -259,7 +263,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 							?>
 							<li id="next-edit">
 								<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED_OPTION'); if ($revertAllowed) { echo ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_GRACE_PERIOD'); } ?>
-								<?php if ($revertAllowed && $allowArchive && $archiveDate) { echo '<p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED') . ' <strong class="highlighted">' . Date::of($archiveDate)->format($dateFormat) . '</strong>, ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED_NO_CHANGE') . '</p>'; } ?>
+								<?php if ($revertAllowed && $allowArchive && $archiveDate) { echo '<p class="info">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED') . ' <strong class="highlighted">' . Date::of($archiveDate)->toLocal($dateFormat) . '</strong>, ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED_NO_CHANGE') . '</p>'; } ?>
 								<span class="revert-options">
 								<?php if ($revertAllowed)
 								{
@@ -292,7 +296,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						case 5: ?>
 						<li id="next-pending">
 							<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING');  ?>	</p>
-							<?php if ($this->pub->doi) {
+							<?php if ($this->pub->doi && !empty($citation)) {
 								echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PENDING_DOI_ISSUED') . '</p>'
 								. '<div class="citeit">' . $citation . '</div>'; } ?>
 						</li>
@@ -320,6 +324,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 			</div>
 		</div>
 	</div>
+	<?php } ?>
  </div>
 </form>
 <?php // We need this to make CKEditor checker work ?>
