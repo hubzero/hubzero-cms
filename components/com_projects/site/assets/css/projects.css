@@ -704,38 +704,32 @@
 		border: none !important;
 	}
 	#pimage {
-		width: 100%;
+		display: inline-block;
+		width: 150px;
+		height: 150px;
+		border-radius: 20%;
+		overflow: hidden;
+		padding: 0;
+		margin: 1em 1em 2em 1em;
+		border: 4px solid #FFFFFF;
+		background: white;
 		text-align: center;
-		padding-top: 1em;
-		margin-bottom: 2em;
-		margin-top: 1em;
+		-webkit-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		-moz-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 	}
 
 /* Project image
 --------------------------------------------- */
 
 	#pimage img {
-		max-width: 150px;
-		max-height: 150px;
+		max-width: 200%;
+		height: 150px;
+		min-width: 100%;
 		padding: 0;
 	}
 	#pimage a:hover {
 		border: none;
-	}
-	#pimage .defaultimage {
-		width: 150px;
-		height: 150px;
-		display: block;
-		margin-left: 25px;
-		background: #fffdfb;
-	}
-	#pimage .defaultimage:before {
-		width: 100px;
-		height: 100px;
-		font-size: 100px;
-		margin-top: 0.5em;
-		margin-left: -0.5em;
-		position: absolute;
 	}
 
 /* Project plugin options
