@@ -90,99 +90,99 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	{
 ?>
 	<h3><?php echo Lang::txt('Sorry, you need to have CSV formatted spreadsheet files to create databases.'); ?></h3>
-	<p><?php echo Lang::txt('Maybe the file has already been used for a database. Please'); ?> <a href="/projects/<?php echo $this->model->get('alias')?>/databases"><?php echo Lang::txt('go back'); ?></a> <?php echo Lang::txt('and remove the database that\'s using the file'); ?></p>
-	<p>or</p>
-	<p><a href="/projects/<?php echo $this->model->get('alias')?>/files">Click here</a> to upload a new CSV file.</p>
+	<p><?php echo Lang::txt('Maybe the file has already been used for a database. Please'); ?> <a href="/projects/<?php echo $this->model->get('alias')?>/databases"><?php echo Lang::txt('go back'); ?></a> <?php echo Lang::txt('and remove the database that\'s using the file'); ?>
+	<span class="and_or prominent">or</span>
+	<a href="/projects/<?php echo $this->model->get('alias')?>/files"><?php echo Lang::txt('Click here'); ?></a> <?php echo Lang::txt('to upload a new CSV file'); ?>.</p>
 <?php
 	}
 ?>
 </div>
 
 <div id="prj-db-step-2" class="prj-db-step" style="display: none;">
-	<input type="submit" value="Next &raquo;" class="prj-db-next btn" data-step='2' style="float: right;" />
-	<input type="submit" value="&laquo; Back" class="prj-db-back btn" data-warning="true" data-step='2' style="float: right;" />
-	<h3>Step 2: Verify Data [<span id="prj-db-rec-limit"></span>]</h3>
+	<input type="submit" value="<?php echo Lang::txt('Next'); ?> &raquo;" class="prj-db-next btn rightfloat" data-step='2' />
+	<input type="submit" value="&laquo; <?php echo Lang::txt('Back'); ?>" class="prj-db-back btn rightfloat" data-warning="true" data-step='2' />
+	<h3><?php echo Lang::txt('Step 2: Verify Data'); ?> [<span id="prj-db-rec-limit"></span>]</h3>
 	<div id="prj-db-preview-table-wrapper" style="height: 400px; overflow: auto; padding: 5px;"></div>
 </div>
 
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
-	<input type="submit" value="&laquo; Back" class="prj-db-back btn" data-step='3' style="float: right;" />
-	<h3>Step 3: Title &amp; Description, Finish</h3>
+	<input type="submit" value="&laquo; Back" class="prj-db-back btn rightfloat" data-step='3' />
+	<h3><?php echo Lang::txt('Step 3: Title &amp; Description, Finish'); ?></h3>
 	<form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1')?>">
-		<label for="prj-db-title" >Title:</label><br /><input type="text" name="prj-db-title" id="prj-db-title" style="width: 450px;" /><br /><br />
-		<label for="prj-db-desc" >Description:</label><br /><textarea name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
-		<input type="submit" value="Finish" class="btn" id="prj-db-finish-btn" />
+		<label for="prj-db-title"><?php echo Lang::txt('Title'); ?>:<input type="text" name="prj-db-title" id="prj-db-title" /></label>
+		<label for="prj-db-desc"><?php echo Lang::txt('Description'); ?>:<textarea name="prj-db-desc" id="prj-db-desc" cols="5" rows="10"></textarea></label>
+		<input type="submit" value="<?php echo Lang::txt('Finish'); ?>" class="btn" id="prj-db-finish-btn" />
 	</form>
 </div>
 
 <div id="col-prop-dialog" style="display: none;" title="">
 	<div class="tabs">
 		<ul>
-			<li><a href="#tabs-1">General</a></li>
-			<li><a href="#tabs-2">Column Type</a></li>
-			<li><a href="#tabs-3">Other</a></li>
+			<li><a href="#tabs-1"><?php echo Lang::txt('General'); ?></a></li>
+			<li><a href="#tabs-2"><?php echo Lang::txt('Column Type'); ?></a></li>
+			<li><a href="#tabs-3"><?php echo Lang::txt('Other'); ?></a></li>
 		</ul>
 		<div id="tabs-1">
-			<label for="prj-db-col-label">Label:</label><br />
+			<label for="prj-db-col-label"><?php echo Lang::txt('Label'); ?>:</label><br />
 			<input id="prj-db-col-label" class="col-prop" type="text" value="" /><br /><br />
 
-			<label for="prj-db-col-desc">Description:</label><br />
+			<label for="prj-db-col-desc"><?php echo Lang::txt('Description'); ?>:</label><br />
 			<textarea id="prj-db-col-desc" class="col-prop" style="width: 400px;"></textarea><br /><br />
 
-			<label for="prj-db-col-width">Width:</label><br />
+			<label for="prj-db-col-width"><?php echo Lang::txt('Width'); ?>:</label><br />
 			<input id="prj-db-col-width" class="col-prop" type="text" value="" /><br /><br />
 
-			<label for="prj-db-col-units">Units:</label><br />
+			<label for="prj-db-col-units"><?php echo Lang::txt('Units'); ?>:</label><br />
 			<input id="prj-db-col-units" class="col-prop" type="text" value="" />
 		</div>
 		<div id="tabs-2">
-			<label for="prj-db-col-type">Column Type:</label><br />
+			<label for="prj-db-col-type"><?php echo Lang::txt('Column Type'); ?>:</label><br />
 			<select id="prj-db-col-type" class="col-prop">
-				<option value="text_small">Text [small]</option>
-				<option value="text_large">Text [large]</option>
-				<option value="link">Link</option>
-				<option value="image">Image</option>
-				<option value="email">Email</option>
-				<option value="int">Integer</option>
-				<option value="float">Floating Point</option>
-				<option value="numeric">Numeric [4 decimal places]</option>
-				<option value="date">Date [yyyy-mm-dd]</option>
-				<option value="datetime">Date &amp; Time [yyyy-mm-dd HH:MM:SS]</option>
+				<option value="text_small"><?php echo Lang::txt('Text [small]'); ?></option>
+				<option value="text_large"><?php echo Lang::txt('Text [large]'); ?></option>
+				<option value="link"><?php echo Lang::txt('Link'); ?></option>
+				<option value="image"><?php echo Lang::txt('Image'); ?></option>
+				<option value="email"><?php echo Lang::txt('Email'); ?></option>
+				<option value="int"><?php echo Lang::txt('Integer'); ?></option>
+				<option value="float"><?php echo Lang::txt('Floating Point'); ?></option>
+				<option value="numeric"><?php echo Lang::txt('Numeric [4 decimal places]'); ?></option>
+				<option value="date"><?php echo Lang::txt('Date [yyyy-mm-dd]'); ?></option>
+				<option value="datetime"><?php echo Lang::txt('Date &amp; Time [yyyy-mm-dd HH:MM:SS]'); ?></option>
 			</select><br /><br />
 			<div class="col-type-props" id="prj-db-col-type-text">
-				<label for="prj-db-col-truncate" title="Hide the overflow text, full text will be visible by hover-over or by clicking on the visible text">
-					<input type="checkbox" class="col-prop" value="truncate" id="prj-db-col-truncate" />Limit text to a single line
+				<label for="prj-db-col-truncate" title="<?php echo Lang::txt('Hide the overflow text, full text will be visible by hover-over or by clicking on the visible text'); ?>">
+					<input type="checkbox" class="col-prop" value="truncate" id="prj-db-col-truncate" /><?php echo Lang::txt('Limit text to a single line'); ?>
 				</label>
 			</div>
 			<div class="col-type-props" id="prj-db-col-type-link" style="display: none;">
-				<label for="prj-db-col-linktype" title="Select if files are stored in the repository">
-					<input type="checkbox" class="col-prop" value="repofiles" id="prj-db-col-linktype" />Repository Files?
+				<label for="prj-db-col-linktype" title="<?php echo Lang::txt('Select if files are stored in the repository'); ?>">
+					<input type="checkbox" class="col-prop" value="repofiles" id="prj-db-col-linktype" /><?php echo Lang::txt('Repository Files?'); ?>
 				</label>
 				<br />
-				<label for="prj-db-col-linkpath">Repository Path:</label><br />
+				<label for="prj-db-col-linkpath"><?php echo Lang::txt('Repository Path'); ?>:</label><br />
 				<select class="col-prop" id="prj-db-col-linkpath"></select><br />
 				<div style="font-size: .8em;">
 					<ul>
-						<li>Only files in the source CSV file folder or  its sub folders can be used here.</li>
-						<li>Your CSV file should list <strong>only the file name</strong> for repository files.</li>
+						<li><?php echo Lang::txt('Only files in the source CSV file folder or  its sub folders can be used here.'); ?></li>
+						<li><?php echo Lang::txt('Your CSV file should list <strong>only the file name</strong> for repository files.'); ?></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div id="tabs-3">
-			<label for="prj-db-col-align">Alignment:</label><br />
+			<label for="prj-db-col-align"><?php echo Lang::txt('Alignment'); ?>:</label><br />
 			<select id="prj-db-col-align" class="col-prop">
-				<option value="left">Left</option>
-				<option value="center">Center</option>
-				<option value="right">Right</option>
+				<option value="left"><?php echo Lang::txt('Left'); ?></option>
+				<option value="center"><?php echo Lang::txt('Center'); ?></option>
+				<option value="right"><?php echo Lang::txt('Right'); ?></option>
 			</select><br /><br />
-			<label for="prj-db-col-text-color">Text Color:</label><br />
+			<label for="prj-db-col-text-color"><?php echo Lang::txt('Text Color'); ?>:</label><br />
 			<input type='text' id="prj-db-col-text-color" class="col-prop color-picker dv-style" data-default='rgba(255, 255, 255, 0)' data-style-val='' data-style-type="color" />
-			<input type='button' class="color-picker-clear" data-target="prj-db-col-text-color" value="Clear" style="width: 50px;" />
+			<input type='button' class="color-picker-clear" data-target="prj-db-col-text-color" value="<?php echo Lang::txt('Clear'); ?>" style="width: 50px;" />
 			<br /><br />
-			<label for="prj-db-col-bg-color">Background Color:</label><br />
+			<label for="prj-db-col-bg-color"><?php echo Lang::txt('Background Color'); ?>:</label><br />
 			<input type='text' id="prj-db-col-bg-color" class="col-prop color-picker dv-style" data-default='rgba(255, 255, 255, 0)' data-style-val='' data-style-type="background" />
-			<input type='button' class="color-picker-clear" data-target="prj-db-col-bg-color" value="Clear" style="width: 50px;" />
+			<input type='button' class="color-picker-clear" data-target="prj-db-col-bg-color" value="<?php echo Lang::txt('Clear'); ?>" style="width: 50px;" />
 			<br /><br />
 		</div>
 	</div>

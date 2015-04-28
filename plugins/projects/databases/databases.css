@@ -29,3 +29,26 @@
 .chzn-single {
 	border: 1px solid #AAAAAA;
 }
+
+/* Added by snowwitje */
+.prj-db-step {
+	padding: 2em;
+	border: 1px solid #E2E2E2;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	background: #f8ffff;
+	background: -moz-linear-gradient(top, #f8ffff, #FFFFFF);
+}
+.prj-db-step h3 {
+	margin-top: 0;
+}
+#prj-db-finish-form label {
+	width: 100%;
+	display: block;
+	padding: 1em 0;
+}
+#prj-db-finish-form label input,
+#prj-db-finish-form label textarea {
+	display: block;
+	width: 100%;
+}
