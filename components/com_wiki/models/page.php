@@ -1098,7 +1098,7 @@ class Page extends Model
 		$log->uid       = ($user_id ? $user_id : User::get('id'));
 		$log->timestamp = Date::toSql();
 		$log->action    = (string) $action;
-		$log->actorid   = $user->get('id');
+		$log->actorid   = User::get('id');
 		$log->comments  = json_encode($data);
 		if (!$log->store())
 		{
