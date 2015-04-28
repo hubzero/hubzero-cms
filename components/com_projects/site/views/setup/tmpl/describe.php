@@ -116,7 +116,7 @@ $this->view('_title')
 					<legend><?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?></legend>
 					<label for="field-about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 						<?php 
-						echo \Components\Wiki\Helpers\Editor::getInstance()->display('about', $this->model->about('raw'), '', '', 35, 25, false, 'field-about', null, null, array('class' => 'minimal no-footer'));
+						echo JFactory::getEditor()->display('about', $this->model->about('raw'), '', '', 35, 25, false, 'field-about', null, null, array('class' => 'minimal no-footer'));
 						?>
 					</label>
 					<h4><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></h4>

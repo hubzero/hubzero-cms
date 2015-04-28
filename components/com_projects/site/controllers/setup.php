@@ -34,8 +34,6 @@ use Components\Projects\Tables;
 use Components\Projects\Helpers;
 use Exception;
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
-
 /**
  * Projects setup controller class
  */
