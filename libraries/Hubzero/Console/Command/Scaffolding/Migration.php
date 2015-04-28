@@ -31,6 +31,7 @@
 namespace Hubzero\Console\Command\Scaffolding;
 
 use Hubzero\Console\Command\Scaffolding;
+use Hubzero\Utility\Date;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -80,10 +81,10 @@ class Migration extends Scaffolding
 		}
 
 		// Determine our base path
-		$base = JPATH_ROOT;
+		$base = PATH_ROOT;
 		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
 		{
-			$base = JPATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
+			$base = PATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
 		}
 
 		// Install directory is migrations folder within base
@@ -132,7 +133,7 @@ class Migration extends Scaffolding
 		}
 
 		// Craft file/classname
-		$classname   = 'Migration' . \JFactory::getDate()->format("YmdHis") . $ext;
+		$classname   = 'Migration' . with(new Date('now'))->format("YmdHis") . $ext;
 		$destination = $install_dir . DS . $classname . '.php';
 
 		$this->addTemplateFile("{$this->getType()}.tmpl", $destination)

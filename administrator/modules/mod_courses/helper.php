@@ -31,6 +31,7 @@
 namespace Modules\Courses;
 
 use Hubzero\Module\Module;
+use Date;
 
 /**
  * Module class for com_courses data
@@ -62,11 +63,11 @@ class Helper extends Module
 		$database->setQuery("SELECT enrolled FROM `#__courses_members` ORDER BY enrolled ASC LIMIT 1");
 		$first = $database->loadResult();
 
-		$startYear  = \JFactory::getDate($first)->format('Y');
-		$startMonth = \JFactory::getDate($first)->format('m');
+		$startYear  = Date::of($first)->format('Y');
+		$startMonth = Date::of($first)->format('m');
 
-		$endYear  = \JFactory::getDate()->format('Y');
-		$endMonth = \JFactory::getDate()->format('m');
+		$endYear  = Date::of('now')->format('Y');
+		$endMonth = Date::of('now')->format('m');
 
 		$totals = array();
 		for ($y = $startYear; $y <= $endYear; $y++)

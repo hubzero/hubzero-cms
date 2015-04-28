@@ -739,7 +739,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				}
 
 				$recipient->state = 2;
-				$recipient->expires = JFactory::getDate(time()+(10*60*60*60))->toSql();
+				$recipient->expires = Date::of(time()+(10*60*60*60))->toSql();
 				if (!$recipient->store())
 				{
 					$this->setError($recipient->getError());

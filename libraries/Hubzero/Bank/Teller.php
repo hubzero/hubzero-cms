@@ -31,6 +31,7 @@
 namespace Hubzero\Bank;
 
 use Hubzero\Base\Object;
+use Hubzero\Utility\Date;
 
 /**
  * Teller class for controlling bank transactions
@@ -369,7 +370,7 @@ class Teller extends Object
 		$data['description'] = $desc;
 		$data['category']    = $cat;
 		$data['referenceid'] = $ref;
-		$data['created']     = \JFactory::getDate()->toSql();
+		$data['created']     = with(new Date('now'))->toSql();
 		$data['balance']     = $this->balance;
 
 		$BT = new Transaction($this->_db);

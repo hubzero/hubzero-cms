@@ -47,10 +47,10 @@ class Helper extends Module
 	public function display()
 	{
 		// include group page archive model
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'archive.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'archive.php';
 
 		// include group module archive model
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'archive.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'archive.php';
 
 		// get unapproved pages
 		$groupModelPageArchive = new GroupsModelPageArchive();

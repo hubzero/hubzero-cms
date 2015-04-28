@@ -34,6 +34,8 @@ use Components\Support\Tables\Query;
 use Components\Support\Tables\Ticket;
 use Hubzero\Module\Module;
 use stdClass;
+use Request;
+use Config;
 
 /**
  * Module class for com_support ticket data
@@ -47,10 +49,9 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 
-		$juser    = \User::getRoot();
 		$database = \JFactory::getDBO();
 
 		$st = new Ticket($database);
@@ -101,9 +102,9 @@ class Helper extends Module
 
 		$this->topened = $types['common'];
 
-		$this->offset = \Config::get('offset');
+		$this->offset = Config::get('offset');
 
-		$year  = \Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 
 		$this->year = $year;

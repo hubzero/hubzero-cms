@@ -64,8 +64,7 @@ class plgSearchBlogs extends \JPlugin
 			$authorization = 'state = 1 || state = 2';
 		}
 
-		$date = JFactory::getDate();
-		$now = $date->toSql();
+		$now = Date::toSql();
 
 		$terms = $request->get_term_ar();
 		$weight = '(match(be.title, be.content) against (\''.join(' ', $terms['stemmed']).'\'))';

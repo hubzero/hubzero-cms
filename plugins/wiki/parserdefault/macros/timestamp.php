@@ -63,7 +63,7 @@ class TimestampMacro extends WikiMacro
 	 */
 	public function render()
 	{
-		return JFactory::getDate();
+		return new \Hubzero\Utility\Date('now');
 	}
 }
 

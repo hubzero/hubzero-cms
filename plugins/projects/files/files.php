@@ -2979,11 +2979,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if ($autoSync < 1)
 					{
 						$hr = 60 * $autoSync;
-						$timecheck = \JFactory::getDate(time() - (1 * $hr * 60));
+						$timecheck = Date::of(time() - (1 * $hr * 60));
 					}
 					else
 					{
-						$timecheck = \JFactory::getDate(time() - ($autoSync * 60 * 60));
+						$timecheck = Date::of(time() - ($autoSync * 60 * 60));
 					}
 
 					if ($synced > $timecheck)
@@ -3814,7 +3814,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Debug output
 		$temp = $this->_logPath;
-		$this->_writeToFile($output, $temp . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log', true);
+		$this->_writeToFile($output, $temp . DS . 'sync.' . Date::of('now')->format('Y-m') . '.log', true);
 
 		// Record sync status
 		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE_UPDATE_VIEW') );

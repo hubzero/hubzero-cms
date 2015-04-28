@@ -174,17 +174,17 @@ class GroupEventMacro extends WikiMacro
 				$publishDown = strtotime($event->publish_down);
 				if (date("z", $publishUp) == date("z", $publishDown))
 				{
-					$date  = JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
-					$date .= ' &mdash; ' . JFactory::getDate($publishDown)->format('g:i a');
+					$date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
+					$date .= ' &mdash; ' . Date::of($publishDown)->format('g:i a');
 				}
 				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
 				{
-					$date  = JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
-					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . JFactory::getDate($publishDown)->format('m/d/Y @ g:i a');
+					$date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
+					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . Date::of($publishDown)->format('m/d/Y @ g:i a');
 				}
 				else
 				{
-					$date  = JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
+					$date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
 				}
 
 				//shorten content

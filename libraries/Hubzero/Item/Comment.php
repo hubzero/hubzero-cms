@@ -77,13 +77,13 @@ class Comment extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 			$this->state = 1;
 		}
 		else
 		{
 			$this->modified_by = \User::get('id');
-			$this->modified = \JFactory::getDate()->toSql();
+			$this->modified = \Date::toSql();
 		}
 
 		// Check file attachment

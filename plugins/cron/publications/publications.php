@@ -322,8 +322,8 @@ class plgCronPublications extends JPlugin
 		foreach ($rows as $row)
 		{
 			// Grace period unexpired?
-			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
-			if (strtotime($monthFrom) > strtotime(JFactory::getDate()))
+			$monthFrom = Date::of($row->accepted . '+1 month')->toSql();
+			if (strtotime($monthFrom) > strtotime(Date::of('now')))
 			{
 				continue;
 			}

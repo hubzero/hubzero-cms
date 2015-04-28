@@ -90,7 +90,7 @@ class Vote extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = \Date::toSql();
 		}
 
 		return true;

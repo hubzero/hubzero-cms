@@ -32,6 +32,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Utility\Date;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -235,7 +236,7 @@ class User extends Base implements CommandInterface
 									$log->column      = $column;
 									$log->table_pk    = $tablePK;
 									$log->table_id    = $row->$tablePK;
-									$log->logged      = \JFactory::getDate()->toSql();
+									$log->logged      = with(new Date('now'))->toSql();
 									$dbo->insertObject('#__users_merge_log', $log);
 								}
 								catch (\PDOException $e)

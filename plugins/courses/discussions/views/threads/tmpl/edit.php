@@ -55,7 +55,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 			{
 				$anon = 0;
 			}
-			$now = JFactory::getDate();
+			$now = Date::of('now');
 			?>
 			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
 		</p>
@@ -82,9 +82,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 			<label for="field_<?php echo $this->post->get('id'); ?>_comment">
 				<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 				<?php
-				/* <textarea name="fields[comment]" id="field_<?php echo $this->post->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->content('raw')); ?></textarea> */
-
-				echo \JFactory::getEditor()->display('fields[comment]', $this->escape($this->post->content('raw')), '', '', 35, 5, false, 'field_' . $this->post->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
+				echo $this->editor('fields[comment]', $this->escape($this->post->content('raw')), 35, 5, 'field_' . $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 		<?php if (!$this->post->get('parent')) { ?>

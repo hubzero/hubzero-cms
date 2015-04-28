@@ -56,7 +56,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 	public static function render()
 	{
 		// Load language
-		JFactory::getLanguage()->load('plg_time_csv', JPATH_ADMINISTRATOR);
+		Lang::load('plg_time_csv', JPATH_ADMINISTRATOR);
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -67,7 +67,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		);
 
 		$view->hub_id = Request::getInt('hub_id', null);
-		$view->start  = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$view->start  = Request::getCmd('start_date', Date::of(strtotime('today - 1 month'))->format('Y-m-d'));
 		$view->end    = Request::getCmd('end_date', Date::format('Y-m-d'));
 		$records      = Record::all()->where('date', '>=', $view->start)
 		                              ->where('date', '<=', $view->end);
@@ -95,10 +95,10 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 	public static function download()
 	{
 		// Load language
-		JFactory::getLanguage()->load('plg_time_csv', JPATH_ADMINISTRATOR);
+		Lang::load('plg_time_csv', JPATH_ADMINISTRATOR);
 
 		$hub_id    = Request::getInt('hub_id', null);
-		$start     = Request::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$start     = Request::getCmd('start_date', Date::of(strtotime('today - 1 month'))->format('Y-m-d'));
 		$end       = Request::getCmd('end_date', Date::format('Y-m-d'));
 		$records   = Record::all()->where('date', '>=', $start)
 		                           ->where('date', '<=', $end);
@@ -123,8 +123,8 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 
 		$filename  = 'time_report';
 		$filename .= (isset($hubname)) ? '_' . $hubname : '';
-		$filename .= '_' . JFactory::getDate($start)->format('Ymd');
-		$filename .= '-' . JFactory::getDate($end)->format('Ymd');
+		$filename .= '_' . Date::of($start)->format('Ymd');
+		$filename .= '-' . Date::of($end)->format('Ymd');
 		$filename .= '.csv';
 
 		// Set content type headers

@@ -446,7 +446,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						}
 						if (checkdate($month, $day, $year))
 						{
-							$objTD->duedate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
+							$objTD->duedate = Date::of(mktime(0, 0, 0, $month, $day, $year))->toSql();
 						}
 					}
 				}

@@ -34,6 +34,7 @@ use Hubzero\Module\Module;
 use Component;
 use Config;
 use User;
+use Date;
 
 /**
  * Module class for Administrator dashboard
@@ -54,8 +55,8 @@ class Helper extends Module
 		$this->banking  = $upconfig->get('bankAccounts');
 		$this->sitename = Config::get('sitename');
 
-		$threemonths = \JFactory::getDate(time() - (92 * 24 * 60 * 60))->toSql();
-		$onemonth    = \JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
+		$threemonths = Date::of(time() - (92 * 24 * 60 * 60))->toSql();
+		$onemonth    = Date::of(time() - (30 * 24 * 60 * 60))->toSql();
 
 		if ($this->banking && Component::isEnabled('com_store'))
 		{
@@ -103,7 +104,7 @@ class Helper extends Module
 
 		if ($found)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
 			$obj = new \Components\Wishlist\Tables\Wishlist($database);
 			$objWish = new \Components\Wishlist\Tables\Wish($database);

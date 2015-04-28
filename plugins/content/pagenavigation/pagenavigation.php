@@ -30,18 +30,16 @@ class plgContentPagenavigation extends JPlugin
 		if ($params->get('show_item_navigation') && ($context == 'com_content.article') && ($view == 'article')) {
 			$html = '';
 			$db		= JFactory::getDbo();
-			$user	= JFactory::getUser();
 			$app	= JFactory::getApplication();
 			$lang	= JFactory::getLanguage();
 			$nullDate = $db->getNullDate();
 
-			$date	= JFactory::getDate();
-			$config	= JFactory::getConfig();
+			$date	= Date::of('now');
 			$now = $date->toSql();
 
 			$uid	= $row->id;
 			$option	= 'com_content';
-			$canPublish = $user->authorise('core.edit.state', $option.'.article.'.$row->id);
+			$canPublish = User::authorise('core.edit.state', $option.'.article.'.$row->id);
 
 			// The following is needed as different menu items types utilise a different param to control ordering.
 			// For Blogs the `orderby_sec` param is the order controlling param.

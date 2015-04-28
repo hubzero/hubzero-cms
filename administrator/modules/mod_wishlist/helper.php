@@ -45,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
 		$wishlist = intval($this->params->get('wishlist', 0));
 		if (!$wishlist)

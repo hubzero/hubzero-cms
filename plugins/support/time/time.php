@@ -51,17 +51,17 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTicketComment($ticket)
 	{
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
 
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
 
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
 
 		$permissions = new TimeModelPermissions('com_time');
 		if (!$permissions->can('save', 'records'))
@@ -118,17 +118,17 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTicketUpdate($ticket, $comment)
 	{
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
 
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
 
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
-		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
+		require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
 
 		$permissions = new TimeModelPermissions('com_time');
 		if (!$permissions->can('save.records'))
@@ -145,7 +145,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		// Combine the time entry
 		$record['user_id']     = User::get('id');
 		$record['time']        = $record['htime'] . '.' . $record['mtime'];
-		$record['date']        = JFactory::getDate($record['date'], Config::get('offset'))->toSql();
+		$record['date']        = Date::of($record['date'], Config::get('offset'))->toSql();
 		$record['description'] = $comment->get('comment');
 
 		// Don't attempt to save a record if no time or task was chosen

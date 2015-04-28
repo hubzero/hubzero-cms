@@ -30,6 +30,8 @@
 
 namespace Hubzero\Document\Renderer;
 
+use Hubzero\Utility\Date;
+
 /**
  * RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
  *
@@ -52,7 +54,7 @@ class Rss extends \JDocumentRenderer
 	 */
 	public function render($name = NULL, $params = NULL, $content = NULL)
 	{
-		$now  = \Date::getRoot();
+		$now  = new Date('now');
 		$data = $this->_doc;
 
 		$uri = \JFactory::getURI();
@@ -147,7 +149,7 @@ class Rss extends \JDocumentRenderer
 		}
 		if ($data->pubDate != '')
 		{
-			$pubDate = \JFactory::getDate($data->pubDate);
+			$pubDate = new Date($data->pubDate);
 			$feed .= "		<pubDate>" . $this->escape($pubDate->toRFC822()) . "</pubDate>\n";
 		}
 		if ($data->category != '')
@@ -252,7 +254,7 @@ class Rss extends \JDocumentRenderer
 			}
 			if ($data->items[$i]->date != '')
 			{
-				$itemDate = \JFactory::getDate($data->items[$i]->date);
+				$itemDate = new Date($data->items[$i]->date);
 				$feed .= "			<pubDate>" . $this->escape($itemDate->toRFC822()) . "</pubDate>\n";
 			}
 			if ($data->items[$i]->guid != '')

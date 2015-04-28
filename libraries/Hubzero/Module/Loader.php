@@ -30,6 +30,8 @@
 
 namespace Hubzero\Module;
 
+use Hubzero\Utility\Date;
+
 /**
  * Module loader class
  */
@@ -298,7 +300,7 @@ class Loader
 	 */
 	public function getLayoutPath($module, $layout = 'default')
 	{
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = \App::get('template')->template;
 		$defaultLayout = $layout;
 
 		if (strpos($layout, ':') !== false)
@@ -367,7 +369,7 @@ class Loader
 			$query->join('LEFT', '#__extensions AS e ON e.element = m.module AND e.client_id = m.client_id');
 			$query->where('e.enabled = 1');
 
-			$date = \JFactory::getDate();
+			$date = new Date('now');
 			$now = $date->toSql();
 			$nullDate = $db->getNullDate();
 			$query->where('(m.publish_up = ' . $db->Quote($nullDate) . ' OR m.publish_up <= ' . $db->Quote($now) . ')');

@@ -34,6 +34,7 @@ use Hubzero\Mail\View;
 use Hubzero\Mail\Message;
 use Hubzero\User\Profile;
 use Hubzero\User\Group;
+use Hubzero\Utility\Date;
 
 /**
  * Hubzero Announcement Model Class
@@ -72,7 +73,7 @@ class Announcement extends \JTable
 
 		if (!$this->created)
 		{
-			$this->created = \JFactory::getDate()->toSql();
+			$this->created = with(new Date('now'))->toSql();
 		}
 
 		return true;
@@ -198,7 +199,7 @@ class Announcement extends \JTable
 		//published
 		if (isset($filters['published']))
 		{
-			$now = \JFactory::getDate();
+			$now = new Date('now');
 			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now->toSql()) . ")";
 			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now->toSql()) . ")";
 		}
@@ -251,11 +252,11 @@ class Announcement extends \JTable
 		$up = $down = null;
 		if ($announcement->publish_up != '' && $announcement->publish_up != $this->_db->getNullDate())
 		{
-			$up = \JFactory::getDate($announcement->publish_up)->toUnix();
+			$up = with(new Date($announcement->publish_up))->toUnix();
 		}
 		if ($announcement->publish_down != '' && $announcement->publish_down != $this->_db->getNullDate())
 		{
-			$down = \JFactory::getDate($announcement->publish_down)->toUnix();
+			$down = with(new Date($announcement->publish_down))->toUnix();
 		}
 
 		// if we have a null uptime or uptime less then our date
