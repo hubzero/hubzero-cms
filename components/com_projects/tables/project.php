@@ -119,14 +119,14 @@ class Project extends \JTable
 			$query .= " OR p.params LIKE '%export_data=yes%' ";
 			$query .= " OR p.params LIKE 'restricted_data=maybe%' ";
 			$query .= " OR p.params LIKE '%followup=yes%') ";
-			$query .= " AND p.state != 2 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . " ) ";
+			$query .= " AND p.state != 2 AND p.setup_stage >= " . $this->_db->Quote($setup_complete) . " ) ";
 		}
 		elseif ($reviewer == 'sponsored')
 		{
 			$query .= " WHERE ((( p.params LIKE '%grant_title=%' AND p.params NOT LIKE '%grant_title=\\n%') ";
 			$query .= " OR ( p.params LIKE '%grant_agency=%' AND p.params NOT LIKE '%grant_agency=\\n%') ";
 			$query .= " OR ( p.params LIKE '%grant_budget=%' AND p.params NOT LIKE '%grant_budget=\\n%') ";
-			$query .= " ) AND p.state=1 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . " ) ";
+			$query .= " ) AND p.state=1 AND p.setup_stage >= " . $this->_db->Quote($setup_complete) . " ) ";
 		}
 		elseif ($admin)
 		{
@@ -139,7 +139,7 @@ class Project extends \JTable
 			{
 				$query .= $uid
 						? " WHERE (o.userid=" . $this->_db->Quote($uid) . " AND o.status!=2
-							AND ((p.state != 2 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . ")
+							AND ((p.state != 2 AND p.setup_stage >= " . $this->_db->Quote($setup_complete) . ")
 							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . " ))) "
 						: " WHERE 1=2";
 				if ($which == 'owned' && $uid)
@@ -156,7 +156,7 @@ class Project extends \JTable
 				$query .= $uid
 						? " WHERE ((p.state = 1 AND p.private = 0)
 							OR (o.userid=" . $this->_db->Quote($uid) . " AND o.status!=2 AND ((p.state = 1
-							AND p.setup_stage = " . $this->_db->Quote($setup_complete) . ")
+							AND p.setup_stage >= " . $this->_db->Quote($setup_complete) . ")
 							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . ")))) "
 						: " WHERE p.state = 1 AND p.private = 0 ";
 			}
