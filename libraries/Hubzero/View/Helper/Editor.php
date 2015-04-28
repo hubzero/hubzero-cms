@@ -30,6 +30,8 @@
 
 namespace Hubzero\View\Helper;
 
+//use Hubzero\Html\Editor;
+
 /**
  * Helper for making easy links and getting urls that depend on the routes and router.
  */
@@ -39,28 +41,27 @@ class Editor extends AbstractHelper
 	 * Display the editor area.
 	 *
 	 * @param   string   $name     The control name.
-	 * @param   string   $html     The contents of the text area.
-	 * @param   string   $width    The width of the text area (px or %).
-	 * @param   string   $height   The height of the text area (px or %).
+	 * @param   string   $content  The contents of the text area.
 	 * @param   integer  $col      The number of columns for the textarea.
 	 * @param   integer  $row      The number of rows for the textarea.
-	 * @param   boolean  $buttons  True and the editor buttons will be displayed.
 	 * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
-	 * @param   string   $asset    The object asset
-	 * @param   object   $author   The author.
 	 * @param   array    $params   Associative array of editor parameters.
 	 * @return  string
 	 */
-	public function __invoke($name, $content, $col=35, $row=15, $id=null, $params=array())
+	public function __invoke($name='', $content='', $col=35, $row=15, $id=null, $params=array())
 	{
+		if (!count(func_get_args()))
+		{
+			return $this->instance();
+		}
+
 		$width   = '';
 		$height  = '';
 		$buttons = true;
 		$asset   = null;
 		$author  = null;
-		$editor  = null;
 
-		if (!\JFactory::getApplication()->isAdmin())
+		if (!\App::isAdmin())
 		{
 			$buttons = false;
 		}
@@ -71,11 +72,38 @@ class Editor extends AbstractHelper
 				$buttons = $params['buttons'];
 				unset($params['buttons']);
 			}
-			$editor = \User::getParam('editor', $editor);
+		}
+
+		if (!$name)
+		{
+			\App::abort(500, \Lang::txt('Editor must have a name'));
 		}
 
 		$id = $id ?: str_replace(array('[', ']'), '', $name);
 
-		return \JFactory::getEditor($editor)->display($name, $content, $width, $height, intval($col), intval($row), $buttons, $id, $asset, $author, $params);
+		return $this->instance()->display($name, $content, $width, $height, intval($col), intval($row), $buttons, $id, $asset, $author, $params);
+	}
+
+	/**
+	 * Get the editor object.
+	 *
+	 * @return  object
+	 */
+	public function instance()
+	{
+		$editor = null;
+
+		if (\App::isAdmin())
+		{
+			$editor = \User::getParam('editor', $editor);
+		}
+
+		if (is_null($editor))
+		{
+			$editor = \App::get('config')->get('editor');
+		}
+
+		//return Editor::getInstance($editor);
+		return \JFactory::getEditor($editor);
 	}
 }
