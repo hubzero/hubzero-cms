@@ -30,6 +30,9 @@
 
 namespace Components\Jobs\Tables;
 
+use Lang;
+use Date;
+
 /**
  * Table class for job stats
  */
@@ -166,9 +169,9 @@ class JobStats extends \JTable
 	 */
 	public function getView($itemid=NULL, $category=NULL, $type='viewed', $when ='')
 	{
-		$lastweek  = \JFactory::getDate(time() - (7 * 24 * 60 * 60))->format('Y-m-d H:i:s');
-		$lastmonth = \JFactory::getDate(time() - (30 * 24 * 60 * 60))->format('Y-m-d H:i:s');
-		$today     = \JFactory::getDate(time() - (24 * 60 * 60))->format('Y-m-d H:i:s');
+		$lastweek  = Date::of(time() - (7 * 24 * 60 * 60))->format('Y-m-d H:i:s');
+		$lastmonth = Date::of(time() - (30 * 24 * 60 * 60))->format('Y-m-d H:i:s');
+		$today     = Date::of(time() - (24 * 60 * 60))->format('Y-m-d H:i:s');
 
 		$query  = "SELECT ";
 		if ($type == 'viewed')
@@ -231,8 +234,8 @@ class JobStats extends \JTable
 			return false;
 		}
 
-		$today = \JFactory::getDate()->format('Y-m-d');
-		$now = \Date::toSql();
+		$today = Date::of('now')->format('Y-m-d');
+		$now   = Date::toSql();
 
 		// load existing entry
 		$this->loadStat($itemid, $category);
@@ -277,7 +280,7 @@ class JobStats extends \JTable
 	 */
 	public function cleanup()
 	{
-		$lastmonth = \JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
+		$lastmonth = Date::of(time() - (30 * 24 * 60 * 60))->toSql();
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE lastviewed < " . $this->_db->Quote($lastmonth));
 		$this->_db->query();
 	}

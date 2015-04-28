@@ -34,6 +34,7 @@ use Components\Oaipmh\Models\Xml\Response;
 use Components\Oaipmh\Models\Service;
 use Components\Oaipmh\Models\Schema;
 use Hubzero\Base\Traits\Escapable;
+use Date;
 
 require_once(__DIR__ . '/../schema.php');
 
@@ -377,7 +378,7 @@ class DublinCore implements Schema
 				{
 					if ($dc == 'date')
 					{
-						$this->response->element('dc:' . $dc, \JFactory::getDate($result->date)->format($gran))->end();
+						$this->response->element('dc:' . $dc, Date::of($result->date)->format($gran))->end();
 					}
 					else
 					{

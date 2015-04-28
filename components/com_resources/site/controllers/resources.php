@@ -2028,7 +2028,7 @@ class Resources extends SiteController
 			$resource->id         = $id;
 			$resource->standalone = 1;
 			$resource->path       = null;
-			$resource->created    = \JFactory::getDate()->format('Y-m-d 00:00:00');
+			$resource->created    = Date::of('now')->format('Y-m-d 00:00:00');
 		}
 		elseif (!$resource->load($id))
 		{
@@ -2047,14 +2047,14 @@ class Resources extends SiteController
 
 			$session = \Hubzero\Session\Helper::getSession($session_id);
 
-			$user = \JFactory::getUser($session->userid);
+			$user = User::getInstance($session->userid);
 			$user->guest = 0;
 			$user->id = $session->userid;
 			$user->usertype = $session->usertype;
 		}
 		else
 		{
-			$user = \JFactory::getUser();
+			$user = User::getRoot();
 		}
 
 		if ($resource->access == 1 && $user->get('guest'))

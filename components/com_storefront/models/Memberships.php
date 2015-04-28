@@ -132,14 +132,14 @@ class StorefrontModelMemberships
 		if ($currentExpiration && $currentExpiration['crtmActive'])
 		{
 			// Set the date to the current expiration
-			$date = JFactory::getDate($currentExpiration['crtmExpires']);
+			$date = Date::of($currentExpiration['crtmExpires']);
 			// Add TTL to the current expiration
 			$date->modify('+ ' . $ttl);
 		}
 		else
 		{
 			// Get current time
-			$date = JFactory::getDate();
+			$date = Date::of('now');
 			// Add TTL to the current time
 			$date->modify('+ ' . $ttl);
 		}

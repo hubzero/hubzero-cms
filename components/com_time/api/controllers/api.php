@@ -545,7 +545,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		// Restructure results into the format that the calendar plugin expects
 		foreach ($records as $r)
 		{
-			$dayOfWeek = \JFactory::getDate($r->date)->format('N') - 1;
+			$dayOfWeek = Date::of($r->date)->format('N') - 1;
 			$results[$dayOfWeek][] = $r->time;
 		}
 

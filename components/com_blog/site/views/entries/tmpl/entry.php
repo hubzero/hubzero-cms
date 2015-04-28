@@ -206,7 +206,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<?php
 			if ($first->exists()) {
 				$start = intval(substr($first->get('publish_up'), 0, 4));
-				$now = JFactory::getDate()->format("Y");
+				$now = Date::of('now')->format("Y");
 				//$mon = date("m");
 				for ($i=$now, $n=$start; $i >= $n; $i--)
 				{

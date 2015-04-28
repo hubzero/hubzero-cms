@@ -67,7 +67,7 @@ class NewsfeedsTableNewsfeed extends JTable
 		}
 		$this->alias = JApplication::stringURLSafe($this->alias);
 		if (trim(str_replace('-', '', $this->alias)) == '') {
-			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
+			$this->alias = Date::of('now')->format("Y-m-d-H-i-s");
 		}
 
 		// Check the publish down date is not earlier than publish up.
@@ -110,8 +110,8 @@ class NewsfeedsTableNewsfeed extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$date	= Date::of('now');
+		$user	= User::getRoot();
 		if ($this->id) {
 			// Existing item
 			$this->modified		= $date->toSql();

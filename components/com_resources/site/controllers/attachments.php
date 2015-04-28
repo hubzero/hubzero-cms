@@ -684,10 +684,10 @@ class Attachments extends SiteController
 		}
 		$row->title        = ($row->title) ? $row->title : $file['name'];
 		$row->introtext    = $row->title;
-		$row->created      = \Date::toSql();
+		$row->created      = Date::toSql();
 		$row->created_by   = User::get('id');
 		$row->published    = 1;
-		$row->publish_up   = \Date::toSql();
+		$row->publish_up   = Date::toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->path         = ''; // make sure no path is specified just yet
@@ -946,8 +946,8 @@ class Attachments extends SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-		$baseY = $base . '/'. \JFactory::getDate($row->created)->format("Y");
-		$baseM = $baseY . '/' . \JFactory::getDate($row->created)->format("m");
+		$baseY = $base . '/'. Date::of($row->created)->format("Y");
+		$baseM = $baseY . '/' . Date::of($row->created)->format("m");
 
 		// Check if the folder even exists
 		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http')
@@ -1169,13 +1169,13 @@ class Attachments extends SiteController
 		}
 		if ($date)
 		{
-			$dir_year  = \JFactory::getDate($date)->format('Y');
-			$dir_month = \JFactory::getDate($date)->format('m');
+			$dir_year  = Date::of($date)->format('Y');
+			$dir_month = Date::of($date)->format('m');
 		}
 		else
 		{
-			$dir_year  = \JFactory::getDate()->format('Y');
-			$dir_month = \JFactory::getDate()->format('m');
+			$dir_year  = Date::of('now')->format('Y');
+			$dir_month = Date::of('now')->format('m');
 		}
 		$dir_id = String::pad($id);
 

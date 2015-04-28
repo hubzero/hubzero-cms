@@ -42,8 +42,8 @@ class UsersTableNote extends JTable
 	public function store($updateNulls = false)
 	{
 		// Initialise variables.
-		$date = JFactory::getDate()->toMySQL();
-		$userId = JFactory::getUser()->get('id');
+		$date = Date::toSql();
+		$userId = User::get('id');
 
 		if (empty($this->id))
 		{
@@ -82,7 +82,7 @@ class UsersTableNote extends JTable
 		$k = $this->_tbl_key;
 
 		// Sanitize input.
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 		$userId = (int) $userId;
 		$state  = (int) $state;
 

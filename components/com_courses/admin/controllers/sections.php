@@ -36,6 +36,7 @@ use stdClass;
 use Request;
 use Config;
 use Route;
+use Date;
 use Lang;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section.php');
@@ -200,11 +201,11 @@ class Sections extends AdminController
 	{
 		if (isset($dt['publish_up']) && $dt['publish_up'] != '')
 		{
-			$dt['publish_up']   = \JFactory::getDate($dt['publish_up'], Config::get('offset'))->toSql();
+			$dt['publish_up']   = Date::of($dt['publish_up'], Config::get('offset'))->toSql();
 		}
 		if (isset($dt['publish_down']) && $dt['publish_down'] != '')
 		{
-			$dt['publish_down'] = \JFactory::getDate($dt['publish_down'], Config::get('offset'))->toSql();
+			$dt['publish_down'] = Date::of($dt['publish_down'], Config::get('offset'))->toSql();
 		}
 		return $dt;
 	}

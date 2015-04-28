@@ -69,8 +69,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 		}
 
 		// Check that the user has create permission for the component
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_newsfeeds.category.' . $categoryId))
+		if (!User::authorise('core.create', 'com_newsfeeds.category.' . $categoryId))
 		{
 			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
@@ -156,10 +155,9 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 			if ($record->published != -2) {
 				return ;
 			}
-			$user = JFactory::getUser();
 
 			if (!empty($record->catid)) {
-				return $user->authorise('core.delete', 'com_newsfeed.category.'.(int) $record->catid);
+				return User::authorise('core.delete', 'com_newsfeed.category.'.(int) $record->catid);
 			}
 			else {
 				return parent::canDelete($record);
@@ -176,10 +174,8 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
 		if (!empty($record->catid)) {
-			return $user->authorise('core.edit.state', 'com_newsfeeds.category.'.(int) $record->catid);
+			return User::authorise('core.edit.state', 'com_newsfeeds.category.'.(int) $record->catid);
 		}
 		else {
 			return parent::canEditState($record);
@@ -252,15 +248,16 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_newsfeeds.edit.newsfeed.data', array());
+		$data = User::getState('com_newsfeeds.edit.newsfeed.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 
 			// Prime some default values.
-			if ($this->getState('newsfeed.id') == 0) {
-				$app = JFactory::getApplication();
-				$data->set('catid', Request::getInt('catid', $app->getUserState('com_newsfeeds.newsfeeds.filter.category_id')));
+			if ($this->getState('newsfeed.id') == 0)
+			{
+				$data->set('catid', Request::getInt('catid', User::getState('com_newsfeeds.newsfeeds.filter.category_id')));
 			}
 		}
 
@@ -277,7 +274,8 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		if ($item = parent::getItem($pk)) {
+		if ($item = parent::getItem($pk))
+		{
 			// Convert the params field to an array.
 			$registry = new JRegistry;
 			$registry->loadString($item->metadata);
@@ -292,8 +290,8 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 	 */
 	protected function prepareTable(&$table)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Date::of('now');
+		$user = User::getRoot();
 
 		$table->name		= htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias		= JApplication::stringURLSafe($table->alias);

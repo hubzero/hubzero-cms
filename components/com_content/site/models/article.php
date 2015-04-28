@@ -70,7 +70,7 @@ class ContentModelArticle extends JModelItem
 	{
 
 		// Get current user for authorisation checks
-		$user	= JFactory::getUser();
+		$user	= User::getRoot();
 
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('article.id');
@@ -144,7 +144,7 @@ class ContentModelArticle extends JModelItem
 				if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content'))) {
 					// Filter by start and end dates.
 					$nullDate = $db->Quote($db->getNullDate());
-					$date = JFactory::getDate();
+					$date = Date::of('now');
 
 					$nowDate = $db->Quote($date->toSql());
 

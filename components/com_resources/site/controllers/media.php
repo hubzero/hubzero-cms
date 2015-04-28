@@ -73,7 +73,7 @@ class Media extends SiteController
 		// allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
-			$row->created = \JFactory::getDate()->format('Y-m-d 00:00:00');
+			$row->created = Date::of('now')->format('Y-m-d 00:00:00');
 		}
 
 		$path =  PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $resource, '') . DS . 'media';

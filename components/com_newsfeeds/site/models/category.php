@@ -102,7 +102,7 @@ class NewsfeedsModelCategory extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$user	= JFactory::getUser();
+		$user	= User::getRoot();
 		$groups	= implode(',', $user->getAuthorisedViewLevels());
 
 		// Create a new query object.
@@ -129,7 +129,7 @@ class NewsfeedsModelCategory extends JModelList
 
 		// Filter by start and end dates.
 		$nullDate = $db->Quote($db->getNullDate());
-		$date = JFactory::getDate();
+		$date = Date::of('now');
 		$nowDate = $db->Quote($date->format($db->getDateFormat()));
 
 		if ($this->getState('filter.publish_date')){

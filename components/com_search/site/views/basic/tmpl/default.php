@@ -90,7 +90,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<?php if ($res->has_metadata()): ?>
 							<p class="details">
 								<?php if (($section = $res->get_section())) {?><span class="section"><?php echo $section; ?></span><?php }?>
-								<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo JFactory::getDate($date)->format('j M Y'); ?></span><?php } ?>
+								<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo Date::of($date)->format('j M Y'); ?></span><?php } ?>
 								<?php if (($contributors = $res->get_contributors())): ?>
 								<span class="contributors">
 										<?php

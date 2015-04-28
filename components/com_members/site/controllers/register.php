@@ -678,8 +678,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$user->set('id', 0);
 				$user->set('groups', array($newUsertype));
 
-				$date = JFactory::getDate();
-				$user->set('registerDate', $date->toMySQL());
+				$date = Date::of('now');
+				$user->set('registerDate', $date->toSql());
 
 				// Check joomla user activation setting
 				// 0 = automatically confirmed

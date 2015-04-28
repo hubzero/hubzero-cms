@@ -645,11 +645,11 @@ class Items extends AdminController
 		// Is this a new resource?
 		if (!$id)
 		{
-			$this->view->row->created      = \Date::toSql();
+			$this->view->row->created      = Date::toSql();
 			$this->view->row->created_by   = User::get('id');
 			$this->view->row->modified     = $this->database->getNullDate();
 			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = \Date::toSql();
+			$this->view->row->publish_up   = Date::toSql();
 			$this->view->row->publish_down = Lang::txt('COM_RESOURCES_NEVER');
 			if ($this->view->pid)
 			{
@@ -810,7 +810,7 @@ class Items extends AdminController
 		if ($isNew)
 		{
 			// New entry
-			$row->created    = $row->created    ? $row->created    : \Date::toSql();
+			$row->created    = $row->created    ? $row->created    : Date::toSql();
 			$row->created_by = $row->created_by ? $row->created_by : User::get('id');
 			$row->access     = 0;
 		}
@@ -822,7 +822,7 @@ class Items extends AdminController
 			$created_by_id = Request::getInt('created_by_id', 0);
 
 			// Updating entry
-			$row->modified    = \Date::toSql();
+			$row->modified    = Date::toSql();
 			$row->modified_by = User::get('id');
 
 			if ($created_by_id)
@@ -836,7 +836,7 @@ class Items extends AdminController
 		}
 
 		// publish up
-		$row->publish_up = \JFactory::getDate($row->publish_up, Config::get('offset'))->toSql();
+		$row->publish_up = Date::of($row->publish_up, Config::get('offset'))->toSql();
 
 		// publish down
 		if (!$row->publish_down || trim($row->publish_down) == '0000-00-00 00:00:00' || trim($row->publish_down) == 'Never')
@@ -845,7 +845,7 @@ class Items extends AdminController
 		}
 		else
 		{
-			$row->publish_down = \JFactory::getDate($row->publish_down, Config::get('offset'))->toSql();
+			$row->publish_down = Date::of($row->publish_down, Config::get('offset'))->toSql();
 		}
 
 		// Get parameters
@@ -875,7 +875,7 @@ class Items extends AdminController
 					}
 
 					$v = trim($v)
-						? \JFactory::getDate($v, Config::get('offset'))->toSql()
+						? Date::of($v, Config::get('offset'))->toSql()
 						: NULL;
 				}
 				$txta->set($k, $v);
@@ -1185,8 +1185,8 @@ class Items extends AdminController
 			$path = Utilities::buildUploadPath($listdir, '');
 
 			$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-			$baseY = $base . '/'. \JFactory::getDate($row->created)->format("Y");
-			$baseM = $baseY . '/' . \JFactory::getDate($row->created)->format("m");
+			$baseY = $base . '/'. Date::of($row->created)->format("Y");
+			$baseM = $baseY . '/' . Date::of($row->created)->format("m");
 
 			// Check if the folder even exists
 			if (!is_dir($path) or !$path)
@@ -1362,7 +1362,7 @@ class Items extends AdminController
 				// If we're publishing, set the UP date
 				if ($publish)
 				{
-					$resource->publish_up = \Date::toSql();
+					$resource->publish_up = Date::toSql();
 				}
 
 				// Is this a standalone resource and we need to email approved submissions?

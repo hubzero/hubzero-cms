@@ -40,6 +40,8 @@ use Components\Citations\Helpers\Format;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Exception;
+use Date;
+use Lang;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -229,17 +231,17 @@ class Citations extends SiteController
 		}
 		else
 		{
-			$this->view->filters['startuploaddate'] = \JFactory::getDate($this->view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
+			$this->view->filters['startuploaddate'] = Date::of($this->view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
 		}
 		if ($this->view->filters['enduploaddate'] == '0000-00-00'
 			|| $this->view->filters['enduploaddate'] == '0000-00-00 00:00:00'
 			|| $this->view->filters['enduploaddate'] == '')
 		{
-			$this->view->filters['enduploaddate'] = \JFactory::getDate()->modify('+1 DAY')->format('Y-m-d 00:00:00');
+			$this->view->filters['enduploaddate'] = Date::of('now')->modify('+1 DAY')->format('Y-m-d 00:00:00');
 		}
 		else
 		{
-			$this->view->filters['enduploaddate'] = \JFactory::getDate($this->view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
+			$this->view->filters['enduploaddate'] = Date::of($this->view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
 		}
 
 		// Make sure the end date for the upload search isn't before the start date
@@ -790,7 +792,7 @@ class Citations extends SiteController
 		// New entry so set the created date
 		if (!$row->id)
 		{
-			$row->created = \Date::toSql();
+			$row->created = Date::toSql();
 		}
 
 		// Field named 'uri' due to conflict with existing 'url' variable
@@ -1055,7 +1057,7 @@ class Citations extends SiteController
 		$ext = (strtolower($download) == 'bibtex') ? '.bib' : '.enw';
 
 		// filename
-		$filename = 'citations_export_' . strtolower($download) . '_' . \JFactory::getDate()->format('Y_m_d') . $ext;
+		$filename = 'citations_export_' . strtolower($download) . '_' . Date::of('now')->format('Y_m_d') . $ext;
 
 		// output file
 		header('Content-Type: application/octet-stream');

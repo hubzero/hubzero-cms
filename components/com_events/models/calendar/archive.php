@@ -36,6 +36,7 @@ use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use DateTimezone;
 use DateTime;
+use Date;
 
 // include calendar model
 require_once dirname(__DIR__) . DS . 'calendar.php';
@@ -167,11 +168,11 @@ class Archive extends Model
 
 		// get daylight start and end
 		$ttz = new DateTimezone(timezone_name_from_abbr('EST'));
-		$first = \JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
-		$last = \JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
+		$first = Date::of(date('Y') . '-01-02 00:00:00')->toUnix();
+		$last = Date::of(date('Y') . '-12-30 00:00:00')->toUnix();
 		$transitions = $ttz->getTransitions($first, $last);
-		$daylightStart = \JFactory::getDate($transitions[1]['ts']);
-		$daylightEnd = \JFactory::getDate($transitions[2]['ts']);
+		$daylightStart = Date::of($transitions[1]['ts']);
+		$daylightEnd = Date::of($transitions[2]['ts']);
 
 		// output timezone block
 		$output .= "BEGIN:VTIMEZONE\r\n";

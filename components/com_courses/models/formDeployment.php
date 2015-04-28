@@ -475,7 +475,7 @@ class PdfFormDeployment
 			return $this->timeLimit;
 		}
 
-		return min($this->timeLimit, (strtotime($this->endTime) - strtotime(\JFactory::getDate()))/60);
+		return min($this->timeLimit, (strtotime($this->endTime) - strtotime(Date::of('now')))/60);
 	}
 
 	/**
@@ -505,12 +505,12 @@ class PdfFormDeployment
 	 **/
 	public function getState()
 	{
-		if ($this->endTime && strtotime($this->endTime) <= strtotime(\JFactory::getDate()))
+		if ($this->endTime && strtotime($this->endTime) <= strtotime(Date::of('now')))
 		{
 			return 'expired';
 		}
 
-		return (!$this->startTime || strtotime($this->startTime) <= strtotime(\JFactory::getDate())) ? 'active' : 'pending';
+		return (!$this->startTime || strtotime($this->startTime) <= strtotime(Date::of('now'))) ? 'active' : 'pending';
 	}
 
 	/**
@@ -547,7 +547,7 @@ class PdfFormDeployment
 			{
 				$this->errors['timeLimit'] = array('Expected a positive, nonzero, integer number of minutes');
 			}
-			if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(\JFactory::getDate()))
+			if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(Date::of('now')))
 			{
 				if (!isset($this->errors['endTime']))
 				{
@@ -603,13 +603,13 @@ class PdfFormDeployment
 		{
 			if (!isset($data[$key]))
 			{
-				JError::raiseError(422, 'expected a value to be supplied for '.$key);
+				App::abort(422, 'expected a value to be supplied for '.$key);
 				return;
 			}
 
 			if (($key == 'endTime' || $key == 'startTime') && !empty($data[$key]))
 			{
-				$data[$key] = \JFactory::getDate(strtotime($data[$key]))->toSql();
+				$data[$key] = Date::of(strtotime($data[$key]))->toSql();
 			}
 
 			$dep->$key = $data[$key];
@@ -657,7 +657,7 @@ class PdfFormDeployment
 					$dbh->quote($this->resultsClosed).', '.
 					(int)$this->timeLimit.', '.
 					$dbh->quote($this->crumb).', '.
-					(int)\JFactory::getUser()->id.', '.
+					(int)User::get('id').', '.
 					(int)$this->allowedAttempts.
 				')'
 			);

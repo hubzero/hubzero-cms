@@ -37,14 +37,14 @@ Toolbar::custom('migrate', 'purge', '', 'Run pending migrations', false);
 $this->css();
 ?>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="updateRepositoryForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
-				<th>Component</th>
-				<th>Date</th>
-				<th>Status</th>
-				<th>Description</th>
+				<th scope="col">Component</th>
+				<th scope="col">Date</th>
+				<th scope="col">Status</th>
+				<th scope="col">Description</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -57,10 +57,10 @@ $this->css();
 		<tbody>
 			<?php foreach ($this->rows as $row) : ?>
 				<?php $item      = ltrim($row['entry'], 'Migration'); ?>
-				<?php $date      = \JFactory::getDate(strtotime(substr($item, 0, 14).'UTC'))->format('Y-m-d g:i:sa'); ?>
+				<?php $date      = Date::of(strtotime(substr($item, 0, 14).'UTC'))->format('Y-m-d g:i:sa'); ?>
 				<?php $component = substr($item, 14, -4); ?>
 				<?php require_once PATH_CORE . DS . 'migrations' . DS . $row['entry']; ?>
-				<?php $class     = new \ReflectionClass(substr($row['entry'], 0, -4)); ?>
+				<?php $class     = new ReflectionClass(substr($row['entry'], 0, -4)); ?>
 				<?php $desc      = trim(rtrim(ltrim($class->getDocComment(), "/**\n *"), '**/')); ?>
 				<tr>
 					<td><?php echo $component; ?></td>

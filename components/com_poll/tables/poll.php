@@ -30,6 +30,9 @@
 
 namespace Components\Poll\Tables;
 
+use Lang;
+use Date;
+
 /**
  * Table class for a poll
  */
@@ -93,8 +96,7 @@ class Poll extends \JTable
 		$this->alias = \JFilterOutput::stringURLSafe($this->alias);
 		if (trim(str_replace('-','',$this->alias)) == '')
 		{
-			$datenow = \JFactory::getDate();
-			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+			$this->alias = Date::of('now')->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
 
 		return true;
@@ -171,7 +173,7 @@ class Poll extends \JTable
 		$this->_db->query();
 
 		$query = 'INSERT INTO `#__poll_date`'
-			. ' SET date = ' . $this->_db->quote(\JFactory::getDate()->toMySQL())
+			. ' SET date = ' . $this->_db->quote(Date::toSql())
 			. ', vote_id = ' . (int) $option_id
 			. ', poll_id = ' . (int) $poll_id
 		;

@@ -361,19 +361,19 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			switch ($val)
 			{
 				case 'year':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d"), date("Y")-1))->format("Y-m-d H:i:s");
+					$val = Date::of(mktime(0, 0, 0, date("m"), date("d"), date("Y")-1))->format("Y-m-d H:i:s");
 				break;
 
 				case 'month':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))->format("Y-m-d H:i:s");
+					$val = Date::of(mktime(0, 0, 0, date("m")-1, date("d"), date("Y")))->format("Y-m-d H:i:s");
 				break;
 
 				case 'week':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-7, date("Y")))->format("Y-m-d H:i:s");
+					$val = Date::of(mktime(0, 0, 0, date("m"), date("d")-7, date("Y")))->format("Y-m-d H:i:s");
 				break;
 
 				case 'day':
-					$val = JFactory::getDate(mktime(0, 0, 0, date("m"), date("d")-1, date("Y")))->format("Y-m-d H:i:s");
+					$val = Date::of(mktime(0, 0, 0, date("m"), date("d")-1, date("Y")))->format("Y-m-d H:i:s");
 				break;
 
 				default:
@@ -883,8 +883,8 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		$msg = new stdClass;
-		$msg->ticket  = $ticket->get('id');
-		$msg->comment = $comment->get('id');
+		$msg->ticket   = $ticket->get('id');
+		$msg->comment  = $comment->get('id');
 		$msg->notified = $comment->changelog()->get('notifications');
 
 		$this->setMessageType(Request::getVar('format', 'json'));

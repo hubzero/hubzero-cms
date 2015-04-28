@@ -85,9 +85,9 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if ($course_id)
@@ -373,7 +373,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 				break;
 
 				case 'date':
-					$val = \JFactory::getDate()->format(Lang::txt('d M Y'));
+					$val = Date::of('now')->format(Lang::txt('d M Y'));
 				break;
 			}
 
@@ -425,7 +425,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			jimport('joomla.filesystem.file');
 			if (!\JFolder::delete($path))
 			{
-				$this->setError(\Lang::txt('Unable to remove upload directory and files for certificate.'));
+				$this->setError(Lang::txt('Unable to remove upload directory and files for certificate.'));
 				return false;
 			}
 		}

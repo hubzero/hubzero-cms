@@ -54,7 +54,7 @@ $this->css()
 					$cls = '';
 					if ($row->featured) {
 						$cls = 'featured';
-					} else if ($row->created > JFactory::getDate(time() - (30 * 24 * 60 * 60))) {
+					} else if ($row->created > Date::of(time() - (30 * 24 * 60 * 60))) {
 						$cls = 'new';
 					}
 			?>

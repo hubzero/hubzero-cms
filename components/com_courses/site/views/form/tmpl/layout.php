@@ -33,9 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 $this->css('form.css')
      ->js('layout.js');
 
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
-\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
-\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
+$this->css('jquery.ui.css', 'system')
+     ->js('jquery.iframe-transport', 'system')
+     ->js('jquery.fileupload', 'system');
 
 ?>
 <section class="main section courses-form">

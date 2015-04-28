@@ -373,11 +373,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
 
 		//get newly registered members (past day)
-		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 DAY'))->toSql() . "'");
+		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
 		$this->view->past_day_members = $stats->past_day_members; //$this->database->loadResult();
 
 		//get newly registered members (past month)
-		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 MONTH'))->toSql() . "'");
+		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
 		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
 
 		$this->view->registration = new JObject();
@@ -422,11 +422,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$stats->total_public_members = $c->getCount(array('show' => '', 'authorized' => false), false);
 
 		//get newly registered members (past day)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 DAY'))->toSql() . "'");
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 DAY'))->toSql() . "'");
 		$stats->past_day_members = $this->database->loadResult();
 
 		//get newly registered members (past month)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 MONTH'))->toSql() . "'");
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
 		$stats->past_month_members = $this->database->loadResult();
 
 		return $stats;

@@ -74,7 +74,7 @@ class ToolsHelperHtml
 	public static function timeAgoo($timestamp)
 	{
 		// Store the current time
-		$current_time = strtotime(JFactory::getDate());
+		$current_time = strtotime(Date::of('now'));
 
 		// Determine the difference, between the time now and the timestamp
 		$difference = $current_time - $timestamp;

@@ -32,6 +32,11 @@ namespace Components\Time\Site\Controllers;
 
 use Components\Time\Helpers\Filters;
 use Components\Time\Models\Record;
+use Request;
+use Config;
+use Route;
+use Date;
+use Lang;
 
 /**
  * Records controller for time component
@@ -141,7 +146,7 @@ class Records extends Base
 			'task_id'     => Request::getInt('task_id'),
 			'user_id'     => Request::getInt('user_id'),
 			'time'        => Request::getInt('htime') . '.' . Request::getInt('mtime'),
-			'date'        => \JFactory::getDate(Request::getVar('date'), Config::get('offset'))->toSql(),
+			'date'        => Date::of(Request::getVar('date'), Config::get('offset'))->toSql(),
 			'description' => Request::getVar('description')
 		));
 

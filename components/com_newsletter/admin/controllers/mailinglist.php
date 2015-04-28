@@ -38,6 +38,7 @@ use stdClass;
 use Request;
 use Notify;
 use Route;
+use Date;
 use Lang;
 use App;
 
@@ -624,7 +625,7 @@ class Mailinglist extends AdminController
 		$emails = $newsletterMailinglist->getListEmails($id, null, array('status' => 'all'));
 
 		// file name
-		$filename  = Lang::txt('COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME', $newsletterMailinglist->name, JFactory::getDate()->format('m-d-Y'));
+		$filename  = Lang::txt('COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME', $newsletterMailinglist->name, Date::of('now')->format('m-d-Y'));
 		$filename .= '.csv';
 
 		// file contents

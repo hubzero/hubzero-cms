@@ -802,7 +802,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// redirect
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
-			Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, JFactory::getDate($pageVersion->get('created'))->format('M d, Y @ g:ia')),
+			Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, Date::of($pageVersion->get('created'))->format('M d, Y @ g:ia')),
 			'passed'
 		);
 	}

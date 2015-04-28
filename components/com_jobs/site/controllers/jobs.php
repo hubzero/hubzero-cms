@@ -51,6 +51,7 @@ use Pathway;
 use Event;
 use Route;
 use Lang;
+use Date;
 
 /**
  * Jobs controller class for postings
@@ -730,11 +731,11 @@ class Jobs extends SiteController
 		$units 		= Request::getInt('units_' . $serviceid, 0);
 		$contact 	= Request::getVar('contact', '');
 		$total 		= $service->unitprice * $units;
-		$now 		= \Date::toSql();
+		$now 		= Date::toSql();
 		$new 		= 0;
 		$credit 	= 0;
 		$months 	= $units * $service->unitsize;
-		$newexprire = \JFactory::getDate(strtotime('+' . $months . ' month'))->toSql();
+		$newexprire = Date::of(strtotime('+' . $months . ' month'))->toSql();
 
 		// we got an order
 		if ($units)
@@ -788,7 +789,7 @@ class Jobs extends SiteController
 					$subscription->units = $autoapprove && !$total ? $subscription->units + $units : $subscription->units;
 					$subscription->pendingunits = $autoapprove && !$total ? 0 : $units;
 					$subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
-					$newexprire = \JFactory::getDate(strtotime('+' . $subscription->units * $service->unitsize . ' month'))->toSql();
+					$newexprire = Date::of(strtotime('+' . $subscription->units * $service->unitsize . ' month'))->toSql();
 					$subscription->expires = $newexprire;
 					$subscription->updated = $now;
 				}
@@ -1223,7 +1224,7 @@ class Jobs extends SiteController
 
 		$job = new Job($this->database);
 		$ja  = new JobApplication($this->database);
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		if (!$job->loadJob($code))
 		{
@@ -1461,11 +1462,11 @@ class Jobs extends SiteController
 			}
 
 			$job->editedBy = User::get('id');
-			$job->edited   = \Date::toSql();
+			$job->edited   = Date::toSql();
 		}
 		else
 		{
-			$job->added   = \Date::toSql();
+			$job->added   = Date::toSql();
 			$job->addedBy = User::get('id');
 		}
 
@@ -1537,7 +1538,7 @@ class Jobs extends SiteController
 			{
 				// confirm
 				$job->status       = !$autoapprove && !$this->_masteradmin ? 0 : 1;
-				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : \Date::toSql(); // set open date as of now, if confirming new ad publication
+				$job->opendate     = !$autoapprove && !$this->_masteradmin ? '' : Date::toSql(); // set open date as of now, if confirming new ad publication
 				$this->_msg_passed = !$autoapprove && !$this->_masteradmin ? Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_PENDING_APPROVAL') : Lang::txt('COM_JOBS_MSG_SUCCESS_JOB_POSTED');
 			}
 		}
@@ -1770,8 +1771,8 @@ class Jobs extends SiteController
 				$subscription->uid       = 1;
 				$subscription->units     = 72;
 				$subscription->serviceid = 1;
-				$subscription->expires   = \JFactory::getDate(strtotime("+ 72 months"))->toSql();
-				$subscription->added     = \Date::toSql();
+				$subscription->expires   = Date::of(strtotime("+ 72 months"))->toSql();
+				$subscription->added     = Date::toSql();
 
 				if (!$subscription->store())
 				{
@@ -2191,7 +2192,7 @@ class Jobs extends SiteController
 	protected function setupServices()
 	{
 		$objS = new Service($this->database);
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		$default1 = array(
 			'id'          => 0,

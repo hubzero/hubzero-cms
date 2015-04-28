@@ -33,6 +33,13 @@ namespace Components\Courses\Site\Controllers;
 use Hubzero\Component\SiteController;
 use PdfFormDeployment;
 use PdfForm;
+use Request;
+use Pathway;
+use Route;
+use User;
+use Lang;
+use Date;
+use App;
 
 // Include required forms models
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'form.php');
@@ -60,7 +67,7 @@ class Form extends SiteController
 			$this->member = $this->course->offering()->member(User::get('id'))->get('id');
 			if (!$this->member || !is_numeric($this->member))
 			{
-				throw new Exception(Lang::txt('No user found'), 422);
+				App::abort(422, Lang::txt('No user found'));
 			}
 		}
 
@@ -188,7 +195,7 @@ class Form extends SiteController
 			}
 			else // Otherwise, redirect
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
 					Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
 					'passed'
@@ -309,7 +316,7 @@ class Form extends SiteController
 			else
 			{
 				$tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
-				$this->setRedirect(
+				App::redirect(
 					Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save() . '&formId=' . $pdf->getId() . $tmpl, false),
 					Lang::txt('COM_COURSES_DEPLOYMENT_CREATED'),
 					'passed'
@@ -349,7 +356,7 @@ class Form extends SiteController
 		else
 		{
 			$tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save($deploymentId) . '&formId=' . $pdf->getId() . $tmpl, false),
 				Lang::txt('COM_COURSES_DEPLOYMENT_UPDATED'),
 				'passed'
@@ -495,7 +502,7 @@ class Form extends SiteController
 		$tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=' . Request::getWord('tmpl') : '';
 		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false)
 		);
 		return;
@@ -555,7 +562,7 @@ class Form extends SiteController
 		{
 			$resp = $dep->getRespondent($this->member, $attempt);
 
-			$now   = strtotime(\JFactory::getDate());
+			$now   = strtotime(Date::of('now'));
 			$start = strtotime($resp->getStartTime());
 			$end   = strtotime($dep->getEndTime());
 			$dur   = $limit * 60;
@@ -576,7 +583,7 @@ class Form extends SiteController
 				$resp->saveAnswers($_POST)->markEnd();
 			}
 
-			$this->setRedirect(Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att, false));
+			App::redirect(Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att, false));
 			return;
 		}
 		else
@@ -599,7 +606,7 @@ class Form extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=form'));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				$message,
 				'warning'

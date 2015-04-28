@@ -30,6 +30,8 @@
 
 namespace Components\Whatsnew\Helpers;
 
+use Date;
+
 /**
  * Whats New helper class for time periods
  */
@@ -118,23 +120,23 @@ class Period
 		switch ($this->period)
 		{
 			case 'week':
-				$this->endTime   = \JFactory::getDate('now')->toSql();
-				$this->startTime = \JFactory::getDate('-1 week')->toSql();
+				$this->endTime   = Date::of('now')->toSql();
+				$this->startTime = Date::of('-1 week')->toSql();
 			break;
 
 			case 'month':
-				$this->endTime   = \JFactory::getDate('now')->toSql();
-				$this->startTime = \JFactory::getDate('-1 month')->toSql();
+				$this->endTime   = Date::of('now')->toSql();
+				$this->startTime = Date::of('-1 month')->toSql();
 			break;
 
 			case 'quarter':
-				$this->endTime   = \JFactory::getDate('now')->toSql();
-				$this->startTime = \JFactory::getDate('-3 months')->toSql();
+				$this->endTime   = Date::of('now')->toSql();
+				$this->startTime = Date::of('-3 months')->toSql();
 			break;
 
 			case 'year':
-				$this->endTime   = \JFactory::getDate('now')->toSql();
-				$this->startTime = \JFactory::getDate('-1 year')->toSql();
+				$this->endTime   = Date::of('now')->toSql();
+				$this->startTime = Date::of('-1 year')->toSql();
 			break;
 
 			default:

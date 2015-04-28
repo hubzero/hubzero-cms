@@ -121,7 +121,7 @@ class ContentModelCategory extends JModelList
 		$mergedParams->merge($params);
 
 		$this->setState('params', $mergedParams);
-		$user		= JFactory::getUser();
+		$user		= User::getRoot();
 				// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -132,7 +132,7 @@ class ContentModelCategory extends JModelList
 			$this->setState('filter.published', 1);
 			// Filter by start and end dates.
 			$nullDate = $db->Quote($db->getNullDate());
-			$nowDate = $db->Quote(JFactory::getDate()->toSQL());
+			$nowDate = $db->Quote(Date::toSQL());
 
 			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 			$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
@@ -313,7 +313,7 @@ class ContentModelCategory extends JModelList
 
 			// Compute selected asset permissions.
 			if (is_object($this->_item)) {
-				$user	= JFactory::getUser();
+				$user	= User::getRoot();
 				$userId	= $user->get('id');
 				$asset	= 'com_content.category.'.$this->_item->id;
 
@@ -408,7 +408,7 @@ class ContentModelCategory extends JModelList
 			$params = $this->getState()->get('params');
 			if ($params->get('orderby_pri') == 'alpha' || $params->get('orderby_pri') == 'ralpha') {
 				jimport('joomla.utilities.arrayhelper');
-				JArrayHelper::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
+				\Hubzero\Utility\Arr::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
 			}
 		}
 

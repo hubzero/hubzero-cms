@@ -33,6 +33,7 @@ namespace Components\Oaipmh\Models\Schemas;
 use Components\Oaipmh\Models\Xml\Response;
 use Components\Oaipmh\Models\Service;
 use Components\Oaipmh\Models\Schema;
+use Date;
 
 require_once(__DIR__ . '/dublincore.php');
 
@@ -230,7 +231,7 @@ class QualifiedDC extends DublinCore
 				{
 					if ($dc == 'date')
 					{
-						$this->response->element('dc:' . $dc, \JFactory::getDate($result->date)->format($gran))->end();
+						$this->response->element('dc:' . $dc, Date::of($result->date)->format($gran))->end();
 					}
 					else
 					{

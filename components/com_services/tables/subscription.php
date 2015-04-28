@@ -30,6 +30,9 @@
 
 namespace Components\Services\Tables;
 
+use Lang;
+use Date;
+
 /**
  * Table class for service subscription
  */
@@ -292,11 +295,11 @@ class Subscription extends \JTable
 		$limits    = array();
 		$starttime = $subscription->added;
 		$lastunit  = 0;
-		$today     = \JFactory::getDate(time() - (24 * 60 * 60))->toSql();
+		$today     = Date::of(time() - (24 * 60 * 60))->toSql();
 
 		for ($i = 0; $i < $maxunits; $i++)
 		{
-			$starttime = \JFactory::getDate(strtotime("+".$unitsize."month", strtotime($starttime)))->format('Y-m-d');
+			$starttime = Date::of(strtotime("+".$unitsize."month", strtotime($starttime)))->format('Y-m-d');
 			$limits[$i] = $starttime;
 		}
 
