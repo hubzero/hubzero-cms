@@ -44,10 +44,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					&#160;
 				</th>
 				<th>
-					<?php echo $this->grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.element', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.element', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo $this->grid('sort', 'JCLIENT', 'a.client_id', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JCLIENT', 'a.client_id', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%" class="center">
 					<?php echo Lang::txt('JVERSION'); ?>
