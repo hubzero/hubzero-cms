@@ -117,12 +117,12 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_CN', 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_CN', 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MEMBERS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES'); ?></th>
 			</tr>

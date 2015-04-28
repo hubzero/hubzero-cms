@@ -88,25 +88,25 @@ Toolbar::help('polls');
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>
 				<th scope="col" class="title">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo $this->grid('sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 			</tr>
 		</thead>

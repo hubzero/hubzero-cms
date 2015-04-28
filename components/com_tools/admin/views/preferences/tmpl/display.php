@@ -65,11 +65,11 @@ Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DE
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_TOOLS_USER_PREFS_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_TOOLS_USER_PREFS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_TOOLS_USER_PREFS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_TOOLS_USER_PREFS_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_TOOLS_USER_PREFS_JOBS', 'jobs', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_JOBS', 'jobs', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

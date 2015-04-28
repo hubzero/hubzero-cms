@@ -56,10 +56,10 @@ $type		= $this->state->get('filter.type');
 		<thead>
 			<tr>
 				<th class="title" width="20%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
+					<?php echo $this->grid('sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
 				</th>
 				<th>
-					<?php echo JHtml::_('grid.sort', 'COM_MODULES_HEADING_TEMPLATES', 'templates', $direction, $ordering); ?>
+					<?php echo $this->grid('sort', 'COM_MODULES_HEADING_TEMPLATES', 'templates', $direction, $ordering); ?>
 				</th>
 			</tr>
 		</thead>

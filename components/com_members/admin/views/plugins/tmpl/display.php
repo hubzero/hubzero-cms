@@ -62,26 +62,26 @@ if ($canDo->get('core.edit'))
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col" class="title">
-					<?php echo JHTML::_('grid.sort', 'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'Published', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'Published', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 					<?php echo JHTML::_('grid.order',  $this->rows); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'Access', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'Access', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
 					<?php echo Lang::txt('Manage'); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'File', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'File', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 			</tr>
 		</thead>

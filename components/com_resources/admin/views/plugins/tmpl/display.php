@@ -48,26 +48,26 @@ Toolbar::unpublishList();
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col" class="title">
-					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_PLUGIN_NAME', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PLUGIN_NAME', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_PUBLISHED', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PUBLISHED', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ORDER', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ORDER', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 					<?php echo JHTML::_('grid.order', $this->rows); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ACCESS', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ACCESS', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
 					<?php echo Lang::txt('COM_RESOURCES_COL_MANAGE'); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_FILE', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_FILE', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 			</tr>
 		</thead>

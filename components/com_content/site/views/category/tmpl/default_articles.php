@@ -61,30 +61,30 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th class="list-title" id="tableOrdering">
-					<?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
+					<?php  echo $this->grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
 				</th>
 
 				<?php if ($date = $this->params->get('list_show_date')) : ?>
 				<th class="list-date" id="tableOrdering2">
 					<?php if ($date == "created") : ?>
-						<?php echo JHtml::_('grid.sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
+						<?php echo $this->grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
-						<?php echo JHtml::_('grid.sort', 'COM_CONTENT_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
+						<?php echo $this->grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "published") : ?>
-						<?php echo JHtml::_('grid.sort', 'COM_CONTENT_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+						<?php echo $this->grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
 					<?php endif; ?>
 				</th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_author', 1)) : ?>
 				<th class="list-author" id="tableOrdering3">
-					<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
+					<?php echo $this->grid('sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
 				</th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_hits', 1)) : ?>
 				<th class="list-hits" id="tableOrdering4">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+					<?php echo $this->grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th>
 				<?php endif; ?>
 			</tr>

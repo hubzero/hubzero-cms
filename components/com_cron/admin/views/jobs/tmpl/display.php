@@ -77,14 +77,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<!-- <th scope="col"><?php echo Lang::txt('COM_CRON_COL_RECURRENCE'); ?></th> -->
 			</tr>
 		</thead>
@@ -92,13 +92,11 @@ function submitbutton(pressbutton)
 			<tr>
 				<td colspan="9"><?php
 				// initiate paging
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				echo $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
-				echo $pageNav->getListFooter();
 				?></td>
 			</tr>
 		</tfoot>
@@ -176,7 +174,7 @@ if ($this->results)
 				<td class="priority-4">
 					<span class="datetime">
 						<?php if ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') { ?>
-							<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo JFactory::getDate($row->get('publish_up'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo Date::of($row->get('publish_up'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						<?php } else { ?>
 							<?php echo Lang::txt('COM_CRON_NO_DATE_SET'); ?>
 						<?php } ?>
@@ -185,7 +183,7 @@ if ($this->results)
 				<td class="priority-3">
 					<span class="datetime">
 						<?php if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') { ?>
-							<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo JFactory::getDate($row->get('publish_down'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo Date::of($row->get('publish_down'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						<?php } else { ?>
 							<?php echo Lang::txt('COM_CRON_NONE'); ?>
 						<?php } ?>

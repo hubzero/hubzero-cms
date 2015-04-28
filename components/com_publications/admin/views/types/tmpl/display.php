@@ -45,17 +45,17 @@ $useBlocks  = $this->config->get('curation', 0);
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
 				<?php if (!$useBlocks) { ?>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
 				<?php } ?>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<?php if (!$useBlocks) { ?>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_SUPPORTING'), 'supporting', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_SUPPORTING'), 'supporting', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<?php } ?>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

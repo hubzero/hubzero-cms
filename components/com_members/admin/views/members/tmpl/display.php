@@ -109,14 +109,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_NAME', 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_CONTRIBUTIONS', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_NAME', 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3" colspan="2"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_CONTRIBUTIONS', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

@@ -59,13 +59,13 @@ Toolbar::help('categories');
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" />
 				</th>
 				<th scope="col" class="priority-2">
-					<?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo $this->grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_ORDER', 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo $this->grid('sort', 'COM_JOBS_COL_ORDER', 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo $this->grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>

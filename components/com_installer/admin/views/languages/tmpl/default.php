@@ -29,7 +29,7 @@ $ver = new JVersion;
 							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 						</th>
 						<th class="nowrap">
-							<?php echo JHtml::_('grid.sort', 'COM_INSTALLER_HEADING_NAME', 'name', $listDirn, $listOrder); ?>
+							<?php echo $this->grid('sort', 'COM_INSTALLER_HEADING_NAME', 'name', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="center">
 							<?php echo Lang::txt('JVERSION'); ?>
@@ -41,7 +41,7 @@ $ver = new JVersion;
 							<?php echo Lang::txt('COM_INSTALLER_HEADING_DETAILS_URL'); ?>
 						</th>
 						<th width="30">
-							<?php echo JHtml::_('grid.sort', 'COM_INSTALLER_HEADING_ID', 'update_id', $listDirn, $listOrder); ?>
+							<?php echo $this->grid('sort', 'COM_INSTALLER_HEADING_ID', 'update_id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 				</thead>

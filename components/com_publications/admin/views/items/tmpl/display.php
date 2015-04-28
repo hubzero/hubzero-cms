@@ -92,11 +92,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th></th>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo Lang::txt('@v.'); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo $this->grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
 				<th colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
 				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
