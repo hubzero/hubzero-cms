@@ -300,53 +300,11 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 				$msg = null;
 				$typ = null;
 
-				// Check if we're deleting collection and all FAQs or just the collection page
-				$action = JRequest::getVar('action', 'removefaqs');
-
-				// Create an article object
-				/*$article = new KbTableArticle($this->database);
-
-				// Get all the articles in this collection
-				$faqs = $category->getCollection($id);
-
-				if ($faqs)
-				{
-					// Loop through the articles
-					foreach ($faqs as $faq)
-					{
-						if ($action == 'deletefaqs')
-						{
-							$article->delete($faq->id);
-						}
-						else
-						{
-							// Load the article
-							$a = new KbTableArticle($this->database);
-							$a->load($faq->id);
-							// Make some changes
-							if ($faq->category == $id)
-							{
-								$a->category = 0;
-							}
-							else
-							{
-								$a->section = 0;
-							}
-							// Check and store the changes
-							if (!$a->check())
-							{
-								return $a->getError();
-							}
-							if (!$a->store())
-							{
-								return $a->getError();
-							}
-						}
-					}
-				}*/
-
 				// Delete the category
 				$category = new KbModelCategory($id);
+
+				// Check if we're deleting collection and all FAQs or just the collection page
+				$category->set('delete_action', JRequest::getVar('action', 'removefaqs'));
 				if (!$category->delete())
 				{
 					$msg = $category->getError();

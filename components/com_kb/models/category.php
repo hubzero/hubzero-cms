@@ -332,6 +332,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 		// Remove children
 		foreach ($this->children('list') as $category)
 		{
+			$category->set('delete_action', $this->get('delete_action', 'deletefaqs'));
 			if (!$category->delete())
 			{
 				$this->setError($category->getError());
@@ -342,10 +343,24 @@ class KbModelCategory extends \Hubzero\Base\Model
 		// Remove articles
 		foreach ($this->articles('list') as $article)
 		{
-			if (!$article->delete())
+			if ($this->get('delete_action', 'deletefaqs') == 'deletefaqs')
 			{
-				$this->setError($article->getError());
-				return false;
+				if (!$article->delete())
+				{
+					$this->setError($article->getError());
+					return false;
+				}
+			}
+			else
+			{
+				$key = ($article->get('category') == $this->get('id') ? 'category' : 'section');
+
+				$article->set($key, 0);
+				if (!$article->store(false))
+				{
+					$this->setError($article->getError());
+					return false;
+				}
 			}
 		}
 
