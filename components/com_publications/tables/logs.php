@@ -53,6 +53,35 @@ class Log extends \JTable
 	 */
 	public function checkBotIp( $ip )
 	{
+		// Check by hostname
+		$hostname = gethostbyaddr($ip);
+		$bots = array(
+			'feedfetcher',
+			'msnbot',
+			'gsa-crawler',
+			'googlebot',
+			'yandex',
+			'spider',
+			'bot',
+			'search',
+			'crawl',
+			'archive',
+			'harvest',
+			'slurp',
+			'feed',
+			'nutch',
+			'robot',
+			'fetch',
+			'findlinks'
+		);
+		foreach ($bots as $bot)
+		{
+			if (stripos($hostname, $bot) !== FALSE)
+			{
+				return true;
+			}
+		}
+
 		// Metrics db name
 		$query = "SELECT DATABASE()";
 		$this->_db->setQuery( $query );
@@ -69,7 +98,11 @@ class Log extends \JTable
 		// So it it bot or real user?
 		if ($exists)
 		{
-			$query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter=" . $this->_db->Quote($ip);
+			$bits   = explode('.', $ip);
+			$n      = array_pop($bits);
+			$subnet = trim(implode('.', $bits)) . '.';
+
+			$query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE " . $this->_db->Quote($subnet . '%');
 			$this->_db->setQuery( $query );
 			return $this->_db->loadResult();
 		}
