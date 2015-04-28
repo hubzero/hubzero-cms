@@ -142,8 +142,9 @@ $base = $this->course->offering()->link();
 									</select>
 								</div>
 								<div class="label-input-pair">
-									<label for="description">Description:</label>
-									<textarea name="description" rows="4"><?php echo $agt->get('description') ?></textarea>
+									<label for="description">Short Description:</label>
+									<input type="text" name="description" value="<?php echo $agt->get('description') ?>">
+									<span><?php echo Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT'); ?></span>
 								</div>
 								<input class="asset-group-title-save" type="submit" value="Save" />
 								<input class="asset-group-title-cancel" type="reset" value="Cancel" />

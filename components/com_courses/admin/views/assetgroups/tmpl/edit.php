@@ -98,9 +98,9 @@ jQuery(document).ready(function($){
 				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_SHORT_DESCRIPTION_HINT'); ?>">
 				<label for="field-description"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
-				<textarea name="fields[description]" id="field-description" cols="40" rows="5"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+				<input type="text" name="fields[description]" id="field-description" value="<?php echo $this->escape(stripslashes($this->row->get('description'))); ?>">
 			</div>
 		</fieldset>
 
