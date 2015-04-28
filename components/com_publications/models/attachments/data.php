@@ -522,15 +522,6 @@ class Data extends Base
 		// Remove link
 		if (!$this->getError())
 		{
-			// Get database object and load record
-			$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
-			$objData->loadRecord($row->object_name);
-			if (!$objData->id)
-			{
-				$this->_parent->setError(Lang::txt('There was a problem deleting the database'));
-				return false;
-			}
-
 			$result = Event::trigger( 'projects.remove_database', array( $row->object_name, $pub->_project, $row->object_revision) );
 
 			$row->delete();

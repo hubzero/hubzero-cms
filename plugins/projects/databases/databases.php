@@ -1394,7 +1394,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		$db 	=  JFactory::getDBO();
-		$ds_db 	= $this->get_ds_db($project->id);
+		$ds_db 	= $this->get_ds_db($project->get('id'));
 
 		// Load database record
 		$objPD = new \Components\Projects\Tables\Database($db);
@@ -1476,7 +1476,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		$db 	=  JFactory::getDBO();
-		$ds_db 	= $this->get_ds_db($project->id);
+		$ds_db 	= $this->get_ds_db($project->get('id'));
 
 		// Load database record
 		$objPD = new \Components\Projects\Tables\Database($db);
