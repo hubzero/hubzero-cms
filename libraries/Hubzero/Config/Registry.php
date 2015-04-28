@@ -33,13 +33,12 @@ namespace Hubzero\Config;
 use Hubzero\Error\Exception\InvalidArgumentException;
 use Hubzero\Filesystem\Filesystem;
 use Hubzero\Utility\Arr;
-use ArrayAccess;
 use stdClass;
 
 /**
  * Registry class
  */
-class Registry implements ArrayAccess
+class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \Countable
 {
 	/**
 	 * Data container
@@ -47,6 +46,13 @@ class Registry implements ArrayAccess
 	 * @var  object
 	 */
 	protected $data;
+
+	/**
+	 * Path separator
+	 *
+	 * @var  string
+	 */
+	public $separator = '.';
 
 	/**
 	 * Constructor
@@ -88,6 +94,19 @@ class Registry implements ArrayAccess
 	}
 
 	/**
+	 * Gets this object represented as an ArrayIterator.
+	 *
+	 * This allows the data properties to be accessed via a foreach statement.
+	 *
+	 * @return  object  This object represented as an ArrayIterator.
+	 * @see     IteratorAggregate::getIterator()
+	 */
+	public function getIterator()
+	{
+		return new \ArrayIterator($this->data);
+	}
+
+	/**
 	 * Sets a default value if not already assigned.
 	 *
 	 * @param   string  $key      The name of the parameter.
@@ -125,16 +144,19 @@ class Registry implements ArrayAccess
 	 */
 	public function get($path, $default = null)
 	{
-		// Initialise variables.
-		$result = $default;
+		// Return default value if path is empty
+		if (empty($path))
+		{
+			return $default;
+		}
 
-		if (!strpos($path, '.'))
+		if (!strpos($path, $this->separator))
 		{
 			return (isset($this->data->$path) && $this->data->$path !== null && $this->data->$path !== '') ? $this->data->$path : $default;
 		}
 
 		// Explode the registry path into an array
-		$nodes = explode('.', $path);
+		$nodes = explode($this->separator, $path);
 
 		// Initialize the current node to be the registry root.
 		$node  = $this->data;
@@ -143,39 +165,51 @@ class Registry implements ArrayAccess
 		// Traverse the registry to find the correct node for the result.
 		foreach ($nodes as $n)
 		{
-			if (isset($node->$n))
+			if (is_array($node) && isset($node[$n]))
 			{
-				$node  = $node->$n;
+				$node  = $node[$n];
 				$found = true;
+				continue;
 			}
-			else
+
+			if (!isset($node->$n))
 			{
-				$found = false;
-				break;
+				return $default;
 			}
+
+			$node  = $node->$n;
+			$found = true;
 		}
 
-		if ($found && $node !== null && $node !== '')
+		if (!$found || $node === null || $node === '')
 		{
-			$result = $node;
+			return $default;
 		}
 
-		return $result;
+		return $node;
 	}
 
 	/**
 	 * Set a registry value.
 	 *
-	 * @param   string  $path   Registry Path (e.g. config.cache.file)
-	 * @param   mixed   $value  Value of entry
-	 * @return  mixed   The value of the that has been set.
+	 * @param   string  $path       Registry Path (e.g. config.cache.file)
+	 * @param   mixed   $value      Value of entry
+	 * @param   string  $separator  The key separator
+	 * @return  object  This method is chainable
 	 */
-	public function set($path, $value)
+	public function set($path, $value, $separator = null)
 	{
-		$result = null;
+		if (empty($separator))
+		{
+			$separator = $this->separator;
+		}
 
-		// Explode the registry path into an array
-		if ($nodes = explode('.', $path))
+		// Explode the registry path into an array and remove empty
+		// nodes that occur as a result of a double separator. ex: joomla..test
+		// Finally, re-key the array so they are sequential.
+		$nodes = array_values(array_filter(explode($separator, $path), 'strlen'));
+
+		if ($nodes)
 		{
 			// Initialize the current node to be the registry root.
 			$node = $this->data;
@@ -183,18 +217,30 @@ class Registry implements ArrayAccess
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++)
 			{
-				if (!isset($node->$nodes[$i]) && ($i != $n))
+				if (is_object($node))
 				{
-					$node->$nodes[$i] = new stdClass;
+					if (!isset($node->{$nodes[$i]}) && ($i != $n))
+					{
+						$node->{$nodes[$i]} = new stdClass;
+					}
+					// Pass the child as pointer in case it is an object
+					$node = &$node->{$nodes[$i]};
+					continue;
 				}
-				$node = $node->$nodes[$i];
-			}
 
-			// Get the old value if exists so we can return it
-			$result = $node->$nodes[$i] = $value;
+				if (is_array($node))
+				{
+					if (!isset($node[$nodes[$i]]) && ($i != $n))
+					{
+						$node[$nodes[$i]] = new stdClass;
+					}
+					// Pass the child as pointer in case it is an array
+					$node = &$node[$nodes[$i]];
+				}
+			}
 		}
 
-		return $result;
+		return $this;
 	}
 
 	/**
@@ -273,10 +319,11 @@ class Registry implements ArrayAccess
 	/**
 	 * Merge a Registry object into this one
 	 *
-	 * @param   mixed    $source  Source data to merge.
+	 * @param   mixed    $source     Source data to merge.
+	 * @param   boolean  $recursive  True to support recursive merge the children values.
 	 * @return  boolean  True on success
 	 */
-	public function merge($source)
+	public function merge($source, $recursive = false)
 	{
 		if (!$source)
 		{
@@ -291,13 +338,14 @@ class Registry implements ArrayAccess
 		}
 
 		// Load the variables into the registry's default namespace.
-		foreach ($source->toArray() as $k => $v)
+		/*foreach ($source->toArray() as $k => $v)
 		{
 			if (($v !== null) && ($v !== ''))
 			{
 				$this->data->$k = $v;
 			}
-		}
+		}*/
+		$this->bind($this->data, $source->toArray(), $recursive, false);
 
 		return true;
 	}
@@ -358,34 +406,38 @@ class Registry implements ArrayAccess
 	/**
 	 * Method to recursively bind data to a parent object.
 	 *
-	 * @param   object  &$parent  The parent object on which to attach the data values.
-	 * @param   mixed   $data     An array or object of data to bind to the parent object.
+	 * @param   object   $parent     The parent object on which to attach the data values.
+	 * @param   mixed    $data       An array or object of data to bind to the parent object.
+	 * @param   boolean  $recursive  True to support recursive bindData.
+	 * @param   boolean  $allowNull  True to allow null values.
 	 * @return  void
 	 */
-	protected function bind(&$parent, $data)
+	protected function bind($parent, $data, $recursive = true, $allowNull = true)
 	{
 		// Ensure the input data is an array.
-		if (is_object($data))
-		{
-			$data = get_object_vars($data);
-		}
-		else
-		{
-			$data = (array) $data;
-		}
+		$data = is_object($data)
+			? get_object_vars($data)
+			: (array) $data;
 
 		foreach ($data as $k => $v)
 		{
-			if ((is_array($v) && Arr::isAssociative($v)) || is_object($v))
+			if (!$allowNull && !(($v !== null) && ($v !== '')))
 			{
-				$parent->$k = new stdClass;
+				continue;
+			}
+
+			if ($recursive && ((is_array($v) && Arr::isAssociative($v)) || is_object($v)))
+			{
+				if (!isset($parent->$k))
+				{
+					$parent->$k = new stdClass;
+				}
 
 				$this->bind($parent->$k, $v);
+				continue;
 			}
-			else
-			{
-				$parent->$k = $v;
-			}
+
+			$parent->$k = $v;
 		}
 	}
 
@@ -399,19 +451,92 @@ class Registry implements ArrayAccess
 	{
 		$array = array();
 
-		foreach (get_object_vars((object) $data) as $k => $v)
+		if (is_object($data))
 		{
-			if (is_object($v))
+			$data = get_object_vars($data);
+		}
+
+		foreach ($data as $k => $v)
+		{
+			if (is_object($v) || is_array($v))
 			{
 				$array[$k] = $this->asArray($v);
+				continue;
 			}
-			else
-			{
-				$array[$k] = $v;
-			}
+			$array[$k] = $v;
 		}
 
 		return $array;
+	}
+
+	/**
+	 * Method to extract a sub-registry from path
+	 *
+	 * @param   string  $path  Registry path (e.g. joomla.content.showauthor)
+	 * @return  mixed   Registry object if data is present
+	 */
+	public function extract($path)
+	{
+		$data = $this->get($path);
+
+		if (is_null($data))
+		{
+			return null;
+		}
+
+		return new self($data);
+	}
+
+	/**
+	 * Dump to one dimension array.
+	 *
+	 * @param   string  $separator  The key separator.
+	 * @return  array   Dumped array.
+	 */
+	public function flatten($separator = null)
+	{
+		$array = array();
+
+		if (empty($separator))
+		{
+			$separator = $this->separator;
+		}
+
+		$this->toFlatten($separator, $this->data, $array);
+
+		return $array;
+	}
+
+	/**
+	 * Method to recursively convert data to one dimension array.
+	 *
+	 * @param   string        $separator  The key separator.
+	 * @param   array|object  $data       Data source of this scope.
+	 * @param   array         &$array     The result array, it is pass by reference.
+	 * @param   string        $prefix     Last level key prefix.
+	 * @return  void
+	 */
+	protected function toFlatten($separator = null, $data = null, &$array = array(), $prefix = '')
+	{
+		$data = (array) $data;
+
+		if (empty($separator))
+		{
+			$separator = $this->separator;
+		}
+
+		foreach ($data as $k => $v)
+		{
+			$key = $prefix ? $prefix . $separator . $k : $k;
+
+			if (is_object($v) || is_array($v))
+			{
+				$this->toFlatten($separator, $v, $array, $key);
+				continue;
+			}
+
+			$array[$key] = $v;
+		}
 	}
 
 	/**
