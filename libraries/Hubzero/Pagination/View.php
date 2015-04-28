@@ -47,6 +47,7 @@ class View extends AbstractView
 	/**
 	 * Constructor
 	 *
+	 * @param   array  $config
 	 * @return  void
 	 */
 	public function __construct($config = array())
@@ -54,25 +55,20 @@ class View extends AbstractView
 		parent::__construct($config);
 
 		// Set a base path for use by the view
-		if (array_key_exists('base_path', $config))
+		if (!array_key_exists('base_path', $config))
 		{
-			$this->_basePath = $config['base_path'];
-		}
-		else
-		{
-			$this->_basePath = __DIR__;
+			$config['base_path'] = __DIR__;
 		}
 
-		// set the default template search path
-		if (array_key_exists('template_path', $config))
+		$this->_basePath = $config['base_path'];
+
+		// Set the default template search path
+		if (!array_key_exists('template_path', $config))
 		{
-			// user-defined dirs
-			$this->_setPath('template', $config['template_path']);
+			$config['template_path'] = $this->_basePath . DS . 'Views';
 		}
-		else
-		{
-			$this->_setPath('template', $this->_basePath . DS . 'Views');
-		}
+
+		$this->_setPath('template', $config['template_path']);
 	}
 
 	/**
@@ -94,8 +90,6 @@ class View extends AbstractView
 	*/
 	protected function _setPath($type, $path)
 	{
-		$app = \JFactory::getApplication();
-
 		// Clear out the prior search dirs
 		$this->_path[$type] = array();
 
@@ -107,9 +101,9 @@ class View extends AbstractView
 		{
 			case 'template':
 				// Set the alternative template search dir
-				if (isset($app))
+				if (class_exists('\\App'))
 				{
-					$fallback = JPATH_BASE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . $this->getName();
+					$fallback = JPATH_BASE . DS . 'templates' . DS . \App::get('template')->template . DS . 'html' . DS . $this->getName();
 					$this->_addPath('template', $fallback);
 				}
 			break;

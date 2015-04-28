@@ -165,14 +165,15 @@ class Paginator extends Object
 		$this->set('pages.start', $start_loop);
 		$this->set('pages.stop', $stop_loop);
 
-		$this->_limits = array(
-			5,
-			20,
-			50,
-			100,
-			500,
-			1000
-		);
+		$this->_limits = array();
+		for ($i = 5; $i <= 30; $i += 5)
+		{
+			$this->_limits[] = $i;
+		}
+		$this->_limits[] = 50;
+		$this->_limits[] = 100;
+		$this->_limits[] = 500;
+		$this->_limits[] = 1000;
 	}
 
 	/**
