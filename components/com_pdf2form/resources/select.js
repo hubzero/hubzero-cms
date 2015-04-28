@@ -1,3 +1,0 @@
-jQuery(function($) {
-	$('.tablesorter').tablesorter();
-});
