@@ -82,7 +82,7 @@ $this->css();
 			<label for="field-question">
 				<?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
 				<?php
-				echo JFactory::getEditor()->display('question[question]', $this->escape(stripslashes($this->row->get('question'))), '', '', 50, 10, false, 'field-question');
+				echo $this->editor('question[question]', $this->escape(stripslashes($this->row->get('question'))),  50, 10, 'field-question', array('class' => 'minimal no-footer'));
 				?>
 				<span class="hint"><a class="popup" href="<?php echo Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>

@@ -126,6 +126,9 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$arr['count'] = $this->count;
 		$arr['name']  = 'questions';
 
+		// Load component language file
+		Lang::load('com_answers') || Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
