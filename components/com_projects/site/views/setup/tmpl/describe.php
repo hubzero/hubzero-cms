@@ -115,8 +115,8 @@ $this->view('_title')
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?></legend>
 					<label for="field-about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
-						<?php 
-						echo JFactory::getEditor()->display('about', $this->model->about('raw'), '', '', 35, 25, false, 'field-about', null, null, array('class' => 'minimal no-footer'));
+						<?php
+							echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'field-about', array('class' => 'minimal no-footer'));
 						?>
 					</label>
 					<h4><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></h4>

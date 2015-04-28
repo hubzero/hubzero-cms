@@ -164,7 +164,7 @@ else
 											<td>
 												<span class="clear"></span>
 												<?php
-													echo JFactory::getEditor()->display('about', $this->model->get('about'), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
+													echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'about', array('class' => 'minimal no-footer'));
 												?>
 											</td>
 										</tr>
