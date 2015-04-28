@@ -197,9 +197,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Load wiki language file
-			$lang = JFactory::getLanguage();
-			$lang->load('plg_groups_wiki');
-			$lang->load('com_wiki');
+			Lang::load('com_wiki') || Lang::load('com_wiki', PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site');
 
 			// Set vars
 			$this->_database 	= JFactory::getDBO();
