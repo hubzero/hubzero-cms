@@ -123,6 +123,9 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		$this->count = $this->a->getCount($this->filters);
 
+		// Load component language file
+		Lang::load('com_answers') || Lang::load('com_answers', PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'site');
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
