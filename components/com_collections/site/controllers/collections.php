@@ -50,12 +50,6 @@ class Collections extends SiteController
 	 */
 	public function execute()
 	{
-		// This needs to be called to ensure scripts are pushed to the document
-		if (!User::isGuest())
-		{
-			$foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
-		}
-
 		$this->_authorize('collection');
 		$this->_authorize('item');
 

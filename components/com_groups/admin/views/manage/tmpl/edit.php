@@ -80,6 +80,8 @@ function submitbutton(pressbutton)
 	} else if ($('#field-cn').val() == '') {
 		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
+		<?php echo $this->editor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -124,12 +126,12 @@ function submitbutton(pressbutton)
  			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_EDIT_PUBLIC_TEXT_HINT'); ?>">
 				<label for="field-public_desc"><?php echo Lang::txt('COM_GROUPS_EDIT_PUBLIC_TEXT'); ?>:</label><br />
 				<span class="hint"><?php echo Lang::txt('COM_GROUPS_EDIT_PUBLIC_TEXT_HINT'); ?></span>
-				<?php echo JFactory::getEditor()->display('group[public_desc]', $this->escape(stripslashes($this->group->public_desc)), '', '', '40', '10', false, 'field-public_desc'); ?>
+				<?php echo $this->editor('group[public_desc]', $this->escape(stripslashes($this->group->public_desc)), 40, 10, 'field-public_desc'); ?>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_EDIT_PRIVATE_TEXT_HINT'); ?>">
 				<label for="field-private_desc"><?php echo Lang::txt('COM_GROUPS_EDIT_PRIVATE_TEXT'); ?>:</label><br />
 				<span class="hint"><?php echo Lang::txt('COM_GROUPS_EDIT_PRIVATE_TEXT_HINT'); ?></span>
-				<?php echo JFactory::getEditor()->display('group[private_desc]', $this->escape(stripslashes($this->group->private_desc)), '', '', '40', '10', false, 'field-private_desc'); ?>
+				<?php echo $this->editor('group[private_desc]', $this->escape(stripslashes($this->group->private_desc)), 40, 10, 'field-private_desc'); ?>
 			</div>
 		</fieldset>
 
@@ -187,7 +189,7 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo Lang::txt('COM_GROUPS_CREATED_BY'); ?></th>
 					<td><?php
-					$creator = JUser::getInstance($this->group->created_by);
+					$creator = User::getInstance($this->group->created_by);
 					echo $this->escape($creator->get('name')); ?></td>
 				</tr>
 			<?php } ?>
@@ -212,7 +214,7 @@ function submitbutton(pressbutton)
 			</fieldset>
 			<div class="input-wrap">
 				<label for="restrict_msg"><?php echo Lang::txt('COM_GROUPS_EDIT_CREDENTIALS'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg)), '', '', 40, 10, false, 'restrict_msg', null, null, array('class' => 'minimal')); ?>
+				<?php echo $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg)), 40, 10, 'restrict_msg', array('class' => 'minimal')); ?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">

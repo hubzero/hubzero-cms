@@ -82,6 +82,8 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-title').value == ''){
 		alert('<?php echo Lang::txt('COM_KB_ERROR_MISSING_TITLE'); ?>');
 	} else {
+		<?php echo $this->editor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -136,7 +138,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-fulltxt"><?php echo Lang::txt('COM_KB_BODY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), '', '', 60, 30, false, 'field-fulltxt'); ?>
+				<?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), 60, 30, 'field-fulltxt'); ?>
 			</div>
 
 			<div class="input-wrap">
@@ -165,7 +167,7 @@ function submitbutton(pressbutton)
 				</tr>
 		<?php
 		if ($this->row->exists() && $this->row->get('modified') != '0000-00-00 00:00:00') {
-			$modifier = JUser::getInstance($this->row->get('modified_by'));
+			$modifier = User::getInstance($this->row->get('modified_by'));
 		?>
 				<tr>
 					<th class="key"><?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>:</th>
@@ -213,9 +215,6 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-access"><?php echo Lang::txt('COM_KB_ACCESS_LEVEL'); ?>:</label>
 				<select name="fields[access]" id="field-access">
-					<?php /*<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_KB_ACCESS_PUBLIC'); ?></option>
-					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_KB_ACCESS_REGISTERED'); ?></option>
-					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_KB_ACCESS_SPECIAL'); ?></option>*/ ?>
 					<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->row->get('access')); ?>
 				</select>
 			</div>

@@ -62,25 +62,6 @@ else
 {
 	$title = 'Back';
 }
-
-if (!$this->course->exists())
-{
-	$default = "=== About ===
-
-Eneter text about your course.
-
-=== Audience ===
-
-Who is this course appropriate for?
-
-=== Prerequisites ===
-
-This course is intended to be broadly accessible to those with a background in ''fill in here'' and the following prerequisites are recommended:
-
- * A working knowledge of ''fill in here''
- * A basic understanding of ''fill in here''";
-	$this->course->set('description', $default);
-}
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -154,7 +135,7 @@ This course is intended to be broadly accessible to those with a background in '
 				<?php echo Lang::txt('Overview'); ?> <span class="optional"><?php echo Lang::txt('COM_COURSES_OPTIONAL'); ?></span>
 
 				<?php
-					echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
+					echo $this->editor('course[description]', $this->escape(stripslashes($this->course->get('description'))), 35, 30, 'field_description');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 

@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-content').value == ''){
 		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-content"><?php echo Lang::txt('COM_WISHLIST_COMMENT'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))), '', '', 50, 30, false, 'field-content', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('fields[content]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))), 50, 30, 'field-content', array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>
@@ -112,7 +112,7 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->created_by);
+						$editor = User::getInstance($this->row->created_by);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : Lang::txt('unknown');
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->created_by); ?>" />

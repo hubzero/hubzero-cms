@@ -69,7 +69,7 @@ function submitbutton(pressbutton)
 	if ($('#field-type').val() == '') {
 		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_TYPE'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
-				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 35, 10, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')),  35, 10, 'field-description', array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_TAGS_HINT'); ?>">
@@ -184,7 +184,7 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->get('created_by'));
+						$editor = User::getInstance($this->row->get('created_by'));
 						echo $this->escape(stripslashes($editor->get('name')));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />

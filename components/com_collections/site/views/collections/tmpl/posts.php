@@ -34,6 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 $base  = 'index.php?option=' . $this->option;
 $mode  = Request::getWord('mode', 'grid');
 
+// This needs to be called to ensure scripts are pushed to the document
+if (!User::isGuest())
+{
+	$foo = $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer'));
+}
+
 $this->css()
      ->js('jquery.masonry')
      ->js('jquery.infinitescroll')

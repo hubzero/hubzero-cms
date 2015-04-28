@@ -56,7 +56,7 @@ $this->css()
 
 	if (!$assigned && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1) && $this->wish->get('status')==0)
 	{
-		$assigned = '<a href="'.Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.Lang::txt('unassigned').'</a>';
+		$assigned = '<a href="' . Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.Lang::txt('unassigned').'</a>';
 	}
 
 	$this->wish->set('status', ($this->wish->get('accepted')==1 && $this->wish->get('status')==0 ? 6 : $this->wish->get('status')));
@@ -188,7 +188,7 @@ $this->css()
 						$html = '';
 						if ($this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted())
 						{
-							$html .= ($this->wish->get('due') <= Date::format('Y-m-d H:i:s'))
+							$html .= ($this->wish->get('due') <= Date::of('now')->toSql())
 									? '<span class="overdue"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_OVERDUE')
 									: '<span class="due"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->get('due'));
 							$html .= '</a></span>';
@@ -696,7 +696,7 @@ $this->css()
 						<label for="comment<?php echo $this->wish->get('id'); ?>">
 							<?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
 							<?php
-							echo JFactory::getEditor()->display('content', '', '', '', 35, 4, false, 'comment' . $this->wish->get('id'), null, null, array('class' => 'minimal no-footer'));
+							echo $this->editor('content', '', 35, 4, 'comment' . $this->wish->get('id'), array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
@@ -778,7 +778,7 @@ $this->css()
 						<?php } ?>
 						<label>
 							<?php echo Lang::txt('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
-							<?php echo JFactory::getEditor()->display('pagetext', $this->escape($this->wish->plan()->content('raw')), '', '', 35, 40, false, 'pagetext', null, null, array('class' => 'minimal no-footer')); ?>
+							<?php echo $this->editor('pagetext', $this->escape($this->wish->plan()->content('raw')), 35, 40, 'pagetext', array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<input type="hidden" name="pageid" value="<?php echo $this->wish->plan()->get('id', 0); ?>" />

@@ -83,7 +83,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-text"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<textarea name="fields[text]" id="field-text" cols="45" rows="15"><?php echo $this->escape(stripslashes($this->row->text)); ?></textarea>
-				<?php //echo JFactory::getEditor()->display('fields[text]', $this->escape(stripslashes($this->row->text)), '', '', 45, 15, false, 'field-text', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php //echo $this->editor('fields[text]', $this->escape(stripslashes($this->row->text)), 45, 15, 'field-text', array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />

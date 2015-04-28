@@ -66,6 +66,8 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-title').value == ''){
 		alert("<?php echo Lang::txt('COM_KB_ERROR_MISSING_TITLE'); ?>");
 	} else {
+		<?php echo $this->editor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -97,7 +99,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_KB_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', 50, 10, false, 'field-description'); ?>
+				<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->row->get('description'))), 50, 10, 'field-description'); ?>
 			</div>
 		</fieldset>
 	</div>

@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+$this->js('jquery.fancyselect', 'system')
+     ->css('jquery.fancyselect', 'system')
+     ->css('jquery.ui.css', 'system');
 
 $this->css()
      ->css('hubs')
@@ -156,7 +156,7 @@ $this->css()
 
 				<div class="grouping" id="notes-group">
 					<label for="notes"><?php echo Lang::txt('COM_TIME_HUBS_NOTES'); ?>:</label>
-					<?php echo \JFactory::getEditor()->display('notes', $this->escape($this->row->notes('raw')), '', '', 35, 6, false, 'notes', null, null, array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('notes', $this->escape($this->row->notes('raw')), 35, 6, 'notes', array('class' => 'minimal no-footer')); ?>
 				</div>
 
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" id="hub_id" />

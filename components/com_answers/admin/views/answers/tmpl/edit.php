@@ -64,12 +64,12 @@ function submitbutton(pressbutton)
 		return;
 	}
 
-	<?php echo JFactory::getEditor()->save('text'); ?>
-
 	// do field validation
 	if (document.getElementById('field-answer').value == ''){
 		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_ANSWER'); ?>');
 	} else {
+		<?php echo $this->editor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-answer"><?php echo Lang::txt('COM_ANSWERS_FIELD_ANSWER'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('answer[answer]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-answer', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('answer[answer]', $this->escape($this->row->content('raw')), 50, 15, 'field-answer', array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>

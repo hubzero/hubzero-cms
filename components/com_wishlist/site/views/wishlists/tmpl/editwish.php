@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->js();
+
 $tags = $this->wish->tags('string') ? $this->wish->tags('string') : Request::getVar('tag', '');
 
 if ($this->wishlist->exists())
@@ -114,7 +115,7 @@ if ($this->wishlist->exists())
 				<label for="field_about">
 					<?php echo Lang::txt('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>:
 					<?php
-						echo JFactory::getEditor()->display('about', $this->escape($this->wish->content('raw')), '', '', 35, 10, false, 'field_about', null, null, array('class' => 'minimal no-footer'));
+						echo $this->editor('about', $this->escape($this->wish->content('raw')), 35, 10, 'field_about', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 

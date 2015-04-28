@@ -59,6 +59,8 @@ function submitbutton(pressbutton)
 	if ($('#field-type').val() == '') {
 		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
+		<?php echo $this->editor()->save('field-description'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -99,7 +101,7 @@ function submitbutton(pressbutton)
 			<?php } ?>
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_RESOURCES_FIELD_DESCIPTION'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal')); ?>
+				<?php echo $this->editor('description', stripslashes($this->row->description), 45, 10, 'field-description', array('class' => 'minimal')); ?>
 			</div>
 
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

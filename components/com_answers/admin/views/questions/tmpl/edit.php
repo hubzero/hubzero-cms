@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 	} else if (document.getElementById('field-tags').value == ''){
 		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_TAG'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -94,7 +94,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-question"><?php echo Lang::txt('COM_ANSWERS_FIELD_QUESTION'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('question[question]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-question', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('question[question]', $this->escape($this->row->content('raw')), 50, 15, 'field-question', array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_ANSWERS_FIELD_TAGS_HINT'); ?>">

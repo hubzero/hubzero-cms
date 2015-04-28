@@ -373,7 +373,7 @@ if ($this->registration->Interests != REG_HIDE) {
 
 $html .= "\t\t".'<label for="profilebio">'."\n";
 $html .= "\t\t\t".Lang::txt('BIO').':'."\n";
-$html .= "\t\t\t".\JFactory::getEditor()->display('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), '', '', 35, 10, false, 'profilebio', null, null, array('class' => 'minimal no-footer'));
+$html .= "\t\t\t".$this->editor('profile[bio]', $this->escape(stripslashes($this->profile->getBio('raw'))), 35, 10, 'profilebio', array('class' => 'minimal no-footer'));
 $html .= "\t\t\t".'<span class="hint"><a class="popup" href="'.Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting').'">Wiki formatting</a> is allowed for Bios.</span>'."\n";
 $html .= "\t\t".'</label>'."\n";
 $html .= "\t".'</fieldset><div class="clear"></div>'."\n";

@@ -57,12 +57,14 @@ class Textarea extends Base
 	{
 		$rows = isset($element->rows) ? $element->rows : 6;
 		$cols = isset($element->cols) ? $element->cols : 50;
+
 		$cls = array();
 		if (isset($element->class))
 		{
 			$cls[] = $element->class;
 		}
-		$cls[] = (\JFactory::getApplication()->isAdmin() ? 'no-footer' : 'minimal no-footer');
+		$cls[] = (\App::isAdmin() ? 'no-footer' : 'minimal no-footer');
+
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 

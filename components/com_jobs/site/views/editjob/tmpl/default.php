@@ -146,7 +146,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				&nbsp;
 				<?php
-				echo \JFactory::getEditor()->display('description', $this->escape($job->description), '', '', 50, 25, false, 'description');
+				echo $this->editor('description', $this->escape($job->description), 50, 25, 'description');
 				?>
 			</label>
 		</fieldset>

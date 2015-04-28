@@ -44,6 +44,7 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
 	submitform(pressbutton);
 }
 </script>
@@ -72,7 +73,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="pagetext"><?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<?php echo JFactory::getEditor()->display('pagetext', $this->escape(stripslashes($this->page->pagetext)), '', '', 40, 20); ?>
+				<?php echo $this->editor('pagetext', $this->escape(stripslashes($this->page->pagetext)), 40, 20); ?>
 			</div>
 		</fieldset>
 	</div>

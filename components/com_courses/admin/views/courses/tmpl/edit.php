@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-title').value == '') {
 		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
 	} else {
-		<?php echo \JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -305,7 +305,7 @@ function submitbutton(pressbutton)
 										'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 										'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 										'<ul class="qq-upload-list"></ul>' +
-									   '</div>',
+									'</div>',
 							onComplete: function(id, file, response) {
 								if (response.success) {
 									$('#img-display').attr('src', '..' + response.directory + '/' + response.file);

@@ -109,7 +109,7 @@ function submitbutton(pressbutton)
 	} else if (document.getElementById('type').value == "-1"){
 		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TYPE'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -151,13 +151,13 @@ function doFileoptions()
 					document.forms['adminForm'].elements['path'].value = filepath;
 					//}
 				} else if (act == '3') {
-					var content = <?php echo JFactory::getEditor()->getContent('field-fulltxt'); ?>
+					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
 					content = content + '<p><img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" /></p>';
-					<?php echo JFactory::getEditor()->setContent('field-fulltxt', 'content'); ?>
+					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
 				} else if (act == '4') {
-					var content = <?php echo JFactory::getEditor()->getContent('field-fulltxt'); ?>
+					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
 					content = content + '<p><a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a></p>';
-					<?php echo JFactory::getEditor()->setContent('field-fulltxt', 'content'); ?>
+					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
 				}
 			}
 		}
@@ -267,14 +267,13 @@ function popratings()
 			<div class="input-wrap">
 				<label for="field-introtext"><?php echo Lang::txt('COM_RESOURCES_FIELD_INTRO_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php
-				$editor = JFactory::getEditor();
-				echo $editor->display('introtext', $this->escape(stripslashes($this->row->introtext)), '', '', '45', '5', false, 'field-introtext');
+				echo $this->editor('introtext', $this->escape(stripslashes($this->row->introtext)), 45, 5, 'field-introtext');
 				?>
 			</div>
 			<div class="input-wrap">
 				<label for="field-fulltxt"><?php echo Lang::txt('COM_RESOURCES_FIELD_MAIN_TEXT'); ?>:</label><br />
 				<?php
-				echo $editor->display('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), '', '', '45', '15', false, 'field-fulltxt');
+				echo $this->editor('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), 45, 15, 'field-fulltxt');
 				?>
 			</div>
 

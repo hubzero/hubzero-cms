@@ -110,7 +110,7 @@ else
 				}
 				?>
 				<?php
-				echo JFactory::getEditor()->display('comment', $this->escape($review->content('raw')), '', '', 35, 10, false, 'review_comments', null, null, array('class' => 'minimal no-footer'));
+				echo $this->editor('comment', $this->escape($review->content('raw')), 35, 10, 'review_comments', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 

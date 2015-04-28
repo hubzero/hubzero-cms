@@ -55,7 +55,7 @@ function submitbutton(pressbutton, section)
 	if (document.adminForm.name.value == ''){
 		alert("<?php echo Lang::txt('Category must have a name'); ?>");
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -81,7 +81,7 @@ function submitbutton(pressbutton, section)
 			</div>
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</label>
-				<?php echo JFactory::getEditor()->display('category[description]', $this->escape($this->row->description), '', '', 50, 15, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('category[description]', $this->escape($this->row->description), '', '', 50, 15, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>

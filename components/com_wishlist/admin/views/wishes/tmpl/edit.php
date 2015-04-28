@@ -74,7 +74,7 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-subject').value == ''){
 		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		submitform(pressbutton);
 	}
@@ -110,7 +110,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-about"><?php echo Lang::txt('COM_WISHLIST_DESCRIPTION'); ?>:</label><br />
-				<?php echo JFactory::getEditor()->display('fields[about]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->about))), '', '', 50, 30, false, 'field-about', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('fields[about]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->about))), 50, 30, 'field-about', array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<div class="input-wrap">
@@ -158,7 +158,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="plan-pagetext"><?php echo Lang::txt('COM_WISHLIST_PAGETEXT'); ?>:</label>
-				<?php echo JFactory::getEditor()->display('plan[pagetext]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->plan->pagetext))), '', '', 50, 30, false, 'plan-pagetext', null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('plan[pagetext]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->plan->pagetext))), 50, 30, 'plan-pagetext', array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<input type="hidden" name="plan[id]" id="plan-id" value="<?php echo $this->plan->id; ?>" />
@@ -191,7 +191,7 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->proposed_by);
+						$editor = User::getInstance($this->row->proposed_by);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : Lang::txt('COM_WISHLIST_UNKNOWN');
 						?>
 						<input type="hidden" name="fields[proposed_by]" id="field-proposed_by" value="<?php echo $this->row->proposed_by; ?>" />

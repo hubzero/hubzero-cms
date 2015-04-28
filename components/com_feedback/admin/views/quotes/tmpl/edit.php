@@ -45,8 +45,6 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('quote');
 
-$editor = JFactory::getEditor();
-
 $short_quote = stripslashes($this->row->short_quote);
 $miniquote = stripslashes($this->row->miniquote);
 if (!$short_quote)
@@ -79,6 +77,8 @@ function submitbutton(pressbutton)
 	} else if (form.org.value == '') {
 		alert('<?php echo Lang::txt('COM_FEEDBACK_AUTHOR_MUST_HAVE_AFFILIATION'); ?>');
 	} else {
+		<?php echo $this->editor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }

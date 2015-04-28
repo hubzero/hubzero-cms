@@ -61,7 +61,7 @@ Joomla.submitbutton = function(pressbutton) {
 	} else if ($('#field-content').val() == ''){
 		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
+		<?php echo $this->editor()->save('text'); ?>
 
 		Joomla.submitform(pressbutton, document.getElementById('item-form'));
 	}
@@ -112,7 +112,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 			<div class="input-wrap">
 				<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape($this->row->content('raw')), '', '', 50, 30, false, 'field-content'); ?>
+				<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content', array('buttons' => false)); ?>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?>">

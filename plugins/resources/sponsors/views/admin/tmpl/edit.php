@@ -49,6 +49,8 @@ function submitbutton(pressbutton)
 	if ($('#title').val() == '') {
 		alert( '<?php echo Lang::txt('PLG_RESOURCES_SPONSORS_MISSING_TITLE'); ?>' );
 	} else {
+		<?php echo $this->editor()->save('field-description'); ?>
+
 		submitform( pressbutton );
 	}
 }
@@ -71,8 +73,8 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo Lang::txt('PLG_RESOURCES_SPONSORS_FIELD_DESCRIPTION'); ?>:</label></td>
-				<?php echo JFactory::getEditor()->display('fields[description]', stripslashes($this->row->description), '', '', '45', '10', false); ?>
+				<label for="field-description"><?php echo Lang::txt('PLG_RESOURCES_SPONSORS_FIELD_DESCRIPTION'); ?>:</label></td>
+				<?php echo $this->editor('fields[description]', stripslashes($this->row->description), 45, 10, 'field-description'); ?>
 			</div>
 		</fieldset>
 	</div>
