@@ -107,6 +107,27 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	}
 
 	/**
+	 * Count elements of the data object
+	 *
+	 * @return  integer  The custom count as an integer.
+	 */
+	public function count()
+	{
+		return count(get_object_vars($this->data));
+	}
+
+	/**
+	 * Implementation for the JsonSerializable interface.
+	 * Allows us to pass Registry objects to json_encode.
+	 *
+	 * @return  object
+	 */
+	public function jsonSerialize()
+	{
+		return $this->data;
+	}
+
+	/**
 	 * Sets a default value if not already assigned.
 	 *
 	 * @param   string  $key      The name of the parameter.
