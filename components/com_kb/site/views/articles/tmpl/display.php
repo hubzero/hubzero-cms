@@ -70,7 +70,7 @@ $this->css()
 									</a>
 								</h4>
 							<?php
-							$popular = $this->archive->articles('popular', array('limit' => 5, 'access' => (JFactory::getUser()->get('guest') ? 0 : -1)));
+							$popular = $this->archive->articles('popular', array('limit' => 5, 'access' => (User::isGuest() ? 0 : -1)));
 							if ($popular->total() > 0) { ?>
 								<ul class="articles">
 								<?php foreach ($popular as $row) { ?>
@@ -92,7 +92,7 @@ $this->css()
 									</a>
 								</h4>
 							<?php
-							$recent = $this->archive->articles('recent', array('limit' => 5, 'access' => (JFactory::getUser()->get('guest') ? 0 : -1)));
+							$recent = $this->archive->articles('recent', array('limit' => 5, 'access' => (User::isGuest() ? 0 : -1)));
 							if ($recent->total() > 0) { ?>
 								<ul class="articles">
 								<?php foreach ($recent as $row) { ?>
@@ -119,7 +119,7 @@ $this->css()
 								'order'    => Request::getWord('order', 'recent'),
 								'category' => 0,
 								'state'    => 1,
-								'access'   => (JFactory::getUser()->get('guest') ? 0 : -1)
+								'access'   => (User::isGuest() ? 0 : -1)
 							);
 							foreach ($this->archive->categories('list', array('sort' => 'title', 'sort_Dir' => 'ASC')) as $row)
 							{

@@ -214,7 +214,7 @@ if (!$tmpl)
 
 						$sr = new \Components\Support\Tables\QueryFolder($database);
 						$folders = $sr->find('list', array(
-							'user_id'  => JFactory::getUser()->get('id'),
+							'user_id'  => User::get('id'),
 							'sort'     => 'ordering',
 							'sort_Dir' => 'ASC'
 						));

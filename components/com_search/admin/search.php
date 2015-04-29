@@ -30,15 +30,15 @@
 namespace Components\Search\Admin;
 
 // Authorization check
-if (!\JFactory::getUser()->authorise('core.manage', 'com_search'))
+if (!\User::authorise('core.manage', 'com_search'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'basic'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	App::abort(404);
+	\App::abort(404);
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

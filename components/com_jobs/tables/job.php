@@ -30,6 +30,10 @@
 
 namespace Components\Jobs\Tables;
 
+use Lang;
+use User;
+use Date;
+
 /**
  * Table class for job openings
  */
@@ -81,7 +85,7 @@ class Job extends \JTable
 	{
 		if ($uid === NULL)
 		{
-			$uid = \JFactory::getUser()->get('id');
+			$uid = User::get('id');
 		}
 
 		$sql  = "SELECT j.id, j.title, j.status, j.added, j.code, ";
@@ -111,7 +115,7 @@ class Job extends \JTable
 	{
 		if ($uid === NULL)
 		{
-			$uid = \JFactory::getUser()->get('id');
+			$uid = User::get('id');
 		}
 
 		$sql  = "SELECT count(*) FROM $this->_tbl AS j ";
@@ -142,8 +146,8 @@ class Job extends \JTable
 	{
 		$defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
 		$category    = isset($filters['category']) ? $filters['category'] : 'all';
-		$now 		 = \Date::toSql();
-		$juser 		 = \JFactory::getUser();
+		$now         = Date::toSql();
+
 		$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
 		$active = isset($filters['active']) && $filters['active'] == 1 ? 1 : 0;
 
@@ -196,9 +200,9 @@ class Job extends \JTable
 				$sql.= "\n NULL AS manager,";
 			}
 			$sql.= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
-				$myid = $juser->get('id');
+				$myid = User::get('id');
 				$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=1) AS applied,";
 				$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=2) AS withdrawn,";
 			}
@@ -347,14 +351,13 @@ class Job extends \JTable
 			return false;
 		}
 
-		$now   = \Date::toSql();
-		$juser = \JFactory::getUser();
-		$myid  = $juser->get('id');
+		$now   = Date::toSql();
+		$myid  = User::get('id');
 
 		$sql  = "SELECT j.*, ";
 		$sql .= $admin ? "s.expires IS NULL AS inactive,  " : ' NULL AS inactive, ';
 		$sql .= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=1) AS applied,";
 			$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=2) AS withdrawn,";

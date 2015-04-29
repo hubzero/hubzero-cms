@@ -33,9 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 $tmpl = Request::getVar('tmpl', '');
 $no_html = Request::getInt('no_html', 0);
 
-$juser = JFactory::getUser();
-?>
-<?php
 if (!$tmpl && !$no_html) {
 	// Push some styles to the template
 	$this->js('json2.js');
@@ -208,7 +205,7 @@ if (!$tmpl && !$no_html) {
 
 					$sr = new \Components\Support\Tables\QueryFolder($database);
 					$folders = $sr->find('list', array(
-						'user_id'  => JFactory::getUser()->get('id'),
+						'user_id'  => User::get('id'),
 						'sort'     => 'ordering',
 						'sort_Dir' => 'ASC'
 					));

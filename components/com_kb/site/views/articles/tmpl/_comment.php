@@ -1,40 +1,65 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
+$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	$cls = isset($this->cls) ? $this->cls : 'odd';
+if ($this->article->get('created_by') == $this->comment->get('created_by'))
+{
+	$cls .= ' author';
+}
+$cls .= ($this->comment->isReported()) ? ' abusive' : '';
+if ($this->comment->get('state') == 1)
+{
+	$cls .= ' chosen';
+}
 
-	if ($this->article->get('created_by') == $this->comment->get('created_by'))
+$name = Lang::txt('COM_KB_ANONYMOUS');
+if (!$this->comment->get('anonymous'))
+{
+	$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
+	if ($this->comment->creator('public'))
 	{
-		$cls .= ' author';
+		$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 	}
-	$cls .= ($this->comment->isReported()) ? ' abusive' : '';
-	if ($this->comment->get('state') == 1)
-	{
-		$cls .= ' chosen';
-	}
+}
 
-	$name = Lang::txt('COM_KB_ANONYMOUS');
-	if (!$this->comment->get('anonymous'))
-	{
-		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
-		if ($this->comment->creator('public'))
-		{
-			$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
-		}
-	}
-
-	if ($this->comment->isReported())
-	{
-		$comment = '<p class="warning">' . Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
-	}
-	else
-	{
-		$comment  = $this->comment->content('parsed');
-	}
-
-	//$this->comment->set('category', 'kb');
+if ($this->comment->isReported())
+{
+	$comment = '<p class="warning">' . Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
+}
+else
+{
+	$comment  = $this->comment->content('parsed');
+}
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
@@ -50,10 +75,10 @@ defined('_JEXEC') or die('Restricted access');
 						     ->set('type', 'comment')
 						     ->set('vote', '')
 						     ->set('id', '');
-				if (!$juser->get('guest'))
+				if (!User::isGuest())
 				{
 					$view->set('vote', $this->comment->get('vote'));
-					if ($this->comment->get('created_by') == $juser->get('id'))
+					if ($this->comment->get('created_by') == User::get('id'))
 					{
 						$view->set('id', $this->comment->get('id'));
 					}
@@ -78,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 
 			<p class="comment-options">
-			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
+			<?php /*if ($this->config->get('access-edit-thread')) { // || User::get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo Lang::txt('COM_KB_DELETE'); ?><!--
@@ -110,7 +135,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<?php if ($juser->get('guest')) { ?>
+				<?php if (User::isGuest()) { ?>
 				<p class="warning">
 					<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))); ?>
 				</p>
@@ -123,7 +148,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->comment->get('id')); ?>" />
 						<input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->comment->get('entry_id')); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
-						<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($juser->get('id')); ?>" />
+						<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
 						<input type="hidden" name="comment[state]" value="1" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

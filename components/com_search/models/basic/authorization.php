@@ -49,16 +49,15 @@ class Authorization
 	 */
 	public function __construct()
 	{
-		$juser = \JFactory::getUser();
-		if ($juser->guest)
+		if (\User::isGuest())
 		{
 			$this->groups = array();
 			return;
 		}
 
-		$this->uid = $juser->get('id');
+		$this->uid = \User::get('id');
 
-		if ($juser->usertype == 'Super Administrator')
+		if (\User::get('usertype') == 'Super Administrator')
 		{
 			$this->super_admin = true;
 		}

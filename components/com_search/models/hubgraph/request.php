@@ -233,7 +233,7 @@ class Request
 
 		if (is_null($crit))
 		{
-			$user = \JFactory::getUser();
+			$user = \User::getRoot();
 			$groups = array();
 			$super = FALSE;
 			if (($uid = $user->get('id')))

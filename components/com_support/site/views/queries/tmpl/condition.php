@@ -97,8 +97,7 @@ if ($this->condition->expressions)
 		{
 			if ($expression->val == '$me')
 			{
-				$juser = JFactory::getUser();
-				$expression->val = $juser->get('username');
+				$expression->val = User::get('username');
 			}
 ?>
 			<input type="text" class="val" value="<?php echo $this->escape(stripslashes($expression->val)); ?>" />

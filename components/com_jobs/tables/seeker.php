@@ -30,6 +30,9 @@
 
 namespace Components\Jobs\Tables;
 
+use Lang;
+use User;
+
 /**
  * Table class for job seeker
  */
@@ -282,15 +285,13 @@ class JobSeeker extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
-
 		$query  = "SELECT DISTINCT x.name, x.countryresident, r.title, r.filename, r.created, ";
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
 		if ($eid)
 		{
 			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->Quote($eid) . " AND s.uid=r.uid AND s.uid="  . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($eid) . " AND W.category='resume') AS shortlisted ";
 		}
-		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=" . $this->_db->Quote($uid) . " AND s.uid=r.uid AND s.uid = " . $this->_db->Quote($juser->get('id')) . ") AS mine ";
+		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=" . $this->_db->Quote($uid) . " AND s.uid=r.uid AND s.uid = " . $this->_db->Quote(User::get('id')) . ") AS mine ";
 		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";
 
 		$query .= "WHERE s.active=1 AND r.main=1 AND s.uid=" . $this->_db->Quote($uid) . " LIMIT 1";

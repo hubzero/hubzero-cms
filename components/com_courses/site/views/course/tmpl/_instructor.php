@@ -62,7 +62,7 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 	<?php
 	$params = new JRegistry($this->instructor->get('params'));
 	if ($params->get('access_bio') == 0 // public
-	 || ($params->get('access_bio') == 1 && !\JFactory::getUser()->get('guest')) // registered members
+	 || ($params->get('access_bio') == 1 && !User::usGuest()) // registered members
 	) {
 	?>
 	<div class="course-instructor-bio">

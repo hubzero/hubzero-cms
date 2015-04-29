@@ -305,8 +305,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		if (!$id)
 		{
-			$juser = \JFactory::getUser();
-			$id = $juser->get('id');
+			$id = \User::get('id');
 		}
 		return $this->member($id)->exists();
 	}

@@ -32,9 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $this->css('browse.css');
-
-//$maxtextlen = 42;
-$juser = \JFactory::getUser();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

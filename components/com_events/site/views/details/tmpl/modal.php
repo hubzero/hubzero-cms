@@ -25,13 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
 ?>
 <div id="event" class="modal">
 <?php if ($this->row) { ?>
 	<h2 class="entry-title">
 		<?php echo $this->escape(stripslashes($this->row->title)); ?>
-<?php if ($this->authorized || $this->row->created_by == $juser->get('id')) { ?>
+<?php if ($this->authorized || $this->row->created_by == User::get('id')) { ?>
 		<a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('EVENTS_EDIT'); ?>">
 			<?php echo strtolower(Lang::txt('EVENTS_EDIT')); ?>
 		</a>

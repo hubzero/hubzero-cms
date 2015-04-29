@@ -32,6 +32,7 @@ namespace Components\Redirect\Helpers;
 
 use Hubzero\Base\Object;
 use Exception;
+use User;
 
 /**
  * Redirect component helper.
@@ -54,13 +55,12 @@ class Redirect
 	{
 		$assetName = self::$extension;
 
-		$user    = \JFactory::getUser();
 		$actions = \JAccess::getActions($assetName);
 		$result  = new Object;
 
 		foreach ($actions as $action)
 		{
-			$result->set($action->name, $user->authorise($action->name, $assetName));
+			$result->set($action->name, User::authorise($action->name, $assetName));
 		}
 
 		return $result;

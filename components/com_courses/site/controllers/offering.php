@@ -197,13 +197,11 @@ class Offering extends SiteController
 		$this->view->nonadmin = 0;
 		if ($this->course->offering()->access('manage', 'section'))
 		{
-			$app = \JFactory::getApplication();
-
-			$this->view->nonadmin = Request::getInt('nonadmin', $app->getUserState(
+			$this->view->nonadmin = Request::getInt('nonadmin', User::getState(
 				$this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
 				0
 			));
-			$app->setUserState(
+			User::setState(
 				$this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
 				$this->view->nonadmin
 			);
@@ -507,7 +505,7 @@ class Offering extends SiteController
 		}
 
 		// Check prerequisites
-		$member = $this->course->offering()->section()->member(\JFactory::getUser()->get('id'));
+		$member = $this->course->offering()->section()->member(User::get('id'));
 		if (is_null($member->get('section_id')))
 		{
 			$member->set('section_id', $section_id);

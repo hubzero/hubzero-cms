@@ -32,9 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $database = JFactory::getDBO();
-$juser = JFactory::getUser();
-$gid = $juser->get('gid');
-$gid = (intval($gid)) ? $gid : 0;
+
+$gid = User::get('gid', 0);
 
 $startday = ((!_CAL_CONF_STARDAY) || (_CAL_CONF_STARDAY > 1)) ? 0 : _CAL_CONF_STARDAY;
 $timeWithOffset = time() + ($this->offset*60*60);

@@ -1004,7 +1004,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 			// Copy tags
 			$tagger = new CoursesModelTags($c_id);
-			$this->tag($tagger->render('string', array('admin' => 1)), \JFactory::getUser()->get('id'), 1);
+			$this->tag($tagger->render('string', array('admin' => 1)), \User::get('id'), 1);
 		}
 
 		return true;

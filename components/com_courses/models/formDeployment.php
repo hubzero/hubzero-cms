@@ -154,7 +154,7 @@ class PdfFormDeployment
 			$rv[] = $dep;
 		}
 
-		$uid = \JFactory::getUser()->id;
+		$uid = \User::get('id');
 		usort($rv, function($a, $b) use($uid)
 		{
 			$au = $a->getUserId();
