@@ -31,6 +31,7 @@
 namespace Components\System\Helpers;
 
 use Hubzero\Base\Object;
+use User;
 
 /**
  * System helper for calculating user permissions
@@ -68,12 +69,11 @@ class Permissions
 			'core.delete'
 		);
 
-		$user = \JFactory::getUser();
 		$result = new Object;
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

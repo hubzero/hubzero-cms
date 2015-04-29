@@ -52,7 +52,6 @@ class ContentControllerArticles extends JControllerAdmin
 		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$user	= JFactory::getUser();
 		$ids	= Request::getVar('cid', array(), '', 'array');
 		$values	= array('featured' => 1, 'unfeatured' => 0);
 		$task	= $this->getTask();

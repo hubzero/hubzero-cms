@@ -50,8 +50,8 @@ class ContentModelArticle extends JModelItem
 		$this->setState('params', $params);
 
 		// TODO: Tune these values based on other permissions.
-		$user		= JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_content')) &&  (!$user->authorise('core.edit', 'com_content'))){
+		if ((!User::authorise('core.edit.state', 'com_content')) && (!User::authorise('core.edit', 'com_content')))
+		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}
@@ -68,10 +68,6 @@ class ContentModelArticle extends JModelItem
 	 */
 	public function &getItem($pk = null)
 	{
-
-		// Get current user for authorisation checks
-		$user	= User::getRoot();
-
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('article.id');
 
@@ -79,9 +75,10 @@ class ContentModelArticle extends JModelItem
 			$this->_item = array();
 		}
 
-		if (!isset($this->_item[$pk])) {
-
-			try {
+		if (!isset($this->_item[$pk]))
+		{
+			try
+			{
 				$db = $this->getDbo();
 				$query = $db->getQuery(true);
 
@@ -141,7 +138,8 @@ class ContentModelArticle extends JModelItem
 
 				$query->where('a.id = ' . (int) $pk);
 
-				if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content'))) {
+				if ((!User::authorise('core.edit.state', 'com_content')) && (!User::authorise('core.edit', 'com_content')))
+				{
 					// Filter by start and end dates.
 					$nullDate = $db->Quote($db->getNullDate());
 					$date = Date::of('now');
@@ -164,7 +162,8 @@ class ContentModelArticle extends JModelItem
 				$published = $this->getState('filter.published');
 				$archived = $this->getState('filter.archived');
 
-				if (is_numeric($published)) {
+				if (is_numeric($published))
+				{
 					$query->where('(a.state = ' . (int) $published . ' OR a.state =' . (int) $archived . ')');
 				}
 
@@ -172,17 +171,20 @@ class ContentModelArticle extends JModelItem
 
 				$data = $db->loadObject();
 
-				if ($error = $db->getErrorMsg()) {
+				if ($error = $db->getErrorMsg())
+				{
 					throw new Exception($error);
 				}
 
-				if (empty($data)) {
-					return JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+				if (empty($data))
+				{
+					return App::abort(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
 				}
 
 				// Check for published state if filter set.
-				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived))) {
-					return JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
+				{
+					return App::abort(404, Lang::txt('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
 				}
 
 				// Convert parameter fields to objects.
@@ -197,18 +199,22 @@ class ContentModelArticle extends JModelItem
 				$data->metadata = $registry;
 
 				// Technically guest could edit an article, but lets not check that to improve performance a little.
-				if (!$user->get('guest')) {
-					$userId	= $user->get('id');
-					$asset	= 'com_content.article.'.$data->id;
+				if (!User::isGuest())
+				{
+					$userId = User::get('id');
+					$asset  = 'com_content.article.'.$data->id;
 
 					// Check general edit permission first.
-					if ($user->authorise('core.edit', $asset)) {
+					if (User::authorise('core.edit', $asset))
+					{
 						$data->params->set('access-edit', true);
 					}
 					// Now check if edit.own is available.
-					elseif (!empty($userId) && $user->authorise('core.edit.own', $asset)) {
+					elseif (!empty($userId) && User::authorise('core.edit.own', $asset))
+					{
 						// Check for a valid user and that they are the owner.
-						if ($userId == $data->created_by) {
+						if ($userId == $data->created_by)
+						{
 							$data->params->set('access-edit', true);
 						}
 					}
@@ -221,26 +227,29 @@ class ContentModelArticle extends JModelItem
 				}
 				else {
 					// If no access filter is set, the layout takes some responsibility for display of limited information.
-					$user = JFactory::getUser();
-					$groups = $user->getAuthorisedViewLevels();
+					$groups = User::getAuthorisedViewLevels();
 
-					if ($data->catid == 0 || $data->category_access === null) {
+					if ($data->catid == 0 || $data->category_access === null)
+					{
 						$data->params->set('access-view', in_array($data->access, $groups));
 					}
-					else {
+					else
+					{
 						$data->params->set('access-view', in_array($data->access, $groups) && in_array($data->category_access, $groups));
 					}
 				}
 
 				$this->_item[$pk] = $data;
 			}
-			catch (JException $e)
+			catch (Exception $e)
 			{
-				if ($e->getCode() == 404) {
+				if ($e->getCode() == 404)
+				{
 					// Need to go thru the error handler to allow Redirect to work.
-					JError::raiseError(404, $e->getMessage());
+					App::abort(404, $e->getMessage());
 				}
-				else {
+				else
+				{
 					$this->setError($e);
 					$this->_item[$pk] = false;
 				}
@@ -259,40 +268,40 @@ class ContentModelArticle extends JModelItem
 	 */
 	public function hit($pk = 0)
 	{
-			$hitcount = Request::getInt('hitcount', 1);
+		$hitcount = Request::getInt('hitcount', 1);
 
-			if ($hitcount)
-			{
-				// Initialise variables.
-				$pk = (!empty($pk)) ? $pk : (int) $this->getState('article.id');
-				$db = $this->getDbo();
+		if ($hitcount)
+		{
+			// Initialise variables.
+			$pk = (!empty($pk)) ? $pk : (int) $this->getState('article.id');
+			$db = $this->getDbo();
 
-				$db->setQuery(
-						'UPDATE #__content' .
-						' SET hits = hits + 1' .
-						' WHERE id = '.(int) $pk
-				);
+			$db->setQuery(
+					'UPDATE #__content' .
+					' SET hits = hits + 1' .
+					' WHERE id = '.(int) $pk
+			);
 
-				if (!$db->query()) {
-						$this->setError($db->getErrorMsg());
-						return false;
-				}
+			if (!$db->query()) {
+					$this->setError($db->getErrorMsg());
+					return false;
 			}
+		}
 
-			return true;
+		return true;
 	}
 
 	public function storeVote($pk = 0, $rate = 0)
 	{
-		if ( $rate >= 1 && $rate <= 5 && $pk > 0 )
+		if ($rate >= 1 && $rate <= 5 && $pk > 0)
 		{
 			$userIP = $_SERVER['REMOTE_ADDR'];
 			$db = $this->getDbo();
 
 			$db->setQuery(
-					'SELECT *' .
-					' FROM #__content_rating' .
-					' WHERE content_id = '.(int) $pk
+				'SELECT *' .
+				' FROM #__content_rating' .
+				' WHERE content_id = '.(int) $pk
 			);
 
 			$rating = $db->loadObject();
@@ -301,27 +310,33 @@ class ContentModelArticle extends JModelItem
 			{
 				// There are no ratings yet, so lets insert our rating
 				$db->setQuery(
-						'INSERT INTO #__content_rating ( content_id, lastip, rating_sum, rating_count )' .
-						' VALUES ( '.(int) $pk.', '.$db->Quote($userIP).', '.(int) $rate.', 1 )'
+					'INSERT INTO #__content_rating ( content_id, lastip, rating_sum, rating_count )' .
+					' VALUES ( '.(int) $pk.', '.$db->Quote($userIP).', '.(int) $rate.', 1 )'
 				);
 
-				if (!$db->query()) {
-						$this->setError($db->getErrorMsg());
-						return false;
+				if (!$db->query())
+				{
+					$this->setError($db->getErrorMsg());
+					return false;
 				}
-			} else {
+			}
+			else
+			{
 				if ($userIP != ($rating->lastip))
 				{
 					$db->setQuery(
-							'UPDATE #__content_rating' .
-							' SET rating_count = rating_count + 1, rating_sum = rating_sum + '.(int) $rate.', lastip = '.$db->Quote($userIP) .
-							' WHERE content_id = '.(int) $pk
+						'UPDATE #__content_rating' .
+						' SET rating_count = rating_count + 1, rating_sum = rating_sum + '.(int) $rate.', lastip = '.$db->Quote($userIP) .
+						' WHERE content_id = '.(int) $pk
 					);
-					if (!$db->query()) {
-							$this->setError($db->getErrorMsg());
-							return false;
+					if (!$db->query())
+					{
+						$this->setError($db->getErrorMsg());
+						return false;
 					}
-				} else {
+				}
+				else
+				{
 					return false;
 				}
 			}

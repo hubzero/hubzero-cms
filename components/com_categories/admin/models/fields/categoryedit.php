@@ -116,31 +116,26 @@ class JFormFieldCategoryEdit extends JFormFieldList
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 
-
-			// Pad the option text with spaces using depth level as a multiplier.
-			for ($i = 0, $n = count($options); $i < $n; $i++)
+		// Pad the option text with spaces using depth level as a multiplier.
+		for ($i = 0, $n = count($options); $i < $n; $i++)
+		{
+			// Translate ROOT
+			if ($this->element['parent'] == true || $jinput->get('option') == 'com_categories')
 			{
-				// Translate ROOT
-				if ($this->element['parent'] == true || $jinput->get('option') == 'com_categories')
-				{
-						if ($options[$i]->level == 0)
-						{
-							$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
-						}
-				}
-				if ($options[$i]->published == 1)
-				{
-					$options[$i]->text = str_repeat('- ', $options[$i]->level). $options[$i]->text ;
-				}
-				else
-				{
-					$options[$i]->text = str_repeat('- ', $options[$i]->level). '[' .$options[$i]->text . ']';
-				}
+					if ($options[$i]->level == 0)
+					{
+						$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
+					}
 			}
-
-
-		// Get the current user object.
-		$user = JFactory::getUser();
+			if ($options[$i]->published == 1)
+			{
+				$options[$i]->text = str_repeat('- ', $options[$i]->level). $options[$i]->text ;
+			}
+			else
+			{
+				$options[$i]->text = str_repeat('- ', $options[$i]->level). '[' .$options[$i]->text . ']';
+			}
+		}
 
 		// For new items we want a list of categories you are allowed to create in.
 		if ($oldCat == 0)
@@ -150,7 +145,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 				// To take save or create in a category you need to have create rights for that category
 				// unless the item is already in that category.
 				// Unset the option if the user isn't authorised for it. In this field assets are always categories.
-				if ($user->authorise('core.create', $extension . '.category.' . $option->value) != true )
+				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true )
 				{
 					unset($options[$i]);
 				}
@@ -164,29 +159,29 @@ class JFormFieldCategoryEdit extends JFormFieldList
 			// but you should be able to save in that category.
 			foreach ($options as $i => $option)
 			{
-			if ($user->authorise('core.edit.state', $extension . '.category.' . $oldCat) != true && !isset($oldParent))
-			{
-				if ($option->value != $oldCat  )
+				if (User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true && !isset($oldParent))
+				{
+					if ($option->value != $oldCat)
+					{
+						unset($options[$i]);
+					}
+				}
+				if (User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true
+					&& (isset($oldParent)) && $option->value != $oldParent)
 				{
 					unset($options[$i]);
 				}
-			}
-			if ($user->authorise('core.edit.state', $extension . '.category.' . $oldCat) != true
-				&& (isset($oldParent)) && $option->value != $oldParent)
-			{
-					unset($options[$i]);
-			}
 
-			// However, if you can edit.state you can also move this to another category for which you have
-			// create permission and you should also still be able to save in the current category.
-				if (($user->authorise('core.create', $extension . '.category.' . $option->value) != true)
+				// However, if you can edit.state you can also move this to another category for which you have
+				// create permission and you should also still be able to save in the current category.
+				if ((User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 					&& ($option->value != $oldCat && !isset($oldParent)))
 				{
 					{
 						unset($options[$i]);
 					}
 				}
-				if (($user->authorise('core.create', $extension . '.category.' . $option->value) != true)
+				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 					&& (isset($oldParent)) && $option->value != $oldParent)
 				{
 					{
@@ -195,18 +190,16 @@ class JFormFieldCategoryEdit extends JFormFieldList
 				}
 			}
 		}
-		if (($this->element['parent'] == true || $jinput->get('option') == 'com_categories')
-			&& (isset($row) && !isset($options[0])) && isset($this->element['show_root']))
-			{
-				if ($row->parent_id == '1') {
-					$parent = new stdClass();
-					$parent->text = Lang::txt('JGLOBAL_ROOT_PARENT');
-					array_unshift($options, $parent);
-				}
-				array_unshift($options, JHtml::_('select.option', '0', Lang::txt('JGLOBAL_ROOT')));
+		if (($this->element['parent'] == true || $jinput->get('option') == 'com_categories') &&
+			(isset($row) && !isset($options[0])) && isset($this->element['show_root']))
+		{
+			if ($row->parent_id == '1') {
+				$parent = new stdClass();
+				$parent->text = Lang::txt('JGLOBAL_ROOT_PARENT');
+				array_unshift($options, $parent);
 			}
-
-
+			array_unshift($options, JHtml::_('select.option', '0', Lang::txt('JGLOBAL_ROOT')));
+		}
 
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

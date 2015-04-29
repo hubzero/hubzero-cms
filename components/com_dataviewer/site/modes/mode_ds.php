@@ -39,7 +39,7 @@ function get_dd($db_id)
 	$dd = false;
 	$db = JFactory::getDBO();
 
-	$dv_id = JRequest::getVar('dv');
+	$dv_id = Request::getVar('dv');
 
 	if ($db_id['extra']) {
 		$sql = "SELECT * FROM #__datastore_tables WHERE datastore_id = " . $db_id['name'] . " AND id = " . $db->quote($dv_id);
@@ -213,10 +213,9 @@ function get_dd($db_id)
 	}
 
 	// Giving Hub admins full access to the DataStore dataviews
-	$juser = JFactory::getUser();
-	if (JAccess::check($juser->get('id'), 'core.admin')) {
+	if (JAccess::check(User::get('id'), 'core.admin')) {
 		$dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
-		$dd['acl']['allowed_users'][] = $juser->get('username');
+		$dd['acl']['allowed_users'][] = User::get('username');
 	}
 
 	return $dd;
@@ -224,14 +223,14 @@ function get_dd($db_id)
 
 function _dd_post($dd)
 {
-	$id = JRequest::getVar('id', false);
+	$id = Request::getVar('id', false);
 
 	if ($id) {
 		$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
 		$dd['single'] = true;
 	}
 
-	$custom_field =  JRequest::getVar('custom_field', false);
+	$custom_field =  Request::getVar('custom_field', false);
 	if ($custom_field) {
 		$custom_field = explode('|', $custom_field);
 		$dd['where'][] = array('field'=>$custom_field[0], 'value'=>$custom_field[1]);
@@ -239,20 +238,20 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = JRequest::getVar('custom_view', '');
+	$custom_view = Request::getVar('custom_view', '');
 
 	if ($custom_view != '') {
 		$custom_view = explode(',', $custom_view);
 		unset($dd['customizer']);
 
 		// Custom Title
-		$custom_title = JRequest::getString('custom_title', '');
+		$custom_title = Request::getString('custom_title', '');
 		if ($custom_title !== '') {
 			$dd['title'] = htmlspecialchars($custom_title);
 		}
 
 		// Custom Group by
-		$group_by = JRequest::getString('group_by', '');
+		$group_by = Request::getString('group_by', '');
 		if ($group_by !== '') {
 			$dd['group_by'] = htmlspecialchars($group_by);
 		}
@@ -291,7 +290,7 @@ function pathway($dd)
 		$ref_title = "Datastore";
 		Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
 	} elseif (isset($_SERVER['HTTP_REFERER'])) {
-		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
+		$ref_title = Request::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
 		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
 	}

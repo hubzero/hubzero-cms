@@ -49,17 +49,19 @@ class ContentModelFeatured extends ContentModelArticles
 
 		$this->setState('filter.frontpage', true);
 
-		$user		= JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_content')) &&  (!$user->authorise('core.edit', 'com_content'))){
+		if ((!User::authorise('core.edit.state', 'com_content')) && (!User::authorise('core.edit', 'com_content')))
+		{
 			// filter on published for those who do not have edit or edit.state rights.
 			$this->setState('filter.published', 1);
 		}
-		else {
+		else
+		{
 			$this->setState('filter.published', array(0, 1, 2));
 		}
 
 		// check for category selection
-		if ($params->get('featured_categories') && implode(',', $params->get('featured_categories'))  == true) {
+		if ($params->get('featured_categories') && implode(',', $params->get('featured_categories'))  == true)
+		{
 			$featuredCategories = $params->get('featured_categories');
 			$this->setState('filter.frontpage.categories', $featuredCategories);
 		}
@@ -128,10 +130,10 @@ class ContentModelFeatured extends ContentModelArticles
 		}
 
 		// Filter by categories
-		if (is_array($featuredCategories = $this->getState('filter.frontpage.categories'))) {
+		if (is_array($featuredCategories = $this->getState('filter.frontpage.categories')))
+		{
 			$query->where('a.catid IN (' . implode(',', $featuredCategories) . ')');
 		}
-
 
 		return $query;
 	}

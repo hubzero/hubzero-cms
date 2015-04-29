@@ -51,14 +51,13 @@ class ContentControllerArticle extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$user = JFactory::getUser();
 		$categoryId = JArrayHelper::getValue($data, 'catid', Request::getInt('filter_category_id'), 'int');
 		$allow = null;
 
 		if ($categoryId)
 		{
 			// If the category has been passed in the data or URL check it.
-			$allow = $user->authorise('core.create', 'com_content.category.' . $categoryId);
+			$allow = User::authorise('core.create', 'com_content.category.' . $categoryId);
 		}
 
 		if ($allow === null)
@@ -86,18 +85,18 @@ class ContentControllerArticle extends JControllerForm
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$user = JFactory::getUser();
-		$userId = $user->get('id');
+
+		$userId = User::get('id');
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', 'com_content.article.' . $recordId))
+		if (User::authorise('core.edit', 'com_content.article.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_content.article.' . $recordId))
+		if (User::authorise('core.edit.own', 'com_content.article.' . $recordId))
 		{
 			// Now test the owner is the user.
 			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;

@@ -113,11 +113,10 @@ class MwSession extends JTable
 		}
 		else
 		{
-			$juser = JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
 					  WHERE v.sessnum=" . $sess . "
-					  AND v.viewuser='" . $juser->get('username') . "'";
+					  AND v.viewuser='" . \User::get('username') . "'";
 		}
 
 		$this->_db->setQuery($query);

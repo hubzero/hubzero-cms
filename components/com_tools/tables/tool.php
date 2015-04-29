@@ -103,14 +103,12 @@ class Tool extends JTable
 	 */
 	public function buildQuery($filters, $admin)
 	{
-		$juser = JFactory::getUser();
-
 		// get and set record filter
 		$filter = ($admin) ? " WHERE f.id!=0": " WHERE f.state!=9";
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':      $filter .= " AND f.registered_by=" . $this->_db->Quote($juser->get('username')) . " "; break;
+			case 'mine':      $filter .= " AND f.registered_by=" . $this->_db->Quote(User::get('username')) . " "; break;
 			case 'published': $filter .= " AND f.published='1' AND f.state!='9' ";                  break;
 			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
 			case 'all':       $filter .= " ";                                                       break;
@@ -129,7 +127,7 @@ class Tool extends JTable
 		}
 		if (!$admin)
 		{
-			$filter .= " AND m.uidNumber=" . $this->_db->Quote($juser->get('id')) . " ";
+			$filter .= " AND m.uidNumber=" . $this->_db->Quote(User::get('id')) . " ";
 			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
 		}
 		else
@@ -430,12 +428,11 @@ class Tool extends JTable
 	 */
 	public function getToolInfo($toolid, $toolname='')
 	{
-		$juser = JFactory::getUser();
 		$query  = "SELECT t.id, t.toolname, t.published, t.state, t.priority, t.registered, t.registered_by, t.ticketid, t.state_changed, r.id as rid, g.cn as devgroup";
 		$query .= ", r.created as rcreated, r.modified as rmodified, r.fulltxt as rfulltxt";
 		/*$query .= ", (SELECT COUNT(*) FROM #__support_comments AS sc LEFT JOIN #__tool_statusviews AS v ON v.ticketid=sc.ticket WHERE sc.ticket=t.ticketid AND
-		 (UNIX_TIMESTAMP(sc.created)-UNIX_TIMESTAMP(t.state_changed))>=10 AND sc.access=0 AND sc.comment!='' AND sc.created_by!='".$juser->get('username')."'
-		 AND (UNIX_TIMESTAMP(v.viewed)-UNIX_TIMESTAMP(sc.created))<= v.elapsed AND v.uid=".$juser->get('id').") AS comments ";*/
+		 (UNIX_TIMESTAMP(sc.created)-UNIX_TIMESTAMP(t.state_changed))>=10 AND sc.access=0 AND sc.comment!='' AND sc.created_by!='".User::get('username')."'
+		 AND (UNIX_TIMESTAMP(v.viewed)-UNIX_TIMESTAMP(sc.created))<= v.elapsed AND v.uid=".User::get('id').") AS comments ";*/
 		$query .= ", (SELECT COUNT(*) FROM #__tool) AS ntools ";
 		$query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=0 AND state!='9' AND state!='8') AS ntoolsdev ";
 		$query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=1) AS ntoolspublished ";

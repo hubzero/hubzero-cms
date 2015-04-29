@@ -194,8 +194,7 @@ class ToolsModelTool
 	 */
 	private function logDebug($msg)
 	{
-		$xlog =  JFactory::getLogger();
-		$xlog->debug($msg);
+		Log::debug($msg);
 	}
 
 	/**
@@ -1562,7 +1561,7 @@ class ToolsModelTool
 			$devs = array_map('trim', explode(',', $tool['developers']));
 			foreach ($devs as $dev)
 			{
-				if (!is_object(JFactory::getUser($dev)))
+				if (!is_object(User::getInstance($dev)))
 				{
 					$err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_INVALID_USER', (string) $dev);
 				}
@@ -1570,7 +1569,7 @@ class ToolsModelTool
 
 			// Finally, make sure that the current user is either in the apps group, or on the dev team
 			// If the user were neither in apps, nor on the dev team, they would immediately lose access to the tool after saving
-			if (!Component::params('com_tools')->get('access-manage-component') && !in_array(JFactory::getUser()->get('username'), $devs))
+			if (!Component::params('com_tools')->get('access-manage-component') && !in_array(User::get('username'), $devs))
 			{
 				$err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_CREATER_NOT_DEVELOPER');
 			}
@@ -1831,14 +1830,12 @@ class ToolsModelTool
 	 */
 	public static function xbuildQuery($filters, $admin)
 	{
-		$juser = JFactory::getUser();
-
 		// get and set record filter
 		$filter = ($admin) ? " WHERE f.id!=0": " WHERE f.state!=9";
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':      $filter .= " AND f.registered_by='" . $juser->get('username') . "' "; break;
+			case 'mine':      $filter .= " AND f.registered_by='" . User::get('username') . "' "; break;
 			case 'published': $filter .= " AND f.published='1' AND f.state!='9' ";					break;
 			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
 			case 'all':       $filter .= " ";														break;
@@ -1857,7 +1854,7 @@ class ToolsModelTool
 		}
 		if (!$admin)
 		{
-			$filter .= " AND m.uidNumber='" . $juser->get('id') . "' ";
+			$filter .= " AND m.uidNumber='" . User::get('id') . "' ";
 			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
 		}
 		else

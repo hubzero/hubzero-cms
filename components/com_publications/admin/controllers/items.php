@@ -1261,7 +1261,7 @@ class Items extends AdminController
 		// Get dc:contibutor
 		$project = new \Components\Projects\Tables\Project($this->database);
 		$project->load($objP->project_id);
-		$profile = \Hubzero\User\Profile::getInstance(\JFactory::getUser()->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$owner 	 = $project->owned_by_user ? $project->owned_by_user : $project->created_by_user;
 		if ($profile->load( $owner ))
 		{

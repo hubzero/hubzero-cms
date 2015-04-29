@@ -47,7 +47,7 @@ function get_dd($db_id)
 {
 	global $dv_conf;
 	$dd = false;
-	$dv_id = JRequest::getVar('dv');
+	$dv_id = Request::getVar('dv');
 	$db_name = $db_id['name'];
 
 	$dv_conf['dd_json'] = "{$dv_conf['db_base_dir']}/$db_name/applications/dataviewer/datadefinitions";
@@ -58,10 +58,9 @@ function get_dd($db_id)
 		$dd['title'] = 'Table : ' . $dv_id;
 		$dd['table'] = $dv_id;
 
-		$juser = JFactory::getUser();
-		if (!$juser->get('guest') && isset($dv_conf['_managers']) && $dv_conf['_managers'] !== false) {
+		if (!User::isGuest() && isset($dv_conf['_managers']) && $dv_conf['_managers'] !== false) {
 			$dd['acl']['allowed_groups'] = $dv_conf['_managers'];
-		} elseif (!$juser->get('guest') && $juser->authorize('login', 'administrator')) {
+		} elseif (!User::isGuest() && User::authorise('login', 'administrator')) {
 			// Remove access restrictions for managers
 			$dd['acl']['allowed_users'] = false;
 			$dd['acl']['allowed_groups'] = false;
@@ -77,7 +76,7 @@ function get_dd($db_id)
 				$dd = $dd_func();
 			}
 		} else {
-			JError::raiseError('404', 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+			App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
 			exit;
 		}
 
@@ -132,14 +131,14 @@ function get_dd($db_id)
 
 function _dd_post($dd)
 {
-	$id = JRequest::getVar('id', false);
+	$id = Request::getVar('id', false);
 
 	if ($id) {
 		$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
 		$dd['single'] = true;
 	}
 
-	$custom_field =  JRequest::getVar('custom_field', false);
+	$custom_field =  Request::getVar('custom_field', false);
 	if ($custom_field) {
 		$custom_field = explode('|', $custom_field);
 		$dd['where'][] = array('field'=>$custom_field[0], 'value'=>$custom_field[1]);
@@ -147,20 +146,20 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = JRequest::getVar('custom_view', '');
+	$custom_view = Request::getVar('custom_view', '');
 
 	if ($custom_view != '') {
 		$custom_view = explode(',', $custom_view);
 		unset($dd['customizer']);
 
 		// Custom Title
-		$custom_title = JRequest::getString('custom_title', '');
+		$custom_title = Request::getString('custom_title', '');
 		if ($custom_title !== '') {
 			$dd['title'] = htmlspecialchars($custom_title);
 		}
 
 		// Custom Group by
-		$group_by = JRequest::getString('group_by', '');
+		$group_by = Request::getString('group_by', '');
 		if ($group_by !== '') {
 			$dd['group_by'] = htmlspecialchars($group_by);
 		}
@@ -195,7 +194,7 @@ function pathway($dd)
 	$document->setTitle($dd['title']);
 
 	if (isset($_SERVER['HTTP_REFERER'])) {
-		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
+		$ref_title = Request::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
 		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
 	}

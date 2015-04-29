@@ -16,7 +16,6 @@ $params		= $this->item->params;
 $images = json_decode($this->item->images);
 $urls = json_decode($this->item->urls);
 $canEdit	= $this->item->params->get('access-edit');
-$user		= JFactory::getUser();
 
 ?>
 
@@ -185,7 +184,7 @@ if (!empty($this->item->pagination) AND $this->item->pagination AND $this->item-
 <?php echo $this->loadTemplate('links'); ?>
 <?php endif; ?>
 	<?php //optional teaser intro text for guests ?>
-<?php elseif ($params->get('show_noauth') == true and  $user->get('guest') ) : ?>
+<?php elseif ($params->get('show_noauth') == true and  User::isGuest() ) : ?>
 	<?php echo $this->item->introtext; ?>
 	<?php //Optional link to let them register to see the whole article. ?>
 	<?php if ($params->get('show_readmore') && $this->item->fulltext != null) :

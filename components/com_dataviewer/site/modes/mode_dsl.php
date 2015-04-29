@@ -31,11 +31,11 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	$db = JFactory::getDBO();
 
 	if (!$dv_id) {
-		$dv_id = JRequest::getVar('dv');
+		$dv_id = Request::getVar('dv');
 	}
 
 	if (!$version) {
-		$version = JRequest::getInt('v', false);
+		$version = Request::getInt('v', false);
 	}
 
 	$name = $dv_id;
@@ -94,7 +94,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 			if ($curation_enabled && $curator != '') {
 				$curator = $pub_version['curator'];
-				$curator = JFactory::getUser($curator)->get('username');
+				$curator = User::getInstance($curator)->get('username');
 			}
 		}
 	}
@@ -151,14 +151,14 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 function _dd_post($dd)
 {
-	$id = JRequest::getVar('id', false);
+	$id = Request::getVar('id', false);
 
 	if ($id) {
 		$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
 		$dd['single'] = true;
 	}
 
-	$custom_field =  JRequest::getVar('custom_field', false);
+	$custom_field =  Request::getVar('custom_field', false);
 	if ($custom_field) {
 		$custom_field = explode('|', $custom_field);
 		$dd['where'][] = array('field'=>$custom_field[0], 'value'=>$custom_field[1]);
@@ -166,18 +166,18 @@ function _dd_post($dd)
 	}
 
 	// Data for Custom Views
-	$custom_view = JRequest::getVar('custom_view', array());
+	$custom_view = Request::getVar('custom_view', array());
 	if (count($custom_view) > 0) {
 		unset($dd['customizer']);
 
 		// Custom Title
-		$custom_title = JRequest::getString('custom_title', '');
+		$custom_title = Request::getString('custom_title', '');
 		if ($custom_title !== '') {
 			$dd['title'] = htmlspecialchars($custom_title);
 		}
 
 		// Custom Group by
-		$group_by = JRequest::getString('group_by', '');
+		$group_by = Request::getString('group_by', '');
 		if ($group_by !== '') {
 			$dd['group_by'] = htmlspecialchars($group_by);
 		}
@@ -216,7 +216,7 @@ function pathway($dd)
 		$ref_title = "Datastore";
 		Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
 	} elseif (isset($_SERVER['HTTP_REFERER'])) {
-		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
+		$ref_title = Request::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
 		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
 	}

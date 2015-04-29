@@ -30,16 +30,16 @@ class ContentHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('JGLOBAL_ARTICLES'),
-			'index.php?option=com_content&view=articles',
+			Route::url('index.php?option=com_content&view=articles'),
 			$vName == 'articles'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_content',
+			Route::url('index.php?option=com_categories&extension=com_content'),
 			$vName == 'categories');
 		Submenu::addEntry(
 			Lang::txt('COM_CONTENT_SUBMENU_FEATURED'),
-			'index.php?option=com_content&view=featured',
+			Route::url('index.php?option=com_content&view=featured'),
 			$vName == 'featured'
 		);
 	}
@@ -56,16 +56,18 @@ class ContentHelper
 	public static function getActions($categoryId = 0, $articleId = 0)
 	{
 		// Reverted a change for version 2.5.6
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$result	= new \Hubzero\Base\Object;
 
-		if (empty($articleId) && empty($categoryId)) {
+		if (empty($articleId) && empty($categoryId))
+		{
 			$assetName = 'com_content';
 		}
-		elseif (empty($articleId)) {
+		elseif (empty($articleId))
+		{
 			$assetName = 'com_content.category.'.(int) $categoryId;
 		}
-		else {
+		else
+		{
 			$assetName = 'com_content.article.'.(int) $articleId;
 		}
 
@@ -73,8 +75,9 @@ class ContentHelper
 			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
 		);
 
-		foreach ($actions as $action) {
-			$result->set($action,	$user->authorise($action, $assetName));
+		foreach ($actions as $action)
+		{
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;
@@ -88,9 +91,8 @@ class ContentHelper
 	public static function filterText($text)
 	{
 		// Filter settings
-		$config		= Component::params('com_config');
-		$user		= JFactory::getUser();
-		$userGroups	= JAccess::getGroupsByUser($user->get('id'));
+		$config     = Component::params('com_config');
+		$userGroups = JAccess::getGroupsByUser(User::get('id'));
 
 		$filters = $config->get('filters');
 

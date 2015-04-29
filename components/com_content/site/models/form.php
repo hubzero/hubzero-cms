@@ -42,7 +42,7 @@ class ContentModelForm extends ContentModelArticle
 		$this->setState('return_page', urldecode(base64_decode($return)));
 
 		// Load the parameters.
-		$params	= $app->getParams();
+		$params = $app->getParams();
 		$this->setState('params', $params);
 
 		$this->setState('layout', Request::getCmd('layout'));
@@ -67,7 +67,8 @@ class ContentModelForm extends ContentModelArticle
 		$return = $table->load($itemId);
 
 		// Check for a table object error.
-		if ($return === false && $table->getError()) {
+		if ($return === false && $table->getError())
+		{
 			$this->setError($table->getError());
 			return false;
 		}
@@ -80,16 +81,15 @@ class ContentModelForm extends ContentModelArticle
 		$value->params->loadString($value->attribs);
 
 		// Compute selected asset permissions.
-		$user	= JFactory::getUser();
-		$userId	= $user->get('id');
-		$asset	= 'com_content.article.'.$value->id;
+		$userId = User::get('id');
+		$asset  = 'com_content.article.'.$value->id;
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', $asset)) {
+		if (User::authorise('core.edit', $asset)) {
 			$value->params->set('access-edit', true);
 		}
 		// Now check if edit.own is available.
-		elseif (!empty($userId) && $user->authorise('core.edit.own', $asset)) {
+		elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
 			// Check for a valid user and that they are the owner.
 			if ($userId == $value->created_by) {
 				$value->params->set('access-edit', true);
@@ -99,18 +99,18 @@ class ContentModelForm extends ContentModelArticle
 		// Check edit state permission.
 		if ($itemId) {
 			// Existing item
-			$value->params->set('access-change', $user->authorise('core.edit.state', $asset));
+			$value->params->set('access-change', User::authorise('core.edit.state', $asset));
 		}
 		else {
 			// New item.
 			$catId = (int) $this->getState('article.catid');
 
 			if ($catId) {
-				$value->params->set('access-change', $user->authorise('core.edit.state', 'com_content.category.'.$catId));
+				$value->params->set('access-change', User::authorise('core.edit.state', 'com_content.category.'.$catId));
 				$value->catid = $catId;
 			}
 			else {
-				$value->params->set('access-change', $user->authorise('core.edit.state', 'com_content'));
+				$value->params->set('access-change', User::authorise('core.edit.state', 'com_content'));
 			}
 		}
 

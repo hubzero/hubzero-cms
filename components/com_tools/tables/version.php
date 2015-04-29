@@ -312,8 +312,6 @@ class ToolVersion extends  JTable
 	 */
 	public function unpublish($toolid=NULL, $vid=0)
 	{
-		$xlog =  JFactory::getLogger();
-
 		if (!$toolid)
 		{
 			return false;
@@ -328,7 +326,7 @@ class ToolVersion extends  JTable
 
 		$this->_db->setQuery($query);
 
-		$xlog->debug(__FUNCTION__ . "()  $query");
+		Log::debug(__FUNCTION__ . "()  $query");
 
 		if ($this->_db->query())
 		{
@@ -352,9 +350,6 @@ class ToolVersion extends  JTable
 	 */
 	public function save($toolid=NULL, $version='dev', $create_new = 0)
 	{
-		die('1');
-		$xlog =  JFactory::getLogger();
-
 		if (!$this->toolid)
 		{
 			$this->toolid= $toolid;
@@ -384,7 +379,7 @@ class ToolVersion extends  JTable
 
 		$this->id = $result ? $result : 0;
 
-		$xlog->debug(__FUNCTION__ . " $toolid $version $create_new ");
+		Log::debug(__FUNCTION__ . " $toolid $version $create_new ");
 
 		if ((!$result && $create_new) or $this->id)
 		{
@@ -409,7 +404,6 @@ class ToolVersion extends  JTable
 	{
 		if (empty($this->id))
 		{
-			$xlog =  JFactory::getLogger();
 			$query = "SELECT id FROM #__tool_version WHERE toolname=" . $this->_db->Quote($this->toolname) .
 					" AND instance=" . $this->_db->Quote($this->instance) . ";";
 			$this->_db->setQuery($query);
@@ -417,7 +411,7 @@ class ToolVersion extends  JTable
 
 			if ($result)
 			{
-				$xlog->debug(__FUNCTION__ . " someone created this before me. Fixed");
+				Log::debug(__FUNCTION__ . " someone created this before me. Fixed");
 			}
 
 			$this->id = $result ? $result : 0;
@@ -439,8 +433,6 @@ class ToolVersion extends  JTable
 	 */
 	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
-		$xlog = JFactory::getLogger();
-
 		$objA = new ToolAuthor($this->_db);
 
 		$query  = "SELECT v.*, d.* ";
@@ -497,10 +489,7 @@ class ToolVersion extends  JTable
 	 */
 	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
-		$xlog = JFactory::getLogger();
-
 		// data comes from mysql
-		$juser  = JFactory::getUser();
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
@@ -669,8 +658,6 @@ class ToolVersion extends  JTable
 	 */
 	public function validToolReg(&$tool, &$err, $id, $config, $checker=0, $result=1)
 	{
-		$xlog = JFactory::getLogger();
-
 		$tgObj = new ToolGroup($this->_db);
 
 		//  check if toolname exists in tool table

@@ -16,11 +16,10 @@ function dv_data_definition_remove()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$db_id = JRequest::getString('db', false);
-	$dd_name = JRequest::getString('dd_name', false);
+	$db_id = Request::getString('db', false);
+	$dd_name = Request::getString('dd_name', false);
 
-	$juser = JFactory::getUser();
-	$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
+	$author = User::get('name') . ' <' . User::get('email') . '>';
 
 
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";

@@ -17,10 +17,10 @@ function dv_data_definition_new()
 
 	$document =  JFactory::getDocument();
 
-	$db_id = JRequest::getString('db', false);
-	$table = JRequest::getString('table', false);
-	$name = JRequest::getString('name', false);
-	$title = JRequest::getString('title', false);
+	$db_id = Request::getString('db', false);
+	$table = Request::getString('table', false);
+	$name = Request::getString('name', false);
+	$title = Request::getString('title', false);
 
 	$name = strtolower(preg_replace('/\W/', '_', $name));
 
@@ -77,8 +77,7 @@ function dv_data_definition_new()
 
 	$dd_name = $name;
 
-	$juser = JFactory::getUser();
-	$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
+	$author = User::get('name') . ' <' . User::get('email') . '>';
 
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";
 	file_put_contents($dd_file_php, $dd_text);

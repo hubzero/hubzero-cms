@@ -68,29 +68,31 @@ class CategoriesHelper
 	 * @param	string	$extension	The extension.
 	 * @param	int		$categoryId	The category ID.
 	 *
-	 * @return	JObject
+	 * @return	Object
 	 * @since	1.6
 	 */
 	public static function getActions($extension, $categoryId = 0)
 	{
-		$user		= JFactory::getUser();
-		$result		= new JObject;
-		$parts		= explode('.', $extension);
-		$component	= $parts[0];
+		$result    = new \Hubzero\Base\Object;
+		$parts     = explode('.', $extension);
+		$component = $parts[0];
 
-		if (empty($categoryId)) {
+		if (empty($categoryId))
+		{
 			$assetName = $component;
 			$level = 'component';
 		}
-		else {
+		else
+		{
 			$assetName = $component.'.category.'.(int) $categoryId;
 			$level = 'category';
 		}
 
 		$actions = JAccess::getActions($component, $level);
 
-		foreach ($actions as $action) {
-			$result->set($action->name, $user->authorise($action->name, $assetName));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name, User::authorise($action->name, $assetName));
 		}
 
 		return $result;

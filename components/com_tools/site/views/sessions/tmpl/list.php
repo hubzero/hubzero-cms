@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-
 $newSession = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version), 'server');
 if (strstr($newSession, '?'))
 {
@@ -89,7 +87,7 @@ else
 				<td>
 					<?php echo $session->accesstime; ?>
 				</td>
-			<?php if ($juser->get('username') == $session->username) { ?>
+			<?php if (User::get('username') == $session->username) { ?>
 				<td>
 					<a class="closetool" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=stop&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>">
 						<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>

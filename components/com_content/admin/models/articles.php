@@ -134,7 +134,6 @@ class ContentModelArticles extends JModelList
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser();
 
 		// Select the required fields from the table.
 		$query->select(
@@ -173,9 +172,9 @@ class ContentModelArticles extends JModelList
 		}
 
 		// Implement View Level Access
-		if (!$user->authorise('core.admin'))
+		if (!User::authorise('core.admin'))
 		{
-		    $groups	= implode(',', $user->getAuthorisedViewLevels());
+			$groups	= implode(',', User::getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 		}
 
@@ -294,8 +293,7 @@ class ContentModelArticles extends JModelList
 		$items	= parent::getItems();
 		$app	= JFactory::getApplication();
 		if ($app->isSite()) {
-			$user	= JFactory::getUser();
-			$groups	= $user->getAuthorisedViewLevels();
+			$groups	= User::getAuthorisedViewLevels();
 
 			for ($x = 0, $count = count($items); $x < $count; $x++) {
 				//Check the access level. Remove articles the user shouldn't see

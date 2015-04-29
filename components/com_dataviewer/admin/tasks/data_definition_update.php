@@ -16,8 +16,8 @@ function dv_data_definition_update()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$db_id = JRequest::getString('db', false);
-	$dd_name = JRequest::getString('dd', false);
+	$db_id = Request::getString('db', false);
+	$dd_name = Request::getString('dd', false);
 	$dd_text = $_POST['dd_text'];
 
 	if (get_magic_quotes_gpc()) {
@@ -27,8 +27,7 @@ function dv_data_definition_update()
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-	$juser = JFactory::getUser();
-	$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
+	$author = User::get('name') . ' <' . User::get('email') . '>';
 
 
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";

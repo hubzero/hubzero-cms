@@ -75,8 +75,8 @@ class ContentModelArticle extends JModelAdmin
 
 		// Check that the user has create permission for the component
 		$extension = JFactory::getApplication()->input->get('option', '');
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', $extension . '.category.' . $categoryId))
+
+		if (!User::authorise('core.create', $extension . '.category.' . $categoryId))
 		{
 			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
@@ -176,12 +176,14 @@ class ContentModelArticle extends JModelAdmin
 	 */
 	protected function canDelete($record)
 	{
-		if (!empty($record->id)) {
-			if ($record->state != -2) {
+		if (!empty($record->id))
+		{
+			if ($record->state != -2)
+			{
 				return ;
 			}
-			$user = JFactory::getUser();
-			return $user->authorise('core.delete', 'com_content.article.'.(int) $record->id);
+
+			return User::authorise('core.delete', 'com_content.article.'.(int) $record->id);
 		}
 	}
 
@@ -195,18 +197,19 @@ class ContentModelArticle extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
 		// Check for existing article.
-		if (!empty($record->id)) {
-			return $user->authorise('core.edit.state', 'com_content.article.'.(int) $record->id);
+		if (!empty($record->id))
+		{
+			return User::authorise('core.edit.state', 'com_content.article.'.(int) $record->id);
 		}
 		// New article, so check against the category.
-		elseif (!empty($record->catid)) {
-			return $user->authorise('core.edit.state', 'com_content.category.'.(int) $record->catid);
+		elseif (!empty($record->catid))
+		{
+			return User::authorise('core.edit.state', 'com_content.category.'.(int) $record->catid);
 		}
 		// Default to component settings if neither article nor category known.
-		else {
+		else
+		{
 			return parent::canEditState('com_content');
 		}
 	}
@@ -331,12 +334,10 @@ class ContentModelArticle extends JModelAdmin
 			$form->setFieldAttribute('catid', 'action', 'core.create');
 		}
 
-		$user = JFactory::getUser();
-
 		// Check for existing article.
 		// Modify the form based on Edit State access controls.
-		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_content.article.'.(int) $id))
-		|| ($id == 0 && !$user->authorise('core.edit.state', 'com_content'))
+		if ($id != 0 && (!User::authorise('core.edit.state', 'com_content.article.'.(int) $id))
+		|| ($id == 0 && !User::authorise('core.edit.state', 'com_content'))
 		)
 		{
 			// Disable fields for display.
@@ -368,15 +369,16 @@ class ContentModelArticle extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_content.edit.article.data', array());
+		$data = User::getState('com_content.edit.article.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 
 			// Prime some default values.
-			if ($this->getState('article.id') == 0) {
-				$app = JFactory::getApplication();
-				$data->set('catid', Request::getInt('catid', $app->getUserState('com_content.articles.filter.category_id')));
+			if ($this->getState('article.id') == 0)
+			{
+				$data->set('catid', Request::getInt('catid', User::getState('com_content.articles.filter.category_id')));
 			}
 		}
 

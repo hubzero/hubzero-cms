@@ -126,7 +126,7 @@ class CategoriesViewCategories extends JViewLegacy
 			Toolbar::archiveList('categories.archive');
 		}
 
-		if (JFactory::getUser()->authorise('core.admin')) {
+		if (User::authorise('core.admin')) {
 			Toolbar::checkin('categories.checkin');
 		}
 

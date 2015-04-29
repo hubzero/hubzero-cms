@@ -149,8 +149,6 @@ class ToolAuthor extends  JTable
 	 */
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
-		$juser =  JFactory::getUser();
-
 		if ($version == 'dev' && $rid)
 		{
 			$query = "SELECT authorid as uidNumber FROM #__author_assoc WHERE subid= " . $this->_db->Quote($rid) . " AND subtable='resources' ORDER BY ordering";

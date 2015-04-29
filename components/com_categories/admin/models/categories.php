@@ -130,7 +130,6 @@ class CategoriesModelCategories extends JModelList
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser();
 
 		// Select the required fields from the table.
 		$query->select(
@@ -176,9 +175,9 @@ class CategoriesModelCategories extends JModelList
 		}
 
 		// Implement View Level Access
-		if (!$user->authorise('core.admin'))
+		if (!User::authorise('core.admin'))
 		{
-		    $groups	= implode(',', $user->getAuthorisedViewLevels());
+			$groups	= implode(',', User::getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 		}
 

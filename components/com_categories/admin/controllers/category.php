@@ -58,8 +58,7 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		$user = JFactory::getUser();
-		return ($user->authorise('core.create', $this->extension) || count($user->getAuthorisedCategories($this->extension, 'core.create')));
+		return (User::authorise('core.create', $this->extension) || count(User::getAuthorisedCategories($this->extension, 'core.create')));
 	}
 
 	/**
@@ -76,24 +75,24 @@ class CategoriesControllerCategory extends JControllerForm
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$user = JFactory::getUser();
-		$userId = $user->get('id');
+
+		$userId = User::get('id');
 
 		// Check general edit permission first.
-		if ($user->authorise('core.edit', $this->extension))
+		if (User::authorise('core.edit', $this->extension))
 		{
 			return true;
 		}
 
 		// Check specific edit permission.
-		if ($user->authorise('core.edit', $this->extension . '.category.' . $recordId))
+		if (User::authorise('core.edit', $this->extension . '.category.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', $this->extension . '.category.' . $recordId) || $user->authorise('core.edit.own', $this->extension))
+		if (User::authorise('core.edit.own', $this->extension . '.category.' . $recordId) || User::authorise('core.edit.own', $this->extension))
 		{
 			// Now test the owner is the user.
 			$ownerId = (int) isset($data['created_user_id']) ? $data['created_user_id'] : 0;

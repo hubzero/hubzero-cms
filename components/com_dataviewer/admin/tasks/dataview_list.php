@@ -18,20 +18,20 @@ function dv_dataview_list()
 	$document =  JFactory::getDocument();
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-	$db_id = JRequest::getString('db', false);
+	$db_id = Request::getString('db', false);
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
 	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
 
 
-	JToolBarHelper::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
+	Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
 	if (!$jdb->getErrorMsg()) {
-		JToolBarHelper::custom('new', 'new', 'new', 'New Dataview', false);
+		Toolbar::custom('new', 'new', 'new', 'New Dataview', false);
 	}
 
-	JToolBarHelper::custom('back', 'back', 'back', 'Go back', false );
+	Toolbar::custom('back', 'back', 'back', 'Go back', false );
 
 	$path = "$base/$db_id/applications/$com_name/datadefinitions/";
 
@@ -101,8 +101,7 @@ function dv_dataview_list()
 					$cmd = "cd " . JPATH_COMPONENT . "; php ./ddconvert.php -i$php_file -o$json_file";
 					system($cmd);
 
-					$juser = JFactory::getUser();
-					$author = $juser->get('name') . ' <' . $juser->get('email') . '>';
+					$author = User::get('name') . ' <' . User::get('email') . '>';
 					$cmd = "cd $path; git add $dd_name.json; git commit $dd_name.json --author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
 					system($cmd);
 				}

@@ -24,7 +24,6 @@ class ContentViewForm extends JViewLegacy
 	{
 		// Initialise variables.
 		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
 
 		// Get model data.
 		$this->state		= $this->get('State');
@@ -33,14 +32,14 @@ class ContentViewForm extends JViewLegacy
 		$this->return_page	= $this->get('ReturnPage');
 
 		if (empty($this->item->id)) {
-			$authorised = $user->authorise('core.create', 'com_content') || (count($user->getAuthorisedCategories('com_content', 'core.create')));
+			$authorised = User::authorise('core.create', 'com_content') || (count(User::getAuthorisedCategories('com_content', 'core.create')));
 		}
 		else {
 			$authorised = $this->item->params->get('access-edit');
 		}
 
 		if ($authorised !== true) {
-			JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return false;
 		}
 
@@ -68,7 +67,7 @@ class ContentViewForm extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->params	= $params;
-		$this->user		= $user;
+		$this->user		= User::getRoot();
 
 		if ($params->get('enable_category') == 1) {
 			$this->form->setFieldAttribute('catid', 'default',  $params->get('catid', 1));

@@ -15,7 +15,7 @@ function controller()
 	global $dv_conf;
 	$db_id = array();
 
-	$db_id['id'] = JRequest::getVar('db');
+	$db_id['id'] = Request::getVar('db');
 	$db_info = explode(':', $db_id['id']);
 	$db_id['name'] = $db_info[0];
 	$db_id['mode'] = isset($db_info[1]) ? $db_info[1] : 'db';
@@ -31,13 +31,13 @@ function controller()
 
 
 
-	$task = strtolower(JRequest::getVar('task'));
+	$task = strtolower(Request::getVar('task'));
 	$task_func = 'task_' . $task;
 
 	if (function_exists($task_func)) {
 		$task_func($db_id);
 	} else {
-		JError::raiseError('404', 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+		App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
 	}
 }
 
@@ -55,7 +55,7 @@ function task_file($db_id)
 
 function task_stream_file($db_id)
 {
-	$hash = JRequest::getVar('hash');
+	$hash = Request::getVar('hash');
 	stream_file($hash);
 	exit;
 }
@@ -77,7 +77,7 @@ function task_view($db_id)
 		return;
 	}
 
-	$filter = strtolower(JRequest::getVar( 'format', 'json' ));
+	$filter = strtolower(Request::getVar( 'format', 'json' ));
 	$file = (JPATH_COMPONENT.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
@@ -103,7 +103,7 @@ function task_data($db_id)
 		return;
 	}
 
-	$filter = strtolower(JRequest::getVar('type', 'json'));
+	$filter = strtolower(Request::getVar('type', 'json'));
 	$file = (JPATH_COMPONENT.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
@@ -127,8 +127,6 @@ function authorize($dd)
 {
 	global $dv_conf;
 
-	$juser = JFactory::getUser();
-
 	if (isset($dd['acl']['allowed_users']) && (is_array($dd['acl']['allowed_users']) || $dd['acl']['allowed_users'] === false || $dd['acl']['allowed_users'] == 'registered')) {
 		$dv_conf['acl']['allowed_users'] = $dd['acl']['allowed_users'];
 	}
@@ -139,7 +137,7 @@ function authorize($dd)
 
 	if ($dv_conf['acl']['allowed_users'] === false && $dv_conf['acl']['allowed_groups'] === false || isset($dd['acl']['public'])) {
 		return true;
-	} elseif ($juser->get('guest')) {
+	} elseif (User::isGuest()) {
 		$redir_url = '?return=' . base64_encode($_SERVER['REQUEST_URI']);
 		$login_url = '/login';
 		$url = $login_url . $redir_url;
@@ -147,20 +145,20 @@ function authorize($dd)
 		return;
 	}
 
-	if (!$juser->get('guest') && isset($dd['acl']['registered'])) {
+	if (!User::isGuest() && isset($dd['acl']['registered'])) {
 		return true;
 	}
 
-	if ($dv_conf['acl']['allowed_users'] !== false && $dv_conf['acl']['allowed_users'] == 'registered' && !$juser->get('guest')) {
+	if ($dv_conf['acl']['allowed_users'] !== false && $dv_conf['acl']['allowed_users'] == 'registered' && !User::isGuest()) {
 		return true;
-	} elseif (isset($dv_conf['acl']['allowed_users']) && is_array($dv_conf['acl']['allowed_users']) && !$juser->get('guest')) {
-		if (in_array($juser->get('username'), $dv_conf['acl']['allowed_users'])) {
+	} elseif (isset($dv_conf['acl']['allowed_users']) && is_array($dv_conf['acl']['allowed_users']) && !User::isGuest()) {
+		if (in_array(User::get('username'), $dv_conf['acl']['allowed_users'])) {
 			return true;
 		}
 	}
 
-	if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !$juser->get('guest')) {
-		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
+	if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !User::isGuest()) {
+		$groups = \Hubzero\User\Helper::getGroups(User::get('id'));
 		if ($groups && count($groups)) {
 			foreach ($groups as $g) {
 				if (in_array($g->cn, $dv_conf['acl']['allowed_groups'])) {

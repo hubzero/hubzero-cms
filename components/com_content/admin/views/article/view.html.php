@@ -59,8 +59,8 @@ class ContentViewArticle extends JViewLegacy
 	protected function addToolbar()
 	{
 		Request::setVar('hidemainmenu', true);
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
+
+		$userId		= User::get('id');
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo		= ContentHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
@@ -69,7 +69,7 @@ class ContentViewArticle extends JViewLegacy
 		// Built the actions for new and existing records.
 
 		// For new records, check the create permission.
-		if ($isNew && (count($user->getAuthorisedCategories('com_content', 'core.create')) > 0)) {
+		if ($isNew && (count(User::getAuthorisedCategories('com_content', 'core.create')) > 0)) {
 			Toolbar::apply('article.apply');
 			Toolbar::save('article.save');
 			Toolbar::save2new('article.save2new');

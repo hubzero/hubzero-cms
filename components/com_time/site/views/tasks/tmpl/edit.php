@@ -34,9 +34,9 @@ use Components\Time\Models\Liaison;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+$this->js('jquery.fancyselect', 'system');
+     ->css('jquery.fancyselect', 'system');
+     ->css('jquery.ui.css', 'system');
 
 $this->css()
      ->css('tasks')
@@ -125,7 +125,7 @@ $this->css()
 						<?php if ($group = \Hubzero\User\Group::getInstance($this->config->get('accessgroup', 'time'))) : ?>
 							<?php foreach ($group->get('members') as $member) : ?>
 								<option value="<?php echo $member; ?>" <?php echo ($this->row->assignee_id == $member) ? 'selected="selected"': '';?>>
-									<?php echo JFactory::getUser($member)->get('name'); ?>
+									<?php echo User::getInstance($member)->get('name'); ?>
 								</option>
 							<?php endforeach; ?>
 						<?php endif; ?>

@@ -66,29 +66,31 @@ class ContentModelArticles extends JModelList
 		$app = JFactory::getApplication();
 
 		// List state information
-		$value = Request::getUInt('limit', $app->getCfg('list_limit', 0));
+		$value = Request::getUInt('limit', Config::get('list_limit', 0));
 		$this->setState('list.limit', $value);
 
 		$value = Request::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
-		$orderCol	= Request::getCmd('filter_order', 'a.ordering');
-		if (!in_array($orderCol, $this->filter_fields)) {
+		$orderCol = Request::getCmd('filter_order', 'a.ordering');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
 			$orderCol = 'a.ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder	=  Request::getCmd('filter_order_Dir', 'ASC');
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
 
 		$params = $app->getParams();
 		$this->setState('params', $params);
-		$user		= JFactory::getUser();
 
-		if ((!$user->authorise('core.edit.state', 'com_content')) &&  (!$user->authorise('core.edit', 'com_content'))){
+		if ((!User::authorise('core.edit.state', 'com_content')) &&  (!User::authorise('core.edit', 'com_content')))
+		{
 			// filter on published for those who do not have edit or edit.state rights.
 			$this->setState('filter.published', 1);
 		}
@@ -96,10 +98,12 @@ class ContentModelArticles extends JModelList
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// process show_noauth parameter
-		if (!$params->get('show_noauth')) {
+		if (!$params->get('show_noauth'))
+		{
 			$this->setState('filter.access', true);
 		}
-		else {
+		else
+		{
 			$this->setState('filter.access', false);
 		}
 
@@ -149,9 +153,6 @@ class ContentModelArticles extends JModelList
 	 */
 	function getListQuery()
 	{
-		// Get the current user for authorisation checks
-		$user	= JFactory::getUser();
-
 		// Create a new query object.
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -189,7 +190,8 @@ class ContentModelArticles extends JModelList
 		$query->from('#__content AS a');
 
 		// Join over the frontpage articles.
-		if ($this->context != 'com_content.featured') {
+		if ($this->context != 'com_content.featured')
+		{
 			$query->join('LEFT', '#__content_frontpage AS fp ON fp.content_id = a.id');
 		}
 
@@ -235,14 +237,16 @@ class ContentModelArticles extends JModelList
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_content');
 
-		if ($this->getState('filter.published') == 2) {
+		if ($this->getState('filter.published') == 2)
+		{
 			// Find any up-path categories that are archived
 			// If any up-path categories are archived, include all children in archived layout
 			$subquery .= ' AND parent.published = 2 GROUP BY cat.id ';
 			// Set effective state to archived if up-path category is archived
 			$publishedWhere = 'CASE WHEN badcats.id is null THEN a.state ELSE 2 END';
 		}
-		else {
+		else
+		{
 			// Find any up-path categories that are not published
 			// If all categories are published, badcats.id will be null, and we just use the article state
 			$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
@@ -261,11 +265,13 @@ class ContentModelArticles extends JModelList
 		// Filter by published state
 		$published = $this->getState('filter.published');
 
-		if (is_numeric($published)) {
+		if (is_numeric($published))
+		{
 			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
 			$query->where($publishedWhere . ' = ' . (int) $published);
 		}
-		elseif (is_array($published)) {
+		elseif (is_array($published))
+		{
 			JArrayHelper::toInteger($published);
 			$published = implode(',', $published);
 			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
@@ -294,11 +300,13 @@ class ContentModelArticles extends JModelList
 		// Filter by a single or group of articles.
 		$articleId = $this->getState('filter.article_id');
 
-		if (is_numeric($articleId)) {
+		if (is_numeric($articleId))
+		{
 			$type = $this->getState('filter.article_id.include', true) ? '= ' : '<> ';
 			$query->where('a.id '.$type.(int) $articleId);
 		}
-		elseif (is_array($articleId)) {
+		elseif (is_array($articleId))
+		{
 			JArrayHelper::toInteger($articleId);
 			$articleId = implode(',', $articleId);
 			$type = $this->getState('filter.article_id.include', true) ? 'IN' : 'NOT IN';
@@ -402,10 +410,10 @@ class ContentModelArticles extends JModelList
 		}
 
 		// Define null and now dates
-		$nullDate	= $db->Quote($db->getNullDate());
-		$nowDate	= $db->Quote(Date::toSql());
+		$nullDate = $db->Quote($db->getNullDate());
+		$nowDate  = $db->Quote(Date::toSql());
 
-		if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content')))
+		if ((!User::authorise('core.edit.state', 'com_content')) && (!User::authorise('core.edit', 'com_content')))
 		{
 			// Filter by start and end dates.
 			$query->where('(a.publish_up = '.$nullDate.' OR a.publish_up <= '.$nowDate.')');
@@ -486,11 +494,11 @@ class ContentModelArticles extends JModelList
 	 */
 	public function getItems()
 	{
-		$items	= parent::getItems();
-		$user	= JFactory::getUser();
-		$userId	= $user->get('id');
-		$guest	= $user->get('guest');
-		$groups	= $user->getAuthorisedViewLevels();
+		$items  = parent::getItems();
+
+		$userId = User::get('id');
+		$guest  = User::get('guest');
+		$groups = User::getAuthorisedViewLevels();
 
 		// Get the global params
 		$globalParams = Component::params('com_content', true);
@@ -566,11 +574,11 @@ class ContentModelArticles extends JModelList
 				$asset	= 'com_content.article.'.$item->id;
 
 				// Check general edit permission first.
-				if ($user->authorise('core.edit', $asset)) {
+				if (User::authorise('core.edit', $asset)) {
 					$item->params->set('access-edit', true);
 				}
 				// Now check if edit.own is available.
-				elseif (!empty($userId) && $user->authorise('core.edit.own', $asset)) {
+				elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
 					// Check for a valid user and that they are the owner.
 					if ($userId == $item->created_by) {
 						$item->params->set('access-edit', true);

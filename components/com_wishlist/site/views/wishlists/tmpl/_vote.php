@@ -45,8 +45,7 @@ $dcls = '';
 $lcls = '';
 $cls  = ' tooltips';
 
-$juser = JFactory::getUser();
-if (!$juser->get('guest'))
+if (!User::isGuest())
 {
 	// Logged in
 	$like_title    = Lang::txt('COM_WISHLIST_VOTING_I_LIKE_THIS');
@@ -64,7 +63,7 @@ if (!$juser->get('guest'))
 			$dcls = ' chosen';
 		}
 	}
-	if ($juser->get('id') == $this->item->get('proposed_by'))
+	if (User::get('id') == $this->item->get('proposed_by'))
 	{
 		$like_title = $dislike_title = Lang::txt('COM_WISHLIST_VOTING_CANNOT_VOTE_FOR_OWN');
 	}
@@ -82,16 +81,16 @@ else
 }
 ?>
 <span class="vote-like<?php echo $lcls; ?>">
-<?php if ($juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { //if ($this->item->get('vote') || $juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { ?>
-	<span class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive'); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></span>
-<?php } else { ?>
-	<a class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></a>
-<?php } ?>
+	<?php if (User::isGuest() || User::get('id') == $this->item->get('proposed_by')) { ?>
+		<span class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive'); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></span>
+	<?php } else { ?>
+		<a class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></a>
+	<?php } ?>
 </span>
 <span class="vote-dislike<?php echo $dcls; ?>">
-<?php if ($juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { //if ($this->item->get('vote') || $juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { ?>
-	<span class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative'); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></span>
-<?php } else { ?>
-	<a class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></a>
-<?php } ?>
+	<?php if (User::isGuest() || User::get('id') == $this->item->get('proposed_by')) { ?>
+		<span class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative'); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></span>
+	<?php } else { ?>
+		<a class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></a>
+	<?php } ?>
 </span>

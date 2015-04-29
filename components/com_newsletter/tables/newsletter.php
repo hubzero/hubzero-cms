@@ -106,9 +106,9 @@ class Newsletter extends \JTable
 
 		// set new created & modified date/by
 		$this->created     = \Date::toSql();
-		$this->created_by  = \JFactory::getUser()->get('id');
+		$this->created_by  = \User::get('id');
 		$this->modified    = \Date::toSql();
-		$this->modified_by = \JFactory::getUser()->get('id');
+		$this->modified_by = \User::get('id');
 
 		//save the copy
 		$this->save($this);

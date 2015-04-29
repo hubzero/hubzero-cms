@@ -54,9 +54,7 @@ class ContentController extends JControllerLegacy
 		$vName	= Request::getCmd('view', 'categories');
 		Request::setVar('view', $vName);
 
-		$user = JFactory::getUser();
-
-		if ($user->get('id') ||
+		if (User::get('id') ||
 			($_SERVER['REQUEST_METHOD'] == 'POST' &&
 				(($vName == 'category' && Request::getCmd('layout') != 'blog') || $vName == 'archive' ))) {
 			$cachable = false;
@@ -68,7 +66,7 @@ class ContentController extends JControllerLegacy
 		// Check for edit form.
 		if ($vName == 'form' && !$this->checkEditId('com_content.edit.article', $id)) {
 			// Somehow the person just went to the form - we don't allow that.
-			return JError::raiseError(403, Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			return App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 		}
 
 		parent::display($cachable, $safeurlparams);

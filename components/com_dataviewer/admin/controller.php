@@ -19,8 +19,8 @@ function controller_exec()
 
 		if ($conf['modes']['db']['enabled']) {
 			$group = $conf['access_limit_to_group'];
-			JToolBarHelper::title('Databases', 'databases');
-			JToolBarHelper::preferences('com_databases', '200');
+			Toolbar::title('Databases', 'databases');
+			Toolbar::preferences('com_databases', '200');
 			$err_str =  "<p class=\"error\">Not authorized, access is limited to \"<em>$group</em>\"</p>. <h3>Use the Databases component parameters to change this</h3>";
 		}
 
@@ -30,7 +30,7 @@ function controller_exec()
 
 
 	// Get the task
-	$task = JRequest::getVar('task', 'list');
+	$task = Request::getVar('task', 'list');
 
 	$task_file = JPATH_COMPONENT . DS . 'tasks' . DS . $task . '.php';
 	if (require_once($task_file)) {
@@ -48,14 +48,13 @@ function controller_exec()
 function authorized()
 {
 	global $conf;
-	$juser = JFactory::getUser();
 
 	if ($conf['access_limit_to_group'] === false) {
 		return true;
 	}
 
-	if ($conf['access_limit_to_group'] !== false && !$juser->get('guest')) {
-		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
+	if ($conf['access_limit_to_group'] !== false && !User::isGuest()) {
+		$groups = \Hubzero\User\Helper::getGroups(User::get('id'));
 		if ($groups && count($groups)) {
 			foreach ($groups as $g) {
 				if ($g->cn == $conf['access_limit_to_group']) {
