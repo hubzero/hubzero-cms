@@ -181,7 +181,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 						unset($options[$i]);
 					}
 				}
-				if (User::authorise('core.create', $extension . '.category.' . $option->value) != true)
+				if ((User::authorise('core.create', $extension . '.category.' . $option->value) != true)
 					&& (isset($oldParent)) && $option->value != $oldParent)
 				{
 					{

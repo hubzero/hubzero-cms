@@ -34,8 +34,8 @@ use Components\Time\Models\Liaison;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->js('jquery.fancyselect', 'system');
-     ->css('jquery.fancyselect', 'system');
+$this->js('jquery.fancyselect', 'system')
+     ->css('jquery.fancyselect', 'system')
      ->css('jquery.ui.css', 'system');
 
 $this->css()
