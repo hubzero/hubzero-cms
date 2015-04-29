@@ -523,7 +523,6 @@ class Projects extends AdminController
 	{
 		$id = Request::getVar( 'id', 0 );
 		$permanent = 1;
-		jimport('joomla.filesystem.folder');
 
 		// Initiate extended database class
 		$obj = new Tables\Project( $this->database );
@@ -537,7 +536,7 @@ class Projects extends AdminController
 
 		// Get project group
 		$group_prefix = $this->config->get('group_prefix', 'pr-');
-		$prgroup = $group_prefix.$obj->alias;
+		$prGroup = $group_prefix . $obj->alias;
 
 		// Store project info
 		$alias = $obj->alias;
@@ -552,7 +551,7 @@ class Projects extends AdminController
 
 		// Erase owner group
 		$group = new \Hubzero\User\Group();
-		$group->read( $prgroup );
+		$group->read( $prGroup );
 		if ($group)
 		{
 			$group->delete();
@@ -590,7 +589,7 @@ class Projects extends AdminController
 
 		// Get all notes
 		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p
-			WHERE p.group_cn='" . $prgroup . "' AND p.scope LIKE '" . $masterscope . "%' " );
+			WHERE p.group_cn='" . $prGroup . "' AND p.scope LIKE '" . $masterscope . "%' " );
 		$notes = $this->database->loadObjectList();
 
 		if ($notes)
@@ -610,6 +609,8 @@ class Projects extends AdminController
 		// Erase all files, remove files repository
 		if ($alias)
 		{
+			$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
+
 			// Delete base dir for .git repos
 			$dir 		= $alias;
 			$prefix 	= $this->config->get('offroot', 0) ? '' : PATH_CORE ;
@@ -618,7 +619,7 @@ class Projects extends AdminController
 
 			if (is_dir($path))
 			{
-				\JFolder::delete($path);
+				$this->fileSystem->deleteDirectory($path);
 			}
 
 			// Delete images/preview directories
@@ -627,7 +628,7 @@ class Projects extends AdminController
 
 			if (is_dir($webpath))
 			{
-				\JFolder::delete($webpath);
+				$this->fileSystem->deleteDirectory($webpath);
 			}
 		}
 

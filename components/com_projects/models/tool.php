@@ -227,11 +227,11 @@ class Tool extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('status_changed'), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get('status_changed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('status_changed'), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get('status_changed'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			case 'datetime':
@@ -278,13 +278,6 @@ class Tool extends Model
 				{
 					foreach ($results as $key => $result)
 					{
-						/*
-						$results[$key] = self::getInstance(
-							$result->name,
-							$result->project_id,
-							$result->instance
-						);
-						*/
 						$results[$key] = self::mapInstance($result);
 					}
 				}

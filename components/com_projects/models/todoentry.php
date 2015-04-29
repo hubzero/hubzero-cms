@@ -198,7 +198,10 @@ class Entry extends Model
 	 */
 	public function isOverdue()
 	{
-		if ($this->get('duedate') != '0000-00-00 00:00:00' && $this->get('duedate') < \JFactory::getDate())
+		if ($this->get('duedate')
+			&& $this->get('duedate') != $this->_db->getNullDate()
+			&& $this->get('duedate') < Date::toSql()
+		)
 		{
 			return true;
 		}
@@ -228,18 +231,18 @@ class Entry extends Model
 	 */
 	protected function _date($key, $as='')
 	{
-		if ($this->get($key) == '0000-00-00 00:00:00')
+		if ($this->get($key) == $this->_db->getNullDate())
 		{
 			return NULL;
 		}
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -405,4 +408,3 @@ class Entry extends Model
 		}
 	}
 }
-

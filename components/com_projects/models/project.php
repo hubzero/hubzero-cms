@@ -181,7 +181,7 @@ class Project extends Model
 		require_once(__DIR__ . DS . 'repo.php');
 		if (!isset($this->_repo))
 		{
-			$this->_repo = new \Components\Projects\Models\Repo ($this, 'local');
+			$this->_repo = new Repo ($this, 'local');
 		}
 
 		return $this->_repo;
@@ -218,14 +218,18 @@ class Project extends Model
 	 */
 	protected function _date($key, $as='')
 	{
+		if ($this->get($key) == $this->_db->getNullDate())
+		{
+			return NULL;
+		}
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
