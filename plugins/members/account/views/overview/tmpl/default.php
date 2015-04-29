@@ -62,13 +62,21 @@ $this->css()
 					$plugin       = JPluginHelper::getPlugin('authentication', $hzala['auth_domain_name']);
 					$pparams      = new JRegistry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
+					$class = 'plgauthentication'.$plugin->name;
+					$refl = new \ReflectionClass($class);
 					?>
 					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
 						<div class="x">
 							<a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php echo JRoute::_($this->member->getLink() . '&active=account&action=unlink&hzal_id=' . $hzala['id']); ?>">x</a>
 						</div>
 						<div class="account-info">
+							<?php 
+								if ($refl->hasMethod('getLinkIndicator')):
+									echo $refl->getMethod('getLinkIndicator')->invoke(NULL, $hzala['auth_domain_id']);
+								else:
+							?>
 							<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+							<?php 	endif; ?>
 						</div>
 					</div>
 					<?php
