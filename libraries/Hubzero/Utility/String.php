@@ -340,7 +340,7 @@ class String
 
 		if ($html)
 		{
-			if (mb_strlen(preg_replace('/<.*?>/', '', $text)) <= $length)
+			if (mb_strlen($text) <= $length)
 			{
 				return $text;
 			}
