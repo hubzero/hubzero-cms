@@ -30,7 +30,18 @@ jQuery(document).ready(function(jq){
 	// Are there any posts?
 	if (container.length > 0) {
 		// Set overlays for lightboxed elements
-		$('a.img-link').fancybox();
+		$('a.img-link').fancybox({
+			afterLoad: function() {
+				if ($(this.element).attr('data-download')) {
+					this.title = '<a href="' + $(this.element).attr('data-download') + '">' + $(this.element).attr('data-downloadtext') + '</a> ' + this.title;
+				}
+			},
+			helpers: {
+				title: {
+					type: 'inside'
+				}
+			}
+		});
 
 		var opts = $('.view-options a');
 		opts.each(function(i, el) {
