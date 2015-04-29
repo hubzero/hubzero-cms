@@ -30,6 +30,7 @@
 
 namespace Hubzero\Module;
 
+use Hubzero\Container\Container;
 use Hubzero\Utility\Date;
 
 /**
@@ -37,6 +38,24 @@ use Hubzero\Utility\Date;
  */
 class Loader
 {
+	/**
+	 * The application implementation.
+	 *
+	 * @var  object
+	 */
+	protected $app;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $app
+	 * @return  void
+	 */
+	public function __construct(Container $app)
+	{
+		$this->app = $app;
+	}
+
 	/**
 	 * Count the modules based on the given condition
 	 *
@@ -129,7 +148,7 @@ class Loader
 
 		if (count($result) == 0)
 		{
-			if (\Request::getBool('tp') && \Component::params('com_templates')->get('template_positions_display'))
+			if ($this->outline())
 			{
 				$result[0] = $this->get('mod_' . $position);
 				$result[0]->title    = $position;
@@ -188,6 +207,22 @@ class Loader
 	}
 
 	/**
+	 * Determine if module position outlining is enabled
+	 *
+	 * @return  boolean
+	 */
+	protected function outline()
+	{
+		if ($this->app['request']->getBool('tp')
+		 && $this->app['component']->params('com_templates')->get('template_positions_display'))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Render the module.
 	 *
 	 * @param   object  $module   A module object.
@@ -198,7 +233,7 @@ class Loader
 	{
 		static $chrome;
 
-		if (constant('JDEBUG'))
+		if ($this->app['config']->get('debug'))
 		{
 			\JProfiler::getInstance('Application')->mark('beforeRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
@@ -223,8 +258,8 @@ class Loader
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
 		if (empty($module->user) && file_exists($path))
 		{
-				\Lang::load($module->module, JPATH_BASE, null, false, true)
-			||	\Lang::load($module->module, dirname($path), null, false, true);
+				$this->app['language']->load($module->module, JPATH_BASE, null, false, true)
+			||	$this->app['language']->load($module->module, dirname($path), null, false, true);
 
 			$content = '';
 			ob_start();
@@ -240,7 +275,7 @@ class Loader
 		}
 
 		include_once JPATH_THEMES . '/system/html/modules.php';
-		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/modules.php';
+		$chromePath = JPATH_THEMES . '/' . $this->app['template']->template . '/html/modules.php';
 
 		if (!isset($chrome[$chromePath]))
 		{
@@ -259,7 +294,7 @@ class Loader
 		}
 
 		// Dynamically add outline style
-		if (\Request::getBool('tp') && \Component::params('com_templates')->get('template_positions_display'))
+		if ($this->outline())
 		{
 			$attribs['style'] .= ' outline';
 		}
@@ -283,7 +318,7 @@ class Loader
 		//revert the scope
 		$app->scope = $scope;
 
-		if (constant('JDEBUG'))
+		if ($this->app['config']->get('debug'))
 		{
 			\JProfiler::getInstance('Application')->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
@@ -300,21 +335,22 @@ class Loader
 	 */
 	public function getLayoutPath($module, $layout = 'default')
 	{
-		$template = \App::get('template')->template;
-		$defaultLayout = $layout;
+		$template = $this->app['template']->template;
+		$default  = $layout;
 
 		if (strpos($layout, ':') !== false)
 		{
 			// Get the template and file name from the string
 			$temp = explode(':', $layout);
+
 			$template = ($temp[0] == '_') ? $template : $temp[0];
-			$layout = $temp[1];
-			$defaultLayout = ($temp[1]) ? $temp[1] : 'default';
+			$layout   = $temp[1];
+			$default  = ($temp[1]) ? $temp[1] : 'default';
 		}
 
 		// Build the template and base path for the layout
 		$tPath = JPATH_THEMES . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
-		$bPath = JPATH_BASE . '/modules/' . $module . '/tmpl/' . $defaultLayout . '.php';
+		$bPath = JPATH_BASE . '/modules/' . $module . '/tmpl/' . $default . '.php';
 		$dPath = JPATH_BASE . '/modules/' . $module . '/tmpl/default.php';
 
 		// If the template has a layout override use it
@@ -346,12 +382,12 @@ class Loader
 			return $clean;
 		}
 
-		$Itemid = \Request::getInt('Itemid');
-		$app    = \JFactory::getApplication();
-		$user   = \User::getRoot();
-		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$lang   = \Lang::getTag();
-		$clientId = (int) $app->getClientId();
+		$Itemid   = \Request::getInt('Itemid');
+		//$app      = \JFactory::getApplication();
+		$user     = \User::getRoot();
+		$groups   = implode(',', $user->getAuthorisedViewLevels());
+		$lang     = $this->app['language']->getTag();
+		$clientId = (int) $this->app['client']->id;
 
 		$cache = \JFactory::getCache('com_modules', '');
 		$cacheid = md5(serialize(array($Itemid, $groups, $clientId, $lang)));
@@ -369,9 +405,9 @@ class Loader
 			$query->join('LEFT', '#__extensions AS e ON e.element = m.module AND e.client_id = m.client_id');
 			$query->where('e.enabled = 1');
 
-			$date = new Date('now');
-			$now = $date->toSql();
+			$now = with(new Date('now'))->toSql();
 			$nullDate = $db->getNullDate();
+
 			$query->where('(m.publish_up = ' . $db->Quote($nullDate) . ' OR m.publish_up <= ' . $db->Quote($now) . ')');
 			$query->where('(m.publish_down = ' . $db->Quote($nullDate) . ' OR m.publish_down >= ' . $db->Quote($now) . ')');
 
@@ -380,7 +416,7 @@ class Loader
 			$query->where('(mm.menuid = ' . (int) $Itemid . ' OR mm.menuid <= 0)');
 
 			// Filter by language
-			if ($app->isSite() && $app->getLanguageFilter())
+			if ($this->app->isSite() && \JFactory::getApplication()->getLanguageFilter())
 			{
 				$query->where('m.language IN (' . $db->Quote($lang) . ',' . $db->Quote('*') . ')');
 			}
@@ -394,7 +430,8 @@ class Loader
 
 			if ($db->getErrorNum())
 			{
-				throw new \Exception(\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()), 500);
+				Notify::error(\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+
 				return $clean;
 			}
 
@@ -427,13 +464,15 @@ class Loader
 					// Determine if this is a 1.0 style custom module (no mod_ prefix)
 					// This should be eliminated when the class is refactored.
 					// $module->user is deprecated.
-					$file = $module->module;
-					$custom = substr($file, 0, 4) == 'mod_' ?  0 : 1;
-					$module->user = $custom;
+					//$file = $module->module;
+					//$custom = substr($file, 0, 4) == 'mod_' ? 0 : 1;
+					//$module->user = $custom;
 					// 1.0 style custom module name is given by the title field, otherwise strip off "mod_"
-					$module->name = $custom ? $module->module : substr($file, 4);
-					$module->style = null;
+					//$module->name = $custom ? $module->module : substr($file, 4);
+					$module->name     = substr($module->module, 4);
+					$module->style    = null;
 					$module->position = strtolower($module->position);
+
 					$clean[$module->id] = $module;
 				}
 			}
@@ -481,13 +520,13 @@ class Loader
 		$cache = \JFactory::getCache($cacheparams->cachegroup, 'callback');
 
 		// Turn cache off for internal callers if parameters are set to off and for all logged in users
-		if ($moduleparams->get('owncache', null) === '0' || \Config::get('caching') == 0 || \User::get('id'))
+		if ($moduleparams->get('owncache', null) === '0' || $this->app['config']->get('caching') == 0 || \User::get('id'))
 		{
 			$cache->setCaching(false);
 		}
 
 		// module cache is set in seconds, global cache in minutes, setLifeTime works in minutes
-		$cache->setLifeTime($moduleparams->get('cache_time', \Config::get('cachetime') * 60) / 60);
+		$cache->setLifeTime($moduleparams->get('cache_time', $this->app['config']->get('cachetime') * 60) / 60);
 
 		$wrkaroundoptions = array('nopathway' => 1, 'nohead' => 0, 'nomodules' => 1, 'modulemode' => 1, 'mergehead' => 1);
 

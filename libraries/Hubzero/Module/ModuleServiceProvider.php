@@ -46,7 +46,7 @@ class ModuleServiceProvider extends ServiceProvider
 	{
 		$this->app['module'] = function($app)
 		{
-			return new Loader();
+			return new Loader($app);
 		};
 	}
 }
