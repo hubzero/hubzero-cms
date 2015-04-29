@@ -15,7 +15,7 @@ function dv_list()
 	global $com_name, $conf;
 
 	JToolBarHelper::title( Lang::txt('Database List' ), 'databases');
-	JToolBarHelper::preferences(JRequest::getcmd('option'), '500');
+	JToolBarHelper::preferences(Request::getcmd('option'), '500');
 
 
 	$base = $conf['dir_base'];

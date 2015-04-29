@@ -73,7 +73,7 @@ function view($dd = false)
 
 
 	// Get the list of IDs if any
-	$rec_ids = JRequest::getVar('id', '');
+	$rec_ids = Request::getVar('id', '');
 	if ($rec_ids != '') {
 		$dv_conf['settings']['data_url'] .= '&id=' . htmlentities($rec_ids);
 		$dv_conf['settings']['view_url'] .= '?id=' . htmlentities($rec_ids);
@@ -92,13 +92,13 @@ function view($dd = false)
 		$dv_conf['settings']['show_filter_options'] = isset($dd['filter_options'])? $dd['filter_options']: true;
 
 		$custom_field_url = '';
-		$custom_field = JRequest::getVar('custom_field', false);
+		$custom_field = Request::getVar('custom_field', false);
 		if ($custom_field) {
 			$custom_field_url = '&custom_field=' . $custom_field;
 		}
 
 		// Custom views
-		$custom_view = JRequest::getVar('custom_view', false);
+		$custom_view = Request::getVar('custom_view', false);
 		$custom_view_url = '';
 		if ($custom_field) {
 			$custom_view_url = '&custom_view=' . $custom_field;
@@ -173,7 +173,7 @@ function view($dd = false)
 		}
 
 		// Filtered Views
-		$filter = JRequest::getVar('filter', false);
+		$filter = Request::getVar('filter', false);
 		$filted_view = array();
 		$filted_view_str = '';
 		if ($filter !== false) {
@@ -189,7 +189,7 @@ function view($dd = false)
 	<a name="dv_top"></a>
 	<div id="dv-spreadsheet">
 
-	<?php if (!JRequest::getVar('show_table_only', false)): ?>
+	<?php if (!Request::getVar('show_table_only', false)): ?>
 
 		<div id="dv_title" style="margin: 0;">
 			<h2 class="ui-corner-all" style="display: inline-block;">
@@ -471,7 +471,7 @@ function view($dd = false)
 		}
 
 		//Legacy support
-		if (JRequest::getVar('show_filters', 'false') === 'true') {
+		if (Request::getVar('show_filters', 'false') === 'true') {
 			$dv_show_filters = 'true';
 		}
 
@@ -490,9 +490,9 @@ function view($dd = false)
 			dv_data = <?php print $f_data; ?>;
 			dv_settings = <?php print json_encode($dv_conf['settings']); ?>;
 			dv_show_filters = <?php print $dv_show_filters; ?>;
-			dv_settings.show_charts = <?php print JRequest::getInt('show_chart', 'undefined');?>;
+			dv_settings.show_charts = <?php print Request::getInt('show_chart', 'undefined');?>;
 			dv_show_customizer = <?php print ($show_customizer)? 'true': 'false';?>;
-			var dv_show_maps = <?php print JRequest::getString('show_map', 'undefined');?>;
+			var dv_show_maps = <?php print Request::getString('show_map', 'undefined');?>;
 		</script>
 
 		<form style="display: none;" id="dv-spreadsheet-dl" method="POST"

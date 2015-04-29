@@ -29,7 +29,7 @@ function view()
 	global $html_path, $com_name, $dv_conf;
 
 	$base_path = $dv_conf['base_path'];
-	$file = JRequest::getString('f', false);
+	$file = Request::getString('f', false);
 
 	$pi = pathinfo($file);
 	$file_name = $pi['basename'];

@@ -14,7 +14,7 @@ function dv_config_current()
 {
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
-	$db_id = JRequest::getString('db', false);
+	$db_id = Request::getString('db', false);
 
 	require_once(JPATH_COMPONENT_SITE . DS . 'dv_config.php');
 

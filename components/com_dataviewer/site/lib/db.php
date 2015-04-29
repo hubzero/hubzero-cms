@@ -248,9 +248,9 @@ function query_gen(&$dd)
 	for ($i=0; $i<count($cols_vis); $i++) {
 		$col_id = $cols_vis[$i];
 		$col = $cols[$col_id];
-		$searchable = JRequest::getString('bSearchable_' . $i, 'false');
-		$fieldtype = JRequest::getString('fieldtype_' . $i, 'string');
-		$search_str = JRequest::getVar('sSearch_' . $i, '', 'default', null, JREQUEST_ALLOWRAW);
+		$searchable = Request::getString('bSearchable_' . $i, 'false');
+		$fieldtype = Request::getString('fieldtype_' . $i, 'string');
+		$search_str = Request::getVar('sSearch_' . $i, '', 'default', null, JREQUEST_ALLOWRAW);
 
 		if ($searchable === 'true' && $search_str !== '') {
 			if ($col['aggr']) {
@@ -264,7 +264,7 @@ function query_gen(&$dd)
 	}
 
 	// Filtered views
-	$filters = JRequest::getVar('filter', false, 'default', null, JREQUEST_ALLOWRAW);
+	$filters = Request::getVar('filter', false, 'default', null, JREQUEST_ALLOWRAW);
 	if ($filters !== false) {
 		$filters = explode('||', $filters);
 		foreach ($filters as $filter) {
@@ -496,7 +496,7 @@ function query_gen(&$dd)
 	$where_search = array();
 	$having_search = array();
 
-	$search_str = JRequest::getVar('sSearch', '', 'default', null, JREQUEST_ALLOWRAW);
+	$search_str = Request::getVar('sSearch', '', 'default', null, JREQUEST_ALLOWRAW);
 	if ($search_str != '') {
 		for ($i = 0; $i < count($cols_vis); $i++) {
 			$col_id = $cols_vis[$i];
@@ -599,15 +599,15 @@ function query_gen(&$dd)
 
 	$order = array();
 
-	$sorting = JRequest::getVar('iSortCol_0', false);
+	$sorting = Request::getVar('iSortCol_0', false);
 	if ($sorting !== false && count($cols_vis) > 0) {
-		$sort_col_count = JRequest::getInt('iSortingCols', 0);
+		$sort_col_count = Request::getInt('iSortingCols', 0);
 		for ($i = 0 ; $i < $sort_col_count; $i++) {
-			$idx = JRequest::getInt('iSortCol_' . $i, NULL);
-			$sortable = JRequest::getString('bSortable_' . $idx, 'false');
+			$idx = Request::getInt('iSortCol_' . $i, NULL);
+			$sortable = Request::getString('bSortable_' . $idx, 'false');
 			if ($sortable === 'true') {
 				$col_id = $cols_vis[$idx];
-				$sort_dir = JRequest::getString('sSortDir_' . $i, 'asc');
+				$sort_dir = Request::getString('sSortDir_' . $i, 'asc');
 				if ($cols[$col_id]['aggr']) {
 					$order[] = '`' . $col_id . '` ' . $sort_dir;
 				} elseif ($cols[$col_id]['raw']) {
@@ -631,9 +631,9 @@ function query_gen(&$dd)
 
 	// Limit
 	$limit = '';
-	$no_limit = JRequest::getVar('nolimit', false);
-	$limit_start = JRequest::getVar('iDisplayStart', false);
-	$limit_length = JRequest::getVar('iDisplayLength', $dv_conf['settings']['limit']);
+	$no_limit = Request::getVar('nolimit', false);
+	$limit_start = Request::getVar('iDisplayStart', false);
+	$limit_length = Request::getVar('iDisplayLength', $dv_conf['settings']['limit']);
 	if ($no_limit === false && $limit_start !== false && $limit_length != '-1') {
 		$limit = " LIMIT $limit_start, $limit_length";
 	} elseif ($no_limit === false && isset($dd['serverside']) && $dd['serverside']) {

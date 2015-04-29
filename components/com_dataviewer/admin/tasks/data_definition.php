@@ -18,14 +18,14 @@ function dv_data_definition()
 	$document =  JFactory::getDocument();
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-	$db_id = JRequest::getString('db', false);
+	$db_id = Request::getString('db', false);
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-	$dd_name = JRequest::getString('dd', false);
+	$dd_name = Request::getString('dd', false);
 
 
-	$full_screen = JRequest::getString('tmpl', false);
+	$full_screen = Request::getString('tmpl', false);
 
 
 	$dd_file = "$base/$db_id/applications/$com_name/datadefinitions/$dd_name.json";

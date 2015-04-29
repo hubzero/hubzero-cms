@@ -16,8 +16,8 @@ function dv_config_update()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$db_id = JRequest::getString('db', false);
-	$dv_conf_text = JRequest::getString('conf_text', false);
+	$db_id = Request::getString('db', false);
+	$dv_conf_text = Request::getString('conf_text', false);
 
 	$dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
 	file_put_contents($dv_conf_file, $dv_conf_text);
