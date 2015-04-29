@@ -81,7 +81,10 @@ class Rows implements Iterator
 	public function push(Relational $model)
 	{
 		// Index by primary key if possible, otherwise plain incremental array
-		if ($model->getPkValue())
+		// Also check to see if that key already exists.  If so, we'll just start
+		// appending items to the array.  This will result in a mixed array and 
+		// subsequent items will not be seekable.
+		if ($model->getPkValue() && (!is_array($this->rows) || !array_key_exists($model->getPkValue(), $this->rows)))
 		{
 			$this->rows[$model->getPkValue()] = $model;
 		}
