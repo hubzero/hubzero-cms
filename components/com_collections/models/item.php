@@ -464,7 +464,7 @@ class Item extends Base
 		{
 			$this->_tags = new Tags($this->get('id'));
 		}
-		//$user_id = $user_id ?: \JFactory::getUser()->get('id');
+		//$user_id = $user_id ?: User::get('id');
 
 		//return $this->_tags->add($tag, $user_id, $admin);
 		return $this->_tags->append($tag);

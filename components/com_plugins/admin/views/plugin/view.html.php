@@ -47,7 +47,6 @@ class PluginsViewPlugin extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
 		$canDo		= PluginsHelper::getActions();
 
 		Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGIN', Lang::txt($this->item->name)), 'plugin');

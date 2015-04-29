@@ -34,14 +34,13 @@ class NewsfeedsControllerNewsfeed extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$user = JFactory::getUser();
-		$categoryId = JArrayHelper::getValue($data, 'catid', Request::getInt('filter_category_id'), 'int');
+		$categoryId = \Hubzero\Utility\Arr::getValue($data, 'catid', Request::getInt('filter_category_id'), 'int');
 		$allow = null;
 
 		if ($categoryId)
 		{
 			// If the category has been passed in the URL check it.
-			$allow = $user->authorise('core.create', $this->option . '.category.' . $categoryId);
+			$allow = User::authorise('core.create', $this->option . '.category.' . $categoryId);
 		}
 
 		if ($allow === null)
@@ -68,7 +67,6 @@ class NewsfeedsControllerNewsfeed extends JControllerForm
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Initialise variables.
-		$user = JFactory::getUser();
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 		$categoryId = 0;
 
@@ -80,7 +78,7 @@ class NewsfeedsControllerNewsfeed extends JControllerForm
 		if ($categoryId)
 		{
 			// The category has been set. Check the category permissions.
-			return $user->authorise('core.edit', $this->option . '.category.' . $categoryId);
+			return User::authorise('core.edit', $this->option . '.category.' . $categoryId);
 		}
 		else
 		{

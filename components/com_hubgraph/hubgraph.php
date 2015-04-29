@@ -100,7 +100,7 @@ try {
 			$users        = $req->getContributors();
 			$groups       = $req->getGroup();
 			$domainMap    = $req->getDomainMap();
-			$loggedIn     = (bool)JFactory::getUser()->id;
+			$loggedIn     = (bool) User::get('id');
 			ksort($domainMap);
 
 			if ($task == 'page') {

@@ -73,7 +73,7 @@ class Review extends \JTable
 			$this->created = \Date::toSql();
 		}
 
-		$this->user_id = $this->user_id ?: \JFactory::getUser()->get('id');
+		$this->user_id = $this->user_id ?: \User::get('id');
 
 		return true;
 	}
@@ -114,8 +114,6 @@ class Review extends \JTable
 	 */
 	public function getRatings($resource_id=NULL)
 	{
-		$juser = \JFactory::getUser();
-
 		$resource_id = $resource_id ?: $this->resource_id;
 
 		if (!$resource_id)
@@ -128,7 +126,7 @@ class Review extends \JTable
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
 			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($juser->get('id')) . "
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote(\User::get('id')) . "
 			WHERE rr.resource_id=" . $this->_db->Quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC"
 		);
 		return $this->_db->loadObjectList();
@@ -145,7 +143,7 @@ class Review extends \JTable
 	{
 		if (!$userid)
 		{
-			$userid = \JFactory::getUser()->get('id');
+			$userid = \User::get('id');
 		}
 
 		$id = $id ?: $this->resource_id;

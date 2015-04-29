@@ -60,22 +60,19 @@ class CartModelCurrentCart extends CartModelCart
 
 		/* Load current user cart */
 
-		// Get user
-		$juser = JFactory::getUser();
-
 		/* Check if there is a session or cookie cart */
 
 		// Get cart from session
 		$cart = $this->liftSessionCart();
 
 		// If no session cart, try to locate a cookie cart (only for not logged in users)
-		if (!$cart && $juser->get('guest')) {
+		if (!$cart && User::isGuest()) {
 			$cart = $this->liftCookie();
 		}
 
 		if ($cart) {
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!$juser->get('guest')) {
+			if (!User::isGuest()) {
 				if (empty($this->cart->linked) || !$this->cart->linked) {
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
@@ -88,9 +85,9 @@ class CartModelCurrentCart extends CartModelCart
 				$this->cart->linked = 0;
 			}
 		} // If no session & cookie cart found, but user is logged in
-		elseif (!$juser->get('guest')) {
+		elseif (!User::isGuest()) {
 			// Try to get the saved cart in the DB
-			if (!$this->liftUserCart($juser->id)) {
+			if (!$this->liftUserCart(User::get('id'))) {
 				// If no session, no cookie, no DB cart -- create a brand new cart
 				$this->createCart();
 			}
@@ -356,8 +353,7 @@ class CartModelCurrentCart extends CartModelCart
 			$redirect_url  = Route::url('index.php?option=' . 'com_cart') . '/checkout/' . $where;
 		}
 
-		$app  =  JFactory::getApplication();
-		$app->redirect($redirect_url);
+		App::redirect($redirect_url);
 	}
 
 	/**
@@ -549,8 +545,7 @@ class CartModelCurrentCart extends CartModelCart
 				$sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 
 				// Get user
-				$juser = JFactory::getUser();
-				$uId = $juser->id;
+				$uId = User::get('id');
 
 				$sql = "INSERT IGNORE INTO `#__cart_saved_addresses`
 						SET `uidNumber` = {$uId}, {$sqlUpdateValues}";
@@ -829,14 +824,15 @@ class CartModelCurrentCart extends CartModelCart
 	public function addCoupon($couponCode)
 	{
 		// Check if coupon is valid and active (throws exception if invalid)
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
 		$coupons = new StorefrontModelCoupons;
 
 		// Get coupons
 		$this->cartCoupons = $this->getCoupons();
 
 		// Check if coupon has already been applied
-		if ($this->isCouponApplied($couponCode)) {
+		if ($this->isCouponApplied($couponCode))
+		{
 			throw new Exception(Lang::txt('COM_CART_COUPON_ALREADY_APPLIED'));
 		}
 
@@ -846,8 +842,7 @@ class CartModelCurrentCart extends CartModelCart
 		$this->applyCoupon($cnId);
 
 		// If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
-		$juser = JFactory::getUser();
-		if ($juser->id)
+		if (User::get('id'))
 		{
 			$coupons->apply($cnId);
 		}
@@ -869,7 +864,7 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	public function applyCoupon($cnId)
 	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
 		$coupon = StorefrontModelCoupons::getCouponInfo($cnId, true, true, true, true);
 
 		if (!$coupon->info->itemCoupon)
@@ -911,7 +906,7 @@ class CartModelCurrentCart extends CartModelCart
 			elseif ($coupon->info->cnObject == 'product')
 			{
 				// Check product SKUs
-				include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 				$warehouse = new StorefrontModelWarehouse();
 				$productOptions = $warehouse->getProductOptions($couponObject->cnoObjectId);
 
@@ -945,7 +940,7 @@ class CartModelCurrentCart extends CartModelCart
 		$cnIds = $this->_db->loadResultArray();
 
 		// Get coupon types
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
 		$coupons = StorefrontModelCoupons::getCouponsInfo($cnIds);
 
 		return $coupons;
@@ -1311,8 +1306,7 @@ class CartModelCurrentCart extends CartModelCart
 		$coupons = new StorefrontModelCoupons;
 
 		// If user is logged in return coupon back to the coupons pool.
-		$juser = JFactory::getUser();
-		if ($juser->id)
+		if (User::get('id'))
 		{
 			$coupons->recycle($cnId);
 		}
@@ -1343,7 +1337,7 @@ class CartModelCurrentCart extends CartModelCart
 		// init membership info
 		$memberships = array();
 
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
 		$ms = new StorefrontModelMemberships();
 
 		// Get membership types
@@ -1362,11 +1356,8 @@ class CartModelCurrentCart extends CartModelCart
 				$pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
 				$type = $pType['ptName'];
 
-				// Get user
-				$jUser = JFactory::getUser();
-
 				// Get the correct membership Object
-				$subscription = StorefrontModelMemberships::getSubscriptionObject($type, $itemInfo->pId, $jUser->id);
+				$subscription = StorefrontModelMemberships::getSubscriptionObject($type, $itemInfo->pId, User::get('id'));
 				// Get the expiration for the current subscription (if any)
 				$currentExpiration = $subscription->getExpiration();
 
@@ -1423,7 +1414,7 @@ class CartModelCurrentCart extends CartModelCart
 		$allSkuInfo = $items->allSkuInfo;
 		$skus = $items->skus;
 
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		$skuInfo = $warehouse->getSkusInfo($skus);
@@ -1699,13 +1690,11 @@ class CartModelCurrentCart extends CartModelCart
 			echo "<br>Creating new cart";
 		}
 
-		$juser = JFactory::getUser();
-
 		$uId = 'NULL';
 		$cart = new stdClass();
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$uId = $juser->id;
+			$uId = User::get('id');
 			$cart->linked = 1;
 		}
 		else {
@@ -1723,7 +1712,7 @@ class CartModelCurrentCart extends CartModelCart
 		$session->set('cart', $cart);
 
 		// Set cookie for non logged-in users to recover the cart
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			if ($this->debug)
 			{
@@ -1756,13 +1745,10 @@ class CartModelCurrentCart extends CartModelCart
 		// Kill the old cookie
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
 
-		// Get user
-		$juser = JFactory::getUser();
-
 		// Check if session cart is not someone else's. Otherwise load user's cart and done
 		if ($this->cartIsLinked($this->crtId))
 		{
-			if (!$this->liftUserCart($juser->id))
+			if (!$this->liftUserCart(User::get('id')))
 			{
 				return false;
 			}
@@ -1770,7 +1756,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// Get user's cart
-		$userCartId = $this->getUserCartId($juser->id);
+		$userCartId = $this->getUserCartId(User::get('id'));
 
 		// Get coupons
 		$coupons = $this->getCoupons();
@@ -1778,7 +1764,7 @@ class CartModelCurrentCart extends CartModelCart
 		// If no user cart -- make the session cart a user's cart. Easy.
 		if (!$userCartId)
 		{
-			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
+			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = " . User::get('id') . " WHERE `crtId` = {$this->crtId}";
 			$existingCnIds = array();
 		}
 		// Merge session and user carts. Not so easy.
@@ -1853,7 +1839,7 @@ class CartModelCurrentCart extends CartModelCart
 			$this->crtId = $userCartId;
 		}
 
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
 		$storefrontCoupons = new StorefrontModelCoupons;
 
 		// Go through each coupon and apply all that are not applied
@@ -1925,7 +1911,7 @@ class CartModelCurrentCart extends CartModelCart
 		// Initialize required steps
 		$steps = array();
 
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		$transactionSubtotalAmount = 0;
@@ -2015,7 +2001,7 @@ class CartModelCurrentCart extends CartModelCart
 		}
 
 		// lock transaction items
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 
 		foreach ($tItems as $sId => $item)

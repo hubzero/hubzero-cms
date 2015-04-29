@@ -27,18 +27,20 @@ class NewsfeedsHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_NEWSFEEDS_SUBMENU_NEWSFEEDS'),
-			'index.php?option=com_newsfeeds&view=newsfeeds',
+			Route::url('index.php?option=com_newsfeeds&view=newsfeeds'),
 			$vName == 'newsfeeds'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_NEWSFEEDS_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_newsfeeds',
+			Route::url('index.php?option=com_categories&extension=com_newsfeeds'),
 			$vName == 'categories'
 		);
-		if ($vName=='categories') {
+		if ($vName=='categories')
+		{
 			Toolbar::title(
 				Lang::txt('COM_CATEGORIES_CATEGORIES_TITLE', Lang::txt('com_newsfeeds')),
-				'newsfeeds-categories');
+				'newsfeeds-categories'
+			);
 		}
 	}
 
@@ -51,22 +53,24 @@ class NewsfeedsHelper
 	 */
 	public static function getActions($categoryId = 0, $newsfeedId = 0)
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$result	= new \Hubzero\Base\Object;
 
-		if (empty($categoryId)) {
+		if (empty($categoryId))
+		{
 			$assetName = 'com_newsfeeds';
 			$level = 'component';
 		}
-		else {
+		else
+		{
 			$assetName = 'com_newsfeeds.category.'.(int) $categoryId;
 			$level = 'category';
 		}
 
 		$actions = JAccess::getActions('com_newsfeeds', $level);
 
-		foreach ($actions as $action) {
-			$result->set($action->name,	$user->authorise($action->name, $assetName));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name,	User::authorise($action->name, $assetName));
 		}
 
 		return $result;

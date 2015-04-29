@@ -103,7 +103,7 @@ class MembersQuotasClasses extends JTable
 			$log->set('object_id'  , $this->id);
 			$log->set('name'       , $this->alias);
 			$log->set('action'     , $action);
-			$log->set('actor_id'   , JFactory::getUser()->get('id'));
+			$log->set('actor_id'   , User::get('id'));
 			$log->set('soft_blocks', $this->soft_blocks);
 			$log->set('hard_blocks', $this->hard_blocks);
 			$log->set('soft_files' , $this->soft_files);
@@ -133,7 +133,7 @@ class MembersQuotasClasses extends JTable
 			$log->set('object_id'  , $this->id);
 			$log->set('name'       , $this->alias);
 			$log->set('action'     , 'delete');
-			$log->set('actor_id'   , JFactory::getUser()->get('id'));
+			$log->set('actor_id'   , User::get('id'));
 			$log->set('soft_blocks', $this->soft_blocks);
 			$log->set('hard_blocks', $this->hard_blocks);
 			$log->set('soft_files' , $this->soft_files);

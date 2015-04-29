@@ -791,7 +791,7 @@ class Format
 		{
 			if ($includeHtml)
 			{
-				$isAdmin = (\JFactory::getUser()->authorise('core.manage', 'com_citations') ? true : false);
+				$isAdmin = (\User::authorise('core.manage', 'com_citations') ? true : false);
 
 				$html  = '<ul class="tags">';
 				foreach ($tags as $tag)

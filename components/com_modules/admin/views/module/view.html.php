@@ -32,8 +32,9 @@ class ModulesViewModule extends JViewLegacy
 		$this->state = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -50,7 +51,6 @@ class ModulesViewModule extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
 		$canDo		= ModulesHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
@@ -80,12 +80,14 @@ class ModulesViewModule extends JViewLegacy
 		$lang = Lang::getRoot();
 
 		$help = $this->get('Help');
-		if ($lang->hasKey($help->url)) {
+		if ($lang->hasKey($help->url))
+		{
 			$debug = $lang->setDebug(false);
 			$url = Lang::txt($help->url);
 			$lang->setDebug($debug);
 		}
-		else {
+		else
+		{
 			$url = null;
 		}
 		Toolbar::help('module'); //$help->key, false, $url);

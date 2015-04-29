@@ -63,7 +63,7 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php $canEdit = JFactory::getUser()->authorise('core.edit', 'com_languages');
+		<?php $canEdit = User::authorise('core.edit', 'com_languages');
 		$i = 0;
 		foreach ($this->items as $key => $text): ?>
 			<tr class="row<?php echo $i % 2; ?>" id="overriderrow<?php echo $i; ?>">

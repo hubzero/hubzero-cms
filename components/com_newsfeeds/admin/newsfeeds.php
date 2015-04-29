@@ -9,8 +9,9 @@
 defined('_JEXEC') or die;
 
 // Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_newsfeeds')) {
-	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!User::authorise('core.manage', 'com_newsfeeds'))
+{
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 $controller	= JControllerLegacy::getInstance('Newsfeeds');

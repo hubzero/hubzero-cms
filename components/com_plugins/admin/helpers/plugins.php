@@ -34,14 +34,14 @@ class PluginsHelper
 	 */
 	public static function getActions()
 	{
-		$user		= JFactory::getUser();
-		$result		= new JObject;
-		$assetName	= 'com_plugins';
+		$result    = new \Hubzero\Base\Object;
+		$assetName = 'com_plugins';
 
 		$actions = JAccess::getActions($assetName);
 
-		foreach ($actions as $action) {
-			$result->set($action->name,	$user->authorise($action->name, $assetName));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name, User::authorise($action->name, $assetName));
 		}
 
 		return $result;
@@ -80,26 +80,31 @@ class PluginsHelper
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		if ($error = $db->getErrorMsg()) {
+		if ($error = $db->getErrorMsg())
+		{
 			JError::raiseWarning(500, $error);
 		}
 
 		return $options;
 	}
-	function parseXMLTemplateFile($templateBaseDir, $templateDir)
+
+	public function parseXMLTemplateFile($templateBaseDir, $templateDir)
 	{
-		$data = new JObject;
+		$data = new \Hubzero\Base\Object;
 
 		// Check of the xml file exists
 		$filePath = JPath::clean($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
-		if (is_file($filePath)) {
+		if (is_file($filePath))
+		{
 			$xml = JInstaller::parseXMLInstallFile($filePath);
 
-			if ($xml['type'] != 'template') {
+			if ($xml['type'] != 'template')
+			{
 				return false;
 			}
 
-			foreach ($xml as $key => $value) {
+			foreach ($xml as $key => $value)
+			{
 				$data->set($key, $value);
 			}
 		}

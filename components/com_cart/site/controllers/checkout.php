@@ -54,10 +54,10 @@ class CartControllerCheckout extends ComponentController
 			$this->registerTask('__default', $this->_task);
 		}
 
-		$this->juser = JFactory::getUser();
+		$this->user = User::getRoot();
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->login('Please login to continue');
 			return;
@@ -89,8 +89,7 @@ class CartControllerCheckout extends ComponentController
 		{
 			// redirect back to cart to display all messages
 			$redirect_url = Route::url('index.php?option=' . 'com_cart');
-			$app = JFactory::getApplication();
-			$app->redirect($redirect_url);
+			App::redirect($redirect_url);
 		}
 
 		// Check/create/update transaction here
@@ -140,7 +139,7 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function shippingTask()
 	{
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
 		$cart = new CartModelCurrentCart();
 
 		// initialize address set var
@@ -209,7 +208,7 @@ class CartControllerCheckout extends ComponentController
 			$this->view->notifications = $errors;
 		}
 
-		$savedShippingAddresses = $cart->getSavedShippingAddresses($this->juser->id);
+		$savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
 		$this->view->savedShippingAddresses = $savedShippingAddresses;
 		$this->view->display();
 	}
@@ -232,7 +231,7 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function summaryTask()
 	{
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
 		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();
@@ -268,7 +267,7 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function confirmTask()
 	{
-		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
 		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();

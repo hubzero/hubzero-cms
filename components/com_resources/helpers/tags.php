@@ -57,7 +57,6 @@ class Tags extends Cloud
 	 */
 	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
-		$juser = \JFactory::getUser();
 		$now = \Date::toSql();
 
 		$this->_db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_scope'");
@@ -89,9 +88,9 @@ class Tags extends Cloud
 			$sql .= "AND r.type=" . $type . " ";
 		}
 
-		if (!$juser->get('guest'))
+		if (!\User::isGuest())
 		{
-			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups(\User::get('id'), 'all');
 			if ($xgroups != '')
 			{
 				$usersgroups = self::getUsersGroups($xgroups);
@@ -189,7 +188,6 @@ class Tags extends Cloud
 	 */
 	public function get_objects_on_tag($tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array())
 	{
-		$juser = \JFactory::getUser();
 		$now  = \Date::toSql();
 
 		if ($tag || $tag2)
@@ -291,9 +289,9 @@ class Tags extends Cloud
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '" . $now . "') ";
 		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '" . $now . "') AND ";
 
-		if (!$juser->get('guest'))
+		if (!\User::isGuest())
 		{
-			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+			$xgroups = \Hubzero\User\Helper::getGroups(\User::get('id'), 'all');
 			if ($xgroups != '')
 			{
 				$usersgroups = self::getUsersGroups($xgroups);

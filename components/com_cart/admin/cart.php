@@ -33,9 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 $option = 'com_cart';
 
 // Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!User::authorise('core.manage', $option))
 {
-	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 Toolbar::title(Lang::txt('Cart'));

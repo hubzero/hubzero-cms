@@ -50,9 +50,8 @@ class MenusViewItem extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
 		$canDo		= MenusHelper::getActions($this->state->get('filter.parent_id'));
 
 		Toolbar::title(Lang::txt($isNew ? 'COM_MENUS_VIEW_NEW_ITEM_TITLE' : 'COM_MENUS_VIEW_EDIT_ITEM_TITLE'), 'menu-add');

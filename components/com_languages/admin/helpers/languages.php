@@ -25,22 +25,22 @@ class LanguagesHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_LANGUAGES_SUBMENU_INSTALLED_SITE'),
-			'index.php?option=com_languages&view=installed&client=0',
+			Route::url('index.php?option=com_languages&view=installed&client=0'),
 			$vName == 'installed'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_LANGUAGES_SUBMENU_INSTALLED_ADMINISTRATOR'),
-			'index.php?option=com_languages&view=installed&client=1',
+			Route::url('index.php?option=com_languages&view=installed&client=1'),
 			$vName == 'installed'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_LANGUAGES_SUBMENU_CONTENT'),
-			'index.php?option=com_languages&view=languages',
+			Route::url('index.php?option=com_languages&view=languages'),
 			$vName == 'languages'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_LANGUAGES_SUBMENU_OVERRIDES'),
-			'index.php?option=com_languages&view=overrides',
+			Route::url('index.php?option=com_languages&view=overrides'),
 			$vName == 'overrides'
 		);
 	}
@@ -52,14 +52,14 @@ class LanguagesHelper
 	 */
 	public static function getActions()
 	{
-		$user		= JFactory::getUser();
-		$result		= new JObject;
-		$assetName	= 'com_languages';
+		$result    = new \Hubzero\Base\Object;
+		$assetName = 'com_languages';
 
 		$actions = JAccess::getActions($assetName);
 
-		foreach ($actions as $action) {
-			$result->set($action->name,	$user->authorise($action->name, $assetName));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name, User::authorise($action->name, $assetName));
 		}
 
 		return $result;
@@ -84,16 +84,16 @@ class LanguagesHelper
 		}
 
 		// Capture hidden PHP errors from the parsing
-		$version			= phpversion();
-		$php_errormsg	= null;
-		$track_errors	= ini_get('track_errors');
+		$version      = phpversion();
+		$php_errormsg = null;
+		$track_errors = ini_get('track_errors');
 		ini_set('track_errors', true);
 
 		if ($version >= '5.3.1')
 		{
 			$contents = file_get_contents($filename);
 			$contents = str_replace('_QQ_', '"\""', $contents);
-			$strings 	= @parse_ini_string($contents);
+			$strings  = @parse_ini_string($contents);
 
 			if ($strings === false)
 			{

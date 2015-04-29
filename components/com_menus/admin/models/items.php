@@ -26,7 +26,8 @@ class MenusModelItems extends JModelList
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'menutype', 'a.menutype',
@@ -44,7 +45,8 @@ class MenusModelItems extends JModelList
 				'client_id', 'a.client_id',
 				'home', 'a.home',
 			);
-			if (JFactory::getApplication()->get('menu_associations', 0)) {
+			if (JFactory::getApplication()->get('menu_associations', 0))
+			{
 				$config['filter_fields'][] = 'association';
 			}
 		}
@@ -164,7 +166,6 @@ class MenusModelItems extends JModelList
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser();
 		$app	= JFactory::getApplication();
 
 		// Select all fields from the table.
@@ -252,9 +253,9 @@ class MenusModelItems extends JModelList
 		}
 
 		// Implement View Level Access
-		if (!$user->authorise('core.admin'))
+		if (!User::authorise('core.admin'))
 		{
-		    $groups	= implode(',', $user->getAuthorisedViewLevels());
+			$groups	= implode(',', User::getAuthorisedViewLevels());
 			$query->where('a.access IN ('.$groups.')');
 		}
 

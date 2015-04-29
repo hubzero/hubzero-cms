@@ -721,7 +721,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 						continue;
 					}
 
-					$juser = JFactory::getUser($args[1]);
+					$juser = User::getInstance($args[1]);
 					if (!is_object($juser) || !is_numeric($juser->get('id')))
 					{
 						continue;

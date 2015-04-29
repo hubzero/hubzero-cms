@@ -36,10 +36,9 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.view');
 
 // enable only if PRO is enabled
-$juser = JFactory::getUser();
-if (!$juser->proEnabled)
+if (!User::get('proEnabled'))
 {
-	JError::raiseError(404, Lang::txt('Component is not available at this time'));
+	App::abort(404, Lang::txt('Component is not available at this time'));
 }
 
 // require base component controller
@@ -55,7 +54,7 @@ if (empty($controllerName))
 }
 else if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	JError::raiseError(404, Lang::txt('Page Not Found'));
+	App::abort(404, Lang::txt('Page Not Found'));
 }
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');

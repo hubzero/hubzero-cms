@@ -119,12 +119,12 @@ class Resource extends \JTable
 		if (!$this->id)
 		{
 			$this->created    = $this->created    ?: \Date::toSql();
-			$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
+			$this->created_by = $this->created_by ?: \User::get('id');
 		}
 		else
 		{
 			$this->modified    = $this->modified    ?: \Date::toSql();
-			$this->modified_by = $this->modified_by ?: \JFactory::getUser()->get('id');
+			$this->modified_by = $this->modified_by ?: \User::get('id');
 		}
 
 		return true;
@@ -275,7 +275,6 @@ class Resource extends \JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$juser = \JFactory::getUser();
 		$now = \Date::toSql();
 
 		$query  = "";
@@ -331,9 +330,9 @@ class Resource extends \JTable
 		{
 			$query .= "(C.access=0 OR C.access=3) ";
 		}
-		else if (!$juser->get('guest'))
+		else if (!\User::isGuest())
 		{
-			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance(\User::get('id'));
 			$xgroups = (is_object($profile)) ? $profile->getGroups('all') : array();
 			if ($xgroups != '')
 			{
@@ -481,7 +480,6 @@ class Resource extends \JTable
 	public function buildPluginQuery($filters=array())
 	{
 		$database = \JFactory::getDBO();
-		$juser = \JFactory::getUser();
 
 		include_once(__DIR__ . DS . 'type.php');
 		$rt = new Type($database);
@@ -585,7 +583,7 @@ class Resource extends \JTable
 			$query .= ", #__tags_object AS t ";
 		}
 		$query .= "WHERE r.standalone=1 ";
-		if ($juser->get('guest') || !isset($filters['authorized']) || (isset($filters['authorized']) && !$filters['authorized']))
+		if (\User::isGuest() || !isset($filters['authorized']) || (isset($filters['authorized']) && !$filters['authorized']))
 		{
 			$query .= "AND r.published=1 ";
 		}
@@ -644,11 +642,11 @@ class Resource extends \JTable
 		}
 		else
 		{
-			if (!$juser->get('guest'))
+			if (!\User::isGuest())
 			{
 				if (!isset($filters['usergroups']))
 				{
-					$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+					$profile = \Hubzero\User\Profile::getInstance(\User::get('id'));
 					$xgroups = $profile->getGroups('all');
 				}
 				else
@@ -671,7 +669,7 @@ class Resource extends \JTable
 						$groups = count($usersgroups) ? $usersgroups[0] : '';
 					}
 					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
-					$query .= " OR r.created_by=" . $this->_db->Quote($juser->get('id'));
+					$query .= " OR r.created_by=" . $this->_db->Quote(\User::get('id'));
 					$query .= "))) ";
 				}
 				else

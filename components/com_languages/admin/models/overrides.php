@@ -148,23 +148,21 @@ class LanguagesModelOverrides extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-
 		// Use default language of frontend for default filter
-		$default	= Component::params('com_languages')->get('site', 'en-GB').'0';
+		$default = Component::params('com_languages')->get('site', 'en-GB').'0';
 
-		$old_language_client	= $app->getUserState('com_languages.overrides.filter.language_client', '');
-		$language_client			= $this->getUserStateFromRequest('com_languages.overrides.filter.language_client', 'filter_language_client', $default, 'cmd');
+		$old_language_client = User::getState('com_languages.overrides.filter.language_client', '');
+		$language_client     = $this->getUserStateFromRequest('com_languages.overrides.filter.language_client', 'filter_language_client', $default, 'cmd');
 
 		if ($old_language_client != $language_client)
 		{
-			$client		= substr($language_client, -1);
-			$language	= substr($language_client, 0, -1);
+			$client   = substr($language_client, -1);
+			$language = substr($language_client, 0, -1);
 		}
 		else
 		{
-			$client		= $app->getUserState('com_languages.overrides.filter.client', 0);
-			$language	= $app->getUserState('com_languages.overrides.filter.language', 'en-GB');
+			$client   = User::getState('com_languages.overrides.filter.client', 0);
+			$language = User::getState('com_languages.overrides.filter.language', 'en-GB');
 		}
 
 		$this->setState('filter.language_client', $language.$client);
@@ -200,9 +198,9 @@ class LanguagesModelOverrides extends JModelList
 		}
 
 		// Get all languages of frontend and backend
-		$languages 				= array();
-		$site_languages 	= JLanguage::getKnownLanguages(JPATH_SITE);
-		$admin_languages	= JLanguage::getKnownLanguages(JPATH_ADMINISTRATOR);
+		$languages = array();
+		$site_languages  = JLanguage::getKnownLanguages(JPATH_SITE);
+		$admin_languages = JLanguage::getKnownLanguages(JPATH_ADMINISTRATOR);
 
 		// Create a single array of them
 		foreach ($site_languages as $tag => $language)
@@ -235,7 +233,7 @@ class LanguagesModelOverrides extends JModelList
 	public function delete($cids)
 	{
 		// Check permissions first
-		if (!JFactory::getUser()->authorise('core.delete', 'com_languages'))
+		if (!User::authorise('core.delete', 'com_languages'))
 		{
 			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 
@@ -244,8 +242,6 @@ class LanguagesModelOverrides extends JModelList
 
 		jimport('joomla.filesystem.file');
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
-
-		$app = JFactory::getApplication();
 
 		// Parse the override.ini file in oder to get the keys and strings
 		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';

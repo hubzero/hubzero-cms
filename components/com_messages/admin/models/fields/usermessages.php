@@ -40,7 +40,8 @@ class JFormFieldUserMessages extends JFormFieldUser
 		$groups = $db->loadColumn();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			JError::raiseNotice(500, $db->getErrorMsg());
 			return null;
 		}
@@ -70,6 +71,6 @@ class JFormFieldUserMessages extends JFormFieldUser
 	 */
 	protected function getExcluded()
 	{
-		return array(JFactory::getUser()->id);
+		return array(User::get('id'));
 	}
 }

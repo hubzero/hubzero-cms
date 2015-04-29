@@ -24,13 +24,14 @@ class MenusViewMenu extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form	= $this->get('Form');
-		$this->item	= $this->get('Item');
-		$this->state	= $this->get('State');
+		$this->form  = $this->get('Form');
+		$this->item  = $this->get('Item');
+		$this->state = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -47,7 +48,6 @@ class MenusViewMenu extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$canDo		= MenusHelper::getActions($this->state->get('filter.parent_id'));
 

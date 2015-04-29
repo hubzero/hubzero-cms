@@ -14,10 +14,9 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= $user->authorise('core.edit.state',	'com_plugins');
+$canOrder	= User::authorise('core.edit.state',	'com_plugins');
 $saveOrder	= $listOrder == 'ordering';
 ?>
 <form action="<?php echo Route::url('index.php?option=com_plugins&view=plugins'); ?>" method="post" name="adminForm" id="adminForm">
@@ -90,9 +89,9 @@ $saveOrder	= $listOrder == 'ordering';
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$ordering	= ($listOrder == 'ordering');
-			$canEdit	= $user->authorise('core.edit',			'com_plugins');
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
-			$canChange	= $user->authorise('core.edit.state',	'com_plugins') && $canCheckin;
+			$canEdit	= User::authorise('core.edit',			'com_plugins');
+			$canCheckin	= User::authorise('core.manage',		'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
+			$canChange	= User::authorise('core.edit.state',	'com_plugins') && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">

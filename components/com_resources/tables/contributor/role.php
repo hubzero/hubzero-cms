@@ -67,16 +67,15 @@ class Role extends \JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
 			$this->created    = \Date::toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = \User::get('id');
 		}
 		else
 		{
 			$this->modified    = \Date::toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified_by = \User::get('id');
 		}
 
 		return true;

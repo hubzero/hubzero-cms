@@ -13,12 +13,11 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
+$userId		= User::get('id');
 $n			= count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= $user->authorise('core.edit.state', 'com_languages');
+$canOrder	= User::authorise('core.edit.state', 'com_languages');
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
 
@@ -100,9 +99,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<?php
 		foreach ($this->items as $i => $item) :
 			$ordering	= ($listOrder == 'a.ordering');
-			$canCreate	= $user->authorise('core.create',		'com_languages');
-			$canEdit	= $user->authorise('core.edit',			'com_languages');
-			$canChange	= $user->authorise('core.edit.state',	'com_languages');
+			$canCreate	= User::authorise('core.create',		'com_languages');
+			$canEdit	= User::authorise('core.edit',			'com_languages');
+			$canChange	= User::authorise('core.edit.state',	'com_languages');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td>

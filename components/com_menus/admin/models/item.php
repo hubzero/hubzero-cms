@@ -107,7 +107,7 @@ class MenusModelItem extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
@@ -125,7 +125,7 @@ class MenusModelItem extends JModelAdmin
 
 		if (!empty($commands['menu_id']))
 		{
-			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
+			$cmd = \Hubzero\Utility\Arr::getValue($commands, 'move_copy', 'c');
 
 			if ($cmd == 'c')
 			{
@@ -191,7 +191,7 @@ class MenusModelItem extends JModelAdmin
 		// $value comes as {menutype}.{parent_id}
 		$parts = explode('.', $value);
 		$menuType = $parts[0];
-		$parentId = (int) JArrayHelper::getValue($parts, 1, 0);
+		$parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 1, 0);
 
 		$table = $this->getTable();
 		$db = $this->getDbo();
@@ -381,7 +381,7 @@ class MenusModelItem extends JModelAdmin
 		// $value comes as {menutype}.{parent_id}
 		$parts = explode('.', $value);
 		$menuType = $parts[0];
-		$parentId = (int) JArrayHelper::getValue($parts, 1, 0);
+		$parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 1, 0);
 
 		$table = $this->getTable();
 		$db = $this->getDbo();
@@ -524,7 +524,7 @@ class MenusModelItem extends JModelAdmin
 	 */
 	protected function canSave($data = array(), $key = 'id')
 	{
-		return JFactory::getUser()->authorise('core.edit', $this->option);
+		return User::authorise('core.edit', $this->option);
 	}
 
 	/**
@@ -544,8 +544,8 @@ class MenusModelItem extends JModelAdmin
 			// The type should already be set.
 		}
 		else {
-			$this->setState('item.link', JArrayHelper::getValue($data, 'link'));
-			$this->setState('item.type', JArrayHelper::getValue($data, 'type'));
+			$this->setState('item.link', \Hubzero\Utility\Arr::getValue($data, 'link'));
+			$this->setState('item.type', \Hubzero\Utility\Arr::getValue($data, 'type'));
 		}
 
 		// Get the form.
@@ -578,7 +578,7 @@ class MenusModelItem extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		return array_merge((array)$this->getItem(), (array)JFactory::getApplication()->getUserState('com_menus.edit.item.data', array()));
+		return array_merge((array)$this->getItem(), (array) User::getState('com_menus.edit.item.data', array()));
 	}
 
 	/**
@@ -811,25 +811,29 @@ class MenusModelItem extends JModelAdmin
 		$pk = (int) Request::getInt('id');
 		$this->setState('item.id', $pk);
 
-		if (!($parentId = $app->getUserState('com_menus.edit.item.parent_id'))) {
+		if (!($parentId = User::getState('com_menus.edit.item.parent_id')))
+		{
 			$parentId = Request::getInt('parent_id');
 		}
 		$this->setState('item.parent_id', $parentId);
 
-		$menuType = $app->getUserState('com_menus.edit.item.menutype');
-		if (Request::getCmd('menutype', false)) {
+		$menuType = User::getState('com_menus.edit.item.menutype');
+		if (Request::getCmd('menutype', false))
+		{
 			$menuType = Request::getCmd('menutype', 'mainmenu');
 		}
 		$this->setState('item.menutype', $menuType);
 
-		if (!($type = $app->getUserState('com_menus.edit.item.type'))){
+		if (!($type = User::getState('com_menus.edit.item.type')))
+		{
 			$type = Request::getCmd('type');
 			// Note a new menu item will have no field type.
 			// The field is required so the user has to change it.
 		}
 		$this->setState('item.type', $type);
 
-		if ($link = $app->getUserState('com_menus.edit.item.link')) {
+		if ($link = User::getState('com_menus.edit.item.link'))
+		{
 			$this->setState('item.link', $link);
 		}
 

@@ -173,7 +173,7 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	protected function authoriseUser($action)
 	{
-		if (!JFactory::getUser()->authorise('core.' . strtolower($action), 'com_media'))
+		if (!User::authorise('core.' . strtolower($action), 'com_media'))
 		{
 			// User is not authorised
 			JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));

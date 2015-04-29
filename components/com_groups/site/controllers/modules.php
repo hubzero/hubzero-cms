@@ -87,7 +87,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 	 */
 	public function displayTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#modules'));
+		App::redirect(Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#modules'));
 	}
 
 	/**
@@ -236,12 +236,12 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		if (!$this->module->get('id'))
 		{
 			$this->module->set('created', Date::toSql());
-			$this->module->set('created_by', JFactory::getUser()->get('id'));
+			$this->module->set('created_by', User::get('id'));
 		}
 
 		// set modified
 		$this->module->set('modified', Date::toSql());
-		$this->module->set('modified_by', JFactory::getUser()->get('id'));
+		$this->module->set('modified_by', User::get('id'));
 
 
 		// check module again (because were not on store() method)
@@ -361,11 +361,13 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		}
 
 		//inform user & redirect
-		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_STATE_CHANGE', $status), 'passed');
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules'));
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules');
+
 		if ($return = Request::getVar('return', '','get'))
 		{
-			$this->setRedirect(base64_decode($return));
+			$url = base64_decode($return);
 		}
+
+		App::redirect($url, Lang::txt('COM_GROUPS_PAGES_MODULE_STATE_CHANGE', $status), 'passed');
 	}
 }

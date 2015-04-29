@@ -28,9 +28,8 @@ class MessagesModelConfig extends JModelForm
 	protected function populateState()
 	{
 		$app	= JFactory::getApplication('administrator');
-		$user	= JFactory::getUser();
 
-		$this->setState('user.id', $user->get('id'));
+		$this->setState('user.id', User::get('id'));
 
 		// Load the parameters.
 		$params	= Component::params('com_messages');
@@ -47,7 +46,7 @@ class MessagesModelConfig extends JModelForm
 	public function &getItem()
 	{
 		// Initialise variables.
-		$item = new JObject;
+		$item = new \Hubzero\Base\Object;
 
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -58,12 +57,14 @@ class MessagesModelConfig extends JModelForm
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
-		if ($error = $db->getErrorMsg()) {
+		if ($error = $db->getErrorMsg())
+		{
 			$this->setError($error);
 			return false;
 		}
 
-		foreach ($rows as $row) {
+		foreach ($rows as $row)
+		{
 			$item->set($row->cfg_name, $row->cfg_value);
 		}
 
@@ -82,7 +83,8 @@ class MessagesModelConfig extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_messages.config', 'config', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -99,36 +101,43 @@ class MessagesModelConfig extends JModelForm
 	{
 		$db = $this->getDbo();
 
-		if ($userId = (int) $this->getState('user.id')) {
+		if ($userId = (int) $this->getState('user.id'))
+		{
 			$db->setQuery(
 				'DELETE FROM #__messages_cfg'.
 				' WHERE user_id = '. $userId
 			);
 			$db->query();
-			if ($error = $db->getErrorMsg()) {
+			if ($error = $db->getErrorMsg())
+			{
 				$this->setError($error);
 				return false;
 			}
 
 			$tuples = array();
-			foreach ($data as $k => $v) {
+			foreach ($data as $k => $v)
+			{
 				$tuples[] =  '('.$userId.', '.$db->Quote($k).', '.$db->Quote($v).')';
 			}
 
-			if ($tuples) {
+			if ($tuples)
+			{
 				$db->setQuery(
 					'INSERT INTO #__messages_cfg'.
 					' (user_id, cfg_name, cfg_value)'.
 					' VALUES '.implode(',', $tuples)
 				);
 				$db->query();
-				if ($error = $db->getErrorMsg()) {
+				if ($error = $db->getErrorMsg())
+				{
 					$this->setError($error);
 					return false;
 				}
 			}
 			return true;
-		} else {
+		}
+		else
+		{
 			$this->setError('COM_MESSAGES_ERR_INVALID_USER');
 			return false;
 		}

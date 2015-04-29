@@ -10,8 +10,8 @@ defined('_JEXEC') or die;
 
 // Add specific helper files for html generation
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
+
+$userId		= User::get('id');
 $client		= $this->state->get('filter.client_id', 0) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
 $clientId	= $this->state->get('filter.client_id', 0);
 ?>
@@ -61,9 +61,9 @@ $clientId	= $this->state->get('filter.client_id', 0);
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->rows as $i => $row) :
-			$canCreate	= $user->authorise('core.create',		'com_languages');
-			$canEdit	= $user->authorise('core.edit',			'com_languages');
-			$canChange	= $user->authorise('core.edit.state',	'com_languages');
+			$canCreate	= User::authorise('core.create',		'com_languages');
+			$canEdit	= User::authorise('core.edit',			'com_languages');
+			$canChange	= User::authorise('core.edit.state',	'com_languages');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td width="20">

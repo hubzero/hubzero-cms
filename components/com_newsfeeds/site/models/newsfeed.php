@@ -49,8 +49,8 @@ class NewsfeedsModelNewsfeed extends JModelItem
 		$params = $app->getParams();
 		$this->setState('params', $params);
 
-		$user = JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_newsfeeds')) &&  (!$user->authorise('core.edit', 'com_newsfeeds'))){
+		if ((!User::authorise('core.edit.state', 'com_newsfeeds')) && (!User::authorise('core.edit', 'com_newsfeeds')))
+		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}
@@ -69,11 +69,13 @@ class NewsfeedsModelNewsfeed extends JModelItem
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('newsfeed.id');
 
-		if ($this->_item === null) {
+		if ($this->_item === null)
+		{
 			$this->_item = array();
 		}
 
-		if (!isset($this->_item[$pk])) {
+		if (!isset($this->_item[$pk]))
+		{
 			try
 			{
 				$db = $this->getDbo();
@@ -98,12 +100,13 @@ class NewsfeedsModelNewsfeed extends JModelItem
 
 				// Filter by start and end dates.
 				$nullDate = $db->Quote($db->getNullDate());
-				$nowDate = $db->Quote(Date::toSql());
+				$nowDate  = $db->Quote(Date::toSql());
 
 				// Filter by published state.
 				$published = $this->getState('filter.published');
-				$archived = $this->getState('filter.archived');
-				if (is_numeric($published)) {
+				$archived  = $this->getState('filter.archived');
+				if (is_numeric($published))
+				{
 					$query->where('(a.published = ' . (int) $published . ' OR a.published =' . (int) $archived . ')');
 					$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 					$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
@@ -114,17 +117,20 @@ class NewsfeedsModelNewsfeed extends JModelItem
 
 				$data = $db->loadObject();
 
-				if ($error = $db->getErrorMsg()) {
+				if ($error = $db->getErrorMsg())
+				{
 					throw new Exception($error);
 				}
 
-				if (empty($data)) {
+				if (empty($data))
+				{
 					throw new JException(Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'), 404);
 				}
 
 				// Check for published state if filter set.
-				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->published != $published) && ($data->published != $archived))) {
-					JError::raiseError(404, Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'));
+				if (((is_numeric($published)) || (is_numeric($archived))) && (($data->published != $published) && ($data->published != $archived)))
+				{
+					App::abort(404, Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'));
 				}
 
 				// Convert parameter fields to objects.
@@ -138,14 +144,15 @@ class NewsfeedsModelNewsfeed extends JModelItem
 				$data->metadata = $registry;
 
 				// Compute access permissions.
-				if ($access = $this->getState('filter.access')) {
+				if ($access = $this->getState('filter.access'))
+				{
 					// If the access filter has been set, we already know this user can view.
 					$data->params->set('access-view', true);
 				}
-				else {
+				else
+				{
 					// If no access filter is set, the layout takes some responsibility for display of limited information.
-					$user = JFactory::getUser();
-					$groups = $user->getAuthorisedViewLevels();
+					$groups = User::getAuthorisedViewLevels();
 					$data->params->set('access-view', in_array($data->access, $groups) && in_array($data->category_access, $groups));
 				}
 

@@ -95,7 +95,7 @@ class GroupsHelperPages
 		));
 
 		// pass vars to view
-		$view->juser = JFactory::getUser();
+		$view->juser = User::getRoot();
 		$view->group = $group;
 
 		// get group desc

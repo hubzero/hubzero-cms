@@ -30,12 +30,12 @@ class MenusHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_MENUS_SUBMENU_MENUS'),
-			'index.php?option=com_menus&view=menus',
+			Route::url('index.php?option=com_menus&view=menus'),
 			$vName == 'menus'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
-			'index.php?option=com_menus&view=items',
+			Route::url('index.php?option=com_menus&view=items'),
 			$vName == 'items'
 		);
 	}
@@ -50,8 +50,7 @@ class MenusHelper
 	 */
 	public static function getActions($parentId = 0)
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$result = new \Hubzero\Base\Object;
 
 		if (empty($parentId)) {
 			$assetName = 'com_menus';
@@ -61,8 +60,9 @@ class MenusHelper
 
 		$actions = JAccess::getActions('com_menus');
 
-		foreach ($actions as $action) {
-			$result->set($action->name,	$user->authorise($action->name, $assetName));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name, User::authorise($action->name, $assetName));
 		}
 
 		return $result;

@@ -41,9 +41,7 @@ class MenusModelMenu extends JModelForm
 	 */
 	protected function canDelete($record)
 	{
-		$user = JFactory::getUser();
-
-		return $user->authorise('core.delete', 'com_menus.menu.'.(int) $record->id);
+		return User::authorise('core.delete', 'com_menus.menu.'.(int) $record->id);
 	}
 
 	/**
@@ -56,9 +54,7 @@ class MenusModelMenu extends JModelForm
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
-		return $user->authorise('core.edit.state', 'com_menus.menu.'.(int) $record->id);
+		return User::authorise('core.edit.state', 'com_menus.menu.'.(int) $record->id);
 	}
 
 	/**
@@ -121,7 +117,7 @@ class MenusModelMenu extends JModelForm
 		}
 
 		$properties = $table->getProperties(1);
-		$value = JArrayHelper::toObject($properties, 'JObject');
+		$value = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 		return $value;
 	}
 
@@ -154,7 +150,7 @@ class MenusModelMenu extends JModelForm
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_menus.edit.menu.data', array());
+		$data = User::getState('com_menus.edit.menu.data', array());
 
 		if (empty($data))
 		{
@@ -224,7 +220,7 @@ class MenusModelMenu extends JModelForm
 	{
 		// Sanitize the ids.
 		$itemIds = (array) $itemIds;
-		JArrayHelper::toInteger($itemIds);
+		\Hubzero\Utility\Arr::toInteger($itemIds);
 
 		// Get a group row instance.
 		$table = $this->getTable();

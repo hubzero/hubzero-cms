@@ -18,8 +18,8 @@ JHtml::_('behavior.multiselect');
 
 $uri = JFactory::getUri();
 $return = base64_encode($uri);
-$user = JFactory::getUser();
-$userId = $user->get('id');
+
+$userId = User::get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
 $modMenuId = (int) $this->get('ModMenuId');
@@ -72,9 +72,9 @@ $modMenuId = (int) $this->get('ModMenuId');
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_menus');
-			$canEdit	= $user->authorise('core.edit',			'com_menus');
-			$canChange	= $user->authorise('core.edit.state',	'com_menus');
+			$canCreate	= User::authorise('core.create',		'com_menus');
+			$canEdit	= User::authorise('core.edit',			'com_menus');
+			$canChange	= User::authorise('core.edit.state',	'com_menus');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">

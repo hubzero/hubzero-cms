@@ -158,24 +158,25 @@ class NewsfeedsModelCategory extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app	= JFactory::getApplication();
-		$params	= Component::params('com_newsfeeds');
+		$params = Component::params('com_newsfeeds');
 
 		// List state information
-		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+		$limit = Request::getState('global.list.limit', 'limit', Config::get('list_limit'), 'uint');
 		$this->setState('list.limit', $limit);
 
 		$limitstart = Request::getUInt('limitstart', 0);
 		$this->setState('list.start', $limitstart);
 
-		$orderCol	= Request::getCmd('filter_order', 'ordering');
-		if (!in_array($orderCol, $this->filter_fields)) {
+		$orderCol = Request::getCmd('filter_order', 'ordering');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
 			$orderCol = 'ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  Request::getCmd('filter_order_Dir', 'ASC');
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+		$listOrder = Request::getCmd('filter_order_Dir', 'ASC');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
@@ -183,8 +184,8 @@ class NewsfeedsModelCategory extends JModelList
 		$id = Request::getVar('id', 0, '', 'int');
 		$this->setState('category.id', $id);
 
-		$user = JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_newsfeeds')) &&  (!$user->authorise('core.edit', 'com_newsfeeds'))){
+		if ((!User::authorise('core.edit.state', 'com_newsfeeds')) &&  (!User::authorise('core.edit', 'com_newsfeeds')))
+		{
 			// limit to published for people who can't edit or edit.state.
 			$this->setState('filter.published',	1);
 
@@ -192,7 +193,7 @@ class NewsfeedsModelCategory extends JModelList
 			$this->setState('filter.publish_date', true);
 		}
 
-		$this->setState('filter.language', $app->getLanguageFilter());
+		$this->setState('filter.language', JFactory::getApplication()->getLanguageFilter());
 
 		// Load the parameters.
 		$this->setState('params', $params);

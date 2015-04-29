@@ -95,7 +95,6 @@ class MessagesModelMessages extends JModelList
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser();
 
 		// Select the required fields from the table.
 		$query->select(
@@ -109,7 +108,7 @@ class MessagesModelMessages extends JModelList
 
 		// Join over the users for message owner.
 		$query->join('INNER', '#__users AS u ON u.id = a.user_id_from');
-		$query->where('a.user_id_to = '.(int) $user->get('id'));
+		$query->where('a.user_id_to = '.(int) User::get('id'));
 
 		// Filter by published state.
 		$state = $this->getState('filter.state');

@@ -26,7 +26,6 @@ class NewsfeedsViewCategory extends JViewLegacy
 	function display($tpl = null)
 	{
 		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
 		$params		= $app->getParams();
 
 		// Get some data from the models
@@ -39,31 +38,31 @@ class NewsfeedsViewCategory extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
 		if ($category == false) {
-			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return App::abort(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		if ($parent == false) {
-			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
+			return App::abort(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		// Check whether category access level allows access.
-		$groups	= $user->getAuthorisedViewLevels();
+		$groups	= User::getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups)) {
-			return JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		// Prepare the data.
 		// Compute the newsfeed slug.
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
-			$item		= &$items[$i];
+			$item = &$items[$i];
 			$item->slug	= $item->alias ? ($item->id.':'.$item->alias) : $item->id;
-			$temp		= new JRegistry();
+			$temp = new JRegistry();
 			$temp->loadString($item->params);
 			$item->params = clone($params);
 			$item->params->merge($temp);

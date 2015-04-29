@@ -26,13 +26,13 @@ class MessagesHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_MESSAGES_ADD'),
-			'index.php?option=com_messages&view=message&layout=edit',
+			Route::url('index.php?option=com_messages&view=message&layout=edit'),
 			$vName == 'message'
 		);
 
 		Submenu::addEntry(
 			Lang::txt('COM_MESSAGES_READ'),
-			'index.php?option=com_messages',
+			Route::url('index.php?option=com_messages'),
 			$vName == 'messages'
 		);
 	}
@@ -44,13 +44,13 @@ class MessagesHelper
 	 */
 	public static function getActions()
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$result	= new \Hubzero\Base\Object;
 
 		$actions = JAccess::getActions('com_messages');
 
-		foreach ($actions as $action) {
-			$result->set($action->name,	$user->authorise($action->name, 'com_messages'));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name, User::authorise($action->name, 'com_messages'));
 		}
 
 		return $result;

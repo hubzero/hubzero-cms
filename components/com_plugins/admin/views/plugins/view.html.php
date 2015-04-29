@@ -38,10 +38,7 @@ class PluginsViewPlugins extends JViewLegacy
 			// Check if there are no matching items
 		if (!count($this->items))
 		{
-			JFactory::getApplication()->enqueueMessage(
-				Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS')
-				, 'warning'
-			);
+			Notify::warning(Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS'));
 		}
 
 		parent::display($tpl);

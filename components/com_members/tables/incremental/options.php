@@ -65,9 +65,9 @@ class ModIncrementalRegistrationOptions
 		$dbg = isset($_GET['dbg']);
 		if (!$uid)
 		{
-			$uid = (int)JFactory::getUser()->get('id');
+			$uid = (int)User::get('id');
 		}
-		if (!$uid || !JModuleHelper::isEnabled('incremental_registration'))
+		if (!$uid || !Module::isEnabled('incremental_registration'))
 		{
 			return false;
 		}
@@ -105,7 +105,7 @@ class ModIncrementalRegistrationOptions
 			return false;
 		}
 
-		$uid = $uid ?: (int)JFactory::getUser()->get('id');
+		$uid = $uid ?: (int)User::get('id');
 
 		$dbh = JFactory::getDBO();
 		$dbh->setQuery('SELECT edited_profile FROM `#__profile_completion_awards` WHERE user_id = ' . $uid);

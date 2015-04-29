@@ -96,7 +96,7 @@ class UsersQuotas extends JTable
 	public function store($updateNulls = false)
 	{
 		// Use Juser, rather than JFactory::getUser, as JFactory won't get the right username if it was just updated
-		$username = Juser::getInstance($this->user_id)->get('username');
+		$username = User::getInstance($this->user_id)->get('username');
 
 		// Don't try to save quotas for auth link temp accounts (negative number usernames)
 		if (is_numeric($username) && $username < 0)
@@ -127,7 +127,7 @@ class UsersQuotas extends JTable
 			$log->set('object_id'  , $this->id);
 			$log->set('name'       , $username);
 			$log->set('action'     , $action);
-			$log->set('actor_id'   , JFactory::getUser()->get('id'));
+			$log->set('actor_id'   , User::get('id'));
 			$log->set('soft_blocks', $this->soft_blocks);
 			$log->set('hard_blocks', $this->hard_blocks);
 			$log->set('soft_files' , $this->soft_files);

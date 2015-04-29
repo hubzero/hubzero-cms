@@ -160,7 +160,7 @@ class MenusViewItems extends JViewLegacy
 	{
 		require_once JPATH_COMPONENT.'/helpers/menus.php';
 
-		$canDo	= MenusHelper::getActions($this->state->get('filter.parent_id'));
+		$canDo = MenusHelper::getActions($this->state->get('filter.parent_id'));
 
 		Toolbar::title(Lang::txt('COM_MENUS_VIEW_ITEMS_TITLE'), 'menumgr.png');
 
@@ -175,7 +175,7 @@ class MenusViewItems extends JViewLegacy
 			Toolbar::publish('items.publish', 'JTOOLBAR_PUBLISH', true);
 			Toolbar::unpublish('items.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		}
-		if (JFactory::getUser()->authorise('core.admin')) {
+		if (User::authorise('core.admin')) {
 			Toolbar::divider();
 			Toolbar::checkin('items.checkin', 'JTOOLBAR_CHECKIN', true);
 		}
@@ -191,7 +191,7 @@ class MenusViewItems extends JViewLegacy
 			Toolbar::makeDefault('items.setDefault', 'COM_MENUS_TOOLBAR_SET_HOME');
 			Toolbar::divider();
 		}
-		if (JFactory::getUser()->authorise('core.admin')) {
+		if (User::authorise('core.admin')) {
 			Toolbar::custom('items.rebuild', 'refresh.png', 'refresh_f2.png', 'JToolbar_Rebuild', false);
 			Toolbar::divider();
 		}
