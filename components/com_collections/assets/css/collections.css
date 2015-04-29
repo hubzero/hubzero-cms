@@ -843,6 +843,26 @@
 	#sbox-content #hubForm .grid {
 		margin: 0;
 	}
+
+	.fancybox-title {
+		visibility: visible;
+	}
+	.fancybox-title a {
+		color: #fff;
+		font-weight: bold;
+		border: none;
+		text-decoration: none;
+	}
+	.fancybox-title a:before {
+		content: "\f019";
+		font-family: "Fontcons";
+		font-weight: normal;
+		margin-right: 0.4em;
+	}
+	.fancybox-title a:hover {
+		color: orange;
+	}
+
 	.post-modal a.fancybox-close,
 	.post-modal .fancybox-close {
 		background: #f1f1f1;
