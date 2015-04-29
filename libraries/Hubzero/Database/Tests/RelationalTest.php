@@ -198,7 +198,7 @@ class RelationalTest extends Database
 			$tags->whereEquals('name', 'fun stuff');
 		})->rows();
 
-		$this->assertCount(1, $posts, 'Model should have returned a count of 1 post with the tag "fun stuff"');
+		$this->assertCount(2, $posts, 'Model should have returned a count of 2 post with the tag "fun stuff"');
 	}
 
 	/**

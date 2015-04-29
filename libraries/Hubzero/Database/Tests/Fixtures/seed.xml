@@ -43,6 +43,11 @@
 			<value>1</value>
 			<value>3</value>
 		</row>
+		<row>
+			<value>4</value>
+			<value>2</value>
+			<value>1</value>
+		</row>
 	</table>
 	<table name="posts">
 		<column>id</column>
