@@ -39,6 +39,8 @@ if (!$this->app->sess)
 }
 else
 {
+	$this->js('jquery.editable.min.js', 'system');
+
 	// Invlude NoVNC
 	$this->css('./novnc/base.css')
 	     ->js('./novnc/jquery.ui.touch-punch.min.js') // This allows for touch events to be translated to click events on mobile devices
@@ -236,6 +238,17 @@ else
 			elm.style.overflow = prev;
 			return r;
 		}
+
+		jQuery(document).ready(function($){
+			// Inititate session title editing
+			$('#session-title.editable').editable('index.php?option=com_tools&controller=sessions&task=rename&no_html=1&id=' + $('#session-title').attr('rel'), {
+				id   : 'title',
+				name : 'name',
+				width : '200px',
+				submit : 'OK',
+				cancel : 'cancel'
+			});
+		});
 
 		//Final attachment for onload
 		//window.onload = UI.load;
