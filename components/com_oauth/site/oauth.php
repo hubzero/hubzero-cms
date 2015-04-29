@@ -28,65 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Oauth\Controllers;
+namespace Components\Oauth\Site;
 
-use Hubzero\Component\SiteController;
-use Exception;
+$controllerName = \Request::getCmd('controller', 'authorize');
 
-/**
- * Controller for Authorizing OAuth
- */
-class Authorize extends SiteController
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	/**
-	 * Authorize
-	 *
-	 * @return  void
-	 */
-	public function authorizeTask()
-	{
-		$oauth_token = \Request::getVar('oauth_token');
-
-		if (empty($oauth_token))
-		{
-			throw new Exception('Forbidden', 403);
-		}
-
-		$db = \JFactory::getDBO();
-		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->Quote($oauth_token) . " AND user_id=0 LIMIT 1;");
-
-		$result = $db->loadObject();
-
-		if ($result === false)
-		{
-			throw new Exception('Internal Server Error', 500);
-		}
-
-		if (empty($result))
-		{
-			throw new Exception('Forbidden', 403);
-		}
-
-		if (\Request::getMethod() == 'GET')
-		{
-			$this->view->oauth_token = $oauth_token;
-			$this->view->display();
-			return;
-		}
-
-		if (\Request::getMethod() == 'POST')
-		{
-			$token = \Request::get('token',''.'post');
-
-			if ($token != sha1($this->verifier))
-			{
-				throw new Exception('Forbidden', 403);
-			}
-
-			echo "posted";
-			return;
-		}
-
-		throw new Exception('Method Not Allowed', 405);
-	}
+	throw new \Exception('Specified controller does not exist.', 404);
 }
+
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();
