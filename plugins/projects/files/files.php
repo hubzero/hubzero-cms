@@ -807,7 +807,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set params
 		$params = array(
 			'subdir'      => $this->subdir,
-			'dataPath'    => Request::getVar('data_path', ''),
+		//	'dataPath'    => Request::getVar('data_path', ''),
 			'expand'      => Request::getInt('expand_zip', 0),
 			'ajaxUpload'  => $ajaxUpload,
 			'path'        => $this->_path,
