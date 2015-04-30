@@ -45,7 +45,7 @@ class Helper
 		$storageHandler = \Config::get('session_handler');
 
 		// create storage class
-		$storageClass = 'Hubzero\\Session\\Storage\\' . ucfirst($storageHandler);
+		$storageClass = __NAMESPACE__ . '\\Storage\\' . ucfirst($storageHandler);
 
 		// return new instance of storage class
 		return new $storageClass();
@@ -65,22 +65,38 @@ class Helper
 	/**
 	 * Get Session by User Id
 	 * 
-	 * @param  [type] $id [description]
-	 * @return [type]     [description]
+	 * @param   integer  $id  User ID
+	 * @return  mixed
 	 */
 	public static function getSessionWithUserId($userid)
 	{
-		return self::storage()->sessionWithUserid($userid);
+		// get list of all sessions
+		$sessions = self::storage()->all(array(
+			'guest'    => 0,
+			'distinct' => 1
+		));
+
+		// see if any session matches our userid
+		foreach ($sessions as $session)
+		{
+			if ($session->userid == $userid)
+			{
+				return $session;
+			}
+		}
+
+		// nothing found
+		return null;
 	}
 
 	/**
 	 * Get list of all sessions
 	 * 
-	 * @param  array  $filters [description]
-	 * @return [type]          [description]
+	 * @param   array  $filters  Filters to apply
+	 * @return  array
 	 */
 	public static function getAllSessions($filters = array())
 	{
-		return self::storage()->allSessions($filters);
+		return self::storage()->all($filters);
 	}
 }

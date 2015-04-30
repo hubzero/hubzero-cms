@@ -29,6 +29,7 @@
  */
 
 return array(
+	'Hubzero\Session\SessionServiceProvider',
 	'Hubzero\Html\ToolbarServiceProvider',
 	'Hubzero\Module\ModuleServiceProvider',
 	'Hubzero\Notification\NotificationServiceProvider',

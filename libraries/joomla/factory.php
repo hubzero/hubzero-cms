@@ -747,6 +747,11 @@ abstract class JFactory
 	 */
 	protected static function createSession($options = array())
 	{
+		if (class_exists('\\App'))
+		{
+			return \App::get('session');
+		}
+
 		// Get the editor configuration setting
 		$conf = self::getConfig();
 		$handler = $conf->get('session_handler', 'none');

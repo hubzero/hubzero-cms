@@ -29,6 +29,7 @@
  */
 
 return array(
+	'Session' => 'Hubzero\Facades\Session',
 	'Toolbar' => 'Hubzero\Facades\Toolbar',
 	'Submenu' => 'Hubzero\Facades\Submenu',
 	'Module'  => 'Hubzero\Facades\Module',

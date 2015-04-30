@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -29,93 +29,167 @@
  */
 
 namespace Hubzero\Session\Storage;
-use Hubzero\Redis\Database;
-use Hubzero\Session\StorageInterface;
 
-class Redis implements StorageInterface
+use Hubzero\Redis\Database;
+
+/**
+ * Redis Session Storage class
+ */
+class Redis extends Store
 {
 	/**
-	 * Get Connection to Redis Client
-	 * 
-	 * @param  string $name name of client
-	 * @return mixed
+	 * Format for hash keys
+	 *
+	 * @var  string
 	 */
-	private static function getDBO($name = 'default')
-	{
-		return Database::connect($name);
-	}
+	private $prefix  = 'session:';
 
 	/**
-	 * Get Hash key prefix
-	 * 
-	 * @return  string  key prefix
+	 * Redis database connection
+	 *
+	 * @var  object
 	 */
-	private static function getPrefix()
-	{
-		// get redis key prefixes
-		$prefixes = \Config::get('redis_key_prefix', array());
-
-		// return prefix
-		return isset($prefixes['session']) ? $prefixes['session'] : 'session:';
-	}
+	private $database = null;
 
 	/**
-	 * Get single session data
-	 * 
-	 * @param  [type] $id [description]
-	 * @return [type]     [description]
+	 * Constructor
+	 *
+	 * @param   array  $options  Optional parameters.
+	 * @return  void
 	 */
-	public static function session($id)
+	public function __construct($options = array())
 	{
-		// get database
-		$database = self::getDBO();
-
-		// get all key => values for hash
-		return (object) $database->hgetall($id);
-	}
-
-	/**
-	 * Get single session data (with Userid)
-	 * 
-	 * @param  [type] $id [description]
-	 * @return [type]     [description]
-	 */
-	public static function sessionWithUserid($userid)
-	{
-		// get list of all sessions
-		$sessions = self::allSessions(array(
-			'guest' => 0,
-			'distinct' => 1
-		));
-
-		// see if any session matches our userid
-		foreach ($sessions as $session)
+		if (!self::isAvailable())
 		{
-			if ($session->userid == $userid)
-			{
-				return $session;
-			}
+			throw new Exception(\Lang::txt('JLIB_SESSION_REDIS_EXTENSION_NOT_AVAILABLE'));
 		}
 
-		// nothing found
-		return null;
+		if (!array_key_exists('redis_key_prefix', $options))
+		{
+			$options['redis_key_prefix'] = array();
+		}
+
+		$prefixes = $options['redis_key_prefix'];
+
+		if (isset($prefixes['session']))
+		{
+			$this->prefix = $prefixes['session'];
+		}
+
+		parent::__construct($options);
+	}
+	
+	/**
+	 * Open the SessionHandler backend.
+	 *
+	 * @param   string   $save_path  The path to the session object.
+	 * @param   string   $name       The name of the session.
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function open($save_path, $name)
+	{
+		$this->database = Database::connect('default');
+		$this->database->connect();
+	}
+
+	/**
+	 * Close the SessionHandler backend.
+	 *
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function close()
+	{
+		$this->database->disconnect();
+	}
+
+	/**
+	 * Read session hash for Id
+	 * 
+	 * @param   string  $session_id  Session Id
+	 * @return  mixed   Session Data
+	 */
+	public function read($session_id)
+	{
+		// get session hash
+		$session = $this->database->hgetall($this->key($session_id));
+
+		// return session data
+		return (isset($session['data'])) ? $session['data'] : null;
+	}
+
+	/**
+	 * Write session data to the SessionHandler backend.
+	 *
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $data  The session data.
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function write($session_id, $session_data)
+	{
+		$data = array(
+			'session_id' => $session_id,
+			'client_id'  => \App::get('client')->id,
+			'guest'      => \User::isGuest(),
+			'time'       => time(),
+			'data'       => $session_data,
+			'userid'     => \User::get('id'),
+			'username'   => \User::get('username'),
+			'usertype'   => null,
+			'ip'         => $_SERVER['REMOTE_ADDR']
+		);
+
+		$saved = $this->database->hmset($this->key($session_id), $data);
+
+		return $saved;
+	}
+
+	/**
+	 * Delete session hash
+	 * 
+	 * @param  string  $session_id  Session Id 
+	 * @return boolean              Destroyed or not
+	 */
+	public function destroy($session_id)
+	{
+		if (!$this->database->del($this->key($session_id)))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Garbage collect stale sessions from the SessionHandler backend.
+	 *
+	 * @param   integer  $maxlifetime  The maximum age of a session.
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function gc($maxlifetime = null)
+	{
+		error_log('redis gc');
+	}
+
+	/**
+	 * Get single session data as an object
+	 * 
+	 * @param   integer  $session_id  Session Id 
+	 * @return  object
+	 */
+	public function session($session_id)
+	{
+		return (object) $this->database->hgetall($session_id);
 	}
 
 	/**
 	 * Get list of all sessions
 	 * 
-	 * @return [type]          [description]
+	 * @param   array  $filters
+	 * @return  array
 	 */
-	public static function allSessions($filters = array())
+	public function all($filters = array())
 	{
-		// get database
-		$database = self::getDBO();
-
-		// get prefix
-		$prefix = self::getPrefix();
-
 		// load all session keys
-		$result   = $database->scan(0, array('MATCH' => $prefix . '*'));
+		$result   = $this->database->scan(0, array('MATCH' => $this->prefix . '*'));
 		$cursor   = $result[0];
 		$sessions = $result[1];
 
@@ -126,7 +200,7 @@ class Redis implements StorageInterface
 		foreach ($sessions as $k => $v)
 		{
 			// get session data for key
-			$sessions[$k] = self::session($v);
+			$sessions[$k] = $this->database->hgetall($v);
 			$userid       = $sessions[$k]->userid;
 			$guest        = $sessions[$k]->guest;
 			$client       = $sessions[$k]->client_id;
@@ -183,5 +257,26 @@ class Redis implements StorageInterface
 
 		// return array of session objects
 		return array_values(array_filter($sessions));
+	}
+
+	/**
+	 * Build the storage key
+	 *
+	 * @param   string   $id  The session identifier.
+	 * @return  string
+	 */
+	protected function key($id)
+	{
+		return $this->prefix . $id;
+	}
+
+	/**
+	 * Test to see if Predis Library exists
+	 * 
+	 * @return  boolean 
+	 */
+	public static function isAvailable()
+	{
+		return new Database != null;
 	}
 }

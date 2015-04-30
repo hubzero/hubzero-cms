@@ -1,8 +1,8 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,129 +23,251 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Session\Storage;
-use Hubzero\Session\StorageInterface;
-use JFactory;
 
-class Database implements StorageInterface
+use Hubzero\Session\Store;
+use Exception;
+
+/**
+ * Database session storage handler
+ */
+class Database extends Store
 {
 	/**
-	 * Get Connection to Database Client
-	 * 
-	 * @return mixed
+	 * Constructor
+	 *
+	 * @param   array  $options  Optional parameters.
+	 * @return  void
 	 */
-	public static function getDBO()
+	public function __construct($options = array())
 	{
-		return JFactory::getDBO();
+		if (!isset($options['database']) || !($options['database'] instanceof \JDatabase))
+		{
+			$options['database'] = \JFactory::getDBO();
+		}
+
+		$this->connection = $options['database'];
+
+		parent::__construct($options);
 	}
 
 	/**
-	 * Get single session data
-	 * 
-	 * @param  string $id Session Id
-	 * @return mixed
+	 * Read the data for a particular session identifier from the SessionHandler backend.
+	 *
+	 * @param   string  $id  The session identifier.
+	 * @return  string  The session data.
 	 */
-	public static function session($id)
+	public function read($session_id)
 	{
-		// get database
-		$database = self::getDBO();
+		// Get the database connection object and verify its connected.
+		if (!$this->connection->connected())
+		{
+			return false;
+		}
 
-		// query database
-		$database->setQuery(
-			"SELECT * 
-				FROM `#__session`
-				WHERE session_id = " . $database->quote($id) . "
-				GROUP BY userid, client_id
-				ORDER BY time DESC"
-		);
+		try
+		{
+			// Get the session data from the database table.
+			$query = $this->connection->getQuery(true);
+			$query->select($this->connection->quoteName('data'))
+				->from($this->connection->quoteName('#__session'))
+				->where($this->connection->quoteName('session_id') . ' = ' . $this->connection->quote($session_id));
 
-		// get session
-		return $database->loadObject();
+			$this->connection->setQuery($query);
+
+			return (string) $this->connection->loadResult();
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
 	}
 
 	/**
-	 * Get Session with User Id
-	 * 
-	 * @param  [type] $userid [description]
-	 * @return [type]         [description]
+	 * Write session data to the SessionHandler backend.
+	 *
+	 * @param   string   $session_id    The session identifier.
+	 * @param   string   $session_data  The session data.
+	 * @return  boolean  True on success, false otherwise.
 	 */
-	public static function sessionWithUserid($userid)
+	public function write($session_id, $session_data)
 	{
-		// get database
-		$database = self::getDBO();
+		//global $_PROFILER;
 
-		// query database
-		$database->setQuery(
-			"SELECT * 
-				FROM `#__session`
-				WHERE userid = " . $database->quote($userid) . "
-				GROUP BY userid, client_id
-				ORDER BY time DESC"
-		);
+		/*if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
+		{
+			if (php_sapi_name() != 'cli')
+			{
+				JPROFILE ? $_PROFILER->log() : null;
+			}
+			
+			return true; // skip session write on api and command line calls
+		}*/
 
-		// get session
-		return $database->loadObject();
+		// Get the database connection object and verify its connected.
+		if ($this->connection->connected())
+		{
+			try
+			{
+				$query = $this->connection->getQuery(true);
+				$query->update($this->connection->quoteName('#__session'))
+					->set($this->connection->quoteName('data') . ' = ' . $this->connection->quote($session_data))
+					->set($this->connection->quoteName('time') . ' = ' . $this->connection->quote((int) time()))
+					->set($this->connection->quoteName('ip') . ' = ' . $this->connection->quote($_SERVER['REMOTE_ADDR']))
+					->where($this->connection->quoteName('session_id') . ' = ' . $this->connection->quote($session_id));
+
+				// Try to update the session data in the database table.
+				$this->connection->setQuery($query);
+
+				if ($this->connection->execute())
+				{
+					//JPROFILE ? $_PROFILER->log() : null;
+					return true;
+				}
+
+				/* Since $db->execute did not throw an exception, so the query was successful.
+				Either the data changed, or the data was identical.
+				In either case we are done.
+				*/
+			}
+			catch (Exception $e)
+			{
+			}
+		}
+
+		//JPROFILE ? $_PROFILER->log() : null;
+		return false;
+	}
+
+	/**
+	 * Destroy the data for a particular session identifier in the SessionHandler backend.
+	 *
+	 * @param   string   $id  The session identifier.
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function destroy($session_id)
+	{
+		// Get the database connection object and verify its connected.
+		if (!$this->connection->connected())
+		{
+			return false;
+		}
+
+		try
+		{
+			$query = $this->connection->getQuery(true);
+			$query->delete($this->connection->quoteName('#__session'))
+				->where($this->connection->quoteName('session_id') . ' = ' . $this->connection->quote($session_id));
+
+			// Remove a session from the database.
+			$this->connection->setQuery($query);
+
+			return (boolean) $this->connection->execute();
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Garbage collect stale sessions from the SessionHandler backend.
+	 *
+	 * @param   integer  $lifetime  The maximum age of a session.
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function gc($lifetime = 1440)
+	{
+		// Get the database connection object and verify its connected.
+		if (!$this->connection->connected())
+		{
+			return false;
+		}
+
+		// Determine the timestamp threshold with which to purge old sessions.
+		$past = time() - $lifetime;
+
+		try
+		{
+			$query = $this->connection->getQuery(true);
+			$query->delete($this->connection->quoteName('#__session'))
+				->where($this->connection->quoteName('time') . ' < ' . $this->connection->quote((int) $past));
+
+			// Remove expired sessions from the database.
+			$this->connection->setQuery($query);
+
+			return (boolean) $this->connection->execute();
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Get single session data as an object
+	 * 
+	 * @param   integer  $session_id  Session Id 
+	 * @return  object
+	 */
+	public function session($session_id)
+	{
+		$query = $this->connection->getQuery(true);
+		$query->select('*')
+				->from('#__session')
+				->group('userid, client_id')
+				->order('time DESC');
+
+		$this->connection->setQuery($query);
+		return $this->connection->loadObject();
 	}
 
 	/**
 	 * Get list of all sessions
 	 * 
-	 * @return mixed
+	 * @param   array  $filters
+	 * @return  array
 	 */
-	public static function allSessions($filters = array())
+	public function all($filters = array())
 	{
-		// get database
-		$database = self::getDBO();
-
-		// distinct filter
-		$max     = '';
-		$groupBy = '';
+		$max = '';
 		if (isset($filters['distinct']) && $filters['distinct'] == 1)
 		{
-			$max     = "MAX(time) as time,";
-			$groupBy = "GROUP BY userid, client_id";
+			$max = "MAX(time) as time,";
 		}
 
-		$query  = "SELECT session_id, client_id, guest, time, ".$max." data, userid, username, ip FROM `#__session`";
-		$wheres = array();
+		$query = $this->connection->getQuery(true);
+		$query->select('session_id, client_id, guest, time, ' . $max . ' data, userid, username, ip')
+				->from('#__session');
 
-		// guest filter
 		if (isset($filters['guest']))
 		{
-			$wheres[] = "guest=" . $database->quote($filters['guest']);
+			$query->where('guest=' . $this->connection->quote($filters['guest']));
 		}
 
-		// client filter
 		if (isset($filters['client']))
 		{
-			// make sure is array
 			if (!is_array($filters['client']))
 			{
 				$filters['client'] = array($filters['client']);
 			}
 
-			$wheres[] = "client_id IN(". implode(',', $filters['client']) .")";
+			$query->where('client_id IN ('. implode(',', $filters['client']) . ')');
 		}
 
-		// append wheres
-		if (count($wheres) > 0)
+		if (isset($filters['distinct']) && $filters['distinct'] == 1)
 		{
-			$query .= " WHERE " . implode("AND ", $wheres);
+			$query->group('userid, client_id');
 		}
 
-		// add group by
-		$query .= " " . $groupBy;
+		$query->order('time DESC');
 
-		// order by time
-		$query .= " ORDER BY time DESC";
-
-		// return sessions
-		$database->setQuery($query);
-		return $database->loadObjectList();
+		$this->connection->setQuery($query);
+		return $this->connection->loadObjectList();
 	}
 }

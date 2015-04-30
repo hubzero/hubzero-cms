@@ -1,8 +1,8 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,15 +23,28 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-namespace Hubzero\Session;
 
-interface StorageInterface
+namespace Hubzero\Session\Storage;
+
+use Hubzero\Session\Store;
+
+/**
+ * Session handler for 'None'
+ */
+class None extends Store
 {
-	public static function session($id);
-	public static function sessionWithUserid($userId);
-	public static function allSessions($filters = array());
+	/**
+	 * Register the functions of this class with PHP's session handler
+	 *
+	 * @param   array  $options  Optional parameters.
+	 * @return  void
+	 */
+	public function register($options = array())
+	{
+		// Let php handle the session storage
+	}
 }
