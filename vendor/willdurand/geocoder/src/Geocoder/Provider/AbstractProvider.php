@@ -11,82 +11,35 @@
 namespace Geocoder\Provider;
 
 use Geocoder\Geocoder;
-use Geocoder\HttpAdapter\HttpAdapterInterface;
+use Geocoder\Model\AddressFactory;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
 abstract class AbstractProvider
 {
-    /**
-     * @var HttpAdapterInterface
-     */
-    protected $adapter = null;
 
     /**
-     * @var string
+     * @var AddressFactory
      */
-    protected $locale = null;
+    private $factory;
 
     /**
      * @var integer
      */
-    protected $maxResults = Geocoder::MAX_RESULTS;
+    private $limit = Provider::MAX_RESULTS;
 
-    /**
-     * @param HttpAdapterInterface $adapter An HTTP adapter.
-     * @param string               $locale  A locale (optional).
-     */
-    public function __construct(HttpAdapterInterface $adapter, $locale = null)
+    public function __construct()
     {
-        $this->setAdapter($adapter);
-        $this->setLocale($locale);
+        $this->factory = new AddressFactory();
     }
 
     /**
-     * Returns the HTTP adapter.
-     *
-     * @return HttpAdapterInterface
+     * {@inheritDoc}
      */
-    public function getAdapter()
+    public function limit($limit)
     {
-        return $this->adapter;
-    }
-
-    /**
-     * Sets the HTTP adapter to be used for further requests.
-     *
-     * @param HttpAdapterInterface $adapter
-     *
-     * @return AbstractProvider
-     */
-    public function setAdapter($adapter)
-    {
-        $this->adapter = $adapter;
-
-        return $this;
-    }
-
-    /**
-     * Returns the configured locale or null.
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Sets the locale to be used.
-     *
-     * @param string|null $locale If no locale is set, the provider or service will fallback.
-     *
-     * @return AbstractProvider
-     */
-    public function setLocale($locale = null)
-    {
-        $this->locale = $locale;
+        $this->limit = $limit;
 
         return $this;
     }
@@ -94,21 +47,9 @@ abstract class AbstractProvider
     /**
      * {@inheritDoc}
      */
-    public function setMaxResults($maxResults)
+    public function getLimit()
     {
-        $this->maxResults = $maxResults;
-
-        return $this;
-    }
-
-    /**
-     * Returns the maximum of wished results.
-     *
-     * @return integer
-     */
-    public function getMaxResults()
-    {
-        return $this->maxResults;
+        return $this->limit;
     }
 
     /**
@@ -118,23 +59,25 @@ abstract class AbstractProvider
      */
     protected function getDefaults()
     {
-        return array(
-            'latitude'      => null,
-            'longitude'     => null,
-            'bounds'        => null,
-            'streetNumber'  => null,
-            'streetName'    => null,
-            'city'          => null,
-            'zipcode'       => null,
-            'cityDistrict'  => null,
-            'county'        => null,
-            'countyCode'    => null,
-            'region'        => null,
-            'regionCode'    => null,
-            'country'       => null,
-            'countryCode'   => null,
-            'timezone'      => null,
-        );
+        return [
+            'latitude'     => null,
+            'longitude'    => null,
+            'bounds'       => [
+                'south' => null,
+                'west'  => null,
+                'north' => null,
+                'east'  => null,
+            ],
+            'streetNumber' => null,
+            'streetName'   => null,
+            'locality'     => null,
+            'postalCode'   => null,
+            'subLocality'  => null,
+            'adminLevels'  => [],
+            'country'      => null,
+            'countryCode'  => null,
+            'timezone'     => null,
+        ];
     }
 
     /**
@@ -144,19 +87,31 @@ abstract class AbstractProvider
      */
     protected function getLocalhostDefaults()
     {
-        return array(
-            'city'      => 'localhost',
-            'region'    => 'localhost',
-            'county'    => 'localhost',
-            'country'   => 'localhost',
-        );
+        return [
+            'locality' => 'localhost',
+            'country'  => 'localhost',
+        ];
     }
 
     /**
-     * @param array $results
+     * @param array $data An array of data.
      *
-     * @return array
+     * @return \Geocoder\Model\AddressCollection
      */
+    protected function returnResults(array $data = [])
+    {
+        if (0 < $this->getLimit()) {
+            $data = array_slice($data, 0, $this->getLimit());
+        }
+
+        return $this->factory->createFromArray($data);
+    }
+
+    /**
+    * @param array $results
+    *
+    * @return array
+    */
     protected function fixEncoding(array $results)
     {
         return array_map(function ($value) {
