@@ -59,11 +59,11 @@ class Html extends Object
 		}
 		elseif ($lapsed > 86400 && $current['year'] != $parsed['year'])
 		{
-			return \JHTML::_('date', $timestamp, 'M j, Y', false);
+			return Date::of($timestamp)->toLocal('M j, Y');
 		}
 		elseif ($lapsed > 86400)
 		{
-			return \JHTML::_('date', $timestamp, 'M j', false) . ' at ' . \JHTML::_('date', $timestamp, 'h:ia', false);
+			return Date::of($timestamp)->toLocal('M j') . ' at ' . Date::of($timestamp)->toLocal('h:ia');
 		}
 		else
 		{
@@ -89,23 +89,23 @@ class Html extends Object
 
 		if ($full)
 		{
-			return \JHTML::_('date', $timestamp, 'M d, Y H:i:s', false);
+			return Date::of($timestamp)->toLocal('M d, Y H:i:s');
 		}
 
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return \JHTML::_('date', $timestamp, 'g:i A', false);
+				return Date::of($timestamp)->toLocal('g:i A');
 			}
 			else
 			{
-				return \JHTML::_('date', $timestamp, 'M j', false);
+				return Date::of($timestamp)->toLocal('M j');
 			}
 		}
 		else
 		{
-			return \JHTML::_('date', $timestamp, 'M j, Y', false);
+			return Date::of($timestamp)->toLocal('M j, Y');
 		}
 	}
 
@@ -121,7 +121,7 @@ class Html extends Object
 		$timestamp = strtotime($timestamp);
 
 		// Get current time
-		$current_time = $utc ? strtotime(\JFactory::getDate()) : strtotime(date('c'));
+		$current_time = $utc ? Date::toUnix() : strtotime(date('c'));
 
 		$text = self::timeDifference($current_time - $timestamp);
 

@@ -118,9 +118,9 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$filterstring  = $this->filters['sortby']   ? '&amp;sort='.$this->filters['sortby']    : '';
-$filterstring .= '&amp;status='.$this->filters['status'];
-$filterstring .= ($this->filters['category'])   ? '&amp;category='.$this->filters['category']     : '';
+$filterstring  = $this->filters['sortby']   ? '&amp;sort=' . $this->filters['sortby']    : '';
+$filterstring .= '&amp;status=' . $this->filters['status'];
+$filterstring .= ($this->filters['category'])   ? '&amp;category=' . $this->filters['category']     : '';
 
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -138,15 +138,21 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$checkedInfo = '';
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
-		$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-				 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
-				. JHTML::_('date', $row->checked_out_time, Lang::txt('DATE_FORMAT_LC2')) . '<br />'
-				 : '';
+		$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
+		$time = Date::of($row->checked_out_time)->toLocal('H:i');
+
+		$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->checked_out) . '<br />' . $date . '<br />' . $time . '">';
+		$checked .= JHTML::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
+
+		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
+				. $date . '<br />'
+				: '';
 		$info .= ($row->checked_out)
-				 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': '.$row->checked_out . '<br />'
+				 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': ' . $row->checked_out . '<br />'
 				 : '';
 		$checkedInfo = ' ['.Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
-		$checked = JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
+
 	}
 	else
 	{
@@ -158,8 +164,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
 	$task 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'task');
 	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00'
-			? JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_LC2'))
-			: JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_LC2'));
+			? Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'))
+			: Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
 ?>
 			<tr class="<?php echo "row$k"; ?> <?php echo $row->state == 5 ? 'attention' : ''; ?>">
 				<td>

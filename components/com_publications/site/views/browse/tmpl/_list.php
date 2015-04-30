@@ -55,9 +55,9 @@ foreach ($this->results as $line)
 	switch ($show_date)
 	{
 		case 0: $thedate = ''; break;
-		case 1: $thedate = JHTML::_('date', $line->created, 'M d, Y');      break;
-		case 2: $thedate = JHTML::_('date', $line->modified, 'M d, Y');     break;
-		case 3: $thedate = JHTML::_('date', $line->published_up, 'M d, Y'); break;
+		case 1: $thedate = Date::of($line->created)->toLocal('M d, Y');      break;
+		case 2: $thedate = Date::of($line->modified)->toLocal('M d, Y');     break;
+		case 3: $thedate = Date::of($line->published_up)->toLocal('M d, Y'); break;
 	}
 
 	// Display List of items

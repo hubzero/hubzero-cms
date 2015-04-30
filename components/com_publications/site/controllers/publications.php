@@ -1574,7 +1574,6 @@ class Publications extends SiteController
 	{
 		$yearFormat = "Y";
 		$monthFormat = "M";
-		$tz = false;
 
 		// Incoming
 		$id = Request::getInt( 'id', 0 );
@@ -1695,9 +1694,9 @@ class Publications extends SiteController
 						$i++;
 					}
 				}
-				$addarray['month'] = \JHTML::_('date', $thedate, $monthFormat, $tz);
+				$addarray['month'] = Date::of($thedate)->toLocal($monthFormat);
 				$addarray['url']   = $url;
-				$addarray['year']  = \JHTML::_('date', $thedate, $yearFormat, $tz);
+				$addarray['year']  = Date::of($thedate)->toLocal($yearFormat);
 				if ($publication->doi)
 				{
 					$addarray['doi'] = 'doi:' . DS . $publication->doi;

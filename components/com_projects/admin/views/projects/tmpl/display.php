@@ -128,7 +128,7 @@ function submitbutton(pressbutton)
 					$status = '';
 					if ($row->state == 1 && $row->setup_stage >= $setup_complete)
 					{
-						$status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' ' . JHTML::_('date', $row->created, 'd M. Y');
+						$status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' ' . Date::of($row->created)->toLocal('M d, Y');
 					}
 					else if ($row->state == 2)
 					{

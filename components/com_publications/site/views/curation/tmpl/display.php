@@ -79,7 +79,7 @@ $this->css()
 							$submitted  = $row->reviewed && $row->state == 5
 										? strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED'))
 										: strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'));
-							$submitted .= ' <span class="prominent">' . JHTML::_('date', $row->submitted, 'M d, Y') . '</span> ';
+							$submitted .= ' <span class="prominent">' . Date::of($row->submitted)->toLocal('M d, Y') . '</span> ';
 
 							// Get submitter
 							$submitter = $pa->getSubmitter($row->id, $row->created_by);
@@ -89,7 +89,7 @@ $this->css()
 							if ($row->state == 7)
 							{
 								$reviewed  = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED'))
-									.' <span class="prominent">' . JHTML::_('date', $row->reviewed, 'M d, Y') . '</span> ';
+									.' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
 
 								$reviewer  = \Hubzero\User\Profile::getInstance($row->reviewed_by);
 								$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY')

@@ -99,13 +99,13 @@ class Andmore extends Base
 		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
 		{
 			$html .= '<table class="usagestats" summary="' . Lang::txt('Statistics for this resource') . '">' . "\n";
-			$html .= ' <caption>'.Lang::txt('Usage Stats') . '</caption>' . "\n";
+			$html .= ' <caption>' . Lang::txt('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . Lang::txt('updated') . ' ' . \JHTML::_('date', $this->datetime, $this->dateFormat);
+				$html .= ': ' . Lang::txt('updated') . ' ' . Date::of($this->datetime)->toLocal($this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";
@@ -114,24 +114,10 @@ class Andmore extends Base
 			if ($this->users != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.Lang::txt('Users').':</th>' . "\n";
+				$html .= '   <th scope="row">' . Lang::txt('Users') . ':</th>' . "\n";
 				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			/*if ($this->views != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.$vlabel.':</th>' . "\n";
-				$html .= '   <td>'.$this->views.'</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			if ($this->avg_view != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.$avlabel.':</th>' . "\n";
-				$html .= '   <td>'.$this->valfmt($this->avg_view).'</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}*/
 			$html .= ' </tbody>' . "\n";
 			$html .= '</table>' . "\n";
 		}

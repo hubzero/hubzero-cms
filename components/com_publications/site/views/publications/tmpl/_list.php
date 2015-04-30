@@ -40,7 +40,7 @@ foreach ($this->results as $row)
 	$authors = $pa->getAuthors($row->version_id);
 
 	$info = array();
-	$info[] = JHTML::_('date', $row->published_up, 'd M Y');
+	$info[] = Date::of($row->published_up)->toLocal('d M Y');
 	$info[] = $row->cat_name;
 	$info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': '
 		. \Components\Publications\Helpers\Html::showContributors( $authors, false, true );
