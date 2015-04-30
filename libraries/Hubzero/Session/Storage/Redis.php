@@ -78,7 +78,7 @@ class Redis extends Store
 
 		parent::__construct($options);
 	}
-	
+
 	/**
 	 * Open the SessionHandler backend.
 	 *
