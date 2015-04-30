@@ -24,15 +24,45 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return array(
-	'Hubzero\Module\ModuleServiceProvider',
-	'Hubzero\Pathway\PathwayServiceProvider',
-	'Hubzero\Notification\NotificationServiceProvider',
-	'Hubzero\Template\TemplateServiceProvider',
-	'Hubzero\Cache\CacheServiceProvider',
-	'Hubzero\Html\EditorServiceProvider',
-);
+namespace Hubzero\Html;
+
+use Hubzero\Base\ServiceProvider;
+use Hubzero\Html\Editor;
+
+/**
+ * Editor service provider
+ */
+class EditorServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['editor'] = function($app)
+		{
+			$global = $app['config']->get('editor');
+
+			$editor = \JFactory::getUser()->getParam('editor', $global);
+
+			if (!$app['plugin']->isEnabled('editors', $editor))
+			{
+				$editor = $global;
+				if (!$app['plugin']->isEnabled('editors', $editor))
+				{
+					$editor = 'none';
+				}
+			}
+
+			$app['config']->set('editor', $editor);
+
+			return new Editor($editor);
+		};
+	}
+}

@@ -34,4 +34,5 @@ return array(
 	'Hubzero\Notification\NotificationServiceProvider',
 	'Hubzero\Template\TemplateServiceProvider',
 	'Hubzero\Cache\CacheServiceProvider',
+	'Hubzero\Html\EditorServiceProvider',
 );

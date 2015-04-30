@@ -30,7 +30,7 @@
 
 namespace Hubzero\View\Helper;
 
-//use Hubzero\Html\Editor;
+use App;
 
 /**
  * Helper for making easy links and getting urls that depend on the routes and router.
@@ -61,7 +61,7 @@ class Editor extends AbstractHelper
 		$asset   = null;
 		$author  = null;
 
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			$buttons = false;
 		}
@@ -76,7 +76,7 @@ class Editor extends AbstractHelper
 
 		if (!$name)
 		{
-			\App::abort(500, \Lang::txt('Editor must have a name'));
+			App::abort(500, \Lang::txt('Editor must have a name'));
 		}
 
 		$id = $id ?: str_replace(array('[', ']'), '', $name);
@@ -91,19 +91,15 @@ class Editor extends AbstractHelper
 	 */
 	public function instance()
 	{
-		$editor = null;
-
-		if (\App::isAdmin())
+		try
 		{
-			$editor = \User::getParam('editor', $editor);
+			$editor = App::get('editor');
+		}
+		catch (Exception $e)
+		{
+			$editor = \Hubzero\Html\Editor::getInstance('none');
 		}
 
-		if (is_null($editor))
-		{
-			$editor = \App::get('config')->get('editor');
-		}
-
-		//return Editor::getInstance($editor);
-		return \JFactory::getEditor($editor);
+		return $editor;
 	}
 }
