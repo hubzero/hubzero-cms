@@ -30,6 +30,8 @@
 
 namespace Hubzero\Base;
 
+use Hubzero\Http\Request;
+
 /**
  * Client detector
  */
@@ -45,9 +47,9 @@ class ClientDetector
 	 *
 	 * @return  void
 	 */
-	public function __construct($request)
+	public function __construct(Request $request)
 	{
-		$this->request = substr($request, strlen($_SERVER['SCRIPT_NAME']));
+		$this->request = $request;
 	}
 
 	/**
@@ -63,10 +65,8 @@ class ClientDetector
 		{
 			return $this->detectConsoleEnvironment($environments, $consoleArgs);
 		}
-		else
-		{
-			return $this->detectWebEnvironment($environments);
-		}
+
+		return $this->detectWebEnvironment($environments);
 	}
 
 	/**
@@ -111,14 +111,12 @@ class ClientDetector
 		// First we will check if an environment argument was passed via console arguments
 		// and if it was that automatically overrides as the environment. Otherwise, we
 		// will check the environment as a "web" request like a typical HTTP request.
-		if ( ! is_null($value = $this->getEnvironmentArgument($args)))
+		if (!is_null($value = $this->getEnvironmentArgument($args)))
 		{
 			return reset(array_slice(explode('=', $value), 1));
 		}
-		else
-		{
-			return $this->detectWebEnvironment($environments);
-		}
+
+		return $this->detectWebEnvironment($environments);
 	}
 
 	/**

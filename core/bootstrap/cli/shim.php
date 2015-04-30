@@ -59,26 +59,6 @@ $app = new Hubzero\Base\Application;
 
 /*
 |--------------------------------------------------------------------------
-| Detect The Application Client
-|--------------------------------------------------------------------------
-|
-| Laravel takes a dead simple approach to your application environments
-| so you can just specify a machine name or HTTP host that matches a
-| given environment, then we will automatically detect it for you.
-|
-*/
-
-$client = $app->detectClient(array(
-
-	'administrator' => 'administrator',
-	'api'           => 'api',
-	'cli'           => 'cli',
-	'install'       => 'install',
-
-))->name;
-
-/*
-|--------------------------------------------------------------------------
 | Bind The Application In The Container
 |--------------------------------------------------------------------------
 |
@@ -101,7 +81,7 @@ $app['app'] = $app;
 |
 */
 
-$app['config'] = new \Hubzero\Config\Repository($client);
+$app['config'] = new \Hubzero\Config\Repository('cli');
 
 /*
 |--------------------------------------------------------------------------
@@ -113,7 +93,7 @@ $app['config'] = new \Hubzero\Config\Repository($client);
 |
 */
 
-$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
+$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'services.php';
 $services = file_exists($providers) ? require $providers : array();
 foreach ($services as $service)
 {
@@ -130,7 +110,7 @@ foreach ($services as $service)
 |
 */
 
-$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
+$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'aliases.php';
 
 $app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
 

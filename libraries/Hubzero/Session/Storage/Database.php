@@ -99,15 +99,11 @@ class Database extends Store
 	{
 		//global $_PROFILER;
 
-		/*if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
+		//if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
+		if (php_sapi_name() == 'cli')
 		{
-			if (php_sapi_name() != 'cli')
-			{
-				JPROFILE ? $_PROFILER->log() : null;
-			}
-			
 			return true; // skip session write on api and command line calls
-		}*/
+		}
 
 		// Get the database connection object and verify its connected.
 		if ($this->connection->connected())

@@ -281,7 +281,7 @@ class Application extends Container
 	{
 		$args = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
 
-		return $this['client'] = with(new ClientDetector($_SERVER['REQUEST_URI']))->detect($clients, $args);
+		return $this['client'] = with(new ClientDetector($this['request']))->detect($clients, $args);
 	}
 
 	/**
