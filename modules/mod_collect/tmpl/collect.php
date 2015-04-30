@@ -112,7 +112,7 @@ $url  = Request::getVar('REQUEST_URI', '', 'server');
 
 		<label for="field_description">
 			<?php echo Lang::txt('MOD_COLLECT_ADD_DESCRIPTION'); ?>
-			<?php echo \JFactory::getEditor()->display('collectible[description]', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+			<?php echo App::get('editor')->display('collectible[description]', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 

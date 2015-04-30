@@ -188,7 +188,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		if ($return == 'html')
 		{
 			// This needs to be called to ensure scripts are pushed to the document
-			$foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
+			$foo = App::get('editor')->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
 
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];

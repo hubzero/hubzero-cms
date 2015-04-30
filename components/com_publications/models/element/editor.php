@@ -34,9 +34,9 @@ class Editor extends Base
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Editor';
+	protected $_name = 'Editor';
 
 	/**
 	 * Return any options this element may have
@@ -51,11 +51,11 @@ class Editor extends Base
 	{
 		$rows = isset($element->rows) ? $element->rows : 6;
 		$cols = isset($element->cols) ? $element->cols : 50;
-		$editorMacros 	= isset($element->editorMacros)
+		$editorMacros  = isset($element->editorMacros)
 						? $element->editorMacros : 0;
-		$editorMinimal 	= isset($element->editorMinimal)
+		$editorMinimal = isset($element->editorMinimal)
 						? $element->editorMinimal : 1;
-		$editorImages 	= isset($element->editorImages)
+		$editorImages  = isset($element->editorImages)
 						? $element->editorImages : 0;
 
 		$classes  = $editorMinimal == 1 ? 'minimal ' : '';
@@ -63,6 +63,6 @@ class Editor extends Base
 		$classes .= $editorImages == 1 ? 'images ' : '';
 		$classes .= $editorMacros == 1 ? 'macros ' : '';
 
-		return '<span class="field-wrap">' . \JFactory::getEditor()->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
+		return '<span class="field-wrap">' . \App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
 	}
 }

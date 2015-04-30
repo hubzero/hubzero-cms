@@ -1,7 +1,34 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-	$juser = JFactory::getUser();
+defined('_JEXEC') or die('Restricted access');
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
@@ -73,9 +100,9 @@ defined('_JEXEC') or die('Restricted access');
 				$view->type   = 'review';
 				$view->vote   = '';
 				$view->id     = '';
-				if (!$juser->get('guest'))
+				if (!User::isGuest())
 				{
-					if ($this->comment->get('created_by') == $juser->get('username'))
+					if ($this->comment->get('created_by') == User::get('username'))
 					{
 						$view->vote = $this->comment->get('vote');
 						$view->id   = $this->comment->get('id');
@@ -123,7 +150,7 @@ defined('_JEXEC') or die('Restricted access');
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 						<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_ENTER_COMMENTS'); ?></span>
 						<?php
-						echo JFactory::getEditor()->display('comment[content]', $this->comment->content('raw'), '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
+						echo $this->editor('comment[content]', $this->comment->content('raw'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 						?>
 					</label>
 
@@ -142,7 +169,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<p class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
-			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
+			<?php if (User::get('id') == $this->comment->get('created_by')) { ?>
 				<?php /*if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_DELETE'); ?><!--
@@ -173,7 +200,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<?php if ($juser->get('guest')) { ?>
+				<?php if (User::isGuest()) { ?>
 				<p class="warning">
 					<?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_PUBLICATION_REVIEWS_LOGIN') . '</a>'); ?>
 				</p>
@@ -187,7 +214,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
 						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('publication_id') ? 0 : $this->comment->get('id')); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
-						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="id" value="<?php echo $this->publication->id; ?>" />
@@ -199,7 +226,7 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATION_REVIEWS_ENTER_COMMENTS'); ?></span>
 							<?php
-							echo JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
+							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 							?>
 						</label>
 

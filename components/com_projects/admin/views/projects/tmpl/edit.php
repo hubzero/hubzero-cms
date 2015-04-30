@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?>:</label>
 				<?php 
-					echo JFactory::getEditor()->display('about', $this->model->about('raw'), '', '', 35, 25, false, 'about', null, null);
+					echo $this->editor('about', $this->model->about('raw'), 35, 25, 'about');
 				?>
 			</div>
 

@@ -158,7 +158,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 						$classes .= ' no-footer ';
 						$classes .= $editorImages == 1 ? 'images ' : '';
 						$classes .= $editorMacros == 1 ? 'macros ' : '';
-						$output .= JFactory::getEditor()->display($field, $value
+						$output .= App::get('editor')->display($field, $value
 							, '', '', $cols, $rows, false
 							, 'pub-' . $elName, null, null, array('class' => $classes));
 

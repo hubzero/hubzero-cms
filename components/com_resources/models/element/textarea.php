@@ -68,6 +68,6 @@ class Textarea extends Base
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		return '<span class="field-wrap">' . \JFactory::getEditor()->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
+		return '<span class="field-wrap">' . \App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
 	}
 }

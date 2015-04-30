@@ -166,7 +166,7 @@ class Helper extends Module
 			}
 
 			ob_clean();
-			require($this->getLayoutPath($this->module->module, 'collect'));
+			require($this->getLayoutPath('collect'));
 			exit;
 		}
 
