@@ -82,7 +82,7 @@ $this->css()
 							$submitted .= ' <span class="prominent">' . Date::of($row->submitted)->toLocal('M d, Y') . '</span> ';
 
 							// Get submitter
-							$submitter = $pa->getSubmitter($row->id, $row->created_by);
+							$submitter = $pa->getSubmitter($row->version_id, $row->created_by);
 							$submitted .= ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY')
 								. ' ' . $submitter->name . '</span>';
 
