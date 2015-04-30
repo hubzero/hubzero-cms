@@ -494,6 +494,11 @@ abstract class JFactory
 	 */
 	public static function getEditor($editor = null)
 	{
+		if (class_exists('\\App'))
+		{
+			return \App::get('editor');
+		}
+
 		jimport('joomla.html.editor');
 
 		//get the editor configuration setting
