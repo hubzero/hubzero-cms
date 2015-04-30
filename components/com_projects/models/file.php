@@ -411,6 +411,21 @@ class File extends Object
 	}
 
 	/**
+	 * Can image thumbnail be generated?
+	 *
+	 * @return  mixed
+	 */
+	public function isSupportedImage()
+	{
+		$mime = $this->getMimeType();
+		if (in_array($mime, array('image/jpeg', 'image/gif', 'image/png')))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Get item parent directories
 	 *
 	 * @return     mixed
