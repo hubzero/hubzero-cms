@@ -82,7 +82,7 @@ $this->css()
 							$submitted .= ' <span class="prominent">' . JHTML::_('date', $row->submitted, 'M d, Y') . '</span> ';
 
 							// Get submitter
-							$submitter = $pa->getSubmitter($row->id, $row->created_by);
+							$submitter = $pa->getSubmitter($row->version_id, $row->created_by);
 							$submitted .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
 								. ' ' . $submitter->name . '</span>';
 
