@@ -115,6 +115,40 @@ class Test extends Base implements CommandInterface
 	}
 
 	/**
+	 * Lists the test suites available to run
+	 *
+	 * @return void
+	 **/
+	public function show()
+	{
+		$base        = PATH_CORE . DS . 'libraries' . DS . 'Hubzero';
+		$directories = array_diff(scandir($base), ['.', '..']);
+
+		$tests = [];
+
+		foreach ($directories as $directory)
+		{
+			if (is_dir($base . DS . $directory . DS . 'Tests'))
+			{
+				$tests[] = $directory;
+			}
+		}
+
+		if (!count($tests))
+		{
+			$this->output->addLine('There are currently no tests suites available to be run.', 'warning');
+		}
+		else
+		{
+			foreach ($tests as $test)
+			{
+				$name = 'lib_' . strtolower($test);
+				$this->output->addLine($name, 'success');
+			}
+		}
+	}
+
+	/**
 	 * Output help documentation
 	 *
 	 * @return void
