@@ -107,7 +107,8 @@ class Processor extends Object
 		//open image
 		if (!$this->openImage())
 		{
-			throw new Exception('Invalid/corrupted image file.');
+			$this->setError(\Lang::txt('[ERROR] Invalid/corrupted image file'));
+			return;
 		}
 	}
 
@@ -178,6 +179,7 @@ class Processor extends Object
 				$this->resource   = imagecreatefromgif($this->source);
 			break;
 			case 'image/png':
+			case 'image/x-png':
 				$this->image_type = IMAGETYPE_PNG;
 				$this->resource   = imagecreatefrompng($this->source);
 			break;
@@ -201,6 +203,7 @@ class Processor extends Object
 		{
 			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -246,6 +249,10 @@ class Processor extends Object
 	 */
 	public function rotate($rotation = 0, $background = 0)
 	{
+		if (empty($this->resource))
+		{
+			return false;
+		}
 		$resource = imagerotate($this->resource, $rotation, $background);
 		imagedestroy($this->resource);
 		$this->resource = $resource;
@@ -260,6 +267,10 @@ class Processor extends Object
 	 */
 	public function flip($flip_horizontal, $flip_vertical = false)
 	{
+		if (empty($this->resource))
+		{
+			return false;
+		}
 		$resource = $this->resource;
 		$width = imagesx($resource);
 		$height = imagesy($resource);
@@ -299,6 +310,10 @@ class Processor extends Object
 	 */
 	public function crop($top, $right = 0, $bottom = 0, $left = 0)
 	{
+		if (empty($this->resource))
+		{
+			return false;
+		}
 		$width      = imagesx($this->resource);
 		$height     = imagesy($this->resource);
 		$new_width  = $width - ($left + $right);
@@ -322,6 +337,10 @@ class Processor extends Object
 	 */
 	public function resize($new_dimension, $use_height = false, $squared = false, $resample = true)
 	{
+		if (empty($this->resource))
+		{
+			return false;
+		}
 		$percent = false;
 		$width   = imagesx($this->resource);
 		$height  = imagesy($this->resource);
