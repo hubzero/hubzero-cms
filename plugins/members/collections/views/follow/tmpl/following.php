@@ -101,7 +101,17 @@ $this->css()
 					<?php } ?>
 				</tbody>
 			</table>
-			<?php echo $this->pageNav->getListFooter(); ?>
+			<?php
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+			$pageNav->setAdditionalUrlParam('active', 'collections');
+			$pageNav->setAdditionalUrlParam('task', 'following');
+			echo $pageNav->render();
+			?>
 			<div class="clear"></div>
 		</div><!-- / .container -->
 	<?php } else { ?>

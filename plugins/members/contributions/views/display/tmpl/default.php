@@ -290,14 +290,13 @@ if (!$foundresults) {
 		<?php
 		if ($dopaging)
 		{
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination($total, $this->start, $this->limit);
+			$pageNav = $this->pagination($total, $this->start, $this->limit);
 
 			$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
 			$pageNav->setAdditionalUrlParam('active', 'contributions');
 			$pageNav->setAdditionalUrlParam('area', urlencode(stripslashes($this->active)));
 			$pageNav->setAdditionalUrlParam('sort', $this->sort);
-			echo $pageNav->getListFooter();
+			echo $pageNav->render();
 		}
 		?>
 		<div class="clearfix"></div>

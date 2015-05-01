@@ -316,17 +316,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->rows = $this->model->followers($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('task', 'followers');
-
 		foreach ($this->getErrors() as $error)
 		{
 			$view->setError($error);
@@ -381,17 +370,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->rows  = $this->model->following($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('task', 'followers');
-
 		foreach ($this->getErrors() as $error)
 		{
 			$view->setError($error);
@@ -444,17 +422,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->posts     = $this->model->posts($count);
 		$view->followers = $this->model->followers($count);
 		$view->following = $this->model->following($count);
-
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('task', 'all');
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -533,24 +500,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
+		$view->task = $this->collection->get('alias');
 
-		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('task', $view->collection->get('alias'));
-
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -738,16 +694,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-
 		foreach ($this->getErrors() as $error)
 		{
 			$view->setError($error);
@@ -806,16 +752,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->rows = $view->collection->posts($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('task', 'posts');
+		$view->task = 'posts';
 
 		foreach ($this->getErrors() as $error)
 		{

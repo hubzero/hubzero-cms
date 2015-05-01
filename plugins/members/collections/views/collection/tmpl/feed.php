@@ -171,7 +171,19 @@ $this->css()
 			</div><!-- / .post -->
 		<?php } ?>
 	</div><!-- / #posts -->
-	<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<?php
+	if ($this->total > $this->filters['limit'])
+	{
+		$pageNav = $this->pagination(
+			$this->total,
+			$this->filters['start'],
+			$this->filters['limit']
+		);
+		$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('active', 'collections');
+		echo $pageNav->render();
+	}
+	?>
 	<div class="clear"></div>
 <?php } else { ?>
 	<div id="collection-introduction">

@@ -232,8 +232,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
 
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
 			$filters['start'],
 			$filters['limit']
@@ -247,7 +246,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$pageNav->setAdditionalUrlParam('task', 'inbox');
 		$pageNav->setAdditionalUrlParam('action', '');
 
-		$view->pagenavhtml = $pageNav->getListFooter();
+		$view->pagenavhtml = $pageNav->render();
 
 		return $view->loadTemplate();
 	}
@@ -290,8 +289,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
 
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
 			$filters['start'],
 			$filters['limit']
@@ -305,7 +303,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$pageNav->setAdditionalUrlParam('task', 'archive');
 		$pageNav->setAdditionalUrlParam('action', '');
 
-		$view->pagenavhtml = $pageNav->getListFooter();
+		$view->pagenavhtml = $pageNav->render();
 
 		return $view->loadTemplate();
 	}
@@ -348,8 +346,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
 
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
 			$filters['start'],
 			$filters['limit']
@@ -363,7 +360,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$pageNav->setAdditionalUrlParam('task', 'trash');
 		$pageNav->setAdditionalUrlParam('action', '');
 
-		$view->pagenavhtml = $pageNav->getListFooter();
+		$view->pagenavhtml = $pageNav->render();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -409,8 +406,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$view->rows = $recipient->getSentMessages($filters);
 
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$pageNav = new \Hubzero\Pagination\Paginator(
 			$view->total,
 			$filters['start'],
 			$filters['limit']
@@ -421,7 +417,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$pageNav->setAdditionalUrlParam('task', 'sent');
 		$pageNav->setAdditionalUrlParam('action', '');
 
-		$view->pagenavhtml = $pageNav->getListFooter();
+		$view->pagenavhtml = $pageNav->render();
 
 		foreach ($this->getErrors() as $error)
 		{

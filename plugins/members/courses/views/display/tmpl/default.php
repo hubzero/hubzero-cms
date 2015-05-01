@@ -200,13 +200,18 @@ $this->css();
 			</table>
 
 			<?php
-			$this->pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
-			$this->pageNav->setAdditionalUrlParam('active', 'courses');
-			$this->pageNav->setAdditionalUrlParam('task', $this->filters['task']);
-			$this->pageNav->setAdditionalUrlParam('action', '');
-			$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+			$pageNav->setAdditionalUrlParam('active', 'courses');
+			$pageNav->setAdditionalUrlParam('task', $this->filters['task']);
+			$pageNav->setAdditionalUrlParam('action', '');
+			$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
 
-			echo $this->pageNav->getListFooter();
+			echo $pageNav->render();
 			?>
 			<div class="clearfix"></div>
 		</form>

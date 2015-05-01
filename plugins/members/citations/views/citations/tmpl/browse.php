@@ -310,8 +310,7 @@ if (isset($this->messages))
 					<?php endif; ?>
 					<?php
 						// Initiate paging
-						jimport('joomla.html.pagination');
-						$pageNav = new JPagination(
+						$pageNav = $this->pagination(
 							$this->total,
 							$this->filters['start'],
 							$this->filters['limit']
@@ -340,7 +339,7 @@ if (isset($this->messages))
 								break;
 							}
 						}
-						echo $pageNav->getListFooter();
+						echo $pageNav->render();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- /.container -->

@@ -186,13 +186,6 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				$view->results = $this->_getData('list', $view->active->alias, $view->filters);
 			}
 
-			jimport('joomla.html.pagination');
-			$view->pageNav = new JPagination(
-				$view->total,
-				$view->filters['start'],
-				$view->filters['limit']
-			);
-
 			foreach ($this->getErrors() as $error)
 			{
 				$view->setError($error);
