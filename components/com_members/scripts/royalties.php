@@ -30,7 +30,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-$thispath = dirname(__FILE__);
+$thispath = __DIR__;
 $bits = explode('/', $thispath);
 $basepath = '/'.$bits[1].'/'.$bits[2];
 
@@ -47,12 +47,10 @@ define('JPATH_BASE', $basepath);
  */
 define('DS', DIRECTORY_SEPARATOR);
 
-require_once (JPATH_BASE  . DS . 'includes' . DS . 'defines.php');
-require_once (JPATH_BASE  . DS . 'includes' . DS . 'framework.php');
+require_once (PATH_CORE  . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php');
+require_once (PATH_CORE  . DS . 'bootstrap' . DS . 'site' . DS . 'framework.php');
 
 $time_start = microtime(true);
-
-JPROFILE ? $_PROFILER->mark('afterLoad') : null;
 
 /**
  * CREATE THE APPLICATION
@@ -72,10 +70,10 @@ $mainframe->initialise();
 JPluginHelper::importPlugin('system');
 
 // trigger the onAfterInitialise events
-JPROFILE ? $_PROFILER->mark('afterInitialise') : null;
 $mainframe->triggerEvent('onAfterInitialise');
 
-if (0) {
+if (0)
+{
 /**
  * ROUTE THE APPLICATION
  *
@@ -88,7 +86,6 @@ $Itemid = Request::getInt('Itemid');
 $mainframe->authorize($Itemid);
 
 // trigger the onAfterRoute events
-JPROFILE ? $_PROFILER->mark('afterRoute') : null;
 $mainframe->triggerEvent('onAfterRoute');
 
 /**
@@ -100,7 +97,6 @@ $option = Request::getCmd('option');
 $mainframe->dispatch($option);
 
 // trigger the onAfterDispatch events
-JPROFILE ? $_PROFILER->mark('afterDispatch') : null;
 $mainframe->triggerEvent('onAfterDispatch');
 
 /**
@@ -111,40 +107,8 @@ $mainframe->triggerEvent('onAfterDispatch');
 $mainframe->render();
 
 // trigger the onAfterRender events
-JPROFILE ? $_PROFILER->mark('afterRender') : null;
 $mainframe->triggerEvent('onAfterRender');
 } // (0)
-// Begin Joomla 1.5 Core Compatibility Support *njk*
-/*
-define('JPATH_BASE', dirname(__FILE__));
-define('DS', DIRECTORY_SEPARATOR);
-$parts = explode(DS, JPATH_BASE);
-array_pop($parts);
-array_pop($parts);
-array_pop($parts);
-define('PATH_CORE', implode(DS, $parts));
-define('JPATH_SITE', PATH_CORE);
-define('JPATH_LIBRARIES', PATH_CORE . DS . 'libraries');
-define('JPATH_CONFIGURATION',     PATH_CORE);
-require_once(JPATH_LIBRARIES . DS . 'loader.php');
-jimport('joomla.common.abstract.object');
-jimport('joomla.factory');
-*/
-// End Joomla 1.5 Core Compatibility Support *njk*
-
-/*
-if (!file_exists("../../../configuration.php")) {
-	header("Location: ../../../installation/index.php");
-	exit();
-}
-
-require_once(PATH_CORE . DS . "globals.php");
-require_once(PATH_CORE . DS . "configuration.php");
-include_once($mosConfig_absolute_path . "/language/".$mosConfig_lang.".php");
-
-$database = new database($mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix);
-$database->debug($mosConfig_debug);
-*/
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'economy.php');

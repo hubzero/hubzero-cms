@@ -58,6 +58,7 @@ class Application extends Container
 		'Hubzero\Language\TranslationServiceProvider',
 		'Hubzero\Events\EventServiceProvider',
 		'Hubzero\Plugin\PluginServiceProvider',
+		'Hubzero\Debug\ProfilerServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
 		'Hubzero\Component\ComponentServiceProvider',
@@ -261,8 +262,8 @@ class Application extends Container
 	/**
 	 * Mark the given provider as registered.
 	 *
-	 * @param  object  \Hubzero\Base\ServiceProvider
-	 * @return void
+	 * @param   object  \Hubzero\Base\ServiceProvider
+	 * @return  void
 	 */
 	protected function markAsRegistered($provider)
 	{
@@ -274,8 +275,8 @@ class Application extends Container
 	/**
 	 * Detect the application's current environment.
 	 *
-	 * @param  array|string  $clients
-	 * @return string
+	 * @param   array|string  $clients
+	 * @return  string
 	 */
 	public function detectClient($clients)
 	{
@@ -325,19 +326,16 @@ class Application extends Container
 	/**
 	 * Run the application and send the response.
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function run()
 	{
-		if (JPROFILE)
-		{
-			$_PROFILER = \JProfiler::getInstance($this['client']->name);
-		}
+		$profiler = $this['profiler'];
 
 		$app = \JFactory::getApplication($this['client']->name);
 
 		// Mark afterLoad in the profiler.
-		JPROFILE ? $_PROFILER->mark('afterLoad') : null;
+		$profiler ? $profiler->mark('afterLoad') : null;
 
 		// Initialise the application.
 		$app->initialise(
@@ -345,13 +343,13 @@ class Application extends Container
 		);
 
 		// Mark afterIntialise in the profiler.
-		JPROFILE ? $_PROFILER->mark('afterInitialise') : null;
+		$profiler ? $profiler->mark('afterInitialise') : null;
 
 		// Route the application.
 		$app->route();
 
 		// Mark afterRoute in the profiler.
-		JPROFILE ? $_PROFILER->mark('afterRoute') : null;
+		$profiler ? $profiler->mark('afterRoute') : null;
 
 		// Authenticate
 		if (method_exists($app, 'authenticate'))
@@ -363,13 +361,13 @@ class Application extends Container
 		$app->dispatch();
 
 		// Mark afterDispatch in the profiler.
-		JPROFILE ? $_PROFILER->mark('afterDispatch') : null;
+		$profiler ? $profiler->mark('afterDispatch') : null;
 
 		// Render the application.
 		$app->render();
 
 		// Mark afterRender in the profiler.
-		JPROFILE ? $_PROFILER->mark('afterRender') : null;
+		$profiler ? $profiler->mark('afterRender') : null;
 
 		// Return the response.
 		echo $app;

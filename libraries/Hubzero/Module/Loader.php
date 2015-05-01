@@ -46,14 +46,22 @@ class Loader
 	protected $app;
 
 	/**
+	 * A profiler for debugging
+	 *
+	 * @var  object
+	 */
+	protected $profiler;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   object  $app
 	 * @return  void
 	 */
-	public function __construct(Container $app)
+	public function __construct(Container $app, $profiler = null)
 	{
-		$this->app = $app;
+		$this->app      = $app;
+		$this->profiler = $profiler;
 	}
 
 	/**
@@ -233,9 +241,9 @@ class Loader
 	{
 		static $chrome;
 
-		if ($this->app['config']->get('debug'))
+		if (null !== $this->profiler)
 		{
-			\JProfiler::getInstance('Application')->mark('beforeRenderModule ' . $module->module . ' (' . $module->title . ')');
+			$this->profiler->mark('beforeRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
 
 		$app = \JFactory::getApplication();
@@ -318,9 +326,9 @@ class Loader
 		//revert the scope
 		$app->scope = $scope;
 
-		if ($this->app['config']->get('debug'))
+		if (null !== $this->profiler)
 		{
-			\JProfiler::getInstance('Application')->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');
+			$this->profiler->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
 
 		return $module->content;
@@ -430,7 +438,7 @@ class Loader
 
 			if ($db->getErrorNum())
 			{
-				Notify::error(\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+				\Notify::error(\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
 
 				return $clean;
 			}

@@ -117,10 +117,10 @@ unset($config);
 
 // System profiler.
 
-if (JPROFILE) {
+/*if (JPROFILE) {
 	jimport('joomla.error.profiler');
 	$_PROFILER = JProfiler::getInstance('Application');
-}
+}*/
 
 //
 // Joomla library imports.

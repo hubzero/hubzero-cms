@@ -68,12 +68,6 @@ class plgCronMembers extends JPlugin
 	 */
 	public function onPointRoyalties(\Components\Cron\Models\Job $job)
 	{
-		/*
-		jimport('joomla.error.profiler');
-		$_profiler = JProfiler::getInstance('Cron');
-		$_profiler->mark(__CLASS__ . '::' . __METHOD__ . '() -- Start');
-		*/
-
 		$this->database = JFactory::getDBO();
 
 		$action = 'royalty';
@@ -256,12 +250,6 @@ class plgCronMembers extends JPlugin
 		{
 			$this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
 		}
-
-		//$time_end = microtime(true);
-		//$time = $time_end - $time_start;
-
-		//echo "Computed in $time seconds\n";
-		//$_profiler->mark(__CLASS__ . '::' . __METHOD__ . '() -- End');
 
 		return true;
 	}

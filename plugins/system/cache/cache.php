@@ -15,51 +15,48 @@ defined('_JEXEC') or die;
  */
 class plgSystemCache extends JPlugin
 {
-
-	var $_cache = null;
+	private $_cache = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @access	protected
-	 * @param	object	$subject The object to observe
-	 * @param	array	$config  An array that holds the plugin configuration
-	 * @since	1.0
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
+	 * @return  void
 	 */
-	function __construct(& $subject, $config)
+	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
 
-		//Set the language in the class
-		$config = JFactory::getConfig();
+		// Set the language in the class
 		$options = array(
-			'defaultgroup'	=> 'page',
-			'browsercache'	=> $this->params->get('browsercache', false),
-			'caching'		=> false,
+			'defaultgroup' => 'page',
+			'browsercache' => $this->params->get('browsercache', false),
+			'caching'      => false,
 		);
 
-		$this->_cache = JCache::getInstance('page', $options);
+		$this->_cache = \JCache::getInstance('page', $options);
 	}
 
 	/**
-	* Converting the site URL to fit to the HTTP request
-	*
-	*/
-	function onAfterInitialise()
+	 * Converting the site URL to fit to the HTTP request
+	 *
+	 * @return  void
+	 */
+	public function onAfterInitialise()
 	{
-		global $_PROFILER;
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
-
-		if ($app->isAdmin() || JDEBUG) {
+		if (App::isAdmin() || JDEBUG)
+		{
 			return;
 		}
 
-		if (count($app->getMessageQueue())) {
+		if (Notify::any())
+		{
 			return;
 		}
 
-		if ($user->get('guest') && $_SERVER['REQUEST_METHOD'] == 'GET') {
+		if (User::isGuest() && Request::method() == 'GET')
+		{
 			$this->_cache->setCaching(true);
 		}
 
@@ -67,35 +64,41 @@ class plgSystemCache extends JPlugin
 
 		if ($data !== false)
 		{
-			JResponse::setBody($data);
+			\JResponse::setBody($data);
 
-			echo JResponse::toString($app->getCfg('gzip'));
+			echo \JResponse::toString(App::config('gzip'));
 
-			if (JDEBUG)
+			if ($profiler = App::get('profiler'))
 			{
-				$_PROFILER->mark('afterCache');
-				echo implode('', $_PROFILER->getBuffer());
+				$profiler->mark('afterCache');
+				echo implode('', $profiler->marks());
 			}
 
 			$app->close();
 		}
 	}
 
-	function onAfterRender()
+	/**
+	 * Save cached data
+	 *
+	 * @return  void
+	 */
+	public function onAfterRender()
 	{
-		$app = JFactory::getApplication();
-
-		if ($app->isAdmin() || JDEBUG) {
+		if (App::isAdmin() || JDEBUG)
+		{
 			return;
 		}
 
-		if (count($app->getMessageQueue())) {
+		if (Notify::any())
+		{
 			return;
 		}
 
-		$user = JFactory::getUser();
-		if ($user->get('guest')) {
-			//We need to check again here, because auto-login plugins have not been fired before the first aid check
+		if (User::isGuest())
+		{
+			// We need to check again here, because auto-login plugins
+			// have not been fired before the first aid check
 			$this->_cache->store();
 		}
 	}

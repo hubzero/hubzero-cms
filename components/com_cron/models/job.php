@@ -35,6 +35,7 @@ use Components\Cron\Tables\Job as Table;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
+use Hubzero\Debug\Profiler;
 use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'job.php');
@@ -78,8 +79,7 @@ class Job extends Model
 
 		$this->set('params', new \JRegistry($this->get('params')));
 
-		jimport('joomla.error.profiler');
-		$this->_profiler = new \JProfiler('cron_job_' . $this->get('id'));
+		$this->_profiler = new Profiler('cron_job_' . $this->get('id'));
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Job extends Model
 	 */
 	public function profile()
 	{
-		return $this->_profiler->getBuffer();
+		return $this->_profiler->marks();
 	}
 
 	/**
@@ -295,15 +295,8 @@ class Job extends Model
 	{
 		$buffer = $this->profile();
 
-		if (!is_array($buffer) || !isset($buffer[0]))
-		{
-			$buffer = array(
-				'0 0 0 0 0',
-				'0 0 0 0 0'
-			);
-		}
-		$start_run = explode(' ', $buffer[0]);
-		$end_run   = explode(' ', $buffer[1]);
+		$start = $buffer[0];
+		$end   = end($buffer);
 
 		return array(
 			'id'         => $this->get('id'),
@@ -313,12 +306,12 @@ class Job extends Model
 			'last_run'   => $this->get('last_run'),
 			'next_run'   => $this->get('next_run'),
 			'active'     => $this->get('active'),
-			'start_time' => round($start_run[2], 3),
-			'start_mem'  => round($start_run[4], 3),
-			'end_time'   => round($end_run[2], 3),
-			'end_mem'    => round($end_run[4], 3),
-			'delta_time' => round($end_run[2] - $start_run[2], 3),
-			'delta_mem'  => round($end_run[4] - $start_run[4], 3)
+			'start_time' => round($start->started(), 3),
+			'start_mem'  => round($start->memory(), 3),
+			'end_time'   => round($end->ended(), 3),
+			'end_mem'    => round($end->memory(), 3),
+			'delta_time' => round($end->ended() - $start->started(), 3),
+			'delta_mem'  => round($end->memory() - $start->memory(), 3)
 		);
 	}
 }

@@ -195,7 +195,7 @@ class plgSystemDebug extends JPlugin
 				$html .= '<a href="javascript:" class="debug-tab debug-tab-errors" onclick="Debugger.toggleContainer(this, \'debug-errors\');"><span class="text">' . Lang::txt('PLG_DEBUG_ERRORS') . '</span><span class="badge">' . count(\JError::getErrors()) . '</span></a>';
 			}
 
-			$dumper = \Hubzero\Utility\Debug::getInstance();
+			$dumper = \Hubzero\Debug\Dumper::getInstance();
 			if ($dumper->hasMessages())
 			{
 				$html .= '<a href="javascript:" class="debug-tab debug-tab-console" onclick="Debugger.toggleContainer(this, \'debug-debug\');"><span class="text">' . Lang::txt('PLG_DEBUG_CONSOLE') . '</span>';
@@ -609,7 +609,7 @@ class plgSystemDebug extends JPlugin
 	 */
 	protected function displayDebug()
 	{
-		$dumper = \Hubzero\Utility\Debug::getInstance();
+		$dumper = \Hubzero\Debug\Dumper::getInstance();
 
 		return $dumper->render();
 	}
@@ -770,9 +770,30 @@ class plgSystemDebug extends JPlugin
 	{
 		$html = '<ul class="debug-timeline">';
 
-		foreach (\JProfiler::getInstance('Application')->getBuffer() as $mark)
+		$previousMem  = 0;
+		$previousTime = 0;
+
+		$started = \App::get('profiler')->started();
+		$name    = \App::get('profiler')->label();
+		$previousTime = $started;
+
+		foreach (\App::get('profiler')->marks() as $mark)
 		{
-			$html .= '<li>' . $mark . '</li>';
+			$data = sprintf(
+				'<code>%s %.3f seconds (<span class="tm">+%.3f</span>); %0.2f MB (<span class="mmry">%s%0.3f</span>) - <span class="msg">%s</span></code>',
+				$name,
+				($mark->ended() - $started),
+				($mark->ended() - $previousTime),
+				($mark->memory() / 1048576),
+				($mark->memory() > $previousMem) ? '+' : '',
+				(($mark->memory() - $previousMem) / 1048576),
+				$mark->label()
+			);
+
+			$previousMem  = $mark->memory();
+			$previousTime = $mark->ended();
+
+			$html .= '<li>' . $data . '</li>';
 		}
 
 		$html .= '</ul>';
@@ -789,7 +810,7 @@ class plgSystemDebug extends JPlugin
 	{
 		$html = '';
 
-		$bytes = \JProfiler::getInstance('Application')->getMemory();
+		$bytes = \App::get('profiler')->memory();
 
 		//$html .= '<code>';
 		$html .= \JHtml::_('number.bytes', $bytes);
