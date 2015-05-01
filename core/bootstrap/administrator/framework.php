@@ -19,7 +19,8 @@ defined('_JEXEC') or die;
 /*
  * Installation check, and check on removal of the install directory.
  */
-if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
+if (!file_exists(JPATH_CONFIGURATION . DS . 'configuration.php'))
+{
 	echo 'No configuration file found. Exiting...';
 	exit();
 }
@@ -59,10 +60,13 @@ $config = new JConfig();
 
 if (count(get_object_vars($config)) <= 1)
 {
-	if( file_exists( JPATH_INSTALLATION . DS . 'index.php' ) ) {
+	if (file_exists(JPATH_INSTALLATION . DS . 'index.php'))
+	{
 		header( 'Location: installation/index.php' );
 		exit();
-	} else {
+	}
+	else
+	{
 		echo 'No installation code available. Exiting...';
 		exit();
 	}
@@ -103,7 +107,7 @@ switch ($config->error_reporting)
 
 if (!isset($config->profile))
 {
-        $config->profile = 0;
+	$config->profile = 0;
 }
 
 define('JDEBUG', $config->debug);
@@ -117,7 +121,8 @@ unset($config);
 
 // System profiler.
 
-/*if (JPROFILE) {
+/*if (JPROFILE)
+{
 	jimport('joomla.error.profiler');
 	$_PROFILER = JProfiler::getInstance('Application');
 }*/
