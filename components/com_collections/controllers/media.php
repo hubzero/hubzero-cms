@@ -142,6 +142,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			if (!$item->exists())
 			{
 				$item->set('state', 0);
+				$item->set('access', 0);
 				$item->set('title', $listdir);
 				if (!$item->store())
 				{
@@ -196,6 +197,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			{
 				$item->set('id', 0);
 				$item->set('state', 0);
+				$item->set('access', 0);
 				$item->set('title', $listdir);
 				if (!$item->store())
 				{
@@ -270,6 +272,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			if (!$item->exists())
 			{
 				$item->set('state', 0);
+				$item->set('access', 0);
 				$item->set('title', $listdir);
 				if (!$item->store())
 				{
