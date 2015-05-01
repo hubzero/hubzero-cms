@@ -156,6 +156,7 @@ class Media extends SiteController
 			if (!$item->exists())
 			{
 				$item->set('state', 0);
+				$item->set('access', 0);
 				$item->set('title', $listdir);
 				if (!$item->store())
 				{
@@ -210,6 +211,7 @@ class Media extends SiteController
 			{
 				$item->set('id', 0);
 				$item->set('state', 0);
+				$item->set('access', 0);
 				$item->set('title', $listdir);
 				if (!$item->store())
 				{
@@ -282,6 +284,7 @@ class Media extends SiteController
 			if (!$item->exists())
 			{
 				$item->set('state', 0);
+				$item->set('access', 0);
 				$item->set('title', $listdir);
 				if (!$item->store())
 				{
