@@ -167,7 +167,7 @@ class plgAuthenticationFacebook extends JPlugin
 
 		// Set up params for the login call
 		$params = array(
-			'scope'        => 'public_profile,email,user_birthday',
+			'scope'        => 'public_profile,email',
 			'display'      => 'page',
 			'redirect_uri' => self::getReturnUrl($view->return)
 		);
