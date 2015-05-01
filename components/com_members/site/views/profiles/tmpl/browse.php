@@ -354,10 +354,15 @@ $this->css()
 					</tbody>
 				</table>
 				<?php
-					$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-					$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
-					echo $this->pageNav->getListFooter();
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$pageNav->setAdditionalUrlParam('show', $this->filters['show']);
+					echo $pageNav->render();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

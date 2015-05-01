@@ -144,13 +144,6 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$this->database->setQuery($query);
 		$this->view->total = $this->database->loadResult();
 
-		jimport('joomla.html.pagination');
-		$this->view->pagination = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
 			. ' FROM #__extensions AS p'
 			. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'

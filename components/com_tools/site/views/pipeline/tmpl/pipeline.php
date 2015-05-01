@@ -219,11 +219,17 @@ $this->css('pipeline.css')
 			</table>
 
 			<?php
-			$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-			$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-			$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+			// Initiate paging
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+			$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+			$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-			echo $this->pageNav->getListFooter();
+			echo $pageNav->render();
 			?>
 		</div><!-- / .container -->
 	</form>

@@ -108,14 +108,6 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{

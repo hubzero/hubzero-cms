@@ -380,17 +380,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . Date::of(strtotime('-1 MONTH'))->toSql() . "'");
 		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
 
-		$this->view->registration = new JObject();
+		$this->view->registration = new \Hubzero\Base\Object();
 		$this->view->registration->Fullname     = $this->_registrationField('registrationFullname', 'RRRR', $this->_task);
 		$this->view->registration->Organization = $this->_registrationField('registrationOrganization', 'HOOO', $this->_task);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Instantiate the view
 		$this->view->config = $this->config;

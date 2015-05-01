@@ -106,14 +106,6 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 		$this->view->rows = $model->getAllRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Display results
 		$this->view->display();
 	}

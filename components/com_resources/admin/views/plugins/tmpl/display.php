@@ -74,13 +74,11 @@ Toolbar::unpublishList();
 		<tfoot>
 			<tr>
 				<td colspan="8"><?php
-				jimport('joomla.html.pagination');
-				$pagination = new JPagination(
+				echo $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
-				echo $pagination->getListFooter();
 				?></td>
 			</tr>
 		</tfoot>

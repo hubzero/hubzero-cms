@@ -73,7 +73,14 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="6">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					?>
 				</td>
 			</tr>
 		</tfoot>

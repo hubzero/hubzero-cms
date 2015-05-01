@@ -194,14 +194,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->groups = \Hubzero\User\Group::find($this->view->filters);
 		$this->view->authorized = $this->_authorize();
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		//set some vars for view
 		$this->view->title = $this->_title;
 		$this->view->juser = User::getRoot();

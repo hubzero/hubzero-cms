@@ -39,8 +39,7 @@ foreach ($this->rows as $row)
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 // Initiate paging
-jimport('joomla.html.pagination');
-$pageNav = new JPagination(
+$pageNav = $this->pagination(
 	$this->total,
 	$this->filters['start'],
 	$this->filters['limit']

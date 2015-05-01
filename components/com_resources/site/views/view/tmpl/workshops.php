@@ -279,8 +279,7 @@ if ($mode != 'preview')
 
 					<?php
 					// Initiate paging for children
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
+					$pageNav = $this->pagination(
 						$ccount,
 						$filters['start'],
 						$filters['limit']
@@ -288,7 +287,7 @@ if ($mode != 'preview')
 					$pageNav->setAdditionalUrlParam('id', $this->model->resource->id);
 					$pageNav->setAdditionalUrlParam('sortby', $filters['sortby']);
 
-					echo $pageNav->getListFooter();
+					echo $pageNav->render();
 					?>
 				</div><!-- / .subject -->
 				<div class="aside">

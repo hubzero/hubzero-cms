@@ -127,14 +127,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Fetch results
 		$this->view->rows = $obj->getTools($this->view->filters, $this->config->get('access-admin-component'));
 
-		// Initiate paging class
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(

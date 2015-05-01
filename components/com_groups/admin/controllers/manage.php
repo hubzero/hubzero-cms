@@ -137,14 +137,6 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			$this->view->rows = \Hubzero\User\Group::find($this->view->filters);
 		}
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{

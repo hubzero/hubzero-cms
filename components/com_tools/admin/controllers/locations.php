@@ -115,17 +115,6 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 
 		$this->view->rows  = $this->view->zone->locations('list', $this->view->filters);
 
-		if ($this->view->filters['tmpl'] != 'component')
-		{
-			// Initiate paging
-			jimport('joomla.html.pagination');
-			$this->view->pageNav = new JPagination(
-				$this->view->total,
-				$this->view->filters['start'],
-				$this->view->filters['limit']
-			);
-		}
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{

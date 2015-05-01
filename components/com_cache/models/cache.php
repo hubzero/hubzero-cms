@@ -184,8 +184,7 @@ class Cache extends JModelList
 	{
 		if (empty($this->_pagination))
 		{
-			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination(
+			$this->_pagination = new \Hubzero\Pagination\Paginator(
 				$this->getTotal(),
 				$this->getState('list.start'),
 				$this->getState('list.limit')

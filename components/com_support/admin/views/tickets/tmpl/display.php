@@ -315,13 +315,11 @@ $this->css();
 
 					<?php
 					// Initiate paging
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
+					echo $this->pagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
 					);
-					echo $pageNav->getListFooter();
 					?>
 
 					<input type="hidden" name="option" value="<?php echo $this->option ?>" />

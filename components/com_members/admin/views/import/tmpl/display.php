@@ -95,13 +95,11 @@ function submitbutton(pressbutton)
 				<td colspan="6">
 					<?php
 					// Initiate paging
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
+					echo $this->pagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
 					);
-					echo $pageNav->getListFooter();
 					?>
 				</td>
 			</tr>

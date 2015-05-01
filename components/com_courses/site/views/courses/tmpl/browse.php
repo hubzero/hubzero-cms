@@ -238,8 +238,7 @@ $this->css('browse.css');
 
 				<?php
 				// Initiate paging
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				$pageNav = $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
@@ -247,7 +246,7 @@ $this->css('browse.css');
 				$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
 				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-				echo $pageNav->getListFooter();
+				echo $pageNav->render();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

@@ -87,14 +87,6 @@ class Sections extends AdminController
 		// Fetch results
 		$this->view->rows  = $model->getRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		if ($this->getError())
 		{
