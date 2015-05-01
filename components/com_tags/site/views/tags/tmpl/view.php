@@ -232,8 +232,7 @@ foreach ($cats as $cat)
 					?>
 				</div><!-- / .container-block -->
 				<?php
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
+					$pageNav = $this->pagination(
 						$total,
 						$this->filters['start'],
 						$this->filters['limit']
@@ -243,7 +242,7 @@ foreach ($cats as $cat)
 					$pageNav->setAdditionalUrlParam('active', $this->active);
 					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
 
-					echo $pageNav->getListFooter() . '<div class="clearfix"></div>';
+					echo $pageNav->render() . '<div class="clearfix"></div>';
 				?>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->

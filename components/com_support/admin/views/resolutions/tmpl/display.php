@@ -60,13 +60,11 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="3"><?php
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				echo $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
-				echo $pageNav->getListFooter();
 				?></td>
 			</tr>
 		</tfoot>

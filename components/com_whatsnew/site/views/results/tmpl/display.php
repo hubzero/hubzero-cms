@@ -275,8 +275,7 @@ foreach ($this->cats as $cat)
 					// Initiate paging if we we're displaying an active category
 					if ($dopaging)
 					{
-						jimport('joomla.html.pagination');
-						$pageNav = new JPagination(
+						$pageNav = $this->pagination(
 							$this->total,
 							$this->start,
 							$this->limit
@@ -285,7 +284,7 @@ foreach ($this->cats as $cat)
 						$pageNav->setAdditionalUrlParam('category', urlencode(strToLower($this->active)));
 						$pageNav->setAdditionalUrlParam('period', $this->period);
 
-						$html .= $pageNav->getListFooter();
+						$html .= $pageNav->render();
 						$html .= '<div class="clearfix"></div>';
 					}
 					else

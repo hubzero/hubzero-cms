@@ -359,8 +359,7 @@ if ($this->wishlist->exists())
 						<?php
 						// Page navigation
 						// Initiate paging
-						jimport('joomla.html.pagination');
-						$pageNav = new JPagination(
+						$pageNav = $this->pagination(
 							$this->total,
 							$this->filters['start'],
 							$this->filters['limit']
@@ -373,7 +372,7 @@ if ($this->wishlist->exists())
 						{
 							$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 						}
-						echo $pageNav->getListFooter();
+						echo $pageNav->render();
 						?>
 						<div class="clearfix"></div>
 					</div><!-- / .container -->

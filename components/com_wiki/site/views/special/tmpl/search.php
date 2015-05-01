@@ -142,8 +142,7 @@ $rows = $database->loadObjectList();
 			</tbody>
 		</table>
 		<?php
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$pageNav = $this->pagination(
 			$total,
 			$start,
 			$limit
@@ -151,7 +150,7 @@ $rows = $database->loadObjectList();
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-		echo $pageNav->getListFooter();
+		echo $pageNav->render();
 		?>
 		<div class="clear"></div>
 	</div>

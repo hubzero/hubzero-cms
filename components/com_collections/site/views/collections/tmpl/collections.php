@@ -178,13 +178,11 @@ $this->css()
 			if ($this->total > $this->filters['limit'])
 			{
 				// Initiate paging
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				echo $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
-				echo $pageNav->getListFooter();
 			}
 			?>
 			<div class="clear"></div>

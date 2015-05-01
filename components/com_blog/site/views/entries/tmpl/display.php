@@ -192,8 +192,7 @@ $first = $this->model->entries('first', $filters);
 				</ol>
 
 				<?php
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				$pageNav = $this->pagination(
 					$this->model->entries('count', $this->filters),
 					$this->filters['start'],
 					$this->filters['limit']
@@ -201,7 +200,7 @@ $first = $this->model->entries('first', $filters);
 				$pageNav->setAdditionalUrlParam('year', $this->filters['year']);
 				$pageNav->setAdditionalUrlParam('month', $this->filters['month']);
 				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-				echo $pageNav->getListFooter();
+				echo $pageNav->render();
 				?>
 		<?php } else { ?>
 				<p class="warning"><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>

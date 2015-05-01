@@ -93,8 +93,7 @@ $this->thread->set('category', $this->category->get('alias'));
 			?>
 			<form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
 				<?php
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				$pageNav = $this->pagination(
 					$this->thread->posts('count', $this->filters),
 					$this->filters['start'],
 					$this->filters['limit']
@@ -103,7 +102,7 @@ $this->thread->set('category', $this->category->get('alias'));
 				$pageNav->setAdditionalUrlParam('category', $this->category->get('alias'));
 				$pageNav->setAdditionalUrlParam('thread', $this->thread->get('id'));
 
-				echo $pageNav->getListFooter();
+				echo $pageNav->render();
 				?>
 			</form>
 

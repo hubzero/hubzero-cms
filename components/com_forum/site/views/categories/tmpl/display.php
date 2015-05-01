@@ -220,8 +220,7 @@ $this->category->set('section_alias', $this->filters['section']);
 					</table>
 
 					<?php
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
+					$pageNav = $this->pagination(
 						$this->category->threads('count', $this->filters),
 						$this->filters['start'],
 						$this->filters['limit']
@@ -229,7 +228,7 @@ $this->category->set('section_alias', $this->filters['section']);
 					$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
 					$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
 					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-					echo $pageNav->getListFooter();
+					echo $pageNav->render();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->

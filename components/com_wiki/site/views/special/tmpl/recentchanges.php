@@ -160,8 +160,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			</tbody>
 		</table>
 		<?php
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$pageNav = $this->pagination(
 			$total,
 			$start,
 			$limit
@@ -169,7 +168,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-		echo $pageNav->getListFooter();
+		echo $pageNav->render();
 		?>
 		<div class="clearfix"></div>
 	</div>

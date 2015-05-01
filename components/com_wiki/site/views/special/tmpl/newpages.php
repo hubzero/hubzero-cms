@@ -83,8 +83,7 @@ if ($limit && $limit != 'all')
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 
-jimport('joomla.html.pagination');
-$pageNav = new JPagination(
+$pageNav = $this->pagination(
 	$total,
 	$start,
 	$limit
@@ -172,7 +171,7 @@ else
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-		echo $pageNav->getListFooter();
+		echo $pageNav->render();
 		?>
 		<div class="clearfix"></div>
 	</div>

@@ -135,14 +135,13 @@ $this->css()
 						</tbody>
 					</table>
 					<?php
-						jimport('joomla.html.pagination');
-						$pageNav = new JPagination(
+						$pageNav = $this->pagination(
 							$this->thread->posts('count', $this->filters),
 							$this->filters['start'],
 							$this->filters['limit']
 						);
 						$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-						echo $pageNav->getListFooter();
+						echo $pageNav->render();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->

@@ -174,13 +174,13 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			</ol>
 			<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
 				<?php
-				$pagination = new JPagination(
+				$pagination = $this->pagination(
 					$this->total,
 					$this->results->get_offset(),
 					$this->results->get_limit()
 				);
 				$pagination->setAdditionalUrlParam('terms', $this->terms);
-				echo $pagination->getListFooter();
+				echo $pagination->render();
 				?>
 				<input type="hidden" name="terms" value="<?php echo $this->escape($this->terms); ?>" />
 				<div class="clearfix"></div>

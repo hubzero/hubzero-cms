@@ -133,16 +133,14 @@ $this->css()
 					</table>
 					<?php
 					// Initiate paging
-					jimport('joomla.html.pagination');
-					$pageNav = new JPagination(
+					$pageNav = $this->pagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
 					);
-
 					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-					echo $pageNav->getListFooter();
+					echo $pageNav->render();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
