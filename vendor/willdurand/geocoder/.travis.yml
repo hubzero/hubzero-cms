@@ -1,33 +1,18 @@
-sudo: false
-
-addons:
-  apt:
-    packages:
-    - libgeoip-dev
-
 language: php
 
-env:
-    global:
-        - deps=""
-
 php:
+    - 5.3
     - 5.4
     - 5.5
     - 5.6
-    - nightly
     - hhvm-nightly
 
 matrix:
-    fast_finish: true
-    include:
-        - php: 5.4
-          env: deps="low"
+    allow_failures:
+        - php: hhvm-nightly
 
 before_script:
-    - if [ "$TRAVIS_PHP_VERSION" != "hhvm-nightly" ]; then pecl install geoip; fi
     - composer self-update
-    - if [ "$deps" = "low" ]; then composer update --prefer-dist --prefer-lowest; fi
-    - if [ "$deps" = "" ]; then composer install --prefer-dist --no-interaction; fi
+    - composer install --dev --prefer-dist --no-interaction
 
 script: phpunit --coverage-text
