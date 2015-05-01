@@ -29,7 +29,7 @@ jQuery(document).ready(function(jq){
 		$('a.img-link').fancybox({
 			afterLoad: function() {
 				if ($(this.element).attr('data-download')) {
-					this.title = '<a href="' + $(this.element).attr('data-download') + '">' + $(this.element).attr('data-downloadtext') + '</a> ' + this.title;
+					this.title = '<a href="' + $(this.element).attr('data-download') + '" download="' + $(this.element).attr('data-download') + '">' + $(this.element).attr('data-downloadtext') + '</a> ' + this.title;
 				}
 			},
 			helpers: {
