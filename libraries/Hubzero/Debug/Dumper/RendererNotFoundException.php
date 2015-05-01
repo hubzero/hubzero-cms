@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,34 +24,12 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility\Debug;
+namespace Hubzero\Debug\Dumper;
 
-/**
- * Renderable interface to be extended
- */
-interface Renderable
+class RendererNotFoundException extends \InvalidArgumentException
 {
-	/**
-	 * Get the renderer's name
-	 */
-	public function getName();
-
-	/**
-	 * Set the list of messages
-	 */
-	public function setMessages($messages);
-
-	/**
-	 * Get the list of messages
-	 */
-	public function getMessages();
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function render($messages=null);
 }

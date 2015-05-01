@@ -71,9 +71,6 @@ class Profiler extends Object
 		$this->reset();
 
 		$this->prefix  = $prefix;
-
-		//$this->started = $this->getNow();
-		//$this->mark('profilingStarted');
 	}
 
 	/**
@@ -89,34 +86,14 @@ class Profiler extends Object
 	}
 
 	/**
-	 * Starts the timer
+	 * Get the prefix
+	 *
+	 * @return  string
 	 */
-	/*public function start()
+	public function label()
 	{
-		$this->running = true;
-		$this->paused  = false;
-
-		// Set the start time
-		$this->startTime = $this->getNow();
-		$this->mark('profilingStarted');
-
-		return $this;
-	}*/
-
-	/**
-	 * Ends the timer
-	 */
-	/*public function end()
-	{
-		$this->running = false;
-		$this->paused  = true;
-
-		// Set the end time
-		$this->endTime = $this->getNow();
-		$this->mark('profilingEnded');
-
-		return $this;
-	}*/
+		return $this->prefix;
+	}
 
 	/**
 	 * Output a time mark
@@ -129,11 +106,7 @@ class Profiler extends Object
 	 */
 	public function mark($label)
 	{
-		$current = $this->now();
-
-		$this->marks[] = new Mark($label, $this->started, $this->now());
-
-		$this->started = $current;
+		$this->marks[] = new Mark($label, $this->ended(), $this->now());
 
 		return $this;
 	}
@@ -155,7 +128,7 @@ class Profiler extends Object
 	 */
 	public function started()
 	{
-		return isset($this->marks[0]) ? $this->marks[0]->started() : 0;
+		return isset($this->marks[0]) ? $this->marks[0]->started() : $this->started;
 	}
 
 	/**
@@ -167,7 +140,7 @@ class Profiler extends Object
 	{
 		$count = count($this->marks);
 
-		return $count ? $this->marks[$count - 1]->ended() : 0;
+		return $count ? $this->marks[$count - 1]->ended() : $this->started;
 	}
 
 	/**
@@ -234,6 +207,11 @@ class Profiler extends Object
 		return $summary;
 	}
 
+	/**
+	 * Log profiler info
+	 *
+	 * @return  void
+	 */
 	public function log()
 	{
 		// <timstamp> <hubname> <ip-address> <app> <url> <query> <memory> <querycount> <timeinqueries> <totaltime>

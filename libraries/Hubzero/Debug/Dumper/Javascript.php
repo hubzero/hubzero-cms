@@ -28,12 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility\Debug;
+namespace Hubzero\Debug\Dumper;
 
 /**
- * Terminal renderer
+ * Javascript renderer
  */
-class Console extends AbstractRenderer
+class Javascript extends AbstractRenderer
 {
 	/**
 	 * Returns renderer name
@@ -42,7 +42,7 @@ class Console extends AbstractRenderer
 	 */
 	public function getName()
 	{
-		return 'console';
+		return 'javascript';
 	}
 
 	/**
@@ -60,37 +60,33 @@ class Console extends AbstractRenderer
 
 		$messages = $this->getMessages();
 
-		echo '-----';
+		$output = array();
+		$output[] = '<script type="text/javascript">';
+		$output[] = 'if (!window.console) console = {};';
+		$output[] = 'console.log   = console.log   || function(){};';
+		$output[] = 'console.warn  = console.warn  || function(){};';
+		$output[] = 'console.error = console.error || function(){};';
+		$output[] = 'console.info  = console.info  || function(){};';
+		$output[] = 'console.debug = console.debug || function(){};';
 		foreach ($messages as $item)
 		{
-			echo print_r($item['var'], true); //$this->_deflate($item['var']);
-		}
-		echo '-----';
-	}
-
-	/**
-	 * Turn an array into a pretty print format
-	 *
-	 * @param   array  $arr
-	 * @return  string
-	 */
-	protected function _deflate($arr)
-	{
-		$output = 'Array( ' . "\n";
-		$a = array();
-		foreach ($arr as $key => $val)
-		{
-			if (is_array($val))
+			$output[] = 'console.' . $item['label'] . '("' . addslashes($this->_deflate($item['message'])) . '");';
+			/*switch ($item['type'])
 			{
-				$a[] = "\t" . $key . ' => ' . $this->_deflate($val);
-			}
-			else
-			{
-				$a[] = "\t" . $key . ' => ' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '';
-			}
-		}
-		$output .= implode(", \n", $a) . "\n" . ' )' . "\n";
+				case 'string':
+					$output[] = 'console.' . $item['label'] . '("' . $this->_deflate($item['message']). '");';
+				break;
 
-		return $output;
+				case 'array':
+					$output[] = 'console.log("' . json_encode($this->_deflate($item['message'])). '");';
+				break;
+
+				case 'object':
+					$output[] = 'console.log(JSON.parse(\'' . json_encode($item['message']) . '\'));';
+				break;
+			}*/
+		}
+		$output[] = '</script>';
+		return implode("\n", $output);
 	}
 }

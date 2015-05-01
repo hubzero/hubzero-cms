@@ -45,14 +45,14 @@ class Mark
 	/**
 	 * The time of the start of the period (in milliseconds)
 	 *
-	 * @var  integer
+	 * @var  float
 	 */
 	private $start;
 
 	/**
 	 * The time of the end of the period (in milliseconds)
 	 *
-	 * @var  integer
+	 * @var  float
 	 */
 	private $end;
 
@@ -73,8 +73,8 @@ class Mark
 	public function __construct($label, $start, $end)
 	{
 		$this->label  = (string) $label;
-		$this->start  = (int) $start;
-		$this->end    = (int) $end;
+		$this->start  = (float) $start;
+		$this->end    = (float) $end;
 		$this->memory = memory_get_usage(true);
 	}
 

@@ -67,28 +67,6 @@ if ( ! function_exists('config'))
 	}
 }
 
-if ( ! function_exists('csrf_token'))
-{
-	/**
-	 * Get the CSRF token value.
-	 *
-	 * @param   boolean  $forceNew  Force creation of a new token.
-	 * @return  string
-	 * @throws  RuntimeException
-	 */
-	function csrf_token($forceNew = false)
-	{
-		//$session = app('session');
-
-		if (isset($session))
-		{
-			return \JSession::getFormToken(); //$session->getToken($forceNew);
-		}
-
-		throw new RuntimeException('Application session store not set.');
-	}
-}
-
 if ( ! function_exists('ddie'))
 {
 	/**
@@ -101,7 +79,7 @@ if ( ! function_exists('ddie'))
 	{
 		foreach (func_get_args() as $var)
 		{
-			\Hubzero\Utility\Debug::dump($var);
+			\Hubzero\Debug\Dumper::dump($var);
 		}
 		die();
 	}
@@ -119,7 +97,7 @@ if ( ! function_exists('dlog'))
 	{
 		foreach (func_get_args() as $var)
 		{
-			\Hubzero\Utility\Debug::log($var);
+			\Hubzero\Debug\Dumper::log($var);
 		}
 	}
 }
@@ -136,7 +114,7 @@ if ( ! function_exists('dump'))
 	{
 		foreach (func_get_args() as $var)
 		{
-			\Hubzero\Utility\Debug::dump($var);
+			\Hubzero\Debug\Dumper::dump($var);
 		}
 	}
 }

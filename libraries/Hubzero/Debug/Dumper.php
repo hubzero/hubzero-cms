@@ -28,13 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility;
+namespace Hubzero\Debug;
 
-use Hubzero\Utility\Debug\Renderable;
-use Hubzero\Utility\Debug\RendererNotFoundException;
+use Hubzero\Debug\Dumper\Renderable;
+use Hubzero\Debug\Dumper\RendererNotFoundException;
 use InvalidArgumentException;
 
-class Debug
+class Dumper
 {
 	/**
 	 * Renderable
@@ -126,7 +126,7 @@ class Debug
 
 		if (!($renderer instanceof Renderable))
 		{
-			throw new InvalidArgumentException(\Lang::txt(
+			throw new InvalidArgumentException(sprintf(
 				'%s was unable to fetch renderer or renderer was not an instance of %s',
 				get_class($this) . '::' . __FUNCTION__,
 				__NAMESPACE__ . '\Renderable'
@@ -227,7 +227,7 @@ class Debug
 	{
 		if (!$renderer)
 		{
-			$renderer = php_sapi_name() === 'cli' ? 'console' : 'html'; //isset($_SERVER['argv']) && count($_SERVER['argv']) ? 'console' : 'html';
+			$renderer = php_sapi_name() === 'cli' ? 'console' : 'html';
 		}
 
 		return $this->setRenderer($renderer)

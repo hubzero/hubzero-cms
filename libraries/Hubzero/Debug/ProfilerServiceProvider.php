@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility\Debug;
+namespace Hubzero\Debug;
 
-class RendererNotFoundException extends \InvalidArgumentException
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Profiler service provider
+ */
+class ProfilerServiceProvider extends ServiceProvider
 {
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['profiler'] = function($app)
+		{
+			if ($app['config']['debug'] || $app['config']['profile'])
+			{
+				return new Profiler($app['client']->name);
+			}
+
+			return null;
+		};
+	}
 }

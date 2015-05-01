@@ -28,33 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility\Debug;
-
-use InvalidArgumentException;
+namespace Hubzero\Debug\Dumper;
 
 /**
- * Abstract renderer
+ * Terminal renderer
  */
-class AbstractRenderer implements Renderable
+class Console extends AbstractRenderer
 {
-	/**
-	 * Messages
-	 *
-	 * @var array
-	 */
-	protected $_messages = array();
-
-	/**
-	 * @param array $messages
-	 */
-	public function __construct($messages = null)
-	{
-		if ($messages)
-		{
-			$this->setMessages($messages);
-		}
-	}
-
 	/**
 	 * Returns renderer name
 	 *
@@ -62,38 +42,7 @@ class AbstractRenderer implements Renderable
 	 */
 	public function getName()
 	{
-		return '__abstract__';
-	}
-
-	/**
-	 * Get the list of messages
-	 *
-	 * @return  array
-	 */
-	public function getMessages()
-	{
-		return $this->_messages;
-	}
-
-	/**
-	 * Set the list of messages
-	 *
-	 * @param   mixed $messages
-	 * @return  object
-	 */
-	public function setMessages($messages)
-	{
-		if (!is_array($messages))
-		{
-			throw new InvalidArgumentException(\Lang::txt(
-				'Messages must be an array. Type of "%s" passed.',
-				gettype($messages)
-			));
-		}
-
-		$this->_messages = $messages;
-
-		return $this;
+		return 'console';
 	}
 
 	/**
@@ -111,13 +60,12 @@ class AbstractRenderer implements Renderable
 
 		$messages = $this->getMessages();
 
-		$output = array();
+		echo '-----';
 		foreach ($messages as $item)
 		{
-			$output[] = print_r($item['var'], true);
+			echo print_r($item['var'], true); //$this->_deflate($item['var']);
 		}
-
-		return implode("\n", $output);
+		echo '-----';
 	}
 
 	/**
@@ -128,7 +76,21 @@ class AbstractRenderer implements Renderable
 	 */
 	protected function _deflate($arr)
 	{
-		$arr = str_replace(array("\n", "\r", "\t"), ' ', $arr);
-		return preg_replace('/\s+/', ' ', $arr);
+		$output = 'Array( ' . "\n";
+		$a = array();
+		foreach ($arr as $key => $val)
+		{
+			if (is_array($val))
+			{
+				$a[] = "\t" . $key . ' => ' . $this->_deflate($val);
+			}
+			else
+			{
+				$a[] = "\t" . $key . ' => ' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '';
+			}
+		}
+		$output .= implode(", \n", $a) . "\n" . ' )' . "\n";
+
+		return $output;
 	}
 }

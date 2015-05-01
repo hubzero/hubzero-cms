@@ -28,13 +28,33 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility\Debug;
+namespace Hubzero\Debug\Dumper;
+
+use InvalidArgumentException;
 
 /**
- * Javascript renderer
+ * Abstract renderer
  */
-class Javascript extends AbstractRenderer
+class AbstractRenderer implements Renderable
 {
+	/**
+	 * Messages
+	 *
+	 * @var array
+	 */
+	protected $_messages = array();
+
+	/**
+	 * @param array $messages
+	 */
+	public function __construct($messages = null)
+	{
+		if ($messages)
+		{
+			$this->setMessages($messages);
+		}
+	}
+
 	/**
 	 * Returns renderer name
 	 *
@@ -42,7 +62,38 @@ class Javascript extends AbstractRenderer
 	 */
 	public function getName()
 	{
-		return 'javascript';
+		return '__abstract__';
+	}
+
+	/**
+	 * Get the list of messages
+	 *
+	 * @return  array
+	 */
+	public function getMessages()
+	{
+		return $this->_messages;
+	}
+
+	/**
+	 * Set the list of messages
+	 *
+	 * @param   mixed $messages
+	 * @return  object
+	 */
+	public function setMessages($messages)
+	{
+		if (!is_array($messages))
+		{
+			throw new InvalidArgumentException(sprintf(
+				'Messages must be an array. Type of "%s" passed.',
+				gettype($messages)
+			));
+		}
+
+		$this->_messages = $messages;
+
+		return $this;
 	}
 
 	/**
@@ -61,32 +112,23 @@ class Javascript extends AbstractRenderer
 		$messages = $this->getMessages();
 
 		$output = array();
-		$output[] = '<script type="text/javascript">';
-		$output[] = 'if (!window.console) console = {};';
-		$output[] = 'console.log   = console.log   || function(){};';
-		$output[] = 'console.warn  = console.warn  || function(){};';
-		$output[] = 'console.error = console.error || function(){};';
-		$output[] = 'console.info  = console.info  || function(){};';
-		$output[] = 'console.debug = console.debug || function(){};';
 		foreach ($messages as $item)
 		{
-			$output[] = 'console.' . $item['label'] . '("' . addslashes($this->_deflate($item['message'])) . '");';
-			/*switch ($item['type'])
-			{
-				case 'string':
-					$output[] = 'console.' . $item['label'] . '("' . $this->_deflate($item['message']). '");';
-				break;
-
-				case 'array':
-					$output[] = 'console.log("' . json_encode($this->_deflate($item['message'])). '");';
-				break;
-
-				case 'object':
-					$output[] = 'console.log(JSON.parse(\'' . json_encode($item['message']) . '\'));';
-				break;
-			}*/
+			$output[] = print_r($item['var'], true);
 		}
-		$output[] = '</script>';
+
 		return implode("\n", $output);
+	}
+
+	/**
+	 * Turn an array into a pretty print format
+	 *
+	 * @param   array  $arr
+	 * @return  string
+	 */
+	protected function _deflate($arr)
+	{
+		$arr = str_replace(array("\n", "\r", "\t"), ' ', $arr);
+		return preg_replace('/\s+/', ' ', $arr);
 	}
 }

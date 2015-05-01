@@ -28,40 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Utility\Debug;
+namespace Hubzero\Debug\Dumper;
 
 /**
- * Monolog renderer
+ * Html renderer
  */
-class Logs extends AbstractRenderer
+class Html extends AbstractRenderer
 {
 	/**
-	 * Logger
-	 *
-	 * @var object
-	 */
-	protected $_logger = null;
-
-	/**
-	 * Constructor
-	 *
-	 * @param array $messages
-	 */
-	public function __construct($messages = null)
-	{
-		parent::__construct($messages);
-
-		$this->_logger = \JFactory::getLogger();
-	}
-
-	/**
-	 * Returns renderer name
-	 *
-	 * @return  string
+	 * {@inheritDoc}
 	 */
 	public function getName()
 	{
-		return 'logs';
+		return 'html';
 	}
 
 	/**
@@ -79,12 +58,34 @@ class Logs extends AbstractRenderer
 
 		$messages = $this->getMessages();
 
+		$output = array();
+		/*$output[] = '<ul class="debug-varlist">';
 		foreach ($messages as $item)
 		{
-			//$type = $item['label'];
-			//$this->_logger->$type($this->_deflate($item['message']));
-			$this->_logger->debug(print_r($item['var'], true));
+			$output[] = '<li>' . $this->line($item) . '</li>';
 		}
+		$output[] = '</ul>';*/
+		$output[] = '<div class="debug-varlist">';
+		foreach ($messages as $item)
+		{
+			$output[] = $this->line($item);
+		}
+		$output[] = '</div>';
+		return implode("\n", $output);
+	}
+
+	/**
+	 * Render a list of messages
+	 *
+	 * @param   array  $messages
+	 * @return  string
+	 */
+	public function line(array $item)
+	{
+		//return '<span class="vl vl-' . $item['label']. '">' . $this->_deflate($item['message']). '</span> <span class="lbl">' . $item['label']. '</span>';
+		$val = print_r($item['var'], true);
+		$val = preg_replace('/\[(.+?)\] =>/i', '<code class="ky">[$1]</code> <code class="op">=></code>', $val);
+		return '<pre>' . $val . '</pre>';
 	}
 
 	/**
@@ -95,17 +96,29 @@ class Logs extends AbstractRenderer
 	 */
 	protected function _deflate($arr)
 	{
+		if (is_string($arr))
+		{
+			$arr = htmlentities($arr, ENT_COMPAT, 'UTF-8');
+			$arr = preg_replace('/\[(.+?)\] =&gt;/i', '<code class="ky">[$1]</code> <code class="op">=></code>', $arr);
+			return $arr;
+		}
+
 		$output = 'Array( ' . "\n";
 		$a = array();
-		foreach ($arr as $key => $val)
+		if (is_array($arr))
 		{
-			if (is_array($val))
+			foreach ($arr as $key => $val)
 			{
-				$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $this->_deflate($val) . '</code>';
-			}
-			else
-			{
-				$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '</code>';
+				if (is_array($val))
+				{
+					$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $this->_deflate($val) . '</code>';
+				}
+				else
+				{
+					$val = htmlentities($val, ENT_COMPAT, 'UTF-8');
+					$val = preg_replace('/\[(.+?)\] =&gt;/i', '<code class="ky">[$1]</code> <code class="op">=></code>', $val);
+					$a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $val . '</code>';
+				}
 			}
 		}
 		$output .= implode(", \n", $a) . "\n" . ' )' . "\n";
