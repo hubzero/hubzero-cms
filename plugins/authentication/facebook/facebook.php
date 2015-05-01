@@ -136,8 +136,6 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function display($view, $tpl)
 	{
-		$ver = $this->params->get('api_version', 1.0);
-
 		// Set up the config for the facebook sdk instance
 		$config = array(
 			'appId'      => $this->params->get('app_id'),
@@ -152,23 +150,10 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			'redirect_uri' => self::getReturnUrl($view->return)
 		);
 
-		switch ($ver)
-		{
-			case 2.0:
-				\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
+		\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
 
-				$helper = new \Facebook\FacebookRedirectLoginHelper($params['redirect_uri']);
-				$loginUrl = $helper->getLoginUrl(explode(',', $params['scope']));
-				break;
-			case 1.0:
-			default:
-				// Create facebook instance
-				$facebook = new Facebook($config);
-
-				// Get the login URL
-				$loginUrl = $facebook->getLoginUrl($params);
-				break;
-		}
+		$helper = new \Facebook\FacebookRedirectLoginHelper($params['redirect_uri']);
+		$loginUrl = $helper->getLoginUrl(explode(',', $params['scope']));
 
 		// Redirect to the login URL
 		App::redirect($loginUrl);
@@ -182,95 +167,51 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 * @param   object   $response     Authentication response object
 	 * @return  boolean
 	 */
-	public function onAuthenticate($credentials, $options, &$response)
-	{
-		return $this->onUserAuthenticate($credentials, $options, $response);
-	}
-
-	/**
-	 * This method should handle any authentication and report back to the subject
-	 *
-	 * @param   array    $credentials  Array holding the user credentials
-	 * @param   array    $options      Array of extra options
-	 * @param   object   $response     Authentication response object
-	 * @return  boolean
-	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		// Check which version of facebook api should be used
-		$ver = $this->params->get('api_version', 1.0);
-
 		// Set up the config for the sdk instance
 		$config = array(
 			'appId'  => $this->params->get('app_id'),
 			'secret' => $this->params->get('app_secret')
 		);
 
-		switch ($ver)
+		// Set defaults
+		\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
+
+		$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return'], true));
+
+		try
 		{
-			case 2.0:
-				// Set defaults
-				\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
-
-				$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return'], true));
-
-				try
-				{
-					$session = $helper->getSessionFromRedirect();
-				}
-				catch (\Facebook\FacebookRequestException $ex)
-				{
-					// When Facebook returns an error
-				}
-				catch (\Exception $ex)
-				{
-					// When validation fails or other local issues
-				}
-				break;
-			case 1.0:
-			default:
-				// Create instance and get the facebook user_id
-				$facebook = new Facebook($config);
-				$user_id  = $facebook->getUser();
-				break;
+			$session = $helper->getSessionFromRedirect();
+		}
+		catch (\Facebook\FacebookRequestException $ex)
+		{
+			// When Facebook returns an error
+		}
+		catch (\Exception $ex)
+		{
+			// When validation fails or other local issues
 		}
 
 		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
 		if ((isset($user_id) && $user_id > 0) || (isset($session) && $session))
 		{
-			switch ($ver)
+			try
 			{
-				case 2.0:
-					try
-					{
-						$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
-						$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
+				$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
+				$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
 
-						$id       = $user_profile->getId();
-						$fullname = $user_profile->getName();
-						$email    = $user_profile->getProperty('email');
-						$username = $user_profile->getProperty('username');
-					}
-					catch (\Facebook\FacebookRequestException $e)
-					{
-						// Error message?
-						$response->status = JAUTHENTICATE_STATUS_FAILURE;
-						$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
-						return;
-					}
-					break;
-				case 1.0:
-				default:
-					// Get the facebook graph api profile for the user
-					$user_profile = $facebook->api('/me','GET');
-
-					// Get unique username/id
-					// We'll use facebook id - could also use facebook username, but not everyone has one defined
-					$id       = $user_profile['id'];
-					$fullname = $user_profile['name'];
-					$email    = $user_profile['email'];
-					$username = $user_profile['username'];
-					break;
+				$id       = $user_profile->getId();
+				$fullname = $user_profile->getName();
+				$email    = $user_profile->getProperty('email');
+				$username = $user_profile->getProperty('username');
+			}
+			catch (\Facebook\FacebookRequestException $e)
+			{
+				// Error message?
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
+				return;
 			}
 
 			// Create the hubzero auth link
@@ -344,76 +285,47 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		// Check which version of facebook api should be used
-		$ver = $this->params->get('api_version', 1.0);
-
 		// Set up the config for the sdk instance
 		$config = array(
 			'appId'  => $this->params->get('app_id'),
 			'secret' => $this->params->get('app_secret')
 		);
 
-		switch ($ver)
+		// Set defaults
+		\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
+
+		$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return']));
+
+		try
 		{
-			case 2.0:
-				// Set defaults
-				\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
-
-				$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return']));
-
-				try
-				{
-					$session = $helper->getSessionFromRedirect();
-				}
-				catch (\Facebook\FacebookRequestException $ex)
-				{
-					// When Facebook returns an error
-				}
-				catch (\Exception $ex)
-				{
-					// When validation fails or other local issues
-				}
-				break;
-			case 1.0:
-			default:
-				// Create instance and get the facebook user_id
-				$facebook = new Facebook($config);
-				$user_id  = $facebook->getUser();
-				break;
+			$session = $helper->getSessionFromRedirect();
+		}
+		catch (\Facebook\FacebookRequestException $ex)
+		{
+			// When Facebook returns an error
+		}
+		catch (\Exception $ex)
+		{
+			// When validation fails or other local issues
 		}
 
 		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
 		if ((isset($user_id) && $user_id > 0) || (isset($session) && $session))
 		{
-			switch ($ver)
+			try
 			{
-				case 2.0:
-					try
-					{
-						$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
-						$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
+				$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
+				$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
 
-						$id    = $user_profile->getId();
-						$email = $user_profile->getProperty('email');
-					}
-					catch (\Facebook\FacebookRequestException $e)
-					{
-						// Error message?
-						$response->status = JAUTHENTICATE_STATUS_FAILURE;
-						$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
-						return;
-					}
-					break;
-				case 1.0:
-				default:
-					// Get the facebook graph api profile for the user
-					$user_profile = $facebook->api('/me','GET');
-
-					// Get unique username/id
-					// We'll use facebook id - could also use facebook username, but not everyone has one defined
-					$id    = $user_profile['id'];
-					$email = $user_profile['email'];
-					break;
+				$id    = $user_profile->getId();
+				$email = $user_profile->getProperty('email');
+			}
+			catch (\Facebook\FacebookRequestException $e)
+			{
+				// Error message?
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
+				return;
 			}
 
 			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'facebook', '');
