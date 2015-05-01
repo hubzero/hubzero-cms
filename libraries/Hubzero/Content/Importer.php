@@ -87,7 +87,7 @@ class Importer
 	}
 
 	/**
-	 * Method to boot import adapaters
+	 * Method to boot import adapters
 	 *
 	 * @return  void
 	 */
