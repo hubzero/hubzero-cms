@@ -254,8 +254,8 @@ $more = count($this->pubstats) - $this->limit;
 											<tr>
 												<td width="45"></td>
 												<td width="320">
-													<p style="color: #333; font-weight:bold;"><a href="http://dev33.hubzero.org/publications/31?from=sheilanamilo@gmail.com" style="color: #333; text-decoration: none;">My New Model</a></p>
-													<p style="color: #777; font-style: italic;"><a href="http://dev33.hubzero.org/publications/31?from=sheilanamilo@gmail.com" style="color: #33a9cf;">View publication</a> <br /> <a href="http://dev33.hubzero.org/publications/submit/31?from=sheilanamilo@gmail.com" style="color: #33a9cf;">Manage</a></p>
+													<p style="color: #333; font-weight:bold;"><a href="<?php echo $link; ?>" style="color: #333; text-decoration: none;"><?php echo $stat->title; ?></a></p>
+													<p style="color: #777; font-style: italic;"><a href="<?php echo $link; ?>" style="color: #33a9cf;">View publication</a> <br /> <a href="<?php echo $manageLink; ?>" style="color: #33a9cf;">Manage</a></p>
 												</td>
 												<td width="320">
 													<table cellpadding="0" cellspacing="0" border="0" style="font-size: 12px; padding: 0; margin: 0;">

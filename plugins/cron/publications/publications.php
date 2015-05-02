@@ -227,6 +227,7 @@ class plgCronPublications extends JPlugin
 				$this->setError(JText::sprintf('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $juser->get('email')));
 			}
 			$mailed[] = $juser->get('email');
+
 		}
 
 		return true;
