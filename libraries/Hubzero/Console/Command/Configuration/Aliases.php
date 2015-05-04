@@ -34,7 +34,6 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Console\Application;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -76,7 +75,7 @@ class Aliases extends Base implements CommandInterface
 		$this->arguments->setOpt('aliases', array($name => $path));
 
 		// Redirect back to the basic configuration set method
-		Application::call('configuration', 'set', $this->arguments, $this->output);
+		App::get('client')->call('configuration', 'set', $this->arguments, $this->output);
 	}
 
 	/**

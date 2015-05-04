@@ -103,6 +103,13 @@ class JApplicationHelper
 			$obj->bootstrap = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'api';
 			$obj->path = JPATH_SITE . DS . 'api';
 			self::$_clients[4] = clone $obj;
+
+			// HUBzero CLI Client
+			$obj->id = 6;
+			$obj->name = 'cli';
+			$obj->bootstrap = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'cli';
+			$obj->path = JPATH_SITE . DS . 'cli';
+			self::$_clients[6] = clone $obj;
 		}
 
 		// If no client id has been passed return the whole array

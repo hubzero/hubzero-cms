@@ -30,6 +30,9 @@
 
 namespace Hubzero\Base\Client;
 
+use Hubzero\Console\Arguments;
+use Hubzero\Console\Output;
+
 /**
  * Site client
  */
@@ -50,9 +53,52 @@ class Cli implements ClientInterface
 	public $name = 'cli';
 
 	/**
-	 * A url to init this client.
+	 * Alias
+	 *
+	 * @var string
+	 */
+	public $alias = 'cli';
+
+	/**
+	 * A url to init this client
 	 *
 	 * @var string
 	 */
 	public $url = '';
+
+	/**
+	 * Method to call another console command
+	 *
+	 * @param  string                     $class     the command to call
+	 * @param  string                     $task      the command task to call
+	 * @param  \Hubzero\Console\Arguments $arguments the command arguments
+	 * @param  \Hubzero\Console\Output    $output    the command output
+	 * @return void
+	 **/
+	public function call($class, $task, Arguments $arguments, Output $output)
+	{
+		// Namespace class
+		$class = 'Hubzero\\Console\\Command\\' . ucfirst($class);
+
+		// Say no to infinite nesting!
+		$backtrace = debug_backtrace();
+		$previous  = $backtrace[1];
+		$prevClass = $previous['class'];
+		$prevTask  = $previous['function'];
+
+		if ($prevClass == $class && $prevTask == $task)
+		{
+			$output->error('You\'ve attempted to enter an infinite loop. We\'ve stopped you. You\'re welcome.');
+		}
+
+		// If task is help, set the output to our output class with extra methods for rendering help doc
+		if ($task == 'help')
+		{
+			$output = $output->getHelpOutput();
+		}
+
+		$command = new $class($output, $arguments);
+
+		$command->{$task}();
+	}
 }

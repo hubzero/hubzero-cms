@@ -3,74 +3,93 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /*
-| ===================
-| Include custom shim
-| ===================
+|--------------------------------------------------------------------------
+| Check environment
+|--------------------------------------------------------------------------
 |
-| All this is really doing is bootstrapping the Joomla framework
-| Maybe we should just make a cli application environment?
-|
-*/
-
-require __DIR__ . '/shim.php';
-
-/*
-| ============================
-| Start up console application
-| ============================
-|
-| Start by getting an instance of our console application.
-| This will handle our command execution and rendering of the response.
-| We'll pass in the argument parser class and our output class.
+| This is only allowed to run in the command line interface.
 |
 */
 
-$arguments = new Hubzero\Console\Arguments($argv);
-$output    = new Hubzero\Console\Output();
-$muse      = new Hubzero\Console\Application($arguments, $output);
+if (php_sapi_name() != 'cli')
+{
+	exit();
+}
 
 /*
-| ===================
-| Execute the command
-| ===================
+|--------------------------------------------------------------------------
+| Parent Flag
+|--------------------------------------------------------------------------
 |
-| This will process the command line vars and execute the given command.
+| Set flag that this is a parent file.
+|
+*/
+define('_JEXEC', 1);
+define('DS', DIRECTORY_SEPARATOR);
+
+/*
+|--------------------------------------------------------------------------
+| Define directories
+|--------------------------------------------------------------------------
+|
+| First thing we need to do is set some constants for the app's directory
+| and the path to the parent directory containing the app and core.
 |
 */
 
-$muse->execute();
+define('JPATH_BASE', dirname(__DIR__));
+
+require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
 
 /*
-| ====
+|--------------------------------------------------------------------------
+| Load The Framework
+|--------------------------------------------------------------------------
+|
+| Here we will load the framework. We'll keep this is in a
+| separate location so we can isolate the creation of an application
+| from the actual running of the application with a given request.
+|
+*/
+
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'framework.php';
+
+/*
+|--------------------------------------------------------------------------
+| Load The Application
+|--------------------------------------------------------------------------
+|
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser.
+|
+*/
+
+$muse = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'cli' . DS . 'shim.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can simply call the run method,
+| which will execute the request and send the response back to
+| the client's browser.
+|
+*/
+
+$muse->run();
+
+/*
+|--------------------------------------------------------------------------
 | Exit
-| ====
+|--------------------------------------------------------------------------
 |
 | We're all done!  Go home...call it a day.
 |

@@ -28,22 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-if (php_sapi_name() != 'cli')
-{
-	exit();
-}
-
-define('_JEXEC', 1);
-define('DS', DIRECTORY_SEPARATOR);
-
-if (!defined('JPATH_BASE'))
-{
-	define('JPATH_BASE', dirname(__DIR__));
-	require_once JPATH_BASE.'/core/bootstrap/site/defines.php';
-}
-
-require_once JPATH_BASE.'/core/bootstrap/site/framework.php';
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -56,6 +40,18 @@ require_once JPATH_BASE.'/core/bootstrap/site/framework.php';
 */
 
 $app = new Hubzero\Base\Application;
+
+/*
+|--------------------------------------------------------------------------
+| Set The Application Client
+|--------------------------------------------------------------------------
+|
+| We're just setting this explicitly here - no need for dynamic detection.
+| The fact that we're in this file is detection enough.
+|
+*/
+
+$app['client'] = new Hubzero\Base\Client\Cli;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,20 +77,19 @@ $app['app'] = $app;
 |
 */
 
-$app['config'] = new \Hubzero\Config\Repository('cli');
+$app['config'] = new Hubzero\Config\Repository('cli');
 
 /*
 |--------------------------------------------------------------------------
 | Register The Core Service Providers
 |--------------------------------------------------------------------------
 |
-| Register all of the core pieces of the framework including session, 
-| caching, and more.
+| Register all of the core pieces of the framework.
 |
 */
 
-$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'services.php';
-$services = file_exists($providers) ? require $providers : array();
+$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'cli' .  DS . 'services.php';
+$services = file_exists($providers) ? require $providers : [];
 foreach ($services as $service)
 {
 	$app->register($service);
@@ -110,8 +105,8 @@ foreach ($services as $service)
 |
 */
 
-$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'aliases.php';
+$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'cli' .  DS . 'aliases.php';
 
-$app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
+$app->registerBaseFacades(file_exists($aliases) ? require $aliases : []);
 
-\JFactory::getApplication('site');
+return $app;

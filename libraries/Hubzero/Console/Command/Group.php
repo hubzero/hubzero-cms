@@ -32,7 +32,6 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Console\Application;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -132,7 +131,7 @@ class Group extends Base implements CommandInterface
 		// Set our needed args
 		$this->arguments->setOpt(3, $createWhat);
 		$this->arguments->setOpt('install-dir', $directory);
-		Application::call('scaffolding', 'create', $this->arguments, $this->output);
+		App::get('client')->call('scaffolding', 'create', $this->arguments, $this->output);
 	}
 
 	/**
@@ -144,7 +143,7 @@ class Group extends Base implements CommandInterface
 	{
 		// Set our group arg & call migration
 		$this->arguments->setOpt('group', $this->group->get('cn'));
-		Application::call('migration', 'run', $this->arguments, $this->output);
+		App::get('client')->call('migration', 'run', $this->arguments, $this->output);
 	}
 
 	/**
@@ -166,7 +165,7 @@ class Group extends Base implements CommandInterface
 
 		// Set our group directory & call update
 		$this->arguments->setOpt('r', $directory);
-		Application::call('repository', $task, $this->arguments, $this->output);
+		App::get('client')->call('repository', $task, $this->arguments, $this->output);
 	}
 
 	/**

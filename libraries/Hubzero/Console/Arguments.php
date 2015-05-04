@@ -166,7 +166,7 @@ class Arguments
 			{
 				if (array_key_exists($command, $aliases))
 				{
-					if (strpos($aliases[$command], '::') !== false)
+					if (strpos($aliases->$command, '::') !== false)
 					{
 						$bits      = explode('::', $aliases[$command]);
 						$command   = $bits[0];
@@ -174,7 +174,7 @@ class Arguments
 					}
 					else
 					{
-						$command = $aliases[$command];
+						$command = $aliases->$command;
 					}
 				}
 			}

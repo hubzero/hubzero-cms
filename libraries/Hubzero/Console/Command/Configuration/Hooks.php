@@ -34,8 +34,6 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Console\Config;
-use Hubzero\Console\Application;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -77,7 +75,7 @@ class Hooks extends Base implements CommandInterface
 		$this->arguments->setOpt('hooks', array($trigger => array($hook)));
 
 		// Redirect back to the basic configuration set method
-		Application::call('configuration', 'set', $this->arguments, $this->output);
+		App::get('client')->call('configuration', 'set', $this->arguments, $this->output);
 	}
 
 	/**

@@ -24,11 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return [
-	'Hubzero\Console\ArgumentsServiceProvider',
-	'Hubzero\Console\OutputServiceProvider',
-];
+namespace Hubzero\Console;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Console arguments service provider
+ */
+class ArgumentsServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['arguments'] = function($app)
+		{
+			global $argv;
+
+			return new \Hubzero\Console\Arguments($argv);
+		};
+	}
+}
