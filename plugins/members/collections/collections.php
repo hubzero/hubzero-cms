@@ -500,7 +500,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
 
-		$view->task = $this->collection->get('alias');
+		$view->task = $view->collection->get('alias');
 
 		foreach ($this->getErrors() as $error)
 		{
