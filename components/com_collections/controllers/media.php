@@ -389,6 +389,15 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$asset = new CollectionsModelAsset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', $filename . '.' . $ext);
+		if ($asset->image())
+		{
+			$hi = new \Hubzero\Image\Processor($file);
+			if (count($hi->getErrors()) == 0)
+			{
+				$hi->autoRotate();
+				$hi->save();
+			}
+		}
 		$asset->set('description', JRequest::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'file');
@@ -490,6 +499,15 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			$asset = new CollectionsModelAsset();
 			$asset->set('item_id', intval($listdir));
 			$asset->set('filename', $file['name']);
+			if ($asset->image())
+			{
+				$hi = new \Hubzero\Image\Processor($path . DS . $file['name']);
+				if (count($hi->getErrors()) == 0)
+				{
+					$hi->autoRotate();
+					$hi->save();
+				}
+			}
 			$asset->set('description', JRequest::getVar('description', '', 'post'));
 			$asset->set('state', 1);
 			$asset->set('type', 'file');
