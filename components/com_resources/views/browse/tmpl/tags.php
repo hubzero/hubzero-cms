@@ -59,7 +59,12 @@ $this->css()
 					<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=1&type=' . $type->id); ?>">
 						<?php
 						$name = $type->type;
-						if (substr($type->type, -1) == 's')
+						if (substr($type->type, -3) == 'ies')
+						{
+							$name = substr($type->type, 0, -3);
+							$name .= 'y';
+						}
+						elseif (substr($type->type, -1) == 's')
 						{
 							$name = substr($type->type, 0, -1);
 						}
