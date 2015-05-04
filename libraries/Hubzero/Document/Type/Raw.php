@@ -48,10 +48,10 @@ class Raw extends Base
 		parent::__construct($options);
 
 		// Set mime type
-		$this->mime = 'text/html';
+		$this->_mime = 'text/html';
 
 		// Set document type
-		$this->type = 'raw';
+		$this->_type = 'raw';
 	}
 
 	/**

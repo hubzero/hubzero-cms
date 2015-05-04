@@ -58,7 +58,8 @@ class DocumentServiceProvider extends ServiceProvider
 			);
 
 			$manager = new Manager($app);
-			$manager->instance($type, $attributes);
+			$manager->setType($type);
+			//$manager->instance($type, $attributes);
 
 			return $manager;
 		};
