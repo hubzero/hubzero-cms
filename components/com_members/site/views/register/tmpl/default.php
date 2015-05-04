@@ -614,7 +614,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 									foreach ($countries as $country)
 									{
 										?>
-										<option value="<?php echo $country->code; ?>"<?php if ($this->registration['countryorigin'] == $country->code) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+										<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->registration['countryorigin']) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 										<?php
 									}
 								}
@@ -672,7 +672,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 									foreach ($countries as $country)
 									{
 										?>
-										<option value="<?php echo $country->code; ?>"<?php if (strcasecmp($this->registration['countryresident'], $country->code) == 0) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+										<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->registration['countryresident']) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 										<?php
 									}
 								}
