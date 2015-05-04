@@ -879,7 +879,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							// get the country name
 							foreach ($co as $c)
 							{
-								if ($c->code == strtoupper($this->profile->get('countryorigin')))
+								if (strtoupper($c->code) == strtoupper($this->profile->get('countryorigin')))
 								{
 									$citizenship = $c->name;
 								}
@@ -898,7 +898,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
-								if ($this->profile->get('countryorigin') == $c->code)
+								if (strtoupper($this->profile->get('countryorigin')) == strtoupper($c->code))
 								{
 									$countries .= ' selected="selected"';
 								}
@@ -980,7 +980,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							// get the country name
 							foreach ($co as $c)
 							{
-								if ($c->code == strtoupper($this->profile->get('countryresident')))
+								if (strtoupper($c->code) == strtoupper($this->profile->get('countryresident')))
 								{
 									$residence = $c->name;
 								}
@@ -998,7 +998,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
-								if ($this->profile->get('countryresident') == $c->code)
+								if (strtoupper($this->profile->get('countryresident')) == strtoupper($c->code))
 								{
 									$countries .= ' selected="selected"';
 								}

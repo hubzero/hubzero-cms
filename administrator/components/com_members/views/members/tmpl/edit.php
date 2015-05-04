@@ -186,7 +186,7 @@ function submitbutton(pressbutton)
 							foreach ($countries as $country)
 							{
 								?>
-								<option value="<?php echo $country->code; ?>"<?php if ($this->profile->get('countryorigin') == $country->code) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+								<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->profile->get('countryorigin')) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 								<?php
 							}
 						}
@@ -202,16 +202,12 @@ function submitbutton(pressbutton)
 							<option value=""><?php echo JText::_('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
 						<?php } ?>
 						<?php
-						if (!isset($countries) || !$countries)
-						{
-							$countries = \Hubzero\Geocode\Geocode::getcountries();
-						}
 						if ($countries)
 						{
 							foreach ($countries as $country)
 							{
 								?>
-								<option value="<?php echo $country->code; ?>"<?php if (strcasecmp($this->profile->get('countryresident'), $country->code) == 0) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+								<option value="<?php echo $country->code; ?>"<?php if (strtoupper($this->profile->get('countryresident')) == strtoupper($country->code)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 								<?php
 							}
 						}
