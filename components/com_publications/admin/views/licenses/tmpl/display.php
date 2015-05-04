@@ -60,7 +60,14 @@ Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLI
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="7"><?php
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->render();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -102,10 +109,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td class="order">
 					<span>
-						<?php echo $this->pageNav->orderUpIcon( $i, (isset($this->rows[$i-1]->ordering)) ); ?>
+						<?php echo $pageNav->orderUpIcon($i, (isset($this->rows[$i-1]->ordering))); ?>
 					</span>
 					<span>
-						<?php echo $this->pageNav->orderDownIcon( $i, $n, (isset($this->rows[$i+1]->ordering))); ?>
+						<?php echo $pageNav->orderDownIcon($i, $n, (isset($this->rows[$i+1]->ordering))); ?>
 					</span>
 					<input type="hidden" name="order[]" value="<?php echo $row->ordering; ?>" />
 				</td>

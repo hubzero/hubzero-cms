@@ -178,11 +178,17 @@ $this->css()
 					<?php } ?>
 				</div>
 				<?php
-				$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
-				$this->pageNav->setAdditionalUrlParam('type', $this->filters['type']);
-				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				// Initiate paging
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+				$pageNav->setAdditionalUrlParam('type', $this->filters['type']);
+				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-				echo $this->pageNav->getListFooter();
+				echo $pageNav->render();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

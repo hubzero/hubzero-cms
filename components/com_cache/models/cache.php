@@ -30,19 +30,14 @@
 
 namespace Components\Cache\Models;
 
-use JApplicationHelper;
-use JModelList;
-use JPagination;
-use JArrayHelper;
-use JFactory;
-use JCache;
+use Request;
 
 jimport('joomla.application.component.modellist');
 
 /**
  * Cache Model
  */
-class Cache extends JModelList
+class Cache extends \JModelList
 {
 	/**
 	 * An Array of CacheItems indexed by cache group ID
@@ -76,12 +71,10 @@ class Cache extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-
-		$clientId = $this->getUserStateFromRequest($this->context . '.filter.client_id', 'filter_client_id', 0, 'int');
+		$clientId = Request::getState($this->context . '.filter.client_id', 'filter_client_id', 0, 'int');
 		$this->setState('clientId', $clientId == 1 ? 1 : 0);
 
-		$client = JApplicationHelper::getClientInfo($clientId);
+		$client = \JApplicationHelper::getClientInfo($clientId);
 		$this->setState('client', $client);
 
 		parent::populateState('group', 'asc');
@@ -111,8 +104,7 @@ class Cache extends JModelList
 					$ordering  = $this->getState('list.ordering');
 					$direction = ($this->getState('list.direction') == 'asc') ? 1 : -1;
 
-					jimport('joomla.utilities.arrayhelper');
-					$this->_data = JArrayHelper::sortObjects($data, $ordering, $direction);
+					$this->_data = \Hubzero\Utility\Arr::sortObjects($data, $ordering, $direction);
 
 					// Apply custom pagination
 					if ($this->_total > $this->getState('list.limit') && $this->getState('list.limit'))
@@ -145,7 +137,7 @@ class Cache extends JModelList
 			'cachebase'    => ($this->getState('clientId') == 1) ? JPATH_ADMINISTRATOR . '/cache' : \Config::get('cache_path', JPATH_SITE . '/cache')
 		);
 
-		$cache = JCache::getInstance('', $options);
+		$cache = \JCache::getInstance('', $options);
 
 		return $cache;
 	}
@@ -227,6 +219,6 @@ class Cache extends JModelList
 	 */
 	public function purge()
 	{
-		return JFactory::getCache('')->gc();
+		return \JFactory::getCache('')->gc();
 	}
 }

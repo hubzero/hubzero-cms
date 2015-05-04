@@ -50,7 +50,13 @@ $this->css();
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					?>
 				</td>
 			</tr>
 		</tfoot>

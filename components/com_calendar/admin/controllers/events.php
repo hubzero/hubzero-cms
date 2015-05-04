@@ -121,14 +121,6 @@ class Events extends AdminController
 		// Get records
 		$this->view->rows = $ee->getRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Get list of categories
 		$categories[] = \JHTML::_('select.option', '0', '- ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
 		$this->database->setQuery("SELECT id AS value, title AS text FROM `#__categories` WHERE extension='$this->_option'");

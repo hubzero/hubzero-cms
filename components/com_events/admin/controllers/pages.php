@@ -86,14 +86,6 @@ class Pages extends AdminController
 		// Get records
 		$this->view->rows  = $obj->getRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$this->view->event = new Event($this->database);
 		$this->view->event->load($ids[0]);
 

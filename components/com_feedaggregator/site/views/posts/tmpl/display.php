@@ -140,7 +140,15 @@ $this->js('posts')
 			<?php
 			if ($this->fromfeed != TRUE)
 			{
-				echo $this->pageNav->getListFooter();
+				// Initiate paging
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+
+				echo $pageNav->render();
 			}
 			?>
 		<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>

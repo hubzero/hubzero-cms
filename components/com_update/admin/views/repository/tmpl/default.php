@@ -39,7 +39,7 @@ Toolbar::custom('update', 'purge', '', 'Update repository', false);
 $this->css();
 ?>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="updateRepositoryForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('Search'); ?>: </label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="search" />
@@ -68,7 +68,13 @@ $this->css();
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					?>
 				</td>
 			</tr>
 		</tfoot>

@@ -32,6 +32,9 @@ namespace Components\Update\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Update\Helpers\Cli;
+use Component;
+use Request;
+use Config;
 
 /**
  * Update repository controller class
@@ -110,13 +113,6 @@ class Repository extends AdminController
 		);
 		$this->view->total = $this->view->total[0];
 
-		// Initiate paging
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -172,7 +168,7 @@ class Repository extends AdminController
 
 		// Set the redirect
 		App::redirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message,
 			$type
 		);
@@ -199,7 +195,7 @@ class Repository extends AdminController
 
 		// Set the redirect
 		App::redirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message,
 			$type
 		);

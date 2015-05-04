@@ -55,7 +55,15 @@ JHTML::_('behavior.tooltip');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="10"><?php
+				// Initiate paging
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->limitstart,
+					$this->limit
+				);
+				echo $pageNav->render();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>

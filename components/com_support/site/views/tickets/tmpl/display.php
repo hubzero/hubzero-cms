@@ -201,9 +201,14 @@ $this->css()
 							<tr>
 								<td colspan="8">
 									<?php
-									$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
-									$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-									echo $this->pageNav->getListFooter();
+									$pageNav = $this->pagination(
+										$this->total,
+										$this->filters['start'],
+										$this->filters['limit']
+									);
+									$pageNav->setAdditionalUrlParam('show', $this->filters['show']);
+									$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+									echo $pageNav->render();
 									?>
 								</td>
 							</tr>

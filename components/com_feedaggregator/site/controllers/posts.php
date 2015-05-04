@@ -122,16 +122,6 @@ class Posts extends SiteController
 						$this->view->total = intval($model->loadRowCount());
 					break;
 				}
-
-				// Initiate paging
-				jimport('joomla.html.pagination');
-				$this->view->pageNav = new \JPagination(
-					$this->view->total,
-					$this->view->filters['start'],
-					$this->view->filters['limit']
-				);
-
-				$this->view->pageNav->setAdditionalUrlParam('filterby', $this->view->filters['filterby']);
 			}
 
 			// Truncates the title to save screen real-estate. Full version shown in FancyBox
@@ -187,7 +177,7 @@ class Posts extends SiteController
 		else if (User::isGuest()) // have person login
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
 				'warning'
@@ -333,7 +323,7 @@ class Posts extends SiteController
 			}
 
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
 				Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
 			);

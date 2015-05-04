@@ -129,13 +129,8 @@ class Categories extends AdminController
 			throw new Exception($this->database->stderr(), 500);
 		}
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$limitstart,
-			$limit
-		);
+		$this->view->limit = $limit;
+		$this->view->limitstart = $limitstart;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

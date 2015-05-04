@@ -134,8 +134,7 @@ class Respondent extends \JTable
 	 */
 	public function getPaginator()
 	{
-		jimport('joomla.html.pagination');
-		return new \JPagination($this->getCount(), $this->limit, $this->offset);
+		return new \Hubzero\Pagination\Paginator($this->getCount(), $this->limit, $this->offset);
 	}
 
 	/**

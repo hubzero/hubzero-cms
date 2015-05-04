@@ -76,7 +76,15 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="6">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->render();
+					?>
 				</td>
 			</tr>
 		</tfoot>
@@ -91,8 +99,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->id; ?></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')'; ?></a></td>
-				<td><?php echo $this->pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
-				<td><?php echo $this->pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
+				<td><?php echo $pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
+				<td><?php echo $pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
 				<td><?php echo $row->ordering; ?></td>
 			</tr>
 <?php

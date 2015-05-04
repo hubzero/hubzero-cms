@@ -579,19 +579,16 @@ class Tags extends SiteController
 			$this->view->setLayout('browse_xml');
 		}
 
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array(
 			'admin' => 0,
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
@@ -603,12 +600,12 @@ class Tags extends SiteController
 		{
 			Request::setVar('sort', $sortby);
 		}
-		$this->view->filters['sort'] = urldecode($app->getUserStateFromRequest(
+		$this->view->filters['sort'] = urldecode(Request::getState(
 			$this->_option . '.' . $this->_controller . '.sort',
 			'sort',
 			'raw_tag'
 		));
-		$this->view->filters['sort_Dir'] = strtolower($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = strtolower(Request::getState(
 			$this->_option . '.' . $this->_controller . '.sort_Dir',
 			'sortdir',
 			'asc'
@@ -629,7 +626,7 @@ class Tags extends SiteController
 		$order = Request::getVar('order', '');
 		if ($order == 'usage')
 		{
-			$limit = $app->getUserStateFromRequest(
+			$limit = Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
@@ -649,7 +646,7 @@ class Tags extends SiteController
 			// Record count
 			$this->view->total = $t->tags('count', $this->view->filters);
 
-			$this->view->filters['limit'] = $app->getUserStateFromRequest(
+			$this->view->filters['limit'] = Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
@@ -658,14 +655,6 @@ class Tags extends SiteController
 
 			// Get records
 			$this->view->rows = $t->tags('list', $this->view->filters);
-
-			// Initiate paging
-			jimport('joomla.html.pagination');
-			$this->view->pageNav = new \JPagination(
-				$this->view->total,
-				$this->view->filters['start'],
-				$this->view->filters['limit']
-			);
 		}
 
 		// Set the pathway

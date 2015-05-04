@@ -167,10 +167,16 @@ $this->css()
 					</tbody>
 				</table>
 				<?php
-					$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-					$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-					$this->pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
-					echo $this->pageNav->getListFooter();
+					// Initiate paging
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+					$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
+					echo $pageNav->render();
 				?>
 				<div class="clearfix"></div>
 				<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />

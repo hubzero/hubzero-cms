@@ -387,9 +387,8 @@ class Jobs extends SiteController
 		$total = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptioncode, 1);
 
 		// Initiate paging
-		jimport('joomla.html.pagination');
 		$jtotal = ($this->_task != 'browse' && $this->_allowsubscriptions) ? count($jobs) : $total;
-		$pageNav = new \JPagination(
+		$pageNav = new \Hubzero\Pagination\Paginator(
 			$jtotal,
 			$filters['start'],
 			$filters['limit']
@@ -496,8 +495,7 @@ class Jobs extends SiteController
 			$total   = $js->countSeekers($filters, User::get('id'), 0, $this->_masteradmin);
 
 			// Initiate paging
-			jimport('joomla.html.pagination');
-			$pageNav = new \JPagination(
+			$pageNav = new \Hubzero\Pagination\Paginator(
 				$total,
 				$filters['start'],
 				$filters['limit']

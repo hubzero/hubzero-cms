@@ -87,7 +87,17 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8">
+					<?php
+					// Initiate paging
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->render();
+					?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -171,7 +181,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php if ($row->scope == 'group') : ?>
 						<?php
-							$group = \Hubzero\User\Group::getInstance( $row->scope_id );
+							$group = \Hubzero\User\Group::getInstance($row->scope_id);
 							if (is_object($group))
 							{
 								echo Lang::txt('COM_EVENTS_EVENT_GROUP', Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber')), $group->get('description'));

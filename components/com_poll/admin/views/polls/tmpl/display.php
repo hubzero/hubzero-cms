@@ -113,7 +113,14 @@ Toolbar::help('polls');
 		<tfoot>
 			<tr>
 				<td colspan="9">
-					<?php echo $this->pagination->getListFooter(); ?>
+					<?php
+					$pagination = $this->pagination(
+						$this->total,
+						$this->limitstart,
+						$this->limit
+					);
+					echo $pagination->render();
+					?>
 				</td>
 			</tr>
 		</tfoot>
@@ -126,9 +133,6 @@ Toolbar::help('polls');
 
 			$link = Route::url('index.php?option=' . $this->option . '&view=poll&task=edit&cid='. $row->id);
 
-			//$checked   = JHTML::_('grid.checkedout',   $row, $i );
-			//$published = JHTML::_('grid.published', $row, $i );
-
 			$task  = $row->published ? 'unpublish' : 'publish';
 			$class = $row->published ? 'published' : 'unpublished';
 			$alt   = $row->published ? Lang::txt('JPUBLISHED') : Lang::txt('JUNPUBLISHED');
@@ -139,7 +143,7 @@ Toolbar::help('polls');
 		?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php echo $this->pagination->getRowOffset( $i ); ?>
+					<?php echo $pagination->getRowOffset($i); ?>
 				</td>
 				<td>
 					<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) { ?>

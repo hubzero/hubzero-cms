@@ -49,7 +49,14 @@ Toolbar::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS')
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5"><?php
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->render();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -67,7 +74,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 					<span class="block faded">

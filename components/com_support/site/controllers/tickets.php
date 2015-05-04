@@ -162,7 +162,7 @@ class Tickets extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -553,7 +553,7 @@ class Tickets extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -564,34 +564,32 @@ class Tickets extends SiteController
 		// Create a Ticket object
 		$obj = new Tables\Ticket($this->database);
 
-		$app = \JFactory::getApplication();
-
 		$this->view->total = 0;
 		$this->view->rows = array();
 
 		$this->view->filters = $this->_getFilters();
 		// Paging
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
 		// Query to filter by
-		$this->view->filters['show'] = $app->getUserStateFromRequest(
+		$this->view->filters['show'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.show',
 			'show',
 			0,
 			'int'
 		);
 		// Search
-		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+		$this->view->filters['search']       = urldecode(Request::getState(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
@@ -670,7 +668,7 @@ class Tickets extends SiteController
 			if ($query->id == $this->view->filters['show'])
 			{
 				// Search
-				$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+				$this->view->filters['search']       = urldecode(Request::getState(
 					$this->_option . '.' . $this->_controller . '.search',
 					'search',
 					''
@@ -679,13 +677,13 @@ class Tickets extends SiteController
 				$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
 
 				// Incoming sort
-				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+				$this->view->filters['sort']         = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sort',
 					'sort',
 					$query->sort
 				));
 
-				$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
+				$this->view->filters['sortdir']     = trim(Request::getState(
 					$this->_option . '.' . $this->_controller . '.sortdir',
 					'sortdir',
 					$query->sort_dir
@@ -718,7 +716,7 @@ class Tickets extends SiteController
 			//$folder = reset($this->view->folders);
 			//$query = $folder->queries[0];
 			// Search
-			$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
+			$this->view->filters['search'] = urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
@@ -727,12 +725,12 @@ class Tickets extends SiteController
 			$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
 
 			// Incoming sort
-			$this->view->filters['sort']   = trim($app->getUserStateFromRequest(
+			$this->view->filters['sort']   = trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
 				$query->sort
 			));
-			$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
+			$this->view->filters['sortdir'] = trim(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
 				'filter_order_Dir',
 				$query->sort_dir
@@ -772,14 +770,6 @@ class Tickets extends SiteController
 				$this->view->rows = array();
 			}
 		}
-
-		// Initiate paging class
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set the page title
 		$this->_buildTitle();
@@ -1434,7 +1424,7 @@ class Tickets extends SiteController
 		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=tickets'),
 				Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'),
 				'error'
@@ -1454,7 +1444,7 @@ class Tickets extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url($this->view->row->link(), false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -1467,32 +1457,29 @@ class Tickets extends SiteController
 			return;
 		}
 
-		// Incoming
-		$app    = \JFactory::getApplication();
-
 		$this->view->filters = array(
 			// Paging
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
 			// Query to filter by
-			'show' => $app->getUserStateFromRequest(
+			'show' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.show',
 				'show',
 				0,
 				'int'
 			),
 			// Search
-			'search' => urldecode($app->getUserStateFromRequest(
+			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
@@ -1617,7 +1604,7 @@ class Tickets extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
@@ -1923,7 +1910,7 @@ class Tickets extends SiteController
 		}
 
 		// Display the ticket with changes, new comment
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id),
 			($this->getError() ? $this->getError() :  null),
 			($this->getError() ? 'error' :  null)
@@ -1943,7 +1930,7 @@ class Tickets extends SiteController
 		// Check for an ID
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets')
 			);
 			return;
@@ -1960,7 +1947,7 @@ class Tickets extends SiteController
 		$attach = new Tables\Attachment($this->database);
 		if (!$attach->deleteAllForTicket($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
 				$attach->getError(),
 				'error'
@@ -1973,7 +1960,7 @@ class Tickets extends SiteController
 		$ticket->delete($id);
 
 		// Output messsage and redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets')
 		);
 	}
@@ -2161,7 +2148,7 @@ class Tickets extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;

@@ -87,14 +87,6 @@ class Categories extends AdminController
 		// Get records
 		$this->view->rows = $rt->getCategories($this->view->filters);
 
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		if ($this->getError())
 		{

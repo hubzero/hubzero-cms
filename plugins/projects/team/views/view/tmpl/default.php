@@ -144,7 +144,7 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 			</table>
 			<?php
 			// Pagination
-			$pageNav = new \JPagination(
+			$pageNav = $this->pagination(
 				$this->total,
 				$this->filters['start'],
 				$this->filters['limit']
@@ -152,7 +152,7 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 			$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 			$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
 
-			$pagenavhtml = $pageNav->getListFooter();
+			$pagenavhtml = $pageNav->render();
 			?>
 			<fieldset>
 				<?php echo $pagenavhtml; ?>

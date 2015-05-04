@@ -32,6 +32,10 @@ namespace Components\Update\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Update\Helpers\Cli;
+use Request;
+use Config;
+use Route;
+use App;
 
 /**
  * Update controller class
@@ -46,24 +50,21 @@ class Database extends AdminController
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->filters = array();
 
 		// Paging
-		$this->view->filters['limit'] = \JFactory::getApplication()->getUserStateFromRequest(
+		$this->view->filters['limit'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			Config::getValue('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start'] = \JFactory::getApplication()->getUserStateFromRequest(
+		$this->view->filters['start'] = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -88,13 +89,6 @@ class Database extends AdminController
 			$this->view->rows  = array_splice($this->view->rows, $this->view->filters['start'], $this->view->filters['limit']);
 		}
 
-		// Initiate paging
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -113,8 +107,8 @@ class Database extends AdminController
 		$type     = 'success';
 
 		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message,
 			$type
 		);

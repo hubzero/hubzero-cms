@@ -343,7 +343,7 @@ class Polls extends SiteController
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->alias . $itemid, false),
 			$msg
 		);

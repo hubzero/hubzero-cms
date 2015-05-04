@@ -298,14 +298,6 @@ class Resources extends SiteController
 		// Run query with limit
 		$this->view->results = $rr->getRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Get type if not given
 		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
 		if ($this->view->filters['type'] != '')

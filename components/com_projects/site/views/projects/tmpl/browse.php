@@ -96,7 +96,7 @@ $total = $this->model->entries('count', $this->filters);
 				     ->display();
 
 				// Pagination
-				$pageNav = new \JPagination(
+				$pageNav = $this->pagination(
 					$total,
 					$this->filters['start'],
 					$this->filters['limit']
@@ -106,7 +106,7 @@ $total = $this->model->entries('count', $this->filters);
 				$pageNav->setAdditionalUrlParam('reviewer', $this->filters['reviewer']);
 				$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
 
-				$pagenavhtml = $pageNav->getListFooter();
+				$pagenavhtml = $pageNav->render();
 				$pagenavhtml = str_replace('projects/?','projects/browse/?', $pagenavhtml);
 				?>
 				<fieldset>

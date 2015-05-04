@@ -147,13 +147,6 @@ class Polls extends AdminController
 		$db->setQuery('SELECT COUNT(m.id) FROM `#__polls` AS m' . $where);
 		$total = $db->loadResult();
 
-		jimport('joomla.html.pagination');
-		$pagination = new \JPagination(
-			$total,
-			$limitstart,
-			$limit
-		);
-
 		$query = 'SELECT m.*, u.name AS editor, COUNT(d.id) AS numoptions'
 			. ' FROM `#__polls` AS m'
 			. ' LEFT JOIN `#__users` AS u ON u.id = m.checked_out'
@@ -186,7 +179,9 @@ class Polls extends AdminController
 			->set('user', User::getRoot())
 			->set('lists', $lists)
 			->set('items', $rows)
-			->set('pagination', $pagination)
+			->set('limit', $limit)
+			->set('limitstart', $limitstart)
+			->set('total', $total)
 			->display();
 	}
 

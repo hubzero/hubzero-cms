@@ -32,6 +32,8 @@ namespace Components\Update\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Update\Helpers\Cli;
+use Component;
+use Config;
 
 /**
  * Update controller class
@@ -46,12 +48,9 @@ class Dashboard extends AdminController
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$source = Component::params('com_update')->get('git_repository_source', null);
