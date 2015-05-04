@@ -1533,7 +1533,7 @@ class Publication extends Object
 
 		return $result ? $result[0] : NULL;
 	}
-	
+
 	/**
 	 * Get path to specific publication directory
 	 *
