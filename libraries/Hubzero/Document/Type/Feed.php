@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,16 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Document;
+namespace Hubzero\Document\Type;
+
+use Hubzero\Document\Type\Feed\Item;
+use Hubzero\Document\Renderer;
+use Hubzero\Document\Base;
 
 /**
- * Feed class, provides an easy interface to parse and display any feed document
+ * Document Feed class, provides an easy interface to parse and display any feed document
  */
-class Feed extends \JDocument
+class Feed extends Base
 {
 	/**
 	 * Syndication URL feed element
@@ -162,72 +166,71 @@ class Feed extends \JDocument
 	/**
 	 * The feed items collection
 	 *
-	 * @public array
+	 * @var array
 	 */
 	public $items = array();
-
-	/* iTunes specific tags */
 
 	/**
 	 * Description for 'itunes_summary'
 	 *
-	 * @public string
+	 * @var string
 	 */
 	public $itunes_summary = '';
 
 	/**
 	 * Description for 'itunes_category'
 	 *
-	 * @public string
+	 * @var string
 	 */
 	public $itunes_category = '';
 
 	/**
 	 * Description for 'itunes_subcategories'
 	 *
-	 * @public unknown
+	 * @var unknown
 	 */
 	public $itunes_subcategories = null;
 
 	/**
 	 * Description for 'itunes_owner'
 	 *
-	 * @public unknown
+	 * @var unknown
 	 */
 	public $itunes_owner = null;
 
 	/**
 	 * Description for 'itunes_explicit'
 	 *
-	 * @public string
+	 * @var string
 	 */
 	public $itunes_explicit = 'no';
 
 	/**
 	 * Description for 'itunes_keywords'
 	 *
-	 * @public string
+	 * @var string
 	 */
 	public $itunes_keywords = '';
 
 	/**
 	 * Description for 'itunes_author'
 	 *
-	 * @public string
+	 * @var string
 	 */
 	public $itunes_author = '';
 
 	/**
 	 * Description for 'itunes_image'
 	 *
-	 * @public unknown
+	 * @var unknown
 	 */
 	public $itunes_image = null;
 
 	/**
 	 * Class constructor
 	 *
-	 * @param  array $options Associative array of options
+	 * @param   array  $options  Associative array of options
+	 * @return  void
 	 */
 	public function __construct($options = array())
 	{
@@ -240,32 +243,23 @@ class Feed extends \JDocument
 	/**
 	 * Render the document
 	 *
-	 * @param   boolean $cache  If true, cache the output
-	 * @param   array   $params Associative array of attributes
+	 * @param   boolean  $cache   If true, cache the output
+	 * @param   array    $params  Associative array of attributes
 	 * @return  The rendered data
 	 */
 	public function render($cache = false, $params = array())
 	{
-		$option = \Request::getCmd('option');
-
 		// Get the feed type
 		$type = \Request::getCmd('type', 'Rss');
 
-		// Cache TODO In later release
-		$cache      = 0;
-		$cache_time = 3600;
-		$cache_path = PATH_APP . DS . 'cache';
-
-		// set filename for rss feeds
-		$file = strtolower(str_replace('.', '', $type));
-		$file = $cache_path . DS . $file . '_' . $option . '.xml';
-
 		// Instantiate feed renderer and set the mime encoding
-		$renderer = $this->loadXRenderer(($type) ? $type : 'Rss');
-		if (!($renderer instanceof \JDocumentRenderer))
+		$renderer = $this->loadRenderer(($type) ? $type : 'rss');
+
+		if (!($renderer instanceof Renderer))
 		{
 			\App::abort(404, \Lang::txt('Resource Not Found'));
 		}
+
 		$this->setMimeEncoding($renderer->getContentType());
 
 		// output
@@ -288,49 +282,17 @@ class Feed extends \JDocument
 	}
 
 	/**
-	 * Load a renderer
-	 *
-	 * @param   string The renderer type
-	 * @return  object
-	 * @throws  InvalidArgumentException
-	 */
-	public function &loadXRenderer($type)
-	{
-		$null  = null;
-		$class = __NAMESPACE__ . '\\Renderer\\' . ucfirst(strtolower($type));
-
-		if (!class_exists($class))
-		{
-			$path = __DIR__ . DS . 'Renderer' . DS . ucfirst(strtolower($type)) . '.php';
-			if (file_exists($path))
-			{
-				require_once($path);
-			}
-			else
-			{
-				throw new \InvalidArgumentException(\Lang::txt('Unable to load renderer class'), 500);
-			}
-		}
-
-		if (!class_exists($class))
-		{
-			return $null;
-		}
-
-		$instance = new $class($this);
-		return $instance;
-	}
-
-	/**
 	 * Adds an Item to the feed.
 	 *
-	 * @param   object Item $item The feeditem to add to the feed.
-	 * @return  void
+	 * @param   object  &$item  The feeditem to add to the feed.
+	 * @return  object  instance of $this to allow chaining
 	 */
-	public function addItem(&$item)
+	public function addItem(Item $item)
 	{
 		$item->source = $this->link;
+
 		$this->items[] = $item;
+
+		return $this;
 	}
 }
-

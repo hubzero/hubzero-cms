@@ -28,129 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Document\Feed;
-
-use Hubzero\Base\Object;
+namespace Hubzero\Document\Type\Feed;
 
 /**
  * Item is an internal class that stores feed item information
- *
- * @author Johan Janssens <johan.janssens@joomla.org>
- * @author Shawn Rice <zooley@purdue.edu>
  */
-class Item extends Object
+class ItunesItem extends Item
 {
-	/**
-	 * Title item element
-	 *
-	 * required
-	 *
-	 * @var  string
-	 */
-	public $title;
-
-	/**
-	 * Link item element
-	 *
-	 * required
-	 *
-	 * @var  string
-	 */
-	public $link;
-
-	/**
-	 * Description item element
-	 *
-	 * required
-	 *
-	 * @var  string
-	 */
-	public $description;
-
-	/**
-	 * Author item element
-	 *
-	 * optional
-	 *
-	 * @var  string
-	 */
-	public $author;
-
-	/**
-	 * Author email element
-	 *
-	 * optional
-	 *
-	 * @var  string
-	 */
-	public $authorEmail;
-
-	/**
-	 * Category element
-	 *
-	 * optional
-	 *
-	 * @var  string
-	 */
-	public $category;
-
-	/**
-	 * Comments element
-	 *
-	 * optional
-	 *
-	 * @var  string
-	 */
-	public $comments;
-
-	/**
-	 * Enclosure element
-	 *
-	 * @var		object
-	 */
-	public $enclosure =  null;
-
-	/**
-	 * Guid element
-	 *
-	 * optional
-	 *
-	 * @var  string
-	 */
-	public $guid;
-
-	/**
-	 * Published date
-	 *
-	 * optional
-	 *
-	 *  May be in one of the following formats:
-	 *
-	 *	RFC 822:
-	 *	"Mon, 20 Jan 03 18:05:41 +0400"
-	 *	"20 Jan 03 18:05:41 +0000"
-	 *
-	 *	ISO 8601:
-	 *	"2003-01-20T18:05:41+04:00"
-	 *
-	 *	Unix:
-	 *	1043082341
-	 *
-	 * @var	 string
-	 */
-	public $pubDate;
-
-	/**
-	 * Source element
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $source;
-
-	/* iTunes specific tags */
-
 	/**
 	 * Description for 'itunes_summary'
 	 *
@@ -206,15 +90,5 @@ class Item extends Object
 	 * @public unknown
 	 */
 	public $itunes_subcategories = null;
-
-	/**
-	 * Set the Enclosure for this item
-	 *
-	 * @param object $enclosure The Item to add to the feed.
-	*/
-	public function setEnclosure($enclosure)
-	{
-		$this->enclosure = $enclosure;
-	}
 }
 

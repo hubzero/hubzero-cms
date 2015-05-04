@@ -24,16 +24,47 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Create aliaes for runtime
-return array(
-	'Session'  => 'Hubzero\Facades\Session',
-	'Module'   => 'Hubzero\Facades\Module',
-	'Pathway'  => 'Hubzero\Facades\Pathway',
-	'Notify'   => 'Hubzero\Facades\Notify',
-	'Cache'    => 'Hubzero\Facades\Cache',
-	'Document' => 'Hubzero\Facades\Document',
-);
+namespace Hubzero\Document\Type;
+
+use Hubzero\Document\Base;
+
+/**
+ * Document RAW class, provides an easy interface to parse and display raw output
+ */
+class Raw extends Base
+{
+	/**
+	 * Class constructor
+	 *
+	 * @param   array  $options  Associative array of options
+	 * @return  void
+	 */
+	public function __construct($options = array())
+	{
+		parent::__construct($options);
+
+		// Set mime type
+		$this->mime = 'text/html';
+
+		// Set document type
+		$this->type = 'raw';
+	}
+
+	/**
+	 * Render the document.
+	 *
+	 * @param   boolean  $cache   If true, cache the output
+	 * @param   array    $params  Associative array of attributes
+	 * @return  string   The rendered data
+	 */
+	public function render($cache = false, $params = array())
+	{
+		parent::render();
+
+		return $this->getBuffer();
+	}
+}

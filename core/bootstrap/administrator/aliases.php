@@ -29,10 +29,11 @@
  */
 
 return array(
-	'Session' => 'Hubzero\Facades\Session',
-	'Toolbar' => 'Hubzero\Facades\Toolbar',
-	'Submenu' => 'Hubzero\Facades\Submenu',
-	'Module'  => 'Hubzero\Facades\Module',
-	'Notify'  => 'Hubzero\Facades\Notify',
-	'Cache'   => 'Hubzero\Facades\Cache',
+	'Session'  => 'Hubzero\Facades\Session',
+	'Toolbar'  => 'Hubzero\Facades\Toolbar',
+	'Submenu'  => 'Hubzero\Facades\Submenu',
+	'Module'   => 'Hubzero\Facades\Module',
+	'Notify'   => 'Hubzero\Facades\Notify',
+	'Cache'    => 'Hubzero\Facades\Cache',
+	'Document' => 'Hubzero\Facades\Document',
 );

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,38 +24,37 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Document\Feed;
+namespace Hubzero\Document\Type\Html;
 
-use Hubzero\Base\Object;
+use Hubzero\Document\Renderer;
 
 /**
- * ItunesOwner is an internal class that stores feed image information
- *
- * @author Johan Janssens <johan.janssens@joomla.org>
- * @author Shawn Rice <zooley@purdue.edu>
+ * Modules renderer
  */
-class ItunesOwner extends Object
+class Modules extends Renderer
 {
 	/**
-	 * Email attribute
+	 * Renders multiple modules script and returns the results as a string
 	 *
-	 * required
-	 *
-	 * @var  string
+	 * @param   string  $position  The position of the modules to render
+	 * @param   array   $params    Associative array of values
+	 * @param   string  $content   Module content
+	 * @return  string  The output of the script
 	 */
-	public $email = '';
+	public function render($position, $params = array(), $content = null)
+	{
+		$renderer = $this->doc->loadRenderer('module');
 
-	/**
-	 * Name attribute
-	 *
-	 * required
-	 *
-	 * @var  string
-	 */
-	public $name = '';
+		$buffer = '';
+		foreach (\App::get('module')->byPosition($position) as $mod)
+		{
+			$buffer .= $renderer->render($mod, $params, $content);
+		}
+
+		return $buffer;
+	}
 }
-

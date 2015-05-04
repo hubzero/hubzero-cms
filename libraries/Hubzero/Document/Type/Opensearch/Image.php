@@ -24,16 +24,52 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Create aliaes for runtime
-return array(
-	'Session'  => 'Hubzero\Facades\Session',
-	'Module'   => 'Hubzero\Facades\Module',
-	'Pathway'  => 'Hubzero\Facades\Pathway',
-	'Notify'   => 'Hubzero\Facades\Notify',
-	'Cache'    => 'Hubzero\Facades\Cache',
-	'Document' => 'Hubzero\Facades\Document',
-);
+namespace Hubzero\Document\Type\Opensearch;
+
+use Hubzero\Base\Object;
+
+/**
+ * An internal class that stores Images for the OpenSearch Description
+ */
+class Image extends Object
+{
+	/**
+	 * The images MIME type
+	 *
+	 * required
+	 *
+	 * @var  string
+	 */
+	public $type = '';
+
+	/**
+	 * URL of the image or the image as base64 encoded value
+	 *
+	 * required
+	 *
+	 * @var  string
+	 */
+	public $data = '';
+
+	/**
+	 * The image's width
+	 *
+	 * required
+	 *
+	 * @var  string
+	 */
+	public $width;
+
+	/**
+	 * The image's height
+	 *
+	 * required
+	 *
+	 * @var  string
+	 */
+	public $height;
+}

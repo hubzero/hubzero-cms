@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,47 +24,43 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Document\Feed;
+namespace Hubzero\Document\Type\Opensearch;
 
 use Hubzero\Base\Object;
 
 /**
- * Enclosure is an internal class that stores feed enclosure information
- *
- * @author Johan Janssens <johan.janssens@joomla.org>
- * @author Shawn Rice <zooley@purdue.edu>
+ * An internal class that stores the search URLs for the OpenSearch description
  */
-class Enclosure extends Object
+class Url extends Object
 {
 	/**
-	 * URL enclosure element
+	 * Type item element
 	 *
 	 * required
 	 *
-	 * @var	 string
+	 * @var  string
 	 */
-	 public $url = '';
+	public $type = 'text/html';
 
 	/**
-	 * Lenght enclosure element
+	 * Rel item element
 	 *
 	 * required
 	 *
-	 * @var	 string
+	 * @var  string
 	 */
-	 public $length = '';
+	public $rel = 'results';
 
-	 /**
-	 * Type enclosure element
+	/**
+	 * Template item element. Has to contain the {searchTerms} parameter to work.
 	 *
 	 * required
 	 *
-	 * @var	 string
+	 * @var  string
 	 */
-	 public $type = '';
+	public $template;
 }
-

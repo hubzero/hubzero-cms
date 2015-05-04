@@ -28,70 +28,31 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Document\Feed;
+namespace Hubzero\Document\Type\Feed;
 
 use Hubzero\Base\Object;
 
 /**
- * Image is an internal class that stores feed image information
- *
- * @author Johan Janssens <johan.janssens@joomla.org>
- * @author Shawn Rice <zooley@purdue.edu>
+ * ItunesOwner is an internal class that stores feed image information
  */
-class Image extends Object
+class ItunesOwner extends Object
 {
 	/**
-	 * Title image attribute
+	 * Email attribute
 	 *
 	 * required
 	 *
-	 * @var	 string
+	 * @var  string
 	 */
-	public $title = '';
+	public $email = '';
 
 	/**
-	 * URL image attribute
+	 * Name attribute
 	 *
 	 * required
 	 *
-	 * @var	 string
+	 * @var  string
 	 */
-	public $url = '';
-
-	/**
-	 * Link image attribute
-	 *
-	 * required
-	 *
-	 * @var	 string
-	 */
-	public $link = '';
-
-	/**
-	 * Image width attribute
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $width;
-
-	/**
-	 * Image height attribute
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $height;
-
-	/**
-	 * Image description attribute
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $description;
+	public $name = '';
 }
 

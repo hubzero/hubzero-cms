@@ -203,6 +203,14 @@ abstract class JFactory
 	 */
 	public static function getDocument()
 	{
+		if (class_exists('\\App'))
+		{
+			if ($lang = \App::get('document'))
+			{
+				return $lang;
+			}
+		}
+
 		if (!self::$document)
 		{
 			self::$document = self::createDocument();

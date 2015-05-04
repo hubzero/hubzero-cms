@@ -24,16 +24,43 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Create aliaes for runtime
-return array(
-	'Session'  => 'Hubzero\Facades\Session',
-	'Module'   => 'Hubzero\Facades\Module',
-	'Pathway'  => 'Hubzero\Facades\Pathway',
-	'Notify'   => 'Hubzero\Facades\Notify',
-	'Cache'    => 'Hubzero\Facades\Cache',
-	'Document' => 'Hubzero\Facades\Document',
-);
+namespace Hubzero\Document;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Toolbar service provider
+ */
+class DocumentServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['document'] = function($app)
+		{
+			$raw  = $app['request']->getBool('no_html');
+			$type = $app['request']->getWord('format', $raw ? 'raw' : 'html');
+
+			$attributes = array(
+				'charset'   => 'utf-8',
+				'lineend'   => 'unix',
+				'tab'       => "\t",
+				'language'  => $app['language']->getTag(),
+				'direction' => $app['language']->isRTL() ? 'rtl' : 'ltr'
+			);
+
+			$manager = new Manager($app);
+			$manager->instance($type, $attributes);
+
+			return $manager;
+		};
+	}
+}

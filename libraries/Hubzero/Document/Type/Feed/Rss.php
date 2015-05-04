@@ -28,16 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Document\Renderer;
+namespace Hubzero\Document\Type\Feed;
 
+use Hubzero\Document\Renderer;
 use Hubzero\Utility\Date;
 
 /**
  * RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
  *
- * @see    http://www.rssboard.org/rss-specification
+ * @see  http://www.rssboard.org/rss-specification
  */
-class Rss extends \JDocumentRenderer
+class Rss extends Renderer
 {
 	/**
 	 * Renderer mime type
@@ -47,24 +48,36 @@ class Rss extends \JDocumentRenderer
 	protected $_mime = 'application/rss+xml';
 
 	/**
-	 * Render the feed
+	 * Render the feed.
 	 *
-	 * @access public
-	 * @return	string
+	 * @param   string  $name     The name of the element to render
+	 * @param   array   $params   Array of values
+	 * @param   string  $content  Override the output of the renderer
+	 * @return  string  The output of the script
 	 */
 	public function render($name = NULL, $params = NULL, $content = NULL)
 	{
 		$now  = new Date('now');
-		$data = $this->_doc;
+		$data = $this->doc;
 
 		$uri = \JFactory::getURI();
 		$url = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 
-		$feed  = '<rss xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd" version="2.0">' . "\n";
+		if (\App::get('config')->get('sitename_pagetitles', 0) == 1)
+		{
+			$data->title = \App::get('language')->txt('JPAGETITLE', \App::get('config')->get('sitename'), $data->title);
+		}
+		elseif (\App::get('config')->get('sitename_pagetitles', 0) == 2)
+		{
+			$data->title = \App::get('language')->txt('JPAGETITLE', $data->title, \App::get('config')->get('sitename'));
+		}
+
+		$feed  = '<rss version="2.0" xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">' . "\n";
+		//$feed  = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 		$feed .= '	<channel>' . "\n";
 		$feed .= '		<title>' . $data->title . '</title>' . "\n";
-		$feed .= '		<description>' . $data->description . '</description>' . "\n";
-		$feed .= '		<link>' . $url . $data->link . '</link>' . "\n";
+		$feed .= '		<description><![CDATA[' . $data->description . ']]></description>' . "\n";
+		$feed .= '		<link>' . str_replace(' ', '%20', $url . $data->link) . '</link>' . "\n";
 		$feed .= '		<lastBuildDate>' . $this->escape($now->toRFC822()) . '</lastBuildDate>' . "\n";
 		$feed .= '		<generator>' . $data->getGenerator() . '</generator>' . "\n";
 
@@ -111,12 +124,12 @@ class Rss extends \JDocumentRenderer
 		}
 		// end iTunes specific tags
 
-		if ($data->image!=null)
+		if ($data->image != null)
 		{
 			$feed .= '		<image>' . "\n";
 			$feed .= '			<url>' . $data->image->url . '</url>' . "\n";
 			$feed .= '			<title>' . $this->escape($data->image->title) . '</title>' . "\n";
-			$feed .= '			<link>' . $data->image->link . '</link>' . "\n";
+			$feed .= '			<link>' . str_replace(' ', '%20', $data->image->link) . '</link>' . "\n";
 			if ($data->image->width != "")
 			{
 				$feed .= '			<width>' . $data->image->width . '</width>' . "\n";
@@ -152,9 +165,17 @@ class Rss extends \JDocumentRenderer
 			$pubDate = new Date($data->pubDate);
 			$feed .= "		<pubDate>" . $this->escape($pubDate->toRFC822()) . "</pubDate>\n";
 		}
-		if ($data->category != '')
+		if ($data->category)
 		{
-			$feed .= "		<category>" . $this->escape($data->category) . "</category>\n";
+			if (!is_array($data->category))
+			{
+				$data->category = array($data->category);
+			}
+
+			foreach ($data->category as $category)
+			{
+				$feed .= "		<category>" . $this->escape($category) . "</category>\n";
+			}
 		}
 		if ($data->docs != '')
 		{
@@ -179,10 +200,24 @@ class Rss extends \JDocumentRenderer
 
 		for ($i=0; $i<count($data->items); $i++)
 		{
+			if ((strpos($data->items[$i]->link, 'http://') === false) and (strpos($data->items[$i]->link, 'https://') === false))
+			{
+				$data->items[$i]->link = str_replace(' ', '%20', $url . $data->items[$i]->link);
+			}
+
 			$feed .= "		<item>\n";
 			$feed .= "			<title>" . $this->escape(strip_tags($data->items[$i]->title)) . "</title>\n";
-			$feed .= "			<link>" . $url . $data->items[$i]->link . "</link>\n";
+			$feed .= "			<link>" . str_replace(' ', '%20', $data->items[$i]->link) . "</link>\n";
 			$feed .= "			<description>" . $this->_relToAbs($data->items[$i]->description) . "</description>\n";
+
+			if (empty($data->items[$i]->guid) === true)
+			{
+				$feed .= "			<guid isPermaLink=\"true\">" . str_replace(' ', '%20', $data->items[$i]->link) . "</guid>\n";
+			}
+			else
+			{
+				$feed .= "			<guid isPermaLink=\"false\">" . $this->escape($data->items[$i]->guid) . "</guid>\n";
+			}
 
 			// iTunes specific tags
 			if ($data->items[$i]->itunes_summary != '')
@@ -218,7 +253,7 @@ class Rss extends \JDocumentRenderer
 				}
 				$feed .= "			</itunes:category>\n";
 			}
-			if ($data->items[$i]->itunes_image!=null)
+			if ($data->items[$i]->itunes_image != null)
 			{
 				$feed .= "			<itunes:image>\n";
 				$feed .= "				<url>" . $data->items[$i]->itunes_image->url . "</url>\n";
@@ -244,9 +279,17 @@ class Rss extends \JDocumentRenderer
 			{
 				$feed .= "			<author>" . $this->escape($data->items[$i]->author) . "</author>\n";
 			}
-			if ($data->items[$i]->category != '')
+			if ($data->items[$i]->category)
 			{
-				$feed .= "			<category>" . $this->escape($data->items[$i]->category) . "</category>\n";
+				if (!is_array($data->items[$i]->category))
+				{
+					$data->items[$i]->category = array($data->items[$i]->category);
+				}
+
+				foreach ($data->items[$i]->category as $category)
+				{
+					$feed .= "			<category>" . $this->escape($category) . "</category>\n";
+				}
 			}
 			if ($data->items[$i]->comments != '')
 			{
@@ -270,6 +313,7 @@ class Rss extends \JDocumentRenderer
 		}
 		$feed .= "	</channel>\n";
 		$feed .= "</rss>\n";
+
 		return $feed;
 	}
 

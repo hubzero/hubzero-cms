@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,16 +24,71 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Create aliaes for runtime
-return array(
-	'Session'  => 'Hubzero\Facades\Session',
-	'Module'   => 'Hubzero\Facades\Module',
-	'Pathway'  => 'Hubzero\Facades\Pathway',
-	'Notify'   => 'Hubzero\Facades\Notify',
-	'Cache'    => 'Hubzero\Facades\Cache',
-	'Document' => 'Hubzero\Facades\Document',
-);
+namespace Hubzero\Document\Type\Feed;
+
+use Hubzero\Base\Object;
+
+/**
+ * Image is an internal class that stores feed image information
+ */
+class Image extends Object
+{
+	/**
+	 * Title image attribute
+	 *
+	 * required
+	 *
+	 * @var	 string
+	 */
+	public $title = '';
+
+	/**
+	 * URL image attribute
+	 *
+	 * required
+	 *
+	 * @var	 string
+	 */
+	public $url = '';
+
+	/**
+	 * Link image attribute
+	 *
+	 * required
+	 *
+	 * @var	 string
+	 */
+	public $link = '';
+
+	/**
+	 * Image width attribute
+	 *
+	 * optional
+	 *
+	 * @var	 string
+	 */
+	public $width;
+
+	/**
+	 * Image height attribute
+	 *
+	 * optional
+	 *
+	 * @var	 string
+	 */
+	public $height;
+
+	/**
+	 * Image description attribute
+	 *
+	 * optional
+	 *
+	 * @var	 string
+	 */
+	public $description;
+}
+
