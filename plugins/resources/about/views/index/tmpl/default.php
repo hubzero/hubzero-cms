@@ -171,6 +171,7 @@ $maintext = $this->model->description('parsed');
 				<?php
 				$revision = 0;
 
+				//auto generated
 				if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2)
 				{
 					// Build our citation object
@@ -230,10 +231,17 @@ $maintext = $this->model->description('parsed');
 				$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
 				$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model);
 				?>
+				<?php if ($this->model->params->get('show_citation') == 3): ?>
 				<h4><?php echo (isset($citations) && ($citations != NULL || $citations != '') ? JText::_('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
 				<div class="resource-content">
 					<?php echo (isset($citations) && ($citations != NULL || $citations != '') ? $citeinstruct : ''); ?>
 				</div>
+				<?php else: ?>
+					<h4><?php echo (isset($cite) && ($cite != NULL || $cite != '') ? JText::_('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+					<div class="resource-content">
+						<?php echo (isset($cite) && ($cite != NULL || $cite != '') ? $citeinstruct : ''); ?>
+					</div>
+				<?php endif; ?>
 			<?php } ?>
 		<?php } ?>
 
