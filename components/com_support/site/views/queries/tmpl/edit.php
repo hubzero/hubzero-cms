@@ -119,7 +119,7 @@ if (!$tmpl && !$no_html) {
 
 		<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />
-		<input type="hidden" name="fields[user_id]" value="<?php echo $juser->get('id'); ?>" />
+		<input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -245,7 +245,7 @@ if (!$tmpl && !$no_html) {
 
 		<input type="hidden" name="fields[id]" value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />
-		<input type="hidden" name="fields[user_id]" value="<?php echo $juser->get('id'); ?>" />
+		<input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
