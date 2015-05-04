@@ -73,7 +73,7 @@ class Message extends Renderer
 		$buffer[] = '<div id="system-message-container">';
 
 		// If messages exist render them
-		if (is_array($lists))
+		if (!empty($lists))
 		{
 			$buffer[] = $tab . '<dl id="system-message">';
 			foreach ($lists as $type => $msgs)

@@ -92,7 +92,7 @@ abstract class JHtmlBehavior
 	private static function _pushScriptTo($index, $url, $type = 'text/javascript', $defer = false, $async = false)
 	{
 		$document = JFactory::getDocument();
-		if ($document instanceof JDocumentHTML)
+		if ($document instanceof JDocumentHTML || $document instanceof \Hubzero\Document\Manager)
 		{
 			$pushed = false;
 
