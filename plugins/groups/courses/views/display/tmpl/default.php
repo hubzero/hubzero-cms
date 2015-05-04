@@ -129,8 +129,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			</table>
 
 			<?php
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
+			$pageNav = $this->pagination(
 				$this->total,
 				$this->filters['start'],
 				$this->filters['limit']
@@ -140,7 +139,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			$pageNav->setAdditionalUrlParam('action', '');
 			$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-			echo $pageNav->getListFooter();
+			echo $pageNav->render();
 			?>
 			<div class="clearfix"></div>
 		</form>

@@ -266,7 +266,13 @@ if (isset($this->messages))
 						<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 					<?php endif; ?>
 					<?php
-						$this->pageNav->setAdditionalUrlParam('task', 'browse');
+						// Initiate paging
+						$pageNav = $this->pagination(
+							$this->total,
+							$this->filters['start'],
+							$this->filters['limit']
+						);
+						$pageNav->setAdditionalUrlParam('task', 'browse');
 						foreach ($this->filters as $key => $value)
 						{
 							switch ($key)
@@ -281,16 +287,16 @@ if (isset($this->messages))
 								case 'geo':
 									foreach ($value as $k => $v)
 									{
-										$this->pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
+										$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
 									}
 								break;
 
 								default:
-									$this->pageNav->setAdditionalUrlParam($key, $value);
+									$pageNav->setAdditionalUrlParam($key, $value);
 								break;
 							}
 						}
-						echo $this->pageNav->getListFooter();
+						echo $pageNav->render();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- /.container -->

@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-	 ->css('resources.css', 'com_resources')
+     ->css('resources.css', 'com_resources')
      ->js('resources.js', 'com_resources');
 
 $config = Component::params('com_resources');
@@ -248,19 +248,17 @@ if ($this->cats)
 				?>
 			</div><!-- / .container-block -->
 			<?php
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
+			$pageNav = $this->pagination(
 				$this->total,
 				$this->limitstart,
 				$this->limit
 			);
-
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 			$pageNav->setAdditionalUrlParam('active', 'resources');
 			$pageNav->setAdditionalUrlParam('area', urlencode(stripslashes($this->active)));
 			$pageNav->setAdditionalUrlParam('sort', $this->sort);
 			$pageNav->setAdditionalUrlParam('access', $this->access);
-			echo $pageNav->getListFooter();
+			echo $pageNav->render();
 			?>
 			<div class="clearfix"></div>
 		</div><!-- / .container -->

@@ -111,22 +111,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</ol>
 
 			<?php
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				$pageNav = $this->pagination(
 					$this->eventsCount,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
 				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 				$pageNav->setAdditionalUrlParam('active', 'calendar');
-				echo $pageNav->getListFooter();
+				echo $pageNav->render();
 			?>
 		<?php else : ?>
 			<p class="warning"><?php echo Lang::txt('PLG_GROUPS_CALENDAR_NO_ENTRIES_FOUND'); ?></p>
 		<?php endif; ?>
 	</div>
 </div>
-
 
 <?php
 	if ($this->params->get('allow_subscriptions', 1))
@@ -137,4 +135,4 @@ defined('_JEXEC') or die( 'Restricted access' );
 			->set('group', $this->group)
 			->display();
 	}
-?>
+

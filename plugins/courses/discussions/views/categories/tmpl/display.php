@@ -169,13 +169,19 @@ $base = $this->offering->link() . '&active=forum';
 					</tbody>
 				</table>
 				<?php
-				if ($this->pageNav)
+				if ($this->total > $this->filters['limit'])
 				{
-					$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-					$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-					$this->pageNav->setAdditionalUrlParam('active', 'forum');
-					$this->pageNav->setAdditionalUrlParam('unit', $this->filters['category']);
-					echo $this->pageNav->getListFooter();
+					// Initiate paging
+					$pageNav = $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+					$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+					$pageNav->setAdditionalUrlParam('active', 'forum');
+					$pageNav->setAdditionalUrlParam('unit', $this->filters['category']);
+					echo $pageNav->render();
 				}
 				?>
 			</div><!-- / .container -->

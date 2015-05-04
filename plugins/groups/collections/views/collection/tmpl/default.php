@@ -225,7 +225,20 @@ $viewas = Request::getWord('viewas', $this->collection->get('layout'));
 				</div><!-- / .post -->
 			<?php } ?>
 		</div><!-- / #posts -->
-		<?php if ($this->posts > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+		<?php
+		if ($this->posts > $this->filters['limit'])
+		{
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+			$pageNav->setAdditionalUrlParam('active', 'collections');
+			$pageNav->setAdditionalUrlParam('scope', $this->scope);
+			echo $pageNav->render();
+		}
+		?>
 		<div class="clear"></div>
 	<?php } else { ?>
 		<div id="collection-introduction">

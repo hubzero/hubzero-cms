@@ -84,13 +84,20 @@ $base = $this->offering->link() . '&active=forum';
 				<p><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
 				<?php
 			}
-			$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-			$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-			$this->pageNav->setAdditionalUrlParam('active', 'forum');
-			$this->pageNav->setAdditionalUrlParam('unit', $this->category->alias);
-			$this->pageNav->setAdditionalUrlParam('b', $this->post->id);
 
-			echo $this->pageNav->getListFooter();
+			// Initiate paging
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+			$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+			$pageNav->setAdditionalUrlParam('active', 'forum');
+			$pageNav->setAdditionalUrlParam('unit', $this->category->alias);
+			$pageNav->setAdditionalUrlParam('b', $this->post->id);
+
+			echo $pageNav->render();
 			?>
 		</form>
 	</div><!-- / .subject -->

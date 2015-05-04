@@ -224,8 +224,7 @@ $this->css()
 			</table>
 
 			<?php
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
+			$pageNav = $this->pagination(
 				$this->category->threads('count', $this->filters),
 				$this->filters['start'],
 				$this->filters['limit']
@@ -233,7 +232,7 @@ $this->css()
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 			$pageNav->setAdditionalUrlParam('active', 'forum');
 			$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
-			echo $pageNav->getListFooter();
+			echo $pageNav->render();
 			?>
 		</div><!-- / .container -->
 	</form>

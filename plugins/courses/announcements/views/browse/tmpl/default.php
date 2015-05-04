@@ -111,8 +111,7 @@ $base = $this->offering->link() . '&active=announcements';
 			<?php } ?>
 
 			<?php
-			jimport('joomla.html.pagination');
-			$pageNav = new JPagination(
+			$pageNav = $this->pagination(
 				$total,
 				$this->filters['start'],
 				$this->filters['limit']
@@ -120,7 +119,7 @@ $base = $this->offering->link() . '&active=announcements';
 			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 			$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
 			$pageNav->setAdditionalUrlParam('active', 'announcements');
-			echo $pageNav->getListFooter();
+			echo $pageNav->render();
 			?>
 			<div class="clearfix"></div>
 		</div><!-- / .container -->

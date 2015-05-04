@@ -198,13 +198,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	private function _browse()
 	{
 		//initialize the view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		// push objects to the view
 		$view->group             = $this->group;
@@ -360,14 +354,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		$view->citations = $citations->getRecords($view->filters, $view->isAdmin);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
 		// Add some data to our view for form filtering/sorting
 		$ct = new \Components\Citations\Tables\Type($this->database);
 		$view->types = $ct->getType();
@@ -448,12 +434,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -467,13 +450,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	private function _edit()
 	{
 		//create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'edit'
-			)
-		);
+		$view = $this->view('default', 'edit');
 
 		//appends view override if this is a supergroup
 		if ($this->group->isSuperGroup())
@@ -568,15 +545,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			: $view->row->title;
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
 		if ($id && $id != 0)
 		{
-			$pathway->addItem($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
-			$pathway->addItem(Lang::txt('PLG_GROUPS_CITATIONS_EDIT'));
+			Pathway::append($shortenedTitle, 'index.php?option=com_citations&task=view&id=' . $view->row->id);
+			Pathway::append(Lang::txt('PLG_GROUPS_CITATIONS_EDIT'));
 		}
 		else
 		{
-			$pathway->addItem(Lang::txt('PLG_GROUPS_CITATIONS_ADD'));
+			Pathway::append(Lang::txt('PLG_GROUPS_CITATIONS_ADD'));
 		}
 
 		// Set the page title
@@ -584,7 +560,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$document->setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
 
 		//push jquery to doc
-		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view

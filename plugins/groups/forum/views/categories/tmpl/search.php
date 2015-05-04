@@ -130,8 +130,7 @@ $this->css()
 				</tbody>
 			</table>
 			<?php
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				$pageNav = $this->pagination(
 					$this->thread->posts('count', $this->filters),
 					$this->filters['start'],
 					$this->filters['limit']
@@ -140,6 +139,7 @@ $this->css()
 				$pageNav->setAdditionalUrlParam('active', 'forum');
 				//$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
 				$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+				echo $pageNav->render();
 			?>
 		</div><!-- / .container -->
 	</form>

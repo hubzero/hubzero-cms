@@ -447,17 +447,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->rows  = $this->model->followers($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('scope', 'followers');
-
 		foreach ($this->getErrors() as $error)
 		{
 			$view->setError($error);
@@ -518,17 +507,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$view->following = $this->model->following($count);
 		}
-
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('cn', $view->group->get('cn'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('scope', 'all');
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -602,16 +580,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
 
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->count,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('cn', $view->group->get('cn'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('scope', $view->collection->get('alias'));
+		$view->scope = $view->collection->get('alias');
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -795,18 +764,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		//$view->filters['user_id'] = JFactory::getUser()->get('id');
 
 		$view->count = $view->posts;
-		$view->rows = $view->collection->posts($view->filters);
-
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->count,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
-		$view->pageNav->setAdditionalUrlParam('cn', $view->group->get('cn'));
-		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		$view->pageNav->setAdditionalUrlParam('scope', 'posts');
+		$view->rows  = $view->collection->posts($view->filters);
+		$view->scope = 'posts';
 
 		foreach ($this->getErrors() as $error)
 		{

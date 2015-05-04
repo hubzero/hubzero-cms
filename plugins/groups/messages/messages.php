@@ -188,14 +188,6 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		$rows = $recipient->getSentMessages($filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
-			$total,
-			$filters['start'],
-			$filters['limit']
-		);
-
 		// Instantiate a view
 		$view = $this->view('default', 'sent');
 
@@ -204,7 +196,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->rows = $rows;
-		$view->pageNav = $pageNav;
+		$view->filters = $filters;
+		$view->total = $total;
 
 		foreach ($this->getErrors() as $error)
 		{

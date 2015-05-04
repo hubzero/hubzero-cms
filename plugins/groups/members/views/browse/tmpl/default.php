@@ -428,12 +428,18 @@ $option = 'com_groups';
 					</tbody>
 				</table>
 			<?php
-				$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-				$this->pageNav->setAdditionalUrlParam('active', 'members');
-				$this->pageNav->setAdditionalUrlParam('filter', $this->filter);
-				$this->pageNav->setAdditionalUrlParam('q', $this->q);
+				// Initiate paging
+				$pageNav = $this->pagination(
+					count($this->groupusers),
+					$this->start,
+					$this->limit
+				);
+				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+				$pageNav->setAdditionalUrlParam('active', 'members');
+				$pageNav->setAdditionalUrlParam('filter', $this->filter);
+				$pageNav->setAdditionalUrlParam('q', $this->q);
 
-				echo $this->pageNav->getListFooter();
+				echo $pageNav->render();
 			?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

@@ -271,10 +271,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				$view->no_html = Request::getInt('no_html', 0);
 				$view->params = $this->params;
 
-				// Initiate paging
-				jimport('joomla.html.pagination');
-				$view->pageNav = new JPagination(count($view->groupusers), $view->start, $view->limit);
-
 				if ($this->getError())
 				{
 					$view->setError($this->getError());

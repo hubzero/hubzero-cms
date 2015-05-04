@@ -77,10 +77,16 @@ defined('_JEXEC') or die('Restricted access');
 		</form>
 
 		<?php
-		$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-		$this->pageNav->setAdditionalUrlParam('active', 'messages');
+		// Initiate paging
+		$pageNav = $this->pagination(
+			$this->total,
+			$this->filters['start'],
+			$this->filters['limit']
+		);
+		$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+		$pageNav->setAdditionalUrlParam('active', 'messages');
 
-		echo $this->pageNav->getListFooter();
+		echo $pageNav->render();
 		?>
 		<div class="clearfix"></div>
 	</div><!-- / .container -->

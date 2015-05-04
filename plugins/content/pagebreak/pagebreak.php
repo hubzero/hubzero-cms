@@ -170,7 +170,7 @@ class plgContentPagebreak extends JPlugin
 				}
 
 				// traditional mos page navigation
-				$pageNav = new JPagination($n, $page, 1);
+				$pageNav = new \Hubzero\Pagination\Paginator($n, $page, 1);
 
 				// Page counter.
 				$row->text .= '<div class="pagenavcounter">';

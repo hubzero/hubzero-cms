@@ -77,14 +77,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$this->database = JFactory::getDBO();
 
 		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'display',
-				'layout'  => 'mini'
-			)
-		);
+		$this->view = $this->view('mini', 'display');
 
 		if ($miniview)
 		{
@@ -182,45 +175,35 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function defaultTask()
 	{
 		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'admin',
-				'layout'  => 'default'
-			)
-		);
+		$this->view = $this->view('default', 'admin');
 		$this->view->option = $this->_option;
 		$this->view->controller = $this->_controller;
 		$this->view->task = $this->_task;
 
-		// Get configuration
-		$app = JFactory::getApplication();
-
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
+		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.plugins.sponsors.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
+		$this->view->filters['start']    = Request::getState(
 			$this->_option . '.plugins.sponsors.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort']     = Request::getState(
 			$this->_option . '.plugins.sponsors.sort',
 			'filter_order',
 			'title'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+		);
+		$this->view->filters['sort_Dir'] = Request::getState(
 			$this->_option . '.plugins.sponsors.sortdir',
 			'filter_order_Dir',
 			'ASC'
-		));
+		);
 
 		$model = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 
@@ -229,14 +212,6 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
 		// Get records
 		$this->view->rows = $model->getRecords($this->view->filters);
-
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		if ($this->getError())
 		{
@@ -263,14 +238,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	 */
 	public function editTask($row=null)
 	{
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'admin',
-				'layout'  => 'edit'
-			)
-		);
+		$this->view = new \Hubzero\Plugin\View('edit', 'admin');
 		$this->view->option = $this->_option;
 		$this->view->controller = $this->_controller;
 		$this->view->task = $this->_task;
@@ -350,7 +318,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
 			Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_SAVED')
 		);
@@ -373,7 +341,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		if (empty($ids))
 		{
 			// Redirect with error message
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
 				Lang::txt('PLG_RESOURCES_SPONSORS_NO_ITEM_SELECTED'),
 				'error'
@@ -390,7 +358,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
 			Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_REMOVED')
 		);
@@ -435,7 +403,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		{
 			$action = ($state == 1) ? Lang::txt('PLG_RESOURCES_SPONSORS_UNPUBLISH') : Lang::txt('PLG_RESOURCES_SPONSORS_PUBLISH');
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
 				Lang::txt('PLG_RESOURCES_SPONSORS_SELECT_ITEM_TO', $action),
 				'error'
@@ -466,7 +434,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			$message = Lang::txt('PLG_RESOURCES_SPONSORS_ITEMS_UNPUBLISHED', count($ids));
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
 			$message
 		);
@@ -479,23 +447,9 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false)
 		);
-	}
-
-	/**
-	 * Redirect
-	 *
-	 * @return	void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-		$this->redirect($url);
 	}
 }
 

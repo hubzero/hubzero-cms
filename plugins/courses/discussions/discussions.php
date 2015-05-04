@@ -1735,14 +1735,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->option = $this->option;
 		$view->notifications = $this->getPluginMessage();
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -2072,14 +2064,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->offering = $this->offering;
 		$view->option = $this->option;
 		$view->notifications = $this->getPluginMessage();
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$view->pageNav = new JPagination(
-			$view->total,
-			$view->filters['start'],
-			$view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

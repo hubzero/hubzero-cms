@@ -82,15 +82,14 @@ $this->js();
 			<?php endif; ?>
 
 			<?php
-				jimport('joomla.html.pagination');
-				$pageNav = new JPagination(
+				$pageNav = $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
 				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 				$pageNav->setAdditionalUrlParam('active', 'announcements');
-				echo $pageNav->getListFooter();
+				echo $pageNav->render();
 			?>
 			<div class="clearfix"></div>
 		</div><!-- / .acontainer -->

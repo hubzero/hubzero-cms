@@ -96,7 +96,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					<?php } ?>
 				</tbody>
 			</table>
-			<?php echo $this->pageNav->getListFooter(); ?>
+			<?php
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+			$pageNav->setAdditionalUrlParam('active', 'collections');
+			$pageNav->setAdditionalUrlParam('scope', 'followers');
+			echo $pageNav->render();
+			?>
 			<div class="clear"></div>
 		</div><!-- / .container -->
 	<?php } else { ?>
