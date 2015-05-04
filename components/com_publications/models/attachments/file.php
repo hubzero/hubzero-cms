@@ -726,21 +726,6 @@ class File extends Base
 			// Perform download
 			if ($download && is_file($download))
 			{
-				// Log access
-				if ( is_file(PATH_CORE . DS . 'components'. DS
-						.'com_publications' . DS . 'tables' . DS . 'logs.php'))
-				{
-					require_once( PATH_CORE . DS . 'components'. DS
-							.'com_publications' . DS . 'tables' . DS . 'logs.php');
-
-					if ($pub->state == 1)
-					{
-						$pubLog = new \Components\Publications\Tables\Log($this->_parent->_db);
-						$aType  = $element->params->role == 1 ? 'primary' : 'support';
-						$pubLog->logAccess($pub, $aType, $configs->logPath);
-					}
-				}
-
 				// Initiate a new content server and serve up the file
 				$xserver = new \Hubzero\Content\Server();
 				$xserver->filename($download);

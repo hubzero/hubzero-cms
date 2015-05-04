@@ -380,6 +380,38 @@ class Curation extends Object
 	}
 
 	/**
+	 * Get element id by attachment
+	 *
+	 * @param   integer  $aid		Attachment ID
+	 * @return  mixed: object or boolean False
+	 */
+	public function getElementIdByAttachment($aid = 0)
+	{
+		if (empty($this->_pub))
+		{
+			return false;
+		}
+
+		// Make sure we got attachments
+		$attachments = $this->_pub->attachments();
+		if (empty($attachments))
+		{
+			return false;
+		}
+		foreach ($attachments['elements'] as $elementId => $rows)
+		{
+			foreach ($rows as $row)
+			{
+				if ($row->id == $aid)
+				{
+					return $elementId;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Get manifest for element of block type (content OR description)
 	 *
 	 * @param   integer  $elementId		Element ID
@@ -469,7 +501,7 @@ class Curation extends Object
 	 * @param   object  $pub	Models\Publication
 	 * @return  void
 	 */
-	public function setPubAssoc($pub = NULL)
+	public function setPubAssoc($pub = NULL, $setProgress = true)
 	{
 		// Set version alias (e.f. 'dev' or 'default')
 		if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version))
@@ -479,7 +511,10 @@ class Curation extends Object
 		$this->_pub = $pub;
 
 		// Set progress
-		$this->setProgress();
+		if ($setProgress)
+		{
+			$this->setProgress();
+		}
 	}
 
 	/*----------------------------
@@ -1887,13 +1922,71 @@ class Curation extends Object
 	}
 
 	/**
+	 * Get bundle package name
+	 *
+	 * @return     boolean
+	 */
+	public function getBundleName()
+	{
+		if (empty($this->_pub))
+		{
+			return false;
+		}
+
+		return Lang::txt('Publication') . '_' . $this->_pub->id . '.zip';
+	}
+
+	/**
+	 * Serve publication package
+	 *
+	 * @return     boolean
+	 */
+	public function serveBundle()
+	{
+		if (empty($this->_pub))
+		{
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
+			return;
+		}
+
+		$bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
+		$serveas = $this->_pub->version->get('title') . ' v.' . $this->_pub->version->get('version_label') . '.zip';
+
+		if (!is_file($bundle))
+		{
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new \Hubzero\Content\Server();
+		$xserver->filename($bundle);
+		$xserver->disposition('download');
+		$xserver->acceptranges(true);
+		$xserver->saveas($serveas);
+
+		if (!$xserver->serve())
+		{
+			// Should only get here on error
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
+		}
+		else
+		{
+			exit;
+		}
+
+		return;
+
+	}
+
+	/**
 	 * Produce publication package
 	 *
 	 * @return     boolean
 	 */
 	public function package()
 	{
-		if (!$this->_pub)
+		if (empty($this->_pub))
 		{
 			return false;
 		}
@@ -1909,22 +2002,17 @@ class Curation extends Object
 		{
 			return false;
 		}
-
-		// Get publication path
-		$pubBase = Helpers\Html::buildPubPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
-
-		// Empty draft?
-		if (!file_exists($pubBase))
+		if (!is_dir($this->_pub->path('base', true)))
 		{
 			return false;
 		}
 
 		// Set archival properties
 		$bundleDir  = $this->_pub->title;
-		$tarname 	= Lang::txt('Publication') . '_' . $this->_pub->id . '.zip';
-		$tarpath 	= $pubBase . DS . $tarname;
-		$licFile 	= $pubBase . DS . 'LICENSE.txt';
-		$readmeFile = $pubBase . DS . 'README.txt';
+		$tarname 	= $this->getBundleName();
+		$tarpath 	= $this->_pub->path('base', true) . DS . $tarname;
+		$licFile 	= $this->_pub->path('base', true) . DS . 'LICENSE.txt';
+		$readmeFile = $this->_pub->path('base', true) . DS . 'README.txt';
 
 		// Get attachment type model
 		$attModel = new Attachments($this->_db);
@@ -2045,22 +2133,20 @@ class Curation extends Object
 	 * @param   object $pub
 	 * @return  boolean
 	 */
-	public function convertToCuration( $pub = NULL, $uid = 0 )
+	public function convertToCuration( $pub = NULL )
 	{
-		$pub = $pub ? $pub : $this->_pub;
-		$oldFlow = 0;
+		$pub     = $pub ? $pub : $this->_pub;
+		$oldFlow = false;
+
+		// Load attachments
+		$pub->attachments();
 
 		if (!isset($pub->_attachments)
-			|| !isset($pub->_attachments['elements'])
 			|| empty($pub->_attachments['elements']))
 		{
 			// Nothing to convert
 			return false;
 		}
-
-		// Get attachment type model
-		$attModel = new Attachments($this->_db);
-		$fileAttach = $attModel->loadAttach('file');
 
 		// Get supporting docs element manifest
 		$sElements = self::getElements(2);
@@ -2086,7 +2172,7 @@ class Curation extends Object
 						$row->element_id = $markId;
 						$row->store();
 					}
-					$oldFlow = 1; // will need to make further checks
+					$oldFlow = true; // will need to make further checks
 				}
 			}
 		}
@@ -2107,6 +2193,10 @@ class Curation extends Object
 		// Transfer gallery files to the right location
 		if ($element && $shots)
 		{
+			// Get attachment type model
+			$attModel = new Attachments($this->_db);
+			$fileAttach = $attModel->loadAttach('file');
+
 			// Set configs
 			$configs  = $fileAttach->getConfigs(
 				$element->manifest->params,
@@ -2138,7 +2228,7 @@ class Curation extends Object
 						$objPA->publication_version_id 	= $pub->version_id;
 						$objPA->path 					= $shot->filename;
 						$objPA->type 					= 'file';
-						$objPA->created_by 				= $uid;
+						$objPA->created_by 				= User::get('id');
 						$objPA->created 				= Date::toSql();
 						$objPA->role 					= $element->manifest->params->role;
 						$objPA->element_id 				= $element->id;

@@ -124,8 +124,7 @@ class Curation extends SiteController
 		$this->view->total = $objP->getCount($filters);
 
 		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
+		$this->view->pageNav = new \Hubzero\Pagination\Paginator(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']

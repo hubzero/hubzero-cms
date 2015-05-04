@@ -146,7 +146,7 @@ $url = Route::url($this->project->link('publications'));
 		</table>
 		<?php
 		// Pagination
-		$pageNav = new \JPagination(
+		$pageNav = new \Hubzero\Pagination\Paginator(
 			$this->total,
 			$this->filters['start'],
 			$this->filters['limit']
@@ -154,7 +154,7 @@ $url = Route::url($this->project->link('publications'));
 		$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 		$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
 
-		$pagenavhtml = $pageNav->getListFooter();
+		$pagenavhtml = $pageNav->render();
 		?>
 		<fieldset>
 			<?php echo $pagenavhtml; ?>

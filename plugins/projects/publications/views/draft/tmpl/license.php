@@ -107,7 +107,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 						<?php $subs = array_unique($substitutes[1]);
 								foreach ($subs as $sub)
 							{ ?>
-							<label>[<?php echo $sub; ?>]<span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $versionParams->get('licensecustom' . strtolower($sub), ''); ?>" class="customfield" /></label>
+							<label>[<?php echo $sub; ?>]<span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $this->pub->params->get('licensecustom' . strtolower($sub), ''); ?>" class="customfield" /></label>
 						<?php $i++; } ?>
 						</div>
 					<?php } ?>

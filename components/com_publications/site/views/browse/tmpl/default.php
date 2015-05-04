@@ -145,7 +145,7 @@ $this->css()
 			$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
 			$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-			echo $this->pageNav->getListFooter();
+			echo $this->pageNav->render();
 			?>
 			<div class="clearfix"></div>
 			</div><!-- / .container -->

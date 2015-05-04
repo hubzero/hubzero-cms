@@ -1280,7 +1280,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->setCuration();
 
 		// For publications created in a non-curated flow - convert
-		$pub->_curationModel->convertToCuration($pub, $this->_uid);
+		$pub->_curationModel->convertToCuration($pub);
 
 		// Go to last incomplete section
 		if ($this->_task == 'continue')

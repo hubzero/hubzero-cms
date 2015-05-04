@@ -755,7 +755,7 @@ class Html
 					$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WIP');
 					break;
 			}
-			if ($publication->access('curator') && !$publication->access('owner') && !$publication->published())
+			if ($publication->access('curator') && !$publication->access('owner') && !$publication->isPublished())
 			{
 				$msg .= ' ' . Lang::txt('You are viewing this publication as a curator.');
 			}

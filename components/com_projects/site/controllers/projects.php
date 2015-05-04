@@ -1064,8 +1064,7 @@ class Projects extends Base
 			$cbase = $this->model->get('admin_notes');
 
 			// Meta data for comment
-			$now = Date::toSql();
-			$meta = '<meta>' . \JHTML::_('date', $now, 'M d, Y') . ' - ' . User::get('name') . '</meta>';
+			$meta = '<meta>' . Date::of('now')->toLocal('M d, Y') . ' - ' . User::get('name') . '</meta>';
 
 			// Save approval
 			if ($reviewer == 'sensitive')

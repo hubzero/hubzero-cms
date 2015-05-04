@@ -46,6 +46,7 @@ require_once( dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 require_once( dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
 require_once( dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
 require_once( dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
 
 // Projects
 require_once( PATH_CORE . DS . 'components'.DS
@@ -320,39 +321,96 @@ class Publication extends Object
 	}
 
 	/**
-	 * Is publication deleted?
-	 *
-	 * @return     boolean
-	 */
-	public function isDeleted()
-	{
-		if ($this->get('state') == 2)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Return a formatted timestamp
+	 * Return a formatted created timestamp
 	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
 	public function created($as='')
 	{
+		return $this->_date('created', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function modified($as='')
+	{
+		return $this->_date('modified', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function published($as='')
+	{
+		return $this->_date('published_up', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function unpublished($as='')
+	{
+		return $this->_date('published_down', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function submitted($as='')
+	{
+		return $this->_date('submitted', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function released($as='')
+	{
+		return $this->_date('released', $as);
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param      string $key Field to return
+	 * @param      string $as  What data to return
+	 * @return     string
+	 */
+	protected function _date($key, $as='')
+	{
+		if ($this->get($key) == $this->_db->getNullDate())
+		{
+			return NULL;
+		}
 		switch (strtolower($as))
 		{
 			case 'date':
-				return Date::of($this->get('created'))->toLocal('M d, Y');
+				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return Date::of($this->get('created'))->toLocal('g:i a');
+				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
-				return $this->get('created');
+				return $this->get($key);
 			break;
 		}
 	}
@@ -411,9 +469,10 @@ class Publication extends Object
 	 * Set curation
 	 * Get & apply manifest from saved record or master type)
 	 *
+	 * @param      boolean 	$setProgress 	Get status of each section
 	 * @return     mixed
 	 */
-	public function setCuration()
+	public function setCuration($setProgress = true)
 	{
 		if (!$this->exists())
 		{
@@ -434,7 +493,7 @@ class Publication extends Object
 			$this->_curationModel = new Curation($manifest, $this->_type->curation);
 
 			// Set pub assoc and load curation
-			$this->_curationModel->setPubAssoc($this);
+			$this->_curationModel->setPubAssoc($this, $setProgress);
 		}
 
 		return $this->_curationModel;
@@ -495,6 +554,22 @@ class Publication extends Object
 				$this->_tblAuthor = new Tables\Author( $this->_db );
 			}
 			return $this->_tblAuthor;
+		}
+		if ($name == 'Content')
+		{
+			if (!isset($this->_tblContent))
+			{
+				$this->_tblContent = new Tables\Attachment( $this->_db );
+			}
+			return $this->_tblContent;
+		}
+		if ($name == 'License')
+		{
+			if (!isset($this->_tblLicense))
+			{
+				$this->_tblLicense = new Tables\License( $this->_db );
+			}
+			return $this->_tblLicense;
 		}
 
 		return $this->_tbl;
@@ -668,10 +743,13 @@ class Publication extends Object
 		{
 			return array();
 		}
+		if (!isset($this->_tblContent))
+		{
+			$this->_tblContent = new Tables\Attachment( $this->_db );
+		}
 		if (!isset($this->_attachments))
 		{
-			$pContent = new Tables\Attachment( $this->_db );
-			$this->_attachments = $pContent->sortAttachments ( $this->version->id );
+			$this->_attachments = $this->_tblContent->sortAttachments ( $this->version->id );
 		}
 
 		return $this->_attachments;
@@ -688,10 +766,13 @@ class Publication extends Object
 		{
 			return array();
 		}
+		if (!isset($this->_tblLicense))
+		{
+			$this->_tblLicense = new Tables\License( $this->_db );
+		}
 		if (!isset($this->_license))
 		{
-			$this->_license = new Tables\License($this->_db);
-			$this->_license->load($this->version->license_type);
+			$this->_license = $this->_tblLicense->getLicense($this->version->license_type);
 		}
 
 		return $this->_license;
@@ -703,9 +784,23 @@ class Publication extends Object
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function deleted()
+	public function isDeleted()
 	{
 		if ($this->version->state == 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is publication unpublished?
+	 *
+	 * @return     boolean
+	 */
+	public function isUnpublished()
+	{
+		if ($this->get('state') == 0)
 		{
 			return true;
 		}
@@ -718,7 +813,7 @@ class Publication extends Object
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function published()
+	public function isPublished()
 	{
 		if (!$this->exists())
 		{
@@ -760,7 +855,7 @@ class Publication extends Object
 		if (User::isGuest())
 		{
 			// If the resource is published and public
-			if ($this->published() && $this->publication->access == 0)
+			if ($this->isPublished() && $this->publication->access == 0)
 			{
 				// Allow view access
 				$this->params->set('access-view-publication', true);
@@ -801,7 +896,7 @@ class Publication extends Object
 		 && !$this->params->get('access-manage-publication'))
 		{
 			// If logged in and resource is published and public or registered
-			if ($this->published() && $this->publication->access <= 1)
+			if ($this->isPublished() && $this->publication->access <= 1)
 			{
 				// Allow view access
 				$this->params->set('access-view-publication', true);
@@ -810,7 +905,7 @@ class Publication extends Object
 			// Allowed groups (private access)
 			if ($this->publication->access >= 2)
 			{
-				$groups      = $this->getAccessGroups();
+				$groups = $this->getAccessGroups();
 				if (array_intersect($usersgroups, $groups) > 1)
 				{
 					$this->params->set('access-view-publication', true);
@@ -1438,6 +1533,37 @@ class Publication extends Object
 
 		return $result ? $result[0] : NULL;
 	}
+	
+	/**
+	 * Get path to specific publication directory
+	 *
+	 * @param      string $type The type of link to return
+	 * @return     boolean
+	 */
+	public function path($type = '', $root = false)
+	{
+		if (!isset($this->_basePath))
+		{
+			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\String::pad($this->get('id')) . DS . \Hubzero\Utility\String::pad($this->version->get('id'));
+		}
+		switch (strtolower($type))
+		{
+			case 'base':
+				$path = $this->_basePath;
+			break;
+
+			case 'data':
+				$path = $this->_basePath . DS . 'data';
+			break;
+
+			case 'content':
+			default:
+				$path = $this->_basePath . DS . $this->version->get('secret');
+			break;
+		}
+
+		return $root ? PATH_APP . $path : $path;
+	}
 
 	/**
 	 * Generate and return various links to the entry
@@ -1461,7 +1587,6 @@ class Publication extends Object
 				: 'index.php?option=com_projects&alias=' . $this->project()->get('alias') . '&active=publications';
 		}
 
-		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
 			case 'serve':
@@ -1544,5 +1669,43 @@ class Publication extends Object
 			htmlentities($value)
 		);
 		return $value;
+	}
+
+	/**
+	 * Log access
+	 *
+	 * @param      string 	$type
+	 *
+	 * @return     void
+	 */
+	public function logAccess($type = 'view')
+	{
+		// Only logging access for published
+		if (!$this->isPublished())
+		{
+			return false;
+		}
+
+		if (!isset($this->_tblLog))
+		{
+			$this->_tblLog = new Tables\Log( $this->_db );
+		}
+
+		// Build log path (access logs)
+		$logPath = Helpers\Html::buildPubPath(
+			$this->publication->id,
+			$this->version->id,
+			$this->config('webpath'),
+			'logs'
+		);
+
+		// Create log directory
+		if (!is_dir(PATH_APP . $logPath))
+		{
+			$fileSystem = new \Hubzero\Filesystem\Filesystem();
+			$fileSystem->makeDirectory( PATH_APP . $logPath, 0755, true, true);
+		}
+
+		$this->_tblLog->logAccess($this->publication->id, $this->version->id, $type, $logPath);
 	}
 }

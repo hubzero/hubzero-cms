@@ -194,25 +194,9 @@ class Log extends \JTable
 	 * @param      string 	$type		view, primary or support
 	 * @return     void
 	 */
-	public function logAccess ( $publication = NULL, $type = 'view', $logPath = '' )
+	public function logAccess ( $pid = 0, $vid = 0, $type = 'view', $logPath = '' )
 	{
-		if (!$publication || !is_object($publication))
-		{
-			return false;
-		}
-
-		$pid = $publication->id;
-		$vid = $publication->version_id;
-
-		// Create log directory
-		if ($logPath && !is_dir(PATH_APP . $logPath))
-		{
-			jimport('joomla.filesystem.folder');
-			\JFolder::create( PATH_APP . $logPath);
-		}
-
-		// We are only logging access to public resources
-		if ($publication->state != 1)
+		if (!$pid || !$vid)
 		{
 			return false;
 		}

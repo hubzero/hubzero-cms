@@ -142,7 +142,7 @@ $this->css()
 				</table>
 		</div>
 		<?php
-			$pn = $this->pageNav->getListFooter();
+			$pn = $this->pageNav->render();
 			$pn = str_replace('/?/&amp;','/?',$pn);
 			$f = 'task=display';
 			foreach ($this->filters as $k=>$v)
