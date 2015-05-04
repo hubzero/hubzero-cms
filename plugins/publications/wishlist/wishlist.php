@@ -109,8 +109,8 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'models' . DS . 'wishlist.php');
 		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_wishlist');
+		// Load component language file
+		Lang::load('com_wishlist') || Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');
 
 		// Configure controller
 		$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
