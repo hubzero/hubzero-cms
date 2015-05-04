@@ -61,11 +61,44 @@ class Status extends Model
 	{
 		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new Tables\ToolStatus($this->_db);
+		if (!isset($this->_tbl))
+		{
+			$this->_tbl = new Tables\ToolStatus($this->_db);
+		}
+		if (!isset($this->_statuses))
+		{
+			$this->_statuses = array();
+			$statuses = $this->_tbl->getItems();
+			foreach ($statuses as $status)
+			{
+				$this->_statuses[$status->id] = $status;
+			}
+		}
 
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load($oid);
+			if (isset($this->_statuses[$oid]))
+			{
+				$this->_tbl->bind($this->_statuses[$oid]);
+			}
+			else
+			{
+				$this->_tbl->load($oid);
+			}
+		}
+	}
+
+	/**
+	 * Returns a reference to the model
+	 *
+	 * @param      mixed $oid status ID
+	 * @return     object Todo
+	 */
+	public function getStatus($oid=null)
+	{
+		if (isset($this->_statuses[$oid]))
+		{
+			$this->_tbl->bind($this->_statuses[$oid]);
 		}
 	}
 

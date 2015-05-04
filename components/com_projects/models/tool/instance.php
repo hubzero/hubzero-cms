@@ -63,7 +63,7 @@ class Instance extends Model
 
 		$this->_tbl = new Tables\ToolInstance($this->_db);
 
-		if ($oid)
+		if ($oid && $oid != 'dev')
 		{
 			if (is_numeric($oid))
 			{

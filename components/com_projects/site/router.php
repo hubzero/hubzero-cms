@@ -367,7 +367,7 @@ class Router extends Base
 					return $vars;
 				}
 
-				// Apps
+				// Tools
 				if (!empty($segments[2]) && $vars['active'] == 'tools')
 				{
 					// App actions
@@ -382,11 +382,13 @@ class Router extends Base
 					else
 					{
 						$vars['tool'] = $segments[2];
+						$vars['action'] = 'status';
 					}
 					if (!empty($segments[3]) && in_array( $segments[3], $appActions ))
 					{
 						$vars['action'] = $segments[3];
 					}
+					return $vars;
 				}
 
 				// Notes

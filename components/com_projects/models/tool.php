@@ -202,18 +202,43 @@ class Tool extends Model
 	 *
 	 * @return     void
 	 */
-	public function status($id = NULL, $property = NULL)
+	public function status($property = NULL, $statusModel = NULL)
 	{
-		if (!isset($this->_status) || ($id !== null && (int) $this->_status->get('id') != $id))
+		if (!empty($statusModel) && ($statusModel instanceof Tool\Status))
 		{
-			$this->_status = new Tool\Status($id);
-
-			if ($this->_status->exists() && $property)
-			{
-				return $this->_status->get($property);
-			}
+			$statusModel->getStatus($this->get('status'));
+			$this->_status = $statusModel;
+		}
+		if (!isset($this->_status))
+		{
+			$this->_status = new Tool\Status($this->get('status'));
+		}
+		if ($property)
+		{
+			return $this->_status->get($property);
 		}
 		return $this->_status;
+	}
+
+	/**
+	 * Get status css
+	 *
+	 * @return     void
+	 */
+	public function getStatusCss($admin = false)
+	{
+		$next_actor = $this->status('next_actor');
+		if (!$admin)
+		{
+			$class = $next_actor == 1 ? 'wait' : 'donext';
+			$class = $next_actor == 2 ? 'followup' : $class;
+		}
+		else
+		{
+			$class = $next_actor == 1 ? 'donext' : 'wait';
+			$class = $next_actor == 2 ? 'followup' : $class;
+		}
+		return $class;
 	}
 
 	/**
