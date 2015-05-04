@@ -36,6 +36,7 @@ use Components\Kb\Models\Article;
 use Components\Kb\Models\Comment;
 use Hubzero\Component\SiteController;
 use Exception;
+use Document;
 use Pathway;
 use Request;
 use Config;
@@ -341,8 +342,8 @@ class Articles extends SiteController
 		{
 			$this->_title .= ': ' . stripslashes($article->get('title'));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -502,27 +503,23 @@ class Articles extends SiteController
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$document = \JFactory::getDocument();
-		$document->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$feed = new \JDocumentFeed;
-		$feed->link = Route::url($article->link());
+		Document::setLink(Route::url($article->link()));
 
 		// Build some basic RSS document information
-		$feed->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
-		$feed->title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
-		$feed->title .= ': ' . Lang::txt('COM_KB_COMMENTS');
+		$title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+		$title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
+		$title .= ': ' . Lang::txt('COM_KB_COMMENTS');
 
-		$feed->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($article->get('title')));
-		$feed->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
+		Document::setTitle($title);
+
+		Document::instance()->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($article->get('title')));
+		Document::instance()->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 
 		// Start outputing results if any found
-		$feed = $this->_feedItem($feed, $article->comments('list'));
-
-		// Output the feed
-		echo $feed->render();
-		die();
+		$this->_feedItem($article->comments('list'));
 	}
 
 	/**
@@ -532,12 +529,12 @@ class Articles extends SiteController
 	 * @param   object  $comments
 	 * @return  object
 	 */
-	protected function _feedItem($feed, $comments)
+	protected function _feedItem($comments)
 	{
 		foreach ($comments as $comment)
 		{
 			// Load individual item creator class
-			$item = new \JFeedItem();
+			$item = new \Hubzero\Document\Type\Feed\Item();
 
 			$item->author = Lang::txt('COM_KB_ANONYMOUS');
 			if (!$comment->get('anonymous'))
@@ -565,15 +562,13 @@ class Articles extends SiteController
 			$item->category = '';
 
 			// Loads item info into rss array
-			$feed->addItem($item);
+			Document::addItem($item);
 
 			if ($comment->replies()->total())
 			{
-				$feed = $this->_feedItem($feed, $comment->replies());
+				$this->_feedItem($comment->replies());
 			}
 		}
-
-		return $feed;
 	}
 }
 

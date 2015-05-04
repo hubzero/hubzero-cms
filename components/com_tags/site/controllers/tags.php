@@ -36,6 +36,7 @@ use Components\Tags\Models\Tag;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use Exception;
+use Document;
 use Request;
 use Pathway;
 use Config;
@@ -936,7 +937,7 @@ class Tags extends SiteController
 			$this->view->title .= ': ' . implode(' + ', $t);
 		}
 
-		\JFactory::getDocument()->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 	}
 
 	/**

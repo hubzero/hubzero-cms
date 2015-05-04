@@ -181,8 +181,8 @@ class Resources extends SiteController
 				}
 			}
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -860,7 +860,7 @@ class Resources extends SiteController
 		$child = Request::getVar('resid', '');
 
 		//document object
-		$document = \JFactory::getDocument();
+		$document = Document::getRoot();
 		$database = \JFactory::getDBO();
 
 		//media tracking object
@@ -953,12 +953,9 @@ class Resources extends SiteController
 	 */
 	public function videoTask()
 	{
-		//get the document to push resources to
-		$document = \JFactory::getDocument();
-
 		//get the request vars
-		$parent = Request::getInt("id", "");
-		$child  = Request::getVar("resid", "");
+		$parent = Request::getInt('id', '');
+		$child  = Request::getVar('resid', '');
 
 		//load resource
 		$activechild = new Resource($this->database);
@@ -987,14 +984,14 @@ class Resources extends SiteController
 		//do we want to redirect user with time added to url
 		if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 		{
-			$redirect = 'index.php?option=com_resources&task=video&id='.$parent.'&resid='.$child;
+			$redirect = 'index.php?option=com_resources&task=video&id=' . $parent . '&resid=' . $child;
 			if (Request::getVar('tmpl', '') == 'component')
 			{
 				$redirect .= '&tmpl=component';
 			}
 
 			//append current position to redirect
-			$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
+			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
 			App::redirect(Route::url($redirect, false), '','',false);
@@ -1458,8 +1455,7 @@ class Resources extends SiteController
 		}
 
 		// Write title
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
 
 		if ($canonical = $this->model->attribs->get('canonical', ''))
 		{
@@ -1467,7 +1463,7 @@ class Resources extends SiteController
 			{
 				$canonical = rtrim(Request::base(), '/') . '/' . ltrim($canonical, '/');
 			}
-			$document->addHeadLink($canonical, 'canonical');
+			Document::addHeadLink($canonical, 'canonical');
 		}
 
 		Pathway::append(
@@ -1525,16 +1521,11 @@ class Resources extends SiteController
 	 */
 	public function feedTask()
 	{
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
-		// Set the mime encoding for the document
-		$jdoc = \JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \Hubzero\Document\Feed;
-		$app = \JFactory::getApplication();
-		$params = $app->getParams();
+		$doc = Document::instance();
+		$params = \JFactory::getApplication()->getParams();
 
 		// Incoming
 		$id    = Request::getInt('id', 0);
@@ -1543,7 +1534,7 @@ class Resources extends SiteController
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -1650,7 +1641,6 @@ class Resources extends SiteController
 			}
 		}
 		$tags = implode(', ', $tagarray);
-		//$tags = $rt->render('string');
 		$tags = trim(\Hubzero\Utility\String::truncate($tags, 250));
 		$tags = rtrim($tags, ',');
 
@@ -1685,14 +1675,14 @@ class Resources extends SiteController
 		$dimg = $this->_checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
 		if ($dimg)
 		{
-			$dimage = new \Hubzero\Document\Feed\Image();
+			$dimage = new \Hubzero\Document\Type\Feed\Image();
 			$dimage->url = $dimg;
 			$dimage->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK')), 250));
 			$dimage->link = $base.$doc->link;
 			$doc->itunes_image = $dimage;
 		}
 
-		$owner = new \Hubzero\Document\Feed\ItunesOwner;
+		$owner = new \Hubzero\Document\Type\Feed\ItunesOwner;
 		$owner->email = Config::get('mailfrom');
 		$owner->name  = Config::get('sitename');
 
@@ -1727,7 +1717,7 @@ class Resources extends SiteController
 
 				if (is_null($queried_logical_types) || !is_array($queried_logical_types))
 				{
-					\JError::raiseError(404, Lang::txt('COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST'));
+					App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST'));
 					return;
 				}
 
@@ -1790,16 +1780,16 @@ class Resources extends SiteController
 				}
 
 				// Get attributes
-				//$attribs = new JRegistry($row->attribs);
+				//$attribs = new \JRegistry($row->attribs);
 				if ($children)
 				{
-					$attribs = new JRegistry($children[0]->attribs);
+					$attribs = new \JRegistry($children[0]->attribs);
 				}
 
 				foreach ($podcasts as $podcast)
 				{
 					// Load individual item creator class
-					$item = new \Hubzero\Document\Feed\Item();
+					$item = new \Hubzero\Document\Type\Feed\Item();
 					$item->title       = $title;
 					$item->link        = $link;
 					$item->description = $description;
@@ -1810,7 +1800,7 @@ class Resources extends SiteController
 					$img = $this->_checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
 					if ($img)
 					{
-						$image = new \Hubzero\Document\Feed\Image();
+						$image = new \Hubzero\Document\Type\Feed\Image();
 						$image->url = $img;
 						$image->title = $title.' '.Lang::txt('COM_RESOURCES_RSS_ARTWORK');
 						$image->link = $base.$link;
@@ -1846,7 +1836,7 @@ class Resources extends SiteController
 						{
 							$fs = filesize($podcastp);
 
-							$enclosure = new \Hubzero\Document\Feed\Enclosure;
+							$enclosure = new \Hubzero\Document\Type\Feed\Enclosure;
 							$enclosure->url = $podcast;
 							switch (Html::getFileExtension($podcast))
 							{
@@ -1888,9 +1878,6 @@ class Resources extends SiteController
 				}
 			}
 		}
-
-		// Output the feed
-		echo $doc->render();
 	}
 
 	/**

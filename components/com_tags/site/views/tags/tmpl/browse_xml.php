@@ -31,8 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$document = JFactory::getDocument();
-$document->setMimeEncoding('text/xml');
+//$document = JFactory::getDocument();
+//$document->setMimeEncoding('text/xml');
+Document::setType('xml');
 
 // Output XML header.
 echo '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";
@@ -42,13 +43,14 @@ echo '<root>' . "\n";
 
 // Output the data.
 echo "\t" . '<tags>' . "\n";
-if ($this->rows) {
+if ($this->rows)
+{
 	foreach ($this->rows as $datum)
 	{
 		echo "\t\t" . '<tag>' . "\n";
-		echo "\t\t\t" . '<raw>' . $this->escape(stripslashes($datum->raw_tag)) . '</raw>' . "\n";
-		echo "\t\t\t" . '<normalized>' . $this->escape($datum->tag) . '</normalized>' . "\n";
-		echo "\t\t\t" . '<total>' . $this->escape($datum->total) . '</total>' . "\n";
+		echo "\t\t\t" . '<raw>' . $this->escape(stripslashes($datum->get('raw_tag'))) . '</raw>' . "\n";
+		echo "\t\t\t" . '<normalized>' . $this->escape($datum->get('tag')) . '</normalized>' . "\n";
+		echo "\t\t\t" . '<total>' . $this->escape($datum->get('total')) . '</total>' . "\n";
 		echo "\t\t" . '</tag>' . "\n";
 	}
 }

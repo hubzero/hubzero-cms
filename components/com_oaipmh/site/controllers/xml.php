@@ -32,6 +32,9 @@ namespace Components\Oaipmh\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Oaipmh\Models\Service;
+use Request;
+use Session;
+use Lang;
 
 /**
  * OAIPMH controller for XML output
@@ -46,11 +49,11 @@ class Xml extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$metadata   = \Request::getVar('metadataPrefix', 'oai_dc');
-		$from       = \Request::getVar('from');
-		$until      = \Request::getVar('until');
-		$set        = \Request::getVar('set');
-		$resumption = \Request::getVar('resumptionToken');
+		$metadata   = Request::getVar('metadataPrefix', 'oai_dc');
+		$from       = Request::getVar('from');
+		$until      = Request::getVar('until');
+		$set        = Request::getVar('set');
+		$resumption = Request::getVar('resumptionToken');
 
 		$igran  = "YYYY-MM-DD";
 		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
@@ -72,11 +75,11 @@ class Xml extends SiteController
 				->set('gran', $this->config->get('gran', 'c'))
 				->set('resumption', $resumption);
 
-		$verb = \Request::getVar('verb');
+		$verb = Request::getVar('verb');
 		switch ($verb)
 		{
 			case 'GetRecord':
-				$service->record(\Request::getVar('identifier'));
+				$service->record(Request::getVar('identifier'));
 			break;
 
 			case 'Identify':
@@ -92,7 +95,7 @@ class Xml extends SiteController
 			break;
 
 			case 'ListRecords':
-				$sessionTokenResumptionTemp = \JFactory::getSession()->get($resumption);
+				$sessionTokenResumptionTemp = Session::get($resumption);
 
 				if (!empty($resumption) && empty($sessionTokenResumptionTemp))
 				{
@@ -103,7 +106,7 @@ class Xml extends SiteController
 			break;
 
 			case 'ListSets':
-				$sessionTokenResumptionTemp = \JFactory::getSession()->get($resumption);
+				$sessionTokenResumptionTemp = Session::get($resumption);
 
 				if (!empty($resumption) && empty($sessionTokenResumptionTemp))
 				{
@@ -114,12 +117,12 @@ class Xml extends SiteController
 			break;
 
 			default:
-				$service->error($service::ERROR_BAD_VERB, \Lang::txt('COM_OAIPMH_ILLEGAL_VERB'));
+				$service->error($service::ERROR_BAD_VERB, Lang::txt('COM_OAIPMH_ILLEGAL_VERB'));
 			break;
 		}
 
-		header("Content-type: text/xml");
+		Document::setType('xml');
+
 		echo $service;
-		exit;
 	}
 }
