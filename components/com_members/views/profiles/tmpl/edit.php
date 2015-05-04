@@ -396,7 +396,7 @@ if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residen
 		$message = (!empty($this->xregistration->_invalid['countryorigin'])) ? '<p class="error">' . $this->xregistration->_invalid['countryorigin'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
-		$countryorigin = $this->profile->get('countryorigin');
+		$countryorigin = strtoupper($this->profile->get('countryorigin'));
 
 		$html .= "\t\t".'<fieldset'.$fieldclass.'>'."\n";
 		$html .= "\t\t\t".'<legend>'.JText::_('Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?').$required.'</legend>'."\n";
@@ -420,7 +420,7 @@ if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residen
 		{
 			if ($country->code != 'US') {
 				$html .= "\t\t\t\t".' <option value="' . $country->code . '"';
-				if ($countryorigin == $country->code) {
+				if ($countryorigin == strtoupper($country->code)) {
 					$html .= ' selected="selected"';
 				}
 				$html .= '>' . $this->escape($country->name) . '</option>'."\n";
@@ -435,7 +435,7 @@ if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residen
 		$message = (!empty($this->xregistration->_invalid['countryresident'])) ? '<p class="error">' . $this->xregistration->_invalid['countryresident'] . '</p>' : '';
 		$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
-		$countryresident = $this->profile->get('countryresident');
+		$countryresident = strtoupper($this->profile->get('countryresident'));
 
 		$html .= "\t\t".'<fieldset'.$fieldclass.'>';
 		$html .= "\t\t\t".'<legend>'.JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?').$required.'</legend>'."\n";
@@ -459,7 +459,7 @@ if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residen
 		{
 			if (strcasecmp($country->code,"US") != 0) {
 				$html .= "\t\t\t"."\t\t".'<option value="' . $country->code . '"';
-				if (strcasecmp($countryresident,$country->code) == 0) {
+				if ($countryresident == strtoupper($country->code)) {
 					$html .= ' selected="selected"';
 				}
 				$html .= '>' . $this->escape($country->name) . '</option>'."\n";
