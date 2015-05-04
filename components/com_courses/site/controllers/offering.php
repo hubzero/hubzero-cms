@@ -57,7 +57,7 @@ class Offering extends SiteController
 		$this->gid = Request::getVar('gid', '');
 		if (!$this->gid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option
 			);
 			return;
@@ -75,7 +75,7 @@ class Offering extends SiteController
 		// No offering provided
 		if (!($offering = Request::getVar('offering', '')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
 			);
 			return;
@@ -152,8 +152,7 @@ class Offering extends SiteController
 		}
 
 		//set title of browser window
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		\Document::setTitle($this->_title);
 	}
 
 	/**
@@ -165,7 +164,7 @@ class Offering extends SiteController
 	{
 		$rtrn = base64_encode(Route::url($this->course->offering()->link() . '&task=' . $this->_task, false, true));
 		$link = str_replace('&amp;', '&', Route::url('index.php?option=com_users&view=login&return=' . $rtrn));
-		$this->setRedirect(
+		App::redirect(
 			$link,
 			Lang::txt($message),
 			'warning'
@@ -248,7 +247,7 @@ class Offering extends SiteController
 		{
 			// Yes! Already enrolled
 			// Redirect back to the course page
-			$this->setRedirect(
+			App::redirect(
 				Route::url($offering->link()),
 				Lang::txt('COM_COURSES_ALREADY_ENROLLED')
 			);
@@ -316,7 +315,7 @@ class Offering extends SiteController
 								$this->course = \CoursesModelCourse::getInstance($offering->get('course_id'));
 							}
 						}
-						$this->setRedirect(
+						App::redirect(
 							Route::url($offering->link() . '&task=enroll&code=' . $code)
 						);
 						return;
@@ -370,7 +369,7 @@ class Offering extends SiteController
 			{
 				$link = implode('', $data);
 			}
-			$this->setRedirect(
+			App::redirect(
 				Route::url($link)
 			);
 			return;
@@ -444,7 +443,7 @@ class Offering extends SiteController
 				else
 				{
 					// Redirect back to the course outline
-					$this->setRedirect(
+					App::redirect(
 						Route::url($this->course->offering()->link()),
 						Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
 						'warning'
@@ -470,7 +469,7 @@ class Offering extends SiteController
 							else
 							{
 								// Redirect back to the course outline
-								$this->setRedirect(
+								App::redirect(
 									Route::url($this->course->offering()->link()),
 									Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
 									'warning'
@@ -495,7 +494,7 @@ class Offering extends SiteController
 			if (!$asset->get('type') == 'form' || !$asset->ended())
 			{
 				// Redirect back to the course outline
-				$this->setRedirect(
+				App::redirect(
 					Route::url($this->course->offering()->link()),
 					Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
 					'warning'
@@ -525,7 +524,7 @@ class Offering extends SiteController
 			$requirements = implode(', ', $requirements);
 
 			// Redirect back to the course outline
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->course->offering()->link()),
 				Lang::txt('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
 				'warning'
@@ -557,7 +556,7 @@ class Offering extends SiteController
 		}
 
 		// Redirect back to the course page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
 	}
@@ -571,7 +570,7 @@ class Offering extends SiteController
 	 */
 	public function deleteTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
 	}

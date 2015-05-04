@@ -211,8 +211,7 @@ $this->css('course.css')
 
 						if ($this->active != 'overview')
 						{
-							$document = \JFactory::getDocument();
-							$document->setTitle($document->getTitle() . ': ' . $plugin->get('title'));
+							Document::setTitle($document->getTitle() . ': ' . $plugin->get('title'));
 						}
 					}
 					?>

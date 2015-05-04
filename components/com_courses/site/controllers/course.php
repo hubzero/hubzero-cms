@@ -119,8 +119,7 @@ class Course extends SiteController
 		}
 
 		//set title of browser window
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		\Document::setTitle($this->_title);
 	}
 
 	/**
@@ -131,7 +130,7 @@ class Course extends SiteController
 	public function loginTask($message = '')
 	{
 		$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 			$message,
 			'warning'
@@ -374,7 +373,7 @@ class Course extends SiteController
 		}
 
 		// Redirect back to the course page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
 			$msg
 		);
@@ -510,7 +509,7 @@ class Course extends SiteController
 		else
 		{
 			// Redirect back to the course page
-			$this->setRedirect(
+			App::redirect(
 				Route::url($course->link()),
 				$response->message
 			);
@@ -650,7 +649,7 @@ class Course extends SiteController
 		}
 
 		// Redirect back to the courses page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option),
 			Lang::txt('COM_COURSES_COURSE_DELETED', $this->course->get('title')),
 			'passed'
@@ -683,7 +682,7 @@ class Course extends SiteController
 		$course = \CoursesModelCourse::getInstance($page['course_id']);
 		if (!$course->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
@@ -693,7 +692,7 @@ class Course extends SiteController
 		if (!$model->bind($page))
 		{
 			// Redirect back to the course page
-			$this->setRedirect(
+			App::redirect(
 				Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
 				$model->getError(),
 				'error'
@@ -704,7 +703,7 @@ class Course extends SiteController
 		if (!$model->store(true))
 		{
 			// Redirect back to the course page
-			$this->setRedirect(
+			App::redirect(
 				Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
 				$model->getError(),
 				'error'
@@ -713,7 +712,7 @@ class Course extends SiteController
 		}
 
 		// Redirect back to the course page
-		$this->setRedirect(
+		App::redirect(
 			Route::url($course->link() . '&active=' . $model->get('url')),
 			Lang::txt('COM_COURSES_PAGE_SAVED')
 		);
@@ -735,7 +734,7 @@ class Course extends SiteController
 
 		if (!$this->course->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -743,7 +742,7 @@ class Course extends SiteController
 
 		if (!$this->course->access('edit', 'course'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->course->link())
 			);
 			return;
@@ -764,7 +763,7 @@ class Course extends SiteController
 		}
 
 		// Redirect back to the course page
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->course->link()),
 			($msg ? $msg : Lang::txt('COM_COURSES_PAGE_REMOVED')),
 			($msg ? 'error' : null)

@@ -31,22 +31,21 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$doc = JFactory::getDocument();
-
-$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css');
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
-	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
 JHTML::_('behavior.framework');
-$doc->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js');
+
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js');
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
@@ -60,7 +59,6 @@ $v = $browser->major();
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
-
 	</head>
 	<body id="component-body" class="contentpane">
 		<jdoc:include type="message" />

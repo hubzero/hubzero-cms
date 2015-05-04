@@ -103,7 +103,7 @@ class Tree extends \JTree
 		if ($this->_css)
 		{
 			// Add style to document head
-			\JFactory::getDocument()->addStyleDeclaration($this->_css);
+			\Document::addStyleDeclaration($this->_css);
 		}
 	}
 

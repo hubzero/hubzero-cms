@@ -32,6 +32,11 @@ namespace Components\Courses\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Exception;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Courses controller class
@@ -53,7 +58,7 @@ class Courses extends SiteController
 				$offering = \CoursesModelOffering::getInstance($section->get('offering_id'));
 				$offering->section($section->get('alias'));
 
-				$this->setRedirect(
+				App::redirect(
 					Route::url($offering->link('overview'))
 				);
 			}
@@ -106,8 +111,7 @@ class Courses extends SiteController
 		}
 
 		//set title of browser window
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		\Document::setTitle($this->_title);
 	}
 
 	/**

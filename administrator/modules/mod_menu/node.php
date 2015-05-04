@@ -30,9 +30,6 @@
 
 namespace Modules\Menu;
 
-use JFilterOutput;
-use JURI;
-
 /**
  * Menu node class
  */
@@ -88,14 +85,14 @@ class Node extends \JNode
 	public function __construct($title, $link = null, $class = null, $active = false, $target = null, $titleicon = null)
 	{
 		$this->title  = $titleicon ? $title . $titleicon : $title;
-		$this->link   = JFilterOutput::ampReplace($link);
+		$this->link   = \JFilterOutput::ampReplace($link);
 		$this->class  = $class;
 		$this->active = $active;
 
 		$this->id = null;
 		if (!empty($link) && $link !== '#')
 		{
-			$params = with(new JURI($link))->getQuery(true);
+			$params = with(new \JURI($link))->getQuery(true);
 
 			$parts = array();
 			foreach ($params as $name => $value)

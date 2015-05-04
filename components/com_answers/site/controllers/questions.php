@@ -40,6 +40,7 @@ use Hubzero\Utility\Sanitize;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Transaction;
 use Exception;
+use Document;
 use Pathway;
 use Request;
 use Config;
@@ -117,8 +118,8 @@ class Questions extends SiteController
 		{
 			$this->view->title .= ': ' . String::truncate($question->subject('clean'), 50);
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->view->title);
+
+		Document::setTitle($this->view->title);
 	}
 
 	/**
@@ -1430,26 +1431,20 @@ class Questions extends SiteController
 	 */
 	public function latestTask()
 	{
-		//get the joomla document
-		$jdoc = \JFactory::getDocument();
-
 		//instantiate database object
 		$database = \JFactory::getDBO();
 
 		//get the id of module so we get the right params
-		$mid = Request::getInt("m", 0);
+		$mid = Request::getInt('m', 0);
 
 		//get module params
 		$params = \Module::params($mid);
 
-		//include feed lib
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		//force mime type of document to be rss
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 
 		//set rss feed attribs
 		$doc->link        = Route::url('index.php?option=com_answers');
@@ -1492,18 +1487,16 @@ class Questions extends SiteController
 			$link = Route::url('index.php?option=com_answers&task=question&id=' . $question['id']);
 
 			//set feed item attibs and add item to feed
-			$item = new \JFeedItem();
+			$item = new \Hubzero\Document\Type\Feed\Item();
 			$item->title       = html_entity_decode(Sanitize::stripAll(stripslashes($question['subject'])));
 			$item->link        = $link;
 			$item->description = html_entity_decode(Sanitize::stripAll(stripslashes($question['question'])));
 			$item->date        = date("r", strtotime($question['created']));
 			$item->category    = 'Recent Question';
 			$item->author      = $author;
+
 			$doc->addItem($item);
 		}
-
-		//render feed
-		echo $doc->render();
 	}
 }
 

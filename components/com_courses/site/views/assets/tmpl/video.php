@@ -750,9 +750,9 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		jimport('joomla.filesystem.file');
 		$path = $path . DS . $this->model->get('url');
 		$ext  = strtolower(JFile::getExt(PATH_APP . $path));
-		$doc  = \JFactory::getDocument();
-		$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-		$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+
+		Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
+		Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 	?>
 	<div class="flowplayer">
 		<video id="movie<?php echo rand(0, 1000); ?>" preload controls>
