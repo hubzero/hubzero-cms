@@ -419,6 +419,6 @@ class ResourceMapGenerator
 
 		$rdfURL = '/publications/' . $id . '.rdf';
 
-		\JFactory::getDocument()->addCustomTag('<link rel="resourcemap" type="application/rdf+xml" href="' . $rdfURL . '" />');
+		Document::addCustomTag('<link rel="resourcemap" type="application/rdf+xml" href="' . $rdfURL . '" />');
 	}
 }

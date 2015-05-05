@@ -269,8 +269,7 @@ class Base extends SiteController
 				break;
 		}
 
-		$document = \JFactory::getDocument();
-		$document->setTitle( $this->title );
+		Document::setTitle( $this->title );
 
 		return $this->title;
 	}

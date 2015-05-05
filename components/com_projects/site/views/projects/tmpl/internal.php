@@ -34,11 +34,10 @@ $counts = $this->model->get('counts');
 $new = isset($counts['new']) && $counts['new'] > 0 ? $counts['new'] : 0;
 
 // Add new activity count to page title
-$document = JFactory::getDocument();
 $title = $new && $this->active == 'feed'
 	? $this->title . ' (' . $new . ')'
 	: $this->title;
-$document->setTitle( $title );
+Document::setTitle( $title );
 
 // Get project params
 $params = $this->model->params;

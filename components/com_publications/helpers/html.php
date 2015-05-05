@@ -150,7 +150,8 @@ class Html
 
 		$html.= '<div class="audience_wrap">' . "\n";
 		$html.= '<ul class="audiencelevel">' . "\n";
-		foreach ($levels as $level)  {
+		foreach ($levels as $level)
+		{
 			$class = $level->label != $sel ? ' isoff' : '';
 			$class = $level->label != $sel && $level->label == 'level0' ? '_isoff' : $class;
 			if ($level->label != $sel && $sel == 'level0') {
@@ -289,9 +290,8 @@ class Html
 
 					if ($active != 'about')
 					{
-						$document = \JFactory::getDocument();
-						$title = $document->getTitle();
-						$document->setTitle( $title.': '.$cat[$name] );
+						$title = Document::getTitle();
+						Document::setTitle( $title . ': ' . $cat[$name] );
 					}
 				}
 				$html .= "\t\t".'<li id="sm-' . $i . '"';

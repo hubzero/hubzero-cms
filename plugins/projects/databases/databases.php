@@ -291,23 +291,21 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$document = JFactory::getDocument();
+			Document::addScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+			Document::addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
+			Document::addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
 
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js');
-			$document->addStyleSheet('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css');
-
-			$document->addScript('/plugins/projects/databases/res/main.js');
-			$document->addStyleSheet('/plugins/projects/databases/res/main.css');
+			Document::addScript('/plugins/projects/databases/res/main.js');
+			Document::addStyleSheet('/plugins/projects/databases/res/main.css');
 
 			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.js'))
 			{
-				$document->addScript('/plugins/projects/databases/res/ds.' . $action . '.js');
+				Document::addScript('/plugins/projects/databases/res/ds.' . $action . '.js');
 			}
 
 			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.css'))
 			{
-				$document->addStyleSheet('/plugins/projects/databases/res/ds.' . $action . '.css');
+				Document::addStyleSheet('/plugins/projects/databases/res/ds.' . $action . '.css');
 			}
 
 			return $this->$act_func();

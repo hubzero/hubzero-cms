@@ -156,10 +156,9 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
-		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+		Document::addScript('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
@@ -312,10 +311,9 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
-		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+		Document::addScript('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
@@ -420,10 +418,9 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
-		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+		Document::addScript('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
@@ -574,10 +571,9 @@ class Types extends AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
-		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+		Document::addScript('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
@@ -711,10 +707,9 @@ class Types extends AdminController
 		$this->view->cats = $objC->getCategories();
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+		Document::addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
-		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+		Document::addScript('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML

@@ -32,13 +32,12 @@ if ($this->getError()) {
 ?> <p class="error"><?php echo $this->getError(); ?></p>
 <?php return; }
 
-$document = JFactory::getDocument();
-$document->addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');
-$document->addStyleSheet('/plugins/projects/databases/res/dataTables/jquery.dataTables.css');
-$document->addStyleSheet('/plugins/projects/databases/res/chosen/chosen.css');
-$document->addScript('/plugins/projects/databases/res/chosen/chosen.jquery.js');
-$document->addStyleSheet('/plugins/projects/databases/res/spectrum/spectrum.css');
-$document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
+Document::addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');
+Document::addStyleSheet('/plugins/projects/databases/res/dataTables/jquery.dataTables.css');
+Document::addStyleSheet('/plugins/projects/databases/res/chosen/chosen.css');
+Document::addScript('/plugins/projects/databases/res/chosen/chosen.jquery.js');
+Document::addStyleSheet('/plugins/projects/databases/res/spectrum/spectrum.css');
+Document::addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 
 ?>
 <div id="plg-header">

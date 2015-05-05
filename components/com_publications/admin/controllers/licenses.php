@@ -141,8 +141,7 @@ class Licenses extends AdminController
 		}
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option
+		Document::addStyleSheet('components' . DS . $this->_option
 			. DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML

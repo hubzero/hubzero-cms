@@ -247,8 +247,8 @@ class Publications extends SiteController
 				}
 			}
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle( $this->_title );
+
+		Document::setTitle( $this->_title );
 	}
 
 	/**
@@ -659,8 +659,7 @@ class Publications extends SiteController
 		$filters['id']     	= $this->model->publication->id;
 
 		// Write title & build pathway
-		$document = \JFactory::getDocument();
-		$document->setTitle( Lang::txt(strtoupper($this->_option))
+		Document::setTitle( Lang::txt(strtoupper($this->_option))
 			. ': ' . stripslashes($this->model->version->title) );
 
 		// Set the pathway

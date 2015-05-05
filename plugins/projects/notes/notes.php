@@ -765,8 +765,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 
 		// Write title & build pathway
-		$document = JFactory::getDocument();
-		$document->setTitle( Lang::txt(strtoupper($this->_option)) . ': '
+		Document::setTitle( Lang::txt(strtoupper($this->_option)) . ': '
 			. stripslashes($this->model->get('title')) . ' - ' . stripslashes($page->get('title')) );
 
 		// Instantiate a new view
