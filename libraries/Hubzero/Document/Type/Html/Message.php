@@ -85,7 +85,7 @@ class Message extends Renderer
 					$buffer[] = $tab . $tab . $tab . '<ul>';
 					foreach ($msgs as $msg)
 					{
-						$buffer .= $tab . $tab . $tab . $tab . '<li>' . $msg . '</li>';
+						$buffer[] = $tab . $tab . $tab . $tab . '<li>' . $msg . '</li>';
 					}
 					$buffer[] = $tab . $tab . $tab . '</ul>';
 					$buffer[] = $tab . $tab . '</dd>';
