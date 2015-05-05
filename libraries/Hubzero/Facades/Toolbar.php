@@ -66,11 +66,9 @@ class Toolbar extends Facade
 
 		$html = '<div class="pagetitle ' . htmlspecialchars(implode(' ', $icons)) . '"><h2>' . $title . '</h2></div>';
 
-		$app = \JFactory::getApplication();
-		$app->JComponentTitle = $html;
+		App::set('ComponentTitle', $html);
 
-		$doc = \JFactory::getDocument();
-		$doc->setTitle($app->getCfg('sitename') . ' - ' . \Lang::txt('JADMINISTRATION') . ' - ' . $title);
+		App::get('document')->setTitle(App::get('config')->get('sitename') . ' - ' . App::get('language')->txt('JADMINISTRATION') . ' - ' . $title);
 	}
 
 	/**

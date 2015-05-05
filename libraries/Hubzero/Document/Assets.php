@@ -34,7 +34,6 @@ use Hubzero\Document\Asset\Javascript;
 use Hubzero\Document\Asset\Stylesheet;
 use Exception;
 use Request;
-use Config;
 use lessc;
 
 /**
@@ -43,6 +42,17 @@ use lessc;
 class Assets
 {
 	/**
+	 * Get an item from the applcation
+	 *
+	 * @param   string  $key
+	 * @return  mixed
+	 */
+	protected static function app($key)
+	{
+		return \App::get($key);
+	}
+
+	/**
 	 * Get the base path
 	 *
 	 * @return  string
@@ -50,7 +60,7 @@ class Assets
 	public static function base()
 	{
 		$base = JPATH_SITE;
-		if (\JFactory::getApplication()->isAdmin())
+		if (\App::isAdmin())
 		{
 			$base = JPATH_ADMINISTRATOR;
 		}
@@ -100,7 +110,7 @@ class Assets
 
 		$root = self::base();
 
-		\JFactory::getDocument()->addStyleSheet(rtrim(\Request::base(true), DS) . $stylesheet . '?v=' . filemtime($root . $stylesheet));
+		self::app('document')->addStyleSheet(rtrim(Request::base(true), '/') . $stylesheet . '?v=' . filemtime($root . $stylesheet));
 	}
 
 	/**
@@ -123,7 +133,7 @@ class Assets
 
 		$root = self::base();
 
-		\JFactory::getDocument()->addScript(rtrim(\Request::base(true), DS) . $script . '?v=' . filemtime($root . $script));
+		self::app('document')->addScript(rtrim(Request::base(true), '/') . $script . '?v=' . filemtime($root . $script));
 	}
 
 	/**
@@ -153,7 +163,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addStyleSheet($asset->link());
+			self::app('document')->addStyleSheet($asset->link());
 		}
 	}
 
@@ -184,7 +194,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addScript($asset->link());
+			self::app('document')->addScript($asset->link());
 		}
 	}
 
@@ -206,7 +216,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addStyleSheet($asset->link());
+			self::app('document')->addStyleSheet($asset->link());
 		}
 	}
 
@@ -228,7 +238,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addScript($asset->link());
+			self::app('document')->addScript($asset->link());
 		}
 	}
 
@@ -250,7 +260,7 @@ class Assets
 			return $image;
 		}
 
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = self::app('template')->template;
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'images' . DS . $image;
@@ -265,7 +275,7 @@ class Assets
 			if (file_exists($root . $path))
 			{
 				// Push script to the document
-				return rtrim(Request::base(true), DS) . $path;
+				return rtrim(Request::base(true), '/') . $path;
 			}
 		}
 	}
@@ -281,7 +291,7 @@ class Assets
 	 */
 	public static function getComponentStylesheet($component, $stylesheet, $dir = 'css')
 	{
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = self::app('template')->template;
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
@@ -296,7 +306,7 @@ class Assets
 			if (file_exists($root . $path))
 			{
 				// Push script to the document
-				return rtrim(Request::base(true), DS) . $path;
+				return rtrim(Request::base(true), '/') . $path;
 			}
 		}
 	}
@@ -319,7 +329,7 @@ class Assets
 			return $image;
 		}
 
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = self::app('template')->template;
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . 'images' . DS . $image;
@@ -334,7 +344,7 @@ class Assets
 			if (file_exists($root . $path))
 			{
 				// Push script to the document
-				return rtrim(Request::base(true), DS) . $path;
+				return rtrim(Request::base(true), '/') . $path;
 			}
 		}
 	}
@@ -358,7 +368,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addStyleSheet($asset->link());
+			self::app('document')->addStyleSheet($asset->link());
 		}
 	}
 
@@ -381,7 +391,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addScript($asset->link());
+			self::app('document')->addScript($asset->link());
 		}
 	}
 
@@ -404,7 +414,7 @@ class Assets
 			return $image;
 		}
 
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = self::app('template')->template;
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . 'images' . DS . $image;
@@ -456,7 +466,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addStyleSheet($asset->link());
+			self::app('document')->addStyleSheet($asset->link());
 		}
 	}
 
@@ -480,7 +490,7 @@ class Assets
 
 		if ($asset->exists())
 		{
-			\JFactory::getDocument()->addScript($asset->link());
+			self::app('document')->addScript($asset->link());
 		}
 	}
 
@@ -500,7 +510,7 @@ class Assets
 			return $image;
 		}
 
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = self::app('template')->template;
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
@@ -532,7 +542,7 @@ class Assets
 		// Path to system CSS
 		$thispath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
 
-		$env = Config::get('application_env', 'production');
+		$env = self::app('config')->get('application_env', 'production');
 
 		try {
 			// Primary build file
@@ -564,7 +574,7 @@ class Assets
 				}
 
 				// Are there any template overrides?
-				$template  = JPATH_ROOT . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate() . DS . 'less'; // . 'bootstrap.less';
+				$template  = JPATH_ROOT . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
 				if (file_exists($template . DS . $primary . '.less'))

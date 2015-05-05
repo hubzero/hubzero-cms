@@ -130,18 +130,21 @@ function modChrome_outline($module, &$params, &$attribs)
 	if (!$css)
 	{
 		$css = true;
-		jimport('joomla.environment.browser');
-		$doc = JFactory::getDocument();
-		$browser = JBrowser::getInstance();
+
+		$browser = new \Hubzero\Browser\Detector();
+
+		$doc = App::get('document');
 		$doc->addStyleDeclaration(".mod-preview-info { padding: 2px 4px 2px 4px; border: 1px solid black; position: absolute; background-color: white; color: red;}");
 		$doc->addStyleDeclaration(".mod-preview-wrapper { background-color:#eee; border: 1px dotted black; color:#700;}");
-		if ($browser->getBrowser()=='msie')
+		if ($browser->name() == 'ie')
 		{
-			if ($browser->getMajor() <= 7) {
+			if ($browser->major() <= 7)
+			{
 				$doc->addStyleDeclaration(".mod-preview-info {filter: alpha(opacity=80);}");
 				$doc->addStyleDeclaration(".mod-preview-wrapper {filter: alpha(opacity=50);}");
 			}
-			else {
+			else
+			{
 				$doc->addStyleDeclaration(".mod-preview-info {-ms-filter: alpha(opacity=80);}");
 				$doc->addStyleDeclaration(".mod-preview-wrapper {-ms-filter: alpha(opacity=50);}");
 			}

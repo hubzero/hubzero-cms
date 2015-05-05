@@ -31,6 +31,8 @@
 namespace Components\Resources\Models\Element;
 
 use Components\Resources\Models\Element as Base;
+use Document;
+use Lang;
 
 /**
  * Renders a geolocation element
@@ -92,9 +94,8 @@ class Geo extends Base
 	{
 		if (!$this->_script)
 		{
-			$document = \JFactory::getDocument();
-			$document->addScript('//maps.google.com/maps/api/js?sensor=false');
-			$document->addScript(\Request::base(true) . '/components/com_resources/models/element/geo.js');
+			Document::addScript('//maps.google.com/maps/api/js?sensor=false');
+			Document::addScript(\Request::base(true) . '/components/com_resources/models/element/geo.js');
 			$this->_script = true;
 		}
 

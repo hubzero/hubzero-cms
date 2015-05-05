@@ -65,11 +65,11 @@ trait AssetAware
 		{
 			if ($asset->isDeclaration())
 			{
-				\JFactory::getDocument()->addStyleDeclaration($asset->contents());
+				\App::get('document')->addStyleDeclaration($asset->contents());
 			}
 			else
 			{
-				\JFactory::getDocument()->addStyleSheet($asset->link());
+				\App::get('document')->addStyleSheet($asset->link());
 			}
 		}
 		return $this;
@@ -98,11 +98,11 @@ trait AssetAware
 		{
 			if ($asset->isDeclaration())
 			{
-				\JFactory::getDocument()->addScriptDeclaration($asset->contents());
+				\App::get('document')->addScriptDeclaration($asset->contents());
 			}
 			else
 			{
-				\JFactory::getDocument()->addScript($asset->link());
+				\App::get('document')->addScript($asset->link());
 			}
 		}
 		return $this;

@@ -30,8 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$document = JFactory::getDocument();
-
 $authIDs = array();
 ?>
 <label for="authid"><?php echo Lang::txt('COM_RESOURCES_AUTHID'); ?></label>

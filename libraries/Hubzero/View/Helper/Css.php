@@ -31,6 +31,9 @@
 namespace Hubzero\View\Helper;
 
 use Hubzero\Document\Asset\Stylesheet;
+use Hubzero\Plugin\View as PluginView;
+use Document;
+use Request;
 
 /**
  * Helper for pushing styles to the document.
@@ -60,11 +63,11 @@ class Css extends AbstractHelper
 		{
 			if ($asset->isDeclaration())
 			{
-				\JFactory::getDocument()->addStyleDeclaration($asset->contents());
+				Document::addStyleDeclaration($asset->contents());
 			}
 			else
 			{
-				\JFactory::getDocument()->addStyleSheet($asset->link());
+				Document::addStyleSheet($asset->link());
 			}
 		}
 		return $this->getView();
@@ -77,10 +80,10 @@ class Css extends AbstractHelper
 	 */
 	private function _extension()
 	{
-		if ($this->getView() instanceof \Hubzero\Plugin\View)
+		if ($this->getView() instanceof PluginView)
 		{
 			return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
 		}
-		return $this->getView()->get('option', \Request::getCmd('option'));
+		return $this->getView()->get('option', Request::getCmd('option'));
 	}
 }

@@ -44,11 +44,13 @@ use Components\Resources\Helpers\Helper;
 use Components\Resources\Models;
 use Hubzero\Component\SiteController;
 use stdClass;
+use Document;
 use Pathway;
 use Request;
 use Route;
 use Event;
 use Lang;
+use App;
 
 /**
  * Resources controller class
@@ -1430,7 +1432,7 @@ class Resources extends SiteController
 				$view->content_folder = $content_folder;
 				$view->pid            = $id;
 				$view->resid          = Request::getVar('resid', '');
-				$view->doc            = \JFactory::getDocument();
+				$view->doc            = Document::getRoot();
 
 				// Output HTML
 				if ($this->getError())
@@ -2246,8 +2248,7 @@ class Resources extends SiteController
 		$this->view->title = stripslashes($row->title) . ': ' . Lang::txt('COM_RESOURCES_LICENSE');
 
 		// Write title
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Instantiate a new view
 		$this->view->config  = $this->config;

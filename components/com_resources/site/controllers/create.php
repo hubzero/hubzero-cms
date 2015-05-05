@@ -51,6 +51,7 @@ use Route;
 use Lang;
 use User;
 use Date;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor.php');
 
@@ -175,8 +176,7 @@ class Create extends SiteController
 			$this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
 		}
 
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		App::get('document')->setTitle($this->_title);
 	}
 
 	/**
@@ -187,7 +187,7 @@ class Create extends SiteController
 	public function loginTask()
 	{
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
@@ -336,8 +336,7 @@ class Create extends SiteController
 
 		if ($type == '7')
 		{
-			$app = \JFactory::getApplication();
-			$app->redirect(Route::url('index.php?option=com_tools&task=create'), '', 'message', true);
+			App::redirect(Route::url('index.php?option=com_tools&task=create'), '', 'message', true);
 		}
 
 		$this->view->next_step = $this->step + 1;
@@ -362,7 +361,7 @@ class Create extends SiteController
 				$row->group_owner = $group;
 
 				// generate a random number for file uploader
-				$session = \JFactory::getSession();
+				$session = App::get('session');
 				if (!$session->get('resources_temp_id'))
 				{
 					$row->id = '9999' . rand(1000,10000);
@@ -883,7 +882,7 @@ class Create extends SiteController
 		}
 
 		// build path to temp upload folder and future permanent folder
-		$session = \JFactory::getSession();
+		$session = App::get('session');
 		$created = Date::format('Y-m-d 00:00:00');
 		$oldPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($created, $session->get('resources_temp_id') ,'');
 		$newPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $row->id, '');
@@ -1336,7 +1335,7 @@ class Create extends SiteController
 			{
 				$url = Route::url('index.php?option=com_resources&id=' . $resource->id);
 			}
-			$this->setRedirect($url);
+			App::redirect($url);
 			return;
 		}
 
@@ -1367,7 +1366,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=new')
 			);
 			return;
@@ -1460,7 +1459,7 @@ class Create extends SiteController
 				}
 
 				// Redirect to the start page
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=new')
 				);
 			break;
@@ -1480,7 +1479,7 @@ class Create extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=new')
 			);
 			return;
@@ -1500,7 +1499,7 @@ class Create extends SiteController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=new')
 		);
 	}

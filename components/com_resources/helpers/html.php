@@ -30,6 +30,12 @@
 
 namespace Components\Resources\Helpers;
 
+use Document;
+use Pathway;
+use Route;
+use Lang;
+use Date;
+
 include_once(__DIR__ . DS . 'tags.php');
 
 /**
@@ -192,7 +198,7 @@ class Html
 			$html .= ' disabled="disabled"';
 		}
 		$html .= '>' . "\n";
-		$html .= ' <option value="">' . \Lang::txt('Select group ...') . '</option>' . "\n";
+		$html .= ' <option value="">' . Lang::txt('Select group ...') . '</option>' . "\n";
 		if ($groups)
 		{
 			foreach ($groups as $group)
@@ -225,7 +231,7 @@ class Html
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		$html .= ' <option value="0"';
 		$html .= ($id == $value || $value == 0) ? ' selected="selected"' : '';
-		$html .= '>' . \Lang::txt('[ none ]') . '</option>' . "\n";
+		$html .= '>' . Lang::txt('[ none ]') . '</option>' . "\n";
 		foreach ($array as $anode)
 		{
 			$selected = ($anode->id == $value || $anode->type == $value)
@@ -612,9 +618,7 @@ class Html
 
 					if ($active != 'about')
 					{
-						$document = \JFactory::getDocument();
-						$title = $document->getTitle();
-						$document->setTitle($title . ': ' . $cat[$name]);
+						Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
 					}
 				}
 				$html .= "\t\t" . '<li id="sm-' . $i . '"';

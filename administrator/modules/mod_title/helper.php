@@ -31,7 +31,7 @@
 namespace Modules\Title;
 
 use Hubzero\Module\Module;
-use JFactory;
+use App;
 
 /**
  * Module class for displaying component title
@@ -46,9 +46,9 @@ class Helper extends Module
 	public function display()
 	{
 		// Get the component title div
-		if (isset(JFactory::getApplication()->JComponentTitle))
+		if (App::has('ComponentTitle'))
 		{
-			$this->title = JFactory::getApplication()->JComponentTitle;
+			$this->title = App::get('ComponentTitle');
 		}
 
 		// Get the view

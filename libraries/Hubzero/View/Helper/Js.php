@@ -31,7 +31,8 @@
 namespace Hubzero\View\Helper;
 
 use Hubzero\Document\Asset\Javascript;
-use Hubzero\Plugin\View;
+use Hubzero\Plugin\View as PluginView;
+use Document;
 use Request;
 
 /**
@@ -62,11 +63,11 @@ class Js extends AbstractHelper
 		{
 			if ($asset->isDeclaration())
 			{
-				\JFactory::getDocument()->addScriptDeclaration($asset->contents());
+				Document::addScriptDeclaration($asset->contents());
 			}
 			else
 			{
-				\JFactory::getDocument()->addScript($asset->link());
+				Document::addScript($asset->link());
 			}
 		}
 		return $this->getView();
@@ -79,7 +80,7 @@ class Js extends AbstractHelper
 	 */
 	private function _extension()
 	{
-		if ($this->getView() instanceof View)
+		if ($this->getView() instanceof PluginView)
 		{
 			return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
 		}

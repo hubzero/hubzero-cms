@@ -259,8 +259,8 @@ class Editor extends Object
 			}
 		}
 
-		$document = \JFactory::getDocument();
-		if (get_class($document) != 'JDocumentHTML')
+		$document = \App::get('document');
+		if ($document->getType() != 'html')
 		{
 			return;
 		}

@@ -35,19 +35,14 @@ if (!isset($this->error))
 	$this->error = new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 404);
 	$this->debug = false;
 }
-
-// Get language and direction
-$doc = JFactory::getDocument();
-$this->language  = $doc->language;
-$this->direction = $doc->direction;
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
+<html lang="<?php echo $this->getLanguage(); ?>" dir="<?php echo $this->getDirection(); ?>">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title><?php echo $this->error->getCode(); ?> - <?php echo htmlspecialchars($this->error->getMessage(), ENT_QUOTES, 'UTF-8'); ?></title>
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css" type="text/css" />
-		<?php if ($this->direction == 'rtl') : ?>
+		<?php if ($this->getDirection() == 'rtl') : ?>
 			<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error_rtl.css" type="text/css" />
 		<?php endif; ?>
 		<?php if (Config::get('debug_lang', '0') == '1' || Config::get('debug', '0') == '1') : ?>

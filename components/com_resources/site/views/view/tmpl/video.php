@@ -53,7 +53,7 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 /* Bug fix for Firefox bug. */
 /* Firefox fails to update the readyState and does not call the canplay and canplaythrough */
 /* Some background information: http://stackoverflow.com/questions/10235919/the-canplay-canplaythrough-events-for-an-html5-video-are-not-called-on-firefox */
-if(navigator.userAgent.contains("Mozilla"))
+if (navigator.userAgent.contains("Mozilla"))
 {
 	setInterval(function(){ 
 		var vid = document.getElementById('video-player');
@@ -297,6 +297,4 @@ if(navigator.userAgent.contains("Mozilla"))
 	<a href="javascript:void(0);" class="btn btn-secondardy icon-popout embed-popout">Pop Out</a>
 </div>
 <?php
-$document = JFactory::getDocument();
-$document->setTitle( $this->resource->title );
-?>
+Document::setTitle($this->resource->title);
