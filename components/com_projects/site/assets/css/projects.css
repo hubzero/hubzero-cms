@@ -770,14 +770,16 @@
 		background-color: #FFF;
 	}
 	.com_projects #member_options li #options-dock {
-		*display: none;
+		display: none;
+	}
+	.com_projects #member_options:hover #options-dock {
+		display: block;
 	}
 	.com_projects #member_options #options-dock {
 		position: absolute;
-		top:-9999px;
 		width: 200px;
 		margin-left: -110px;
-		margin-top: 45px;
+		margin-top: 4em;
 		padding: 6px 0 0 0;
 		z-index: 99999;
 		color: #666;

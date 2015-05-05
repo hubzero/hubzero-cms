@@ -209,3 +209,81 @@
 	padding: 0.5em 1em;
 	font-size: 85%;
 }
+@media all and (max-width: 1024px) {
+	#introduction .second {
+		background: none;
+	}
+	.content-files #u-hd {
+		display: none;
+	}
+	#plg-content .subject,
+	#plg-content .main-col {
+		margin-right: 0;
+		min-width: 400px;
+		width: 100%;
+		margin-right: 0;
+	}
+	#plg-content .side-col {
+		clear: both;
+		width: 100%;
+	}
+}
+@media all and (max-width: 900px) {
+	.main-menu ul.projecttools li a span {
+		display: none;
+	}
+	.main-menu ul.projecttools li a span.mini,
+	.main-menu ul.projecttools li a span.mini span {
+		display: inline;
+	}
+	.main-menu ul.projecttools li a span.mini,
+	.main-menu ul.assetlist li a span.mini {
+		margin-right: 2em;
+	}
+	.main-menu ul.projecttools li.assets {
+		display: none;
+	}
+	.main-menu ul.projecttools li,
+	.main-menu ul.assetlist li {
+		padding-left: 2em;
+		padding-top: 1em;
+		padding-bottom: 1em;
+	}
+	.main-menu ul.projecttools li a:before {
+		width: 25px;
+		height: 25px;
+		font-size: 25px;
+	}
+	#pimage {
+		width: 60px;
+		height: 60px;
+	}
+	#pimage img {
+		height: 60px;
+	}
+	.returnln {
+		padding: 0.5em 0;
+	}
+	.com_projects #member_options {
+		margin-top: -2.5em;
+	}
+	.com_projects #member_options #options-dock {
+		margin-top: 7em;
+	}
+	.main-menu {
+		width: 100px;
+		float: left;
+		margin: 0;
+		padding: 0 0 0 0;	
+		background: #fff9ef;
+	}
+	.main-content {
+		margin-left: 100px;
+		padding: 2em;
+		padding-bottom: 4em;
+		margin-top: 0;
+		background: #FFF;
+		border-left: 1px solid #e8e8e8;
+		min-height: 400px;
+	}
+}
