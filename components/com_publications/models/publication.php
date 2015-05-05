@@ -248,7 +248,7 @@ class Publication extends Object
 	 * @param      string $key Config property to retrieve
 	 * @return     mixed
 	 */
-	public function config($key=null)
+	public function config($key=null, $default=null)
 	{
 		if (!isset($this->_config))
 		{
@@ -256,7 +256,7 @@ class Publication extends Object
 		}
 		if ($key)
 		{
-			return $this->_config->get($key);
+			return $this->_config->get($key, $default);
 		}
 		return $this->_config;
 	}
