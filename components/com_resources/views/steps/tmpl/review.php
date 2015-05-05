@@ -172,19 +172,24 @@ $this->css('create.css')
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_AUTHORIZATION_LEGEND'); ?></legend>
 
-			<label for="authorization">
+			<label for="authorization">`
 				<input class="option" type="checkbox" name="authorization" id="authorization" value="1" />
 				<span class="required"><?php echo JText::_('COM_CONTRIBUTE_REQUIRED'); ?></span>
 				<?php echo JText::sprintf(
 					'COM_CONTRIBUTE_AUTHORIZATION_LABEL',
 					$jconfig->getValue('config.sitename'),
+					$jconfig->getValue('config.sitename'),
 					$jconfig->getValue('config.sitename')
 				); ?><br /><br />
+				<?php echo JText::_('COM_CONTRIBUTE_AUTHORIZATION_LINKS_LABEL'); ?>
+				<br /><br />
 				<?php echo JText::sprintf(
 					'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
 					$jconfig->getValue('config.sitename'),
 					'<a class="popup 760x560" href="' . JURI::base(true) . '/legal/license">' . JText::_('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
 				); ?>
+				<br /><br />
+
 			</label>
 	<?php if ($this->config->get('cc_license')) { ?>
 			<label for="license">
