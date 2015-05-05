@@ -226,14 +226,14 @@ class Publication extends JTable
 					$squery = '';
 					foreach ($filters['status'] as $s)
 					{
-						$squery .= "'".$s."',";
+						$squery .= "'" . $s . "',";
 					}
-					$squery = substr($squery,0,strlen($squery) - 1);
+					$squery = substr($squery, 0, strlen($squery) - 1);
 					$query .= " AND (V.state IN (" . $squery . ")) ";
 				}
-				elseif (intval($filters['status']))
+				else
 				{
-					$query .= " AND V.state=".$filters['status'];
+					$query .= " AND V.state=" . intval($filters['status']);
 				}
 			}
 			if ($mine)
