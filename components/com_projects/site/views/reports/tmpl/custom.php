@@ -31,8 +31,8 @@ $this->css('reports')
 
 // Incoming
 $data   = Request::getVar( 'data', array(), 'post', 'array' );
-$from   = Request::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-$to     = Request::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+$from   = Request::getVar( 'fromdate', Date::of('-1 month')->toLocal('Y-m') );
+$to     = Request::getVar( 'todate', Date::of('now')->toLocal('Y-m') );
 $filter = Request::getVar( 'searchterm', '');
 
 ?>
@@ -63,11 +63,11 @@ $filter = Request::getVar( 'searchterm', '');
 				<div class="groupblock">
 					<h6><?php echo Lang::txt('Download publication data:'); ?></h6>
 					<label>
-						<?php $ph = JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m'); ?>
+						<?php $ph = Date::of('-1 month')->toLocal('Y-m'); ?>
 						<?php echo Lang::txt('From'); ?>: <input type="text" value="<?php echo $from; ?>" id="from-date" name="fromdate" placeholder="<?php echo $ph; ?>" maxlength="7" />
 					</label>
 					<label>
-						<?php $ph = JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m'); ?>
+						<?php $ph = Date::of('now')->toLocal('Y-m'); ?>
 						<?php echo Lang::txt('To'); ?>: <input type="text" value="<?php echo $to; ?>" id="to-date"  name="todate" placeholder="<?php echo $ph; ?>" maxlength="7" />
 					</label>
 				</div>

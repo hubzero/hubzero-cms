@@ -46,7 +46,7 @@ $counts = $this->model->get('counts');
 <ul id="member_options">
 	<li><?php echo ucfirst($role); ?>
 		<div id="options-dock">
-			<div><p><?php echo Lang::txt('COM_PROJECTS_JOINED') . ' ' . JHTML::_('date', $this->model->get('created'), 'M d, Y'); ?></p>
+			<div><p><?php echo Lang::txt('COM_PROJECTS_JOINED') . ' ' . $this->model->created('date'); ?></p>
 				<ul>
 		<?php if ($this->model->access('manager')) { ?>
 					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=edit'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></li>

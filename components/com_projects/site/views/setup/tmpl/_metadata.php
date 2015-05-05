@@ -37,7 +37,7 @@ if (!$this->model->exists())
 	<div class="col span6">
 		<?php echo '<span class="prominent">' . Lang::txt('COM_PROJECTS_PROJECT'). '</span>: ' . $this->escape($this->model->get('title')); ?>
 		(<span><?php echo $this->model->get('alias'); ?></span>)
-		<span class="block faded"><?php echo Lang::txt('COM_PROJECTS_CREATED') . ' ' . JHTML::_('date', $this->model->get('created'), 'M d, Y'); ?></span>
+		<span class="block faded"><?php echo Lang::txt('COM_PROJECTS_CREATED') . ' ' . $this->model->created('date'); ?></span>
 	</div>
 	<div class="col span5 omega">
 	</div>

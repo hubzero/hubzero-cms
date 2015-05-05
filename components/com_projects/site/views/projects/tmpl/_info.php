@@ -68,7 +68,7 @@ $config = $this->model->config();
 			</tr>
 			<tr>
 				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?></td>
-				<td><?php echo JHTML::_('date', $this->model->get('created'), 'M d, Y'); ?></td>
+				<td><?php echo $this->model->created('date'); ?></td>
 			</tr>
 			<?php if ($this->model->get('about')) { ?>
 			<tr>

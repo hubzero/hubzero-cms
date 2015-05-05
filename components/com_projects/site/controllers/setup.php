@@ -757,7 +757,7 @@ class Setup extends Base
 						if ($key == 'grant_status')
 						{
 							// Meta data for comment
-							$meta = '<meta>' . \JHTML::_('date', \JFactory::getDate(), 'M d, Y')
+							$meta = '<meta>' . Date::of('now')->toLocal('M d, Y')
 							. ' - ' . User::get('name') . '</meta>';
 
 							$cbase   = $this->model->get('admin_notes');
