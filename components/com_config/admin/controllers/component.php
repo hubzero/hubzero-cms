@@ -98,7 +98,6 @@ class Component extends AdminController
 			->set('model', $model)
 			->set('form', $form)
 			->set('component', $component)
-			->set('document', $document)
 			->setLayout('default')
 			->display();
 	}
