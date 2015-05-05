@@ -162,9 +162,9 @@ class Publication extends \JTable
 					$squery = substr($squery,0,strlen($squery) - 1);
 					$query .= " AND (V.state IN (" . $squery . ")) ";
 				}
-				elseif (intval($filters['status']))
+				else
 				{
-					$query .= " AND V.state=" . $filters['status'];
+					$query .= " AND V.state=" . intval($filters['status']);
 				}
 			}
 			if ($mine)
