@@ -137,7 +137,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 			$bits[] = 'email:' . $email;
 		}
 
-		$url .= implode('+AND+', $bits);
+		$url .= implode('&', $bits);
 
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
@@ -244,6 +244,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 * Fetch...
 	 *
 	 * @param   boolean  $is_return
+	 * @todo  ORCiD's API does not return the best results. Search first name, last name, and email individually
 	 * @return  void
 	 */
 	public function fetchTask($is_return = false)
@@ -336,6 +337,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		$srv = $this->config->get('orcid_service', 'members');
 		$url = JURI::getInstance()->getScheme() . '://' . $this->_services[$srv] . '/v1.2' . '/orcid-profile';
+
 		$tkn = $this->config->get('orcid_' . $srv . '_token');
 
 		if (!$tkn)

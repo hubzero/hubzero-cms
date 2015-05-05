@@ -70,7 +70,7 @@ jQuery(document).ready(function($){
 			} else if (metawidth < 20 && metawidth != 0) {
 				alrt.css("right", 33-(20-metawidth));
 			}
-		} 
+		}
 	});
 
 	$("#member-stats-graph").fancybox({

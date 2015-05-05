@@ -120,7 +120,7 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 					</div>
 					<div class="col span4 omega">
 						<p>
-							<a id="get-orcid-results" class="btn" href="javascript:;"><?php echo JText::_('Search ORCID'); ?></a>
+							<a id="get-orcid-results" class="btn" onclick="<?php echo $callbackPrefix . "fetchOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Search ORCID'); ?></a>
 						</p>
 					</div>
 				</div>

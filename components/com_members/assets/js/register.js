@@ -331,7 +331,7 @@ HUB.Register = {
 				.val("");
 		}
 	},
-	
+
 	disableIndie: function() {
 		var $ = HUB.Register.jQuery;
 
@@ -339,7 +339,7 @@ HUB.Register = {
 		$('#username').attr('disabled', false);
 		$('#passwd').attr('disabled', false);
 	},
-	
+
 	disableDomains: function() {
 		var $ = HUB.Register.jQuery;
 
@@ -379,12 +379,12 @@ HUB.Register = {
 
 			$('.tags a').on('click', function (e) {
 				e.preventDefault();
-				
+
 				var val = $('#actags').val();
 				$('#actags').val((val) ? val + ', ' + $(this).text() : $(this).text());
 				if (jQuery().tokenInput) {
 					$('#actags').tokenInput('add', {
-						id: $(this).attr('rel'), 
+						id: $(this).attr('rel'),
 						name: $(this).text()
 					});
 				}
@@ -491,7 +491,7 @@ HUB.Register = {
 
 		if (userlogin.length > 0) {
 			usernameStatusAfter.after('<p class="hint" id="usernameStatus">&nbsp;</p>');
-			
+
 			userlogin.focusout(function(obj) {
 				var timer = setTimeout('HUB.Register.checkLogin()',200);
 			});
@@ -548,7 +548,7 @@ HUB.Register = {
 			fitToView: false,
 			titleShow: false,
 			closeClick: false,
-			helpers: { 
+			helpers: {
 				overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
 			},
 			tpl: {
@@ -569,7 +569,7 @@ HUB.Register = {
 			}*/
 		});
 	},
-	
+
 	fetchOrcidRecords: function() {
 		var $ = this.jQuery;
 
@@ -609,6 +609,8 @@ HUB.Register = {
 	},
 
 	createOrcid: function(fname, lname, email) {
+
+		console.log("here");
 		var uri = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email;
 
 		$.ajax({

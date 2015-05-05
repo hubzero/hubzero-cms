@@ -17,7 +17,7 @@ if(!HUB.Members) {
 }
 
 //-------------------------------------------------------------
-//	Members Profile 
+//	Members Profile
 //-------------------------------------------------------------
 if (!jq) {
 	var jq = $;
@@ -25,53 +25,53 @@ if (!jq) {
 
 HUB.Members.Profile = {
 	jQuery: jq,
-	
+
 	initialize: function()
 	{
 		//enable edit mode
 		HUB.Members.Profile.edit();
-		
+
 		//profile privacy actions
 		HUB.Members.Profile.editPrivacy();
-		
+
 		//profile picture editor
 		HUB.Members.Profile.editProfilePicture();
-		
+
 		//terms of use
 		HUB.Members.Profile.editTermsOfUse();
-		
+
 		//profile completeness meter
 		HUB.Members.Profile.editCompletenessMeter();
-		
+
 		//edit profile section if we have section specified in window hash
 		HUB.Members.Profile.editProfileSectionWithHash();
-		
+
 		//profile address section
 		HUB.Members.Profile.addresses();
 		HUB.Members.Profile.locateMe();
 		HUB.Members.Profile.fetchOrcid();
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	edit: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//hide edit and password links for when jquery is not enabled
 		$("#page_options .edit, #page_options .password").parent("li").hide();
-		
+
 		//do we have the ability to edit
 		if( $('.section-edit-container').length )
 		{
 			$(".section-edit a").show();
-			
+
 			$(".com_members")
 				.on("mouseenter", "#profile li.section:not(.active)", function(event) {
 					$(this).append("<div class=\"section-hover\" />");
 				})
 				.on("mouseleave", "#profile li.section", function(event) {
-					$(this).children(".section-hover").remove(); 
+					$(this).children(".section-hover").remove();
 				})
 				.on("click", "#profile li.section .section-hover", function(event) {
 					HUB.Members.Profile.editToggleSection( $(this) );
@@ -89,7 +89,7 @@ HUB.Members.Profile = {
 					HUB.Members.Profile.editSubmitForm( $(this) );
 					event.preventDefault();
 				});
-				
+
 			$("body")
 				.on("click", ".fancybox-wrap .section-edit-submit", function(event) {
 					HUB.Members.Profile.editSubmitForm( $(this) );
@@ -121,49 +121,49 @@ HUB.Members.Profile = {
 				});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editToggleSection: function( trigger )
 	{
 		var $ = this.jQuery;
-		
+
 		var $section = trigger.parents("li"),
 			section_classes = $section.attr("class").split(" ");
-		
+
 		//show edit or close link
 		if($section.find(".section-edit a").html() == "Edit")
-		{   
-			$section.find(".section-edit a").addClass("open").html('&times;'); 
+		{
+			$section.find(".section-edit a").addClass("open").html('&times;');
 		}
 		else
 		{
 			$section.find(".section-edit a").removeClass("open").html('Edit');
 		}
-			
+
 		//hide all open sections
 		$("#profile li:not(."+section_classes[0]+") .section-edit a").removeClass("open").html('Edit');
 		$("#profile li:not(."+section_classes[0]+")").removeClass("active").find(".section-edit-container").slideUp();
-		
+
 		//remove hover div
 		$section.find(".section-hover").remove();
-		
+
 		//slide open new section
 		$section.toggleClass("active").find(".section-edit-container").slideToggle();
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editSubmitForm: function( submit_button )
 	{
 		var $ = this.jQuery;
-		
+
 		//get the needed vars
 		var form = submit_button.parents("form"),
 			registration_field = form.attr("data-section-registation"),
 			profile_field = form.attr("data-section-profile");
 
-		//disable submit button and show saving graphic	
+		//disable submit button and show saving graphic
 		submit_button.attr("disabled", true);
 		//form.children(".section-edit-cancel").after("<div class=\"section-edit-saving\" />");
 
@@ -179,7 +179,7 @@ HUB.Members.Profile = {
 			{
 				//parse the returned json data
 				var returned = jQuery.parseJSON(data);
-				
+
 				//remove saving indicator and enable save button
 				//form.find(".section-edit-saving").remove();
 				submit_button.attr("disabled", false);
@@ -193,7 +193,7 @@ HUB.Members.Profile = {
 						case 'usageAgreement':
 							HUB.Members.Profile.editRedirect(window.location.href);
 						break;
-						
+
 						default:
 							HUB.Members.Profile.editReloadSections();
 					}
@@ -220,11 +220,11 @@ HUB.Members.Profile = {
 	editBiographyConvert: function()
 	{
 		//if we have any active wykiwyg editors we want to auto-convert html to wiki before submitting
-		if (typeof(wykiwygs) === 'undefined') 
+		if (typeof(wykiwygs) === 'undefined')
 		{
 			return;
 		}
-		if (wykiwygs.length) 
+		if (wykiwygs.length)
 		{
 			for (i=0; i<wykiwygs.length; i++)
 			{
@@ -234,32 +234,32 @@ HUB.Members.Profile = {
 	},
 
 	//-------------------------------------------------------------
-	
+
 	editBiographyEditorReinstantiate: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if ($("#profile_bio").length)
 		{
 			//reset wiki toolbar editor
-			if (typeof(wyktoolbar) !== 'undefined') 
+			if (typeof(wyktoolbar) !== 'undefined')
 			{
 				wyktoolbar   = [];
 			}
-			
+
 			//reset wiki wysiwyg editor
-			if (typeof(wykiwygs) !== 'undefined') 
+			if (typeof(wykiwygs) !== 'undefined')
 			{
 				wykiwygs   = [];
 			}
-			
+
 			//call ajaxLoad which triggers re-apply
 			jQuery(document).trigger('ajaxLoad');
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editInterestsAutocompleterReinstantiate: function()
 	{
 		if(HUB.Plugins != null)
@@ -276,12 +276,12 @@ HUB.Members.Profile = {
 	editShowUpdatingOverlay: function( element )
 	{
 		var $ = this.jQuery;
-		
-		$(element).css("position","relative").append("<div class=\"edit-profile-overlay update\" />"); 
+
+		$(element).css("position","relative").append("<div class=\"edit-profile-overlay update\" />");
 
 		var windowHeight = $(window).height(),
 			windowScroll = $(document).scrollTop(),
-			profilePosition = $(element).offset().top, 
+			profilePosition = $(element).offset().top,
 			diff = ((windowHeight - profilePosition + windowScroll) / 2) - 64;
 
 		$(".edit-profile-overlay").css("background-position", "50% "+diff+"px");
@@ -290,7 +290,7 @@ HUB.Members.Profile = {
 	//-------------------------------------------------------------
 
 	editRedirect: function( location )
-	{              
+	{
 		if(location != '')
 		{
 			window.location.href = location;
@@ -302,10 +302,10 @@ HUB.Members.Profile = {
 	editReloadSections: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//close any open lightboxes
 		$.fancybox.close();
-		
+
 		//check to see if we are edit our profile or we were forced to fill in fields due to registration update
 		if(window.location.pathname.match(/\/members\/\d+\/profile/g) || !$('.member-update-missing').length)
 		{
@@ -314,7 +314,7 @@ HUB.Members.Profile = {
 				HUB.Members.Profile.editRedirect(window.location.href);
 				return;
 			}
-			
+
 			//show updating overlay
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
 
@@ -323,14 +323,14 @@ HUB.Members.Profile = {
 			$(".member_profile").load(url + " #profile-page-content", function() {
 				//reload page header in case we edited name
 				$("#page_header").load(url +  " #page_header > *");
-			
+
 				//show edit links
 				$(".section-edit a").show();
-			
+
 				//re-initalize autocompler for tags and wiki editor for bio
 				HUB.Members.Profile.editInterestsAutocompleterReinstantiate();
 				HUB.Members.Profile.editBiographyEditorReinstantiate();
-			
+
 				//update the complete ness meter
 				var new_completeness = $("#profile-page-content #member-profile-completeness #meter-percent").attr("data-percent");
 				$("#page_options #meter-percent").width( new_completeness + "%" );
@@ -348,35 +348,35 @@ HUB.Members.Profile = {
 	editValidationHandling: function( form, returned_data, registration_field )
 	{
 		var $ = this.jQuery;
-		
+
 		var error = "",
 			missing = returned_data._missing,
 			invalid = returned_data._invalid;
 
-		if(missing[registration_field] || invalid[registration_field]) 
-		{     
+		if(missing[registration_field] || invalid[registration_field])
+		{
 			if(missing[registration_field])
 			{
 				error = '<p class="error no-margin-top"><strong>Missing Required Field:</strong> ' + missing[registration_field] + '</p>';
 			}
 			else if(invalid[registration_field])
 			{
-				error = '<p class="error no-margin-top"><strong>Validation Error:</strong> ' + invalid[registration_field] + '</p>';	
+				error = '<p class="error no-margin-top"><strong>Validation Error:</strong> ' + invalid[registration_field] + '</p>';
 			}
 			form.find(".section-edit-errors").html( error );
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editPrivacy: function()
 	{
 		var $ = this.jQuery;
-		
+
 		$("#page_header").on("click", "#profile-privacy", function(event){
 			var pub = 0,
 				id = $(this).attr("data-uidnumber");
-			
+
 			if($(this).hasClass("private"))
 			{
 				pub = 1;
@@ -385,7 +385,7 @@ HUB.Members.Profile = {
 			{
 				pub = 0;
 			}
-			
+
 			var params = {
 				'option': 'com_members',
 				'id': id,
@@ -394,10 +394,10 @@ HUB.Members.Profile = {
 				'field_to_check[]': 'profile[public]',
 				'no_html': 1
 			};
-			
-			$.post('index.php', params, function(data){ 
+
+			$.post('index.php', params, function(data){
 				var returned = jQuery.parseJSON(data);
-				
+
 				if(returned.success)
 				{
 					if(pub)
@@ -412,46 +412,46 @@ HUB.Members.Profile = {
 					}
 				}
 			});
-			
+
 			event.preventDefault();
 		});
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfilePicture: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var $identity = $("#page_identity"),
 		    $change = $("<a id=\"page_identity_change\"><span>Change Picture</span></a>");
-			
+
 		//if this is our profile otherwise dont do ot
 		if( $(".section-edit a").length )
 		{
 			var w = $identity.find("img").width() + 2;
 			w = (w < 165) ? 165 : w;
-			
+
 			$change
 				.css('width',  w)
 				.attr("href", window.location.href.replace("profile","ajaxupload"))
 				.appendTo($identity);
-					
-			//edit picture	
+
+			//edit picture
 			$('.com_members')
 				.on("click", "#page_identity_change", function(event) {
 					HUB.Members.Profile.editProfilePicturePopup();
 					event.preventDefault();
-				});	
+				});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfilePicturePopup: function()
 	{
 		var $ = this.jQuery;
-		
+
 		$('#page_identity_change').fancybox({
 			type: 'ajax',
 			width: 500,
@@ -461,11 +461,11 @@ HUB.Members.Profile = {
 			title: '',
 			keys: { close: null },
 			closeClick: false,
-			beforeLoad: function() 
+			beforeLoad: function()
 			{
 				href = $(this).attr('href').replace("#", "");
 				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
-				$(this).attr('href', href);	
+				$(this).attr('href', href);
 			},
 			beforeShow: function()
 			{
@@ -478,8 +478,8 @@ HUB.Members.Profile = {
 						event.preventDefault();
 						$(this).hide();
 						$("#ajax-upload-right").find("table").hide();
-						$("#ajax-upload-right").append("<p class=\"warning\" style=\"margin-top:0;\">You must save changes to remove your profile picture.</p>"); 
-						
+						$("#ajax-upload-right").append("<p class=\"warning\" style=\"margin-top:0;\">You must save changes to remove your profile picture.</p>");
+
 						$("#profile-picture").attr("value", "");
 						$("#picture-src").attr("src", $("#picture-src").attr("data-default-pic"));
 					})
@@ -516,21 +516,21 @@ HUB.Members.Profile = {
 			}
 		});
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfilePictureUpload: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var uploader = new qq.FileUploader({
 			element: $("#ajax-uploader")[0],
 			action: $("#ajax-uploader").attr("data-action"),
 			multiple: false,
-			template: '<div class="qq-uploader">' + 
+			template: '<div class="qq-uploader">' +
 	                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
 	                '<div class="qq-upload-button">Upload an Image</div>' +
-	                '<ul class="qq-upload-list"></ul>' + 
+	                '<ul class="qq-upload-list"></ul>' +
 	             '</div>',
 			onSubmit: function(id, file)
 			{
@@ -540,60 +540,60 @@ HUB.Members.Profile = {
 			{
 				$("#ajax-upload-uploading").fadeOut("slow").remove();
 				var url = $("#ajax-uploader").attr("data-action");
-				url = url.replace("doajaxupload","getfileatts"); 
-				
+				url = url.replace("doajaxupload","getfileatts");
+
 				$.post(url, {file:response.file, dir:response.directory}, function(data) {
 					var upload = jQuery.parseJSON( data );
 					if(upload)
 					{
 						$("#ajax-upload-right").find("table").show();
 						$("#ajax-upload-right").find("p.warning").remove();
-						
+
 						$("#picture-src").attr("src", upload.src + "?v=" + new Date().getTime());
 						$("#picture-name").html(upload.name);
 						$("#picture-size").html(upload.size);
 						$("#picture-width").html(upload.width);
 						$("#picture-height").html(upload.height);
-						$("#profile-picture").attr("value", upload.name); 
+						$("#profile-picture").attr("value", upload.name);
 					}
 				})
 			}
 		});
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editTermsOfUse: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if( $("#usage-agreement-popup").length )
 		{
 			$("#usage-agreement-popup").hide();
-			
+
 			$.fancybox({
 				type:'inline',
-				autoSize: false, 
+				autoSize: false,
 				modal: true,
 				width: 600,
 				height: 'auto',
 				content:$("#usage-agreement-popup"),
-				beforeLoad: function() 
+				beforeLoad: function()
 				{
 					href = $("#usage-agreement-popup form").attr('action').replace("#", "");
 					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
-					$("#usage-agreement-popup form").attr('action', href);	
+					$("#usage-agreement-popup form").attr('action', href);
 				}
 			});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editCompletenessMeter: function()
 	{
 		var $ = this.jQuery;
-		
+
 		if( $("#member-profile-completeness").length )
 		{
 			$("#member-profile-completeness").appendTo( $("#page_options") ).show();
@@ -601,7 +601,7 @@ HUB.Members.Profile = {
 				$("#meter-percent").width( $("#meter-percent").attr("data-percent") + "%" );
 			}, 1000);
 		}
-		
+
 		if( $("#award-info").length )
 		{
 			$("#completeness-info").on("click", function(event) {
@@ -609,13 +609,13 @@ HUB.Members.Profile = {
 			});
 		}
 	},
-	
+
 	//-------------------------------------------------------------
-	
+
 	editProfileSectionWithHash: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var timeout = null,
 			distance = 0,
 			bottom = 0,
@@ -623,7 +623,7 @@ HUB.Members.Profile = {
 			item = null,
 			item_edit_btn = null,
 			hash = document.location.hash.replace("#", "");
-			
+
 		//if we have a hash and we have an edit btn(on our profile)
 		if(hash != "")
 		{
@@ -633,14 +633,14 @@ HUB.Members.Profile = {
 			{
 				//trigger edit button click
 				item_edit_btn.trigger("click");
-			
+
 				//set timeout to allow section to open so we can capture height of section
 				timeout = setTimeout(function() {
 					window_bottom = $(window).innerHeight();
 					bottom = item.offset().top + item.outerHeight(true);
-				
+
 					if(bottom > window_bottom)
-					{   
+					{
 						distance = bottom - window_bottom + 20;
 						$("body").animate({ scrollTop: distance }, 1500);
 					}
@@ -648,11 +648,11 @@ HUB.Members.Profile = {
 			}
 		}
 	},
-	
+
 	addresses: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//delete confirmation
 		$('.com_members').on('click','.delete-address', function(event) {
 			if (!confirm("Are you sure you want to delete this member Address?"))
@@ -660,7 +660,7 @@ HUB.Members.Profile = {
 				event.preventDefault();
 			}
 		});
-		
+
 		//add/edit addresses
 		if ($('.add-address, .edit-address').length) {
 			$('.add-address, .edit-address').fancybox({
@@ -668,7 +668,7 @@ HUB.Members.Profile = {
 				width: 700,
 				height: 'auto',
 				autoSize: false,
-				fitToView: false,  
+				fitToView: false,
 				titleShow: false,
 				tpl: {
 					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
@@ -696,22 +696,22 @@ HUB.Members.Profile = {
 			});
 		}
 	},
-	
+
 	locateMe: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//locate me
 		$('body').on('click', '#locate-me', function(event) {
 			event.preventDefault();
-			
+
 			//make sure we have the ability
-			if (!navigator.geolocation) 
+			if (!navigator.geolocation)
 			{
 				alert('You browser is not capable of gettting you location.');
 				return;
 			}
-				
+
 			//use the browser geo location
 			navigator.geolocation.getCurrentPosition(
 				HUB.Members.Profile.locateMeGotLocation,
@@ -724,20 +724,20 @@ HUB.Members.Profile = {
 			);
 		});
 	},
-	
+
 	locateMeGotLocation: function( location )
 	{
 		var $ = HUB.Members.Profile.jQuery;
-		
+
 		var latitude      = location.coords.latitude,
 			longitude     = location.coords.longitude,
 			reverseGeoUrl = 'https://maps.google.com/maps/api/geocode/json?sensor=true&latlng=' + latitude + ',' + longitude;
-		
+
 		var address_parts = [];
-		
+
 		$.getJSON(reverseGeoUrl, function(json){
 			var result = json.results[0].address_components;
-			
+
 			for (var i=0, n=result.length; i<n; i++)
 			{
 				//do we have a street
@@ -745,38 +745,38 @@ HUB.Members.Profile = {
 				{
 					address_parts['address1'] = result[i].long_name;
 				}
-				
+
 				//do we have a street
 				if (jQuery.inArray('route', result[i].types) > -1)
 				{
 					address_parts['address1'] += ' ' + result[i].long_name;
 				}
-				
+
 				//do we have a state / region
 				if (jQuery.inArray('locality', result[i].types) > -1)
 				{
 					address_parts['city'] = result[i].long_name;
 				}
-				
+
 				//do we have a state / region
 				if (jQuery.inArray('administrative_area_level_1', result[i].types) > -1)
 				{
 					address_parts['region'] = result[i].long_name;
 				}
-				
+
 				//do we have a postal code
 				if (jQuery.inArray('postal_code', result[i].types) > -1)
 				{
 					address_parts['postal'] = result[i].long_name;
 				}
-				
+
 				//do we have a country
 				if (jQuery.inArray('country', result[i].types) > -1)
 				{
 					address_parts['country'] = result[i].long_name;
 				}
 			}
-			
+
 			//set values
 			$('.member-address-form').find('#address1').val(address_parts['address1']);
 			$('.member-address-form').find('#addressCity').val(address_parts['city']);
@@ -894,7 +894,7 @@ jQuery(document).ready(function($){
 			fitToView: false,
 			titleShow: false,
 			closeClick: false,
-			helpers: { 
+			helpers: {
 				overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
 			},
 			tpl: {
