@@ -49,7 +49,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
 		<div class="col span6">
 		  <div class="launcher-inside-wrap">
 			<?php // Show published date and category
-				echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication, $this->option );
+				echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication);
 			?>
 			<h3><?php echo \Hubzero\Utility\String::truncate(stripslashes($this->publication->title), 150); ?></h3>
 			<?php
@@ -96,18 +96,10 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
 			?>
 			<div class="version-info">
 				<?php echo \Components\Publications\Helpers\Html::showVersionInfo(
-					$this->publication,
-					$this->version,
-					$this->option,
-					$this->config,
-					$this->lastPubRelease
+					$this->publication
 				);
 				echo \Components\Publications\Helpers\Html::showLicense(
-					$this->publication,
-					$this->version,
-					$this->option,
-					$this->publication->_license,
-					'play'
+					$this->publication, 'play'
 				) ?>
 			</div>
 		</div>

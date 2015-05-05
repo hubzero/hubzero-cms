@@ -167,26 +167,24 @@ class Html
 	/**
 	 * Show license information for a publication
 	 *
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $version     	Version name
-	 * @param      string  $option 			Component name
-	 * @param      object  $license 		Publication license object
+	 * @param      object  $publication   	Publication model
 	 * @param      string  $class  			CSS class for the license hyperlink
 	 * @return     string HTML
 	 */
-	public static function showLicense( $publication, $version, $option, $license = '', $class = "showinbox" )
+	public static function showLicense( $publication, $class = "showinbox" )
 	{
+		$license = $publication->license();
 		if (!$license)
 		{
 			return false;
 		}
 
-		$cls = strtolower($license->name);
-		$custom = $publication->license_text ? $publication->license_text : '';
+		$cls    = strtolower($license->name);
+		$custom = $publication->version->get('license_text') ? $publication->version->get('license_text') : '';
 		$custom = !$custom && $license->text ? $license->text : $custom;
-		$lnk = $license->url ? $license->url : '';
-		$title = strtolower($license->title) != 'custom' ? $license->title : '';
-		$url = Route::url('index.php?option=' . $option . '&id=' . $publication->id . '&task=license&v=' . $version);
+		$lnk    = $license->url ? $license->url : '';
+		$title  = strtolower($license->title) != 'custom' ? $license->title : '';
+		$url    = Route::url($publication->link('version') . '&task=license');
 
 		$html  = '<p class="' . $cls . ' license">'.Lang::txt('COM_PUBLICATIONS_LICENSED_UNDER').' ';
 		if ($title)
@@ -261,7 +259,7 @@ class Html
 	public static function tabs( $option, $id, $cats, $active = 'about', $alias = '', $version = '' )
 	{
 		$html  = '';
-		$html .= "\t".'<ul class="sub-menu">' . "\n";
+		$html .= "\t" . '<ul class="sub-menu">' . "\n";
 		$i = 1;
 		foreach ($cats as $cat)
 		{
@@ -294,13 +292,13 @@ class Html
 						Document::setTitle( $title . ': ' . $cat[$name] );
 					}
 				}
-				$html .= "\t\t".'<li id="sm-' . $i . '"';
+				$html .= "\t\t" . '<li id="sm-' . $i . '"';
 				$html .= (strtolower($name) == $active) ? ' class="active"' : '';
 				$html .= '><a class="tab" rel="' . $name . '" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
 				$i++;
 			}
 		}
-		$html .= "\t".'</ul>'."\n";
+		$html .= "\t" . '</ul>'."\n";
 
 		return $html;
 	}
@@ -360,14 +358,12 @@ class Html
 	/**
 	 * Generate a citation for a publication
 	 *
-	 * @param      string  $option    Component name
 	 * @param      object  $cite      Citation data
-	 * @param      object  $pub       Publication
+	 * @param      object  $pub       Publication model
 	 * @param      string  $citations Citations to prepend
-	 * @param      string  $version   Version name
 	 * @return     string HTML
 	 */
-	public static function citation( $option, $cite, $pub, $citations, $version = 'default')
+	public static function citation( $cite, $pub, $citations )
 	{
 		include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
@@ -402,244 +398,124 @@ class Html
 			}
 
 			$html .= $formatted;
-			if ($version != 'dev')
+			if (!$pub->isDev())
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id='
-					. $pub->id . '&format=bibtex&no_html=1&v=' . $version . '" title="'
+				$html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&format=bibtex&no_html=1') . '" title="'
 					. Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id='
-					. $pub->id . '&format=endnote&no_html=1&v=' . $version . '" title="'
+				$html .= "\t\t\t" . '<a href="' . Route::url($pub->link('citation') . '&task=citation&format=endnote&no_html=1') . '" title="'
 					. Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
-				$html .= "\t\t".'</p>'."\n";
+				$html .= "\t\t" . '</p>'."\n";
 			}
-			$html .= "\t".'</li>'."\n";
-			$html .= '</ul>'."\n";
+			$html .= "\t" . '</li>' . "\n";
+			$html .= '</ul>' . "\n";
 		}
 
-		return $html;
-	}
-
-	/**
-	 * Display certain supporting docs and/or link to more
-	 *
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $option 			Component name
-	 * @param      boolean $restricted
-	 * @return     string HTML
-	 */
-	public static function sortSupportingDocs($publication, $option, $restricted)
-	{
-		if ($restricted || empty($publication->_attachments[2]))
-		{
-			return false;
-		}
-		$children = $publication->_attachments[2];
-		$archive  = $publication->bundlePath();
-
-		// Set counts
-		$docs = 0;
-
-		$html = '';
-		$supln  = '<ul class="supdocln">' . "\n";
-		$supli  = array();
-
-		// Archival package?
-		if (file_exists($archive) && $publication->base == 'databases')
-		{
-			$url = Route::url('index.php?option=com_publications&id=' . $publication->id . '&task=serve&v=' . $version . '&render=archive');
-			$supli[] = ' <li class="archival-package"><a href="' . $url . '" title="'. Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ARCHIVE_PACKAGE') .'">' . Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE') . '</a></li>'."\n";
-			$docs++;
-		}
-
-		if ($children)
-		{
-			foreach ($children as $child)
-			{
-				$docs++;
-				$child->title = $child->title ? stripslashes($child->title) : '';
-				$child->title = str_replace( '"', '&quot;', $child->title );
-				$child->title = str_replace( '&amp;', '&', $child->title );
-				$child->title = str_replace( '&', '&amp;', $child->title );
-				$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
-
-				$params = new \JRegistry( $child->params );
-
-				// Get default serving option
-				$defaultServeas = $publication->pubTypeHelper->dispatchByType($child->type, 'getProperty',
-					$data = array('property' => '_serveas') );
-
-				$serveas = $params->get('serveas', $defaultServeas);
-				$ftype 	 = self::getFileExtension($child->path);
-				$class   = $params->get('class', $ftype);
-				$doctitle = $params->get('title', $child->title);
-
-				// Things we want to highlight
-				$toShow = array('iTunes', 'iTunes U', 'Syllabus', 'Audio', 'Video', 'Slides');
-
-				$url   = Route::url($publication->link('serve') . '&a=' . $child->id);
-				$extra = '';
-
-				switch ( $serveas )
-				{
-					case 'download':
-					default:
-						break;
-
-					case 'external':
-						$extra = ' rel="external"';
-						break;
-
-					case 'inlineview':
-						$class = 'play';
-						$url  .= '&amp;render=inline';
-						break;
-				}
-
-				if (in_array($doctitle, $toShow))
-				{
-					$supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"'
-						. $extra . '>' . $doctitle . '</a></li>' . "\n";
-				}
-			}
-		}
-
-		$sdocs = count( $supli ) > 2 ? 2 : count( $supli );
-		$otherdocs = $docs - $sdocs;
-		$otherdocs = ($sdocs + $otherdocs) == 3  ? 0 : $otherdocs;
-
-		for ($i=0; $i < count( $supli ); $i++)
-		{
-			$supln .=  $i < 2 ? $supli[$i] : '';
-			$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
-		}
-
-		// View more link?
-		if ($docs > 0 && $otherdocs > 0)
-		{
-			$supln .= ' <li class="otherdocs"><a href="' . Route::url($publication->link() . '&active=supportingdocs')
-				. '" title="' . Lang::txt('View All') . ' ' . $docs . ' ' . Lang::txt('Supporting Documents') . ' ">'
-				. $otherdocs . ' ' . Lang::txt('more') . ' &rsaquo;</a></li>' . "\n";
-		}
-
-		if (!$sdocs && $docs > 0)
-		{
-			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . Route::url('index.php?option='
-				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">'
-				. Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL') . '</a></p>' . "\n";
-		}
-
-		$supln .= '</ul>' . "\n";
-		$html .= $sdocs ? $supln : '';
 		return $html;
 	}
 
 	/**
 	 * Show version info
 	 *
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $version     	Version name
-	 * @param      string  $option 			Component name
-	 * @param      array   $config
-	 * @param      object $lastPubRelease
+	 * @param      object  $publication   	Publication model
 	 * @return     string HTML
 	 */
-	public static function showVersionInfo( $publication, $version, $option, $config, $lastPubRelease )
+	public static function showVersionInfo( $publication )
 	{
-		$dateFormat = 'M d, Y';
+		$lastPubRelease = $publication->lastPublicRelease();
+		$option         = 'com_publications';
 		$text = '';
 
-		if ($version == 'dev')
+		if ($publication->isDev())
 		{
 			// Dev version
 			$class = 'devversion';
 			$text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>'
-			      . $publication->version_label . '</strong> (' . Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT') . ')';
+					. $publication->version->get('version_label') . '</strong> ('
+					. Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT') . ')';
 			$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_CREATED') . ' ';
-			$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . Date::of($publication->created)->toLocal($dateFormat) . '</span>';
+			$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . $publication->created('date') . '</span>';
 		}
 		else
 		{
 			$class = 'curversion';
-			$text .= ($publication->main == 1 || $publication->state == 1) ? ''
+			$text .= ($publication->isCurrent()) ? ''
 				: '<strong>' . Lang::txt('COM_PUBLICATIONS_ARCHIVE') . '</strong> ';
-			$text .= Lang::txt('COM_PUBLICATIONS_VERSION').' <strong>' . $publication->version_label . '</strong>';
-			$now = Date::toSql();
+			$text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>' . $publication->version->get('version_label') . '</strong>';
 
-			switch ($publication->state)
+			if ($publication->isPublished() || $publication->isEmbargoed())
 			{
-				case 1:
-					$text .= ' - ';
-					$text .= ($publication->published_up > $now)
-						? Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
-						: strtolower(Lang::txt('COM_PUBLICATIONS_PUBLISHED'));
-					$text .= ' ' . Lang::txt('COM_PUBLICATIONS_ON').' '
-						  . Date::of($publication->published_up)->toLocal($dateFormat) . ' ';
-					break;
-				case 4:
-					$text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_READY')) . ')';
-					$text .= '<span class="block">'.Lang::txt('COM_PUBLICATIONS_FINALIZED').' ';
-					$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
-						. Date::of($publication->published_up)->toLocal($dateFormat).'</span>';
-					$class = 'ready';
-					break;
-				case 5:
-				case 7:
-					$text .= $publication->state == 5
-							? ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_PENDING_APPROVAL')) . ')'
-							: ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_PENDING_WIP')) . ')';
-					$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_SUBMITTED') . ' ';
-					$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
-						. Date::of($publication->submitted)->toLocal($dateFormat) . '</span>';
-					if ($publication->published_up > $now)
-					{
-						$text .= '<span class="block">';
-						$text .= Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
-							. ' ' . Lang::txt('COM_PUBLICATIONS_ON') . ' '
-							. Date::of($publication->published_up)->toLocal($dateFormat);
-						$text .= '</span>';
-					}
-					$class = 'pending';
-					break;
-				case 0:
-					$text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ')';
-					$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_RELEASED') . ' ';
-					$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
-						. Date::of($publication->published_up)->toLocal($dateFormat) . '</span>';
-					$class = $publication->main == 1 ? 'unpublished' : 'archive';
-					break;
+				$text .= ' - ';
+				$text .= ($publication->isEmbargoed())
+					? Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
+					: strtolower(Lang::txt('COM_PUBLICATIONS_PUBLISHED'));
+				$text .= ' ' . Lang::txt('COM_PUBLICATIONS_ON') . ' '
+					  . $publication->published('date') . ' ';
+			}
+			elseif ($publication->isPending() || $publication->isWorked())
+			{
+				$text .= $publication->isPending()
+						? ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_PENDING_APPROVAL')) . ')'
+						: ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_PENDING_WIP')) . ')';
+				$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_SUBMITTED') . ' ';
+				$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
+					. $publication->submitted('date') . '</span>';
+				if ($publication->isEmbargoed())
+				{
+					$text .= '<span class="block">';
+					$text .= Lang::txt('COM_PUBLICATIONS_TO_BE_RELEASED')
+						. ' ' . Lang::txt('COM_PUBLICATIONS_ON') . ' '
+						. $publication->published('date');
+					$text .= '</span>';
+				}
+				$class = 'pending';
+			}
+			elseif ($publication->isUnpublished() || $publication->isDown())
+			{
+				$text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ')';
+				$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_RELEASED') . ' ';
+				$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
+						. $publication->published('date') . '</span>';
+				$class = $publication->isMain() ? 'unpublished' : 'archive';
+			}
+			elseif ($publication->isReady())
+			{
+				$text .= ' (' . strtolower(Lang::txt('COM_PUBLICATIONS_READY')) . ')';
+				$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_FINALIZED') . ' ';
+				$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' '
+					. $publication->published('date') . '</span>';
+				$class = 'ready';
 			}
 		}
 
 		// Show DOI if available
-		if ($version != 'dev' && $publication->doi)
+		if ($publication->version->get('doi'))
 		{
-			$text .= "\t\t" . '<span class="doi">' . 'doi:' . $publication->doi;
+			$text .= "\t\t" . '<span class="doi">' . 'doi:' . $publication->version->get('doi');
 			$text .= ' - <span><a href="' . Route::url($publication->link() . '&active=about') . '#citethis">' . Lang::txt('cite this') . '</a></span></span>' . "\n";
 		}
+
 		// Show archival status (mkAIP)
-		if ($config->get('repository', 0))
+		if ($publication->config('repository'))
 		{
-			if ($publication->doi && $publication->archived && $publication->archived != '0000-00-00 00:00:00')
+			if ($publication->version->get('doi') && $publication->archived())
 			{
 				$text .= "\t\t" . '<span class="archival-notice archived">'
 					. Lang::txt('COM_PUBLICATIONS_VERSION_ARCHIVED_ON_DATE')
-					. ' ' . Date::of($publication->archived)->toLocal($dateFormat) . "\n";
+					. ' ' . $publication->archived('date') . "\n";
 			}
-			elseif ($config->get('graceperiod', 0))
+			elseif ($publication->config('graceperiod'))
 			{
-				$archiveDate  = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' ? Date::of($publication->accepted . '+1 month')->toSql() : NULL;
-
-				// Skip notice if archive date passed
-				if (strtotime($archiveDate) > Date::toUnix())
+				$archiveDate  = $publication->futureArchivalDate();
+				if ($archiveDate)
 				{
-					$text .= $archiveDate ? "\t\t".'<span class="archival-notice unarchived">'. Lang::txt('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . Date::of($archiveDate)->toLocal($dateFormat) . "\n" : '';
+					$text .= "\t\t" . '<span class="archival-notice unarchived">'. Lang::txt('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . Date::of($archiveDate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
 				}
 			}
 		}
 
 		// Show current release information
-		if ($lastPubRelease && $lastPubRelease->id != $publication->version_id)
+		if ($lastPubRelease && $lastPubRelease->id != $publication->version->get('id'))
 		{
 			$text .= "\t\t" . '<span class="block">' . Lang::txt('COM_PUBLICATIONS_LAST_PUB_RELEASE')
 			. ' <a href="'. Route::url(
@@ -651,6 +527,7 @@ class Html
 		{
 			return '<p class="' . $class . '">' . $text . '</p>';
 		}
+
 		return false;
 	}
 
@@ -667,7 +544,6 @@ class Html
 	public static function showAccessMessage( $publication)
 	{
 		$msg = '';
-		$now = Date::toSql();
 
 		// Show message to restricted users
 		if (!$publication->access('view-all'))
@@ -693,19 +569,20 @@ class Html
 			{
 				$project  = Lang::txt('COM_PUBLICATIONS_FROM_PROJECT');
 				$project .= $publication->access('owner')
-					? ' <a href="' . Route::url($publication->project()->link()) .'">'
+					? ' <a href="' . Route::url($publication->project()->link()) . '">'
 					: ' <strong>';
-				$project .= \Hubzero\Utility\String::truncate($publication->_project->get('title'), 50);
+				$project .= \Hubzero\Utility\String::truncate($publication->project()->get('title'), 50);
 				$project .= $publication->access('owner') ? '</a>' : '</strong>';
 				$msg .= ' <span class="fromproject">' . $project . '</span>';
 			}
 
 			$class= 'info';
-			switch ($publication->state)
+			switch ($publication->version->get('state'))
 			{
 				case 1:
-					$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED').' ';
-					switch ($publication->access)
+					$msg .= $publication->isDown() ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED') : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED');
+					$msg .= ' ';
+					switch ($publication->get('access'))
 					{
 						case 0:
 							$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WITH_PUBLIC');
@@ -721,7 +598,7 @@ class Html
 							break;
 					}
 
-					if ($publication->published_up > $now)
+					if ($publication->isEmbargoed())
 					{
 						$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO')
 							. ' ' . Date::of($publication->published_up)->toLocal('m d, Y');
@@ -734,19 +611,19 @@ class Html
 					break;
 
 				case 3:
-					$msg .= $publication->versions
+					$msg .= $publication->versionCount()
 					     ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_DRAFT_VERSION')
 					     : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_DRAFT');
 					break;
 
 				case 0:
-					$msg .= $publication->default_version_status == 0
+					$msg .= $publication->versionProperty('state', 'default') == 0
 						 ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED')
 						 : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED_VERSION');
 					break;
 
 				case 5:
-					$msg .= $publication->versions
+					$msg .= $publication->versionCount()
 						 ? Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PENDING')
 						 : Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PENDING_VERSION');
 					break;
@@ -755,7 +632,10 @@ class Html
 					$msg .= Lang::txt('COM_PUBLICATIONS_STATUS_MSG_WIP');
 					break;
 			}
-			if ($publication->access('curator') && !$publication->access('owner') && !$publication->isPublished())
+			if ($publication->access('curator')
+				&& !$publication->access('owner')
+				&& !$publication->isPublished()
+			)
 			{
 				$msg .= ' ' . Lang::txt('You are viewing this publication as a curator.');
 			}
@@ -763,11 +643,12 @@ class Html
 			if ($publication->access('owner'))
 			{
 				// Build pub url
-				$route = $publication->_project->isProvisioned() == 1
+				$route = $publication->project()->isProvisioned() == 1
 						? 'index.php?option=com_publications&task=submit'
-						: 'index.php?option=com_projects&alias=' . $publication->_project->get('alias') . '&active=publications';
+						: 'index.php?option=com_projects&alias='
+						. $publication->project()->get('alias') . '&active=publications';
 
-				$msg .= ' <a href="' . Route::url($route . '&pid=' . $publication->id) . '?version=' . $publication->versionAlias . '">' . Lang::txt('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION') . '</a>.';
+				$msg .= ' <a href="' . Route::url($publication->link('editversion')) . '">' . Lang::txt('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION') . '</a>.';
 			}
 		}
 
@@ -815,28 +696,20 @@ class Html
 	/**
 	 * Show supplementary info
 	 *
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $option 			Component name
+	 * @param      object  $publication   	Publication model
 	 * @return     string HTML
 	 */
-	public static function showSubInfo( $publication, $option )
+	public static function showSubInfo( $publication )
 	{
-		$action = $publication->state == 1 ? Lang::txt('COM_PUBLICATIONS_LISTED_IN') : Lang::txt('COM_PUBLICATIONS_IN');
-		$html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . Route::url('index.php?option='
-			. $option . '&category=' . $publication->_category->url_alias).'">' . $publication->_category->name . '</a>';
+		$action = $publication->isPublished() ? Lang::txt('COM_PUBLICATIONS_LISTED_IN') : Lang::txt('COM_PUBLICATIONS_IN');
+		$html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . Route::url($publication->link('category')) . '">' . $publication->category()->name . '</a>';
 
-		// Show group if group project
-		$groupId = $publication->project_group ? $publication->project_group : $publication->group_owner;
-		if ($groupId)
+		// Publication belongs to group?
+		if ($publication->groupOwner())
 		{
-			$group = new \Hubzero\User\Group();
-			if (\Hubzero\User\Group::exists($groupId))
-			{
-				$group = \Hubzero\User\Group::getInstance( $groupId );
-				$html .= ' | ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION_BY_GROUP')
-						.' <a href="/groups/' . $group->get('cn') . '">'
-						. $group->get('description').'</a>';
-			}
+			$html .= ' | ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION_BY_GROUP')
+					. ' <a href="/groups/' . $publication->groupOwner('cn') . '">'
+					. $publication->groupOwner('description') . '</a>';
 		}
 		$html .= '</p>'."\n";
 
@@ -846,13 +719,12 @@ class Html
 	/**
 	 * Show title
 	 *
-	 * @param      string  $option 			Component name
-	 * @param      object  $publication   	Publication object
+	 * @param      object  $publication   	Publication model
 	 * @return     string HTML
 	 */
-	public static function title( $option, $publication )
+	public static function title( $publication )
 	{
-		$txt   = stripslashes($publication->title);
+		$txt = stripslashes($publication->version->get('title'));
 
 		// Include version label?
 		if (isset($publication->_curationModel))
@@ -860,7 +732,7 @@ class Html
 			$params = $publication->_curationModel->_manifest->params;
 			if (isset($params->appendVersionLabel) && $params->appendVersionLabel == 1)
 			{
-				$txt .= ' ' . $publication->version_label;
+				$txt .= ' ' . $publication->version->get('version_label');
 			}
 		}
 
@@ -888,108 +760,6 @@ class Html
 		}
 
 		return $html;
-	}
-
-	/**
-	 * Draw black button
-	 *
-	 * @param      string  $option 			Component name
-	 * @param      object  $publication   	Publication object
-	 * @param      string  $version     	Version name
-	 * @param      array   $content 		Publication attachments
-	 * @param      string  $path
-	 * @param      string  $serveas
-	 * @param      boolean $restricted
-	 * @param      boolean $authorized
-	 * @return     string HTML
-	 */
-	public static function drawPrimaryButton(
-		$option, $publication, $version,
-		$content, $serveas = 'download',
-		$restricted = 0, $authorized = 0 )
-	{
-
-		$task 		= 'serve';
-		$url  		= Route::url('index.php?option=com_publications&id='
-					. $publication->id . '&v=' . $publication->version_number . '&task=' . $task);
-		$action 	= '';
-		$xtra 		= '';
-		$title  	= 'Access publication';
-		$pop    	= '';
-		$class  	= 'btn btn-primary icon-next ';
-		$disabled 	= 0;
-		$msg		= 'Access Publication';
-
-		// Is content available?
-		if ($publication->state == 0)
-		{
-			$class     .= 'link_disabled';
-			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-			$disabled   = 1;
-		}
-		elseif ($restricted && !$authorized)
-		{
-			$class 		.= 'link_disabled';
-			$pop 		= $publication->access == 1
-			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
-			$disabled = 1;
-		}
-		if ($content['1'][0]->type == 'link' )
-		{
-			$serveas = 'external';
-		}
-		if ($content['1'][0]->type == 'tool' )
-		{
-			$serveas = 'invoke';
-		}
-
-		$primary = $content['1'][0];
-		switch ($serveas)
-		{
-			case 'download':
-			case 'tardownload':
-			default:
-				$msg   = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_PUBLICATION');
-				$xtra  = count($content['1']) == 1
-					? strtoupper(self::getFileExtension($content['1'][0]->path))
-					: NULL;
-				$extra = (count($content['1']) > 1 || $serveas == 'tardownload') ? 'ZIP' : NULL;
-				break;
-
-			case 'video':
-			case 'inlineview':
-				$msg   = Lang::txt('COM_PUBLICATIONS_VIEW_PUBLICATION');
-
-				if (!$disabled)
-				{
-					$class .= 'play';
-				}
-				break;
-
-			case 'invoke':
-				$msg    = Lang::txt('Launch tool');
-				$class .= 'launchtool';
-				break;
-
-			case 'external':
-
-				if ($content['1'][0]->type == 'note')
-				{
-				//	$class = 'play'; // lightboxed
-				}
-				else
-				{
-					$action = 'rel="external"';
-				}
-
-				break;
-		}
-
-		$title = $title ? $title : $msg;
-		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
-
-		return self::primaryButton($class, $url, $msg, $xtra, $title, $action, $disabled, $pop);
 	}
 
 	/**
@@ -1089,12 +859,12 @@ class Html
 		{
 			return Html::showPubTitleProvisioned($pub, $append);
 		}
-		$typetitle = self::writePubCategory($pub->cat_alias, $pub->cat_name);
+		$typetitle = self::writePubCategory($pub->category()->alias, $pub->category()->name);
 		$tabtitle  = $tabtitle ? $tabtitle : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
 		$pubUrl    = Route::url($pub->link('editversion'));
 		?>
 		<div id="plg-header">
-			<h3 class="publications c-header"><a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
+			<h3 class="publications c-header"><a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->get('title'), 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
 			<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
@@ -1196,8 +966,6 @@ class Html
 	 */
 	public static function getPubStateProperty($row, $get = 'class', $version = 1)
 	{
-		$dateFormat = 'M d, Y';
-
 		$status = '';
 		$date   = '';
 		$class  = '';
@@ -1210,7 +978,7 @@ class Html
 				$class  = 'unpublished';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
-					.' ' . Date::of($row->published_down)->toLocal($dateFormat);
+					. ' ' . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 1:
@@ -1218,7 +986,7 @@ class Html
 				$status.= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
 				$date   = $row->published_up > $now ? Lang::txt('to be') . ' ' : '';
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-					.' ' . Date::of($row->published_up)->toLocal($dateFormat);
+					. ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 3:
@@ -1226,7 +994,7 @@ class Html
 				$class = 'draft';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
-					.' ' . Date::of($row->created)->toLocal($dateFormat);
+					. ' ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 4:
@@ -1235,13 +1003,13 @@ class Html
 				{
 					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_REVERTED');
 					$date = strtolower(Lang::txt('COM_PUBLICATIONS_ACCEPTED'))
-						.' ' . Date::of($row->accepted)->toLocal($dateFormat);
+						. ' ' . Date::of($row->accepted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				}
 				else
 				{
 					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_READY');
 					$date = strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
-						.' ' . Date::of($row->published_up)->toLocal($dateFormat);
+						. ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				}
 
 				break;
@@ -1250,14 +1018,14 @@ class Html
 				$class  = 'pending';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-					.' ' . Date::of($row->submitted)->toLocal($dateFormat);
+					. ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
 			case 7:
 				$class  = 'wip';
 				$status = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
 				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
-					.' ' . Date::of($row->submitted)->toLocal($dateFormat);
+					. ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 		}
 
@@ -1358,23 +1126,6 @@ class Html
 		$text = trim($text);
 
 		return $text;
-	}
-
-	/**
-	 * Get the extension of a file
-	 *
-	 * @param      string $url File path/name
-	 * @return     string
-	 */
-	public static function getFileExtension($file)
-	{
-		if (!is_null($file))
-		{
-			$dot = strrpos($file, '.') + 1;
-
-			return strtolower(substr($file, $dot));
-		}
-		return NULL;
 	}
 
 	/**

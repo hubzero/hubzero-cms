@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <aliasa@purdue.edu>
  * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -131,13 +131,13 @@ class Publication extends Object
 			$versionAlias = $this->version->main == 1
 				&& $this->version->state != 0 ? 'default' : $version;
 			$versionAlias = $this->version->state == 3 ? 'dev' : $version;
-			$this->versionAlias   = $versionAlias;
+			$this->versionAlias = $versionAlias;
 
 			// Get what we need
 			$this->masterType();
 			$this->category();
 
-			// Map to former publication object (TEMP measure while converting)
+			// Map values
 			foreach ($this->version as $field => $value)
 			{
 				$this->$field = $value;
@@ -146,11 +146,6 @@ class Publication extends Object
 			$this->id                = $this->publication->id;
 			$this->base 	         = $this->_type->alias;
 			$this->curatorgroup      = $this->_type->curatorgroup;
-			$this->dev_version_label = $this->version->getAttribute(
-				$this->publication->id,
-				'dev',
-				'version_label'
-			);
 
 			// Map master values
 			foreach ($this->publication as $field => $value)
@@ -321,6 +316,32 @@ class Publication extends Object
 	}
 
 	/**
+	 * Get version property
+	 *
+	 * @param      string $property
+	 * @param      string $versionAlias   dev/default
+	 * @return     string
+	 */
+	public function versionProperty($property = '', $versionAlias = 'default')
+	{
+		if (!$property || ($versionAlias != 'dev' && $versionAlias != 'default'))
+		{
+			return false;
+		}
+
+		$val = $versionAlias . '_' . $property;
+		if (!isset($this->$val))
+		{
+			$this->$val = $this->version->getAttribute(
+				$this->get('id'),
+				$versionAlias,
+				$property
+			);
+		}
+		return $this->$val;
+	}
+
+	/**
 	 * Return a formatted created timestamp
 	 *
 	 * @param      string $as What data to return
@@ -381,9 +402,67 @@ class Publication extends Object
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
+	public function accepted($as='')
+	{
+		return $this->_date('accepted', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function archived($as='')
+	{
+		return $this->_date('archived', $as);
+	}
+
+	/**
+	 * Return a formatted modified timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
 	public function released($as='')
 	{
 		return $this->_date('released', $as);
+	}
+
+	/**
+	 * Does publication have future release date?
+	 *
+	 * @return     boolean
+	 */
+	public function isEmbargoed()
+	{
+		if (!$this->get('published_up') || $this->get('published_up') == $this->_db->getNullDate())
+		{
+			return false;
+		}
+		if (Date::of($this->get('published_up'))->toUnix() > Date::toUnix())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Determine future archive date
+	 *
+	 * @return     string
+	 */
+	public function futureArchivalDate()
+	{
+		if ($this->accepted())
+		{
+			$archDate = Date::of($this->get('accepted') . '+1 month')->toSql();
+			if (Date::of($archDate)->toUnix() > Date::toUnix())
+			{
+				return $archDate;
+			}
+		}
+		return NULL;
 	}
 
 	/**
@@ -407,6 +486,14 @@ class Publication extends Object
 
 			case 'time':
 				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+			break;
+
+			case 'datetime':
+				return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
+			break;
+
+			case 'timeago':
+				return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
 			break;
 
 			default:
@@ -737,7 +824,7 @@ class Publication extends Object
 	 *
 	 * @return     mixed
 	 */
-	public function attachments()
+	public function attachments($reload = false)
 	{
 		if (!$this->exists())
 		{
@@ -747,7 +834,7 @@ class Publication extends Object
 		{
 			$this->_tblContent = new Tables\Attachment( $this->_db );
 		}
-		if (!isset($this->_attachments))
+		if (!isset($this->_attachments) || $reload == true)
 		{
 			$this->_attachments = $this->_tblContent->sortAttachments ( $this->version->id );
 		}
@@ -786,7 +873,52 @@ class Publication extends Object
 	 */
 	public function isDeleted()
 	{
-		if ($this->version->state == 2)
+		if ($this->version->get('state') == 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the draft is ready
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function isReady()
+	{
+		if ($this->version->get('state') == 4)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the resource is pending approval
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function isPending()
+	{
+		if ($this->version->get('state') == 5)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the resource is pending author changes
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function isWorked()
+	{
+		if ($this->version->get('state') == 7)
 		{
 			return true;
 		}
@@ -800,7 +932,63 @@ class Publication extends Object
 	 */
 	public function isUnpublished()
 	{
-		if ($this->get('state') == 0)
+		if ($this->version->get('state') == 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is this main version
+	 *
+	 * @return     boolean
+	 */
+	public function isMain()
+	{
+		if ($this->version->get('main') == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is this main published version?
+	 *
+	 * @return     boolean
+	 */
+	public function isCurrent()
+	{
+		if ($this->version->get('main') == 1 && $this->version->get('state') == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is this dev version
+	 *
+	 * @return     boolean
+	 */
+	public function isDev()
+	{
+		if ($this->version->get('state') == 3 || $this->versionAlias == 'dev')
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Does this version have expired unpublished date
+	 *
+	 * @return     boolean
+	 */
+	public function isDown()
+	{
+		if ($this->unpublished() && Date::of($this->get('published_down'))->toUnix() < Date::toUnix())
 		{
 			return true;
 		}
@@ -820,22 +1008,16 @@ class Publication extends Object
 			return false;
 		}
 
-		if (in_array($this->version->state, array(0, 2, 3, 4, 5, 6, 7)))
+		if (in_array($this->version->get('state'), array(0, 2, 3, 4, 5, 6, 7)))
 		{
 			return false;
 		}
 
-		$now = \JFactory::getDate();
-
-		if ($this->version->published_up
-		 && $this->version->published_up != $this->_db->getNullDate()
-		 && $this->version->published_up >= $now)
+		if ($this->published() && $this->isEmbargoed())
 		{
 			return false;
 		}
-		if ($this->version->published_down
-		 && $this->version->published_down != $this->_db->getNullDate()
-		 && $this->version->published_down <= $now)
+		if ($this->isDown())
 		{
 			return false;
 		}
@@ -1589,8 +1771,16 @@ class Publication extends Object
 
 		switch (strtolower($type))
 		{
+			case 'category':
+				$link = 'index.php?option=com_publications&category=' . $this->category()->url_alias;
+			break;
+
 			case 'serve':
 				$link = $this->_base . '&task=serve' . '&v=' . $this->version->get('version_number');
+			break;
+
+			case 'citation':
+				$link = $this->_base . '&task=citation' . '&v=' . $this->version->get('version_number');
 			break;
 
 			case 'curate':
@@ -1707,5 +1897,36 @@ class Publication extends Object
 		}
 
 		$this->_tblLog->logAccess($this->publication->id, $this->version->id, $type, $logPath);
+	}
+
+	/**
+	 * Get the group owner of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire Group object
+	 *
+	 * @return     mixed
+	 */
+	public function groupOwner($property=null)
+	{
+		if ($this->project()->groupOwner())
+		{
+			$this->_groupOwner = $this->project()->groupOwner();
+		}
+		elseif (!$this->get('group_owner'))
+		{
+			return false;
+		}
+		if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group))
+		{
+			$this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('group_owner'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_groupOwner ? $this->_groupOwner->get($property) : NULL;
+		}
+		return $this->_groupOwner;
 	}
 }

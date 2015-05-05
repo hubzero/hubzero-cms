@@ -475,7 +475,7 @@ class File extends Base
 		$disabled = 0;
 		$pop 	  = NULL;
 
-		if ($pub->state == 0)
+		if ($pub->isUnpublished() || $pub->isDown())
 		{
 			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;

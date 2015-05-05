@@ -235,14 +235,14 @@ $schema 	= $metaElements->getSchema();
 		$cite = null;
 	}
 
-	$citeinstruct  = \Components\Publications\Helpers\Html::citation( $this->option, $cite, $this->publication, $citations, $this->version );
+	$citeinstruct  = \Components\Publications\Helpers\Html::citation($cite, $this->publication, $citations);
 	?>
 	<h4 id="citethis"><?php echo Lang::txt('COM_PUBLICATIONS_CITE_THIS'); ?></h4>
 	<div class="pub-content">
 		<?php echo $citeinstruct; ?>
 	</div>
 <?php } ?>
-<?php if ($this->publication->params->get('show_submitter') && $this->publication->_submitter) { ?>
+<?php if ($this->publication->params->get('show_submitter') && $this->publication->submitter()) { ?>
 	<h4><?php echo Lang::txt('COM_PUBLICATIONS_SUBMITTER'); ?></h4>
 	<div class="pub-content">
 		<?php

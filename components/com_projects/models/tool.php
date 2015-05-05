@@ -365,11 +365,11 @@ class Tool extends Model
 			break;
 
 			case 'datetime':
-				return $this->statusChanged('date') . ' &#64; ' . $this->statusChanged('time');
+				return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
 			break;
 
 			case 'timeago':
-				return \Components\Projects\Helpers\Html::showTime($this->get($key), true);
+				return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
 			break;
 
 			default:

@@ -146,7 +146,7 @@ class Tool extends Base
 			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_SESSION_INVOKE_DISABLED_POP');
 			$disabled 	= 1;
 		}
-		elseif ($pub->state == 0)
+		elseif ($pub->isUnpublished() || $pub->isDown())
 		{
 			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;

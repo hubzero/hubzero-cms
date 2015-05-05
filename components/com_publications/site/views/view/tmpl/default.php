@@ -72,7 +72,7 @@ else
 
 	<div class="subject">
 		<div class="overviewcontainer">
-			<?php echo \Components\Publications\Helpers\Html::title( $this->option, $this->publication ); ?>
+			<?php echo \Components\Publications\Helpers\Html::title( $this->publication ); ?>
 <?php
 	// Display authors
 	if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
@@ -84,13 +84,13 @@ else
 
 <?php
 	// Show published date and category
-	echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication, $this->option ); ?>
+	echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication ); ?>
 		</div><!-- / .overviewcontainer -->
 		<div class="aside launcharea">
 <?php
 
 	// Sort out primary files and draw a launch button
-	if ($this->config->get('curation', 0) && $this->tab != 'play' && $this->publication->params->get('curated') != 2)
+	if ($this->tab != 'play')
 	{
 		// Get primary elements
 		$elements = $this->publication->_curationModel->getElements(1);
@@ -114,26 +114,13 @@ else
 			$html .= $launcher;
 		}
 	}
-	elseif ($this->publication->_attachments[1] && count($this->publication->_attachments[1]) > 0 && $this->tab != 'play')
-	{
-		$primaryParams 	 = new JParameter( $this->publication->_attachments[1][0]->params );
-		$serveas 		 = $primaryParams->get('serveas');
-		$html 			.=  \Components\Publications\Helpers\Html::drawPrimaryButton( $this->option, $this->publication, $this->version, $this->publication->_attachments, $serveas, $this->restricted, $this->authorized );
-	}
-	elseif ($this->tab != 'play' && $this->publication->state != 0)
-	{
-		$html .= '<p class="error statusmsg">' . Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
-	}
-
-	// Sort out supporting docs
-	$html .= $this->tab != 'play' && $this->publication->state != 0 ? \Components\Publications\Helpers\Html::sortSupportingDocs( $this->publication, $this->option, $this->restricted) : '';
 
 	// Show version information
-	$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo( $this->publication, $this->version, $this->option, $this->config, $this->lastPubRelease ) : '';
+	$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo( $this->publication) : '';
 
 	// Show license information
-	$html .= $this->tab != 'play' && $this->publication->_license && $this->publication->_license->name != 'standard'
-			? \Components\Publications\Helpers\Html::showLicense( $this->publication, $this->version, $this->option, $this->publication->_license, 'play' ) : '';
+	$html .= $this->tab != 'play' && $this->publication->license() && $this->publication->license()->name != 'standard'
+			? \Components\Publications\Helpers\Html::showLicense( $this->publication, 'play' ) : '';
 
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";
 	$html .= '<div class="clear"></div>'."\n";
@@ -141,7 +128,7 @@ else
 	// Show status for authorized users
 	if ($this->contributable)
 	{
-		$html .= \Components\Publications\Helpers\Html::showAccessMessage( $this->publication);
+		$html .= \Components\Publications\Helpers\Html::showAccessMessage($this->publication);
 	}
 
 	$html .= '</div><!-- / .subject -->'."\n";
@@ -186,17 +173,20 @@ else
 
 // Show related content
 $out = Event::trigger( 'publications.onPublicationSub', array($this->publication, $this->option, 1) );
-if (count($out) > 0) {
+if (count($out) > 0)
+{
 	foreach ($out as $ou)
 	{
-		if (isset($ou['html'])) {
+		if (isset($ou['html']))
+		{
 			$html .= $ou['html'];
 		}
 	}
 }
 
 // Show what's popular
-if ($this->tab == 'about') {
+if ($this->tab == 'about')
+{
 	$html .= \Hubzero\Module\Helper::renderModules('extracontent');
 }
 $html .= ' </div><!-- / .aside extracontent -->'."\n";

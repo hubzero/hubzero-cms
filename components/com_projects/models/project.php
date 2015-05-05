@@ -232,6 +232,15 @@ class Project extends Model
 				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
+			case 'datetime':
+				return $this->_date($key, 'date') . ' &#64; ' . $this->_date($key, 'time');
+			break;
+
+			case 'timeago':
+				return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
+			break;
+			
+
 			default:
 				return $this->get($key);
 			break;

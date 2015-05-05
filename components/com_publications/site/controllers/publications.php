@@ -575,7 +575,11 @@ class Publications extends SiteController
 		$this->model->setCuration(false);
 
 		// For publications created in a non-curated flow - convert
-		$this->model->_curationModel->convertToCuration($this->model);
+		if ($this->model->_curationModel->convertToCuration($this->model))
+		{
+			// Reload attachments (updated)
+			$this->model->attachments(true);
+		}
 
 		// Start sections
 		$sections = array();
