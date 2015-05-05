@@ -75,8 +75,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 						 ?>
 						<li>
 							<span class="item-options">
-									<a href="<?php echo Roure::url($this->pub->link('project') . '&active=links&action=newcite&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo Roure::url($this->pub->link('project') . '&active=links&action=deleteitem&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<a href="<?php echo Route::url($this->pub->link('project') . '&active=links&action=newcite&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+									<a href="<?php echo Route::url($this->pub->link('project') . '&active=links&action=deleteitem&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>
