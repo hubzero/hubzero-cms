@@ -92,8 +92,7 @@ class Wishlists extends SiteController
 		{
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		\Document::setTitle($this->_title);
 	}
 
 	/**

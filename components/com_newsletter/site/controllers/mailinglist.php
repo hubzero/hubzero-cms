@@ -35,6 +35,12 @@ use Components\Newsletter\Tables\MailinglistEmail;
 use Components\Newsletter\Tables\Mailinglist as MailList;
 use Hubzero\Component\SiteController;
 use stdClass;
+use Pathway;
+use Route;
+use User;
+use Lang;
+use Date;
+use App;
 
 /**
  * Newsletter Mailing List Controller
@@ -70,8 +76,7 @@ class Mailinglist extends SiteController
 		}
 
 		//set title of browser window
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		App::get('document')->setTitle($this->_title);
 	}
 
 	/**
@@ -113,9 +118,6 @@ class Mailinglist extends SiteController
 	 */
 	public function subscribeTask()
 	{
-		//set layout
-		$this->view->setLayout('subscribe');
-
 		//must be logged in
 		if (User::isGuest())
 		{
@@ -124,7 +126,7 @@ class Mailinglist extends SiteController
 			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
 
 			//redirect
-			$this->setRedirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
+			App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
 			return;
 		}
 
@@ -145,7 +147,9 @@ class Mailinglist extends SiteController
 		$this->view->title = $this->_title;
 
 		//output
-		$this->view->display();
+		$this->view
+			->setLayout('subscribe')
+			->display();
 	}
 
 	/**
@@ -175,9 +179,11 @@ class Mailinglist extends SiteController
 		if (!isset($email) || $email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
 			//inform user and redirect
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADEMAIL');
-			$this->_redirect    = Route::url($return);
+			App::redirect(
+				Route::url($return),
+				Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADEMAIL'),
+				'error'
+			);
 			return;
 		}
 
@@ -185,9 +191,11 @@ class Mailinglist extends SiteController
 		if (!isset($list) || !is_numeric($list))
 		{
 			//inform user and redirect
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADLIST');
-			$this->_redirect    = Route::url($return);
+			App::redirect(
+				Route::url($return),
+				Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADLIST'),
+				'error'
+			);
 			return;
 		}
 
@@ -214,8 +222,10 @@ class Mailinglist extends SiteController
 		}
 
 		//inform user and redirect
-		$this->_message  = Lang::txt('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $newsletterMailinglist->name);
-		$this->_redirect = Route::url($return);
+		App::redirect(
+			Route::url($return),
+			Lang::txt('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $newsletterMailinglist->name)
+		);
 	}
 
 	/**
@@ -250,7 +260,7 @@ class Mailinglist extends SiteController
 					$subscription->mid        = $list;
 					$subscription->email      = $email;
 					$subscription->status     = 'inactive';
-					$subscription->date_added = \Date::toSql();
+					$subscription->date_added = Date::toSql();
 
 					//mail confirmation email and save subscription
 					if (Helper::sendMailinglistConfirmationEmail($email, $newsletterMailinglist, false))
@@ -302,9 +312,10 @@ class Mailinglist extends SiteController
 		}
 
 		//inform user and redirect
-		$this->_message  = Lang::txt('COM_NEWSLETTER_MAILINGLISTS_SAVE_SUCCESS');
-		$this->_redirect = Route::url('index.php?option=com_newsletter&task=subscribe');
-		return;
+		App::redirect(
+			Route::url('index.php?option=com_newsletter&task=subscribe'),
+			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_SAVE_SUCCESS')
+		);
 	}
 
 	/**
@@ -327,9 +338,11 @@ class Mailinglist extends SiteController
 		//make sure mailing recipient email matches email param
 		if ($email != $recipient->email)
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&task=subscribe'),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
+				'error'
+			);
 			return;
 		}
 
@@ -340,9 +353,11 @@ class Mailinglist extends SiteController
 		//make sure we have a mailing object
 		if (!is_object($mailing))
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&task=subscribe'),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
+				'error'
+			);
 			return;
 		}
 
@@ -397,13 +412,19 @@ class Mailinglist extends SiteController
 		//are we unsubscribed already
 		if ($unsubscribedAlready)
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ALREADY_UNSUBSCRIBED', $mailinglist->name);
-			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+			Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ALREADY_UNSUBSCRIBED', $mailinglist->name));
+
 			if (User::isGuest())
 			{
-				$this->_redirect = Route::url('index.php?option=com_newsletter');
+				App::redirect(
+					Route::url('index.php?option=com_newsletter')
+				);
+				return;
 			}
+
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&task=subscribe')
+			);
 			return;
 		}
 
@@ -447,9 +468,11 @@ class Mailinglist extends SiteController
 		//make sure the token is valid
 		if (!is_object($recipient) || $email != $recipient->email)
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&task=subscribe'),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
+				'error'
+			);
 			return;
 		}
 
@@ -460,9 +483,11 @@ class Mailinglist extends SiteController
 		//make sure we have a mailing object
 		if (!is_object($mailing))
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&task=subscribe'),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
+				'error'
+			);
 			return;
 		}
 
@@ -480,9 +505,11 @@ class Mailinglist extends SiteController
 				$return = Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token);
 
 				//inform user and redirect
-				$this->_messageType = 'warning';
-				$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN');
-				$this->_redirect    = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
+				App::redirect(
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
+					Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN'),
+					'warning'
+				);
 				return;
 			}
 		}
@@ -499,9 +526,11 @@ class Mailinglist extends SiteController
 		$this->database->setQuery($sql);
 		if (!$this->database->query())
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token);
+			App::redirect(
+				Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR'),
+				'error'
+			);
 			return;
 		}
 
@@ -512,14 +541,19 @@ class Mailinglist extends SiteController
 		$this->database->query();
 
 		//inform user of successful unsubscribe
-		$this->_messageType = 'success';
-		$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_SUCCESS');
-		$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_SUCCESS'));
+
 		if (User::isGuest())
 		{
-			$this->_redirect = Route::url('index.php?option=com_newsletter');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter')
+			);
+			return;
 		}
-		return;
+
+		App::redirect(
+			Route::url('index.php?option=com_newsletter&task=subscribe')
+		);
 	}
 
 	/**
@@ -539,9 +573,11 @@ class Mailinglist extends SiteController
 		//make sure the token is valid
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter'),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
+				'error'
+			);
 			return;
 		}
 
@@ -552,21 +588,26 @@ class Mailinglist extends SiteController
 		//set that we are now confirmed
 		$newsletterMailinglistEmail->status         = 'active';
 		$newsletterMailinglistEmail->confirmed      = 1;
-		$newsletterMailinglistEmail->date_confirmed = \Date::toSql();
+		$newsletterMailinglistEmail->date_confirmed = Date::toSql();
 
 		//save
 		$newsletterMailinglistEmail->save($newsletterMailinglistEmail);
 
 		//inform user
-		$this->_messageType = 'success';
-		$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS');;
-		$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS');
 
 		//if were not logged in go back to newsletter page
 		if (User::isGuest())
 		{
-			$this->_redirect = Route::url('index.php?option=com_newsletter');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter')
+			);
+			return;
 		}
+
+		App::redirect(
+			Route::url('index.php?option=com_newsletter&task=subscribe')
+		);
 	}
 
 	/**
@@ -587,9 +628,11 @@ class Mailinglist extends SiteController
 		//make sure the token is valid
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
 		{
-			$this->_messageType = 'error';
-			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE');
-			$this->_redirect    = Route::url('index.php?option=com_newsletter');
+			App::redirect(
+				Route::url('index.php?option=com_newsletter'),
+				Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
+				'error'
+			);
 			return;
 		}
 
@@ -605,9 +648,11 @@ class Mailinglist extends SiteController
 		$newsletterMailinglistEmail->save($newsletterMailinglistEmail);
 
 		//inform user
-		$this->_messageType = 'success';
-		$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS');
-		$this->_redirect    = Route::url('index.php?option=com_newsletter');
+		App::redirect(
+			Route::url('index.php?option=com_newsletter'),
+			Lang::txt('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS'),
+			'success'
+		);
 	}
 
 	/**
@@ -628,8 +673,10 @@ class Mailinglist extends SiteController
 		Helper::sendMailinglistConfirmationEmail(User::get('email'), $newsletterMailinglist, false);
 
 		//inform user and redirect
-		$this->_message  = Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', User::get('email'));
-		$this->_redirect = Route::url('index.php?option=com_newsletter&task=subscribe');
+		App::redirect(
+			Route::url('index.php?option=com_newsletter&task=subscribe'),
+			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', User::get('email'))
+		);
 		return;
 	}
 }

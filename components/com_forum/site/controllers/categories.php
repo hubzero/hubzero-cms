@@ -38,10 +38,11 @@ use Components\Forum\Tables;
 use Exception;
 use Pathway;
 use Request;
+use Notify;
 use Route;
 use User;
 use Lang;
-
+use App;
 
 /**
  * Controller class for forum categories
@@ -106,8 +107,8 @@ class Categories extends SiteController
 		{
 			$this->_title .= ': ' . String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		App::get('document')->setTitle($this->_title);
 	}
 
 	/**
@@ -373,7 +374,7 @@ class Categories extends SiteController
 		$model = new Category($fields['id']);
 		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			Notify::error($model->getError());
 			$this->editTask($model);
 			return;
 		}
@@ -393,7 +394,7 @@ class Categories extends SiteController
 		// Store new content
 		if (!$model->store(true))
 		{
-			$this->addComponentMessage($model->getError(), 'error');
+			Notify::error($model->getError());
 			$this->editTask($model);
 			return;
 		}

@@ -31,7 +31,7 @@
 namespace Modules\Login;
 
 use Hubzero\Module\Module;
-use JPluginHelper;
+use Plugin;
 use JFactory;
 use JRegistry;
 use JURI;
@@ -138,24 +138,21 @@ class Helper extends Module
 		$params = $this->params;
 		$module = $this->module;
 
-		$app      = JFactory::getApplication();
-		$document = JFactory::getDocument();
-
 		// Make sure we're using a secure connection
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
 		{
-			$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			\App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die('insecure connection and redirection failed');
 		}
 
 		// Get and add the js and extra css to the page
-		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
-		\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
-		\Hubzero\Document\Assets::addComponentScript('com_users', 'assets/js/login');
+		$this->css('login.css', 'com_users');
+		$this->css('providers.css', 'com_users');
+		$this->js('login', 'com_users');
 
-		\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
-		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
-		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
+		$this->css('uniform.css', 'system');
+		$this->js('jquery.uniform', 'system');
+		$this->js('jquery.hoverIntent', 'system');
 
 		$type    = self::getType();
 		$return	 = Request::getVar('return', null);
@@ -187,26 +184,26 @@ class Helper extends Module
 		// Figure out whether or not any of our third party auth plugins are turned on
 		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
 		$multiAuth      = false;
-		$plugins        = JPluginHelper::getPlugin('authentication');
+		$plugins        = Plugin::byType('authentication');
 		$authenticators = array();
 
 		foreach ($plugins as $p)
 		{
 			if ($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$pparams = new JRegistry($p->params);
+				$pparams = new \JRegistry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
 			{
-				$pparams = new JRegistry($p->params);
+				$pparams = new \JRegistry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
 			}
 		}
 
-		JPluginHelper::importPlugin('authentication');
+		Plugin::import('authentication');
 
 		// Set the return if we have it...
 		$returnQueryString = ($return) ? "&return={$return}" : '';

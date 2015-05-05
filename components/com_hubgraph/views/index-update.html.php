@@ -1,6 +1,6 @@
 <?php defined('JPATH_BASE') or die();
 
-$doc = JFactory::getDocument();
+$doc = App::get('document');
 if (!defined('HG_INLINE')) {
 	$doc->setTitle('Search');
 }

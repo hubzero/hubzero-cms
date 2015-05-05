@@ -37,6 +37,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use Exception;
+use Document;
 use Request;
 use Pathway;
 use Lang;
@@ -154,7 +155,7 @@ class Entries extends SiteController
 			}
 		}
 
-		\JFactory::getDocument()->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -504,14 +505,11 @@ class Entries extends SiteController
 			return;
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Set the mime encoding for the document
-		$jdoc = \JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
@@ -554,7 +552,7 @@ class Entries extends SiteController
 		{
 			foreach ($rows as $row)
 			{
-				$item = new \JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
@@ -575,10 +573,6 @@ class Entries extends SiteController
 				$doc->addItem($item);
 			}
 		}
-
-		// Output the feed
-		echo $doc->render();
-		die;
 	}
 
 	/**
@@ -725,14 +719,11 @@ class Entries extends SiteController
 			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Set the mime encoding for the document
-		$jdoc = \JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
@@ -767,7 +758,6 @@ class Entries extends SiteController
 		// Start outputing results if any found
 		if ($rows->total() <= 0)
 		{
-			echo $doc->render();
 			return;
 		}
 
@@ -775,9 +765,6 @@ class Entries extends SiteController
 		{
 			$this->_comment($doc, $row);
 		}
-
-		// Output the feed
-		echo $doc->render();
 	}
 
 	/**
@@ -790,7 +777,7 @@ class Entries extends SiteController
 	private function _comment(&$doc, $row)
 	{
 		// Load individual item creator class
-		$item = new \JFeedItem();
+		$item = new \Hubzero\Document\Type\Feed\Item();
 		$item->title = Lang::txt('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
 		$item->link  = Route::url($this->entry->link()  . '#c' . $row->get('id'));
 

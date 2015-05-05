@@ -33,6 +33,11 @@ namespace Components\Config\Controllers;
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
 use Exception;
+use Component;
+use Notify;
+use Route;
+use User;
+use App;
 
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'application.php');
 
@@ -63,14 +68,14 @@ class Application extends AdminController
 	public function displayTask()
 	{
 		// Get the document object.
-		$document = \JFactory::getDocument();
+		$document = App::get('document');
 
 		$model = new Models\Application();
 
 		// Access check.
 		if (!User::authorise('core.admin', $model->getState('component.option')))
 		{
-			return \JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$form = $model->getForm();
@@ -80,7 +85,6 @@ class Application extends AdminController
 		if ($errors = $model->getErrors())
 		{
 			App::abort(500, implode('<br />', $errors));
-			return false;
 		}
 
 		// Bind the form to the data.
@@ -123,7 +127,7 @@ class Application extends AdminController
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php', false),
 				Lang::txt('JERROR_ALERTNOAUTHOR')
 			);
@@ -134,7 +138,6 @@ class Application extends AdminController
 		\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Initialise variables.
-		$app   = \JFactory::getApplication();
 		$model = new Models\Application();
 		$form  = $model->getForm();
 		$data  = Request::getVar('jform', array(), 'post', 'array');
@@ -146,26 +149,28 @@ class Application extends AdminController
 		if ($return === false)
 		{
 			// Get the validation messages.
-			$errors	= $model->getErrors();
+			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
 				if ($errors[$i] instanceof Exception)
 				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+					Notify::warning($errors[$i]->getMessage());
 				}
 				else
 				{
-					$app->enqueueMessage($errors[$i], 'warning');
+					Notify::warning($errors[$i]);
 				}
 			}
 
 			// Save the data in the session.
-			$app->setUserState($this->_option . '.config.global.data', $data);
+			User::setState($this->_option . '.config.global.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&view=application', false));
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&view=application', false)
+			);
 			return false;
 		}
 
@@ -177,11 +182,14 @@ class Application extends AdminController
 		if ($return === false)
 		{
 			// Save the data in the session.
-			$app->setUserState($this->_option . '.config.global.data', $data);
+			User::setState($this->_option . '.config.global.data', $data);
 
 			// Save failed, go back to the screen and display a notice.
-			$message = Lang::txt('JERROR_SAVE_FAILED', $model->getError());
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&view=application', false), $message, 'error');
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&view=application', false),
+				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
+				'error'
+			);
 			return false;
 		}
 
@@ -192,12 +200,12 @@ class Application extends AdminController
 		switch (Request::getCmd('task'))
 		{
 			case 'apply':
-				$this->setRedirect(Route::url('index.php?option=' . $this->_option, false), $message);
+				App::redirect(Route::url('index.php?option=' . $this->_option, false), $message);
 				break;
 
 			case 'save':
 			default:
-				$this->setRedirect(Route::url('index.php', false), $message);
+				App::redirect(Route::url('index.php', false), $message);
 				break;
 		}
 	}
@@ -212,7 +220,7 @@ class Application extends AdminController
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin', 'com_config'))
 		{
-			$this->setRedirect(Route::url('index.php', false), Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::redirect(Route::url('index.php', false), Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
 
@@ -220,9 +228,9 @@ class Application extends AdminController
 		\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Clean the session data.
-		\JFactory::getApplication()->setUserState('com_config.config.global.data', null);
+		User::setState('com_config.config.global.data', null);
 
-		$this->setRedirect('index.php');
+		App::redirect(Route::url('index.php', false));
 	}
 
 	/**
@@ -239,15 +247,15 @@ class Application extends AdminController
 
 		if (($data = file_get_contents('http://help.joomla.org/helpsites.xml')) === false)
 		{
-			$this->setRedirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
+			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
 		}
 		elseif (!\JFile::write(JPATH_BASE . '/help/helpsites.xml', $data))
 		{
-			$this->setRedirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
+			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
 		}
 		else
 		{
-			$this->setRedirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
+			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
 		}
 	}
 
@@ -262,14 +270,17 @@ class Application extends AdminController
 		\JSession::checkToken('get') or die('Invalid Token');
 
 		// Check if the user is authorized to do this.
-		if (!$this->juser->authorise('core.admin'))
+		if (!User::authorise('core.admin'))
 		{
-			\JFactory::getApplication()->redirect('index.php', Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::redirect(
+				Route::url('index.php', false),
+				Lang::txt('JERROR_ALERTNOAUTHOR')
+			);
 			return;
 		}
 
 		// Initialise model.
-		$model = new Models\Application(); //$this->getModel('Application');
+		$model = new Models\Application();
 
 		// Attempt to save the configuration and remove root.
 		$return = $model->removeroot();
@@ -278,7 +289,7 @@ class Application extends AdminController
 		if ($return === false)
 		{
 			// Save failed, go back to the screen and display a notice.
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php', false),
 				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
 				'error'
@@ -287,6 +298,9 @@ class Application extends AdminController
 		}
 
 		// Set the redirect based on the task.
-		$this->setRedirect(Route::url('index.php', false), Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
+		App::redirect(
+			Route::url('index.php', false),
+			Lang::txt('COM_CONFIG_SAVE_SUCCESS')
+		);
 	}
 }

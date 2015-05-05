@@ -32,12 +32,11 @@
 namespace Modules\Search;
 
 use Hubzero\Module\Module;
-use JFactory;
-use JURI;
-use Lang;
+use Document;
 use Request;
-use Route;
 use Config;
+use Route;
+use Lang;
 
 /**
  * Module class for displaying a search form
@@ -55,8 +54,8 @@ class Helper extends Module
 		{
 			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename'));
 
-			JFactory::getDocument()->addHeadLink(
-				JURI::getInstance()->toString(array('scheme', 'host', 'port')) . Route::url('&option=com_search&format=opensearch'),
+			Document::addHeadLink(
+				Request::base() . Route::url('&option=com_search&format=opensearch'),
 				'search',
 				'rel',
 				array('title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml')

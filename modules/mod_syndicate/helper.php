@@ -32,6 +32,7 @@ namespace Modules\Syndicate;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
+use Document;
 
 /**
  * Module helper class for syndicating a feed
@@ -72,9 +73,9 @@ class Helper extends Module
 	 */
 	static function getLink(&$params)
 	{
-		$document = \JFactory::getDocument();
+		$data = Document::getHeadData();
 
-		foreach ($document->_links as $link => $value)
+		foreach ($data['links'] as $link => $value)
 		{
 			$value = Arr::toString($value);
 			if (strpos($value, 'application/' . $params->get('format') . '+xml'))

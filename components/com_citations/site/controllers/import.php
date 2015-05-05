@@ -60,7 +60,7 @@ class Import extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))),
 				Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
 				'warning'
@@ -95,7 +95,7 @@ class Import extends SiteController
 		//if importing is turned off go to intro page
 		if (!$importParam)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
@@ -105,7 +105,7 @@ class Import extends SiteController
 		$isAdmin = User::authorize($this->_option, 'import');
 		if ($importParam == 2 && !$isAdmin)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
 				'warning'
@@ -148,7 +148,7 @@ class Import extends SiteController
 		// make sure we have a file
 		if (!$file['name'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
 				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE'),
 				'error'
@@ -159,7 +159,7 @@ class Import extends SiteController
 		// make sure file is under 4MB
 		if ($file['size'] > 4000000)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
 				Lang::txt('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
 				'error'
@@ -180,7 +180,7 @@ class Import extends SiteController
 		// did we get citations from the citation plugins
 		if (!$citations)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
 				Lang::txt('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
 				'error'
@@ -189,7 +189,7 @@ class Import extends SiteController
 		}
 
 		// get the session object
-		$session   = \JFactory::getSession();
+		$session   = App::get('session');
 		$sessionid = $session->getId();
 
 		// write the citation data to files
@@ -204,14 +204,14 @@ class Import extends SiteController
 		if (isset($group) && $group != '')
 		{
 			// review imported citations
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import_review&group=' . $group)
 			);
 		}
 		else
 		{
 			// review imported citations
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import_review')
 			);
 		}
@@ -227,7 +227,7 @@ class Import extends SiteController
 	public function reviewTask()
 	{
 		// get the session object
-		$session   = \JFactory::getSession();
+		$session   = App::get('session');
 		$sessionid = $session->getId();
 
 		// get the citations
@@ -253,7 +253,7 @@ class Import extends SiteController
 			// make sure we have some citations
 			if (!$citations_require_attention && !$citations_require_no_attention)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=import&group=' . $group),
 					Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 					'error'
@@ -266,7 +266,7 @@ class Import extends SiteController
 			// make sure we have some citations
 			if (!$citations_require_attention && !$citations_require_no_attention)
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=import'),
 					Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 					'error'
@@ -304,7 +304,7 @@ class Import extends SiteController
 	public function saveTask()
 	{
 		// get the session object
-		$session   = \JFactory::getSession();
+		$session   = App::get('session');
 		$sessionid = $session->getId();
 
 		// read in contents of citations file
@@ -322,7 +322,7 @@ class Import extends SiteController
 		// check to make sure we have citations
 		if (!$cites_require_attention && !$cites_require_no_attention)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
 				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
@@ -335,7 +335,7 @@ class Import extends SiteController
 		$citations_not_saved = array();
 		$citations_error     = array();
 		$now = Date::toSql();
-		$user = $this->juser->get('id');
+		$user = User::get('id');
 		$allow_tags   = $this->config->get('citation_allow_tags', 'no');
 		$allow_badges = $this->config->get('citation_allow_badges', 'no');
 
@@ -533,7 +533,7 @@ class Import extends SiteController
 			$gob = new \GroupsGroup($this->database);
 			$cn = $gob->getName($group);
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_groups' . DS . $cn . DS . 'citations&action=dashboard')
 			);
 		}
@@ -563,7 +563,7 @@ class Import extends SiteController
 			}
 
 			//get the session object
-			$session = \JFactory::getSession();
+			$session = App::get('session');
 
 			//ids of sessions saved and not saved
 			$session->set('citations_saved', $citations_saved);
@@ -575,7 +575,7 @@ class Import extends SiteController
 			\JFile::delete($p2);
 
 			//redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import_saved')
 			);
 		}
@@ -591,7 +591,7 @@ class Import extends SiteController
 	public function savedTask()
 	{
 		// Get the session object
-		$session = \JFactory::getSession();
+		$session = App::get('session');
 
 		// Get the citations
 		$citations_saved     = $session->get('citations_saved');
@@ -601,7 +601,7 @@ class Import extends SiteController
 		// Check to make sure we have citations
 		if (!$citations_saved && !$citations_not_saved)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_citations&task=import'),
 				Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
@@ -752,6 +752,6 @@ class Import extends SiteController
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 
-		\JFactory::getDocument()->setTitle($this->_title);
+		App::get('document')->setTitle($this->_title);
 	}
 }

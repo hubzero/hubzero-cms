@@ -28,7 +28,7 @@ class MediaController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		JPluginHelper::importPlugin('content');
+		Plugin::import('content');
 		$vName = Request::getCmd('view', 'images');
 
 		switch ($vName)
@@ -48,8 +48,7 @@ class MediaController extends JControllerLegacy
 				break;
 		}
 
-		$document = JFactory::getDocument();
-		$vType = $document->getType();
+		$vType = Document::getType();
 
 		// Get/Create the view
 		$view = $this->getView($vName, $vType);

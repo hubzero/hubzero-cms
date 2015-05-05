@@ -40,8 +40,10 @@ use Components\Citations\Helpers\Format;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
 use Exception;
+use Document;
 use Date;
 use Lang;
+use App;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -201,7 +203,7 @@ class Citations extends SiteController
 
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
-		$session = \JFactory::getSession();
+		$session = App::get('session');
 
 		// If it's new search remove all user citation checkmarks
 		if (isset($_POST['filter']))
@@ -247,7 +249,7 @@ class Citations extends SiteController
 		// Make sure the end date for the upload search isn't before the start date
 		if ($this->view->filters['startuploaddate'] > $this->view->filters['enduploaddate'])
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_citations&task=browse'),
 				Lang::txt('COM_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
 				'error'
@@ -421,8 +423,7 @@ class Citations extends SiteController
 		$this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength) ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;' : $this->view->citation->title;
 
 		// Set the page title
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle);
+		Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -438,9 +439,8 @@ class Citations extends SiteController
 		$typeAlias = $type[0]['type'];
 
 		// Build paths to type specific overrides
-		$application = \JFactory::getApplication();
 		$componentTypeOverride = PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
-		$tempalteTypeOverride  = PATH_CORE . DS . 'templates' . DS . $application->getTemplate() . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
+		$tempalteTypeOverride  = PATH_CORE . DS . 'templates' . DS . App::get('template')->template . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
 
 		//if we found an override use it
 		if (file_exists($tempalteTypeOverride) || file_exists($componentTypeOverride))
@@ -529,7 +529,7 @@ class Citations extends SiteController
 	 */
 	public function loginTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
 			Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
@@ -574,7 +574,7 @@ class Citations extends SiteController
 		|| ($allowImport == 2 && User::get('usertype') == 'Super Administrator'))
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_CITATION_EDIT_NOTALLOWED'),
 				'warning'
@@ -644,7 +644,6 @@ class Citations extends SiteController
 						: $this->view->row->title;
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
 		Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
 		if ($id && $id != 0)
 		{
@@ -653,12 +652,10 @@ class Citations extends SiteController
 		Pathway::append(Lang::txt('COM_CITATIONS_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
 
 		// Set the page title
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt('COM_CITATIONS_CITATION') . $shortenedTitle);
+		Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . $shortenedTitle);
 
 		//push jquery to doc
-		$document = \JFactory::getDocument();
-		$document->addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
+		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
 		$this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
@@ -889,14 +886,14 @@ class Citations extends SiteController
 		// Redirect
 		if ($this->config->get('citation_single_view', 1))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=view&id=' . $row->id),
 				Lang::txt('COM_CITATIONS_CITATION_SAVED')
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=browse'),
 				Lang::txt('COM_CITATIONS_CITATION_SAVED')
 			);
@@ -956,7 +953,7 @@ class Citations extends SiteController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option)
 		);
 	}
@@ -1237,8 +1234,6 @@ class Citations extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
@@ -1267,7 +1262,6 @@ class Citations extends SiteController
 		{
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 }

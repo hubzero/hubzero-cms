@@ -42,7 +42,6 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getIn
 	Request::setVar('primary', $primary);
 }
 
-$app         = JFactory::getApplication();
 $usersConfig = Component::params('com_users');
 $primary     = Request::getWord('primary', false);
 
@@ -95,12 +94,12 @@ endforeach;
 			<div class="or"></div>
 			<div class="local">
 				<a href="<?php echo Route::url(JURI::current() . '?primary=hubzero&reset=1' . $returnQueryString); ?>">
-					<?php echo Lang::txt('Sign in with your %s account', ((isset($site_display)) ? $site_display : $app->getCfg('sitename'))); ?>
+					<?php echo Lang::txt('Sign in with your %s account', ((isset($site_display)) ? $site_display : Config::get('sitename'))); ?>
 				</a>
 			</div>
 		</div>
 		<div class="hz" style="display:<?php echo ($primary == 'hubzero' || count($authenticators) == 0) ? 'block' : 'none'; ?>;">
-			<div class="instructions"><?php echo Lang::txt('Sign in to %s', $app->getCfg('sitename')); ?></div>
+			<div class="instructions"><?php echo Lang::txt('Sign in to %s', Config::get('sitename')); ?></div>
 			<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 				<div class="input-wrap">
 					<?php if (isset($user) && is_object($user)) : ?>
@@ -122,7 +121,7 @@ endforeach;
 				</div>
 				<div class="submission">
 					<input type="submit" value="<?php echo Lang::txt('Sign in'); ?>" class="login-submit btn btn-primary" />
-					<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
+					<?php if (Plugin::isEnabled('system', 'remember')) : ?>
 						<div class="remember-wrap">
 							<input type="checkbox" class="remember option" name="remember" id="remember" value="yes" title="<?php echo Lang::txt('Remember Me'); ?>" <?php echo ($remember_me_default) ? 'checked="checked"' : ''; ?> />
 							<label for="remember" class="remember-me-label"><?php echo Lang::txt('Keep me logged in?'); ?></label>

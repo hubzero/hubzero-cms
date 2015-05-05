@@ -31,7 +31,6 @@
 namespace Modules\Youtube;
 
 use Hubzero\Module\Module;
-use JFactory;
 use JFile;
 use JFolder;
 use Lang;
@@ -48,9 +47,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		//get the document
-		$jdocument = JFactory::getDocument();
-
 		//get the module id
 		$id = $this->module->id;
 

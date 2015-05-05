@@ -32,6 +32,10 @@ namespace Components\Time\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Time\Models\Permissions;
+use Pathway;
+use Route;
+use Lang;
+use App;
 
 /**
  * Base time controller (extends \Hubzero\Component\SiteController)
@@ -50,7 +54,7 @@ class Base extends SiteController
 		{
 			$task = (isset($this->_task) && !empty($this->_task)) ? '&task=' . $this->_task : '';
 			// Set the redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return='
 					. base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task))),
 				Lang::txt('COM_TIME_ERROR_LOGIN_REQUIRED'),
@@ -135,8 +139,7 @@ class Base extends SiteController
 		$title  = Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
 		// Set the title of the browser window
-		$document = \JFactory::getDocument();
-		$document->setTitle($title);
+		App::get('document')->setTitle($title);
 
 		return $title;
 	}

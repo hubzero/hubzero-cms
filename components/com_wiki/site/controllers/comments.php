@@ -34,6 +34,7 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Comment;
 use Hubzero\Component\SiteController;
 use Exception;
+use Document;
 use Pathway;
 use Request;
 use User;
@@ -95,7 +96,7 @@ class Comments extends SiteController
 				$this->setError($result);
 			}
 
-			JDEBUG ? \JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JDEBUG ? App::get('profiler')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -150,8 +151,7 @@ class Comments extends SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)

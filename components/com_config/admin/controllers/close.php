@@ -31,6 +31,7 @@
 namespace Components\Config\Controllers;
 
 use Hubzero\Component\AdminController;
+use Document;
 
 /**
  * Controller class for closing the config
@@ -44,7 +45,7 @@ class Close extends AdminController
 	 */
 	public function displayTask()
 	{
-		\JFactory::getDocument()->addScriptDeclaration('
+		Document::addScriptDeclaration('
 			window.parent.location.href=window.parent.location.href;
 			window.parent.$.fancybox.close();
 		');

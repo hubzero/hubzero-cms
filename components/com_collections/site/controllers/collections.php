@@ -33,6 +33,7 @@ namespace Components\Collections\Site\Controllers;
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Archive;
 use Hubzero\Component\SiteController;
+use Document;
 use Pathway;
 use Request;
 use Lang;
@@ -268,6 +269,6 @@ class Collections extends SiteController
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 
-		\JFactory::getDocument()->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 }

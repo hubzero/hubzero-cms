@@ -26,7 +26,7 @@ class MediaController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		JPluginHelper::importPlugin('content');
+		Plugin::import('content');
 		$vName = Request::getCmd('view', 'media');
 		switch ($vName)
 		{
@@ -43,10 +43,8 @@ class MediaController extends JControllerLegacy
 				break;
 
 			case 'mediaList':
-				$app = JFactory::getApplication();
 				$mName = 'list';
-				$vLayout = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
-
+				$vLayout = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 				break;
 
 			case 'media':
@@ -57,8 +55,7 @@ class MediaController extends JControllerLegacy
 				break;
 		}
 
-		$document = JFactory::getDocument();
-		$vType = $document->getType();
+		$vType = Document::getType();
 
 		// Get/Create the view
 		$view = $this->getView($vName, $vType);

@@ -34,6 +34,7 @@ use Components\Wiki\Models\Book;
 use Components\Wiki\Models\Revision;
 use Hubzero\Component\SiteController;
 use Exception;
+use Document;
 use Pathway;
 use Request;
 use User;
@@ -94,7 +95,7 @@ class History extends SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JPROFILE ? App::get('profiler')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -119,8 +120,6 @@ class History extends SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		$this->view->page      = $this->page;
 		$this->view->config    = $this->config;
 		$this->view->base_path = $this->_base_path;
@@ -131,8 +130,7 @@ class History extends SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -158,7 +156,9 @@ class History extends SiteController
 			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -212,8 +212,7 @@ class History extends SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
+		Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)

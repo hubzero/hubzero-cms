@@ -48,6 +48,7 @@ use Route;
 use Lang;
 use User;
 use Date;
+use App;
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
@@ -147,8 +148,8 @@ class Tickets extends SiteController
 		{
 			$this->_title .= ' #' . $ticket->get('id');
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		App::get('document')->setTitle($this->_title);
 	}
 
 	/**

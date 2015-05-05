@@ -78,8 +78,7 @@ class Abuse extends SiteController
 		$this->_title  = Lang::txt(strtoupper($this->_option));
 		$this->_title .= ': ' . Lang::txt(strtoupper('COM_SUPPORT_REPORT_ABUSE'));
 
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		\Document::setTitle($this->_title);
 	}
 
 	/**

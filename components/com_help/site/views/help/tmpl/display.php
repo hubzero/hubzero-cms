@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-\JFactory::getDocument()->setTitle(\Lang::txt('COM_HELP'));
+Document::setTitle(\Lang::txt('COM_HELP'));
 ?>
 <a name="help-top"></a>
 <div class="help-header">

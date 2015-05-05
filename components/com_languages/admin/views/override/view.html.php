@@ -10,10 +10,6 @@ defined('_JEXEC') or die;
 
 /**
  * View to edit an language override
- *
- * @package			Joomla.Administrator
- * @subpackage	com_languages
- * @since				2.5
  */
 class LanguagesViewOverride extends JViewLegacy
 {
@@ -44,18 +40,14 @@ class LanguagesViewOverride extends JViewLegacy
 	/**
 	 * Displays the view
 	 *
-	 * @param		string	$tpl	The name of the template file to parse
-	 *
-	 * @return	void
-	 *
-	 * @since		2.5
+	 * @param   string  $tpl  The name of the template file to parse
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
-		$doc = JFactory::getDocument();
-		$doc->addStyleSheet(JURI::root().'media/overrider/css/overrider.css');
+		Document::addStyleSheet(Request::root().'media/overrider/css/overrider.css');
 		JHtml::_('behavior.framework');
-		$doc->addScript(JURI::root().'media/overrider/js/overrider.js');
+		Document::addScript(Request::root().'media/overrider/js/overrider.js');
 
 		$this->form  = $this->get('Form');
 		$this->item  = $this->get('Item');
@@ -70,7 +62,7 @@ class LanguagesViewOverride extends JViewLegacy
 		}
 
 		// Check whether the cache has to be refreshed
-		$cached_time = JFactory::getApplication()->getUserState('com_languages.overrides.cachedtime.'.$this->state->get('filter.client').'.'.$this->state->get('filter.language'), 0);
+		$cached_time = User::getState('com_languages.overrides.cachedtime.'.$this->state->get('filter.client').'.'.$this->state->get('filter.language'), 0);
 		if (time() - $cached_time > 60 * 5)
 		{
 			$this->state->set('cache_expired', true);
@@ -87,15 +79,13 @@ class LanguagesViewOverride extends JViewLegacy
 	/**
 	 * Adds the page title and toolbar
 	 *
-	 * @return void
-	 *
-	 * @since	2.5
+	 * @return  void
 	 */
 	protected function addToolbar()
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$canDo	= LanguagesHelper::getActions();
+		$canDo = LanguagesHelper::getActions();
 
 		Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_TITLE'), 'langmanager');
 

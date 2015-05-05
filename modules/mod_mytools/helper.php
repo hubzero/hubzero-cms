@@ -23,295 +23,309 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\MyTools;
+namespace Modules\Youtube;
 
 use Hubzero\Module\Module;
-use ToolsModelVersion;
-use ToolsModelTool;
-use RecentTool;
-use Component;
-use Request;
-use Route;
+use JFactory;
+use JFile;
+use JFolder;
 use Lang;
-use User;
 
 /**
- * Module class for displaying a user's recently used/favorite tools
+ * Module class for displaying a YouTube feed
  */
 class Helper extends Module
 {
 	/**
-	 * Get a list of applications that the user might invoke.
+	 * Display module contents
 	 *
-	 * @param   array  $lst  List of tools
-	 * @return  array  List of tools
-	 */
-	private function _getToollist($lst=NULL)
-	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
-
-		$toollist = array();
-
-		// Create a Tool object
-		$database = \JFactory::getDBO();
-
-		if (is_array($lst))
-		{
-			$tools = array();
-
-			// Check if the list is empty or not
-			if (!empty($lst))
-			{
-				return $tools;
-			}
-
-			ksort($lst);
-			$items = array();
-			// Get info for tools in the list
-			foreach ($lst as $item)
-			{
-				if (strstr($item, '_r'))
-				{
-					$bits = explode('_r', $item);
-					$rev  = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
-					$item = trim(implode('_r', $bits));
-				}
-
-				$items[] = $item;
-			}
-			$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
-		}
-		else
-		{
-			// Get all available tools
-			$tools = ToolsModelTool::getMyTools();
-		}
-
-		$toolnames = array();
-
-		// Turn it into an App array.
-		foreach ($tools as $tool)
-		{
-			if (!in_array(strtolower($tool->toolname), $toolnames))
-			{
-				// include only one version
-				$toollist[strtolower($tool->instance)] = new App(
-					$tool->instance,
-					$tool->title,
-					$tool->description,
-					$tool->mw,
-					0, '', 0,
-					1,
-					$tool->revision,
-					$tool->toolname
-				);
-			}
-			$toolnames[] = strtolower($tool->toolname);
-		}
-
-		return $toollist;
-	}
-
-	/**
-	 * Convert quote marks
-	 *
-	 * @param   string  $txt  Text to convert quotes in
-	 * @return  string
-	 */
-	private function _prepText($txt)
-	{
-		$txt = stripslashes($txt);
-		$txt = str_replace('"', '&quot;', $txt);
-		return $txt;
-	}
-
-	/**
-	 * Build the HTML for a list of tools
-	 *
-	 * @param   array   &$toollist  List of tools to format
-	 * @param   string  $type       Type of list being formatted
-	 * @return  string  HTML
-	 */
-	public function buildList($toollist, $type='all')
-	{
-		if ($type == 'favs')
-		{
-			$favs = array();
-		}
-		elseif ($type == 'all')
-		{
-			$favs = $this->favs;
-		}
-
-		$database = \JFactory::getDBO();
-
-		$html  = "\t\t" . '<ul>' . "\n";
-		if (count($toollist) <= 0)
-		{
-			$html .= "\t\t" . ' <li>' . Lang::txt('MOD_MYTOOLS_NONE_FOUND') . '</li>' . "\n";
-		}
-		else
-		{
-			foreach ($toollist as $tool)
-			{
-				// Make sure we have some info before attempting to display it
-				if (!empty($tool->caption))
-				{
-					// Prep the text for XHTML output
-					$tool->caption = $this->_prepText($tool->caption);
-					$tool->desc    = $this->_prepText($tool->desc);
-
-					// Get the tool's name without any revision attachments
-					// e.g. "qclab" instead of "qclab_r53"
-					$toolname = $tool->toolname ? $tool->toolname : $tool->name;
-
-					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
-					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-					$url = Route::url('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
-
-					$cls = '';
-					// Build the HTML
-					$html .= "\t\t" . ' <li id="' . $tool->name . '"';
-					// If we're in the 'all tools' pane ...
-					if ($type == 'all')
-					{
-						// Highlight tools on the user's favorites list
-						if (in_array($tool->name,$favs))
-						{
-							$cls = 'favd';
-						}
-					}
-					if ($this->supportedtag)
-					{
-						if (in_array($tool->toolname, $this->supportedtagusage))
-						{
-							$cls .= ($cls) ? ' supported' : 'supported';
-						}
-					}
-					$html .= ($cls) ? ' class="' . $cls . '"' : '';
-					$html .= '>' . "\n";
-
-					// Tool info link
-					$html .= "\t\t\t" . ' <a href="' . Route::url('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname) . '" class="tooltips" title="' . $tool->caption . ' :: ' . $tool->desc . '">' . $tool->caption . '</a>' . "\n";
-
-					// Only add the "favorites" button to the all tools list
-					if ($type == 'all')
-					{
-						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="' . Lang::txt('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption) . '">' . $tool->caption . '</a>' . "\n";
-					}
-
-					// Launch tool link
-					if ($this->can_launch && $tool->middleware != 'download')
-					{
-
-
-						$html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
-					}
-					$html .= "\t\t" . ' </li>' . "\n";
-				}
-				// If we're in the 'favorites' pane ...
-				// Add the tool's name to an array for the 'all tools'
-				// pane to use in highlighting favorite tools
-				if ($type == 'favs')
-				{
-					$favs[] = $tool->name;
-				}
-			}
-		}
-		$html .= "\t\t" . '</ul>' . "\n";
-
-		return $html;
-	}
-
-	/**
-	 * Display module content
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
-		include_once(PATH_CORE . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
+		//get the module id
+		$id = $this->module->id;
 
-		$params = $this->params;
+		//define the base youtube url
+		$youtube_url = 'https://gdata.youtube.com/feeds/api/';
 
-		$mconfig = Component::params('com_tools');
+		//default # of videos to display
+		$default_num_videos = 3;
 
-		// Ensure we have a connection to the middleware
-		$this->can_launch = true;
-		if (!$mconfig->get('mw_on')
-		 || ($mconfig->get('mw_on') > 1 && !User::authorize('com_tools', 'manage')))
+		//get the user defined num of videos
+		$user_num_videos = $this->params->get('videos');
+
+		//determine the final num of videos to show
+		$num_videos = ($user_num_videos != '' && is_numeric($user_num_videos)) ? $user_num_videos : $default_num_videos;
+
+		//get the type of feed we are displaying
+		$type = $this->params->get('type');
+
+		//get the username/playlist/search term
+		$content = $this->params->get('q');
+
+		//build the youtube url based on the type
+		switch ($type)
 		{
-			$this->can_launch = false;
+			case 'playlists':
+				$youtube_url .= 'playlists/' . $content . '?v=2';
+			break;
+			case 'users':
+				$youtube_url .= 'users/' . $content . '/uploads?v=2';
+			break;
+			case 'videos':
+				$youtube_url .= 'videos?q=' . $content . '&v=2';
+			break;
 		}
 
-		// See if we have an incoming string of favorite tools
-		// This should only happen on AJAX requests
-		$this->fav     = Request::getVar('fav', '');
-		$this->no_html = Request::getVar('no_html', 0);
+		//append the the return type and the callback function
+		$youtube_url .= '&alt=json';
 
-		$rconfig = Component::params('com_resources');
-		$this->supportedtag = $rconfig->get('supportedtag');
+		//get title,desc,logo and link params
+		$show_title = $this->params->get('title');
+		$alt_title  = $this->params->get('alttitle');
+		$show_desc  = $this->params->get('desc');
+		$alt_desc   = $this->params->get('altdesc');
+		$show_image = $this->params->get('image');
+		$alt_image  = $this->params->get('altimage');
+		$show_link  = $this->params->get('link');
+		$alt_link   = $this->params->get('altlink');
 
-		$database = \JFactory::getDBO();
-		if ($this->supportedtag)
+		//are we randomizing videos
+		$random = $this->params->get('random');
+
+		//are we using js or PHP
+		$lazy_loading = $this->params->get('lazy');
+
+		//Push some CSS to the template
+		$this->css();
+
+		//push the container that the feed with loaded in
+		$this->id = $id;
+		$this->lazy = $lazy_loading;
+
+		//if we are lazy loading
+		if ($lazy_loading)
 		{
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$this->rt = new \Components\Resources\Helpers\Tags(0);
-			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
-		}
-
-		if ($this->fav || $this->no_html)
-		{
-			// We have a string of tools! This means we're updating the
-			// favorite tools pane of the module via AJAX
-			$favs = explode(',', $this->fav);
-			$favs = array_map('trim', $favs);
-
-			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
+			$this->js();
+			$this->js("
+				jQuery(document).ready(function($){
+					var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
+						type: '" . $type . "',
+						search: '" . $content . "',
+						count: " . $num_videos . ",
+						random: " . $random . ",
+						details: {
+							showLogo: " . $show_image . ",
+							altLogo: '" . $alt_image . "',
+							showTitle: " . $show_title . ",
+							altTitle: '" . $alt_title . "',
+							showDesc: " . $show_desc . ",
+							altDesc: '" . $alt_desc . "',
+							showLink: " . $show_link . ",
+							altLink: '" . $alt_link . "'
+						}
+					});
+				});
+			");
 		}
 		else
 		{
-			// Add the JavaScript that does the AJAX magic to the template
-			$document = \JFactory::getDocument();
-
-			// Get a list of recent tools
-			$rt = new RecentTool($database);
-			$rows = $rt->getRecords(User::get('id'));
-
-			$recent = array();
-			if (!empty($rows))
+			// load feed
+			$feed = $this->_feed($youtube_url, $this->params);
+			if (!$feed)
 			{
-				foreach ($rows as $row)
+				$this->html = '<p class="error">' . Lang::txt('MOD_YOUTUBE_ERROR_PARSING_FEED') . '</p>';
+				require $this->getLayoutPath();
+				return;
+			}
+
+			// access youtubes weird feed item
+			$feed = $feed['feed'];
+
+			//get the entries from the feed
+			$entries = $feed['entry'];
+
+			//start building the html content
+			$html = '';
+
+			//get the title, subtitle, logo
+			$title = $feed['title']['$t'];
+			if ($type == 'playlists')
+			{
+				$desc = $feed['subtitle']['$t'];
+			}
+			$logo = $feed['logo']['$t'];
+
+			//show title based on params
+			if ($show_title)
+			{
+				if ($alt_title != '')
 				{
-					$recent[] = $row->tool;
+					$html .= '<h3>' . $alt_title . '</h3>';
+				}
+				else
+				{
+					$html .= '<h3>' . $title . '</h3>';
 				}
 			}
 
-			// Get the user's list of favorites
-			$fav = $params->get('favs');
-			if ($fav)
+			//show the description based on params
+			if ($show_desc)
 			{
-				$favs = explode(',', $fav);
+				if ($alt_desc != '')
+				{
+					$html .= '<p class="description">' . $alt_desc . '</p>';
+				}
+				elseif ($type == 'playlists')
+				{
+					$html .= '<p class="description">' . $desc . '</p>';
+				}
 			}
-			else
-			{
-				$favs = array();
-			}
-			$this->favs = $favs;
 
-			// Get a list of applications that the user might invoke.
-			$this->rectools = $this->_getToollist($recent);
-			$this->favtools = $this->_getToollist($favs);
-			$this->alltools = $this->_getToollist();
+			//show the logo based on your
+			if ($show_image)
+			{
+				if ($alt_image != '' && is_file(PATH_APP . DS . $alt_image))
+				{
+					$html .= '<img class="logo" src="' . $alt_image . '" alt="Youtube" />';
+				}
+				else
+				{
+					$html .= '<img class="logo" src="' . $logo . '" alt="Youtube" />';
+				}
+			}
+
+			//are we supposed to randomize
+			if ($random)
+			{
+				shuffle($entries);
+			}
+
+			//display the videos
+			$html .= "<ul>";
+			$counter = 1;
+			foreach ($entries as $entry)
+			{
+				if ($counter <= $num_videos)
+				{
+					$media = $entry['media$group'];
+					$html .= "<li>";
+					$html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$media['media$thumbnail'][3]['url']}\" alt=\"\" /></a>";
+					$html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entry['link'][0]['href']}\">{$entry['title']['$t']}</a>";
+					$html .= "<br /><span class=\"entry-duration\">" . $this->_formatTime($media['yt$duration']['seconds']) . "</span>";
+					$html .= "</li>";
+				}
+				$counter++;
+			}
+			$html .= "</ul>";
+
+			//show the view more link based on params
+			if ($show_link)
+			{
+				if ($alt_link != '')
+				{
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$alt_link}\">" . Lang::txt('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
+				}
+				else
+				{
+					switch ($type)
+					{
+						case 'playlists':
+							$link = "http://www.youtube.com/view_play_list?p=" . $content;
+						break;
+						case 'users':
+							$link = "http://www.youtube.com/user/" . $content;
+						break;
+						case 'videos':
+							$link = "http://www.youtube.com/results?search_query=" . $content;
+						break;
+					}
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$link}\">" . Lang::txt('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
+				}
+			}
+
+			$this->html = $html;
 		}
 
 		require $this->getLayoutPath();
+	}
+
+	/**
+	 * Get feed info
+	 *
+	 * @param   string  $url
+	 * @param   object  $params
+	 * @return  object
+	 */
+	private function _feed($url, $params)
+	{
+		// var to hold feed
+		$feed = null;
+
+		// cache path
+		$cachePath = PATH_APP . DS . 'cache' . DS . 'mod_youtube' . DS . $this->module->id;
+		$cacheFile = $cachePath . DS . $params->get('type') . '.txt';
+
+		// do we want to load a cached version
+		if ($this->params->get('cache')
+			&& file_exists($cacheFile)
+			&& filemtime($cacheFile) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES'))
+		{
+			$feed = file_get_contents($cacheFile);
+			$feed = json_decode($feed);
+		}
+		else
+		{
+			// get the feed with curl
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_REFERER, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			$feed = curl_exec($ch);
+			curl_close($ch);
+
+			//if we want to use caching
+			if ($params->get('cache'))
+			{
+				//write to the cache folder
+				if (!is_dir($cachePath))
+				{
+					JFolder::create($cachePath);
+				}
+				$f = json_encode($feed);
+				JFile::write($cacheFile, $f);
+			}
+		}
+
+		// return jsto
+		return json_decode($feed, true);
+	}
+
+	/**
+	 * Format a time
+	 *
+	 * @param   integer  $seconds  Time to format
+	 * @return  string
+	 */
+	private function _formatTime($seconds)
+	{
+		$minutes = floor($seconds / 60);
+		$seconds = $seconds % 60;
+
+		if ($seconds < 10)
+		{
+			$seconds = "0{$seconds}";
+		}
+
+		return "<span>{$minutes}:{$seconds}</span>";
 	}
 }

@@ -46,6 +46,7 @@ use Config;
 use Route;
 use Event;
 use Lang;
+use App;
 
 /**
  * Controller class for the store
@@ -126,8 +127,7 @@ class Shop extends SiteController
 		{
 			$this->view->title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		App::get('document')->setTitle($this->view->title);
 	}
 
 	/**
@@ -171,7 +171,7 @@ class Shop extends SiteController
 	{
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 	}

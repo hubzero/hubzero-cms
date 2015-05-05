@@ -106,7 +106,7 @@ class Page extends SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JPROFILE ? App::get('profiler')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -139,14 +139,13 @@ class Page extends SiteController
 		$this->view->title = $this->page->get('title'); //getTitle();
 
 		// Set the page's <title> tag
-		$document = \JFactory::getDocument();
 		if ($this->_sub)
 		{
-			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
+			Document::setTitle(Document::getTitle() . ': ' . $this->view->title);
 		}
 		else
 		{
-			$document->setTitle(($this->_sub ? Lang::txt('COM_GROUPS') . ': ' : '') . Lang::txt('COM_WIKI') . ': ' . $this->view->title);
+			Document::setTitle(($this->_sub ? Lang::txt('COM_GROUPS') . ': ' : '') . Lang::txt('COM_WIKI') . ': ' . $this->view->title);
 		}
 
 		// Set the pathway
@@ -308,7 +307,7 @@ class Page extends SiteController
 			$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
 		}
 
-		JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
+		JPROFILE ? App::get('profiler')->mark('afterWikiParse') : null;
 
 		// Handle display events
 		$this->page->event = new \stdClass();
@@ -428,14 +427,13 @@ class Page extends SiteController
 		$this->view->title = (trim($this->page->get('title')) ? $this->page->get('title') : Lang::txt('COM_WIKI_NEW_PAGE'));
 
 		// Set the page's <title> tag
-		$document = \JFactory::getDocument();
 		if ($this->_sub)
 		{
-			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
+			Document::setTitle(Document::getTitle() . ': ' . $this->view->title);
 		}
 		else
 		{
-			$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
+			Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 		}
 
 		// Set the pathway
@@ -805,8 +803,7 @@ class Page extends SiteController
 				$this->view->title = $this->page->get('title');
 
 				// Set the page's <title> tag
-				$document = \JFactory::getDocument();
-				$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
+				Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 
 				// Set the pathway
 				if (Pathway::count() <= 0)
@@ -880,8 +877,7 @@ class Page extends SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . Lang::txt('RENAME'));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . Lang::txt('RENAME'));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)

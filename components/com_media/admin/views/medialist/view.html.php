@@ -20,18 +20,16 @@ class MediaViewMediaList extends JViewLegacy
 		// Do not allow cache
 		JResponse::allowCache(false);
 
-		$app = JFactory::getApplication();
-		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+		$style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
 		JHtml::_('behavior.framework', true);
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('../media/media/css/medialist-'.$style.'.css');
+		Document::addStyleSheet('../media/media/css/medialist-'.$style.'.css');
 		if (Lang::isRTL()) :
-			$document->addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
+			Document::addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
 		endif;
 
-		$document->addScriptDeclaration("
+		Document::addScriptDeclaration("
 		jQuery(document).ready(function($){
 			window.parent.document.updateUploader();
 			$('a.img-preview').on('click', function(e) {
@@ -54,11 +52,11 @@ class MediaViewMediaList extends JViewLegacy
 				$dirname = htmlspecialchars($dirname, ENT_COMPAT, 'UTF-8');
 				if (Lang::hasKey('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME'))
 				{
-					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME', $dirname));
+					throw new Exception(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME', $dirname), 100);
 				}
 				else
 				{
-					JError::raiseWarning(100, sprintf('Unable to browse:&#160;%s. Directory name must only contain alphanumeric characters and no spaces.', $dirname));
+					throw new Exception(sprintf('Unable to browse:&#160;%s. Directory name must only contain alphanumeric characters and no spaces.', $dirname), 100);
 				}
 			}
 		}

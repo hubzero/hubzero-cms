@@ -38,12 +38,14 @@ use Components\Forum\Models\Thread;
 use Components\Forum\Models\Post;
 use Components\Forum\Tables;
 use Exception;
+use Document;
 use Pathway;
 use Request;
 use Config;
 use Route;
 use User;
 use Lang;
+use App;
 
 /**
  * Forum controller class for threads
@@ -123,8 +125,8 @@ class Threads extends SiteController
 		{
 			$this->_title .= ': #' . $this->view->thread->get('id') . ' - ' . String::truncate(stripslashes($this->view->thread->get('title')), 100, array('exact' => true));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -207,14 +209,11 @@ class Threads extends SiteController
 	 */
 	public function latestTask()
 	{
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Set the mime encoding for the document
-		$jdoc = \JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Paging variables
@@ -329,7 +328,7 @@ class Threads extends SiteController
 				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
 
 				// Load individual item creator class
-				$item = new \JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 				$item->title       = $title;
 				$item->link        = $link;
 				$item->description = $description;
@@ -341,9 +340,6 @@ class Threads extends SiteController
 				$doc->addItem($item);
 			}
 		}
-
-		// Output the feed
-		echo $doc->render();
 	}
 
 	/**

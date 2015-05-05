@@ -58,8 +58,7 @@ class MediaModelManager extends JModelLegacy
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);
 
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt('COM_MEDIA_INSERT_IMAGE'));
+		Document::setTitle(Lang::txt('COM_MEDIA_INSERT_IMAGE'));
 
 		// Build the array of select options for the folder list
 		$options[] = JHtml::_('select.option', "", "/");
@@ -79,9 +78,8 @@ class MediaModelManager extends JModelLegacy
 		}
 
 		// Get asset and author id (use integer filter)
-		$input = JFactory::getApplication()->input;
-		$asset = $input->get('asset', 0, 'integer');
-		$author = $input->get('author', 0, 'integer');
+		$asset  = Request::getInt('asset', 0);
+		$author = Request::get('author', 0);
 
 		// Create the drop-down folder select list
 		$list = JHtml::_('select.genericlist',  $options, 'folderlist', 'class="inputbox" size="1" onchange="ImageManager.setFolder(this.options[this.selectedIndex].value, '.$asset.', '.$author.')" ', 'value', 'text', $base);

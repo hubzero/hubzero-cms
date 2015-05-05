@@ -40,7 +40,7 @@ JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 // Load switcher behavior
 JHtml::_('behavior.switcher', 'submenu');
 
-JFactory::getDocument()->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

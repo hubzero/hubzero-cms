@@ -104,11 +104,12 @@ class MediaModelList extends JModelLegacy
 		}
 
 		// Iterate over the files if they exist
-		if ($fileList !== false) {
+		if ($fileList !== false)
+		{
 			foreach ($fileList as $file)
 			{
 				if (is_file($basePath.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
-					$tmp = new JObject();
+					$tmp = new \Hubzero\Base\Object();
 					$tmp->name = $file;
 					$tmp->title = $file;
 					$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $file));
@@ -168,10 +169,11 @@ class MediaModelList extends JModelLegacy
 		}
 
 		// Iterate over the folders if they exist
-		if ($folderList !== false) {
+		if ($folderList !== false)
+		{
 			foreach ($folderList as $folder)
 			{
-				$tmp = new JObject();
+				$tmp = new \Hubzero\Base\Object();
 				$tmp->name = basename($folder);
 				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);

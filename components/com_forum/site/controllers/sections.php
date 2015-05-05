@@ -38,6 +38,7 @@ use Request;
 use Route;
 use User;
 use Lang;
+use App;
 
 /**
  * Controller class for forum sections
@@ -327,7 +328,7 @@ class Sections extends SiteController
 		{
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		App::get('document')->setTitle($this->_title);
 	}
 }

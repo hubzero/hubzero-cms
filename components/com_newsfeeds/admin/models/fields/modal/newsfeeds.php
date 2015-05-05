@@ -44,7 +44,7 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		$script[] = '	}';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Document::addScriptDeclaration(implode("\n", $script));
 
 		// Build the script.
 		$script = array();
@@ -54,8 +54,7 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		$script[] = '	});';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-
+		Document::addScriptDeclaration(implode("\n", $script));
 
 		// Get the title of the linked chart
 		$db = JFactory::getDBO();
@@ -66,11 +65,13 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		);
 		$title = $db->loadResult();
 
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 		}
 
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = Lang::txt('COM_NEWSFEEDS_SELECT_A_FEED');
 		}
 
@@ -80,15 +81,19 @@ class JFormFieldModal_Newsfeeds extends JFormField
 		$html = "\n".'<div class="fltlft"><input type="text" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
 		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.Lang::txt('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.Lang::txt('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'</a></div></div>'."\n";
 		// The active newsfeed id field.
-		if (0 == (int)$this->value) {
+		if (0 == (int)$this->value)
+		{
 			$value = '';
-		} else {
+		}
+		else
+		{
 			$value = (int)$this->value;
 		}
 
 		// class='required' for client side validation
 		$class = '';
-		if ($this->required) {
+		if ($this->required)
+		{
 			$class = ' class="required modal-value"';
 		}
 

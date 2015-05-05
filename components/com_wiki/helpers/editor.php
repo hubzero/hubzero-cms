@@ -30,28 +30,29 @@
 
 namespace Components\Wiki\Helpers;
 
-use Exception;
-
-jimport('joomla.event.dispatcher');
+use Hubzero\Base\Object;
+use Hubzero\Config\Registry;
+use Plugin;
+use Lang;
 
 /**
  * Hubzero helper class for retrieving the current wiki editor
  */
-class Editor extends \JObservable
+class Editor extends Object
 {
 	/**
 	 * Editor Plugin object
 	 *
 	 * @var	 object
 	 */
-	private $_editor = null;
+	private $editor = null;
 
 	/**
 	 * Editor Plugin name
 	 *
 	 * @var  string
 	 */
-	private $_name = null;
+	private $name = null;
 
 	/**
 	 * Constructor
@@ -67,7 +68,7 @@ class Editor extends \JObservable
 
 			$editor = $database->loadResult();
 		}
-		$this->_name = $editor;
+		$this->name = $editor;
 	}
 
 	/**
@@ -75,7 +76,7 @@ class Editor extends \JObservable
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 *     $parser = WikiHelperParser::getInstance($parser_name);
+	 *     $parser = WikiHelperParser::getInstance($parsername);
 	 *
 	 * @param   string  $parser  The name of the parser to use.
 	 * @return  object  The Parser object.
@@ -102,24 +103,18 @@ class Editor extends \JObservable
 	/**
 	 * Initialize the parser
 	 *
-	 * @param   array    $config
-	 * @param   boolean  $getnew
 	 * @return  void
 	 */
 	public function initialise()
 	{
-		// Check if editor is already loaded
-		if (is_null(($this->_editor)))
+		if (is_null($this->editor))
 		{
 			return;
 		}
 
-		$args = array(
-			'event' => 'onInitEditor'
-		);
-
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results[] = $this->editor->onInitEditor();
+
 		foreach ($results as $result)
 		{
 			if (trim($result))
@@ -130,8 +125,7 @@ class Editor extends \JObservable
 
 		if ($return)
 		{
-			$document = \JFactory::getDocument();
-			$document->addCustomTag($return);
+			\Document::addCustomTag($return);
 		}
 	}
 
@@ -150,33 +144,22 @@ class Editor extends \JObservable
 	public function display($name, $id, $html, $cls, $col, $row, $params = array())
 	{
 		// Return a standard textarea if no editor is found
-		if (!$this->_name)
+		if (!$this->name)
 		{
 			return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $html . '</textarea>' . "\n";
 		}
 
-		$this->_loadEditor($params);
+		$this->load($params);
 
 		// Check if editor is already loaded
-		if (is_null(($this->_editor)))
+		if (is_null($this->editor))
 		{
 			return;
 		}
 
-		$args = array(
-			'name'    => $name,
-			'id'      => $id,
-			'content' => $html,
-			'cls'     => $cls,
-			'col'     => $col,
-			'row'     => $row,
-			'event'   => 'onDisplayEditor'
-		);
-
-		// Initialize variables
 		$return = null;
 
-		$results[] = $this->_editor->update($args);
+		$results[] = $this->editor->onDisplayEditor($name, $id, $html, $cls, $col, $row);
 
 		foreach ($results as $result)
 		{
@@ -196,19 +179,16 @@ class Editor extends \JObservable
 	 */
 	public function save($editor)
 	{
-		$this->_loadEditor();
+		$this->load();
 
-		// Check if editor is already loaded
-		if (is_null(($this->_editor)))
+		if (is_null($this->editor))
 		{
 			return;
 		}
 
-		$args[] = $editor;
-		$args['event'] = 'onSaveEditorContent';
-
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results[] = $this->editor->onSaveEditorContent($editor);
+
 		foreach ($results as $result)
 		{
 			if (trim($result))
@@ -216,6 +196,7 @@ class Editor extends \JObservable
 				$return .= $result;
 			}
 		}
+
 		return $return;
 	}
 
@@ -227,19 +208,23 @@ class Editor extends \JObservable
 	 */
 	public function getContent($editor)
 	{
-		$this->_loadEditor();
+		$this->load();
 
-		$args['name'] = $editor;
-		$args['event'] = 'onGetEditorContent';
+		if (is_null($this->editor))
+		{
+			return;
+		}
 
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results[] = $this->editor->onGetEditorContent($editor);
+
 		foreach ($results as $result)
 		{
 			if (trim($result)) {
 				$return .= $result;
 			}
 		}
+
 		return $return;
 	}
 
@@ -252,7 +237,7 @@ class Editor extends \JObservable
 	 */
 	public function setContent($editor, $html)
 	{
-		$this->_loadEditor();
+		$this->load();
 
 		$args = array(
 			'name'  => $editor,
@@ -261,7 +246,7 @@ class Editor extends \JObservable
 		);
 
 		$return = '';
-		$results[] = $this->_editor->update($args);
+		$results[] = $this->editor->update($args);
 		foreach ($results as $result)
 		{
 			if (trim($result))
@@ -278,21 +263,21 @@ class Editor extends \JObservable
 	 * @param   array  $config  Associative array of editor config paramaters
 	 * @return  void
 	 */
-	private function _loadEditor($config = array())
+	private function load($config = array())
 	{
 		// Check if editor is already loaded
-		if (!is_null(($this->_editor)))
+		if (!is_null($this->editor))
 		{
 			return;
 		}
 
-		jimport('joomla.filesystem.file');
-
 		// Build the path to the needed editor plugin
-		$name = \JFilterInput::getInstance()->clean($this->_name, 'cmd');
+		$name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
+		$name = ltrim($name, '.');
+
 		$path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
-		if (!\JFile::exists($path))
+		if (!is_file($path))
 		{
 			throw new Exception(Lang::txt('Cannot load the editor'), 500);
 			return false;
@@ -302,14 +287,17 @@ class Editor extends \JObservable
 		require_once $path;
 
 		// Get the plugin
-		$plugin = \JPluginHelper::getPlugin('wiki', $this->_name);
-		$params = new \JRegistry($plugin->params);
+		$plugin = Plugin::byType('wiki', $this->name);
+
+		$params = new Registry($plugin->params);
 		$params->loadArray($config);
+
 		$plugin->params = $params;
 
 		// Build editor plugin classname
-		$name = 'plgWiki' . $this->_name;
-		if ($this->_editor = new $name($this, (array)$plugin))
+		$name = 'plgWiki' . $this->name;
+
+		if ($this->editor = new $name($this, (array)$plugin))
 		{
 			// Load plugin parameters
 			$this->initialise();

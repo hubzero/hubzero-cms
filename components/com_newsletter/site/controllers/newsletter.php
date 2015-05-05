@@ -32,6 +32,11 @@ namespace Components\Newsletter\Site\Controllers;
 
 use Components\Newsletter\Tables\Newsletter as Letter;
 use Hubzero\Component\SiteController;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Newsletter Controller
@@ -57,7 +62,6 @@ class Newsletter extends SiteController
 		parent::execute();
 	}
 
-
 	/**
 	 * Override parent build title method
 	 *
@@ -75,8 +79,7 @@ class Newsletter extends SiteController
 		}
 
 		//set title of browser window
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		App::get('document')->setTitle($this->_title);
 	}
 
 
@@ -207,9 +210,9 @@ class Newsletter extends SiteController
 		{
 			// Build the path if it doesn't exist
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($newsletterPdfFolder))
+			if (!\JFolder::create($newsletterPdfFolder))
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&id=' . $id),
 					Lang::txt('Unable to create the filepath.'),
 					'error'
@@ -258,7 +261,7 @@ class Newsletter extends SiteController
 		//make sure we have a file to output
 		if (!file_exists($newsletterPdf))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&id=' . $id),
 				Lang::txt('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
 				'error'

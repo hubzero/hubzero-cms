@@ -33,6 +33,10 @@ namespace Components\Config\Controllers;
 use Components\Config\Models;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Notify;
+use User;
+use App;
 
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'component.php');
 
@@ -67,7 +71,7 @@ class Component extends AdminController
 		// Access check.
 		if (!User::authorise('core.admin', $model->getState('component.option')))
 		{
-			return \JError::raiseWarning(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$form = $model->getForm();
@@ -77,7 +81,6 @@ class Component extends AdminController
 		if (count($errors = $this->getErrors()))
 		{
 			App::abort(500, implode("\n", $errors));
-			return false;
 		}
 
 		// Bind the form to the data.
@@ -87,8 +90,7 @@ class Component extends AdminController
 		}
 
 		// Get the document object.
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt('JGLOBAL_EDIT_PREFERENCES'));
+		App::get('document')->setTitle(Lang::txt('JGLOBAL_EDIT_PREFERENCES'));
 
 		Request::setVar('hidemainmenu', true);
 
@@ -115,8 +117,7 @@ class Component extends AdminController
 		\JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Initialise variables.
-		$app    = \JFactory::getApplication();
-		$model  = new Models\Component(); //$this->getModel('Component');
+		$model  = new Models\Component();
 		$form   = $model->getForm();
 		$data   = Request::getVar('jform', array(), 'post', 'array');
 		$id     = Request::getInt('id');
@@ -125,7 +126,7 @@ class Component extends AdminController
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin', $option))
 		{
-			$this->setRedirect('index.php', \Lang::txt('JERROR_ALERTNOAUTHOR'));
+			App::redirect('index.php', \Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
 
@@ -143,19 +144,19 @@ class Component extends AdminController
 			{
 				if ($errors[$i] instanceof Exception)
 				{
-					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+					Notify::warning($errors[$i]->getMessage());
 				}
 				else
 				{
-					$app->enqueueMessage($errors[$i], 'warning');
+					Notify::warning($errors[$i]);
 				}
 			}
 
 			// Save the data in the session.
-			$app->setUserState($this->_option . '.config.global.data', $data);
+			User::setState($this->_option . '.config.global.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false)
 			);
 			return false;
@@ -173,13 +174,12 @@ class Component extends AdminController
 		if ($return === false)
 		{
 			// Save the data in the session.
-			$app->setUserState($this->_option . '.config.global.data', $data);
+			User::setState($this->_option . '.config.global.data', $data);
 
 			// Save failed, go back to the screen and display a notice.
-			$message = \Lang::txt('JERROR_SAVE_FAILED', $model->getError());
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false),
-				$message,
+				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
 				'error'
 			);
 			return false;
@@ -189,7 +189,7 @@ class Component extends AdminController
 		switch (Request::getCmd('task'))
 		{
 			case 'apply':
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&refresh=1', false),
 					Lang::txt('COM_CONFIG_SAVE_SUCCESS')
 				);
@@ -197,7 +197,7 @@ class Component extends AdminController
 
 			case 'save':
 			default:
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component', false)
 				);
 				break;

@@ -33,6 +33,12 @@ namespace Components\Search\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Search\Models\Basic\Result\Set;
 use Components\Search\Models\Basic\Terms;
+use Document;
+use Pathway;
+use Request;
+use Plugin;
+use Config;
+use Lang;
 
 if (!function_exists('stem'))
 {
@@ -69,9 +75,7 @@ class Basic extends SiteController
 	 */
 	public function displayTask()
 	{
-		\JPluginHelper::importPlugin('search');
-
-		$app = \JFactory::getApplication();
+		Plugin::import('search');
 
 		// Set breadcrumbs
 		Pathway::append(
@@ -82,11 +86,11 @@ class Basic extends SiteController
 		$terms = new Terms(Request::getString('terms'));
 
 		// Set the document title
-		\JFactory::getDocument()->setTitle($terms->is_set() ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
+		Document::setTitle($terms->is_set() ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
 
 		// Get search results
 		$results = new Set($terms);
-		$results->set_limit($app->getUserStateFromRequest('global.list.limit', 'limit', Config::get('list_limit'), 'int'));
+		$results->set_limit(Request::getState('global.list.limit', 'limit', Config::get('list_limit'), 'int'));
 		$results->set_offset(Request::getInt('limitstart', 0));
 		$results->collect(Request::getBool('force-generic'));
 
@@ -109,7 +113,7 @@ class Basic extends SiteController
 			$total = $results->get_total_count();
 		}
 
-		$this->view->app     = $app;
+		$this->view->app     = \JFactory::getApplication();
 		$this->view->terms   = $terms;
 		$this->view->results = $results;
 		$this->view->total   = $total;

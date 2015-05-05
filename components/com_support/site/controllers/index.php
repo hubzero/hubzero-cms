@@ -31,6 +31,7 @@
 namespace Components\Support\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Document;
 use Pathway;
 use Lang;
 
@@ -49,7 +50,7 @@ class Index extends SiteController
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_option));
 
-		\JFactory::getDocument()->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)

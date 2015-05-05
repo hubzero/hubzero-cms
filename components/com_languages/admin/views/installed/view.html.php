@@ -8,10 +8,6 @@ defined('_JEXEC') or die;
 
 /**
  * Displays a list of the installed languages.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_languages
- * @since		1.6
  */
 class LanguagesViewInstalled extends JViewLegacy
 {
@@ -33,12 +29,12 @@ class LanguagesViewInstalled extends JViewLegacy
 	/**
 	 * @var object pagination information
 	 */
-	protected $pagination=null;
+	protected $pagination = null;
 
 	/**
 	 * @var array languages information
 	 */
-	protected $rows=null;
+	protected $rows = null;
 
 	/**
 	 * @var object user object
@@ -48,17 +44,16 @@ class LanguagesViewInstalled extends JViewLegacy
 	/**
 	 * Display the view
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Get data from the model
-		$this->ftp			= $this->get('Ftp');
-		$this->option		= $this->get('Option');
-		$this->pagination	= $this->get('Pagination');
-		$this->rows			= $this->get('Data');
-		$this->state		= $this->get('State');
+		$this->ftp        = $this->get('Ftp');
+		$this->option     = $this->get('Option');
+		$this->pagination = $this->get('Pagination');
+		$this->rows       = $this->get('Data');
+		$this->state      = $this->get('State');
 
-		$document = JFactory::getDocument();
-		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+		Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 		$this->addToolbar();
 		parent::display($tpl);
@@ -72,7 +67,7 @@ class LanguagesViewInstalled extends JViewLegacy
 	{
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
-		$canDo	= LanguagesHelper::getActions();
+		$canDo = LanguagesHelper::getActions();
 
 		Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_INSTALLED_TITLE'), 'langmanager.png');
 

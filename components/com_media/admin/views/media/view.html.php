@@ -17,13 +17,11 @@ class MediaViewMedia extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$app    = JFactory::getApplication();
 		$config = Component::params('com_media');
 
-		$style  = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+		$style  = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
-		$document = JFactory::getDocument();
-		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+		Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 		JHtml::_('behavior.framework', true);
 
@@ -34,7 +32,7 @@ class MediaViewMedia extends JViewLegacy
 		endif;
 
 		JHtml::_('behavior.modal');
-		$document->addScriptDeclaration("
+		Document::addScriptDeclaration("
 		jQuery(document).ready(function($){
 			document.preview = $.fancybox;
 		});");
@@ -56,13 +54,13 @@ class MediaViewMedia extends JViewLegacy
 			var basepath = '".$base."';
 			var viewstyle = '".$style."';
 		" ;
-		$document->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 
 		// Display form for FTP credentials?
 		// Don't set them here, as there are other functions called before this one if there is any file write operation
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$session = JFactory::getSession();
+		$session = App::get('session');
 		$state   = $this->get('state');
 		$this->assignRef('session', $session);
 		$this->assignRef('config', $config);

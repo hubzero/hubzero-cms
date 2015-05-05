@@ -20,15 +20,12 @@ class MediaViewImagesList extends JViewLegacy
 		// Do not allow cache
 		JResponse::allowCache(false);
 
-		$app = JFactory::getApplication();
-
 		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
 		if (Lang::isRTL()) :
 			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
 		endif;
 
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
+		Document::addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
 
 		$images  = $this->get('images');
 		$folders = $this->get('folders');
@@ -41,7 +38,6 @@ class MediaViewImagesList extends JViewLegacy
 
 		parent::display($tpl);
 	}
-
 
 	function setFolder($index = 0)
 	{

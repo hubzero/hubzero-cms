@@ -32,6 +32,7 @@ namespace Components\Whatsnew\Site\Controllers;
 
 use Components\Whatsnew\Helpers\Period;
 use Hubzero\Component\SiteController;
+use Document;
 use Pathway;
 use Request;
 use Config;
@@ -130,7 +131,7 @@ class Results extends SiteController
 		}
 		else
 		{
-			$limit = 5;
+			$this->view->limit = 5;
 			$activeareas = $areas;
 		}
 
@@ -217,8 +218,7 @@ class Results extends SiteController
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->_text($this->view->period);
 
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -271,16 +271,13 @@ class Results extends SiteController
 	 */
 	public function feedTask()
 	{
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		$app = \JFactory::getApplication();
 
 		// Set the mime encoding for the document
-		$jdoc = \JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
@@ -350,7 +347,7 @@ class Results extends SiteController
 
 		// Fetch results
 		$results = Event::trigger(
-			'whatsnew.onWhatsNew',
+			'whatsnew.onWhatsnew',
 			array(
 				$p,
 				$limit,
@@ -417,7 +414,7 @@ class Results extends SiteController
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
 				// Load individual item creator class
-				$item = new \JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 				$item->title       = $title;
 				$item->link        = $link;
 				$item->description = $description;
@@ -432,9 +429,6 @@ class Results extends SiteController
 				$doc->addItem($item);
 			}
 		}
-
-		// Output the feed
-		echo $doc->render();
 	}
 
 	/**
@@ -491,7 +485,7 @@ class Results extends SiteController
 			$areas = array();
 
 			// Trigger the functions that return the areas we'll be searching
-			$searchareas = Event::trigger('whatsnew.onWhatsNewAreas');
+			$searchareas = Event::trigger('whatsnew.onWhatsnewAreas');
 
 			// Build an array of the areas
 			foreach ($searchareas as $area)
