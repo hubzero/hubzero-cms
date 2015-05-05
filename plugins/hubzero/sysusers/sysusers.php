@@ -41,7 +41,7 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return  array
 	 */
-	public function onSystemOverview()
+	public function onSystemOverview($values = 'all')
 	{
 		$database = JFactory::getDBO();
 
@@ -50,16 +50,28 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
 		$response->label = 'Users';
 		$response->data = array();
 
-		$database->setQuery("SELECT COUNT(*) FROM `#__users`");
-		$response->data['total'] = $this->_obj('Total', $database->loadResult());
+		if ($values == 'all')
+		{
+			$database->setQuery("SELECT COUNT(*) FROM `#__users`");
+			$response->data['total'] = $this->_obj('Total', $database->loadResult());
 
-		$database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE `emailConfirmed` < 1");
-		$response->data['unconfirmed'] = $this->_obj('Unconfirmed', $database->loadResult());
+			$database->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE `emailConfirmed` < 1");
+			$response->data['unconfirmed'] = $this->_obj('Unconfirmed', $database->loadResult());
 
-		$response->data['confirmed'] = $this->_obj('Confirmed', ($response->data['total']->value - $response->data['unconfirmed']->value));
+			$response->data['confirmed'] = $this->_obj('Confirmed', ($response->data['total']->value - $response->data['unconfirmed']->value));
 
-		$database->setQuery("SELECT `lastvisitDate` FROM `#__users` ORDER BY `lastvisitDate` DESC LIMIT 1");
-		$response->data['last_visit'] = $this->_obj('Last user login', $database->loadResult());
+			$database->setQuery("SELECT `lastvisitDate` FROM `#__users` ORDER BY `lastvisitDate` DESC LIMIT 1");
+			$response->data['last_visit'] = $this->_obj('Last user login', $database->loadResult());
+		}
+
+		if ($values == 'all' || $values == 'short')
+		{
+			$database->setQuery("SELECT COUNT(*) FROM `#__session` WHERE `guest`=0 AND `time` >= UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) AND `client_id`=0;");
+			$response->data['site'] = $this->_obj('Active (site)', $database->loadResult());
+
+			$database->setQuery("SELECT COUNT(*) FROM `#__session` WHERE `guest`=0 AND `time` >= UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) AND `client_id`=1;");
+			$response->data['admin'] = $this->_obj('Active (admin)', $database->loadResult());
+		}
 
 		return $response;
 	}
