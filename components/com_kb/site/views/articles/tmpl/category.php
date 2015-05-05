@@ -116,9 +116,9 @@ $this->css()
 											 ->set('type', 'entry')
 											 ->set('vote', '')
 											 ->set('id', '');
-									if (!$this->juser->get('guest'))
+									if (!User::isGuest())
 									{
-										if ($row->get('user_id') == $this->juser->get('id'))
+										if ($row->get('user_id') == User::get('id'))
 										{
 											$view->set('vote', $row->get('vote'));
 											$view->set('id', $row->get('id'));

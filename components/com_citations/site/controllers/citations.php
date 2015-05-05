@@ -451,7 +451,6 @@ class Citations extends SiteController
 		//get any messages & display view
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->config   = $this->config;
-		$this->view->juser    = User::getRoot();
 		$this->view->display();
 	}
 

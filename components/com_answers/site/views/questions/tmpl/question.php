@@ -131,7 +131,7 @@ if (!$this->question->get('anonymous'))
 							<?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?>
 						</a>
 					</span>
-				<?php if ($this->question->get('created_by') == $this->juser->get('id') && $this->question->isOpen()) { ?>
+				<?php if ($this->question->get('created_by') == User::get('id') && $this->question->isOpen()) { ?>
 					<span>
 						<a class="icon-delete delete" href="<?php echo Route::url($this->question->link('delete')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>">
 							<?php echo Lang::txt('COM_ANSWERS_DELETE'); ?>
@@ -320,13 +320,13 @@ if (!$this->question->get('anonymous'))
 						<h3>
 							<?php echo Lang::txt('COM_ANSWERS_YOUR_ANSWER'); ?>
 						</h3>
-						<?php if (!$this->juser->get('guest')) { ?>
+						<?php if (!User::isGuest()) { ?>
 						<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform">
 							<p class="comment-member-photo">
 								<span class="comment-anchor"></span>
 								<?php
-									$jxuser = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
-									if (!$this->juser->get('guest')) {
+									$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
+									if (!User::isGuest()) {
 										$anon = 0;
 									} else {
 										$anon = 1;
@@ -450,16 +450,16 @@ if (!$this->question->get('anonymous'))
 					<?php } //if ($this->responses) { ?>
 				</div><!-- / .subject -->
 				<div class="aside">
-					<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != $this->juser->get('id')) { ?>
+					<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != User::get('id')) { ?>
 						<div class="container">
 							<p><a class="icon-add add btn" href="<?php
 							$route = Route::url($this->question->link('answer'), false, true);
-							echo ($this->juser->get('guest') ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route);
+							echo (User::isGuest() ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route);
 							?>"><?php echo Lang::txt('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 						</div><!-- / .container -->
 					<?php } ?>
 
-					<?php if ($this->juser->get('id') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
+					<?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
 						<div class="container">
 							<p class="info"><?php echo Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE') . ($this->question->config('banking') ? ' ' . Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS') : ''); ?></p>
 						</div><!-- / .container -->

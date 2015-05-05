@@ -70,7 +70,6 @@ class Posts extends SiteController
 	public function displayTask()
 	{
 		$this->view->config  = $this->config;
-		$this->view->juser   = User::getRoot();
 		$this->view->model   = $this->model;
 		$this->view->no_html = Request::getInt('no_html', 0);
 
@@ -112,8 +111,7 @@ class Posts extends SiteController
 			return $this->loginTask();
 		}
 
-		$this->view->juser      = User::getRoot();
-		$this->view->config     = $this->config;
+		$this->view->config = $this->config;
 
 		// Incoming
 		$this->view->no_html = Request::getInt('no_html', 0);
@@ -425,7 +423,6 @@ class Posts extends SiteController
 
 			//$this->view->name          = $this->_name;
 			$this->view->option        = $this->_option;
-			$this->view->juser         = User::getRoot();
 			$this->view->no_html       = $no_html;
 			$this->view->post_id       = $post_id;
 			$this->view->collection_id = $collection_id;

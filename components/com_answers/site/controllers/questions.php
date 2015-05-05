@@ -223,7 +223,6 @@ class Questions extends SiteController
 		));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser    = $this->juser;
 		$eview->question = $question;
 		$eview->row      = $row;
 		$eview->boundary = $from['multipart'];
@@ -692,7 +691,6 @@ class Questions extends SiteController
 
 		// Output HTML
 		$this->view->config = $this->config;
-		$this->view->juser  = $this->juser;
 
 		if (!isset($this->view->responding))
 		{
@@ -959,7 +957,6 @@ class Questions extends SiteController
 			));
 			$eview->option   = $this->_option;
 			$eview->sitename = Config::get('sitename');
-			$eview->juser    = $this->juser;
 			$eview->question = $row;
 			$eview->id       = $row->get('id', 0);
 			$eview->boundary = $from['multipart'];
@@ -1071,7 +1068,6 @@ class Questions extends SiteController
 				));
 				$eview->option   = $this->_option;
 				$eview->sitename = Config::get('sitename');
-				$eview->juser    = $this->juser;
 				$eview->question = $question;
 				$eview->id       = $question->get('id');
 				$eview->boundary = $from['multipart'];
@@ -1165,7 +1161,6 @@ class Questions extends SiteController
 		));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser    = $this->juser;
 		$eview->question = $question;
 		$eview->row      = $row;
 		$eview->id       = $response['question_id'];

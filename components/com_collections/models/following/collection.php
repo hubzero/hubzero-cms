@@ -91,7 +91,7 @@ class Collection extends Base
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire User object
 	 *
 	 * @param   string  $property
 	 * @return  mixed
@@ -126,7 +126,7 @@ class Collection extends Base
 			default:
 				if (!isset($this->_creator) || !is_object($this->_creator))
 				{
-					$this->_creator = \JUser::getInstance($this->_obj->get('created_by'));
+					$this->_creator = \User::getInstance($this->_obj->get('created_by'));
 				}
 				if ($property)
 				{

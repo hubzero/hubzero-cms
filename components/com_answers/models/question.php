@@ -701,7 +701,7 @@ class Question extends Base
 			return false;
 		}
 
-		if ($this->get('created_by') == $juser->get('username'))
+		if ($this->get('created_by') == $user->get('id'))
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
 			return false;

@@ -401,20 +401,20 @@ class Comment extends Model
 	/**
 	 * Check if a user has voted for this entry
 	 *
-	 * @param      integer $user_id Optinal user ID to set as voter
-	 * @return     integer
+	 * @param   integer  $user_id  Optinal user ID to set as voter
+	 * @return  integer
 	 */
-	public function voted($user_id=0)
+	public function voted($user_id = 0)
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$juser = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+			$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 			// See if a person from this IP has already voted in the last week
 			$tbl = new Tables\Vote($this->_db);
 			$this->set(
 				'voted',
-				$tbl->getVote($this->get('id'), $juser->get('id'), Request::ip(), 'comment')
+				$tbl->getVote($this->get('id'), $user->get('id'), Request::ip(), 'comment')
 			);
 		}
 
@@ -444,13 +444,13 @@ class Comment extends Model
 			return false;
 		}
 
-		$juser = ($user_id) ? User::getInstance($user_id) : User::getRoot();
+		$user = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 		$al = new Tables\Vote($this->_db);
 		$al->object_id = $this->get('id');
 		$al->type      = 'comment';
 		$al->ip        = Request::ip();
-		$al->user_id   = $juser->get('id');
+		$al->user_id   = $user->get('id');
 		$al->vote      = $vote;
 
 		// Has user voted before?
@@ -481,7 +481,7 @@ class Comment extends Model
 			}
 		}
 
-		if ($this->get('created_by') == $juser->get('id'))
+		if ($this->get('created_by') == $user->get('id'))
 		{
 			$this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
 			return false;

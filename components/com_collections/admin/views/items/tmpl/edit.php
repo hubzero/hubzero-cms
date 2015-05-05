@@ -202,7 +202,7 @@ function submitbutton(pressbutton)
 						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_MODIFIER'); ?>:</th>
 						<td>
 							<?php
-							$modifier = JUser::getInstance($this->row->get('modified_by'));
+							$modifier = User::getInstance($this->row->get('modified_by'));
 							echo $this->escape(stripslashes($modifier->get('name')));
 							?>
 							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />

@@ -172,7 +172,6 @@ class Articles extends SiteController
 		$this->view->title  = Lang::txt('COM_KB');
 		$this->view->catid  = $sect;
 		$this->view->config = $this->config;
-		$this->view->juser  = User::getRoot();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -254,7 +253,6 @@ class Articles extends SiteController
 
 		// Output HTML
 		$this->view->title   = Lang::txt('COM_KB');
-		$this->view->juser   = User::getRoot();
 		$this->view->helpful = $this->helpful;
 		$this->view->catid   = $this->view->section->get('id');
 
