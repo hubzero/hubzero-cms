@@ -137,7 +137,7 @@ if ($revertAllowed && $this->pub->accepted())
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT')); ?>:</td>
-							<td class="tbl-input"><?php echo $this->pub->type()->type; ?></td>
+							<td class="tbl-input"><?php echo $this->pub->masterType()->type; ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>:</td>
