@@ -767,18 +767,18 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$shortBody = \Components\Projects\Helpers\Html::replaceEmoIcons($shortBody);
 
 		// Style body text
-		$ebody  = '<span class="body';
+		$ebody  = '<div class="body';
 		$ebody .= strlen($shortBody) > 50 ? ' newline' : ' sameline';
 		$ebody .= '">' . preg_replace("/\n/", '<br />', trim($shortBody));
 		if ($shorten)
 		{
 			$ebody .= ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
 		}
-		$ebody .= '</span>';
+		$ebody .= '</div>';
 
 		if ($shorten)
 		{
-			$ebody .= '<span class="fullbody hidden">' . preg_replace("/\n/", '<br />', trim($body)) . '</span>' ;
+			$ebody .= '<div class="fullbody hidden">' . preg_replace("/\n/", '<br />', trim($body)) . '</div>' ;
 		}
 
 		return $ebody;

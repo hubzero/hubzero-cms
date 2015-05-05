@@ -137,21 +137,21 @@
 		padding-left: 0.5em;
 		border-bottom: 1px solid #ececec;
 	}
-	.infofeed span.body, .infofeed span.fullbody {
+	.infofeed .body, .infofeed .fullbody {
 		color: #000;
 		margin: 0;
 		padding: 0 3em 0 0;
 		display: inline-block;
 		text-align: justify;
 	}
-	.infofeed span.fullbody {
+	.infofeed .fullbody {
 		margin: 1.5em 1em 1em 5em;
 	}
-	.infofeed .comment-show span.fullbody {
+	.infofeed .comment-show .fullbody {
 		margin: 0;
 		font-size: 90%;
 	}
-	.infofeed span.newline {
+	.infofeed .newline {
 		display: block;
 		margin: 1.5em 1em 0 5em;
 	}

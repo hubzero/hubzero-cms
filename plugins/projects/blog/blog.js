@@ -74,8 +74,8 @@ HUB.ProjectMicroblog = {
 			$(el).on('click', function(e)
 			{
 				e.preventDefault();
-				var shortBody = $(el).parent().parent().find("span.body");
-				var longBody  = $(el).parent().parent().find("span.fullbody");
+				var shortBody = $(el).parent().parent().find("div.body");
+				var longBody  = $(el).parent().parent().find("div.fullbody");
 
 				$(shortBody).addClass('hidden');
 				$(longBody).removeClass('hidden');

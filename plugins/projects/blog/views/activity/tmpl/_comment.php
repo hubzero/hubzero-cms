@@ -60,22 +60,21 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 		</span>
 		<?php } ?>
 		<img class="comment-author" src="<?php echo $creator->getPicture($comment->admin); ?>" alt="" />
-		<span class="comment-show">
+		<div class="comment-show">
 			<span class="comment-details">
 				<span class="actor"><?php echo $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
 				<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($comment->created, true); ?></span>
 			</span>
-	<?php 	echo '<span class="body">' . $shortComment;
+	<?php 	echo '<div class="body">' . $shortComment;
 			if ($shorten)
 			{
 				echo ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
 			}
-			echo '</span>'; ?>
+			echo '</div>'; ?>
 	<?php 	if ($shorten)
 			{
-			echo '<span class="fullbody hidden">' . $longComment . '</span>' ;
+			echo '<div class="fullbody hidden">' . $longComment . '</div>' ;
 			}
 	?>
-		</span>
-
+		</div>
 	</li>
