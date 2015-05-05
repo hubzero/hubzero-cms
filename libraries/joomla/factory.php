@@ -122,9 +122,9 @@ abstract class JFactory
 	{
 		if (class_exists('\\App'))
 		{
-			if ($config = \App::get('config'))
+			if (\App::has('config'))
 			{
-				return $config;
+				return \App::get('config');
 			}
 		}
 
@@ -612,11 +612,11 @@ abstract class JFactory
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
 			$instance = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
+				new \Monolog\Logger(self::getConfig()->get('application_env')),
 				\JDispatcher::getInstance()
 			);
 
-			$path = self::getConfig()->getValue('config.log_path');
+			$path = self::getConfig()->get('log_path');
 			if (is_dir('/var/log/hubzero'))
 			{
 				$path = '/var/log/hubzero';
@@ -650,11 +650,11 @@ abstract class JFactory
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
 			$instance = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
+				new \Monolog\Logger(self::getConfig()->get('application_env')),
 				\JDispatcher::getInstance()
 			);
 
-			$path = self::getConfig()->getValue('config.log_path');
+			$path = self::getConfig()->get('log_path');
 			if (is_dir('/var/log/hubzero'))
 			{
 				$path = '/var/log/hubzero';

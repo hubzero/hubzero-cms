@@ -139,7 +139,7 @@ class JApplication extends JObject
 			$this->_createConfiguration(JPATH_CONFIGURATION . '/' . $config['config_file']);
 		}
 
-		\Event::trigger('application_onBeforeSessionCreate', ['app' => $this]);
+		\Event::trigger('application.onBeforeSessionCreate', ['app' => $this]);
 
 		// Create the session if a session name is passed.
 		if ($config['session'] !== false)
@@ -971,6 +971,11 @@ class JApplication extends JObject
 	{
 		JLoader::register('JConfig', $file);
 
+		if ($file == (JPATH_CONFIGURATION . DS . 'configuration.php'))
+		{
+			return JFactory::getConfig();
+		}
+
 		// Create the JConfig object.
 		$config = new JConfig;
 
@@ -1072,65 +1077,58 @@ class JApplication extends JObject
 		$session = JFactory::getSession();
 		$user = JFactory::getUser();
 
-		if ($this->getCfg('session_handler') == 'redis')
+		if ($this->getCfg('session_handler') == 'database')
 		{
-			if ($session->isNew())
+			$query = $db->getQuery(true);
+			$query->select($query->qn('session_id'))
+				->from($query->qn('#__session'))
+				->where($query->qn('session_id') . ' = ' . $query->q($session->getId()));
+
+			$db->setQuery($query, 0, 1);
+			$exists = $db->loadResult();
+
+			// If the session record doesn't exist initialise it.
+			if (!$exists)
 			{
-				$session->set('registry', new JRegistry('session'));
-				$session->set('user', new JUser);
+				$query->clear();
+
+				$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+				if ($session->isNew())
+				{
+					$query->insert($query->qn('#__session'))
+						->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
+						->values($query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
+					$db->setQuery($query);
+				}
+				else
+				{
+					$query->insert($query->qn('#__session'))
+						->columns(
+							$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
+							$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
+						)
+						->values(
+							$query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . (int) $user->get('guest') . ', ' .
+							$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username')) .  ', ' . $query->q($ip)
+						);
+
+					$db->setQuery($query);
+				}
+
+				// If the insert failed, exit the application.
+				if ( ($this->getClientId() != 4) && !$db->execute())
+				{
+					jexit($db->getErrorMSG());
+				}
 			}
-			return;
 		}
 
-		$query = $db->getQuery(true);
-		$query->select($query->qn('session_id'))
-			->from($query->qn('#__session'))
-			->where($query->qn('session_id') . ' = ' . $query->q($session->getId()));
-
-		$db->setQuery($query, 0, 1);
-		$exists = $db->loadResult();
-
-		// If the session record doesn't exist initialise it.
-		if (!$exists)
+		// Session doesn't exist yet, so create session variables
+		if ($session->isNew())
 		{
-			$query->clear();
-
-			$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-
-			if ($session->isNew())
-			{
-				$query->insert($query->qn('#__session'))
-					->columns($query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('time') .  ', ' . $query->qn('ip'))
-					->values($query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . $query->q((int) time()) . ', ' . $query->q($ip));
-				$db->setQuery($query);
-			}
-			else
-			{
-				$query->insert($query->qn('#__session'))
-					->columns(
-						$query->qn('session_id') . ', ' . $query->qn('client_id') . ', ' . $query->qn('guest') . ', ' .
-						$query->qn('time') . ', ' . $query->qn('userid') . ', ' . $query->qn('username') .  ', ' . $query->q('ip')
-					)
-					->values(
-						$query->q($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . (int) $user->get('guest') . ', ' .
-						$query->q((int) $session->get('session.timer.start')) . ', ' . (int) $user->get('id') . ', ' . $query->q($user->get('username')) .  ', ' . $query->q($ip)
-					);
-
-				$db->setQuery($query);
-			}
-
-			// If the insert failed, exit the application.
-			if ( ($this->getClientId() != 4) && !$db->execute())
-			{
-				jexit($db->getErrorMSG());
-			}
-
-			// Session doesn't exist yet, so create session variables
-			if ($session->isNew())
-			{
-				$session->set('registry', new JRegistry('session'));
-				$session->set('user', new JUser);
-			}
+			$session->set('registry', new JRegistry('session'));
+			$session->set('user', new JUser);
 		}
 	}
 
