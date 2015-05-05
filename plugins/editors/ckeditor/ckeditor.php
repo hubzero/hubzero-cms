@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * CKEditor Plugin
  */
-class plgEditorCkeditor extends JPlugin
+class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Base path for editor files
@@ -50,12 +50,11 @@ class plgEditorCkeditor extends JPlugin
 	public function onInit()
 	{
 		// add ckeditor stylesheet
-		Hubzero\Document\Assets::addPluginStylesheet('editors', 'ckeditor');
+		$this->css();
 
 		// add ckeditor
-		$document = JFactory::getDocument();
-		$document->addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
-		$document->addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
 	}
 
 	/**
@@ -82,7 +81,7 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onGetContent($id)
 	{
-		JFactory::getDocument()->addScriptDeclaration("
+		$this->js("
 			function getEditorContent(id) {
 				CKEDITOR.instances['$id'].updateElement();
 				return document.getElementById('$id').value;
@@ -191,7 +190,7 @@ class plgEditorCkeditor extends JPlugin
 
 		// output html and script
 		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
-		if (JFactory::getApplication()->isAdmin())
+		if (App::isAdmin())
 		{
 			$editor .= $this->_displayButtons($id, $buttons, $asset, $author);
 		}
@@ -430,13 +429,10 @@ class plgEditorCkeditor extends JPlugin
 		}
 		else
 		{
-			// database & document objects
-			$db  = JFactory::getDBO();
-			$doc = JFactory::getDocument();
-
 			// always get front end template
 			if (!$template)
 			{
+				$db = JFactory::getDBO();
 				$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
 				$template = $db->loadResult();
 			}
@@ -458,8 +454,10 @@ class plgEditorCkeditor extends JPlugin
 				array_push($css, $templateCss);
 			}
 
+			$head = Document::getHeadData();
+
 			// add already added stylesheets
-			foreach ($doc->_styleSheets as $sheet => $attribs)
+			foreach ($head['styleSheets'] as $sheet => $attribs)
 			{
 				array_push($css, $sheet);
 			}
