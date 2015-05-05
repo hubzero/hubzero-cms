@@ -160,7 +160,7 @@ class Tool extends Model
 	}
 
 	/**
-	 * Set and get a specific instance
+	 * Load a specific instance
 	 *
 	 * @return     void
 	 */
@@ -172,6 +172,20 @@ class Tool extends Model
 			$this->_version = Tool\Instance::getInstance($id, $parent);
 		}
 
+		return $this->_version;
+	}
+
+	/**
+	 * Get specific instance property
+	 *
+	 * @return     void
+	 */
+	public function instance($property)
+	{
+		if ($property)
+		{
+			return $this->_version->get($property);
+		}
 		return $this->_version;
 	}
 
@@ -198,6 +212,68 @@ class Tool extends Model
 	}
 
 	/**
+	 * Get last status change
+	 *
+	 * @return     boolean
+	 */
+	public function lastStatusChange($property = NULL, $as = NULL)
+	{
+		return $this->lastUpdate($property, $as, true);
+
+	}
+
+	/**
+	 * Get history
+	 *
+	 * @return  array
+	 */
+	public function history($filters = array())
+	{
+		// Get log model
+		$log = $this->log($this->get('id'), $this->get('name'));
+
+		return $log->getHistory($filters);
+	}
+
+	/**
+	 * Get last update
+	 *
+	 * @return     boolean
+	 */
+	public function lastUpdate($property = NULL, $as = NULL, $statusChange = false)
+	{
+		// Get log model
+		$log = $this->log($this->get('id'), $this->get('name'));
+
+		if (!isset($this->_lastUpdate))
+		{
+			$this->_lastUpdate = $log->getLastUpdate($statusChange);
+		}
+		if ($property)
+		{
+			if ($property == 'recorded')
+			{
+				$this->set('recorded', $this->_lastUpdate->recorded);
+				return $this->_date('recorded', $as);
+			}
+			if ($property == 'actor')
+			{
+				if (!isset($this->_actor) || !($this->_actor instanceof \Hubzero\User\Profile))
+				{
+					$this->_actor = \Hubzero\User\Profile::getInstance($this->_lastUpdate->actor);
+				}
+				if ($as)
+				{
+					$as = ($as == 'id' ? 'uidNumber' : $as);
+					return $this->_actor->get($as);
+				}
+			}
+			return isset($this->_lastUpdate->$property) ? $this->_lastUpdate->$property : NULL;
+		}
+		return $this->_lastUpdate;
+	}
+
+	/**
 	 * Get a status model
 	 *
 	 * @return     void
@@ -212,6 +288,8 @@ class Tool extends Model
 		if (!isset($this->_status))
 		{
 			$this->_status = new Tool\Status($this->get('status'));
+			$options = new \JRegistry($this->_status->get('options'));
+			$this->_status->set('options', $options);
 		}
 		if ($property)
 		{
@@ -242,21 +320,48 @@ class Tool extends Model
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted created timestamp
 	 *
-	 * @param	   string $as What format to return
-	 * @return	   boolean
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function created($as='')
+	{
+		return $this->_date('created', $as);
+	}
+
+	/**
+	 * Return a formatted created timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
 	 */
 	public function statusChanged($as='')
 	{
+		return $this->_date('status_changed', $as);
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param      string $key Field to return
+	 * @param      string $as  What data to return
+	 * @return     string
+	 */
+	protected function _date($key, $as='')
+	{
+		if ($this->get($key) == $this->_db->getNullDate())
+		{
+			return NULL;
+		}
 		switch (strtolower($as))
 		{
 			case 'date':
-				return Date::of($this->get('status_changed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return Date::of($this->get('status_changed'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+				return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			case 'datetime':
@@ -264,11 +369,11 @@ class Tool extends Model
 			break;
 
 			case 'timeago':
-				return \Components\Projects\Helpers\Html::showTime($this->get('status_changed'), true);
+				return \Components\Projects\Helpers\Html::showTime($this->get($key), true);
 			break;
 
 			default:
-				return $this->get('status_changed');
+				return $this->get($key);
 			break;
 		}
 	}
@@ -475,5 +580,117 @@ class Tool extends Model
 		}
 		return $this->_statusChanger;
 	}
-}
 
+	/**
+	 * Is sandbox open?
+	 *
+	 * @return     boolean
+	 */
+	public function isOpenDev()
+	{
+		if ($this->get('opendev') == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is source open?
+	 *
+	 * @return     boolean
+	 */
+	public function isOpenSource()
+	{
+		if ($this->get('opensource') == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is source open?
+	 *
+	 * @return     boolean
+	 */
+	public function isPublished()
+	{
+		if ($this->get('published') == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Tool repo exists
+	 *
+	 * @return     boolean
+	 */
+	public function repoExists()
+	{
+		if ($this->get('status') > 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Tool publication
+	 *
+	 * @return     boolean
+	 */
+	public function publication()
+	{
+		return false;
+	}
+
+	/**
+	 * Is tool in particular status
+	 *
+	 * @return     boolean
+	 */
+	public function inStatus($status = NULL)
+	{
+		switch ($status)
+		{
+			case 'created':
+				return $this->status('status') == 'created' ? true : false;
+			break;
+
+			case 'uploaded':
+				return $this->status('status') == 'uploaded' ? true : false;
+			break;
+
+			case 'installed':
+				return $this->status('status') == 'installed' ? true : false;
+			break;
+
+			case 'draft':
+				return $this->get('status') < 5 ? true : false;
+			break;
+		}
+	}
+
+	/**
+	 * Is action required?
+	 *
+	 * @return     boolean
+	 */
+	public function actionRequired($type = 'user')
+	{
+		$next_actor = $this->status('next_actor');
+		if ($type == 'user')
+		{
+			$required = $next_actor == 1 ? false : true;
+		}
+		else
+		{
+			$required = $next_actor == 1 ? true : false;
+		}
+
+		return $required;
+	}
+}

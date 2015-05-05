@@ -93,7 +93,7 @@ class Instance extends Model
 	 * @param      mixed $oid object ID
 	 * @return     object Todo
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=null, $parent=null)
 	{
 		static $instances;
 
@@ -117,7 +117,7 @@ class Instance extends Model
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new self($oid);
+			$instances[$key] = new self($oid, $parent);
 		}
 
 		return $instances[$key];

@@ -59,8 +59,7 @@ class ToolLog extends \JTable
 	 * @return     object list
 	 */
 	public function getHistory($parent_name = NULL,
-		$parent_id = NULL, $instance_id = 0, $status_changed = 0,
-		$sortby = 'L.recorded', $sortdir = 'DESC', $admin = 0 )
+		$parent_id = NULL, $instance_id = 0, $filters = array())
 	{
 		if ($parent_name === NULL)
 		{
@@ -78,10 +77,10 @@ class ToolLog extends \JTable
 		{
 			return false;
 		}
-
-		$sortby = $sortby ? $sortby : 'L.recorded';
-		$sortdir = $sortdir ? $sortdir : 'DESC';
-		$sortdir = $sortdir == 'DESC' ? $sortdir : 'ASC';
+		$status_changed = isset($filters['status_changed']) ? $filters['status_changed'] : 0;
+		$sortby         = !empty($filters['sortby']) ? $filters['sortby'] : 'L.recorded';
+		$sortdir        = !empty($filters['sortdir']) ? $filters['sortdir'] : 'DESC';
+		$admin          = isset($filters['admin']) ? $filters['admin'] : 0;
 
 		$query  = "SELECT L.*, x.name as actor_name, x.username as username, x.picture ";
 		$query .= "FROM $this->_tbl as L ";

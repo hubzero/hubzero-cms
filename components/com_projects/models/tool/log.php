@@ -117,6 +117,39 @@ class Log extends Model
 	}
 
 	/**
+	 * getLastUpdate
+	 *
+	 * @param      string $name
+	 * @return     object
+	 */
+	public function getLastUpdate($statusChange = false)
+	{
+		return $this->_tbl->getLastUpdate(
+			$this->get('instance_id'),
+			$this->get('parent_name'),
+			$this->get('parent_id'),
+			$statusChange
+		);
+	}
+
+	/**
+	 * Get item history
+	 *
+	 *
+	 * @param      array $filters
+	 * @return     object list
+	 */
+	public function getHistory($filters = array())
+	{
+		return $this->_tbl->getHistory(
+			$this->get('parent_name'),
+			$this->get('parent_id'),
+			$this->get('instance_id'),
+			$filters
+		);
+	}
+
+	/**
 	 * Determine changes
 	 *
 	 * @param      object $old  Tool model

@@ -104,7 +104,7 @@ class ToolInstance extends  \JTable
 	 */
 	public function loadFromParent($parent = NULL, $version = 'dev')
 	{
-		if ($parent === NULL || (!is_numeric($parent) || is_string($parent)))
+		if ($parent === NULL)
 		{
 			return false;
 		}
