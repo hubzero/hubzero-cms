@@ -333,7 +333,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		$output->message = '';
 
 		$srv = $this->config->get('orcid_service', 'members');
-		$url = Request::scheme() . '://' . $this->_services[$srv] . '/orcid-profile';
+		$url = Request::scheme() . '://' . $this->_services[$srv] . '/v1.2' . '/orcid-profile';
+
 		$tkn = $this->config->get('orcid_' . $srv . '_token');
 
 		if (!$tkn)
