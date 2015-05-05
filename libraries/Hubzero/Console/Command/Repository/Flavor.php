@@ -36,9 +36,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Content\Migration\Base as Migration;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Repository flavor class
  **/
@@ -66,7 +63,7 @@ class Flavor extends Base implements CommandInterface
 			$this->output->error('Please provide the flavor you would like to use');
 		}
 
-		$database  = \JFactory::getDbo();
+		$database  = App::get('db');
 		$migration = new Migration($database);
 
 		switch ($flavor)

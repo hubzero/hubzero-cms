@@ -30,8 +30,8 @@
 
 namespace Hubzero\Console\Command;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Utility\Date;
+use Hubzero\Config\Registry;
 
 /**
  * Database class
@@ -58,15 +58,12 @@ class Database extends Base implements CommandInterface
 	 **/
 	public function dump()
 	{
-		$db = \JFactory::getDbo();
-
-		$tables   = $db->getTableList();
-		$prefix   = $db->getPrefix();
-		$excludes = array();
-		$config   = new \JConfig();
-		$now      = new \Hubzero\Utility\Date();
+		$tables   = App::get('db')->getTableList();
+		$prefix   = App::get('db')->getPrefix();
+		$excludes = [];
+		$now      = new Date;
 		$exclude  = '';
-		$includes = ($this->arguments->getOpt('include-table')) ? (array)$this->arguments->getOpt('include-table') : array();
+		$includes = (array)$this->arguments->getOpt('include-table', []);
 
 		if (!$this->arguments->getOpt('all-tables'))
 		{
@@ -75,7 +72,7 @@ class Database extends Base implements CommandInterface
 			{
 				if (strpos($table, $prefix) !== 0 && !in_array(str_replace('#__', $prefix, $table), $includes))
 				{
-					$excludes[] = $config->db . '.' . $table;
+					$excludes[] = Config::get('db') . '.' . $table;
 				}
 				elseif (in_array(str_replace('#__', $prefix, $table), $includes))
 				{
@@ -98,7 +95,7 @@ class Database extends Base implements CommandInterface
 		$filename = tempnam($home, "{$hostname}.mysql.dump." . $now->format('Y.m.d') . ".sql.");
 
 		// Build command
-		$cmd = "mysqldump -u {$config->user} -p'{$config->password}' {$config->db} --routines {$exclude} > {$filename}";
+		$cmd = "mysqldump -u " . Config::get('user') . " -p'" . Config::get('password') . "' " . Config::get('db') . " --routines {$exclude} > {$filename}";
 
 		exec($cmd);
 
@@ -126,15 +123,14 @@ class Database extends Base implements CommandInterface
 		}
 
 		// First, set some things aside that we need to reapply after the update
-		$params                           = array();
+		$params                           = [];
 		$params['com_system']             = \Component::params('com_system');
 		$params['com_tools']              = \Component::params('com_tools');
 		$params['com_usage']              = \Component::params('com_usage');
 		$params['com_users']              = \Component::params('com_users');
 		$params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
 
-		$db     = \JFactory::getDbo();
-		$tables = $db->getTableList();
+		$tables = App::get('db')->getTableList();
 
 		// See if we should drop all tables first
 		if ($this->arguments->getOpt('drop-all-tables'))
@@ -142,14 +138,13 @@ class Database extends Base implements CommandInterface
 			$this->output->addLine('Dropping all tables...');
 			foreach ($tables as $table)
 			{
-				$db->dropTable($table);
+				App::get('db')->dropTable($table);
 			}
 		}
 
 		// Craft the command to be executed
 		$infile = escapeshellarg($infile);
-		$config = new \JConfig();
-		$cmd    = "mysql -u {$config->user} -p'{$config->password}' -D {$config->db} < {$infile}";
+		$cmd    = "mysql -u " . Config::get('user') . " -p'" . Config::get('password') . "' -D " . Config::get('db') . " < {$infile}";
 
 		$this->output->addLine('Loading data from ' . $infile . '...');
 
@@ -163,9 +158,11 @@ class Database extends Base implements CommandInterface
 			{
 				if (!method_exists($v, 'toArray'))
 				{
-					$v = new \JRegistry($v);
+					$v = new Registry($v);
 				}
 
+				// @FIXME: get rid of JStuff
+				$db    = \JFactory::getDbo();
 				$table = new \JTableExtension($db);
 				$table->load(array('name'   => $k));
 				$table->bind(array('params' => $v->toArray()));

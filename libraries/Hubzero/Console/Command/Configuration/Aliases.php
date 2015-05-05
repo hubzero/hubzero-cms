@@ -35,9 +35,6 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Aliases configuration class for adding command aliases
  **/

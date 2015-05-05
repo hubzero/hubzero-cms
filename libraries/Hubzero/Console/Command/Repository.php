@@ -35,9 +35,6 @@ use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 use Hubzero\Console\Command\Utilities\Git;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Repository class
  **/
@@ -62,7 +59,7 @@ class Repository extends Base implements CommandInterface
 		parent::__construct($output, $arguments);
 
 		// Overriding default document root?
-		$directory = JPATH_ROOT;
+		$directory = PATH_CORE;
 		if ($this->arguments->getOpt('r'))
 		{
 			if (is_dir($this->arguments->getOpt('r')) && is_readable($this->arguments->getOpt('r')))

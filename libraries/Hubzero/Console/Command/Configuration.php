@@ -34,9 +34,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Help class for rendering utility-wide help documentation
  **/

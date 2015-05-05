@@ -35,9 +35,6 @@ use Hubzero\Console\Exception\UnsupportedCommandException;
 use Hubzero\Console\Exception\UnsupportedTaskException;
 use Hubzero\Console\Exception\InvalidPropertyException;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Console arguments class
  **/

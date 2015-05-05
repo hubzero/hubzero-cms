@@ -34,9 +34,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Content\Migration\Base as Migration;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Extension class
  **/
@@ -130,8 +127,7 @@ class Extension extends Base implements CommandInterface
 	 **/
 	private function alter($method)
 	{
-		$database  = \JFactory::getDbo();
-		$migration = new Migration($database);
+		$migration = new Migration(App::get('db'));
 
 		$name = null;
 		if ($this->arguments->getOpt('name'))

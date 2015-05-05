@@ -34,9 +34,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Environment class
  **/
@@ -49,9 +46,8 @@ class Environment extends Base implements CommandInterface
 	 **/
 	public function execute()
 	{
-		$config = new \JConfig();
 		$this->output->addLine('Current user     : ' . Config::get('user_name') . ' <' . Config::get('user_email') . '>');
-		$this->output->addLine('Current database : ' . $config->db);
+		$this->output->addLine('Current database : ' . \Config::get('db'));
 	}
 
 	/**

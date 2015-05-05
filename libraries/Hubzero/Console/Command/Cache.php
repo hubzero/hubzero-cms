@@ -32,9 +32,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Filesystem\Filesystem;
 
 /**
  * Cache command class
@@ -72,15 +70,15 @@ class Cache extends Base implements CommandInterface
 	public function clear()
 	{
 		// Path to cache folder
-		$cacheDir = JPATH_ROOT . DS . 'cache' . DS . '*';
+		$cacheDir = PATH_APP . DS . 'cache' . DS . '*';
 
 		// Remove recursively
 		foreach (glob($cacheDir) as $cacheFileOrDir)
 		{
-			$readable = str_replace(JPATH_ROOT . DS, '', $cacheFileOrDir);
+			$readable = str_replace(PATH_APP . DS, '', $cacheFileOrDir);
 			if (is_dir($cacheFileOrDir))
 			{
-				if (!\JFolder::delete($cacheFileOrDir))
+				if (!with(new Filesystem)->deleteDirectory($cacheFileOrDir))
 				{
 					$this->output->addLine('Unable to delete cache directory: ' . $readable, 'error');
 				}
@@ -92,7 +90,7 @@ class Cache extends Base implements CommandInterface
 			else
 			{
 				// Don't delete index.html
-				if ($cacheFileOrDir != JPATH_ROOT . DS . 'cache' . DS . 'index.html')
+				if ($cacheFileOrDir != PATH_APP . DS . 'cache' . DS . 'index.html')
 				{
 					if (!@unlink($cacheFileOrDir))
 					{

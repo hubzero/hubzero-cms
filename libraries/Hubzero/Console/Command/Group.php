@@ -33,9 +33,6 @@ namespace Hubzero\Console\Command;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Group command class
  **/

@@ -33,9 +33,6 @@ namespace Hubzero\Console\Command;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Migration class
  **/
@@ -405,7 +402,7 @@ class Migration extends Base implements CommandInterface
 				'Specify the document root through which the the application
 				will search for migrations directories. The primary use case
 				for this is specifying an alternate directory for testing.
-				By default, it will use the JPATH_ROOT constant for
+				By default, it will use the PATH_CORE constant for
 				the document root.',
 				'Example: -r=/www/myhub/unittests/migrations'
 			)

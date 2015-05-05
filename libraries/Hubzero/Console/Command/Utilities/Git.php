@@ -214,15 +214,15 @@ class Git
 		}
 		if (isset($length))
 		{
-			$args['length'] = '-'.(int)$length;
+			$args['length'] = '-' . (int)$length;
 		}
 		if (isset($start))
 		{
-			$args['skip'] = '--skip='.(int)$start;
+			$args['skip'] = '--skip=' . (int)$start;
 		}
 		if (isset($format))
 		{
-			$args['format'] = '--pretty=format:"'.$format.'"';
+			$args['format'] = '--pretty=format:' . escapeshellarg($format);
 		}
 		if (isset($search))
 		{
@@ -627,7 +627,7 @@ class Git
 	 **/
 	private function call($cmd, $arguments=array())
 	{
-		$command  = "{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '') . ' 2>&1';
+		$command  = escapeshellcmd("{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '')) . ' 2>&1';
 		$response = shell_exec($command);
 
 		return $response;

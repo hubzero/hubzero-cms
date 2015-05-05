@@ -33,9 +33,6 @@ namespace Hubzero\Console\Command;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Help class for rendering utility-wide help documentation
  *
@@ -128,7 +125,7 @@ class Help extends Base implements CommandInterface
 			if (is_file($dir . DS . $file) && strpos($file, '.php') !== false)
 			{
 				$npath      = str_replace('\\', DS, __NAMESPACE__);
-				$namespace  = str_replace(JPATH_ROOT . DS . 'libraries' . DS . $npath . DS, '', $dir . DS . $file);
+				$namespace  = str_replace(PATH_CORE . DS . 'libraries' . DS . $npath . DS, '', $dir . DS . $file);
 				$namespace  = str_replace(DS, '\\', $namespace);
 				$class      = str_replace('.php', '', $namespace);
 

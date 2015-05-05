@@ -35,9 +35,6 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Cache command class
  **/
@@ -73,7 +70,7 @@ class Css extends Base implements CommandInterface
 	 */
 	public function clear()
 	{
-		$cacheDir = JPATH_ROOT . DS . 'cache';
+		$cacheDir = PATH_APP . DS . 'cache';
 		$files = array('site.css', 'site.less.cache');
 
 		// Remove each file
