@@ -175,8 +175,11 @@ $this->css('create.css')
 				<?php echo Lang::txt(
 					'COM_CONTRIBUTE_AUTHORIZATION_LABEL',
 					Config::get('sitename'),
+					Config::get('sitename'),
 					Config::get('sitename')
 				); ?><br /><br />
+				<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORIZATION_LINKS_LABEL'); ?>
+				<br /><br />
 				<?php echo Lang::txt(
 					'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
 					Config::get('sitename'),
