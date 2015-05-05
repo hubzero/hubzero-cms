@@ -91,7 +91,7 @@ class GenericRenderer
 
 	protected function date()
 	{
-		if (isset($this->item['publicationyear'])) 
+		if (isset($this->item['publicationyear']))
 		{
 			return array('<td>', h($this->item['publicationyear']), '</td>');
 		}
@@ -188,7 +188,7 @@ class GenericRenderer
 			if (isset($this->item[$k]) && trim($this->item[$k]))
 			{
 				$rv[] = array(
-					'<td>', 
+					'<td>',
 					$this->item[$k], $nums ? ', ' . str_replace(', (', '(', implode(', ', $nums)) : NULL,
 					'</td>'
 				);
@@ -251,7 +251,7 @@ class GenericRenderer
 			$this->language(),
 			$this->doi(),
 			'</tr></tbody></table>',
-			$this->tags(), 
+			$this->tags(),
 			$this->related()
 		);
 	}

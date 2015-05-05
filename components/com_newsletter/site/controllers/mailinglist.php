@@ -594,7 +594,7 @@ class Mailinglist extends SiteController
 		$newsletterMailinglistEmail->save($newsletterMailinglistEmail);
 
 		//inform user
-		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS');
+		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS'));
 
 		//if were not logged in go back to newsletter page
 		if (User::isGuest())
