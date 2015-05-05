@@ -153,7 +153,7 @@ if ($this->getError())
 							<?php
 							if ($this->tag->get('modified_by'))
 							{
-								$editor = JUser::getInstance($this->tag->get('modified_by'));
+								$editor = User::getInstance($this->tag->get('modified_by'));
 								echo $this->escape(stripslashes($editor->get('name')));
 							}
 							else

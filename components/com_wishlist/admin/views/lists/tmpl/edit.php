@@ -125,7 +125,7 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$creator = $this->row->created_by ? $this->row->created_by : $this->juser->get('id');
+						$creator = $this->row->created_by ? $this->row->created_by : User::get('id');
 						$editor  = User::getInstance($creator);
 						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : Lang::txt('unknown');
 						?>

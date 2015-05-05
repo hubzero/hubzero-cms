@@ -109,18 +109,18 @@ class Wish extends \JTable
 	 * @param   string   $listid   List ID
 	 * @param   array    $filters  Filters to build query on
 	 * @param   integer  $admin    User is admin?
-	 * @param   object   $juser    current user
+	 * @param   object   $user     current user
 	 * @return  mixed    False if error, integer on success
 	 */
-	public function get_count($listid, $filters, $admin, $juser=NULL)
+	public function get_count($listid, $filters, $admin, $user=NULL)
 	{
 		if ($listid === NULL)
 		{
 			return false;
 		}
-		if (is_object($juser))
+		if (is_object($user))
 		{
-			$uid = $juser->get('id');
+			$uid = $user->get('id');
 		}
 		else
 		{
@@ -217,19 +217,19 @@ class Wish extends \JTable
 	 * @param   integer  $listid   List ID
 	 * @param   array    $filters  Filters to build query from
 	 * @param   integer  $admin    Admin access?
-	 * @param   object   $juser    JUser
+	 * @param   object   $user     User
 	 * @param   integer  $fullinfo Return fullinfo or not?
 	 * @return  mixed    False if error, array on success
 	 */
-	public function get_wishes($listid, $filters, $admin, $juser=NULL, $fullinfo = 1)
+	public function get_wishes($listid, $filters, $admin, $user=NULL, $fullinfo = 1)
 	{
 		if ($listid === NULL)
 		{
 			return false;
 		}
-		if (is_object($juser))
+		if (is_object($user))
 		{
-			$uid = $juser->get('id');
+			$uid = $user->get('id');
 		}
 		else
 		{

@@ -436,7 +436,6 @@ class Mailinglist extends SiteController
 
 		//set vars for view
 		$this->view->title       = $this->_title;
-		$this->view->juser       = User::getRoot();
 		$this->view->mailinglist = $mailinglist;
 
 		//output

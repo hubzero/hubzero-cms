@@ -376,7 +376,7 @@ class Threads extends AdminController
 		if (!$id)
 		{
 			$this->view->row->parent = $parent;
-			$this->view->row->created_by = $this->juser->get('id');
+			$this->view->row->created_by = User::get('id');
 		}
 
 		if ($this->view->row->parent)

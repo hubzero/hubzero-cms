@@ -34,6 +34,12 @@ use Components\Feedaggregator\Models;
 use Hubzero\Component\SiteController;
 use Guzzle\Http\Client;
 use Exception;
+use Document;
+use Request;
+use Route;
+use User;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feeds.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'posts.php');
@@ -51,9 +57,8 @@ class Posts extends SiteController
 	 */
 	public function displayTask($posts = NULL)
 	{
-		$document = \JFactory::getDocument();
-		$userId = $this->juser->id;
-		$authlevel = \JAccess::getAuthorisedViewLevels($userId);
+		$userId = User::get('id');
+		$authlevel = User::getAuthorisedViewLevels();
 		$access_level = 3; //author_level
 
 		if (in_array($access_level, $authlevel) && User::get('id'))
@@ -347,11 +352,10 @@ class Posts extends SiteController
 		$posts = $model->getPostsByStatus(1000,0,2);
 
 		// Set the mime encoding for the document
-		$doc = \JFactory::getDocument();
-		$doc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 
 		$doc->title       = Config::get('sitename') . ' ' . Lang::txt('COM_FEEDAGGREGATOR_AGGREGATED_FEED');
 		$doc->description = Lang::txt(Config::get('sitename') . ' ' . Lang::txt('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
@@ -364,7 +368,7 @@ class Posts extends SiteController
 			foreach ($posts as $post)
 			{
 				// Load individual item creator class
-				$item = new \JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 
 				// sanitize ouput
 				$item->title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
@@ -381,12 +385,5 @@ class Posts extends SiteController
 				$doc->addItem($item);
 			}
 		}
-
-		// Output the feed
-		header("Content-Type: application/rss+xml");
-		echo $doc->render();
-
-		//do not output view
-		die;
 	}
 }

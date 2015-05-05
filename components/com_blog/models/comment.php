@@ -34,6 +34,8 @@ use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Lang;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 
@@ -143,7 +145,7 @@ class Comment extends Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
 	 * @param   string  $property  What data to return
 	 * @param   mixed   $default   Default value

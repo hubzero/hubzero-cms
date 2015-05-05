@@ -67,7 +67,7 @@ class Job extends Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
 	 * @return     mixed
 	 */

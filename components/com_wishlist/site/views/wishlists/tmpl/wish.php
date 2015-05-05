@@ -225,7 +225,7 @@ $this->css()
 							</li>
 						<?php } ?>
 					<?php } ?>
-					<?php if (($this->wishlist->access('manage') && $this->wishlist->get('admin') != 3) || $this->juser->get('id') == $this->wish->get('proposed_by')) { ?>
+					<?php if (($this->wishlist->access('manage') && $this->wishlist->get('admin') != 3) || User::get('id') == $this->wish->get('proposed_by')) { ?>
 						<li>
 							<a class="edit" href="<?php echo Route::url($this->wish->link('edit')); ?>">
 								<?php echo ucfirst(Lang::txt('COM_WISHLIST_ACTION_EDIT')); ?>
@@ -237,7 +237,7 @@ $this->css()
 								<?php echo Lang::txt('COM_WISHLIST_REPORT_ABUSE'); ?>
 							</a>
 						</li>
-					<?php if ($this->juser->get('id') == $this->wish->get('proposed_by') && $this->wish->isOpen()) { ?>
+					<?php if (User::get('id') == $this->wish->get('proposed_by') && $this->wish->isOpen()) { ?>
 						<li>
 							<a class="delete" href="<?php echo Route::url($this->wish->link('withdraw')); ?>">
 								<?php echo Lang::txt('COM_WISHLIST_ACTION_WITHDRAW_WISH'); ?>
@@ -444,9 +444,9 @@ $this->css()
 							</label>
 
 							<label<?php if ($this->wishlist->get('category') == 'resource') { echo ' class="grantstatus"'; } ?>>
-								<input type="radio" name="status" value="granted" <?php echo ($this->wish->get('status') == 1) ? 'checked="checked"' : ''; echo ($this->wish->get('assigned') && $this->wish->get('assigned') != $this->juser->get('id')) ? 'disabled="disabled"' : ''; ?> />
+								<input type="radio" name="status" value="granted" <?php echo ($this->wish->get('status') == 1) ? 'checked="checked"' : ''; echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : ''; ?> />
 								<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
-							<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != $this->juser->get('id')) { ?>
+							<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) { ?>
 								<span class="forbidden"> - <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>
 							<?php }
 							// Throws error Hubzero\Base\Model; Method [versions] does not exist.
@@ -508,7 +508,7 @@ $this->css()
 									<input class="option" type="text" maxlength="4" name="amount" id="field-amount" value=""<?php echo ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : ''; ?> />
 									<span>
 										(<?php echo Lang::txt('COM_WISHLIST_NOTICE_OUT_OF'); ?> <?php echo $this->wish->get('funds'); ?> <?php echo Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE'); ?>
-										<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_WISHLIST_ACCOUNT'); ?></a>)
+										<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_WISHLIST_ACCOUNT'); ?></a>)
 									</span>
 								</label>
 
@@ -654,7 +654,7 @@ $this->css()
 			<p>
 				<?php 
 					$link = Route::url($this->wish->link('comment'));
-					if ($this->juser->get('guest'))
+					if (User::isGuest())
 					{
 						$link = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($link));
 					}
@@ -666,7 +666,7 @@ $this->css()
 		</div><!-- / .aside -->
 	</section><!-- / .below section -->
 
-	<?php if (!$this->juser->get('guest')) { //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) { ?>
+	<?php if (!User::isGuest()) { //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) { ?>
 		<section class="below section">
 			<div class="subject">
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
@@ -675,7 +675,7 @@ $this->css()
 					</h3>
 					<p class="comment-member-photo">
 						<?php
-							$jxuser = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+							$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
 						?>
 						<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 					</p>
@@ -785,7 +785,7 @@ $this->css()
 						<input type="hidden" name="version" value="<?php echo $this->wish->plan()->get('version', 1); ?>" />
 						<input type="hidden" name="wishid" value="<?php echo $this->wish->get('id'); ?>" />
 						<input type="hidden" name="option" value="'<?php echo $this->option; ?>" />
-						<input type="hidden" name="created_by" value="<?php echo $this->juser->get('id'); ?>" />
+						<input type="hidden" name="created_by" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="task" value="saveplan" />
 
 						<?php echo JHTML::_('form.token'); ?>

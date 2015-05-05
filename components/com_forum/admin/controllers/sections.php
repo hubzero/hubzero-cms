@@ -146,7 +146,7 @@ class Sections extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created_by', User::get('id'));
 		}
 
 		$m = new AdminSection();

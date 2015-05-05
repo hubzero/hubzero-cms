@@ -69,16 +69,16 @@ $this->css()
 					<input type="hidden" name="e" value="<?php echo Request::getVar('e', ''); ?>" />
 				</p>
 
-				<?php if ($this->mailinglist->id == '-1' && $this->juser->get('guest') == 1) : ?>
+				<?php if ($this->mailinglist->id == '-1' && User::get('guest') == 1) : ?>
 					<ol>
 						<li>
-							<?php if ($this->juser->get('guest')) : ?>
+							<?php if (User::isGuest()) : ?>
 								<a href="login?return=<?php echo base64_encode( $_SERVER['REQUEST_URI'] ); ?>">
 									<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LOGIN_TO_UNSUBSCRIBE'); ?>
 								</a>
 							<?php else : ?>
 								<span class="complete">
-									<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LOGGEDIN_AS', $this->juser->get('username')); ?>
+									<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LOGGEDIN_AS', User::get('username')); ?>
 								</span>
 							<?php endif; ?>
 						</li>
@@ -100,7 +100,7 @@ $this->css()
 					</label>
 				<?php endif; ?>
 			</fieldset>
-			<?php if (!$this->juser->get('guest') || $this->mailinglist->id != '-1') : ?>
+			<?php if (!User::isGuest() || $this->mailinglist->id != '-1') : ?>
 				<p class="submit">
 					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_NEWSLETTER_UNSUBSCRIBE'); ?>">
 				</p>

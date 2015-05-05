@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->get('created_by'));
+						$editor = User::getInstance($this->row->get('created_by'));
 						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />

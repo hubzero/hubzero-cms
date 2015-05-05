@@ -239,7 +239,7 @@ class Author extends \JTable
 			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
-				$targetuser = \JUser::getInstance($author);
+				$targetuser = \User::getInstance($author);
 
 				// Ensure we found an account
 				if (!is_object($targetuser))

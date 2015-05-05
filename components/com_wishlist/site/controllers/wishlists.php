@@ -302,7 +302,6 @@ class Wishlists extends SiteController
 		$this->view->config   = $this->config;
 		$this->view->option   = $this->_option;
 		$this->view->task     = $this->_task;
-		$this->view->juser    = User::getRoot();
 		$this->view->wishlist = $model;
 		$this->view->total    = $total;
 
@@ -507,7 +506,6 @@ class Wishlists extends SiteController
 		$this->view->title      = $this->_title;
 		$this->view->config     = $this->config;
 		$this->view->admin      = $this->_admin;
-		$this->view->juser      = User::getRoot();
 		$this->view->wishlist   = $wishlist;
 		$this->view->wish       = $wish;
 		$this->view->filters    = $filters;
@@ -646,7 +644,6 @@ class Wishlists extends SiteController
 		}
 
 		$this->view->title    = $this->_title;
-		$this->view->juser    = User::getRoot();
 		$this->view->wishlist = $wishlist;
 		if ($this->getError())
 		{
@@ -909,7 +906,6 @@ class Wishlists extends SiteController
 		$this->view->title    = $this->_title;
 		$this->view->config   = $this->config;
 		$this->view->admin    = $this->_admin;
-		$this->view->juser    = User::getRoot();
 		$this->view->wishlist = $wishlist;
 		$this->view->wish     = $wish;
 
@@ -1019,7 +1015,6 @@ class Wishlists extends SiteController
 			$this->view->title    = Lang::txt(strtoupper($this->_name));
 			$this->view->config   = $this->config;
 			$this->view->admin    = $this->_admin;
-			$this->view->juser    = User::getRoot();
 			$this->view->wishlist = $wishlist;
 			$this->view->wish     = $row;
 			$this->view->infolink = $infolink;

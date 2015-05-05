@@ -321,8 +321,8 @@ class Threads extends SiteController
 				$description = String::truncate($description, 300, 0);
 
 				// Get author
-				$juser = User::getInstance($row['created_by']);
-				$author = stripslashes($juser->get('name'));
+				$user = User::getInstance($row['created_by']);
+				$author = stripslashes($user->get('name'));
 
 				// Get date
 				@$date = ($row->created ? date('r', strtotime($row->created)) : '');

@@ -171,7 +171,6 @@ class Comments extends SiteController
 		);
 
 		// Output content
-		$this->view->juser   = User::getRoot();
 		$this->view->message = $this->_message;
 
 		foreach ($this->getErrors() as $error)

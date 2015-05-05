@@ -156,8 +156,6 @@ class Lists extends AdminController
 			$this->view->setError($error);
 		}
 
-		$this->view->juser = User::getRoot();
-
 		// Output the HTML
 		$this->view
 			->setLayout('edit')
