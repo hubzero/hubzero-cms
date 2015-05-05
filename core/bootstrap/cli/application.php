@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Hubzero\Console\Event;
+use Hubzero\Console\Config;
 use Hubzero\Console\Exception\UnsupportedCommandException;
 use Hubzero\Console\Exception\UnsupportedTaskException;
 
@@ -49,7 +50,6 @@ class JCli extends JApplication
 	public function __construct($config=[])
 	{
 		$config['clientId'] = 6;
-		$config['session']  = false;
 
 		parent::__construct($config);
 	}

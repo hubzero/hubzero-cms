@@ -78,6 +78,7 @@ $app['app'] = $app;
 */
 
 $app['config'] = new Hubzero\Config\Repository('cli');
+$app['config']->set('session_handler', 'none');
 
 /*
 |--------------------------------------------------------------------------

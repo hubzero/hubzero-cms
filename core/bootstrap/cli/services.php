@@ -29,6 +29,7 @@
  */
 
 return [
+	'Hubzero\Session\SessionServiceProvider',
 	'Hubzero\Console\ArgumentsServiceProvider',
 	'Hubzero\Console\OutputServiceProvider',
 ];
