@@ -418,7 +418,8 @@ class Record extends Object
 
 				if ($child->type == 13 && file_exists($file))
 				{
-					shell_exec('rm ' . $file);
+					jimport('joomla.filesystem.file');
+					\JFile::delete($file);
 				}
 
 				if (is_dir($directory))
@@ -430,7 +431,8 @@ class Record extends Object
 					// remove directory if empty
 					if ($isDirEmpty)
 					{
-						shell_exec('rmdir ' . $directory);
+						jimport('joomla.filesystem.folder');
+						\JFolder::delete($directory);
 					}
 				}
 			}
