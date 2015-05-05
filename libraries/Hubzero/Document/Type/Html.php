@@ -452,7 +452,7 @@ class Html extends Base
 			$name = strtolower($words[$i]);
 			$words[$i] = ((isset(parent::$_buffer['modules'][$name])) && (parent::$_buffer['modules'][$name] === false))
 				? 0
-				: count(\Module::byName($name));
+				: count(\Module::byPosition($name));
 		}
 
 		$str = 'return ' . implode(' ', $words) . ';';
