@@ -30,7 +30,7 @@
 
 namespace Components\Collections\Models\Following;
 
-use Components\Collections\Models\Collection;
+use Components\Collections\Models;
 use Hubzero\User\Group;
 
 require_once(__DIR__ . DS . 'base.php');
@@ -70,7 +70,7 @@ class Collection extends Base
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_obj = new Collection($oid);
+		$this->_obj = new Models\Collection($oid);
 
 		switch ($this->_obj->get('object_type'))
 		{
