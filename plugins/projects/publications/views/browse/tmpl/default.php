@@ -63,7 +63,7 @@ $url = Route::url($this->project->link('publications'));
 	<ul id="page_options" class="pluginOptions">
 		<li>
 			<a class="icon-add btn" href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>">
-				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?>
+				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?>
 			</a>
 		</li>
 	</ul>

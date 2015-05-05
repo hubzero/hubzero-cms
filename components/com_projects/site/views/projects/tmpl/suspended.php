@@ -29,7 +29,7 @@ $this->css()
      ->js();
 
 // Check who suspended project
-$suspended = $this->model->table('Activity')->checkActivity( $this->model->get('id'), JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+$suspended = $this->model->table('Activity')->checkActivity( $this->model->get('id'), Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 
 ?>
 <div id="project-wrap">
