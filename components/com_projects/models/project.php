@@ -239,7 +239,7 @@ class Project extends Model
 			case 'timeago':
 				return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
 			break;
-			
+
 
 			default:
 				return $this->get($key);
