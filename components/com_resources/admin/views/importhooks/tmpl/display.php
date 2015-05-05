@@ -60,7 +60,7 @@ function submitbutton(pressbutton)
 					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->hooks->count(); ?>);" /></th>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
-					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
+					<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 									}
 								?>
 							</td>
-							<td>
+							<td class="priority-2">
 								<?php echo $hook->get('file'); ?> &mdash;
 								<a target="_blank" href="<?php echo Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id=' . $hook->get('id')); ?>">
 									<?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FILE_VIEWRAW'); ?>
@@ -97,7 +97,7 @@ function submitbutton(pressbutton)
 					<?php endforeach; ?>
 				<?php else : ?>
 					<tr>
-						<td colspan="4">Currently there are no import hooks.</td>
+						<td colspan="4"><?php echo Lang::txt('Currently there are no import hooks.'); ?></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>

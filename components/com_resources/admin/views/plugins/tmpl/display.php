@@ -30,9 +30,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = \Components\Resources\Helpers\Permissions::getActions('plugin');
+
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_PLUGINS'), 'plugin.png');
-Toolbar::publishList();
-Toolbar::unpublishList();
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+}
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -47,26 +52,26 @@ Toolbar::unpublishList();
 				<th scope="col">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-5">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
-				<th scope="col" class="title">
+				<th scope="col">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PLUGIN_NAME', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-4">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_PUBLISHED', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-2">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ORDER', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
-					<?php echo JHTML::_('grid.order', $this->rows); ?>
+					<?php echo $this->grid('order', $this->rows); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-3">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_ACCESS', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
 					<?php echo Lang::txt('COM_RESOURCES_COL_MANAGE'); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-4">
 					<?php echo $this->grid('sort', 'COM_RESOURCES_COL_FILE', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 			</tr>
@@ -74,11 +79,12 @@ Toolbar::unpublishList();
 		<tfoot>
 			<tr>
 				<td colspan="8"><?php
-				echo $this->pagination(
+				$pagination = $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
+				echo $pagination->render();
 				?></td>
 			</tr>
 		</tfoot>
@@ -94,9 +100,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	$link = Route::url('index.php?option=com_plugins&task=plugin.edit&extension_id='.$row->id.'&component=resources');
 
-	$access    = JHTML::_('grid.access', $row, $i);
-	//$checked = JHTML::_('grid.checkedout', $row, $i);
-	$published = JHTML::_('grid.published', $row, $i);
+	//$access    = $this->grid('access', $row, $i);
+	//$checked = $this->grid('checkedout', $row, $i);
+	$published = $this->grid('published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
 
@@ -127,12 +133,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
 					<?php
-						if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) {
+						if ($tbl->isCheckedOut(User::get('id'), $row->checked_out)) {
 							echo $this->escape($row->name);
 						} else {
 					?>
@@ -141,8 +147,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } ?>
 				</td>
-				<td>
-					<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
+				<td class="priority-4">
+					<?php if ($tbl->isCheckedOut(User::get('id'), $row->checked_out)) { ?>
 						<span class="state <?php echo $cls; ?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
@@ -152,22 +158,22 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } ?>
 				</td>
-				<td class="order">
+				<td class="priority-2 order">
 					<span><?php echo $pagination->orderUpIcon($i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'COM_RESOURCES_MOVE_UP', $row->ordering); ?></span>
 					<span><?php echo $pagination->orderDownIcon($i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'COM_RESOURCES_MOVE_DOWN', $row->ordering); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo ($row->ordering ? '' : 'disabled="disabled"'); ?> class="text_area" style="text-align: center" />
 				</td>
-				<td align="center">
-					<?php echo $access; ?>
+				<td class="priority-3">
+					<?php echo $this->escape($row->access_level); ?>
 				</td>
-				<td nowrap="nowrap">
+				<td>
 					<?php if (in_array($row->element, $this->manage)) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=' . $row->element); ?>">
 							<span><?php echo Lang::txt('COM_RESOURCES_COL_MANAGE'); ?></span>
 						</a>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->element); ?>
 				</td>
 			</tr>

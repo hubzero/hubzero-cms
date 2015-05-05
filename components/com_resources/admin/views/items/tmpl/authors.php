@@ -30,6 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->js('authors.js');
+
 $authIDs = array();
 ?>
 <label for="authid"><?php echo Lang::txt('COM_RESOURCES_AUTHID'); ?></label>
@@ -103,5 +105,3 @@ $authIDs = array();
 </ul>
 <input type="hidden" name="old_authors" id="old_authors" value="<?php echo implode(',', $authIDs); ?>" />
 <input type="hidden" name="new_authors" id="new_authors" value="<?php echo implode(',', $authIDs); ?>" />
-
-<script src="components/com_resources/assets/js/authors.js"></script>

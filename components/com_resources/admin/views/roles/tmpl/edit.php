@@ -113,7 +113,7 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_RESOURCES_FIELD_CREATOR'); ?></th>
 					<td>
 						<?php
-						$editor = JUser::getInstance($this->row->created_by);
+						$editor = User::getInstance($this->row->created_by);
 						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->created_by); ?>" />
@@ -131,7 +131,7 @@ function submitbutton(pressbutton)
 					<th><?php echo Lang::txt('COM_RESOURCES_FIELD_MODIFIER'); ?></th>
 					<td>
 						<?php
-						$modifier = JUser::getInstance($this->row->modified_by);
+						$modifier = User::getInstance($this->row->modified_by);
 						echo $this->escape($modifier->get('name'));
 						?>
 						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->modified_by); ?>" />

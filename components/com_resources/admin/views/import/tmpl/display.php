@@ -67,9 +67,9 @@ function submitbutton(pressbutton)
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -93,7 +93,7 @@ function submitbutton(pressbutton)
 								}
 							?>
 						</td>
-						<td>
+						<td class="priority-4">
 							<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
 							<?php
 								$created_on = Date::of($import->get('created_at'))->toLocal('m/d/Y @ g:i a');
@@ -107,7 +107,7 @@ function submitbutton(pressbutton)
 								}
 							?>
 						</td>
-						<td>
+						<td class="priority-3">
 							<?php
 								$lastRun = $import->runs('list', array(
 									'import' => $import->get('id'),
@@ -132,7 +132,7 @@ function submitbutton(pressbutton)
 								n/a
 							<?php endif; ?>
 						</td>
-						<td>
+						<td class="priority-2">
 							<?php
 								$runs = $import->runs('list', array(
 									'import' => $import->get('id'),

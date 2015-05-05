@@ -60,21 +60,22 @@ if ($canDo->get('core.delete'))
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ALIAS', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ALIAS', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ORDER', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ORDER', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<td colspan="5"><?php
 				// initiate paging
-				echo $this->pagination(
+				$pageNav = $this->pagination(
 					$this->total,
 					$this->filters['start'],
 					$this->filters['limit']
 				);
+				echo $pageNav->render();
 				?></td>
 			</tr>
 		</tfoot>
@@ -91,10 +92,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 							<span><?php echo $this->escape(stripslashes($row->name)); ?></span>
@@ -116,7 +117,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td class="order">
+				<td class="priority-2 order">
 					<span>
 						<?php echo $pageNav->orderUpIcon($i, isset($this->rows[$i-1]->ordering)); ?>
 					</span>

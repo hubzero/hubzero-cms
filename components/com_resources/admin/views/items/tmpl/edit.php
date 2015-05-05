@@ -304,7 +304,7 @@ function popratings()
 				<tr>
 					<th><?php echo Lang::txt('COM_RESOURCES_FIELD_CREATED'); ?></th>
 					<td>
-						<?php echo JHTML::_('date', $this->row->created, Lang::txt('DATE_FORMAT_LC2')); ?>
+						<?php echo Date::of($this->row->created)->toLocal(Lang::txt('DATE_FORMAT_LC2')); ?>
 					</td>
 				</tr>
 				<tr>

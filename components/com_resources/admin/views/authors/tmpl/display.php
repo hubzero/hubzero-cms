@@ -70,10 +70,10 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_NAME', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_MEMBER', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_RESOURCES', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_MEMBER', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_RESOURCES', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -109,7 +109,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	if ($row->authorid > 0 && !$row->name)
 	{
-		$u = JUser::getInstance($row->authorid);
+		$u = User::getInstance($row->authorid);
 		$row->name = $u->get('name');
 	}
 ?>
@@ -119,7 +119,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->authorid; ?>" onclick="isChecked(this.checked, this);" />
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->authorid; ?>
 				</td>
 				<td>
@@ -133,7 +133,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($row->authorid > 0) { ?>
 						<a class="state <?php echo $scls; ?>" href="<?php echo Route::url('index.php?option=com_members&task=edit&id=' . $row->authorid); ?>">
 							<span><?php echo $stickyAlt; ?></span>
@@ -144,10 +144,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
-					<span>
-						<span><?php echo Lang::txt('COM_RESOURCES_AUTHORS_NUM_RESOURCES', $this->escape(stripslashes($row->resources))); ?></span>
-					</span>
+				<td class="priority-3">
+					<?php echo Lang::txt('COM_RESOURCES_AUTHORS_NUM_RESOURCES', $this->escape(stripslashes($row->resources))); ?>
 				</td>
 			</tr>
 <?php

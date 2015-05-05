@@ -162,7 +162,7 @@ class Plugins extends AdminController
 		$this->database->setQuery($query);
 		$this->view->total = $this->database->loadResult();
 
-		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
+		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS access_level'
 			. ' FROM #__extensions AS p'
 			. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
 			. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'

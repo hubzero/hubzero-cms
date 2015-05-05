@@ -58,12 +58,12 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_TOOLS_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_DEFAULT', 'is_default', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_MASTER', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_SSH_KEY', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_LOCATIONS'); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_COL_MASTER', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_TOOLS_COL_SSH_KEY', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_TOOLS_COL_LOCATIONS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -97,7 +97,7 @@ if ($this->rows)
 						<span><?php echo $this->escape(stripslashes($row->get('zone'))); ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $this->escape(stripslashes($row->get('type'))); ?>
 				</td>
 				<td>
@@ -110,13 +110,13 @@ if ($this->rows)
 						<span><?php echo $this->escape(stripslashes($row->get('is_default'))); ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape(stripslashes($row->get('master'))); ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape(stripslashes($row->get('ssh_key_path'))); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=locations&zone=' . $row->get('id') . '&tmpl=index'); ?>">
 						<span><?php echo $row->locations('count'); ?></span>
 					</a>

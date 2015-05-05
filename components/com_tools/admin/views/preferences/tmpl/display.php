@@ -65,16 +65,16 @@ Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DE
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_JOBS', 'jobs', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_TOOLS_USER_PREFS_JOBS', 'jobs', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5">
+				<td colspan="6">
 					<?php
 					// Initiate paging
 					echo $this->pagination(
@@ -97,7 +97,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-4">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->user_id); ?>
 					</a>
@@ -107,13 +107,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php echo $this->escape($row->username); ?>
 					</a>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $this->escape($row->name); ?>
 				</td>
 				<td>
 					<?php echo ($row->class_alias) ? $this->escape($row->class_alias) : 'custom'; ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $this->escape($row->jobs); ?>
 				</td>
 			</tr>

@@ -37,7 +37,8 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUTHORS') . ': ' . $text, 'forum.png');
 Toolbar::spacer();
-if ($canDo->get('core.edit')) {
+if ($canDo->get('core.edit'))
+{
 	Toolbar::save();
 }
 Toolbar::cancel();
@@ -70,11 +71,11 @@ function submitbutton(pressbutton)
 					</tr>
 				</thead>
 				<tbody>
-<?php
-	$i = 0;
-	foreach ($this->rows as $row)
-	{
-?>
+				<?php
+				$i = 0;
+				foreach ($this->rows as $row)
+				{
+					?>
 					<tr>
 						<td>
 							<input type="text" name="fields[<?php echo $i; ?>][subid]" maxlength="250" size="4" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
@@ -103,10 +104,10 @@ function submitbutton(pressbutton)
 							</select>
 						</td>
 					</tr>
-<?php
-		$i++;
-	}
-?>
+					<?php
+					$i++;
+				}
+				?>
 				</tbody>
 			</table>
 		</fieldset>

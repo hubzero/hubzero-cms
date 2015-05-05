@@ -112,13 +112,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo ($this->rows) ? count($this->rows) : 0; ?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_MODIFIED', 'modified', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_LICENSE'); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_MODIFIED', 'modified', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_RESOURCES_COL_LICENSE'); ?></th>
+				<th scope="col" class="priority-2"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_CHILDREN', 'children', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_TAGS'); ?></th>
 			</tr>
@@ -262,14 +262,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	else
 	{
-		$checked = JHTML::_('grid.id', $i, $row->id, false, 'id');
+		$checked = $this->grid('id', $i, $row->id, false, 'id');
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $checked; ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
@@ -277,27 +277,27 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-3">
 					<a class="state <?php echo $class; ?> hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . $filterstring . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $alt; ?> :: <?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-3">
 					<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . $filterstring . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
 						<span><?php echo $this->escape(Lang::txt($row->groupname)); ?></span>
 					</a>
 				</td>
-				<td style="white-space: nowrap">
+				<td class="priority-4" style="white-space: nowrap">
 					<?php if ($row->modified == '0000-00-00 00:00:00') { echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); } else { ?>
 						<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
 							<?php echo Date::of($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 						</time>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape(stripslashes($license)); ?>
 				</td>
-				<td style="white-space: nowrap">
+				<td class="priority-2" style="white-space: nowrap">
 					<?php echo $this->escape(stripslashes($row->typetitle)); ?>
 				</td>
 				<td style="white-space: nowrap">

@@ -60,10 +60,10 @@ if ($canDo->get('core.delete'))
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_RESOURCES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_TYPES'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_TYPES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -91,10 +91,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 							<span><?php echo $this->escape($row->alias); ?></span>
@@ -116,7 +116,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 				<?php
 					if ($row->types)
 					{
@@ -125,7 +125,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						{
 							$types[] = '<span>' . $this->escape($type->type) . '</span>';
 						}
-						//echo implode(', ', $types);
+
 						echo count($row->types);
 					}
 				?>

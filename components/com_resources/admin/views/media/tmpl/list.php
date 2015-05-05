@@ -30,104 +30,104 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$app = JFactory::getApplication();
 ?>
-		<script type="text/javascript">
-			function updateDir()
-			{
-				var allPaths = window.top.document.forms[0].dirPath.options;
-				for (i=0; i<allPaths.length; i++)
-				{
-					allPaths.item(i).selected = false;
-					if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
-						allPaths.item(i).selected = true;
-					}
-				}
-			}
-			function deleteFile(file)
-			{
-				if (confirm("Delete file \""+file+"\"?")) {
-					return true;
-				}
-
-				return false;
-			}
-			function deleteFolder(folder, numFiles)
-			{
-				if (numFiles > 0) {
-					alert('<?php echo Lang::txt('COM_RESOURCES_MEDIA_DIRECTORY_NOT_EMPTY');?> '+numFiles);
-					return false;
-				}
-
-				if (confirm('<?php echo Lang::txt('COM_RESOURCES_MEDIA_DELETE_DIRECTORY'); ?> "'+folder+'"')) {
-					return true;
-				}
-
-				return false;
-			}
-		</script>
-	<div id="attachments">
-		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
-<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo Lang::txt('COM_RESOURCES_NO_FILES_FOUND'); ?></p>
-<?php } else { ?>
-			<table>
-				<tbody>
-<?php
-$folders = $this->folders;
-for ($i=0; $i<count($folders); $i++)
-{
-	$folderName = key($folders);
-
-	$numFiles = 0;
-	if (is_dir(PATH_CORE . DS . $folders[$folderName]))
+<script type="text/javascript">
+	function updateDir()
 	{
-		$d = @dir(PATH_CORE . DS . $folders[$folderName]);
-
-		while (false !== ($entry = $d->read()))
+		var allPaths = window.top.document.forms[0].dirPath.options;
+		for (i=0; i<allPaths.length; i++)
 		{
-			if (substr($entry, 0, 1) != '.')
-			{
-				$numFiles++;
+			allPaths.item(i).selected = false;
+			if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
+				allPaths.item(i).selected = true;
 			}
 		}
-		$d->close();
 	}
-
-	if ($this->listdir == '/')
+	function deleteFile(file)
 	{
-		$this->listdir = '';
-	}
+		if (confirm("Delete file \""+file+"\"?")) {
+			return true;
+		}
 
-	if (!isset($subdir) || $subdir == null)
-	{
-		$subdir = '';
+		return false;
 	}
-?>
+	function deleteFolder(folder, numFiles)
+	{
+		if (numFiles > 0) {
+			alert('<?php echo Lang::txt('COM_RESOURCES_MEDIA_DIRECTORY_NOT_EMPTY');?> '+numFiles);
+			return false;
+		}
+
+		if (confirm('<?php echo Lang::txt('COM_RESOURCES_MEDIA_DELETE_DIRECTORY'); ?> "'+folder+'"')) {
+			return true;
+		}
+
+		return false;
+	}
+</script>
+<div id="attachments">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
+		<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
+			<p><?php echo Lang::txt('COM_RESOURCES_NO_FILES_FOUND'); ?></p>
+		<?php } else { ?>
+			<table>
+				<tbody>
+				<?php
+				$folders = $this->folders;
+				for ($i=0; $i<count($folders); $i++)
+				{
+					$folderName = key($folders);
+
+					$numFiles = 0;
+					if (is_dir(PATH_CORE . DS . $folders[$folderName]))
+					{
+						$d = @dir(PATH_CORE . DS . $folders[$folderName]);
+
+						while (false !== ($entry = $d->read()))
+						{
+							if (substr($entry, 0, 1) != '.')
+							{
+								$numFiles++;
+							}
+						}
+						$d->close();
+					}
+
+					if ($this->listdir == '/')
+					{
+						$this->listdir = '';
+					}
+
+					if (!isset($subdir) || $subdir == null)
+					{
+						$subdir = '';
+					}
+					?>
 					<tr>
 						<td>
-							<img src="components/<?php echo $this->option; ?>/assets/img/folder.gif" alt="<?php echo $folderName; ?>" width="16" height="16" />
+							<span class="icon folder">
+								<span><?php echo $folderName; ?></span>
+							</span>
 						</td>
 						<td width="100%">
 							<?php echo $folderName; ?>
 						</td>
 						<td>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $subdir . '&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-								<img src="components/<?php echo $this->option; ?>/assets/img/trash.gif" width="15" height="15" alt="<?php echo Lang::txt('JACTION_DELETE'); ?>" />
+							<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $subdir . '&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>
 					</tr>
-<?php
-	next($folders);
-}
-$docs = $this->docs;
-for ($i=0; $i<count($docs); $i++)
-{
-	$docName = key($docs);
+					<?php
+					next($folders);
+				}
+				$docs = $this->docs;
+				for ($i=0; $i<count($docs); $i++)
+				{
+					$docName = key($docs);
 
-	$subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
-?>
+					$subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
+					?>
 					<tr>
 						<td>
 							<input type="radio" name="slctdfile" value="<?php echo $this->escape($this->listdir . $subdird . $docs[$docName]); ?>" />
@@ -136,20 +136,20 @@ for ($i=0; $i<count($docs); $i++)
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-								<img src="components/<?php echo $this->option; ?>/assets/img/trash.gif" width="15" height="15" alt="<?php echo Lang::txt('JACTION_DELETE'); ?>" />
+							<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>
 					</tr>
-<?php
-	next($docs);
-}
-?>
+					<?php
+					next($docs);
+				}
+				?>
 				</tbody>
 			</table>
-<?php } ?>
-		</form>
-<?php if ($this->getError()) { ?>
+		<?php } ?>
+	</form>
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	</div>
+	<?php } ?>
+</div>

@@ -59,8 +59,8 @@ function submitbutton(pressbutton)
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_BIT', 'value', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?></th>
+				<th scope="col" class="priority-3"><?php echo $this->grid('sort', 'COM_TOOLS_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_TOOLS_COL_REFERENCES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -105,12 +105,12 @@ if ($this->rows)
 				<td>
 					<?php echo $bit; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&item=' . $row->name); ?>">
 						<span><?php echo $this->escape($row->description); ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $row->refs; ?>
 				</td>
 			</tr>
