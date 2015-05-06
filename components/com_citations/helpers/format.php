@@ -459,8 +459,8 @@ class Format
 		}
 
 		// percent encode chars
-		$chars      = array('%', ' ', '/', ':', '"', '&amp;');
-		$replace    = array("%20", "%20", "%2F", "%3A", "%22", "%26");
+		$chars      = array('%', ' ', '/', ':', '"', '\'', '&amp;');
+		$replace    = array("%20", "%20", "%2F", "%3A", "%22", "%27", "%26");
 		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
 		$cite = preg_replace('/, :/', ':', $cite);
