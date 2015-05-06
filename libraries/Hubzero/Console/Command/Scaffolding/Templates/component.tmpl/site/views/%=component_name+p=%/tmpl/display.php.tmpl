@@ -25,27 +25,9 @@
  * @package   hubzero-cms
  * @author    %=author_name=% <%=author_email=%>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3 
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/**
- * API controller class for %=component_name=% component
- */
-class %=component_name+ucf=%ControllerApi extends \Hubzero\Component\ApiController
-{
-	/**
-	 * Execute a request
-	 *
-	 * @return    void
-	 */
-	public function execute()
-	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
-
-		switch ($this->segments[0]) 
-		{
-
-		}
-	}
-}
+$this->css()
+     ->js();
+?>

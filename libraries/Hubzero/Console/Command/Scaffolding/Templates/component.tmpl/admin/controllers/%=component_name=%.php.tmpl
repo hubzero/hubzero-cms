@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,33 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    %=author_name=% <%=author_email=%>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\%=component_name+ucf=%\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
- * %=component_name+ucf=% Database class
+ * Controller class for %=component_name=%
  */
-class %=component_name+ucfp=%Table%=component_name+ucf=% extends JTable
+class %=component_name+ucf=% extends AdminController
 {
 	/**
-	 * int(11) Primary key
-	 * 
-	 * @var integer
+	 * Display primary page
+	 *
+	 * @return void
 	 */
-	var $id = NULL;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object &$db JDatabase
-	 * @return     void
-	 */
-	public function __construct(&$db)
+	public function displayTask()
 	{
-		parent::__construct('#__%=component_name+p=%', 'id', $db);
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		// Output the HTML
+		$this->view->display();
 	}
 }
+

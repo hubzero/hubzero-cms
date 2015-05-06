@@ -28,32 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\%=component_name+ucf=%\Site;
 
-/**
- * Build route
- * 
- * @param  array &$query - query parameters
- * @return array Return - url segments
- */
-function %=component_name+ucf=%BuildRoute(&$query)
+require_once dirname(__DIR__) . DS . 'models' . DS . '%=component_name+ucf=%.php';
+
+$controllerName = Request::getCmd('controller', Request::getCmd('view', '%=component_name=%'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$segments = array();
-
-	return $segments;
+	$controllerName = '%=component_name=%';
 }
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-/**
- * Parse incoming route
- * 
- * @param  array $segments - url segments
- * @return array Return - vars
- */
-function %=component_name+ucf=%ParseRoute($segments)
-{
-	$vars = array();
-
-	return $vars;
-}
-
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();

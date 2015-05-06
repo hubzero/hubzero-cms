@@ -23,26 +23,10 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    %=author_name=% <%=author_email=%>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-/**
- * %=component_name+ucf=% controller class for entries
- */
-class %=component_name+ucf=%Controller%=component_name+ucfp=% extends \Hubzero\Component\SiteController
-{
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return	void
-	 */
-	public function execute()
-	{
-		parent::execute();
-	}
-}
+Toolbar::title(Lang::txt('%=option+uc=%'));
+Toolbar::preferences('%=option=%', '550');
+?>

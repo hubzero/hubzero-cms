@@ -32,9 +32,6 @@ namespace Hubzero\Console\Command\Scaffolding;
 
 use Hubzero\Console\Command\Scaffolding;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Scaffolding class for unit tests
  *
