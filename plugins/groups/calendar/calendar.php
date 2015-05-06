@@ -758,12 +758,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$eventsModelEvent = new EventsModelEvent($eventId);
 
+		$publish_up = strtotime($eventsModelEvent->get('publish_up'));
+		$year = date('Y', $publish_up);
+		$month = date('m', $publish_up);
+
+
 		// check to see if user has the right permissions to delete
 		if ($this->juser->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager')
 		{
 			// do not have permission to delete the event
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
 				JText::_('You do not have the correct permissions to delete this event.'),
 				'error'
 			);
@@ -789,7 +794,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$eventsModelEvent->store(true))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
 				JText::_('An error occurred while trying to delete the event. Please try again.'),
 				'error'
 			);
@@ -798,7 +803,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform user and return
 		$this->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
 			JText::_('You have successfully deleted the event.'),
 			'passed'
 		);
