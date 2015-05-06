@@ -199,14 +199,14 @@ class Authors extends SiteController
 				}
 
 				// We should only get to this part if the author is also a site member
-				$juser = \JUser::getInstance($uid);
-				if (!is_object($juser))
+				$user = User::getInstance($uid);
+				if (!is_object($user))
 				{
 					$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 					continue;
 				}
 
-				$uid = $juser->get('id');
+				$uid = $user->get('id');
 
 				if (!$uid)
 				{

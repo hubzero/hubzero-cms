@@ -1011,7 +1011,7 @@ class Create extends SiteController
 			SELECT 1 FROM #__users u
 			INNER JOIN #__user_usergroup_map cagam ON cagam.user_id = u.id
 			INNER JOIN #__usergroups caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
-			WHERE u.id = ' . $this->juser->id
+			WHERE u.id = ' . User::get('id')
 		);
 
 		if (!$this->database->loadResult())

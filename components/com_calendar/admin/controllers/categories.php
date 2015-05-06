@@ -169,7 +169,7 @@ class Categories extends AdminController
 		$this->view->row->load($id);
 
 		// Fail if checked out not by 'me'
-		if ($this->view->row->checked_out && $this->view->row->checked_out <> $this->juser->get('id'))
+		if ($this->view->row->checked_out && $this->view->row->checked_out <> User::get('id'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -181,7 +181,7 @@ class Categories extends AdminController
 		if ($this->view->row->id)
 		{
 			// Existing record
-			$this->view->row->checkout($this->juser->get('id'));
+			$this->view->row->checkout(User::get('id'));
 		}
 		else
 		{

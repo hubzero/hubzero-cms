@@ -84,7 +84,7 @@ class Comment extends Model
 	private $_base = null;
 
 	/**
-	 * JUser
+	 * User
 	 *
 	 * @var object
 	 */

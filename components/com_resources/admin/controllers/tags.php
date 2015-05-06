@@ -37,6 +37,7 @@ use stdClass;
 use Request;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -119,7 +120,7 @@ class Tags extends AdminController
 			array_push($selected, $tagArray2[$diffed]);
 		}
 		$tags = implode(',', $selected);
-		$tagging->setTags($tags, $this->juser->get('id'), 1);
+		$tagging->setTags($tags, User::get('id'), 1);
 
 		// Redirect
 		App::redirect(

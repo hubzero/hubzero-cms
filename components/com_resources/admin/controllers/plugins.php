@@ -197,7 +197,6 @@ class Plugins extends AdminController
 
 		$this->view->client = $this->client;
 		$this->view->states = \JHTML::_('grid.state', $this->view->filters['state']);
-		$this->view->user = $this->juser;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

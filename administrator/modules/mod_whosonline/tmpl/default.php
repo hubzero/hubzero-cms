@@ -90,7 +90,7 @@ foreach ($this->rows as $row)
 									}
 									else
 									{
-										echo $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']';
+										echo $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']';
 									}
 								?>
 							</td>

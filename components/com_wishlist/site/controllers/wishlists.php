@@ -961,7 +961,7 @@ class Wishlists extends SiteController
 		$by = Request::getVar('by', '', 'post');
 		if ($by)
 		{
-			$ruser = \JUser::getInstance($by);
+			$ruser = User::getInstance($by);
 			if (is_object($ruser))
 			{
 				$row->set('proposed_by', $ruser->get('id'));

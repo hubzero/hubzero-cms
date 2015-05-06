@@ -46,6 +46,7 @@ use Config;
 use Route;
 use Event;
 use Lang;
+use User;
 use App;
 
 /**
@@ -236,7 +237,6 @@ class Shop extends SiteController
 		$upconfig = Component::params('com_members');
 		if (!$upconfig->get('bankAccounts'))
 		{
-			$this->view->juser = $this->juser;
 			$this->view->rows  = 0;
 			$this->view->funds = 0;
 			$this->view->cost  = 0;
@@ -330,8 +330,6 @@ class Shop extends SiteController
 		$this->view->rows = $item->getCartItems(User::get('id'));
 
 		// Output HTML
-		$this->view->juser = User::getRoot();
-
 		foreach ($this->getErrors() as $error)
 		{
 			$this->view->setError($error);
@@ -395,7 +393,6 @@ class Shop extends SiteController
 		$this->view->items = $item->getCartItems(User::get('id'));
 
 		// Output HTML
-		$this->view->juser = $this->juser;
 		$this->view->xprofile = new Profile;
 		$this->view->xprofile->load(User::get('id'));
 		$this->view->posted = array();
@@ -456,7 +453,7 @@ class Shop extends SiteController
 
 		// make sure email address is valid
 		$validemail = $this->_checkValidEmail($shipping['email']);
-		$email = ($validemail) ? $shipping['email'] : $this->juser->get('email');
+		$email = ($validemail) ? $shipping['email'] : User::get('email');
 
 		// Format posted info
 		$details  = Lang::txt('COM_STORE_SHIP_TO') . ':' . "\r\n";
@@ -554,7 +551,6 @@ class Shop extends SiteController
 		$this->view->infolink = $this->infolink;
 
 		// Output HTML
-		$this->view->juser = $this->juser;
 		$this->view->orderid = $orderid;
 
 		foreach ($this->getErrors() as $error)
@@ -645,7 +641,6 @@ class Shop extends SiteController
 		$this->view->funds = $funds;
 		$this->view->items = $items;
 		$this->view->infolink = $this->infolink;
-		$this->view->juser = $this->juser;
 		$this->view->xprofile = new Profile;
 		$this->view->xprofile->load(User::get('id'));
 

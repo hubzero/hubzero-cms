@@ -33,6 +33,8 @@ namespace Components\Resources\Helpers\Economy;
 use Hubzero\Base\Object;
 use Hubzero\Bank\Teller;
 use Hubzero\Bank\Config;
+use User;
+use Lang;
 
 /**
  * Reviews Economy class:
@@ -136,12 +138,12 @@ class Reviews extends Object
 		$points = $this->calculate_marketvalue($review, $type);
 
 		// Get qualifying users
-		$juser = \JUser::getInstance($review->author);
+		$user = User::getInstance($review->author);
 
 		// Reward review author
 		if (is_object($juser))
 		{
-			$BTL = new Teller($this->_db , $juser->get('id'));
+			$BTL = new Teller($this->_db , $user->get('id'));
 
 			if (intval($points) > 0)
 			{

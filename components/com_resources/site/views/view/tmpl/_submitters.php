@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
+$html = '';
 
 if ($this->contributors)
 {
@@ -42,6 +42,8 @@ if ($this->contributors)
 	$orgsln = '';
 	$names_s = array();
 	$orgsln_s = '';
+
+	$database = JFactory::getDBO();
 
 	$types = array(
 		'manager'       => 'manager',
@@ -98,7 +100,7 @@ if ($this->contributors)
 		//{
 			if ($this->badges)
 			{
-				$xuser = JUser::getInstance($contributor->id);
+				$xuser = User::getInstance($contributor->id);
 				if (is_object($xuser) && $xuser->get('name'))
 				{
 					// get users groups
@@ -157,8 +159,5 @@ if ($this->contributors)
 		$html .= '</p>';
 	}
 }
-else
-{
-	$html = '';
-}
+
 echo $html;

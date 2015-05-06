@@ -45,9 +45,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		// get current user
-		$this->juser = \JFactory::getUser();
-
 		// get active sessions (users online)
 		$this->rows = SessionHelper::getAllSessions(array(
 			'guest'    => 0,

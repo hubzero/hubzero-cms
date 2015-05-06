@@ -121,7 +121,7 @@ Lang::load('tpl_' . $this->template);
 							</li>
 						</ul>
 					<?php } else { ?>
-						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+						<ul class="menu <?php echo (!User::isGuest()) ? 'loggedin' : 'loggedout'; ?>">
 							<li id="account-login">
 								<a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_BASELAYER_LOGIN'); ?>"><?php echo Lang::txt('TPL_BASELAYER_LOGIN'); ?></a>
 							</li>

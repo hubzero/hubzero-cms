@@ -59,7 +59,7 @@ class Comment extends Base
 	protected $_context = 'com_wishlist.comment.content';
 
 	/**
-	 * JUser
+	 * User
 	 *
 	 * @var object
 	 */

@@ -30,15 +30,12 @@
 
 namespace Components\Calendar\Site\Controllers;
 
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'event.php' );
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar' . DS . 'archive.php' );
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'tags.php');
-
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'respondent.php' );
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'category.php' );
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php' );
-
-
+require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'event.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar' . DS . 'archive.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'tags.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'respondent.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'category.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
 
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
@@ -46,10 +43,8 @@ use DateTimezone;
 use DateTime;
 use Exception;
 use Components\Events\Models\Tags;
-
 use Components\Events\Tables\Event;
 use Components\Events\Tables\Category;
-
 
 /**
  * @todo replace models and tables, right now it's just "working".
@@ -86,7 +81,6 @@ class Calendar extends SiteController
 		$this->view->month        = $this->month;
 		$this->view->year         = $this->year;
 		$this->view->calendar     = $this->calendar;
-		$this->view->juser        = $this->juser;
 		$this->view->authorized   = $this->authorized;
 		$this->view->members      = $this->members;
 		$this->view->option       = $this->option;
@@ -98,8 +92,6 @@ class Calendar extends SiteController
 		$this->view->calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => '',
 		));
-
-		$jconfig = \JFactory::getConfig();
 
 		// event calendar model
 		$eventsCalendar = \Components\Events\Models\Calendar::getInstance();
@@ -114,7 +106,7 @@ class Calendar extends SiteController
 		$this->view->eventsCount = $eventsCalendar->events('count', $this->view->filters);
 
 		// get events for no js
-		$this->view->filters['limit'] = Request::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 		$this->view->filters['start'] = Request::getInt('limitstart', 0);
 		$this->view->events = $eventsCalendar->events('list', $this->view->filters);
 
@@ -128,12 +120,9 @@ class Calendar extends SiteController
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.css');
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.print.css', 'text/css', 'print');
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();

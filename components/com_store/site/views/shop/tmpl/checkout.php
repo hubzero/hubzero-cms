@@ -55,7 +55,7 @@ $this->css()
 
 						<label for="name">
 							<?php echo Lang::txt('COM_STORE_RECEIVER_NAME'); ?> <span class="required"><?php echo Lang::txt('COM_STORE_REQUIRED'); ?></span>
-							<input name="name" id="name" type="text" value="<?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape($this->juser->get('name')); ?>" />
+							<input name="name" id="name" type="text" value="<?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape(User::get('name')); ?>" />
 						</label>
 
 						<label for="address">
@@ -87,12 +87,12 @@ $this->css()
 
 						<label for="phone">
 							<?php echo Lang::txt('COM_STORE_CONTACT_PHONE'); ?>
-							<input name="phone" id="phone" type="text" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : $this->escape($this->juser->get('phone')); ?>" />
+							<input name="phone" id="phone" type="text" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : $this->escape(User::get('phone')); ?>" />
 						</label>
 
 						<label for="email">
 							<?php echo Lang::txt('COM_STORE_CONTACT_EMAIL'); ?>
-							<input name="email" id="email" type="text" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->escape($this->juser->get('email')); ?>" />
+							<input name="email" id="email" type="text" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->escape(User::get('email')); ?>" />
 						</label>
 						<p class="hint"><?php echo Lang::txt('COM_STORE_CONTACT_MSG'); ?></p>
 					</fieldset>

@@ -40,7 +40,7 @@ $this->css()
 	<div id="content-header-extra">
 		<p>
 			<a href="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="icon-store storefront btn"><?php echo Lang::txt('COM_STORE_STOREFRONT'); ?></a>
-			<a class="icon-points mypoints btn" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_STORE_MY_POINTS'); ?></a>
+			<a class="icon-points mypoints btn" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_STORE_MY_POINTS'); ?></a>
 		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -50,25 +50,25 @@ $this->css()
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
-	
+
 		<div class="grid break4">
 			<div id="cartcontent" class="col span8">
 			<?php if ($this->msg) { ?>
 				<p class="passed"><?php echo $this->msg; ?></p>
 			<?php } ?>
-		
+
 			<?php if ($this->rows) { ?>
 				<p>
 					<?php echo Lang::txt('COM_STORE_THERE_ARE_ITEMS_IN_CART', count($this->rows)); ?>
 					&nbsp;<a href="<?php echo Route::url('index.php?option=' . $this->option); ?>" ><?php echo Lang::txt('COM_STORE_CONTINUE'); ?></a>
 				</p>
-		
+
 				<form id="myCart" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=cart'); ?>">
 					<input type="hidden" name="action" value="" />
 					<input type="hidden" name="task" value="checkout" />
 					<input type="hidden" name="funds" id="funds" value="<?php echo $this->funds; ?>" />
 					<input type="hidden" name="cost" id="cost" value="<?php echo $this->cost; ?>" />
-		
+
 					<table id="tktlist">
 						<thead>
 							<tr>
@@ -150,7 +150,7 @@ $this->css()
 							</tr>
 						</tbody>
 					</table>
-		
+
 					<p class="process">
 					<?php if ($this->funds >= $total && intval($total) > 0) { ?>
 						<input type="submit" class="button checkout" value="checkout" /></p>
@@ -168,7 +168,7 @@ $this->css()
 				<p><?php echo Lang::txt('COM_STORE_CART_IS_EMPTY'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option); ?>" ><?php echo Lang::txt('COM_STORE_START_SHOPPING'); ?></a>.</p>
 			<?php } ?>
 			</div><!-- / #cartcontent -->
-	
+
 			<div id="balanceupdate" class="col span4 omega">
 				<p class="point-balance"><small><?php echo Lang::txt('COM_STORE_YOU_HAVE') . '</small> ' . $this->funds . '<small> '.Lang::txt('COM_STORE_POINTS') . ' ' . Lang::txt('COM_STORE_TO_SPEND'); ?></small></p>
 			<?php if ($this->funds < $this->cost && $this->cost != 0) { ?>

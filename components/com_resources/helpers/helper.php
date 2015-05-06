@@ -31,6 +31,8 @@
 namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Object;
+use User;
+use Lang;
 
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
 
@@ -423,7 +425,7 @@ class Helper extends Object
 				{
 					if ($badges)
 					{
-						$xuser = \JUser::getInstance($contributor->id);
+						$xuser = User::getInstance($contributor->id);
 						if (is_object($xuser) && $xuser->get('name'))
 						{
 							$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');

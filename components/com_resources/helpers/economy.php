@@ -32,6 +32,8 @@ namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Object;
 use Hubzero\Bank\Teller;
+use User;
+use Lang;
 
 include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
 
@@ -93,12 +95,12 @@ class Economy extends Object
 		$points = round($con->ranking);
 
 		// Get qualifying users
-		$juser = \JUser::getInstance($con->authorid);
+		$user = User::getInstance($con->authorid);
 
 		// Reward review author
-		if (is_object($juser) && $juser->get('id'))
+		if (is_object($juser) && $user->get('id'))
 		{
-			$BTL = new Teller($this->_db , $juser->get('id'));
+			$BTL = new Teller($this->_db , $user->get('id'));
 
 			if (intval($points) > 0)
 			{

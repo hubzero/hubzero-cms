@@ -749,7 +749,7 @@ $this->css()
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="planform" enctype="multipart/form-data">
 					<p class="plan-member-photo">
 						<span class="plan-anchor"></span>
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
+						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
 					</p>
 					<fieldset>
 				<?php if ($this->wish->get('action') == 'editplan') { ?>

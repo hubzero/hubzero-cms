@@ -160,11 +160,11 @@ $this->css()
 			</h3>
 			<form method="post" action="<?php echo Route::url($this->article->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
-					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), (!User::isGuest() ? 0 : 1)); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php
-					if (!$this->juser->get('guest'))
+					if (!User::isGuest())
 					{
 						if ($this->replyto->exists())
 						{
@@ -199,7 +199,7 @@ $this->css()
 						<label for="commentcontent">
 							<?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 						<?php
-						if (!$this->juser->get('guest')) {
+						if (!User::isGuest()) {
 							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
 						} else {
 							$rtrn = Route::url($this->article->link() . '#post-comment', false, true);
@@ -212,7 +212,7 @@ $this->css()
 						?>
 						</label>
 
-						<?php if (!$this->juser->get('guest')) { ?>
+						<?php if (!User::isGuest()) { ?>
 						<label id="comment-anonymous-label" for="comment-anonymous">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 							<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
@@ -232,7 +232,7 @@ $this->css()
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->replyto->get('id')); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->juser->get('id')); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
 					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
