@@ -31,6 +31,7 @@
 namespace Hubzero\Routing;
 
 use Hubzero\Routing\Router\Rules;
+use Hubzero\Utility\Uri;
 use InvalidArgumentException;
 use Closure;
 
@@ -64,7 +65,7 @@ class Router
 	 */
 	public function __construct($vars = array())
 	{
-		$this->flush()->setVars($vars);
+		$this->flush()->bind($vars);
 	}
 
 	/**
@@ -88,13 +89,13 @@ class Router
 	/**
 	 * Function to convert an internal URI to a route
 	 *
-	 * @param   string  $url  The internal URL
+	 * @param   string  $uri  The internal URL
 	 * @return  string  The absolute search engine friendly URL
 	 */
-	public function build($url)
+	public function build($uri)
 	{
 		// Create the URI object
-		$uri = $this->createUri($url);
+		$uri = $this->createUri($uri);
 
 		// Process the uri information based on custom defined rules
 		foreach ($this->rules['build'] as $rule)
@@ -102,30 +103,33 @@ class Router
 			$uri = $rule($uri);
 		}
 
-		return $uri;
+		return $uri->getUri();
 	}
 
 	/**
 	 * Function to convert a route to an internal URI
 	 *
-	 * @param   object  &$uri  JURI
+	 * @param   string  $uri  The request URL
 	 * @return  array
 	 */
-	public function parse(&$uri)
+	public function parse($uri)
 	{
+		// Create the URI object
+		$uri = $this->createUri($uri);
+
 		$vars = array();
 
 		// Process the parsed variables based on custom defined rules
 		foreach ($this->rules['parse'] as $rule)
 		{
-			if ($results = $rule($uri))
+			if ($results = $rule($request))
 			{
 				$vars += $results;
 				break;
 			}
 		}
 
-		return array_merge($this->getVars(), $vars);
+		return array_merge($this->vars(), $vars);
 	}
 
 	/**
@@ -152,7 +156,7 @@ class Router
 	 * @param   boolean  $create  If True, the variable will be created if it doesn't exist yet
 	 * @return  object
 	 */
-	public function setVar($key, $value, $create = true)
+	public function set($key, $value, $create = true)
 	{
 		if ($create || array_key_exists($key, $this->vars))
 		{
@@ -169,7 +173,7 @@ class Router
 	 * @param   boolean  $merge  If True, the array will be merged instead of overwritten
 	 * @return  object
 	 */
-	public function setVars($vars = array(), $merge = true)
+	public function bind($vars = array(), $merge = true)
 	{
 		if ($merge)
 		{
@@ -189,13 +193,15 @@ class Router
 	 * @param   string  $key  The name of the variable
 	 * @return  mixed   Value of the variable
 	 */
-	public function getVar($key)
+	public function get($key)
 	{
 		$result = null;
+
 		if (isset($this->vars[$key]))
 		{
 			$result = $this->vars[$key];
 		}
+
 		return $result;
 	}
 
@@ -204,7 +210,7 @@ class Router
 	 *
 	 * @return  array  An associative array of router variables
 	 */
-	public function getVars()
+	public function vars()
 	{
 		return $this->vars;
 	}
@@ -213,14 +219,20 @@ class Router
 	 * Create a uri based on a full or partial url string
 	 *
 	 * @param   string  $url  The URI
-	 * @return  object  JURI
+	 * @return  object
 	 */
 	protected function createUri($url)
 	{
+		if ($url instanceof Uri)
+		{
+			return $url;
+		}
+
 		// Create full URL if we are only appending variables to it
 		if (substr($url, 0, 1) == '&')
 		{
 			$vars = array();
+
 			if (strpos($url, '&amp;') !== false)
 			{
 				$url = str_replace('&amp;', '&', $url);
@@ -228,7 +240,7 @@ class Router
 
 			parse_str($url, $vars);
 
-			$vars = array_merge($this->getVars(), $vars);
+			$vars = array_merge($this->vars(), $vars);
 
 			foreach ($vars as $key => $var)
 			{
@@ -238,10 +250,9 @@ class Router
 				}
 			}
 
-			$url = 'index.php?' . \JURI::buildQuery($vars);
+			$url = 'index.php?' . urldecode(http_build_query($vars, '', '&'));
 		}
 
-		// Decompose link into url component parts
-		return new \JURI($url);
+		return new Uri($url);
 	}
 }

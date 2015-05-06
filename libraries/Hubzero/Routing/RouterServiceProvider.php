@@ -44,9 +44,36 @@ class RouterServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app['router'] = function()
+		$this->app['router'] = function($app)
 		{
 			return new Router;
 		};
 	}
+
+	/**
+	 * Handle request in HTTP stack
+	 * 
+	 * @param   object  $request  HTTP Request
+	 * @return  mixed
+	 */
+	/*public function handle(Request $request)
+	{
+		try
+		{
+			$this->app['dispatcher']->trigger('system.onBeforeRoute');
+
+			foreach ($this->app['router']->parse($request->getUri()) as $key => $val)
+			{
+				$request->setVar($key, $val);
+			}
+
+			$this->app['dispatcher']->trigger('system.onAfterRoute');
+		}
+		catch (Exception $e)
+		{
+			return Response::error($e->getMessage(), 404);
+		}
+
+		return $this->next($request);
+	}*/
 }

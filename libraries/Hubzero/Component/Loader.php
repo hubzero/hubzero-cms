@@ -54,6 +54,13 @@ class Loader
 	protected static $components = array();
 
 	/**
+	 * The component router cache
+	 *
+	 * @var  array
+	 */
+	protected static $routers = array();
+
+	/**
 	 * Constructor
 	 *
 	 * @param   object  $app
@@ -62,6 +69,7 @@ class Loader
 	public function __construct(Container $app)
 	{
 		self::$components = array();
+		self::$routers    = array();
 
 		$this->app = $app;
 	}
@@ -232,6 +240,71 @@ class Loader
 		ob_end_clean();
 
 		return $contents;
+	}
+
+	/**
+	 * Get component router
+	 *
+	 * @param   string  $option  Name of the component
+	 * @return  object  Component router
+	 */
+	public function router($option)
+	{
+		$option = $this->canonical($option);
+
+		if (!isset(self::$routers[$option]))
+		{
+			$compname = ucfirst(substr($component, 4));
+
+			$client = ucfirst($this->app['client']->alias);
+
+			$name  = $compname . 'Router';
+			$name2 = '\\Components\\' . $compname . '\\' . $client . '\\Router';
+
+			if (!class_exists($name) && !class_exists($name2))
+			{
+				// Use the component routing handler if it exists
+				$paths = array();
+				$paths[] = $this->path($option) . DS . 'router.php';
+				$paths[] = $this->path($option) . DS . strtolower($client) . DS . 'router.php';
+
+				// Use the custom routing handler if it exists
+				foreach ($paths as $path)
+				{
+					if (file_exists($path))
+					{
+						require_once $path;
+						break;
+					}
+				}
+			}
+
+			if (class_exists($name))
+			{
+				$reflection = new ReflectionClass($name);
+
+				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
+				{
+					self::$routers[$option] = new $name;
+				}
+			}
+			else if (class_exists($name2))
+			{
+				$reflection = new ReflectionClass($name2);
+
+				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
+				{
+					self::$routers[$option] = new $name2;
+				}
+			}
+
+			if (!isset($this->componentRouters[$component]))
+			{
+				self::$routers[$option] = new \Hubzero\Component\Router\Legacy($compname);
+			}
+		}
+
+		return self::$routers[$option];
 	}
 
 	/**
