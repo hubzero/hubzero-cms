@@ -30,9 +30,6 @@
 
 namespace Hubzero\Console\Exception;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 class InvalidPropertyException extends \InvalidArgumentException implements ExceptionInterface
 {
 }

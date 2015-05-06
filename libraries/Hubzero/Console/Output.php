@@ -32,9 +32,6 @@ namespace Hubzero\Console;
 
 use Hubzero\Console\Config;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Output class for rendering content to command line
  **/

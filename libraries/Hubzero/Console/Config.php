@@ -33,9 +33,6 @@ namespace Hubzero\Console;
 use Hubzero\Config\Registry;
 use Hubzero\Error\Exception\RuntimeException;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Console configuration class
  **/

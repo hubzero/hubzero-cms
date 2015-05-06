@@ -32,9 +32,6 @@ namespace Hubzero\Console\Output;
 
 use Hubzero\Console\Output;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Json output class for rendering content to command line (usually for ingestion to browser)
  **/

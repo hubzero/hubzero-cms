@@ -109,8 +109,8 @@ class User extends Base implements CommandInterface
 			}
 		}
 
-		$suser  = \JFactory::getUser($sourceUser);
-		$duser  = \JFactory::getUser($destinationUser);
+		$suser  = User::getInstance($sourceUser);
+		$duser  = User::getInstance($destinationUser);
 		$dbo    = App::get('db');
 		$tables = $dbo->getTableList();
 		$prefix = $dbo->getPrefix();
@@ -207,8 +207,6 @@ class User extends Base implements CommandInterface
 
 							if (!$this->arguments->getOpt('dry-run'))
 							{
-								$pdo = $this->getPdo();
-
 								try
 								{
 									$numericUpdate = true;
@@ -222,8 +220,8 @@ class User extends Base implements CommandInterface
 										$query = "UPDATE `{$table}` SET `{$column}` = REPLACE({$column}, '{$sUserName}', '{$dUserName}') WHERE `{$tablePK}` = '{$row->$tablePK}'";
 									}
 
-									$pdo->setQuery($query);
-									$pdo->query();
+									$dbo->setQuery($query);
+									$dbo->query();
 
 									// Now log it
 									$log              = new \stdClass();
@@ -236,7 +234,7 @@ class User extends Base implements CommandInterface
 									$log->logged      = with(new Date('now'))->toSql();
 									$dbo->insertObject('#__users_merge_log', $log);
 								}
-								catch (\PDOException $e)
+								catch (\Hubzero\Database\Exception\QueryFailedException $e)
 								{
 									if ($e->getCode() == '23000')
 									{
@@ -315,9 +313,9 @@ class User extends Base implements CommandInterface
 		}
 
 		// Now, make sure a merge between these two actually exists in the logs
-		$suser  = \JFactory::getUser($sourceUser);
-		$duser  = \JFactory::getUser($destinationUser);
-		$dbo    = \JFactory::getDbo();
+		$suser  = User::getInstance($sourceUser);
+		$duser  = User::getInstance($destinationUser);
+		$dbo    = App::get('db');
 
 		// First, make sure we were given valid user ids
 		if (!$suser->get('id') || !$duser->get('id'))
@@ -399,36 +397,5 @@ class User extends Base implements CommandInterface
 	public function block()
 	{
 		$this->output->addLine('Not implemented', 'warning');
-	}
-
-	/**
-	 * Get PDO database connection (probably to catch db errors)
-	 *
-	 * @return (object) pdo database connection
-	 **/
-	private function getPdo()
-	{
-		$config = new \JConfig();
-
-		$pdo = \JDatabase::getInstance(
-			array(
-				'driver'   => 'pdo',
-				'host'     => $config->host,
-				'user'     => $config->user,
-				'password' => $config->password,
-				'database' => $config->db,
-				'prefix'   => 'jos_'
-			)
-		);
-
-		// Test the connection
-		if (!$pdo->connected())
-		{
-			$this->output->error('Failed to make PDO database connection');
-		}
-		else
-		{
-			return $pdo;
-		}
 	}
 }
