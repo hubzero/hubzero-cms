@@ -38,12 +38,11 @@ if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->pub
 	{
 		if (isset($section['name']) && isset($section['count']))
 		{
-			echo '<li class="meta-' . $section['name']
-			. '">';
+			echo '<li class="meta-' . $section['name'] . '">';
 
 			if ($section['name'] != 'usage')
 			{
-				echo '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=' . $section['name'] ) . '" title="' . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
+				echo '<a href="' . Route::url($this->publication->link() . '&active=' . $section['name'] ) . '" title="' . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
 			}
 
 			echo '<span class="icon"></span><span class="label">' . $section['count'] . '</span>';
@@ -59,9 +58,9 @@ if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->pub
 }
 
 // Non-published version
-if ($this->publication->state != 1)
+if (!$this->publication->isPublished())
 {
-	$text = $this->version == 'dev'
+	$text = $this->publication->isDev()
 		? Lang::txt('COM_PUBLICATIONS_METADATA_DEV')
 		: Lang::txt('COM_PUBLICATIONS_METADATA_UNAVAILABLE');
 	echo '<div class="metaplaceholder"><p>' . $text . '</p></div>' . "\n";

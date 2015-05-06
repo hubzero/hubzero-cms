@@ -138,6 +138,26 @@ class Html
 	}
 
 	/**
+	 * Draw supporting docs quick links
+	 *
+	 * @return string HTML
+	 */
+	public static function drawSupportingItems($publication = NULL)
+	{
+		if ($publication == NULL)
+		{
+			return false;
+		}
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+			'name'      => 'view',
+			'layout'    => '_supportingdocs',
+		));
+		$view->publication  = $publication;
+		return $view->loadTemplate();
+	}
+
+	/**
 	 * Display a list of skill levels
 	 *
 	 * @param      array   $levels List of levels

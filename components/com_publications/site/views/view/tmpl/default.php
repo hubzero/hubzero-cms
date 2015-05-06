@@ -115,6 +115,9 @@ else
 		}
 	}
 
+	// Show additional docs
+	$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::drawSupportingItems( $this->publication) : '';
+
 	// Show version information
 	$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo( $this->publication) : '';
 
