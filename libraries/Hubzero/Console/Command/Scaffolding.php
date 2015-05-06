@@ -342,6 +342,10 @@ class Scaffolding extends Base implements CommandInterface
 						{
 							switch ($match)
 							{
+								// Upper case word
+								case 'uc':
+									$value = strtoupper($v);
+									break;
 								// Upper case first character
 								case 'ucf':
 									$value = ucfirst($v);
@@ -437,6 +441,10 @@ class Scaffolding extends Base implements CommandInterface
 				$modifier = substr($matches[2], 1);
 				switch ($modifier)
 				{
+					// Upper case word
+					case 'uc':
+						$value = strtoupper($v);
+						break;
 					// Upper case first character
 					case 'ucf':
 						$newfile = ucfirst($newfile);
@@ -468,7 +476,7 @@ class Scaffolding extends Base implements CommandInterface
 	 **/
 	private function scanFolder($path)
 	{
-		$files = array_diff(scandir($path), array('.', '..'));
+		$files = array_diff(scandir($path), array('.', '..', '.DS_Store'));
 
 		if ($files && count($files) > 0)
 		{
@@ -483,6 +491,39 @@ class Scaffolding extends Base implements CommandInterface
 				}
 				else
 				{
+					// See if we need to do var replacement in directory name
+					if (preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $path . DS . $file, $matches) && isset($this->replacements[$matches[1]]))
+					{
+						$newfile = str_replace($matches[0], $this->replacements[$matches[1]], $file);
+
+						if (isset($matches[2]))
+						{
+							$modifier = substr($matches[2], 1);
+							switch ($modifier)
+							{
+								// Upper case word
+								case 'uc':
+									$value = strtoupper($v);
+									break;
+								// Upper case first character
+								case 'ucf':
+									$newfile = ucfirst($newfile);
+									break;
+								// Upper case first character and plural
+								case 'ucfp':
+									$newfile = ucfirst(Inflector::pluralize($newfile));
+									break;
+								// Plural form
+								case 'p':
+									$newfile = Inflector::pluralize($newfile);
+									break;
+							}
+						}
+
+						rename($path. DS . $file, $path . DS . $newfile);
+						$file = $newfile;
+					}
+
 					$this->scanFolder($path . DS . $file);
 				}
 			}
