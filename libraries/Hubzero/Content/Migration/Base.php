@@ -762,7 +762,7 @@ class Base
 		{
 			$params = json_encode($params);
 		}
-		else if ($params instanceof \JRegistry)
+		else if ($params instanceof \JRegistry || $params instanceof \Registry)
 		{
 			$params = $params->toString('JSON');
 		}
