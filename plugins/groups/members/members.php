@@ -320,7 +320,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// sort by last name
-		asort($users);
+		natcasesort($users);
 
 		// return sorted member ids
 		return array_merge(array_keys($users), $emails);
