@@ -103,7 +103,7 @@ class Flavor extends Base implements CommandInterface
 
 				// Update kb articles
 				$query = "UPDATE `#__faq_categories` SET `state` = 2 WHERE `alias` = 'tools'";
- 				$database->setQuery($query);
+				$database->setQuery($query);
 				$database->query();
 				$query = "UPDATE `#__faq` SET `state` = 2 WHERE `alias` = 'webdav'";
 				$database->setQuery($query);
