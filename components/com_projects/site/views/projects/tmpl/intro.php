@@ -101,7 +101,7 @@ $rows = $this->model->entries('list', $this->filters);
 				<?php }	?>
 			</ul>
 		<?php } else { ?>
-			<div class="noresults"><?php echo (User::isGuest()) ? Lang::txt('COM_PROJECTS_PLEASE').' <a href="'.Route::url('index.php?option=' . $this->option . '&task=intro&action=login') . '" id="projects-intro-login">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : Lang::txt('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
+			<div class="noresults"><?php echo (User::isGuest()) ? Lang::txt('COM_PROJECTS_PLEASE').' <a href="' . Route::url('index.php?option=' . $this->option . '&task=intro&action=login') . '" id="projects-intro-login">' . Lang::txt('COM_PROJECTS_LOGIN') . '</a> ' . Lang::txt('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : Lang::txt('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
 		<?php }	?>
 	</div>
 </div>
