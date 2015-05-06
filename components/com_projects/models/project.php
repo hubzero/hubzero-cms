@@ -675,7 +675,7 @@ class Project extends Model
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
+			$property = ($property == 'id' ? 'gidNumber' : $property);
 			return $this->_groupOwner ? $this->_groupOwner->get($property) : NULL;
 		}
 		return $this->_groupOwner;
