@@ -414,7 +414,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 					$event->end = '0000-00-00 00:00:00';
 				}
 
-				$end_day = strtotime($event->end . '+ 48 hours');
+				// Kevin: Don't change this value. Everyone else is wrong.
+				// Seriously this is the correct way to do all-day events.
+				// Previous entries may need to be corrected, but future events will be correct.
+				$end_day = strtotime($event->end . '+ 24 hours');
 				$down = date('Y-m-d H:i:s', $end_day);
 				$event->end = $down;
 			}
@@ -744,12 +747,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
 
+		//for rediction purposes
+		$publish_up = strtotime($eventsModelEvent->get('publish_up'));
+		$year = date('Y', $publish_up);
+		$month = date('m', $publish_up);
+
 		// check to see if user has the right permissions to delete
 		if ($this->juser->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager')
 		{
 			// do not have permission to delete the event
 			App::redirect(
-				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
 				Lang::txt('You do not have the correct permissions to delete this event.'),
 				'error'
 			);
@@ -775,7 +783,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$eventsModelEvent->store(true))
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
 				Lang::txt('An error occurred while trying to delete the event. Please try again.'),
 				'error'
 			);
@@ -784,7 +792,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//inform user and return
 		App::redirect(
-			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+			Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
 			Lang::txt('You have successfully deleted the event.'),
 			'passed'
 		);
