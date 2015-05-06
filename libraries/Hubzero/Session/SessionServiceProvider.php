@@ -49,7 +49,7 @@ class SessionServiceProvider extends ServiceProvider
 			$handler = $app['config']->get('session_handler', 'none');
 
 			$options = array(
-				'name'          => md5($app['config']->get('secret') . $app['client']->name),
+				'name'          => md5($app['config']->get('secret') . ($app['client']->name == 'administrator' ? 'administrator' : 'site')),
 				'cookie_domain' => $app['config']->get('cookie_domain', ''),
 				'cookie_path'   => $app['config']->get('cookie_path', '/'),
 				// Config time is in minutes so we need to do some
