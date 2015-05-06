@@ -173,7 +173,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 					case 'text':
 					default:
 						$output .= '<input type="text" name="' . $field . '" id="pub-' . $elName
-							. '" value="' . $value.'" ' . $size.' ' . $placeholder . ' />';
+							. '" value="' . $this->escape($value) . '" ' . $size.' ' . $placeholder . ' />';
 
 					break;
 				}
