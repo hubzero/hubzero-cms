@@ -105,7 +105,6 @@ class JCli extends JApplication
 		// Register any user specific events
 		if ($hooks = Config::get('hooks'))
 		{
-			$output = $output;
 			foreach ($hooks as $trigger => $scripts)
 			{
 				foreach ($scripts as $script)
@@ -121,6 +120,10 @@ class JCli extends JApplication
 				}
 			}
 		}
+
+		// Reset the output stored on the application
+		App::forget('output');
+		App::set('output', $output);
 	}
 
 	/**

@@ -624,7 +624,7 @@ class Git
 	 **/
 	private function call($cmd, $arguments=array())
 	{
-		$command  = escapeshellcmd("{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '')) . ' 2>&1';
+		$command  = "{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '') . ' 2>&1';
 		$response = shell_exec($command);
 
 		return $response;
