@@ -30,7 +30,9 @@
 
 namespace Hubzero\Component;
 
+use Hubzero\Component\Router\Legacy;
 use Hubzero\Container\Container;
+use ReflectionClass;
 use Exception;
 use stdClass;
 
@@ -254,7 +256,7 @@ class Loader
 
 		if (!isset(self::$routers[$option]))
 		{
-			$compname = ucfirst(substr($component, 4));
+			$compname = ucfirst(substr($option, 4));
 
 			$client = ucfirst($this->app['client']->alias);
 
@@ -283,7 +285,7 @@ class Loader
 			{
 				$reflection = new ReflectionClass($name);
 
-				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
+				if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 				{
 					self::$routers[$option] = new $name;
 				}
@@ -292,15 +294,15 @@ class Loader
 			{
 				$reflection = new ReflectionClass($name2);
 
-				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
+				if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 				{
 					self::$routers[$option] = new $name2;
 				}
 			}
 
-			if (!isset($this->componentRouters[$component]))
+			if (!isset(self::$routers[$option]))
 			{
-				self::$routers[$option] = new \Hubzero\Component\Router\Legacy($compname);
+				self::$routers[$option] = new Legacy($compname);
 			}
 		}
 
