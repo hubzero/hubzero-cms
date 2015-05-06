@@ -354,14 +354,14 @@ class Publications extends SiteController
 		$this->view->filters['start']  = Request::getInt( 'limitstart', 0 );
 
 		// Instantiate a publication object
-		$rr = new Tables\Publication( $this->database );
+		$model = new Models\Publication();
 
 		// Get most recent pubs
-		$this->view->results = $rr->getRecords( $this->view->filters );
+		$this->view->results = $model->entries( 'list', $this->view->filters );
 
 		// Get most popular/oldest pubs
 		$this->view->filters['sortby'] = 'popularity';
-		$this->view->best = $rr->getRecords( $this->view->filters );
+		$this->view->best = $model->entries( 'list', $this->view->filters );
 
 		// Get major types
 		$t = new Tables\Category( $this->database );
@@ -428,13 +428,13 @@ class Publications extends SiteController
 		}
 
 		// Instantiate a publication object
-		$rr = new Tables\Publication( $this->database );
+		$model = new Models\Publication();
 
 		// Execute count query
-		$this->view->total = $rr->getCount( $this->view->filters );
+		$this->view->total = $model->entries( 'count', $this->view->filters );
 
 		// Run query with limit
-		$this->view->results = $rr->getRecords( $this->view->filters );
+		$this->view->results = $model->entries( 'list', $this->view->filters );
 
 		// Initiate paging
 		$this->view->pageNav = new \Hubzero\Pagination\Paginator(

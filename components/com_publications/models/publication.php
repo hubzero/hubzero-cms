@@ -33,6 +33,7 @@ namespace Components\Publications\Models;
 use Hubzero\Base\Object;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
+use Hubzero\Base\ItemList;
 
 // Include table classes
 require_once( dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
@@ -105,9 +106,27 @@ class Publication extends Object
 
 		if (is_object($oid))
 		{
-			// Temp as we are converting to models
-			$this->version = $oid;
-			$this->publication = NULL;
+			// This mapping is used in item listings
+			$this->version = new Tables\Version($this->_db);
+			$this->version->bind($oid);
+
+			$this->publication = new Tables\Publication($this->_db);
+			$this->publication->bind($oid);
+
+			// Map values
+			foreach ($oid as $field => $value)
+			{
+				$this->$field = $value;
+			}
+			// Some adjustments
+			$this->version->id = $this->get('version_id');
+
+			$this->params = Component::params('com_publications');
+			$this->params->merge(new \JRegistry($this->version->params));
+			if (isset($this->version->type_params))
+			{
+				$this->params->merge($this->version->type_params);
+			}
 		}
 		else
 		{
@@ -127,17 +146,11 @@ class Publication extends Object
 			$this->publication = new Tables\Publication($this->_db);
 			$this->publication->loadPublication($oid);
 
-			// Version alternative label
-			$versionAlias = $this->version->main == 1
-				&& $this->version->state != 0 ? 'default' : $version;
-			$versionAlias = $this->version->state == 3 ? 'dev' : $version;
-			$this->versionAlias = $versionAlias;
-
 			// Get what we need
 			$this->masterType();
 			$this->category();
 
-			// Map values
+			// Map values for easy access
 			foreach ($this->version as $field => $value)
 			{
 				$this->$field = $value;
@@ -166,6 +179,9 @@ class Publication extends Object
 			$this->params->merge(new \JRegistry($this->version->params));
 			$this->params->merge($this->_type->_params);
 		}
+
+		// Set version alias
+		$this->versionAlias($version);
 	}
 
 	/**
@@ -284,11 +300,31 @@ class Publication extends Object
 	 */
 	public function exists()
 	{
-		if ($this->version->id && $this->version->id > 0)
+		if (empty($this->version) || !$this->get('version_id'))
 		{
-			return true;
+			return false;
 		}
-		return false;
+		return true;
+	}
+
+	/**
+	 * Set/get version alternative label if applicable (dev/default)
+	 *
+	 * @return     array
+	 */
+	public function versionAlias($name = 'default')
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!isset($this->versionAlias))
+		{
+			$this->versionAlias = $this->isMain() && !$this->isUnpublished() ? 'default' : $name;
+			$this->versionAlias = $this->isDev() ? 'dev' : $name;
+		}
+
+		return $this->versionAlias;
 	}
 
 	/**
@@ -303,11 +339,11 @@ class Publication extends Object
 		{
 			return false;
 		}
-		if (empty($this->publication) || !$this->publication->id)
+		if (!$this->masterExists())
 		{
 			return false;
 		}
-		if ($this->publication->project_id != $projectId)
+		if ($this->get('project_id') != $projectId)
 		{
 			return false;
 		}
@@ -873,7 +909,7 @@ class Publication extends Object
 	 */
 	public function isDeleted()
 	{
-		if ($this->version->get('state') == 2)
+		if ($this->get('state') == 2)
 		{
 			return true;
 		}
@@ -888,7 +924,7 @@ class Publication extends Object
 	 */
 	public function isReady()
 	{
-		if ($this->version->get('state') == 4)
+		if ($this->get('state') == 4)
 		{
 			return true;
 		}
@@ -903,7 +939,7 @@ class Publication extends Object
 	 */
 	public function isPending()
 	{
-		if ($this->version->get('state') == 5)
+		if ($this->get('state') == 5)
 		{
 			return true;
 		}
@@ -918,7 +954,7 @@ class Publication extends Object
 	 */
 	public function isWorked()
 	{
-		if ($this->version->get('state') == 7)
+		if ($this->get('state') == 7)
 		{
 			return true;
 		}
@@ -932,7 +968,7 @@ class Publication extends Object
 	 */
 	public function isUnpublished()
 	{
-		if ($this->version->get('state') == 0)
+		if ($this->get('state') == 0)
 		{
 			return true;
 		}
@@ -946,7 +982,7 @@ class Publication extends Object
 	 */
 	public function isMain()
 	{
-		if ($this->version->get('main') == 1)
+		if ($this->get('main') == 1)
 		{
 			return true;
 		}
@@ -960,7 +996,7 @@ class Publication extends Object
 	 */
 	public function isCurrent()
 	{
-		if ($this->version->get('main') == 1 && $this->version->get('state') == 1)
+		if ($this->get('main') == 1 && $this->get('state') == 1)
 		{
 			return true;
 		}
@@ -974,7 +1010,7 @@ class Publication extends Object
 	 */
 	public function isDev()
 	{
-		if ($this->version->get('state') == 3 || $this->versionAlias == 'dev')
+		if ($this->get('state') == 3 || $this->versionAlias == 'dev')
 		{
 			return true;
 		}
@@ -1008,7 +1044,7 @@ class Publication extends Object
 			return false;
 		}
 
-		if (in_array($this->version->get('state'), array(0, 2, 3, 4, 5, 6, 7)))
+		if (in_array($this->get('state'), array(0, 2, 3, 4, 5, 6, 7)))
 		{
 			return false;
 		}
@@ -1037,11 +1073,11 @@ class Publication extends Object
 		if (User::isGuest())
 		{
 			// If the resource is published and public
-			if ($this->isPublished() && $this->publication->access == 0)
+			if ($this->isPublished() && $this->get('master_access') == 0)
 			{
 				// Allow view access
 				$this->params->set('access-view-publication', true);
-				if ($this->publication->access == 0)
+				if ($this->get('master_access') == 0)
 				{
 					$this->params->set('access-view-all-publication', true);
 				}
@@ -1078,14 +1114,14 @@ class Publication extends Object
 		 && !$this->params->get('access-manage-publication'))
 		{
 			// If logged in and resource is published and public or registered
-			if ($this->isPublished() && $this->publication->access <= 1)
+			if ($this->isPublished() && $this->get('master_access') <= 1)
 			{
 				// Allow view access
 				$this->params->set('access-view-publication', true);
 				$this->params->set('access-view-all-publication', true);
 			}
 			// Allowed groups (private access)
-			if ($this->publication->access >= 2)
+			if ($this->get('master_access') >= 2)
 			{
 				$groups = $this->getAccessGroups();
 				if (array_intersect($usersgroups, $groups) > 1)
@@ -1111,7 +1147,7 @@ class Publication extends Object
 		}
 
 		// Curator
-		if ($this->version->curator && User::get('id') == $this->version->curator)
+		if ($this->get('curator') && User::get('id') == $this->get('curator'))
 		{
 			$this->params->set('access-curator-publication', true);
 			$this->params->set('access-curator-assigned-publication', true);
@@ -1190,7 +1226,7 @@ class Publication extends Object
 	{
 		if (!($this->_modifier instanceof \Hubzero\User\Profile))
 		{
-			$this->_modifier = \Hubzero\User\Profile::getInstance($this->version->get('modified_by'));
+			$this->_modifier = \Hubzero\User\Profile::getInstance($this->get('modified_by'));
 		}
 		if ($property)
 		{
@@ -1211,13 +1247,13 @@ class Publication extends Object
 	 */
 	public function curator($property=null)
 	{
-		if (!$this->version->get('curator'))
+		if (!$this->get('curator'))
 		{
 			return false;
 		}
 		if (!($this->_curator instanceof \Hubzero\User\Profile))
 		{
-			$this->_curator = \Hubzero\User\Profile::getInstance($this->version->get('curator'));
+			$this->_curator = \Hubzero\User\Profile::getInstance($this->get('curator'));
 		}
 		if ($property)
 		{
@@ -1246,7 +1282,7 @@ class Publication extends Object
 
 		if ($this->get('description', null) == null)
 		{
-			$content = stripslashes($this->version->description);
+			$content = stripslashes($this->get('description'));
 			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
 
 			$this->set('description', trim($content));
@@ -1321,7 +1357,7 @@ class Publication extends Object
 
 		if ($this->get('release_notes', null) == null)
 		{
-			$content = stripslashes($this->version->release_notes);
+			$content = stripslashes($this->get('release_notes'));
 
 			$this->set('release_notes', trim($content));
 		}
@@ -1420,7 +1456,7 @@ class Publication extends Object
 
 		if ($this->get($field, null) == null)
 		{
-			$content = stripslashes($this->version->$field);
+			$content = stripslashes($this->get($field));
 
 			$this->set($field, trim($content));
 		}
@@ -1532,7 +1568,7 @@ class Publication extends Object
 
 			$cc = new \Components\Citations\Tables\Citation( $this->_db );
 
-			$this->_citations = $cc->getCitations( 'publication', $this->publication->id );
+			$this->_citations = $cc->getCitations( 'publication', $this->get('id') );
 		}
 
 		return $this->_citations;
@@ -1570,7 +1606,7 @@ class Publication extends Object
 
 			$cc = new \Components\Citations\Tables\Citation( $this->_db );
 
-			$this->_lastCitationDate = $cc->getLastCitationDate( 'publication', $this->publication->id );
+			$this->_lastCitationDate = $cc->getLastCitationDate( 'publication', $this->get('id') );
 		}
 
 		return $this->_lastCitationDate;
@@ -1596,7 +1632,7 @@ class Publication extends Object
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 			$rt = new Helpers\Tags( $this->_db );
-			$this->_tags = $rt->get_tags_on_object($this->id, 0, 0, $tagger_id, $strength, $admin);
+			$this->_tags = $rt->get_tags_on_object($this->get('id'), 0, 0, $tagger_id, $strength, $admin);
 		}
 
 		return $this->_tags;
@@ -1620,7 +1656,7 @@ class Publication extends Object
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 		$rt = new Helpers\Tags( $this->_db );
-		$this->_tagsForEditing = $rt->get_tag_string( $this->id, 0, 0, $tagger_id, $strength, 0 );
+		$this->_tagsForEditing = $rt->get_tag_string( $this->get('id'), 0, 0, $tagger_id, $strength, 0 );
 	}
 
 	/**
@@ -1642,7 +1678,7 @@ class Publication extends Object
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 			$rt = new Helpers\Tags( $this->_db );
-			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->id);
+			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->get('id'));
 		}
 
 		return $this->_tagCloud;
@@ -1662,10 +1698,10 @@ class Publication extends Object
 		if (!isset($this->_bundlePath))
 		{
 			// Archival package
-			$tarname  = Lang::txt('Publication') . '_' . $this->publication->id . '.zip';
+			$tarname  = Lang::txt('Publication') . '_' . $this->get('id') . '.zip';
 			$this->_bundlePath = Helpers\Html::buildPubPath(
-				$this->publication->id,
-				$this->version->id,
+				$this->get('id'),
+				$this->get('version_id'),
 				'', '', 1) . DS . $tarname;
 		}
 
@@ -1689,7 +1725,7 @@ class Publication extends Object
 		}
 
 		$query = "SELECT p.* ";
-		if ($this->version->state == 3)
+		if ($this->get('state') == 3)
 		{
 			// Draft - load latest version
 			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id
@@ -1697,9 +1733,8 @@ class Publication extends Object
 		}
 		else
 		{
-			$date = $this->version->accepted && $this->version->accepted != '0000-00-00 00:00:00'
-				? $this->version->accepted : $this->version->submitted;
-			$date = (!$date || $date == '0000-00-00 00:00:00') ? $this->version->published_up : $date;
+			$date = $this->accepted() ? $this->accepted() : $this->submitted();
+			$date = $date ? $date : $this->published();
 
 			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id AND ";
 			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
@@ -1726,7 +1761,7 @@ class Publication extends Object
 	{
 		if (!isset($this->_basePath))
 		{
-			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\String::pad($this->get('id')) . DS . \Hubzero\Utility\String::pad($this->version->get('id'));
+			$this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\String::pad($this->get('id')) . DS . \Hubzero\Utility\String::pad($this->get('version_id'));
 		}
 		switch (strtolower($type))
 		{
@@ -1738,9 +1773,13 @@ class Publication extends Object
 				$path = $this->_basePath . DS . 'data';
 			break;
 
+			case 'data':
+				$path = $this->_basePath . DS . 'logs';
+			break;
+
 			case 'content':
 			default:
-				$path = $this->_basePath . DS . $this->version->get('secret');
+				$path = $this->_basePath . DS . $this->get('secret');
 			break;
 		}
 
@@ -1762,7 +1801,7 @@ class Publication extends Object
 			$this->_base .= $this->get('alias')
 				? '&alias=' . $this->get('alias') : '&id=' . $this->get('id');
 		}
-		if (!isset($this->_editBase))
+		if (!isset($this->_editBase) && strpos($type, 'edit') !== false)
 		{
 			$this->_editBase  = $this->project()->isProvisioned()
 				? 'index.php?option=com_publications&task=submit'
@@ -1775,20 +1814,28 @@ class Publication extends Object
 				$link = 'index.php?option=com_publications&category=' . $this->category()->url_alias;
 			break;
 
+			case 'thumb':
+				$link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id') . '&media=Image:thumb';
+			break;
+
+			case 'masterimage':
+				$link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id') . '&media=Image:master';
+			break;
+
 			case 'serve':
-				$link = $this->_base . '&task=serve' . '&v=' . $this->version->get('version_number');
+				$link = $this->_base . '&task=serve' . '&v=' . $this->get('version_number');
 			break;
 
 			case 'citation':
-				$link = $this->_base . '&task=citation' . '&v=' . $this->version->get('version_number');
+				$link = $this->_base . '&task=citation' . '&v=' . $this->get('version_number');
 			break;
 
 			case 'curate':
-				$link = $this->_base . '&task=curate' . '&version=' . $this->version->get('version_number');
+				$link = $this->_base . '&task=curate' . '&version=' . $this->get('version_number');
 			break;
 
 			case 'version':
-				$link = $this->_base . '&v=' . $this->version->get('version_number');
+				$link = $this->_base . '&v=' . $this->get('version_number');
 			break;
 
 			case 'edit':
@@ -1796,7 +1843,7 @@ class Publication extends Object
 			break;
 
 			case 'editversion':
-				$link = $this->_editBase . '&pid=' . $this->get('id') . '&version=' . $this->version->get('version_number');
+				$link = $this->_editBase . '&pid=' . $this->get('id') . '&version=' . $this->get('version_number');
 			break;
 
 			case 'editdev':
@@ -1808,7 +1855,7 @@ class Publication extends Object
 			break;
 
 			case 'editversionid':
-				$link = $this->_editBase . '&pid=' . $this->get('id') . '&vid=' . $this->version->get('id');
+				$link = $this->_editBase . '&pid=' . $this->get('id') . '&vid=' . $this->get('version_id');
 			break;
 
 			case 'editbase':
@@ -1854,7 +1901,7 @@ class Publication extends Object
 		}
 
 		$this->version->saveParam(
-			$this->version->get('id'),
+			$this->get('version_id'),
 			trim($param),
 			htmlentities($value)
 		);
@@ -1882,12 +1929,7 @@ class Publication extends Object
 		}
 
 		// Build log path (access logs)
-		$logPath = Helpers\Html::buildPubPath(
-			$this->publication->id,
-			$this->version->id,
-			$this->config('webpath'),
-			'logs'
-		);
+		$logPath = $this->path('logs');
 
 		// Create log directory
 		if (!is_dir(PATH_APP . $logPath))
@@ -1896,7 +1938,7 @@ class Publication extends Object
 			$fileSystem->makeDirectory( PATH_APP . $logPath, 0755, true, true);
 		}
 
-		$this->_tblLog->logAccess($this->publication->id, $this->version->id, $type, $logPath);
+		$this->_tblLog->logAccess($this->get('id'), $this->get('version_id'), $type, $logPath);
 	}
 
 	/**
@@ -1924,9 +1966,42 @@ class Publication extends Object
 		}
 		if ($property)
 		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
+			$property = ($property == 'id' ? 'gidNumber' : $property);
 			return $this->_groupOwner ? $this->_groupOwner->get($property) : NULL;
 		}
 		return $this->_groupOwner;
+	}
+
+	/**
+	 * Get a count of, model for, or list of entries
+	 *
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $admin    Admin?
+	 * @return  mixed
+	 */
+	public function entries($rtrn = 'list', $filters = array(), $admin = false)
+	{
+		if (!isset($this->_tbl))
+		{
+			$this->_tbl = new Tables\Publication($this->_db);
+		}
+
+		switch (strtolower($rtrn))
+		{
+			case 'count':
+				return (int) $this->_tbl->getCount($filters, $admin);
+			break;
+		}
+
+		if ($results = $this->_tbl->getRecords($filters, $admin))
+		{
+			foreach ($results as $key => $result)
+			{
+				$results[$key] = new self($result);
+			}
+		}
+
+		return new ItemList($results);
 	}
 }

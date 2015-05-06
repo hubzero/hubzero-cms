@@ -27,9 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 <li>
-	<span class="pub-thumb"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $this->row->id . '&v=' . $this->row->version_id) . '/Image:thumb'; ?>" alt=""/></span>
+	<span class="pub-thumb"><img src="<?php echo Route::url($this->row->link('thumb')); ?>" alt=""/></span>
 	<span class="pub-details">
-		<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->row->id); ?>" title="<?php echo stripslashes($this->row->abstract); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($this->row->title), 100); ?></a>
+		<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->row->get('id')); ?>" title="<?php echo stripslashes($this->row->get('abstract')); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($this->row->get('title')), 100); ?></a>
 		<span class="block details"><?php echo implode(' <span>|</span> ', $this->info); ?></span>
 	</span>
 </li>

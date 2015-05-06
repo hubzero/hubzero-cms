@@ -351,9 +351,6 @@ class File extends Base
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
-		$url =  Route::url('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
-		$url = preg_replace('/\/administrator/', '', $url);
 		$html = '';
 
 		// Is handler assigned?
@@ -377,27 +374,26 @@ class File extends Base
 
 			$fpath = $this->bundle($attachments, $configs, false);
 
-			// Get size
-			$size = file_exists( $fpath ) ? filesize( $fpath ) : '';
-			$size = $size ? \Hubzero\Utility\Number::formatBytes($size) : '';
-			$ext  = 'zip';
+			// File model
+			$file = new \Components\Projects\Models\File(trim($fpath));
 
 			// Get file icon
-			$icon  = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
+			$icon  = '<img src="' . $file->getIcon() . '" alt="' . $file->get('ext') . '" />';
 
 			// Serve as bundle
 			$html .= '<li>';
-			$html .= is_file($fpath) && $authorized
-					? '<a href="' . $url . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
+			$html .= $file->exists() && $authorized
+					? '<a href="' . Route::url($pub->link('serve') . '&el=' . $elementId )
+					. '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
 					: $icon . ' ' . $title . $notice;
 			$html .= '<span class="extras">';
-			$html .= $ext ? '('.strtoupper($ext) : '';
-			$html .= $size ? ' | '.$size : '';
-			$html .= $ext ? ')' : '';
+			$html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
+			$html .= $file->getSize() ? ' | ' . $file->getSize('formatted') : '';
+			$html .= $file->get('ext') ? ')' : '';
 			if ($authorized === 'administrator')
 			{
 				$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
-				. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
+				. $pub->get('id') . '&el=' . $elementId . '&v=' . $pub->get('version_number') . '">'
 				. Lang::txt('COM_PUBLICATIONS_EDIT') . '</a></span>';
 			}
 			$html .= '</span>';
@@ -408,31 +404,25 @@ class File extends Base
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
-				// Get size
+				// Get file path
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
-				$size = file_exists( $fpath ) ? filesize( $fpath ) : '';
-				$size = $size ? \Hubzero\Utility\Number::formatBytes($size) : '';
 
-				// Get ext
-				$parts  = explode('.', $attach->path);
-				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
-				$ext	= strtolower($ext);
+				// File model
+				$file = new \Components\Projects\Models\File(trim($fpath));
 
-				// Get file icon
-				$icon  = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
+				$title = $attach->title ? $attach->title : $configs->title;
+				$title = $title ? $title : basename($attach->path);
+				$pop   = Lang::txt('Download') . ' ' . $title;
+				$icon  = '<img src="' . $file->getIcon() . '" alt="' . $file->get('ext') . '" />';
 
-				$itemUrl 	=  $url . '&a=' . $attach->id . '&download=1';
-				$title 		= $attach->title ? $attach->title : $configs->title;
-				$title 		= $title ? $title : basename($attach->path);
-				$pop		= Lang::txt('Download') . ' ' . $title;
 				$html .= '<li>';
-				$html .= is_file($fpath) && $authorized
-						? '<a href="' . $itemUrl . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
+				$html .= $file->exists() && $authorized
+						? '<a href="' . Route::url($pub->link('serve') . '&el=' . $elementId . '&a=' . $attach->id . '&download=1') . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
 						: $icon . ' ' . $title . $notice;
 				$html .= '<span class="extras">';
-				$html .= $ext ? '('.strtoupper($ext) : '';
-				$html .= $size ? ' | '.$size : '';
-				$html .= $ext ? ')' : '';
+				$html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
+				$html .= $file->getSize() ? ' | ' . $file->getSize('formatted') : '';
+				$html .= $file->get('ext') ? ')' : '';
 				if ($authorized === 'administrator')
 				{
 					$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='

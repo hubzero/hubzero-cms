@@ -106,10 +106,10 @@ class Items extends AdminController
 		$model = new Tables\Publication($this->database);
 
 		// Get record count
-		$this->view->total = $model->getCount($this->view->filters, NULL, true);
+		$this->view->total = $model->getCount($this->view->filters, true);
 
 		// Get publications
-		$this->view->rows = $model->getRecords($this->view->filters, NULL, true);
+		$this->view->rows = $model->getRecords($this->view->filters, true);
 
 		$this->view->config = $this->config;
 

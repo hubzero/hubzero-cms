@@ -25,17 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->line->alias)
-{
-	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->line->alias);
-}
-else
-{
-	$sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->line->id);
-}
-
 $html  = "\t".'<li';
-switch ($this->line->access)
+switch ($this->line->get('master_access'))
 {
 	case 1: $html .= ' class="registered"'; break;
 	case 2: $html .= ' class="protected"'; break;
@@ -44,33 +35,35 @@ switch ($this->line->access)
 	default: $html .= ' class="public"'; break;
 }
 $html .= '>' . "\n";
-$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . Route::url('index.php?option=com_publications&id=' . $this->line->id . '&v=' . $this->line->version_id) . '/Image:thumb' . '" alt=""/></div>' . "\n";
+$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . Route::url($this->line->link('thumb')) . '" alt=""/></div>' . "\n";
 $html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
-$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>' . "\n";
+$html .= "\t\t".'<p class="title"><a href="' . Route::url($this->line->link()) . '">' .  $this->escape($this->line->title) . '</a>' . "\n";
 $html .= '</p>' . "\n";
 
-if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
+if ($this->params->get('show_ranking') && $this->config->get('show_ranking'))
+{
 	$database = \JFactory::getDBO();
 
-	$this->line->ranking = round($this->line->ranking, 1);
+	$ranking = round($this->line->get('master_ranking'), 1);
 
-	$r = (10*$this->line->ranking);
-	if (intval($r) < 10) {
-		$r = '0'.$r;
+	$r = (10*$ranking);
+	if (intval($r) < 10)
+	{
+		$r = '0' . $r;
 	}
 
-	$html .= "\t\t".'<div class="metadata">' . "\n";
-	$html .= "\t\t\t".'<dl class="rankinfo">' . "\n";
-	$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.Lang::txt('COM_PUBLICATIONS_THIS_HAS').'</span> '.number_format($this->line->ranking,1).' '.Lang::txt('COM_PUBLICATIONS_RANKING').'</dt>' . "\n";
+	$html .= "\t\t" . '<div class="metadata">' . "\n";
+	$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
+	$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('COM_PUBLICATIONS_THIS_HAS') . '</span> ' . number_format($ranking, 1) . ' '.Lang::txt('COM_PUBLICATIONS_RANKING') . '</dt>' . "\n";
 	$html .= "\t\t\t\t".'<dd>' . "\n";
-	$html .= "\t\t\t\t\t".'<p>'.Lang::txt('COM_PUBLICATIONS_RANKING_EXPLANATION').'</p>' . "\n";
-	$html .= "\t\t\t\t\t".'<div>' . "\n";
-	$html .= "\t\t\t\t\t".'</div>' . "\n";
-	$html .= "\t\t\t\t".'</dd>' . "\n";
-	$html .= "\t\t\t".'</dl>' . "\n";
-	$html .= "\t\t".'</div>' . "\n";
+	$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('COM_PUBLICATIONS_RANKING_EXPLANATION') . '</p>' . "\n";
+	$html .= "\t\t\t\t\t" . '<div>' . "\n";
+	$html .= "\t\t\t\t\t" . '</div>' . "\n";
+	$html .= "\t\t\t\t" . '</dd>' . "\n";
+	$html .= "\t\t\t" . '</dl>' . "\n";
+	$html .= "\t\t" . '</div>' . "\n";
 } elseif ($this->params->get('show_rating') && $this->config->get('show_rating')) {
-	switch ($this->line->rating)
+	switch ($this->line->get('master_rating'))
 	{
 		case 0.5: $class = ' half-stars';      break;
 		case 1:   $class = ' one-stars';       break;
@@ -86,26 +79,29 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 		default:  $class = ' no-stars';        break;
 	}
 
-	if ($this->line->rating > 5)
+	if ($this->line->get('master_rating') > 5)
 	{
 		$class = ' five-stars';
 	}
 
-	$html .= "\t\t".'<div class="metadata">' . "\n";
-	$html .= "\t\t\t".'<p class="rating"><span title="' . Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->rating).'" class="avgrating' . $class . '"><span>' . Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->rating) . '</span>&nbsp;</span></p>' . "\n";
-	$html .= "\t\t".'</div>' . "\n";
+	$html .= "\t\t" . '<div class="metadata">' . "\n";
+	$html .= "\t\t\t" . '<p class="rating"><span title="' . Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->get('master_rating')) . '" class="avgrating' . $class . '"><span>' . Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->get('master_rating')) . '</span>&nbsp;</span></p>' . "\n";
+	$html .= "\t\t" .'</div>' . "\n";
 }
 
 $info = array();
-if ($this->thedate) {
+if ($this->thedate)
+{
 	$info[] = $this->thedate;
 }
 
-if (($this->line->category && !intval($this->filters['category']))) {
+if (($this->line->category && !intval($this->filters['category'])))
+{
 	$info[] = $this->line->cat_name;
 }
-if ($this->authors && $this->params->get('show_authors')) {
-	$info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': '. \Components\Publications\Helpers\Html::showContributors( $this->authors, false, true );
+if ($this->authors && $this->params->get('show_authors'))
+{
+	$info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': ' . \Components\Publications\Helpers\Html::showContributors( $this->authors, false, true );
 }
 if ($this->line->doi)
 {
@@ -113,10 +109,10 @@ if ($this->line->doi)
 }
 
 $html .= "\t\t" . '<p class="details">' . implode(' <span>|</span> ', $info) . '</p>' . "\n";
-if ($this->line->abstract) {
-	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->abstract), 300 ) . "\n";
-} else if ($this->line->description) {
-	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->description), 300 ) . "\n";
+if ($this->line->get('abstract')) {
+	$html .= "\t\t" . \Hubzero\Utility\String::truncate( stripslashes($this->line->get('abstract')), 300 ) . "\n";
+} else if ($this->line->get('description')) {
+	$html .= "\t\t" . \Hubzero\Utility\String::truncate( stripslashes($this->line->get('description')), 300 ) . "\n";
 }
 $html .= "\t" . "\t" . '</div>' . "\n";
 $html .= "\t" . '</li>' . "\n";

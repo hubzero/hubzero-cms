@@ -104,10 +104,10 @@ $this->css()
 				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 				?>
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="Sort by title">&darr; Title</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="Sort by date published">&darr; Published</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('Sort by title'); ?>">&darr; <?php echo Lang::txt('Title'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('Sort by date published'); ?>">&darr; <?php echo Lang::txt('Published'); ?></a></li>
 					<?php if ($this->config->get('show_ranking')) { ?>
-					<li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="Sort by date published">&darr; Ranking</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('Sort by ranking'); ?>">&darr; <?php echo Lang::txt('Ranking'); ?></a></li>
 					<?php } ?>
 				</ul>
 				<?php if (count($this->categories) > 0) { ?>
@@ -157,7 +157,7 @@ $this->css()
 				$rt = new \Components\Publications\Helpers\Tags($database);
 				echo $rt->getTopTagCloud(20, $this->filters['tag']);
 				?>
-				<p>Click a tag to see only publications with that tag.</p>
+				<p><?php echo Lang::txt('Click a tag to see only publications with that tag.'); ?></p>
 			</div>
 		</div><!-- / .aside -->
 	</section><!-- / .main section -->

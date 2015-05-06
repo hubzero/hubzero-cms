@@ -55,9 +55,9 @@ foreach ($this->results as $line)
 	switch ($show_date)
 	{
 		case 0: $thedate = ''; break;
-		case 1: $thedate = Date::of($line->created)->toLocal('M d, Y');      break;
-		case 2: $thedate = Date::of($line->modified)->toLocal('M d, Y');     break;
-		case 3: $thedate = Date::of($line->published_up)->toLocal('M d, Y'); break;
+		case 1: $thedate = $line->created();      break;
+		case 2: $thedate = $line->modified();     break;
+		case 3: $thedate = $line->published();    break;
 	}
 
 	// Display List of items
