@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Routing;
+namespace Hubzero\Utility;
 
 use Hubzero\Base\Object;
 
