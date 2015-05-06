@@ -235,10 +235,14 @@ class Pdo extends Driver
 		$start = microtime(true);
 
 		// Execute the query
-		if (!$this->statement->execute())
+		try
+		{
+			$this->statement->execute();
+		}
+		catch (\PDOException $e)
 		{
 			// @FIXME: this should honor error reporting settings
-			throw new QueryFailedException('Query failed.', 500);
+			throw new QueryFailedException($e->getMessage(), $e->getCode());
 		}
 
 		// Log it
