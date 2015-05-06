@@ -314,63 +314,11 @@ class Html
 				}
 				$html .= "\t\t" . '<li id="sm-' . $i . '"';
 				$html .= (strtolower($name) == $active) ? ' class="active"' : '';
-				$html .= '><a class="tab" rel="' . $name . '" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
+				$html .= '><a class="tab" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
 				$i++;
 			}
 		}
-		$html .= "\t" . '</ul>'."\n";
-
-		return $html;
-	}
-
-	/**
-	 * Generate COins microformat
-	 *
-	 * @param      object $cite     	Pub citation data
-	 * @param      object $publication 	Publication
-	 * @param      object $config   	Component config
-	 * @param      object $helper   	Publication Helper
-	 * @return     string HTML
-	 */
-	public static function citationCOins($cite, $publication, $config, $helper)
-	{
-		if (!$cite)
-		{
-			return '';
-		}
-
-		$html  = '<span ';
-		$html .= ' class="Z3988"';
-		$html .= ' title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
-		$html .= isset($publication->doi)
-			? '&amp;rft_id=info%3Adoi%2F' . $publication->doi
-			: '';
-
-		$html .= '&amp;rft.genre=unknown';
-		$html .= '&amp;rft.atitle=' . urlencode($cite->title);
-		$html .= '&amp;rft.date=' . urlencode($cite->year);
-
-		$author_array = $publication->_authors;
-
-		if ($author_array)
-		{
-			for ($i = 0; $i < count($author_array); $i++)
-			{
-				if ($author_array[$i]->lastName || $author_array[$i]->firstName)
-				{
-					$name  = stripslashes($author_array[$i]->firstName) . ' ';
-					$name .= stripslashes($author_array[$i]->lastName);
-				}
-				else
-				{
-					$name = $author_array[$i]->name;
-				}
-
-				$html.= '&amp;rft.au=' . urlencode($name);
-			}
-		}
-
-		$html.= '"></span>'."\n";
+		$html .= "\t" . '</ul>' . "\n";
 
 		return $html;
 	}
