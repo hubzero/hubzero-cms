@@ -327,7 +327,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// sort by last name
-		asort($users);
+		natcasesort($users);
 
 		// return sorted member ids
 		return array_merge(array_keys($users), $emails);
@@ -335,7 +335,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Is user sustem user?
-	 * 
+	 *
 	 * @param  [type]  $userid [description]
 	 * @return boolean         [description]
 	 */
