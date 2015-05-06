@@ -114,10 +114,9 @@ class Publication extends \JTable
 	 * Build query
 	 *
 	 * @param      array 		$filters
-	 * @param      array 		$usergroups
 	 * @return     query string
 	 */
-	public function buildQuery( $filters = array(), $usergroups = array(), $admin = false )
+	public function buildQuery( $filters = array(), $admin = false )
 	{
 		$now 		= Date::toSql();
 		$groupby 	= ' GROUP BY C.id ';
@@ -419,14 +418,13 @@ class Publication extends \JTable
 	 * Get record count
 	 *
 	 * @param      array 		$filters
-	 * @param      array 		$usergroups
 	 * @param      boolean		$admin
 	 * @return     object
 	 */
-	public function getCount( $filters = array(), $usergroups = array(), $admin = false )
+	public function getCount( $filters = array(), $admin = false )
 	{
 		$filters['count'] = 1;
-		$query = $this->buildQuery( $filters, $usergroups, $admin );
+		$query = $this->buildQuery( $filters, $admin );
 
 		$sql  = "SELECT C.id ";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : $query;
@@ -439,11 +437,10 @@ class Publication extends \JTable
 	 * Get records
 	 *
 	 * @param      array 		$filters
-	 * @param      array 		$usergroups
 	 * @param      boolean		$admin
 	 * @return     object
 	 */
-	public function getRecords( $filters = array(), $usergroups = array(), $admin = false )
+	public function getRecords( $filters = array(), $admin = false )
 	{
 		$sql  = "SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access,
 				C.checked_out, C.checked_out_time, C.rating as master_rating,
@@ -452,7 +449,7 @@ class Publication extends \JTable
 				C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias,
 				t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title,
 				PP.state as project_status, PP.private as project_private,
-				PP.provisioned as project_provisioned, MT.alias as base";
+				PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params";
 		$sql .= ", (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ) AS dev_version_label ";
 		$sql .= ", (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
 
@@ -464,7 +461,7 @@ class Publication extends \JTable
 		}
 
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
-		$sql .= $this->buildQuery( $filters, $usergroups, $admin );
+		$sql .= $this->buildQuery( $filters, $admin );
 		$start = isset($filters['start']) ? $filters['start'] : 0;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . $filters['limit'] : "";
 
