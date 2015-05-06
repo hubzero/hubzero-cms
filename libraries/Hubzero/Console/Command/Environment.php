@@ -46,6 +46,7 @@ class Environment extends Base implements CommandInterface
 	 **/
 	public function execute()
 	{
+		// Note that we're using both the muse config and the global config repositories
 		$this->output->addLine('Current user     : ' . Config::get('user_name') . ' <' . Config::get('user_email') . '>');
 		$this->output->addLine('Current database : ' . \Config::get('db'));
 	}

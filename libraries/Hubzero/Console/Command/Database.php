@@ -32,6 +32,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Utility\Date;
 use Hubzero\Config\Registry;
+use Hubzero\Content\Migration\Base as Migration;
 
 /**
  * Database class
@@ -151,22 +152,14 @@ class Database extends Base implements CommandInterface
 		// Now push the big red button
 		exec($cmd);
 
+		$migration = new Migration(App::get('db'));
+
 		// Now load some things back up
 		foreach ($params as $k => $v)
 		{
 			if (!empty($v))
 			{
-				if (!method_exists($v, 'toArray'))
-				{
-					$v = new Registry($v);
-				}
-
-				// @FIXME: get rid of JStuff
-				$db    = \JFactory::getDbo();
-				$table = new \JTableExtension($db);
-				$table->load(array('name'   => $k));
-				$table->bind(array('params' => $v->toArray()));
-				$table->store();
+				$migration->saveParams($k, $v);
 			}
 		}
 

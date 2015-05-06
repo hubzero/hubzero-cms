@@ -109,8 +109,8 @@ class User extends Base implements CommandInterface
 			}
 		}
 
-		$suser  = User::getInstance($sourceUser);
-		$duser  = User::getInstance($destinationUser);
+		$suser  = \User::getInstance($sourceUser);
+		$duser  = \User::getInstance($destinationUser);
 		$dbo    = App::get('db');
 		$tables = $dbo->getTableList();
 		$prefix = $dbo->getPrefix();
@@ -313,8 +313,8 @@ class User extends Base implements CommandInterface
 		}
 
 		// Now, make sure a merge between these two actually exists in the logs
-		$suser  = User::getInstance($sourceUser);
-		$duser  = User::getInstance($destinationUser);
+		$suser  = \User::getInstance($sourceUser);
+		$duser  = \User::getInstance($destinationUser);
 		$dbo    = App::get('db');
 
 		// First, make sure we were given valid user ids

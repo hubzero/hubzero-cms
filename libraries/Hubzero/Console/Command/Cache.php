@@ -70,7 +70,8 @@ class Cache extends Base implements CommandInterface
 	public function clear()
 	{
 		// Path to cache folder
-		$cacheDir = PATH_APP . DS . 'cache' . DS . '*';
+		$cacheDir   = PATH_APP . DS . 'cache' . DS . '*';
+		$filesystem = new Filesystem;
 
 		// Remove recursively
 		foreach (glob($cacheDir) as $cacheFileOrDir)
@@ -78,7 +79,7 @@ class Cache extends Base implements CommandInterface
 			$readable = str_replace(PATH_APP . DS, '', $cacheFileOrDir);
 			if (is_dir($cacheFileOrDir))
 			{
-				if (!with(new Filesystem)->deleteDirectory($cacheFileOrDir))
+				if (!$filesystem->deleteDirectory($cacheFileOrDir))
 				{
 					$this->output->addLine('Unable to delete cache directory: ' . $readable, 'error');
 				}
@@ -92,7 +93,7 @@ class Cache extends Base implements CommandInterface
 				// Don't delete index.html
 				if ($cacheFileOrDir != PATH_APP . DS . 'cache' . DS . 'index.html')
 				{
-					if (!@unlink($cacheFileOrDir))
+					if (!$filesystem->delete($cacheFileOrDir))
 					{
 						$this->output->addLine('Unable to delete cache file: ' . $readable, 'error');
 					}
