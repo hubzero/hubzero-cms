@@ -28,27 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Notification;
+namespace Hubzero\Http;
 
-use Hubzero\Base\ServiceProvider;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
- * Notification service provider
+ * Response represents an HTTP response.
  */
-class NotificationServiceProvider extends ServiceProvider
+class Response extends BaseResponse
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['notification'] = function($app)
-		{
-			return new Handler(
-				new Storage\Session($app['session'])
-			);
-		};
-	}
 }

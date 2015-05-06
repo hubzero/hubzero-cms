@@ -35,6 +35,7 @@ use Hubzero\Error\Exception\NotAuthorizedException;
 use Hubzero\Error\Exception\NotFoundException;
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Facades\Facade;
+use Hubzero\Http\RedirectResponse;
 use Hubzero\Http\Request;
 
 /**
@@ -48,6 +49,13 @@ class Application extends Container
 	 * @var  string
 	 */
 	const VERSION = '2.0.0-dev';
+
+	/**
+	 * Indicates if the application has "booted".
+	 *
+	 * @var  boolean
+	 */
+	protected $booted = false;
 
 	/**
 	 * Array of core services
@@ -318,9 +326,51 @@ class Application extends Container
 	 * @param   array   $type     Message type.
 	 * @return  void
 	 */
-	public function redirect($url, $message = null, $type = null)
+	public function redirect($url, $message = null, $type = 'success')
 	{
-		\JFactory::getApplication()->redirect($url, $message, $type);
+		//\JFactory::getApplication()->redirect($url, $message, $type);
+		$redirect = new RedirectResponse($url); //, $status, $headers);
+		$redirect->setRequest($this['request']);
+
+		if ($message && $this->has('notification'))
+		{
+			$this['notification']->message($message, $type);
+		}
+
+		$redirect->send();
+
+		exit();
+	}
+
+	/**
+	 * Boot the application's service providers.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		if ($this->booted) return;
+
+		array_walk($this->serviceProviders, function($p)
+		{
+			$this->bootProvider($p);
+		});
+
+		$this->booted = true;
+	}
+
+	/**
+	 * Boot the given service provider.
+	 *
+	 * @param   object  $provider
+	 * @return  void
+	 */
+	protected function bootProvider(ServiceProvider $provider)
+	{
+		if (method_exists($provider, 'boot'))
+		{
+			return $provider->boot();
+		}
 	}
 
 	/**
@@ -330,6 +380,8 @@ class Application extends Container
 	 */
 	public function run()
 	{
+		$this->boot();
+
 		$profiler = $this['profiler'];
 
 		$app = \JFactory::getApplication($this['client']->name);
