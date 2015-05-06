@@ -32,9 +32,6 @@ namespace Hubzero\Console\Command\Scaffolding;
 
 use Hubzero\Console\Command\Scaffolding;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Scaffolding class for templates
  *
@@ -80,18 +77,18 @@ class Template extends Scaffolding
 		}
 
 		// Make sure template doesn't already exist
-		if (is_dir(JPATH_ROOT . DS . 'templates' . DS . $to))
+		if (is_dir(PATH_APP . DS . 'templates' . DS . $to))
 		{
 			$this->output->error("Error: the template destination alread exists.");
 		}
-		if (!is_dir(JPATH_ROOT . DS . 'templates' . DS . $from))
+		if (!is_dir(PATH_APP . DS . 'templates' . DS . $from))
 		{
 			$this->output->error("Error: the template source does not appear to exist.");
 		}
 
 		// Make component
-		$this->addTemplateFile(JPATH_ROOT . DS . 'templates' . DS . $from, JPATH_ROOT . DS . 'templates' . DS . $to, true)
-			 ->addTemplateFile(JPATH_ROOT . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $from . '.ini', JPATH_ROOT . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $to . '.ini', true)
+		$this->addTemplateFile(PATH_APP . DS . 'templates' . DS . $from, PATH_APP . DS . 'templates' . DS . $to, true)
+			 ->addTemplateFile(PATH_APP . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $from . '.ini', PATH_APP . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $to . '.ini', true)
 			 ->addReplacement(strtoupper($from), strtoupper($to))
 			 ->addReplacement(ucfirst($from), ucfirst($to))
 			 ->addReplacement($from, $to)

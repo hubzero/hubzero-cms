@@ -32,9 +32,6 @@ namespace Hubzero\Console\Command\Scaffolding;
 
 use Hubzero\Console\Command\Scaffolding;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Scaffolding class for muse commands
  *
@@ -73,7 +70,7 @@ class Command extends Scaffolding
 		}
 
 		// Define our install directory or get it from args
-		$dest = JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Console' . DS . 'Command' . DS . ucfirst($name) . '.php';
+		$dest = PATH_CORE . DS . 'libraries' . DS . 'Hubzero' . DS . 'Console' . DS . 'Command' . DS . ucfirst($name) . '.php';
 
 		// Make command
 		$this->addTemplateFile("{$this->getType()}.tmpl", $dest)

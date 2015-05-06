@@ -33,9 +33,8 @@ namespace Hubzero\Console\Command;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Filesystem\Filesystem;
+use Hubzero\Utility\Inflector;
 
 /**
  * Scaffolding class for generating template extensions
@@ -81,7 +80,7 @@ class Scaffolding extends Base implements CommandInterface
 	{
 		parent::__construct($output, $arguments);
 
-		$this->type      = $this->arguments->getOpt(3);
+		$this->type = $this->arguments->getOpt(3);
 	}
 
 	/**
@@ -251,7 +250,7 @@ class Scaffolding extends Base implements CommandInterface
 			{
 				if (is_dir($template['path']))
 				{
-					if (!\JFolder::copy($template['path'], $template['destination']))
+					if (!with(new Filesystem)->copyDirectory($template['path'], $template['destination']))
 					{
 						$this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
 					}
@@ -349,11 +348,11 @@ class Scaffolding extends Base implements CommandInterface
 									break;
 								// Upper case first character and plural
 								case 'ucfp':
-									$value = ucfirst($this->makePlural($v));
+									$value = ucfirst(Inflector::pluralize($v));
 									break;
 								// Plural form
 								case 'p':
-									$value = $this->makePlural($v);
+									$value = Inflector::pluralize($v);
 									break;
 							}
 
@@ -444,11 +443,11 @@ class Scaffolding extends Base implements CommandInterface
 						break;
 					// Upper case first character and plural
 					case 'ucfp':
-						$newfile = ucfirst($this->makePlural($newfile));
+						$newfile = ucfirst(Inflector::pluralize($newfile));
 						break;
 					// Plural form
 					case 'p':
-						$newfile = $this->makePlural($newfile);
+						$newfile = Inflector::pluralize($newfile);
 						break;
 				}
 			}
@@ -488,80 +487,5 @@ class Scaffolding extends Base implements CommandInterface
 				}
 			}
 		}
-	}
-
-	/**
-	 * Make a given string plural...trying to account for as many english language constructs as possible
-	 *
-	 * @param  (string) $string - incoming string
-	 * @return (string) $string - plural form of given string
-	 **/
-	private static function makePlural($string)
-	{
-		$plural = array(
-			array( '/(quiz)$/i',               "$1zes"   ),
-			array( '/^(ox)$/i',                "$1en"    ),
-			array( '/([m|l])ouse$/i',          "$1ice"   ),
-			array( '/(matr|vert|ind)ix|ex$/i', "$1ices"  ),
-			array( '/(x|ch|ss|sh)$/i',         "$1es"    ),
-			array( '/([^aeiouy]|qu)y$/i',      "$1ies"   ),
-			array( '/([^aeiouy]|qu)ies$/i',    "$1y"     ),
-			array( '/(hive)$/i',               "$1s"     ),
-			array( '/(?:([^f])fe|([lr])f)$/i', "$1$2ves" ),
-			array( '/sis$/i',                  "ses"     ),
-			array( '/([ti])um$/i',             "$1a"     ),
-			array( '/(buffal|tomat)o$/i',      "$1oes"   ),
-			array( '/(bu)s$/i',                "$1ses"   ),
-			array( '/(alias|status)$/i',       "$1es"    ),
-			array( '/(octop|vir)us$/i',        "$1i"     ),
-			array( '/(ax|test)is$/i',          "$1es"    ),
-			array( '/s$/i',                    "s"       ),
-			array( '/$/',                      "s"       )
-		);
-
-		$irregular = array(
-			array( 'move',   'moves'    ),
-			array( 'sex',    'sexes'    ),
-			array( 'child',  'children' ),
-			array( 'man',    'men'      ),
-			array( 'person', 'people'   )
-		);
-
-		$uncountable = array(
-			'sheep',
-			'fish',
-			'series',
-			'species',
-			'money',
-			'rice',
-			'information',
-			'equipment'
-		);
-
-		// First, check if singular and plural are the same
-		if (in_array(strtolower($string), $uncountable))
-		{
-			return $string;
-		}
-
-		// Now, check for irregular singular forms
-		foreach ($irregular as $noun)
-		{
-			if (strtolower($string) == $noun[0])
-			{
-				return $noun[1];
-			}
-		}
-
-		// Finally, check for matches using regular expressions
-		foreach ($plural as $pattern)
-		{
-			if (preg_match($pattern[0], $string))
-			{
-				return preg_replace($pattern[0], $pattern[1], $string);
-			}
-		}
-
-		return $string;
 	}
 }

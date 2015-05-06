@@ -34,9 +34,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Utility\Date;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * User class for general user functions
  **/
@@ -114,7 +111,7 @@ class User extends Base implements CommandInterface
 
 		$suser  = \JFactory::getUser($sourceUser);
 		$duser  = \JFactory::getUser($destinationUser);
-		$dbo    = \JFactory::getDbo();
+		$dbo    = App::get('db');
 		$tables = $dbo->getTableList();
 		$prefix = $dbo->getPrefix();
 		$fields = array(

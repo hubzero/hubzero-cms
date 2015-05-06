@@ -35,9 +35,6 @@ use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * User class for terms of use functions
  **/
@@ -97,7 +94,7 @@ class Terms extends Base implements CommandInterface
 		if (strtolower($confirm) == 'yes' || strtolower($confirm) == 'y')
 		{
 			// Get db object
-			$dbo = \JFactory::getDbo();
+			$dbo = App::get('db');
 
 			// Update registration config value to require re-agreeing upon next login
 			$params = \Component::params('com_members');

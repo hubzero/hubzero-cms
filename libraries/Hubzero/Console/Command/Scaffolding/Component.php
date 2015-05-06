@@ -32,9 +32,6 @@ namespace Hubzero\Console\Command\Scaffolding;
 
 use Hubzero\Console\Command\Scaffolding;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Scaffolding class for components
  *
@@ -73,10 +70,11 @@ class Component extends Scaffolding
 		}
 
 		// Define our install directory or get it from args
-		$install_dir = JPATH_ROOT . DS . 'components';
+		$install_dir = PATH_CORE . DS . 'components';
 		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
 		{
-			$install_dir = JPATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS) . DS . 'components';
+			// @FIXME: need to be able to distinguish between path_app and path_core here
+			$install_dir = PATH_CORE . DS . trim($this->arguments->getOpt('install-dir'), DS) . DS . 'components';
 		}
 
 		if (substr($name, 0, 3) == 'com')
@@ -118,7 +116,7 @@ class Component extends Scaffolding
 				'--install-dir: installation directory',
 				'Directory in which the component should be installed. Can be helpful
 				when installing a component in some sort of subsite or alternate
-				configuration. Scaffolding with use JPATH_ROOT as the default.',
+				configuration. Scaffolding with use PATH_CORE as the default.',
 				'Example: --install-dir=site/groups/1987'
 			);
 	}

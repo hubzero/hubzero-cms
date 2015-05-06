@@ -33,9 +33,6 @@ namespace Hubzero\Console\Command\Scaffolding;
 use Hubzero\Console\Command\Scaffolding;
 use Hubzero\Utility\Date;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
 /**
  * Scaffolding class for migrations
  *
@@ -53,9 +50,8 @@ class Migration extends Scaffolding
 		switch ($this->arguments->getOpt(4))
 		{
 			case 'for':
-				$db     = \JFactory::getDbo();
-				$prefix = $db->getPrefix();
-				$tables = $db->getTableList();
+				$prefix = App::get('db')->getPrefix();
+				$tables = App::get('db')->getTableList();
 
 				if (!$table = $this->arguments->getOpt(5))
 				{
@@ -81,10 +77,10 @@ class Migration extends Scaffolding
 		}
 
 		// Determine our base path
-		$base = PATH_ROOT;
+		$base = PATH_CORE;
 		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
 		{
-			$base = PATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
+			$base = PATH_CORE . DS . trim($this->arguments->getOpt('install-dir'), DS);
 		}
 
 		// Install directory is migrations folder within base
@@ -183,10 +179,9 @@ class Migration extends Scaffolding
 	 **/
 	private function showCreateTable($tableName)
 	{
-		$db     = \JFactory::getDbo();
-		$prefix = $db->getPrefix();
+		$prefix = App::get('db')->getPrefix();
 
-		$create = $db->getTableCreate($tableName);
+		$create = App::get('db')->getTableCreate($tableName);
 		$create = $create[$tableName];
 		$create = str_replace("CREATE TABLE `{$prefix}", 'CREATE TABLE `#__', $create);
 		$create = str_replace("\n", "\n\t\t\t\t", $create);
@@ -227,7 +222,7 @@ class Migration extends Scaffolding
 			->addArgument(
 				'--install-dir: installation directory',
 				'Installation/base directory within which the migration will be installed.
-				By default, this will be JPATH_ROOT. The command will then look for a 
+				By default, this will be PATH_CORE. The command will then look for a 
 				directory named "migrations" within the provided installation directory.',
 				'Example: --install-dir=/www/myhub'
 			)
