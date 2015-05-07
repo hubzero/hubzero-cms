@@ -152,13 +152,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$view->task   = $task;
 
 			$view->filters = array();
-			$view->filters['limit'] = App::getState(
+			$view->filters['limit'] = Request::getState(
 				$option . '.plugin.messages.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			);
-			$view->filters['start'] = App::getState(
+			$view->filters['start'] = Request::getState(
 				$option . '.plugin.messages.limitstart',
 				'limitstart',
 				0,
@@ -209,13 +209,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$filters = array();
-		$filters['limit'] = App::getState(
+		$filters['limit'] = Request::getState(
 			$option . '.plugin.messages.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$filters['start'] = App::getState(
+		$filters['start'] = Request::getState(
 			$option . '.plugin.messages.limitstart',
 			'limitstart',
 			0,
@@ -267,13 +267,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$filters = array();
-		$filters['limit'] = App::getState(
+		$filters['limit'] = Request::getState(
 			$option . '.plugin.messages.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$filters['start'] = App::getState(
+		$filters['start'] = Request::getState(
 			$option . '.plugin.messages.limitstart',
 			'limitstart',
 			0,
@@ -324,13 +324,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$filters = array();
-		$filters['limit'] = App::getState(
+		$filters['limit'] = Request::getState(
 			$option . '.plugin.messages.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$filters['start'] = App::getState(
+		$filters['start'] = Request::getState(
 			$option . '.plugin.messages.limitstart',
 			'limitstart',
 			0,
@@ -386,13 +386,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$filters = array();
-		$filters['limit'] = App::getState(
+		$filters['limit'] = Request::getState(
 			$option . '.plugin.messages.limit',
 			'limit',
 			Config::get('list_limit'),
 			'int'
 		);
-		$filters['start'] = App::getState(
+		$filters['start'] = Request::getState(
 			$option . '.plugin.messages.limitstart',
 			'limitstart',
 			0,
