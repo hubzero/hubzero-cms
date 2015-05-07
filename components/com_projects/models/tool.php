@@ -342,6 +342,25 @@ class Tool extends Model
 	}
 
 	/**
+	 * Return a formatted created timestamp
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function lastView($as='')
+	{
+		if (!isset($this->_lastView))
+		{
+			if (!isset($this->_viewLog))
+			{
+				$this->_viewLog = new Tool\View();
+			}
+			$this->_lastView = $this->_viewLog->lastView($this->get('id'), User::get('id'));
+		}
+		return $this->_lastView;
+	}
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param      string $key Field to return

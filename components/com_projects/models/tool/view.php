@@ -104,4 +104,16 @@ class View extends Model
 
 		return $instances[$key];
 	}
+
+	/**
+	 * Check if page was viewed recently
+	 *
+	 * @param      integer $toolid 	Project tool id
+	 * @param      integer $userid	User id
+	 * @return     mixed Return string or NULL
+	 */
+	public function lastView( $toolid = 0, $userid = 0)
+	{
+		return $this->_tbl->checkView($toolid, $userid);
+	}
 }
