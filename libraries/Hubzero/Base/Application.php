@@ -235,6 +235,16 @@ class Application extends Container
 			$this[$key] = $value;
 		}
 
+		// Since service providers can do more than just register callbacks,
+		// we need to track the loaded providers for futher use later in the
+		// application.
+		$this->markAsRegistered($provider);
+
+		// If the application has already booted, we will call this boot method on
+		// the provider class so it has an opportunity to do its boot logic and
+		// will be ready for any usage by the developer's application logics.
+		if ($this->booted) $this->bootProvider($provider);
+
 		return $this;
 	}
 
@@ -244,7 +254,7 @@ class Application extends Container
 	 * @param   mixed  $provider  \Hubzero\Base\ServiceProvider|string
 	 * @return  mixed  \Hubzero\Base\ServiceProvider|null
 	 */
-	public function getRegistered($provider)
+	/*public function getRegistered($provider)
 	{
 		$name = is_string($provider) ? $provider : get_class($provider);
 
@@ -254,7 +264,7 @@ class Application extends Container
 		}
 
 		return null;
-	}
+	}*/
 
 	/**
 	 * Resolve a service provider instance from the class name.
@@ -339,6 +349,16 @@ class Application extends Container
 
 		$redirect->send();
 
+		$this->close();
+	}
+
+	/**
+	 * Terminate the application
+	 *
+	 * @return  void
+	 */
+	public function close()
+	{
 		exit();
 	}
 

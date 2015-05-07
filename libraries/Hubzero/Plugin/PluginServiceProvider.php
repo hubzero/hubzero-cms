@@ -47,16 +47,27 @@ class PluginServiceProvider extends ServiceProvider
 	{
 		$this->app['plugin'] = function($app)
 		{
-			$loader = new Loader();
-
-			return $loader;
+			return new Loader();
 		};
 
-		$this->app->extend('dispatcher', function($dispatcher, $app)
+		/*$this->app->extend('dispatcher', function($dispatcher, $app)
 		{
 			$dispatcher->addListenerLoader($app['plugin']);
 
 			return $dispatcher;
-		});
+		});*/
+	}
+
+	/**
+	 * Add the plugin loader to the event dispatcher.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		if ($this->app->has('dispatcher'))
+		{
+			$this->app['dispatcher']->addListenerLoader($this->app['plugin']);
+		}
 	}
 }
