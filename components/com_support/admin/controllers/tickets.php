@@ -1052,7 +1052,7 @@ class Tickets extends AdminController
 					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 					// Send e-mail to admin?
-					JPluginHelper::importPlugin('xmessage');
+					Plugin::import('xmessage');
 
 					foreach ($rowc->to('ids') as $to)
 					{

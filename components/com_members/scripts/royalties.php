@@ -67,10 +67,10 @@ $mainframe = JFactory::getApplication('site');
 // set the language
 $mainframe->initialise();
 
-JPluginHelper::importPlugin('system');
+Plugin::import('system');
 
 // trigger the onAfterInitialise events
-$mainframe->triggerEvent('onAfterInitialise');
+Event::trigger('onAfterInitialise');
 
 if (0)
 {
@@ -86,7 +86,7 @@ $Itemid = Request::getInt('Itemid');
 $mainframe->authorize($Itemid);
 
 // trigger the onAfterRoute events
-$mainframe->triggerEvent('onAfterRoute');
+Event::trigger('onAfterRoute');
 
 /**
  * DISPATCH THE APPLICATION
@@ -97,7 +97,7 @@ $option = Request::getCmd('option');
 $mainframe->dispatch($option);
 
 // trigger the onAfterDispatch events
-$mainframe->triggerEvent('onAfterDispatch');
+Event::trigger('onAfterDispatch');
 
 /**
  * RENDER  THE APPLICATION
@@ -107,7 +107,7 @@ $mainframe->triggerEvent('onAfterDispatch');
 $mainframe->render();
 
 // trigger the onAfterRender events
-$mainframe->triggerEvent('onAfterRender');
+Event::trigger('onAfterRender');
 } // (0)
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');

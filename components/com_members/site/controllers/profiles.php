@@ -497,7 +497,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Check subscription to Employer Services
 		//   NOTE: This must occur after the initial plugins import and
-		//   do not specifically call JPluginHelper::importPlugin('members', 'resume');
+		//   do not specifically call Plugin::import('members', 'resume');
 		//   Doing so can have negative affects.
 		if ($this->config->get('employeraccess') && $tab == 'resume')
 		{

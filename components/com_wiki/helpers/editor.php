@@ -220,7 +220,8 @@ class Editor extends Object
 
 		foreach ($results as $result)
 		{
-			if (trim($result)) {
+			if (trim($result))
+			{
 				$return .= $result;
 			}
 		}
@@ -302,5 +303,25 @@ class Editor extends Object
 			// Load plugin parameters
 			$this->initialise();
 		}
+	}
+
+	/**
+	 * Attach an observer object
+	 *
+	 * @param   object  $observer  An observer object to attach
+	 * @return  void
+	 */
+	public function attach($observer)
+	{
+	}
+
+	/**
+	 * Detach an observer object
+	 *
+	 * @param   object   $observer  An observer object to detach.
+	 * @return  boolean  True if the observer object was detached.
+	 */
+	public function detach($observer)
+	{
 	}
 }

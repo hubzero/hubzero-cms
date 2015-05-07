@@ -55,13 +55,16 @@ class PluginsModelPlugin extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		// The folder and element vars are passed when saving the form.
-		if (empty($data)) {
-			$item		= $this->getItem();
-			$folder		= $item->folder;
-			$element	= $item->element;
-		} else {
-			$folder		= JArrayHelper::getValue($data, 'folder', '', 'cmd');
-			$element	= JArrayHelper::getValue($data, 'element', '', 'cmd');
+		if (empty($data))
+		{
+			$item    = $this->getItem();
+			$folder  = $item->folder;
+			$element = $item->element;
+		}
+		else
+		{
+			$folder  = \Hubzero\Utility\Arr::getValue($data, 'folder', '', 'cmd');
+			$element = \Hubzero\Utility\Arr::getValue($data, 'element', '', 'cmd');
 		}
 
 		// These variables are used to add data from the plugin XML files.
@@ -75,7 +78,8 @@ class PluginsModelPlugin extends JModelAdmin
 		}
 
 		// Modify the form based on access controls.
-		if (!$this->canEditState((object) $data)) {
+		if (!$this->canEditState((object) $data))
+		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
 			$form->setFieldAttribute('enabled', 'disabled', 'true');
@@ -98,9 +102,10 @@ class PluginsModelPlugin extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_plugins.edit.plugin.data', array());
+		$data = User::getState('com_plugins.edit.plugin.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -119,8 +124,9 @@ class PluginsModelPlugin extends JModelAdmin
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('plugin.id');
 
-		if (!isset($this->_cache[$pk])) {
-			$false	= false;
+		if (!isset($this->_cache[$pk]))
+		{
+			$false = false;
 
 			// Get a row instance.
 			$table = $this->getTable();
@@ -129,14 +135,15 @@ class PluginsModelPlugin extends JModelAdmin
 			$return = $table->load($pk);
 
 			// Check for a table object error.
-			if ($return === false && $table->getError()) {
+			if ($return === false && $table->getError())
+			{
 				$this->setError($table->getError());
 				return $false;
 			}
 
 			// Convert to the JObject before adding other data.
 			$properties = $table->getProperties(1);
-			$this->_cache[$pk] = JArrayHelper::toObject($properties, 'JObject');
+			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
 			$registry = new JRegistry;
@@ -146,9 +153,12 @@ class PluginsModelPlugin extends JModelAdmin
 			// Get the plugin XML.
 			$path = JPath::clean(JPATH_PLUGINS.'/'.$table->folder.'/'.$table->element.'/'.$table->element.'.xml');
 
-			if (file_exists($path)) {
+			if (file_exists($path))
+			{
 				$this->_cache[$pk]->xml = JFactory::getXML($path);
-			} else {
+			}
+			else
+			{
 				$this->_cache[$pk]->xml = null;
 			}
 		}
@@ -182,8 +192,6 @@ class PluginsModelPlugin extends JModelAdmin
 		// Execute the parent method.
 		parent::populateState();
 
-		$app = JFactory::getApplication('administrator');
-
 		// Load the User state.
 		$pk = (int) Request::getInt('extension_id');
 		$this->setState('plugin.id', $pk);
@@ -202,12 +210,12 @@ class PluginsModelPlugin extends JModelAdmin
 		jimport('joomla.filesystem.folder');
 
 		// Initialise variables.
-		$folder		= $this->getState('item.folder');
-		$element	= $this->getState('item.element');
-		$lang		= Lang::getRoot();
-		$client		= JApplicationHelper::getClientInfo(0);
+		$folder  = $this->getState('item.folder');
+		$element = $this->getState('item.element');
+		$lang    = Lang::getRoot();
+		$client  = JApplicationHelper::getClientInfo(0);
 
-	// Load the core and/or local language sys file(s) for the ordering field.
+		// Load the core and/or local language sys file(s) for the ordering field.
 		$db = JFactory::getDbo();
 		$query = 'SELECT element' .
 				' FROM #__extensions' .
@@ -221,41 +229,48 @@ class PluginsModelPlugin extends JModelAdmin
 			||	$lang->load('plg_'.$folder.'_'.$elementa.'.sys', JPATH_PLUGINS.'/'.$folder.'/'.$elementa, null, false, true);
 		}
 
-		if (empty($folder) || empty($element)) {
-			$app = JFactory::getApplication();
-			$app->redirect(Route::url('index.php?option=com_plugins&view=plugins', false));
+		if (empty($folder) || empty($element))
+		{
+			App::redirect(Route::url('index.php?option=com_plugins&view=plugins', false));
 		}
+
 		// Try 1.6 format: /plugins/folder/element/element.xml
 		$formFile = JPath::clean(JPATH_PLUGINS.'/'.$folder.'/'.$element.'/'.$element.'.xml');
-		if (!file_exists($formFile)) {
+		if (!file_exists($formFile))
+		{
 			// Try 1.5 format: /plugins/folder/element/element.xml
 			$formFile = JPath::clean(JPATH_PLUGINS.'/'.$folder.'/'.$element.'.xml');
-			if (!file_exists($formFile)) {
+			if (!file_exists($formFile))
+			{
 				throw new Exception(Lang::txt('COM_PLUGINS_ERROR_FILE_NOT_FOUND', $element.'.xml'));
 				return false;
 			}
 		}
 
 		// Load the core and/or local language file(s).
-			$lang->load('plg_'.$folder.'_'.$element, JPATH_ADMINISTRATOR, null, false, true)
-			|| $lang->load('plg_'.$folder.'_'.$element, JPATH_PLUGINS.'/'.$folder.'/'.$element, null, false, true);
+		$lang->load('plg_'.$folder.'_'.$element, JPATH_ADMINISTRATOR, null, false, true)
+		|| $lang->load('plg_'.$folder.'_'.$element, JPATH_PLUGINS.'/'.$folder.'/'.$element, null, false, true);
 
 
-		if (file_exists($formFile)) {
+		if (file_exists($formFile))
+		{
 			// Get the plugin form.
-			if (!$form->loadFile($formFile, false, '//config')) {
+			if (!$form->loadFile($formFile, false, '//config'))
+			{
 				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 		}
 
 		// Attempt to load the xml file.
-		if (!$xml = simplexml_load_file($formFile)) {
+		if (!$xml = simplexml_load_file($formFile))
+		{
 			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
 		// Get the help data from the XML file if present.
 		$help = $xml->xpath('/extension/help');
-		if (!empty($help)) {
+		if (!empty($help))
+		{
 			$helpKey = trim((string) $help[0]['key']);
 			$helpURL = trim((string) $help[0]['url']);
 
@@ -292,7 +307,7 @@ class PluginsModelPlugin extends JModelAdmin
 	public function save($data)
 	{
 		// Load the extension plugin group.
-		JPluginHelper::importPlugin('extension');
+		Plugin::import('extension');
 
 		// Setup type
 		$data['type'] = 'plugin';

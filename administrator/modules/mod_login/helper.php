@@ -50,7 +50,7 @@ class Helper extends Module
 
 		$returnQueryString = (!empty($return)) ? "&return={$return}" : '';
 		$authenticators    = [];
-		$plugins           = \JPluginHelper::getPlugin('authentication');
+		$plugins           = \Plugin::byType('authentication');
 
 		foreach ($plugins as $p)
 		{

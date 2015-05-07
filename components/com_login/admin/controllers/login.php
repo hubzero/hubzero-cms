@@ -35,6 +35,9 @@ use Hubzero\Component\AdminController;
 use Exception;
 use Hubzero\Notification\Handler;
 use Hubzero\Notification\Storage\Cookie;
+use Request;
+use Plugin;
+use App;
 
 /**
  * Login Controller
@@ -52,9 +55,9 @@ class Login extends AdminController
 		// otherwise (or if method does not exist) use default
 		$authenticator = Request::getVar('authenticator', '', 'method');
 
-		\JPluginHelper::importPlugin('authentication');
+		Plugin::import('authentication');
 
-		$plugins = \JPluginHelper::getPlugin('authentication');
+		$plugins = Plugin::byType('authentication');
 
 		foreach ($plugins as $plugin)
 		{
@@ -81,9 +84,9 @@ class Login extends AdminController
 		// Special treatment is required for this plugin, as this view may be called
 		// after a session timeout. We must reset the view and layout prior to display
 		// otherwise an error will occur.
-		\Request::setVar('view', 'login');
-		\Request::setVar('tmpl', 'login');
-		//\Request::setVar('layout', 'default');
+		Request::setVar('view', 'login');
+		Request::setVar('tmpl', 'login');
+		//Request::setVar('layout', 'default');
 
 		// See if we have any messages available by cookie
 		$handler = new Handler(new Cookie(1));
@@ -116,9 +119,9 @@ class Login extends AdminController
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if ($authenticator = Request::getVar('authenticator', false, 'method'))
 		{
-			\JPluginHelper::importPlugin('authentication');
+			Plugin::import('authentication');
 
-			$plugins = \JPluginHelper::getPlugin('authentication');
+			$plugins = Plugin::byType('authentication');
 
 			foreach ($plugins as $plugin)
 			{
@@ -177,7 +180,7 @@ class Login extends AdminController
 	{
 		$app = \JFactory::getApplication();
 
-		$userid = \Request::getInt('uid', null);
+		$userid = Request::getInt('uid', null);
 
 		$result = $app->logout($userid, array(
 			'clientid' => ($userid ? 0 : 1)
@@ -189,7 +192,8 @@ class Login extends AdminController
 			$model->setState('task', $this->_task);
 
 			$return = $model->getState('return');
-			$app->redirect($return);
+
+			App::redirect($return);
 		}
 
 		$this->displayTask();

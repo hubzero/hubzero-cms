@@ -106,7 +106,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 		if ($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing))
 		{
 			// Check to see if third party auth plugins are enabled
-			$plugins        = JPluginHelper::getPlugin('authentication');
+			$plugins        = Plugin::byType('authentication');
 			$authenticators = array();
 
 			foreach ($plugins as $p)

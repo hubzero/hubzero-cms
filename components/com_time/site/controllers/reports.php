@@ -30,6 +30,9 @@
 
 namespace Components\Time\Site\Controllers;
 
+use Request;
+use Plugin;
+
 /**
  * Time component reports controller
  */
@@ -42,8 +45,8 @@ class Reports extends Base
 	 */
 	public function displayTask()
 	{
-		\JPluginHelper::importPlugin('time');
-		$this->view->reports = \JPluginHelper::getPlugin('time');
+		Plugin::import('time');
+		$this->view->reports = Plugin::byType('time');
 
 		if ($this->view->report_type = Request::getCmd('report_type', false))
 		{

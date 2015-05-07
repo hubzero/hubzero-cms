@@ -250,8 +250,7 @@ class Writer
 		// that aggregate all of the log messages for a given "request" cycle.
 		if (isset($this->dispatcher))
 		{
-			\JPluginHelper::importPlugin('system');
-			$this->dispatcher->trigger('onLog', array($level, $message, $context));
+			$this->dispatcher->trigger('system.onLog', array($level, $message, $context));
 		}
 	}
 

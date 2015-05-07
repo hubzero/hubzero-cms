@@ -30,29 +30,30 @@
 
 namespace Components\Wiki\Helpers;
 
+use Hubzero\Base\Object;
+use Hubzero\Config\Registry;
 use Exception;
+use Plugin;
 use Lang;
-
-jimport('joomla.event.dispatcher');
 
 /**
  * Hubzero helper class for retrieving wiki parser
  */
-class Parser extends \JObservable
+class Parser extends Object
 {
 	/**
 	 * Parser Plugin object
 	 *
 	 * @var	 object
 	 */
-	public $_parser = null;
+	public $parser = null;
 
 	/**
 	 * Parser Plugin name
 	 *
 	 * @var  string
 	 */
-	public $_name = null;
+	public $name = null;
 
 	/**
 	 * Constructor
@@ -68,7 +69,7 @@ class Parser extends \JObservable
 
 			$parser = $database->loadResult();
 		}
-		$this->_name = $parser;
+		$this->name = $parser;
 	}
 
 	/**
@@ -76,7 +77,7 @@ class Parser extends \JObservable
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 *     $parser = WikiHelperParser::getInstance($parser_name);
+	 *     $parser = WikiHelperParser::getInstance($parsername);
 	 *
 	 * @param   string  $parser  The name of the parser to use.
 	 * @return  object  The Parser object.
@@ -110,19 +111,14 @@ class Parser extends \JObservable
 	public function initialise($config=array(), $getnew=false)
 	{
 		// Check if parser is already loaded
-		if (is_null($this->_parser))
+		if (is_null($this->parser))
 		{
 			return;
 		}
 
-		$args = array(
-			'config' => $config,
-			'getnew' => $getnew,
-			'event'  => 'onGetWikiParser'
-		);
-
 		$return = '';
-		$results[] = $this->_parser->update($args);
+		$results[] = $this->parser->onGetWikiParser($config, $getnew);
+
 		foreach ($results as $result)
 		{
 			if (is_object($result))
@@ -144,15 +140,15 @@ class Parser extends \JObservable
 	 */
 	public function parse($text, $config, $fullparse=true, $getnew=false, $params=array())
 	{
-		if (!$this->_name)
+		if (!$this->name)
 		{
 			return nl2br($text);
 		}
 
-		$this->_loadParser($params, $config, $getnew);
+		$this->load($params, $config, $getnew);
 
 		// Check if parser is already loaded
-		if (is_null($this->_parser))
+		if (is_null($this->parser))
 		{
 			return nl2br($text);
 		}
@@ -160,15 +156,7 @@ class Parser extends \JObservable
 		// Initialize variables
 		$return = null;
 
-		$args = array(
-			'text'      => $text,
-			'config'    => $config,
-			'fullparse' => $fullparse,
-			'getnew'    => $getnew,
-			'event'     => 'onWikiParseText'
-		);
-
-		$results[] = $this->_parser->update($args);
+		$results[] = $this->parser->onWikiParseText($text, $config, $fullparse, $getnew);
 
 		foreach ($results as $result)
 		{
@@ -188,22 +176,21 @@ class Parser extends \JObservable
 	 * @param   bool   $getnew   Tells initialise() to create new parser or not
 	 * @return  void
 	 */
-	private function _loadParser($config=array(), $pconfig=array(), $getnew=false)
+	private function load($config=array(), $pconfig=array(), $getnew=false)
 	{
 		// Check if editor is already loaded
-		if (!$getnew && !is_null($this->_parser))
+		if (!$getnew && !is_null($this->parser))
 		{
 			return;
 		}
 
-		jimport('joomla.filesystem.file');
-		$input = new \JFilterInput();
-
 		// Build the path to the needed parser plugin
-		$name = $input->clean($this->_name, 'cmd');
+		$name = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $this->name);
+		$name = ltrim($name, '.');
+
 		$path = PATH_CORE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
-		if (!\JFile::exists($path))
+		if (!is_file($path))
 		{
 			throw new Exception(Lang::txt('Cannot load the parser'), 500);
 			return false;
@@ -213,19 +200,40 @@ class Parser extends \JObservable
 		require_once $path;
 
 		// Get the plugin
-		$plugin = \JPluginHelper::getPlugin('wiki', $this->_name);
+		$plugin = Plugin::byType('wiki', $this->name);
 		if (is_string($plugin->params))
 		{
-			$plugin->params = new \JRegistry($plugin->params);
+			$plugin->params = new Registry($plugin->params);
 		}
-		$plugin->params->loadArray($config);
+		$plugin->params->merge($config);
 
 		// Build parser plugin classname
-		$name = 'plgWiki' . $this->_name;
-		if ($this->_parser = new $name($this, (array)$plugin))
+		$name = 'plgWiki' . $this->name;
+
+		if ($this->parser = new $name($this, (array)$plugin))
 		{
 			// Load plugin parameters
 			$this->initialise($pconfig, $getnew);
 		}
+	}
+
+	/**
+	 * Attach an observer object
+	 *
+	 * @param   object  $observer  An observer object to attach
+	 * @return  void
+	 */
+	public function attach($observer)
+	{
+	}
+
+	/**
+	 * Detach an observer object
+	 *
+	 * @param   object   $observer  An observer object to detach.
+	 * @return  boolean  True if the observer object was detached.
+	 */
+	public function detach($observer)
+	{
 	}
 }

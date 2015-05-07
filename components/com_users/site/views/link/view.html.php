@@ -40,14 +40,13 @@ class UsersViewLink extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$user     = JFactory::getUser();
-		$document = JFactory::getDocument();
+		$user = User::getRoot();
 
 		// If this is an auth_link account update, carry on, otherwise raise an error
 		if (!is_object($user)
-				|| !array_key_exists('auth_link_id', $user)
-				|| !is_numeric($user->get('username'))
-				|| !$user->get('username') < 0)
+			|| !array_key_exists('auth_link_id', $user)
+			|| !is_numeric($user->get('username'))
+			|| !$user->get('username') < 0)
 		{
 			App::abort('405', 'Method not allowed');
 			return;
@@ -64,11 +63,11 @@ class UsersViewLink extends JViewLegacy
 		// Look up a few things
 		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get("auth_link_id"));
 		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
-		$plugins = JPluginHelper::getPlugin('authentication');
+		$plugins = Plugin::byType('authentication');
 
 		// Get the display name for the current plugin being used
-		JPluginHelper::importPlugin('authentication', $hzad->authenticator);
-		$plugin       = JPluginHelper::getPlugin('authentication', $hzad->authenticator);
+		Plugin::import('authentication', $hzad->authenticator);
+		$plugin       = Plugin::byType('authentication', $hzad->authenticator);
 		$pparams      = new JRegistry($plugin->params);
 		$refl         = new ReflectionClass("plgAuthentication{$plugin->name}");
 		$display_name = $pparams->get('display_name', $refl->hasMethod('onGetLinkDescription') ? $refl->getMethod('onGetLinkDescription')->invoke(NULL) : ucfirst($plugin->name));
@@ -85,7 +84,7 @@ class UsersViewLink extends JViewLegacy
 			foreach ($profile_conflicts as $p)
 			{
 				$user_id    = JUserHelper::getUserId($p);
-				$juser      = JFactory::getUser($user_id);
+				$juser      = User::getInstance($user_id);
 				$auth_link  = \Hubzero\Auth\Link::find_by_user_id($juser->id);
 				$dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
 				$conflict[] = array("auth_domain_name" => $dname, "name" => $juser->name, "email" => $juser->email);
@@ -95,7 +94,7 @@ class UsersViewLink extends JViewLegacy
 		{
 			foreach ($link_conflicts as $l)
 			{
-				$juser      = JFactory::getUser($l['user_id']);
+				$juser      = User::getInstance($l['user_id']);
 				$conflict[] = array("auth_domain_name" => $l['auth_domain_name'], "name" => $juser->name, "email" => $l['email']);
 			}
 		}
@@ -106,7 +105,7 @@ class UsersViewLink extends JViewLegacy
 		// @TODO: Could also check for high probability of name matches???
 
 		// Get the site name
-		$sitename = \Config::get('sitename');
+		$sitename = Config::get('sitename');
 
 		// Assign variables to the view
 		$this->assign('hzal', $hzal);

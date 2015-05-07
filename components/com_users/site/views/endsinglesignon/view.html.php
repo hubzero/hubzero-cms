@@ -49,7 +49,7 @@ class UsersViewEndsinglesignon extends JViewLegacy
 		$sitename = \Config::get('sitename');
 
 		// Get the display name for the current plugin being used
-		$plugin       = JPluginHelper::getPlugin('authentication', $authenticator);
+		$plugin       = Plugin::byType('authentication', $authenticator);
 		$pparams      = new JRegistry($plugin->params);
 		$display_name = $pparams->get('display_name', ucfirst($plugin->name));
 

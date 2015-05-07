@@ -34,6 +34,7 @@ use Components\Search\Models\Basic\Authorization;
 use Components\Search\Models\Basic\Request;
 use ReflectionClass;
 use Iterator;
+use Plugin;
 
 jimport('joomla.application.component.model');
 
@@ -210,7 +211,7 @@ class Set extends \JModel implements Iterator
 		$this->tags = $req->get_tags();
 
 		$weighters = array('all' => array());
-		$plugins = \JPluginHelper::getPlugin('search');
+		$plugins = Plugin::byType('search');
 
 		$this->custom_mode = true;
 		// Poll custom result plugins, like the one that shows matching members at the top of the list
@@ -218,7 +219,7 @@ class Set extends \JModel implements Iterator
 		{
 			foreach ($plugins as $plugin)
 			{
-				if (\JPluginHelper::isEnabled('search', $plugin->name))
+				if (Plugin::isEnabled('search', $plugin->name))
 				{
 					$refl = new ReflectionClass("plgSearch$plugin->name");
 					if ($refl->hasMethod('onSearchCustom'))
@@ -237,7 +238,7 @@ class Set extends \JModel implements Iterator
 
 		foreach ($plugins as $plugin)
 		{
-			if (!\JPluginHelper::isEnabled('search', $plugin->name))
+			if (!Plugin::isEnabled('search', $plugin->name))
 			{
 				continue;
 			}
@@ -277,7 +278,7 @@ class Set extends \JModel implements Iterator
 		$plugin_types = array_keys($weighters);
 		foreach ($plugins as $plugin)
 		{
-			if (!\JPluginHelper::isEnabled('search', $plugin->name))
+			if (!Plugin::isEnabled('search', $plugin->name))
 			{
 				continue;
 			}

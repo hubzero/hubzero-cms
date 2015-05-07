@@ -31,8 +31,11 @@
 namespace Modules\QuickIcon;
 
 use Hubzero\Module\Module;
+use Plugin;
 use Route;
+use Event;
 use Lang;
+use User;
 
 /**
  * Module class for displaying shortcut idons for common tasks
@@ -77,7 +80,7 @@ class Helper extends Module
 			if ($context == 'mod_quickicon')
 			{
 				// Load mod_quickicon language file in case this method is called before rendering the module
-				\JFactory::getLanguage()->load('mod_quickicon');
+				Lang::load('mod_quickicon');
 
 				self::$buttons[$key] = array(
 					array(
@@ -158,7 +161,7 @@ class Helper extends Module
 						'access' => array('core.manage', 'com_templates')
 					),
 					array(
-						'link'   => Route::url('index.php?option=com_admin&task=profile.edit&id=' . JFactory::getUser()->id),
+						'link'   => Route::url('index.php?option=com_admin&task=profile.edit&id=' . User::get('id')),
 						//'image'  => 'header/icon-48-user-profile.png',
 						'id'     => 'icon-user-profile',
 						'text'   => Lang::txt('MOD_QUICKICON_PROFILE'),
@@ -172,9 +175,9 @@ class Helper extends Module
 			}
 
 			// Include buttons defined by published quickicon plugins
-			\JPluginHelper::importPlugin('quickicon');
-			$app = \JFactory::getApplication();
-			$arrays = (array) $app->triggerEvent('onGetIcons', array($context));
+			Plugin::import('quickicon');
+
+			$arrays = (array) Event::trigger('onGetIcons', array($context));
 
 			foreach ($arrays as $response)
 			{
@@ -209,7 +212,7 @@ class Helper extends Module
 	{
 		$key = $params->get('context', 'mod_quickicon') . '_title';
 
-		if (\JFactory::getLanguage()->hasKey($key))
+		if (Lang::hasKey($key))
 		{
 			return Lang::txt($key);
 		}

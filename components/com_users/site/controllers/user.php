@@ -38,28 +38,32 @@ class UsersControllerUser extends UsersController
 		$authenticator    = Request::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the login method for that plugin
-		if (!empty($authenticator)) {
-			JPluginHelper::importPlugin('authentication');
+		if (!empty($authenticator))
+		{
+			Plugin::import('authentication');
 
-			$plugins = JPluginHelper::getPlugin('authentication');
+			$plugins = Plugin::byType('authentication');
 
 			foreach ($plugins as $plugin)
 			{
 				$className = 'plg'.$plugin->type.$plugin->name;
 
-				if ($plugin->name != $authenticator) {
+				if ($plugin->name != $authenticator)
+				{
 					continue;
 				}
 
-				if (class_exists($className)) {
-					if (method_exists($className,'login')) {
-
+				if (class_exists($className))
+				{
+					if (method_exists($className,'login'))
+					{
 						$myplugin = new $className($this,(array)$plugin);
 
 						$myplugin->login($credentials, $options);
 
-						if (isset($options['return'])) {
-								$data['return'] = $options['return'];
+						if (isset($options['return']))
+						{
+							$data['return'] = $options['return'];
 						}
 					}
 
@@ -71,20 +75,25 @@ class UsersControllerUser extends UsersController
 		}
 
 		// If no authenticator is specified, or the login method for that plugin did not exist then use joomla default
-		if (!isset($myplugin)) {
+		if (!isset($myplugin))
+		{
 			// Check for request forgeries
 			Request::checkToken('request') or jexit( 'Invalid Token' );
 
-			if ($return = Request::getVar('return', '', 'method', 'base64')) {
+			if ($return = Request::getVar('return', '', 'method', 'base64'))
+			{
 				$return = base64_decode($return);
-				if (!JURI::isInternal($return)) {
+				if (!JURI::isInternal($return))
+				{
 					$return = '';
 				}
 			}
 
-			if ($freturn = Request::getVar('freturn', '', 'method', 'base64')) {
+			if ($freturn = Request::getVar('freturn', '', 'method', 'base64'))
+			{
 				$freturn = base64_decode($freturn);
-				if (!JURI::isInternal($freturn)) {
+				if (!JURI::isInternal($freturn))
+				{
 					$freturn = '';
 				}
 			}
@@ -93,7 +102,8 @@ class UsersControllerUser extends UsersController
 			$options = array();
 			$options['remember'] = Request::getBool('remember', false);
 			$options['return'] = $data['return'];
-			if (!empty($authenticator)) {
+			if (!empty($authenticator))
+			{
 				$options['authenticator'] = $authenticator;
 			}
 
@@ -113,7 +123,8 @@ class UsersControllerUser extends UsersController
 
 		$result = $app->login($credentials, $options);
 		// Perform the log in.
-		if (true === $result) {
+		if (true === $result)
+		{
 			// Success
 			$app->setUserState('users.login.form.data', array());
 
@@ -127,7 +138,9 @@ class UsersControllerUser extends UsersController
 			{
 				$app->redirect(Route::url($app->getUserState('users.login.form.return'), false));
 			}
-		} else {
+		}
+		else
+		{
 			// Login failed !
 			$data['remember'] = (int)$options['remember'];
 			$app->setUserState('users.login.form.data', $data);
@@ -165,21 +178,23 @@ class UsersControllerUser extends UsersController
 	{
 		$app = JFactory::getApplication();
 
-		$juser = JFactory::getUser();
+		$user = User::getRoot();
 
 		$authenticator = Request::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the logout method for that plugin
-		if (!empty($authenticator)) {
-			JPluginHelper::importPlugin('authentication');
+		if (!empty($authenticator))
+		{
+			Plugin::import('authentication');
 
-			$plugins = JPluginHelper::getPlugin('authentication');
+			$plugins = Plugin::byType('authentication');
 
 			foreach ($plugins as $plugin)
 			{
 				$className = 'plg'.$plugin->type.$plugin->name;
 
-				if ($plugin->name != $authenticator) {
+				if ($plugin->name != $authenticator)
+				{
 					continue;
 				}
 
@@ -201,13 +216,14 @@ class UsersControllerUser extends UsersController
 		$error = $app->logout();
 
 		// Check if the log out succeeded.
-		if (!($error instanceof Exception)) {
+		if (!($error instanceof Exception))
+		{
 			// If the authenticator is empty, but they have an active third party session,
 			// redirect to a page indicating this and offering complete signout
-			if (isset($juser->auth_link_id) && $juser->auth_link_id && empty($authenticator))
+			if (isset($user->auth_link_id) && $user->auth_link_id && empty($authenticator))
 			{
 				$auth_domain_name = '';
-				$auth_domain      = \Hubzero\Auth\Link::find_by_id($juser->auth_link_id);
+				$auth_domain      = \Hubzero\Auth\Link::find_by_id($user->auth_link_id);
 
 				if (is_object($auth_domain))
 				{
@@ -220,7 +236,7 @@ class UsersControllerUser extends UsersController
 				if ($auth_domain_name == 'pucas')
 				{
 					// Get plugin params
-					$plugin      = JPluginHelper::getPlugin('authentication', $auth_domain_name);
+					$plugin      = Plugin::byType('authentication', $auth_domain_name);
 
 					$pparams = new JRegistry($plugin->params);
 					$auto_logoff = $pparams->get('auto_logoff', false);
@@ -241,13 +257,16 @@ class UsersControllerUser extends UsersController
 			// Get the return url from the request and validate that it is internal.
 			$return = Request::getVar('return', '', 'method', 'base64');
 			$return = base64_decode($return);
-			if (!JURI::isInternal($return)) {
+			if (!JURI::isInternal($return))
+			{
 				$return = '';
 			}
 
 			// Redirect the user.
 			$app->redirect(Route::url($return, false));
-		} else {
+		}
+		else
+		{
 			$app->redirect(Route::url('index.php?option=com_users&view=login', false));
 		}
 	}
@@ -361,7 +380,7 @@ class UsersControllerUser extends UsersController
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getLoginRoute();
 			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$route	= 'index.php?option=com_users&view=login'.$itemid;
+			$route  = 'index.php?option=com_users&view=login'.$itemid;
 
 			// Proceed to the login form.
 			$message = Lang::txt('COM_USERS_REMIND_REQUEST_SUCCESS');
@@ -383,7 +402,7 @@ class UsersControllerUser extends UsersController
 
 	public function link()
 	{
-		$user = JFactory::getUser();
+		$user = User::getRoot();
 		$app  = JFactory::getApplication();
 
 		// First, they should already be logged in, so check for that
@@ -412,35 +431,44 @@ class UsersControllerUser extends UsersController
 		$authenticator = Request::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the link method for that plugin
-		if (!empty($authenticator)) {
-			JPluginHelper::importPlugin('authentication');
+		if (!empty($authenticator))
+		{
+			Plugin::import('authentication');
 
-			$plugin = JPluginHelper::getPlugin('authentication', $authenticator);
+			$plugin = Plugin::byType('authentication', $authenticator);
 
 			$className = 'plg'.$plugin->type.$plugin->name;
 
-			if (class_exists($className)) {
-				if (method_exists($className,'link')) {
-
+			if (class_exists($className))
+			{
+				if (method_exists($className,'link'))
+				{
 					$myplugin = new $className($this,(array)$plugin);
-
 					$myplugin->link($options);
-				} else {
+				}
+				else
+				{
 					// No Link method is availble
-					$app->redirect(Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
+					$app->redirect(
+						Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
 						'Linked accounts are not currently available for this provider.',
-						'error');
+						'error'
+					);
 				}
 			}
-		} else {
+		}
+		else
+		{
 			// No authenticator provided...
 			App::abort( 400, Lang::txt( 'Missing authenticator' ));
 			return;
 		}
 
 		// Success!  Redict with message
-		$app->redirect(Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
-			'Your account has been successfully linked!');
+		$app->redirect(
+			Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
+			'Your account has been successfully linked!'
+		);
 	}
 
 	public function attach()

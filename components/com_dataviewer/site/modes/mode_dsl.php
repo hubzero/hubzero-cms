@@ -15,7 +15,7 @@ function get_conf($db_id)
 {
 	global $dv_conf, $com_name;
 
-	$params = new JParameter(JPluginHelper::getPlugin('projects', 'databases')->params);
+	$params = Plugin::params('projects', 'databases');
 
 	$dv_conf['db']['host'] = $params->get('db_host');
 	$dv_conf['db']['user'] = $params->get('db_ro_user');
@@ -27,14 +27,17 @@ function get_conf($db_id)
 function get_dd($db_id, $dv_id = false, $version = false)
 {
 	global $dv_conf;
+
 	$dd = false;
 	$db = JFactory::getDBO();
 
-	if (!$dv_id) {
+	if (!$dv_id)
+	{
 		$dv_id = Request::getVar('dv');
 	}
 
-	if (!$version) {
+	if (!$version)
+	{
 		$version = Request::getInt('v', false);
 	}
 
@@ -45,12 +48,15 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	$curator = '';
 	$curator_groups = array();
 
-	if (!$version) {
+	if (!$version)
+	{
 		$sql = 'SELECT data_definition FROM #__project_databases WHERE `database_name` = ' . $db->quote($name);
 		$db->setQuery($sql);
 		$database = $db->loadAssoc();
 		$dd = json_decode($database['data_definition'], true);
-	} else {
+	}
+	else
+	{
 		$sql = 'SELECT data_definition FROM #__project_database_versions WHERE database_name=' . $db->quote($name) .
 			' AND version=' . $db->quote($version);
 		$db->setQuery($sql);
@@ -72,14 +78,15 @@ function get_dd($db_id, $dv_id = false, $version = false)
 		$dd['version'] = $version;
 		$dd['publication_state'] = $state;
 
-
-		if ($state != 1) {
+		if ($state != 1)
+		{
 			// curator groups
 			$curation_enabled = Component::params('com_publications')->get('curation');
 
 			$curator_group = trim(Component::params('com_publications')->get('curatorgroup'));
 
-			if ($curation_enabled && $curator_group != '') {
+			if ($curation_enabled && $curator_group != '')
+			{
 				$curator_groups[] = $curator_group;
 			}
 
@@ -88,21 +95,22 @@ function get_dd($db_id, $dv_id = false, $version = false)
 			$db->setQuery($sql);
 			$dsl_curators = $db->loadResult();
 
-			if ($curation_enabled && $dsl_curators != '') {
+			if ($curation_enabled && $dsl_curators != '')
+			{
 				$curator_groups[] = $dsl_curators;
 			}
 
-			if ($curation_enabled && $curator != '') {
+			if ($curation_enabled && $curator != '')
+			{
 				$curator = $pub_version['curator'];
 				$curator = User::getInstance($curator)->get('username');
 			}
 		}
 	}
 
-
 	// Access control
-	if (!isset($dd['publication_state']) || $dd['publication_state'] != 1) {
-
+	if (!isset($dd['publication_state']) || $dd['publication_state'] != 1)
+	{
 		// Project owners
 		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = {$dd['project']}";
 		$db = JFactory::getDBO();
@@ -110,14 +118,18 @@ function get_dd($db_id, $dv_id = false, $version = false)
 		$dd['acl']['allowed_users'] = $db->loadResultArray();
 
 		// Curators
-		if (isset($dd['publication_state'])) {
+		if (isset($dd['publication_state']))
+		{
 			$dd['acl']['allowed_groups'] = $curator_groups;
 
-			if (isset($dd['acl']['allowed_users']) && is_array($dd['acl']['allowed_users'])) {
+			if (isset($dd['acl']['allowed_users']) && is_array($dd['acl']['allowed_users']))
+			{
 				$dd['acl']['allowed_users'][] = $curator;
 			}
 		}
-	} elseif (isset($dd['publication_state']) && $dd['publication_state'] == 1) {
+	}
+	elseif (isset($dd['publication_state']) && $dd['publication_state'] == 1)
+	{
 		$dd['acl']['allowed_users'] = false;
 		$dd['acl']['allowed_groups'] = false;
 		$dd['acl']['public'] = true;
@@ -142,7 +154,8 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 	$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
 
-	if ($cell_count_threshold < ($total * $vis_col_count)) {
+	if ($cell_count_threshold < ($total * $vis_col_count))
+	{
 		$dd['serverside'] = true;
 	}
 
@@ -153,13 +166,15 @@ function _dd_post($dd)
 {
 	$id = Request::getVar('id', false);
 
-	if ($id) {
+	if ($id)
+	{
 		$dd['where'][] = array('field'=>$dd['pk'], 'value'=>$id);
 		$dd['single'] = true;
 	}
 
 	$custom_field =  Request::getVar('custom_field', false);
-	if ($custom_field) {
+	if ($custom_field)
+	{
 		$custom_field = explode('|', $custom_field);
 		$dd['where'][] = array('field'=>$custom_field[0], 'value'=>$custom_field[1]);
 		$dd['single'] = true;
@@ -167,37 +182,43 @@ function _dd_post($dd)
 
 	// Data for Custom Views
 	$custom_view = Request::getVar('custom_view', array());
-	if (count($custom_view) > 0) {
+	if (count($custom_view) > 0)
+	{
 		unset($dd['customizer']);
 
 		// Custom Title
 		$custom_title = Request::getString('custom_title', '');
-		if ($custom_title !== '') {
+		if ($custom_title !== '')
+		{
 			$dd['title'] = htmlspecialchars($custom_title);
 		}
 
 		// Custom Group by
 		$group_by = Request::getString('group_by', '');
-		if ($group_by !== '') {
+		if ($group_by !== '')
+		{
 			$dd['group_by'] = htmlspecialchars($group_by);
 		}
 
 		// Ordering
 		$order_cols = $dd['cols'];
 		$dd['cols'] = array();
-		foreach ($custom_view as $cv_col) {
+		foreach ($custom_view as $cv_col)
+		{
 			$dd['cols'][$cv_col] = $order_cols[$cv_col];
 		}
 
 		// Hiding
-		foreach ($order_cols as $id=>$prop) {
-			if (!in_array($id, $custom_view)) {
+		foreach ($order_cols as $id=>$prop)
+		{
+			if (!in_array($id, $custom_view))
+			{
 				$dd['cols'][$id] = $prop;
 
-				if (!isset($dd['cols'][$id]['hide'])) {
+				if (!isset($dd['cols'][$id]['hide']))
+				{
 					$dd['cols'][$id]['hide'] = 'custom';
 				}
-
 			}
 		}
 	}
@@ -209,13 +230,15 @@ function pathway($dd)
 {
 	$db_id = $dd['db_id'];
 
-	$document = JFactory::getDocument();
-	$document->setTitle($dd['title']);
+	Document::setTitle($dd['title']);
 
-	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
+	if (isset($db_id['extra']) && $db_id['extra'] == 'table')
+	{
 		$ref_title = "Datastore";
 		Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
-	} elseif (isset($_SERVER['HTTP_REFERER'])) {
+	}
+	elseif (isset($_SERVER['HTTP_REFERER']))
+	{
 		$ref_title = Request::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
 		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
@@ -223,4 +246,3 @@ function pathway($dd)
 
 	Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
 }
-?>

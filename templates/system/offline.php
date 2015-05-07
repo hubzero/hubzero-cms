@@ -69,7 +69,7 @@ defined('_JEXEC') or die;
 						<label for="passwd"><?php echo Lang::txt('JGLOBAL_PASSWORD') ?></label>
 						<input type="password" name="password" class="inputbox" size="18" alt="<?php echo Lang::txt('JGLOBAL_PASSWORD') ?>" id="passwd" />
 					</p>
-					<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
+					<?php if (Plugin::isEnabled('system', 'remember')) : ?>
 					<p id="form-login-remember">
 						<label for="remember"><?php echo Lang::txt('JGLOBAL_REMEMBER_ME') ?></label>
 						<input type="checkbox" name="remember" class="inputbox" value="yes" alt="<?php echo Lang::txt('JGLOBAL_REMEMBER_ME') ?>" id="remember" />

@@ -37,12 +37,10 @@ Toolbar::help('search');
 
 JHTML::_('behavior.framework');
 
-JPluginHelper::importPlugin('search');
-
 $context = array();
 if (array_key_exists('search-task', $_POST))
 {
-	foreach (JApplication::triggerEvent('onSearchTask' . $_POST['search-task']) as $resp)
+	foreach (Event::trigger('search.onSearchTask' . $_POST['search-task']) as $resp)
 	{
 		list($name, $html, $ctx) = $resp;
 		echo $html;
@@ -57,8 +55,7 @@ if (array_key_exists('search-task', $_POST))
 	}
 }
 
-$app = JFactory::getApplication();
-foreach ($app->triggerEvent('onSearchAdministrate', array($context)) as $plugin)
+foreach (Event::trigger('search.onSearchAdministrate', array($context)) as $plugin)
 {
 	list($name, $html) = $plugin;
 	//echo '<h3>' . $name . '</h3>';

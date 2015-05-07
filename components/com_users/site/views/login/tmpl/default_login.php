@@ -41,18 +41,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 \Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
 \Hubzero\Document\Assets::addSystemScript('placeholder');
 
-$hash  = JUtility::getHash(JFactory::getApplication()->getName().':authenticator');
+$hash  = JUtility::getHash(JFactory::getApplication()->getName() . ':authenticator');
 $crypt = new JSimpleCrypt();
 
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
 {
 	$primary  = $cookie->authenticator;
-	$user     = JFactory::getUser($cookie->user_id);
+	$user     = User::getInstance($cookie->user_id);
 	$user_img = $cookie->user_img;
 	Request::setVar('primary', $primary);
 }
 
-$app         = JFactory::getApplication();
 $usersConfig = Component::params('com_users');
 $primary     = Request::getWord('primary', false);
 
@@ -112,12 +111,12 @@ endforeach;
 			<div class="or"></div>
 			<div class="local">
 				<a href="<?php echo Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
-					<?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : $app->getCfg('sitename'))); ?>
+					<?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))); ?>
 				</a>
 			</div>
 		</div>
 		<div class="hz" style="display:<?php echo ($primary == 'hubzero' || count($this->authenticators) == 0) ? 'block' : 'none'; ?>;">
-			<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', $app->getCfg('sitename')); ?></div>
+			<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 			<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 				<div class="input-wrap">
 					<?php if (isset($user) && is_object($user)) : ?>
@@ -143,7 +142,7 @@ endforeach;
 				</div>
 				<div class="submission">
 					<input type="submit" value="<?php echo Lang::txt('COM_USERS_LOGIN'); ?>" class="login-submit btn btn-primary" />
-					<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
+					<?php if (Plugin::isEnabled('system', 'remember')) : ?>
 						<div class="remember-wrap">
 							<input type="checkbox" class="remember option" name="remember" id="remember" value="yes" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
 							<label for="remember" class="remember-me-label"><?php echo Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN'); ?></label>

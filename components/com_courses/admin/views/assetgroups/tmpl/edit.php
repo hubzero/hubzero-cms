@@ -161,8 +161,7 @@ jQuery(document).ready(function($){
 
 				foreach ($plugins as $plugin)
 				{
-					$p = JPluginHelper::getPlugin('courses', $plugin['name']);
-					$default = new JRegistry($p->params);
+					$default = Plugin::params('courses', $plugin['name']);
 
 					$param = new JParameter(
 						(is_object($data) ? $data->toString() : $data),

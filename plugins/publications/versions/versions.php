@@ -113,7 +113,7 @@ class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
 			);
 
 			// Are we allowing contributions
-			$view->contributable = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+			$view->contributable = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
 			// Pass the view some info
 			$view->option 		= $option;

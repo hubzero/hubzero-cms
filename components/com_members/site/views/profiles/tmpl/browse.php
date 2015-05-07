@@ -204,7 +204,7 @@ $this->css()
 							}
 							$messaging = true;
 						}
-						if (!JPluginHelper::isEnabled('members', 'messages'))
+						if (!Plugin::isEnabled('members', 'messages'))
 						{
 							$messaging = false;
 						}
