@@ -51,10 +51,9 @@ class plgSearchGroups extends \JPlugin
 
 		$from = '';
 
-		$juser = JFactory::getUser();
-		if (!$juser->get('guest') && !$juser->authorise('core.view', 'com_groups'))
+		if (!User::isGuest() && !User::authorise('core.view', 'com_groups'))
 		{
-			$from = " JOIN `#__xgroups_members` AS m ON m.gidNumber=g.gidNumber AND m.uidNumber=" . $juser->get('id');
+			$from = " JOIN `#__xgroups_members` AS m ON m.gidNumber=g.gidNumber AND m.uidNumber=" . User::get('id');
 		}
 
 		$addtl_where = array();

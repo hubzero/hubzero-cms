@@ -30,7 +30,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-$juser = $this->juser;
 
 $this->css();
 ?>
@@ -52,12 +51,12 @@ $this->css();
 	<div class="entries-filters">
 		<ul class="entries-menu">
 			<li>
-				<a class="active" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=projects&action=all'); ?>">
+				<a class="active" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
 					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=projects&action=updates'); ?>">
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
 					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
 				</a>
 			</li>
@@ -73,7 +72,7 @@ $this->css();
 			     ->set('rows', $this->owned)
 			     ->set('which', 'owned')
 			     ->set('config', $this->config)
-			     ->set('juser', $this->juser)
+			     ->set('user', $this->user)
 			     ->set('filters', $this->filters)
 			     ->display();
 		}
@@ -83,7 +82,7 @@ $this->css();
 		     ->set('option', $this->option)
 		     ->set('rows', $this->rows)
 		     ->set('config', $this->config)
-		     ->set('juser', $this->juser)
+		     ->set('user', $this->user)
 		     ->set('which', $this->filters['which'])
 		     ->set('filters', $this->filters)
 		     ->display();

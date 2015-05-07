@@ -52,7 +52,7 @@ else
 			<span class="comment-anchor"></span>
 			<?php
 			$anon = 1;
-			if (!$this->juser->get('guest'))
+			if (!$this->user->get('guest'))
 			{
 				$anon = 0;
 			}
@@ -105,7 +105,8 @@ else
 
 			<label for="review_comments">
 				<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_COMMENTS');
-				if ($this->banking) {
+				if ($this->banking)
+				{
 					echo ' ( <span class="required">'.Lang::txt('PLG_RESOURCES_REVIEWS_REQUIRED').'</span> '.Lang::txt('PLG_RESOURCES_REVIEWS_FOR_ELIGIBILITY').' <a href="'.$this->infolink.'">'.Lang::txt('PLG_RESOURCES_REVIEWS_EARN_POINTS').'</a> )';
 				}
 				?>

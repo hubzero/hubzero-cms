@@ -61,7 +61,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	     ->display();
 	?>
 
-	<?php if (!$this->juser->get('guest')) { ?>
+	<?php if (!User::isGuest()) { ?>
 		<p class="guest-options">
 			<?php if ($this->params->get('access-manage-collection')) { ?>
 				<a class="icon-config config btn" href="<?php echo Route::url($base . '&scope=settings'); ?>">
@@ -83,7 +83,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>">
-			<?php if (!$this->juser->get('guest')) { ?>
+			<?php if (!User::isGuest()) { ?>
 				<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 					<div class="post new-collection">
 						<a class="add" href="<?php echo Route::url($base . '&scope=new'); ?>">
@@ -111,7 +111,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								</span>
 							</p>
 							<div class="actions">
-								<?php if (!$this->juser->get('guest')) { ?>
+								<?php if (!User::isGuest()) { ?>
 									<?php if ($row->isFollowing()) { ?>
 										<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>

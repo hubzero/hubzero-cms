@@ -97,13 +97,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//Create user object
-		$juser = User::getRoot();
+		$user = User::getRoot();
 
 		//get the group members
 		$members = $group->get('members');
 
 		// Set some variables so other functions have access
-		$this->juser      = $juser;
+		$this->user       = $user;
 		$this->authorized = $authorized;
 		$this->members    = $members;
 		$this->group      = $group;
@@ -142,7 +142,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				}
 
 				//check to see if user is member and plugin access requires members
-				if (!in_array($juser->get('id'), $members) && $group_plugin_acl == 'members')
+				if (!in_array($user->get('id'), $members) && $group_plugin_acl == 'members')
 				{
 					$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
@@ -242,7 +242,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->month        = $this->month;
 		$view->year         = $this->year;
 		$view->calendar     = $this->calendar;
-		$view->juser        = $this->juser;
+		$view->user        = $this->user;
 		$view->authorized   = $this->authorized;
 		$view->members      = $this->members;
 		$view->option       = $this->option;
@@ -467,7 +467,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function edit()
 	{
 		//if we are not a member we cant create events
-		if (!in_array($this->juser->get('id'), $this->group->get('members')))
+		if (!in_array($this->user->get('id'), $this->group->get('members')))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
@@ -505,7 +505,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if ($view->event->get('id'))
 		{
 			//check to see if user has the correct permissions to edit
-			if ($this->juser->get('id') != $view->event->get('created_by') && $this->authorized != 'manager')
+			if ($this->user->get('id') != $view->event->get('created_by') && $this->authorized != 'manager')
 			{
 				//do not have permission to edit the event
 				App::redirect(
@@ -592,7 +592,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event['scope']       = 'group';
 		$event['scope_id']    = $this->group->get('gidNumber');
 		$event['modified']    = Date::toSql();
-		$event['modified_by'] = $this->juser->get('id');
+		$event['modified_by'] = $this->user->get('id');
 
 		// repeating rule
 		$event['repeating_rule'] = $this->_buildRepeatingRule();
@@ -601,7 +601,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!isset($event['id']) || $event['id'] == 0)
 		{
 			$event['created']    = Date::toSql();
-			$event['created_by'] = $this->juser->get('id');
+			$event['created_by'] = $this->user->get('id');
 		}
 
 		// timezone
@@ -753,7 +753,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$month = date('m', $publish_up);
 
 		// check to see if user has the right permissions to delete
-		if ($this->juser->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager')
+		if ($this->user->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager')
 		{
 			// do not have permission to delete the event
 			App::redirect(
@@ -838,7 +838,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->juser      = $this->juser;
+		$view->user      = $this->user;
 
 		//get any errors if there are any
 		foreach ($this->getErrors() as $error)
@@ -1096,7 +1096,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->juser      = $this->juser;
+		$view->user      = $this->user;
 
 		$view->register   = (isset($this->register)) ? $this->register : null;
 		$view->arrival    = (isset($this->arrival)) ? $this->arrival : null;
@@ -1109,10 +1109,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//add params to view
 		$view->params = new JRegistry($view->event->get('params'));
 
-		if (!$this->juser->get('guest'))
+		if (!$this->user->get('guest'))
 		{
 			$profile = new \Hubzero\User\Profile();
-			$profile->load($this->juser->get('id'));
+			$profile->load($this->user->get('id'));
 
 			$view->register['first_name']  = $profile->get('givenName');
 			$view->register['last_name']   = $profile->get('surname');
@@ -1359,7 +1359,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->juser      = $this->juser;
+		$view->user      = $this->user;
 
 		//get any errors if there are any
 		foreach ($this->getErrors() as $error)
@@ -1504,7 +1504,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->juser      = $this->juser;
+		$view->user      = $this->user;
 		$view->calendars  = $calendars;
 
 		//get any errors if there are any
@@ -1551,7 +1551,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->option     = $this->option;
 		$view->authorized = $this->authorized;
-		$view->juser      = $this->juser;
+		$view->user       = $this->user;
 
 		//get any errors if there are any
 		foreach ($this->getErrors() as $error)

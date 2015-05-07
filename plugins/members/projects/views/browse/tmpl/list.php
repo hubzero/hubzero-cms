@@ -30,16 +30,15 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $projects = $this->rows;
-$juser = $this->juser;
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 switch ($this->which)
 {
-	case 'group':  		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_GROUP');     	break;
-	case 'owned': 		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OWNED');   	break;
-	case 'other':    	$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OTHER');    	break;
+	case 'group': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_GROUP'); break;
+	case 'owned': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OWNED'); break;
+	case 'other': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_OTHER'); break;
 	default:
-	case 'all': 		$title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');     	break;
+	case 'all':   $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');   break;
 }
 ?>
 <h4 class="th_header"><?php echo $title.' ('.count($projects).')'; ?></h4>
@@ -48,9 +47,9 @@ switch ($this->which)
 	<thead>
 		<tr>
 			<th class="th_image" colspan="2"></th>
-			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=title&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
-			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=status&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
-			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=projects&action=all&sortby=role&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$this->user->get('id').'&active=projects&action=all&sortby=title&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$this->user->get('id').'&active=projects&action=all&sortby=status&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$this->user->get('id').'&active=projects&action=all&sortby=role&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
 		</tr>
 	</thead>
 	<tbody>

@@ -228,8 +228,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$lang = JFactory::getLanguage();
-		$lang->load('com_answers');
+		Lang::load('com_answers', PATH_ROOT) ||
+		Lang::load('com_answers', PATH_CORE . DS . 'com_answers' . DS . 'site');
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -241,7 +241,6 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		);
 		$view->option   = $this->option;
 		$view->resource = $this->model->resource;
-		$view->juser    = User::getRoot();
 		if (is_object($row))
 		{
 			$view->row  = $row;

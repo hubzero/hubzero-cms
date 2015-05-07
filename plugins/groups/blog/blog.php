@@ -364,7 +364,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	private function _browse()
 	{
 		$view = $this->view('default', 'browse');
-		$view->juser      = User::getRoot();
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->config     = $this->params;
@@ -572,7 +571,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$view->group      = $this->group;
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
-		$view->juser      = User::getRoot();
 		$view->model      = $this->model;
 
 		if (isset($this->entry) && is_object($this->entry))

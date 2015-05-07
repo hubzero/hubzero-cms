@@ -68,7 +68,6 @@ $this->js();
 						$this->view('item')
 						     ->set('option', $this->option)
 						     ->set('group', $this->group)
-						     ->set('juser', $this->juser)
 						     ->set('authorized', $this->authorized)
 						     ->set('announcement', new GroupsModelAnnouncement($row))
 						     ->set('showClose', false)

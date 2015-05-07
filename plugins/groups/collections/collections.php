@@ -415,7 +415,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		$view = $this->view('followers', 'follow');
 		$view->name        = $this->_name;
-		$view->juser       = User::getRoot();
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
@@ -464,7 +463,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		$view = $this->view('collections', 'collection');
 		$view->name        = $this->_name;
-		$view->juser       = User::getRoot();
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
@@ -525,7 +523,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	{
 		$view = $this->view('default', 'collection');
 		$view->name    = $this->_name;
-		$view->juser   = User::getRoot();
 		$view->option  = $this->option;
 		$view->group   = $this->group;
 		$view->params  = $this->params;
@@ -786,7 +783,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
-		$view->juser       = User::getRoot();
 		$view->name        = $this->_name;
 		$view->model       = $this->model;
 

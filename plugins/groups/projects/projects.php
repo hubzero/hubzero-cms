@@ -114,8 +114,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Set filters
 		$filters = array();
@@ -171,7 +171,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 
 			// Load classes
-			require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 			// Which view
 			$task = $action ? strtolower(trim($action)) : Request::getVar('action', '');
@@ -203,8 +203,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreGroup($group)
 	{
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Get group projects
 		$obj  = new \Components\Projects\Tables\Project($this->_database);
@@ -273,7 +273,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$view->newcount = $obj->getUpdateCount($this->_projects, User::get('id'));
 
 		$view->which   = $which;
-		$view->juser   = User::getRoot();
 		$view->filters = $filters;
 		$view->config  = $this->_config;
 		$view->option  = 'com_projects';
@@ -293,9 +292,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _updates()
 	{
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
 
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -323,7 +322,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$view->newcount = $obj->getUpdateCount($projects, User::get('id'));
 
 		// Get activity class
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();

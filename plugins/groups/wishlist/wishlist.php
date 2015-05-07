@@ -243,7 +243,6 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			$view->option = $option;
 			//$view->owners = $owners;
 			$view->group = $this->group;
-			$view->juser = User::getRoot();
 			$view->wishlist = $wishlist;
 			$view->items = $items;
 			$view->filters = $filters;

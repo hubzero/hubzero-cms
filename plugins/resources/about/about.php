@@ -98,17 +98,10 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'index'
-				)
-			);
+			$view = $this->view('default', 'index');
 			$view->option   = $option;
 			$view->model    = $model;
 			$view->database = JFactory::getDBO();
-			$view->juser    = User::getRoot();
 			$view->plugin   = $this->params;
 
 			// Return the output

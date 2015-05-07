@@ -74,7 +74,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   JUser
+	 * @param      object  $user   User
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
 	 */
@@ -96,7 +96,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if a user has employer authorization
 	 *
-	 * @param      object $user       JUser
+	 * @param      object $user       User
 	 * @param      object $member     \Hubzero\User\Profile
 	 * @return     integer 1 = authorized, 0 = not
 	 */
@@ -172,7 +172,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   JUser
+	 * @param      object  $user   User
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
 	 * @param      string  $areas  Plugins to return data

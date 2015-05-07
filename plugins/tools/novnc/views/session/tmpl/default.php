@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 if (!$this->app->sess)
 {
 	echo '<p class="error"><strong>' . Lang::txt('PLG_TOOLS_NOVNC_ERROR') . '</strong><br />' . implode('<br />', $this->output) . '</p>';

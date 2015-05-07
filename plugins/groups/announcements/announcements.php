@@ -70,21 +70,13 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	public function onBeforeGroup($group, $authorized)
 	{
 		//creat view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse',
-				'layout'  => 'sticky'
-			)
-		);
+		$view = $this->view('sticky', 'browse');
 
 		//vars for view
 		$view->authorized = $authorized;
 		$view->option     = 'com_groups';
 		$view->group      = $group;
 		$view->name       = $this->_name;
-		$view->juser      = User::getRoot();
 		$view->database   = JFactory::getDBO();
 
 		// get plugin access
@@ -259,7 +251,6 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->option     = $this->option;
 		$view->group      = $this->group;
 		$view->name       = $this->_name;
-		$view->juser      = User::getRoot();
 
 		//build array of filters
 		$view->filters              = array();

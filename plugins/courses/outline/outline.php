@@ -93,7 +93,6 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->config     = $course->config();
-			$this->view->juser      = JFactory::getUser();
 
 			switch ($action)
 			{

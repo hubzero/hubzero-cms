@@ -69,7 +69,6 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			->set('controller', Request::getWord('controller', 'course'))
 			->set('course', $course)
 			->set('offering', $offering)
-			->set('juser', User::getRoot())
 			->set('plugin', $this->_name);
 
 		return $this->view->loadTemplate();
@@ -130,7 +129,6 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->config     = $this->params;
-			$this->view->juser      = User::getRoot();
 			$this->view->plugin     = $this->_name;
 
 			switch ($action)

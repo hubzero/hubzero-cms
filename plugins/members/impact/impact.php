@@ -82,10 +82,10 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		$this->_database = JFactory::getDBO();
 
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 	}
 
 	/**
@@ -146,7 +146,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		if ($returnhtml)
 		{
-			require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 
 			$this->_option = $option;
 
@@ -176,13 +176,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	protected function _view($uid = 0)
 	{
 		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'stats'
-			)
-		);
+		$view = $this->view('default', 'stats');
 
 		// Get pub stats for each publication
 		$pubLog = new \Components\Publications\Tables\Log($this->_database);
@@ -239,11 +233,11 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
 	{
 		$query = "SELECT COUNT(DISTINCT P.id) FROM #__publications AS P,
-							#__publication_versions as V,
-							#__publication_authors as A
-							WHERE V.publication_id=P.id AND A.publication_version_id = V.id
-							AND A.user_id=" . $user_id . " AND
-							V.state=1 AND A.status=1 AND A.role!='submitter'";
+				#__publication_versions as V,
+				#__publication_authors as A
+				WHERE V.publication_id=P.id AND A.publication_version_id = V.id
+				AND A.user_id=" . $user_id . " AND
+				V.state=1 AND A.status=1 AND A.role!='submitter'";
 		return $query;
 	}
 
@@ -261,8 +255,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
-		$database = JFactory::getDBO();
-		$juser 	= JFactory::getUser();
 		if (is_array($areas) && $limit && count($this->onMembersContributionsAreas()) > 0)
 		{
 			if (!isset($areas[$this->_name])
@@ -283,7 +275,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$uidNumber = $member->get('uidNumber');
-				$username = $member->get('username');
+				$username  = $member->get('username');
 			}
 		}
 		else
@@ -295,19 +287,20 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$uidNumber = $member->uidNumber;
-				$username = $member->username;
+				$username  = $member->username;
 			}
 		}
 
 		// Instantiate some needed objects
+		$database = JFactory::getDBO();
 		$objP = new \Components\Publications\Tables\Publication($database);
 
 		// Build query
 		$filters = array(
-			'sortby' 		=> $sort,
-			'limit'  		=> $limit,
-			'start'  		=> $limitstart,
-			'author' 		=> $uidNumber
+			'sortby' => $sort,
+			'limit'  => $limit,
+			'start'  => $limitstart,
+			'author' => $uidNumber
 		);
 
 		if (!$limit)
@@ -325,18 +318,16 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 				{
 					if ($row->alias)
 					{
-						$sef = Route::url('index.php?option=com_publications&alias='
-							. $row->alias . '&v=' . $row->version_number);
+						$sef = Route::url('index.php?option=com_publications&alias=' . $row->alias . '&v=' . $row->version_number);
 					}
 					else
 					{
-						$sef = Route::url('index.php?option=com_publications&id='
-							. $row->id . '&v=' . $row->version_number);
+						$sef = Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number);
 					}
 					$rows[$key]->href = $sef;
 					$rows[$key]->text = $rows[$key]->abstract;
 					$rows[$key]->section = 'impact';
-					$rows[$key]->author = $uidNumber == $juser->get('id') ? true : false;
+					$rows[$key]->author = $uidNumber == User::get('id') ? true : false;
 				}
 			}
 
@@ -356,16 +347,15 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$thedate  = Date::of($row->published_up)->toLocal('d M Y');
 
 		// Get version authors
-		$pa = new \Components\Publications\Tables\Author( $database );
+		$pa = new \Components\Publications\Tables\Author($database);
 		$authors = $pa->getAuthors($row->version_id);
 
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		$html .= "\t\t".'<p class="details">' . $thedate . ' <span>|</span> '
-			  . stripslashes($row->cat_name);
+		$html .= "\t\t".'<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->cat_name);
 		if ($authors)
 		{
-			$html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $authors, false, true ) . "\n";
+			$html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";
 		}
 		if ($row->doi)
 		{

@@ -101,7 +101,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$view->option   = $option;
 			$view->model    = $model;
 			$view->database = JFactory::getDBO();
-			$view->juser    = User::getRoot();
+			$view->user     = User::getRoot();
 			$view->plugin   = $this->params;
 			$view->openurl  = $this->getOpenUrl();
 

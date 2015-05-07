@@ -1396,9 +1396,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			foreach ($this->members as $mbr)
 			{
 				//Look up user info
-				$user = new JUser();
+				$user = User::getInstance($mbr);
 
-				if ($user->load($mbr))
+				if ($user->get('id'))
 				{
 					include_once(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 
@@ -1406,7 +1406,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					$groupMemberOption = new GroupsTableMemberoption($this->database);
 					$groupMemberOption->loadRecord(
 						$this->group->get('gidNumber'),
-						$user->id,
+						$user->get('id'),
 						GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION
 					);
 
@@ -1418,7 +1418,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 					if ($sendEmail)
 					{
-						$userIDsToEmail[] = $user->id;
+						$userIDsToEmail[] = $user->get('id');
 					}
 				}
 			}

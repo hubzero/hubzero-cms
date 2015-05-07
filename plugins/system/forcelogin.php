@@ -63,15 +63,11 @@ class plgSystemForceLogin extends JPlugin
 	 */
 	function onAfterRoute()
 	{
-		global $mainframe;
-
-		if ($mainframe->isAdmin()) {
+		if (App::isAdmin()) {
 			return;
 		}
 
-		$juser = JFactory::getUser();
-
-		if ($juser->get('guest') != '1') {
+		if (!User::isGuest()) {
 			return;
 		}
 

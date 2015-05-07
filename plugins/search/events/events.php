@@ -65,8 +65,7 @@ class plgSearchEvents extends \JPlugin
 		// @author Chris Smoak
 		// @date   4/20/2014
 		//
-		// $user = JFactory::getUser();
-		// $addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
+		// $addtl_where[] = '(e.access IN (' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
 		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
@@ -106,15 +105,14 @@ class plgSearchEvents extends \JPlugin
 				}
 
 				// get group calendar access
-				$juser  = JFactory::getUser();
 				$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'calendar');
 
 				// is calendar off
 				// is calendar for registered users & not logged in
 				// is calendar for members only and we are not a member
 				if ($access == 'nobody'
-					|| ($access == 'registered' && $juser->get('guest'))
-					|| ($access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
+					|| ($access == 'registered' && User::isGuest())
+					|| ($access == 'members' && !in_array(User::get('id'), $group->get('members'))))
 				{
 					continue;
 				}

@@ -656,7 +656,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			)
 		);
 		$eview->option   = $this->_option;
-		$eview->juser    = User::getRoot();
+		$eview->user     = User::getRoot();
 		$eview->resource = $resource;
 		$eview->review   = $row;
 		$message = $eview->loadTemplate();

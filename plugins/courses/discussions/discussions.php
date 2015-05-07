@@ -508,7 +508,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->_active = 'outline';
 
 		$this->database = JFactory::getDBO();
-		$this->juser    = User::getRoot();
 		$this->offering = $course->offering();
 
 		$this->base = $this->offering->link() . '&active=' . $this->_active;

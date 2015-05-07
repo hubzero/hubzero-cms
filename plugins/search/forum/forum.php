@@ -69,16 +69,14 @@ class plgSearchForum extends \JPlugin
 			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.comment NOT LIKE '%$forb%')";
 		}
 
-		$juser = JFactory::getUser();
-
 		$gids = $authz->get_group_ids();
-		if (!$juser->authorise('core.view', 'com_groups'))
+		if (!User::authorise('core.view', 'com_groups'))
 		{
 			$addtl_where[] = 'f.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 		}
 		else
 		{
-			$viewlevels = implode(',', $juser->getAuthorisedViewLevels());
+			$viewlevels = implode(',', User::getAuthorisedViewLevels());
 
 			if ($gids)
 			{

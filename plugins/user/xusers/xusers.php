@@ -31,19 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-
 /**
  * User plugin for hub users
  */
-class plgUserXusers extends JPlugin
+class plgUserXusers extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -52,6 +50,13 @@ class plgUserXusers extends JPlugin
 		$this->database = JFactory::getDBO();
 	}
 
+	/**
+	* This method is an alias for onLoginUser
+	*
+	* @param   array    $user     holds the user data
+	* @param   array    $options  array holding options (remember, autoregister, group)
+	* @return  boolean  True on success
+	*/
 	public function onUserLogin($user, $options = array())
 	{
 		return $this->onLoginUser($user, $options);
@@ -60,18 +65,17 @@ class plgUserXusers extends JPlugin
 	/**
 	* This method should handle any login logic and report back to the subject
 	*
-	* @access public
-	* @param array holds the user data
-	* @param array array holding options (remember, autoregister, group)
-	* @return boolean True on success
+	* @param   array    $user     holds the user data
+	* @param   array    $options  array holding options (remember, autoregister, group)
+	* @return  boolean  True on success
 	*/
 	public function onLoginUser($user, $options = array())
 	{
 		jimport('joomla.user.helper');
 
-		$juser =  JFactory::getUser(); // get user from session (might be tmp_user, can't fetch from db)
+		$xuser = User::getRoot(); // get user from session (might be tmp_user, can't fetch from db)
 
-		if ($juser->get('guest') == '1')
+		if ($xuser->get('guest'))
 		{
 			// joomla user plugin hasn't run or something went very badly
 
@@ -109,17 +113,16 @@ class plgUserXusers extends JPlugin
 		}
 
 		// log login to auth log
-		JFactory::getAuthLogger()->info($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
+		Log::auth($xuser->get('id') . ' [' . $xuser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
 
 		// correct apache log data
 		apache_note('auth','login');
 
 		// update session tracking with new data
-		$session =  JFactory::getSession();
+		$session = App::get('session');
 
-		$session->set('tracker.user_id', $juser->get('id'));
-
-		$session->set('tracker.username', $juser->get('username'));
+		$session->set('tracker.user_id', $xuser->get('id'));
+		$session->set('tracker.username', $xuser->get('username'));
 
 		if ($session->get('tracker.sid') == '')
 		{
@@ -133,7 +136,7 @@ class plgUserXusers extends JPlugin
 			$session->set('tracker.rsid', $session->getId());
 		}
 
-		if ( ($session->get('tracker.user_id') != $juser->get('id')) || ($session->get('tracker.ssid') == '') )
+		if (($session->get('tracker.user_id') != $xuser->get('id')) || ($session->get('tracker.ssid') == ''))
 		{
 			$session->set('tracker.ssid', $session->getId());
 		}
@@ -176,7 +179,7 @@ class plgUserXusers extends JPlugin
 
 		/* Mark registration as incomplete so it gets checked on next page load */
 
-		$username = $juser->get('username');
+		$username = $xuser->get('username');
 
 		if (isset($user['auth_link']) && is_object($user['auth_link']))
 		{
@@ -187,9 +190,9 @@ class plgUserXusers extends JPlugin
 			$hzal = null;
 		}
 
-		if ($juser->get('tmp_user'))
+		if ($xuser->get('tmp_user'))
 		{
-			$email = $juser->get('email');
+			$email = $xuser->get('email');
 
 			if ($username[0] == '-')
 			{
@@ -197,8 +200,8 @@ class plgUserXusers extends JPlugin
 
 				if ($hzal)
 				{
-					$juser->set('username','guest;' . $username);
-					$juser->set('email', $hzal->email);
+					$xuser->set('username','guest;' . $username);
+					$xuser->set('email', $hzal->email);
 				}
 			}
 		}
@@ -210,7 +213,7 @@ class plgUserXusers extends JPlugin
 
 				if ($hzal)
 				{
-					$hzal->user_id = $juser->get('id');
+					$hzal->user_id = $xuser->get('id');
 					$hzal->update();
 				}
 			}
@@ -218,11 +221,10 @@ class plgUserXusers extends JPlugin
 
 		if ($hzal)
 		{
-			$juser->set('auth_link_id',$hzal->id);
+			$xuser->set('auth_link_id',$hzal->id);
 			$session->set('linkaccount', true);
 		}
 
-		$session = JFactory::getSession();
 		$session->set('registration.incomplete', true);
 
 		// Check if quota exists for the user
@@ -234,7 +236,7 @@ class plgUserXusers extends JPlugin
 			require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
 			$quota = new UsersQuotas($this->database);
-			$quota->load(array('user_id'=>$juser->get('id')));
+			$quota->load(array('user_id' => $xuser->get('id')));
 
 			if (!$quota->id)
 			{
@@ -243,7 +245,7 @@ class plgUserXusers extends JPlugin
 
 				if ($class->id)
 				{
-					$quota->set('user_id'    , $juser->get('id'));
+					$quota->set('user_id'    , $xuser->get('id'));
 					$quota->set('class_id'   , $class->id);
 					$quota->set('soft_blocks', $class->soft_blocks);
 					$quota->set('hard_blocks', $class->hard_blocks);
@@ -257,6 +259,15 @@ class plgUserXusers extends JPlugin
 		return true;
 	}
 
+	/**
+	 * This method is an alias for onAfterStoreUser
+	 *
+	 * @param   array    $user     holds the new user data
+	 * @param   boolean  $isnew    true if a new user is stored
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  void
+	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
 		return $this->onAfterStoreUser($user, $isnew, $success, $msg);
@@ -265,10 +276,11 @@ class plgUserXusers extends JPlugin
 	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param array holds the new user data
-	 * @param boolean true if a new user is stored
-	 * @param boolean true if user was succesfully stored in the database
-	 * @param string message
+	 * @param   array    $user     holds the new user data
+	 * @param   boolean  $isnew    true if a new user is stored
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  void
 	 */
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
@@ -420,7 +432,8 @@ class plgUserXusers extends JPlugin
 				$update = true;
 			}
 
-			if ($update) {
+			if ($update)
+			{
 				$xprofile->update();
 			}
 		}
@@ -455,6 +468,14 @@ class plgUserXusers extends JPlugin
 		}
 	}
 
+	/**
+	 * This method is an alias for onAfterDeleteUser
+	 *
+	 * @param   array    $user     holds the user data
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  boolean  True on success
+	 */
 	public function onUserAfterDelete($user, $succes, $msg)
 	{
 		return $this->onAfterDeleteUser($user, $succes, $msg);
@@ -463,9 +484,10 @@ class plgUserXusers extends JPlugin
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param array holds the user data
-	 * @param boolean true if user was succesfully stored in the database
-	 * @param string message
+	 * @param   array    $user     holds the user data
+	 * @param   boolean  $success  true if user was succesfully stored in the database
+	 * @param   string   $msg      message
+	 * @return  boolean  True on success
 	 */
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
@@ -494,6 +516,13 @@ class plgUserXusers extends JPlugin
 		return true;
 	}
 
+	/**
+	 * This method is an alias for onLogoutUser
+	 *
+	 * @param   array    $user     holds the user data
+	 * @param   array    $options  array holding options (remember, autoregister, group)
+	 * @return  boolean  True on success
+	 */
 	public function onUserLogout($user, $options = array())
 	{
 		return $this->onLogoutUser($user, $options);
@@ -502,14 +531,13 @@ class plgUserXusers extends JPlugin
 	/**
 	 * This method should handle any logout logic and report back to the subject
 	 *
-	 * @access public
-	 * @param array holds the user data
-	 * @return boolean True on success
+	 * @param   array    $user     holds the user data
+	 * @param   array    $options  array holding options (remember, autoregister, group)
+	 * @return  boolean  True on success
 	 */
 	public function onLogoutUser($user, $options = array())
 	{
-		$authlog = JFactory::getAuthLogger();
-		$authlog->info($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
+		Log::auth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 
 		apache_note('auth','logout');
 
@@ -518,13 +546,13 @@ class plgUserXusers extends JPlugin
 		// then delete the temp account
 		if (is_numeric($user['username']) && $user['username'] < 0)
 		{
-			$juser = User::getInstance($user['id']);
+			$user = User::getInstance($user['id']);
 
 			// Further check to make sure this was an abandoned auth_link account
-			if (substr($juser->email, -8) == '@invalid')
+			if (substr($xuser->get('email'), -8) == '@invalid')
 			{
 				// Delete the user
-				$juser->delete();
+				$xuser->delete();
 			}
 		}
 

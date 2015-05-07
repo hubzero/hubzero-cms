@@ -56,7 +56,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$this->_config = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$this->_juser = JFactory::getUser();
+		$this->_user = User::getRoot();
 		$this->_filters = array();
 		$this->_total = 0;
 	}
@@ -126,7 +126,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$total = $obj->getCount($filters, false, $user->get('id'), 0, $this->_setup_complete);
 		$this->_filters = $filters;
 		$this->_total = $total;
-		$this->_juser = $user;
+		$this->_user = $user;
 
 		// Add stylesheet
 		\Hubzero\Document\Assets::addPluginStylesheet('members', 'projects');
@@ -176,16 +176,16 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		);
 
 		$obj = new \Components\Projects\Tables\Project($this->_database);
-		$projects = $obj->getUserProjectIds($this->_juser->get('id'));
-		$view->newcount = $obj->getUpdateCount($projects, $this->_juser->get('id'));
+		$projects = $obj->getUserProjectIds($this->_user->get('id'));
+		$view->newcount = $obj->getUpdateCount($projects, $this->_user->get('id'));
 
 		if ($which == 'all')
 		{
 			$this->_filters['which'] = 'owned';
-			$view->owned = $obj->getRecords($this->_filters, false, $this->_juser->get('id'), 0, $this->_setup_complete);
+			$view->owned = $obj->getRecords($this->_filters, false, $this->_user->get('id'), 0, $this->_setup_complete);
 
 			$this->_filters['which'] = 'other';
-			$view->rows = $obj->getRecords($this->_filters, false, $this->_juser->get('id'), 0, $this->_setup_complete);
+			$view->rows = $obj->getRecords($this->_filters, false, $this->_user->get('id'), 0, $this->_setup_complete);
 		}
 		else
 		{
@@ -196,12 +196,12 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 				$which = 'owned';
 			}
 			$this->_filters['which'] = $which;
-			$view->rows = $obj->getRecords($this->_filters, false, $this->_juser->get('id'), 0, $this->_setup_complete);
+			$view->rows = $obj->getRecords($this->_filters, false, $this->_user->get('id'), 0, $this->_setup_complete);
 		}
 
 		$view->which   = $which;
 		$view->total   = $this->_total;
-		$view->juser   = $this->_juser;
+		$view->user    = $this->_user;
 		$view->filters = $this->_filters;
 		$view->config  = $this->_config;
 		$view->option  = 'com_projects';
@@ -235,8 +235,8 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 
 		// Get all projects user has access to
 		$obj = new \Components\Projects\Tables\Project($this->_database);
-		$projects = $obj->getUserProjectIds($this->_juser->get('id'));
-		$view->newcount = $obj->getUpdateCount ($projects, $this->_juser->get('id'));
+		$projects = $obj->getUserProjectIds($this->_user->get('id'));
+		$view->newcount = $obj->getUpdateCount ($projects, $this->_user->get('id'));
 
 		// Get activity class
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
@@ -244,15 +244,15 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();
-		$view->total = $objAC->getActivities (0, $afilters, 1, $this->_juser->get('id'), $projects);
+		$view->total = $objAC->getActivities (0, $afilters, 1, $this->_user->get('id'), $projects);
 		$view->limit = 25;
 		$afilters['limit'] = Request::getVar('limit', 25, 'request');
 		$view->filters = $afilters;
-		$activities = $objAC->getActivities (0, $afilters, 0, $this->_juser->get('id'), $projects);
-		$view->activities = $this->prepActivities ($activities, 'com_projects', $this->_juser->get('id'), $view->filters, $view->limit);
+		$activities = $objAC->getActivities (0, $afilters, 0, $this->_user->get('id'), $projects);
+		$view->activities = $this->prepActivities ($activities, 'com_projects', $this->_user->get('id'), $view->filters, $view->limit);
 
 		$view->projectcount = $this->_total;
-		$view->uid          = $this->_juser->get('id');
+		$view->uid          = $this->_user->get('id');
 		$view->config       = $this->_config;
 		$view->option       = 'com_projects';
 		$view->database     = $this->_database;

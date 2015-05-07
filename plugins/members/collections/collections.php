@@ -87,7 +87,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->member = $member;
-		$this->juser  = $user;
 
 		$this->_authorize('collection');
 
@@ -285,7 +284,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	{
 		$view = $this->view('followers', 'follow');
 		$view->name        = $this->_name;
-		$view->juser       = $this->juser;
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
@@ -333,7 +331,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	{
 		$view = $this->view('following', 'follow');
 		$view->name        = $this->_name;
-		$view->juser       = $this->juser;
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
@@ -387,7 +384,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	{
 		$view = $this->view('collections', 'collection');
 		$view->name        = $this->_name;
-		$view->juser       = $this->juser;
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
@@ -773,7 +769,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->option     = $this->option;
 		$view->member     = $this->member;
 		$view->params     = $this->params;
-		$view->juser      = $this->juser;
 		$view->name       = $this->_name;
 		$view->model      = $this->model;
 

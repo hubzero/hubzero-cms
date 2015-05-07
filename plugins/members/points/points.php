@@ -46,7 +46,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   JUser
+	 * @param      object  $user   User
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
 	 */
@@ -68,7 +68,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   JUser
+	 * @param      object  $user   User
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
 	 * @param      string  $areas  Plugins to return data
@@ -96,7 +96,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 		$tables = $database->getTableList();
-		$table = $database->getPrefix() . 'users_points';
+		$table  = $database->getPrefix() . 'users_points';
 
 		if (!in_array($table, $tables))
 		{
@@ -109,13 +109,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		// Build the final HTML
 		if ($returnhtml)
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'history'
-				)
-			);
+			$view = $this->view('default', 'history');
 
 			$view->sum = $BTL->summary();
 
@@ -123,7 +117,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 			$funds = $view->sum - $view->credit;
 
 			$view->funds = ($funds > 0) ? $funds : 0;
-			$view->hist = $BTL->history(0);
+			$view->hist  = $BTL->history(0);
 			if ($this->getError())
 			{
 				$view->setError($this->getError());

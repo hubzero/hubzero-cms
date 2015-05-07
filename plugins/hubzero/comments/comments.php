@@ -68,16 +68,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'view',
-				'layout'  => 'default'
-			)
-		);
+		$this->view = $this->view('default', 'view');
 		$this->view->database = $this->database = JFactory::getDBO();
-		$this->view->juser    = $this->juser    = User::getRoot();
 		$this->view->option   = $this->option   = $option;
 		$this->view->obj      = $this->obj      = $obj;
 		$this->view->obj_id   = $this->obj_id   = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);

@@ -51,7 +51,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 	<span class="event-title">
 		<?php echo $this->event->get('title'); ?>
 	</span>
-	<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
+	<?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 		<a class="delete" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 			Delete
 		</a>
@@ -74,7 +74,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 					<span><?php echo Lang::txt('Register'); ?></span>
 				</a>
 			</li>
-			<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
+			<?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 				<li>
 					<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=registrants&event_id='.$this->event->get('id')); ?>">
 						<span><?php echo Lang::txt('Registrants ('.$this->registrants.')'); ?></span>

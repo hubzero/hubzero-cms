@@ -46,7 +46,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @param      object  $user   JUser
+	 * @param      object  $user   User
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
 	 */
@@ -62,7 +62,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific member
 	 *
-	 * @param      object  $user   JUser
+	 * @param      object  $user   User
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
 	 * @param      string  $areas  Plugins to return data
@@ -154,8 +154,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		$registration_update = null;
 
-		$session = JFactory::getSession();
-		if ($session->get('registration.incomplete'))
+		if (App::get('session')->get('registration.incomplete'))
 		{
 			$xreg = new MembersModelRegistration();
 
@@ -172,7 +171,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$check = $xreg->check('update');
 			if ($check)
 			{
-				$session->set('registration.incomplete', 0);
+				App::get('session')->set('registration.incomplete', 0);
 				App::redirect($_SERVER['REQUEST_URI']);
 			}
 			else
