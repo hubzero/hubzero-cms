@@ -284,8 +284,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				foreach ($categories as $category)
 				{
 					$ids[] = $category->id;
+					$cat   = new ForumTableCategory($db);
+					$cat->load($category->id);
+					$cat->setStateBySection($section->id, 2);
 				}
-				$section->setStateBySection($section->id, 2);
 
 				$thread = new ForumTablePost($db);
 				$thread->setStateByCategory($ids, 2);
