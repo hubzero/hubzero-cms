@@ -55,11 +55,11 @@ if ($this->group->isSuperGroup())
 ?>
 
 <ul <?php echo $this->classOrId; ?>>
-	<?php if ($this->juser->get('guest') == 1) : ?>
+	<?php if (User::isGuest() == 1) : ?>
 		<li>
 			<a class="login" href="<?php echo $loginLink; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
 		</li>
-	<?php elseif (in_array($this->juser->get("id"), $this->group->get("invitees"))) : ?>
+	<?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
 				<a class="invited" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
@@ -67,23 +67,23 @@ if ($this->group->isSuperGroup())
 				</a>
 			</li>
 		<?php endif; ?>
-	<?php elseif ($this->group->get('join_policy') == 3 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 3 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
 		<li>
 			<span class="closed"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_CLOSED'); ?></span>
 		</li>
-	<?php elseif ($this->group->get('join_policy') == 2 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 2 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
 		<li>
 			<span class="inviteonly"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_INVITE_ONLY'); ?></span>
 		</li>
-	<?php elseif ($this->group->get('join_policy') == 0 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 0 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
 				<a class="join" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 			</li>
 		<?php endif; ?>
-	<?php elseif ($this->group->get('join_policy') == 1 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 1 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
 		<?php if ($membership_control == 1) : ?>
-			<?php if (in_array($this->juser->get("id"), $this->group->get("applicants"))) : ?>
+			<?php if (in_array(User::get("id"), $this->group->get("applicants"))) : ?>
 				<li><span class="pending"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_PENDING'); ?></span></li>
 			<?php else : ?>
 				<li>
@@ -92,8 +92,8 @@ if ($this->group->isSuperGroup())
 			<?php endif; ?>
 		<?php endif; ?>
 	<?php else : ?>
-		<?php $isManager = (in_array($this->juser->get("id"), $this->group->get("managers"))) ? true : false; ?>
-		<?php $canCancel = (($isManager && count($this->group->get("managers")) > 1) || (!$isManager && in_array($this->juser->get("id"), $this->group->get("members")))) ? true : false; ?>
+		<?php $isManager = (in_array(User::get("id"), $this->group->get("managers"))) ? true : false; ?>
+		<?php $canCancel = (($isManager && count($this->group->get("managers")) > 1) || (!$isManager && in_array(User::get("id"), $this->group->get("members")))) ? true : false; ?>
 		<li>
 			<div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
 				<a href="javascript:void(0);" class="btn">

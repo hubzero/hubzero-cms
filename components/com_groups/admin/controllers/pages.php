@@ -674,7 +674,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$page = new GroupsModelPage( $id );
+		$page = new GroupsModelPage($id);
 
 		// load current version
 		$currentVersion = $page->version();
@@ -694,7 +694,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// set approved and approved date and approver
 		$currentVersion->set('approved', 1);
 		$currentVersion->set('approved_on', Date::toSql());
-		$currentVersion->set('approved_by', $this->juser->get('id'));
+		$currentVersion->set('approved_by', User::get('id'));
 
 		// save version with approved status
 		if (!$currentVersion->store(false, $this->group->isSuperGroup()))

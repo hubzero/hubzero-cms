@@ -105,14 +105,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			break;
 	}
 
-	$juser = JUser::getInstance($row->created_by);
+	$user = User::getInstance($row->created_by);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $row->id;  ?></td>
 				<td><?php echo $status;  ?></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category); ?>"><?php echo ($row->category . ' #' . $row->referenceid); ?></a></td>
 				<td><?php echo $this->escape($row->subject); ?></td>
-				<td><?php echo $this->escape($juser->get('username')); ?></td>
+				<td><?php echo $this->escape($user->get('username')); ?></td>
 				<td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 <?php

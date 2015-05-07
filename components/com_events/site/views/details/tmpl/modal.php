@@ -184,7 +184,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php } ?>
 
 <?php if ($this->config->getCfg('byview') == 'YES') {
-			$user = JUser::getInstance($this->row->created_by);
+			$user = User::getInstance($this->row->created_by);
 
 			if (is_object($user)) {
 				$name = $user->get('name');

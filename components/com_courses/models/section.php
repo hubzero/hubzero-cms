@@ -68,21 +68,21 @@ class CoursesModelSection extends CoursesModelAbstract
 	private $_authorized = false;
 
 	/**
-	 * JUser
+	 * List of roles
 	 *
 	 * @var object
 	 */
 	private $_roles = NULL;
 
 	/**
-	 * JUser
+	 * List of members
 	 *
 	 * @var object
 	 */
 	private $_members = NULL;
 
 	/**
-	 * JUser
+	 * Member
 	 *
 	 * @var object
 	 */

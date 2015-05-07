@@ -313,7 +313,7 @@ class Query extends \JTable
 		{
 			$condition = json_decode($condition);
 		}
-		$juser = User::getRoot();
+		$user = User::getRoot();
 
 		$op = ' ' . strtoupper($condition->operator) . ' ';
 
@@ -389,7 +389,7 @@ class Query extends \JTable
 
 				if ($expr->fldval == 'group')
 				{
-					$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
+					$xgroups = \Hubzero\User\Helper::getGroups($user->get('id'), 'members');
 					$expr->val = '';
 					if ($xgroups)
 					{
@@ -428,14 +428,14 @@ class Query extends \JTable
 
 				if ($expr->val == '$me')
 				{
-					$expr->val = $juser->get($uid);
+					$expr->val = $user->get($uid);
 				}
 				else if (strtolower($expr->fldval) == 'owner')
 				{
-					$user = User::getInstance($expr->val);
-					if ($user)
+					$vuser = User::getInstance($expr->val);
+					if ($vuser)
 					{
-						$expr->val = $user->get('id');
+						$expr->val = $vuser->get('id');
 					}
 				}
 

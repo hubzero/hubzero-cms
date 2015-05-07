@@ -528,7 +528,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 		if (!$auto)
 		{
-			$who = $this->juser->get('id');
+			$who = User::get('id');
 		}
 		else
 		{

@@ -51,9 +51,6 @@ class MembersControllerWhosOnline extends \Hubzero\Component\AdminController
 			'distinct' => 1
 		));
 
-		//set juser object for view
-		$this->view->juser = $this->juser;
-
 		// Output the HTML
 		$this->view->display();
 	}

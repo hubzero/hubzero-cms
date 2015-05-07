@@ -370,7 +370,7 @@ class Plugins extends AdminController
 
 		$query = "UPDATE `#__extensions` SET enabled = ".(int) $state
 			. " WHERE extension_id IN (" . implode(',', $id) . ")"
-			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
+			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) User::get('id') . "))";
 
 		$this->database->setQuery($query);
 		if (!$this->database->query())

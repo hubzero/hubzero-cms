@@ -34,13 +34,13 @@ Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_
 Toolbar::save();
 //Toolbar::cancel();
 
-$reporter = JUser::getInstance($this->report->created_by);
+$reporter = User::getInstance($this->report->created_by);
 
 $link = '';
 
 if (is_object($this->reported))
 {
-	$author = JUser::getInstance($this->reported->author);
+	$author = User::getInstance($this->reported->author);
 
 	if (is_object($author) && $author->get('username'))
 	{

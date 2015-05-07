@@ -85,7 +85,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$ia = new ModIncrementalRegistrationAwards($profile);
 		$ia->optOut();
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url($profile->getLink() . '&active=profile'),
 			Lang::txt('You have been successfully opted out of this promotion.'),
 			'passed'
@@ -242,8 +242,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->contribution_counting = $this->config->get('contribution_counting', true);
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the document pathway
 		if (Pathway::count() <= 0)
@@ -258,8 +257,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		{
 			$this->view->setError($error);
 		}
-
-		$this->view->juser = User::getRoot();
 
 		$this->view->display();
 	}
@@ -317,8 +314,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the document pathway
 		if (Pathway::count() <= 0)
@@ -433,7 +429,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	{
 		if (User::isGuest())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount'))),
 				Lang::txt('You must be a logged in to access this area.'),
 				'warning'
@@ -517,7 +513,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			if (User::isGuest())
 			{
 				$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&id=' . $profile->get('uidNumber')), 'server');
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
 				return;
@@ -574,8 +570,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$params->merge($rparams);
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title . ': ' . stripslashes($profile->get('name')));
+		Document::setTitle($this->view->title . ': ' . stripslashes($profile->get('name')));
 
 		// Set the pathway
 		Pathway::append(
@@ -606,7 +601,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	{
 		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
 		{
-			JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			App::redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 			die('insecure connection and redirection failed');
 		}
 
@@ -614,8 +609,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$title  = Lang::txt(strtoupper($this->_name));
 		$title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
-		$document = JFactory::getDocument();
-		$document->setTitle($title);
+		Document::setTitle($title);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -633,7 +627,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword'), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 			);
 			return;
@@ -857,8 +851,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->title  = Lang::txt(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -876,7 +869,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit'), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 			);
 			return;
@@ -1127,8 +1120,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->title  = Lang::txt(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -1146,7 +1138,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity'), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 			);
 			return;
@@ -1522,38 +1514,38 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Make sure certain changes make it back to the Joomla user table
 		if ($id > 0)
 		{
-			$juser  = User::getInstance($id);
-			$jname  = $juser->get('name');
-			$jemail = $juser->get('email');
+			$user  = User::getInstance($id);
+			$jname  = $user->get('name');
+			$jemail = $user->get('email');
 			if ($name != trim($jname))
 			{
-				$juser->set('name', $name);
+				$user->set('name', $name);
 			}
 			if ($email != trim($jemail))
 			{
-				$juser->set('email', $email);
+				$user->set('email', $email);
 			}
 			if ($name != trim($jname) || $email != trim($jemail))
 			{
-				if (!$juser->save())
+				if (!$user->save())
 				{
-					App::abort(500, Lang::txt($juser->getError()));
+					App::abort(500, Lang::txt($user->getError()));
 					return false;
 				}
 			}
 
 			// Update session if name is changing
-			if ($n && $juser->get('name') != JFactory::getSession()->get('user')->get('name'))
+			if ($n && $user->get('name') != JFactory::getSession()->get('user')->get('name'))
 			{
-				$user = JFactory::getSession()->get('user');
-				$user->set('name', $juser->get('name'));
+				$suser = JFactory::getSession()->get('user');
+				$user->set('name', $suser->get('name'));
 			}
 
 			// Update session if email is changing
-			if ($juser->get('email') != JFactory::getSession()->get('user')->get('email'))
+			if ($user->get('email') != JFactory::getSession()->get('user')->get('email'))
 			{
-				$user = JFactory::getSession()->get('user');
-				$user->set('email', $juser->get('email'));
+				$suser = JFactory::getSession()->get('user');
+				$user->set('email', $suser->get('email'));
 
 				// add item to session to mark that the user changed emails
 				// this way we can serve profile images for these users but not all
@@ -1581,7 +1573,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (!$no_html)
 		{
 			// Redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : '')),
 				$this->_message
 			);
@@ -1695,8 +1687,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	public function activityTask()
 	{
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_task)));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_task)));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -1715,14 +1706,14 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity'), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 			);
 			return;
 		}
 		if (!User::authorize($this->_option, 'manage'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
@@ -1812,7 +1803,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = Request::getInt('id', 0);
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&id=' . $id . '&active=profile')
 		);
 	}

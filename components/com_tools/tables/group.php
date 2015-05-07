@@ -255,16 +255,16 @@ class ToolGroup extends  JTable
 		{
 			foreach ($members as $member)
 			{
-				$juser = JUser::getInstance($member);
-				if (is_object($juser))
+				$user = User::getInstance($member);
+				if (is_object($user))
 				{
 					if ($id)
 					{
-						$teamlist[$i]->uidNumber = $juser->get('id');
+						$teamlist[$i]->uidNumber = $user->get('id');
 					}
 					else
 					{
-						$teamlist[$i] = $juser->get('id');
+						$teamlist[$i] = $user->get('id');
 					}
 					$i++;
 				}

@@ -154,7 +154,7 @@ jQuery(document).ready(function($){
 				<tr>
 					<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 					<td><?php
-					$creator = JUser::getInstance($this->row->get('created_by'));
+					$creator = User::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
 			<?php } ?>

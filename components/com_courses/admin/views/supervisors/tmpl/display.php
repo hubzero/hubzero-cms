@@ -117,7 +117,7 @@ $offerings = $course->offerings();
 		$i = 0;
 			foreach ($managers as $manager)
 			{
-				$u = JUser::getInstance($manager->get('user_id'));
+				$u = User::getInstance($manager->get('user_id'));
 				if (!is_object($u))
 				{
 					continue;

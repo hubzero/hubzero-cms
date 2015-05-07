@@ -98,8 +98,6 @@ class Abuse extends SiteController
 			return;
 		}
 
-		$this->view->juser    = User::getRoot();
-
 		// Incoming
 		$this->view->refid    = Request::getInt('id', 0);
 		$this->view->parentid = Request::getInt('parent', 0);

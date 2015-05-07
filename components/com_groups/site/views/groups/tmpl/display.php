@@ -145,7 +145,7 @@ $this->css('introduction.css', 'system')
 		</div><!-- / .col span9 -->
 	</div><!-- / .grid -->
 
-	<?php if (!$this->juser->get("guest")) : ?>
+	<?php if (!User::isGuest()) : ?>
 		<?php if ($this->config->get("intro_mygroups", 1)) : ?>
 			<div class="grid mygroups">
 				<div class="col span3">
@@ -162,7 +162,7 @@ $this->css('introduction.css', 'system')
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<?php if (!$this->juser->get("guest")) : ?>
+	<?php if (!User::isGuest()) : ?>
 		<?php if ($this->config->get("intro_interestinggroups", 1)) : ?>
 			<div class="grid interestinggroups">
 				<div class="col span3">

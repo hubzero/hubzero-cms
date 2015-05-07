@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 				$trueTab = strtolower(Request::getVar('active', 'overview'));
 				$liClass = ($trueTab != $this->tab) ? '' : $liClass;
 
-				if (($access == 'registered' && $this->juser->get('guest')) || ($access == 'members' && !in_array($this->juser->get("id"), $this->group->get('members'))))
+				if (($access == 'registered' && User::isGuest()) || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members'))))
 				{
 					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" class=\"overview\">Overview</span>";
 				}
@@ -80,13 +80,13 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					$item = '';
 				}
-				elseif ($access == 'members' && !in_array($this->juser->get("id"), $this->group->get('members')))
+				elseif ($access == 'members' && !in_array(User::get("id"), $this->group->get('members')))
 				{
 					$item  = "<li class=\"protected members-only group-{$class}-tab\" title=\"This page is restricted to group members only!\">";
 					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"{$class}\">{$title}</span>";
 					$item .= "</li>";
 				}
-				elseif ($access == 'registered' && $this->juser->get('guest'))
+				elseif ($access == 'registered' && User::isGuest())
 				{
 					$item  = "<li class=\"protected registered-only group-{$class}-tab\" title=\"This page is restricted to registered hub users only!\">";
 					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"{$class}\">{$title}</span>";

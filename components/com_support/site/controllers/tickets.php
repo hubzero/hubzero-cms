@@ -2035,9 +2035,9 @@ class Tickets extends SiteController
 				}
 
 				// get user's infor from login
-				$juser = \JUser::getInstance($row->get('login'));
-				$row->set('name', $juser->get('name'));
-				$row->set('email', $juser->get('email'));
+				$user = User::getInstance($row->get('login'));
+				$row->set('name', $user->get('name'));
+				$row->set('email', $user->get('email'));
 			}
 		}
 
@@ -2595,7 +2595,7 @@ class Tickets extends SiteController
 						$users[] = \JHTML::_('select.optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
-							$u = \JUser::getInstance($member);
+							$u = User::getInstance($member);
 							if (!is_object($u))
 							{
 								continue;

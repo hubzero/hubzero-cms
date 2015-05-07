@@ -221,7 +221,7 @@ class GroupsHelperView
 
 		// pass vars to view
 		$view->group           = $group;
-		$view->juser           = User::getRoot();
+		$view->user            = User::getRoot();
 		$view->classOrId       = $classOrId;
 		$view->tab             = self::getTab($group);
 		$view->sections        = self::getSections();
@@ -406,7 +406,7 @@ class GroupsHelperView
 
 		// pass vars to view
 		$view->group      = $group;
-		$view->juser      = User::getRoot();
+		$view->user       = User::getRoot();
 		$view->classOrId  = $classOrId;
 		$view->logoutLink = $displayLogoutLink;
 

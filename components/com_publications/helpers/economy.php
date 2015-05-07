@@ -94,12 +94,12 @@ class Economy extends Object
 		$points = round($con->ranking);
 
 		// Get qualifying users
-		$juser = User::getInstance($con->user_id);
+		$user = User::getInstance($con->user_id);
 
 		// Reward review author
-		if (is_object($juser) && $juser->get('id'))
+		if (is_object($user) && $user->get('id'))
 		{
-			$BTL = new Teller($this->_db , $juser->get('id'));
+			$BTL = new Teller($this->_db , $user->get('id'));
 
 			if (intval($points) > 0)
 			{

@@ -62,7 +62,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Get the email address
 		if (!$email = trim(Request::getVar('email', false)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_EMAIL'),
 				'warning'
@@ -73,7 +73,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure it looks like a valid email address
 		if (!\Hubzero\Utility\Validate::email($email))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_INVALID_EMAIL'),
 				'warning'
@@ -87,7 +87,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure we have at least one
 		if ($users->count() < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -127,7 +127,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		if (!$message->send())
 		{
 			\JFactory::getLogger()->error('Members username reminder email failed: ' . Lang::txt('Failed to mail %s', $email));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
 				'warning'
@@ -136,7 +136,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Everything went well...go to the login page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login', false),
 			Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
 			'passed'
@@ -167,7 +167,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Grab the incoming username
 		if (!$username = trim(Request::getVar('username', false)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_USERNAME'),
 				'warning'
@@ -179,7 +179,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 		if (!MembersHelperUtility::validlogin($username))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_INVALID_USERNAME'),
 				'warning'
@@ -193,7 +193,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure we have at least one (although there's really no way to have more than 1)
 		if ($user->count() < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -203,12 +203,12 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 
 		// Get the user object
 		$user  = $user->first();
-		$juser = JUser::getInstance($user->id);
+		$user = User::getInstance($user->id);
 
 		// Make sure the user isn't blocked
 		if ($user->block)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -217,9 +217,9 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Make sure the user isn't a super admin
-		if ($juser->authorise('core.admin'))
+		if ($user->authorise('core.admin'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_IS_SUPER'),
 				'warning'
@@ -230,7 +230,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure the user has not exceeded the reset limit
 		if ($user->hasExceededResetLimit())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_EXCEEDED_LIMIT'),
 				'warning'
@@ -280,7 +280,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		if (!$message->send())
 		{
 			\JFactory::getLogger()->error('Members password reset email failed: ' . Lang::txt('Failed to mail %s', $user->email));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
 				'warning'
@@ -292,7 +292,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		JFactory::getApplication()->setUserState('com_users.reset.user', $user->id);
 
 		// Everything went well...go to the token verification page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=verify', false),
 			Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
 			'passed'
@@ -323,7 +323,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Grab the token (not to be confused with the CSRF token above!)
 		if (!$token = trim(Request::getVar('token', false)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_TOKEN'),
 				'warning'
@@ -342,7 +342,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 
 		if (!isset($parts[1]))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -356,7 +356,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Verify the token
 		if (!($crypt == $testcrypt))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -367,7 +367,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure the user isn't blocked
 		if ($user->block)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -379,7 +379,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		$app->setUserState('com_users.reset.token', $crypt . ':' . $salt);
 
 		// Everything went well...go to the actual change password page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
 			Lang::txt('COM_MEMBERS_CREDENTIALS_TOKEN_CONFIRMED'),
 			'passed'
@@ -436,7 +436,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Check for a user and that the tokens match
 		if ($user->tokens()->latest()->token !== $token)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -447,7 +447,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Make sure the user isn't blocked
 		if ($user->block)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
 				'warning'
@@ -523,7 +523,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
 					$error,
 					'warning'
@@ -553,7 +553,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
 					Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC'),
 					'warning'
@@ -579,7 +579,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		else
 		{
 			// Everything went well...go to the login page
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_PASSWORD_RESET_COMPLETE'),
 				'passed'

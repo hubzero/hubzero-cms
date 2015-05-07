@@ -132,7 +132,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//set some vars for view
 		$this->view->config = $this->config;
 		$this->view->title = $this->_title;
-		$this->view->juser = User::getRoot();
 
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -196,7 +195,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		//set some vars for view
 		$this->view->title = $this->_title;
-		$this->view->juser = User::getRoot();
 
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -337,7 +335,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		//set some vars for view
 		$this->view->title         = $this->_title;
-		$this->view->juser         = User::getRoot();
 		$this->view->content       = GroupsHelperView::displaySectionsContent($this->view->group, $overviewContent);
 		$this->view->activePage    = $activePage;
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -703,7 +700,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'saved'));
 		$eview->option = $this->_option;
-		$eview->juser  = User::getRoot();
+		$eview->user  = User::getRoot();
 		$eview->group  = $group;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
@@ -888,7 +885,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		//set some vars for view
 		$this->view->title = Lang::txt('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');;
-		$this->view->juser = User::getRoot();
 		$this->view->msg = Request::getVar('msg', '');
 
 		//display view
@@ -1016,7 +1012,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$eview = new \Hubzero\Component\View(array('name' => 'emails','layout' => 'deleted'));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser    = User::getRoot();
+		$eview->user    = User::getRoot();
 		$eview->gcn      = $deletedgroup->get('cn');
 		$eview->msg      = $message;
 		$eview->group    = $deletedgroup;
@@ -1105,7 +1101,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		//set some vars for view
 		$this->view->title = "Group: Unapproved";
-		$this->view->juser = User::getRoot();
 
 		//display view
 		$this->view->display();

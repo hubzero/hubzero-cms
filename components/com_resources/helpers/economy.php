@@ -44,7 +44,7 @@ include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
 class Economy extends Object
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
@@ -98,7 +98,7 @@ class Economy extends Object
 		$user = User::getInstance($con->authorid);
 
 		// Reward review author
-		if (is_object($juser) && $user->get('id'))
+		if (is_object($user) && $user->get('id'))
 		{
 			$BTL = new Teller($this->_db , $user->get('id'));
 

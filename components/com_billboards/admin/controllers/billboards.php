@@ -35,6 +35,7 @@ use Components\Billboards\Models\Billboard;
 use Request;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -104,7 +105,7 @@ class BillBoards extends AdminController
 		if ($billboard->id)
 		{
 			// Yes, we should check it out first
-			$billboard->checkout($this->juser->get('id'));
+			$billboard->checkout(User::get('id'));
 		}
 
 		// Output the HTML

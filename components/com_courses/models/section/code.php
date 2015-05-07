@@ -56,7 +56,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	protected $_scope = 'section_code';
 
 	/**
-	 * JUser
+	 * User
 	 *
 	 * @var object
 	 */

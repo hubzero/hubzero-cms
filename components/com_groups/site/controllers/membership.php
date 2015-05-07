@@ -105,7 +105,6 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		//set some vars for view
 		$this->view->title = Lang::txt('Invite Members: ' . $this->view->group->get('description'));
-		$this->view->juser = User::getRoot();
 		$this->view->msg = trim(Request::getVar('msg',''));
 		$this->view->return = trim(Request::getVar('return',''));
 
@@ -317,7 +316,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'invite'));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = User::getRoot();
+		$eview->user = User::getRoot();
 		$eview->group = $this->view->group;
 		$eview->msg = $msg;
 		$html = $eview->loadTemplate();
@@ -357,7 +356,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$eview2 = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'inviteemail'));
 			$eview2->option = $this->_option;
 			$eview2->sitename = Config::get('sitename');
-			$eview2->juser = User::getRoot();
+			$eview2->user = User::getRoot();
 			$eview2->group = $this->view->group;
 			$eview2->msg = $msg;
 			$eview2->token = $mbr['token'];
@@ -560,7 +559,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'accepted'));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = User::getRoot();
+		$eview->user = User::getRoot();
 		$eview->group = $this->view->group;
 		$body = $eview->loadTemplate();
 		$body = str_replace("\n", "\r\n", $body);
@@ -686,7 +685,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'cancelled'));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = User::getRoot();
+		$eview->user = User::getRoot();
 		$eview->group = $this->view->group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -913,7 +912,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'request'));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = User::getRoot();
+		$eview->user = User::getRoot();
 		$eview->group = $this->view->group;
 		$eview->row = $row;
 		$html = $eview->loadTemplate();

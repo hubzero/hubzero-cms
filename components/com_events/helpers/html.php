@@ -549,17 +549,17 @@ class Html
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid)
 		{
-			$juser = \JUser::getInstance($userid);
+			$user = User::getInstance($userid);
 
-			if ($juser)
+			if ($user)
 			{
-				if (($juser->get('email')) && ($agenda_viewmail=='YES'))
+				if (($user->get('email')) && ($agenda_viewmail=='YES'))
 				{
-					$contactlink = '<a href="mailto:' . $juser->get('email') . '">' . $juser->get('name') . '</a>';
+					$contactlink = '<a href="mailto:' . $user->get('email') . '">' . $user->get('name') . '</a>';
 				}
 				else
 				{
-					$contactlink = $juser->get('username');
+					$contactlink = $user->get('username');
 				}
 			}
 		}

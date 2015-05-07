@@ -1277,7 +1277,7 @@ class Tickets extends AdminController
 						$users[] = \JHTML::_('select.optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
-							$u = \JUser::getInstance($member);
+							$u = User::getInstance($member);
 							if (!is_object($u))
 							{
 								continue;
@@ -1306,7 +1306,7 @@ class Tickets extends AdminController
 
 				foreach ($members as $member)
 				{
-					$u = \JUser::getInstance($member);
+					$u = User::getInstance($member);
 					if (!is_object($u))
 					{
 						continue;

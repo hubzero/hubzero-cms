@@ -43,7 +43,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' 
 class CoursesModelPermissions extends \Hubzero\Base\Object
 {
 	/**
-	 * JUser
+	 * Config
 	 *
 	 * @var object
 	 */

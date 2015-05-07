@@ -47,6 +47,9 @@ foreach ($this->rows as $row)
 		$adminUserCount++;
 	}
 }
+
+//are we authorized to edit users
+$editAuthorized = User::authorise('core.manage', 'com_users');
 ?>
 
 <table class="adminlist whosonline-summary">
@@ -79,9 +82,6 @@ foreach ($this->rows as $row)
 				<tr>
 					<td>
 						<?php
-							//are we authorized to edit users
-							$editAuthorized = $this->juser->authorize('com_users', 'manage');
-
 							//get user object
 							$user = User::getInstance($row->username);
 

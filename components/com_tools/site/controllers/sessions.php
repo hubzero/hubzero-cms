@@ -885,7 +885,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			}
 
 			// Check that the user exist
-			$zuser = JUser::getInstance($user);
+			$zuser = User::getInstance($user);
 			if (!$zuser || !is_object($zuser) || !$zuser->get('id'))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_ERROR_INVALID_USERNAME') . ': ' . $user);

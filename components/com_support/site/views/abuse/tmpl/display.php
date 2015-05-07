@@ -66,11 +66,11 @@ if (!$no_html)
 							$name = Lang::txt('COM_SUPPORT_ANONYMOUS');
 							if ($this->report->anon == 0)
 							{
-								$juser = JUser::getInstance($this->report->author);
+								$user = User::getInstance($this->report->author);
 								$name = Lang::txt('COM_SUPPORT_UNKNOWN');
-								if (is_object($juser))
+								if (is_object($user))
 								{
-									$name = $juser->get('name');
+									$name = $user->get('name');
 								}
 							}
 

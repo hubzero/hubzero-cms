@@ -343,11 +343,11 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 			$group->set('published', 1);
 			$group->set('approved', 1);
-			$group->set('created', date("Y-m-d H:i:s"));
-			$group->set('created_by', $this->juser->get('id'));
+			$group->set('created', Date::toSql());
+			$group->set('created_by', User::get('id'));
 
-			$group->add('managers', array($this->juser->get('id')));
-			$group->add('members', array($this->juser->get('id')));
+			$group->add('managers', array(User::get('id')));
+			$group->add('members', array(User::get('id')));
 		}
 		$group->set('description', $g['description']);
 		$group->set('discoverability', $g['discoverability']);

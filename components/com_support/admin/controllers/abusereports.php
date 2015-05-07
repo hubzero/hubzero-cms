@@ -367,7 +367,7 @@ class Abusereports extends AdminController
 			$eview->controller = $this->_controller;
 			$eview->reported   = $reported;
 			$eview->report     = $report;
-			$eview->author     = $juser;
+			$eview->author     = $user;
 
 			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
@@ -391,7 +391,7 @@ class Abusereports extends AdminController
 			$message->addPart($html, 'text/html');
 
 			// Send the email
-			if (Utilities::checkValidEmail($juser->get('email')))
+			if (Utilities::checkValidEmail($user->get('email')))
 			{
 				$message->send();
 			}

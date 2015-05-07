@@ -622,7 +622,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			//authorize checks
 			/*if ($this->_authorize() != 'admin')
 			{
-				if ($this->juser->get('id') != $member->get('uidNumber'))
+				if (User::get('id') != $member->get('uidNumber'))
 				{
 					App::abort(403, Lang::txt('You are not authorized to download the file: ') . ' ' . $file);
 					return;

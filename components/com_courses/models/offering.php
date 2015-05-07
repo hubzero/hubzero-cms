@@ -81,28 +81,28 @@ class CoursesModelOffering extends CoursesModelAbstract
 	private $_unit = NULL;
 
 	/**
-	 * JUser
+	 * Page
 	 *
 	 * @var object
 	 */
 	private $_page = NULL;
 
 	/**
-	 * JUser
+	 * Iterator
 	 *
 	 * @var object
 	 */
 	private $_pages = NULL;
 
 	/**
-	 * JUser
+	 * Iterator
 	 *
 	 * @var object
 	 */
 	private $_announcements = NULL;
 
 	/**
-	 * JUser
+	 * Iterator
 	 *
 	 * @var object
 	 */

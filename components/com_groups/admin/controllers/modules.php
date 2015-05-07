@@ -95,7 +95,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 
 		// are we in the approvers
 		$this->view->needsAttention = new \Hubzero\Base\ItemList();
-		if (in_array($this->juser->get('username'), $approvers))
+		if (in_array(User::get('username'), $approvers))
 		{
 			// get group pages
 			$moduleArchive = GroupsModelModuleArchive::getInstance();
@@ -816,7 +816,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// set approved and approved date and approver
 		$module->set('approved', 1);
 		$module->set('approved_on', Date::toSql());
-		$module->set('approved_by', $this->juser->get('id'));
+		$module->set('approved_by', User::get('id'));
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		$module->store(false, $this->group->isSuperGroup());

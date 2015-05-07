@@ -239,7 +239,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			$users = array_values(array_unique(array_merge($users, $members)));
 
 			// remove this user
-			$isUserInArray = array_search($juser->get('id'), $users);
+			$isUserInArray = array_search(User::get('id'), $users);
 			if (isset($isUserInArray))
 			{
 				unset($users[$isUserInArray]);
@@ -264,7 +264,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			}
 
 			// Check that the user exist
-			$zuser = JUser::getInstance($user);
+			$zuser = User::getInstance($user);
 			if (!$zuser || !is_object($zuser) || !$zuser->get('id'))
 			{
 				$this->setError(Lang::txt('MW_ERROR_INVALID_USERNAME') . ': ' . $user);

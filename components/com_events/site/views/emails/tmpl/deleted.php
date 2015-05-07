@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $sef = Route::url('index.php?option='.$this->option.'&task=details&id='.$this->event->id);
 
-$message  = Lang::txt('EVENTS_CAL_LANG_ACT_DELETED_BY', $this->juser->get('name'), $this->juser->get('login'));
+$message  = Lang::txt('EVENTS_CAL_LANG_ACT_DELETED_BY', $this->user->get('name'), $this->user->get('login'));
 $message .= ''."\n";
 $message .= ''."\n";
 $message .= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE').': '.stripslashes($this->event->title)."\n";

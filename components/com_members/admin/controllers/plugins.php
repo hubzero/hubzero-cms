@@ -275,7 +275,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = Request::getVar('id', array(), '', 'array');
 		$id = (!is_array($id) ? array($id) : $id);
-		JArrayHelper::toInteger($id, array(0));
+		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$client = Request::getWord('filter_client', 'site');
 
@@ -292,7 +292,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 
 		$query = "UPDATE #__extensions SET enabled = ".(int) $state
 			. " WHERE extension_id IN (" . implode(',', $id) . ")"
-			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
+			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) User::get('id') . "))";
 
 		$this->database->setQuery($query);
 		if (!$this->database->query())

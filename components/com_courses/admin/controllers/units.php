@@ -33,6 +33,12 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
@@ -323,10 +329,10 @@ class Units extends AdminController
 				$log = new Tables\Log($this->database);
 				$log->scope_id  = $id;
 				$log->scope     = 'course_unit';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = \Date::toSql();
+				$log->user_id   = User::get('id');
+				$log->timestamp = Date::toSql();
 				$log->action    = 'unit_deleted';
-				$log->actor_id  = $this->juser->get('id');
+				$log->actor_id  = User::get('id');
 				if (!$log->store())
 				{
 					$this->setError($log->getError());
@@ -408,7 +414,7 @@ class Units extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		$id = Request::getVar('id', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($id, array(0));
+		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$uid = $id[0];
 		$inc = ($this->_task == 'orderup' ? -1 : 1);

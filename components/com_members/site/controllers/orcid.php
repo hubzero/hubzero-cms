@@ -307,7 +307,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	public function associateTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}

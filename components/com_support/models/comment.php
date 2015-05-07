@@ -79,7 +79,7 @@ class Comment extends Model
 	private $_base = null;
 
 	/**
-	 * JUser
+	 * User
 	 *
 	 * @var object
 	 */
@@ -135,7 +135,7 @@ class Comment extends Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire User object
 	 *
 	 * @param   string  $property  Property to retrieve
 	 * @param   mixed   $default   Default value if property not set

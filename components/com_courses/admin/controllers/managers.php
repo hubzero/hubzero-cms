@@ -80,7 +80,7 @@ class Managers extends AdminController
 			if (is_numeric($mbr))
 			{
 				// Make sure the user exists
-				$user = JUser::getInstance($mbr);
+				$user = User::getInstance($mbr);
 				if (is_object($user) && $user->get('username'))
 				{
 					$uid = $mbr;

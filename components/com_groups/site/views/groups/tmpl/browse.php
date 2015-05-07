@@ -174,19 +174,19 @@ $this->css();
 							$status = '';
 
 							//determine group status
-							if ($g->get('published') && in_array($this->juser->get('id'), $managers))
+							if ($g->get('published') && in_array(User::get('id'), $managers))
 							{
 								$status = 'manager';
 							}
-							elseif ($g->get('published') && in_array($this->juser->get('id'), $members))
+							elseif ($g->get('published') && in_array(User::get('id'), $members))
 							{
 								$status = 'member';
 							}
-							elseif ($g->get('published') && in_array($this->juser->get('id'), $invitees))
+							elseif ($g->get('published') && in_array(User::get('id'), $invitees))
 							{
 								$status = 'invitee';
 							}
-							elseif ($g->get('published') && in_array($this->juser->get('id'), $applicants))
+							elseif ($g->get('published') && in_array(User::get('id'), $applicants))
 							{
 								$status = 'pending';
 							}

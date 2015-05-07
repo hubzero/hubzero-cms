@@ -721,14 +721,14 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 						continue;
 					}
 
-					$juser = User::getInstance($args[1]);
-					if (!is_object($juser) || !is_numeric($juser->get('id')))
+					$user = User::getInstance($args[1]);
+					if (!is_object($user) || !is_numeric($user->get('id')))
 					{
 						continue;
 					}
 					else
 					{
-						$user_id = $juser->get('id');
+						$user_id = $user->get('id');
 					}
 
 					$class = new MembersQuotasClasses($this->database);

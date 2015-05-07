@@ -33,6 +33,11 @@ namespace Components\Courses\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Exception;
+use Request;
+use Route;
+use User;
+use Lang;
+use App;
 
 /**
  * Courses controller class for generation and viewing of certificates
@@ -52,7 +57,7 @@ class Certificate extends SiteController
 		// Ensure the course exists
 		if (!$course->exists() || !$offering->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
 				Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'),
 				'error'
@@ -61,11 +66,11 @@ class Certificate extends SiteController
 		}
 
 		// Ensure specified user is enrolled in the course
-		//$student = $offering->member($this->juser->get('id'));
-		$student = \CoursesModelMember::getInstance($this->juser->get('id'), $course->get('id'), $offering->get('id'), null, 1);
+		//$student = $offering->member(User::get('id'));
+		$student = \CoursesModelMember::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null, 1);
 		if (!$student->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
 				Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'),
 				'error'
@@ -76,7 +81,7 @@ class Certificate extends SiteController
 		$certificate = $course->certificate();
 		if (!$certificate->exists() || !$certificate->hasFile())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
 				Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'),
 				'error'
@@ -86,7 +91,7 @@ class Certificate extends SiteController
 
 		// Path and file name
 		$dir = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
-		$file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id') . '_' . $this->juser->get('id') . '.pdf';
+		$file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id') . '_' . User::get('id') . '.pdf';
 
 		// If the file exists and we want to force regenerate it
 		if (is_file($file) && Request::getInt('regenerate', 0))
@@ -111,7 +116,7 @@ class Certificate extends SiteController
 				}
 			}
 
-			$certificate->render($this->juser, $file);
+			$certificate->render(User::getRoot(), $file);
 		}
 
 		// If file exists

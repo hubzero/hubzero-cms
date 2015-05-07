@@ -43,7 +43,7 @@ use Lang;
 class Reviews extends Object
 {
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var  object
 	 */
@@ -141,7 +141,7 @@ class Reviews extends Object
 		$user = User::getInstance($review->author);
 
 		// Reward review author
-		if (is_object($juser))
+		if (is_object($user))
 		{
 			$BTL = new Teller($this->_db , $user->get('id'));
 

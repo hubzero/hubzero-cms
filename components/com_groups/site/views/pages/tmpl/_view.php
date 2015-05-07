@@ -63,8 +63,8 @@ $overviewPageAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 
 $pagePrivacy = ($this->page->get('privacy') == 'default') ? $overviewPageAccess : $this->page->get('privacy');
 
 // check to make sure user has access this page
-if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
-	||($pagePrivacy == 'members' && !in_array($this->juser->get('id'), $this->group->get('members'))))
+if (($pagePrivacy== 'registered' && User::isGuest())
+	||($pagePrivacy == 'members' && !in_array(User::get('id'), $this->group->get('members'))))
 {
 	$displayComments = 0;
 	$this->version->set('content', '<p class="info">' . Lang::txt('COM_GROUPS_PAGES_PAGE_UNABLE_TO_VIEW') . '</p>');

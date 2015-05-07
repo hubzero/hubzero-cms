@@ -234,7 +234,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Updated By:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left">
 																		<?php
-																			echo $this->juser->get('name') . ' ('.$this->juser->get('email').')';
+																			echo $this->user->get('name') . ' ('.$this->user->get('email').')';
 																		?>
 																	</td>
 																</tr>

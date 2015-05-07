@@ -43,7 +43,7 @@ $this->css();
 	</span>
 	<span class="description"><?php echo Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></span>
 
-	<?php if (in_array($this->juser->get('id'), $this->group->get('invitees'))) : ?>
+	<?php if (in_array(User::get('id'), $this->group->get('invitees'))) : ?>
 		<hr />
 		<a href="<?php echo Route::url('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">
 			<?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE'); ?>

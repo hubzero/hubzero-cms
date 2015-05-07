@@ -95,7 +95,7 @@ class GroupsHelperPages
 		));
 
 		// pass vars to view
-		$view->juser = User::getRoot();
+		$view->user  = User::getRoot();
 		$view->group = $group;
 
 		// get group desc
@@ -660,7 +660,7 @@ class GroupsHelperPages
 		$version->set('content', trim($content));
 
 		// set vars to view
-		$view->juser      = User::getRoot();
+		$view->user       = User::getRoot();
 		$view->group      = $group;
 		$view->page       = $page;
 		$view->version    = $version;

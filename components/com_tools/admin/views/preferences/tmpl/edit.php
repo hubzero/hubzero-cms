@@ -38,7 +38,7 @@ Toolbar::save();
 Toolbar::spacer();
 Toolbar::cancel();
 
-$user = \JUser::getInstance($this->row->user_id);
+$user = User::getInstance($this->row->user_id);
 
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 ?>

@@ -270,7 +270,6 @@ class Course extends SiteController
 
 		// Output HTML
 		$this->view->course = $this->course;
-		$this->view->juser  = User::getRoot();
 
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view
@@ -396,7 +395,6 @@ class Course extends SiteController
 		$this->view->no_tml = Request::getInt('no_html', 0);
 
 		$this->view->course = $this->course;
-		$this->view->juser  = User::getRoot();
 
 		$this->view->display();
 	}
@@ -427,7 +425,6 @@ class Course extends SiteController
 		}
 
 		$this->view->course = $this->course;
-		$this->view->juser  = User::getRoot();
 
 		$this->view->title = Lang::txt('COM_COURSES_NEW_OFFERING');
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
@@ -621,7 +618,7 @@ class Course extends SiteController
 		));
 		$eview->option = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->juser = User::getRoot();
+		$eview->user = User::getRoot();
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
 		$eview->course = $deletedcourse;

@@ -103,7 +103,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// needs to be admin
 		if (!$this->config->get('access-manage-component'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				$this->config->get('contribtool_redirect', '/home')
 			);
 			return;
@@ -181,7 +181,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// Output HTML
 		if (!($no_html = Request::getInt('no_html', 0)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
 			);
 			return;
@@ -269,7 +269,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// Output HTML
 		if (!($no_html = Request::getInt('no_html', 0)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
 			);
 			return;
@@ -344,7 +344,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// Output HTML
 		if (!($no_html = Request::getInt('no_html', 0)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
 			);
 			return;
@@ -573,7 +573,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$new_hztv->vnc_command   = $invokedir . DS . $status['toolname'] . DS . 'r' . $status['revision'] . DS . 'middleware' . DS . 'invoke -T r' . $status['revision'];
 			$new_hztv->mw            = $status['mw'];
 			$new_hztv->released      = Date::toSql();
-			$new_hztv->released_by   = $this->juser->get('username');
+			$new_hztv->released_by   = User::get('username');
 			$new_hztv->license       = $status['license'];
 			$new_hztv->fulltxt       = $status['fulltxt'];
 			$new_hztv->exportControl = $exportmap[strtoupper($status['exec'])];
@@ -677,7 +677,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// Output HTML
 		if (!($no_html = Request::getInt('no_html', 0)))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
 			);
 			return;

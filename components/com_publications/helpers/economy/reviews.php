@@ -139,12 +139,12 @@ class Reviews extends Object
 		$points = $this->calculate_marketvalue($review, $type);
 
 		// Get qualifying users
-		$juser = User::getInstance($review->author);
+		$user = User::getInstance($review->author);
 
 		// Reward review author
-		if (is_object($juser))
+		if (is_object($user))
 		{
-			$BTL = new Teller($this->_db , $juser->get('id'));
+			$BTL = new Teller($this->_db , $user->get('id'));
 
 			if (intval($points) > 0)
 			{

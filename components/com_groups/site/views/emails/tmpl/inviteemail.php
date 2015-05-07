@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $sef = ltrim(Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn')), '/');
 
-$message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->juser->get('name'), $this->sitename)."\n\n";
+$message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->user->get('name'), $this->sitename)."\n\n";
 $message .= Lang::txt('COM_GROUPS_GROUP').': '.$this->group->get('description')."\n\n";
 
 if ($this->msg)
@@ -55,13 +55,13 @@ $message .= "--------------------------------------------\n\n";
 //if (substr($sef,0,1) == '/') {
 //	$sef = substr($sef,1,strlen($sef));
 //}
-//$message .= "1. ".$juri->base().$sef."\n\n";
+//$message .= "1. ".Request::base().$sef."\n\n";
 
 //$sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&task=accept&token='.$this->token);
 //if (substr($sef,0,1) == '/') {
 //	$sef = substr($sef,1,strlen($sef));
 //}
-//$message .= "2. ".$juri->base().$sef."\n\n";
+//$message .= "2. ".Request::base().$sef."\n\n";
 
 $message .= "If you DO NOT have an account on " . $this->sitename . ", please follow this link! \n\n";
 
@@ -73,6 +73,6 @@ $sef = ltrim(Route::url('index.php?option=com_members&controller=register'), '/'
 $message .= rtrim(Request::base(), '/') . '/' . $sef . "?return=".base64_encode($return)."\n\n\n";
 
 $message .= "--------------------------------------------\n\n";
-$message .= Lang::txt('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
+$message .= Lang::txt('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->user->get('name'), $this->user->get('email'))."\n";
 
 echo $message;

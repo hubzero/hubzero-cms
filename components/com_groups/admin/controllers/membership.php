@@ -300,7 +300,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
-			$targetuser = JUser::getInstance($mbr);
+			$targetuser = User::getInstance($mbr);
 
 			// Ensure we found an account
 			if (is_object($targetuser))
@@ -638,7 +638,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 			else
 			{
 				// Retrieve user's account info
-				$targetuser = JUser::getInstance($mbr);
+				$targetuser = User::getInstance($mbr);
 
 				// Ensure we found an account
 				if (is_object($targetuser))

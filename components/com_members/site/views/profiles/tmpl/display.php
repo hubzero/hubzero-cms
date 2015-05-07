@@ -37,7 +37,7 @@ $this->css('introduction.css', 'system')
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
-	<?php if ($this->juser->get('guest')) { ?>
+	<?php if (User::isGuest()) { ?>
 		<div id="content-header-extra">
 			<p>
 				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_members&controller=register'); ?>"><?php echo Lang::txt('COM_MEMBERS_REGISTER_NOW'); ?></a>

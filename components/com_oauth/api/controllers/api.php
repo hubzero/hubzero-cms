@@ -379,7 +379,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				return;
 			}
 
-			$useraccount = JFactory::getUser(JUserHelper::getUserId($x_auth_username));
+			$useraccount = User::getInstance(JUserHelper::getUserId($x_auth_username));
 
 			$db = JFactory::getDBO();
 

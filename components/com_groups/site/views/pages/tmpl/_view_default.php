@@ -60,7 +60,7 @@ if ($displaySystemUsers == 'no')
 }
 
 //are we a group member
-$isMember = (in_array($this->juser->get('id'), $this->group->get('members'))) ? true : false;
+$isMember = (in_array(User::get('id'), $this->group->get('members'))) ? true : false;
 
 //get the members plugin access for this group
 $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'members');
@@ -89,7 +89,7 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 	<?php endif; ?>
 </div>
 
-<?php if ($memberAccess == 'anyone' || ($memberAccess == 'registered' && !$this->juser->get('guest')) || ($memberAccess == 'members' && $isMember)) : ?>
+<?php if ($memberAccess == 'anyone' || ($memberAccess == 'registered' && !User::isGuest()) || ($memberAccess == 'members' && $isMember)) : ?>
 	<div class="group-content-header">
 		<h3><?php echo Lang::txt('COM_GROUPS_OVERVIEW_MEMBERS_HEADING'); ?></h3>
 		<div class="group-content-header-extra">

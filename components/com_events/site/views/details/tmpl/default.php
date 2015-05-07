@@ -99,10 +99,10 @@ $this->css()
 		if ($this->page->alias != '') {
 			$html .= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">'. Lang::txt('EVENTS_NO_INFO_AVAILABLE') .'</p>';
 		} else {
-			$juser = JUser::getInstance( $this->row->created_by );
+			$user = User::getInstance($this->row->created_by);
 
-			if (is_object($juser)) {
-				$name = $juser->get('name');
+			if (is_object($user)) {
+				$name = $user->get('name');
 			} else {
 				$name = Lang::txt('EVENTS_CAL_LANG_UNKOWN');
 			}

@@ -255,7 +255,6 @@ class Offering extends SiteController
 		}
 
 		$this->view->course = $this->course;
-		$this->view->juser  = User::getRoot();
 
 		// Build the title
 		$this->_buildTitle();

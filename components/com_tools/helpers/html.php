@@ -416,10 +416,10 @@ class ToolsHelperHtml
 			foreach ($members as $member)
 			{
 				$uid = ($obj) ? $member->uidNumber : $member;
-				$juser = User::getInstance($uid);
-				if (is_object($juser))
+				$user = User::getInstance($uid);
+				if (is_object($user))
 				{
-					$login = $juser->get('username');
+					$login = $user->get('username');
 				}
 				else
 				{

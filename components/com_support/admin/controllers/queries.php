@@ -42,6 +42,7 @@ use Request;
 use Config;
 use Route;
 use Lang;
+use User;
 use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'ticket.php');
@@ -253,14 +254,14 @@ class Queries extends AdminController
 		// Get query list
 		$sf = new QueryFolder($this->database);
 		$this->view->folders = $sf->find('list', array(
-			'user_id'  => $this->juser->get('id'),
+			'user_id'  => User::get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));
 
 		$sq = new Query($this->database);
 		$queries = $sq->find('list', array(
-			'user_id'  => $this->juser->get('id'),
+			'user_id'  => User::get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));

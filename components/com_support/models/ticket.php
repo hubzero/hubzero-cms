@@ -574,7 +574,7 @@ class Ticket extends Model
 	/**
 	 * Get a user's ID
 	 *
-	 * Accepts a user ID, JUser object, \Hubzero\User\Profile object
+	 * Accepts a user ID, User object, \Hubzero\User\Profile object
 	 * or username
 	 *
 	 * @param   mixed   $user  Object, ID, or username

@@ -78,7 +78,7 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// CREATE COUPON
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCoupon.php');
 			try
 			{
 				// Constructor take the coupon code
@@ -110,7 +110,7 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// DELETE COUPON
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 			$warehouse = new StorefrontModelWarehouse();
 			try
 			{
@@ -126,7 +126,7 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// CREATE NEW COURSE
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
 
 			$course = new StorefrontModelCourse();
 			$course->setName('Name of the course');
@@ -153,7 +153,7 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// GET EXISTING COURSE, modify it and save
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 			$warehouse = new StorefrontModelWarehouse();
 			try
 			{
@@ -175,7 +175,7 @@ class CartControllerTest extends ComponentController
 
 		if (0) {
 			// UPDATE COURSE by recreating it
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			$course = new StorefrontModelCourse();
 			$course->setName('Operations Management 104');
 			$course->setDescription('Operations Management 104 is some kind of test course for now...');
@@ -199,7 +199,7 @@ class CartControllerTest extends ComponentController
 		if (0)
 		{
 			// DELETE COURSE
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 			$warehouse = new StorefrontModelWarehouse();
 			// Delete by existing course ID (pID returned with $course->add() when the course was created)
 			$warehouse->deleteProduct(1023);
@@ -210,7 +210,7 @@ class CartControllerTest extends ComponentController
 	public function postTask()
 	{
 
-		//$user =& JUser::getInstance((int)1057);
+		//$user =& User::getInstance((int)1057);
 
 		//echo '==>' . $user->get( 'gid' );
 
@@ -218,8 +218,7 @@ class CartControllerTest extends ComponentController
 		//$user->delete();
 		//die;
 
-		$doc =& JFactory::getDocument();
-		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -274,8 +273,7 @@ class CartControllerTest extends ComponentController
 		//print_r($curl_result);
 		die('+');
 
-		$doc =& JFactory::getDocument();
-		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
+		Document::addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 
 		$this->view->display();
 	}
@@ -392,7 +390,7 @@ class CartControllerTest extends ComponentController
 			//echo $req;
 
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, JURI::root() . 'cart/order/postback');
+			curl_setopt($ch, CURLOPT_URL, Request::root() . 'cart/order/postback');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
@@ -409,9 +407,8 @@ class CartControllerTest extends ComponentController
 			//print_r($req); echo '<br>'; print_r($curl_err); die;
 
 			// Redirect to confirmation page
-			$redirect_url  = JURI::root() . 'cart/order/complete?' . $req;
-			$app = & JFactory::getApplication();
-			$app->redirect($redirect_url);
+			$redirect_url  = Request::root() . 'cart/order/complete?' . $req;
+			App::redirect($redirect_url);
 		}
 
 		$this->view->display();
