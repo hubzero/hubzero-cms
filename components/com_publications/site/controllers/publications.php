@@ -99,7 +99,7 @@ class Publications extends SiteController
 		// Is component enabled?
 		if ($this->config->get('enabled', 0) == 0)
 		{
-			$this->_redirect = Route::url('index.php?option=com_resources');
+			App::redirect(Route::url('index.php?option=com_resources'));
 			return;
 		}
 
@@ -107,7 +107,8 @@ class Publications extends SiteController
 		$this->_logging = $this->config->get('enable_logs', 1);
 
 		// Are we allowing contributions
-		$this->_contributable = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_contributable = Plugin::isEnabled('projects', 'publications')
+			&& $this->config->get('contribute', 0) ? true : false;
 	}
 
 	/**
@@ -345,8 +346,7 @@ class Publications extends SiteController
 		$this->view->option 		= $this->_option;
 		$this->view->database 		= $this->database;
 		$this->view->config 		= $this->config;
-		$this->view->contributable 	= $this->_contributable
-			&& $this->config->get('contribute') == 1 ? true : false;
+		$this->view->contributable 	= $this->_contributable;
 
 		$this->view->filters 		   = array();
 		$this->view->filters['sortby'] = 'date_published';
@@ -516,7 +516,7 @@ class Publications extends SiteController
 		// Ensure we have an ID or alias to work with
 		if (!$this->_identifier)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -669,20 +669,6 @@ class Publications extends SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Determine the layout we're using
-		$layout = 'default';
-		$app = \JFactory::getApplication();
-		if ($this->model->_category->alias
-		 && (is_file(PATH_CORE . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html'
-			. DS . $this->_option . DS . 'view' . DS . $this->model->_category->url_alias . '.php')
-		 || is_file(PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view'
-			. DS . 'tmpl' . DS . $this->model->_category->url_alias . '.php')))
-		{
-			$layout = $this->model->_category->url_alias;
-		}
-
-		// View
-		$this->view->setLayout($layout);
 		$this->view->version 		= $this->model->versionAlias;
 		$this->view->config 		= $this->config;
 		$this->view->option 		= $this->_option;
@@ -856,7 +842,7 @@ class Publications extends SiteController
 			// Do we need to redirect to content?
 			if ($attModel->get('redirect'))
 			{
-				$this->_redirect = $attModel->get('redirect');
+				App::redirect($attModel->get('redirect'));
 				return;
 			}
 
@@ -1158,9 +1144,9 @@ class Publications extends SiteController
 		$ajax 	 = Request::getInt( 'ajax', 0 );
 
 		// Redirect if publishing is turned off
-		if (!$this->_contributable || !$this->config->get('contribute', 0))
+		if (!$this->_contributable)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -1214,8 +1200,7 @@ class Publications extends SiteController
 
 			if (!$project->exists())
 			{
-				$this->_redirect = Route::url('index.php?option=' . $this->_option . '&task=submit');
-				$this->_task = 'submit';
+				App::redirect(Route::url('index.php?option=' . $this->_option . '&task=submit'));
 				return;
 			}
 
@@ -1229,9 +1214,9 @@ class Publications extends SiteController
 			// Redirect to project if not provisioned
 			if (!$project->isProvisioned())
 			{
-				$this->_redirect = Route::url('index.php?option=com_projects&alias='
-					. $project->get('alias')
-					. '&active=publications&pid=' . $pid . '&action=' . $action);
+				App::redirect(Route::url($project->link('publications')
+					. '&pid=' . $pid . '&action=' . $action)
+				);
 				return;
 			}
 		}
@@ -1274,24 +1259,23 @@ class Publications extends SiteController
 		}
 		elseif (!$this->view->content && isset($content[0]['referer']) && $content[0]['referer'] != '')
 		{
-			$this->_redirect = $content[0]['referer'];
+			App::redirect($content[0]['referer']);
 			return;
 		}
 		elseif (empty($content))
 		{
 			// plugin disabled?
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
 		// Output HTML
-		$this->view->project= $project->project();
-		$this->view->action = $action;
-		$this->view->uid	= User::get('id');
-		$this->view->pid 	= $pid;
-		$this->view->title 	= $this->_title;
-		$this->view->msg 	= $this->getNotifications('success');
-		$error 				= $this->getError() ? $this->getError() : $this->getNotifications('error');
+		$this->view->project = $project;
+		$this->view->action  = $action;
+		$this->view->pid     = $pid;
+		$this->view->title   = $this->_title;
+		$this->view->msg     = $this->getNotifications('success');
+		$error               = $this->getError() ? $this->getError() : $this->getNotifications('error');
 		if ($error)
 		{
 			$this->view->setError( $error );
@@ -1311,6 +1295,7 @@ class Publications extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
+			$this->_task = 'page';
 			$this->pageTask();
 			return;
 		}
@@ -1321,14 +1306,15 @@ class Publications extends SiteController
 		$no_html = Request::getInt( 'no_html', 0 );
 
 		// Process tags
-		$database = \JFactory::getDBO();
-		$rt = new Helpers\Tags( $database );
+		$rt = new Helpers\Tags( $this->database );
 		$rt->tag_object(User::get('id'), $id, $tags, 1, 0);
 
 		if (!$no_html)
 		{
 			// Push through to the resource view
+			$this->_task = 'page';
 			$this->pageTask();
+			return;
 		}
 	}
 
@@ -1359,7 +1345,7 @@ class Publications extends SiteController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
 				'error'

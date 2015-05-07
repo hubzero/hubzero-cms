@@ -539,26 +539,26 @@ class Curation extends SiteController
 			return;
 		}
 
-		$this->_pub->version->state       = 1; // published
-		$this->_pub->version->accepted    = Date::toSql();
-		$this->_pub->version->reviewed    = Date::toSql();
-		$this->_pub->version->reviewed_by = User::get('id');
+		$this->_pub->version->set('state', 1);
+		$this->_pub->version->set('accepted', Date::toSql());
+		$this->_pub->version->set('reviewed', Date::toSql());
+		$this->_pub->version->set('reviewed_by', User::get('id'));
 
 		// Archive (mkAIP) if no grace period and not previously archived
 		if (!$this->getError() && !$this->config->get('graceperiod', 0)
-			&& $this->_pub->version->doi && \Components\Publications\Helpers\Utilities::mkAip($this->_pub->version)
-			&& (!$this->_pub->version->archived
-			|| $this->_pub->version->archived == '0000-00-00 00:00:00')
+			&& $this->_pub->version->doi
+			&& \Components\Publications\Helpers\Utilities::mkAip($this->_pub->version)
+			&& !$this->_pub->archived()
 		)
 		{
-			$this->_pub->version->archived = Date::toSql();
+			$this->_pub->version->set('archived', Date::toSql());
 		}
 
 		// Set curation
 		$this->_pub->setCuration();
 
 		// Store curation manifest
-		$this->_pub->version->curation = json_encode($this->_pub->_curationModel->_manifest);
+		$this->_pub->version->set('curation', json_encode($this->_pub->_curationModel->_manifest));
 
 		if (!$this->_pub->version->store())
 		{
@@ -627,9 +627,9 @@ class Curation extends SiteController
 		}
 
 		// Change publication status
-		$this->_pub->version->state 		= 7; // pending author changes
-		$this->_pub->version->reviewed 		= Date::toSql();
-		$this->_pub->version->reviewed_by 	= User::get('id');
+		$this->_pub->version->set('state', 7); // pending author changes
+		$this->_pub->version->set('reviewed', Date::toSql());
+		$this->_pub->version->set('reviewed_by', User::get('id'));
 
 		if (!$this->_pub->version->store())
 		{
