@@ -51,7 +51,7 @@ class Assetgroups extends AdminController
 	 */
 	public function execute()
 	{
-		$task = Request::getVar('task', '');
+		$task   = Request::getVar('task', '');
 		$plugin = Request::getVar('plugin', '');
 		if ($plugin && $task && $task != 'manage') //!isset($this->_taskMap[$task]))
 		{
@@ -116,7 +116,7 @@ class Assetgroups extends AdminController
 			return;
 		}
 		$this->view->offering = \CoursesModelOffering::getInstance($this->view->unit->get('offering_id'));
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course   = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		$rows = $this->view->unit->assetgroups(null, $this->view->filters);
 
@@ -257,7 +257,7 @@ class Assetgroups extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -284,21 +284,19 @@ class Assetgroups extends AdminController
 
 		if (!$model->bind($fields))
 		{
-			$this->setError('failed bind');
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
 
-		$p = new \JRegistry('');
+		$p = new \Hubzero\Config\Registry('');
 		$p->loadArray(Request::getVar('params', array(), 'post'));
 
 		$model->set('params', $p->toString());
 
 		if (!$model->store(true))
 		{
-			$this->setError('failed store' . $model->getError());
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->setError($model->getError());
 			$this->editTask($model);
 			return;
 		}
@@ -468,7 +466,7 @@ class Assetgroups extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		$id = Request::getVar('id', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($id, array(0));
+		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$uid = $id[0];
 		$inc = ($this->_task == 'orderup' ? -1 : 1);

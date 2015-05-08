@@ -20,7 +20,8 @@ class plgContentGeshi extends JPlugin
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
 		// Simple performance check to determine whether bot should process further.
-		if (JString::strpos($article->text, 'pre>') === false) {
+		if (JString::strpos($article->text, 'pre>') === false)
+		{
 			return true;
 		}
 
@@ -48,8 +49,8 @@ class plgContentGeshi extends JPlugin
 		$args = JUtility::parseAttributes($matches[1]);
 		$text = $matches[2];
 
-		$lang = JArrayHelper::getValue($args, 'lang', 'php');
-		$lines = JArrayHelper::getValue($args, 'lines', 'false');
+		$lang  = \Hubzero\Utility\Arr::getValue($args, 'lang', 'php');
+		$lines = \Hubzero\Utility\Arr::getValue($args, 'lines', 'false');
 
 		$html_entities_match = array("|\<br \/\>|", "#<#", "#>#", "|&#39;|", '#&quot;#', '#&nbsp;#');
 		$html_entities_replace = array("\n", '&lt;', '&gt;', "'", '"', ' ');
@@ -62,7 +63,8 @@ class plgContentGeshi extends JPlugin
 		$text = str_replace("\t", '  ', $text);
 
 		$geshi = new GeSHi($text, $lang);
-		if ($lines == 'true') {
+		if ($lines == 'true')
+		{
 			$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);
 		}
 		$text = $geshi->parse_code();

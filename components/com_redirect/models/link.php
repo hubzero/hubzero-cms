@@ -154,7 +154,7 @@ class Link extends \JModelAdmin
 
 		// Sanitize the ids.
 		$pks = (array) $pks;
-		\JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 
 		// Populate default comment if necessary.
 		$comment = (!empty($comment)) ? $comment : Lang::txt('COM_REDIRECT_REDIRECTED_ON', Date::toSql());

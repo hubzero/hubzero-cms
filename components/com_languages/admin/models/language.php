@@ -83,7 +83,7 @@ class LanguagesModelLanguage extends JModelAdmin
 		}
 
 		$properties = $table->getProperties(1);
-		$value = JArrayHelper::toObject($properties, 'JObject');
+		$value = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 		return $value;
 	}
@@ -118,7 +118,7 @@ class LanguagesModelLanguage extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_languages.edit.language.data', array());
+		$data = User::getState('com_languages.edit.language.data', array());
 
 		if (empty($data))
 		{

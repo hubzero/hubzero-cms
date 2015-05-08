@@ -91,14 +91,14 @@ class UsersModelUsers extends JModelList
 		$groups = json_decode(base64_decode(Request::getVar('groups', '', 'default', 'BASE64')));
 		if (isset($groups))
 		{
-			JArrayHelper::toInteger($groups);
+			\Hubzero\Utility\Arr::toInteger($groups);
 		}
 		$this->setState('filter.groups', $groups);
 
 		$excluded = json_decode(base64_decode(Request::getVar('excluded', '', 'default', 'BASE64')));
 		if (isset($excluded))
 		{
-			JArrayHelper::toInteger($excluded);
+			\Hubzero\Utility\Arr::toInteger($excluded);
 		}
 		$this->setState('filter.excluded', $excluded);
 

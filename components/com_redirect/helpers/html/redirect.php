@@ -51,7 +51,7 @@ class JHtmlRedirect
 			2  => array('archived', 'unpublish', 'JARCHIVED', 'JUNARCHIVE'),
 			-2 => array('trash',    'publish',   'JTRASHED',  'COM_REDIRECT_ENABLE_LINK'),
 		);
-		$state = JArrayHelper::getValue($states, (int) $value, $states[0]);
+		$state = \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
 		$html  = '<span>' . Lang::txt($state[3]) . '</span>'; //JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
 		if ($canChange)
 		{

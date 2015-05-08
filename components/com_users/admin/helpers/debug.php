@@ -54,7 +54,7 @@ class UsersHelperDebug
 			}
 
 			// Sort by component name
-			JArrayHelper::sortObjects($items, 'text', 1, true, $lang->getLocale());
+			\Hubzero\Utility\Arr::sortObjects($items, 'text', 1, true, $lang->getLocale());
 		}
 
 		return $items;

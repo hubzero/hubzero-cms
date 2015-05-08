@@ -40,7 +40,7 @@ class CategoriesControllerCategories extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$extension = Request::getCmd('extension');
 		$this->setRedirect(Route::url('index.php?option=com_categories&view=categories&extension='.$extension, false));
@@ -48,11 +48,14 @@ class CategoriesControllerCategories extends JControllerAdmin
 		// Initialise variables.
 		$model = $this->getModel();
 
-		if ($model->rebuild()) {
+		if ($model->rebuild())
+		{
 			// Rebuild succeeded.
 			$this->setMessage(Lang::txt('COM_CATEGORIES_REBUILD_SUCCESS'));
 			return true;
-		} else {
+		}
+		else
+		{
 			// Rebuild failed.
 			$this->setMessage(Lang::txt('COM_CATEGORIES_REBUILD_FAILURE'));
 			return false;
@@ -67,16 +70,19 @@ class CategoriesControllerCategories extends JControllerAdmin
 	 */
 	public function saveorder()
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order	= Request::getVar('order',	null, 'post', 'array');
+		$order = Request::getVar('order', null, 'post', 'array');
 		$originalOrder = explode(',', Request::getString('original_order_values'));
 
 		// Make sure something has changed
-		if (!($order === $originalOrder)) {
+		if (!($order === $originalOrder))
+		{
 			parent::saveorder();
-		} else {
+		}
+		else
+		{
 			// Nothing to reorder
 			$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_list, false));
 			return true;
@@ -90,7 +96,7 @@ class CategoriesControllerCategories extends JControllerAdmin
  	 */
 	public function delete()
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
 		$cid = Request::getVar('cid', array(), '', 'array');
@@ -98,7 +104,7 @@ class CategoriesControllerCategories extends JControllerAdmin
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
-			JError::raiseWarning(500, Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'));
+			Notify::error(Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'));
 		}
 		else
 		{
@@ -106,8 +112,7 @@ class CategoriesControllerCategories extends JControllerAdmin
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			\Hubzero\Utility\Arr::toInteger($cid);
 
 			// Remove the items.
 			if ($model->delete($cid))

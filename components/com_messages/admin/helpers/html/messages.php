@@ -21,18 +21,17 @@ class JHtmlMessages
 	{
 		// Array of image, task, title, action.
 		$states	= array(
-			-2	=> array('trash.png',		'messages.unpublish',	'JTRASHED',				'COM_MESSAGES_MARK_AS_UNREAD'),
-			1	=> array('tick.png',		'messages.unpublish',	'COM_MESSAGES_OPTION_READ',		'COM_MESSAGES_MARK_AS_UNREAD'),
-			0	=> array('publish_x.png',	'messages.publish',		'COM_MESSAGES_OPTION_UNREAD',	'COM_MESSAGES_MARK_AS_READ')
+			-2 => array('trash.png',     'messages.unpublish', 'JTRASHED',                   'COM_MESSAGES_MARK_AS_UNREAD'),
+			1  => array('tick.png',      'messages.unpublish', 'COM_MESSAGES_OPTION_READ',   'COM_MESSAGES_MARK_AS_UNREAD'),
+			0  => array('publish_x.png', 'messages.publish',   'COM_MESSAGES_OPTION_UNREAD', 'COM_MESSAGES_MARK_AS_READ')
 		);
-		$state	= JArrayHelper::getValue($states, (int) $value, $states[0]);
-		$html	= JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
-		if ($canChange) {
-			$html = '<a href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'
-					.$html.'</a>';
+		$state = \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
+		$html  = JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
+		if ($canChange)
+		{
+			$html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="' . Lang::txt($state[3]) . '">' . $html . '</a>';
 		}
 
 		return $html;
 	}
-
 }

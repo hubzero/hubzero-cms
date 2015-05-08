@@ -46,7 +46,7 @@ class plgUserMiddleware extends JPlugin
 	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
-		$userId = JArrayHelper::getValue($user, 'id', 0, 'int');
+		$userId = \Hubzero\Utility\Arr::getValue($user, 'id', 0, 'int');
 
 		if ($userId && $success)
 		{
@@ -212,7 +212,7 @@ class plgUserMiddleware extends JPlugin
 			return false;
 		}
 
-		$userId	= JArrayHelper::getValue($user, 'id', 0, 'int');
+		$userId	= \Hubzero\Utility\Arr::getValue($user, 'id', 0, 'int');
 
 		if ($userId)
 		{

@@ -104,8 +104,6 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication('administrator');
-
 		$parentId = Request::getInt('parent_id');
 		$this->setState('category.parent_id', $parentId);
 
@@ -141,7 +139,6 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		if ($result = parent::getItem($pk))
 		{
-
 			// Prime required properties.
 			if (empty($result->id))
 			{
@@ -155,7 +152,6 @@ class CategoriesModelCategory extends JModelAdmin
 			$result->metadata = $registry->toArray();
 
 			// Convert the created and modified dates to local user time for display in the form.
-			jimport('joomla.utilities.date');
 			$tz = new DateTimeZone(Config::get('offset'));
 
 			if (intval($result->created_time))
@@ -198,7 +194,6 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		// Initialise variables.
 		$extension = $this->getState('category.extension');
-		$jinput = JFactory::getApplication()->input;
 
 		// A workaround to get the extension into the model for save requests.
 		if (empty($extension) && isset($data['extension']))
@@ -224,7 +219,7 @@ class CategoriesModelCategory extends JModelAdmin
 			$data['extension'] = $extension;
 		}
 
-		if (!User::authorise('core.edit.state', $extension . '.category.' . $jinput->get('id')))
+		if (!User::authorise('core.edit.state', $extension . '.category.' . Request::getInt('id')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
@@ -264,7 +259,7 @@ class CategoriesModelCategory extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_categories.edit.' . $this->getName() . '.data', array());
+		$data = User::getState('com_categories.edit.' . $this->getName() . '.data', array());
 
 		if (empty($data))
 		{
@@ -332,7 +327,8 @@ class CategoriesModelCategory extends JModelAdmin
 			if (class_exists($cName) && is_callable(array($cName, 'onPrepareForm')))
 			{
 					Lang::load($component, JPATH_BASE, null, false, true)
-				||	Lang::load($component, JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true);
+				||	Lang::load($component, JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true)
+				||	Lang::load($component, JPath::clean(JPATH_SITE . '/components/' . $component . '/admin'), null, false, true);
 				call_user_func_array(array($cName, 'onPrepareForm'), array(&$form));
 
 				// Check for an error.
@@ -542,11 +538,11 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		// $value comes as {parent_id}.{extension}
 		$parts = explode('.', $value);
-		$parentId = (int) JArrayHelper::getValue($parts, 0, 1);
+		$parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 0, 1);
 
 		$table = $this->getTable();
 		$db = $this->getDbo();
-		$extension = JFactory::getApplication()->input->get('extension', '', 'word');
+		$extension = Request::getWord('extension', '');
 		$i = 0;
 
 		// Check that the parent exists
@@ -732,7 +728,7 @@ class CategoriesModelCategory extends JModelAdmin
 		$table = $this->getTable();
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$extension = JFactory::getApplication()->input->get('extension', '', 'word');
+		$extension = Request::getWord('extension', '');
 
 		// Check that the parent exists.
 		if ($parentId)
@@ -833,7 +829,7 @@ class CategoriesModelCategory extends JModelAdmin
 		{
 			// Remove any duplicates and sanitize ids.
 			$children = array_unique($children);
-			JArrayHelper::toInteger($children);
+			\Hubzero\Utility\Arr::toInteger($children);
 
 			// Check for a database error.
 			if ($db->getErrorNum())

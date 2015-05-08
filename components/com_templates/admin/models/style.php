@@ -71,23 +71,28 @@ class TemplatesModelStyle extends JModelAdmin
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
 		{
-			if ($table->load($pk)) {
+			if ($table->load($pk))
+			{
 				// Access checks.
-				if (!User::authorise('core.delete', 'com_templates')) {
+				if (!User::authorise('core.delete', 'com_templates'))
+				{
 					throw new Exception(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 				}
 				// You should not delete a default style
-				if ($table->home != '0'){
-					JError::raiseWarning(SOME_ERROR_NUMBER, Lang::txt('COM_TEMPLATES_STYLE_CANNOT_DELETE_DEFAULT_STYLE'));
+				if ($table->home != '0')
+				{
+					Notify::warning(SOME_ERROR_NUMBER, Lang::txt('COM_TEMPLATES_STYLE_CANNOT_DELETE_DEFAULT_STYLE'));
 					return false;
 				}
 
-				if (!$table->delete($pk)) {
+				if (!$table->delete($pk))
+				{
 					$this->setError($table->getError());
 					return false;
 				}
 			}
-			else {
+			else
+			{
 				$this->setError($table->getError());
 				return false;
 			}
@@ -113,7 +118,8 @@ class TemplatesModelStyle extends JModelAdmin
 		$db = $this->getDbo();
 
 		// Access checks.
-		if (!User::authorise('core.create', 'com_templates')) {
+		if (!User::authorise('core.create', 'com_templates'))
+		{
 			throw new Exception(Lang::txt('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
 
@@ -121,7 +127,8 @@ class TemplatesModelStyle extends JModelAdmin
 
 		foreach ($pks as $pk)
 		{
-			if ($table->load($pk, true)) {
+			if ($table->load($pk, true))
+			{
 				// Reset the id to create a new record.
 				$table->id = 0;
 
@@ -132,11 +139,13 @@ class TemplatesModelStyle extends JModelAdmin
 				$m = null;
 				$table->title = $this->generateNewTitle(null, null, $table->title);
 
-				if (!$table->check() || !$table->store()) {
+				if (!$table->check() || !$table->store())
+				{
 					throw new Exception($table->getError());
 				}
 			}
-			else {
+			else
+			{
 				throw new Exception($table->getError());
 			}
 		}
@@ -183,28 +192,32 @@ class TemplatesModelStyle extends JModelAdmin
 		$app = JFactory::getApplication();
 
 		// The folder and element vars are passed when saving the form.
-		if (empty($data)) {
-			$item		= $this->getItem();
-			$clientId	= $item->client_id;
-			$template	= $item->template;
+		if (empty($data))
+		{
+			$item     = $this->getItem();
+			$clientId = $item->client_id;
+			$template = $item->template;
 		}
-		else {
-			$clientId	= JArrayHelper::getValue($data, 'client_id');
-			$template	= JArrayHelper::getValue($data, 'template');
+		else
+		{
+			$clientId = \Hubzero\Utility\Arr::getValue($data, 'client_id');
+			$template = \Hubzero\Utility\Arr::getValue($data, 'template');
 		}
 
 		// These variables are used to add data from the plugin XML files.
-		$this->setState('item.client_id',	$clientId);
-		$this->setState('item.template',	$template);
+		$this->setState('item.client_id', $clientId);
+		$this->setState('item.template',  $template);
 
 		// Get the form.
 		$form = $this->loadForm('com_templates.style', 'style', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
 		// Modify the form based on access controls.
-		if (!$this->canEditState((object) $data)) {
+		if (!$this->canEditState((object) $data))
+		{
 			// Disable fields for display.
 			$form->setFieldAttribute('home', 'disabled', 'true');
 
@@ -225,9 +238,10 @@ class TemplatesModelStyle extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_templates.edit.style.data', array());
+		$data = User::getState('com_templates.edit.style.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -246,8 +260,9 @@ class TemplatesModelStyle extends JModelAdmin
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('style.id');
 
-		if (!isset($this->_cache[$pk])) {
-			$false	= false;
+		if (!isset($this->_cache[$pk]))
+		{
+			$false = false;
 
 			// Get a row instance.
 			$table = $this->getTable();
@@ -256,14 +271,15 @@ class TemplatesModelStyle extends JModelAdmin
 			$return = $table->load($pk);
 
 			// Check for a table object error.
-			if ($return === false && $table->getError()) {
+			if ($return === false && $table->getError())
+			{
 				$this->setError($table->getError());
 				return $false;
 			}
 
 			// Convert to the JObject before adding other data.
 			$properties = $table->getProperties(1);
-			$this->_cache[$pk] = JArrayHelper::toObject($properties, 'JObject');
+			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
 			$registry = new JRegistry;
@@ -271,13 +287,15 @@ class TemplatesModelStyle extends JModelAdmin
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the template XML.
-			$client	= JApplicationHelper::getClientInfo($table->client_id);
-			$path	= JPath::clean($client->path.'/templates/'.$table->template.'/templateDetails.xml');
+			$client = JApplicationHelper::getClientInfo($table->client_id);
+			$path   = JPath::clean($client->path.'/templates/'.$table->template.'/templateDetails.xml');
 
-			if (file_exists($path)) {
+			if (file_exists($path))
+			{
 				$this->_cache[$pk]->xml = simplexml_load_file($path);
 			}
-			else {
+			else
+			{
 				$this->_cache[$pk]->xml = null;
 			}
 		}
@@ -367,29 +385,33 @@ class TemplatesModelStyle extends JModelAdmin
 	{
 		// Detect disabled extension
 		$extension = JTable::getInstance('Extension');
-		if ($extension->load(array('enabled' => 0, 'type' => 'template', 'element' => $data['template'], 'client_id' => $data['client_id']))) {
+		if ($extension->load(array('enabled' => 0, 'type' => 'template', 'element' => $data['template'], 'client_id' => $data['client_id'])))
+		{
 			$this->setError(Lang::txt('COM_TEMPLATES_ERROR_SAVE_DISABLED_TEMPLATE'));
 			return false;
 		}
 
 		// Initialise variables;
-		$table		= $this->getTable();
-		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState('style.id');
-		$isNew		= true;
+		$table = $this->getTable();
+		$pk    = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('style.id');
+		$isNew = true;
 
 		// Load the row if saving an existing record.
-		if ($pk > 0) {
+		if ($pk > 0)
+		{
 			$table->load($pk);
 			$isNew = false;
 		}
-		if (Request::getVar('task') == 'save2copy') {
+		if (Request::getVar('task') == 'save2copy')
+		{
 			$data['title'] = $this->generateNewTitle(null, null, $data['title']);
 			$data['home'] = 0;
 			$data['assigned'] ='';
 		}
 
 		// Bind the data.
-		if (!$table->bind($data)) {
+		if (!$table->bind($data))
+		{
 			$this->setError($table->getError());
 			return false;
 		}
@@ -398,30 +420,35 @@ class TemplatesModelStyle extends JModelAdmin
 		$this->prepareTable($table);
 
 		// Check the data.
-		if (!$table->check()) {
+		if (!$table->check())
+		{
 			$this->setError($table->getError());
 			return false;
 		}
 
 		// Trigger the onExtensionBeforeSave event.
 		$result = Event::trigger('extension.onExtensionBeforeSave', array('com_templates.style', &$table, $isNew));
-		if (in_array(false, $result, true)) {
+		if (in_array(false, $result, true))
+		{
 			$this->setError($table->getError());
 			return false;
 		}
 
 		// Store the data.
-		if (!$table->store()) {
+		if (!$table->store())
+		{
 			$this->setError($table->getError());
 			return false;
 		}
 
-		if (User::authorise('core.edit', 'com_menus') && $table->client_id==0) {
-			$n		= 0;
-			$db		= JFactory::getDbo();
+		if (User::authorise('core.edit', 'com_menus') && $table->client_id==0)
+		{
+			$n  = 0;
+			$db = JFactory::getDbo();
 
-			if (!empty($data['assigned']) && is_array($data['assigned'])) {
-				JArrayHelper::toInteger($data['assigned']);
+			if (!empty($data['assigned']) && is_array($data['assigned']))
+			{
+				\Hubzero\Utility\Arr::toInteger($data['assigned']);
 
 				// Update the mapping for menu items that this style IS assigned to.
 				$query = $db->getQuery(true);
@@ -440,7 +467,8 @@ class TemplatesModelStyle extends JModelAdmin
 			$query = $db->getQuery(true);
 			$query->update('#__menu');
 			$query->set('template_style_id=0');
-			if (!empty($data['assigned'])) {
+			if (!empty($data['assigned']))
+			{
 				$query->where('id NOT IN ('.implode(',', $data['assigned']).')');
 			}
 
@@ -450,9 +478,9 @@ class TemplatesModelStyle extends JModelAdmin
 			$db->query();
 
 			$n += $db->getAffectedRows();
-			if ($n > 0) {
-				$app = JFactory::getApplication();
-				$app->enQueueMessage(Lang::txts('COM_TEMPLATES_MENU_CHANGED', $n));
+			if ($n > 0)
+			{
+				Notify::success(Lang::txts('COM_TEMPLATES_MENU_CHANGED', $n));
 			}
 		}
 
@@ -481,18 +509,21 @@ class TemplatesModelStyle extends JModelAdmin
 		$db = $this->getDbo();
 
 		// Access checks.
-		if (!User::authorise('core.edit.state', 'com_templates')) {
+		if (!User::authorise('core.edit.state', 'com_templates'))
+		{
 			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 		}
 
 		$style = JTable::getInstance('Style', 'TemplatesTable');
-		if (!$style->load((int)$id)) {
+		if (!$style->load((int)$id))
+		{
 			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_STYLE_NOT_FOUND'));
 		}
 
 		// Detect disabled extension
 		$extension = JTable::getInstance('Extension');
-		if ($extension->load(array('enabled' => 0, 'type' => 'template', 'element' => $style->template, 'client_id' => $style->client_id))) {
+		if ($extension->load(array('enabled' => 0, 'type' => 'template', 'element' => $style->template, 'client_id' => $style->client_id)))
+		{
 			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SAVE_DISABLED_TEMPLATE'));
 		}
 
@@ -505,7 +536,8 @@ class TemplatesModelStyle extends JModelAdmin
 			' AND home = \'1\''
 		);
 
-		if (!$db->query()) {
+		if (!$db->query())
+		{
 			throw new Exception($db->getErrorMsg());
 		}
 
@@ -516,7 +548,8 @@ class TemplatesModelStyle extends JModelAdmin
 			' WHERE id = '.(int) $id
 		);
 
-		if (!$db->query()) {
+		if (!$db->query())
+		{
 			throw new Exception($db->getErrorMsg());
 		}
 
@@ -537,10 +570,11 @@ class TemplatesModelStyle extends JModelAdmin
 	public function unsetHome($id = 0)
 	{
 		// Initialise variables.
-		$db		= $this->getDbo();
+		$db = $this->getDbo();
 
 		// Access checks.
-		if (!User::authorise('core.edit.state', 'com_templates')) {
+		if (!User::authorise('core.edit.state', 'com_templates'))
+		{
 			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 		}
 
@@ -552,13 +586,16 @@ class TemplatesModelStyle extends JModelAdmin
 		);
 		$style = $db->loadObject();
 
-		if ($error = $db->getErrorMsg()) {
+		if ($error = $db->getErrorMsg())
+		{
 			throw new Exception($error);
 		}
-		elseif (!is_numeric($style->client_id)) {
+		elseif (!is_numeric($style->client_id))
+		{
 			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_STYLE_NOT_FOUND'));
 		}
-		elseif ($style->home=='1') {
+		elseif ($style->home=='1')
+		{
 			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_CANNOT_UNSET_DEFAULT_STYLE'));
 		}
 
@@ -569,7 +606,8 @@ class TemplatesModelStyle extends JModelAdmin
 			' WHERE id = '.(int) $id
 		);
 
-		if (!$db->query()) {
+		if (!$db->query())
+		{
 			throw new Exception($db->getErrorMsg());
 		}
 

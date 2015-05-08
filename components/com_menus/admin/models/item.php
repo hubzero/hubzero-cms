@@ -489,7 +489,7 @@ class MenusModelItem extends JModelAdmin
 		{
 			// Remove any duplicates and sanitize ids.
 			$children = array_unique($children);
-			JArrayHelper::toInteger($children);
+			\Hubzero\Utility\Arr::toInteger($children);
 
 			// Update the menutype field in all nodes where necessary.
 			$query->clear();
@@ -687,7 +687,7 @@ class MenusModelItem extends JModelAdmin
 
 		// Convert to the JObject before adding the params.
 		$properties = $table->getProperties(1);
-		$result = JArrayHelper::toObject($properties, 'JObject');
+		$result = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 		// Convert the params field to an array.
 		$registry = new JRegistry;
@@ -1249,10 +1249,11 @@ class MenusModelItem extends JModelAdmin
 		// Clean the cache
 		$this->cleanCache();
 
-		if (isset($data['link'])) {
-			$base 	= Request::base();
-			$juri 	= JURI::getInstance($base.$data['link']);
-			$option = $juri->getVar('option');
+		if (isset($data['link']))
+		{
+			$base   = Request::base();
+			$uri    = new \Hubzero\Utility\Uri($base . $data['link']);
+			$option = $uri->getVar('option');
 
 			// Clean the cache
 			parent::cleanCache($option);
@@ -1277,7 +1278,8 @@ class MenusModelItem extends JModelAdmin
 		// Get an instance of the table object.
 		$table = $this->getTable();
 
-		if (!$table->saveorder($idArray, $lft_array)) {
+		if (!$table->saveorder($idArray, $lft_array))
+		{
 			$this->setError($table->getError());
 			return false;
 		}

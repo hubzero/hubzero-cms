@@ -40,7 +40,7 @@ class MenusControllerItems extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$this->setRedirect('index.php?option=com_menus&view=items');
 
@@ -60,10 +60,10 @@ class MenusControllerItems extends JControllerAdmin
 
 	public function saveorder()
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order	= Request::getVar('order',	null,	'post',	'array');
+		$order = Request::getVar('order',	null,	'post',	'array');
 		$originalOrder = explode(',', Request::getString('original_order_values'));
 
 		// Make sure something has changed
@@ -87,13 +87,13 @@ class MenusControllerItems extends JControllerAdmin
 	function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or die(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
 		$cid	= Request::getVar('cid', array(), '', 'array');
 		$data	= array('setDefault' => 1, 'unsetDefault' => 0);
 		$task 	= $this->getTask();
-		$value	= JArrayHelper::getValue($data, $task, 0, 'int');
+		$value	= \Hubzero\Utility\Arr::getValue($data, $task, 0, 'int');
 
 		if (empty($cid)) {
 			JError::raiseWarning(500, Lang::txt($this->text_prefix.'_NO_ITEM_SELECTED'));
@@ -102,7 +102,7 @@ class MenusControllerItems extends JControllerAdmin
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			JArrayHelper::toInteger($cid);
+			\Hubzero\Utility\Arr::toInteger($cid);
 
 			// Publish the items.
 			if (!$model->setHome($cid, $value)) {

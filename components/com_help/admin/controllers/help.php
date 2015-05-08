@@ -190,7 +190,7 @@ class Help extends AdminController
 			}
 		}
 
-		return \JArrayHelper::sortObjects($result, 'text', 1, true, $lang->getLocale());
+		return \Hubzero\Utility\Arr::sortObjects($result, 'text', 1, true, $lang->getLocale());
 	}
 
 	/**

@@ -79,10 +79,11 @@ class ModulesModelModules extends JModelList
 		$this->setState('filter.module', $module);
 
 		$clientId = $this->getUserStateFromRequest($this->context.'.filter.client_id', 'filter_client_id', 0, 'int', false);
-		$previousId = $app->getUserState($this->context.'.filter.client_id_previous', null);
-		if ($previousId != $clientId || $previousId === null){
+		$previousId = User::getState($this->context.'.filter.client_id_previous', null);
+		if ($previousId != $clientId || $previousId === null)
+		{
 			$this->getUserStateFromRequest($this->context.'.filter.client_id_previous', 'filter_client_id_previous', 0, 'int', true);
-			$app->setUserState($this->context.'.filter.client_id_previous', $clientId);
+			User::setState($this->context.'.filter.client_id_previous', $clientId);
 		}
 		$this->setState('filter.client_id', $clientId);
 
@@ -137,7 +138,7 @@ class ModulesModelModules extends JModelList
 			$result = $this->_db->loadObjectList();
 			$this->translate($result);
 			$lang = Lang::getRoot();
-			JArrayHelper::sortObjects($result, $ordering, $this->getState('list.direction') == 'desc' ? -1 : 1, true, $lang->getLocale());
+			\Hubzero\Utility\Arr::sortObjects($result, $ordering, $this->getState('list.direction') == 'desc' ? -1 : 1, true, $lang->getLocale());
 			$total = count($result);
 			$this->cache[$this->getStoreId('getTotal')] = $total;
 			if ($total < $limitstart) {

@@ -39,7 +39,7 @@ class JElementAuthor extends JElement
 		}
 
 		// Clean up and serialize.
-		JArrayHelper::toInteger($groups);
+		\Hubzero\Utility\Arr::toInteger($groups);
 		$groups = implode(',', $groups);
 
 		// Build the query to get the users.

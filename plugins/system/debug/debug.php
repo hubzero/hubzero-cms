@@ -686,7 +686,7 @@ class plgSystemDebug extends JPlugin
 
 				if (is_object($entries))
 				{
-					$o = \JArrayHelper::fromObject($entries);
+					$o = \Hubzero\Utility\Arr::fromObject($entries);
 
 					if ($o)
 					{

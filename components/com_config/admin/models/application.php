@@ -30,7 +30,6 @@
 
 namespace Components\Config\Models;
 
-use JArrayHelper;
 use JModelForm;
 use JAccessRules;
 use JAccess;
@@ -86,24 +85,24 @@ class Application extends JModelForm
 	{
 		// Get the config data.
 		$config = new JConfig();
-		$data = JArrayHelper::fromObject($config);
+		$data = \Hubzero\Utility\Arr::fromObject($config);
 
 		// Prime the asset_id for the rules.
 		$data['asset_id'] = 1;
 
 		// Get the text filter data
 		$params = \Component::params('com_config');
-		$data['filters'] = JArrayHelper::fromObject($params->get('filters'));
+		$data['filters'] = \Hubzero\Utility\Arr::fromObject($params->get('filters'));
 
 		// If no filter data found, get from com_content (update of 1.6/1.7 site)
 		if (empty($data['filters']))
 		{
 			$contentParams = \Component::params('com_content');
-			$data['filters'] = JArrayHelper::fromObject($contentParams->get('filters'));
+			$data['filters'] = \Hubzero\Utility\Arr::fromObject($contentParams->get('filters'));
 		}
 
 		// Check for data in the session.
-		$temp = JFactory::getApplication()->getUserState('com_config.config.global.data');
+		$temp = User::getState('com_config.config.global.data');
 
 		// Merge in the session data.
 		if (!empty($temp))
@@ -145,7 +144,7 @@ class Application extends JModelForm
 
 				if (!$asset->check() || !$asset->store())
 				{
-					JError::raiseNotice('SOME_ERROR_CODE', $asset->getError());
+					Notify::error('SOME_ERROR_CODE', $asset->getError());
 				}
 			}
 			else
@@ -172,7 +171,7 @@ class Application extends JModelForm
 				$extension->params = (string) $registry;
 				if (!$extension->check() || !$extension->store())
 				{
-					JError::raiseNotice('SOME_ERROR_CODE', $extension->getError());
+					Notify::error('SOME_ERROR_CODE', $extension->getError());
 				}
 			}
 			else
@@ -185,7 +184,7 @@ class Application extends JModelForm
 
 		// Get the previous configuration.
 		$prev = new JConfig();
-		$prev = JArrayHelper::fromObject($prev);
+		$prev = \Hubzero\Utility\Arr::fromObject($prev);
 
 		// Merge the new data in. We do this to preserve values that were not in the form.
 		$data = array_merge($prev, $data);
@@ -248,7 +247,7 @@ class Application extends JModelForm
 	{
 		// Get the previous configuration.
 		$prev = new JConfig();
-		$prev = JArrayHelper::fromObject($prev);
+		$prev = \Hubzero\Utility\Arr::fromObject($prev);
 
 		// Create the new configuration object, and unset the root_user property
 		$config = new JRegistry('config');
@@ -280,7 +279,7 @@ class Application extends JModelForm
 		// Attempt to make the file writeable if using FTP.
 		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0640'))
 		{
-			JError::raiseNotice('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTWRITABLE'));
+			Notify::error('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTWRITABLE'));
 		}
 
 		// Attempt to write the configuration file as a PHP class named JConfig.
@@ -294,7 +293,7 @@ class Application extends JModelForm
 		// Attempt to make the file unwriteable if using FTP.
 		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0440'))
 		{
-			JError::raiseNotice('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTUNWRITABLE'));
+			Notify::error('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTUNWRITABLE'));
 		}
 
 		return true;

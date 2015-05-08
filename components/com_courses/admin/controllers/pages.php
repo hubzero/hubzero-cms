@@ -187,10 +187,8 @@ class Pages extends AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
-
-		$this->view->notifications = $this->getComponentMessage();
 
 		// Output the HTML
 		$this->view
@@ -216,14 +214,14 @@ class Pages extends AdminController
 
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
 
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -818,7 +816,7 @@ class Pages extends AdminController
 		Request::checkToken() or jexit('Invalid Token');
 
 		$id = Request::getVar('id', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($id, array(0));
+		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$uid = $id[0];
 		$inc = ($this->_task == 'orderup' ? -1 : 1);

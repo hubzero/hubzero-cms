@@ -22,20 +22,19 @@ class InstallerControllerUpdate extends JControllerLegacy
 	public function update()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$model = $this->getModel('update');
 		$uid   = Request::getVar('cid', array(), '', 'array');
 
-		JArrayHelper::toInteger($uid, array());
+		\Hubzero\Utility\Arr::toInteger($uid, array());
 		if ($model->update($uid))
 		{
 			$cache = JFactory::getCache('mod_menu');
 			$cache->clean();
 		}
 
-		$app = JFactory::getApplication();
-		$redirect_url = $app->getUserState('com_installer.redirect_url');
+		$redirect_url = User::getState('com_installer.redirect_url');
 		if (empty($redirect_url))
 		{
 			$redirect_url = Route::url('index.php?option=com_installer&view=update', false);
@@ -43,10 +42,11 @@ class InstallerControllerUpdate extends JControllerLegacy
 		else
 		{
 			// wipe out the user state when we're going to redirect
-			$app->setUserState('com_installer.redirect_url', '');
-			$app->setUserState('com_installer.message', '');
-			$app->setUserState('com_installer.extension_message', '');
+			User::setState('com_installer.redirect_url', '');
+			User::setState('com_installer.message', '');
+			User::setState('com_installer.extension_message', '');
 		}
+
 		$this->setRedirect($redirect_url);
 	}
 
@@ -58,16 +58,19 @@ class InstallerControllerUpdate extends JControllerLegacy
 	public function find()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+
 		// Get the caching duration
 		jimport('joomla.application.component.helper');
 		$component = Component::load('com_installer');
 		$params = $component->params;
 		$cache_timeout = $params->get('cachetimeout', 6, 'int');
 		$cache_timeout = 3600 * $cache_timeout;
+
 		// Find updates
-		$model	= $this->getModel('update');
+		$model  = $this->getModel('update');
 		$result = $model->findUpdates(0, $cache_timeout);
+
 		$this->setRedirect(Route::url('index.php?option=com_installer&view=update', false));
 		//$view->display();
 	}
@@ -81,10 +84,12 @@ class InstallerControllerUpdate extends JControllerLegacy
 	{
 		// Purge updates
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+
 		$model = $this->getModel('update');
 		$model->purge();
 		$model->enableSites();
+
 		$this->setRedirect(Route::url('index.php?option=com_installer&view=update', false), $model->_message);
 	}
 
@@ -107,14 +112,11 @@ class InstallerControllerUpdate extends JControllerLegacy
 		$cache_timeout = Request::getInt('cache_timeout', 0);
 		if ($cache_timeout == 0)
 		{
-			jimport('joomla.application.component.helper');
-			$component = Component::load('com_installer');
-			$params = $component->params;
-			$cache_timeout = $params->get('cachetimeout', 6, 'int');
+			$cache_timeout = Component::params('com_installer')->get('cachetimeout', 6, 'int');
 			$cache_timeout = 3600 * $cache_timeout;
 		}
 
-		$model = $this->getModel('update');
+		$model  = $this->getModel('update');
 		$result = $model->findUpdates($eid, $cache_timeout);
 
 		$model->setState('list.start', 0);
@@ -138,6 +140,6 @@ class InstallerControllerUpdate extends JControllerLegacy
 
 		echo json_encode($updates);
 
-		JFactory::getApplication()->close();
+		App::close();
 	}
 }

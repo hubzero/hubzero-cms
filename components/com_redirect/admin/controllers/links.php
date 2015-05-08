@@ -350,7 +350,7 @@ class Links extends AdminController
 			// Get the model.
 			$model = new Record(); //$this->getModel();
 
-			\JArrayHelper::toInteger($ids);
+			\Hubzero\Utility\Arr::toInteger($ids);
 
 			// Remove the items.
 			if (!$model->activate($ids, $newUrl, $comment))
@@ -388,7 +388,7 @@ class Links extends AdminController
 			'report'    => -3
 		);
 
-		$value = \JArrayHelper::getValue($data, $this->_task, 0, 'int');
+		$value = \Hubzero\Utility\Arr::getValue($data, $this->_task, 0, 'int');
 
 		if (empty($cid))
 		{
@@ -400,7 +400,7 @@ class Links extends AdminController
 			$model = new Record();
 
 			// Make sure the item ids are integers
-			\JArrayHelper::toInteger($cid);
+			\Hubzero\Utility\Arr::toInteger($cid);
 
 			// Publish the items.
 			if (!$model->publish($cid, $value))

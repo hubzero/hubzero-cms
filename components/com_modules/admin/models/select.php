@@ -29,11 +29,8 @@ class ModulesModelSelect extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
-
 		// Load the filter state.
-		$clientId = $app->getUserState('com_modules.modules.filter.client_id', 0);
+		$clientId = User::getState('com_modules.modules.filter.client_id', 0);
 		$this->setState('filter.client_id', (int) $clientId);
 
 		// Load the parameters.
@@ -119,11 +116,15 @@ class ModulesModelSelect extends JModelList
 
 		// Loop through the results to add the XML metadata,
 		// and load language support.
-		foreach ($items as &$item) {
+		foreach ($items as &$item)
+		{
 			$path = JPath::clean($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
-			if (file_exists($path)) {
+			if (file_exists($path))
+			{
 				$item->xml = simplexml_load_file($path);
-			} else {
+			}
+			else
+			{
 				$item->xml = null;
 			}
 
@@ -133,14 +134,16 @@ class ModulesModelSelect extends JModelList
 			||	$lang->load($item->module . '.sys', $client->path . '/modules/' . $item->module, null, false, true);
 			$item->name	= Lang::txt($item->name);
 
-			if (isset($item->xml) && $text = trim($item->xml->description)) {
+			if (isset($item->xml) && $text = trim($item->xml->description))
+			{
 				$item->desc = Lang::txt($text);
 			}
-			else {
+			else
+			{
 				$item->desc = Lang::txt('COM_MODULES_NODESCRIPTION');
 			}
 		}
-		$items = JArrayHelper::sortObjects($items, 'name', 1, true, $lang->getLocale());
+		$items = \Hubzero\Utility\Arr::sortObjects($items, 'name', 1, true, $lang->getLocale());
 
 		// TODO: Use the cached XML from the extensions table?
 

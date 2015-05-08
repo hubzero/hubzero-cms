@@ -29,7 +29,7 @@ class ModulesControllerModules extends JControllerAdmin
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'post', 'array');
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 
 		try {
 			if (empty($pks)) {

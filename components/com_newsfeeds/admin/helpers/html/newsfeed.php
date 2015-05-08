@@ -28,7 +28,7 @@ class JHtmlNewsfeed
 			1	=> array('tick.png',		'newsfeeds.unpublish',	'JPUBLISHED',			'COM_NEWSFEEDS_UNPUBLISH_ITEM'),
 			0	=> array('publish_x.png',	'newsfeeds.publish',		'JUNPUBLISHED',		'COM_NEWSFEEDS_PUBLISH_ITEM')
 		);
-		$state	= JArrayHelper::getValue($states, (int) $value, $states[0]);
+		$state	= \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
 		$html	= '<a href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'
 				. JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true).'</a>';
 

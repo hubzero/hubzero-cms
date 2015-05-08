@@ -99,7 +99,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 		}
 		elseif (is_array($published))
 		{
-			JArrayHelper::toInteger($published);
+			\Hubzero\Utility\Arr::toInteger($published);
 			$query->where('a.published IN (' . implode(',', $published) . ')');
 		}
 

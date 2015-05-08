@@ -77,7 +77,7 @@ class UsersControllerUsers extends JControllerAdmin
 		$ids	= Request::getVar('cid', array(), '', 'array');
 		$values	= array('block' => 1, 'unblock' => 0);
 		$task	= $this->getTask();
-		$value	= JArrayHelper::getValue($values, $task, 0, 'int');
+		$value	= \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
 
 		if (empty($ids))
 		{

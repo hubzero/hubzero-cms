@@ -78,7 +78,7 @@ class InstallerModel extends JModelList
 					}
 				}
 			}
-			JArrayHelper::sortObjects($result, $this->getState('list.ordering'), $this->getState('list.direction') == 'desc' ? -1 : 1, true, $lang->getLocale());
+			\Hubzero\Utility\Arr::sortObjects($result, $this->getState('list.ordering'), $this->getState('list.direction') == 'desc' ? -1 : 1, true, $lang->getLocale());
 			$total = count($result);
 			$this->cache[$this->getStoreId('getTotal')] = $total;
 			if ($total < $limitstart)
@@ -127,10 +127,11 @@ class InstallerModel extends JModelList
 			$item->author_info = @$item->authorEmail .'<br />'. @$item->authorUrl;
 			$item->client = $item->client_id ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
 			$path = $item->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE;
-			switch ($item->type) {
+			switch ($item->type)
+			{
 				case 'component':
 					$extension = $item->element;
-					$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+					$source = JPATH_SITE . '/components/' . $extension . '/admin';
 						$lang->load("$extension.sys", JPATH_ADMINISTRATOR, null, false, true)
 					||	$lang->load("$extension.sys", $source, null, false, true);
 				break;

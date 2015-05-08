@@ -247,7 +247,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function orderTask($up)
 	{
 		$cid = Request::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$id  = $cid[0];
 		$inc = ($up) ? -1 : 1;

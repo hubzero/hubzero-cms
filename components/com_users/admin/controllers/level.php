@@ -63,7 +63,7 @@ class UsersControllerLevel extends JControllerForm
 			// Get the model.
 			$model = $this->getModel();
 
-			JArrayHelper::toInteger($ids);
+			\Hubzero\Utility\Arr::toInteger($ids);
 
 			// Remove the items.
 			if (!$model->delete($ids)) {

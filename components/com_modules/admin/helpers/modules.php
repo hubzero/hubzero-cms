@@ -33,7 +33,7 @@ abstract class ModulesHelper
 	 */
 	public static function getActions()
 	{
-		$result = new JObject;
+		$result = new \Hubzero\Base\Object;
 
 		$actions = JAccess::getActions('com_modules');
 
@@ -90,7 +90,8 @@ abstract class ModulesHelper
 		$positions = $db->loadColumn();
 		$positions = (is_array($positions)) ? $positions : array();
 
-		if ($error = $db->getErrorMsg()) {
+		if ($error = $db->getErrorMsg())
+		{
 			JError::raiseWarning(500, $error);
 			return;
 		}
@@ -123,10 +124,12 @@ abstract class ModulesHelper
 		$query->from('#__extensions');
 		$query->where('client_id = '.(int) $clientId);
 		$query->where('type = '.$db->quote('template'));
-		if ($state!='') {
+		if ($state!='')
+		{
 			$query->where('enabled = '.$db->quote($state));
 		}
-		if ($template!='') {
+		if ($template!='')
+		{
 			$query->where('element = '.$db->quote($template));
 		}
 
@@ -145,8 +148,8 @@ abstract class ModulesHelper
 	 */
 	public static function getModules($clientId)
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('element AS value, name AS text');
 		$query->from('#__extensions as e');
@@ -159,7 +162,8 @@ abstract class ModulesHelper
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();
 		$lang = Lang::getRoot();
-		foreach ($modules as $i=>$module) {
+		foreach ($modules as $i => $module)
+		{
 			$extension = $module->value;
 			$path = $clientId ? JPATH_ADMINISTRATOR : JPATH_SITE;
 			$source = $path . "/modules/$extension";
@@ -167,7 +171,7 @@ abstract class ModulesHelper
 			||	$lang->load("$extension.sys", $source, null, false, true);
 			$modules[$i]->text = Lang::txt($module->text);
 		}
-		JArrayHelper::sortObjects($modules, 'text', 1, true, $lang->getLocale());
+		\Hubzero\Utility\Arr::sortObjects($modules, 'text', 1, true, $lang->getLocale());
 		return $modules;
 	}
 
@@ -184,7 +188,8 @@ abstract class ModulesHelper
 		$options[] = JHtml::_('select.option', '0', 'COM_MODULES_OPTION_MENU_ALL');
 		$options[] = JHtml::_('select.option', '-', 'COM_MODULES_OPTION_MENU_NONE');
 
-		if ($clientId == 0) {
+		if ($clientId == 0)
+		{
 			$options[] = JHtml::_('select.option', '1', 'COM_MODULES_OPTION_MENU_INCLUDE');
 			$options[] = JHtml::_('select.option', '-1', 'COM_MODULES_OPTION_MENU_EXCLUDE');
 		}

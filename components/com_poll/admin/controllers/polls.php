@@ -320,7 +320,7 @@ class Polls extends AdminController
 		$row->checkin();
 
 		// Save the poll options
-		$options = \JArrayHelper::getValue($post, 'polloption', array(), 'array');
+		$options = \Hubzero\Utility\Arr::getValue($post, 'polloption', array(), 'array');
 
 		foreach ($options as $i => $text)
 		{
@@ -370,7 +370,7 @@ class Polls extends AdminController
 
 		$db  = \JFactory::getDBO();
 		$cid = Request::getVar('cid', array(), '', 'array');
-		\JArrayHelper::toInteger($cid);
+		\Hubzero\Utility\Arr::toInteger($cid);
 
 		$msg = '';
 
@@ -401,7 +401,7 @@ class Polls extends AdminController
 		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		$cid = Request::getVar('cid', array(), '', 'array');
-		\JArrayHelper::toInteger($cid);
+		\Hubzero\Utility\Arr::toInteger($cid);
 
 		$publish = (Request::getVar('task') == 'publish' ? 1 : 0);
 
@@ -453,7 +453,7 @@ class Polls extends AdminController
 		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		$cid = Request::getVar('cid', array(), '', 'array');
-		\JArrayHelper::toInteger($cid);
+		\Hubzero\Utility\Arr::toInteger($cid);
 
 		$publish = (Request::getVar('task') == 'open' ? 1 : 0);
 

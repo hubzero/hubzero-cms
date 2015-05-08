@@ -55,7 +55,7 @@ class ContentControllerArticles extends JControllerAdmin
 		$ids	= Request::getVar('cid', array(), '', 'array');
 		$values	= array('featured' => 1, 'unfeatured' => 0);
 		$task	= $this->getTask();
-		$value	= JArrayHelper::getValue($values, $task, 0, 'int');
+		$value	= \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
 
 		// Access checks.
 		foreach ($ids as $i => $id)

@@ -51,7 +51,7 @@ class MenusControllerMenus extends JControllerLegacy
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
 		$cid	= Request::getVar('cid', array(), '', 'array');
@@ -63,8 +63,7 @@ class MenusControllerMenus extends JControllerLegacy
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			\Hubzero\Utility\Arr::toInteger($cid);
 
 			// Remove the items.
 			if (!$model->delete($cid)) {
@@ -84,7 +83,7 @@ class MenusControllerMenus extends JControllerLegacy
 	 */
 	public function rebuild()
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$this->setRedirect('index.php?option=com_menus&view=menus');
 

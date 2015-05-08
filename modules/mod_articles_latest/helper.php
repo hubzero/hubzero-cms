@@ -31,10 +31,10 @@
 namespace Modules\ArticlesLatest;
 
 use Hubzero\Module\Module;
+use Hubzero\Utility\Arr;
 use ContentHelperRoute;
 use Component;
 use JModelLegacy;
-use JArrayHelper;
 use JFactory;
 use JAccess;
 use Route;
@@ -141,7 +141,7 @@ class Helper extends Module
 			'c_dsc' => 'a.created',
 			'p_dsc' => 'a.publish_up',
 		);
-		$ordering = JArrayHelper::getValue($order_map, $params->get('ordering'), 'a.publish_up');
+		$ordering = Arr::getValue($order_map, $params->get('ordering'), 'a.publish_up');
 		$dir = 'DESC';
 
 		$model->setState('list.ordering', $ordering);

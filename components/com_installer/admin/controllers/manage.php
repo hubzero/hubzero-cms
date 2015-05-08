@@ -43,7 +43,7 @@ class InstallerControllerManage extends JControllerLegacy
 		$ids    = Request::getVar('cid', array(), '', 'array');
 		$values = array('publish' => 1, 'unpublish' => 0);
 		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
 
 		if (empty($ids))
 		{
@@ -90,7 +90,7 @@ class InstallerControllerManage extends JControllerLegacy
 		$eid   = Request::getVar('cid', array(), '', 'array');
 		$model = $this->getModel('manage');
 
-		JArrayHelper::toInteger($eid, array());
+		\Hubzero\Utility\Arr::toInteger($eid, array());
 		$result = $model->remove($eid);
 		$this->setRedirect(Route::url('index.php?option=com_installer&view=manage', false));
 	}
@@ -110,8 +110,9 @@ class InstallerControllerManage extends JControllerLegacy
 		$uid   = Request::getVar('cid', array(), '', 'array');
 		$model = $this->getModel('manage');
 
-		JArrayHelper::toInteger($uid, array());
+		\Hubzero\Utility\Arr::toInteger($uid, array());
 		$result = $model->refresh($uid);
+
 		$this->setRedirect(Route::url('index.php?option=com_installer&view=manage', false));
 	}
 }

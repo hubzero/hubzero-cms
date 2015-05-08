@@ -32,11 +32,12 @@ class InstallerModelDiscover extends InstallerModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-		$this->setState('message', $app->getUserState('com_installer.message'));
-		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
-		$app->setUserState('com_installer.message', '');
-		$app->setUserState('com_installer.extension_message', '');
+		$this->setState('message', User::getState('com_installer.message'));
+		$this->setState('extension_message', User::getState('com_installer.extension_message'));
+
+		User::setState('com_installer.message', '');
+		User::setState('com_installer.extension_message', '');
+
 		parent::populateState('name', 'asc');
 	}
 
@@ -100,17 +101,17 @@ class InstallerModelDiscover extends InstallerModel
 	 */
 	public function discover_install()
 	{
-		$app = JFactory::getApplication();
 		$installer = JInstaller::getInstance();
 		$eid = Request::getVar('cid', 0);
+
 		if (is_array($eid) || $eid)
 		{
 			if (!is_array($eid))
 			{
 				$eid = array($eid);
 			}
-			JArrayHelper::toInteger($eid);
-			$app = JFactory::getApplication();
+			\Hubzero\Utility\Arr::toInteger($eid);
+
 			$failed = false;
 			foreach ($eid as $id)
 			{
@@ -123,16 +124,18 @@ class InstallerModelDiscover extends InstallerModel
 			}
 			$this->setState('action', 'remove');
 			$this->setState('name', $installer->get('name'));
-			$app->setUserState('com_installer.message', $installer->message);
-			$app->setUserState('com_installer.extension_message', $installer->get('extension_message'));
+
+			User::setState('com_installer.message', $installer->message);
+			User::setState('com_installer.extension_message', $installer->get('extension_message'));
+
 			if (!$failed)
 			{
-				$app->enqueueMessage(Lang::txt('COM_INSTALLER_MSG_DISCOVER_INSTALLSUCCESSFUL'));
+				Notify::success(Lang::txt('COM_INSTALLER_MSG_DISCOVER_INSTALLSUCCESSFUL'));
 			}
 		}
 		else
 		{
-			$app->enqueueMessage(Lang::txt('COM_INSTALLER_MSG_DISCOVER_NOEXTENSIONSELECTED'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_DISCOVER_NOEXTENSIONSELECTED'));
 		}
 	}
 

@@ -24,7 +24,7 @@ class MessagesTableMessage extends JTable
 	 *
 	 * @param database A database connector object
 	 */
-	function __construct(& $db)
+	public function __construct(& $db)
 	{
 		parent::__construct('#__messages', 'message_id', $db);
 	}
@@ -34,27 +34,31 @@ class MessagesTableMessage extends JTable
 	 *
 	 * @return boolean
 	 */
-	function check()
+	public function check()
 	{
 		// Check the to and from users.
-		$user = new JUser($this->user_id_from);
-		if (empty($user->id)) {
+		$user = User::getInstance($this->user_id_from);
+		if (empty($user->id))
+		{
 			$this->setError(Lang::txt('COM_MESSAGES_ERROR_INVALID_FROM_USER'));
 			return false;
 		}
 
-		$user = new JUser($this->user_id_to);
-		if (empty($user->id)) {
+		$user = User::getInstance($this->user_id_to);
+		if (empty($user->id))
+		{
 			$this->setError(Lang::txt('COM_MESSAGES_ERROR_INVALID_TO_USER'));
 			return false;
 		}
 
-		if (empty($this->subject)) {
+		if (empty($this->subject))
+		{
 			$this->setError(Lang::txt('COM_MESSAGES_ERROR_INVALID_SUBJECT'));
 			return false;
 		}
 
-		if (empty($this->message)) {
+		if (empty($this->message))
+		{
 			$this->setError(Lang::txt('COM_MESSAGES_ERROR_INVALID_MESSAGE'));
 			return false;
 		}
@@ -80,18 +84,20 @@ class MessagesTableMessage extends JTable
 		$k = $this->_tbl_key;
 
 		// Sanitize input.
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 		$userId = (int) $userId;
 		$state  = (int) $state;
 
 		// If there are no primary keys set check to see if the instance key is set.
 		if (empty($pks))
 		{
-			if ($this->$k) {
+			if ($this->$k)
+			{
 				$pks = array($this->$k);
 			}
 			// Nothing to set publishing state on, return false.
-			else {
+			else
+			{
 				$this->setError(Lang::txt('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
 				return false;
 			}
@@ -109,13 +115,15 @@ class MessagesTableMessage extends JTable
 		$this->_db->query();
 
 		// Check for a database error.
-		if ($this->_db->getErrorNum()) {
+		if ($this->_db->getErrorNum())
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 
 		// If the JTable instance value is in the list of primary keys that were set, set the instance.
-		if (in_array($this->$k, $pks)) {
+		if (in_array($this->$k, $pks))
+		{
 			$this->state = $state;
 		}
 

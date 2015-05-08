@@ -24,18 +24,19 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function duplicate()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'post', 'array');
 
 		try
 		{
-			if (empty($pks)) {
+			if (empty($pks))
+			{
 				throw new Exception(Lang::txt('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
-			JArrayHelper::toInteger($pks);
+			\Hubzero\Utility\Arr::toInteger($pks);
 
 			$model = $this->getModel();
 			$model->duplicate($pks);
@@ -43,7 +44,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			Notify::error($e->getMessage());
 		}
 
 		$this->setRedirect('index.php?option=com_templates&view=styles');
@@ -68,18 +69,19 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'post', 'array');
 
 		try
 		{
-			if (empty($pks)) {
+			if (empty($pks))
+			{
 				throw new Exception(Lang::txt('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
-			JArrayHelper::toInteger($pks);
+			\Hubzero\Utility\Arr::toInteger($pks);
 
 			// Pop off the first element.
 			$id = array_shift($pks);
@@ -90,7 +92,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			Notify::error($e->getMessage());
 		}
 
 		$this->setRedirect('index.php?option=com_templates&view=styles');
@@ -103,11 +105,11 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function unsetDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'get', 'array');
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 
 		try
 		{
@@ -124,7 +126,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			JError::raiseWarning(500, $e->getMessage());
+			Notify::error(500, $e->getMessage());
 		}
 
 		$this->setRedirect('index.php?option=com_templates&view=styles');

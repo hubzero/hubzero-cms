@@ -82,7 +82,7 @@ class ModulesModelModule extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
@@ -100,7 +100,7 @@ class ModulesModelModule extends JModelAdmin
 
 		if (!empty($commands['position_id']))
 		{
-			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
+			$cmd = \Hubzero\Utility\Arr::getValue($commands, 'move_copy', 'c');
 
 			if (!empty($commands['position_id']))
 			{
@@ -521,8 +521,8 @@ class ModulesModelModule extends JModelAdmin
 		}
 		else
 		{
-			$clientId = JArrayHelper::getValue($data, 'client_id');
-			$module   = JArrayHelper::getValue($data, 'module');
+			$clientId = \Hubzero\Utility\Arr::getValue($data, 'client_id');
+			$module   = \Hubzero\Utility\Arr::getValue($data, 'module');
 		}
 
 		// These variables are used to add data from the plugin XML files.
@@ -658,7 +658,7 @@ class ModulesModelModule extends JModelAdmin
 
 			// Convert to the JObject before adding other data.
 			$properties = $table->getProperties(1);
-			$this->_cache[$pk] = JArrayHelper::toObject($properties, 'JObject');
+			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
 			$registry = new JRegistry;

@@ -246,7 +246,7 @@ class plgUserProfile extends JPlugin
 
 	function onUserAfterSave($data, $isNew, $result, $error)
 	{
-		$userId	= JArrayHelper::getValue($data, 'id', 0, 'int');
+		$userId	= \Hubzero\Utility\Arr::getValue($data, 'id', 0, 'int');
 
 		if ($userId && $result && isset($data['profile']) && (count($data['profile'])))
 		{
@@ -312,7 +312,7 @@ class plgUserProfile extends JPlugin
 			return false;
 		}
 
-		$userId = JArrayHelper::getValue($user, 'id', 0, 'int');
+		$userId = \Hubzero\Utility\Arr::getValue($user, 'id', 0, 'int');
 
 		if ($userId)
 		{

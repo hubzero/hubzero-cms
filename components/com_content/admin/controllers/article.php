@@ -51,7 +51,7 @@ class ContentControllerArticle extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$categoryId = JArrayHelper::getValue($data, 'catid', Request::getInt('filter_category_id'), 'int');
+		$categoryId = \Hubzero\Utility\Arr::getValue($data, 'catid', Request::getInt('filter_category_id'), 'int');
 		$allow = null;
 
 		if ($categoryId)

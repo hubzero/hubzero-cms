@@ -24,7 +24,7 @@ abstract class JHtmlContentAdministrator
 			0	=> array('disabled.png',	'articles.featured',	'COM_CONTENT_UNFEATURED',	'COM_CONTENT_TOGGLE_TO_FEATURE'),
 			1	=> array('featured.png',		'articles.unfeatured',	'COM_CONTENT_FEATURED',		'COM_CONTENT_TOGGLE_TO_UNFEATURE'),
 		);
-		$state	= JArrayHelper::getValue($states, (int) $value, $states[1]);
+		$state	= \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[1]);
 		$html	= JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
 		if ($canChange) {
 			$html	= '<a href="#" class="state ' . ($value ? 'yes' : 'no') . '" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'. $html.'</a>';

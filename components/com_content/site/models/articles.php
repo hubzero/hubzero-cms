@@ -272,7 +272,7 @@ class ContentModelArticles extends JModelList
 		}
 		elseif (is_array($published))
 		{
-			JArrayHelper::toInteger($published);
+			\Hubzero\Utility\Arr::toInteger($published);
 			$published = implode(',', $published);
 			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
 			$query->where($publishedWhere . ' IN ('.$published.')');
@@ -307,7 +307,7 @@ class ContentModelArticles extends JModelList
 		}
 		elseif (is_array($articleId))
 		{
-			JArrayHelper::toInteger($articleId);
+			\Hubzero\Utility\Arr::toInteger($articleId);
 			$articleId = implode(',', $articleId);
 			$type = $this->getState('filter.article_id.include', true) ? 'IN' : 'NOT IN';
 			$query->where('a.id '.$type.' ('.$articleId.')');
@@ -343,7 +343,7 @@ class ContentModelArticles extends JModelList
 			}
 		}
 		elseif (is_array($categoryId) && (count($categoryId) > 0)) {
-			JArrayHelper::toInteger($categoryId);
+			\Hubzero\Utility\Arr::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 			if (!empty($categoryId)) {
 				$type = $this->getState('filter.category_id.include', true) ? 'IN' : 'NOT IN';
@@ -360,7 +360,7 @@ class ContentModelArticles extends JModelList
 			$authorWhere = 'a.created_by '.$type.(int) $authorId;
 		}
 		elseif (is_array($authorId)) {
-			JArrayHelper::toInteger($authorId);
+			\Hubzero\Utility\Arr::toInteger($authorId);
 			$authorId = implode(',', $authorId);
 
 			if ($authorId) {
@@ -381,7 +381,7 @@ class ContentModelArticles extends JModelList
 			$first = current($authorAlias);
 
 			if (!empty($first)) {
-				JArrayHelper::toString($authorAlias);
+				\Hubzero\Utility\Arr::toString($authorAlias);
 
 				foreach ($authorAlias as $key => $alias)
 				{

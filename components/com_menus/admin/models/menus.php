@@ -75,7 +75,7 @@ class MenusModelMenus extends JModelList
 
 		// Get the menu types of menus in the list.
 		$db = $this->getDbo();
-		$menuTypes = JArrayHelper::getColumn($items, 'menutype');
+		$menuTypes = \Hubzero\Utility\Arr::getColumn($items, 'menutype');
 
 		// Quote the strings.
 		$menuTypes = implode(
@@ -216,8 +216,8 @@ class MenusModelMenus extends JModelList
 	 */
 	public function &getModules()
 	{
-		$model	= JModelLegacy::getInstance('Menu', 'MenusModel', array('ignore_request' => true));
-		$result	= &$model->getModules();
+		$model  = JModelLegacy::getInstance('Menu', 'MenusModel', array('ignore_request' => true));
+		$result = &$model->getModules();
 
 		return $result;
 	}

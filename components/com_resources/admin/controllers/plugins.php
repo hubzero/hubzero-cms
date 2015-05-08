@@ -267,7 +267,7 @@ class Plugins extends AdminController
 	public function editTask($row = null)
 	{
 		$cid = Request::getVar('cid', array(0), '', 'array');
-		\JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		App::redirect(
 			Route::url('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources', false)
@@ -352,7 +352,7 @@ class Plugins extends AdminController
 
 		// Incoming
 		$id = Request::getVar('id', array(0), '', 'array');
-		\JArrayHelper::toInteger($id, array(0));
+		\Hubzero\Utility\Arr::toInteger($id, array(0));
 
 		$client = Request::getWord('filter_client', 'site');
 
@@ -406,7 +406,7 @@ class Plugins extends AdminController
 		Request::checkToken() or Request::checkToken('get') or jexit('Invalid Token');
 
 		$cid    = Request::getVar('id', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$uid    = $cid[0];
 		$inc    = ($this->_task == 'orderup' ? -1 : 1);
@@ -450,7 +450,7 @@ class Plugins extends AdminController
 
 		// Incoming
 		$cid = Request::getVar('id', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		// Load the object
 		$row = \JTable::getInstance('extension');
@@ -498,11 +498,11 @@ class Plugins extends AdminController
 		Request::checkToken() or Request::checkToken('get') or jexit('Invalid Token');
 
 		$cid = Request::getVar('id', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($cid, array(0));
+		\Hubzero\Utility\Arr::toInteger($cid, array(0));
 
 		$total = count($cid);
 		$order = Request::getVar('order', array(0), 'post', 'array');
-		\JArrayHelper::toInteger($order, array(0));
+		\Hubzero\Utility\Arr::toInteger($order, array(0));
 
 		$row = \JTable::getInstance('extension');
 

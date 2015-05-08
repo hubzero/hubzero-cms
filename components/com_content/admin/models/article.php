@@ -441,7 +441,7 @@ class ContentModelArticle extends JModelAdmin
 	{
 		// Sanitize the ids.
 		$pks = (array) $pks;
-		JArrayHelper::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($pks);
 
 		if (empty($pks)) {
 			$this->setError(Lang::txt('COM_CONTENT_NO_ITEM_SELECTED'));
