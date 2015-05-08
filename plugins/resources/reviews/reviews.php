@@ -478,7 +478,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		if (!$voted && $vote) // && $rev->user_id != User::get('id'))
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
-			$v = new Vote($database);
+			$v = new \Components\Answers\Tables\Vote($database);
 			$v->referenceid = $id;
 			$v->category    = $cat;
 			$v->voter       = User::get('id');
