@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if (in_array($this->juser->get('id'), $this->members)) : ?>
+<?php if (in_array(User::get('id'), $this->members)) : ?>
 	<ul id="page_options">
 		<li>
 			<a class="icon-add btn add" title="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add'); ?>">
@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</ul>
 <?php endif; ?>
 
-<?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array($this->juser->get('id'), $this->group->get('members'))) ? true : 0; ?>
+<?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array(User::get('id'), $this->group->get('members'))) ? true : 0; ?>
 <div id="calendar"
 	data-base="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>"
 	data-month="<?php echo $this->month; ?>"

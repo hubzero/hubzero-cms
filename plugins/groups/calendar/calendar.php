@@ -275,14 +275,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->events = $eventsCalendar->events('list', $view->filters);
 
 		// add hub fancyselect lib
-		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
+		$this->js('jquery.fancyselect.min', 'system');
+		$this->css('jquery.fancyselect.css', 'system');
 
 		// add full calendar lib
-		\Hubzero\Document\Assets::addSystemScript('moment.min');
-		\Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.css');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.print.css', 'text/css', 'print');
+		$this->js('moment.min', 'system');
+		$this->js('jquery.fullcalendar.min', 'system');
+		$this->css('jquery.fullcalendar.css', 'system');
+		$this->css('jquery.fullcalendar.print.css', 'system', array('media' => 'print'));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -551,15 +551,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//added need scripts and stylesheets
-		\Hubzero\Document\Assets::addSystemScript('fileupload/jquery.fileupload');
-		\Hubzero\Document\Assets::addSystemScript('fileupload/jquery.iframe-transport');
-		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect.min');
-		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
-		\Hubzero\Document\Assets::addSystemScript('toolbox');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.datepicker.css');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.timepicker.css');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
-		\Hubzero\Document\Assets::addSystemStylesheet('toolbox.css');
+		$this->js('fileupload/jquery.fileupload', 'system');
+		$this->js('fileupload/jquery.iframe-transport', 'system');
+		$this->js('jquery.fancyselect.min', 'system');
+		$this->js('jquery.timepicker', 'system');
+		$this->js('toolbox', 'system');
+		$this->css('jquery.datepicker.css', 'system');
+		$this->css('jquery.timepicker.css', 'system');
+		$this->css('jquery.fancyselect.css', 'system');
+		$this->css('toolbox.css', 'system');
 
 		//get any errors if there are any
 		foreach ($this->getErrors() as $error)
