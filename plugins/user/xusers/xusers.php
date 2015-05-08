@@ -254,6 +254,26 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 					$quota->store();
 				}
 			}
+			else if ($quota->class_id)
+			{
+				// Here, we're checking to make sure their class matches their actual quota values
+				$class = new MembersQuotasClasses($this->database);
+				$class->load($quota->class_id);
+
+				if ($quota->get('soft_blocks') != $class->get('soft_blocks')
+				 || $quota->get('hard_blocks') != $class->get('hard_blocks')
+				 || $quota->get('soft_files')  != $class->get('soft_files')
+				 || $quota->get('hard_files')  != $class->get('hard_files'))
+				{
+					$quota->set('user_id'    , $xuser->get('id'));
+					$quota->set('class_id'   , $class->id);
+					$quota->set('soft_blocks', $class->soft_blocks);
+					$quota->set('hard_blocks', $class->hard_blocks);
+					$quota->set('soft_files' , $class->soft_files);
+					$quota->set('hard_files' , $class->hard_files);
+					$quota->store();
+				}
+			}
 		}
 
 		return true;

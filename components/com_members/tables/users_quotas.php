@@ -247,6 +247,9 @@ class UsersQuotas extends JTable
 	/**
 	 * Update all quotas of a certain class ID to reflect a change in class defaults
 	 *
+	 * NOTE: we're not using this anymore.  Now, class changes are reflected for
+	 *       individual users on login.
+	 *
 	 * @param   integer  $id
 	 * @return  boolean
 	 */
@@ -299,17 +302,50 @@ class UsersQuotas extends JTable
 
 		if ($records && count($records) > 0)
 		{
+			// Build an array of ids
+			$ids = array();
 			foreach ($records as $r)
 			{
-				$quota = new self($this->_db);
-				$quota->load($r->id);
-				$quota->set('hard_files',  $class->hard_files);
-				$quota->set('soft_files',  $class->soft_files);
-				$quota->set('hard_blocks', $class->hard_blocks);
-				$quota->set('soft_blocks', $class->soft_blocks);
-				$quota->set('class_id',    $class->id);
-				$quota->store();
+				$ids[] = $r->id;
 			}
+
+			// Update their class id, and their actual quota will be
+			// updated the next time they log in.
+			$query  = "UPDATE " . $this->_db->quoteName($this->_tbl);
+			$query .= " SET `class_id` = " . (int)$class->id;
+			$query .= " WHERE `id` IN (" . implode(',', $ids) . ")";
+			$this->_db->setQuery($query);
+			$this->_db->query();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Set default class for given set of users
+	 *
+	 * @param   array  $users
+	 * @return  boolean
+	 */
+	public function setDefaultClass($users)
+	{
+		$class = new MembersQuotasClasses($this->_db);
+		$class->load(array('alias' => 'default'));
+
+		if (!$class->id)
+		{
+			return false;
+		}
+
+		if ($users && count($users) > 0)
+		{
+			// Update their class id, and their actual quota will be
+			// updated the next time they log in.
+			$query  = "UPDATE " . $this->_db->quoteName($this->_tbl);
+			$query .= " SET `class_id` = " . (int)$class->id;
+			$query .= " WHERE `id` IN (" . implode(',', $users) . ")";
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 
 		return true;
