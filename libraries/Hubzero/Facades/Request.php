@@ -118,6 +118,16 @@ class Request extends \JRequest
 	}
 
 	/**
+	 * Returns the scheme.
+	 *
+	 * @return  string
+	 */
+	public static function isSecure()
+	{
+		return (self::scheme() == 'https');
+	}
+
+	/**
 	 * Temporary placeholder
 	 *
 	 * @return  void
