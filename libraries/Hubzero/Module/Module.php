@@ -86,7 +86,7 @@ class Module extends Object
 	 */
 	public function getLayoutPath($layout='default')
 	{
-		return \JModuleHelper::getLayoutPath($this->module->module, $layout);
+		return \App::get('module')->getLayoutPath($this->module->module, $layout);
 	}
 }
 

@@ -31,6 +31,7 @@
 namespace Hubzero\Document\Type\Html;
 
 use Hubzero\Document\Renderer;
+use Hubzero\Config\Registry;
 use stdClass;
 
 /**
@@ -82,14 +83,12 @@ class Module extends Renderer
 		}
 
 		// Get module parameters
-		$params = new \JRegistry;
-		$params->loadString($module->params);
+		$params = new Registry($module->params);
 
 		// Use parameters from template
 		if (isset($attribs['params']))
 		{
-			$template_params = new \JRegistry;
-			$template_params->loadString(html_entity_decode($attribs['params'], ENT_COMPAT, 'UTF-8'));
+			$template_params = new Registry(html_entity_decode($attribs['params'], ENT_COMPAT, 'UTF-8'));
 
 			$params->merge($template_params);
 
@@ -99,27 +98,24 @@ class Module extends Renderer
 
 		/*$contents = '';
 
-		// Default for compatibility purposes. Set cachemode parameter or use JModuleHelper::moduleCache from within the
+		// Default for compatibility purposes. Set cachemode parameter or use Module::cache from within the
 		// module instead
 		
-		// Get the user and configuration object
-		// $user = JFactory::getUser();
-		$conf = JFactory::getConfig();
+		// Get the configuration object
+		$conf = \App::get('config');
 
 		$cachemode = $params->get('cachemode', 'oldstatic');
 
-		if ($params->get('cache', 0) == 1 && $conf->get('caching') >= 1 && $cachemode != 'id' && $cachemode != 'safeuri')
+		if ($params->get('cache', 0) == 1 && $config->get('caching') >= 1 && $cachemode != 'id' && $cachemode != 'safeuri')
 		{
-
 			// Default to itemid creating method and workarounds on
 			$cacheparams = new stdClass;
-			$cacheparams->cachemode = $cachemode;
-			$cacheparams->class = 'JModuleHelper';
-			$cacheparams->method = 'renderModule';
+			$cacheparams->cachemode    = $cachemode;
+			$cacheparams->class        = '\\Hubzero\\Module\\Loader';
+			$cacheparams->method       = 'render';
 			$cacheparams->methodparams = array($module, $attribs);
 
-			$contents = JModuleHelper::ModuleCache($module, $params, $cacheparams);
-
+			$contents = \App::get('module')::cache($module, $params, $cacheparams);
 		}
 		else
 		{

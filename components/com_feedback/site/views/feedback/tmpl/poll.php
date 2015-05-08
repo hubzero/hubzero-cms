@@ -32,8 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $this->css();
-
-jimport('joomla.application.module.helper');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -51,9 +49,9 @@ jimport('joomla.application.module.helper');
 	<div class="section-inner">
 		<h3><?php echo Lang::txt('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo Lang::txt('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
 
-		<?php if (count(JModuleHelper::isEnabled('mod_poll')) > 0) { ?>
+		<?php if (count(Module::isEnabled('mod_poll')) > 0) { ?>
 			<div class="introtext">
-				<?php echo JModuleHelper::renderModule(JModuleHelper::getModule('mod_poll')); ?>
+				<?php echo Module::render(Module::byName('mod_poll')); ?>
 			</div>
 		<?php } else { ?>
 			<p class="warning"><?php echo Lang::txt('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>

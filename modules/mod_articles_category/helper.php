@@ -33,18 +33,16 @@ namespace Modules\ArticlesCategory;
 use Hubzero\Module\Module;
 use ContentHelperRoute;
 use Component;
-use JModuleHelper;
-use JModelLegacy;
-use JArrayHelper;
-use JFactory;
+use stdClass;
 use Request;
-use JAccess;
 use Route;
+use Date;
+use User;
+use JModelLegacy;
+use JFactory;
+use JAccess;
 use JString;
 use JHtml;
-use JDate;
-use stdClass;
-use User;
 
 /**
  * Module class for displaying articles in a category
@@ -104,7 +102,7 @@ class Helper extends Module
 		$cacheparams->methodparams = $params;
 		$cacheparams->modeparams   = $cacheid;
 
-		$list = Module::cache($module, $params, $cacheparams);
+		$list = \Module::cache($module, $params, $cacheparams);
 
 		if (!empty($list))
 		{
@@ -561,7 +559,7 @@ class Helper extends Module
 		{
 			foreach ($grouped as $group => $items)
 			{
-				$date = new \Hubzero\Utility\Date($group);
+				$date = Date::of($group);
 				$formatted_group = $date->format($month_year_format);
 				$grouped[$formatted_group] = $items;
 				unset($grouped[$group]);

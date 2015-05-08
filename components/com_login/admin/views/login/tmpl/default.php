@@ -37,18 +37,18 @@ defined('_JEXEC') or die;
 
 $loginmodule = \Components\Login\Models\Login::getLoginModule('mod_login');
 
-echo JModuleHelper::renderModule($loginmodule, array('style' => 'rounded', 'id' => 'section-box'));
+echo Module::render($loginmodule, array('style' => 'rounded', 'id' => 'section-box'));
 
 
-//Get any other modules in the login position.
-//If you want to use a different position for the modules, change the name here in your override.
-$modules = JModuleHelper::getModules('login');
+// Get any other modules in the login position.
+// If you want to use a different position for the modules, change the name here in your override.
+$modules = Module::byPosition('login');
 
 foreach ($modules as $module)
 {
 	// Render the login modules
 	if ($module->module != 'mod_login')
 	{
-		echo JModuleHelper::renderModule($module, array('style' => 'rounded', 'id' => 'section-box'));
+		echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
 	}
 }
