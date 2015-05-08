@@ -71,7 +71,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check to see if user is member and plugin access requires members
-		$sparams = new JRegistry($course->offering()->section()->get('params'));
+		$sparams = new \Hubzero\Config\Registry($course->offering()->section()->get('params'));
 		if (!$course->offering()->section()->access('view') && !$sparams->get('preview', 0))
 		{
 			$response->set('html', '<p class="info">' . Lang::txt('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>');
@@ -101,8 +101,8 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 				break;
 
 				default:
-					\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
-					//\Hubzero\Document\Assets::addSystemScript('jquery.masonry');
+					$this->js();
+
 					$this->_display();
 				break;
 			}
@@ -149,7 +149,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	{
 		if (!$this->course->access('manage'))
 		{
-			JError::raiseError(401, Lang::txt('Not Authorized'));
+			App::abort(401, Lang::txt('Not Authorized'));
 			return;
 		}
 
@@ -159,13 +159,13 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			// Setup view
 			$this->view->setLayout("edit{$scope}");
 
-			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, 'build.css');
-			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, $scope.'.css');
-			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name, $scope);
+			$this->css('build.css');
+			$this->css($scope . '.css');
+			$this->js($scope);
 
 			// Add file uploader JS
-			\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
-			\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
+			$this->js('jquery.iframe-transport', 'system');
+			$this->js('jquery.fileupload', 'system');
 
 			$this->view->title         = "Edit {$scope}";
 			$this->view->scope         = $scope;
@@ -174,30 +174,30 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+		$this->css('jquery.ui.css', 'system');
 
 		// Add outline builder style and script
-		\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, 'build.css');
-		\Hubzero\Document\Assets::addPluginScript('courses', $this->_name, 'build');
+		$this->css('build.css');
+		$this->js('build');
 
 		// Add Content box plugin
-		\Hubzero\Document\Assets::addSystemScript('contentbox');
-		\Hubzero\Document\Assets::addSystemStylesheet('contentbox.css');
+		$this->js('contentbox', 'system');
+		$this->css('contentbox.css', 'system');
 
 		// Add underscore
-		\Hubzero\Document\Assets::addSystemScript('underscore-min');
-		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
+		$this->js('underscore-min', 'system');
+		$this->js('jquery.hoverIntent', 'system');
 
 		// Add 'uniform' js and css
-		\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
-		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
+		$this->css('uniform.css', 'system');
+		$this->js('jquery.uniform', 'system');
 
 		// Add file uploader JS
-		\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
-		\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
+		$this->js('jquery.iframe-transport', 'system');
+		$this->js('jquery.fileupload', 'system');
 
 		// Use datetime picker, rather than just datepicker
-		\Hubzero\Document\Assets::addSystemScript('jquery.timepicker');
+		$this->js('jquery.timepicker', 'system');
 
 		// Setup view
 		$this->view->setLayout('build');
@@ -219,6 +219,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		{
 			$this->addPluginMessage($msg, $type);
 		}
-		$this->redirect($url);
+
+		App::redirect($url);
 	}
 }

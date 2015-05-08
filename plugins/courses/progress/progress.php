@@ -152,12 +152,12 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add some styles to the view
-		\Hubzero\Document\Assets::addPluginStylesheet('courses', 'progress', $layout.'.css');
-		\Hubzero\Document\Assets::addPluginScript('courses', 'progress', $layout.'progress');
-		\Hubzero\Document\Assets::addSystemScript('handlebars');
-		\Hubzero\Document\Assets::addSystemStylesheet('contentbox.css');
-		\Hubzero\Document\Assets::addSystemScript('contentbox');
-		\Hubzero\Document\Assets::addSystemScript('jquery.uniform.min');
+		$this->css($layout.'.css');
+		$this->js($layout.'progress');
+		$this->js('handlebars', 'system');
+		$this->css('contentbox.css', 'system');
+		$this->js('contentbox', 'system');
+		$this->js('jquery.uniform.min', 'system');
 
 		// Set the layout
 		$this->view->setLayout($layout);
@@ -178,8 +178,8 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id, $this->course->offering()->section()->get('id'));
 
-		\Hubzero\Document\Assets::addPluginStylesheet('courses', 'progress', 'assessmentdetails.css');
-		\Hubzero\Document\Assets::addPluginScript('courses', 'progress', 'assessmentdetails');
+		$this->css('assessmentdetails.css');
+		$this->js('assessmentdetails');
 
 		// Set the layout
 		$this->view->setLayout($layout);

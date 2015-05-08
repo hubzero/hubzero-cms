@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-\Hubzero\Document\Assets::addSystemScript('jquery.ui');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+$this->js('jquery.ui', 'system');
+$this->css('jquery.ui.css', 'system');
 
 $base = $this->course->offering()->link() . '&active=progress';
 ?>
@@ -97,7 +97,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 			<div class="student-clickable">
 				<div class="cell student-name">
 					<div class="picture-thumb">
-						<img src="<?php echo Juri::base(); ?>{{this.thumb}}" />
+						<img src="<?php echo Request::base(); ?>{{this.thumb}}" />
 					</div>
 					<div class="name-value">
 						{{this.name}}
@@ -269,7 +269,7 @@ $base = $this->course->offering()->link() . '&active=progress';
 <div class="main-container">
 	<div id="message-container"></div>
 	<div class="loading">
-		<img src="/components/com_courses/assets/img/loading-light.gif" />
+		<img src="<?php echo Request::base(true); ?>/components/com_courses/site/assets/img/loading-light.gif" />
 	</div>
 
 	<div class="controls-wrap">
