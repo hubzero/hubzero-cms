@@ -19,7 +19,7 @@ $baseLink = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
 $no_html = Request::getInt('no_html', 0);
 
 // add stylesheets and scripts
-Document::addStyleSheet($base . DS . 'assets/css/main.css')
+Document::addStyleSheet($base . DS . 'assets/css/main.css');
 Document::addScript($base . DS . 'assets/js/main.js');
 ?>
 

@@ -13,8 +13,8 @@
 $base = str_replace(PATH_CORE, '', __DIR__);
 
 // add stylesheets and scripts
-Document::addStyleSheet($base . DS . 'assets/css/main.css')
-Document::addStyleSheet($base . DS . 'assets/css/error.css')
+Document::addStyleSheet($base . DS . 'assets/css/main.css');
+Document::addStyleSheet($base . DS . 'assets/css/error.css');
 Document::addScript($base . DS . 'assets/js/main.js');
 ?>
 <script>
