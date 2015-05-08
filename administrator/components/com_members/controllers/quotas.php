@@ -279,35 +279,16 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Loop through each ID and restore
-			foreach ($ids as $id)
+			$quotas = new UsersQuotas($this->database);
+			if (!$quotas->setDefaultClass($ids))
 			{
-				$id = intval($id);
-
-				$row = new UsersQuotas($this->database);
-				$row->load($id);
-
-				$class = new MembersQuotasClasses($this->database);
-				$class->load(array('alias' => 'default'));
-
-				if (!$class->id)
-				{
-					// Output message and redirect
-					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						JText::_('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
-						'error'
-					);
-					return;
-				}
-
-				$row->set('class_id'   , $class->id);
-				$row->set('hard_files' , $class->hard_files);
-				$row->set('soft_files' , $class->soft_files);
-				$row->set('hard_blocks', $class->hard_blocks);
-				$row->set('soft_blocks', $class->soft_blocks);
-
-				$row->store();
+				// Output message and redirect
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JText::_('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
+					'error'
+				);
+				return;
 			}
 		}
 		else // no rows were selected
@@ -492,10 +473,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-
-		// If changing, update members referencing this class
-		$quotas = new UsersQuotas($this->database);
-		$quotas->updateUsersByClassId($row->id);
 
 		// Redirect
 		if ($redirect)
