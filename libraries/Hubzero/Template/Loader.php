@@ -31,6 +31,7 @@
 namespace Hubzero\Template;
 
 use Hubzero\Container\Container;
+use Hubzero\Config\Registry;
 use Exception;
 use stdClass;
 
@@ -85,7 +86,7 @@ class Loader
 	 *
 	 * @param   string   $option     The option for the component.
 	 * @param   integer  $client_id  If set and the component does not exist, false will be returned
-	 * @return  object   A JRegistry object.
+	 * @return  object   A Registry object.
 	 */
 	public function params($name, $client_id = 0)
 	{
@@ -151,7 +152,7 @@ class Loader
 		$template->id       = 0;
 		$template->home     = 0;
 		$template->template = 'system';
-		$template->params   = new \JRegistry();
+		$template->params   = new Registry();
 
 		return $template;
 	}
@@ -179,7 +180,7 @@ class Loader
 
 		$template = $db->loadObject();
 		$template->template = $this->canonical($template->template);
-		$template->params   = new \JRegistry($template->params);
+		$template->params   = new Registry($template->params);
 
 		if (!file_exists(JPATH_THEMES . DS . $template->template . DS . 'index.php'))
 		{
@@ -201,7 +202,9 @@ class Loader
 		$item = $menu->getActive();
 		if (!$item)
 		{
-			$item = $menu->getItem($this->app['request']->getInt('Itemid'));
+			//$iid = $this->app['request']->getInt('Itemid', 0, 'get');
+			$iid = 0; //$iid ?: $this->app['request']->getInt('Itemid', 0, 'get');
+			$item = $menu->getItem($iid);
 		}
 
 		$id = 0;
@@ -212,7 +215,7 @@ class Loader
 		}
 		$condition = '';
 
-		$tid = $this->app['request']->getVar('templateStyle', 0);
+		$tid = 0; //$this->app['request']->getVar('templateStyle', 0);
 		if (is_numeric($tid) && (int) $tid > 0)
 		{
 			$id = (int) $tid;
@@ -240,8 +243,8 @@ class Loader
 			$templates = $db->loadObjectList('id');
 			foreach ($templates as &$template)
 			{
-				$registry = new \JRegistry;
-				$registry->loadString($template->params);
+				$registry = new Registry($template->params);
+
 				$template->params = $registry;
 
 				// Create home element
@@ -268,7 +271,7 @@ class Loader
 			else
 			{
 				$template = new stdClass;
-				$template->params = new \JRegistry;
+				$template->params = new Registry;
 				$template->home   = 0;
 			}
 			$template->template = 'system';
@@ -276,7 +279,7 @@ class Loader
 		}
 
 		// Allows for overriding the active template from the request
-		$template->template = $this->app['request']->getCmd('template', $template->template);
+		//$template->template = $this->app['request']->getCmd('template', $template->template);
 		$template->template = $this->canonical($template->template); // need to filter the default value as well
 
 		// Fallback template

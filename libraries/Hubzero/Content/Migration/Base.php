@@ -31,9 +31,7 @@
 namespace Hubzero\Content\Migration;
 
 use Hubzero\Config\Processor\Ini;
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Config\Registry;
 
 /**
  * Base migration class
@@ -356,11 +354,11 @@ class Base
 		{
 			if ($params)
 			{
-				$params = new \JRegistry($params);
+				$params = new Registry($params);
 			}
 			else
 			{
-				$params = new \JRegistry();
+				$params = new Registry();
 			}
 		}
 
@@ -762,7 +760,7 @@ class Base
 		{
 			$params = json_encode($params);
 		}
-		else if ($params instanceof \JRegistry || $params instanceof \Registry)
+		else if ($params instanceof \JRegistry || $params instanceof Registry)
 		{
 			$params = $params->toString('JSON');
 		}

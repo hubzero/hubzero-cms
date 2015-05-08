@@ -42,7 +42,7 @@ class Module extends Object
 	use \Hubzero\Base\Traits\Escapable;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var  object
 	 */
@@ -58,7 +58,7 @@ class Module extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param   object  $params  JParameter/JRegistry
+	 * @param   object  $params  Registry
 	 * @param   object  $module  Database row
 	 * @return  void
 	 */

@@ -32,6 +32,7 @@ namespace Hubzero\Plugin;
 
 use Hubzero\Events\DispatcherInterface;
 use Hubzero\Events\LoaderInterface;
+use Hubzero\Config\Registry;
 use Exception;
 use Event;
 use User;
@@ -103,10 +104,7 @@ class Loader implements LoaderInterface
 
 		if (is_string($result->params))
 		{
-			$temp = new \JRegistry;
-			$temp->loadString($result->params);
-
-			$result->params = $temp;
+			$result->params = new Registry($result->params);
 		}
 
 		return $result->params;

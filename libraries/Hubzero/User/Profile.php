@@ -32,6 +32,7 @@ namespace Hubzero\User;
 
 use Hubzero\Base\Object;
 use Hubzero\User\Profile\Helper as ProfileHelper;
+use Hubzero\Config\Registry;
 use Hubzero\Utility\String;
 use Event;
 
@@ -375,7 +376,7 @@ class Profile extends Object
 	private $_password = null;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -475,7 +476,7 @@ class Profile extends Object
 
 		$this->clear();
 
-		$this->_params = new \JRegistry($result['params']);
+		$this->_params = new Registry($result['params']);
 
 		foreach ($result as $property => $value)
 		{
@@ -1398,7 +1399,7 @@ class Profile extends Object
 	 *
 	 * @param   boolean  $loadsetupfile  Load the XML set up file?
 	 * @param   string   $path           Path to parameters XML file
-	 * @return  object   JRegistry
+	 * @return  object   Registry
 	 */
 	public function &getParameters($loadsetupfile = false, $path = null)
 	{
@@ -1414,7 +1415,7 @@ class Profile extends Object
 		// Set the default parampath if not set already
 		if (!isset($parampath))
 		{
-			$parampath = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_members' . DS . 'models';
+			$parampath = PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'admin' . DS . 'models';
 		}
 
 		if ($loadsetupfile)
@@ -1472,7 +1473,7 @@ class Profile extends Object
 	{
 		// Get user roles
 		$roles = self::getGroupMemberRoles(
-			\JFactory::getUser()->get('id'),
+			\User::get('id'),
 			$group->get('gidNumber')
 		);
 

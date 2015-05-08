@@ -32,6 +32,7 @@ namespace Hubzero\Module;
 
 use Hubzero\Container\Container;
 use Hubzero\Utility\Date;
+use Hubzero\Config\Registry;
 
 /**
  * Module loader class
@@ -255,12 +256,11 @@ class Loader
 		$app->scope = $module->module;
 
 		// Get module parameters
-		$params = new \JRegistry;
-		$params->loadString($module->params);
+		$params = new Registry($module->params);
 
 		// Get module path
 		$module->module = preg_replace('/[^A-Z0-9_\.-]/i', '', $module->module);
-		$path = JPATH_BASE . '/modules/' . $module->module . '/' . $module->module . '.php';
+		$path = JPATH_BASE . DS . 'modules' . DS . $module->module . DS . $module->module . '.php';
 
 		// Load the module
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
@@ -282,8 +282,8 @@ class Loader
 			$chrome = array();
 		}
 
-		include_once JPATH_THEMES . '/system/html/modules.php';
-		$chromePath = JPATH_THEMES . '/' . $this->app['template']->template . '/html/modules.php';
+		include_once JPATH_THEMES . DS . 'system' . DS . 'html' . DS . 'modules.php';
+		$chromePath = JPATH_THEMES . DS . $this->app['template']->template . DS . 'html' . DS . 'modules.php';
 
 		if (!isset($chrome[$chromePath]))
 		{
@@ -637,6 +637,6 @@ class Loader
 		$params = $db->loadResult();
 
 		//return params
-		return new \JRegistry($params);
+		return new Registry($params);
 	}
 }

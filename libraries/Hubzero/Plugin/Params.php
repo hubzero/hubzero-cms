@@ -30,6 +30,8 @@
 
 namespace Hubzero\Plugin;
 
+use Hubzero\Config\Registry;
+
 /**
  * Table class for custom plugin parameters
  */
@@ -124,7 +126,7 @@ class Params extends \JTable
 		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
 		$result = $this->_db->loadResult();
 
-		return new \JRegistry($result);
+		return new Registry($result);
 	}
 
 	/**
@@ -146,7 +148,7 @@ class Params extends \JTable
 
 		$plugin = \Plugin::byType($folder, $element);
 
-		return new \JRegistry($plugin->params);
+		return new Registry($plugin->params);
 	}
 
 	/**

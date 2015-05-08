@@ -31,6 +31,7 @@
 namespace Hubzero\Document\Type;
 
 use Hubzero\Document\Base;
+use Hubzero\Config\Registry;
 
 /**
  * Document class, provides an easy interface to parse and display a HTML document
@@ -563,7 +564,7 @@ class Html extends Base
 		// Assign the variables
 		$this->template = $template;
 		$this->baseurl = \Request::base(true);
-		$this->params = isset($params['params']) ? $params['params'] : new \JRegistry;
+		$this->params = isset($params['params']) ? $params['params'] : new Registry;
 
 		// Load
 		$this->_template = $this->_loadTemplate($directory . '/' . $template, $file);
