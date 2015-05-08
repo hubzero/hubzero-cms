@@ -291,7 +291,7 @@ class Editor extends Object
 		$plugin = Plugin::byType('wiki', $this->name);
 
 		$params = new Registry($plugin->params);
-		$params->loadArray($config);
+		$params->toArray($config);
 
 		$plugin->params = $params;
 
