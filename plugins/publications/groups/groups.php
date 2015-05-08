@@ -72,17 +72,7 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		if (!$publication->project_group && !$publication->group_owner)
-		{
-			return $arr;
-		}
-
-		// Defaults to project group, otherwise check for group owner (individual projects)
-		$groupId = $publication->project_group
-				? $publication->project_group : $publication->group_owner;
-
-		$group = \Hubzero\User\Group::getInstance($groupId);
-		if (!$group || !$group->get('gidNumber'))
+		if (!$publication->groupOwner())
 		{
 			return $arr;
 		}
@@ -106,7 +96,7 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 		$this->view->option   		= $option;
 		$this->view->publication 	= $publication;
 		$this->view->params   		= $this->params;
-		$this->view->group    		= $group;
+		$this->view->group    		= $publication->groupOwner();
 
 		if ($this->getError())
 		{
