@@ -44,30 +44,30 @@ class plgSystemMobile extends JPlugin
 
 	public function onAfterDispatch()
 	{
-		$session = JFactory::getSession();
-		$tmpl = Request::getVar("tmpl","");
+		$session = App::get('session');
+		$tmpl = Request::getVar('tmpl', '');
 
-		if ($tmpl == "mobile")
+		if ($tmpl == 'mobile')
 		{
-			$session->set("mobile", true);
+			$session->set('mobile', true);
 		}
 		else
 		{
-			if ($session->get("mobile"))
+			if ($session->get('mobile'))
 			{
-				Request::setVar("tmpl", "mobile");
+				Request::setVar('tmpl', 'mobile');
 			}
 		}
 
 
 		//are we requesting to view full site again
-		if ($tmpl == "fullsite")
+		if ($tmpl == 'fullsite')
 		{
-			$session->set("mobile", false);
-			Request::setVar("tmpl", "");
+			$session->set('mobile', false);
 
-			$app = JFactory::getApplication();
-			$app->redirect($_SERVER['SCRIPT_URI'] . '?' . str_replace('tmpl=fullsite', '', $_SERVER['QUERY_STRING']));
+			Request::setVar('tmpl', '');
+
+			App::redirect($_SERVER['SCRIPT_URI'] . '?' . str_replace('tmpl=fullsite', '', $_SERVER['QUERY_STRING']));
 		}
 	}
 }

@@ -212,7 +212,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
-		$session = \JFactory::getSession();
+		$session = App::get('session');
 
 		// If it's new search remove all user citation checkmarks
 		if (isset($_POST['filter']))

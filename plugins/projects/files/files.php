@@ -4183,7 +4183,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$kind = 'projects.' . $this->model->get('alias') . '.' . $type;
 
 		// Get session
-		$jsession = \JFactory::getSession();
+		$jsession = App::get('session');
 
 		if ($append == true)
 		{
@@ -4210,14 +4210,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		$activity = '';
 		$message  = '';
-		$ref	  = '';
+		$ref      = '';
 
 		$model = $model ? $model : $this->model;
 
 		if (empty($changes))
 		{
 			// Get session
-			$jsession = \JFactory::getSession();
+			$jsession = App::get('session');
 
 			// Get values from session
 			$updated 	= $jsession->get('projects.' . $this->model->get('alias') . '.updated');

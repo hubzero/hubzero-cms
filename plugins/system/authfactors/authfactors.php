@@ -58,7 +58,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 			if (!User::isGuest() && !in_array($current, $exceptions))
 			{
 				// Get factor status
-				$status = \JFactory::getSession()->get('authfactors.status', null);
+				$status = App::get('session')->get('authfactors.status', null);
 
 				if ($status === false)
 				{

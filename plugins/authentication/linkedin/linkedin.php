@@ -188,8 +188,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			if ($reply['success'] === TRUE)
 			{
 				// Store the request token
-				$jsession = JFactory::getSession();
-				$jsession->set('linkedin.oauth.request', $reply['linkedin']);
+				App::get('session')->set('linkedin.oauth.request', $reply['linkedin']);
 
 				// Redirect the user to the LinkedIn authentication/authorization page to initiate validation
 				App::redirect(LINKEDIN::_URL_AUTH . $reply['linkedin']['oauth_token']);

@@ -187,7 +187,7 @@ class plgAuthenticationCertificate extends JPlugin
 				$response->email    = $response->username . '@invalid';
 
 				// Also set a suggested username for their hub account
-				\JFactory::getSession()->set('auth_link.tmp_username', $username);
+				App::get('session')->set('auth_link.tmp_username', $username);
 			}
 
 			$hzal->update();

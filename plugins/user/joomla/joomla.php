@@ -60,8 +60,8 @@ class plgUserJoomla extends JPlugin
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
 		// Initialise variables.
-		$app	= JFactory::getApplication();
-		$config	= JFactory::getConfig();
+		$app    = JFactory::getApplication();
+		$config = JFactory::getConfig();
 		$mail_to_user = $this->params->get('mail_to_user', 1);
 
 		if ($isnew) {
@@ -123,7 +123,8 @@ class plgUserJoomla extends JPlugin
 						$lang->setLanguage($defaultLocale);
 					}
 
-					if (!$mail->Send()) {
+					if (!$mail->Send())
+					{
 						// TODO: Probably should raise a plugin error but this event is not error checked.
 						JError::raiseWarning(500, Lang::txt('ERROR_SENDING_EMAIL'));
 					}
@@ -149,25 +150,28 @@ class plgUserJoomla extends JPlugin
 		$instance = $this->_getUser($user, $options);
 
 		// If _getUser returned an error, then pass it back.
-		if ($instance instanceof Exception) {
+		if ($instance instanceof Exception)
+		{
 			return false;
 		}
 
 		// If the user is blocked, redirect with an error
-		if ($instance->get('block') == 1) {
+		if ($instance->get('block') == 1)
+		{
 			JError::raiseWarning('SOME_ERROR_CODE', Lang::txt('JERROR_NOLOGIN_BLOCKED'));
 			return false;
 		}
 
 		// Authorise the user based on the group information
-		if (!isset($options['group'])) {
+		if (!isset($options['group']))
+		{
 			$options['group'] = 'USERS';
 		}
 
 		// Chek the user can login.
 		$result	= $instance->authorise($options['action']);
-		if (!$result) {
-
+		if (!$result)
+		{
 			JError::raiseWarning(401, Lang::txt('JERROR_LOGIN_DENIED'));
 			return false;
 		}
@@ -176,7 +180,7 @@ class plgUserJoomla extends JPlugin
 		$instance->set('guest', 0);
 
 		// Register the needed session variables
-		$session = JFactory::getSession();
+		$session = App::get('session');
 		$session->set('user', $instance);
 
 		$db = JFactory::getDBO();
@@ -185,7 +189,7 @@ class plgUserJoomla extends JPlugin
 		$app = JFactory::getApplication();
 		$app->checkSession();
 
-		if ($app->getCfg('session_handler') == 'database')
+		if (App::get('config')->get('session_handler') == 'database')
 		{
 			// Update the user related fields for the Joomla sessions table.
 			$db->setQuery(
@@ -215,9 +219,9 @@ class plgUserJoomla extends JPlugin
 	 */
 	public function onUserLogout($user, $options = array())
 	{
-		$my 		= JFactory::getUser();
-		$session 	= JFactory::getSession();
-		$app 		= JFactory::getApplication();
+		$my      = JFactory::getUser();
+		$session = App::get('session');
+		$app     = JFactory::getApplication();
 
 		// Make sure we're a valid user first
 		if ($user['id'] == 0 && !$my->get('tmp_user')) {
@@ -225,7 +229,8 @@ class plgUserJoomla extends JPlugin
 		}
 
 		// Check to see if we're deleting the current session
-		if ($my->get('id') == $user['id'] && $options['clientid'] == $app->getClientId()) {
+		if ($my->get('id') == $user['id'] && $options['clientid'] == $app->getClientId())
+		{
 			// Hit the user last visit field
 			$my->setLastVisit();
 
@@ -259,7 +264,9 @@ class plgUserJoomla extends JPlugin
 	protected function _getUser($user, $options = array())
 	{
 		$instance = User::getInstance();
-		if ($id = intval(JUserHelper::getUserId($user['username'])))  {
+
+		if ($id = intval(JUserHelper::getUserId($user['username'])))
+		{
 			$instance->load($id);
 			return $instance;
 		}
@@ -299,12 +306,15 @@ class plgUserJoomla extends JPlugin
 		//If autoregister is set let's register the user
 		$autoregister = isset($options['autoregister']) ? $options['autoregister'] :  $this->params->get('autoregister', 1);
 
-		if ($autoregister) {
-			if (!$instance->save()) {
+		if ($autoregister)
+		{
+			if (!$instance->save())
+			{
 				return JError::raiseWarning('SOME_ERROR_CODE', $instance->getError());
 			}
 		}
-		else {
+		else
+		{
 			// No existing user and autoregister off, this is a temporary user.
 			$instance->set('tmp_user', true);
 		}

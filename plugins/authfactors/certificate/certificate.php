@@ -52,13 +52,13 @@ class plgAuthfactorsCertificate extends \Hubzero\Plugin\Plugin
 		if ($this->isAuthenticated())
 		{
 			// Update session and reload the current page
-			\JFactory::getSession()->set('authfactors.status', true);
+			App::get('session')->set('authfactors.status', true);
 			App::redirect(Request::current());
 		}
 		else
 		{
 			// Update session and reload the current page
-			\JFactory::getSession()->set('authfactors.status', false);
+			App::get('session')->set('authfactors.status', false);
 
 			// Register an error with the cookie handler so that it outlives session termination
 			with(new Handler(new Cookie(1)))->error(Lang::txt('COM_LOGIN_FACTORS_FAILED'));

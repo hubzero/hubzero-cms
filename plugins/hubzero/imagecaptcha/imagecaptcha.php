@@ -93,9 +93,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	private function _confirm($word, $instanceNo='')
 	{
-		$currentSession = JFactory::getSession();
-
-		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
+		$securiy_code = App::get('session')->get('securiy_code' . $instanceNo);
 
 		if ($word == $securiy_code  &&  ($word != ''))
 		{
@@ -417,8 +415,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 		$security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
 
 		//Set the session to store the security code
-		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
+		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
 		$width = 120;
 		$height = 40;
 	}
@@ -437,8 +434,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 		$security_code = str_replace(array("0","O","o"), array("p"), substr($md5_hash, 15, 5));
 
 		// Set the session to store the security code
-		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
+		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
 
 		$width = 120;
 		$height = 40;

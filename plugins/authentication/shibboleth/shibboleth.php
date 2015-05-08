@@ -189,7 +189,7 @@ class plgAuthenticationShibboleth extends JPlugin
 	 */
 	public static function onGetLinkDescription()
 	{
-		$sess = JFactory::getSession()->get('shibboleth.session', NULL);
+		$sess = App::get('session')->get('shibboleth.session', NULL);
 		if ($sess && $sess['idp'] && ($rv = self::getInstitutionByEntityId($sess['idp'], 'label')))
 		{
 			return $rv;
@@ -337,7 +337,7 @@ class plgAuthenticationShibboleth extends JPlugin
 	 */
 	public function status()
 	{
-		if (($sess = JFactory::getSession()->get('shibboleth.session', NULL)))
+		if (($sess = App::get('session')->get('shibboleth.session', NULL)))
 		{
 			$this->log('found resumable session:', $sess);
 			return array('username' => $sess['username'], 'eppn' => $sess['eppn'], 'idp' => $sess['idp']);
@@ -400,7 +400,7 @@ class plgAuthenticationShibboleth extends JPlugin
 			$options['shibboleth'] = $attrs;
 			$this->log('login from:', $_SERVER);
 			$this->log('session attributes: ', $attrs);
-			JFactory::getSession()->set('shibboleth.session', $attrs);
+			App::get('session')->set('shibboleth.session', $attrs);
 		}
 	}
 
@@ -414,7 +414,6 @@ class plgAuthenticationShibboleth extends JPlugin
 	 */
 	public function display($view, $tpl)
 	{
-		$app = JFactory::getApplication();
 		list($service, $com_user, $task) = self::getLoginParams();
 		$return = $view->return ? '&return='.$view->return : '';
 
@@ -425,11 +424,11 @@ class plgAuthenticationShibboleth extends JPlugin
 			if (isset($_GET['return']) && isset($_COOKIE['shib-entity-id']))
 			{
 				$this->log('wayf passthru', $_COOKIE['shib-entity-id']);
-				$app->redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
+				App::redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
 			}
 			$this->log('failed wayf');
 			// invalid request, back to the login page with you
-			$app->redirect($service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 		}
 
 		// invalid idp in request, send back to login landing
@@ -437,7 +436,7 @@ class plgAuthenticationShibboleth extends JPlugin
 		if (!isset($eid) || !self::getInstitutionByEntityId($eid))
 		{
 			$this->log('failed to look up entity id', $eid);
-			$app->redirect($service.'/index.php?option='.$com_user.'&task=login'.$return);
+			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.$return);
 		}
 
 		// we're about to do at least a few redirects, some of which are out of our
@@ -485,7 +484,7 @@ class plgAuthenticationShibboleth extends JPlugin
 		// either way, the rewrite directs us back here to our login() method
 		// where we can extract info about the authn from mod_shib
 		$this->log('passing throuugh to shibd');
-		$app->redirect($service.'/login/shibboleth');
+		App::redirect($service.'/login/shibboleth');
 	}
 
 	/**
@@ -552,7 +551,7 @@ class plgAuthenticationShibboleth extends JPlugin
 				$response->email    = $response->username . '@invalid'; // RFC2606, section 2
 
 				// Also set a suggested username for their hub account
-				JFactory::getSession()->set('auth_link.tmp_username', $options['shibboleth']['username']);
+				App::get('session')->set('auth_link.tmp_username', $options['shibboleth']['username']);
 			}
 
 			$hzal->update();

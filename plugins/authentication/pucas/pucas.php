@@ -139,8 +139,6 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 */
 	public function display($view, $tpl)
 	{
-		$app = JFactory::getApplication();
-
 		if (Config::get('debug'))
 		{
 			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
@@ -156,7 +154,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		phpCAS::setNoCasServerValidation();
 		phpCAS::forceAuthentication();
 
-		$app->redirect(self::getRedirectUri('pucas') . $return);
+		App::redirect(self::getRedirectUri('pucas') . $return);
 	}
 
 	/**
@@ -251,7 +249,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				$response->email    = $response->username . '@invalid'; // RFC2606, section 2
 
 				// Also set a suggested username for their hub account
-				\JFactory::getSession()->set('auth_link.tmp_username', $username);
+				App::get('session')->set('auth_link.tmp_username', $username);
 			}
 
 			$hzal->update();

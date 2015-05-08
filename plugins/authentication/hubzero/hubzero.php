@@ -127,13 +127,11 @@ class plgAuthenticationHubzero extends JPlugin
 				$msg = \Hubzero\Password\Rule::validate($credentials['password'], $password_rules, $result->username);
 				if (is_array($msg) && !empty($msg[0]))
 				{
-					$session = \JFactory::getSession();
-					$session->set('badpassword', '1');
+					App::get('session')->set('badpassword', '1');
 				}
 				if (\Hubzero\User\Password::isPasswordExpired($result->username))
 				{
-					$session = \JFactory::getSession();
-					$session->set('expiredpassword', '1');
+					App::get('session')->set('expiredpassword', '1');
 				}
 
 				// Set cookie with login preference info

@@ -112,8 +112,8 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		$temporary_credentials = $twitter->getRequestToken(self::getRedirectUri('twitter') . $return);
 
 		// Store temp credentials in session for use after authentication redirect from twitter
-		JFactory::getSession()->set('twitter.oauth.token', $temporary_credentials['oauth_token']);
-		JFactory::getSession()->set('twitter.oauth.token_secret', $temporary_credentials['oauth_token_secret']);
+		App::get('session')->set('twitter.oauth.token', $temporary_credentials['oauth_token']);
+		App::get('session')->set('twitter.oauth.token_secret', $temporary_credentials['oauth_token_secret']);
 
 		// Get login url
 		$redirect_url = $twitter->getAuthorizeURL($temporary_credentials);
@@ -150,8 +150,8 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		$twitter = new TwitterOAuth(
 			$this->params->get('app_id'),
 			$this->params->get('app_secret'),
-			\JFactory::getSession()->get('twitter.oauth.token'),
-			\JFactory::getSession()->get('twitter.oauth.token_secret')
+			App::get('session')->get('twitter.oauth.token'),
+			App::get('session')->get('twitter.oauth.token_secret')
 		);
 
 		// Request user specific (longer lasting) credentials
@@ -205,7 +205,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 				$response->email    = $response->username . '@invalid';
 
 				// Also set a suggested username for their hub account
-				\JFactory::getSession()->set('auth_link.tmp_username', $account->screen_name);
+				App::get('session')->set('auth_link.tmp_username', $account->screen_name);
 			}
 
 			$hzal->update();
@@ -245,8 +245,8 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		$twitter = new TwitterOAuth(
 			$this->params->get('app_id'),
 			$this->params->get('app_secret'),
-			\JFactory::getSession()->get('twitter.oauth.token'),
-			\JFactory::getSession()->get('twitter.oauth.token_secret')
+			App::get('session')->get('twitter.oauth.token'),
+			App::get('session')->get('twitter.oauth.token_secret')
 		);
 
 		// Request user specific (longer lasting) credentials

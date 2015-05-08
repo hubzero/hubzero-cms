@@ -354,8 +354,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
-		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
+		App::get('session')->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 
 		if ($this->_verified)
 		{
@@ -430,8 +429,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	{
 		$word = $this->_generateHash(strtolower($word), date('j'));
 
-		$currentSession = JFactory::getSession();
-		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
+		$securiy_code = App::get('session')->get('securiy_code' . $instanceNo);
 
 		if ($hash && $word == $hash)
 		{
@@ -737,8 +735,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$security_code = $this->_generateHash($this->keystring, date('j'));
 
 		//Set the session to store the security code
-		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
+		App::get('session')->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
 		$width = 120;
 		$height = 40;
 	}
@@ -758,8 +755,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$security_code = $this->_generateHash($security_code, date('j'));
 
 		// Set the session to store the security code
-		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
+		App::get('session')->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
 
 		$width  = 120;
 		$height = 40;

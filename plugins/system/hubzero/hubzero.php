@@ -78,7 +78,7 @@ class plgSystemHubzero extends JPlugin
 		$user = JFactory::getUser();
 
 		// Get the session object
-		$session = JFactory::getSession();
+		$session = App::get('session');
 
 		if ($session->isNew())
 		{
@@ -165,7 +165,8 @@ class plgSystemHubzero extends JPlugin
 
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
-			JFactory::getAuthLogger()->info( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+
+			App::get('log.auth')->info( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 
 			// set new tracking cookie with current data
 			$tracker = array();
@@ -206,7 +207,8 @@ class plgSystemHubzero extends JPlugin
 	 */
 	public function onUserLoginFailure($response)
 	{
-		JFactory::getAuthLogger()->info($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+		App::get('log.auth')->info($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+
 		apache_note('auth','invalid');
 
 		return true;
