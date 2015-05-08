@@ -54,9 +54,28 @@ trait AssetAware
 	{
 		$extension = $extension ?: $this->detectExtensionName();
 
+		$attr = array(
+			'type'    => 'text/css',
+			'media'   => null,
+			'attribs' => array()
+		);
+
 		if ($element)
 		{
-			$extension = 'plg_' . $extension . '_' . $element;
+			if (is_string($element))
+			{
+				$extension = 'plg_' . $extension . '_' . $element;
+			}
+			else if (is_array($element))
+			{
+				foreach ($element as $key => $val)
+				{
+					if (array_key_exists($key, $attr))
+					{
+						$attr[$key] = $val;
+					}
+				}
+			}
 		}
 
 		$asset = new Stylesheet($extension, $stylesheet);
@@ -69,7 +88,7 @@ trait AssetAware
 			}
 			else
 			{
-				\App::get('document')->addStyleSheet($asset->link());
+				\App::get('document')->addStyleSheet($asset->link(), $attr['type'], $attr['media'], $attr['attribs']);
 			}
 		}
 		return $this;
@@ -87,9 +106,28 @@ trait AssetAware
 	{
 		$extension = $extension ?: $this->detectExtensionName();
 
+		$attr = array(
+			'type'  => 'text/javascript',
+			'defer' => false,
+			'async' => false
+		);
+
 		if ($element)
 		{
-			$extension = 'plg_' . $extension . '_' . $element;
+			if (is_string($element))
+			{
+				$extension = 'plg_' . $extension . '_' . $element;
+			}
+			else if (is_array($element))
+			{
+				foreach ($element as $key => $val)
+				{
+					if (array_key_exists($key, $attr))
+					{
+						$attr[$key] = $val;
+					}
+				}
+			}
 		}
 
 		$asset = new Javascript($extension, $asset);
@@ -102,7 +140,7 @@ trait AssetAware
 			}
 			else
 			{
-				\App::get('document')->addScript($asset->link());
+				\App::get('document')->addScript($asset->link(), $attr['type'], $attr['defer'], $attr['async']);
 			}
 		}
 		return $this;
