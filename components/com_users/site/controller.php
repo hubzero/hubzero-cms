@@ -33,7 +33,7 @@ class UsersController extends JControllerLegacy
 
 		// Set the default view name and format from the Request.
 		$vName   = Request::getCmd('view', 'login');
-		$vFormat = $document->getType();
+		$vFormat = Document::getType();
 		$lName   = Request::getCmd('layout', 'default');
 
 		if ($view = $this->getView($vName, $vFormat))
