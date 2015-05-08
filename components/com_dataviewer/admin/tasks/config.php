@@ -15,7 +15,7 @@ function dv_config()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document =  JFactory::getDocument();
+	$document = App::get('document');
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
 	$db_id = Request::getString('db', false);
@@ -23,8 +23,8 @@ function dv_config()
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
 
-	JToolBarHelper::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database' , 'databases');
-	JToolBarHelper::custom('back', 'back', 'back', 'Go back', false );
+	Toolbar::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database' , 'databases');
+	Toolbar::custom('back', 'back', 'back', 'Go back', false );
 
 
 	if (isset($_SESSION['dataviewer']['conf_file_updated'])) {

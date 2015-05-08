@@ -16,7 +16,7 @@ function view($dd = false)
 	global $com_name, $html_path, $dv_conf;
 	$name = $dd['dv_id'];
 
-	$document =  JFactory::getDocument();
+	$document = App::get('document');
 
 
 	dv_add_script('util.js');

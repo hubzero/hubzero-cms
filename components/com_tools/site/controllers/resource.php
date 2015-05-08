@@ -88,7 +88,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 		if (!$this->_toolid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=pipeline')
 			);
 			return;
@@ -352,8 +352,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 		// Set the document title
 		$this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)
 		if (Pathway::count() <= 0)
@@ -385,12 +384,9 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$this->view->authors = $authors;
 
 		// Pass error messages to the view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
@@ -522,7 +518,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		if (!$this->_toolid)
 		{
 			// not a tool resource page
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=pipeline')
 			);
 			return;
@@ -590,8 +586,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 		// Set the document title
 		$this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)
 		if (Pathway::count() <= 0)
@@ -622,12 +617,9 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$this->view->status      = $status;
 
 		// Pass error messages to the view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML

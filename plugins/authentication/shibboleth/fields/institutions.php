@@ -50,12 +50,13 @@ class JFormFieldInstitutions extends JFormField
 {
 	protected function getInput()
 	{
-		$doc = JFactory::getDocument();
-		$doc->addScript('/plugins/authentication/shibboleth/assets/js/admin.js');
-		$doc->addStyleSheet('/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
-		$doc->addStyleSheet('/plugins/authentication/shibboleth/assets/css/admin.css');
+		Document::addScript('/plugins/authentication/shibboleth/assets/js/admin.js');
+		Document::addStyleSheet('/plugins/authentication/shibboleth/assets/css/jquery-ui.css');
+		Document::addStyleSheet('/plugins/authentication/shibboleth/assets/css/admin.css');
+
 		$html = array();
-		$a = function($str) {
+		$a = function($str)
+		{
 			return str_replace('"', '&quot;', $str);
 		};
 		$val = json_decode($this->value, TRUE);
@@ -72,10 +73,12 @@ class JFormFieldInstitutions extends JFormField
 	private static function getIdpList($val, $alwaysUpdate = TRUE)
 	{
 		// list is up to date
-		if (($mtime = $val['xmlPath'].':'.filemtime($val['xmlPath'])) == $val['xmlRead'] && !$alwaysUpdate) {
+		if (($mtime = $val['xmlPath'].':'.filemtime($val['xmlPath'])) == $val['xmlRead'] && !$alwaysUpdate)
+		{
 			return array($mtime, $val['idps']);
 		}
-		if (!($xml = simplexml_load_file($val['xmlPath']))) {
+		if (!($xml = simplexml_load_file($val['xmlPath'])))
+		{
 			return array(null, 'Failed to parse XML from this path');
 		}
 		$xml->registerXPathNamespace('shib', 'urn:mace:shibboleth:2.0:native:sp:config');

@@ -190,7 +190,7 @@ function _dd_post($dd)
 
 function pathway($dd)
 {
-	$document = JFactory::getDocument();
+	$document = App::get('document');
 	$document->setTitle($dd['title']);
 
 	if (isset($_SERVER['HTTP_REFERER'])) {

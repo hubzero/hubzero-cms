@@ -55,7 +55,7 @@ class ToolsControllerTools extends \Hubzero\Component\SiteController
 		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && !$this->config->get('access-admin-component'))))
 		{
 			// Redirect to home page
-			$this->setRedirect(
+			App::redirect(
 				$this->config->get('mw_redirect', '/home')
 			);
 			return;
@@ -76,8 +76,7 @@ class ToolsControllerTools extends \Hubzero\Component\SiteController
 		{
 			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 
 	/**

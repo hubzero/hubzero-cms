@@ -31,7 +31,7 @@ class InstallerController extends JControllerLegacy
 		require_once JPATH_COMPONENT . '/helpers/installer.php';
 
 		// Get the document object.
-		$document = JFactory::getDocument();
+		$document = App::get('document');
 
 		// Set the default view name and format from the Request.
 		$vName   = Request::getCmd('view', 'install');

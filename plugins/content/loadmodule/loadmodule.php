@@ -150,7 +150,7 @@ class plgContentLoadmodule extends JPlugin
 		if (!isset(self::$modules[$position]))
 		{
 			self::$modules[$position] = '';
-			$document   = JFactory::getDocument();
+			$document   = \Document::instance();
 			$renderer   = $document->loadRenderer('module');
 			$modules    = \Module::byPosition($position);
 			$params     = array('style' => $style);
@@ -181,7 +181,7 @@ class plgContentLoadmodule extends JPlugin
 		if (!isset(self::$mods[$moduleinstance]))
 		{
 			self::$mods[$moduleinstance] = '';
-			$document = JFactory::getDocument();
+			$document = \Document::instance();
 			$renderer = $document->loadRenderer('module');
 			$params   = array('style' => $style);
 			$mod      = \Module::byName($module, $title);

@@ -129,8 +129,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			$title .= ': ';
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -144,7 +143,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
@@ -227,11 +226,9 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($title);
+		Document::setTitle($title);
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
@@ -474,7 +471,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Make sure we have an app to invoke
 		if (!$app->name)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
 			);
 			return;
@@ -529,7 +526,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$hasaccess = $this->_getToolAccess($app->name);
 		//$status2 = ($hasaccess) ? "PASSED" : "FAILED";
 
-		//$xlog->debug("mw::invoke " . $app->name . " by " . User::get('username') . " from " . $app->ip . " _getToolAccess " . $status2);
+		//Log::debug("mw::invoke " . $app->name . " by " . User::get('username') . " from " . $app->ip . " _getToolAccess " . $status2);
 
 		if ($this->getError())
 		{
@@ -614,7 +611,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 		if ($this->percent >= 100)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=storage')
 			);
 			return;
@@ -658,7 +655,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			//App::abort(500, $this->getError());
 			//return;
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
 				Lang::txt('COM_TOOLS_ERROR_SESSION_INVOKE_FAILED'),
 				'error'
@@ -691,7 +688,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		$rtrn = Request::getVar('return', '');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false)
 		);
 	}
@@ -759,7 +756,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$status = $this->middleware("start user=" . User::get('username') . " ip=" . Request::ip() . " app=" . $session->app() . " version=" . $session->app('version') . $toolparams, $output);
 		if ($this->getError())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
 				Lang::txt('COM_TOOLS_ERROR_SESSION_INVOKE_FAILED'),
 				'error'
@@ -785,7 +782,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Redirect to the new session view
 		$rtrn = Request::getVar('return', '');
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $session->app() . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false)
 		);
 	}
@@ -981,7 +978,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($user == User::get('username'))
 		{
 			// Take us back to the main page...
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
 			);
 			return;
@@ -989,7 +986,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Drop through and re-view the session...
 		//$this->viewTask();
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app . '&task=session&sess=' . $sess )
 		);
 	}
@@ -1015,7 +1012,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Make sure we have an app to invoke
 		if (!$app->sess)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
 				Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND'),
 				'error'
@@ -1288,11 +1285,9 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$title .= ': ' . Lang::txt('Session');
 		$title .= ($app->caption) ? ': ' . $app->sess . ' "' . $app->caption . '"' : ': ' . $app->sess;
 
-		$document = JFactory::getDocument();
-		$document->setTitle($title);
+		Document::setTitle($title);
 
 		// Set the breadcrumbs
-		$pathway = JFactory::getApplication()->getPathway();
 		if (Pathway::count() <= 0)
 		{
 			Pathway::append(
@@ -1371,7 +1366,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Ensure we have a session
 		if (!$sess)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($redirect)
 			);
 			return;
@@ -1393,7 +1388,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Did we get a result form the database?
 		if (!$ms->username)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($rediect)
 			);
 			return;
@@ -1430,13 +1425,13 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Take us back to the main page...
 		if ($rtrn)
 		{
-			$this->setRedirect(
+			App::redirect(
 				$rtrn
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($rediect)
 			);
 		}
@@ -1495,7 +1490,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		//if ($this->percent >= 100 && $this->remaining == 0) {
 		if ($this->percent >= 100)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
 			);
 		}
@@ -1734,7 +1729,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 	 */
 	private function _getToolExportControl($exportcontrol)
 	{
-		$xlog = JFactory::getLogger();
 		$exportcontrol = strtolower($exportcontrol);
 
 		$ip = Request::ip();
@@ -1744,14 +1738,14 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if (empty($country) && in_array($exportcontrol, array('us', 'd1', 'pu')))
 		{
 			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
-			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
+			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
 			return false;
 		}
 
 		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
 			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
-			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
+			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
 			return false;
 		}
 
@@ -1761,7 +1755,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
 					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
-					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
+					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
 					return false;
 				}
 			break;
@@ -1770,7 +1764,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
 					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
-					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
+					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
 					return false;
 				}
 			break;
@@ -1779,7 +1773,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol))
 				{
 					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
-					$xlog->debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
+					Log::debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
 					return false;
 				}
 			break;
@@ -1801,13 +1795,11 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php');
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php');
 
-		$xlog = JFactory::getLogger();
-
 		// Ensure we have a tool
 		if (!$tool)
 		{
 			$this->setError('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
-			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
+			Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return false;
 		}
 
@@ -1817,7 +1809,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			$login = User::get('username');
 			if ($login == '')
 			{
-				$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null user check");
+				Log::debug("mw::_getToolAccess($tool,$login) FAILED null user check");
 				return false;
 			}
 		}
@@ -1828,7 +1820,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		if (empty($tv->id))
 		{
-			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
+			Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
 			return false;
 		}
 
@@ -1837,13 +1829,13 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$toolgroups = $this->database->loadObjectList();
 		if (empty($toolgroups))
 		{
-			//$xlog->debug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
+			//Log::debug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
 		}
 
 		$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 		if (empty($xgroups))
 		{
-			//$xlog->debug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");
+			//Log::debug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");
 		}
 
 		// Check if the user is in any groups for this app
@@ -1882,23 +1874,23 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$exportAllowed = $this->_getToolExportControl($tv->exportControl);
 		$tisPublished = ($tv->state == 1);
 		$tisDev = ($tv->state == 3);
-	    $tisGroupControlled = ($tv->toolaccess == '@GROUP');
+		$tisGroupControlled = ($tv->toolaccess == '@GROUP');
 
 		if ($tisDev)
 		{
 			if ($indevgroup)
 			{
-				//$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
+				//Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
 				return true;
 			}
 			else if ($admin)
 			{
-				//$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+				//Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
 				return true;
 			}
 			else
 			{
-				$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
+				Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
 				$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP'));
 				return false;
 			}
@@ -1908,17 +1900,17 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			if ($tisGroupControlled) {
 				if ($ingroup)
 				{
-					//$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
+					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
 					return true;
 				}
 				else if ($admin)
 				{
-					//$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
 					return true;
 				}
 				else
 				{
-					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
+					Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
 					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP'));
 					return false;
 				}
@@ -1927,29 +1919,29 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			{
 				if (!$exportAllowed)
 				{
-					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+					Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
 					return false;
 				}
 				else if ($admin)
 				{
-					//$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
+					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
 					return true;
 				}
 				else if ($indevgroup)
 				{
-					//$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
+					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
 					return true;
 				}
 				else
 				{
-					//$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED");
+					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED");
 					return true;
 				}
 			}
 		}
 		else
 		{
-			$xlog->debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
+			Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_VERSION_UNPUBLISHED'));
 			return false;
 		}

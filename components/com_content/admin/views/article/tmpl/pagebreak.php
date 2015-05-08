@@ -26,7 +26,7 @@ $script .= 'window.parent.$.fancybox.close();'."\n\t";
 $script .= 'return false;'."\n";
 $script .= '}'."\n";
 
-JFactory::getDocument()->addScriptDeclaration($script);
+Document::addScriptDeclaration($script);
 ?>
 		<form>
 		<table width="100%" align="center">

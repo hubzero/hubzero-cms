@@ -35,10 +35,10 @@ $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&contr
 
 // add page stylesheets
 $stylesheets = GroupsHelperView::getPageCss($this->group);
-$doc = JFactory::getDocument();
+
 foreach ($stylesheets as $stylesheet)
 {
-	$doc->addStylesheet($stylesheet);
+	Document::addStylesheet($stylesheet);
 }
 
 // add styles & scripts

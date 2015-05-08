@@ -82,13 +82,13 @@ class plgSystemDebug extends JPlugin
 		// Only if debugging or language debug is enabled
 		if (JDEBUG || \Config::get('debug_lang'))
 		{
-			JFactory::getDocument()->addStyleSheet($base . '/media/cms/css/debug.css?v=' . filemtime(PATH_CORE . '/media/cms/css/debug.css'));
+			Document::addStyleSheet($base . '/media/cms/css/debug.css?v=' . filemtime(PATH_CORE . '/media/cms/css/debug.css'));
 		}
 
 		// [!] HUBZERO - Add CSS diagnostics
 		if (JDEBUG && $this->params->get('css', 0) && is_file(JPATH_SITE . '/media/system/css/diagnostics.css'))
 		{
-			JFactory::getDocument()->addStyleSheet($base . '/media/system/css/diagnostics.css?v=' . filemtime(PATH_CORE . '/media/system/css/diagnostics.css'));
+			Document::addStyleSheet($base . '/media/system/css/diagnostics.css?v=' . filemtime(PATH_CORE . '/media/system/css/diagnostics.css'));
 		}
 	}
 
@@ -131,7 +131,7 @@ class plgSystemDebug extends JPlugin
 		}
 
 		// Only render for HTML output
-		if ('html' !== \JFactory::getDocument()->getType())
+		if ('html' !== Document::getType())
 		{
 			echo $contents;
 			return;

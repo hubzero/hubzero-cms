@@ -21,7 +21,7 @@ if (!isset($_SESSION['db']['__rid'])) {
 define('DB_RID', $_SESSION['db']['__rid']);
 
 global $conf, $com_name;
-$document =  JFactory::getDocument();
+$document = App::get('document');
 $com_name = str_replace(JPATH_BASE.'/components/', '', JPATH_COMPONENT);
 $com_name = str_replace('com_', '' , $com_name);
 

@@ -22,10 +22,9 @@ class InstallerViewDefault extends JViewLegacy
 	 */
 	public function __construct($config = null)
 	{
-		$app = JFactory::getApplication();
 		parent::__construct($config);
 		$this->_addPath('template', $this->_basePath . '/views/default/tmpl');
-		$this->_addPath('template', JPATH_THEMES . '/' . $app->getTemplate() . '/html/com_installer/default');
+		$this->_addPath('template', JPATH_THEMES . '/' . App::get('template')->template . '/html/com_installer/default');
 	}
 
 	/**
@@ -70,7 +69,6 @@ class InstallerViewDefault extends JViewLegacy
 		}
 
 		// Document
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt('COM_INSTALLER_TITLE_' . $this->getName()));
+		Document::setTitle(Lang::txt('COM_INSTALLER_TITLE_' . $this->getName()));
 	}
 }

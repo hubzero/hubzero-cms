@@ -43,7 +43,7 @@ class plgSystemJquery extends JPlugin
 	public function onAfterRoute()
 	{
 		$client = 'Site';
-		if (JFactory::getApplication()->isAdmin())
+		if (App::isAdmin())
 		{
 			$client = 'Admin';
 			return;
@@ -69,7 +69,7 @@ class plgSystemJquery extends JPlugin
 
 		if ($this->params->get('noconflict' . $client))
 		{
-			JFactory::getDocument()->addScript(Request::root(true) . '/media/system/js/jquery.noconflict.js');
+			App::addScript(Request::root(true) . '/media/system/js/jquery.noconflict.js');
 		}
 	}
 }

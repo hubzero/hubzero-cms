@@ -61,8 +61,7 @@ class GroupsHelperDocumentRendererStylesheet extends GroupsHelperDocumentRendere
 		if ($path = $this->group->downloadLinkForPath($base, $source))
 		{
 			// add stylsheet to document
-			$document = JFactory::getDocument();
-			$document->addStylesheet($path);
+			Document::addStylesheet($path);
 		}
 	}
 }

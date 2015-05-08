@@ -75,7 +75,7 @@ class plgEditorTinymce extends JPlugin
 
 		if ($langMode)
 		{
-			$langPrefix = substr($language->getTag(), 0, strpos($language->getTag(), '-'));
+			$langPrefix = substr(Lang::getTag(), 0, strpos(Lang::getTag(), '-'));
 		}
 
 		$text_direction = 'ltr';
@@ -114,10 +114,11 @@ class plgEditorTinymce extends JPlugin
 			// If it is not a URL, assume it is a file name in the current template folder
 			else
 			{
-				$content_css = 'content_css : "'. JURI::root() .'templates/'. $template . '/css/'. $content_css_custom .'",';
+				$content_css = 'content_css : "'. Request::root() .'templates/'. $template . '/css/'. $content_css_custom .'",';
 
 				// Issue warning notice if the file is not found (but pass name to $content_css anyway to avoid TinyMCE error
-				if (!file_exists($templates_path . '/' . $template . '/css/' . $content_css_custom)) {
+				if (!file_exists($templates_path . '/' . $template . '/css/' . $content_css_custom))
+				{
 					$msg = sprintf (Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom);
 					JError::raiseNotice('SOME_ERROR_CODE', $msg);
 				}
@@ -519,14 +520,14 @@ class plgEditorTinymce extends JPlugin
 					remove_script_host : false,
 					// Layout
 					$content_css
-					document_base_url : \"". JURI::root() ."\"
+					document_base_url : \"". Request::root() ."\"
 				});
 				</script>";
 				break;
 
 			case 1: /* Advanced mode*/
 				$load = "\t<script type=\"text/javascript\" src=\"".
-						JURI::root().$this->_basePath.
+						Request::root().$this->_basePath.
 						"/tiny_mce.js\"></script>\n";
 
 				$return = $load .
@@ -549,7 +550,7 @@ class plgEditorTinymce extends JPlugin
 					// URL
 					relative_urls : $relative_urls,
 					remove_script_host : false,
-					document_base_url : \"". JURI::root() ."\",
+					document_base_url : \"". Request::root() ."\",
 					// Layout
 					$content_css
 					// Advanced theme
@@ -566,7 +567,7 @@ class plgEditorTinymce extends JPlugin
 
 			case 2: /* Extended mode*/
 				$load = "\t<script type=\"text/javascript\" src=\"".
-						JURI::root().$this->_basePath.
+						Request::root().$this->_basePath.
 						"/tiny_mce.js\"></script>\n";
 
 				$return = $load .
@@ -591,9 +592,9 @@ class plgEditorTinymce extends JPlugin
 					// URL
 					relative_urls : $relative_urls,
 					remove_script_host : false,
-					document_base_url : \"". JURI::root() ."\",
+					document_base_url : \"". Request::root() ."\",
 					//Templates
-					template_external_list_url :  \"". JURI::root() ."media/editors/tinymce/templates/template_list.js\",
+					template_external_list_url :  \"". Request::root() ."media/editors/tinymce/templates/template_list.js\",
 					// Layout
 					$content_css
 					// Advanced theme
@@ -666,9 +667,7 @@ class plgEditorTinymce extends JPlugin
 	 */
 	public function onGetInsertMethod($name)
 	{
-		$doc = JFactory::getDocument();
-
-		$js= "
+		$js = "
 			function isBrowserIE() {
 				return navigator.appName==\"Microsoft Internet Explorer\";
 			}
@@ -692,7 +691,7 @@ class plgEditorTinymce extends JPlugin
 				return true;
 			}";
 
-		$doc->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 
 		return true;
 	}

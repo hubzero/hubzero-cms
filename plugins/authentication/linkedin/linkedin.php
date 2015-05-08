@@ -85,7 +85,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 					});
 				});";
 
-		\JFactory::getDocument()->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$jsession   = JFactory::getSession();
+		$jsession   = App::get('session');
 		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
@@ -225,7 +225,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Make sure we have authorization
-		$jsession = \JFactory::getSession();
+		$jsession = App::get('session');
 
 		if ($jsession->get('linkedin.oauth.authorized') == TRUE)
 		{
@@ -288,7 +288,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', (string) $profile->{'email-address'}, 2);
 				$tmp_username = $sub_email[0];
-				\JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
+				$jsession->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -324,7 +324,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		$jsession = \JFactory::getSession();
+		$jsession = App::get('session');
 
 		// Set up linkedin configuration
 		$linkedin_config['appKey']    = $this->params->get('api_key');
@@ -354,7 +354,6 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		if ($reply['success'] === TRUE)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession = \JFactory::getSession();
 			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference

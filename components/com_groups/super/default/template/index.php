@@ -19,9 +19,8 @@ $baseLink = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
 $no_html = Request::getInt('no_html', 0);
 
 // add stylesheets and scripts
-JFactory::getDocument()
-	->addStyleSheet($base . DS . 'assets/css/main.css')
-	->addScript($base . DS . 'assets/js/main.js');
+Document::addStyleSheet($base . DS . 'assets/css/main.css')
+Document::addScript($base . DS . 'assets/js/main.js');
 ?>
 
 <?php if (!$no_html) : ?>

@@ -18,18 +18,19 @@ class ContentViewFeatured extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Parameters
-		$app 		= JFactory::getApplication();
-		$doc		= JFactory::getDocument();
-		$params		= $app->getParams();
-		$feedEmail	= $app->getCfg('feed_email', 'author');
-		$siteEmail	= $app->getCfg('mailfrom');
+		$app       = JFactory::getApplication();
+		$doc       = Document::instance();
+		$params    = $app->getParams();
+		$feedEmail = Config::get('feed_email', 'author');
+		$siteEmail = Config::get('mailfrom');
 
-		$doc->link	= Route::url('index.php?option=com_content&view=featured');
+		$doc->link = Route::url('index.php?option=com_content&view=featured');
 
 		// Get some data from the model
-		Request::setVar('limit', $app->getCfg('feed_limit'));
+		Request::setVar('limit', Config::get('feed_limit'));
 		$categories = JCategories::getInstance('Content');
-		$rows		= $this->get('Items');
+
+		$rows = $this->get('Items');
 		foreach ($rows as $row)
 		{
 			// strip html from feed item title
@@ -48,23 +49,27 @@ class ContentViewFeatured extends JViewLegacy
 			$db->setQuery($query);
 			$row->fulltext = $db->loadResult();
 
-			$description	= ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltext : $row->introtext);
-			$author			= $row->created_by_alias ? $row->created_by_alias : $row->author;
+			$description = ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltext : $row->introtext);
+			$author      = $row->created_by_alias ? $row->created_by_alias : $row->author;
 
 			// Load individual item creator class
-			$item				= new JFeedItem();
-			$item->title		= $title;
-			$item->link			= $link;
-			$item->date			= $row->publish_up;
-			$item_category		= $categories->get($row->catid);
-			$item->category		= array();
-			$item->category[]	= Lang::txt('JFEATURED'); // All featured articles are categorized as "Featured"
-			for ($item_category = $categories->get($row->catid); $item_category !== null; $item_category = $item_category->getParent()) {
-				if ($item_category->id > 1) { // Only add non-root categories
+			$item = new \Hubzero\Document\Type\Feed\Item();
+			$item->title   = $title;
+			$item->link    = $link;
+			$item->date    = $row->publish_up;
+			$item_category = $categories->get($row->catid);
+
+			$item->category   = array();
+			$item->category[] = Lang::txt('JFEATURED'); // All featured articles are categorized as "Featured"
+
+			for ($item_category = $categories->get($row->catid); $item_category !== null; $item_category = $item_category->getParent())
+			{
+				// Only add non-root categories
+				if ($item_category->id > 1)
+				{
 					$item->category[] = $item_category->title;
 				}
 			}
-
 
 			$item->author = $author;
 			if ($feedEmail == 'site')
@@ -83,7 +88,7 @@ class ContentViewFeatured extends JViewLegacy
 			}
 
 			// Load item description and add div
-			$item->description	= '<div class="feed-description">'.$description.'</div>';
+			$item->description = '<div class="feed-description">'.$description.'</div>';
 
 			// Loads item info into rss array
 			$doc->addItem($item);

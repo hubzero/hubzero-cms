@@ -46,7 +46,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		if (User::isGuest())
 		{
 			// Redirect to home page
-			$this->setRedirect(
+			App::redirect(
 				$this->config->get('mw_redirect', '/home')
 			);
 			return;
@@ -62,7 +62,9 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin')))
 		{
 			// Redirect to home page
-			$this->_redirect = $this->config->get('mw_redirect', '/home');
+			App::redirect(
+				$this->config->get('mw_redirect', '/home')
+			);
 			return;
 		}
 
@@ -106,8 +108,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->_title .= ': ' . stripslashes(User::get('name'));
 		$this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
 
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -121,7 +122,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
@@ -214,7 +215,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 		if (!($shost = $this->config->get('storagehost')))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
 			);
 			return;
@@ -305,7 +306,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		//if ($this->percent >= 100 && $this->remaining == 0) {
 		if ($this->percent >= 100)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
 			);
 		}
@@ -566,13 +567,11 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->view->listdir = $listdir;
 		$this->view->path = $path;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 

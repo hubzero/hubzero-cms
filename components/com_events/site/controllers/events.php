@@ -42,6 +42,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use DateTimezone;
 use DateTime;
+use Document;
 use Exception;
 use Request;
 use Pathway;
@@ -223,8 +224,7 @@ class Events extends SiteController
 				}
 			break;
 		}
-		$document = \JFactory::getDocument();
-		$document->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 
 	/**
@@ -835,8 +835,7 @@ class Events extends SiteController
 		$tags = $rt->render();
 
 		// Set the page title
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)) . ': ' . stripslashes($row->title));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)) . ': ' . stripslashes($row->title));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -940,8 +939,6 @@ class Events extends SiteController
 	 */
 	public function eventregisterTask()
 	{
-		$document = \JFactory::getDocument();
-
 		// Get some needed info
 		$offset = $this->offset;
 		$year   = $this->year;
@@ -966,7 +963,7 @@ class Events extends SiteController
 		// Ensure we have an event
 		if (!$event->title || $event->registerby == '0000-00-00 00:00:00')
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::Redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 
@@ -983,7 +980,7 @@ class Events extends SiteController
 		$eday = $edbits[0];
 
 		// Set the page title
-		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.Lang::txt('EVENTS_REGISTER').': '.stripslashes($event->title));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)).': '.Lang::txt('EVENTS_REGISTER').': '.stripslashes($event->title));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -1105,8 +1102,6 @@ class Events extends SiteController
 	 */
 	public function processTask()
 	{
-		$document = \JFactory::getDocument();
-
 		// Get some needed info
 		$offset = $this->offset;
 		$year   = $this->year;
@@ -1155,7 +1150,7 @@ class Events extends SiteController
 		$pages = $page->loadPages($event->id);
 
 		// Set the page title
-		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('EVENTS_REGISTER') . ': ' . stripslashes($event->title));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('EVENTS_REGISTER') . ': ' . stripslashes($event->title));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -1617,8 +1612,7 @@ class Events extends SiteController
 		}
 
 		// Set the title
-		$document = \JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)));
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -1684,7 +1678,7 @@ class Events extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option);
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 			return;
 		}
 

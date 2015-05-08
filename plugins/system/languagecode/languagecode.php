@@ -27,7 +27,7 @@ class plgSystemLanguagecode extends JPlugin
 			$body = JResponse::getBody();
 
 			// Get the current language code
-			$code = JFactory::getDocument()->getLanguage();
+			$code = Document::getLanguage();
 
 			// Get the new code
 			$new_code  = $this->params->get($code);
@@ -93,17 +93,16 @@ class plgSystemLanguagecode extends JPlugin
 		}
 
 		// Check we are manipulating a valid form.
-		$app = JFactory::getApplication();
 		if ($form->getName() != 'com_plugins.plugin'
 			|| isset($data->name) && $data->name != 'plg_system_languagecode'
-			|| empty($data) && !$app->getUserState('plg_system_language_code.edit')
+			|| empty($data) && !User::getState('plg_system_language_code.edit')
 		)
 		{
 			return true;
 		}
 
 		// Mark the plugin as being edited
-		$app->setUserState('plg_system_language_code.edit', $data->name == 'plg_system_languagecode');
+		User::setState('plg_system_language_code.edit', $data->name == 'plg_system_languagecode');
 
 		// Get site languages
 		$languages = JLanguage::getKnownLanguages(JPATH_SITE);

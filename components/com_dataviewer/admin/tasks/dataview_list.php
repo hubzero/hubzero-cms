@@ -15,7 +15,7 @@ function dv_dataview_list()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document =  JFactory::getDocument();
+	$document = App::get('document');
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
 	$db_id = Request::getString('db', false);

@@ -266,7 +266,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
-		$session = JFactory::getSession();
+		$session = App::get('session');
 
 		// If it's new search remove all user citation checkmarks
 		if (isset($_POST['filter']))
@@ -556,11 +556,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
+		Document::setTitle( Lang::txt('PLG_GROUPS_CITATIONS_CITATION') . $shortenedTitle );
 
 		//push jquery to doc
-		$document->addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
+		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
 		$view->title  = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));

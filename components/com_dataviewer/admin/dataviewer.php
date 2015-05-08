@@ -27,7 +27,7 @@ require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_security.php');
 require_once(JPATH_COMPONENT . DS . 'libs' . DS . 'lib_json.php');
 
 
-$document =  JFactory::getDocument();
+$document = App::get('document');
 
 // CSRF token
 $document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');

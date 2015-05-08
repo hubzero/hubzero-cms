@@ -33,7 +33,8 @@ class CategoriesController extends JControllerLegacy
 		parent::__construct($config);
 
 		// Guess the Lang message prefix. Defaults to the option.
-		if (empty($this->extension)) {
+		if (empty($this->extension))
+		{
 			$this->extension = Request::getCmd('extension', 'com_content');
 		}
 	}
@@ -50,16 +51,17 @@ class CategoriesController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		// Get the document object.
-		$document = JFactory::getDocument();
+		$document = App::get('document');
 
 		// Set the default view name and format from the Request.
-		$vName		= Request::getCmd('view', 'categories');
-		$vFormat	= $document->getType();
-		$lName		= Request::getCmd('layout', 'default');
-		$id			= Request::getInt('id');
+		$vName   = Request::getCmd('view', 'categories');
+		$vFormat = $document->getType();
+		$lName   = Request::getCmd('layout', 'default');
+		$id      = Request::getInt('id');
 
 		// Check for edit form.
-		if ($vName == 'category' && $lName == 'edit' && !$this->checkEditId('com_categories.edit.category', $id)) {
+		if ($vName == 'category' && $lName == 'edit' && !$this->checkEditId('com_categories.edit.category', $id))
+		{
 			// Somehow the person just went to the form - we don't allow that.
 			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
@@ -69,7 +71,8 @@ class CategoriesController extends JControllerLegacy
 		}
 
 		// Get and render the view.
-		if ($view = $this->getView($vName, $vFormat)) {
+		if ($view = $this->getView($vName, $vFormat))
+		{
 			// Get the model for the view.
 			$model = $this->getModel($vName, 'CategoriesModel', array('name' => $vName . '.' . substr($this->extension, 4)));
 

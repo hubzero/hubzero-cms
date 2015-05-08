@@ -72,13 +72,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
-		$jsession = JFactory::getSession();
 
 		// Get the return URL
 		$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
 		if (!$return)
 		{
-			$return = $jsession->get('session.return');
+			$return = Session::get('session.return');
 
 			if (!$return)
 			{
@@ -231,7 +230,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			if (!$updateEmail)
 			{
 				// Redirect
-				$jsession->clear('session.return');
+				Session::clear('session.return');
+
 				App::redirect($return,'','message',true);
 			}
 		}
@@ -295,7 +295,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			if (!$updateEmail)
 			{
 				// Redirect
-				$jsession->clear('session.return');
+				Session::clear('session.return');
+
 				App::redirect($return,'','message',true);
 			}
 		}
@@ -339,7 +340,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$xregistration = new MembersModelRegistration();
 
 		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
-		$jsession = JFactory::getSession();
 
 		$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
 
@@ -365,10 +365,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 			if ($username[0] == '-' && is_object($hzal))
 			{
-				$tmp_username = JFactory::getSession()->get('auth_link.tmp_username', '');
-				$xregistration->set('login',$tmp_username);
-				$xregistration->set('email',$hzal->email);
-				$xregistration->set('confirmEmail',$hzal->email);
+				$tmp_username = Session::get('auth_link.tmp_username', '');
+				$xregistration->set('login', $tmp_username);
+				$xregistration->set('email', $hzal->email);
+				$xregistration->set('confirmEmail', $hzal->email);
 				$force = true;
 			}
 		}
@@ -377,7 +377,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if (!$force && $check && Request::getMethod() == 'GET')
 		{
-			$jsession->set('registration.incomplete', false);
+			Session::set('registration.incomplete', false);
 			if ($_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/register/update'
 			 || $_SERVER['REQUEST_URI'] == rtrim(Request::base(true), '/') . '/members/register/update')
 			{
@@ -471,20 +471,20 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// TODO: only update if changed
 			if ($myuser->get('id') == User::get('id'))
 			{
-				$suser = $jsession->get('user');
+				$suser = Session::get('user');
 				$suser->set('username', $xprofile->get('username'));
 				$suser->set('email', $xprofile->get('email'));
 				$suser->set('name', $xprofile->get('name'));
-				$jsession->set('user', $suser);
+				Session::set('user', $suser);
 
 				// Get the session object
 				$table =  JTable::getInstance('session');
-				$table->load($jsession->getId());
+				$table->load(Session::getId());
 				$table->username = $xprofile->get('username');
 				$table->update();
 			}
 
-			$jsession->set('registration.incomplete', false);
+			Session::set('registration.incomplete', false);
 
 			// Notify the user
 			if ($updateEmail)
@@ -642,7 +642,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				// Get required system objects
 				$user      = clone(User::getRoot());
 				$authorize = JFactory::getACL();
-				$document  = JFactory::getDocument();
 
 				// If user registration is not allowed, show 403 not authorized.
 				if ($usersConfig->get('allowUserRegistration') == '0')
@@ -854,7 +853,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						// Send mail
 						if (!$message->send())
 						{
-							\JFactory::getLogger()->error('Members admin notification email failed: ' . Lang::txt('Failed to mail %s', $hubMonitorEmail));
+							Log::error('Members admin notification email failed: ' . Lang::txt('Failed to mail %s', $hubMonitorEmail));
 						}
 					}
 
@@ -1514,10 +1513,9 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 			// if the user just changed their email & confirmed
 			// reset 'userchangedemail' key
-			$session = JFactory::getSession();
-			if ($session->get('userchangedemail', 0) == 1)
+			if (Session::get('userchangedemail', 0) == 1)
 			{
-				$session->set('userchangedemail', 0);
+				Session::set('userchangedemail', 0);
 			}
 
 			// Redirect
@@ -1643,8 +1641,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			$title = Lang::txt('COM_MEMBERS_REGISTER');
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($title);
+		Document::setTitle($title);
 	}
 
 	/**
@@ -1654,17 +1651,16 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	private function _cookie_check()
 	{
-		$jsession = JFactory::getSession();
-		$jcookie = $jsession->getName();
+		$jcookie = Session::getName();
 
 		if (!isset($_COOKIE[$jcookie]))
 		{
 			if (Request::getVar('cookie', '', 'get') != 'no')
 			{
-				$juri = JURI::getInstance();
-				$juri->setVar('cookie', 'no');
+				$uri = JURI::getInstance();
+				$uri->setVar('cookie', 'no');
 
-				App::redirect($juri->toString());
+				App::redirect($uri->toString());
 				return;
 			}
 
@@ -1672,10 +1668,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 		else if (Request::getVar('cookie', '', 'get') == 'no')
 		{
-			$juri = JURI::getInstance();
-			$juri->delVar('cookie');
+			$uri = JURI::getInstance();
+			$uri->delVar('cookie');
 
-			App::redirect($juri->toString());
+			App::redirect($uri->toString());
 			return;
 		}
 

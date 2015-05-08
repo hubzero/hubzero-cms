@@ -169,8 +169,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	protected function _sent()
 	{
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT'));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT'));
 
 		// Filters for returning results
 		$filters = array(
@@ -274,8 +273,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt('PLG_GROUPS_MESSAGES_SEND'));
+		Document::setTitle(Lang::txt(strtoupper($this->_name)).': '.$this->group->get('description').': '.Lang::txt('PLG_GROUPS_MESSAGES_SEND'));
 
 		// Instantiate a vew
 		$view = $this->view('default', 'create');

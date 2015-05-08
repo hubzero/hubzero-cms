@@ -27,16 +27,16 @@ class plgButtonArticle extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
-
 
 	/**
 	 * Display the button
 	 *
 	 * @return array A four element array of (article_id, article_title, category_id, object)
 	 */
-	function onDisplay($name)
+	public function onDisplay($name)
 	{
 		/*
 		 * Javascript to insert the link
@@ -55,8 +55,7 @@ class plgButtonArticle extends JPlugin
 			$.fancybox.close();
 		}";
 
-		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 
 		JHtml::_('behavior.modal');
 
@@ -64,9 +63,9 @@ class plgButtonArticle extends JPlugin
 		 * Use the built-in element view to select the article.
 		 * Currently uses blank class.
 		 */
-		$link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;'.JSession::getFormToken().'=1';
+		$link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
 
-		$button = new JObject();
+		$button = new \Hubzero\Base\Object();
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', Lang::txt('PLG_ARTICLE_BUTTON_ARTICLE'));

@@ -75,8 +75,7 @@ $schema = $elements->getSchema();
 // Set the document description
 if ($this->model->resource->introtext)
 {
-	$document = JFactory::getDocument();
-	$document->setDescription(strip_tags($this->model->resource->introtext));
+	Document::setDescription(strip_tags($this->model->resource->introtext));
 }
 
 // Check if there's anything left in the fulltxt after removing custom fields

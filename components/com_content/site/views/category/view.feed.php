@@ -17,16 +17,16 @@ class ContentViewCategory extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$app		= JFactory::getApplication();
-		$doc		= JFactory::getDocument();
-		$params 	= $app->getParams();
-		$feedEmail	= $app->getCfg('feed_email', 'author');
-		$siteEmail	= $app->getCfg('mailfrom');
+		$app       = JFactory::getApplication();
+		$doc       = Document::instance();
+		$params    = $app->getParams();
+		$feedEmail = Config::get('feed_email', 'author');
+		$siteEmail = Config::get('mailfrom');
 
 		// Get some data from the model
-		Request::setVar('limit', $app->getCfg('feed_limit'));
-		$category	= $this->get('Category');
-		$rows		= $this->get('Items');
+		Request::setVar('limit', Config::get('feed_limit'));
+		$category = $this->get('Category');
+		$rows     = $this->get('Items');
 
 		$doc->link = Route::url(ContentHelperRoute::getCategoryRoute($category->id));
 
@@ -54,12 +54,12 @@ class ContentViewCategory extends JViewLegacy
 			@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
 			// Load individual item creator class
-			$item 				= new JFeedItem();
-			$item->title		= $title;
-			$item->link			= $link;
-			$item->date			= $date;
-			$item->category		= $row->category_title;
-			$item->author		= $author;
+			$item = new \Hubzero\Document\Type\Feed\Item();
+			$item->title    = $title;
+			$item->link     = $link;
+			$item->date     = $date;
+			$item->category = $row->category_title;
+			$item->author   = $author;
 			if ($feedEmail == 'site')
 			{
 				$item->authorEmail = $siteEmail;

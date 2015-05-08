@@ -283,7 +283,7 @@ function pathway($dd)
 {
 	$db_id = $dd['db_id'];
 
-	$document = JFactory::getDocument();
+	$document = App::get('document');
 	$document->setTitle($dd['title']);
 
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {

@@ -104,7 +104,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		}
 
 		//redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return))),
 			$message,
 			'warning'
@@ -255,8 +255,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		}
 
 		//set title of browser window
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+		Document::setTitle($this->_title);
 	}
 
 

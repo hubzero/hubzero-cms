@@ -126,7 +126,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Send mail
 		if (!$message->send())
 		{
-			\JFactory::getLogger()->error('Members username reminder email failed: ' . Lang::txt('Failed to mail %s', $email));
+			Log::error('Members username reminder email failed: ' . Lang::txt('Failed to mail %s', $email));
+
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
@@ -177,6 +178,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 
 		// Make sure it looks like a valid username
 		require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
+
 		if (!MembersHelperUtility::validlogin($username))
 		{
 			App::redirect(
@@ -279,7 +281,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Send mail
 		if (!$message->send())
 		{
-			\JFactory::getLogger()->error('Members password reset email failed: ' . Lang::txt('Failed to mail %s', $user->email));
+			Log::error('Members password reset email failed: ' . Lang::txt('Failed to mail %s', $user->email));
+
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
@@ -289,7 +292,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Push the user data into the session
-		JFactory::getApplication()->setUserState('com_users.reset.user', $user->id);
+		User::setState('com_users.reset.user', $user->id);
 
 		// Everything went well...go to the token verification page
 		App::redirect(
@@ -332,8 +335,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Get the token and user id from the confirmation process
-		$app = JFactory::getApplication();
-		$id  = $app->getUserState('com_users.reset.user', null);
+		$id  = User::getState('com_users.reset.user', null);
 
 		// Get the user object
 		$user  = \Hubzero\User\User::oneOrFail($id);
@@ -376,7 +378,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Push the user data into the session
-		$app->setUserState('com_users.reset.token', $crypt . ':' . $salt);
+		User::setState('com_users.reset.token', $crypt . ':' . $salt);
 
 		// Everything went well...go to the actual change password page
 		App::redirect(
@@ -419,9 +421,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the token and user id from the verification process
-		$app     = JFactory::getApplication();
-		$token   = $app->getUserState('com_users.reset.token', null);
-		$id      = $app->getUserState('com_users.reset.user',  null);
+		$token   = User::getState('com_users.reset.token', null);
+		$id      = User::getState('com_users.reset.user',  null);
 		$no_html = Request::getInt('no_html', 0);
 
 		// Check the token and user id
@@ -563,8 +564,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Flush the user data from the session
-		$app->setUserState('com_users.reset.token', null);
-		$app->setUserState('com_users.reset.user', null);
+		User::setState('com_users.reset.token', null);
+		User::setState('com_users.reset.user', null);
 
 		if ($no_html)
 		{
@@ -594,7 +595,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	 **/
 	private function setTitle()
 	{
-		JFactory::getDocument()->setTitle(
+		Document::setTitle(
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task))
 		);
 

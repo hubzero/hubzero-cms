@@ -59,7 +59,6 @@ class UsersViewLogout extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Initialize variables
-		$document = JFactory::getDocument();
 		$image    = '';
 
 		$menu = JFactory::getApplication()->getMenu();
@@ -72,7 +71,7 @@ class UsersViewLogout extends JViewLegacy
 		else
 		{
 			$params = new JParameter( '' );
-			$template = JFactory::getApplication()->getTemplate();
+			$template = App::get('template')->template;
 			$inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
 			if (file_exists($inifile))
 			{
@@ -108,10 +107,10 @@ class UsersViewLogout extends JViewLegacy
 		$title = Lang::txt( 'Logout');
 
 		// Set page title
-		$document->setTitle( $title );
+		Document::setTitle($title);
 
 		// Build logout image if enabled
-		if ( $params->get( 'image_'.$type ) != -1 )
+		if ($params->get( 'image_'.$type) != -1)
 		{
 			$image = '/images/stories/'.$params->get( 'image_'.$type );
 			$image = '<img src="'. $image  .'" align="'. $params->get( 'image_'.$type.'_align' ) .'" hspace="10" alt="" />';

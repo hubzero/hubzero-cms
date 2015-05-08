@@ -33,6 +33,7 @@ namespace Components\Poll\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Poll\Tables\Poll;
 use Exception;
+use Document;
 use Request;
 use Pathway;
 use Route;
@@ -67,8 +68,6 @@ class Polls extends SiteController
 	{
 		$app = \JFactory::getApplication();
 
-		$document = \JFactory::getDocument();
-
 		$poll_id = Request::getVar('id', 0, '', 'int');
 
 		$poll = new Poll($this->database);
@@ -101,7 +100,7 @@ class Polls extends SiteController
 		{
 			$params->set('page_title', $poll->title);
 		}
-		$document->setTitle($params->get('page_title'));
+		Document::setTitle($params->get('page_title'));
 
 		//Set pathway information
 		Pathway::append($poll->title, '');
@@ -244,7 +243,6 @@ class Polls extends SiteController
 	public function latestTask()
 	{
 		$app      = \JFactory::getApplication();
-		$document = \JFactory::getDocument();
 
 		$model = new Poll($this->database);
 		$poll = $model->getLatest();
@@ -278,7 +276,7 @@ class Polls extends SiteController
 		{
 			$params->set('page_title', $poll->title);
 		}
-		$document->setTitle($params->get('page_title'));
+		Document::setTitle($params->get('page_title'));
 
 		//Set pathway information
 		Pathway::append($poll->title, '');

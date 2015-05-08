@@ -13,10 +13,9 @@
 $base = str_replace(PATH_CORE, '', __DIR__);
 
 // add stylesheets and scripts
-JFactory::getDocument()
-	->addStyleSheet($base . DS . 'assets/css/main.css')
-	->addStyleSheet($base . DS . 'assets/css/error.css')
-	->addScript($base . DS . 'assets/js/main.js');
+Document::addStyleSheet($base . DS . 'assets/css/main.css')
+Document::addStyleSheet($base . DS . 'assets/css/error.css')
+Document::addScript($base . DS . 'assets/js/main.js');
 ?>
 <script>
 	jQuery(document).ready(function(jq) {

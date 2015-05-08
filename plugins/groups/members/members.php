@@ -146,8 +146,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			}
 
 			// Set the page title
-			$document = JFactory::getDocument();
-			$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
+			Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
 
 			$this->css('members.css')
 			     ->js('members.js');
@@ -645,8 +644,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
 		$view = $this->view('default', 'remove');
@@ -801,8 +799,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$msg = $this->group->get('restrict_msg');
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'deny');
@@ -906,8 +903,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Display form asking for a reason to deny membership
 		$view = $this->view('default', 'cancel');
@@ -1155,8 +1151,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
+		Document::setTitle(Lang::txt(strtoupper($this->name)).': '.$this->group->get('description').': '.Lang::txt(strtoupper($this->action)));
 
 		// Cancel membership confirmation screen
 		$view = $this->view('assign', 'role');

@@ -93,7 +93,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 					}
 				})();";
 
-		JFactory::getDocument()->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			$client->authenticate($code);
 
 			// Add the access token to the session
-			$jsession = \JFactory::getSession();
+			$jsession = App::get('session');
 			$jsession->set('google.token', $client->getAccessToken());
 		}
 		else
@@ -202,7 +202,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$oauth2 = new Google_Service_OAuth2($client);
 
 		// Check if there's an active token in the session
-		$jsession = \JFactory::getSession();
+		$jsession = App::get('session');
 		if ($jsession->get('google.token', NULL))
 		{
 			$client->setAccessToken($jsession->get('google.token'));
@@ -253,7 +253,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $user_profile['email'], 2);
 				$tmp_username = $sub_email[0];
-				\JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
+				$jsession->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();

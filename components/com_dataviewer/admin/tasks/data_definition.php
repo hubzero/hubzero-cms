@@ -15,7 +15,7 @@ function dv_data_definition()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document =  JFactory::getDocument();
+	$document = App::get('document');
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
 	$db_id = Request::getString('db', false);
@@ -33,8 +33,8 @@ function dv_data_definition()
 	$dd = json_decode($dd_json, true);
 
 
-	JToolBarHelper::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
-	JToolBarHelper::custom('back', 'back', 'back', 'Go back', false );
+	Toolbar::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
+	Toolbar::custom('back', 'back', 'back', 'Go back', false );
 
 
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";

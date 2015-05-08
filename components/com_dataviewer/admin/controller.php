@@ -37,7 +37,7 @@ function controller_exec()
 		$task_func = 'dv_' . $task;
 		if (function_exists($task_func)) {
 			if (file_exists(JPATH_COMPONENT . DS . 'tasks' . DS . 'html' . DS . $task . '.js')) {
-				$document =  JFactory::getDocument();
+				$document = App::get('document');
 				$document->addScript(DB_PATH . DS . 'tasks' . DS . 'html' . DS . $task . '.js?v=2');
 			}
 			$task_func();

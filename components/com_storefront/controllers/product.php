@@ -60,7 +60,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$pId = $this->warehouse->productExists(Request::getVar('product', ''));
 		if (!$pId)
 		{
-			JError::raiseError(404, Lang::txt('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
 		}
 
 		$this->view->pId = $pId;
@@ -102,12 +102,12 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			{
 				$this->view->setError($errors);
 			}
-			else {
+			else
+			{
 				// prevent resubmitting by refresh
 				// If not an ajax call, redirect to cart
 				$redirect_url  = Route::url('index.php?option=' . 'com_cart');
-				$app = JFactory::getApplication();
-				$app->redirect($redirect_url);
+				App::redirect($redirect_url);
 			}
 		}
 
@@ -196,13 +196,16 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 
 		if ($data)
 		{
-			foreach ($data->skus as $sId => $info) {
+			foreach ($data->skus as $sId => $info)
+			{
 				$info = $info['info'];
 
-				if ($info->sPrice > $priceRange['high']) {
+				if ($info->sPrice > $priceRange['high'])
+				{
 					$priceRange['high'] = $info->sPrice;
 				}
-				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice) {
+				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice)
+				{
 					$priceRange['low'] = $info->sPrice;
 				}
 			}
@@ -210,10 +213,11 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$this->view->price = $priceRange;
 
 		// Add custom page JS
-		if ($data && (count($data->options) > 1 || count($data->skus) > 1)) {
+		if ($data && (count($data->options) > 1 || count($data->skus) > 1))
+		{
 			$js = $this->getDisplayJs($data->options, $data->skus);
-			$doc =& JFactory::getDocument();
-			$doc->addScriptDeclaration($js);
+
+			Document::addScriptDeclaration($js);
 		}
 
 		// Get images (if any), gets all images from /site/storefront/products/$pId
@@ -227,7 +231,8 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			$files = scandir($imgPath);
 			foreach ($files as $file)
 			{
-				if (in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedImgExt)) {
+				if (in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedImgExt))
+				{
 					if (substr($file, 0, 7) == 'default')
 					{
 						// Let the default image to be the first one

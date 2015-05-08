@@ -30,7 +30,7 @@ $script .= "	Joomla.submitform(task, document.getElementById('item-form'));
 			}
 	}";
 
-JFactory::getDocument()->addScriptDeclaration($script);
+Document::addScriptDeclaration($script);
 ?>
 <form action="<?php echo Route::url('index.php?option=com_modules&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">

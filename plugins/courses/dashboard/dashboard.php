@@ -79,8 +79,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 		if ($response->get('name') == $active)
 		{
 			// Set the page title
-			$document = JFactory::getDocument();
-			$document->setTitle($document->getTitle() . ': ' . Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
+			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
 			Pathway::append(
 				Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),

@@ -54,16 +54,16 @@ class plgCaptchaRecaptcha extends JPlugin
 		}
 
 		$server = self::RECAPTCHA_API_SERVER;
-		if (JBrowser::getInstance()->isSSLConnection())
+		if (Request::isSecure())
 		{
 			$server = self::RECAPTCHA_API_SECURE_SERVER;
 		}
 
 		JHtml::_('script', $server.'/js/recaptcha_ajax.js');
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('jQuery(document).ready(function($) {
-			Recaptcha.create("' . $pubkey . '", "dynamic_recaptcha_1", {theme: "' . $theme . '",' . $lang . 'tabindex: 0});});'
-		);
+
+		Document::addScriptDeclaration('jQuery(document).ready(function($) {
+			Recaptcha.create("' . $pubkey . '", "dynamic_recaptcha_1", {theme: "' . $theme . '",' . $lang . 'tabindex: 0});
+		});');
 
 		return true;
 	}
@@ -209,10 +209,7 @@ class plgCaptchaRecaptcha extends JPlugin
 	 */
 	private function _getLanguage()
 	{
-		// Initialise variables
-		$language = \JFactory::getLanguage();
-
-		$tag = explode('-', $language->getTag());
+		$tag = explode('-', Lang::getTag());
 		$tag = $tag[0];
 		$available = array('en', 'pt', 'fr', 'de', 'nl', 'ru', 'es', 'tr');
 

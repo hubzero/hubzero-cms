@@ -60,14 +60,14 @@ class JFormFieldMenutype extends JFormFieldList
 			default:
 				$link	= $this->form->getValue('link');
 				// Clean the link back to the option, view and layout
-				$value	= Lang::txt(JArrayHelper::getValue($rlu, MenusHelper::getLinkKey($link)));
+				$value	= Lang::txt(\Hubzero\Utility\Arr::getValue($rlu, MenusHelper::getLinkKey($link)));
 				break;
 		}
 		// Load the javascript and css
 		JHtml::_('behavior.framework');
 		JHtml::_('behavior.modal');
 
-		JFactory::getDocument()->addScriptDeclaration("
+		Document::addScriptDeclaration("
 			jQuery(document).ready(function($){
 				$('input.modal').fancybox({
 					arrows: false,

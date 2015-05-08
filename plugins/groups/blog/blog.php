@@ -162,8 +162,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Append to document the title
-			$document = JFactory::getDocument();
-			$document->setTitle($document->getTitle() . ': ' . Lang::txt('PLG_GROUPS_BLOG'));
+			Document::setTitle($document->getTitle() . ': ' . Lang::txt('PLG_GROUPS_BLOG'));
 
 			switch ($this->action)
 			{
@@ -459,11 +458,10 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		// Filters for returning results
@@ -501,7 +499,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($rows as $row)
 			{
-				$item = new JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');

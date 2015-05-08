@@ -144,10 +144,9 @@ class Slider extends Macro
 			$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins/content/formathtml/macros/macro-assets/slider/slider.css');
-		$document->addScript('plugins/content/formathtml/macros/macro-assets/slider/slider.js');
-		$document->addScriptDeclaration('
+		\Document::addStyleSheet('plugins/content/formathtml/macros/macro-assets/slider/slider.css');
+		\Document::addScript('plugins/content/formathtml/macros/macro-assets/slider/slider.js');
+		\Document::addScriptDeclaration('
 			var $jQ = jQuery.noConflict();
 
 			$jQ(function() {

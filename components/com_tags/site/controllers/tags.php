@@ -509,14 +509,11 @@ class Tags extends SiteController
 		$title = trim($title);
 		$title .= ': ' . $area;
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Set the mime encoding for the document
-		$jdoc = \JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Start a new feed object
-		$doc = new \JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link        = Route::url('index.php?option=' . $this->_option);
 		$doc->title       = Config::get('sitename') . ' - ' . $title;
 		$doc->description = Lang::txt('COM_TAGS_RSS_DESCRIPTION', Config::get('sitename'), $title);
@@ -550,7 +547,7 @@ class Tags extends SiteController
 				}
 
 				// Load individual item creator class
-				$item = new \JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 				$item->title       = $title;
 				$item->link        = $row->href;
 				$item->description = $description;
@@ -562,9 +559,6 @@ class Tags extends SiteController
 				$doc->addItem($item);
 			}
 		}
-
-		// Output the feed
-		echo $doc->render();
 	}
 
 	/**

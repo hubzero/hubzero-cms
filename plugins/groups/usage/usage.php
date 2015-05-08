@@ -133,8 +133,6 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			//reference group for other functions
 			$this->group = $group;
 
-			//get the joomla document
-			$doc = JFactory::getDocument();
 
 			//add usage stylesheet to view
 			$this->css();
@@ -143,10 +141,10 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$this->css('datepicker.css');
 
 			//add google js-api
-			$doc->addScript('https://www.google.com/jsapi');
+			Document::addScript('https://www.google.com/jsapi');
 
 			//add jquery from google cdn
-			//$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
+			//Document::addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js');
 
 			//add usage custom script
 			$this->js('usage.js');
@@ -175,7 +173,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 			//generate script to draw chart and push to the page
 			$script = $this->drawChart($pid, $start, $end);
-			$doc->addScriptDeclaration($script);
+			Document::addScriptDeclaration($script);
 
 			//import and create view
 			$view = $this->view('default', 'index');

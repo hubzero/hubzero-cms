@@ -29,7 +29,7 @@ $script .= "\t\t".'}'."\n";
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 
-JFactory::getDocument()->addScriptDeclaration($script);
+Document::addScriptDeclaration($script);
 ?>
 
 <form action="<?php echo Route::url('index.php?option=com_users&view=mail'); ?>" name="adminForm" method="post" id="adminForm">

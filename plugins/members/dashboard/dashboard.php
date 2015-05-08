@@ -260,22 +260,21 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$view = $this->view('module', 'display');
 
 		// get application location
-		$application  = JFactory::getApplication();
-		$view->admin  = $application->isAdmin();
+		$view->admin  = App::isAdmin();
 		$view->module = $module;
 		$content      = $view->loadTemplate();
 
 		$stylesheets = array();
 		$scripts     = array();
-		$document = JFactory::getDocument();
-		foreach ($document->_styleSheets as $strSrc => $strAttr)
+		$document = Document::getHeadData();
+		foreach ($document['styleSheets'] as $strSrc => $strAttr)
 		{
 			if (strstr($strSrc, $module->module))
 			{
 				$stylesheets[] = $strSrc;
 			}
 		}
-		foreach ($document->_scripts as $strSrc => $strType)
+		foreach ($document['scripts'] as $strSrc => $strType)
 		{
 			if (strstr($strSrc, $module->module))
 			{

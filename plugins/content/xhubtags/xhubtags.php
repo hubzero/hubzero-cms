@@ -139,9 +139,7 @@ class plgContentXhubtags extends JPlugin
 	 */
 	private function _templateDir()
 	{
-		$app = JFactory::getApplication();
-
-		return '/templates/' . $app->getTemplate();
+		return '/templates/' . App::get('template')->template;
 	}
 
 	/**
@@ -169,8 +167,7 @@ class plgContentXhubtags extends JPlugin
 
 		$regex = "/component\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
-		$app = JFactory::getApplication();
-		$template = $app->getTemplate();
+		$template = App::get('template')->template;
 
 		if ($file[2][0] == '/')
 		{
@@ -204,15 +201,13 @@ class plgContentXhubtags extends JPlugin
 			return '';
 		}
 
-		$document = JFactory::getDocument();
-
 		if ($type[2] == 'script')
 		{
-			$document->addScript(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename));
+			Document::addScript(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename));
 		}
 		else if ($type[2] == 'stylesheet')
 		{
-			$document->addStyleSheet(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename), 'text/css', 'screen');
+			Document::addStyleSheet(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename), 'text/css', 'screen');
 		}
 
 		return '';
@@ -226,8 +221,6 @@ class plgContentXhubtags extends JPlugin
 	 */
 	private function _image($options)
 	{
-		$app = JFactory::getApplication();
-
 		$regex = "/filename\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
 		if (!preg_match($regex, $options, $file))

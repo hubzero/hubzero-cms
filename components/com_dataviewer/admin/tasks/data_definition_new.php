@@ -15,7 +15,7 @@ function dv_data_definition_new()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$document =  JFactory::getDocument();
+	$document = App::get('document');
 
 	$db_id = Request::getString('db', false);
 	$table = Request::getString('table', false);

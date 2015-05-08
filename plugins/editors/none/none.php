@@ -110,12 +110,12 @@ class plgEditorNone extends JPlugin
 		static $done = false;
 
 		// Do this only once.
-		if (!$done) {
-			$doc = JFactory::getDocument();
+		if (!$done)
+		{
 			$js = "\tfunction jInsertEditorText(text, editor) {
 				insertAtCursor(document.getElementById(editor), text);
 			}";
-			$doc->addScriptDeclaration($js);
+			Document::addScriptDeclaration($js);
 		}
 
 		return true;
@@ -140,16 +140,19 @@ class plgEditorNone extends JPlugin
 	 */
 	function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
-		if (empty($id)) {
+		if (empty($id))
+		{
 			$id = $name;
 		}
 
 		// Only add "px" to width and height if they are not given as a percentage
-		if (is_numeric($width)) {
+		if (is_numeric($width))
+		{
 			$width .= 'px';
 		}
 
-		if (is_numeric($height)) {
+		if (is_numeric($height))
+		{
 			$height .= 'px';
 		}
 
@@ -172,12 +175,14 @@ class plgEditorNone extends JPlugin
 
 		foreach ($results as $result)
 		{
-			if (is_string($result) && trim($result)) {
+			if (is_string($result) && trim($result))
+			{
 				$return .= $result;
 			}
 		}
 
-		if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
+		if (is_array($buttons) || (is_bool($buttons) && $buttons))
+		{
 			$results = $this->_subject->getButtons($name, $buttons, $asset, $author);
 
 			// This will allow plugins to attach buttons or change the behavior on the fly using AJAX
@@ -186,11 +191,12 @@ class plgEditorNone extends JPlugin
 			foreach ($results as $button)
 			{
 				// Results should be an object
-				if ($button->get('name')) {
-					$modal		= ($button->get('modal')) ? 'class="modal-button"' : null;
-					$href		= ($button->get('link')) ? 'href="'.Request::base().$button->get('link').'"' : null;
-					$onclick	= ($button->get('onclick')) ? 'onclick="'.$button->get('onclick').'"' : null;
-					$title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
+				if ($button->get('name'))
+				{
+					$modal   = ($button->get('modal')) ? 'class="modal-button"' : null;
+					$href    = ($button->get('link')) ? 'href="'.Request::base().$button->get('link').'"' : null;
+					$onclick = ($button->get('onclick')) ? 'onclick="'.$button->get('onclick').'"' : null;
+					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$return .= "<div class=\"button2-left\"><div class=\"".$button->get('name')."\"><a ".$modal." title=\"".$title."\" ".$href." ".$onclick." rel=\"".$button->get('options')."\">".$button->get('text')."</a></div></div>\n";
 				}
 			}

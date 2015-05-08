@@ -26,6 +26,7 @@ class plgQuickiconExtensionupdate extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
@@ -47,16 +48,16 @@ class plgQuickiconExtensionupdate extends JPlugin
 			return;
 		}
 
-		$cur_template = JFactory::getApplication()->getTemplate();
+		$cur_template = App::get('template')->template;
 		$ajax_url = Request::base().'index.php?option=com_installer&view=update&task=update.ajax';
 		$script = "var plg_quickicon_extensionupdate_ajax_url = '$ajax_url';\n";
 		$script .= 'var plg_quickicon_extensionupdate_text = {"UPTODATE" : "'.
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_UPTODATE', true).'", "UPDATEFOUND": "'.
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_UPDATEFOUND', true).'", "ERROR": "'.
 			Lang::txt('PLG_QUICKICON_EXTENSIONUPDATE_ERROR', true)."\"};\n";
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration($script);
-		$document->addScript(Request::base().'../media/plg_quickicon_extensionupdate/extensionupdatecheck.js');
+
+		Document::addScriptDeclaration($script);
+		Document::addScript(Request::base().'../media/plg_quickicon_extensionupdate/extensionupdatecheck.js');
 
 		return array(array(
 			'link' => 'index.php?option=com_installer&view=update',

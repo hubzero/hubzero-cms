@@ -27,6 +27,7 @@ class plgButtonPagebreak extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
@@ -37,16 +38,13 @@ class plgButtonPagebreak extends JPlugin
 	 */
 	public function onDisplay($name)
 	{
-		$app = JFactory::getApplication();
-
-		$doc = JFactory::getDocument();
-		$template = $app->getTemplate();
+		$template = App::get('template')->template;
 
 		$link = 'index.php?option=com_content&amp;view=article&amp;layout=pagebreak&amp;tmpl=component&amp;e_name='.$name;
 
 		JHtml::_('behavior.modal');
 
-		$button = new JObject;
+		$button = new \Hubzero\Base\Object;
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', Lang::txt('PLG_EDITORSXTD_PAGEBREAK_BUTTON_PAGEBREAK'));

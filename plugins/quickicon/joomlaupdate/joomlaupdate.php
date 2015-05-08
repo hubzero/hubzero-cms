@@ -26,6 +26,7 @@ class plgQuickiconJoomlaupdate extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
@@ -48,7 +49,7 @@ class plgQuickiconJoomlaupdate extends JPlugin
 			return;
 		}
 
-		$cur_template = JFactory::getApplication()->getTemplate();
+		$cur_template = App::get('template')->template;
 		$ajax_url = Request::base().'index.php?option=com_installer&view=update&task=update.ajax';
 		$script = "var plg_quickicon_joomlaupdate_ajax_url = '$ajax_url';\n";
 		$script .= 'var plg_quickicon_jupdatecheck_jversion = "'.JVERSION.'";'."\n";
@@ -60,9 +61,9 @@ class plgQuickiconJoomlaupdate extends JPlugin
 			Request::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-jupdate-uptodate.png'.'", "ERROR": "'.
 			Request::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-deny.png'.'", "UPDATEFOUND": "'.
 			Request::base(true) .'/templates/'. $cur_template .'/images/header/icon-48-jupdate-updatefound.png'."\"};\n";
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration($script);
-		$document->addScript(Request::base().'../media/plg_quickicon_joomlaupdate/jupdatecheck.js');
+
+		Document::addScriptDeclaration($script);
+		Document::addScript(Request::base().'../media/plg_quickicon_joomlaupdate/jupdatecheck.js');
 
 		return array(array(
 			'link' => 'index.php?option=com_joomlaupdate',

@@ -24,11 +24,9 @@ class ContentViewArchive extends JViewLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$state 		= $this->get('State');
-		$items 		= $this->get('Items');
-		$pagination	= $this->get('Pagination');
-
-		$document	= JFactory::getDocument();
+		$state = $this->get('State');
+		$items = $this->get('Items');
+		$pagination = $this->get('Pagination');
 
 		// Get the page/component configuration
 		$params = &$state->params;
@@ -38,8 +36,6 @@ class ContentViewArchive extends JViewLegacy
 			$item->catslug = ($item->category_alias) ? ($item->catid . ':' . $item->category_alias) : $item->catid;
 			$item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
 		}
-
-
 
 		$form = new stdClass();
 		// Month Field
@@ -71,7 +67,8 @@ class ContentViewArchive extends JViewLegacy
 		// Year Field
 		$years = array();
 		$years[] = JHtml::_('select.option', null, Lang::txt('JYEAR'));
-		for ($i = 2000; $i <= 2020; $i++) {
+		for ($i = 2000; $i <= 2020; $i++)
+		{
 			$years[] = JHtml::_('select.option', $i, $i);
 		}
 		$form->yearField = JHtml::_(
@@ -102,9 +99,9 @@ class ContentViewArchive extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$title 		= null;
+		$app = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -117,14 +114,17 @@ class ContentViewArchive extends JViewLegacy
 		}
 
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = $app->getCfg('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 
@@ -144,4 +144,4 @@ class ContentViewArchive extends JViewLegacy
 		}
 	}
 }
-?>
+

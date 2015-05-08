@@ -61,8 +61,7 @@ class GroupsHelperDocumentRendererScript extends GroupsHelperDocumentRenderer
 		if ($path = $this->group->downloadLinkForPath($base, $source))
 		{
 			// add stylsheet to document
-			$document = JFactory::getDocument();
-			$document->addScript($path);
+			Document::addScript($path);
 		}
 	}
 }

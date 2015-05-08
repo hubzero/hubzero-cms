@@ -34,14 +34,13 @@ class PlgSystemHighlight extends JPlugin
 	public function onAfterDispatch()
 	{
 		// Check that we are in the site application.
-		if (JFactory::getApplication()->isAdmin())
+		if (App::isAdmin())
 		{
 			return true;
 		}
 
 		// Set the variables
-		$input = JFactory::getApplication()->input;
-		$extension = $input->get('option', '', 'cmd');
+		$extension = Request::getCmd('option', '');
 
 		// Check if the highlighter is enabled.
 		if (!Component::params($extension)->get('highlight_terms', 1))
@@ -50,13 +49,13 @@ class PlgSystemHighlight extends JPlugin
 		}
 
 		// Check if the highlighter should be activated in this environment.
-		if (JFactory::getDocument()->getType() !== 'html' || $input->get('tmpl', '', 'cmd') === 'component')
+		if (Document::getType() !== 'html' || Request::getCmd('tmpl', '') === 'component')
 		{
 			return true;
 		}
 
 		// Get the terms to highlight from the request.
-		$terms = $input->request->get('highlight', null, 'base64');
+		$terms = Request::getVar('highlight', null, 'base64');
 		$terms = $terms ? json_decode(base64_decode($terms)) : null;
 
 		// Check the terms.
@@ -78,10 +77,9 @@ class PlgSystemHighlight extends JPlugin
 		JHtml::_('behavior.highlighter', $cleanTerms);
 
 		// Adjust the component buffer.
-		$doc = JFactory::getDocument();
-		$buf = $doc->getBuffer('component');
+		$buf = Document::getBuffer('component');
 		$buf = '<br id="highlighter-start" />' . $buf . '<br id="highlighter-end" />';
-		$doc->setBuffer($buf, 'component');
+		Document::setBuffer($buf, 'component');
 
 		return true;
 	}

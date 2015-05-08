@@ -21,7 +21,7 @@ require_once(JPATH_COMPONENT . DS . 'lib' . DS. 'html.php');
 require_once(JPATH_COMPONENT . DS . 'lib/db.php');
 require_once(JPATH_COMPONENT . DS . 'lib/dl.php');
 
-$document =  JFactory::getDocument();
+$document = App::get('document');
 
 global $html_path, $com_name, $dv_conf;
 

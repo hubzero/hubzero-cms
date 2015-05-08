@@ -70,7 +70,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				. $this->_option . '&controller=' . $this->_controller . '&task='
 				. Request::getWord('task', ''), false, true), 'server'));
 
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
@@ -98,8 +98,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	{
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		// Filters
 		$this->view->filters = array();
@@ -179,7 +178,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Couldn't get ID, exit
 		if (!$this->_toolid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
@@ -260,8 +259,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Set the page title
 		$this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
 		$this->view->title .= $status['toolname'] ? ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname'] : '';
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		if (Pathway::count() <= 0)
 		{
@@ -316,7 +314,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Couldn't get ID, exit
 		if (!$this->_toolid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
@@ -347,8 +345,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';
 		$this->view->title .= ($this->_action=='confirm') ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : Lang::txt('COM_TOOLS_TASK_VERSIONS');
 
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		$hzt = ToolsModelTool::getInstance($this->_toolid);
 		$hztv_dev = $hzt->getRevision('development');
@@ -427,7 +424,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Couldn't get ID, exit
 		if (!$this->_toolid)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
@@ -456,8 +453,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		if (Pathway::count() <= 0)
 		{
@@ -556,8 +552,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';
 		$this->view->title .= ($this->_action == 'confirm') ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : Lang::txt('COM_TOOLS_TASK_LICENSE');
 
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		if (Pathway::count() <= 0)
 		{
@@ -606,7 +601,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 		}
@@ -750,8 +745,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' .  Lang::txt('COM_TOOLS_TASK_CREATE_NEW_TOOL');
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		if (Pathway::count() <= 0)
 		{
@@ -830,8 +824,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_TOOL');
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		if (Pathway::count() <= 0)
 		{
@@ -927,8 +920,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask()
 	{
-		$xlog = JFactory::getLogger();
-
 		$exportmap  = array(
 			'@OPEN'   => null,
 			'@GROUP'  => null,
@@ -978,8 +969,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		{
 			// display form with errors
 			//$title = Lang::txt(strtoupper($this->_option)).': '.Lang::txt('COM_TOOLS_EDIT_TOOL');
-			//$document = JFactory::getDocument();
-			//$document->setTitle($title);
+			Document::setTitle($title);
 			if (is_array($err))
 			{
 				foreach ($err as $error)
@@ -1050,7 +1040,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		{
 			if ($hztv === false)
 			{
-				$xlog->debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
+				Log::debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
 				$hztv = ToolsModelVersion::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
 
 				$oldstatus = $hztv->toArray();
@@ -1229,7 +1219,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, 0 , 1);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname),
 			($id ? Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED') : Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED'))
 		);
@@ -1347,7 +1337,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if ($this->_action == 'confirm')
 			{
 				// Go to license page
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname)
 				);
 				return;
@@ -1527,8 +1517,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xlog = JFactory::getLogger();
-
 		$newstate    = Request::getVar('newstate', '');
 		$priority    = Request::getVar('priority', 3);
 		$comment     = Request::getVar('comment', '');
@@ -1549,12 +1537,12 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if (intval($newstate) && $newstate != $oldstatus['toolstate'])
 		{
-			$xlog->debug(__FUNCTION__ . "() state changing");
+			Log::debug(__FUNCTION__ . "() state changing");
 
 			if ($newstate == ToolsHelperHtml::getStatusNum('Approved') && ToolsModelTool::validateVersion($oldstatus['version'], $error, $hzt->id))
 			{
 				$this->_error = $error;
-				$xlog->debug(__FUNCTION__ . "() state changing to approved, action confirm");
+				Log::debug(__FUNCTION__ . "() state changing to approved, action confirm");
 				$this->_action = 'confirm';
 				$this->_task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 				$this->versionsTask();
@@ -1563,7 +1551,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			else if ($newstate == ToolsHelperHtml::getStatusNum('Approved'))
 			{
 				$this->_error = $error;
-				$xlog->debug(__FUNCTION__ . "() state changing to approved, action new");
+				Log::debug(__FUNCTION__ . "() state changing to approved, action new");
 				$this->_action = 'new';
 				$this->_task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 				$this->versionsTask();
@@ -1571,7 +1559,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 			else if ($newstate == ToolsHelperHtml::getStatusNum('Published'))
 			{
-				$xlog->debug(__FUNCTION__ . "() state changing to published");
+				Log::debug(__FUNCTION__ . "() state changing to published");
 				$hzt->published = '1';
 			}
 			$this->_error = $error;
@@ -1582,7 +1570,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				// Create a Tool Version object
 				$objV = new ToolVersion($this->database);
 
-				$xlog->debug(__FUNCTION__ . "() state changing away from  published");
+				Log::debug(__FUNCTION__ . "() state changing away from  published");
 				// Get version ids
 				$rid = ToolsModelTool::getResourceId($hzt->toolname,$hzt->id);
 
@@ -1592,17 +1580,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$dev_hztv = $hzt->getRevision('dev');
 				$current_hztv = $hzt->getRevision('current');
 
-				$xlog->debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
+				Log::debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
 				if ($to && $from)
 				{
-					require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'screenshots.php');
+					require_once(__DIR__ . DS . 'screenshots.php');
 
 					$ss = new ToolsControllerScreenshots();
 					$ss->transfer($from, $to, $rid);
 				}
 			}
 
-			$xlog->debug(__FUNCTION__ . "() state changing to $newstate");
+			Log::debug(__FUNCTION__ . "() state changing to $newstate");
 			$hzt->state = $newstate;
 			$hzt->state_changed = Date::toSql();
 		}
@@ -1620,12 +1608,12 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$status = $hztv->toArray();
 		$status['toolstate'] = $hzt->state;
 		// update history ticket
-		$xlog->debug(__FUNCTION__ . "() before newUpdateTicket test");
+		Log::debug(__FUNCTION__ . "() before newUpdateTicket test");
 		if ($oldstatus != $status || !empty($comment))
 		{
-			$xlog->debug(__FUNCTION__ . "() before newUpdateTicket");
+			Log::debug(__FUNCTION__ . "() before newUpdateTicket");
 			$this->_newUpdateTicket($hzt->id, $hzt->ticketid, $oldstatus, $status, $comment, $access, 1);
-			$xlog->debug(__FUNCTION__ . "() after newUpdateTicket");
+			Log::debug(__FUNCTION__ . "() after newUpdateTicket");
 		}
 
 		//$this->addComponentMessage(Lang::txt('COM_TOOLS_NOTICE_STATUS_CHANGED'));
@@ -1839,8 +1827,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	protected function _newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1)
 	{
-		$xlog = JFactory::getLogger();
-		$xlog->debug(__FUNCTION__ . '() started');
+		Log::debug(__FUNCTION__ . '() started');
 
 		$summary = '';
 
@@ -2006,7 +1993,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$rowc->set('created_by', User::get('id'));
 			$rowc->set('access', $access);
 
-			$xlog->debug(__FUNCTION__ . '() storing ticket');
+			Log::debug(__FUNCTION__ . '() storing ticket');
 			if (!$rowc->store())
 			{
 				$this->_error = $rowc->getError();
@@ -2015,7 +2002,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 			if ($email)
 			{
-				$xlog->debug(__FUNCTION__ . '() emailing notifications');
+				Log::debug(__FUNCTION__ . '() emailing notifications');
 				// send notification emails
 				$this->_email($toolid, $summary, $comment, $access, $action);
 			}
@@ -2321,7 +2308,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->_updateTicket($this->_toolid, '', '', Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'), 0, 1, 5);
 
 		// continue output
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pipeline'),
 			Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED')
 		);

@@ -89,7 +89,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			});
 		});";
 
-		JFactory::getDocument()->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 	}
 
 	/**

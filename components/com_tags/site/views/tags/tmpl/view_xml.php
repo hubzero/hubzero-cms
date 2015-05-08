@@ -31,8 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$document = JFactory::getDocument();
-$document->setMimeEncoding('text/xml');
+Document::setType('xml');
 
 // Output XML header.
 echo '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";

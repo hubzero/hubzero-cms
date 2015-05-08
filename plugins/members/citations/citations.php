@@ -432,11 +432,10 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle( Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle );
+		Document::setTitle( Lang::txt('PLG_MEMBERS_CITATIONS_CITATION') . $shortenedTitle );
 
 		//push jquery to doc
-		$document->addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
+		Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
 		// Instantiate a new view
 		$view->title  = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));

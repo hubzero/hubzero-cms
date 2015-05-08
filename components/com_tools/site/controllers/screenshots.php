@@ -187,24 +187,17 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$this->view->shot = $ss->getScreenshot($this->view->file, $pid, $vid);
 
-		// Get the app
-		$app = JFactory::getApplication();
-
 		// Set the page title
 		$this->view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('COM_TOOLS_TASK_EDIT_SS');
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		Document::setTitle($this->view->title);
 
 		$this->view->pid = $pid;
 		$this->view->version = $version;
 		$this->view->vid = $vid;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
@@ -219,9 +212,9 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Incoming parent ID
-		$pid = Request::getInt('pid', 0);
+		$pid     = Request::getInt('pid', 0);
 		$version = Request::getVar('version', 'dev');
-		$vid = Request::getInt('vid', 0);
+		$vid     = Request::getInt('vid', 0);
 		if (!$pid)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
@@ -235,7 +228,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Instantiate a new screenshot object
 		$ss = new \Components\Resources\Tables\Screenshot($this->database);
-		$shot = $ss->getScreenshot($file, $pid, $vid);
+		$shot  = $ss->getScreenshot($file, $pid, $vid);
 		$files = $ss->getFiles($pid, $vid);
 
 		if ($shot)
@@ -289,9 +282,6 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// Load resource info
 		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($pid);
@@ -323,6 +313,9 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 		else
 		{
+			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
+
 			if (!\JFile::exists($path . DS . $file))
 			{
 				$this->displayTask($pid, $version);
@@ -695,7 +688,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 		}
@@ -711,8 +704,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	 */
 	public function transfer($sourceid, $destid, $rid)
 	{
-		$xlog = JFactory::getLogger();
-		$xlog->debug(__FUNCTION__ . '()');
+		Log::debug(__FUNCTION__ . '()');
 
 		// Get resource information
 		$resource = new \Components\Resources\Tables\Resource($this->database);
@@ -742,15 +734,15 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 				return false;
 			}
 		}
-		$xlog->debug(__FUNCTION__ . "() $src");
+		Log::debug(__FUNCTION__ . "() $src");
 
 		// do we have files to transfer?
 		$files = \JFolder::files($src, '.', false, true, array());
-		$xlog->debug(__FUNCTION__ . "() $files");
+		Log::debug(__FUNCTION__ . "() $files");
 		if (!empty($files))
 		{
 			// Copy directory
-			$xlog->debug(__FUNCTION__ . "() copying $src to $dest");
+			Log::debug(__FUNCTION__ . "() copying $src to $dest");
 			if (!\JFolder::copy($src, $dest, '', true))
 			{
 				return false;
@@ -760,12 +752,12 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 				// Update screenshot information for this resource
 				$ss->updateFiles($rid, $sourceid, $destid, $copy=1);
 
-				$xlog->debug(__FUNCTION__ . '() updated files');
+				Log::debug(__FUNCTION__ . '() updated files');
 				return true;
 			}
 		}
 
-		$xlog->debug(__FUNCTION__ . '() done');
+		Log::debug(__FUNCTION__ . '() done');
 
 		return true;
 	}
@@ -829,12 +821,9 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->view->version = $version;
 		$this->view->rid = $rid;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML

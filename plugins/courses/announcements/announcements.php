@@ -82,8 +82,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			$this->offering = $offering;
 
 			// Set the page title
-			$document = JFactory::getDocument();
-			$document->setTitle($document->getTitle() . ': ' . Lang::txt('PLG_COURSES_ANNOUNCEMENTS'));
+			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_COURSES_ANNOUNCEMENTS'));
 
 			Pathway::append(
 				Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),

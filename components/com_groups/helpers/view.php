@@ -476,13 +476,13 @@ class GroupsHelperView
 	public static function getPageCss($group)
 	{
 		// load stylesheets from specific group first
-		$url = rtrim(str_replace('administrator', '', Request::base()), DS) . DS . 'groups' . DS . $group->get('cn');
+		$url = rtrim(str_replace('administrator', '', Request::base()), '/') . '/groups/' . $group->get('cn');
 		$stylesheets = self::stylesheetsForUrl($url);
 
 		// if we got nothing back lets get styles from groups intro page
 		if (empty($stylesheets))
 		{
-			$url  = rtrim(str_replace('administrator', '', Request::base()), DS) . DS . 'groups';
+			$url  = rtrim(str_replace('administrator', '', Request::base()), '/') . '/groups';
 			$stylesheets = self::stylesheetsForUrl($url);
 		}
 
@@ -609,7 +609,7 @@ class GroupsHelperView
 
 		// bootstrap Jdocument
 		// add custom error template as component buffer
-		$document = JFactory::getDocument();
+		$document = App::get('document');
 		$document->addStylesheet('/media/cms/css/debug.css');
 		$document->addStylesheet('/components/com_groups/assets/css/groups.css');
 		$document->setBuffer($errorTemplate, array('type'=>'component', 'name' => ''));

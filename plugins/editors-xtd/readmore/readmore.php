@@ -27,6 +27,7 @@ class plgButtonReadmore extends JPlugin
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
@@ -36,10 +37,7 @@ class plgButtonReadmore extends JPlugin
 	 */
 	public function onDisplay($name)
 	{
-		$app = JFactory::getApplication();
-
-		$doc		= JFactory::getDocument();
-		$template	= $app->getTemplate();
+		$template = App::get('template')->template;
 
 		// button is not active in specific content components
 
@@ -57,9 +55,9 @@ class plgButtonReadmore extends JPlugin
 			}
 			";
 
-		$doc->addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);
 
-		$button = new JObject;
+		$button = new \Hubzero\Base\Object;
 		$button->set('modal', false);
 		$button->set('onclick', 'insertReadmore(\''.$name.'\');return false;');
 		$button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));

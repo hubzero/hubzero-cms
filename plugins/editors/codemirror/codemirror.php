@@ -86,11 +86,11 @@ class plgEditorCodemirror extends JPlugin
 		if (!$done)
 		{
 			$done = true;
-			$doc = JFactory::getDocument();
+
 			$js = "\tfunction jInsertEditorText(text, editor) {
 					Joomla.editors.instances[editor].replaceSelection(text);\n
 			}";
-			$doc->addScriptDeclaration($js);
+			Document::addScriptDeclaration($js);
 		}
 
 		return true;
@@ -141,7 +141,7 @@ class plgEditorCodemirror extends JPlugin
 		$styleSheet = array('xmlcolors.css');
 
 		// Look if we need special syntax coloring.
-		$syntax = JFactory::getApplication()->getUserState('editor.source.syntax');
+		$syntax = User::getState('editor.source.syntax');
 
 		if ($syntax) {
 			switch ($syntax)

@@ -67,8 +67,8 @@ class AdminViewSysinfo extends JViewLegacy
 	protected function _setSubMenu()
 	{
 		$contents = $this->loadTemplate('navigation');
-		$document = JFactory::getDocument();
-		$document->setBuffer($contents, 'modules', 'submenu');
+
+		Document::setBuffer($contents, 'modules', 'submenu');
 	}
 
 	/**

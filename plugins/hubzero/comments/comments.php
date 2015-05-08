@@ -514,8 +514,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		Document::setType('feed');
 
 		// Load the comments
 		$comment = new \Plugins\Hubzero\Comments\Models\Comment();
@@ -535,7 +534,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
+		$doc = Document::instance();
 		$doc->link = Route::url($this->url);
 
 		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
@@ -575,7 +574,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				@$date = ($row->created() ? date('r', strtotime($row->created())) : '');
 
 				// Load individual item creator class
-				$item = new JFeedItem();
+				$item = new \Hubzero\Document\Type\Feed\Item();
 				$item->title       = $title;
 				$item->link        = $link;
 				$item->description = $description;
@@ -622,7 +621,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 						@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
 
 						// Load individual item creator class
-						$item = new JFeedItem();
+						$item = new \Hubzero\Document\Type\Feed\Item();
 						$item->title       = $title;
 						$item->link        = $link;
 						$item->description = $description;
@@ -668,7 +667,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								@$date = ($response->created ? date('r', strtotime($response->created)) : '');
 
 								// Load individual item creator class
-								$item = new JFeedItem();
+								$item = new \Hubzero\Document\Type\Feed\Item();
 								$item->title       = $title;
 								$item->link        = $link;
 								$item->description = $description;
