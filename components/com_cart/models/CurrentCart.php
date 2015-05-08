@@ -1529,7 +1529,7 @@ class CartModelCurrentCart extends CartModelCart
 			echo "<br>Lifting session cart";
 		}
 
-		$session = JFactory::getSession();
+		$session = App::get('session');
 		$cart = $session->get('cart');
 
 		if ($cart && !empty($cart->crtId))
@@ -1595,8 +1595,7 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	private function updateSession()
 	{
-		$session = JFactory::getSession();
-		$session->set('cart', $this->cart);
+		App::get('session')->set('cart', $this->cart);
 	}
 
 	/**
@@ -1607,8 +1606,7 @@ class CartModelCurrentCart extends CartModelCart
 	 */
 	private function clearSessionCart()
 	{
-		$session = JFactory::getSession();
-		$session->clear('cart');
+		App::get('session')->clear('cart');
 	}
 
 	/**
@@ -1706,7 +1704,7 @@ class CartModelCurrentCart extends CartModelCart
 		$this->_db->query();
 		$crtId = $this->_db->insertid();
 
-		$session = JFactory::getSession();
+		$session = App::get('session');
 		$cart->crtId = $crtId;
 		$this->crtId = $cart->crtId;
 		$session->set('cart', $cart);

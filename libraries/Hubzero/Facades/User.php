@@ -74,7 +74,7 @@ class User extends Facade
 	 */
 	public static function getState($key, $default = null)
 	{
-		$session  = \JFactory::getSession();
+		$session  = self::$app->get('session');
 		$registry = $session->get('registry');
 
 		if (!is_null($registry))
@@ -94,7 +94,7 @@ class User extends Facade
 	 */
 	public static function setState($key, $value)
 	{
-		$session  = \JFactory::getSession();
+		$session  = self::$app->get('session');
 		$registry = $session->get('registry');
 
 		if (!is_null($registry))

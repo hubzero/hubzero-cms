@@ -35,6 +35,10 @@ use Components\Search\Models\Hubgraph\Request;
 use Components\Search\Models\Hubgraph\client;
 use Hubzero\Component\SiteController;
 use Exception;
+use Pathway;
+use Route;
+use Log;
+use App;
 
 include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubgraph.php');
 include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'hubgraph' . DS . 'inflect.php');
@@ -83,17 +87,18 @@ class Hubgraph extends SiteController
 		catch (Exception $ex)
 		{
 			// Log the error
-			\JFactory::getLogger()->error($ex->getMessage());
+			Log::error($ex->getMessage());
 
 			// If not displaying inline...
 			if (!defined('HG_INLINE'))
 			{
-				\JFactory::getSession()->set('searchfallback', time() + 60);
+				App::get('session')->set('searchfallback', time() + 60);
 
 				// Redirect back to this component wil the fallback flag set
 				// so it knows to load the default, basic controller.
 				$terms = \Request::getVar('terms', '', 'get');
-				$this->setRedirect(
+
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . ($terms ? '&terms=' . $terms : ''), false),
 					(JDEBUG ? $ex->getMessage() : null),
 					(JDEBUG ? 'error' : null)

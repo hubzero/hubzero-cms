@@ -351,7 +351,7 @@ class Connect extends Object {
 		}
 
 		$config = $this->_connect[$service];
-		$jsession = \JFactory::getSession();
+		$jsession = App::get('session');
 
 		// Make sure we have service
 		if (!isset($config) || !$config)
@@ -466,7 +466,7 @@ class Connect extends Object {
 			}
 
 			// Acting user - get token from session
-			$jsession = \JFactory::getSession();
+			$jsession = App::get('session');
 			$access_token = $jsession->get('projects.' . $service . '.token');
 		}
 

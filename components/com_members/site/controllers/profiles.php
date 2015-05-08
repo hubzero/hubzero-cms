@@ -816,7 +816,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Redirect user back to main account page
 		$return = base64_decode(Request::getVar('return', '',  'method', 'base64'));
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
-		$session = JFactory::getSession();
+		$session = App::get('session');
 
 		// Redirect user back to main account page
 		if (Request::getInt('no_html', 0))
@@ -1535,22 +1535,22 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			}
 
 			// Update session if name is changing
-			if ($n && $user->get('name') != JFactory::getSession()->get('user')->get('name'))
+			if ($n && $user->get('name') != App::get('session')->get('user')->get('name'))
 			{
-				$suser = JFactory::getSession()->get('user');
+				$suser = App::get('session')->get('user');
 				$user->set('name', $suser->get('name'));
 			}
 
 			// Update session if email is changing
-			if ($user->get('email') != JFactory::getSession()->get('user')->get('email'))
+			if ($user->get('email') != App::get('session')->get('user')->get('email'))
 			{
-				$suser = JFactory::getSession()->get('user');
+				$suser = App::get('session')->get('user');
 				$user->set('email', $suser->get('email'));
 
 				// add item to session to mark that the user changed emails
 				// this way we can serve profile images for these users but not all
 				// unconfirmed users
-				$session = JFactory::getSession();
+				$session = App::get('session');
 				$session->set('userchangedemail', 1);
 			}
 		}

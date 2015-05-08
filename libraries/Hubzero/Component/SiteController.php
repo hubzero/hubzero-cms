@@ -469,7 +469,7 @@ class SiteController extends Object implements ControllerInterface
 			// Preserve component messages after redirect
 			if (count($this->componentMessageQueue))
 			{
-				\JFactory::getSession()->set('component.message.queue', $this->componentMessageQueue);
+				\App::get('session')->set('component.message.queue', $this->componentMessageQueue);
 			}
 
 			\App::redirect($this->_redirect, $this->_message, $this->_messageType);
@@ -539,7 +539,7 @@ class SiteController extends Object implements ControllerInterface
 	{
 		if (!count($this->componentMessageQueue))
 		{
-			$session = \JFactory::getSession();
+			$session = \App::get('session');
 			$componentMessage = $session->get('component.message.queue');
 			if (count($componentMessage))
 			{
@@ -570,7 +570,7 @@ class SiteController extends Object implements ControllerInterface
 	{
 		if (!count($this->componentMessageQueue))
 		{
-			$session = \JFactory::getSession();
+			$session = \App::get('session');
 			$componentMessage = $session->get('component.message.queue');
 			if (count($componentMessage))
 			{

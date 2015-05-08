@@ -350,7 +350,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		if (($params = Request::getVar('params', false, 'post')) || !$id)
 		{
-			$p = new \JRegistry('');
+			$p = new \Hubzero\Config\Registry('');
 
 			$db = \JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -366,7 +366,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			{
 				foreach ($plugins as $plugin)
 				{
-					$default = new JRegistry($plugin->params);
+					$default = new \Hubzero\Config\Registry($plugin->params);
 					foreach ($default->toArray() as $k => $v)
 					{
 						if (substr($k, 0, strlen('default_')) == 'default_')
@@ -1263,7 +1263,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Add silly simple security check
 		$token      = Request::getString('token', false);
-		$session_id = \JFactory::getSession()->getId();
+		$session_id = \App::get('session')->getId();
 		$secret     = Config::get('secret');
 		$hash       = hash('sha256', $session_id . ':' . $secret);
 

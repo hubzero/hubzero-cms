@@ -387,7 +387,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		{
 			// We don't have a logged in user, but this may be a password reset
 			// If so, check session for a user id
-			$session  = JFactory::getSession();
+			$session  = App::get('session');
 			$registry = $session->get('registry');
 			$userid   = (!is_null($registry)) ? $registry->get('com_users.reset.user', null) : null;
 		}

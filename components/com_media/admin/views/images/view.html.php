@@ -30,7 +30,7 @@ class MediaViewImages extends JViewLegacy
 		// Don't set them here, as there are other functions called before this one if there is any file write operation
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$this->session     = JFactory::getSession();
+		$this->session     = App::get('session');
 		$this->config      = Component::params('com_media');
 		$this->state       = $this->get('state');
 		$this->folderList  = $this->get('folderList');

@@ -333,7 +333,7 @@ class Media extends SiteController
 
 		// Instantiate objects
 		$database = \JFactory::getDBO();
-		$session  = \JFactory::getSession();
+		$session  = App::get('session');
 
 		// Get request vars
 		$time       = Request::getVar('time', 0);

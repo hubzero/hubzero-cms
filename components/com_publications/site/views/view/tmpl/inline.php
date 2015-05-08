@@ -85,9 +85,7 @@ $token = '';
 
 if (!User::isGuest())
 {
-	$session = JFactory::getSession();
-
-	$session_id = $session->getId();
+	$session_id = App::get('session')->getId();
 
 	jimport('joomla.utilities.simplecrypt');
 	$crypter = new JSimpleCrypt();

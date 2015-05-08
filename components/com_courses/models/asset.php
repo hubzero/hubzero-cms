@@ -327,7 +327,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 		$view->referrer          = (isset($_SERVER['HTTP_REFERRER']) ? $_SERVER['HTTP_REFERRER'] : '');
 		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
-		$view->session_id        = \JFactory::getSession()->getId();
+		$view->session_id        = \App::get('session')->getId();
 		if (!$view->store())
 		{
 			$this->setError($view->getError());

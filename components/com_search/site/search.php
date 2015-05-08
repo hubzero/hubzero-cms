@@ -35,7 +35,7 @@ $config = \Component::params('com_search');
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', $config->get('engine', 'basic')));
 
 // Are we falling back to the default engine?
-$fallback = \JFactory::getSession()->get('searchfallback');
+$fallback = \App::get('session')->get('searchfallback');
 if ($fallback && intval($fallback) <= time())
 {
 	// Don't fallback if the time limit has expired

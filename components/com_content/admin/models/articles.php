@@ -28,7 +28,8 @@ class ContentModelArticles extends JModelList
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'title', 'a.title',
@@ -63,12 +64,9 @@ class ContentModelArticles extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
-
 		// Adjust the context to support modal layouts.
-		if ($layout = Request::getVar('layout')) {
+		if ($layout = Request::getVar('layout'))
+		{
 			$this->context .= '.'.$layout;
 		}
 
@@ -78,7 +76,7 @@ class ContentModelArticles extends JModelList
 		$access = $this->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', 0, 'int');
 		$this->setState('filter.access', $access);
 
-		$authorId = $app->getUserStateFromRequest($this->context.'.filter.author_id', 'filter_author_id');
+		$authorId = $this->getUserStateFromRequest($this->context.'.filter.author_id', 'filter_author_id');
 		$this->setState('filter.author_id', $authorId);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '');
@@ -132,8 +130,8 @@ class ContentModelArticles extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
@@ -180,17 +178,20 @@ class ContentModelArticles extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
+		if (is_numeric($published))
+		{
 			$query->where('a.state = ' . (int) $published);
 		}
-		elseif ($published === '') {
+		elseif ($published === '')
+		{
 			$query->where('(a.state = 0 OR a.state = 1)');
 		}
 
 		// Filter by a single or group of categories.
 		$baselevel = 1;
 		$categoryId = $this->getState('filter.category_id');
-		if (is_numeric($categoryId)) {
+		if (is_numeric($categoryId))
+		{
 			$cat_tbl = JTable::getInstance('Category', 'JTable');
 			$cat_tbl->load($categoryId);
 			$rgt = $cat_tbl->rgt;
@@ -199,49 +200,58 @@ class ContentModelArticles extends JModelList
 			$query->where('c.lft >= '.(int) $lft);
 			$query->where('c.rgt <= '.(int) $rgt);
 		}
-		elseif (is_array($categoryId)) {
-			JArrayHelper::toInteger($categoryId);
+		elseif (is_array($categoryId))
+		{
+			\Hubzero\Utility\Arr::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 			$query->where('a.catid IN ('.$categoryId.')');
 		}
 
 		// Filter on the level.
-		if ($level = $this->getState('filter.level')) {
+		if ($level = $this->getState('filter.level'))
+		{
 			$query->where('c.level <= '.((int) $level + (int) $baselevel - 1));
 		}
 
 		// Filter by author
 		$authorId = $this->getState('filter.author_id');
-		if (is_numeric($authorId)) {
+		if (is_numeric($authorId))
+		{
 			$type = $this->getState('filter.author_id.include', true) ? '= ' : '<>';
 			$query->where('a.created_by '.$type.(int) $authorId);
 		}
 
 		// Filter by search in title.
 		$search = $this->getState('filter.search');
-		if (!empty($search)) {
-			if (stripos($search, 'id:') === 0) {
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
 				$query->where('a.id = '.(int) substr($search, 3));
 			}
-			elseif (stripos($search, 'author:') === 0) {
+			elseif (stripos($search, 'author:') === 0)
+			{
 				$search = $db->Quote('%'.$db->escape(substr($search, 7), true).'%');
 				$query->where('(ua.name LIKE '.$search.' OR ua.username LIKE '.$search.')');
 			}
-			else {
+			else
+			{
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
 				$query->where('(a.title LIKE '.$search.' OR a.alias LIKE '.$search.')');
 			}
 		}
 
 		// Filter on the language.
-		if ($language = $this->getState('filter.language')) {
+		if ($language = $this->getState('filter.language'))
+		{
 			$query->where('a.language = '.$db->quote($language));
 		}
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering', 'a.title');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
-		if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
+		{
 			$orderCol = 'c.title '.$orderDirn.', a.ordering';
 		}
 		//sqlsrv change

@@ -464,13 +464,13 @@ class Service extends Object
 		// Check completion
 		if (!empty($resumption))
 		{
-			$start = \JFactory::getSession()->get($resumption);
+			$start = \App::get('session')->get($resumption);
 		}
 		if (empty($resumption))
 		{
 			$resumption = uniqid();
 		}
-		\JFactory::getSession()->set($resumption, $start + $limit);
+		\App::get('session')->set($resumption, $start + $limit);
 
 		$sql = "SELECT COUNT(*) FROM (" . implode(' UNION ', $queries) . ") AS m";
 		$this->database->setQuery($sql);

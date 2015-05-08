@@ -22,8 +22,7 @@ class MailtoController extends JControllerLegacy
 	 */
 	function mailto()
 	{
-		$session = JFactory::getSession();
-		$session->set('com_mailto.formtime', time());
+		Session::set('com_mailto.formtime', time());
 		Request::setVar('view', 'mailto');
 		$this->display();
 	}
@@ -37,22 +36,18 @@ class MailtoController extends JControllerLegacy
 	function send()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
-		$app = JFactory::getApplication();
-		$session = JFactory::getSession();
-		$db = JFactory::getDbo();
-
-		$timeout = $session->get('com_mailto.formtime', 0);
+		$timeout = Session::get('com_mailto.formtime', 0);
 		if ($timeout == 0 || time() - $timeout < 20)
 		{
 			JError::raiseNotice(500, Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
 			return $this->mailto();
 		}
 
-		$SiteName = $app->getCfg('sitename');
-		$MailFrom = $app->getCfg('mailfrom');
-		$FromName = $app->getCfg('fromname');
+		$SiteName = Config::get('sitename');
+		$MailFrom = Config::get('mailfrom');
+		$FromName = Config::get('fromname');
 
 		$link = MailtoHelper::validateHash(Request::getCMD('link', '', 'post'));
 
@@ -65,11 +60,13 @@ class MailtoController extends JControllerLegacy
 		}
 
 		// An array of email headers we do not want to allow as input
-		$headers = array (	'Content-Type:',
-							'MIME-Version:',
-							'Content-Transfer-Encoding:',
-							'bcc:',
-							'cc:');
+		$headers = array(
+			'Content-Type:',
+			'MIME-Version:',
+			'Content-Transfer-Encoding:',
+			'bcc:',
+			'cc:'
+		);
 
 		// An array of the input fields to scan for injected headers
 		$fields = array(

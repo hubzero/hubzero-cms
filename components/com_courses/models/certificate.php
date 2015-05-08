@@ -238,7 +238,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		natsort($images);
 
 		$base  = $this->path('web');
-		$token = hash('sha256', \JFactory::getSession()->getId() . ':' . \Config::get('secret'));
+		$token = hash('sha256', \App::get('session')->getId() . ':' . \Config::get('secret'));
 
 		$idx = 0;
 		foreach ($images as $img)

@@ -24,7 +24,7 @@ abstract class MailtoHelper
 	{
 		$hash = sha1($url);
 		self::cleanHashes();
-		$session = JFactory::getSession();
+		$session = App::get('session');
 		$mailto_links = $session->get('com_mailto.links', array());
 		if (!isset($mailto_links[$hash]))
 		{
@@ -45,9 +45,9 @@ abstract class MailtoHelper
 	public static function validateHash($hash)
 	{
 		$retval = false;
-		$session = JFactory::getSession();
+
 		self::cleanHashes();
-		$mailto_links = $session->get('com_mailto.links', array());
+		$mailto_links = App::get('session')->get('com_mailto.links', array());
 		if (isset($mailto_links[$hash]))
 		{
 			$retval = $mailto_links[$hash]->link;
@@ -67,7 +67,7 @@ abstract class MailtoHelper
 		if (!$cleaned)
 		{
 			$past = time() - $lifetime;
-			$session = JFactory::getSession();
+			$session = App::get('session');
 			$mailto_links = $session->get('com_mailto.links', array());
 			foreach ($mailto_links as $index=>$link)
 			{

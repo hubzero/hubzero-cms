@@ -31,6 +31,7 @@
 namespace Hubzero\Plugin;
 
 use Hubzero\Document\Assets;
+use Hubzero\Config\Registry;
 
 jimport('joomla.plugin.plugin');
 
@@ -43,23 +44,24 @@ class Plugin extends \JPlugin
 
 	/**
 	 * Container for component messages
-	 * @var array
+	 *
+	 * @var  array
 	 */
 	public $pluginMessageQueue = array();
 
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = false;
 
 	/**
 	 * Constructor
 	 *
-	 * @access	public
-	 * @param	array	$config		Optional configurations to be used
-	 * @return	void
+	 * @param   object  $subject  Event dispatcher
+	 * @param   array   $config   Optional configurations to be used
+	 * @return  void
 	 */
 	public function __construct($subject, $config)
 	{
@@ -77,9 +79,9 @@ class Plugin extends \JPlugin
 	/**
 	 * Redirect
 	 *
-	 * @param   string $url     The url to redirect to
-	 * @param   string $msg     A message to display
-	 * @param   string $msgType Message type [error, success, warning]
+	 * @param   string  $url      The url to redirect to
+	 * @param   string  $msg      A message to display
+	 * @param   string  $msgType  Message type [error, success, warning]
 	 * @return  void
 	 */
 	public function redirect($url, $msg='', $msgType='')
@@ -91,7 +93,7 @@ class Plugin extends \JPlugin
 			//preserve plugin messages after redirect
 			if (count($this->pluginMessageQueue))
 			{
-				\JFactory::getSession()->set('plugin.message.queue', $this->pluginMessageQueue);
+				\App::get('session')->set('plugin.message.queue', $this->pluginMessageQueue);
 			}
 
 			\App::redirect($url, $msg, $msgType);
@@ -101,15 +103,15 @@ class Plugin extends \JPlugin
 	/**
 	 * Method to add a message to the component message que
 	 *
-	 * @param   string $message The message to add
-	 * @param   string $type    The type of message to add
+	 * @param   string  $message  The message to add
+	 * @param   string  $type     The type of message to add
 	 * @return  object
 	 */
 	public function addPluginMessage($message, $type='message')
 	{
 		if (!count($this->pluginMessageQueue))
 		{
-			$session = \JFactory::getSession();
+			$session = \App::get('session');
 			$pluginMessage = $session->get('plugin.message.queue');
 			if (count($pluginMessage))
 			{
@@ -141,7 +143,7 @@ class Plugin extends \JPlugin
 	{
 		if (!count($this->pluginMessageQueue))
 		{
-			$session = \JFactory::getSession();
+			$session = \App::get('session');
 			$pluginMessage = $session->get('plugin.message.queue');
 			if (count($pluginMessage))
 			{
@@ -164,8 +166,8 @@ class Plugin extends \JPlugin
 	/**
 	 * Method to get plugin params
 	 *
-	 * @param   string $name   Plugin name
-	 * @param   string $folder Plugin folder
+	 * @param   string  $name    Plugin name
+	 * @param   string  $folder  Plugin folder
 	 * @return	object
 	 */
 	public static function getParams($name, $folder)
@@ -174,11 +176,11 @@ class Plugin extends \JPlugin
 
 		// load the params from databse
 		$sql = "SELECT params FROM `#__extensions` WHERE folder=" . $database->quote($folder) . " AND element=" . $database->quote($name) . " AND enabled=1";
-		$database->setQuery( $sql );
+		$database->setQuery($sql);
 		$result = $database->loadResult();
 
 		// params object
-		$params = new \JRegistry($result);
+		$params = new Registry($result);
 		return $params;
 	}
 

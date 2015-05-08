@@ -100,7 +100,7 @@ class MediaTracking extends \JTable
 		// If we don't have a user ID use session ID
 		if (!$user_id)
 		{
-			$session = \JFactory::getSession();
+			$session = \App::get('session');
 			$session_id = $session->getId();
 			$sql .= "m.session_id=" . $this->_db->quote($session_id);
 		}

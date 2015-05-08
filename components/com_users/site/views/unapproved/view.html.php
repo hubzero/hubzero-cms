@@ -51,7 +51,7 @@ class UsersViewUnapproved extends JViewLegacy
 		if ($real->get('approved'))
 		{
 			// Update the session and redirect
-			$session = \JFactory::getSession();
+			$session = App::get('session');
 
 			$sessionUser = $session->get('user');
 			$sessionUser->set('approved', $real->get('approved'));

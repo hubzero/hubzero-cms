@@ -289,7 +289,7 @@ class PdfForm
 		$idx = 0;
 		foreach ($images as $img)
 		{
-			$session_id = \JFactory::getSession()->getId();
+			$session_id = \App::get('session')->getId();
 			$secret     = \Config::get('secret');
 			$token      = hash('sha256', $session_id . ':' . $secret);
 			$path       = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&token='.$token;

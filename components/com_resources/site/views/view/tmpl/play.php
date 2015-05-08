@@ -37,7 +37,7 @@ $html = '';
 	$url = $this->activechild->path;
 
 	// Get some attributes
-	$attribs = new JRegistry( $this->activechild->attribs );
+	$attribs = new \Hubzero\Config\Registry( $this->activechild->attribs );
 	$width  = $attribs->get('width', '');
 	$height = $attribs->get('height', '');
 
@@ -150,7 +150,7 @@ $html = '';
 
 			if (!User::isGuest())
 			{
-				$session = JFactory::getSession();
+				$session = App::get('session');
 
 				$session_id = $session->getId();
 
