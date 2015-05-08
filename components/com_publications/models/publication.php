@@ -1838,6 +1838,15 @@ class Publication extends Object
 				$link = $this->_base . '&v=' . $this->get('version_number');
 			break;
 
+			case 'questions':
+			case 'versions':
+			case 'supportingdocs':
+			case 'reviews':
+			case 'wishlist':
+			case 'citations':
+				$link = $this->_base . '&v=' . $this->get('version_number') . '&active=' . strtolower($type);
+			break;
+
 			case 'edit':
 				$link = $this->_editBase . '&pid=' . $this->get('id');
 			break;
@@ -2003,5 +2012,42 @@ class Publication extends Object
 		}
 
 		return new ItemList($results);
+	}
+
+	/**
+	 * Check if this is a tool publication
+	 *
+	 * @return     array
+	 */
+	public function isTool()
+	{
+		static $isTool;
+
+		if (!isset($isTool))
+		{
+			$isTool = false;
+
+			if ($this->category()->alias == 'tool')
+			{
+				$isTool = true;
+			}
+		}
+
+		return $isTool;
+	}
+
+	/**
+	 * Get alias or id
+	 *
+	 * @return     array
+	 */
+	public function identifier()
+	{
+		if ($this->get('alias'))
+		{
+			return $this->get('alias');
+		}
+
+		return $this->get('id');
 	}
 }

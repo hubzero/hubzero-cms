@@ -1,0 +1,82 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/questions/questions.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources Q&A plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.metadata p.answer:before { 
+		content: "\f086";
+	}
+	.subject #hubForm.full fieldset {
+		padding-left: 0;
+	}
+
+/* Entries */
+	.entry-state {
+		text-transform: uppercase;
+	}
+	.entry-comments a:before {
+		content: "\f0e6";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+		color: #999;
+	}
+	.entries .reward {
+		text-align: right;
+	}
+
+	.entries .entry-id:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
+	}
+	.entries .answered .entry-id:before {
+		content: "\f086";
+		color: #a284db;
+	}
+	.entries .answered {
+		background: #fcf9ff;
+	}
+	.entries .flagged .entry-id:before {
+		content: "\2691";
+	}
+	.entries .mine {
+		background: #ffe;
+	}
+	.entries .mine .entry-id:before {
+		color: #cea638;
+	}
+
+	.container-block .entry-details {
+		padding: 0.7em 0 0.7em 0;
+	}
+	.entry-popularity {
+		display: none;
+	}
+
+/* Rewards */
+	.entry-reward {
+		white-space: nowrap;
+		color: #999;
+	}
+	.entry-reward a {
+		width: 1em;
+		height: 1em;
+		display: inline-block;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	.entry-reward a:before {
+		content: "\f006";
+		font-family: "Fontcons";
+		margin-right: 1em;
+		font-size: 16px;
+	}

@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <p class="answer">
 	<?php if ($this->publication->alias) : ?>
-		<a href="<?php echo Route::url('index.php?option=com_publications&alias='.$this->publication->alias.'&active=questions'); ?>">
+		<a href="<?php echo Route::url($this->publication->link('questions')); ?>">
 	<?php else : ?>
-		<a href="<?php echo Route::url('index.php?option=com_publications&id='.$this->publication->id.'&active=questions'); ?>">
+		<a href="<?php echo Route::url($this->publication->link('questions')); ?>">
 	<?php endif; ?>
 		<?php
 			if ($this->count == 1)
@@ -48,5 +48,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		?>
 	</a>
-	(<a href="<?php echo Request::base(true); ?>/publications/<?php echo $this->publication->id; ?>/questions/?action=new"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+	(<a href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>

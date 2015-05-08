@@ -80,7 +80,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
-			'html'=>'',
+			'html'    =>'',
 			'metadata'=>''
 		);
 
@@ -112,10 +112,10 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$this->filters = array();
 		$this->filters['limit']    	= Request::getInt( 'limit', 0 );
 		$this->filters['start']    	= Request::getInt( 'limitstart', 0 );
-		$identifier 		 		= $this->publication->alias ? $this->publication->alias : $this->publication->id;
-		$this->filters['tag']      	= $this->publication->cat_alias == 'tool'
-									?  'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['rawtag']   	= $this->publication->cat_alias == 'tool'
+		$identifier 		 		= $this->publication->identifier();
+		$this->filters['tag']      	= $this->publication->isTool()
+									? 'tool:' . $identifier : 'publication:' . $identifier;
+		$this->filters['rawtag']   	= $this->publication->isTool()
 									?  'tool:' . $identifier : 'publication:' . $identifier;
 		$this->filters['q']        	= Request::getVar( 'q', '' );
 		$this->filters['filterby'] 	= Request::getVar( 'filterby', '' );
@@ -329,15 +329,6 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 			$row->set('reward', 1);
 		}
 
-		// Ensure the user added a tag
-		/* Make tags optional
-		if (!$tags)
-		{
-			$this->setError(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
-			return $this->_new($row);
-		}
-		*/
-
 		// Store new content
 		if (!$row->store(true))
 		{
@@ -358,14 +349,14 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$row->tag($tags);
 
 		// Add the tag to link to the publication
-		$identifier = $this->publication->alias ? $this->publication->alias : $this->publication->id;
-		$tag        = $this->publication->cat_alias == 'tool' ?  'tool' . $identifier : 'publication' . $identifier;
+		$identifier = $this->publication->get('alias') ? $this->publication->get('alias') : $this->publication->get('id');
+		$tag = $this->publication->isTool() ?  'tool' . $identifier : 'publication' . $identifier;
 
-		$row->addTag($tag, User::get('id'), ($this->publication->cat_alias == 'tool' ? 0 : 1));
+		$row->addTag($tag, User::get('id'), ($this->publication->isTool() ? 0 : 1));
 
 		// Redirect to the question
-		JFactory::getApplication()->redirect(
-			Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions')
+		App::redirect(
+			Route::url($this->publication->link() . '&active=questions')
 		);
 	}
 }

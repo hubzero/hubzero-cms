@@ -41,12 +41,12 @@ $this->css();
 	<?php foreach ($this->getErrors() as $error) { ?>
 	<p class="error"><?php echo $error; ?></p>
 	<?php } ?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions'); ?>" method="post" id="hubForm" class="full">
-		<fieldset>
+	<form action="<?php echo Route::url($this->publication->link('questions')); ?>" method="post" id="hubForm" class="full">
+		<fieldset id="ask">
 			<legend><?php echo Lang::txt('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="id" value="<?php echo $this->escape($this->publication->id); ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->publication->get('id'); ?>" />
 			<input type="hidden" name="active" value="questions" />
 			<input type="hidden" name="action" value="save" />
 			<input type="hidden" name="funds" value="<?php echo $this->escape($this->funds); ?>" />
