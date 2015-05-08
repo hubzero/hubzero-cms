@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$database = JFactory::getDBO();
-
 if ($this->model->isTool())
 {
 	$children = $this->model->children();
@@ -75,10 +73,10 @@ else
 					else
 					{
 						$rt = \Components\Resources\Tables\Type::getRecordInstance($child->type);
-						$tparams = new JRegistry($rt->params);
+						$tparams = new \Hubzero\Config\Registry($rt->params);
 
 						$lt = \Components\Resources\Tables\Type::getRecordInstance($child->logicaltype);
-						$ltparams = new JRegistry($lt->params);
+						$ltparams = new \Hubzero\Config\Registry($lt->params);
 
 						// Check the link action by child's type
 						if ($child->logicaltype)
@@ -134,7 +132,7 @@ else
 						}
 
 						// Check for any link action overrides on the child itself
-						$childParams = new JRegistry($child->params);
+						$childParams = new \Hubzero\Config\Registry($child->params);
 						$linkAction = intval($childParams->get('link_action', $linkAction));
 						switch ($linkAction)
 						{
@@ -229,7 +227,7 @@ else
 					}
 					else
 					{
-						$attribs = new JRegistry($child->attribs);
+						$attribs = new \Hubzero\Config\Registry($child->attribs);
 						$width  = intval($attribs->get('width', 640));
 						$height = intval($attribs->get('height', 360));
 						if ($width > 0 && $height > 0)

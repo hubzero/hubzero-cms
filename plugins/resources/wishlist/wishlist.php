@@ -118,8 +118,8 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		$filters['limit'] = $this->params->get('limit');
 
 		// Load some objects
-		$obj = new \Components\Wishlist\Tables\Wishlist($database);
-		$objWish = new \Components\Wishlist\Tables\Wish($database);
+		$obj      = new \Components\Wishlist\Tables\Wishlist($database);
+		$objWish  = new \Components\Wishlist\Tables\Wish($database);
 		$objOwner = new \Components\Wishlist\Tables\Owner($database);
 
 		// Get wishlist id
@@ -191,13 +191,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 				// HTML output
 				// Instantiate a view
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => $this->_type,
-						'element' => $this->_name,
-						'name'    => 'browse'
-					)
-				);
+				$view = $this->view('default', 'browse');
 				// Pass the view some info
 				$view->option   = $option;
 				$view->resource = $model->resource;
@@ -220,13 +214,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'metadata'
-				)
-			);
+			$view = $this->view('default', 'metadata');
 			$view->resource   = $model->resource;
 			$view->items      = $items;
 			$view->wishlistid = $id;

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 
 $base = Request::base();
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+if (Request::isSecure())
 {
 	$base = str_replace('http://', 'https://', $base);
 }

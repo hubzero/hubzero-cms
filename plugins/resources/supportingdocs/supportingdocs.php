@@ -91,24 +91,10 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 		$view->option    = $option;
 		$view->model     = $model;
 		$view->live_site = rtrim(Request::base(), '/');
-
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
-		}
 
 		// Return the output
 		$arr['html'] = $view->loadTemplate();

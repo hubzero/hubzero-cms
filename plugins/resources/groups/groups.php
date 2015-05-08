@@ -88,11 +88,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 		$this->database = JFactory::getDBO();
 
 		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(array(
-			'folder'  => $this->_type,
-			'element' => $this->_name,
-			'name'    => 'display'
-		));
+		$this->view = $this->view('default', 'display');
 
 		if ($miniview)
 		{

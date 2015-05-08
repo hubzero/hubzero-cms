@@ -71,13 +71,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 
 		$db = JFactory::getDBO();
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'create'
-			)
-		);
+		$view = $this->view('default', 'create');
 		$view->ticket = $ticket;
 
 		$record = new TimeRecords($db);
@@ -160,7 +154,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		if (!$records->save($record))
 		{
 			// Something went wrong...return errors (probably from 'check')
-			$this->addPluginMessage($records->getError(), 'error');
+			Notify::error(App::get('debug') ? $records->getError() : Lang::txt('Failed to save time record.'));
 		}
 	}
 }

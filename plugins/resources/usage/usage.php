@@ -114,7 +114,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get/set some variables
-		$dthis = Request::getVar('dthis', date('Y') . '-' . date('m'));
+		$dthis  = Request::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
 		include_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
@@ -147,13 +147,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			}
 
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'browse'
-				)
-			);
+			$view = $this->view('default', 'browse');
 
 			// Pass the view some info
 			$view->option     = $option;

@@ -459,17 +459,11 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'image'
-			)
-		);
-		$view->task       = Request::getVar('task', '');
-		$view->controller = Request::getVar('controller', '');
-		$view->option     = Request::getVar('option', '');
-		$view->total      = $GLOBALS['totalCaptchas'];
+		$view = $this->view('default', 'image')
+					->set('task', Request::getVar('task', ''))
+					->set('controller', Request::getVar('controller', ''))
+					->set('option', Request::getVar('option', ''))
+					->set('total', $GLOBALS['totalCaptchas']);
 
 		return $view->loadTemplate();
 	}
@@ -533,7 +527,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$font_file = $font_file = dirname(__FILE__) . DS . 'adlibBT.png';
+			$font_file = $font_file = __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.png';
 			$font = imagecreatefrompng($font_file);
 			imagealphablending($font, true);
 			$fontfile_width = imagesx($font);
@@ -780,7 +774,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 			$angle = rand(-45,45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
 
-			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, dirname(__FILE__) . DS . 'adlibBT.TTF', $security_code[$i]);
+			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
 			$x += ($size *2);
 		}
 

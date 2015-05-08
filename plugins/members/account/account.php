@@ -353,7 +353,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function confirmtoken()
 	{
-		$app = JFactory::getApplication();
 		jimport('joomla.user.helper');
 
 		// Check if they're logged in
@@ -437,7 +436,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// All checks pass...
 		// Push the token into the session
-		$app->setUserState($this->option . 'token', $crypt . ':' . $salt);
+		User::setState($this->option . 'token', $crypt . ':' . $salt);
 
 		// Redirect user to set local password view
 		App::redirect(
@@ -456,8 +455,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	 */
 	private function setlocalpass()
 	{
-		$app = JFactory::getApplication();
-
 		// Logged in?
 		if ($this->user->get('guest'))
 		{
@@ -471,7 +468,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the token from the user state variable
-		$token = $app->getUserState($this->option . 'token');
+		$token = User::getState($this->option . 'token');
 
 		// First check to make sure they're not trying to jump to this page without first verifying their token
 		if (is_null($token))
@@ -600,7 +597,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		Event::trigger('user.onAfterStoreUser', array($this->user->getProperties(), false, null, $this->getError()));
 
 		// Flush the variables from the session
-		$app->setUserState($this->option . 'token', null);
+		User::setState($this->option . 'token', null);
 
 		// Redirect
 		if (Request::getInt('no_html', 0))

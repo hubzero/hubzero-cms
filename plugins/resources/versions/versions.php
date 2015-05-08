@@ -102,13 +102,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			$rows = $tv->getVersions($model->resource->alias);
 
 			// Instantiate a view
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'browse'
-				)
-			);
+			$view = $this->view('default', 'browse');
 
 			// Get contribtool params
 			$tconfig = Component::params('com_tools');
@@ -118,13 +112,6 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			$view->option   = $option;
 			$view->resource = $model->resource;
 			$view->rows     = $rows;
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
-			}
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
