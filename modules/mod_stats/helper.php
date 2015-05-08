@@ -63,7 +63,7 @@ class Helper extends Module
 	/**
 	 * Get a list of stats
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @return  array
 	 */
 	static function &getList(&$params)

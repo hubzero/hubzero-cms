@@ -32,11 +32,11 @@ namespace Modules\Featuredmember;
 
 use Hubzero\Module\Module;
 use Hubzero\User\Profile;
+use Hubzero\Config\Registry;
 use MembersProfile;
 use Component;
 use User;
 use JFactory;
-use JRegistry;
 
 /**
  * Module class for displaying featured members
@@ -96,7 +96,7 @@ class Helper extends Module
 
 			$config = Component::params('com_members');
 
-			$rparams = new JRegistry($this->profile->get('params'));
+			$rparams = new Registry($this->profile->get('params'));
 			$this->params = $config;
 			$this->params->merge($rparams);
 

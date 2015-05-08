@@ -70,7 +70,7 @@ class Helper extends Module
 	/**
 	 * Get a list of the menu items.
 	 *
-	 * @param   object  $params  JRegistry The module options.
+	 * @param   object  $params  Registry The module options.
 	 * @return  array
 	 */
 	static function getList(&$params)

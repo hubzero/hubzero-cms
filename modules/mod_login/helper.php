@@ -31,9 +31,9 @@
 namespace Modules\Login;
 
 use Hubzero\Module\Module;
+use Hubzero\Config\Registry;
 use Plugin;
 use JFactory;
-use JRegistry;
 use JURI;
 use Request;
 use User;
@@ -46,7 +46,7 @@ class Helper extends Module
 	/**
 	 * Get the redirect URL
 	 *
-	 * @param   object  $params  JRegistry The module options.
+	 * @param   object  $params  Registry The module options.
 	 * @param   string  $type    Type
 	 * @return  string
 	 */
@@ -191,14 +191,14 @@ class Helper extends Module
 		{
 			if ($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$pparams = new \JRegistry($p->params);
+				$pparams = new Registry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
 			{
-				$pparams = new \JRegistry($p->params);
+				$pparams = new Registry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
 			}
 		}

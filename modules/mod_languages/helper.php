@@ -39,6 +39,7 @@ use Route;
 use JString;
 use MenusHelper;
 use User;
+use Lang;
 
 /**
  * Module class for displaying a menu
@@ -69,7 +70,7 @@ class Helper extends Module
 	/**
 	 * Get a list of languages
 	 *
-	 * @param   object  $params  JRegistry The module options.
+	 * @param   object  $params  Registry The module options.
 	 * @return  array
 	 */
 	public static function getList(&$params)
@@ -109,7 +110,7 @@ class Helper extends Module
 		foreach ($languages as $i => &$language)
 		{
 			// Do not display language without frontend UI
-			if (!JLanguage::exists($language->lang_code))
+			if (!Lang::exists($language->lang_code))
 			{
 				unset($languages[$i]);
 			}

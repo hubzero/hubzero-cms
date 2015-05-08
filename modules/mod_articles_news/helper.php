@@ -65,7 +65,7 @@ class Helper extends Module
 	/**
 	 * Display module contents
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @return  array
 	 */
 	public static function getList(&$params)

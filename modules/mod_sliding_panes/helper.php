@@ -48,7 +48,7 @@ class Helper extends Module
 	/**
 	 * Constructor
 	 *
-	 * @param   object  $params  JParameter/JRegistry
+	 * @param   object  $params  Registry
 	 * @param   object  $module  Database row
 	 * @return  void
 	 */

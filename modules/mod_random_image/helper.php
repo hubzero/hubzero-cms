@@ -71,11 +71,11 @@ class Helper extends Module
 	/**
 	 * Get a random image from a list
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @param   array   $images  List of images in a directory
 	 * @return  string
 	 */
-	static function getRandomImage(&$params, $images)
+	public static function getRandomImage(&$params, $images)
 	{
 		$width  = $params->get('width');
 		$height = $params->get('height');
@@ -124,7 +124,7 @@ class Helper extends Module
 	/**
 	 * Get a list of images from a folder
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @param   string  $folder  Directory to look in
 	 * @return  array
 	 */

@@ -62,7 +62,7 @@ class Helper extends Module
 	/**
 	 * Get users sorted by activation date
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @return  array
 	 */
 	static function getUsers($params)
