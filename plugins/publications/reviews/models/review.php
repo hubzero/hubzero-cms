@@ -166,7 +166,11 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('user_id'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -201,6 +205,10 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 		if (!isset($filters['parent']))
 		{
 			$filters['parent'] = 0;
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

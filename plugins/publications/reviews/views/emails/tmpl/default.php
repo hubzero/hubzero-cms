@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews');
 
-$message  = Lang::txt('PLG_PUBLICATION_REVIEWS_SOMEONE_POSTED_REVIEW') . "\n\n";
+$message  = Lang::txt('PLG_PUBLICATIONS_REVIEWS_SOMEONE_POSTED_REVIEW') . "\n\n";
 $message .= stripslashes($this->publication->title) . "\n\n";
-$message .= Lang::txt('PLG_PUBLICATION_REVIEWS_TO_VIEW_COMMENT') . "\n";
+$message .= Lang::txt('PLG_PUBLICATIONS_REVIEWS_TO_VIEW_COMMENT') . "\n";
 $message .= Request::base() . '/' . ltrim($sef, '/') . "\n";
 
 echo $message;

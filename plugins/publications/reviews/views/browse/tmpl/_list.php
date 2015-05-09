@@ -24,6 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 ?>
 <ol class="comments" id="t<?php echo (isset($this->parent) ? $this->parent : '0'); ?>">
 <?php

@@ -57,6 +57,24 @@ class Review extends \JTable
 			$this->setError( Lang::txt('Your review must have a rating.') );
 			return false;
 		}
+
+		if (!$this->publication_id)
+		{
+			$this->setError(\Lang::txt('Review entry missing Publication ID.'));
+		}
+
+		if ($this->getError())
+		{
+			return false;
+		}
+
+		if (!$this->created || $this->created == $this->_db->getNullDate())
+		{
+			$this->created = \Date::toSql();
+		}
+
+		$this->created_by = $this->created_by ?: \User::get('id');
+
 		return true;
 	}
 
@@ -147,12 +165,12 @@ class Review extends \JTable
 		}
 
 		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
+			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful, "
+			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful "
 			."\n FROM $this->_tbl AS rr "
-			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' ";
+			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='pubreview' ";
 		$query.= "AND v.voter=" . $this->_db->Quote($uid);
-		$query.= " WHERE rr.publication_id=" . $this->_db->Quote($pid);
+		$query.= " WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->Quote($pid);
 		$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
 		$query.= " ORDER BY rr.created DESC";
 		$this->_db->setQuery( $query );
@@ -183,18 +201,14 @@ class Review extends \JTable
 			$uid = User::get('id');
 		}
 
-		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' 
-			AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' 
-			AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
-			."\n FROM $this->_tbl AS rr "
-			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' ";
-		$query.= "AND v.voter=" . $this->_db->Quote($uid);
-		$query.= " WHERE rr.publication_id=" . $this->_db->Quote($pid)
-				. " AND rr.created_by=" . $this->_db->Quote($uid);
-		$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
-		$query.= " ORDER BY rr.created DESC";
+		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful
+			FROM `$this->_tbl` AS rr
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='pubreview' AND v.voter=" . $this->_db->Quote($uid) . "
+			WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->Quote($pid);
+			$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
@@ -207,7 +221,7 @@ class Review extends \JTable
 	 * @param      integer $uid       User ID
 	 * @return     mixed False if error, Object on success
 	 */
-	public function getVote( $id, $category = 'review', $uid = NULL )
+	public function getVote( $id, $category = 'pubreview', $uid = NULL, $select = 'v.helpful' )
 	{
 		if (!$id)
 		{
@@ -219,7 +233,7 @@ class Review extends \JTable
 			return false;
 		}
 
-		$query  = "SELECT v.helpful ";
+		$query  = "SELECT $select ";
 		$query .= "FROM #__vote_log as v  ";
 		$query .= "WHERE v.referenceid= " . $this->_db->Quote($id) . " 
 					AND v.category=" . $this->_db->Quote($category) . " 

@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 $dcls = '';
 $lcls = '';
 
@@ -52,18 +50,21 @@ else
 	$this->item->set('vote', null);
 }
 
-if (!$juser->get('guest')) {
+if (!User::isGuest())
+{
 	$like_title = 'Vote this up :: ' . $this->item->get('helpful', 0) . ' people liked this';
 	$dislike_title = 'Vote this down :: ' . $this->item->get('nothelpful', 0) . ' people did not like this';
 	$cls = ' tooltips';
-} else {
+} 
+else
+{
 	$like_title = 'Vote this up :: Please login to vote.';
 	$dislike_title = 'Vote this down :: Please login to vote.';
 	$cls = ' tooltips';
 }
 ?>
 <?php if (!$this->item->get('vote')) { ?>
-	<?php if ($juser->get('guest')) { ?>
+	<?php if (User::isGuest()) { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>

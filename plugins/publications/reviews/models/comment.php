@@ -184,6 +184,10 @@ class PublicationsModelComment extends \Hubzero\Base\Model
 		{
 			$filters['item_id'] = $this->get('item_id');
 		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
+		}
 
 		switch (strtolower($rtrn))
 		{

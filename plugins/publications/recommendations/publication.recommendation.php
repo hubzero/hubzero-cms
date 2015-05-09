@@ -112,9 +112,9 @@ class PublicationRecommendation extends JTable
 	{
 		$query = "SELECT *, (10*titleScore + 5*contentScore+2*tagScore)/(10+5+2) AS rec_score
 		FROM #__recommendation AS rec, #__publications AS P
-		WHERE (rec.fromID ='".$filters['id']."' AND P.id = rec.toID)
-		OR (rec.toID ='".$filters['id']."' AND P.id = rec.fromID) having rec_score > ".$filters['threshold']."
-		ORDER BY rec_score DESC LIMIT ".$filters['limit'];
+		WHERE (rec.fromID ='" . $filters['id'] . "' AND P.id = rec.toID)
+		OR (rec.toID ='" . $filters['id'] . "' AND P.id = rec.fromID) having rec_score > " . $filters['threshold']."
+		ORDER BY rec_score DESC LIMIT " . $filters['limit'];
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();

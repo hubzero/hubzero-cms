@@ -695,7 +695,7 @@ class Publication extends Object
 			return $this->_tblLicense;
 		}
 
-		return $this->_tbl;
+		return $this->publication;
 	}
 
 	/**

@@ -68,17 +68,18 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 	public function onPublicationSub( $publication, $option, $miniview=0 )
 	{
 		$arr = array(
-			'html'=>'',
+			'html'    =>'',
 			'metadata'=>'',
-			'name'=>'recommendations'
+			'name'    =>'recommendations'
 		);
 
 		// Get some needed libraries
-		include_once(PATH_CORE . DS . 'plugins' . DS . 'publications' . DS . 'recommendations' . DS . 'publication.recommendation.php');
+		include_once(PATH_CORE . DS . 'plugins' . DS . 'publications'
+			. DS . 'recommendations' . DS . 'publication.recommendation.php');
 
 		// Set some filters for returning results
 		$filters = array(
-			'id'        => $publication->id,
+			'id'        => $publication->get('id'),
 			'threshold' => $this->params->get('threshold', '0.21'),
 			'limit'     => $this->params->get('display_limit', 10)
 		);
@@ -101,9 +102,9 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Pass the view some info
-		$view->option = $option;
+		$view->option      = $option;
 		$view->publication = $publication;
-		$view->results = $results;
+		$view->results     = $results;
 		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
