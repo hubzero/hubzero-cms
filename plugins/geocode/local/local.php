@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Geocode plugin for Hubzero
  */
-class plgGeocodeLocal extends JPlugin
+class plgGeocodeLocal extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

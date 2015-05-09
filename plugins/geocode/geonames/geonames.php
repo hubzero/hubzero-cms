@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GeonamesProvider named geonames is able to geocode and
  * reverse geocode places. A valid username is required.
  */
-class plgGeocodeGeonames extends JPlugin
+class plgGeocodeGeonames extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

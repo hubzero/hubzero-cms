@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchWeightTools extends \JPlugin
+class plgSearchWeightTools extends \Hubzero\Plugin\Plugin
 {
 
 	/**

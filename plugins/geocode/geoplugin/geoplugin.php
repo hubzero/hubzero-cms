@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GeoPluginProvider named geo_plugin is able to geocode
  * IPv4 addresses and IPv6 addresses only.
  */
-class plgGeocodeGeoplugin extends JPlugin
+class plgGeocodeGeoplugin extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

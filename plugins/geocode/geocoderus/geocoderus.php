@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GeocoderUsProvider is able to geocode street addresses
  * only, exclusively in USA.
  */
-class plgGeocodeGeocoderus extends JPlugin
+class plgGeocodeGeocoderus extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

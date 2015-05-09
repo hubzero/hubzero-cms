@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchSuffixes extends \JPlugin
+class plgSearchSuffixes extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Short description for 'onSearchExpandTerms'

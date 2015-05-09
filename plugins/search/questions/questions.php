@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search questions
  */
-class plgSearchQuestions extends \JPlugin
+class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Short description for 'sort_by_date'

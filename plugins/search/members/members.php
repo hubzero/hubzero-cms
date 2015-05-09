@@ -101,7 +101,7 @@ class ContributionSorter
 /**
  * Search members
  */
-class plgSearchMembers extends \JPlugin
+class plgSearchMembers extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

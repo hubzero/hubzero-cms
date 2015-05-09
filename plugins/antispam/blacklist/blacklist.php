@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Antispam plugin for a Black Listed word detector
  */
-class plgAntispamBlackList extends JPlugin
+class plgAntispamBlackList extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Instantiate and return a spam detector.

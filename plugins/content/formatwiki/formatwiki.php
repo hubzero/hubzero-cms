@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Wiki formatted Content Plugin
  */
-class plgContentFormatwiki extends JPlugin
+class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Finder before save content method

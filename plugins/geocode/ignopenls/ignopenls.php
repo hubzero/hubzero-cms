@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The IGNOpenLSProvider is able to geocode street addresses only,
  * exclusively in France. A valid OpenLS api key is required.
  */
-class plgGeocodeIgnopenls extends JPlugin
+class plgGeocodeIgnopenls extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

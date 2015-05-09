@@ -43,7 +43,7 @@ jimport('joomla.plugin.plugin');
  * possible to precise the toponym to get more accurate result for reverse
  * geocoding: house, street, metro, district and locality.
  */
-class plgGeocodeYandex extends JPlugin
+class plgGeocodeYandex extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

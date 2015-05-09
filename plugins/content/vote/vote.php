@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Vote plugin.
  */
-class plgContentVote extends JPlugin
+class plgContentVote extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor

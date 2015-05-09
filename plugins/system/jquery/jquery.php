@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
-class plgSystemJquery extends JPlugin
+class plgSystemJquery extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Hook for after routing application

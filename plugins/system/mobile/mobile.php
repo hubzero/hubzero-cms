@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.event.plugin');
 
 
-class plgSystemMobile extends JPlugin
+class plgSystemMobile extends \Hubzero\Plugin\Plugin
 {
 	public function __construct(& $subject)
 	{

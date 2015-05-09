@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  * @subpackage	Extension.Joomla
  * @since		1.6
  */
-class plgExtensionJoomla extends JPlugin
+class plgExtensionJoomla extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * @var		integer Extension Identifier

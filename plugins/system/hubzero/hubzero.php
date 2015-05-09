@@ -37,7 +37,7 @@ jimport('joomla.event.plugin');
 /**
  * System plugin for hubzero
  */
-class plgSystemHubzero extends JPlugin
+class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor

@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search plugin for wiki pages
  */
-class plgSearchWiki extends \JPlugin
+class plgSearchWiki extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

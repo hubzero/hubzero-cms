@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Plugin
  * @subpackage	System.remember
  */
-class plgSystemRemember extends JPlugin
+class plgSystemRemember extends \Hubzero\Plugin\Plugin
 {
 	function onAfterInitialise()
 	{

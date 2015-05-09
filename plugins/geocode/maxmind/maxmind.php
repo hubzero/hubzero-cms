@@ -41,7 +41,7 @@ jimport('joomla.plugin.plugin');
  * key is required. This provider provides two constants
  * CITY_EXTENDED_SERVICE by default and OMNI_SERVICE.
  */
-class plgGeocodeMaxmind extends JPlugin
+class plgGeocodeMaxmind extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

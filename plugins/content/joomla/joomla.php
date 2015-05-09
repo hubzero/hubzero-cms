@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @subpackage	Content.joomla
  * @since		1.6
  */
-class plgContentJoomla extends JPlugin
+class plgContentJoomla extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Example after save content method

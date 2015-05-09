@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * System plugin for disabling the cache for select pages
  */
-class plgSystemDisablecache extends JPlugin
+class plgSystemDisablecache extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Caching turned on/off

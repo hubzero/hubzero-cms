@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  * @subpackage	Editors-xtd.readmore
  * @since 1.5
  */
-class plgButtonReadmore extends JPlugin
+class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor

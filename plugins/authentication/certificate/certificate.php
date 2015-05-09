@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Auth plugin for certificate based authentication
  */
-class plgAuthenticationCertificate extends JPlugin
+class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Actions to perform when logging out a user session

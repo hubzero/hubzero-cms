@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * HUBzero plugin class for displaying a wiki editor toolbar
  */
-class plgEditorWikiToolbar extends JPlugin
+class plgEditorWikiToolbar extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not

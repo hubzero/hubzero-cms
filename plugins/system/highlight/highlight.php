@@ -18,7 +18,7 @@ jimport('joomla.application.component.helper');
  * @subpackage  System.Highlight
  * @since       2.5
  */
-class PlgSystemHighlight extends JPlugin
+class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Method to catch the onAfterDispatch event.

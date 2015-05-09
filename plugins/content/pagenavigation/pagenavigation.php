@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Plugin
  * @subpackage	Content.pagenavigation
  */
-class plgContentPagenavigation extends JPlugin
+class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * @since	1.6

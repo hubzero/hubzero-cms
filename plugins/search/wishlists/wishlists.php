@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchWishlists extends \JPlugin
+class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Short description for 'onSearch'

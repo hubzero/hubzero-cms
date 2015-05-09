@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GoogleMapsProvider is able to geocode and reverse geocode
  * street addresses.
  */
-class plgGeocodeGooglemaps extends JPlugin
+class plgGeocodeGooglemaps extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

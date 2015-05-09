@@ -38,7 +38,7 @@ jimport('joomla.event.plugin');
  *
  * Long description (if any) ...
  */
-class plgSystemForceLogin extends JPlugin
+class plgSystemForceLogin extends \Hubzero\Plugin\Plugin
 {
 
 	/**

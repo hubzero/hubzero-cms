@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The IpGeoBaseProvider named ip_geo_base is able to geocode
  * IPv4 addresses only, very accurate in Russia.
  */
-class plgGeocodeIpgeobase extends JPlugin
+class plgGeocodeIpgeobase extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

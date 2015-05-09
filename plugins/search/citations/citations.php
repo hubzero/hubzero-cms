@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search citation entries
  */
-class plgSearchCitations extends \JPlugin
+class plgSearchCitations extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Search blog entries
  */
-class plgSearchBlogs extends \JPlugin
+class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Description for 'IRST_CLASS_CHILDREN'

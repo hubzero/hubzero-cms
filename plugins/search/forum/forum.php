@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search forum entries
  */
-class plgSearchForum extends \JPlugin
+class plgSearchForum extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Get the name of the area being searched

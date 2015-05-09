@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchSortCourses extends \JPlugin
+class plgSearchSortCourses extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Short description for 'onYSearchSort'

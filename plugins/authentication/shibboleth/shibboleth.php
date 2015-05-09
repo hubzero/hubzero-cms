@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Authentication Plugin class for Shibboleth/InCommon
  */
-class plgAuthenticationShibboleth extends JPlugin
+class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 {
 	const DNS = '8.8.8.8'; // nameserver used to look up user's network to see if we can automatically match them with their id provider
 

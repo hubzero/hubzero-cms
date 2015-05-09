@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Mollom antispam Plugin
  */
-class plgAntispamMollom extends JPlugin
+class plgAntispamMollom extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Instantiate and return a spam detector.

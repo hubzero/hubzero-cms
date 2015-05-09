@@ -89,7 +89,7 @@ class ResourceChildSorter
 /**
  * Search plugin for resources
  */
-class plgSearchResources extends \JPlugin
+class plgSearchResources extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

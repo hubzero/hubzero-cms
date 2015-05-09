@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The BingMapsProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
-class plgGeocodeBingmaps extends JPlugin
+class plgGeocodeBingmaps extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

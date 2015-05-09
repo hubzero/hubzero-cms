@@ -12,7 +12,7 @@ defined('JPATH_BASE') or die;
  * @package		Joomla.Plugin
  * @subpackage	System.logout
  */
-class plgSystemLogout extends JPlugin
+class plgSystemLogout extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Object Constructor.

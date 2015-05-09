@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * MaxMindBinary plugin for geocode
  */
-class plgGeocodeMaxmindbinary extends JPlugin
+class plgGeocodeMaxmindbinary extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

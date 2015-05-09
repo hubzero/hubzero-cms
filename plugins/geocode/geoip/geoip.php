@@ -40,7 +40,7 @@ jimport('joomla.plugin.plugin');
  * No need to use an HttpAdapter as it uses a local database. See the
  * MaxMind page for more information.
  */
-class plgGeocodeGeoip extends JPlugin
+class plgGeocodeGeoip extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

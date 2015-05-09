@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Cron plugin for handling/cleaning cached data
  */
-class plgCronCache extends JPlugin
+class plgCronCache extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Path to cache directory

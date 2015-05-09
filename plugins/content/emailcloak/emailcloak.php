@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Plugin
  * @subpackage	Content.emailcloak
  */
-class plgContentEmailcloak extends JPlugin
+class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Plugin that cloaks all emails in content from spambots via Javascript.

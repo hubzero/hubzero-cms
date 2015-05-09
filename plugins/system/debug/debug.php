@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  System.Debug
  * @since       1.5
  */
-class plgSystemDebug extends JPlugin
+class plgSystemDebug extends \Hubzero\Plugin\Plugin
 {
 	protected $linkFormat = '';
 

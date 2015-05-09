@@ -15,7 +15,7 @@ jimport('joomla.environment.browser');
  * Recaptcha Plugin.
  * Based on the official recaptcha library( https://developers.google.com/recaptcha/docs/php )
  */
-class plgCaptchaRecaptcha extends JPlugin
+class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 {
 	const RECAPTCHA_API_SERVER = "http://www.google.com/recaptcha/api";
 	const RECAPTCHA_API_SECURE_SERVER = "https://www.google.com/recaptcha/api";

@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Antispam plugin for a basic Bayesian filter
  */
-class plgAntispamBayesian extends JPlugin
+class plgAntispamBayesian extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Instantiate and return a spam detector.

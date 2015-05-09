@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The IpInfoDbProvider is able to geocode IPv4 addresses
  * only. A valid api key is required.
  */
-class plgGeocodeIpinfodb extends JPlugin
+class plgGeocodeIpinfodb extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

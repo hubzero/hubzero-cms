@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchSiteMap extends \JPlugin
+class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
 {
 
 	/**

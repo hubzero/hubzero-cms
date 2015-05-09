@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The DataScienceToolkitProvider is able to geocode IPv4
  * addresses and street adresses, exclusively in USA & Canada.
  */
-class plgGeocodeDatasciencetoolkit extends JPlugin
+class plgGeocodeDatasciencetoolkit extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

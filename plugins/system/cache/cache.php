@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Plugin
  * @subpackage	System.cache
  */
-class plgSystemCache extends JPlugin
+class plgSystemCache extends \Hubzero\Plugin\Plugin
 {
 	private $_cache = null;
 

@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GoogleMapsBusinessProvider is able to geocode and reverse geocode
  * street addresses. A valid Client ID is required. The private key is optional.
  */
-class plgGeocodeGooglemapsbusiness extends JPlugin
+class plgGeocodeGooglemapsbusiness extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

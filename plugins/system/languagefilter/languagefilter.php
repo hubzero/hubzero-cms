@@ -17,7 +17,7 @@ JLoader::register('MultilangstatusHelper', PATH_CORE . '/components/com_language
  * @subpackage	System.languagefilter
  * @since		1.6
  */
-class plgSystemLanguageFilter extends JPlugin
+class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 {
 	protected static $mode_sef;
 

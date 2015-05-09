@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The CloudMadeProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
-class plgGeocodeCloudmade extends JPlugin
+class plgGeocodeCloudmade extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

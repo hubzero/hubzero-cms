@@ -33,7 +33,7 @@ defined('JPATH_BASE') or die;
 /**
  * User plugin for updating quotas and session limits
  */
-class plgUserMiddleware extends JPlugin
+class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Utility method to act on a user after it has been saved.

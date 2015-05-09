@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * HTML formatted Content Plugin
  */
-class plgContentFormathtml extends JPlugin
+class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Finder before save content method

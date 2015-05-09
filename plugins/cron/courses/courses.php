@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Cron plugin for courses
  */
-class plgCronCourses extends JPlugin
+class plgCronCourses extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a list of events

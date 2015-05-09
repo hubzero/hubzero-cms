@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchWeightTitle extends \JPlugin
+class plgSearchWeightTitle extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Short description for 'onSearchWeightAll'

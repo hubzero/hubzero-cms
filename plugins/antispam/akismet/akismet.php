@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Akismet antispam Plugin
  */
-class plgAntispamAkismet extends JPlugin
+class plgAntispamAkismet extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Instantiate and return a spam detector.

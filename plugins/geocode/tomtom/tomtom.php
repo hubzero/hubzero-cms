@@ -41,7 +41,7 @@ jimport('joomla.plugin.plugin');
  * you can choose between de, es, fr, it, nl, pl, pt and sv.
  * A valid api key is required.
  */
-class plgGeocodeTomTom extends JPlugin
+class plgGeocodeTomTom extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

@@ -9,7 +9,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-class plgContentGeshi extends JPlugin
+class plgContentGeshi extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * @param	string	The context of the content being passed to the plugin.

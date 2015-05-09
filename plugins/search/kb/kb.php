@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search knowledge base entries
  */
-class plgSearchKB extends \JPlugin
+class plgSearchKB extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Get the name of the area being searched

@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GeoIPsProvider named geo_ips is able to geocode
  * IPv4 addresses only. A valid api key is required.
  */
-class plgGeocodeGeoips extends JPlugin
+class plgGeocodeGeoips extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

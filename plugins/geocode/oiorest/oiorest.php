@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The OIORestProvider is able to geocode and reverse geocode
  * street addresses, exclusively in Denmark.
  */
-class plgGeocodeOiorest extends JPlugin
+class plgGeocodeOiorest extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

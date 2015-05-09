@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Antispam Content Plugin
  */
-class plgContentAntispam extends JPlugin
+class plgContentAntispam extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Finder before save content method

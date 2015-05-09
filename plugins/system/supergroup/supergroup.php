@@ -37,7 +37,7 @@ jimport('joomla.event.plugin');
 /**
  * System plugin for hubzero
  */
-class plgSystemSupergroup extends JPlugin
+class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Method that fires after before a super group displays a super group comonent

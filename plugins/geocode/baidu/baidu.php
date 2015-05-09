@@ -40,7 +40,7 @@ jimport('joomla.plugin.plugin');
  * geocode street addresses, exclusively in China. A valid api
  * key is required.
  */
-class plgGeocodeBaidu extends JPlugin
+class plgGeocodeBaidu extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

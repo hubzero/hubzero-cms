@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search events
  */
-class plgSearchEvents extends \JPlugin
+class plgSearchEvents extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

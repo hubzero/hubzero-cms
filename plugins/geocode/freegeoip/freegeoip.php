@@ -38,7 +38,7 @@ jimport('joomla.plugin.plugin');
  *
  * The FreeGeoIpProvider is able to geocode IPv4 and IPv6 addresses only.
  */
-class plgGeocodeFreegeoip extends JPlugin
+class plgGeocodeFreegeoip extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

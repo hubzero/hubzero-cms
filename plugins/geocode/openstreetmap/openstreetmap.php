@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * OpenStreetMap plugin for geocode
  */
-class plgGeocodeOpenstreetmap extends JPlugin
+class plgGeocodeOpenstreetmap extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

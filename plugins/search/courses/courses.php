@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search course entries
  */
-class plgSearchCourses extends \JPlugin
+class plgSearchCourses extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

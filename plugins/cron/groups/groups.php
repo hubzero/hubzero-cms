@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Cron plugin for support tickets
  */
-class plgCronGroups extends JPlugin
+class plgCronGroups extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a list of events

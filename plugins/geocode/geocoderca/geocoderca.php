@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * The GeocoderCaProvider is able to geocode and reverse
  * geocode street addresses, exclusively in USA & Canada.
  */
-class plgGeocodeGeocoderca extends JPlugin
+class plgGeocodeGeocoderca extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

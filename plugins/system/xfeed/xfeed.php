@@ -36,7 +36,7 @@ jimport('joomla.event.plugin');
 /**
  * System plugin to force .rss URLs to raw document mode
  */
-class plgSystemXFeed extends JPlugin
+class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Perform actions after initialization

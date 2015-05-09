@@ -38,7 +38,7 @@ jimport('joomla.plugin.plugin');
  *
  * The HostIpProvider is able to geocode IPv4 addresses only.
  */
-class plgGeocodeHostip extends JPlugin
+class plgGeocodeHostip extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

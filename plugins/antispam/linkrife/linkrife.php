@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Antispam plugin for a LinkRife spam detector
  */
-class plgAntispamLinkRife extends JPlugin
+class plgAntispamLinkRife extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Instantiate and return a spam detector.

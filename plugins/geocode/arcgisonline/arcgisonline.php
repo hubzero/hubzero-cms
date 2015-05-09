@@ -42,7 +42,7 @@ jimport('joomla.plugin.plugin');
  * time (note that this doesn't work on reverse geocoding).
  * This provider also supports SSL.
  */
-class plgGeocodeArcgisonline extends JPlugin
+class plgGeocodeArcgisonline extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider

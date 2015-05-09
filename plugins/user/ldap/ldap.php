@@ -36,7 +36,7 @@ jimport('joomla.event.plugin');
 /**
  * User plugin for hub users
  */
-class plgUserLdap extends JPlugin
+class plgUserLdap extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor

@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  * @subpackage	Editors-xtd.image
  * @since 1.5
  */
-class plgButtonImage extends JPlugin
+class plgButtonImage extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor

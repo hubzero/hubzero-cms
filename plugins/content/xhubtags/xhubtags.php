@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Content Plugin class for {xhub} tags
  */
-class plgContentXhubtags extends JPlugin
+class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Plugin that loads module positions within content

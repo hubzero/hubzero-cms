@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Plugin
  * @subpackage	System.log
  */
-class  plgSystemLog extends JPlugin
+class  plgSystemLog extends \Hubzero\Plugin\Plugin
 {
 	function onUserLoginFailure($response)
 	{

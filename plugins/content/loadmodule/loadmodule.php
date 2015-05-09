@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 /**
  * Plugin that loads module positions within content
  */
-class plgContentLoadmodule extends JPlugin
+class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * List of modules by position

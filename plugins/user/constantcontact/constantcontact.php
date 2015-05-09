@@ -37,7 +37,7 @@ jimport('Hubzero.Ldap');
 /**
  * User plugin for hub users
  */
-class plgUserConstantContact extends JPlugin
+class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor

@@ -85,7 +85,7 @@ class PublicationChildSorter
 /**
  * Search plugin class for publications
  */
-class plgSearchPublications extends \JPlugin
+class plgSearchPublications extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Build search query and add it to the $results

@@ -36,7 +36,7 @@ jimport('joomla.plugin.plugin');
 /**
  * Authentication plugin for HUBzero
  */
-class plgAuthenticationHubzero extends JPlugin
+class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * This method should handle any authentication and report back to the subject

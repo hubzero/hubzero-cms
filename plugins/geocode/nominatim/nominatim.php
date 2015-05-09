@@ -40,7 +40,7 @@ jimport('joomla.plugin.plugin');
  * street addresses. Access to a Nominatim server is required.
  * See the Nominatim Wiki Page for more information.
  */
-class plgGeocodeNominatim extends JPlugin
+class plgGeocodeNominatim extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a geocode provider
