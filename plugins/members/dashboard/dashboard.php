@@ -167,7 +167,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'display');
 
 		// load dashboard modules
-		$dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+		$dashboardModules = $this->_loadModules('memberDashboard'); //$this->params->get('position', 'memberDashboard'));
 
 		// load user preferences
 		$preferences = $this->_loadPreferences();
