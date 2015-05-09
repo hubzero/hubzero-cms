@@ -493,7 +493,7 @@ class Profile extends Object
 			}
 		}
 
-		$this->_params->loadINI($this->params);
+		$this->_params->merge($this->params);
 
 		return true;
 	}
