@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Cron plugin for resources
  */
-class plgCronResources extends JPlugin
+class plgCronResources extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return a list of events
@@ -120,7 +118,7 @@ class plgCronResources extends JPlugin
 
 			// Map data
 			$pubYear = $row->released && $row->released != '0000-00-00 00:00:00'
-					? date( 'Y', strtotime($row->released)) : date( 'Y' );
+					? gmdate('Y', strtotime($row->released)) : gmdate('Y');
 			$doiService->set('pubYear', $pubYear);
 			$doiService->mapUser($row->created_by, array(), 'creator');
 			$doiService->set('resourceType', 'Software');
