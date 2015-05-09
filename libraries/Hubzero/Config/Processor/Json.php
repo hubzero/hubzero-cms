@@ -46,6 +46,7 @@ class Json extends Base
 	public function canParse($data)
 	{
 		$data = trim($data);
+		$data = trim($data, '"');
 
 		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
@@ -100,6 +101,8 @@ class Json extends Base
 		}
 
 		$data = trim($data);
+		$data = trim($data, '"');
+
 		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
 			$obj = Base::instance('ini')->stringToObject($data, $options);

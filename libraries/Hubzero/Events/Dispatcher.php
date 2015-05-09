@@ -190,7 +190,7 @@ class Dispatcher implements DispatcherInterface
 		}
 
 		// Backwards compatibility
-		if ($listener instanceof \JPlugin)
+		if (!($listener instanceof ListenerInterface))
 		{
 			$listener = new WrappedListener($listener);
 		}

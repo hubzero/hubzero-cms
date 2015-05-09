@@ -319,6 +319,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 					if ($processor->canParse($data))
 					{
 						$format = $name;
+						
 						break;
 					}
 				}

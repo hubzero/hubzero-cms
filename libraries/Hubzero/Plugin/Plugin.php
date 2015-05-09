@@ -32,15 +32,35 @@ namespace Hubzero\Plugin;
 
 use Hubzero\Document\Assets;
 use Hubzero\Config\Registry;
-
-jimport('joomla.plugin.plugin');
+use Hubzero\Base\Object;
 
 /**
  * Base class for plugins to extend
  */
-class Plugin extends \JPlugin
+class Plugin extends Object
 {
 	use \Hubzero\Base\Traits\AssetAware;
+
+	/**
+	 * A Registry object holding the parameters for the plugin
+	 *
+	 * @var  Registry
+	 */
+	public $params = null;
+
+	/**
+	 * The name of the plugin
+	 *
+	 * @var  string
+	 */
+	protected $_name = null;
+
+	/**
+	 * The plugin type
+	 *
+	 * @var  string
+	 */
+	protected $_type = null;
 
 	/**
 	 * Container for component messages
@@ -65,8 +85,30 @@ class Plugin extends \JPlugin
 	 */
 	public function __construct($subject, $config)
 	{
-		parent::__construct($subject, $config);
+		// Get the parameters.
+		if (isset($config['params']))
+		{
+			$this->params = $config['params'];
+		}
 
+		if (!($this->params instanceof Registry))
+		{
+			$this->params = new Registry($this->params);
+		}
+
+		// Get the plugin name.
+		if (isset($config['name']))
+		{
+			$this->_name = $config['name'];
+		}
+
+		// Get the plugin type.
+		if (isset($config['type']))
+		{
+			$this->_type = $config['type'];
+		}
+
+		// @TODO: Remove this
 		$this->option = (isset($config['type']) ? 'com_' . $config['type'] : 'com_' . $this->_type);
 
 		// Load the language files if needed.
@@ -74,6 +116,26 @@ class Plugin extends \JPlugin
 		{
 			$this->loadLanguage();
 		}
+	}
+
+	/**
+	 * Loads the plugin language file
+	 *
+	 * @param   string   $extension  The extension for which a language file should be loaded
+	 * @param   string   $basePath   The basepath to use
+	 * @return  boolean  True, if the file has successfully loaded.
+	 */
+	public function loadLanguage($extension = '', $basePath = JPATH_ADMINISTRATOR)
+	{
+		if (empty($extension))
+		{
+			$extension = 'plg_' . $this->_type . '_' . $this->_name;
+		}
+
+		$lang = \App::get('language');
+		return $lang->load(strtolower($extension), $basePath, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
+			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
 	}
 
 	/**
