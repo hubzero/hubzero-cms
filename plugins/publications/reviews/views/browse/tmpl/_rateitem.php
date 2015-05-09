@@ -55,7 +55,7 @@ if (!User::isGuest())
 	$like_title = 'Vote this up :: ' . $this->item->get('helpful', 0) . ' people liked this';
 	$dislike_title = 'Vote this down :: ' . $this->item->get('nothelpful', 0) . ' people did not like this';
 	$cls = ' tooltips';
-} 
+}
 else
 {
 	$like_title = 'Vote this up :: Please login to vote.';
