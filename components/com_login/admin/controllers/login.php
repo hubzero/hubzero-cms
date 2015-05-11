@@ -166,7 +166,7 @@ class Login extends AdminController
 	 **/
 	public function factorsTask()
 	{
-		$result = Event::trigger('authfactors.onRenderChallenge');
+		$this->view->factors = Event::trigger('authfactors.onRenderChallenge');
 
 		$this->view->display();
 	}

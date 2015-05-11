@@ -28,10 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
-
 Request::setVar('hidemainmenu', 1);
+Toolbar::title(Lang::txt('COM_LOGIN_FACTORS_VERIFICATION'));
 
-Toolbar::title(Lang::txt('COM_LOGIN_FACTORS'));
+$this->css('factors');
 ?>
+
+<div class="factors">
+	<?php foreach ($this->factors as $factor) : ?>
+		<div class="factor-wrap">
+			<div class="factor">
+				<?php echo $factor->html; ?>
+			</div>
+		</div>
+	<?php endforeach; ?>
+</div>
