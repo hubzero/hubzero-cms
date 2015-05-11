@@ -781,7 +781,7 @@ class Diff_SequenceMatcher
 	private function tupleSort($a, $b)
 	{
 		$max = max(count($a), count($b));
-		for($i = 0; $i < $max; ++$i)
+		for ($i = 0; $i < $max; ++$i)
 		{
 			if ($a[$i] < $b[$i])
 			{
