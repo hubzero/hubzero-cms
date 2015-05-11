@@ -33,6 +33,17 @@ $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
 $this->css('pipeline.css')
      ->js('pipeline.js');
+
+// Initiate paging
+$pageNav = $this->pagination(
+	$this->total,
+	$this->filters['start'],
+	$this->filters['limit']
+);
+$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -131,7 +142,7 @@ $this->css('pipeline.css')
 				<caption>
 					<?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?>
 					<span>
-						(<?php echo (count($this->rows) > 0) ? $this->filters['start'] + 1 : 0; ?> - <?php echo $this->filters['start'] + count($this->rows); ?> of <?php echo $this->pageNav->total; ?>)
+						(<?php echo (count($this->rows) > 0) ? $this->filters['start'] + 1 : 0; ?> - <?php echo $this->filters['start'] + count($this->rows); ?> of <?php echo $pageNav->total; ?>)
 					</span>
 				</caption>
 				<thead>
@@ -219,16 +230,6 @@ $this->css('pipeline.css')
 			</table>
 
 			<?php
-			// Initiate paging
-			$pageNav = $this->pagination(
-				$this->total,
-				$this->filters['start'],
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-			$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-			$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-
 			echo $pageNav->render();
 			?>
 		</div><!-- / .container -->

@@ -232,7 +232,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if (Component::isEnabled('com_wishlist'))
 			{
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
 				$objWishlist = new \Components\Wishlist\Tables\Wishlist($this->database);
 				$objWish = new \Components\Wishlist\Tables\Wish($this->database);
