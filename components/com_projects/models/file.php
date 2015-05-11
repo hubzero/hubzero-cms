@@ -577,7 +577,7 @@ class File extends Object
 		}
 
 		// Directory where images are stored
-		$basePath = "/plugins/projects/files/images/";
+		$basePath = "/plugins/projects/files/assets/img/";
 
 		$ext = $ext ? $ext : $this->get('ext');
 		switch (strtolower($ext))

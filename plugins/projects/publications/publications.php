@@ -374,8 +374,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/diskspace');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/diskspace');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
 
 		// Get used space
 		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
@@ -2760,8 +2760,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Include styling and js
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/diskspace');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/diskspace');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
 
 		$database = JFactory::getDBO();
 

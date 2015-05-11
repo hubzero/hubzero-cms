@@ -1148,7 +1148,7 @@
 	#abox-content ul li.level_1 span.folder,
 	#abox-content ul li.level_2 span.folder,
 	#abox-content ul li.level_3 span.folder {
-		background: url("/plugins/projects/files/images/folder.gif") 0 0 no-repeat;
+		background: url("/plugins/projects/files/assets/img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 		margin-left: 0;
 	}

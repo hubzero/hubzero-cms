@@ -1165,10 +1165,9 @@ class Publications extends SiteController
 		// Add projects stylesheet
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
 		\Hubzero\Document\Assets::addComponentScript('com_projects');
-		\Hubzero\Document\Assets::addComponentScript('com_projects', 'assets/js/projects');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/uploader');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/jquery.fileuploader.js');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/jquery.queueuploader.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','uploader');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files','jquery.fileuploader.js');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files','jquery.queueuploader.js');
 
 		// Set page title
 		$this->_task_title = Lang::txt('COM_PUBLICATIONS_SUBMIT');

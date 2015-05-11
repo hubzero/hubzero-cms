@@ -289,7 +289,7 @@ class File extends Base
 		// Draw directories
 		if (($configs->multiZip == 2 && $configs->subdir) || $configs->bundleDirectory)
 		{
-			$icon  = '<img src="/plugins/projects/files/images/folder.gif" alt="" />';
+			$icon  = '<img src="/plugins/projects/files/assets/img/folder.gif" alt="" />';
 
 			// Bundle name
 			$name  = $configs->bundleDirectory ? $configs->bundleDirectory : $configs->subdir;

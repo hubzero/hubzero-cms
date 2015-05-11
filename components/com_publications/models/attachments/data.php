@@ -812,7 +812,7 @@ class Data extends Base
 		}
 		if (!empty($dataFiles))
 		{
-			$list .= '<li><img src="/plugins/projects/files/images/folder.gif" alt="" /> data</li>';
+			$list .= '<li><img src="/plugins/projects/files/assets/img/folder.gif" alt="" /> data</li>';
 			foreach ($dataFiles as $e)
 			{
 				// Skip thumbnails and CSV

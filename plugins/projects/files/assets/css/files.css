@@ -98,7 +98,7 @@
 --------------------------------------------- */
 
 	#abox-content ul li span.folder {
-		background: url("/plugins/projects/files/images/folder.gif") 0 0 no-repeat;
+		background: url("/plugins/projects/files/assets/img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 		margin-left: 0;
 	}
@@ -106,17 +106,17 @@
 /* Files management icons
 --------------------------------------------- */
 	.uptoparent {
-		background: url("images/uptoparent.png") 0 0 no-repeat;
+		background: url("../img/uptoparent.png") 0 0 no-repeat;
 		padding-left: 20px;
 	}
 	.shared {
-		background: url("images/shared.gif") 0 0 no-repeat;
+		background: url("../img/shared.gif") 0 0 no-repeat;
 		padding: 0.5em;
 		padding-left: 32px;
 	}
 	.google {
 		padding-left: 20px;
-		*background: url("images/gdrive.gif") 0 0 no-repeat;
+		*background: url("../img/gdrive.gif") 0 0 no-repeat;
 	}
 		
 /* File preview window 
@@ -804,7 +804,7 @@
 	}
 	#a-sync {
 		*padding-left: 20px;
-		*background: url("images/gdrive.gif") 0 0 no-repeat;
+		*background: url("../img/gdrive.gif") 0 0 no-repeat;
 	}
 	@-o-keyframes Rotate {
 	  from {-o-transform:rotate(0deg);}
@@ -987,7 +987,7 @@
 		position: relative;
 	}
 	.remotedir .s-google {
-		background: url("images/google/folder.gif") 0 0 no-repeat;
+		background: url("../img/google/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 	}
 	.google-resource {
@@ -1156,7 +1156,7 @@
 	.remote-service .google,
 	#plg-header .google {
 		padding-left: 20px;
-		background: url("images/gdrive.gif") 0 0 no-repeat;
+		background: url("../img/gdrive.gif") 0 0 no-repeat;
 	}
 	.remote-service .i-new {
 		margin-top: 2px;
@@ -1181,7 +1181,7 @@
 		font-size: 75%;
 		color: #000;
 		border-bottom: 1px dotted #000;
-		background: url("/plugins/projects/files/images/folder.gif") 0 0 no-repeat;
+		background: url("/plugins/projects/files/assets/img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 	}
 	#abox-content h3 span.folder {
@@ -1321,7 +1321,7 @@
 	#connector .google {
 		*padding-left: 10px;
 		*width: 10px;
-		*background: url("images/gdrive.gif") 0 0 no-repeat;
+		*background: url("../img/gdrive.gif") 0 0 no-repeat;
 		*display: inline-block;
 	}
 	

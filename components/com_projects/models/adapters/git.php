@@ -692,7 +692,7 @@ class Git extends Models\Adapter
 
 		// Diff class
 		include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS
-			. 'files' . DS . 'php-diff' . DS . 'Diff.php' );
+			. 'files' . DS . 'helpers' . DS . 'Diff.php' );
 
 		$context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
 		$options = array('context' => $context);

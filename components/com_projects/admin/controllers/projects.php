@@ -205,8 +205,8 @@ class Projects extends AdminController
 		}
 
 		// Push some styles to the template
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'css/diskspace.css');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'js/diskspace.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace.css');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace.js');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files');
 
 		$this->view = $this->view;

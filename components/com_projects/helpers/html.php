@@ -262,55 +262,6 @@ class Html extends Object
 	}
 
 	/**
-	 * Get google icon image
-	 *
-	 * @param      string $mimeType
-	 * @param      boolean $include_dir
-	 * @param      string $icon
-	 * @return     string
-	 */
-	public static function getGoogleIcon ($mimeType, $include_dir = 1, $icon = '')
-	{
-		switch (strtolower($mimeType))
-		{
-			case 'application/vnd.google-apps.presentation':
-				$icon = 'presentation';
-				break;
-
-			case 'application/vnd.google-apps.spreadsheet':
-				$icon = 'sheet';
-				break;
-
-			case 'application/vnd.google-apps.document':
-				$icon = 'doc';
-				break;
-
-			case 'application/vnd.google-apps.drawing':
-				$icon = 'drawing';
-				break;
-
-			case 'application/vnd.google-apps.form':
-				$icon = 'form';
-				break;
-
-			case 'application/vnd.google-apps.folder':
-				$icon = 'folder';
-				break;
-
-			default:
-				$icon = 'gdrive';
-				break;
-		}
-
-		if ($include_dir)
-		{
-			$icon = "/plugins/projects/files/images/google/" . $icon . '.gif';
-		}
-		return $icon;
-
-	}
-
-	/**
 	 * Fix up some mimetypes
 	 *
 	 * @param      string $file
@@ -524,7 +475,7 @@ class Html extends Object
 
 		if ($include_dir)
 		{
-			$icon = "/plugins/projects/files/images/" . $icon . '.gif';
+			$icon = "/plugins/projects/assets/img/" . $icon . '.gif';
 		}
 		return $icon;
 	}

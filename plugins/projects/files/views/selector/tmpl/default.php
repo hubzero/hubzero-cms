@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!$this->ajax)
 {
-	$this->css('css/selector');
+	$this->css('selector');
 }
 
 // Get attachment type model
@@ -185,7 +185,7 @@ foreach ($this->items as $item)
 }
 
 ?>
-<script src="/plugins/projects/files/js/fileselector.js"></script>
+<script src="/plugins/projects/files/assets/js/fileselector.js"></script>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR'); ?> 	<span class="abox-controls">
 		<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>

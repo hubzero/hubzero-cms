@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-	 ->css('css/uploader')
-	 ->css('css/diskspace')
-	 ->js('js/diskspace')
+	 ->css('uploader')
+	 ->css('diskspace')
+	 ->js('diskspace')
      ->js();
 
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
