@@ -28,6 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'factors.css');
 ?>
+
+<header id="content-header">
+	<h2><?php echo Lang::txt('COM_USERS_FACTOR_VERIFICATION'); ?></h2>
+</header>
+
+<section class="main section factors">
+	<?php foreach ($this->factors as $factor) : ?>
+		<div class="factor-wrap">
+			<div class="factor">
+				<?php echo $factor->html; ?>
+			</div>
+		</div>
+	<?php endforeach; ?>
+</section>

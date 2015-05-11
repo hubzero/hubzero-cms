@@ -1,0 +1,26 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_user/assets/css/factors.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.factors .factor-wrap {
+	width: 33%;
+}
+.factors .factor {
+	border: 1px solid #CCCCCC;
+	background: #FFFFFF;
+	padding: 15px;
+}
+.factors .factor .title {
+	font-size: 18px;
+	text-align: center;
+}
+.factors .factor input,
+.factors .factor select {
+	width: 100%;
+}
+.factors .factor .grouping {
+	margin-top: 10px;
+}

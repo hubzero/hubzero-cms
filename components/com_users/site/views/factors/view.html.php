@@ -40,7 +40,7 @@ class UsersViewFactors extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$result = Event::trigger('authfactors.onRenderChallenge');
+		$this->factors = Event::trigger('authfactors.onRenderChallenge');
 
 		parent::display($tpl);
 	}
