@@ -1,0 +1,13 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/authfactors/authy/assets/css/enroll.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.authy .title {
+	display: none;
+}
+.authy .img-wrap {
+	padding: 10px 40px;
+}
