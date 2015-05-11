@@ -109,7 +109,7 @@ if ($this->wishlist->exists())
 
 				<label for="subject">
 					<?php echo Lang::txt('COM_WISHLIST_SUMMARY_OF_WISH'); ?> <span class="required"><?php echo Lang::txt('COM_WISHLIST_REQUIRED'); ?></span>
-					<input name="subject" maxlength="120" id="subject" type="text" value="<?php echo $this->escape(stripslashes($this->wish->get('subject'))); ?>" />
+					<input name="subject" maxlength="200" id="subject" type="text" value="<?php echo $this->escape(stripslashes($this->wish->get('subject'))); ?>" />
 				</label>
 
 				<label for="field_about">
