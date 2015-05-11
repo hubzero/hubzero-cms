@@ -381,7 +381,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Get css
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team','css/selector');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team','selector');
 		}
 
 		// Instantiate project owner

@@ -222,8 +222,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/curation');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'publications', 'js/curation');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','curation');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'publications', 'curation');
 
 		// Actions
 		switch ($this->_task)
@@ -549,7 +549,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
 
 		// Set curation
 		$view->publication->setCuration();

@@ -260,10 +260,10 @@ class Content extends Base
 		$html = '';
 
 		// Get selector styles
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','selector');
 
 		// Get block element model
 		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);

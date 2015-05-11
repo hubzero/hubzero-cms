@@ -29,7 +29,7 @@
 		list-style: none;
 		margin: 0;
 		padding: 2em 0 2em 0;
-		background: #f6f6f6 url("images/cork.jpg") 0 0 repeat;
+		background: #f6f6f6 url("../img/cork.jpg") 0 0 repeat;
 		border: 1px solid #CCC;
 		-moz-box-shadow: 5px 5px 5px #ebebeb;
 		-webkit-box-shadow: 5px 5px 5px #ebebeb;
@@ -67,7 +67,7 @@
 		background: none;
 	}
 	.pinboard .pin {
-		*background: transparent url("images/pins/grey.gif") 0 0 no-repeat;
+		*background: transparent url("../img/pins/grey.gif") 0 0 no-repeat;
 		padding: 1em;
 		position: absolute;
 		margin-top: -2em;
@@ -296,63 +296,63 @@
 	.tdlists li.pin_red .pin, .tdlists li.pin_red input[type="text"],
 	div#pinoptions ul li span.pin_red, #pinselector span.pin_red,
 	div#pinoptions ul li span.pin_red a, .showpin span.pin_red {
-		*background: url("images/pins/red.gif") 0 0 no-repeat;
+		*background: url("../img/pins/red.gif") 0 0 no-repeat;
 		color: red;
 	}
 	.pinboard .pin_purple .pin, .tdlists li.pin_purple a, h3.todo .pin_purple,
 	.tdlists li.pin_purple .pin, .tdlists li.pin_purple input[type="text"],
 	div#pinoptions ul li span.pin_purple, #pinselector span.pin_purple,
 	div#pinoptions ul li span.pin_purple a, .showpin span.pin_purple {
-		*background: url("images/pins/purple.gif") 0 0 no-repeat;
+		*background: url("../img/pins/purple.gif") 0 0 no-repeat;
 		color: purple;
 	}
 	.pinboard .pin_orange .pin, .tdlists li.pin_orange a, h3.todo .pin_orange,
 	.tdlists li.pin_orange .pin, .tdlists li.pin_orange input[type="text"],
 	div#pinoptions ul li span.pin_orange, #pinselector span.pin_orange,
 	div#pinoptions ul li span.pin_orange a, .showpin span.pin_orange {
-		*background: url("images/pins/orange.gif") 0 0 no-repeat;
+		*background: url("../img/pins/orange.gif") 0 0 no-repeat;
 		color: orange;
 	}
 	.pinboard .pin_lightblue .pin, .tdlists li.pin_lightblue a, h3.todo .pin_lightblue,
 	.tdlists li.pin_lightblue .pin, .tdlists li.pin_lightblue input[type="text"],
 	div#pinoptions ul li span.pin_lightblue, #pinselector span.pin_lightblue,
 	div#pinoptions ul li span.pin_lightblue a, .showpin span.pin_lightblue {
-		*background: url("images/pins/lightblue.gif") 0 0 no-repeat;
+		*background: url("../img/pins/lightblue.gif") 0 0 no-repeat;
 		color: #44b6dc;
 	}
 	.pinboard .pin_blue .pin, .tdlists li.pin_blue a, h3.todo .pin_blue,
 	.tdlists li.pin_blue .pin, .tdlists li.pin_blue input[type="text"],
 	div#pinoptions ul li span.pin_blue, #pinselector span.pin_blue,
 	div#pinoptions ul li span.pin_blue a, .showpin span.pin_blue {
-		*background: url("images/pins/blue.gif") 0 0 no-repeat;
+		*background: url("../img/pins/blue.gif") 0 0 no-repeat;
 		color: blue;
 	}
 	.pinboard .pin_green .pin, .tdlists li.pin_green a, h3.todo .pin_green,
 	.tdlists li.pin_green .pin, .tdlists li.pin_green input[type="text"],
 	div#pinoptions ul li span.pin_green, #pinselector span.pin_green,
 	div#pinoptions ul li span.pin_green a, .showpin span.pin_green {
-		*background: url("images/pins/green.gif") 0 0 no-repeat;
+		*background: url("../img/pins/green.gif") 0 0 no-repeat;
 		color: green;
 	}
 	.pinboard .pin_yellow .pin, .tdlists li.pin_yellow a, h3.todo .pin_yellow,
 	.tdlists li.pin_yellow .pin, .tdlists li.pin_yellow input[type="text"],
 	div#pinoptions ul li span.pin_yellow, #pinselector span.pin_yellow,
 	div#pinoptions ul li span.pin_yellow a, .showpin span.pin_yellow  {
-		*background: url("images/pins/yellow.gif") 0 0 no-repeat;
+		*background: url("../img/pins/yellow.gif") 0 0 no-repeat;
 		color: #f5c238;
 	}
 	.pinboard .pin_black .pin, .tdlists li.pin_black a, h3.todo .pin_black,
 	.tdlists li.pin_black .pin, .tdlists li.pin_black input[type="text"],
 	div#pinoptions ul li span.pin_black, #pinselector span.pin_black,
 	div#pinoptions ul li span.pin_black a, .showpin span.pin_black {
-		*background: url("images/pins/black.gif") 0 0 no-repeat;
+		*background: url("../img/pins/black.gif") 0 0 no-repeat;
 		color: black;
 	}
 	.pinboard .pin_pink .pin, .tdlists li.pin_pink a, h3.todo .pin_pink,
 	.tdlists li.pin_pink .pin, .tdlists li.pin_pink input[type="text"],
 	div#pinoptions ul li span.pin_pink, #pinselector span.pin_pink,
 	div#pinoptions ul li span.pin_pink a, .showpin span.pin_pink {
-		*background: url("images/pins/pink.gif") 0 0 no-repeat;
+		*background: url("../img/pins/pink.gif") 0 0 no-repeat;
 		color: #f538d4;
 	}
 	.tdlists li .pin {
@@ -680,11 +680,11 @@
 		background: #e6fde1;
 	}
 	#todo-mine h4 {
-		*background: url("images/star.png") 0 0 no-repeat;
+		*background: url("../img/star.png") 0 0 no-repeat;
 		*padding-left: 25px;
 	}
 	#todo-completed h4 {
-		*background: url("images/completed.png") 0 0 no-repeat;
+		*background: url("../img/completed.png") 0 0 no-repeat;
 		*padding-left: 25px;
 	}
 	#todo-mine h4, #todo-completed h4 {
@@ -692,14 +692,14 @@
 		padding-bottom: 5px;
 	}
 	.mytodo {
-		*background: url("images/star.png") -5px -5px no-repeat;
+		*background: url("../img/star.png") -5px -5px no-repeat;
 	}
 	.completedtd {
-		*background: url("images/completed.png") -5px -5px no-repeat;
+		*background: url("../img/completed.png") -5px -5px no-repeat;
 		margin-left: -10px;
 	}
 	.compeleted_todo {
-		*background: url("images/completed.png") 0 0 no-repeat;
+		*background: url("../img/completed.png") 0 0 no-repeat;
 	}
 
 	#todo-mine h4:before,

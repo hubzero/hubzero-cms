@@ -76,7 +76,7 @@ $url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.
 ?>
 <div id="abox-content-wrap">
 	<div id="abox-content" class="url-select">
-	<script src="/plugins/projects/links/js/selector.js"></script>
+	<script src="/plugins/projects/links/assets/js/selector.js"></script>
 		<h3><?php echo $title; ?> 	<span class="abox-controls">
 				<a class="btn btn-success active" id="b-save"><?php echo $btnLabel; ?></a>
 				<?php if ($this->ajax) { ?>

@@ -140,8 +140,8 @@ class Citations extends Base
 
 		// Get selector styles
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
 
 		if (!isset($pub->_citations))
 		{

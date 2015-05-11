@@ -260,7 +260,7 @@ class Curation extends SiteController
 
 		//push the stylesheet to the view
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');
 
 		// Get curation model
 		$this->_pub->setCuration();
@@ -346,7 +346,7 @@ class Curation extends SiteController
 			$this->_buildPathway();
 
 			// Add plugin style
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');
 		}
 
 		$this->view->pub 		    = $this->_pub;
@@ -483,7 +483,7 @@ class Curation extends SiteController
 				$this->_buildPathway();
 
 				// Add plugin style
-				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'curation.css');
 			}
 			$this->view->pub 		    = $this->_pub;
 			$this->view->title  		= $this->_title;

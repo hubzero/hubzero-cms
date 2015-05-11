@@ -405,10 +405,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','selector');
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
 		}
 
 		$view->option 		= $this->_option;

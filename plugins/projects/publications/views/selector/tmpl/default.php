@@ -55,7 +55,7 @@ if ($block == 'license')
 }
 
 ?>
-<script src="/plugins/projects/publications/js/selector.js"></script>
+<script src="/plugins/projects/publications/assets/js/selector.js"></script>
 <div id="abox-content">
 <h3><?php echo $title; ?> 	<span class="abox-controls">
 				<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_SAVE_SELECTION'); ?></a>

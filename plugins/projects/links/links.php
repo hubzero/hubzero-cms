@@ -729,7 +729,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Add css?
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','selector');
 		}
 
 		if ($this->_task == 'newcite')
