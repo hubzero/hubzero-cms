@@ -56,7 +56,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 		$users = (array) $db->loadColumn();
 
 		$default_language = Component::params('com_languages')->get('administrator');
-		$debug = JFactory::getConfig()->get('debug_lang');
+		$debug = Config::get('debug_lang');
 
 		foreach ($users as $user_id)
 		{

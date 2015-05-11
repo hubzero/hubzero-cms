@@ -9,7 +9,7 @@
 	.wykiwyg {
 		border: 1px solid #bbb;
 		padding: 0;
-		font: 12px Verdana, Arial;
+		font: 12px 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
 		margin: 0;
 		background: #fff;
 	}
@@ -31,7 +31,7 @@
 	.wykiwyg-header {
 		margin: 0px 1px 0 1px;
 		padding: 0;
-		background: url("images/header-bg.png");
+		background: url("../img/header-bg.png");
 	}
 	html>body .wykiwyg-header {
 		*min-height: 30px;
@@ -76,7 +76,7 @@
 		width: 34px; 
 		height: 30px; 
 		cursor: pointer; 
-		background-image: url("images/icons.png");
+		background-image: url("../img/icons.png");
 	}
 	.wykiwyg-control:hover {
 		background-color: #fff; 
@@ -89,7 +89,7 @@
 	}
 	.wykiwyg-toggle {
 		float: left; 
-		background: url("images/icons.png") -34px 2px no-repeat; 
+		background: url("../img/icons.png") -34px 2px no-repeat; 
 		padding: 9px 13px 0 31px; 
 		height: 23px; 
 		border-right: 1px solid #ccc; 
@@ -103,7 +103,7 @@
 		float: right; 
 		height: 32px; 
 		width: 32px; 
-		background: url("images/resize.gif") 15px 15px no-repeat; 
+		background: url("../img/resize.gif") 15px 15px no-repeat; 
 		cursor: s-resize;
 	}
 /* Frame */

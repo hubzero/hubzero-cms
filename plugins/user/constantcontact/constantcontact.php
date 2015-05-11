@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-jimport('Hubzero.Ldap');
 
 /**
  * User plugin for hub users
@@ -40,21 +38,10 @@ jimport('Hubzero.Ldap');
 class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param object holds the new profile data (\Hubzero\User\Profile)
+	 * @param   object  $user  holds the new profile data (\Hubzero\User\Profile)
+	 * @return  void
 	 */
 	public function onAfterStoreProfile($user)
 	{
@@ -142,7 +129,8 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param object holds the new profile data (\Hubzero\User\Profile)
+	 * @param   object  $user  holds the new profile data (\Hubzero\User\Profile)
+	 * @return  void
 	 */
 	public function onAfterDeleteProfile($user)
 	{
@@ -189,5 +177,4 @@ class plgUserConstantContact extends \Hubzero\Plugin\Plugin
 			$ccContact = $ConstantContact->deleteContact($Contact);
 		}
 	}
-
 }

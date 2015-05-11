@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-
 /**
  * System plugin to force .rss URLs to raw document mode
  */
@@ -41,7 +39,7 @@ class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 	/**
 	 * Perform actions after initialization
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function onAfterInitialise()
 	{
@@ -50,10 +48,14 @@ class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 		$bit = $bits[0];
 		$bi = explode('.', $bit);
 		$b = end($bi);
-		if ($b == strtolower('rss') || $b == strtolower('atom'))
+		$b = strtolower($b);
+
+		if ($b == 'rss' || $b == 'atom')
 		{
 			$_GET['no_html'] = 1;
+			$_GET['format']  = 'raw';
 			$_REQUEST['no_html'] = 1;
+			$_REQUEST['format']  = 'raw';
 		}
 	}
 }

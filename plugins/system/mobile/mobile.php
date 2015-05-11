@@ -22,7 +22,6 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   HUBzero
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
@@ -32,16 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-
-
+/**
+ * System plugin for Mobile template
+ */
 class plgSystemMobile extends \Hubzero\Plugin\Plugin
 {
-	public function __construct(& $subject)
-	{
-		parent::__construct($subject, NULL);
-	}
-
+	/**
+	 * Method to carry template setting in user session if
+	 * using the mobile template.
+	 *
+	 * @return  void
+	 */
 	public function onAfterDispatch()
 	{
 		$session = App::get('session');
@@ -60,7 +60,7 @@ class plgSystemMobile extends \Hubzero\Plugin\Plugin
 		}
 
 
-		//are we requesting to view full site again
+		// Are we requesting to view full site again?
 		if ($tmpl == 'fullsite')
 		{
 			$session->set('mobile', false);

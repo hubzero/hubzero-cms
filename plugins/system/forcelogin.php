@@ -31,47 +31,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport('joomla.event.plugin');
-
 /**
- * Short description for 'plgSystemForceLogin'
- *
- * Long description (if any) ...
+ * System plugin for forcing login
  */
 class plgSystemForceLogin extends \Hubzero\Plugin\Plugin
 {
-
 	/**
-	 * Short description for 'plgSystemForceLogin'
+	 * Force the user to the login screen
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @return     void
+	 * @return  void
 	 */
-	function plgSystemForceLogin(& $subject)
+	public function onAfterRoute()
 	{
-		parent::__construct($subject, NULL);
-	}
-
-	/**
-	 * Short description for 'onAfterRoute'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
-	 */
-	function onAfterRoute()
-	{
-		if (App::isAdmin()) {
+		if (App::isAdmin())
+		{
 			return;
 		}
 
-		if (!User::isGuest()) {
+		if (!User::isGuest())
+		{
 			return;
 		}
 
-		switch ( Request::getCmd('option') )
+		switch (Request::getCmd('option'))
 		{
 			case 'com_user':
 			case 'com_members':
@@ -79,10 +61,11 @@ class plgSystemForceLogin extends \Hubzero\Plugin\Plugin
 
 			default:
 				$vars = array();
-				$vars['option'] = "com_user";
-				$vars['view'] = "login";
+				$vars['option'] = 'com_user';
+				$vars['view']   = 'login';
 				$vars['return'] = base64_encode($_SERVER['REQUEST_URI']);
-				Request::set($vars,'get',true);
+
+				Request::set($vars, 'get', true);
 				break;
 		}
 	}

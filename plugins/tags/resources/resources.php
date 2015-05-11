@@ -311,7 +311,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		// Get the component params and merge with resource params
 		$config = Component::params('com_resources');
 
-		$rparams = new JRegistry($row->params);
+		$rparams = new \Hubzero\Config\Registry($row->params);
 		//$params = $config;
 		//$params->merge($rparams);
 

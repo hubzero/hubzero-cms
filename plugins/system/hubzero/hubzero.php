@@ -22,7 +22,6 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   HUBzero
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
@@ -32,28 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-
 /**
  * System plugin for hubzero
  */
 class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @since 1.5
-	 */
-	public function __construct(& $subject)
-	{
-		parent::__construct($subject, NULL);
-	}
-
 	/**
 	 * Hook for after app routing
 	 *
@@ -61,7 +43,6 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		$app = JFactory::getApplication();
 	}
 
 	/**
@@ -71,12 +52,6 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterInitialise()
 	{
-		// Get the application object
-		$app = JFactory::getApplication();
-
-		// Get the user object
-		$user = JFactory::getUser();
-
 		// Get the session object
 		$session = App::get('session');
 
@@ -85,12 +60,11 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			$tracker = array();
 
 			// Transfer tracking cookie data to session
-
 			jimport('joomla.utilities.utility');
 			jimport('joomla.utilities.simplecrypt');
 			jimport('joomla.user.helper');
 
-			$hash = JUtility::getHash( JFactory::getApplication()->getName().':tracker');
+			$hash = JUtility::getHash(JFactory::getApplication()->getName() . ':tracker');
 
 			$crypt = new JSimpleCrypt();
 
@@ -166,7 +140,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
 
-			App::get('log.auth')->info( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+			App::get('log.auth')->info($username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
 
 			// set new tracking cookie with current data
 			$tracker = array();
@@ -175,21 +149,21 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			$tracker['sid']  = $session->get('tracker.sid');
 			$tracker['rsid'] = $session->get('tracker.rsid');
 			$tracker['ssid'] = $session->get('tracker.ssid');
+
 			$cookie = $crypt->encrypt(serialize($tracker));
 			$lifetime = time() + 365*24*60*60*10;
 			setcookie($hash, $cookie, $lifetime, '/');
 		}
 
 		// all page loads set apache log data
-
 		if (strpos(php_sapi_name(),'apache') !== false)
 		{
 			apache_note('jsession', $session->getId());
 
-			if ($user->get('id') != 0)
+			if (User::get('id') != 0)
 			{
 				apache_note('auth','session');
-				apache_note('userid', $user->get('id'));
+				apache_note('userid', User::get('id'));
 			}
 			else if (!empty($tracker['user_id']))
 			{
@@ -202,8 +176,8 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	/**
 	 * Hook for login failure
 	 *
-	 * @param    unknown $response Parameter description (if any) ...
-	 * @return   boolean
+	 * @param   unknown  $response
+	 * @return  boolean
 	 */
 	public function onUserLoginFailure($response)
 	{

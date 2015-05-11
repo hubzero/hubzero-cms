@@ -158,10 +158,6 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		{
 			$row->href = Route::url($row->href);
 		}
-		if (substr($row->href,0,1) == '/')
-		{
-			$row->href = substr($row->href, 1, strlen($row->href));
-		}
 
 		$html  = "\t" . '<li>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
@@ -169,7 +165,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . Request::base() . $row->href . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

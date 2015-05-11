@@ -21,7 +21,7 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
 	public function onAfterRender()
 	{
 		// Use this plugin only in site application
-		if (JFactory::getApplication()->isSite())
+		if (App::isSite())
 		{
 			// Get the response body
 			$body = JResponse::getBody();
@@ -105,7 +105,7 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
 		User::setState('plg_system_language_code.edit', $data->name == 'plg_system_languagecode');
 
 		// Get site languages
-		$languages = JLanguage::getKnownLanguages(JPATH_SITE);
+		$languages = Lang::getKnownLanguages(JPATH_SITE);
 
 		// Inject fields into the form
 		foreach ($languages as $tag => $language)

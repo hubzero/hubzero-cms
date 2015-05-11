@@ -31,25 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-
 /**
  * User plugin for hub users
  */
 class plgUserLdap extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Constructor
-	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
 	/**
 	 * Method is called after user data is stored in the database
 	 *
@@ -60,7 +46,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterStoreUser(" . $user['id'] . ")");
+		//Log::debug("plgUserLdap::onAfterStoreUser(" . $user['id'] . ")");
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
 	}
 
@@ -73,7 +59,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterDeleteUser(" . $user['id'] . ")");
+		//Log::debug("plgUserLdap::onAfterDeleteUser(" . $user['id'] . ")");
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
 	}
 
@@ -84,7 +70,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreProfile($user)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterStoreProfile(" . $user->get('uidNumber') . ")");
+		//Log::debug("plgUserLdap::onAfterStoreProfile(" . $user->get('uidNumber') . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
 
@@ -95,7 +81,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDeleteProfile($user)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterDeleteProfile(" . $user->get('uidNumber') . ")");
+		//Log::debug("plgUserLdap::onAfterDeleteProfile(" . $user->get('uidNumber') . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
 
@@ -106,7 +92,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStorePassword($user)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterStoreUser(" . $user->user_id . ")");
+		//Log::debug("plgUserLdap::onAfterStoreUser(" . $user->user_id . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->user_id);
 	}
 
@@ -117,7 +103,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDeletePassword($user)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterDeleteUser(" . $user->user_id . ")");
+		//Log::debug("plgUserLdap::onAfterDeleteUser(" . $user->user_id . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->user_id);
 	}
 
@@ -128,7 +114,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreGroup($group)
 	{
-		//JFactory::getLogger()->debug("plgUserLdap::onAfterStoreGroup(" . $group->cn . ")");
+		//Log::debug("plgUserLdap::onAfterStoreGroup(" . $group->cn . ")");
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
 	}
 
@@ -139,7 +125,7 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDeleteGroup($group)
 	{
-		//JFactory::getLogger()->debug("onAfterDeleteGroup($group)");
+		//Log::debug("onAfterDeleteGroup($group)");
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
 	}
 }

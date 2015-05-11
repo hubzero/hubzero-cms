@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,30 +32,30 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * HUBzero plugin class for displaying a wiki editor toolbar
+ * Plugin class for displaying a wiki editor toolbar
  */
 class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
 	 *
-	 * @var boolean
+	 * @var  boolean
 	 */
-	private $_pushscripts = true;
+	private static $pushscripts = true;
 
 	/**
 	 * Initiate the editor. Push scripts to document if needed
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function onInitEditor()
 	{
-		if ($this->_pushscripts)
+		if (self::$pushscripts)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
-			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
+			$this->css();
+			$this->js();
 
-			$this->_pushscripts = false;
+			self::$pushscripts = false;
 		}
 
 		return '';
@@ -64,13 +64,13 @@ class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a wiki editor
 	 *
-	 * @param      string  $name    Name of field
-	 * @param      string  $id      ID for field
-	 * @param      string  $content Field content
-	 * @param      string  $cls     Field class
-	 * @param      integer $col     Number of columns
-	 * @param      integer $row     Number of rows
-	 * @return     string HTML
+	 * @param   string   $name     Name of field
+	 * @param   string   $id       ID for field
+	 * @param   string   $content  Field content
+	 * @param   string   $cls      Field class
+	 * @param   integer  $col      Number of columns
+	 * @param   integer  $row      Number of rows
+	 * @return  string   HTML
 	 */
 	public function onDisplayEditor($name, $id, $content, $cls='wiki-toolbar-content', $col=10, $row=35)
 	{

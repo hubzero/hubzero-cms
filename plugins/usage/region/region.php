@@ -130,7 +130,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($results as $row)
 					{
-						$formattedval = UsageHelper::valformat($row->value, $valfmt);
+						$formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
 						if (strstr($formattedval, "day") !== FALSE)
 						{
 							$chopchar = strrpos($formattedval, ',');
@@ -163,7 +163,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 								array_push($regionlistset, array('n/a', 0, 'n/a', 'n/a'));
 								$rank++;
 							}
-							$formattedval = UsageHelper::valformat($row->value, $valfmt);
+							$formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
 							if (strstr($formattedval, 'day') !== FALSE)
 							{
 								$chopchar = strrpos($formattedval, ',');
@@ -277,7 +277,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 		// Set tome vars
 		$thisyear = date("Y");
 
-		$o = UsageHelper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
+		$o = \Components\Usage\Helpers\Helper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
 
 		// Build HTML
 		$html  = '<form method="post" action="'. Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";

@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * System plugin for disabling the cache for select pages
  */
@@ -59,7 +57,7 @@ class plgSystemDisablecache extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
-		if ($this->_checkRules() && \JFactory::getApplication()->isSite())
+		if ($this->_checkRules() && \App::isSite())
 		{
 			$this->_caching = \Config::get('caching');
 			\Config::set('caching', 0);
@@ -74,7 +72,7 @@ class plgSystemDisablecache extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDispatch()
 	{
-		if ($this->_checkRules() && \JFactory::getApplication()->isSite())
+		if ($this->_checkRules() && \App::isSite())
 		{
 			if ($this->params->def('reenable_afterdispatch', 0))
 			{
@@ -95,7 +93,7 @@ class plgSystemDisablecache extends \Hubzero\Plugin\Plugin
 			$this->_path = $this->_parseQueryString(str_replace(\Request::base(), '', \Request::current()));
 		}
 
-		$defs = str_replace("\r", '', $this->params->def('definitions',''));
+		$defs = str_replace("\r", '', $this->params->def('definitions', ''));
 		$defs = explode("\n", $defs);
 
 		foreach ($defs As $def)

@@ -272,7 +272,7 @@ class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 		// Set some vars
 		$thisyear = date("Y");
 
-		$o = UsageHelper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_classdata');
+		$o = \Components\Usage\Helpers\Helper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_classdata');
 
 		// Build HTML
 		$html  = '<form method="post" action="' . Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";

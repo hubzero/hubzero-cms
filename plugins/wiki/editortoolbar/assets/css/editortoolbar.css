@@ -12,7 +12,7 @@
 		border: 1px solid #ddd !important;
 		background-color: #eee !important;
 		min-height: 32px !important;
-		background: url("images/header-bg.png") !important;
+		background: url("../img/header-bg.png") !important;
 	}
 	.wiki-toolbar:after {
 		content: "";
@@ -48,52 +48,52 @@
 	}
 /* Buttons */
 	.wiki-button-bold {
-		background: url("images/text_bold.png") 50% 50% no-repeat;
+		background: url("../img/text_bold.png") 50% 50% no-repeat;
 	}
 	.wiki-button-italic {
-		background: url("images/text_italic.png") 50% 50% no-repeat;
+		background: url("../img/text_italic.png") 50% 50% no-repeat;
 	}
 	.wiki-button-link {
-		background: url("images/link.png") 50% 50% no-repeat;
+		background: url("../img/link.png") 50% 50% no-repeat;
 	}
 	.wiki-button-headline {
-		background: url("images/text_heading_2.png") 50% 50% no-repeat;
+		background: url("../img/text_heading_2.png") 50% 50% no-repeat;
 	}
 	.wiki-button-image {
-		background: url("images/picture.png") 50% 50% no-repeat;
+		background: url("../img/picture.png") 50% 50% no-repeat;
 	}
 	.wiki-button-file {
-		background: url("images/page_white.png") 50% 50% no-repeat;
+		background: url("../img/page_white.png") 50% 50% no-repeat;
 	}
 	.wiki-button-resource {
-		background: url("images/page.png") 50% 50% no-repeat;
+		background: url("../img/page.png") 50% 50% no-repeat;
 	}
 	.wiki-button-math {
-		background: url("images/text_formula.png") 50% 50% no-repeat;
+		background: url("../img/text_formula.png") 50% 50% no-repeat;
 	}
 	.wiki-button-nowiki {
-		background: url("images/tag.png") 50% 50% no-repeat;
+		background: url("../img/tag.png") 50% 50% no-repeat;
 	}
 	.wiki-button-hr {
-		background: url("images/text_horizontalrule.png") 50% 50% no-repeat;
+		background: url("../img/text_horizontalrule.png") 50% 50% no-repeat;
 	}
 	.wiki-button-underline {
-		background: url("images/text_underline.png") 50% 50% no-repeat;
+		background: url("../img/text_underline.png") 50% 50% no-repeat;
 	}
 	.wiki-button-superscript {
-		background: url("images/text_superscript.png") 50% 50% no-repeat;
+		background: url("../img/text_superscript.png") 50% 50% no-repeat;
 	}
 	.wiki-button-subscript {
-		background: url("images/text_subscript.png") 50% 50% no-repeat;
+		background: url("../img/text_subscript.png") 50% 50% no-repeat;
 	}
 	.wiki-button-strikethrough {
-		background: url("images/text_strikethrough.png") 50% 50% no-repeat;
+		background: url("../img/text_strikethrough.png") 50% 50% no-repeat;
 	}
 	.wiki-button-table {
-		background: url("images/table.png") 50% 50% no-repeat;
+		background: url("../img/table.png") 50% 50% no-repeat;
 	}
 	.wiki-button-help {
-		background: url("images/help_purple.png") 50% 50% no-repeat;
+		background: url("../img/help_purple.png") 50% 50% no-repeat;
 	}
 	.wiki-toolbar-content {
 		transition: none;

@@ -22,7 +22,6 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   HUBzero
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
@@ -31,8 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.event.plugin');
 
 /**
  * System plugin for hubzero
@@ -119,11 +116,8 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterBuildSefRoute($uri)
 	{
-		// get current uri
-		$current = JURI::getInstance();
-
 		// get the current segments
-		$currentSegments = explode(DS, trim($current->getPath(), DS));
+		$currentSegments = explode('/', trim(Request::path(), '/'));
 
 		// make sure were building within groups
 		if (!isset($currentSegments[0]) || !isset($currentSegments[1]) || $currentSegments[0] != 'groups')
@@ -134,7 +128,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 		// get option from uri
 		$url         = $uri->toString();
 		$url         = str_replace('index.php', '', $url);
-		$urlSegments = explode(DS, trim($url, DS));
+		$urlSegments = explode('/', trim($url, '/'));
 
 		// make sure this is not a group route.
 		if (!isset($urlSegments[0]) || $urlSegments[0] == 'groups')

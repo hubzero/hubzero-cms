@@ -9,10 +9,6 @@ defined('_JEXEC') or die;
 
 /**
  * Joomla User plugin
- *
- * @package		Joomla.Plugin
- * @subpackage	User.joomla
- * @since		1.5
  */
 class plgUserJoomla extends \Hubzero\Plugin\Plugin
 {
@@ -21,16 +17,15 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	 *
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param	array		$user	Holds the user data
-	 * @param	boolean		$succes	True if user was succesfully stored in the database
-	 * @param	string		$msg	Message
-	 *
-	 * @return	boolean
-	 * @since	1.6
+	 * @param   array    $user    Holds the user data
+	 * @param   boolean  $succes  True if user was succesfully stored in the database
+	 * @param   string   $msg     Message
+	 * @return  boolean
 	 */
 	public function onUserAfterDelete($user, $succes, $msg)
 	{
-		if (!$succes) {
+		if (!$succes)
+		{
 			return false;
 		}
 
@@ -49,36 +44,33 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	 *
 	 * This method sends a registration email to new users created in the backend.
 	 *
-	 * @param	array		$user		Holds the new user data.
-	 * @param	boolean		$isnew		True if a new user is stored.
-	 * @param	boolean		$success	True if user was succesfully stored in the database.
-	 * @param	string		$msg		Message.
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   array    $user     Holds the new user data.
+	 * @param   boolean  $isnew    True if a new user is stored.
+	 * @param   boolean  $success  True if user was succesfully stored in the database.
+	 * @param   string   $msg      Message.
+	 * @return  void
 	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
 		// Initialise variables.
-		$app    = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$config = App::get('config');
 		$mail_to_user = $this->params->get('mail_to_user', 1);
 
-		if ($isnew) {
+		if ($isnew)
+		{
 			// TODO: Suck in the frontend registration emails here as well. Job for a rainy day.
 
-			if ($app->isAdmin()) {
+			if (App::isAdmin())
+			{
 				if ($mail_to_user)
 				{
-					$lang = JFactory::getLanguage();
+					$lang = App::get('language');
 					$defaultLocale = $lang->getTag();
 
-					/**
-					 * Look for user language. Priority:
-					 * 	1. User frontend language
-					 * 	2. User backend language
-					 */
-					$userParams = new JRegistry($user['params']);
+					// Look for user language. Priority:
+					//  1. User frontend language
+					//  2. User backend language
+					$userParams = new \Hubzero\Config\Registry($user['params']);
 					$userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
 
 					if ($userLocale != $defaultLocale)
@@ -100,7 +92,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 						'PLG_USER_JOOMLA_NEW_USER_EMAIL_BODY',
 						$user['name'],
 						$config->get('sitename'),
-						JUri::root(),
+						Request::root(),
 						$user['username'],
 						$user['password_clear']
 					);
@@ -131,7 +123,8 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		else {
+		else
+		{
 			// Existing user - nothing to do...yet.
 		}
 	}
@@ -183,8 +176,6 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		$session = App::get('session');
 		$session->set('user', $instance);
 
-		$db = JFactory::getDBO();
-
 		// Check to see the the session already exists.
 		$app = JFactory::getApplication();
 		$app->checkSession();
@@ -192,6 +183,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		if (App::get('config')->get('session_handler') == 'database')
 		{
 			// Update the user related fields for the Joomla sessions table.
+			$db = JFactory::getDBO();
 			$db->setQuery(
 				'UPDATE '.$db->quoteName('#__session') .
 				' SET '.$db->quoteName('guest').' = '.$db->quote($instance->get('guest')).',' .
@@ -219,22 +211,22 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLogout($user, $options = array())
 	{
-		$my      = JFactory::getUser();
-		$session = App::get('session');
-		$app     = JFactory::getApplication();
+		$my = User::getRoot();
 
 		// Make sure we're a valid user first
-		if ($user['id'] == 0 && !$my->get('tmp_user')) {
+		if ($user['id'] == 0 && !$my->get('tmp_user'))
+		{
 			return true;
 		}
 
 		// Check to see if we're deleting the current session
-		if ($my->get('id') == $user['id'] && $options['clientid'] == $app->getClientId())
+		if ($my->get('id') == $user['id'] && $options['clientid'] == App::get('client')->id)
 		{
 			// Hit the user last visit field
 			$my->setLastVisit();
 
 			// Destroy the php session for this user
+			$session = App::get('session');
 			$session->destroy();
 		}
 
@@ -255,15 +247,13 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	 *
 	 * If options['autoregister'] is true, if the user doesn't exist yet he will be created
 	 *
-	 * @param	array	$user		Holds the user data.
-	 * @param	array	$options	Array holding options (remember, autoregister, group).
-	 *
-	 * @return	object	A JUser object
-	 * @since	1.5
+	 * @param   array   $user     Holds the user data.
+	 * @param   array   $options  Array holding options (remember, autoregister, group).
+	 * @return  object  A User object
 	 */
 	protected function _getUser($user, $options = array())
 	{
-		$instance = User::getInstance();
+		$instance = User::getRoot();
 
 		if ($id = intval(JUserHelper::getUserId($user['username'])))
 		{
@@ -272,20 +262,20 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		}
 
 		//TODO : move this out of the plugin
-		jimport('joomla.application.component.helper');
 		$config	= Component::params('com_users');
+
 		// Default to Registered.
 		$defaultUserGroup = $config->get('new_usertype', 2);
 
 		$acl = JFactory::getACL();
 
-		$instance->set('id'			, 0);
-		$instance->set('name'			, $user['fullname']);
-		$instance->set('username'		, $user['username']);
-		$instance->set('password_clear'	, ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
-		$instance->set('email'			, $user['email']);	// Result should contain an email (check)
-		$instance->set('usertype'		, 'deprecated');
-		$instance->set('groups'		, array($defaultUserGroup));
+		$instance->set('id',             0);
+		$instance->set('name',           $user['fullname']);
+		$instance->set('username',       $user['username']);
+		$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
+		$instance->set('email',          $user['email']);  // Result should contain an email (check)
+		$instance->set('usertype',       'deprecated');
+		$instance->set('groups',         array($defaultUserGroup));
 
 		// Check joomla user activation setting
 		// 0 = automatically confirmed
@@ -303,8 +293,8 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 			$instance->set('approved', 2);
 		}
 
-		//If autoregister is set let's register the user
-		$autoregister = isset($options['autoregister']) ? $options['autoregister'] :  $this->params->get('autoregister', 1);
+		// If autoregister is set let's register the user
+		$autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
 
 		if ($autoregister)
 		{

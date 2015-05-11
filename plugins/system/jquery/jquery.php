@@ -31,8 +31,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
+/**
+ * System plugin for adding jQuery to the document
+ */
 class plgSystemJquery extends \Hubzero\Plugin\Plugin
 {
 	/**

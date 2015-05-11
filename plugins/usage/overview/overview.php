@@ -744,7 +744,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				if ($row->plot == '1')
 				{
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-u' . $row->id;
-					if (is_file(PATH_CORE . DS . $img . '.gif'))
+					if (is_file(PATH_APP . DS . $img . '.gif'))
 					{
 						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:users1' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users1' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
 					}
@@ -803,7 +803,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				if ($row->plot == '1')
 				{
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-s' . $row->id;
-					if (is_file(PATH_CORE . DS . $img . '.gif'))
+					if (is_file(PATH_APP . DS . $img . '.gif'))
 					{
 						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:sim' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="sim' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
 					//} else if (isset($sparkline)) {
@@ -1036,7 +1036,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				if ($row->plot == '1')
 				{
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-u' . $row->id;
-					if (is_file(PATH_CORE . DS . $img . '.gif'))
+					if (is_file(PATH_APP . DS . $img . '.gif'))
 					{
 						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:users2' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users2' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
 					}

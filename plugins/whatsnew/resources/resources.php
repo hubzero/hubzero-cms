@@ -309,9 +309,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		// Get the component params and merge with resource params
 		$config = Component::params('com_resources');
 
-		$rparams = new JRegistry($row->params);
-		//$params = $config;
-		//$params->merge($rparams);
+		$rparams = new \Hubzero\Config\Registry($row->params);
 
 		// Set the display date
 		switch ($rparams->get('show_date', $config->get('show_date')))

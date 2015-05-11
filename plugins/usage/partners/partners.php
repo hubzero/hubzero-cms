@@ -81,7 +81,7 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
 		// Set some vars
 		$thisyear = date("Y");
 
-		$o = UsageHelper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
+		$o = \Components\Usage\Helpers\Helper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
 
 		// Build HTML
 		$html  = '<form method="post" action="'. Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
@@ -94,14 +94,14 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '</label> <input type="submit" value="'.Lang::txt('PLG_USAGE_VIEW').'" />' . "\n";
 		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
-		$html .= UsageHelper::toplist($db, 24, 1, $enddate);
-		$html .= UsageHelper::toplist($db, 22, 2, $enddate);
-		$html .= UsageHelper::toplist($db, 26, 3, $enddate);
-		$html .= UsageHelper::toplist($db, 25, 4, $enddate);
-		$html .= UsageHelper::toplist($db, 27, 5, $enddate);
-		$html .= UsageHelper::toplist($db, 23, 6, $enddate);
-		$html .= UsageHelper::toplist($db, 21, 7, $enddate);
-		$html .= UsageHelper::toplist($db, 20, 8, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 24, 1, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 22, 2, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 26, 3, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 25, 4, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 27, 5, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 23, 6, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 21, 7, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 20, 8, $enddate);
 
 		// Return HTML
 		return $html;
