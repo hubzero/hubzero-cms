@@ -1328,5 +1328,53 @@
             "geocoding",
             "geoip"
         ]
+    },
+    {
+        "name": "authy/php",
+        "version": "v2.3",
+        "version_normalized": "2.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/authy/authy-php.git",
+            "reference": "35e00bd1219e922da17436750c9d1b38f52f89cf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/authy/authy-php/zipball/35e00bd1219e922da17436750c9d1b38f52f89cf",
+            "reference": "35e00bd1219e922da17436750c9d1b38f52f89cf",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "~5.0",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "eher/phpunit": ">= 1.6"
+        },
+        "time": "2015-02-24 06:05:29",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Authy": "lib"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "David Cuadrado",
+                "email": "david@authy.com"
+            }
+        ],
+        "description": "PHP client for Authy",
+        "homepage": "https://github.com/authy/authy-php",
+        "keywords": [
+            "Authentication",
+            "api",
+            "two-factor"
+        ]
     }
 ]

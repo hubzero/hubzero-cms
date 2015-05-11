@@ -72,7 +72,8 @@
         "pelago/emogrifier": "dev-master",
         "aferrandini/phpqrcode": "1.0.1",
         "google/apiclient": "1.1.*",
-        "guzzlehttp/guzzle": "5.2.*"
+        "guzzlehttp/guzzle": "5.2.*",
+        "authy/php": "2.*"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },

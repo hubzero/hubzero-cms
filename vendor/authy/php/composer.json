@@ -1,0 +1,27 @@
+{
+    "name": "authy/php",
+    "type": "library",
+    "description": "PHP client for Authy",
+    "keywords": ["api", "authentication", "two-factor"],
+    "homepage": "https://github.com/authy/authy-php",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "guzzlehttp/guzzle": "~5.0"
+    },
+    "require-dev": {
+        "EHER/PHPUnit": ">= 1.6"
+    },
+    "authors": [
+        {
+            "name": "David Cuadrado",
+            "email": "david@authy.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Authy": "lib"
+        }
+    }
+}
+

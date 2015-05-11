@@ -20,4 +20,5 @@ return array(
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
     'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
+    'Authy' => array($vendorDir . '/authy/php/lib'),
 );
