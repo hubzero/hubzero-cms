@@ -42,6 +42,14 @@ class Plugin extends Object
 	use \Hubzero\Base\Traits\AssetAware;
 
 	/**
+	 * Event object to observe.
+	 *
+	 * @var    object
+	 * @since  11.3
+	 */
+	protected $_subject = null;
+
+	/**
 	 * A Registry object holding the parameters for the plugin
 	 *
 	 * @var  Registry
@@ -85,6 +93,9 @@ class Plugin extends Object
 	 */
 	public function __construct($subject, $config)
 	{
+		// Set the subject to observe
+		$this->_subject = &$subject;
+
 		// Get the parameters.
 		if (isset($config['params']))
 		{
