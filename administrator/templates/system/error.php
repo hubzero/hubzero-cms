@@ -39,25 +39,20 @@ defined('_JEXEC') or die;
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css" type="text/css" />
 	</head>
 	<body>
-		<table width="550" align="center" class="outline">
-			<tbody>
-				<tr>
-					<td align="center">
-						<h1><?php echo $this->error->getCode() ?> - <?php echo Lang::txt('JERROR_AN_ERROR_HAS_OCCURRED') ?></h1>
-					</td>
-				</tr>
-				<tr>
-					<td width="39%" align="center">
-						<p><?php echo htmlspecialchars($this->error->getMessage(), ENT_QUOTES, 'UTF-8'); ?></p>
-						<p><a href="index.php"><?php echo Lang::txt('JGLOBAL_TPL_CPANEL_LINK_TEXT') ?></a></p>
-						<p>
-							<?php if ($this->debug) :
-								echo $this->renderBacktrace();
-							endif; ?>
-						</p>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="outline">
+			<header>
+				<h1><?php echo $this->error->getCode() ?> - <?php echo Lang::txt('JERROR_AN_ERROR_HAS_OCCURRED') ?></h1>
+			</header>
+
+			<main class="message">
+				<p><?php echo htmlspecialchars($this->error->getMessage(), ENT_QUOTES, 'UTF-8'); ?></p>
+				<p><a href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('JGLOBAL_TPL_CPANEL_LINK_TEXT') ?></a></p>
+				<div class="trace">
+					<?php if ($this->debug) :
+						echo $this->renderBacktrace();
+					endif; ?>
+				</div>
+			</main>
+		</div>
 	</body>
 </html>

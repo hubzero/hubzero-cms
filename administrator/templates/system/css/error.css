@@ -1,53 +1,70 @@
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @file       templates/system/css/error.css
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-.outline {
-	border: 1px solid #cccccc;
-	background: #ffffff;
-	padding: 2px;
+* {
+	margin: 0;
+	padding: 0;
 }
 
 body {
-	margin: 15px;
 	height: 100%;
-	padding: 0;
-	font-family: Arial, Helvetica, Sans Serif;
-	font-size: 11px;
-	color: #333333;
-	background: #ffffff;
+	margin: 1em;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+	line-height: 1.6em;
+	color: #333;
+	background: #fff;
+	text-rendering: optimizeLegibility;
 }
 
-.frame {
-	background-color: #FEFCF3;
-	padding: 8px;
-	border: solid 1px #000000;
-	margin-top: 13px;
-	margin-bottom: 25px;
+.outline {
+	margin: 0 auto;
+	border: 1px solid #ccc;
+	max-width: 45em;
+	text-align: center;
 }
 
 h1 {
-	color: #cc3333;
-	font-size: 18px;
+	margin: 0 0 1em 0;
+	padding: 1em;
+	line-height: 1;
+	color: #fff;
+	font-size: 1.2em;
+	background-color: #c33;
 }
 
-.table {
+table {
 	border-collapse: collapse;
-	margin-top: 13px;
+	text-align: left;
+	font-size: 0.85em;
+	margin: 1em 0 0 0;
+	width: 100%;
+}
+table caption {
+	padding: 0.2em 0.5em;
+	background: #eee;
+
+}
+table th,
+table td {
+	padding: 0.2em 0.5em;
+	border: solid 1px #eee;
 }
 
-td {
-	padding: 3px;
-	padding-left: 5px;
-	padding-right: 5px;
-	border: solid 1px #bbbbbb;
-	font-size: 10px;
+.backtrace .cls {
+	color: #9b859d;
 }
-
-.type {
-	background-color: #cc0000;
-	color: #ffffff;
-	font-weight: bold;
-	padding: 3px;
+.backtrace .opn {
+}
+.backtrace .mtd {
+	color: #4bb1b1;
+}
+.backtrace .fl {
+}
+.backtrace .ln {
+	color: red;
 }

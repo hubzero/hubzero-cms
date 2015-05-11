@@ -1,14 +1,26 @@
+/**
+ * @package    hubzero-cms
+ * @file       templates/system/css/help.css
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
 body {
 	font-size: 14px;
 	line-height: 20px;
 	color: #222;
 	background: #fff;
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	padding: 20px;
 	text-rendering: optimizeLegibility;
 }
-h1, h2, h3, h4, h5, h6 {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-weight: bold;
 	color: #333;
 	margin: 0;
@@ -42,11 +54,11 @@ h6 {
 	font-size: 1em;
 	color: #777;
 }
-h1 img, 
-h2 img, 
-h3 img, 
-h4 img, 
-h5 img, 
+h1 img,
+h2 img,
+h3 img,
+h4 img,
+h5 img,
 h6 img {
 	margin: 0;
 }
@@ -66,7 +78,7 @@ a {
 	color: #0FA1CA;
 	text-decoration: underline;
 }
-a:focus, 
+a:focus,
 a:hover {
 	color: #000;
 	text-decoration: none;
@@ -82,18 +94,18 @@ blockquote {
 strong {
 	font-weight: bold;
 }
-em, 
+em,
 dfn {
 	font-style: italic;
 }
 dfn {
 	font-weight: bold;
 }
-sup, 
+sup,
 sub {
 	line-height: 0;
 }
-abbr, 
+abbr,
 acronym {
 	border-bottom: 1px dotted #666;
 }
@@ -108,8 +120,8 @@ pre {
 	margin: 1.5em 0;
 	white-space: pre;
 }
-pre, 
-code, 
+pre,
+code,
 tt {
 	font-size: 12px;
 	font-family: Consolas, Monaco, "Courier New", Courier, monospace;
@@ -118,11 +130,11 @@ tt {
 	border: 1px solid #CCC;
 	padding: 5px;
 }
-li ul, 
+li ul,
 li ol {
 	margin: 0 1.5em;
 	}
-ul, 
+ul,
 ol {
 	margin: 0 1.5em 1.5em 2em;
 }
@@ -194,8 +206,17 @@ figcaption {
 	color: #777;
 	text-align: center;
 }
-
-/* Added By Chris */
+img {
+	max-width: 100%;
+}
+hr {
+	height: 0;
+	width: 100%;
+	padding: 0;
+	margin: 30px 0;
+	border: none;
+	border-top: 1px solid #efefef;
+}
 
 .example {
 	position: relative;
@@ -215,9 +236,7 @@ figcaption {
 	font-size: 12px;
 	line-height: 12px;
 }
-img {
-	max-width: 100%;
-}
+
 .help-footer {
 	border-top: 1px solid #ccc;
 	font-size: 0.85em;
@@ -261,12 +280,4 @@ img {
 	bottom: 0;
 	text-align: center;
 	padding-top: 6px;
-}
-hr {
-	height: 0;
-	width: 100%;
-	padding: 0;
-	margin: 30px 0;
-	border: none;
-	border-top:1px solid #efefef;
 }
