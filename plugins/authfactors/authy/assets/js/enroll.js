@@ -675,7 +675,7 @@ jQuery(document).ready(function(jq) {
 	});
 
 	if (!!$.prototype.HUBfancyselect) {
-		$('select').HUBfancyselect({
+		$('select.site').HUBfancyselect({
 			'showSearch'          : true,
 			'searchPlaceholder'   : 'search...',
 			'maxHeightWithSearch' : 300

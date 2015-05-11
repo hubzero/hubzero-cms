@@ -42,7 +42,7 @@ $this->css('enroll')
 	</div>
 	<div class="grouping">
 		<label for="country_code">Country Code</label>
-		<select name="country_code" class="country_code">
+		<select name="country_code" class="country_code <?php echo App::get('client')->name; ?>">
 			<option value="1">United States of America (+1)</option>
 		</select>
 	</div>
