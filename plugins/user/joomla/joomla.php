@@ -253,7 +253,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _getUser($user, $options = array())
 	{
-		$instance = User::getRoot();
+		$instance = JUser::getInstance();
 
 		if ($id = intval(JUserHelper::getUserId($user['username'])))
 		{
