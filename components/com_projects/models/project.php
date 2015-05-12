@@ -1151,6 +1151,9 @@ class Project extends Model
 				$link = $this->_base . '&active=files';
 			break;
 
+			case 'stamp':
+				$link = 'index.php?option=com_projects&task=get';
+
 			case 'permalink':
 			default:
 				$link = $this->_base;

@@ -25,41 +25,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$data  = $this->data;
+$data = $this->data;
+$pub  = $data->get('pub');
 
-$viewer 	 = $this->data->viewer;
-$allowRename = $this->data->allowRename;
-
-if ($viewer == 'freeze')
+$details = $data->get('localPath');
+$details.= $data->getSize() ? ' | ' . $data->getSize('formatted') : '';
+if ($data->get('viewer') != 'freeze')
 {
-	$title 	 = $data->title;
-	$details = $data->path;
-	$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
-}
-else
-{
-	$title 	 = $data->title;
-	$details = $data->path;
-	$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
-	$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
+	$details.= !$data->exists() ? ' | ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE') : '';
 }
 ?>
 	<li>
 		<span class="item-options">
-			<?php if ($viewer == 'edit') { ?>
+			<?php if ($data->get('viewer') == 'edit') { ?>
 			<span>
-				<?php if (!$data->gone) { ?>
-				<a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
+				<?php if ($data->exists()) { ?>
+				<a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
 				<?php } ?>
-				<a href="<?php echo Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props); ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
-				<a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+				<a href="<?php echo Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL'); ?>">&nbsp;</a>
+				<a href="<?php echo Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
-			<?php } else { ?>
-				<span><a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>
+			<?php } elseif ($data->exists()) { ?>
+				<span><a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>
 			<?php } ?>
 		</span>
 		<span class="item-title">
-			<img alt="" src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($data->ext); ?>" /> <?php echo $title; ?>
+			<?php echo $data::drawIcon($data->get('ext')); ?> <?php echo $data->get('title'); ?>
 		</span>
 		<span class="item-details"><?php echo $details; ?></span>
 	</li>

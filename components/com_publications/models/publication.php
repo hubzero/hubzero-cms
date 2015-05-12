@@ -1773,7 +1773,7 @@ class Publication extends Object
 				$path = $this->_basePath . DS . 'data';
 			break;
 
-			case 'data':
+			case 'logs':
 				$path = $this->_basePath . DS . 'logs';
 			break;
 
@@ -1836,6 +1836,10 @@ class Publication extends Object
 
 			case 'version':
 				$link = $this->_base . '&v=' . $this->get('version_number');
+			break;
+
+			case 'versionid':
+				$link = $this->_base . '&v=' . $this->get('version_id');
 			break;
 
 			case 'questions':

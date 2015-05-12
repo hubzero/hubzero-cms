@@ -1908,14 +1908,12 @@ class Curation extends Object
 			$this->_pub
 		);
 
-		$txt   = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon('txt') . '" alt="txt" />';
-
 		// Custom license to be included in LICENSE.txt
 		if ($this->_pub->license_text)
 		{
-			$contents .= '<li>' . $txt . ' LICENSE.txt</li>';
+			$contents .= '<li>' . \Components\Projects\Models\File::drawIcon('txt') . ' LICENSE.txt</li>';
 		}
-		$contents .= '<li>' . $txt . ' README.txt</li>';
+		$contents .= '<li>' . \Components\Projects\Models\File::drawIcon('txt') . ' README.txt</li>';
 		$contents .= '</ul>';
 
 		return $contents;

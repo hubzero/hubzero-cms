@@ -316,7 +316,7 @@ class File extends Object
 		}
 
 		// Get size for local
-		if (!$this->get('remote'))
+		if (!$this->get('remote') && $this->exists())
 		{
 			$fileSystem = new \Hubzero\Filesystem\Filesystem();
 			$this->set('size', $fileSystem->size($this->get('fullPath')));
@@ -576,10 +576,34 @@ class File extends Object
 			$ext = 'folder';
 		}
 
-		// Directory where images are stored
-		$basePath = "/plugins/projects/files/assets/img/";
-
 		$ext = $ext ? $ext : $this->get('ext');
+		$icon = self::getIconImage($ext, $basename);
+
+		$this->set('icon', $icon);
+	}
+
+	/**
+	 * Draw icon
+	 *
+	 * @param      string  $ext
+	 * @return     HTML string
+	 */
+	public static function drawIcon($ext = '')
+	{
+		$icon = self::getIconImage($ext);
+		return '<img src="' . $icon . '" alt="' . $ext . '" />';
+	}
+
+	/**
+	 * Get file icon image
+	 *
+	 * @param      string  $ext
+	 * @param      boolean $basename
+	 * @param      string  $icon
+	 * @return     string
+	 */
+	public static function getIconImage ($ext, $basename = false, $icon = '')
+	{
 		switch (strtolower($ext))
 		{
 			case 'pdf':
@@ -706,8 +730,9 @@ class File extends Object
 				break;
 		}
 
-		$result = $basename ? basename($icon) :  $basePath . $icon . '.gif';
-		$this->set('icon', $result);
+		// Directory where images are stored
+		$basePath = "/plugins/projects/files/assets/img/";
+		return $basename ? basename($icon) :  $basePath . $icon . '.gif';
 	}
 
 	/**

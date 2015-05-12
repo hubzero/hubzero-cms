@@ -34,15 +34,6 @@ $objSt 		= new \Components\Projects\Tables\Stamp( $database );
 // Get listed public files
 $items = $objSt->getPubList($this->model->get('id'), 'files');
 
-$link = Route::url('index.php?option=com_projects&task=get') . '/?s=';
-
-// Load component configs
-$config = $this->model->config();
-
-// Get project path
-$path  = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
-$prefix = $config->get('offroot', 0) ? '' : PATH_APP;
-
 if ($items) {
 ?>
 <div class="public-list-header">
@@ -50,15 +41,12 @@ if ($items) {
 </div>
 <div class="public-list-wrap">
 	<ul>
-		<?php foreach ($items as $item) {
+		<?php foreach ($items as $item)
+		{
 			$ref = json_decode($item->reference);
-
-			$serve = $prefix . $path . DS . $ref->file;
-
-			// Get file extention
-			$ext = \Components\Projects\Helpers\Html::getFileExtension($ref->file);
+			$file = new \Components\Projects\Models\File($e);
 		?>
-		<li><a href="<?php echo $link . $item->stamp; ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /> <?php echo basename($ref->file); ?></li>
+		<li><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $file::drawIcon($file->get('ext')); ?> <?php echo basename($ref->file); ?></li>
 		<?php
 		} ?>
 	</ul>

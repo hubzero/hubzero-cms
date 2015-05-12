@@ -57,8 +57,8 @@ class File extends Base
 		$configs	= new stdClass;
 		$typeParams = $element->typeParams;
 
-		// replace current attachments?
-		$configs->replace  	= Request::getInt( 'replace_current', 0, 'post');
+		// Filesystem
+		$configs->fileSystem = new \Hubzero\Filesystem\Filesystem();
 
 		// which directory to copy files to
 		$configs->directory = isset($typeParams->directory) && $typeParams->directory
@@ -82,10 +82,6 @@ class File extends Base
 		// Allow reuse of attachments to other elements
 		$configs->reuse = isset($typeParams->reuse) ? $typeParams->reuse : 1;
 
-		// Run outside script to check file content?
-		$configs->scanScript  = isset($typeParams->scanScript) && $typeParams->scanScript
-					? $typeParams->scanScript : false;
-
 		// Fancy launcher?
 		$configs->fancyLauncher = isset($typeParams->fancyLauncher)
 			? $typeParams->fancyLauncher : 0;
@@ -93,7 +89,7 @@ class File extends Base
 		// Allow changes in non-draft version?
 		$configs->freeze 	= isset($blockParams->published_editing)
 							&& $blockParams->published_editing == 0
-							&& ($pub->state == 1 || $pub->state == 5)
+							&& ($pub->isPublished() || $pub->isPending())
 							? 1 : 0;
 
 		// Verify file type against allowed before attaching?
@@ -106,9 +102,6 @@ class File extends Base
 		// Bundle multple files in an element together or serve independently?
 		$configs->multiZip = isset($typeParams->multiZip) ? $typeParams->multiZip : 1;
 
-		// Handler assigned in publication_handler_assoc?
-		// TBD
-
 		// Load handler
 		if ($configs->handler)
 		{
@@ -116,22 +109,18 @@ class File extends Base
 			$configs->handler = $modelHandler->ini($configs->handler);
 		}
 
-		// Get project path
-		$configs->path 	= $pub->_project->repo()->get('path');
-
-		// Get publication paths
-		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', '', 1);
-		$configs->pubPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', $configs->dirPath, 1);
-
-		// Log path
-		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		// Set paths
+		$configs->path    = $pub->_project->repo()->get('path');
+		$configs->pubBase = $pub->path('base', true);
+		$configs->pubPath = $pub->path('content', true);
+		$configs->logPath = $pub->path('logs', true);
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Get bundle name
-		$versionParams 		  = new \JParameter( $pub->params );
+		$versionParams 		  = $pub->params;
 		$bundleName			  = $versionParams->get('element' . $elementId . 'bundlename', $configs->title);
 		$configs->bundleTitle = $bundleName ? $bundleName : $configs->title;
 		$configs->bundleName  = $bundleName ? $bundleName . '.zip' : 'bundle.zip';
@@ -281,19 +270,14 @@ class File extends Base
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
 			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
-			$icon  = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon('zip') . '" alt="zip" />';
-
-			// Bundle name
-			$list .= '<li>' . $icon . ' ' . $title . '</li>';
+			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('zip') . ' ' . $title . '</li>';
 		}
 		// Draw directories
 		if (($configs->multiZip == 2 && $configs->subdir) || $configs->bundleDirectory)
 		{
-			$icon  = '<img src="/plugins/projects/files/assets/img/folder.gif" alt="" />';
-
 			// Bundle name
 			$name  = $configs->bundleDirectory ? $configs->bundleDirectory : $configs->subdir;
-			$list .= '<li>' . $icon . ' ' . $name . '</li>';
+			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('folder') . ' ' . $name . '</li>';
 			$class = 'level2';
 		}
 		// List individual
@@ -322,16 +306,13 @@ class File extends Base
 				if (!$configs->bundleDirHierarchy)
 				{
 					$where = $configs->subdir && $class == 'level1' ? DS . $configs->subdir : '';
-					$where .= DS . basename($filePath);
+					$where.= DS . basename($filePath);
 				}
 
-				// Get ext
-				$parts  = explode('.', $attach->path);
-				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
-				$ext	= strtolower($ext);
-				$icon   = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
+				// File model
+				$file = new \Components\Projects\Models\File($filePath);
 
-				$list .= '<li class="' . $class . '"><span class="item-title">' . $icon . ' ' . trim($where, DS) . '</span>';
+				$list .= '<li class="' . $class . '"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span>';
 				$list .= '<span class="item-details">' . $attach->path . '</span>';
 				$list .= '</li>';
 			}
@@ -453,7 +434,6 @@ class File extends Base
 
 		$showArchive = isset($pub->_curationModel->_manifest->params->show_archival)
 				? $pub->_curationModel->_manifest->params->show_archival :  0;
-	//	$showArchive = ($showArchive && file_exists($configs->archPath)) ? true : false;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
@@ -599,7 +579,7 @@ class File extends Base
 		// Create new path
 		if (!is_dir( $newPath ))
 		{
-			\JFolder::create( $newPath );
+			$configs->fileSystem->makeDirectory( $newPath, 0755, true, true );
 		}
 
 		// Loop through attachments
@@ -625,11 +605,11 @@ class File extends Base
 			// Make sure we have subdirectories
 			if (!is_dir(dirname($copyTo)))
 			{
-				\JFolder::create( dirname($copyTo) );
+				$configs->fileSystem->makeDirectory( dirname($copyTo), 0755, true, true );
 			}
 
 			// Copy file
-			if (!\JFile::copy($copyFrom, $copyTo))
+			if (!$configs->fileSystem->copy($copyFrom, $copyTo))
 			{
 				$pAttach->delete();
 			}
@@ -805,7 +785,7 @@ class File extends Base
 		// Create pub version path
 		if (!is_dir( $path ))
 		{
-			if (!\JFolder::create( $path ))
+			if (!$configs->fileSystem->makeDirectory( $path, 0755, true, true ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
@@ -863,21 +843,9 @@ class File extends Base
 		}
 
 		// Nothing to change
-		if (empty($toAttach) && !$configs->replace)
+		if (empty($toAttach))
 		{
 			return false;
-		}
-
-		// Get current element attachments
-		if ($configs->replace)
-		{
-			$attachments = $pub->_attachments;
-			$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-
-			// Sort out attachments for this element
-			$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
-
-			// TBD
 		}
 
 		// Git helper
@@ -1154,7 +1122,7 @@ class File extends Base
 		// Create pub version path
 		if (!is_dir( $configs->pubPath ))
 		{
-			if (!\JFolder::create( $configs->pubPath ))
+			if (!$configs->fileSystem->makeDirectory( $configs->pubPath, 0755, true, true ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
@@ -1171,11 +1139,11 @@ class File extends Base
 			// If parent dir does not exist, we must create it
 			if ($configs->dirHierarchy && !file_exists(dirname($copyTo)))
 			{
-				\JFolder::create(dirname($copyTo));
+				$configs->fileSystem->makeDirectory(dirname($copyTo), 0755, true, true);
 			}
 			if (!is_file($copyTo) || $update)
 			{
-				\JFile::copy($copyFrom, $copyTo);
+				$configs->fileSystem->copy($copyFrom, $copyTo);
 			}
 		}
 
@@ -1195,12 +1163,6 @@ class File extends Base
 				chmod($hfile, 0644);
 			}
 			$objPA->store();
-
-			// Scan attachment and record scan status
-			if ($configs->scanScript)
-			{
-				self::scanFile($objPA, $copyTo, $pub, $configs);
-			}
 
 			// Produce thumbnail (if applicable)
 			if ($configs->handler && $configs->handler->getName() == 'imageviewer')
@@ -1236,12 +1198,12 @@ class File extends Base
 		// Delete file
 		if (is_file( $deletePath ))
 		{
-			if (\JFile::delete($deletePath))
+			if ($configs->fileSystem->delete($deletePath))
 			{
 				// Also delete hash file
 				if (is_file($hfile))
 				{
-					\JFile::delete($hfile);
+					$configs->fileSystem->delete($hfile);
 				}
 
 				// Remove any related files managed by handler
@@ -1334,23 +1296,6 @@ class File extends Base
 	}
 
 	/**
-	 * Run script to check for required file content
-	 *
-	 * @return  object
-	 */
-	public function scanFile ( $objPA, $filePath, $pub, $configs )
-	{
-		if (is_file($filePath))
-		{
-			// perform scan
-			// TBD
-			// Record scan status
-		}
-
-		return true;
-	}
-
-	/**
 	 * Check for allowed formats
 	 *
 	 * @return  object
@@ -1433,10 +1378,7 @@ class File extends Base
 			$view->master->params
 		);
 
-		$data 		= new stdClass;
-		$data->path = str_replace($configs->path . DS, '', $att->path);
-		$parts 		= explode('.', $data->path);
-		$data->ext 	= strtolower(end($parts));
+		$data = new \Components\Projects\Models\File($att->path, $configs->path);
 
 		// Customize title
 		$defaultTitle	= $view->manifest->params->title
@@ -1445,48 +1387,28 @@ class File extends Base
 		$defaultTitle	= $view->manifest->params->title
 						? str_replace('{pubversion}', $view->pub->version_label,
 						$defaultTitle) : NULL;
-		// Allow rename?
-		$allowRename = isset($view->manifest->params->typeParams->allowRename)
-					 ? $view->manifest->params->typeParams->allowRename
-					 : false;
 
 		// Set default title
-		$incNum				= $view->manifest->params->max > 1 ? ' (' . $i . ')' : '';
-		$dTitle				= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
-		$data->title 		= $att->title && $att->title != $defaultTitle
-							? $att->title : $dTitle;
+		$incNum = $view->manifest->params->max > 1 ? ' (' . $i . ')' : '';
+		$dTitle = $defaultTitle ? $defaultTitle . $incNum : $data->get('name');
+		$title  = $att->title && $att->title != $defaultTitle ? $att->title : $dTitle;
+		$data->set('title', $title);
 
-		$data->ordering 	= $i;
-		$data->editUrl  	= $view->pub->link('editversion');
-		$data->id			= $att->id;
-		$data->props		= $view->master->block . '-' . $view->master->blockId
-							. '-' . $view->elementId;
-		$data->pid			= $view->pub->id;
-		$data->vid			= $view->pub->version_id;
-		$data->version		= $view->pub->version_number;
-		$data->projectPath  = $configs->path;
-		$data->git		    = $view->git;
-		$data->pubPath	    = $configs->pubPath;
-		$data->md5		    = $att->content_hash;
-		$data->viewer	    = $view->viewer;
-		$data->allowRename  = $allowRename;
-		$data->downloadUrl  = Route::url($view->pub->link('serve')
-							. '&el=' . $view->elementId . '&a=' . $att->id . '&download=1' );
+		$data->set('ordering', $i);
+		$data->set('pub', $view->pub);
+		$data->set('id', $att->id);
+		$data->set('hash', $att->vcs_hash);
+		$data->set('md5Hash', $att->content_hash);
+		$data->set('viewer', $view->viewer);
+		$data->set('pubPath', $configs->pubPath);
+		$data->set('props', $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId);
+		$data->set('downloadUrl', Route::url($view->pub->link('serve')
+							. '&el=' . $view->elementId . '&a=' . $att->id . '&download=1' ));
 
 		// Is attachment (image) also publication thumbnail
 		$params = new \JParameter( $att->params );
-		$data->pubThumb = $params->get('pubThumb', NULL);
-		$data->suffix = $params->get('suffix', NULL);
-
-		$data->hash	  	= $att->vcs_hash;
-		$data->gone 	= is_file($configs->path . DS . $att->path) ? false : true;
-
-		// Get file size
-		$data->size		= $att->vcs_hash
-						? $view->git->gitLog($configs->path, $att->path, $att->vcs_hash, 'size') : NULL;
-		$data->gitStatus= $data->gone
-					? Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
-					: NULL;
+		$data->set('pubThumb', $params->get('pubThumb', NULL));
+		$data->set('suffix', $params->get('suffix', NULL));
 
 		return $data;
 	}

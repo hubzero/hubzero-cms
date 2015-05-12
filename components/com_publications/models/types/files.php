@@ -574,9 +574,10 @@ class Files extends Object
 		}
 
 		$html = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . \Components\Projects\Helpers\Html::shortenFileName($file, 50);
-		if ($canedit && $pid) {
-		$html .= '<span class="c-edit"><a href="' . $url . '?vid=' . $vid
-		. '&item=file::'.urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';
+		if ($canedit && $pid)
+		{
+			$html .= '<span class="c-edit"><a href="' . $url . '?vid=' . $vid
+		. '&item=file::' . urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';
 		}
 		$html .= '<span class="c-iteminfo">';
 		if ($att->id)

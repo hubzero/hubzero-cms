@@ -802,7 +802,7 @@ class Data extends Base
 			return false;
 		}
 
-		$list .= '<li><img src="' . \Components\Projects\Helpers\Html::getFileIcon('csv') . '" alt="" /> data.csv</li>';
+		$list .= '<li>' . \Components\Projects\Models\File::drawIcon('csv') . ' data.csv</li>';
 
 		// Add data files
 		$dataFiles = array();
@@ -812,7 +812,7 @@ class Data extends Base
 		}
 		if (!empty($dataFiles))
 		{
-			$list .= '<li><img src="/plugins/projects/files/assets/img/folder.gif" alt="" /> data</li>';
+			$list .= '<li>' . \Components\Projects\Models\File::drawIcon('folder') . ' data</li>';
 			foreach ($dataFiles as $e)
 			{
 				// Skip thumbnails and CSV
@@ -820,11 +820,9 @@ class Data extends Base
 				{
 					continue;
 				}
-				// Get ext
-				$parts  = explode('.', $e);
-				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
-				$ext	= strtolower($ext);
-				$icon   = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
+
+				$file = new \Components\Projects\Models\File($e);
+
 				$fileinfo = pathinfo($e);
 				$a_dir  = $fileinfo['dirname'];
 				$a_dir	= trim(str_replace($configs->dataPath, '', $a_dir), DS);
@@ -832,7 +830,7 @@ class Data extends Base
 				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$where = 'data' . DS . $fPath . basename($e);
 
-				$list .= '<li class="level2"><span class="item-title">' . $icon . ' ' . trim($where, DS) . '</span></li>';
+				$list .= '<li class="level2"><span class="item-title">' . $file::drawIcon($file->get('ext')) . ' ' . trim($where, DS) . '</span></li>';
 			}
 		}
 

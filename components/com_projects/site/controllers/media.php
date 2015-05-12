@@ -406,14 +406,14 @@ class Media extends Base
 		// Show project thumbnail
 		if ($media == 'thumb')
 		{
-			$source = Helpers\Html::getThumbSrc( $this->model->get('alias'), '', $this->config );
+			$source = $this->getThumbSrc();
 		}
 		elseif ($media)
 		{
 			if ($media == 'master')
 			{
 				// Public picture
-				$source = Helpers\Html::getProjectImageSrc( $this->model->get('alias'), $this->model->get('picture'), $this->config );
+				$source = $this->getProjectImageSrc();
 			}
 			elseif ($dir == 'tools')
 			{
@@ -455,5 +455,65 @@ class Media extends Base
 		}
 
 		return;
+	}
+
+	/**
+	 * Get project image source
+	 *
+	 * @return     string
+	 */
+	public function getProjectImageSrc()
+	{
+		if (!$this->model->exists())
+		{
+			return false;
+		}
+
+		$path    = trim($this->config->get('imagepath', '/site/projects'), DS)
+				. DS . $this->model->get('alias') . DS . 'images';
+		$default = trim($this->config->get('masterpic',
+				'/components/com_projects/site/assets/img/projects-large.gif'), DS);
+
+		$default = is_file( PATH_APP . DS . $default ) ? $default : NULL;
+
+		$src  = $this->model->get('picture')
+				&& is_file( PATH_APP . DS . $path . DS . $this->model->get('picture') )
+				? $path . DS . $this->model->get('picture')
+				: $default;
+		return $src;
+	}
+
+	/**
+	 * Get project thumbnail source
+	 *
+	 * @return     string
+	 */
+	public function getThumbSrc()
+	{
+		if (!$this->model->exists())
+		{
+			return false;
+		}
+
+		$src  = '';
+		$path = DS . trim($this->config->get('imagepath', '/site/projects'), DS)
+				. DS . $this->model->get('alias') . DS . 'images';
+
+		if (file_exists( PATH_APP . $path . DS . 'thumb.png' ))
+		{
+			return $path . DS . 'thumb.png';
+		}
+
+		if ($this->model->get('picture'))
+		{
+			$thumb = Helpers\Html::createThumbName($this->model->get('picture'));
+			$src = $thumb && file_exists( PATH_APP . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
+		}
+		if (!$src)
+		{
+			$src = $this->config->get('defaultpic');
+		}
+
+		return $src;
 	}
 }
