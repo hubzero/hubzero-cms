@@ -95,11 +95,13 @@ class Request extends BaseRequest
 			case 'post':
 			case 'request':
 				$hash = 'request';
+				$this->post->set($name, $value);
 			break;
 
 			case 'get':
 			case 'query':
 				$hash = 'query';
+				$this->request->set($name, $value);
 			break;
 
 			case 'header':
@@ -111,7 +113,7 @@ class Request extends BaseRequest
 			break;
 		}
 
-		return $this->$method->set($key, $default);
+		return $this->$hash->set($name, $value);
 	}
 
 	/**
@@ -166,7 +168,8 @@ class Request extends BaseRequest
 	 */
 	public function getInt($key, $default = 0, $hash = 'input')
 	{
-		return (int) preg_replace(static::$filters['int'], '', $this->getVar($key, $default, $hash));
+		preg_match('/-?[0-9]+/', (string) $this->getVar($key, $default, $hash), $matches);
+		return @ (int) $matches[0];
 	}
 
 	/**
@@ -342,7 +345,7 @@ class Request extends BaseRequest
 	public function base($pathonly = false)
 	{
 		$path = trim($this->getBasePath(), '/');
-		return ($pathonly ? '' : trim($this->root(), '/')) . '/' . $path . ($path ? '/' : '');
+		return ($pathonly ? '' : $this->root()) . ($path ? '/' . $path : '');
 	}
 
 	/**

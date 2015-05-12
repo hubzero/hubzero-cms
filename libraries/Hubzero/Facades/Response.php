@@ -28,51 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Routing;
-
-use Hubzero\Base\Middleware;
-use Hubzero\Http\Request;
+namespace Hubzero\Facades;
 
 /**
- * Router service provider
+ * Response facade
  */
-class RouterServiceProvider extends Middleware
+class Response extends Facade
 {
 	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['router'] = function($app)
-		{
-			return new Router;
-		};
-	}
-
-	/**
-	 * Handle request in HTTP stack
+	 * Get the registered name.
 	 * 
-	 * @param   object  $request  HTTP Request
-	 * @return  mixed
+	 * @return  string
 	 */
-	public function handle(Request $request)
+	public static function getAccessor()
 	{
-		$this->app['dispatcher']->trigger('system.onBeforeRoute');
-
-		foreach ($this->app['router']->parse($request->getUri()) as $key => $val)
-		{
-			$request->setVar($key, $val);
-		}
-
-		$this->app['dispatcher']->trigger('system.onAfterRoute');
-
-		if ($this->app->has('profiler'))
-		{
-			$this->app['profiler']->mark('afterRoute');
-		}
-
-		return $this->next($request);
+		return 'response';
 	}
 }

@@ -23,56 +23,46 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Routing;
+namespace Hubzero\Base;
 
-use Hubzero\Base\Middleware;
+use Hubzero\Base\ServiceProvider;
 use Hubzero\Http\Request;
 
 /**
- * Router service provider
+ * App Middleware
  */
-class RouterServiceProvider extends Middleware
+abstract class Middleware extends ServiceProvider
 {
 	/**
-	 * Register the service provider.
+	 * Call next service
 	 *
-	 * @return  void
+	 * This under the hood resolves the stack on the api container
+	 * and then calls next on it passing the request object. The stack
+	 * object holds onto the current position it is within the stack so
+	 * each service doesnt have to know anything about what comes before
+	 * or after it.
+	 * 
+	 * @param   object  $request  Request object
+	 * @return  mixed   Result of next runnable service
 	 */
-	public function register()
+	public function next(Request $request)
 	{
-		$this->app['router'] = function($app)
-		{
-			return new Router;
-		};
+		return $this->app['stack']->next($request);
 	}
 
 	/**
-	 * Handle request in HTTP stack
+	 * Handle request object
+	 *
+	 * Each runnable service must implement this method and do what it wants
+	 * and then MUST pass the request along to the next service after its done.
 	 * 
-	 * @param   object  $request  HTTP Request
-	 * @return  mixed
+	 * @param   object  $request  Request object
+	 * @return  mixed   Result
 	 */
-	public function handle(Request $request)
-	{
-		$this->app['dispatcher']->trigger('system.onBeforeRoute');
-
-		foreach ($this->app['router']->parse($request->getUri()) as $key => $val)
-		{
-			$request->setVar($key, $val);
-		}
-
-		$this->app['dispatcher']->trigger('system.onAfterRoute');
-
-		if ($this->app->has('profiler'))
-		{
-			$this->app['profiler']->mark('afterRoute');
-		}
-
-		return $this->next($request);
-	}
+	abstract public function handle(Request $request);
 }

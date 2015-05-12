@@ -103,7 +103,7 @@ class Router
 			$uri = $rule($uri);
 		}
 
-		return $uri->getUri();
+		return $uri;
 	}
 
 	/**
@@ -122,14 +122,13 @@ class Router
 		// Process the parsed variables based on custom defined rules
 		foreach ($this->rules['parse'] as $rule)
 		{
-			if ($results = $rule($request))
+			if ($rule($uri))
 			{
-				$vars += $results;
 				break;
 			}
 		}
 
-		return array_merge($this->vars(), $vars);
+		return array_merge($this->vars(), $uri->getQuery(true));
 	}
 
 	/**

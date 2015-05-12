@@ -30,12 +30,13 @@
 
 namespace Hubzero\Component;
 
-use Hubzero\Base\ServiceProvider;
+use Hubzero\Base\Middleware;
+use Hubzero\Http\Request;
 
 /**
  * Component loader service provider
  */
-class ComponentServiceProvider extends ServiceProvider
+class ComponentServiceProvider extends Middleware //ServiceProvider
 {
 	/**
 	 * Register the service provider.
@@ -48,5 +49,59 @@ class ComponentServiceProvider extends ServiceProvider
 		{
 			return new Loader($app);
 		};
+	}
+
+	/**
+	 * Handle request in HTTP stack
+	 * 
+	 * @param   object  $request  HTTP Request
+	 * @return  mixed
+	 */
+	public function handle(Request $request)
+	{
+		/*try
+		{
+			$component = $request->getCmd('option');
+			if (!$component)
+			{
+				$this->app->abort(404);
+			}
+
+			$contents = $this->app['component']->render($component);
+			$this->app['response']->setContent($contents);
+
+			$this->app['dispatcher']->trigger('system.onAfterDispatch');
+
+			if ($this->app->has('profiler'))
+			{
+				$this->app['profiler']->mark('afterDispatch');
+			}
+		}
+		catch (Exception $e)
+		{
+			return Response::error($e->getMessage(), 404);
+		}
+
+		return $this->next($request);*/
+		$response = $this->next($request);
+
+		$component = $request->getCmd('option');
+		if (!$component)
+		{
+			$this->app->abort(404);
+		}
+
+		$contents = $this->app['component']->render($component);
+
+		$response->setContent($contents);
+
+		$this->app['dispatcher']->trigger('system.onAfterDispatch');
+
+		if ($this->app->has('profiler'))
+		{
+			$this->app['profiler']->mark('afterDispatch');
+		}
+
+		return $response;
 	}
 }
