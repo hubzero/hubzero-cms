@@ -58,7 +58,7 @@ endforeach;
 		<div class="<?php echo $primary; ?> upper"></div>
 		<div class="auth">
 			<div class="person">
-				<?php if (isset($user_img)) : ?>
+				<?php if (isset($user_img) && file_exists($user_img)) : ?>
 					<img src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('User profile picture'); ?>" />
 				<?php endif; ?>
 			</div>
@@ -70,7 +70,7 @@ endforeach;
 <?php else: ?>
 	<div class="auth">
 		<div class="person">
-			<?php if (isset($user_img)) : ?>
+			<?php if (isset($user_img) && file_exists($user_img)) : ?>
 				<?php $img_properties = getimagesize(PATH_APP . DS . $user_img); ?>
 				<?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
 				<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('User profile picture'); ?>" />
@@ -80,7 +80,7 @@ endforeach;
 			<div class="instructions"><?php echo Lang::txt('Choose your sign in method:'); ?></div>
 			<div class="options">
 				<?php foreach ($authenticators as $a) : ?>
-						<?php 
+						<?php
 							if ($refl[$a['name']]->hasMethod('onRenderOption') && ($html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(NULL, $returnQueryString))):
 								echo is_array($html) ? implode("\n", $html) : $html;
 							else:
