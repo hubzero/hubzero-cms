@@ -37,6 +37,7 @@ use Hubzero\Utility\Number;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Sanitize;
 use DirectoryIterator;
+use Filesystem;
 use Component;
 use Pathway;
 use Request;
@@ -160,7 +161,7 @@ class Feedback extends SiteController
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
 		if (is_dir($this->tmpPath() . DS . User::get('id')))
 		{
-			\JFolder::delete($this->tmpPath() . DS . User::get('id'));
+			Filesystem::deleteDirectory($this->tmpPath() . DS . User::get('id'));
 		}
 
 		if (User::isGuest())
@@ -315,13 +316,10 @@ class Feedback extends SiteController
 		$files = $_FILES;
 		$addedPictures = array();
 
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		$path = $row->filespace() . DS . $row->id;
 		if (!is_dir($path))
 		{
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}
@@ -333,6 +331,7 @@ class Feedback extends SiteController
 		if (is_dir($tempDir))
 		{
 			$dirIterator = new DirectoryIterator($tempDir);
+
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot() || $file->isDir())
@@ -350,7 +349,7 @@ class Feedback extends SiteController
 						continue;
 					}
 
-					if (\JFile::move($tempDir . '/' . $name, $path . '/' . $name))
+					if (Filesystem::move($tempDir . DS . $name, $path . DS . $name))
 					{
 						array_push($addedPictures, $name);
 					}
@@ -358,7 +357,7 @@ class Feedback extends SiteController
 			}
 
 			// Remove temp folder
-			\JFolder::delete($tempDir);
+			Filesystem::deleteDirectory($tempDir);
 		}
 
 		$this->view->addedPictures = $addedPictures;
@@ -442,8 +441,7 @@ class Feedback extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -474,9 +472,8 @@ class Feedback extends SiteController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \JFile::makeSafe($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -506,9 +503,9 @@ class Feedback extends SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		if (!\JFile::isSafe($file))
+		if (!Filesystem::isSafe($file))
 		{
-			if (\JFile::delete($file))
+			if (Filesystem::delete($file))
 			{
 				echo json_encode(array(
 					'success' => false,

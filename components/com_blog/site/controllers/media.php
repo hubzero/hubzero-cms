@@ -36,6 +36,10 @@ use Hubzero\Content\Server;
 use InvalidArgumentException;
 use RuntimeException;
 use DirectoryIterator;
+use Filesystem;
+use Request;
+use User;
+use Lang;
 
 /**
  * Blog controller class for media
@@ -85,13 +89,13 @@ class Media extends SiteController
 		}
 
 		// Serve up the image
-		$xserver = new Server();
-		$xserver->filename($file_path);
-		$xserver->disposition('inline');
-		$xserver->acceptranges(false); // @TODO fix byte range support
+		$server = new Server();
+		$server->filename($file_path);
+		$server->disposition('inline');
+		$server->acceptranges(false); // @TODO fix byte range support
 
 		// Serve up file
-		if (!$xserver->serve())
+		if (!$server->serve())
 		{
 			// Should only get here on error
 			throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
@@ -136,8 +140,7 @@ class Media extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
@@ -146,11 +149,11 @@ class Media extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 
 		// Ensure file names fit.
-		$ext = \JFile::getExt($file['name']);
+		$ext = Filesystem::extension($file['name']);
+
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -159,8 +162,15 @@ class Media extends SiteController
 		}
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING'));
+		}
+
+		if (!Filesystem::isSafe($path . DS . $file['name']))
+		{
+			Filesystem::delete($path . DS . $file['name']);
+
 			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING'));
 		}
 
@@ -176,7 +186,7 @@ class Media extends SiteController
 	public function deletefolderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -207,8 +217,7 @@ class Media extends SiteController
 		if (is_dir($folder))
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\JFolder::delete($folder))
+			if (!Filesystem::deleteDirectory($folder))
 			{
 				$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -226,7 +235,7 @@ class Media extends SiteController
 	public function deletefileTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -261,8 +270,7 @@ class Media extends SiteController
 		}
 
 		// Attempt to delete the file
-		jimport('joomla.filesystem.file');
-		if (!\JFile::delete($path . DS . $file))
+		if (!Filesystem::delete($path . DS . $file))
 		{
 			$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_DELETE_FILE'));
 		}

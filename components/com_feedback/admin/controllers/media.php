@@ -32,6 +32,7 @@ namespace Components\Feedback\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\String;
+use Filesystem;
 use Request;
 use Lang;
 
@@ -93,8 +94,7 @@ class Media extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -103,14 +103,13 @@ class Media extends AdminController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		$qid = Request::getInt('qid', 0);
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('ERROR_UPLOADING'));
 			$file = $curfile;
@@ -128,7 +127,7 @@ class Media extends AdminController
 				// Yes - remove it
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!\JFile::delete($path . DS . $curfile))
+					if (!Filesystem::delete($path . DS . $curfile))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
@@ -192,8 +191,7 @@ class Media extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $row->picture))
+			if (!Filesystem::delete($path . DS . $row->picture))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);

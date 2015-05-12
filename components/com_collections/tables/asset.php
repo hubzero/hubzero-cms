@@ -31,6 +31,7 @@
 namespace Components\Collections\Tables;
 
 use Component;
+use Filesystem;
 use Date;
 use User;
 use Lang;
@@ -305,12 +306,10 @@ class Asset extends \JTable
 
 		if ($this->type == 'file')
 		{
-			jimport('joomla.filesystem.file');
-
 			$path = $this->path($this->item_id);
 
-			$ext = \JFile::getExt($this->filename);
-			$fileRemoved = \JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
+			$ext = Filesystem::extension($this->filename);
+			$fileRemoved = Filesystem::name($this->filename) . uniqid('_d') . '.' . $ext;
 
 			$file = $path . DS . $this->filename;
 
@@ -320,7 +319,7 @@ class Asset extends \JTable
 				return false;
 			}
 
-			if (!\JFile::move($file, $path . DS . $fileRemoved))
+			if (!Filesystem::move($file, $path . DS . $fileRemoved))
 			{
 				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
 				return false;
@@ -358,19 +357,18 @@ class Asset extends \JTable
 
 		$path = $this->path($this->item_id);
 
-		$ext = \JFile::getExt($this->filename);
-		$thumb = \JFile::stripExt($this->filename) . '_t.' . $ext;
-		$removed = \JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
+		$ext     = Filesystem::extension($this->filename);
+		$thumb   = Filesystem::name($this->filename) . '_t.' . $ext;
+		$removed = Filesystem::name($this->filename) . uniqid('_d') . '.' . $ext;
 
-		jimport('joomla.filesystem.file');
-		if (!\JFile::delete($path . DS . $this->filename))
+		if (!Filesystem::delete($path . DS . $this->filename))
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
 		}
 
 		if (file_exists($path . DS . $thumb))
 		{
-			if (!\JFile::delete($path . DS . $thumb))
+			if (!Filesystem::delete($path . DS . $thumb))
 			{
 				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
 			}
@@ -378,7 +376,7 @@ class Asset extends \JTable
 
 		if (file_exists($path . DS . $removed))
 		{
-			if (!\JFile::delete($path . DS . $removed))
+			if (!Filesystem::delete($path . DS . $removed))
 			{
 				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
 			}

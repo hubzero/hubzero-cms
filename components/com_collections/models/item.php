@@ -35,6 +35,7 @@ use Hubzero\User\Profile;
 use Hubzero\Item\Comment;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
+use Filesystem;
 use Date;
 use User;
 use Lang;
@@ -589,8 +590,7 @@ class Item extends Base
 
 			if (!is_dir($path))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\JFolder::create($path))
+				if (!Filesystem::makeDirectory($path))
 				{
 					$this->setError(Lang::txt('Error uploading. Unable to create path.'));
 					return false;
@@ -604,13 +604,12 @@ class Item extends Base
 				foreach ($files['name'] as $i => $file)
 				{
 					// Make the filename safe
-					jimport('joomla.filesystem.file');
 					$files['name'][$i] = urldecode($files['name'][$i]);
-					$files['name'][$i] = \JFile::makeSafe($files['name'][$i]);
+					$files['name'][$i] = Filesystem::clean($files['name'][$i]);
 					$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
 
 					// Upload new files
-					if (!\JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i]))
+					if (!Filesystem::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i]))
 					{
 						$this->setError(Lang::txt('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
 					}

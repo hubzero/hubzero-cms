@@ -35,6 +35,7 @@ use Components\Collections\Models\Asset;
 use Components\Collections\Models\Post;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Server;
+use Filesystem;
 use Exception;
 use Request;
 use Lang;
@@ -87,20 +88,19 @@ class Media extends AdminController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND') . ' ' . $filename, 404);
 		}
 
-		jimport('joomla.filesystem.file');
-		$ext = strtolower(\JFile::getExt($filename));
+		$ext = strtolower(Filesystem::extension($filename));
 
 		// Initiate a new content server and serve up the file
-		$xserver = new Server();
-		$xserver->filename($filename);
-		$xserver->disposition('attachment');
+		$server = new Server();
+		$server->filename($filename);
+		$server->disposition('attachment');
 		if (in_array($ext, array('jpg','jpeg','jpe','png','gif')))
 		{
-			$xserver->disposition('inline');
+			$server->disposition('inline');
 		}
-		$xserver->acceptranges(false); // @TODO fix byte range support
+		$server->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve())
+		if (!$server->serve())
 		{
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_COLLECTIONS_SERVER_ERROR'), 500);
@@ -312,8 +312,7 @@ class Media extends AdminController
 		$path = $asset->filespace() . DS . $listdir;
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR')));
 				return;
@@ -344,9 +343,8 @@ class Media extends AdminController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \JFile::makeSafe($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -455,8 +453,7 @@ class Media extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR'));
 				$this->displayTask();
@@ -465,13 +462,12 @@ class Media extends AdminController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_UPLOAD'));
 		}

@@ -33,6 +33,7 @@ namespace Components\Feedback\Site\Controllers;
 use Components\Feedback\Tables\Quote;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\String;
+use Filesystem;
 use Request;
 use Route;
 use Lang;
@@ -92,8 +93,7 @@ class Media extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -102,12 +102,11 @@ class Media extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_UPLOADING'));
 			$file = $curfile;
@@ -119,7 +118,7 @@ class Media extends SiteController
 
 			if ($curfile != '' && file_exists($path . DS . $curfile))
 			{
-				if (!\JFile::delete($path . DS . $curfile))
+				if (!Filesystem::delete($path . DS . $curfile))
 				{
 					$this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file['name'], $id);
@@ -183,8 +182,7 @@ class Media extends SiteController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);

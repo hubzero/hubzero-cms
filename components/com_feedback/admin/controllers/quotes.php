@@ -33,6 +33,7 @@ namespace Components\Feedback\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Feedback\Tables\Quote;
 use Hubzero\User\Profile;
+use Filesystem;
 use Request;
 use Route;
 use Lang;
@@ -213,7 +214,7 @@ class Quotes extends AdminController
 		{
 			if (!isset($_POST['existingPictures']) or in_array($existingPicture, $_POST['existingPictures']) === false)
 			{
-				if (!\JFile::delete($path . DS . $existingPicture))
+				if (!Filesystem::delete($path . DS . $existingPicture))
 				{
 					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
@@ -232,13 +233,14 @@ class Quotes extends AdminController
 
 		if ($files['files']['name'][0] !== '')
 		{
-			if (is_dir($path) === false)
+			if (!is_dir($path))
 			{
-				mkdir($path);
+				Filesystem::makeDirectory($path);
 			}
+
 			foreach ($files['files']['name'] as $fileIndex => $file)
 			{
-				\JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
+				Filesystem::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
 			}
 		}
 

@@ -31,6 +31,7 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Image\Processor;
+use Filesystem;
 use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
@@ -116,8 +117,7 @@ class Asset extends Base
 	 */
 	public function image()
 	{
-		jimport('joomla.filesystem.file');
-		$ext = strtolower(\JFile::getExt($this->get('filename')));
+		$ext = strtolower(Filesystem::extension($this->get('filename')));
 
 		if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')))
 		{
@@ -149,9 +149,8 @@ class Asset extends Base
 			case 'tn':
 			case 'thumb':
 			case 'thumbnail':
-				jimport('joomla.filesystem.file');
-				$ext   = \JFile::getExt($file);
-				$thumb = \JFile::stripExt($file) . '_t.' . $ext;
+				$ext   = Filesystem::extension($file);
+				$thumb = Filesystem::name($file) . '_t.' . $ext;
 
 				if (!file_exists($path . $thumb))
 				{
@@ -167,9 +166,8 @@ class Asset extends Base
 			case 'm':
 			case 'med':
 			case 'medium':
-				jimport('joomla.filesystem.file');
-				$ext   = \JFile::getExt($file);
-				$thumb = \JFile::stripExt($file) . '_m.' . $ext;
+				$ext   = Filesystem::extension($file);
+				$thumb = Filesystem::name($file) . '_m.' . $ext;
 
 				if (!file_exists($path . $thumb))
 				{
@@ -278,8 +276,7 @@ class Asset extends Base
 
 			if (!is_dir($path))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\JFolder::create($path))
+				if (!Filesystem::makeDirectory($path))
 				{
 					$this->setError(Lang::txt('Error uploading. Unable to create path.'));
 					return false;
@@ -289,13 +286,12 @@ class Asset extends Base
 			$file = $this->get('_file');
 
 			// Make the filename safe
-			jimport('joomla.filesystem.file');
 			$file['name'] = urldecode($files['name']);
-			$file['name'] = \JFile::makeSafe($file['name']);
+			$file['name'] = Filesystem::clean($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 
 			// Upload new files
-			if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+			if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
 				$this->setError(Lang::txt('ERROR_UPLOADING') . ': ' . $file['name']);
 				return false;
