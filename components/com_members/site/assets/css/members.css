@@ -166,7 +166,7 @@
 		width: 12px;
 		height: 31px; 
 		z-index: 444;
-		background: url("/components/com_members/assets/img/menu-active.png") no-repeat 0 0;
+		background: url("/components/com_members/site/assets/img/menu-active.png") no-repeat 0 0;
 	}
 	#page_menu li .meta {
 		position: absolute;
