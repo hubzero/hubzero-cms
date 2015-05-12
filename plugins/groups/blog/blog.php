@@ -162,7 +162,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Append to document the title
-			Document::setTitle($document->getTitle() . ': ' . Lang::txt('PLG_GROUPS_BLOG'));
+			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_GROUPS_BLOG'));
 
 			switch ($this->action)
 			{
