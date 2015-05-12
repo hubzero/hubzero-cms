@@ -117,7 +117,7 @@ class Filesystem
 	/**
 	 * Delete the file at a given path.
 	 *
-	 * @param   string|array  $paths
+	 * @param   mixed  $paths  string|array
 	 * @return  bool
 	 */
 	public function delete($paths)
@@ -128,7 +128,48 @@ class Filesystem
 
 		foreach ($paths as $path)
 		{
+			if (!is_file($path))
+			{
+				continue;
+			}
+
+			// Try making the file writable first. If it's read-only, it can't be deleted
+			// on Windows, even if the parent folder is writable
+			@chmod($path, 0777);
+
 			if (!@unlink($path)) $success = false;
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Upload a file
+	 *
+	 * @param   string  $path
+	 * @param   string  $target
+	 * @return  bool
+	 */
+	public function upload($path, $target)
+	{
+		$success = false;
+
+		$dir = dirname($target);
+
+		if (!file_exists($dir))
+		{
+			if (!$this->makeDirectory($dir))
+			{
+				return $success;
+			}
+		}
+
+		if (is_writeable($dir) && move_uploaded_file($path, $target))
+		{
+			if ($this->setPermissions($target))
+			{
+				$success = true;
+			}
 		}
 
 		return $success;
@@ -161,8 +202,8 @@ class Filesystem
 	/**
 	 * Extract the file name from a file path.
 	 *
-	 * @param  string  $path
-	 * @return string
+	 * @param   string  $path
+	 * @return  string
 	 */
 	public function name($path)
 	{
@@ -254,6 +295,37 @@ class Filesystem
 	public function isFile($file)
 	{
 		return is_file($file);
+	}
+
+	/**
+	 * Run a virus scan against a file
+	 *
+	 * @param   string   $file  The name of the file [not full path]
+	 * @return  boolean
+	 */
+	public function isSafe($file)
+	{
+		if ($command = \App::get('config')->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"))
+		{
+			$command = trim($command);
+			if (strstr($command, '%s'))
+			{
+				$command = sprintf($command, $file);
+			}
+			else
+			{
+				$command .= ' ' . str_replace(' ', '\ ', $file);
+			}
+
+			exec($command, $output, $status);
+
+			if ($status == 1)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -429,8 +501,112 @@ class Filesystem
 	 * @param   string  $directory
 	 * @return  bool
 	 */
-	public function cleanDirectory($directory)
+	public function emptyDirectory($directory)
 	{
 		return $this->deleteDirectory($directory, true);
+	}
+
+	/**
+	 * Chmods files and directories recursively to given permissions.
+	 *
+	 * @param   string   $path        Root path to begin changing mode [without trailing slash].
+	 * @param   string   $filemode    Octal representation of the value to change file mode to [null = no change].
+	 * @param   string   $foldermode  Octal representation of the value to change folder mode to [null = no change].
+	 * @return  boolean  True if successful [one fail means the whole operation failed].
+	 */
+	public function setPermissions($path, $filemode = '0644', $foldermode = '0755')
+	{
+		// Initialise return value
+		$success = true;
+
+		if (is_dir($path))
+		{
+			$dh = opendir($path);
+
+			$items = new FilesystemIterator($path);
+
+			foreach ($items as $item)
+			{
+				if ($item->isDot())
+				{
+					continue;
+				}
+
+				if ($item->isDir())
+				{
+					if ($this->setPermissions($item->getPathname(), $filemode, $foldermode))
+					{
+						$success = false;
+					}
+
+					continue;
+				}
+
+				if (isset($filemode))
+				{
+					if (!@chmod($item->getPathname(), octdec($filemode)))
+					{
+						$success = false;
+					}
+				}
+			}
+
+			if (isset($foldermode))
+			{
+				if (!@chmod($path, octdec($foldermode)))
+				{
+					$success = false;
+				}
+			}
+		}
+		else
+		{
+			if (isset($filemode))
+			{
+				$success = @chmod($path, octdec($filemode));
+			}
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Makes path or file name safe to use
+	 *
+	 * @param   string  $file  The name of the file [not full path]
+	 * @return  string  The sanitised string
+	 */
+	public function clean($file, $ds = DIRECTORY_SEPARATOR)
+	{
+		if ($this->isDirectory($file))
+		{
+			$path = trim($file);
+			$path = preg_replace('#[^A-Za-z0-9:_\\\/-]#', '', $path);
+
+			// Remove double slashes and backslashes and convert all slashes
+			// and backslashes to DIRECTORY_SEPARATOR. If dealing with a UNC
+			// path don't forget to prepend the path with a backslash.
+			if ($ds == '\\' && $path[0] == '\\' && $path[1] == '\\')
+			{
+				$path = "\\" . preg_replace('#[/\\\\]+#', $ds, $path);
+			}
+			else
+			{
+				$path = preg_replace('#[/\\\\]+#', $ds, $path);
+			}
+
+			return $path;
+		}
+
+		// Remove any trailing dots, as those aren't ever valid file names.
+		$file = rtrim($file, '.');
+
+		$regex = array(
+			'#(\.){2,}#',
+			'#[^A-Za-z0-9\.\_\- ]#',
+			'#^\.#'
+		);
+
+		return preg_replace($regex, '', $file);
 	}
 }

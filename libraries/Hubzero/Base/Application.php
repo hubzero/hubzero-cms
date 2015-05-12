@@ -69,6 +69,7 @@ class Application extends Container
 		'Hubzero\Debug\ProfilerServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
+		'Hubzero\Filesystem\FilesystemServiceProvider',
 		'Hubzero\Component\ComponentServiceProvider',
 		'Hubzero\Database\DatabaseServiceProvider',
 	);
@@ -79,17 +80,18 @@ class Application extends Container
 	 * @var  array
 	 */
 	private static $baseAliases = array(
-		'App'       => 'Hubzero\Facades\App',
-		'Config'    => 'Hubzero\Facades\Config',
-		'Request'   => 'Hubzero\Facades\Request',
-		'Event'     => 'Hubzero\Facades\Event',
-		'Route'     => 'Hubzero\Facades\Route',
-		'User'      => 'Hubzero\Facades\User',
-		'Lang'      => 'Hubzero\Facades\Lang',
-		'Log'       => 'Hubzero\Facades\Log',
-		'Date'      => 'Hubzero\Facades\Date',
-		'Component' => 'Hubzero\Facades\Component',
-		'Plugin'    => 'Hubzero\Facades\Plugin',
+		'App'        => 'Hubzero\Facades\App',
+		'Config'     => 'Hubzero\Facades\Config',
+		'Request'    => 'Hubzero\Facades\Request',
+		'Event'      => 'Hubzero\Facades\Event',
+		'Route'      => 'Hubzero\Facades\Route',
+		'User'       => 'Hubzero\Facades\User',
+		'Lang'       => 'Hubzero\Facades\Lang',
+		'Log'        => 'Hubzero\Facades\Log',
+		'Date'       => 'Hubzero\Facades\Date',
+		'Component'  => 'Hubzero\Facades\Component',
+		'Plugin'     => 'Hubzero\Facades\Plugin',
+		'Filesystem' => 'Hubzero\Facades\Filesystem',
 	);
 
 	/**
