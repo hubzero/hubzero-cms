@@ -162,11 +162,12 @@
 		content: "";
 		position: absolute;
 		top: 0px;
-		right: -12px;
-		width: 12px;
-		height: 31px; 
+		right: -1em;
 		z-index: 444;
-		background: url("/components/com_members/site/assets/img/menu-active.png") no-repeat 0 0;
+		border-top: 1.175em solid transparent;
+		border-right: none;
+		border-bottom: 1.175em solid transparent;
+		border-left: 1em solid #555;
 	}
 	#page_menu li .meta {
 		position: absolute;
