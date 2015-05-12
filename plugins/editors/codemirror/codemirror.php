@@ -224,11 +224,8 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 		// Load modal popup behavior
 		JHtml::_('behavior.modal', 'a.modal-button');
 
-		$args['name'] = $name;
-		$args['event'] = 'onGetInsertMethod';
-
 		$html = array();
-		$results[] = $this->update($args);
+		$results[] = $this->onGetInsertMethod($name);
 
 		foreach ($results as $result)
 		{

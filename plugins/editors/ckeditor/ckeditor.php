@@ -206,11 +206,8 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		// Load modal popup behavior
 		JHtml::_('behavior.modal', 'a.modal-button');
 
-		$args['name']  = $name;
-		$args['event'] = 'onGetInsertMethod';
-
 		$return = '';
-		$results[] = $this->update($args);
+		$results[] = $this->onGetInsertMethod($name);
 
 		foreach ($results as $result)
 		{
