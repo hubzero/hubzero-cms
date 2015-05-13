@@ -31,6 +31,7 @@
 namespace Hubzero\Config;
 
 use Hubzero\Error\Exception\InvalidArgumentException;
+use Hubzero\Filesystem\Adapter\Local;
 use Hubzero\Filesystem\Filesystem;
 use Hubzero\Utility\Arr;
 use stdClass;
@@ -228,7 +229,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 		// Explode the registry path into an array and remove empty
 		// nodes that occur as a result of a double separator. ex: foo..test
 		// Finally, re-key the array so they are sequential.
-		/*$nodes = array_values(array_filter(explode($separator, $path), 'strlen'));
+		$nodes = array_values(array_filter(explode($separator, $path), 'strlen'));
 
 		if ($nodes)
 		{
@@ -244,8 +245,10 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 					{
 						$node->{$nodes[$i]} = new stdClass;
 					}
+
 					// Pass the child as pointer in case it is an object
 					$node = &$node->{$nodes[$i]};
+
 					continue;
 				}
 
@@ -255,30 +258,21 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 					{
 						$node[$nodes[$i]] = new stdClass;
 					}
+
 					// Pass the child as pointer in case it is an array
 					$node = &$node[$nodes[$i]];
 				}
 			}
-		}*/
+		}
 
-		// Explode the registry path into an array
-		if ($nodes = explode($separator, $path))
+		// Get the old value if exists so we can return it
+		if (is_object($node))
 		{
-			// Initialize the current node to be the registry root.
-			$node = $this->data;
-
-			// Traverse the registry to find the correct node for the result.
-			for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++)
-			{
-				if (!isset($node->$nodes[$i]) && ($i != $n))
-				{
-					$node->$nodes[$i] = new stdClass;
-				}
-				$node = $node->$nodes[$i];
-			}
-
-			// Get the old value if exists so we can return it
-			$node->$nodes[$i] = $value;
+			$node->{$nodes[$i]} = $value;
+		}
+		else if (is_array($node))
+		{
+			$node[$nodes[$i]] = $value;
 		}
 
 		return $this;
@@ -294,7 +288,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	public function read($file)
 	{
-		return with(new Filesystem)->get($file);
+		return with(new Filesystem(new Local))->read($file);
 	}
 
 	/**
@@ -307,7 +301,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	public function write($file, $format = 'json', $options = array())
 	{
-		return with(new Filesystem)->put($file, $this->processor($format)->objectToString($this->data, $options));
+		return with(new Filesystem(new Local))->write($file, $this->processor($format)->objectToString($this->data, $options));
 	}
 
 	/**
