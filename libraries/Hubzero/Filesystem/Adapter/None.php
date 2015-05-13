@@ -267,23 +267,25 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Get an array of all files in a directory.
-	 *
-	 * @param   string  $directory
-	 * @return  array
+	 * {@inheritdoc}
 	 */
-	public function files($directory)
+	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
-		return array();
+		return $this->listContents($path, $filter, $recursive, $full, $exclude);
 	}
 
 	/**
-	 * Get all of the directories within a given directory.
-	 *
-	 * @param   string  $directory
-	 * @return  array
+	 * {@inheritdoc}
 	 */
-	public function directories($directory)
+	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	{
+		return $this->listContents($path, $filter, $recursive, $full, $exclude);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
 		return array();
 	}

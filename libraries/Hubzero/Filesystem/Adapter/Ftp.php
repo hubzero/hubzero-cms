@@ -728,56 +728,6 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Get an array of all files in a directory.
-	 *
-	 * @param   string  $directory
-	 * @return  array
-	 */
-	public function files($directory)
-	{
-		$items = array();
-
-		$glob = $this->listDirectoryContents($directory);
-
-		if ($glob === false) return $items;
-
-		foreach ($glob as $file)
-		{
-			if ($file['type'] == 'file')
-			{
-				$items[] = $file['path'];
-			}
-		}
-
-		return $items;
-	}
-
-	/**
-	 * Get all of the directories within a given directory.
-	 *
-	 * @param   string  $directory
-	 * @return  array
-	 */
-	public function directories($directory)
-	{
-		$items = array();
-
-		$glob = $this->listDirectoryContents($directory);
-
-		if ($glob === false) return $items;
-
-		foreach ($glob as $file)
-		{
-			if ($file['type'] == 'path')
-			{
-				$items[] = $file['path'];
-			}
-		}
-
-		return $items;
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function setPermissions($path, $filemode = '0644', $foldermode = '0755')
@@ -804,15 +754,63 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
+	 * Get an array of all files in a directory.
+	 *
+	 * @param   string  $directory
+	 * @return  array
+	 */
+	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	{
+		$items = array();
+
+		if (is_dir($path))
+		{
+			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
+			{
+				if ($file['type'] == 'file')
+				{
+					$items[] = $file['path'];
+				}
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Get all of the directories within a given directory.
+	 *
+	 * @param   string  $path
+	 * @return  array
+	 */
+	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	{
+		$items = array();
+
+		if (is_dir($path))
+		{
+			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
+			{
+				if ($file['type'] == 'path')
+				{
+					$items[] = $file['path'];
+				}
+			}
+		}
+
+		return $items;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 *
 	 * @param string $directory
 	 */
-	protected function listDirectoryContents($directory, $recursive = true)
+	protected function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
-		$listing = ftp_rawlist($this->getConnection(), '-lna ' . $directory, $recursive);
+		$listing = ftp_rawlist($this->getConnection(), '-lna ' . $path, $recursive);
 
-		return $listing ? $this->normalizeListing($listing, $directory) : array();
+		return $listing ? $this->normalizeListing($listing, ($full ? '' : $path), $filter, $exclude) : array();
 	}
 
 	/**
@@ -823,7 +821,7 @@ class Ftp extends AbstractFtpAdapter
 	 *
 	 * @return array directory listing
 	 */
-	protected function normalizeListing(array $listing, $prefix = '')
+	protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
 		$base = $prefix;
 
@@ -838,7 +836,14 @@ class Ftp extends AbstractFtpAdapter
 				continue;
 			}
 
-			$result[] = $this->normalizeObject($item, $base);
+			$file = $this->normalizeObject($item, $base);
+
+			$name = basename($file['path']);
+
+			if (preg_match("/$filter/", $name) && !in_array($name, $exclude))
+			{
+				$result[] = $file;
+			}
 		}
 
 		return $this->sortListing($result);

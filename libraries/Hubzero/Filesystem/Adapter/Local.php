@@ -32,8 +32,11 @@ namespace Hubzero\Filesystem\Adapter;
 
 use Hubzero\Filesystem\AdapterInterface;
 use Hubzero\Filesystem\Util\MimeType;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use FilesystemIterator;
 use DirectoryIterator;
+use SplFileInfo;
 use Finfo;
 
 /**
@@ -385,45 +388,132 @@ class Local implements AdapterInterface
 	 * @param   string  $directory
 	 * @return  array
 	 */
-	public function files($directory)
+	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
-		$glob = glob($directory . DS . '*');
+		$items = array();
 
-		if ($glob === false) return array();
-
-		// To get the appropriate files, we'll simply glob the directory and filter
-		// out any "files" that are not truly files so we do not end up with any
-		// directories in our list, but only true files within the directory.
-		return array_filter($glob, function($file)
+		if (is_dir($path))
 		{
-			return filetype($file) == 'file';
-		});
+			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
+			{
+				if ($file['type'] == 'file')
+				{
+					$items[] = $file['path'];
+				}
+			}
+		}
+
+		return $items;
 	}
 
 	/**
 	 * Get all of the directories within a given directory.
 	 *
-	 * @param   string  $directory
+	 * @param   string  $path
 	 * @return  array
 	 */
-	public function directories($directory)
+	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
-		$directories = array();
+		/*$items = $this->listContents($path, $filter, $recursive, $full, $exclude);
 
-		if (is_dir($directory))
+		return array_filter($items, function($file)
 		{
-			// Loop through all files and collect all the folders
-			$dirIterator = new DirectoryIterator($directory);
-			foreach ($dirIterator as $file)
+			return $file['type'] == 'path';
+		});*/
+		$items = array();
+
+		if (is_dir($path))
+		{
+			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
 			{
-				if ($file->isDir())
+				if ($file['type'] == 'path')
 				{
-					$directories[] = $file->getPathname();
+					$items[] = $file['path'];
 				}
 			}
 		}
 
-		return $directories;
+		return $items;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	{
+		$result = array();
+
+		if (!is_dir($path))
+		{
+			return $result;
+		}
+
+		$iterator = $recursive ? $this->getRecursiveDirectoryIterator($path) : $this->getDirectoryIterator($path);
+
+		foreach ($iterator as $file)
+		{
+			if ($file->isLink())
+			{
+				continue;
+			}
+
+			if (preg_match('#(^|/|\\\\)\.{1,2}$#', $file->getPathname()))
+			{
+				continue;
+			}
+
+			$name = $file->getFilename();
+
+			if (preg_match("/$filter/", $name) && !in_array($name, $exclude))
+			{
+				$result[] = $this->normalizeFileInfo($file, ($full ? null : $path));
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Normalize the file info.
+	 *
+	 * @param   object  $file  SplFileInfo
+	 * @return  array
+	 */
+	protected function normalizeFileInfo(SplFileInfo $file, $base = null)
+	{
+		$normalized = array(
+			'type'      => $file->getType(),
+			'path'      => ($base ? substr($file->getPathname(), strlen($base)) : $file->getPathname()),
+			'timestamp' => $file->getMTime()
+		);
+
+		if ($normalized['type'] === 'file')
+		{
+			$normalized['size'] = $file->getSize();
+		}
+
+		return $normalized;
+	}
+
+	/**
+	 * @param   string  $path
+	 * @return  object  RecursiveIteratorIterator
+	 */
+	protected function getRecursiveDirectoryIterator($path)
+	{
+		$directory = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
+		$iterator  = new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::SELF_FIRST);
+
+		return $iterator;
+	}
+
+	/**
+	 * @param   string  $path
+	 * @return  object  DirectoryIterator
+	 */
+	protected function getDirectoryIterator($path)
+	{
+		return new DirectoryIterator($path);
 	}
 
 	/**

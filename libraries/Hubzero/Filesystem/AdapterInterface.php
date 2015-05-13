@@ -116,18 +116,38 @@ interface AdapterInterface
 	/**
 	 * Get an array of all files in a directory.
 	 *
-	 * @param   string  $directory
+	 * @param   string   $path     The path of the folder to read.
+	 * @param   string   $filter   A filter for file names.
+	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param   boolean  $full     True to return the full path to the file.
+	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
 	 * @return  array
 	 */
-	public function files($directory);
+	public function files($path, $filter, $recursive, $full, $exclude);
 
 	/**
 	 * Get all of the directories within a given directory.
 	 *
-	 * @param   string  $directory
+	 * @param   string   $path     The path of the folder to read.
+	 * @param   string   $filter   A filter for file names.
+	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param   boolean  $full     True to return the full path to the file.
+	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
 	 * @return  array
 	 */
-	public function directories($directory);
+	public function directories($path, $filter, $recursive, $full, $exclude);
+
+	/**
+	 * Get all of the directories within a given directory.
+	 *
+	 * @param   string   $path     The path of the folder to read.
+	 * @param   string   $filter   A filter for file names.
+	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param   boolean  $full     True to return the full path to the file.
+	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
+	 * @return  array
+	 */
+	public function listContents($path, $filter, $recursive, $full, $exclude);
 
 	/**
 	 * Create a directory.
