@@ -47,6 +47,13 @@ class Data extends Base
 	protected	$_imgHelper = NULL;
 
 	/**
+	 * Unique attachment properties
+	 *
+	 * @var array
+	 */
+	protected $_connector  = array('object_name', 'object_revision');
+
+	/**
 	 * Get configs
 	 *
 	 * @return  boolean

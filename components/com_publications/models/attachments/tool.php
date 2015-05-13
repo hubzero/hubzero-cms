@@ -40,6 +40,13 @@ class Tool extends Base
 	protected	$_name = 'tool';
 
 	/**
+	 * Unique attachment properties
+	 *
+	 * @var array
+	 */
+	protected $_connector  = array('object_name', 'object_instance');
+
+	/**
 	 * Get configs
 	 *
 	 * @return  boolean

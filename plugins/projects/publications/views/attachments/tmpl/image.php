@@ -42,9 +42,9 @@ $suffix = isset($this->config->params->thumbSuffix) && $this->config->params->th
 $format = isset($this->config->params->thumbFormat) && $this->config->params->thumbFormat
 		? $this->config->params->thumbFormat : 'png';
 
-$thumbName = \Components\Projects\Helpers\Html::createThumbName($data->get('localPath'), $suffix, $format);
+$thumbName = \Components\Projects\Helpers\Html::createThumbName(basename($data->get('fpath')), $suffix, $format);
 
-$filePath = Route::url($pub->link('versionid')) . '/Image:' . urlencode($data->get('name'));
+$filePath = Route::url($pub->link('versionid')) . '/Image:' . urlencode(basename($data->get('fpath')));
 $thumbSrc = Route::url($pub->link('versionid')) . '/Image:' . urlencode($thumbName);
 
 // Is this image used for publication thumbail?

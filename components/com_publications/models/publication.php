@@ -57,7 +57,6 @@ require_once( PATH_CORE . DS . 'components'.DS
 
 // Common models
 require_once(__DIR__ . DS . 'curation.php');
-require_once(__DIR__ . DS . 'types.php');
 require_once(__DIR__ . DS . 'doi.php');
 
 // Helpers
@@ -582,7 +581,6 @@ class Publication extends Object
 			$this->_type = new Tables\MasterType($this->_db);
 			$this->_type->load($this->publication->master_type);
 			$this->_type->_params = new \JParameter( $this->_type->params );
-			$this->pubTypeHelper = new Types($this->_db, $this->project());
 		}
 
 		return $this->_type;

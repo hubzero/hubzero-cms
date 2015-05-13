@@ -48,6 +48,13 @@ class File extends Base
 	protected	$_git = NULL;
 
 	/**
+	 * Unique attachment properties
+	 *
+	 * @var array
+	 */
+	protected $_connector = array('path', 'vcs_hash');
+
+	/**
 	 * Get configs
 	 *
 	 * @return  boolean
@@ -109,7 +116,7 @@ class File extends Base
 		// Set paths
 		$configs->path    = $pub->_project->repo()->get('path');
 		$configs->pubBase = $pub->path('base', true);
-		$configs->pubPath = $pub->path('content', true);
+		$configs->pubPath = $configs->pubBase . DS . $configs->directory;
 		$configs->logPath = $pub->path('logs', true);
 
 		// Get default title
@@ -1391,6 +1398,8 @@ class File extends Base
 		$title  = $att->title && $att->title != $defaultTitle ? $att->title : $dTitle;
 		$data->set('title', $title);
 
+		$fpath = $this->getFilePath($att->path, $att->id, $configs, $att->params);
+		$data->set('fpath', $fpath);
 		$data->set('ordering', $i);
 		$data->set('pub', $view->pub);
 		$data->set('id', $att->id);

@@ -71,6 +71,23 @@ class Attachments extends Object
 		$this->_db 		= $db;
 		$this->_path[] 	= dirname(__FILE__) . DS . 'attachments';
 	}
+	
+	/**
+	 * Get attachments connector
+	 *
+	 * @return object
+	 */
+	public function connector($name)
+	{
+		// Load attachment type
+		$type = $this->loadAttach($name);
+
+		if ($type === false)
+		{
+			return false;
+		}
+		return $type->getConnector();
+	}
 
 	/**
 	 * Get status for an attachment within publication

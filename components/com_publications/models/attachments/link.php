@@ -40,6 +40,13 @@ class Link extends Base
 	protected	$_name = 'link';
 
 	/**
+	 * Unique attachment properties
+	 *
+	 * @var array
+	 */
+	protected $_connector  = array('path');
+
+	/**
 	 * Get configs
 	 *
 	 * @return  boolean

@@ -71,4 +71,15 @@ class Attachment extends Object
 	{
 		return $this->_name;
 	}
+
+	/**
+	* Get the element connector property
+	*
+	* @access public
+	* @return string type of the parameter
+	*/
+	public function getConnector() 
+	{
+		return $this->_connector;
+	}
 }

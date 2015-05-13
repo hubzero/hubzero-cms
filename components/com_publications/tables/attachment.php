@@ -519,12 +519,9 @@ class Attachment extends \JTable
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
 				. " AND type=" . $this->_db->Quote($type);
 
-		// Import required models
-		require_once( PATH_CORE . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
-
 		// Get types helper
-		$typeHelper = new \Components\Publications\Models\Types($this->_db);
-		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
+		$attach = new \Components\Publications\Models\Attachments($this->_db);
+		$prop = $attach->connector($type);
 		$prop = $prop ? $prop : 'path';
 
 		$query .= " AND " . $prop . "=" . $this->_db->Quote($identifier);
@@ -596,12 +593,8 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		// Import required models
-		require_once( PATH_CORE . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
-
-		// Get types helper
-		$typeHelper = new \Components\Publications\Models\Types($this->_db);
-		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
+		$attach = new \Components\Publications\Models\Attachments($this->_db);
+		$prop = $attach->connector($type);
 		$prop = $prop ? $prop : 'path';
 
 		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
