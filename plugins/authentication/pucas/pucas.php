@@ -24,6 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -51,10 +52,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::setDebug($debug_location);
 		}
 
-		if (!phpCAS::isInitialized())
-		{
-			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
-		}
+		$this->initialize();
 
 		$service = rtrim(Request::base(),'/');
 
@@ -95,12 +93,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::setDebug($debug_location);
 		}
 
-		if (!phpCAS::isInitialized())
-		{
-			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
-		}
-
-		phpCAS::setNoCasServerValidation();
+		$this->initialize();
 
 		if (phpCAS::checkAuthentication())
 		{
@@ -145,13 +138,26 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::setDebug($debug_location);
 		}
 
-		if (!phpCAS::isInitialized())
+		$this->initialize();
+
+		$return = '';
+		if ($view->return)
 		{
-			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
+			$return = '&return=' . $view->return;
 		}
 
-		phpCAS::setFixedServiceURL(self::getRedirectUri('pucas') . $return);
-		phpCAS::setNoCasServerValidation();
+		if ($this->isBoilerkeyRequired())
+		{
+			$loginUrl  = 'https://www.purdue.edu/apps/account/cas/login?boilerkeyRequired=true&service=';
+			$loginUrl .= urlencode(self::getRedirectUri('pucas') . $return);
+
+			phpCAS::setServerLoginURL($loginUrl);
+		}
+		else
+		{
+			phpCAS::setFixedServiceURL(self::getRedirectUri('pucas') . $return);
+		}
+
 		phpCAS::forceAuthentication();
 
 		App::redirect(self::getRedirectUri('pucas') . $return);
@@ -186,12 +192,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::setDebug($debug_location);
 		}
 
-		if (!phpCAS::isInitialized())
-		{
-			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
-		}
-
-		phpCAS::setNoCasServerValidation();
+		$this->initialize();
 
 		try
 		{
@@ -202,7 +203,8 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			throw new Exception("CAS ticket has expired", 400);
 		}
 
-		if ($authenticated)
+		$return = (isset($options['return'])) ? $options['return'] : '';
+		if ($authenticated && $this->checkBoilerkey($return))
 		{
 			$username = phpCAS::getUser();
 
@@ -291,14 +293,9 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::setDebug($debug_location);
 		}
 
-		if (!phpCAS::isInitialized())
-		{
-			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
-		}
+		$this->initialize();
 
-		phpCAS::setNoCasServerValidation();
-
-		if (phpCAS::isAuthenticated())
+		if (phpCAS::isAuthenticated() && $this->checkBoilerkey())
 		{
 			// Get unique username
 			$username = phpCAS::getUser();
@@ -332,5 +329,86 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 				'error'
 			);
 		}
+	}
+
+	/**
+	 * Initializes the PHP CAS client
+	 *
+	 * @return void
+	 **/
+	private function initialize()
+	{
+		if (!phpCAS::isInitialized())
+		{
+			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
+		}
+
+		phpCAS::setNoCasServerValidation();
+	}
+
+	/**
+	 * Checks to see if boilerkey is required
+	 *
+	 * @return bool
+	 **/
+	private function isBoilerkeyRequired()
+	{
+		$boilerkeyRequired = $this->params->get('boilerkey_required', 'none');
+
+		if ($boilerkeyRequired == 'both' || $boilerkeyRequired == App::get('client')->name)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Checks to see if boilerkey is required, and if so, is present
+	 *
+	 * @param  string $return the return location
+	 * @return bool
+	 **/
+	private function checkBoilerkey($return='')
+	{
+		// If boilerkey isn't required, just return true for our check
+		if (!$this->isBoilerkeyRequired())
+		{
+			return true;
+		}
+
+		// Check the last auth time for boilerkey
+		$lastAuth = phpCAS::getAttribute('boilerkeyauthtime');
+
+		// If there is a last auth time, we just have to make sure it's not
+		// above the configurable threshold
+		if (isset($lastAuth) && !empty($lastAuth))
+		{
+			$current  = time();
+			$lastAuth = strtotime($lastAuth);
+
+			// Take the absolute value just in case system times are slightly out of sync
+			$diff = abs($current - $lastAuth);
+
+			if (($diff / 60) < $this->params->get('boilerkey_timeout', 15))
+			{
+				return true;
+			}
+		}
+
+		// We either don't have a cas session with boilerkey, or it's too old.
+		// So we essentially make them reauth.
+		$return    = (!empty($return)) ? '&return=' . base64_encode($return) : '';
+		$loginUrl  = 'https://www.purdue.edu/apps/account/cas/logout?reauthWithBoilerkeyService=';
+		// Not sure why we need to encode twice.  I think somewhere along the lines, the CAS server
+		// removes the encoding once.
+		$loginUrl .= urlencode(urlencode(self::getRedirectUri('pucas') . $return));
+
+		// Kill the session var holding the CAS ticket, otherwise it will find the old session
+		// and never actually redirect to the CAS server logout/login page
+		unset($_SESSION['phpCAS']);
+
+		phpCAS::setServerLoginURL($loginUrl);
+		phpCAS::forceAuthentication();
 	}
 }
