@@ -439,9 +439,9 @@ class Media extends Base
 
 		if (is_file(PATH_APP . DS . $source))
 		{
-			$xserver = new \Hubzero\Content\Server();
-			$xserver->filename($source);
-			$xserver->serve_inline(PATH_APP . DS . $source);
+			$server = new \Hubzero\Content\Server();
+			$server->filename($source);
+			$server->serve_inline(PATH_APP . DS . $source);
 			exit;
 		}
 		elseif ($redirect)

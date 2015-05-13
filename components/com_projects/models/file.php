@@ -353,10 +353,7 @@ class File extends Object
 	{
 		if (!$this->get('mimeType') && $this->get('type') == 'file')
 		{
-			$helper = new \Hubzero\Content\Mimetypes();
-
-			$mTypeParts = explode(';', $helper->getMimeType($this->get('fullPath')));
-			$this->set('mimeType', $this->_fixUpMimeType($mTypeParts[0]));
+			$this->set('mimeType', Filesystem::mimetype($this->get('fullPath')));
 		}
 	}
 

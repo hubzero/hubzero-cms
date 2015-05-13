@@ -769,13 +769,13 @@ class Publications extends SiteController
 				return;
 			}
 			// Initiate a new content server and serve up the file
-			$xserver = new \Hubzero\Content\Server();
-			$xserver->filename($this->model->path('data', true) . DS . trim($file));
-			$xserver->disposition($disp);
-			$xserver->acceptranges(false); // @TODO fix byte range support
-			$xserver->saveas(basename($file));
+			$server = new \Hubzero\Content\Server();
+			$server->filename($this->model->path('data', true) . DS . trim($file));
+			$server->disposition($disp);
+			$server->acceptranges(false); // @TODO fix byte range support
+			$server->saveas(basename($file));
 
-			if (!$xserver->serve())
+			if (!$server->serve())
 			{
 				// Should only get here on error
 				throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);

@@ -794,7 +794,6 @@ class Git extends Object
 	/**
 	 * Get changes for sync
 	 *
-	 *
 	 * @return     array
 	 */
 	public function getChanges ($localPath = '', $synced = '',
@@ -802,9 +801,6 @@ class Git extends Object
 	{
 		// Collector array
 		$locals = array();
-
-		// MIME types
-		$mt = new \Hubzero\Content\Mimetypes();
 
 		// Initial sync
 		if ($synced == 1)
@@ -826,9 +822,6 @@ class Git extends Object
 				{
 					$time = strtotime(date('c', time() )); // Important! needs to be local time, NOT UTC
 
-					$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));
-					$mimeType = \Components\Projects\Helpers\Html::fixUpMimeType($filename , $mTypeParts[0]);
-
 					$locals[$filename] = array(
 						'status' 		=> 'A',
 						'time' 			=> $time,
@@ -842,7 +835,7 @@ class Git extends Object
 						'modified'		=> gmdate('Y-m-d H:i:s', $time),
 						'synced'		=> NULL,
 						'fullPath' 		=> $localPath . DS . $filename,
-						'mimeType'		=> $mimeType,
+						'mimeType'		=> Filesystem::mimetype($localPath . DS . $filename),
 						'md5' 			=> NULL,
 						'rename'		=> NULL
 					);
@@ -976,12 +969,7 @@ class Git extends Object
 						$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename)
 							? hash_file('md5', $localPath . DS . $filename) : NULL;
 
-						$mimeType = NULL;
-						if ($type == 'file')
-						{
-							$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));
-							$mimeType = \Components\Projects\Helpers\Html::fixUpMimeType($filename , $mTypeParts[0]);
-						}
+						$mimeType = $type == 'file' ? Filesystem::mimetype($localPath . DS . $filename) : NULL;
 
 						// We are only interested in last local change on the file
 						if (!isset($locals[$lFilename]))

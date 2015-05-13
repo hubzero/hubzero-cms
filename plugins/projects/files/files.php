@@ -1867,9 +1867,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Serve image
 			if ($image && is_file($image))
 			{
-				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename($image);
-				$xserver->serve_inline($image);
+				$server = new \Hubzero\Content\Server();
+				$server->filename($image);
+				$server->serve_inline($image);
 				exit;
 			}
 		}
@@ -2004,12 +2004,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!$this->getError())
 			{
 				// Initiate a new content server and serve up the file
-				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename($downloadPath);
-				$xserver->disposition('attachment');
-				$xserver->acceptranges(false);
-				$xserver->saveas($serveas);
-				$result = $xserver->serve_attachment($downloadPath, $serveas, false);
+				$server = new \Hubzero\Content\Server();
+				$server->filename($downloadPath);
+				$server->disposition('attachment');
+				$server->acceptranges(false);
+				$server->saveas($serveas);
+				$result = $server->serve_attachment($downloadPath, $serveas, false);
 
 				if (!$result)
 				{
@@ -2231,9 +2231,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!empty($contentFile) && file_exists(PATH_APP . $outputDir . DS . $contentFile))
 		{
 			// Get compiled content mimetype
-			$helper = new \Hubzero\Content\Mimetypes();
-			$mTypeParts = explode(';', $helper->getMimeType(PATH_APP . $outputDir . DS . $contentFile));
-			$cType = $mTypeParts[0];
+			$cType = Filesystem::mimetype(PATH_APP . $outputDir . DS . $contentFile);
 
 			// Is image?
 			if (strpos($cType, 'image/') !== false)
@@ -2262,12 +2260,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$pdfName = $tex ? str_replace('temp__', '', basename($contentFile)) : basename($contentFile);
 
 				// Serve up file
-				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename(PATH_APP . $outputDir . DS . $contentFile);
-				$xserver->disposition('attachment');
-				$xserver->acceptranges(false);
-				$xserver->saveas($pdfName);
-				$result = $xserver->serve_attachment(PATH_APP . $outputDir . DS . $contentFile, $pdfName, false);
+				$server = new \Hubzero\Content\Server();
+				$server->filename(PATH_APP . $outputDir . DS . $contentFile);
+				$server->disposition('attachment');
+				$server->acceptranges(false);
+				$server->saveas($pdfName);
+				$result = $server->serve_attachment(PATH_APP . $outputDir . DS . $contentFile, $pdfName, false);
 
 				if (!$result)
 				{

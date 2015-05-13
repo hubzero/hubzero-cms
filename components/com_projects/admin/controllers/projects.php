@@ -766,12 +766,12 @@ class Projects extends AdminController
 		if (file_exists($sfile))
 		{
 			// Serve up file
-			$xserver = new \Hubzero\Content\Server();
-			$xserver->filename($sfile);
-			$xserver->disposition('attachment');
-			$xserver->acceptranges(false);
-			$xserver->saveas('sync.' . \JFactory::getDate()->format('Y-m') . '.txt');
-			$result = $xserver->serve_attachment($sfile, 'sync.' . \JFactory::getDate()->format('Y-m') . '.txt', false);
+			$server = new \Hubzero\Content\Server();
+			$server->filename($sfile);
+			$server->disposition('attachment');
+			$server->acceptranges(false);
+			$server->saveas('sync.' . \JFactory::getDate()->format('Y-m') . '.txt');
+			$result = $server->serve_attachment($sfile, 'sync.' . \JFactory::getDate()->format('Y-m') . '.txt', false);
 			exit;
 		}
 

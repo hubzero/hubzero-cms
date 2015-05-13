@@ -694,13 +694,13 @@ class File extends Base
 			if ($download && is_file($download))
 			{
 				// Initiate a new content server and serve up the file
-				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename($download);
-				$xserver->disposition('attachment');
-				$xserver->acceptranges(false); // @TODO fix byte range support
-				$xserver->saveas(basename($download));
+				$server = new \Hubzero\Content\Server();
+				$server->filename($download);
+				$server->disposition('attachment');
+				$server->acceptranges(false); // @TODO fix byte range support
+				$server->saveas(basename($download));
 
-				if (!$xserver->serve())
+				if (!$server->serve())
 				{
 					// Should only get here on error
 					throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE'), 404);

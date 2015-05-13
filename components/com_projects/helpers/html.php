@@ -387,10 +387,7 @@ class Html extends Object
 	 */
 	public static function isBinary($file)
 	{
-		// MIME types
-		$mt = new \Hubzero\Content\Mimetypes();
-		$mime = $mt->getMimeType( $file );
-
+		$mime = Filesystem::mimetype( $file );
 		return substr($mime, 0, 4) == 'text' ? false : true;
 	}
 

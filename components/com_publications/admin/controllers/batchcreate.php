@@ -80,13 +80,13 @@ class Batchcreate extends AdminController
 
 		if (file_exists($path))
 		{
-			$xserver = new \Hubzero\Content\Server();
-			$xserver->filename($path);
-			$xserver->disposition('attachment');
-			$xserver->acceptranges(false); // @TODO fix byte range support
-			$xserver->saveas(basename($path));
+			$server = new \Hubzero\Content\Server();
+			$server->filename($path);
+			$server->disposition('attachment');
+			$server->acceptranges(false); // @TODO fix byte range support
+			$server->saveas(basename($path));
 
-			if (!$xserver->serve())
+			if (!$server->serve())
 			{
 				// Should only get here on error
 				throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);

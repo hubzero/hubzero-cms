@@ -2857,13 +2857,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename($serve);
-		$xserver->disposition($disp);
-		$xserver->acceptranges(false); // @TODO fix byte range support
-		$xserver->saveas(basename($fpath));
+		$server = new \Hubzero\Content\Server();
+		$server->filename($serve);
+		$server->disposition($disp);
+		$server->acceptranges(false); // @TODO fix byte range support
+		$server->saveas(basename($fpath));
 
-		if (!$xserver->serve())
+		if (!$server->serve())
 		{
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
