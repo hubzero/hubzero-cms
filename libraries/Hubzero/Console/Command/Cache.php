@@ -32,7 +32,6 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Filesystem\Filesystem;
 
 /**
  * Cache command class
@@ -70,8 +69,7 @@ class Cache extends Base implements CommandInterface
 	public function clear()
 	{
 		// Path to cache folder
-		$cacheDir   = PATH_APP . DS . 'cache' . DS . '*';
-		$filesystem = new Filesystem;
+		$cacheDir = PATH_APP . DS . 'cache' . DS . '*';
 
 		// Remove recursively
 		foreach (glob($cacheDir) as $cacheFileOrDir)
@@ -79,7 +77,7 @@ class Cache extends Base implements CommandInterface
 			$readable = str_replace(PATH_APP . DS, '', $cacheFileOrDir);
 			if (is_dir($cacheFileOrDir))
 			{
-				if (!$filesystem->deleteDirectory($cacheFileOrDir))
+				if (!Filesystem::deleteDirectory($cacheFileOrDir))
 				{
 					$this->output->addLine('Unable to delete cache directory: ' . $readable, 'error');
 				}
@@ -93,7 +91,7 @@ class Cache extends Base implements CommandInterface
 				// Don't delete index.html
 				if ($cacheFileOrDir != PATH_APP . DS . 'cache' . DS . 'index.html')
 				{
-					if (!$filesystem->delete($cacheFileOrDir))
+					if (!Filesystem::delete($cacheFileOrDir))
 					{
 						$this->output->addLine('Unable to delete cache file: ' . $readable, 'error');
 					}

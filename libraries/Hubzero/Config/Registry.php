@@ -31,7 +31,6 @@
 namespace Hubzero\Config;
 
 use Hubzero\Error\Exception\InvalidArgumentException;
-use Hubzero\Filesystem\Filesystem;
 use Hubzero\Utility\Arr;
 use stdClass;
 
@@ -274,7 +273,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	public function read($file)
 	{
-		return with(new Filesystem)->get($file);
+		return Filesystem::read($file);
 	}
 
 	/**
@@ -287,7 +286,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 */
 	public function write($file, $format = 'json', $options = array())
 	{
-		return with(new Filesystem)->put($file, $this->processor($format)->objectToString($this->data, $options));
+		return Filesystem::write($file, $this->processor($format)->objectToString($this->data, $options));
 	}
 
 	/**

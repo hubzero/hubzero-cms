@@ -33,7 +33,6 @@ namespace Hubzero\Console\Command;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Hubzero\Console\Config;
-use Hubzero\Filesystem\Filesystem;
 use Hubzero\Utility\Inflector;
 
 /**
@@ -250,7 +249,7 @@ class Scaffolding extends Base implements CommandInterface
 			{
 				if (is_dir($template['path']))
 				{
-					if (!with(new Filesystem)->copyDirectory($template['path'], $template['destination']))
+					if (!Filesystem::copyDirectory($template['path'], $template['destination']))
 					{
 						$this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
 					}

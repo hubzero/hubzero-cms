@@ -34,7 +34,6 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Filesystem\Filesystem;
 
 /**
  * Cache command class
@@ -71,9 +70,8 @@ class Css extends Base implements CommandInterface
 	 */
 	public function clear()
 	{
-		$cacheDir   = PATH_APP . DS . 'cache';
-		$files      = array('site.css', 'site.less.cache');
-		$filesystem = new Filesystem;
+		$cacheDir = PATH_APP . DS . 'cache';
+		$files    = array('site.css', 'site.less.cache');
 
 		// Remove each file
 		foreach ($files as $file)
@@ -84,7 +82,7 @@ class Css extends Base implements CommandInterface
 				continue;
 			}
 
-			if (!$filesystem->delete($cacheDir . DS . $file))
+			if (!Filesystem::delete($cacheDir . DS . $file))
 			{
 				$this->output->addLine('Unable to delete cache file: ' . $file, 'error');
 			}
