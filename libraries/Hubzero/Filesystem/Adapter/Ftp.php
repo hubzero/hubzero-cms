@@ -256,7 +256,7 @@ class Ftp extends AbstractFtpAdapter
 	 */
 	public function getTransferMode()
 	{
-		return $this->transferMode
+		return $this->transferMode;
 	}
 
 	/**
