@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2009-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,32 +24,43 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Filesystem;
-
-use Hubzero\Filesystem\Adapter\Local;
-use Hubzero\Base\ServiceProvider;
+namespace Hubzero\Filesystem\Exception;
 
 /**
- * Filesystem service provider
+ * File not found exception
  */
-class FilesystemServiceProvider extends ServiceProvider
+class FileNotFoundException extends \Exception
 {
 	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
+	 * @var string
 	 */
-	public function register()
-	{
-		$this->app['filesystem'] = function($app)
-		{
-			$adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+	protected $path;
 
-			return new Filesystem($adapter);
-		};
+	/**
+	 * Constructor.
+	 *
+	 * @param  string  $path
+	 * @param  int     $code
+	 * @param  object  $previous  \Exception
+	 */
+	public function __construct($path, $code = 0, \Exception $previous = null)
+	{
+		$this->path = $path;
+
+		parent::__construct('File not found at path: ' . $this->getPath(), $code, $previous);
+	}
+
+	/**
+	 * Get the path which was not found.
+	 *
+	 * @return  string
+	 */
+	public function getPath()
+	{
+		return $this->path;
 	}
 }

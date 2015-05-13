@@ -30,6 +30,8 @@
 
 namespace Hubzero\Filesystem;
 
+use Hubzero\Filesystem\Exception\FileNotFoundException;
+use Hubzero\Filesystem\Exception\FileExistsException;
 use FilesystemIterator;
 use DirectoryIterator;
 
@@ -39,6 +41,47 @@ use DirectoryIterator;
 class Filesystem
 {
 	/**
+	 * AdapterInterface
+	 *
+	 * @var  object
+	 */
+	protected $adapter;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   object  $adapter  AdapterInterface
+	 * @return  void
+	 */
+	public function __construct(AdapterInterface $adapter)
+	{
+		$this->adapter = $adapter;
+	}
+
+	/**
+	 * Get the Adapter.
+	 *
+	 * @return  object  AdapterInterface
+	 */
+	public function getAdapter()
+	{
+		return $this->adapter;
+	}
+
+	/**
+	 * Set the Adapter.
+	 *
+	 * @param   object  $adapter  AdapterInterface
+	 * @return  object
+	 */
+	public function setAdapter(AdapterInterface $adapter)
+	{
+		$this->adapter = $adapter;
+
+		return $this;
+	}
+
+	/**
 	 * Determine if a file exists.
 	 *
 	 * @param   string  $path
@@ -46,7 +89,9 @@ class Filesystem
 	 */
 	public function exists($path)
 	{
-		return file_exists($path);
+		$path = Util::normalizePath($path);
+
+		return (bool) $this->adapter->exists($path);
 	}
 
 	/**
@@ -55,22 +100,13 @@ class Filesystem
 	 * @param   string  $path
 	 * @return  string
 	 */
-	public function get($path)
+	public function read($path)
 	{
-		if ($this->isFile($path)) return file_get_contents($path);
+		$path = Util::normalizePath($path);
 
-		throw new FileNotFoundException(\Lang::txt('File does not exist at path %s', $path));
-	}
+		$this->assertPresent($path);
 
-	/**
-	 * Get the contents of a remote file.
-	 *
-	 * @param   string  $path
-	 * @return  string
-	 */
-	public function getRemote($path)
-	{
-		return file_get_contents($path);
+		return (bool) $this->adapter->read($path);
 	}
 
 	/**
@@ -80,9 +116,13 @@ class Filesystem
 	 * @param   string  $contents
 	 * @return  int
 	 */
-	public function put($path, $contents)
+	public function write($path, $contents)
 	{
-		return file_put_contents($path, $contents);
+		$path = Util::normalizePath($path);
+
+		$this->assertAbsent($path);
+
+		return (bool) $this->adapter->write($path, $contents);
 	}
 
 	/**
@@ -96,10 +136,10 @@ class Filesystem
 	{
 		if ($this->exists($path))
 		{
-			return $this->put($path, $data . $this->get($path));
+			return $this->write($path, $data . $this->read($path));
 		}
 
-		return $this->put($path, $data);
+		return $this->write($path, $data);
 	}
 
 	/**
@@ -111,36 +151,27 @@ class Filesystem
 	 */
 	public function append($path, $data)
 	{
-		return file_put_contents($path, $data, FILE_APPEND);
+		if ($this->exists($path))
+		{
+			return $this->write($path, $this->read($path) . $data);
+		}
+
+		return $this->write($path, $data);
 	}
 
 	/**
 	 * Delete the file at a given path.
 	 *
-	 * @param   mixed  $paths  string|array
+	 * @param   mixed  $path  string
 	 * @return  bool
 	 */
-	public function delete($paths)
+	public function delete($path)
 	{
-		$paths = is_array($paths) ? $paths : func_get_args();
+		$path = Util::normalizePath($path);
 
-		$success = true;
+		$this->assertPresent($path);
 
-		foreach ($paths as $path)
-		{
-			if (!is_file($path))
-			{
-				continue;
-			}
-
-			// Try making the file writable first. If it's read-only, it can't be deleted
-			// on Windows, even if the parent folder is writable
-			@chmod($path, 0777);
-
-			if (!@unlink($path)) $success = false;
-		}
-
-		return $success;
+		return $this->adapter->delete($path);
 	}
 
 	/**
@@ -152,27 +183,10 @@ class Filesystem
 	 */
 	public function upload($path, $target)
 	{
-		$success = false;
+		$path   = Util::normalizePath($path);
+		$target = Util::normalizePath($target);
 
-		$dir = dirname($target);
-
-		if (!file_exists($dir))
-		{
-			if (!$this->makeDirectory($dir))
-			{
-				return $success;
-			}
-		}
-
-		if (is_writeable($dir) && move_uploaded_file($path, $target))
-		{
-			if ($this->setPermissions($target))
-			{
-				$success = true;
-			}
-		}
-
-		return $success;
+		return $this->adapter->upload($path, $target);
 	}
 
 	/**
@@ -184,7 +198,25 @@ class Filesystem
 	 */
 	public function move($path, $target)
 	{
-		return rename($path, $target);
+		return $this->rename($path, $target);
+	}
+
+	/**
+	 * Rename a file.
+	 *
+	 * @param   string  $path
+	 * @param   string  $target
+	 * @return  bool
+	 */
+	public function rename($path, $target)
+	{
+		$path   = Util::normalizePath($path);
+		$target = Util::normalizePath($target);
+
+		$this->assertPresent($path);
+		//$this->assertAbsent($target);
+
+		return (bool) $this->adapter->rename($path, $target);
 	}
 
 	/**
@@ -196,7 +228,13 @@ class Filesystem
 	 */
 	public function copy($path, $target)
 	{
-		return copy($path, $target);
+		$path   = Util::normalizePath($path);
+		$target = Util::normalizePath($target);
+
+		$this->assertPresent($path);
+		//$this->assertAbsent($target);
+
+		return (bool) $this->adapter->copy($path, $target);
 	}
 
 	/**
@@ -207,7 +245,11 @@ class Filesystem
 	 */
 	public function name($path)
 	{
-		return pathinfo($path, PATHINFO_FILENAME);
+		$path = Util::normalizePath($path);
+
+		$this->assertPresent($path);
+
+		return $this->adapter->name($path);
 	}
 
 	/**
@@ -218,7 +260,9 @@ class Filesystem
 	 */
 	public function extension($path)
 	{
-		return pathinfo($path, PATHINFO_EXTENSION);
+		$path = Util::normalizePath($path);
+
+		return $this->adapter->extension($path);
 	}
 
 	/**
@@ -229,7 +273,9 @@ class Filesystem
 	 */
 	public function type($path)
 	{
-		return filetype($path);
+		$path = Util::normalizePath($path);
+
+		return $this->adapter->type($path);
 	}
 
 	/**
@@ -240,17 +286,23 @@ class Filesystem
 	 */
 	public function size($path)
 	{
-		if ($this->isFile($path))
-		{
-			return filesize($path);
-		}
+		$path = Util::normalizePath($path);
 
-		$ret = 0;
-		foreach (glob($path . DS . "*") as $fn)
-		{
-			$ret += $this->size($fn);
-		}
-		return $ret;
+		return $this->adapter->size($path);
+	}
+
+	/**
+	 * Get a file's mime-type.
+	 *
+	 * @param   string  $path  path to file
+	 * @return  string
+	 * @throws  FileNotFoundException
+	 */
+	public function mimetype($path)
+	{
+		$path = Util::normalizePath($path);
+
+		return $this->adapter->mimetype($path);
 	}
 
 	/**
@@ -261,7 +313,9 @@ class Filesystem
 	 */
 	public function lastModified($path)
 	{
-		return filemtime($path);
+		$path = Util::normalizePath($path);
+
+		return (int) $this->adapter->lastModified($path);
 	}
 
 	/**
@@ -272,7 +326,9 @@ class Filesystem
 	 */
 	public function isDirectory($directory)
 	{
-		return is_dir($directory);
+		$directory = Util::normalizePath($directory);
+
+		return (bool) $this->adapter->isDirectory($directory);
 	}
 
 	/**
@@ -283,7 +339,9 @@ class Filesystem
 	 */
 	public function isWritable($path)
 	{
-		return is_writable($path);
+		$path = Util::normalizePath($path);
+
+		return (bool) $this->adapter->isWritable($path);
 	}
 
 	/**
@@ -294,7 +352,9 @@ class Filesystem
 	 */
 	public function isFile($file)
 	{
-		return is_file($file);
+		$file = Util::normalizePath($file);
+
+		return (bool) $this->adapter->isFile($file);
 	}
 
 	/**
@@ -305,86 +365,35 @@ class Filesystem
 	 */
 	public function isSafe($file)
 	{
-		if ($command = \App::get('config')->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"))
-		{
-			$command = trim($command);
-			if (strstr($command, '%s'))
-			{
-				$command = sprintf($command, $file);
-			}
-			else
-			{
-				$command .= ' ' . str_replace(' ', '\ ', $file);
-			}
+		$file = Util::normalizePath($file);
 
-			exec($command, $output, $status);
-
-			if ($status == 1)
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Find path names matching a given pattern.
-	 *
-	 * @param   string  $pattern
-	 * @param   int     $flags
-	 * @return  array
-	 */
-	public function glob($pattern, $flags = 0)
-	{
-		return glob($pattern, $flags);
+		return (bool) $this->adapter->isSafe($file);
 	}
 
 	/**
 	 * Get an array of all files in a directory.
 	 *
-	 * @param   string  $directory
+	 * @param   string  $path
 	 * @return  array
 	 */
-	public function files($directory)
+	public function files($path)
 	{
-		$glob = glob($directory . DS . '*');
+		$path = Util::normalizePath($path);
 
-		if ($glob === false) return array();
-
-		// To get the appropriate files, we'll simply glob the directory and filter
-		// out any "files" that are not truly files so we do not end up with any
-		// directories in our list, but only true files within the directory.
-		return array_filter($glob, function($file)
-		{
-			return filetype($file) == 'file';
-		});
+		return (array) $this->adapter->files($path);
 	}
 
 	/**
 	 * Get all of the directories within a given directory.
 	 *
-	 * @param   string  $directory
+	 * @param   string  $path
 	 * @return  array
 	 */
-	public function directories($directory)
+	public function directories($path)
 	{
-		$directories = array();
+		$path = Util::normalizePath($path);
 
-		if (is_dir($directory))
-		{
-			// Loop through all files and collect all the folders
-			$dirIterator = new DirectoryIterator($directory);
-			foreach ($dirIterator as $file)
-			{
-				if ($file->isDir())
-				{
-					$directories[] = $file->getPathname();
-				}
-			}
-		}
-
-		return $directories;
+		return (array) $this->adapter->directories($path);
 	}
 
 	/**
@@ -398,62 +407,28 @@ class Filesystem
 	 */
 	public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
 	{
-		if ($force)
-		{
-			return @mkdir($path, $mode, $recursive);
-		}
+		$path = Util::normalizePath($path);
 
-		return mkdir($path, $mode, $recursive);
+		return (bool) $this->adapter->makeDirectory($path, $mode, $recursive, $force);
 	}
 
 	/**
 	 * Copy a directory from one location to another.
 	 *
-	 * @param   string  $directory
-	 * @param   string  $destination
+	 * @param   string  $path
+	 * @param   string  $target
 	 * @param   int     $options
 	 * @return  bool
 	 */
-	public function copyDirectory($directory, $destination, $options = null)
+	public function copyDirectory($path, $target, $options = null)
 	{
-		if (!$this->isDirectory($directory)) return false;
+		$path   = Util::normalizePath($path);
+		$target = Util::normalizePath($target);
 
-		$options = $options ?: FilesystemIterator::SKIP_DOTS;
+		$this->assertPresent($path);
+		//$this->assertAbsent($target);
 
-		// If the destination directory does not actually exist, we will go ahead and
-		// create it recursively, which just gets the destination prepared to copy
-		// the files over. Once we make the directory we'll proceed the copying.
-		if (!$this->isDirectory($destination))
-		{
-			$this->makeDirectory($destination, 0777, true);
-		}
-
-		$items = new FilesystemIterator($directory, $options);
-
-		foreach ($items as $item)
-		{
-			// As we spin through items, we will check to see if the current file is actually
-			// a directory or a file. When it is actually a directory we will need to call
-			// back into this function recursively to keep copying these nested folders.
-			$target = $destination . DS . $item->getBasename();
-
-			if ($item->isDir())
-			{
-				$path = $item->getPathname();
-
-				if (!$this->copyDirectory($path, $target, $options)) return false;
-			}
-
-			// If the current items is just a regular file, we will just copy this to the new
-			// location and keep looping. If for some reason the copy fails we'll bail out
-			// and return false, so the developer is aware that the copy process failed.
-			else
-			{
-				if (!$this->copy($item->getPathname(), $target)) return false;
-			}
-		}
-
-		return true;
+		return (bool) $this->adapter->copyDirectory($path, $target, $options);
 	}
 
 	/**
@@ -461,38 +436,17 @@ class Filesystem
 	 *
 	 * The directory itself may be optionally preserved.
 	 *
-	 * @param   string  $directory
+	 * @param   string  $path
 	 * @param   bool    $preserve
 	 * @return  bool
 	 */
-	public function deleteDirectory($directory, $preserve = false)
+	public function deleteDirectory($path, $preserve = false)
 	{
-		if (!$this->isDirectory($directory)) return false;
+		$path = Util::normalizePath($path);
 
-		$items = new FilesystemIterator($directory);
+		$this->assertPresent($path);
 
-		foreach ($items as $item)
-		{
-			// If the item is a directory, we can just recurse into the function and
-			// delete that sub-director, otherwise we'll just delete the file and
-			// keep iterating through each file until the directory is cleaned.
-			if ($item->isDir())
-			{
-				$this->deleteDirectory($item->getPathname());
-			}
-
-			// If the item is just a file, we can go ahead and delete it since we're
-			// just looping through and waxing all of the files in this directory
-			// and calling directories recursively, so we delete the real path.
-			else
-			{
-				$this->delete($item->getPathname());
-			}
-		}
-
-		if (!$preserve) @rmdir($directory);
-
-		return true;
+		return (bool) $this->adapter->deleteDirectory($path, $preserve);
 	}
 
 	/**
@@ -516,58 +470,9 @@ class Filesystem
 	 */
 	public function setPermissions($path, $filemode = '0644', $foldermode = '0755')
 	{
-		// Initialise return value
-		$success = true;
+		$path = Util::normalizePath($path);
 
-		if (is_dir($path))
-		{
-			$dh = opendir($path);
-
-			$items = new FilesystemIterator($path);
-
-			foreach ($items as $item)
-			{
-				if ($item->isDot())
-				{
-					continue;
-				}
-
-				if ($item->isDir())
-				{
-					if ($this->setPermissions($item->getPathname(), $filemode, $foldermode))
-					{
-						$success = false;
-					}
-
-					continue;
-				}
-
-				if (isset($filemode))
-				{
-					if (!@chmod($item->getPathname(), octdec($filemode)))
-					{
-						$success = false;
-					}
-				}
-			}
-
-			if (isset($foldermode))
-			{
-				if (!@chmod($path, octdec($foldermode)))
-				{
-					$success = false;
-				}
-			}
-		}
-		else
-		{
-			if (isset($filemode))
-			{
-				$success = @chmod($path, octdec($filemode));
-			}
-		}
-
-		return $success;
+		return (bool) $this->adapter->setPermissions($path, $filemode, $foldermode);
 	}
 
 	/**
@@ -576,28 +481,8 @@ class Filesystem
 	 * @param   string  $file  The name of the file [not full path]
 	 * @return  string  The sanitised string
 	 */
-	public function clean($file, $ds = DIRECTORY_SEPARATOR)
+	public function clean($file)
 	{
-		if ($this->isDirectory($file))
-		{
-			$path = trim($file);
-			$path = preg_replace('#[^A-Za-z0-9:_\\\/-]#', '', $path);
-
-			// Remove double slashes and backslashes and convert all slashes
-			// and backslashes to DIRECTORY_SEPARATOR. If dealing with a UNC
-			// path don't forget to prepend the path with a backslash.
-			if ($ds == '\\' && $path[0] == '\\' && $path[1] == '\\')
-			{
-				$path = "\\" . preg_replace('#[/\\\\]+#', $ds, $path);
-			}
-			else
-			{
-				$path = preg_replace('#[/\\\\]+#', $ds, $path);
-			}
-
-			return $path;
-		}
-
 		// Remove any trailing dots, as those aren't ever valid file names.
 		$file = rtrim($file, '.');
 
@@ -608,5 +493,33 @@ class Filesystem
 		);
 
 		return preg_replace($regex, '', $file);
+	}
+
+	/**
+	 * Assert a file is present.
+	 *
+	 * @param   string  $path  Path to file
+	 * @throws  FileNotFoundException
+	 */
+	public function assertPresent($path)
+	{
+		if (!$this->exists($path))
+		{
+			throw new FileNotFoundException($path);
+		}
+	}
+
+	/**
+	 * Assert a file is absent.
+	 *
+	 * @param   string  $path  Path to file
+	 * @throws  FileExistsException
+	 */
+	public function assertAbsent($path)
+	{
+		if ($this->exists($path))
+		{
+			throw new FileExistsException($path);
+		}
 	}
 }
