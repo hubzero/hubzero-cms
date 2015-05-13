@@ -32,8 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
-
-jimport('joomla.filesystem.file');
 ?>
 <script type="text/javascript">
 	function updateDir()
@@ -76,13 +74,8 @@ jimport('joomla.filesystem.file');
 				$base = rtrim(Request::base(true), '/');
 				foreach ($this->folders as $k => $folder)
 				{
-					$num_files = 0;
-
-					if (Filesystem::isDirectory(PATH_APP . DS . $folder))
-					{
-						$num_files = count(Filesystem::files(PATH_APP . DS . $folder));
-					}
-				?>
+					$num_files = count(Filesystem::files(PATH_APP . DS . $folder));
+					?>
 					<tr>
 						<td width="100%">
 							<span class="icon-folder folder">
@@ -90,21 +83,21 @@ jimport('joomla.filesystem.file');
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . $folder . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . basename($folder) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo basename($folder); ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
 								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>
 					</tr>
 				<?php } ?>
-				<?php foreach ($this->docs as $name => $doc) { ?>
+				<?php foreach ($this->docs as $doc) { ?>
 					<tr>
 						<td width="100%">
 							<span class="icon-file file <?php echo Filesystem::extension($doc); ?>">
-								<?php echo $this->escape($doc); ?>
+								<?php echo $this->escape(basename($doc)); ?>
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . $doc . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . basename($doc) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo basename($doc); ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
 								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>

@@ -323,36 +323,8 @@ class Media extends SiteController
 
 		if (!$this->getError() && is_dir($path))
 		{
-			// Loop through all files and separate them into arrays of files and folders
-			$dirIterator = new DirectoryIterator($path);
-			foreach ($dirIterator as $file)
-			{
-				if ($file->isDot())
-				{
-					continue;
-				}
-
-				$name = $file->getFilename();
-
-				if ($file->isDir())
-				{
-					$folders[$path . DS . $name] = $name;
-					continue;
-				}
-
-				if ($file->isFile())
-				{
-					if (in_array(strtolower($name), array('cvs', '.svn', '.git')))
-					{
-						continue;
-					}
-
-					$files[$path . DS . $name] = $name;
-				}
-			}
-
-			ksort($folders);
-			ksort($files);
+			$files   = Filesystem::files($path);
+			$folders = Filesystem::directories($path);
 		}
 
 		$this->view->docs    = $files;
