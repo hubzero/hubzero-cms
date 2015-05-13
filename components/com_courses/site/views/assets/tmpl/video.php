@@ -747,7 +747,6 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	</div>
 <?php elseif ($type == 'standalone') : ?>
 	<?php
-		jimport('joomla.filesystem.file');
 		$path = $path . DS . $this->model->get('url');
 		$ext  = strtolower(Filesystem::extension(PATH_APP . $path));
 

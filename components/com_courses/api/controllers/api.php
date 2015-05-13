@@ -1006,9 +1006,6 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// If no other associations exist, we'll delete the asset file and folder on the file system
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		$deleted = array();
 		$params  = Component::params('com_courses');
 		$path    = DS . trim($params->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $assetObj->id;

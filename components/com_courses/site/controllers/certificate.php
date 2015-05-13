@@ -33,6 +33,7 @@ namespace Components\Courses\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Exception;
+use Filesystem;
 use Request;
 use Route;
 use User;
@@ -96,8 +97,7 @@ class Certificate extends SiteController
 		// If the file exists and we want to force regenerate it
 		if (is_file($file) && Request::getInt('regenerate', 0))
 		{
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::delete($file))
+			if (!Filesystem::delete($file))
 			{
 				throw new Exception(Lang::txt('UNABLE_TO_DELETE_FILE'), 500);
 			}
@@ -109,8 +109,7 @@ class Certificate extends SiteController
 			// Create the upload directory if needed
 			if (!is_dir($dir))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\Filesystem::makeDirectory($dir))
+				if (!Filesystem::makeDirectory($dir))
 				{
 					throw new Exception(Lang::txt('COM_COURSES_ERROR_FAILED_TO_CREATE_DIRECTORY'), 500);
 				}

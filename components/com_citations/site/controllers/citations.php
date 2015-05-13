@@ -39,14 +39,12 @@ use Components\Citations\Helpers\Download;
 use Components\Citations\Helpers\Format;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Sanitize;
+use Filesystem;
 use Exception;
 use Document;
 use Date;
 use Lang;
 use App;
-
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
 
 /**
  * Citations controller class for citation entries
@@ -992,8 +990,7 @@ class Citations extends SiteController
 		// Ensure we have a directory to write files to
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				throw new Exception(Lang::txt('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'), 500);
 			}

@@ -33,6 +33,7 @@ namespace Components\Store\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Content\Server;
 use Hubzero\Bank\Teller;
+use Hubzero\Config\Registry;
 use Components\Store\Tables\Order;
 use Components\Store\Tables\OrderItem;
 use Exception;
@@ -298,7 +299,6 @@ class Orders extends AdminController
 
 		if (!is_dir($dir))
 		{
-			jimport('joomla.filesystem.folder');
 			if (!\Filesystem::makeDirectory($dir))
 			{
 				throw new Exception(Lang::txt('Failed to create folder to store receipts'), 500);
@@ -357,8 +357,8 @@ class Orders extends AdminController
 			{
 				foreach ($this->view->orderitems as $r)
 				{
-					$params = new \JRegistry($r->params);
-					$selections = new \JRegistry($r->selections);
+					$params = new Registry($r->params);
+					$selections = new Registry($r->selections);
 
 					// Get size selection
 					$r->sizes = $params->get('size', '');

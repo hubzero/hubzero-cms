@@ -34,6 +34,7 @@ use Components\Support\Models\Attachment;
 use Hubzero\Component\SiteController;
 use Hubzero\Utility\Number;
 use Hubzero\Component\View;
+use Filesystem;
 use Request;
 use Lang;
 use User;
@@ -94,8 +95,7 @@ class Media extends SiteController
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('Error uploading. Unable to create path.')));
 				return;
@@ -126,9 +126,8 @@ class Media extends SiteController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \Filesystem::clean($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -258,8 +257,7 @@ class Media extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('Error uploading. Unable to create path.'));
 				$this->displayTask();
@@ -268,13 +266,12 @@ class Media extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		$ext = \Filesystem::extension($file['name']);
-		$filename = \Filesystem::name($file['name']);
+		$ext = Filesystem::extension($file['name']);
+		$filename = Filesystem::name($file['name']);
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);

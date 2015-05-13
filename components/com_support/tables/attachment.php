@@ -199,7 +199,6 @@ class Attachment extends \JTable
 		$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
 		if (is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
 			if (!\Filesystem::deleteDirectory($path))
 			{
 				$this->setError(Lang::txt('Unable to delete path'));

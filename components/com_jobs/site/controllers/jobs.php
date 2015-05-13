@@ -2043,7 +2043,6 @@ class Jobs extends SiteController
 		if ($archive)
 		{
 			// Initiate a new content server and serve up the file
-			jimport('joomla.filesystem.file');
 			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($archive['path']);
 
@@ -2091,10 +2090,6 @@ class Jobs extends SiteController
 			{
 				throw new Exception(Lang::txt('COM_JOBS_ERROR_MISSING_PHP_LIBRARY'), 500);
 			}
-
-			// Get joomla libraries
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
 
 			$pile .= $pile != 'all' ? '_' . User::get('id') : '';
 			$zipname = Lang::txt('Resumes') . '_' . $pile . '.zip';

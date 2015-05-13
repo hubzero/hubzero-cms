@@ -31,7 +31,12 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Filesystem;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php');
@@ -241,8 +246,7 @@ class Certificates extends AdminController
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
@@ -260,8 +264,7 @@ class Certificates extends AdminController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$ext = \Filesystem::extension($file['name']);
+		$ext = Filesystem::extension($file['name']);
 		if (strtolower($ext) != 'pdf')
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
@@ -272,7 +275,7 @@ class Certificates extends AdminController
 		$file['name'] = $model->get('name');
 
 		// Perform the upload
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
 		}
@@ -315,35 +318,9 @@ class Certificates extends AdminController
 		// Make sure the upload path exist
 		if (is_dir($path))
 		{
-			// Delete all the files in the directory
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
-
-			$dirIterator = new \DirectoryIterator($path);
-			foreach ($dirIterator as $file)
+			if (!Filesystem::emptyDirectory($path))
 			{
-				if ($file->isDot())
-				{
-					continue;
-				}
-
-				if ($file->isDir())
-				{
-					$name = $file->getFilename();
-					if (!\Filesystem::deleteDirectory($path . DS . $file->getFilename()))
-					{
-						$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
-					}
-					continue;
-				}
-
-				if ($file->isFile())
-				{
-					if (!\Filesystem::delete($path . DS . $file->getFilename()))
-					{
-						$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
-					}
-				}
+				$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
 			}
 		}
 

@@ -31,6 +31,10 @@
 namespace Components\Courses\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Filesystem;
+use Request;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
 
@@ -94,8 +98,7 @@ class Logo extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -126,9 +129,8 @@ class Logo extends AdminController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \Filesystem::clean($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -165,7 +167,7 @@ class Logo extends AdminController
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
 			{
-				if (!\Filesystem::delete($path . DS . $curfile))
+				if (!Filesystem::delete($path . DS . $curfile))
 				{
 					echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE')));
 					return;
@@ -267,8 +269,7 @@ class Logo extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -277,12 +278,11 @@ class Logo extends AdminController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING'));
 			$file = $curfile;
@@ -295,7 +295,7 @@ class Logo extends AdminController
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!\Filesystem::delete($path . DS . $curfile))
+					if (!Filesystem::delete($path . DS . $curfile))
 					{
 						$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
@@ -405,8 +405,7 @@ class Logo extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE')));
 				return;
@@ -475,8 +474,7 @@ class Logo extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);

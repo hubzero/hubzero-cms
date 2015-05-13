@@ -50,8 +50,8 @@ class Finder
 	public static function page($component, $extension, $page)
 	{
 		$name   = str_replace('com_', '', $component);
-		$client = \JFactory::getApplication()->isAdmin() ? 'admin' : 'site';
-		$tmpl   = \JFactory::getApplication()->getTemplate();
+		$client = \App::isAdmin() ? 'admin' : 'site';
+		$tmpl   = \App::get('template')->template;
 		$lang   = \Lang::getTag();
 
 		$paths = array(

@@ -343,7 +343,6 @@ class ImgHandler extends Object
 				$image = $outputName;
 			}
 
-			jimport('joomla.filesystem.file');
 			if (file_exists($resized))
 			{
 				if (file_exists($docRoot . $image))
@@ -384,7 +383,6 @@ class ImgHandler extends Object
 			return false;
 		}
 
-		jimport('joomla.filesystem.file');
 		$ext   = \Filesystem::extension($image);
 		$thumb = \Filesystem::name($image) . $tn . '.' . $ext;
 

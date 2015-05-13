@@ -85,9 +85,6 @@ class WikiAssetHandler extends ContentAssetHandler
 		// @FIXME: share this with file upload if possible
 		if (isset($_FILES['files']))
 		{
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
-
 			// @FIXME: should these come from the global settings, or should they be courses specific
 			// Get config
 			$config = Component::params('com_media');

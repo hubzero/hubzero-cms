@@ -92,8 +92,6 @@ class Html
 
 		for ($i=0, $n=count($images); $i < $n; $i++)
 		{
-			jimport('joomla.filesystem.file');
-
 			$ext = \Filesystem::extension($images[$i]);
 			$tn  = \Filesystem::name($images[$i]) . '-tn.';
 

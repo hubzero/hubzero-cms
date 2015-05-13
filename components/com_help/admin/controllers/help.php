@@ -219,16 +219,18 @@ class Help extends AdminController
 		// Make sure directory exists
 		$pages = array();
 
-		jimport('joomla.filesystem.folder');
 		// Get help pages for this component
 		if (is_dir($helpPagesPath))
 		{
-			$pages = \JFolder::files($helpPagesPath , '.phtml');
+			$path = $helpPagesPath;
 		}
 		else if (is_dir($helpPagesPath2))
 		{
-			$pages = \JFolder::files($helpPagesPath2 , '.phtml');
+			$path = $helpPagesPath2
 		}
+
+		jimport('joomla.filesystem.folder');
+		$pages = \JFolder::files($path , '.phtml');
 
 		// Return pages
 		return array(

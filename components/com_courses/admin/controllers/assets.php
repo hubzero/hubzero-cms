@@ -33,6 +33,11 @@ namespace Components\Courses\Admin\Controllers;
 use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
+use Filesystem;
+use Request;
+use Route;
+use Lang;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
 
@@ -345,10 +350,9 @@ class Assets extends AdminController
 			$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
 			if (is_dir($path . DS . $lid))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\JFolder::move($path . DS . $lid, $path . DS . $row->get('id')))
+				if (!Filesystem::move($path . DS . $lid, $path . DS . $row->get('id')))
 				{
-					$this->setError(\JFolder::move($path . DS . $lid, $path . DS . $row->get('id')));
+					$this->setError(Lang::txt('UNABLE_TO_MOVE_PATH'));
 				}
 			}
 		}
@@ -361,7 +365,6 @@ class Assets extends AdminController
 			// Make sure the upload path exist
 			if (!is_dir($path))
 			{
-				jimport('joomla.filesystem.folder');
 				if (!\Filesystem::makeDirectory($path))
 				{
 					$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
@@ -371,10 +374,9 @@ class Assets extends AdminController
 			}
 
 			// Make the filename safe
-			jimport('joomla.filesystem.file');
-			$file['name'] = \Filesystem::clean($file['name']);
+			$file['name'] = Filesystem::clean($file['name']);
 			// Ensure file names fit.
-			$ext = \Filesystem::extension($file['name']);
+			$ext = Filesystem::extension($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 			if (strlen($file['name']) > 230)
 			{

@@ -34,6 +34,7 @@ use Hubzero\Component\SiteController;
 use Components\Resources\Tables\MediaTrackingDetailed;
 use Components\Resources\Tables\MediaTracking;
 use stdClass;
+use Filesystem;
 use Request;
 use Date;
 use User;
@@ -238,8 +239,7 @@ class Media extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->addComponentMessage(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
 				$this->mediaTask();
@@ -248,13 +248,12 @@ class Media extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->addComponentMessage(Lang::txt('ERROR_UPLOADING'), 'error');
 		}
@@ -311,7 +310,7 @@ class Media extends SiteController
 		//make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!\Filesystem::makeDirectory($uploadDirectory))
+			if (!Filesystem::makeDirectory($uploadDirectory))
 			{
 				echo json_encode(array('error' => "Server error. Unable to create upload directory."));
 				return;
@@ -413,8 +412,7 @@ class Media extends SiteController
 		if (is_dir(PATH_APP . $del_folder))
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::deleteDirectory(PATH_APP . $del_folder))
+			if (!Filesystem::deleteDirectory(PATH_APP . $del_folder))
 			{
 				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			}
@@ -473,8 +471,7 @@ class Media extends SiteController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_FILE'), 'error');
 			}

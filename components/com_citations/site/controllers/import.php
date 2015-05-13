@@ -35,6 +35,7 @@ use Components\Citations\Tables\Type;
 use Components\Citations\Tables\Tags;
 use Hubzero\Component\SiteController;
 use Exception;
+use Filesystem;
 use Pathway;
 use Request;
 use Route;
@@ -42,9 +43,6 @@ use Event;
 use User;
 use Date;
 use Lang;
-
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
 
 /**
  * Citations controller class for importing citation entries
@@ -195,8 +193,8 @@ class Import extends SiteController
 		// write the citation data to files
 		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
 		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
-		$file1 = \Filesystem::write($p1, serialize($citations[0]['attention']));
-		$file2 = \Filesystem::write($p2, serialize($citations[0]['no_attention']));
+		$file1 = Filesystem::write($p1, serialize($citations[0]['attention']));
+		$file2 = Filesystem::write($p2, serialize($citations[0]['no_attention']));
 
 		//get group ID
 		$group = Request::getVar('group');
@@ -237,11 +235,11 @@ class Import extends SiteController
 		$citations_require_no_attention = null;
 		if (file_exists($p1))
 		{
-			$citations_require_attention    = unserialize(\Filesystem::read($p1));
+			$citations_require_attention    = unserialize(Filesystem::read($p1));
 		}
 		if (file_exists($p2))
 		{
-			$citations_require_no_attention = unserialize(\Filesystem::read($p2));
+			$citations_require_no_attention = unserialize(Filesystem::read($p2));
 		}
 
 		$group = Request::getVar('group');
@@ -310,8 +308,8 @@ class Import extends SiteController
 		// read in contents of citations file
 		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
 		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
-		$cites_require_attention    = unserialize(\Filesystem::read($p1));
-		$cites_require_no_attention = unserialize(\Filesystem::read($p2));
+		$cites_require_attention    = unserialize(Filesystem::read($p1));
+		$cites_require_no_attention = unserialize(Filesystem::read($p2));
 
 		// action for citations needing attention
 		$citations_action_attention = Request::getVar('citation_action_attention', array());
@@ -571,8 +569,8 @@ class Import extends SiteController
 			$session->set('citations_error', $citations_error);
 
 			//delete the temp files that hold citation data
-			\Filesystem::delete($p1);
-			\Filesystem::delete($p2);
+			Filesystem::delete($p1);
+			Filesystem::delete($p2);
 
 			//redirect
 			App::redirect(
@@ -689,7 +687,7 @@ class Import extends SiteController
 
 					if ($ft < strtotime("-1 DAY"))
 					{
-						\Filesystem::delete($p . DS . $t);
+						Filesystem::delete($p . DS . $t);
 					}
 				}
 			}
