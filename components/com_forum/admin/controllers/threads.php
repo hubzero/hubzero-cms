@@ -597,7 +597,7 @@ class Threads extends AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -606,12 +606,12 @@ class Threads extends AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(\JFile::getExt($file['name']));
+		$ext = strtolower(\Filesystem::extension($file['name']));
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
 			return;

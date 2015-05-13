@@ -137,10 +137,9 @@ class File extends Object
 
 		if (strstr($this->name, '.'))
 		{
-			jimport('joomla.filesystem.file');
-			if (strtolower(\JFile::getExt($name)) == $this->type)
+			if (strtolower(\App::get('filesystem')->extension($name)) == $this->type)
 			{
-				$this->name = \JFile::stripExt($this->name);
+				$this->name = \App::get('filesystem')->name($this->name);
 			}
 		}
 
@@ -236,7 +235,7 @@ class File extends Object
 	{
 		if (!array_key_exists($type, $this->paths))
 		{
-			throw new \Exception(\Lang::txt('Unknown asset path type of %s given.', $type));
+			throw new \Exception(\App::get('language')->txt('Unknown asset path type of %s given.', $type));
 		}
 
 		$path = trim((string) $path);
@@ -282,7 +281,7 @@ class File extends Object
 				}
 				else
 				{
-					if (\JFactory::getApplication()->isAdmin())
+					if (\App::isAdmin())
 					{
 						$base = JPATH_ADMINISTRATOR;
 						$client = 'admin';
@@ -293,6 +292,10 @@ class File extends Object
 				if ($this->extensionType() == 'components')
 				{
 					$paths[] = PATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . $client . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+				}
+				if ($this->extensionType() == 'modules')
+				{
+					$paths[] = PATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
 				}
 				$paths[] = $base . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
 				$paths[] = $base . DS . $this->file();
@@ -320,7 +323,7 @@ class File extends Object
 	{
 		if (!isset($this->paths['override']))
 		{
-			$this->paths['override']  = JPATH_BASE . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate() . DS . 'html';
+			$this->paths['override']  = JPATH_BASE . DS . 'templates' . DS . \App::get('template')->template . DS . 'html';
 			$this->paths['override'] .= DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
 		}
 		return $this->paths['override'];

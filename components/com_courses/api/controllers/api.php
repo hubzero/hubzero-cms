@@ -1014,10 +1014,10 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$path    = DS . trim($params->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $assetObj->id;
 
 		// If the path exists, delete it!
-		if (\JFolder::exists($path))
+		if (\Filesystem::exists($path))
 		{
 			$deleted = \JFolder::listFolderTree($path);
-			\JFolder::delete($path);
+			\Filesystem::deleteDirectory($path);
 		}
 
 		// Then we'll delete the asset entry itself

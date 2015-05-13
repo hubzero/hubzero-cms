@@ -259,7 +259,7 @@ class Attachment extends Model
 			$path = $this->link('filepath');
 
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path))
+			if (!\Filesystem::delete($path))
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
 				return false;

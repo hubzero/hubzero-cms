@@ -2053,7 +2053,7 @@ class Jobs extends SiteController
 			$result = $xserver->serve_attachment($archive['path'], $archive['name'], false);
 
 			// Delete downloaded zip
-			\JFile::delete($archive['path']);
+			\Filesystem::delete($archive['path']);
 
 			if (!$result)
 			{

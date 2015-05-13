@@ -698,7 +698,7 @@ class PdfForm
 				$base .= DS . max($versions);
 			}
 
-			\JFolder::copy($base, $this->base . $id);
+			\Filesystem::copyDirectory($base, $this->base . $id);
 		}
 
 		// Copy questions

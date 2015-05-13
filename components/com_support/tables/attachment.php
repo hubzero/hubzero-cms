@@ -200,7 +200,7 @@ class Attachment extends \JTable
 		if (is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::delete($path))
+			if (!\Filesystem::deleteDirectory($path))
 			{
 				$this->setError(Lang::txt('Unable to delete path'));
 				return false;

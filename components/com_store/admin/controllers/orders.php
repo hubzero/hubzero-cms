@@ -299,7 +299,7 @@ class Orders extends AdminController
 		if (!is_dir($dir))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($dir))
+			if (!\Filesystem::makeDirectory($dir))
 			{
 				throw new Exception(Lang::txt('Failed to create folder to store receipts'), 500);
 			}

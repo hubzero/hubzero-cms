@@ -30,8 +30,8 @@ class MediaControllerFolder extends JControllerLegacy
 		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get some data from the request
-		$tmpl	= Request::getCmd('tmpl');
-		$paths	= Request::getVar('rm', array(), '', 'array');
+		$tmpl   = Request::getCmd('tmpl');
+		$paths  = Request::getVar('rm', array(), '', 'array');
 		$folder = Request::getVar('folder', '', '', 'path');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
@@ -64,7 +64,7 @@ class MediaControllerFolder extends JControllerLegacy
 		{
 			foreach ($paths as $path)
 			{
-				if ($path !== JFile::makeSafe($path))
+				if ($path !== Filesystem::clean($path))
 				{
 					$dirname = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
 					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_MEDIA_BASE))));
@@ -83,7 +83,7 @@ class MediaControllerFolder extends JControllerLegacy
 						continue;
 					}
 
-					$ret &= JFile::delete($fullPath);
+					$ret &= Filesystem::delete($fullPath);
 
 					// Trigger the onContentAfterDelete event.
 					Event::trigger('content.onContentAfterDelete', array('com_media.file', &$object_file));
@@ -102,7 +102,7 @@ class MediaControllerFolder extends JControllerLegacy
 							continue;
 						}
 
-						$ret &= !JFolder::delete($fullPath);
+						$ret &= !Filesystem::deleteDirectory($fullPath);
 
 						// Trigger the onContentAfterDelete event.
 						Event::trigger('content.onContentAfterDelete', array('com_media.folder', &$object_file));
@@ -170,9 +170,9 @@ class MediaControllerFolder extends JControllerLegacy
 					return false;
 				}
 
-				JFolder::create($path);
+				Filesystem::makeDirectory($path);
 				$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-				JFile::write($path . "/index.html", $data);
+				Filesystem::write($path . "/index.html", $data);
 
 				// Trigger the onContentAfterSave event.
 				Event::trigger('content.onContentAfterSave', array('com_media.folder', &$object_file, true));

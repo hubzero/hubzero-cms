@@ -1607,7 +1607,7 @@ class Create extends SiteController
 					else
 					{
 						// Attempt to delete the folder
-						if (!\JFolder::delete($path))
+						if (!\Filesystem::deleteDirectory($path))
 						{
 							$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 						}
@@ -1644,7 +1644,7 @@ class Create extends SiteController
 		else
 		{
 			// Attempt to delete the folder
-			if (!\JFolder::delete($path))
+			if (!\Filesystem::deleteDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 			}

@@ -7,9 +7,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-
 /**
  * Media File Controller
  *
@@ -81,7 +78,7 @@ class MediaControllerFile extends JControllerLegacy
 				return false;
 			}
 
-			if (JFile::exists($file['filepath']))
+			if (Filesystem::exists($file['filepath']))
 			{
 				// A file with this name already exists
 				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_FILE_EXISTS'));
@@ -90,7 +87,7 @@ class MediaControllerFile extends JControllerLegacy
 
 			if (!isset($file['name']))
 			{
-				// No filename (after the name was cleaned by JFile::makeSafe)
+				// No filename (after the name was cleaned by Filesystem::clean()
 				$this->setRedirect('index.php', Lang::txt('COM_MEDIA_INVALID_REQUEST'), 'error');
 				return false;
 			}
@@ -120,7 +117,7 @@ class MediaControllerFile extends JControllerLegacy
 				return false;
 			}
 
-			if (!JFile::upload($file['tmp_name'], $file['filepath']))
+			if (!Filesystem::upload($file['tmp_name'], $file['filepath']))
 			{
 				// Error in upload
 				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
@@ -152,7 +149,7 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
 	{
-		$name = JFile::makeSafe($name);
+		$name = Filesystem::clean($name);
 		return array(
 			'name'		=> $name,
 			'type'		=> $type,
@@ -224,7 +221,7 @@ class MediaControllerFile extends JControllerLegacy
 		$ret = true;
 		foreach ($paths as $path)
 		{
-			if ($path !== JFile::makeSafe($path))
+			if ($path !== Filesystem::clean($path))
 			{
 				// filename is not safe
 				$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
@@ -237,7 +234,7 @@ class MediaControllerFile extends JControllerLegacy
 			if (is_file($fullPath))
 			{
 				// Trigger the onContentBeforeDelete event.
-				$result = $dispatcher->trigger('onContentBeforeDelete', array('com_media.file', &$object_file));
+				$result = Event::trigger('content.onContentBeforeDelete', array('com_media.file', &$object_file));
 				if (in_array(false, $result, true))
 				{
 					// There are some errors in the plugins
@@ -245,7 +242,7 @@ class MediaControllerFile extends JControllerLegacy
 					continue;
 				}
 
-				$ret &= JFile::delete($fullPath);
+				$ret &= Filesystem::delete($fullPath);
 
 				// Trigger the onContentAfterDelete event.
 				Event::trigger('content.onContentAfterDelete', array('com_media.file', &$object_file));
@@ -257,7 +254,7 @@ class MediaControllerFile extends JControllerLegacy
 				if (empty($contents))
 				{
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger('onContentBeforeDelete', array('com_media.folder', &$object_file));
+					$result = Event::trigger('content.onContentBeforeDelete', array('com_media.folder', &$object_file));
 					if (in_array(false, $result, true))
 					{
 						// There are some errors in the plugins
@@ -265,7 +262,7 @@ class MediaControllerFile extends JControllerLegacy
 						continue;
 					}
 
-					$ret &= JFolder::delete($fullPath);
+					$ret &= Filesystem::deleteDirectory($fullPath);
 
 					// Trigger the onContentAfterDelete event.
 					Event::trigger('content.onContentAfterDelete', array('com_media.folder', &$object_file));

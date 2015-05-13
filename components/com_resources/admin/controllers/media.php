@@ -78,8 +78,7 @@ class Media extends AdminController
 			{
 				if (!is_dir($path . DS . $foldername))
 				{
-					jimport('joomla.filesystem.folder');
-					if (!\JFolder::create($path . DS . $foldername))
+					if (!\Filesystem::makeDirectory($path . DS . $foldername))
 					{
 						$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
@@ -96,8 +95,7 @@ class Media extends AdminController
 			// Make sure the upload path exist
 			if (!is_dir($path))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\JFolder::create($path))
+				if (!\Filesystem::makeDirectory($path))
 				{
 					$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					$this->displayTask();
@@ -115,10 +113,9 @@ class Media extends AdminController
 			}
 
 			// Make the filename safe
-			jimport('joomla.filesystem.file');
-			$file['name'] = \JFile::makeSafe($file['name']);
+			$file['name'] = \Filesystem::clean($file['name']);
 			// Ensure file names fit.
-			$ext = \JFile::getExt($file['name']);
+			$ext = \Filesystem::extension($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 			if (strlen($file['name']) > 230)
 			{
@@ -127,7 +124,7 @@ class Media extends AdminController
 			}
 
 			// Perform the upload
-			if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+			if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_UPLOADING'));
 			}
@@ -139,10 +136,6 @@ class Media extends AdminController
 				$batch = Request::getInt('batch', 0, 'post');
 				if ($batch)
 				{
-					//include libs
-					jimport('joomla.filesystem.folder');
-					jimport('joomla.filesystem.file');
-
 					//build path
 					$path = rtrim($path, DS) . DS;
 					$escaped_file = escapeshellarg($path . $file['name']);
@@ -160,19 +153,19 @@ class Media extends AdminController
 					if ($result = shell_exec($cmd))
 					{
 						// Remove original archive
-						\JFile::delete( $path . $file['name'] );
+						\Filesystem::delete( $path . $file['name'] );
 
 						// Remove MACOSX dirs if there
-						if (\JFolder::exists($path . '__MACOSX'))
+						if (\Filesystem::exists($path . '__MACOSX'))
 						{
-							\JFolder::delete($path . '__MACOSX');
+							\Filesystem::deleteDirectory($path . '__MACOSX');
 						}
 
 						//remove ._ files
 						$dotFiles = \JFolder::files($path, '._[^\s]*', true, true);
 						foreach ($dotFiles as $dotFile)
 						{
-							\JFile::delete($dotFile);
+							\Filesystem::delete($dotFile);
 						}
 					}
 				}
@@ -236,8 +229,7 @@ class Media extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::delete($path . $folder))
+			if (!\Filesystem::deleteDirectory($path . $folder))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -298,8 +290,7 @@ class Media extends AdminController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!\Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_DELETE_FILE'));
 			}

@@ -164,7 +164,7 @@ class LanguagesModelOverride extends JModelAdmin
 		$registry = new JRegistry();
 		$registry->loadObject($strings);
 
-		if (!JFile::write($filename, $registry->toString('INI')))
+		if (!Filesystem::write($filename, $registry->toString('INI')))
 		{
 			return false;
 		}

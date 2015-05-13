@@ -88,7 +88,7 @@ if (!$no_html) {
 
 					foreach ($this->docs as $path => $name)
 					{
-						$ext = JFile::getExt($name);
+						$ext = Filesystem::extension($name);
 				?>
 					<tr>
 						<td>

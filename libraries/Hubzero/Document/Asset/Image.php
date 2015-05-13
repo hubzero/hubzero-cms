@@ -68,8 +68,7 @@ class Image extends File
 		parent::__construct($extension, $name);
 
 		// Preserve the original file extension
-		jimport('joomla.filesystem.file');
-		$this->ext = strtolower(\JFile::getExt($name));
+		$this->ext = strtolower(\App::get('filesystem')->extension($name));
 	}
 
 	/**

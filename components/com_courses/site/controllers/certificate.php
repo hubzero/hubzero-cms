@@ -97,7 +97,7 @@ class Certificate extends SiteController
 		if (is_file($file) && Request::getInt('regenerate', 0))
 		{
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($file))
+			if (!\Filesystem::delete($file))
 			{
 				throw new Exception(Lang::txt('UNABLE_TO_DELETE_FILE'), 500);
 			}
@@ -110,7 +110,7 @@ class Certificate extends SiteController
 			if (!is_dir($dir))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!\JFolder::create($dir))
+				if (!\Filesystem::makeDirectory($dir))
 				{
 					throw new Exception(Lang::txt('COM_COURSES_ERROR_FAILED_TO_CREATE_DIRECTORY'), 500);
 				}

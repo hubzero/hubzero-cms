@@ -721,14 +721,14 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			$homeDir = $profile->get('homeDirectory');
 
 			// First, make sure webdav is there and that the necessary folders are there
-			if (!\JFolder::exists($base))
+			if (!\Filesystem::exists($base))
 			{
 				$this->setMessage(array('success' => false, 'message' => 'Home directories are unavailable'), 500, 'Server Error');
 				return;
 			}
 
 			// Now see if the user has a home directory yet
-			if (!\JFolder::exists($homeDir))
+			if (!\Filesystem::exists($homeDir))
 			{
 				// Try to create their home directory
 				require_once(PATH_CORE . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
@@ -741,21 +741,21 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			}
 
 			// Check for, and create if needed a session data directory
-			if (!\JFolder::exists($base . $user . $data) && !\JFolder::create($base . $user . $data, 0700))
+			if (!\Filesystem::exists($base . $user . $data) && !\Filesystem::makeDirectory($base . $user . $data, 0700))
 			{
 				$this->setMessage(array('success' => false, 'message' => 'Failed to create data directory'), 500, 'Server Error');
 				return;
 			}
 
 			// Check for, and create if needed a queued drivers directory
-			if (!\JFolder::exists($base . $user . $data . $drvr) && !\JFolder::create($base . $user . $data . $drvr, 0700))
+			if (!\Filesystem::exists($base . $user . $data . $drvr) && !\Filesystem::makeDirectory($base . $user . $data . $drvr, 0700))
 			{
 				$this->setMessage(array('success' => false, 'message' => 'Failed to create drivers directory'), 500, 'Server Error');
 				return;
 			}
 
 			// Write the driver file out
-			if (!\JFile::write($base . $user . $data . $drvr . $inst, $driver))
+			if (!\Filesystem::write($base . $user . $data . $drvr . $inst, $driver))
 			{
 				$this->setMessage(array('success' => false, 'message' => 'Failed to create driver file'), 500, 'Server Error');
 				return;

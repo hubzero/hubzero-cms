@@ -266,7 +266,7 @@ class LanguagesModelOverrides extends JModelList
 
 		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 
-		if (!JFile::write($filename, $registry->toString('INI')))
+		if (!Filesystem::write($filename, $registry->toString('INI')))
 		{
 			return false;
 		}

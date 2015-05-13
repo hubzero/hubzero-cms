@@ -34,6 +34,7 @@ use Document;
 use Pathway;
 use Route;
 use Lang;
+use User;
 use Date;
 
 include_once(__DIR__ . DS . 'tags.php');
@@ -409,7 +410,7 @@ class Html
 						? stripslashes($child->logicaltitle)
 						: stripslashes($child->title);
 
-				$params = new \JRegistry( $child->params );
+				$params = new \Hubzero\Config\Registry( $child->params );
 
 				$ftype 	  = self::getFileExtension($child->path);
 				//$class    = $params->get('class', $ftype);
@@ -495,8 +496,7 @@ class Html
 	 */
 	public static function thumbnail($pic)
 	{
-		jimport('joomla.filesystem.file');
-		return \JFile::stripExt($pic) . '-tn.gif';
+		return \Filesystem::name($pic) . '-tn.gif';
 	}
 
 	/**
@@ -803,8 +803,7 @@ class Html
 	 */
 	public static function getFileExtension($url)
 	{
-		jimport('joomla.filesystem.file');
-		return \JFile::getExt($url);
+		return \Filesystem::extension($url);
 	}
 
 	/**
@@ -1301,7 +1300,7 @@ class Html
 			$path = PATH_APP . $path;
 
 			jimport('joomla.filesystem.file');
-			$type = strtoupper(\JFile::getExt($path));
+			$type = strtoupper(\Filesystem::extension($path));
 
 			//check to see if we have a json file (HUBpresenter)
 			if ($type == 'JSON')

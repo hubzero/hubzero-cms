@@ -1431,7 +1431,7 @@ class Tickets extends AdminController
 		if (!is_dir($file_path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($file_path))
+			if (!\Filesystem::makeDirectory($file_path))
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return '';
@@ -1440,11 +1440,11 @@ class Tickets extends AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(\JFile::getExt($file['name']));
+		$ext = strtolower(\Filesystem::extension($file['name']));
 
-		$filename = \JFile::stripExt($file['name']);
+		$filename = \Filesystem::name($file['name']);
 		while (file_exists($file_path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -1453,7 +1453,7 @@ class Tickets extends AdminController
 		$finalfile = $file_path . DS . $filename . '.' . $ext;
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $finalfile))
+		if (!\Filesystem::upload($file['tmp_name'], $finalfile))
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_UPLOADING'));
 			return '';
@@ -1463,9 +1463,9 @@ class Tickets extends AdminController
 			// Scan for viruses
 			//$path = $file_path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
 
-			if (!\JFile::isSafe($finalfile))
+			if (!\Filesystem::isSafe($finalfile))
 			{
-				if (\JFile::delete($finalfile))
+				if (\Filesystem::delete($finalfile))
 				{
 					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_SECURITY_SCAN'));
 					return '';

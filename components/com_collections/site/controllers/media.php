@@ -111,7 +111,7 @@ class Media extends SiteController
 		}
 		$server->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve())
+		if (!$server->serve())
 		{
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_COLLECTIONS_SERVER_ERROR'), 500);

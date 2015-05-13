@@ -105,7 +105,7 @@ class Tools extends AdminController
 			//create path if doesnt exist
 			if (!is_dir($uploadPath))
 			{
-				\JFolder::create($uploadPath);
+				\Filesystem::makeDirectory($uploadPath);
 			}
 
 			//define image

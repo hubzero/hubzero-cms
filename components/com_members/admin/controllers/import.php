@@ -520,7 +520,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		// If we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
-			if (!\JFolder::create($uploadPath))
+			if (!\Filesystem::makeDirectory($uploadPath))
 			{
 				$this->setError(Lang::txt('Failed to create target upload path "%s".', $uploadPath));
 				return false;

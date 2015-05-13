@@ -80,8 +80,7 @@ class Assets
 			return false;
 		}
 
-		jimport('joomla.filesystem.file');
-		$ext = strtolower(\JFile::getExt($image));
+		$ext = strtolower(self::app('filesystem')->extension($image));
 		if (!in_array($ext, array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'bmp')))
 		{
 			return false;

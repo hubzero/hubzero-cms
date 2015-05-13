@@ -38,6 +38,7 @@ use Components\Forum\Models\Thread;
 use Components\Forum\Models\Post;
 use Components\Forum\Tables;
 use Exception;
+use Filesystem;
 use Document;
 use Pathway;
 use Request;

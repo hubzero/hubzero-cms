@@ -404,7 +404,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// create group folder if one doesnt exist
 		if (!is_dir($uploadPath))
 		{
-			if (!JFolder::create($uploadPath))
+			if (!Filesystem::makeDirectory($uploadPath))
 			{
 				Notify::error(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE'));
 			}
@@ -678,7 +678,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// make sure we have an upload path
 			if (!is_dir($uploadPath))
 			{
-				if (!JFolder::create($uploadPath))
+				if (!Filesystem::makeDirectory($uploadPath))
 				{
 					$failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
 					continue;
@@ -815,7 +815,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// make sure we have an upload path
 			if (!is_dir($uploadPath))
 			{
-				if (!JFolder::create($uploadPath))
+				if (!Filesystem::makeDirectory($uploadPath))
 				{
 					$failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
 					continue;

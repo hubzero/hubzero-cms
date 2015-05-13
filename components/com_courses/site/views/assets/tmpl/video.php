@@ -749,7 +749,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	<?php
 		jimport('joomla.filesystem.file');
 		$path = $path . DS . $this->model->get('url');
-		$ext  = strtolower(JFile::getExt(PATH_APP . $path));
+		$ext  = strtolower(Filesystem::extension(PATH_APP . $path));
 
 		Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 		Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');

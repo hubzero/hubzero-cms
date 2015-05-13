@@ -1379,24 +1379,22 @@ class CoursesModelOffering extends CoursesModelAbstract
 			// Copy logo
 			if ($file = $this->logo('file'))
 			{
-				$src  = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $c_id . '/offerings/' . $o_id . '/' . $file;
+				$src  = DS . trim($this->config('uploadpath', '/site/courses'), '/') . DS . $c_id . '/offerings/' . $o_id . DS . $file;
 				if (file_exists(PATH_APP . $src))
 				{
-					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id');
+					$dest = DS . trim($this->config('uploadpath', '/site/courses'), '/') . DS . $this->get('course_id') . '/offerings/' . $this->get('id');
 
 					if (!is_dir(PATH_APP . $dest))
 					{
-						jimport('joomla.filesystem.folder');
-						if (!JFolder::create(PATH_APP . $dest))
+						if (!Filesystem::makeDirectory(PATH_APP . $dest))
 						{
 							$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}
 					}
 
-					$dest .= '/' . $file;
+					$dest .= DS . $file;
 
-					jimport('joomla.filesystem.file');
-					if (!JFile::copy($src, $dest, PATH_APP))
+					if (!Filesystem::copy($src, $dest, PATH_APP))
 					{
 						$this->setError(Lang::txt('Failed to copy offering logo.'));
 					}

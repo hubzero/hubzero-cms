@@ -247,8 +247,6 @@ class Filesystem
 	{
 		$path = Util::normalizePath($path);
 
-		$this->assertPresent($path);
-
 		return $this->adapter->name($path);
 	}
 

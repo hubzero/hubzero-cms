@@ -72,11 +72,11 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		// Ensure file names fit.
-		$ext = \JFile::getExt($file['name']);
-		$filename = \JFile::stripExt($file['name']);
+		$ext = \Filesystem::extension($file['name']);
+		$filename = \Filesystem::name($file['name']);
 
 		if ($ext != 'csv')
 		{
@@ -96,7 +96,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				// error
 			}
@@ -115,7 +115,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 
 		$filename = $path . DS . $filename . $counter . '.' . $ext;
 
-		$uploaded = \JFile::upload($file['tmp_name'], $filename);
+		$uploaded = \Filesystem::upload($file['tmp_name'], $filename);
 
 		if ($uploaded)
 		{

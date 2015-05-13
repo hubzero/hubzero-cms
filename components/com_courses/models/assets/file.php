@@ -68,9 +68,6 @@ class FileAssetHandler extends AssetHandler
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
 		require_once(dirname(__DIR__) . DS . 'asset.php');
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// Get the file
 		if (isset($_FILES['files']))
 		{
@@ -113,7 +110,7 @@ class FileAssetHandler extends AssetHandler
 		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'file';
 		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'file';
 		$this->asset['url']        = $file;
-		$this->asset['created']    = \Date::toSql();
+		$this->asset['created']    = Date::toSql();
 		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = Request::getInt('course_id', 0);
 
@@ -145,7 +142,7 @@ class FileAssetHandler extends AssetHandler
 		// Make sure upload directory exists and is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!JFolder::create($uploadDirectory))
+			if (!Filesystem::makeDirectory($uploadDirectory))
 			{
 				return array('error' => 'Server error. Unable to create upload directory');
 			}
@@ -162,12 +159,12 @@ class FileAssetHandler extends AssetHandler
 		set_time_limit(60);
 
 		// Scan for viruses
-		if (!JFile::isSafe($_FILES['files']['tmp_name'][0]))
+		if (!Filesystem::isSafe($_FILES['files']['tmp_name'][0]))
 		{
 			// Scan failed, delete asset and association and return an error
 			$assetObj->delete();
 			$assocObj->delete();
-			JFolder::delete($uploadDirectory);
+			Filesystem::deleteDirectory($uploadDirectory);
 			return array('error' => 'File rejected because the anti-virus scan failed.');
 		}
 
@@ -176,7 +173,7 @@ class FileAssetHandler extends AssetHandler
 			// Move failed, delete asset and association and return an error
 			$assetObj->delete();
 			$assocObj->delete();
-			JFolder::delete($uploadDirectory);
+			Filesystem::deleteDirectory($uploadDirectory);
 			return array('error' => 'Move file failed');
 		}
 

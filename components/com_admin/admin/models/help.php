@@ -79,7 +79,7 @@ class AdminModelHelp extends JModelLegacy
 		{
 			$this->lang_tag = Lang::getTag();
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::exists(JPATH_BASE . '/help/' . $this->lang_tag))
+			if (!Filesystem::exists(JPATH_BASE . '/help/' . $this->lang_tag))
 			{
 				$this->lang_tag = 'en-GB'; // use english as fallback
 			}

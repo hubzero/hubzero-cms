@@ -45,9 +45,9 @@ class VideoAssetHandler extends FileAssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'As an HTML5/HUBpresenter Video',
-			'responds_to'    => array('zip', 'mp4', 'mov', 'm4v', 'json'),
-		);
+		'action_message' => 'As an HTML5/HUBpresenter Video',
+		'responds_to'    => array('zip', 'mp4', 'mov', 'm4v', 'json'),
+	);
 
 	/**
 	 * Create method for this handler
@@ -88,11 +88,11 @@ class VideoAssetHandler extends FileAssetHandler
 				if ($result = shell_exec("unzip -o {$escaped_file} -d {$asset['upload_path']}"))
 				{
 					// Remove original archive
-					JFile::delete($asset['target_path']);
+					Filesystem::delete($asset['target_path']);
 
 					// Remove MACOSX dirs if there and set permissions
-					JFolder::delete($asset['upload_path'] . '__MACOSX');
-					JPath::setPermissions($asset['upload_path'], '0664', '0775');
+					Filesystem::deleteDirectory($asset['upload_path'] . '__MACOSX');
+					Filesystem::setPermissions($asset['upload_path'], '0664', '0775');
 				}
 				else
 				{

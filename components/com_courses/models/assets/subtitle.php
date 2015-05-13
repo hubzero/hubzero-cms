@@ -63,10 +63,6 @@ class SubtitleAssetHandler extends AssetHandler
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
 		require_once(dirname(__DIR__) . DS . 'asset.php');
 
-		// joomla libs
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// Get the file
 		if (isset($_FILES['files']))
 		{
@@ -143,7 +139,7 @@ class SubtitleAssetHandler extends AssetHandler
 		set_time_limit(60);
 
 		// Scan for viruses
-		if (!JFile::isSafe($_FILES['files']['tmp_name'][0]))
+		if (!Filesystem::isSafe($_FILES['files']['tmp_name'][0]))
 		{
 			// Scan failed, return an error
 			return array('error' => 'File rejected because the anti-virus scan failed.');
@@ -226,7 +222,7 @@ class SubtitleAssetHandler extends AssetHandler
 		$this->asset['type']       = 'file';
 		$this->asset['subtype']    = 'file';
 		$this->asset['url']        = $info['filename'] . '.txt';
-		$this->asset['created']    = \Date::toSql();
+		$this->asset['created']    = Date::toSql();
 		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = $course_id;
 
@@ -257,7 +253,7 @@ class SubtitleAssetHandler extends AssetHandler
 		// Make sure upload directory exists and is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!JFolder::create($uploadDirectory))
+			if (!Filesystem::makeDirectory($uploadDirectory))
 			{
 				return array('error' => 'Server error. Unable to create upload directory');
 			}

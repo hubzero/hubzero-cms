@@ -348,13 +348,13 @@ class ImgHandler extends Object
 			{
 				if (file_exists($docRoot . $image))
 				{
-					if (!\JFile::delete($docRoot . $image))
+					if (!\Filesystem::delete($docRoot . $image))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						return false;
 					}
 				}
-				if (!\JFile::move($resized, $docRoot . $image))
+				if (!\Filesystem::move($resized, $docRoot . $image))
 				{
 					$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 					return false;
@@ -385,8 +385,8 @@ class ImgHandler extends Object
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext   = \JFile::getExt($image);
-		$thumb = \JFile::stripExt($image) . $tn . '.' . $ext;
+		$ext   = \Filesystem::extension($image);
+		$thumb = \Filesystem::name($image) . $tn . '.' . $ext;
 
 		return $thumb;
 	}

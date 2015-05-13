@@ -90,9 +90,6 @@ class Comment extends \JTable
 		$fieldName = 'commentFile';
 		if (!empty($_FILES[$fieldName]))
 		{
-			jimport('joomla.filesystem.file');
-			jimport('joomla.filesystem.folder');
-
 			//any errors the server registered on uploading
 			$fileError = $_FILES[$fieldName]['error'];
 			if ($fileError > 0)
@@ -168,7 +165,7 @@ class Comment extends \JTable
 
 			$uploadPath = $uploadDir . DS . $fileName;
 
-			if (!\JFile::upload($fileTemp, $uploadPath))
+			if (!\Filesystem::upload($fileTemp, $uploadPath))
 			{
 				$this->setError(\Lang::txt('ERROR MOVING FILE'));
 				return false;
@@ -190,8 +187,7 @@ class Comment extends \JTable
 	{
 		$path = trim($path);
 
-		jimport('joomla.filesystem.path');
-		$path = \JPath::clean($path);
+		$path = \Hubzero\Filesystem\Util::normalizePath($path);
 		$path = str_replace(' ', '_', $path);
 
 		$this->_uploadDir = ($path) ? $path : $this->_uploadDir;

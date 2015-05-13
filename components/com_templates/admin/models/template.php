@@ -29,10 +29,11 @@ class TemplatesModelTemplate extends JModelLegacy
 	{
 		$temp = new stdClass;
 
-		if ($template = $this->getTemplate()) {
-			$temp->name = $name;
-			$temp->exists = file_exists($path.$name);
-			$temp->id = urlencode(base64_encode($template->extension_id.':'.$name));
+		if ($template = $this->getTemplate())
+		{
+			$temp->name   = $name;
+			$temp->exists = file_exists($path . $name);
+			$temp->id     = urlencode(base64_encode($template->extension_id . ':' . $name));
 			return $temp;
 		}
 	}
@@ -48,9 +49,8 @@ class TemplatesModelTemplate extends JModelLegacy
 		// Initialise variables.
 		$result	= array();
 
-		if ($template = $this->getTemplate()) {
-			jimport('joomla.filesystem.folder');
-
+		if ($template = $this->getTemplate())
+		{
 			$client = JApplicationHelper::getClientInfo($template->client_id);
 			$path   = JPath::clean($client->path.'/templates/'.$template->element.'/');
 			$lang   = Lang::getRoot();
@@ -196,9 +196,9 @@ class TemplatesModelTemplate extends JModelLegacy
 
 			// Delete new folder if it exists
 			$toPath = $this->getState('to_path');
-			if (JFolder::exists($toPath))
+			if (Filesystem::exists($toPath))
 			{
-				if (!JFolder::delete($toPath))
+				if (!Filesystem::deleteDirectory($toPath))
 				{
 					JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_WRITE'));
 					return false;
@@ -206,7 +206,7 @@ class TemplatesModelTemplate extends JModelLegacy
 			}
 
 			// Copy all files from $fromName template to $newName folder
-			if (!JFolder::copy($fromPath, $toPath) || !$this->fixTemplateName())
+			if (!Filesystem::copyDirectory($fromPath, $toPath) || !$this->fixTemplateName())
 			{
 				return false;
 			}
@@ -234,7 +234,7 @@ class TemplatesModelTemplate extends JModelLegacy
 		$app->setUserState('com_installer.extension_message', '');
 
 		// Delete temporary directory
-		return JFolder::delete($this->getState('to_path'));
+		return Filesystem::deleteDirectory($this->getState('to_path'));
 
 	}
 
@@ -257,20 +257,20 @@ class TemplatesModelTemplate extends JModelLegacy
 		foreach ($files as $file)
 		{
 			$newFile = str_replace($oldName, $newName, $file);
-			$result = JFile::move($file, $newFile) && $result;
+			$result = Filesystem::move($file, $newFile) && $result;
 		}
 
 		// Edit XML file
 		$xmlFile = $this->getState('to_path') . '/templateDetails.xml';
-		if (JFile::exists($xmlFile))
+		if (Filesystem::exists($xmlFile))
 		{
-			$contents = JFile::read($xmlFile);
+			$contents = Filesystem::read($xmlFile);
 			$pattern[] = '#<name>\s*' . $oldName . '\s*</name>#i';
 			$replace[] = '<name>'. $newName . '</name>';
 			$pattern[] = '#<language(.*)' . $oldName . '(.*)</language>#';
 			$replace[] = '<language${1}' . $newName . '${2}</language>';
 			$contents = preg_replace($pattern, $replace, $contents);
-			$result = JFile::write($xmlFile, $contents) && $result;
+			$result = Filesystem::write($xmlFile, $contents) && $result;
 		}
 
 		return $result;

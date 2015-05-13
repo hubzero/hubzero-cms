@@ -185,10 +185,9 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		// Ensure file names fit.
-		$ext = \JFile::getExt($file['name']);
+		$ext = Filesystem::extension($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -243,8 +242,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
@@ -253,7 +251,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_UPLOADING'));
 		}
@@ -346,8 +344,6 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		jimport('joomla.filesystem.folder');
-
 		// Load resource info
 		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($id);
@@ -375,7 +371,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		else
 		{
 			// Attempt to delete the file
-			if (!\JFolder::delete($path))
+			if (!Filesystem::deleteDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -482,9 +478,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 	 */
 	private function _getChildType($filename)
 	{
-		jimport('joomla.filesystem.file');
-
-		$ftype = strtolower(\JFile::getExt($filename));
+		$ftype = strtolower(Filesystem::extension($filename));
 
 		switch ($ftype)
 		{

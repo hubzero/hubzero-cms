@@ -45,8 +45,6 @@ class MenusModelMenutypes extends JModelLegacy
 	 */
 	public function getTypeOptions()
 	{
-		jimport('joomla.filesystem.file');
-
 		// Initialise variables.
 		$lang = Lang::getRoot();
 		$list = array();
@@ -185,11 +183,11 @@ class MenusModelMenutypes extends JModelLegacy
 		$path = JPATH_SITE.'/components/'.$component.'/views';
 		$path2 = JPATH_SITE.'/components/'.$component.'/site/views';
 
-		if (JFolder::exists($path))
+		if (Filesystem::exists($path))
 		{
 			$views = JFolder::folders($path);
 		}
-		else if (JFolder::exists($path2))
+		else if (Filesystem::exists($path2))
 		{
 			$views = JFolder::folders($path2);
 		}
@@ -278,11 +276,11 @@ class MenusModelMenutypes extends JModelLegacy
 		// Get the layouts from the view folder.
 		$path = JPATH_SITE.'/components/'.$component.'/views/'.$view.'/tmpl';
 		$path2 = JPATH_SITE.'/components/'.$component.'/site/views/'.$view.'/tmpl';
-		if (JFolder::exists($path))
+		if (Filesystem::exists($path))
 		{
 			$layouts = array_merge($layouts, JFolder::files($path, '.xml$', false, true));
 		}
-		else if (JFolder::exists($path2))
+		else if (Filesystem::exists($path2))
 		{
 			$layouts = array_merge($layouts, JFolder::files($path2, '.xml$', false, true));
 		}
@@ -299,7 +297,7 @@ class MenusModelMenutypes extends JModelLegacy
 			{
 				$file = $layout;
 				// Get the layout name.
-				$layoutNames[] = JFile::stripext(JFile::getName($layout));
+				$layoutNames[] = Filesystem::name(JFile::getName($layout));
 			}
 		}
 
@@ -310,7 +308,7 @@ class MenusModelMenutypes extends JModelLegacy
 		$templateName = array();
 		foreach ($folders as $folder)
 		{
-			if (JFolder::exists($folder . '/html/' . $component . '/' . $view))
+			if (Filesystem::exists($folder . '/html/' . $component . '/' . $view))
 			{
 				$template = JFile::getName($folder);
 					$lang->load('tpl_' . $template . '.sys', JPATH_SITE, null, false, true)
@@ -322,7 +320,7 @@ class MenusModelMenutypes extends JModelLegacy
 				{
 					$file = $layout;
 					// Get the layout name.
-					$templateLayoutName = JFile::stripext(JFile::getName($layout));
+					$templateLayoutName = Filesystem::name(JFile::getName($layout));
 
 					// add to the list only if it is not a standard layout
 					if (array_search($templateLayoutName, $layoutNames) === false)
@@ -342,7 +340,7 @@ class MenusModelMenutypes extends JModelLegacy
 			if (strpos(JFile::getName($layout), '_') === false) {
 				$file = $layout;
 				// Get the layout name.
-				$layout = JFile::stripext(JFile::getName($layout));
+				$layout = Filesystem::name(JFile::getName($layout));
 
 				// Create the menu option for the layout.
 				$o = new JObject;

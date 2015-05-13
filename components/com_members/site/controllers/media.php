@@ -131,7 +131,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		if (!is_dir($uploadDirectory))
 		{
-			if (!\JFolder::create($uploadDirectory))
+			if (!\Filesystem::makeDirectory($uploadDirectory))
 			{
 				echo json_encode(array('error' => 'Server error. Unable to create upload directory.'));
 				return;
@@ -337,7 +337,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -347,14 +347,14 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Do we have an old file we're replacing?
 		$curfile = Request::getVar('currentfile', '');
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('ERROR_UPLOADING'));
 			$file = $curfile;
@@ -368,7 +368,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 				// Yes - remove it
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!\JFile::delete($path . DS . $curfile))
+					if (!\Filesystem::delete($path . DS . $curfile))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
@@ -379,7 +379,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 				$curthumb = $ih->createThumbName($curfile);
 				if (file_exists($path . DS . $curthumb))
 				{
-					if (!\JFile::delete($path . DS . $curthumb))
+					if (!\Filesystem::delete($path . DS . $curthumb))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
@@ -466,7 +466,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!\Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
@@ -476,7 +476,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			$curthumb = $ih->createThumbName($file);
 			if (file_exists($path . DS . $curthumb))
 			{
-				if (!\JFile::delete($path . DS . $curthumb))
+				if (!\Filesystem::delete($path . DS . $curthumb))
 				{
 					$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file, $id);

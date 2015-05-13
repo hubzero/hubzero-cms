@@ -249,7 +249,7 @@ class Application extends AdminController
 		{
 			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
 		}
-		elseif (!\JFile::write(JPATH_BASE . '/help/helpsites.xml', $data))
+		elseif (!\Filesystem::write(JPATH_BASE . '/help/helpsites.xml', $data))
 		{
 			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
 		}

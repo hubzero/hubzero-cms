@@ -2271,8 +2271,7 @@ class Wishlists extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		//make sure that file is acceptable type
@@ -2295,8 +2294,7 @@ class Wishlists extends SiteController
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
@@ -2304,7 +2302,7 @@ class Wishlists extends SiteController
 		}
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING'));
 			return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_ERROR_UPLOADING');
@@ -2314,9 +2312,9 @@ class Wishlists extends SiteController
 			// Scan for viruses
 			$path = $path . DS . $file['name']; //PATH_CORE . DS . 'virustest';
 
-			if (!\JFile::isSafe($path))
+			if (!\Filesystem::isSafe($path))
 			{
-				if (\JFile::delete($path))
+				if (\Filesystem::delete($path))
 				{
 					$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
 					return Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.');

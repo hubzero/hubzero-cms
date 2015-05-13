@@ -156,7 +156,7 @@ class BillBoards extends AdminController
 			// Make sure upload directory exists and is writable
 			if (!is_dir($uploadDirectory))
 			{
-				if (!\JFolder::create($uploadDirectory))
+				if (!\Filesystem::makeDirectory($uploadDirectory))
 				{
 					$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					$this->view->setLayout('edit');
@@ -167,7 +167,7 @@ class BillBoards extends AdminController
 			}
 
 			// Scan for viruses
-			if (!\JFile::isSafe($billboard_image['tmp_name']))
+			if (!\Filesystem::isSafe($billboard_image['tmp_name']))
 			{
 				$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
 				$this->view->setLayout('edit');

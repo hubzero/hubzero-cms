@@ -59,7 +59,7 @@ class LanguagesModelStrings extends JModelLegacy
 		$files = array();
 
 		// Parse common language directory
-		if (JFolder::exists($path))
+		if (Filesystem::exists($path))
 		{
 			$files = JFolder::files($path, $language.'.*ini$', false, true);
 		}

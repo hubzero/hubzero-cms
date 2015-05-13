@@ -49,7 +49,7 @@ class TemplatesModelSource extends JModelForm
 		$this->setState('filename', $fileName);
 
 		// Save the syntax for later use
-		$app->setUserState('editor.source.syntax', JFile::getExt($fileName));
+		$app->setUserState('editor.source.syntax', Filesystem::extension($fileName));
 
 		// Load the parameters.
 		$params	= Component::params('com_templates');
@@ -131,7 +131,7 @@ class TemplatesModelSource extends JModelForm
 
 				$item->extension_id = $this->getState('extension.id');
 				$item->filename     = $this->getState('filename');
-				$item->source       = JFile::read($filePath);
+				$item->source       = Filesystem::read($filePath);
 			} else {
 				$this->setError(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}
@@ -219,7 +219,7 @@ class TemplatesModelSource extends JModelForm
 		// [!] HUBZERO - Force line endings to be consistent with the server environment
 		$data['source'] = preg_replace('~\R~u', PHP_EOL, $data['source']);
 
-		$return = JFile::write($filePath, $data['source']);
+		$return = Filesystem::write($filePath, $data['source']);
 
 		// Try to make the template file unwriteable.
 		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0444')) {

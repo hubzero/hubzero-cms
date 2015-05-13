@@ -993,7 +993,7 @@ class Citations extends SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				throw new Exception(Lang::txt('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'), 500);
 			}

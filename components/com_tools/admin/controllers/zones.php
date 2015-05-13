@@ -405,7 +405,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -438,7 +438,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \JFile::makeSafe($filename);
+		$filename = \Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -475,7 +475,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
 			{
-				if (!\JFile::delete($path . DS . $curfile))
+				if (!\Filesystem::delete($path . DS . $curfile))
 				{
 					echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')));
 					return;
@@ -553,7 +553,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->pictureTask('', $id);
@@ -563,11 +563,11 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_UPLOADING'));
 			$file = $curfile;
@@ -580,7 +580,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!\JFile::delete($path . DS . $curfile))
+					if (!\Filesystem::delete($path . DS . $curfile))
 					{
 						$this->setError(Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE'));
 						$this->pictureTask($file['name'], $id);
@@ -640,7 +640,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!\Filesystem::delete($path . DS . $file))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')));
 				return;
@@ -705,7 +705,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!\Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE'));
 				$this->pictureTask($file, $id);

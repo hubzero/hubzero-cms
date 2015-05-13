@@ -783,8 +783,7 @@ class ToolsHelperHtml
 		}
 		$path = PATH_APP . $path;
 
-		jimport('joomla.filesystem.file');
-		$type = strtoupper(\JFile::getExt($path));
+		$type = strtoupper(Filesystem::extension($path));
 
 		$fs = '';
 

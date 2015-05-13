@@ -31,6 +31,7 @@
 namespace Modules\Spotlight;
 
 use Hubzero\Module\Module;
+use Filesystem;
 use Component;
 use Request;
 use Route;
@@ -643,10 +644,7 @@ class Helper extends Module
 	 */
 	private function _thumbnail($pic)
 	{
-		jimport('joomla.filesystem.file');
-		$ext = \JFile::getExt($pic);
-
-		return \JFile::stripExt($pic) . '-tn.gif';
+		return Filesystem::name($pic) . '-tn.gif';
 	}
 
 	/**

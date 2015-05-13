@@ -744,7 +744,7 @@ class Resources extends SiteController
 		$path = $base . $path;
 
 		// we must have a folder
-		if (!\JFolder::exists(PATH_APP . DS . $path))
+		if (!\Filesystem::exists(PATH_APP . DS . $path))
 		{
 			$this->setError(Lang::txt('Folder containing assets does nto exist.'));
 
@@ -1142,7 +1142,7 @@ class Resources extends SiteController
 		$manifest = json_encode($manifest, JSON_PRETTY_PRINT);
 
 		// attempt to create manifest file
-		if (!\JFile::write(PATH_APP . DS . $base . $path . DS . 'presentation.json', $manifest))
+		if (!\Filesystem::write(PATH_APP . DS . $base . $path . DS . 'presentation.json', $manifest))
 		{
 			return false;
 		}
@@ -2104,7 +2104,7 @@ class Resources extends SiteController
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext = strtolower(\JFile::getExt($filename));
+		$ext = strtolower(\Filesystem::extension($filename));
 		if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml')))
 		{
 			$d = 'attachment';
@@ -2330,7 +2330,7 @@ class Resources extends SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError('Error. Unable to create path.');
 			}

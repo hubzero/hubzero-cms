@@ -486,7 +486,7 @@ class Sections extends AdminController
 					// Make sure upload directory exists and is writable
 					if (!is_dir($uploadDirectory))
 					{
-						if (!\JFolder::create($uploadDirectory))
+						if (!\Filesystem::makeDirectory($uploadDirectory))
 						{
 							$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}

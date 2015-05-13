@@ -78,7 +78,7 @@ class LanguagesHelper
 	{
 		jimport('joomla.filesystem.file');
 
-		if (!JFile::exists($filename))
+		if (!Filesystem::exists($filename))
 		{
 			return array();
 		}

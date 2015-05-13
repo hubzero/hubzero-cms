@@ -116,7 +116,7 @@ class MediaModelList extends JModelLegacy
 					$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
 					$tmp->size = filesize($tmp->path);
 
-					$ext = strtolower(JFile::getExt($file));
+					$ext = strtolower(Filesystem::extension($file));
 					switch ($ext)
 					{
 						// Image

@@ -307,8 +307,6 @@ class Book extends Object
 
 		if (is_dir($path))
 		{
-			jimport('joomla.filesystem.file');
-
 			$dirIterator = new \DirectoryIterator($path);
 			foreach ($dirIterator as $file)
 			{
@@ -320,10 +318,10 @@ class Book extends Object
 				if ($file->isFile())
 				{
 					$fl = $file->getFilename();
-					if (strtolower(\JFile::getExt($fl)) == 'txt')
+					if (strtolower(\Filesystem::extension($fl)) == 'txt')
 					{
-						$name = \JFile::stripExt($fl);
-						$pages[$name] = \JFile::read($path . DS . $fl);
+						$name = \Filesystem::name($fl);
+						$pages[$name] = \Filesystem::read($path . DS . $fl);
 					}
 				}
 			}
@@ -567,8 +565,6 @@ class Book extends Object
 
 			if (is_dir($path))
 			{
-				jimport('joomla.filesystem.file');
-
 				// Loop through all files and separate them into arrays of images, folders, and other
 				$dirIterator = new \DirectoryIterator($path);
 				foreach ($dirIterator as $file)
@@ -581,14 +577,14 @@ class Book extends Object
 					if ($file->isFile())
 					{
 						$name = $file->getFilename();
-						if (\JFile::getExt($name) != 'php'
+						if (\Filesystem::extension($name) != 'php'
 						 || 'cvs' == strtolower($name)
 						 || '.svn' == strtolower($name))
 						{
 							continue;
 						}
 
-						$pages[] = strtolower(\JFile::stripExt($name));
+						$pages[] = strtolower(\Filesystem::name($name));
 					}
 				}
 

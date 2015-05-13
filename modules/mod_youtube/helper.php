@@ -31,8 +31,7 @@
 namespace Modules\Youtube;
 
 use Hubzero\Module\Module;
-use JFile;
-use JFolder;
+use Filesystem;
 use Lang;
 
 /**
@@ -298,10 +297,11 @@ class Helper extends Module
 				//write to the cache folder
 				if (!is_dir($cachePath))
 				{
-					JFolder::create($cachePath);
+					Filesystem::makedirectory($cachePath);
 				}
 				$f = json_encode($feed);
-				JFile::write($cacheFile, $f);
+
+				Filesystem::write($cacheFile, $f);
 			}
 		}
 

@@ -73,8 +73,7 @@ class Media extends AdminController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_STORE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($id);
@@ -83,14 +82,13 @@ class Media extends AdminController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'imghandler.php');
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_STORE_ERROR_UPLOADING'));
 		}
@@ -104,7 +102,7 @@ class Media extends AdminController
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!\JFile::delete($path . DS . $curfile))
+					if (!\Filesystem::delete($path . DS . $curfile))
 					{
 						$this->setError(Lang::txt('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
@@ -118,7 +116,7 @@ class Media extends AdminController
 				// Remove old thumbnail
 				if (file_exists($path . DS . $curthumb))
 				{
-					if (!\JFile::delete($path . DS . $curthumb))
+					if (!\Filesystem::delete($path . DS . $curthumb))
 					{
 						$this->setError(Lang::txt('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
@@ -170,8 +168,7 @@ class Media extends AdminController
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
 
 		// Attempt to delete the file
-		jimport('joomla.filesystem.folder');
-		if (!\JFolder::delete($path))
+		if (!\Filesystem::deleteDirectory($path))
 		{
 			$this->setError(Lang::txt('COM_STORE_UNABLE_TO_DELETE_FILE'));
 			$this->displayTask($id);
@@ -211,8 +208,6 @@ class Media extends AdminController
 
 		if (is_dir($path))
 		{
-			jimport('joomla.filesystem.file');
-
 			// Loop through all files and separate them into arrays of images, folders, and other
 			$dirIterator = new DirectoryIterator($path);
 			foreach ($dirIterator as $file)
@@ -240,7 +235,7 @@ class Media extends AdminController
 
 					if (preg_match("#bmp|gif|jpg|png|swf#i", $name))
 					{
-						$base = \JFile::stripExt($name);
+						$base = \Filesystem::name($name);
 						if (substr($base, -3) == '-tn')
 						{
 							continue;

@@ -83,8 +83,7 @@ class File extends \JTable
 	{
 		$path = trim($path);
 
-		jimport('joomla.filesystem.path');
-		$path = \JPath::clean($path);
+		$path = \Hubzero\Filesystem\Util::normalizePath($path);
 		$path = str_replace(' ', '_', $path);
 
 		$this->_uploadDir = ($path) ? $path : $this->_uploadDir;
@@ -274,8 +273,7 @@ class File extends \JTable
 
 		if (file_exists($this->_getUploadDir() . DS . $filename))
 		{
-			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($this->_getUploadDir() . DS . $filename))
+			if (!\Filesystem::delete($this->_getUploadDir() . DS . $filename))
 			{
 				$this->setError(\Lang::txt('Unable to delete file.'));
 				return false;

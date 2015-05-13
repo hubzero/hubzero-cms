@@ -340,9 +340,8 @@ class Attachments extends SiteController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \JFile::makeSafe($filename);
+		$filename = \Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -411,8 +410,7 @@ class Attachments extends SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array(
 					'error' => Lang::txt('Error uploading. Unable to create path.')
@@ -486,9 +484,9 @@ class Attachments extends SiteController
 			return;
 		}
 
-		if (!\JFile::isSafe($file))
+		if (!\Filesystem::isSafe($file))
 		{
-			if (\JFile::delete($file))
+			if (\Filesystem::delete($file))
 			{
 				// Delete associations to the resource
 				$row->deleteExistence();
@@ -663,10 +661,9 @@ class Attachments extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		// Ensure file names fit.
-		$ext = \JFile::getExt($file['name']);
+		$ext = \Filesystem::extension($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -728,8 +725,7 @@ class Attachments extends SiteController
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
@@ -738,7 +734,7 @@ class Attachments extends SiteController
 		}
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_CONTRIBUTE_ERROR_UPLOADING'));
 		}
@@ -822,9 +818,9 @@ class Attachments extends SiteController
 		// Scan for viruses
 		$fpath = $path . DS . $file['name'];
 
-		if (!\JFile::isSafe($fpath))
+		if (!\Filesystem::isSafe($fpath))
 		{
-			if (\JFile::delete($fpath))
+			if (\Filesystem::delete($fpath))
 			{
 				// Delete associations to the resource
 				$row->deleteExistence();
@@ -924,9 +920,6 @@ class Attachments extends SiteController
 			return;
 		}
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// Load resource info
 		$row = new Resource($this->database);
 		$row->load($id);
@@ -965,7 +958,7 @@ class Attachments extends SiteController
 			else
 			{
 				// Attempt to delete the folder
-				if (!\JFile::delete($path))
+				if (!\Filesystem::delete($path))
 				{
 					$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE'));
 				}
@@ -1027,7 +1020,7 @@ class Attachments extends SiteController
 					else
 					{
 						// Attempt to delete the folder
-						if (!JFolder::delete($npath))
+						if (!Filesystem::deleteDirectory($npath))
 						{
 							$this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 						}
@@ -1132,9 +1125,7 @@ class Attachments extends SiteController
 	 */
 	private function _getChildType($filename)
 	{
-		jimport('joomla.filesystem.file');
-
-		$ftype = strtolower(\JFile::getExt($filename));
+		$ftype = strtolower(\Filesystem::extension($filename));
 
 		switch ($ftype)
 		{

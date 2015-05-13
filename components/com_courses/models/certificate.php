@@ -173,7 +173,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			if (!file_exists($base))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!\JFolder::create($base))
+				if (!\Filesystem::makeDirectory($base))
 				{
 					$this->setError(Lang::txt('Unable to create directory.'));
 					return false;
@@ -423,7 +423,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFolder::delete($path))
+			if (!\Filesystem::deleteDirectory($path))
 			{
 				$this->setError(Lang::txt('Unable to remove upload directory and files for certificate.'));
 				return false;

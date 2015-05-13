@@ -199,8 +199,7 @@ class CoursesModelPage extends CoursesModelAbstract
 
 			if (!file_exists(PATH_APP . $dest))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!JFolder::copy($src, $dest, PATH_APP))
+				if (!Filesystem::copyDirectory($src, $dest, PATH_APP))
 				{
 					$this->setError(Lang::txt('Failed to copy page files.'));
 				}

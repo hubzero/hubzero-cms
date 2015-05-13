@@ -64,7 +64,7 @@ class MediaControllerFile extends JControllerLegacy
 		JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Make the filename safe
-		$file['name']	= JFile::makeSafe($file['name']);
+		$file['name']	= Filesystem::clean($file['name']);
 
 		if (isset($file['name']))
 		{
@@ -99,7 +99,7 @@ class MediaControllerFile extends JControllerLegacy
 				return;
 			}
 
-			if (JFile::exists($filepath))
+			if (Filesystem::exists($filepath))
 			{
 				// File exists
 				$log->addEntry(array('comment' => 'File exists: '.$filepath.' by user_id '.User::get('id')));
@@ -123,7 +123,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			$file = (array) $object_file;
-			if (!JFile::upload($file['tmp_name'], $file['filepath']))
+			if (!Filesystem::upload($file['tmp_name'], $file['filepath']))
 			{
 				// Error in upload
 				$log->addEntry(array('comment' => 'Error on upload: '.$filepath));

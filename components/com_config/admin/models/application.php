@@ -284,7 +284,7 @@ class Application extends JModelForm
 
 		// Attempt to write the configuration file as a PHP class named JConfig.
 		$configuration = $config->toString('PHP', array('class' => 'JConfig', 'closingtag' => false));
-		if (!JFile::write($file, $configuration))
+		if (!Filesystem::write($file, $configuration))
 		{
 			$this->setError(Lang::txt('COM_CONFIG_ERROR_WRITE_FAILED'));
 			return false;

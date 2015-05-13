@@ -95,7 +95,7 @@ class Media extends SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('Error uploading. Unable to create path.')));
 				return;
@@ -128,7 +128,7 @@ class Media extends SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \JFile::makeSafe($filename);
+		$filename = \Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -165,9 +165,9 @@ class Media extends SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		if (!\JFile::isSafe($file))
+		if (!\Filesystem::isSafe($file))
 		{
-			if (\JFile::delete($file))
+			if (\Filesystem::delete($file))
 			{
 				echo json_encode(array(
 					'success' => false,
@@ -259,7 +259,7 @@ class Media extends SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('Error uploading. Unable to create path.'));
 				$this->displayTask();
@@ -270,11 +270,11 @@ class Media extends SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		$ext = \JFile::getExt($file['name']);
-		$filename = \JFile::stripExt($file['name']);
+		$ext = \Filesystem::extension($file['name']);
+		$filename = \Filesystem::name($file['name']);
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -291,7 +291,7 @@ class Media extends SiteController
 		$filename .= '.' . $ext;
 
 		// Upload new files
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $filename))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $filename))
 		{
 			$this->setError(Lang::txt('ERROR_UPLOADING'));
 		}
@@ -300,9 +300,9 @@ class Media extends SiteController
 		{
 			$fle = $path . DS . $filename;
 
-			if (!\JFile::isSafe($file))
+			if (!\Filesystem::isSafe($file))
 			{
-				if (\JFile::delete($file))
+				if (\Filesystem::delete($file))
 				{
 					$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
 					echo $this->getError();

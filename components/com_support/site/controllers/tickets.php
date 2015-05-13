@@ -2296,7 +2296,7 @@ class Tickets extends SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return '';
@@ -2305,9 +2305,9 @@ class Tickets extends SiteController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(\JFile::getExt($file['name']));
+		$ext = strtolower(\Filesystem::extension($file['name']));
 
 		//make sure that file is acceptable type
 		if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
@@ -2316,7 +2316,7 @@ class Tickets extends SiteController
 			return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
 		}
 
-		$filename = \JFile::stripExt($file['name']);
+		$filename = \Filesystem::name($file['name']);
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -2325,7 +2325,7 @@ class Tickets extends SiteController
 		$finalfile = $path . DS . $filename . '.' . $ext;
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $finalfile))
+		if (!\Filesystem::upload($file['tmp_name'], $finalfile))
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_UPLOADING'));
 			return '';
@@ -2333,9 +2333,9 @@ class Tickets extends SiteController
 		else
 		{
 			// Scan for viruses
-			if (!\JFile::isSafe($finalfile))
+			if (!\Filesystem::isSafe($finalfile))
 			{
-				if (\JFile::delete($finalfile))
+				if (\Filesystem::delete($finalfile))
 				{
 					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN'));
 					return Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN');

@@ -81,7 +81,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($curfile, $id);
@@ -123,7 +123,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		$thumbPath   = $path . DS . 'thumb.png';
 
 		// upload image
-		if (!\JFile::upload($file['tmp_name'], $filePath))
+		if (!\Filesystem::upload($file['tmp_name'], $filePath))
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING'));
 			$this->displayTask($curfile, $id);
@@ -206,7 +206,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!\Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
@@ -226,7 +226,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			// Remove the thumbnail
 			if (file_exists($path . DS . $curthumb))
 			{
-				if (!\JFile::delete($path . DS . $curthumb))
+				if (!\Filesystem::delete($path . DS . $curthumb))
 				{
 					$this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file, $id);

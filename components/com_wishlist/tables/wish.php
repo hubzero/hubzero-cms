@@ -499,7 +499,7 @@ class Wish extends \JTable
 				if (file_exists($path . DS . $attachment->filename) or !$attachment->filename)
 				{
 					// Attempt to delete the file
-					if (!\JFile::delete($path . DS . $attachment->filename))
+					if (!\Filesystem::delete($path . DS . $attachment->filename))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 					}

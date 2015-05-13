@@ -242,7 +242,7 @@ class Certificates extends AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
@@ -261,7 +261,7 @@ class Certificates extends AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$ext = \JFile::getExt($file['name']);
+		$ext = \Filesystem::extension($file['name']);
 		if (strtolower($ext) != 'pdf')
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
@@ -272,7 +272,7 @@ class Certificates extends AdminController
 		$file['name'] = $model->get('name');
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
 		}
@@ -330,7 +330,7 @@ class Certificates extends AdminController
 				if ($file->isDir())
 				{
 					$name = $file->getFilename();
-					if (!\JFolder::delete($path . DS . $file->getFilename()))
+					if (!\Filesystem::deleteDirectory($path . DS . $file->getFilename()))
 					{
 						$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
 					}
@@ -339,7 +339,7 @@ class Certificates extends AdminController
 
 				if ($file->isFile())
 				{
-					if (!\JFile::delete($path . DS . $file->getFilename()))
+					if (!\Filesystem::delete($path . DS . $file->getFilename()))
 					{
 						$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
 					}

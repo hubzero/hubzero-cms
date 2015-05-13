@@ -94,8 +94,8 @@ class Html
 		{
 			jimport('joomla.filesystem.file');
 
-			$ext = \JFile::getExt($images[$i]);
-			$tn  = \JFile::stripExt($images[$i]) . '-tn.';
+			$ext = \Filesystem::extension($images[$i]);
+			$tn  = \Filesystem::name($images[$i]) . '-tn.';
 
 			if (!is_file($root . $wpath . $item . DS . $tn . $ext))
 			{

@@ -98,7 +98,7 @@ $this->css('create.css')
 				}
 
 				// figure out the file type so we can give it the appropriate CSS class
-				$type = JFile::getExt($url);
+				$type = Filesystem::extension($url);
 				if (!$child->type != 12 && $child->type != 11)
 				{
 					$type = ($type) ? $type : 'html';

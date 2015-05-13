@@ -279,7 +279,7 @@ class Elements
 	{
 		// Get the contents of the file
 		jimport('joomla.filesystem.file');
-		$data = \JFile::read($file);
+		$data = \Filesystem::read($file);
 
 		return $this->loadString($data, $format, $options);
 	}

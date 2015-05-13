@@ -210,7 +210,7 @@ class Newsletter extends SiteController
 		{
 			// Build the path if it doesn't exist
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($newsletterPdfFolder))
+			if (!\Filesystem::makeDirectory($newsletterPdfFolder))
 			{
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&id=' . $id),

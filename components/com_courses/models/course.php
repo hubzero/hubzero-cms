@@ -985,8 +985,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 					if (!is_dir(PATH_APP . $dest))
 					{
-						jimport('joomla.filesystem.folder');
-						if (!JFolder::create(PATH_APP . $dest))
+						if (!Filesystem::makeDirectory(PATH_APP . $dest))
 						{
 							$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}
@@ -994,8 +993,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 					$dest .= '/' . $file;
 
-					jimport('joomla.filesystem.file');
-					if (!JFile::copy($src, $dest, PATH_APP))
+					if (!Filesystem::copy($src, $dest, PATH_APP))
 					{
 						$this->setError(Lang::txt('Failed to copy course logo.'));
 					}

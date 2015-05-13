@@ -114,7 +114,7 @@ if ($this->children)
 		$type = '';
 		$liclass = '';
 
-		$type = \JFile::getExt($url);
+		$type = \Filesystem::extension($url);
 		$type = (strlen($type) > 3) ? substr($type, 0, 3): $type;
 		if ($child->type == 12)
 		{

@@ -1204,7 +1204,7 @@ class Items extends AdminController
 				else
 				{
 					// Attempt to delete the folder
-					if (!\JFolder::delete($path))
+					if (!\Filesystem::deleteDirectory($path))
 					{
 						$this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 					}

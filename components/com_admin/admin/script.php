@@ -400,13 +400,13 @@ class joomlaInstallerScript
 		);
 
 		foreach ($files as $file) {
-			if (JFile::exists(PATH_CORE . $file) && !JFile::delete(PATH_CORE . $file)) {
+			if (Filesystem::exists(PATH_CORE . $file) && !Filesystem::delete(PATH_CORE . $file)) {
 				echo Lang::txt('FILES_JOOMLA_ERROR_FILE_FOLDER', $file).'<br />';
 			}
 		}
 
 		foreach ($folders as $folder) {
-			if (JFolder::exists(PATH_CORE . $folder) && !JFolder::delete(PATH_CORE . $folder)) {
+			if (Filesystem::exists(PATH_CORE . $folder) && !Filesystem::deleteDirectory(PATH_CORE . $folder)) {
 				echo Lang::txt('FILES_JOOMLA_ERROR_FILE_FOLDER', $folder).'<br />';
 			}
 		}

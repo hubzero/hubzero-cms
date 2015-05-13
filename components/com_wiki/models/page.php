@@ -1047,7 +1047,7 @@ class Page extends Model
 		$path = PATH_APP . DS . trim($this->config('filepath', '/site/wiki'), DS);
 		if (is_dir($path . DS . $this->get('id')))
 		{
-			if (!\JFolder::delete($path . DS . $this->get('id')))
+			if (!\Filesystem::deleteDirectory($path . DS . $this->get('id')))
 			{
 				$this->setError(Lang::txt('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
 			}

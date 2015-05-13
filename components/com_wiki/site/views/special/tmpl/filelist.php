@@ -157,7 +157,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 					</td>
 					<td>
 						<?php
-						if (in_array(strtolower(JFile::getExt($row->filename)), array('png', 'gif', 'jpg', 'jpeg', 'jpe'))) {
+						if (in_array(strtolower(Filesystem::extension($row->filename)), array('png', 'gif', 'jpg', 'jpeg', 'jpe'))) {
 						?>
 						<a rel="lightbox" href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>">
 							<img src="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->filename)); ?>" />

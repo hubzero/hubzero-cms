@@ -153,15 +153,15 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _createGroupFolder($path)
 	{
 		// create base group folder
-		if (!JFolder::exists($path))
+		if (!Filesystem::exists($path))
 		{
-			JFolder::create($path);
+			Filesystem::makeDirectory($path);
 		}
 
 		// create uploads file
-		if (!JFolder::exists($path . DS . 'uploads'))
+		if (!Filesystem::exists($path . DS . 'uploads'))
 		{
-			JFolder::create($path . DS . 'uploads');
+			Filesystem::makeDirectory($path . DS . 'uploads');
 		}
 	}
 
@@ -495,7 +495,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$groupUploadsFolder = $this->path . DS . 'uploads';
 		if (!is_dir($groupFolder))
 		{
-			if (!JFolder::create($groupFolder))
+			if (!Filesystem::makeDirectory($groupFolder))
 			{
 				$returnObj->error   = true;
 				$returnObj->message = Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH');
@@ -504,7 +504,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 		if (!is_dir($groupUploadsFolder))
 		{
-			if (!JFolder::create($groupUploadsFolder))
+			if (!Filesystem::makeDirectory($groupUploadsFolder))
 			{
 				$returnObj->error   = true;
 				$returnObj->message = Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH');
@@ -514,7 +514,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 
 		// clean file name & make unique
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		$fileInfo     = pathinfo($file['name']);
 		$filename     = $fileInfo['filename'];
@@ -529,7 +529,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$finalFileName = $groupUploadsFolder . DS . $filename . '.' . $ext;
 
 		// upload
-		if (!JFile::upload($file['tmp_name'], $finalFileName))
+		if (!Filesystem::upload($file['tmp_name'], $finalFileName))
 		{
 			$returnObj->error   = true;
 			$returnObj->message = Lang::txt('COM_GROUPS_MEDIA_ERROR_UPLOADING');
@@ -544,7 +544,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			//run scan on file
 			//scan failed
-			if (!JFile::isSafe($finalFileName))
+			if (!Filesystem::isSafe($finalFileName))
 			{
 				//delete file
 				unlink($finalFileName);
@@ -632,7 +632,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!JFolder::create($uploadDirectory))
+			if (!Filesystem::makeDirectory($uploadDirectory))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -670,7 +670,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 
 		// clean file path
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		while (file_exists($uploadDirectory . DS . $filename . '.' . $ext))
@@ -709,7 +709,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			//run scan on file
 			//scan failed
-			if (!JFile::isSafe($file))
+			if (!Filesystem::isSafe($file))
 			{
 				//delete file
 				unlink($file);
@@ -791,7 +791,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$destination .= DS . array_pop(explode('/', $source));
 
 		// move file
-		JFile::move($source, $destination);
+		Filesystem::move($source, $destination);
 
 		// return folder were moving to
 		echo $folder;
@@ -856,7 +856,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 
 		// move file
-		JFile::move($source, $destination);
+		Filesystem::move($source, $destination);
 
 		// return folder were moving to
 		echo $fileInfo['dirname'];
@@ -911,7 +911,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// if file exists delete
 		if (file_exists($file))
 		{
-			JFile::delete($file);
+			Filesystem::delete($file);
 		}
 
 		//are we deleting through ckeditor
@@ -989,14 +989,14 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$newFolder = $this->path . rtrim($folder, DS) . DS . $name;
 
 		// make sure new folder doesnt already exist
-		if (JFolder::exists($newFolder))
+		if (Filesystem::exists($newFolder))
 		{
 			header('HTTP/1.1 500 ' . Lang::txt('COM_GROUPS_MEDIA_FOLDER_NAME_CONFLICT'));
 			exit();
 		}
 
 		// create folder
-		JFolder::create($newFolder);
+		Filesystem::makeDirectory($newFolder);
 
 		// output return folder
 		echo $returnFolder;
@@ -1059,14 +1059,14 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$newFolder = $this->path . $returnFolder . DS . $name;
 
 		// make sure old folder exists
-		if (!JFolder::exists($oldFolder))
+		if (!Filesystem::exists($oldFolder))
 		{
 			echo $returnFolder;
 			exit();
 		}
 
 		// make sure new folder doesnt already exist
-		if (JFolder::exists($newFolder))
+		if (Filesystem::exists($newFolder))
 		{
 			header('HTTP/1.1 500 ' . Lang::txt('COM_GROUPS_MEDIA_FOLDER_NAME_CONFLICT'));
 			exit();
@@ -1138,14 +1138,14 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$newPath = rtrim($this->path . $folder, DS) . DS . $info['basename'];
 
 		// make sure old folder exists
-		if (!JFolder::exists($oldPath))
+		if (!Filesystem::exists($oldPath))
 		{
 			echo $returnFolder;
 			exit();
 		}
 
 		// make sure new folder doesnt already exist
-		if (JFolder::exists($newPath))
+		if (Filesystem::exists($newPath))
 		{
 			header('HTTP/1.1 500 ' . Lang::txt('COM_GROUPS_MEDIA_FOLDER_NAME_CONFLICT'));
 			exit();
@@ -1179,7 +1179,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//delete folder
 		if (is_dir($folder))
 		{
-			JFolder::delete($folder);
+			Filesystem::deleteDirectory($folder);
 		}
 
 		echo $returnFolder;

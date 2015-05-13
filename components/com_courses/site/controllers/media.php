@@ -239,7 +239,7 @@ class Media extends SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path))
+			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->addComponentMessage(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
 				$this->mediaTask();
@@ -250,11 +250,11 @@ class Media extends SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = \JFile::makeSafe($file['name']);
+		$file['name'] = \Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->addComponentMessage(Lang::txt('ERROR_UPLOADING'), 'error');
 		}
@@ -311,7 +311,7 @@ class Media extends SiteController
 		//make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!\JFolder::create($uploadDirectory))
+			if (!\Filesystem::makeDirectory($uploadDirectory))
 			{
 				echo json_encode(array('error' => "Server error. Unable to create upload directory."));
 				return;
@@ -414,7 +414,7 @@ class Media extends SiteController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFolder::delete(PATH_APP . $del_folder))
+			if (!\Filesystem::deleteDirectory(PATH_APP . $del_folder))
 			{
 				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			}
@@ -474,7 +474,7 @@ class Media extends SiteController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($path . DS . $file))
+			if (!\Filesystem::delete($path . DS . $file))
 			{
 				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_FILE'), 'error');
 			}

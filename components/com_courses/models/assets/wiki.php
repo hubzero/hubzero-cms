@@ -129,7 +129,7 @@ class WikiAssetHandler extends ContentAssetHandler
 				// Make sure upload directory exists and is writable
 				if (!is_dir($uploadDirectory))
 				{
-					if (!JFolder::create($uploadDirectory))
+					if (!Filesystem::makeDirectory($uploadDirectory))
 					{
 						return array('error' => 'Server error. Unable to create upload directory');
 					}

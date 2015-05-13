@@ -347,13 +347,13 @@ class MembersImgHandler extends \Hubzero\Base\Object
 			{
 				if (file_exists($docRoot . $image))
 				{
-					if (!\JFile::delete($docRoot . $image))
+					if (!\Filesystem::delete($docRoot . $image))
 					{
 						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						return false;
 					}
 				}
-				if (!\JFile::move($resized, $docRoot . $image))
+				if (!\Filesystem::move($resized, $docRoot . $image))
 				{
 					$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 					return false;
@@ -384,9 +384,9 @@ class MembersImgHandler extends \Hubzero\Base\Object
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext = \JFile::getExt($image);
+		$ext = \Filesystem::extension($image);
 
-		return \JFile::stripExt($image) . $tn . '.' . $ext;
+		return \Filesystem::name($image) . $tn . '.' . $ext;
 	}
 
 	/**
