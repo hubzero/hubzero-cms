@@ -466,7 +466,7 @@ class Base extends SiteController
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
-		$objLog->time 			= date('Y-m-d H:i:s');
+		$objLog->time 			= Date::toSql();
 		$objLog->request_uri 	= Request::getVar('REQUEST_URI', Request::base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();

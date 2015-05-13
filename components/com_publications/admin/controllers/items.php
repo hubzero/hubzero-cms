@@ -1537,7 +1537,8 @@ class Items extends AdminController
 					// Delete all files
 					if (is_dir($path))
 					{
-						\JFolder::delete($path);
+						$fileSystem = new \Hubzero\Filesystem\Filesystem();
+						$fileSystem->deleteDirectory($path);
 					}
 				}
 			}
@@ -1588,7 +1589,8 @@ class Items extends AdminController
 		// Delete all files
 		if (is_dir($path))
 		{
-			\JFolder::delete($path);
+			$fileSystem = new \Hubzero\Filesystem\Filesystem();
+			$fileSystem->deleteDirectory($path);
 		}
 
 		return true;

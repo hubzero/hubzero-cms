@@ -814,15 +814,15 @@ class Projects extends Base
 		// Rename project parent directory
 		if ($path && is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\JFolder::copy($path, $newpath, '', true))
+			$fileSystem = new \Hubzero\Filesystem\Filesystem();
+			if (!$fileSystem->copyDirectory($path, $newpath))
 			{
 				$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
 			}
 			else
 			{
 				// Delete original repo
-				\JFolder::delete($path);
+				$fileSystem->deleteDirectory($path);
 			}
 		}
 
@@ -886,7 +886,7 @@ class Projects extends Base
 		// Fix ownership?
 		if ($this->_task == 'fixownership')
 		{
-			$keep 	 = Request::getInt( 'keep', 0 );
+			$keep = Request::getInt( 'keep', 0 );
 
 			if (!$this->model->access('owner'))
 			{
