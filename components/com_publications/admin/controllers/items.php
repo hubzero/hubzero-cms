@@ -48,9 +48,6 @@ class Items extends AdminController
 	 */
 	public function execute()
 	{
-		// Curation?
-		$this->_curated = $this->config->get('curation', 0);
-
 		$this->_task = strtolower(Request::getVar('task', '','request'));
 		parent::execute();
 	}
@@ -141,9 +138,6 @@ class Items extends AdminController
 		// Get the publications component config
 		$this->view->config = $this->config;
 
-		// Use new curation flow?
-		$this->view->useBlocks  = $this->_curated;
-
 		// Incoming publication ID
 		$id = Request::getVar('id', array(0));
 		if (is_array($id))
@@ -164,7 +158,7 @@ class Items extends AdminController
 		}
 
 		// Incoming version
-		$version = Request::getVar( 'version', '' );
+		$version = Request::getVar( 'version', 'default' );
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
@@ -172,38 +166,19 @@ class Items extends AdminController
 		$this->view->return['sortby']   = Request::getVar('sortby', '');
 		$this->view->return['status']   = Request::getVar('status', '');
 
-		// Instantiate publication object
-		$objP = new Tables\Publication( $this->database );
-
-		// Instantiate Version
-		$this->view->row = new Tables\Version($this->database);
-
-		// Check that version exists
-		$version = $this->view->row->checkVersion($id, $version) ? $version : 'default';
-		$this->view->version = $version;
-
-		// Get publication information
-		$this->view->pub = $objP->getPublication($id, $version);
-		$objP->load($id);
-		$this->view->objP = $objP;
+		// Instantiate a publication object
+		$this->view->model = new Models\Publication($id, $version);
 
 		// If publication not found, raise error
-		if (!$this->view->pub)
+		if (!$this->view->model->exists())
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
-		// Load publication project
-		$this->view->pub->_project = new \Components\Projects\Models\Project($this->view->pub->project_id);
-
-		// Load version
-		$vid = $this->view->pub->version_id;
-		$this->view->row->load($vid);
-
 		// Fail if checked out not by 'me'
-		if ($this->view->objP->checked_out
-		 && $this->view->objP->checked_out <> User::get('id'))
+		if ($this->view->model->get('checked_out')
+		 && $this->view->model->get('checked_out') <> User::get('id'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -214,97 +189,12 @@ class Items extends AdminController
 		}
 
 		// Editing existing
-		$this->view->objP->checkout(User::get('id'));
+		$this->view->model->publication->checkout(User::get('id'));
 
-		if (trim($this->view->row->published_down) == '0000-00-00 00:00:00')
-		{
-			$this->view->row->published_down = Lang::txt('COM_PUBLICATIONS_NEVER');
-		}
+		$this->view->model->setCuration();
 
-		// Get name of resource creator
-		$creator = User::getInstance($this->view->row->created_by);
-
-		$this->view->row->created_by_name = $creator->get('name');
-		$this->view->row->created_by_name = ($this->view->row->created_by_name)
-			? $this->view->row->created_by_name : Lang::txt('COM_PUBLICATIONS_UNKNOWN');
-
-		// Get name of last person to modify resource
-		if ($this->view->row->modified_by)
-		{
-			$modifier = User::getInstance($this->view->row->modified_by);
-
-			$this->view->row->modified_by_name = $modifier->get('name');
-			$this->view->row->modified_by_name = ($this->view->row->modified_by_name)
-				? $this->view->row->modified_by_name : Lang::txt('COM_PUBLICATIONS_UNKNOWN');
-		}
-		else
-		{
-			$this->view->row->modified_by_name = '';
-		}
-
-		// Build publication path
-		$base_path = $this->view->config->get('webpath');
-		$path = Helpers\Html::buildPubPath($id, $this->view->row->id, $base_path);
-
-		// Archival package?
-		$this->view->archPath = PATH_APP . $path . DS
-			. Lang::txt('Publication').'_'.$id.'.zip';
-
-		// Get params definitions
-		$this->view->params  = new \JParameter(
-			$this->view->row->params,
-			JPATH_COMPONENT . DS . 'publications.xml'
-		);
-
-		// Get category
-		$this->view->pub->_category = new Tables\Category( $this->database );
-		$this->view->pub->_category->load($this->view->pub->category);
-		$this->view->pub->_category->_params = new \JParameter( $this->view->pub->_category->params );
-
-		// Get master type info
-		$mt = new Tables\MasterType( $this->database );
-		$this->view->pub->_type = $mt->getType($this->view->pub->base);
-		$this->view->typeParams = new \JParameter( $this->view->pub->_type->params );
-
-		// Get attachments
-		$pContent = new Tables\Attachment( $this->database );
-		$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
-
-		// Curation
-		if ($this->view->useBlocks)
-		{
-			// Get manifest from either version record (published) or master type
-			$manifest   = $this->view->pub->curation
-						? $this->view->pub->curation
-						: $this->view->pub->_type->curation;
-
-			// Get curation model
-			$this->view->pub->_curationModel = new Models\Curation($manifest);
-
-			// Set pub assoc and load curation
-			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
-		}
-
-		// Get pub authors
-		$pAuthors 			= new Tables\Author( $this->database );
-		$this->view->pub->_authors 		= $pAuthors->getAuthors($this->view->pub->version_id);
-		$this->view->pub->_submitter 	= $pAuthors->getSubmitter($this->view->pub->version_id, $this->view->pub->created_by);
-
-		// Get tags on this item
-		$tagsHelper = new Helpers\Tags( $this->database );
-		$tags_men = $tagsHelper->get_tags_on_object($this->view->pub->id, 0, 0, 0, 0, true);
-
-		$mytagarray = array();
-		foreach ($tags_men as $tag_men)
-		{
-			$mytagarray[] = $tag_men['raw_tag'];
-		}
-		$this->view->tags = implode(', ', $mytagarray);
-
-		// Get selected license
-		$objL = new Tables\License( $this->database );
-		$this->view->license = $objL->getPubLicense( $this->view->pub->version_id );
-		$this->view->licenses = $objL->getLicenses();
+		// Get licenses
+		$this->view->licenses = $this->view->model->table('License')->getLicenses();
 
 		// Get groups
 		$filters = array(
@@ -335,64 +225,35 @@ class Items extends AdminController
 		// Incoming
 		$id = Request::getInt( 'id', 0 );
 		$el = Request::getInt( 'el', 0 );
-		$v  = Request::getInt( 'v', 0 );
-
-		$objP = new Tables\Publication( $this->database );
+		$v  = Request::getVar( 'v', 'default' );
 
 		// Get publication information
-		$this->view->pub = $objP->getPublication($id, $v);
+		$this->view->pub = new Models\Publication($id, $v);
 
 		// If publication not found, raise error
-		if (!$this->view->pub)
+		if (!$this->view->pub->exists())
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
-		// Get the publications component config
 		$this->view->config = $this->config;
+		$this->view->typeParams = $this->view->pub->masterType()->_params;
 
-		// Use new curation flow?
-		$this->view->useBlocks  = $this->_curated;
+		// Get attachments
+		$this->view->pub->attachments();
 
-		if (!$this->_curated)
+		// Set curation
+		$this->view->pub->setCuration();
+
+		if (!$el)
 		{
-			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'));
+			$this->setError();
 		}
 		else
 		{
-			// Load publication project
-			$this->view->pub->_project = new \Components\Projects\Models\Project($this->view->pub->project_id);
-
-			// Get master type info
-			$mt = new Tables\MasterType( $this->database );
-			$this->view->pub->_type = $mt->getType($this->view->pub->base);
-			$this->view->typeParams = new \JParameter( $this->view->pub->_type->params );
-
-			// Get attachments
-			$pContent = new Tables\Attachment( $this->database );
-			$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
-
-			// Get manifest from either version record (published) or master type
-			$manifest   = $this->view->pub->curation
-						? $this->view->pub->curation
-						: $this->view->pub->_type->curation;
-
-			// Get curation model
-			$this->view->pub->_curationModel = new Models\Curation($manifest);
-
-			// Set pub assoc and load curation
-			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
-
-			if (!$el)
-			{
-				$this->setError();
-			}
-			else
-			{
-				$this->view->elementId = $el;
-				$this->view->element = $this->view->pub->_curationModel->getElementManifest($el, 'content');
-			}
+			$this->view->elementId = $el;
+			$this->view->element   = $this->view->pub->_curationModel->getElementManifest($el, 'content');
 		}
 
 		// Set any errors
@@ -435,27 +296,19 @@ class Items extends AdminController
 			return;
 		}
 
-		if (!$this->_curated)
-		{
-			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'), 404);
-			return;
-		}
-		else
-		{
-			// Set curation
-			$this->model->setCuration();
+		// Set curation
+		$this->model->setCuration();
 
-			// Save attachments
-			if (!empty($attachments))
+		// Save attachments
+		if (!empty($attachments))
+		{
+			foreach ($attachments as $attachId => $attach )
 			{
-				foreach ($attachments as $attachId => $attach )
+				$pContent = new Tables\Attachment( $this->database );
+				if ($pContent->load($attachId))
 				{
-					$pContent = new Tables\Attachment( $this->database );
-					if ($pContent->load($attachId))
-					{
-						$pContent->title = $attach['title'];
-						$pContent->store();
-					}
+					$pContent->title = $attach['title'];
+					$pContent->store();
 				}
 			}
 		}
@@ -835,17 +688,9 @@ class Items extends AdminController
 		$authors = $this->model->authors();
 		$project = $this->model->project();
 
-		// Curation?
-		if ($this->_curated)
-		{
-			$this->model->setCuration();
-			$requireDoi = isset($this->model->_curationModel->_manifest->params->require_doi)
-						? $this->model->_curationModel->_manifest->params->require_doi : 0;
-		}
-		else
-		{
-			$requireDoi = true;
-		}
+		$this->model->setCuration();
+		$requireDoi = isset($this->model->_curationModel->_manifest->params->require_doi)
+					? $this->model->_curationModel->_manifest->params->require_doi : 0;
 
 		// Incoming updates
 		$title 			= trim(Request::getVar( 'title', '', 'post' ));
@@ -1043,15 +888,11 @@ class Items extends AdminController
 					{
 						$this->model->version->accepted = Date::toSql();
 
-						if ($this->_curated)
-						{
-							// Store curation manifest
-							$this->model->version->curation = json_encode($this->model->_curationModel->_manifest);
+						// Store curation manifest
+						$this->model->version->curation = json_encode($this->model->_curationModel->_manifest);
 
-							// Mark as curated/non-curated
-							$curated = $this->_curated ? 1 : 2;
-							$this->model->version->saveParam($this->model->version->id, 'curated', $curated);
-						}
+						// Mark as curated/non-curated
+						$this->model->version->saveParam($this->model->version->id, 'curated', 1);
 
 						// Check if publication is within grace period (published status)
 						$gracePeriod = $this->config->get('graceperiod', 0);
@@ -1237,53 +1078,6 @@ class Items extends AdminController
 		}
 
 		return;
-	}
-
-	/**
-	 * Collect DOI metadata
-	 *
-	 * @param      object $row      Publication
-	 * @return     void
-	 */
-	private function _collectMetadata($row, $objP, $authors)
-	{
-		// Get type
-		$objT = new Tables\Category($this->database);
-		$objT->load($objP->category);
-		$typetitle = ucfirst($objT->alias);
-
-		// Collect metadata
-		$metadata = array();
-		$metadata['typetitle'] 		= $typetitle ? $typetitle : 'Dataset';
-		$metadata['resourceType'] 	= isset($objT->dc_type) && $objT->dc_type ? $objT->dc_type : 'Dataset';
-		$metadata['language'] 		= 'en';
-
-		// Get dc:contibutor
-		$project = new \Components\Projects\Tables\Project($this->database);
-		$project->load($objP->project_id);
-		$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
-		$owner 	 = $project->owned_by_user ? $project->owned_by_user : $project->created_by_user;
-		if ($profile->load( $owner ))
-		{
-			$metadata['contributor'] = $profile->get('name');
-		}
-
-		// Get previous version DOI
-		$lastPub = $row->getLastPubRelease($objP->id);
-		if ($lastPub && $lastPub->doi)
-		{
-			$metadata['relatedDoi'] = $row->version_number > 1 ? $lastPub->doi : '';
-		}
-
-		// Get license type
-		$objL = new Tables\License( $this->database);
-		if ($objL->loadLicense($row->license_type))
-		{
-			$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
-			$metadata['license'] = $objL->title;
-		}
-
-		return $metadata;
 	}
 
 	/**
@@ -1703,83 +1497,45 @@ class Items extends AdminController
 		// Incoming
 		$pid 		= Request::getInt('pid', 0);
 		$vid 		= Request::getInt('vid', 0);
-		$version 	= Request::getVar( 'version', '' );
+		$version 	= Request::getVar( 'version', 'default' );
 
-		// Load publication & version classes
-		$objP  = new Tables\Publication( $this->database );
-		$objV  = new Tables\Version( $this->database );
-		$mt    = new Tables\MasterType( $this->database );
+		// Load publication
+		$pub = new Models\Publication($pid, $version, $vid);
 
-		if (!$objP->load($pid) || !$objV->load($vid))
+		if (!$pub->exists())
 		{
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-			return;
-		}
-		$pub = $objP->getPublication($pid, $objV->version_number, $objP->project_id);
-		if (!$pub)
-		{
-			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'), 404);
 			return;
 		}
 
 		$url = Route::url('index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version, false);
 
-		if ($this->_curated)
+		// Get attachments
+		$pub->attachments();
+
+		// Get authors
+		$pub->authors();
+
+		// Set pub assoc and load curation
+		$pub->setCuration();
+
+		// Produce archival package
+		if (!$pub->_curationModel->package())
 		{
-			$pub->version 	= $pub->version_number;
+			// Checkin the resource
+			$pub->publication->checkin();
 
-			// Load publication project
-			$pub->_project = new \Components\Projects\Models\Project($pub->project_id);
-
-			// Get master type info
-			$mt = new Tables\MasterType( $this->database );
-			$pub->_type = $mt->getType($pub->base);
-			$typeParams = new \JParameter( $pub->_type->params );
-
-			// Get attachments
-			$pContent = new Tables\Attachment( $this->database );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-
-			// Get authors
-			$pAuthors 			= new Tables\Author( $this->database );
-			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
-
-			// Get manifest from either version record (published) or master type
-			$manifest   = $pub->curation
-						? $pub->curation
-						: $pub->_type->curation;
-
-			// Get curation model
-			$pub->_curationModel = new Models\Curation($manifest);
-
-			// Set pub assoc and load curation
-			$pub->_curationModel->setPubAssoc($pub);
-
-			// Produce archival package
-			if (!$pub->_curationModel->package())
-			{
-				// Checkin the resource
-				$objP->checkin();
-
-				// Redirect
-				App::redirect( $url, Lang::txt('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
-				return;
-			}
+			// Redirect
+			App::redirect( $url, Lang::txt('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
+			return;
 		}
-		else
-		{
-			// Archival for non-curated publications
-			$result = Event::trigger( 'projects.archivePub', array($pid, $vid) );
-		}
-
-		$this->_message = Lang::txt('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
 
 		// Checkin the resource
-		$objP->checkin();
+		$pub->publication->checkin();
 
 		// Redirect
-		App::redirect($url);
+		App::redirect($url, Lang::txt('COM_PUBLICATIONS_SUCCESS_ARCHIVAL'));
 	}
 
 	/**

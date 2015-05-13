@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$useBlocks 	= $this->config->get('curation', 0);
 $webpath 	= $this->config->get('webpath');
 
 $authorized = $this->publication->access('view-all');
@@ -54,13 +53,7 @@ if (count($matches) > 0)
 }
 
 $category = $this->publication->_category;
-$customFields = $category->customFields && $category->customFields != '{"fields":[]}'
-				? $category->customFields
-				: '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
-if ($useBlocks)
-{
-	$customFields = $this->publication->_curationModel->getMetaSchema();
-}
+$customFields = $this->publication->_curationModel->getMetaSchema();
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
@@ -71,37 +64,15 @@ $schema 	= $metaElements->getSchema();
 <div class="pubabout">
 <?php
 	// Show gallery images
-	if ($this->publication->params->get('show_gallery') || $useBlocks)
+	if ($this->publication->params->get('show_gallery'))
 	{
-		if ($useBlocks && $this->publication->params->get('curated') != 2)
-		{
-			// Get handler model
-			$modelHandler = new \Components\Publications\Models\Handlers($this->database);
+		// Get handler model
+		$modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
-			// Load image handler
-			if ($handler = $modelHandler->ini('imageviewer'))
-			{
-				echo $handler->showImageBand($this->publication);
-			}
-		}
-		else
+		// Load image handler
+		if ($handler = $modelHandler->ini('imageviewer'))
 		{
-			// Get gallery path
-			$galleryPath 	= \Components\Publications\Helpers\Html::buildPubPath(
-				$this->publication->id,
-				$this->publication->version_id,
-				$webpath,
-				'gallery'
-			);
-
-			$view = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-				'name'      => 'view',
-				'layout'    => '_gallery',
-			));
-			$view->publication   = $this->publication;
-			$view->path          = $galleryPath;
-			echo $view->loadTemplate();
+			echo $handler->showImageBand($this->publication);
 		}
 	}
 ?>
@@ -113,73 +84,70 @@ $schema 	= $metaElements->getSchema();
 
 <?php
 	// List all content?
-	if ($useBlocks)
+	$listAll = isset($this->publication->_curationModel->_manifest->params->list_all)
+			? $this->publication->_curationModel->_manifest->params->list_all :  0;
+	$listLabel = isset($this->publication->_curationModel->_manifest->params->list_label)
+			? $this->publication->_curationModel->_manifest->params->list_label
+			: Lang::txt('COM_PUBLICATIONS_CONTENT_LIST');
+	// Add plugin style
+	\Hubzero\Document\Assets::addPluginStylesheet('publications', 'supportingdocs');
+
+	if ($listAll)
 	{
-		$listAll = isset($this->publication->_curationModel->_manifest->params->list_all)
-				? $this->publication->_curationModel->_manifest->params->list_all :  0;
-		$listLabel = isset($this->publication->_curationModel->_manifest->params->list_label)
-				? $this->publication->_curationModel->_manifest->params->list_label
-				: Lang::txt('COM_PUBLICATIONS_CONTENT_LIST');
-		// Add plugin style
-		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'supportingdocs');
+		// Get elements in primary and supporting role
+		$prime    = $this->publication->_curationModel->getElements(1);
+		$second   = $this->publication->_curationModel->getElements(2);
+		$elements = array_merge($prime, $second);
 
-		if ($listAll)
+		// Get attachment type model
+		$attModel = new \Components\Publications\Models\Attachments($this->database);
+
+		if ($elements)
 		{
-			// Get elements in primary and supporting role
-			$prime    = $this->publication->_curationModel->getElements(1);
-			$second   = $this->publication->_curationModel->getElements(2);
-			$elements = array_merge($prime, $second);
-
-			// Get attachment type model
-			$attModel = new \Components\Publications\Models\Attachments($this->database);
-
-			if ($elements)
+			$append = NULL;
+			// Get file path
+			$path 	= \Components\Publications\Helpers\Html::buildPubPath(
+				$this->publication->id,
+				$this->publication->version_id,
+				$webpath,
+				'',
+				1
+			);
+			$licFile 	= $path . DS . 'LICENSE.txt';
+			if (file_exists($licFile))
 			{
-				$append = NULL;
-				// Get file path
-				$path 	= \Components\Publications\Helpers\Html::buildPubPath(
-					$this->publication->id,
-					$this->publication->version_id,
-					$webpath,
-					'',
-					1
-				);
-				$licFile 	= $path . DS . 'LICENSE.txt';
-				if (file_exists($licFile))
-				{
-					$licenseUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
-					$append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">' . Lang::txt('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
-				}
-
-				// Archival path
-				$tarname  = Lang::txt('Publication') . '_' . $this->publication->id . '.zip';
-				$archPath = $path . DS . $tarname;
-
-				$showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)
-						? $this->publication->_curationModel->_manifest->params->show_archival :  0;
-				$archiveUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number . '&render=archive');
-				$showArchive = ($showArchive && file_exists($archPath)) ? true : false;
-
-				// Draw list
-				$list = $attModel->listItems(
-					$elements,
-					$this->publication,
-					$authorized,
-					$append
-				);
-				?>
-				<h4 class="list-header"><?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive && $authorized) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
-				<div class="pub-content">
-					<?php echo $list; ?>
-				</div>
-			<?php
+				$licenseUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
+				$append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">' . Lang::txt('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
 			}
+
+			// Archival path
+			$tarname  = Lang::txt('Publication') . '_' . $this->publication->id . '.zip';
+			$archPath = $path . DS . $tarname;
+
+			$showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)
+					? $this->publication->_curationModel->_manifest->params->show_archival :  0;
+			$archiveUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number . '&render=archive');
+			$showArchive = ($showArchive && file_exists($archPath)) ? true : false;
+
+			// Draw list
+			$list = $attModel->listItems(
+				$elements,
+				$this->publication,
+				$authorized,
+				$append
+			);
+			?>
+			<h4 class="list-header"><?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive && $authorized) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
+			<div class="pub-content">
+				<?php echo $list; ?>
+			</div>
+		<?php
 		}
 	}
 ?>
 <?php
 	$citations = NULL;
-	if ($useBlocks || $this->publication->params->get('show_metadata'))
+	if ($this->publication->params->get('show_metadata'))
 	{
 		if (!isset($schema->fields) || !is_array($schema->fields))
 		{
@@ -188,10 +156,14 @@ $schema 	= $metaElements->getSchema();
 		}
 		foreach ($schema->fields as $field)
 		{
-			if (isset($data[$field->name])) {
-				if ($field->name == 'citations') {
+			if (isset($data[$field->name]))
+			{
+				if ($field->name == 'citations')
+				{
 					$citations = $data[$field->name];
-				} else if ($value = $metaElements->display($field->type, $data[$field->name])) {
+				}
+				elseif ($value = $metaElements->display($field->type, $data[$field->name]))
+				{
 				?>
 				<h4><?php echo $field->label; ?></h4>
 				<div class="pub-content">
@@ -204,7 +176,7 @@ $schema 	= $metaElements->getSchema();
 	}
 ?>
 
-<?php if (($useBlocks || $this->publication->params->get('show_citation'))) { ?>
+<?php if (($this->publication->params->get('show_citation'))) { ?>
 	<?php
 	if ($this->publication->params->get('show_citation') == 1
 	|| $this->publication->params->get('show_citation') == 2)
@@ -253,7 +225,7 @@ $schema 	= $metaElements->getSchema();
 		?>
 	</div>
 <?php } ?>
-<?php if ($useBlocks || $this->publication->params->get('show_tags')) {
+<?php if ($this->publication->params->get('show_tags')) {
 	$this->publication->getTagCloud( $this->authorized );
 	?>
 	<?php if ($this->publication->_tagCloud) { ?>
@@ -267,7 +239,7 @@ $schema 	= $metaElements->getSchema();
 <?php } ?>
 <?php
 // Show version notes
-if (($useBlocks || $this->publication->params->get('show_notes')) && $this->publication->release_notes)
+if (($this->publication->params->get('show_notes')) && $this->publication->get('release_notes'))
 {
 	$notes = $this->publication->notes('parsed');
 	$notes = NULL;

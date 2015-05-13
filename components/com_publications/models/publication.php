@@ -130,21 +130,21 @@ class Publication extends Object
 		}
 		else
 		{
-			// Load version
 			$this->version = new Tables\Version($this->_db);
+			$this->publication = new Tables\Publication($this->_db);
+
+			// Load version & master record
 			if (intval($vid))
 			{
 				$this->version->load($vid);
 				$oid = $this->version->publication_id;
+				$this->publication->loadPublication($oid);
 			}
 			elseif ($oid)
 			{
-				$this->version->loadVersion($oid, $version);
+				$this->publication->loadPublication($oid);
+				$this->version->loadVersion($this->publication->id, $version);
 			}
-
-			// Load master entry
-			$this->publication = new Tables\Publication($this->_db);
-			$this->publication->loadPublication($oid);
 
 			// Get what we need
 			$this->masterType();
@@ -1646,7 +1646,7 @@ class Publication extends Object
 	 *
 	 * @return     string HTML
 	 */
-	public function getTagsForEditing( $tagger_id = 0, $strength = 0 )
+	public function getTagsForEditing( $tagger_id = 0, $strength = 0, $admin = 0 )
 	{
 		if (!$this->exists())
 		{
@@ -1656,7 +1656,8 @@ class Publication extends Object
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 		$rt = new Helpers\Tags( $this->_db );
-		$this->_tagsForEditing = $rt->get_tag_string( $this->get('id'), 0, 0, $tagger_id, $strength, 0 );
+		$this->_tagsForEditing = $rt->get_tag_string( $this->get('id'), 0, 0, $tagger_id, $strength, $admin );
+		return $this->_tagsForEditing;
 	}
 
 	/**

@@ -1957,13 +1957,13 @@ class Curation extends Object
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename($bundle);
-		$xserver->disposition('download');
-		$xserver->acceptranges(true);
-		$xserver->saveas($serveas);
+		$server = new \Hubzero\Content\Server();
+		$server->filename($bundle);
+		$server->disposition('download');
+		$server->acceptranges(true);
+		$server->saveas($serveas);
 
-		if (!$xserver->serve())
+		if (!$server->serve())
 		{
 			// Should only get here on error
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);

@@ -37,7 +37,7 @@ $tmpl = Request::getVar('tmpl', '');
 if ($tmpl != 'component')
 {
 	Toolbar::title(Lang::txt('COM_PUBLICATIONS').': [ ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #'
-	. $this->pub->id . ' (v.' . $this->pub->version_label . ')' . ' ]', 'groups.png');
+	. $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')' . ' ]', 'groups.png');
 	Toolbar::save('savecontent');
 	Toolbar::cancel();
 }
@@ -60,7 +60,7 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php return; } ?>
-<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $this->pub->version_number); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></p>
+<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->get('id') . '&version=' . $this->pub->get('version_number')); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id'); ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></p>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
@@ -81,9 +81,9 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="no_html" value="<?php echo ($tmpl == 'component') ? '1' : '0'; ?>">
-			<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->pub->get('id'); ?>" />
 			<input type="hidden" name="task" value="savecontent" />
-			<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->pub->get('version_number'); ?>" />
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></span></legend>
 			<?php if ($this->getError()) {
 				echo '<p class="error">' . $this->getError() . '</p>';
@@ -107,8 +107,7 @@ function submitbutton(pressbutton)
 						 ? $attachments['elements'][$this->elementId] : NULL;
 
 			// Get version params and extract bundle name
-			$versionParams 	= new JParameter( $this->pub->params );
-			$bundleName		= $versionParams->get($elName . 'bundlename', $defaultTitle);
+			$bundleName		= $this->pub->params->get($elName . 'bundlename', $defaultTitle);
 
 			$multiZip 		= (isset($element->params->typeParams->multiZip)
 							&& $element->params->typeParams->multiZip == 0)

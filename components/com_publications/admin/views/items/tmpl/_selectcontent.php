@@ -41,7 +41,7 @@ $html 	= '';
 $prime  = $pub->_attachments[1];
 $second = $pub->_attachments[2];
 
-if ($this->useBlocks && isset($pub->_curationModel))
+if (isset($pub->_curationModel))
 {
 	$prime    = $pub->_curationModel->getElements(1);
 	$second   = $pub->_curationModel->getElements(2);
@@ -92,9 +92,9 @@ else
 				$type = strtoupper(end($ext));
 			}
 			$title = $att->title ? $att->title : $att->path;
-			$html .= '<li>('.$type.') ';
+			$html .= '<li>(' . $type . ') ';
 			$html .= $att->title ? $att->title : $att->path;
-			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path.'</span>' : '';
+			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path . '</span>' : '';
 			$html .= '</li>'."\n";
 		}
 		$html .= '</ul>';
@@ -116,10 +116,10 @@ else
 				$type = strtoupper(end($ext));
 			}
 			$title = $att->title ? $att->title : $att->path;
-			$html .= '<li>('.$type.') ';
+			$html .= '<li>(' . $type . ') ';
 			$html .= $att->title ? $att->title : $att->path;
 			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path.'</span>' : '';
-			$html .= '</li>'."\n";
+			$html .= '</li>' . "\n";
 		}
 		$html .= '</ul>';
 	}

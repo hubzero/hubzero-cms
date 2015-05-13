@@ -258,15 +258,9 @@ class ImageViewer extends Base
 			return false;
 		}
 
-		$html 	= '';
-		$els 	= '';
-		$i 		= 0;
-		$k 		= 0;
-		$g 		= 0;
+		$html = '';
+		$i    = 0;
 
-		$i = 0;
-
-		$els .=  '<div class="showcase-pane">'."\n";
 		foreach ($attachments as $attach)
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
@@ -281,40 +275,33 @@ class ImageViewer extends Base
 			if (is_file(PATH_APP . DS . $fpath) && is_file(PATH_APP . DS . $thumbPath))
 			{
 				// Get extentsion
-				$ext = \Components\Projects\Helpers\Html::getFileExtension($fpath);
+				$ext = Filesystem::extension(PATH_APP . DS . $fpath);
 
 				$title = $attach->title ? $attach->title : basename($attach->path);
-				$fpath = Route::url('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . basename($fpath);
-				if ($ext == 'swf' || $ext == 'mov')
-				{
-					$g++;
-					$els .= ' <a class="video"  href="' . $fpath . '" title="' . $title . '">';
-					$els .= '<img src="' . Route::url('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" /></a>';
-				}
-				else
-				{
-					$k++;
-					$els .= ' <a rel="lightbox" href="' . $fpath . '" title="' . $title . '">';
-					$els .= '<img src="' . Route::url('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></a>';
-				}
+				$link  = Route::url($pub->link('versionid')) . '/Image:' . basename($fpath);
+				$rel   = ($ext == 'swf' || $ext == 'mov') ? '' : ' rel="lightbox"';
+				$class = ($ext == 'swf' || $ext == 'mov') ? ' class="video"' : '';
+
+				$html .= ' <a ' . $class . ' ' . $rel . '  href="' . $link . '" title="' . $title . '">';
+				$html .= '<img src="' . Route::url($pub->link('versionid')) . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></a>';
+
 				$i++;
 			}
 		}
-		$els .=  '</div>'."\n";
 
 		if ($i > 0)
 		{
-			$html .= '<div id="showcase">'."\n" ;
-			$html .= '<div id="showcase-prev" ></div>'."\n";
-			$html .= '  <div id="showcase-window">'."\n";
-			$html .= $els;
-			$html .= '  </div>'."\n";
-			$html .= '  <div id="showcase-next" ></div>'."\n";
-			$html .= '</div>'."\n";
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
+				'name'      => 'view',
+				'layout'    => '_gallery',
+			));
+
+			$view->content  = $html;
+			return $view->loadTemplate();
 		}
 
-		return $html;
-
+		return;
 	}
 
 	/**
