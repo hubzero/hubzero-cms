@@ -226,7 +226,7 @@ class Help extends AdminController
 		}
 		else if (is_dir($helpPagesPath2))
 		{
-			$path = $helpPagesPath2
+			$path = $helpPagesPath2;
 		}
 
 		jimport('joomla.filesystem.folder');

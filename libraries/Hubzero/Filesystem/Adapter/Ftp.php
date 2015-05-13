@@ -237,16 +237,6 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Returns the amount of seconds before the connection will timeout.
-	 *
-	 * @return  int
-	 */
-	public function getTimeout()
-	{
-		return $this->timeout;
-	}
-
-	/**
 	 * Set the amount of seconds before the connection should timeout.
 	 *
 	 * @param    int     $timeout
