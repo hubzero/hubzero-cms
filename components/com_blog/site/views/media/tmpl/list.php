@@ -78,18 +78,9 @@ jimport('joomla.filesystem.file');
 				{
 					$num_files = 0;
 
-					if (is_dir(PATH_APP . DS . $folder))
+					if (Filesystem::isDirectory(PATH_APP . DS . $folder))
 					{
-						$d = @dir(PATH_APP . DS . $folder);
-
-						while (false !== ($entry = $d->read()))
-						{
-							if (substr($entry, 0, 1) != '.')
-							{
-								$num_files++;
-							}
-						}
-						$d->close();
+						$num_files = count(Filesystem::files(PATH_APP . DS . $folder));
 					}
 				?>
 					<tr>
@@ -108,7 +99,7 @@ jimport('joomla.filesystem.file');
 				<?php foreach ($this->docs as $name => $doc) { ?>
 					<tr>
 						<td width="100%">
-							<span class="icon-file file <?php echo JFile::getExt($doc); ?>">
+							<span class="icon-file file <?php echo Filesystem::extension($doc); ?>">
 								<?php echo $this->escape($doc); ?>
 							</span>
 						</td>
