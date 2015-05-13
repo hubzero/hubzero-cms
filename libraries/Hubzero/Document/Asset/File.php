@@ -137,9 +137,9 @@ class File extends Object
 
 		if (strstr($this->name, '.'))
 		{
-			if (strtolower(\App::get('filesystem')->extension($name)) == $this->type)
+			if (strtolower(substr($name, strrpos($name, '.') + 1)) == $this->type)
 			{
-				$this->name = \App::get('filesystem')->name($this->name);
+				$this->name = preg_replace('/\.[^.]*$/', '', $this->name);
 			}
 		}
 
