@@ -162,7 +162,7 @@ class Setup extends Base
 		else
 		{
 			// Setup complete, go to project page
-			$this->_redirect 	= Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias'));
+			App::redirect(Route::url($this->model->link()));
 			return;
 		}
 
@@ -289,8 +289,7 @@ class Setup extends Base
 				// Some follow-up actions
 				$this->_onAfterProjectCreate();
 
-				$this->_redirect = Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $this->model->get('alias'));
+				App::redirect(Route::url($this->model->link()));
 				return;
 			}
 		}
@@ -317,8 +316,7 @@ class Setup extends Base
 					// Some follow-up actions
 					$this->_onAfterProjectCreate();
 
-					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&alias=' . $this->model->get('alias'));
+					App::redirect(Route::url($this->model->link()));
 					return;
 				}
 			}
@@ -339,9 +337,9 @@ class Setup extends Base
 		// Redirect
 		$task   = $setup ? 'setup' : 'edit';
 		$append = $new && $this->model->exists() && $this->next == 'describe' ? '#describearea' : '';
-		$this->_redirect = Route::url('index.php?option=' . $this->_option
+		App::redirect(Route::url('index.php?option=' . $this->_option
 			. '&task=' . $task . '&alias=' . $this->model->get('alias')
-			. '&active=' . $this->next ) . $append;
+			. '&active=' . $this->next ) . $append);
 		return;
 	}
 
@@ -845,8 +843,7 @@ class Setup extends Base
 		// Check if project is in setup
 		if ($this->model->inSetup())
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=setup&id=' . $this->model->get('id'));
+			App::redirect(Route::url($this->model->link('setup')));
 			return;
 		}
 

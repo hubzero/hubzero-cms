@@ -125,7 +125,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$this->view->row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -185,7 +185,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -268,7 +268,7 @@ class Types extends AdminController
 			$row->store();
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			$url,
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_ADDED')
 		);
@@ -289,7 +289,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$this->view->row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -337,7 +337,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'error'
@@ -355,7 +355,7 @@ class Types extends AdminController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_ERROR_SAVING_ADVANCED_CURATION'),
 				'error'
@@ -363,7 +363,7 @@ class Types extends AdminController
 			return;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			$url,
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_CURATION_SAVED')
 		);
@@ -396,7 +396,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$this->view->row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -444,7 +444,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -518,7 +518,7 @@ class Types extends AdminController
 		$row->curation = json_encode($manifest);
 		$row->store();
 
-		$this->setRedirect(
+		App::redirect(
 			$url,
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ELEMENTS_SAVED')
 		);
@@ -540,7 +540,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$this->view->row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -601,7 +601,7 @@ class Types extends AdminController
 		// Load object
 		if (!$id || !$row->load($id))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
@@ -634,7 +634,7 @@ class Types extends AdminController
 			$row->store();
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			$url,
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ORDER_SAVED')
 		);
@@ -758,7 +758,7 @@ class Types extends AdminController
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect($url);
+			App::redirect($url);
 			return;
 		}
 
@@ -847,28 +847,28 @@ class Types extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setRedirect($url, $row->getError(), 'error');
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setRedirect($url, $row->getError(), 'error');
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Redirect to edit view?
 		if ($redirect)
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
 			);
@@ -906,7 +906,7 @@ class Types extends AdminController
 		// Update order
 		$row->changeOrder($dir);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -918,7 +918,7 @@ class Types extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 
 	/**
@@ -939,7 +939,7 @@ class Types extends AdminController
 		if (empty($ids))
 		{
 			// Redirect with error message
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_NO_ITEM_SELECTED'),
 				'error'
@@ -957,7 +957,7 @@ class Types extends AdminController
 			if ($total > 0)
 			{
 				// Redirect with error message
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
 					'error'
@@ -970,7 +970,7 @@ class Types extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
 		);

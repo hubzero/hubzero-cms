@@ -98,7 +98,7 @@ class Batchcreate extends AdminController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
 				'error'
@@ -828,6 +828,6 @@ class Batchcreate extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 }

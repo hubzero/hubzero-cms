@@ -305,7 +305,7 @@ class Publications extends SiteController
 	{
 		$rtrn = Request::getVar('REQUEST_URI',
 			Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
@@ -320,7 +320,7 @@ class Publications extends SiteController
 	public function mainTask()
 	{
 		// Redirect to version panel of current version (TEMP)
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->_route . '&active=versions')
 		);
 		return;
@@ -532,7 +532,7 @@ class Publications extends SiteController
 			if ($lastPubRelease && $lastPubRelease->id)
 			{
 				// Go to last public release
-				$this->setRedirect(
+				App::redirect(
 					Route::url($this->_route . '&v=' . $lastPubRelease->version_number)
 				);
 				return;
@@ -542,7 +542,7 @@ class Publications extends SiteController
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
@@ -556,7 +556,7 @@ class Publications extends SiteController
 			if ($this->_version == 'default' && $lastPubRelease && $lastPubRelease->id)
 			{
 				// Go to last public release
-				$this->setRedirect(
+				App::redirect(
 					Route::url($this->_route . '&v=' . $lastPubRelease->version_number)
 				);
 				return;
@@ -720,7 +720,7 @@ class Publications extends SiteController
 
 		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
@@ -864,7 +864,7 @@ class Publications extends SiteController
 
 		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
@@ -906,7 +906,7 @@ class Publications extends SiteController
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option),
 				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'

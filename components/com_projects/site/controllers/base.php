@@ -50,7 +50,7 @@ class Base extends SiteController
 		// Is component on?
 		if (!$this->config->get( 'component_on', 0 ))
 		{
-			$this->_redirect = '/';
+			App::redirect('/');
 			return;
 		}
 

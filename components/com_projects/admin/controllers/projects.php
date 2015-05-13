@@ -468,11 +468,11 @@ class Projects extends AdminController
 		// Redirect to edit view?
 		if ($redirect)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false);
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false));
 		}
 		else
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option, false);
+			App::redirect(Route::url('index.php?option=' . $this->_option, false));
 		}
 	}
 

@@ -179,7 +179,7 @@ class Licenses extends AdminController
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect($url);
+			App::redirect($url);
 			return;
 		}
 
@@ -215,14 +215,14 @@ class Licenses extends AdminController
 		// Redirect to edit view?
 		if ($redirect)
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
 			);
@@ -261,7 +261,7 @@ class Licenses extends AdminController
 		// Update order
 		$row->changeOrder($dir);
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
@@ -283,7 +283,7 @@ class Licenses extends AdminController
 		if (count($id) > 1)
 		{
 			$this->addComponentMessage(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'), 'error');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -304,7 +304,7 @@ class Licenses extends AdminController
 		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
@@ -314,7 +314,7 @@ class Licenses extends AdminController
 		$row->undefault($id);
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT')
 		);
@@ -349,7 +349,7 @@ class Licenses extends AdminController
 				if (!$row->store())
 				{
 					$this->addComponentMessage($row->getError(), 'error');
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 					);
 					return;
@@ -358,7 +358,7 @@ class Licenses extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED')
 		);
@@ -371,6 +371,6 @@ class Licenses extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 }

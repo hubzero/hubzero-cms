@@ -155,7 +155,7 @@ class Items extends AdminController
 		if (!$id)
 		{
 			$this->view->isnew = 1;
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
 				'notice'
@@ -205,7 +205,7 @@ class Items extends AdminController
 		if ($this->view->objP->checked_out
 		 && $this->view->objP->checked_out <> User::get('id'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_CHECKED_OUT'),
 				'notice'
@@ -465,7 +465,7 @@ class Items extends AdminController
 			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
 
 		// Redirect back to publication
-		$this->setRedirect(
+		App::redirect(
 			$url,
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_CONTENT')
 		);
@@ -559,7 +559,7 @@ class Items extends AdminController
 		$pAuthor = new Tables\Author( $this->database );
 		if (!$pAuthor->load($aid))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
 				'error'
@@ -579,7 +579,7 @@ class Items extends AdminController
 
 		if (!$pAuthor->delete())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($url, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_TO_DELETE_AUTHOR'),
 				'error'
@@ -588,7 +588,7 @@ class Items extends AdminController
 		}
 
 		// Redirect back to publication
-		$this->setRedirect(
+		App::redirect(
 			Route::url($url, false),
 			Lang::txt('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR')
 		);
@@ -617,7 +617,7 @@ class Items extends AdminController
 		if (!$neworder)
 		{
 			// Nothing to save
-			$this->setRedirect(
+			App::redirect(
 				$url
 			);
 			return;
@@ -628,7 +628,7 @@ class Items extends AdminController
 
 		if (!$model->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
 				'error'
@@ -649,7 +649,7 @@ class Items extends AdminController
 		$block->reorder(NULL, 0, $model, User::get('id'));
 		if ($block->getError())
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				$block->getError(),
 				'error'
@@ -677,7 +677,7 @@ class Items extends AdminController
 			}
 
 			// Redirect back to publication
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
 			);
@@ -713,7 +713,7 @@ class Items extends AdminController
 
 		if (!$model->exists())
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
 				'error'
@@ -742,7 +742,7 @@ class Items extends AdminController
 
 		if ($block->getError())
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				$block->getError(),
 				'error'
@@ -769,7 +769,7 @@ class Items extends AdminController
 			}
 
 			// Redirect back to publication
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
 			);
@@ -808,7 +808,7 @@ class Items extends AdminController
 		$isnew = $id ? 0 : 1;
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'error'
@@ -1026,7 +1026,7 @@ class Items extends AdminController
 
 							if (!$doi)
 							{
-								$this->setRedirect(
+								App::redirect(
 									$url, Lang::txt('COM_PUBLICATIONS_ERROR_DOI')
 									. ' ' . $doiService->getError(), 'error');
 								return;
@@ -1113,7 +1113,7 @@ class Items extends AdminController
 			// Store content
 			if (!$this->model->version->store())
 			{
-				$this->setRedirect(
+				App::redirect(
 					$url, $this->model->version->getError(), 'error'
 				);
 				return;
@@ -1222,14 +1222,14 @@ class Items extends AdminController
 		// Redirect to edit view?
 		if ($redirect)
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				$output
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option
 				. '&controller=' . $this->_controller, false),
 				$output
@@ -1373,7 +1373,7 @@ class Items extends AdminController
 		// Need ID
 		if (!$id)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'notice'
@@ -1429,7 +1429,7 @@ class Items extends AdminController
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'notice'
@@ -1547,7 +1547,7 @@ class Items extends AdminController
 		$output = ($version != 'all')
 			? Lang::txt('COM_PUBLICATIONS_SUCCESS_VERSION_DELETED')
 			: Lang::txt('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED') . ' (' . count($ids) . ')';
-		$this->setRedirect(
+		App::redirect(
 			$this->buildRedirectURL(),
 			$output
 		);
@@ -1613,7 +1613,7 @@ class Items extends AdminController
 		$row->checkin();
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller, false)
 		);
@@ -1649,7 +1649,7 @@ class Items extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $id, false),
@@ -1684,7 +1684,7 @@ class Items extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $id, false),
@@ -1763,7 +1763,7 @@ class Items extends AdminController
 				$objP->checkin();
 
 				// Redirect
-				$this->setRedirect( $url, Lang::txt('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
+				App::redirect( $url, Lang::txt('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
 				return;
 			}
 		}
@@ -1779,7 +1779,7 @@ class Items extends AdminController
 		$objP->checkin();
 
 		// Redirect
-		$this->setRedirect( $url );
+		App::redirect($url);
 	}
 
 	/**
@@ -1805,8 +1805,8 @@ class Items extends AdminController
 		}
 
 		// Redirect
-		$this->_redirect = Route::url('index.php?option=' . $this->_option
-			. '&controller=' . $this->_controller, false);
+		App::redirect(Route::url('index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller, false));
 	}
 
 	/**

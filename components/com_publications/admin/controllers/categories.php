@@ -187,7 +187,7 @@ class Categories extends AdminController
 		if (!$row->bind($prop))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect($url);
+			App::redirect($url);
 			return;
 		}
 
@@ -254,28 +254,28 @@ class Categories extends AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setRedirect($url, $row->getError(), 'error');
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setRedirect($url, $row->getError(), 'error');
+			App::redirect($url, $row->getError(), 'error');
 			return;
 		}
 
 		// Redirect to edit view?
 		if ($redirect)
 		{
-			$this->setRedirect(
+			App::redirect(
 				$url,
 				Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED')
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED')
 			);
@@ -312,7 +312,7 @@ class Categories extends AdminController
 				if (!$row->store())
 				{
 					$this->addComponentMessage($row->getError(), 'error');
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 					);
 					return;
@@ -321,7 +321,7 @@ class Categories extends AdminController
 		}
 
 		// Redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_PUBLICATIONS_CATEGORY_ITEM_STATUS_CHNAGED')
 		);
@@ -334,7 +334,7 @@ class Categories extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 
 	/**

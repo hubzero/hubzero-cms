@@ -729,17 +729,16 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$route = $this->model->isProvisioned()
 				? 'index.php?option=com_publications&task=submit'
 				: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
-			$url = Route::url($route . '&pid=' . $pid);
-			$this->_redirect = $url;
+			App::redirect(Route::url($route . '&pid=' . $pid));
 			return;
 		}
 		else
 		{
 			$url = $setup
-							? Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->model->get('alias') . '&task=setup&step=1')
-							: Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->model->get('alias') . '&task=edit&edit=team');
+					? Route::url('index.php?option=' . $this->_option
+					. '&alias=' . $this->model->get('alias') . '&task=setup&step=1')
+					: Route::url('index.php?option=' . $this->_option
+					. '&alias=' . $this->model->get('alias') . '&task=edit&edit=team');
 			$this->_referer = $url;
 		}
 

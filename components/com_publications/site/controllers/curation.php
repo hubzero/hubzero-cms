@@ -237,7 +237,7 @@ class Curation extends SiteController
 		// We can only view pending publications
 		if ($this->_pub->state != 5)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=curation'),
 				Lang::txt('COM_PUBLICATIONS_CURATION_PUB_WRONG_STATUS'),
 				'error'
@@ -497,7 +497,7 @@ class Curation extends SiteController
 		$class   = $this->getError() ? 'error' : 'success';
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=curation'),
 			$message,
 			$class
@@ -584,7 +584,7 @@ class Curation extends SiteController
 		$class   = $this->getError() ? 'error' : 'success';
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=curation'),
 			$message,
 			$class
@@ -644,7 +644,7 @@ class Curation extends SiteController
 		$this->onAfterStatusChange();
 
 		// Redirect to main listing
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=curation'),
 			Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_KICKBACK')
 		);
@@ -895,7 +895,7 @@ class Curation extends SiteController
 	{
 		$rtrn = Request::getVar('REQUEST_URI',
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'

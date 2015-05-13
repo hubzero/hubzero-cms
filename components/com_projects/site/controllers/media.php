@@ -365,7 +365,7 @@ class Media extends Base
 		}
 
 		// Return to project page
-		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias'));
+		App::redirect(Route::url($this->model->link()));
 		return;
 	}
 

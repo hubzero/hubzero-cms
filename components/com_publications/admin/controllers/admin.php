@@ -46,7 +46,7 @@ class Admin extends AdminController
 	public function displayTask()
 	{
 		// Redirect to Publication Manager for now
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=items', false)
 		);
 		return;
@@ -59,7 +59,7 @@ class Admin extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option
+		App::redirect(Route::url('index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller, false));
 	}
 }

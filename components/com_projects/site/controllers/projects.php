@@ -359,8 +359,8 @@ class Projects extends Base
 		// Check if project is in setup
 		if ($this->model->inSetup() && !$ajax)
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=setup&alias=' . $this->model->get('alias'));
+			App::redirect(Route::url('index.php?option=' . $this->_option
+				. '&task=setup&alias=' . $this->model->get('alias')));
 			return;
 		}
 
@@ -410,7 +410,7 @@ class Projects extends Base
 			$pub = $this->model->getPublication();
 			if ($pub && $pub->id)
 			{
-				$this->_redirect = Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id);
+				App::redirect(Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id));
 				return;
 			}
 			else
@@ -474,8 +474,7 @@ class Projects extends Base
 						);
 
 						// Go to project page
-						$this->_redirect = Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->model->get('alias'));
+						App::redirect(Route::url($this->model->link()));
 						return;
 					}
 				}
@@ -574,8 +573,7 @@ class Projects extends Base
 						return;
 					}
 
-					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&task=view&alias=' . $this->model->get('alias'));
+					App::redirect(Route::url($this->model->link()));
 					return;
 				}
 
@@ -614,7 +612,7 @@ class Projects extends Base
 						}
 						elseif (isset($section['referer']) && $section['referer'] != '')
 						{
-							$this->_redirect = $section['referer'];
+							App::redirect($section['referer']);
 							return;
 						}
 					}
@@ -622,8 +620,7 @@ class Projects extends Base
 				else
 				{
 					// No html output
-					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&task=view&alias=' . $this->model->get('alias'));
+					App::redirect(Route::url($this->model->link()));
 					return;
 				}
 			}
@@ -650,8 +647,7 @@ class Projects extends Base
 						User::get('id'),
 						$param = 'hide_welcome', 1
 					);
-					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&task=view&alias=' . $this->model->get('alias'));
+					App::redirect(Route::url($this->model->link()));
 					return;
 				}
 			}
@@ -710,16 +706,14 @@ class Projects extends Base
 		if (!$this->model->isProvisioned())
 		{
 			// Redirect to project page
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias'));
+			App::redirect(Route::url($this->model->link()));
 			return;
 		}
 
 		// Redirect to setup if activation not complete
 		if ($this->model->inSetup())
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=setup&alias=' . $this->model->get('alias'));
+			App::redirect(Route::url($this->model->link('setup')));
 			return;
 		}
 
@@ -832,8 +826,7 @@ class Projects extends Base
 		$this->_logActivity($this->model->get('id'), 'provisioned', 'activate', 'save', 1);
 
 		// Send to continue setup
-		$this->_redirect = Route::url('index.php?option=' . $this->_option
-			. '&task=setup&alias=' . $this->model->get('alias'));
+		App::redirect(Route::url($this->model->link('setup')));
 		return;
 	}
 
@@ -854,8 +847,7 @@ class Projects extends Base
 		// Already suspended
 		if ($this->_task == 'suspend' && $this->model->isInactive())
 		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->model->get('alias'));
+			App::redirect(Route::url($this->model->link()));
 			return;
 		}
 
@@ -898,8 +890,7 @@ class Projects extends Base
 			if (!$this->model->groupOwner('id'))
 			{
 				// Nothing to fix
-				$this->_redirect = Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $this->model->get('alias'));
+				App::redirect(Route::url($this->model->link()));
 				return;
 			}
 			$this->model->set('owned_by_group', 0);
@@ -1019,7 +1010,7 @@ class Projects extends Base
 			$return = $json->return;
 		}
 
-		$this->_redirect = $return;
+		App::redirect($return);
 		return;
 	}
 
@@ -1266,8 +1257,8 @@ class Projects extends Base
 			}
 
 			// Go back to project listing
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby);
+			App::redirect(Route::url('index.php?option=' . $this->_option
+				. '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby));
 			return;
 		}
 		else
