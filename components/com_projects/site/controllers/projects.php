@@ -814,15 +814,17 @@ class Projects extends Base
 		// Rename project parent directory
 		if ($path && is_dir($path))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			if (!$fileSystem->copyDirectory($path, $newpath))
+			if (!Filesystem::copyDirectory($path, $newpath))
 			{
 				$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
 			}
 			else
 			{
+				// Correct permissions to 0755
+				Filesystem::setPermissions($newpath);
+
 				// Delete original repo
-				$fileSystem->deleteDirectory($path);
+				Filesystem::deleteDirectory($path);
 			}
 		}
 

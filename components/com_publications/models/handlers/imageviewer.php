@@ -109,7 +109,7 @@ class ImageViewer extends Base
 		if (is_file($thumbPath))
 		{
 			$md5 = hash_file('sha256', $thumbPath);
-			\JFile::delete($thumbPath);
+			Filesystem::delete($thumbPath);
 		}
 
 		// Get master and default thumb
@@ -122,12 +122,12 @@ class ImageViewer extends Base
 			if (is_file($masterThumb) &&  hash_file('sha256', $masterThumb) == $md5)
 			{
 				// Delete master thumbnail
-				\JFile::delete($masterThumb);
+				Filesystem::delete($masterThumb);
 
 				// Remove master cover
 				if (is_file($masterCover))
 				{
-					\JFile::delete($masterCover);
+					Filesystem::delete($masterCover);
 				}
 			}
 		}
@@ -179,10 +179,10 @@ class ImageViewer extends Base
 		// Copy to master
 		if (is_file($path))
 		{
-			\JFile::copy($path, $copyToMaster);
+			Filesystem::copy($path, $copyToMaster);
 
 			// Create/update thumb
-			\JFile::copy($path, $copyToThumb);
+			Filesystem::copy($path, $copyToThumb);
 
 			$hi = new \Hubzero\Image\Processor($copyToThumb);
 			if (count($hi->getErrors()) == 0)
@@ -407,11 +407,10 @@ class ImageViewer extends Base
 		// Create/update thumb if doesn't exist or file changed
 		if (!is_file($thumbPath) || $md5 != $row->content_hash)
 		{
-			\JFile::copy($fpath, $thumbPath);
+			Filesystem::copy($fpath, $thumbPath);
 			$hi = new \Hubzero\Image\Processor($thumbPath);
 			if (count($hi->getErrors()) == 0)
 			{
-				//$square = $this->_config->params->thumbWidth == $this->_config->params->thumbHeight ? true : false;
 				$hi->resize($this->_config->params->thumbWidth, false, true, true);
 				$hi->save($thumbPath);
 			}
@@ -536,8 +535,8 @@ class ImageViewer extends Base
 		// Draw images
 		$view = new \Hubzero\Component\View(array(
 			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
-			'name'   => 'handlers',
-			'layout' => 'imagegallery',
+			'name'      => 'handlers',
+			'layout'    => 'imagegallery',
 		));
 		return $view->loadTemplate();
 	}

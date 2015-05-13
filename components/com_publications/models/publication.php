@@ -1947,8 +1947,7 @@ class Publication extends Object
 		// Create log directory
 		if (!is_dir(PATH_APP . $logPath))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			$fileSystem->makeDirectory( PATH_APP . $logPath, 0755, true, true);
+			Filesystem::makeDirectory( PATH_APP . $logPath, 0755, true, true);
 		}
 
 		$this->_tblLog->logAccess($this->get('id'), $this->get('version_id'), $type, $logPath);

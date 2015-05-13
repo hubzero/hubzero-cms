@@ -326,8 +326,7 @@ class Tool extends Base
 		// Create new version path
 		if (!is_dir( $configs->dataPath ))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			if (!$fileSystem->makeDirectory( $configs->dataPath, 0755, true, true ))
+			if (!Filesystem::makeDirectory( $configs->dataPath, 0755, true, true ))
 			{
 				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;

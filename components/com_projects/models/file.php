@@ -181,7 +181,6 @@ class File extends Object
 			return false;
 		}
 
-		$fileSystem = new \Hubzero\Filesystem\Filesystem();
 		$image = NULL;
 
 		if (!$hashed)
@@ -233,9 +232,9 @@ class File extends Object
 			$image = $target . DS . $remoteThumb;
 
 			// Copy this over as local thumb
-			if ($hashed && $fileSystem->copy($target . DS . $remoteThumb, $target . DS . $hashed))
+			if ($hashed && Filesystem::copy($target . DS . $remoteThumb, $target . DS . $hashed))
 			{
-				$fileSystem->delete($target . DS . $remoteThumb);
+				Filesystem::delete($target . DS . $remoteThumb);
 			}
 		}
 		else
@@ -243,7 +242,7 @@ class File extends Object
 			// Generate thumbnail locally
 			if (!file_exists( $target ))
 			{
-				$fileSystem->makeDirectory( $target, 0755, true, true);
+				Filesystem::makeDirectory( $target, 0755, true, true);
 			}
 
 			// Make sure it's an image file
@@ -252,7 +251,7 @@ class File extends Object
 				return false;
 			}
 
-			if (!$fileSystem->copy($this->get('fullPath'), $target . DS . $hashed))
+			if (!Filesystem::copy($this->get('fullPath'), $target . DS . $hashed))
 			{
 				return false;
 			}
@@ -318,8 +317,7 @@ class File extends Object
 		// Get size for local
 		if (!$this->get('remote') && $this->exists())
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			$this->set('size', $fileSystem->size($this->get('fullPath')));
+			$this->set('size', Filesystem::size($this->get('fullPath')));
 		}
 
 		// Formatted size

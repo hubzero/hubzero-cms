@@ -341,8 +341,7 @@ class Note extends \Components\Wiki\Models\Book
 
 		if (!is_dir(PATH_APP . $path))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			if (!$fileSystem->makeDirectory(PATH_APP . $path))
+			if (!Filesystem::makeDirectory(PATH_APP . $path))
 			{
 				return false;
 			}

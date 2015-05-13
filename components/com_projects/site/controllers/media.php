@@ -109,9 +109,6 @@ class Media extends Base
 			return;
 		}
 
-		// Filesystem
-		$fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 		// Make the filename safe
 		$file = \Components\Projects\Helpers\Html::makeSafeFile($file);
 
@@ -135,7 +132,7 @@ class Media extends Base
 
 		if (!is_dir( $path ))
 		{
-			if (!$fileSystem->makeDirectory( $path, 0755, true, true ))
+			if (!Filesystem::makeDirectory( $path, 0755, true, true ))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
@@ -145,7 +142,7 @@ class Media extends Base
 		// Delete older file with same name
 		if (file_exists($path . DS . $file))
 		{
-			$fileSystem->delete($path . DS . $file);
+			Filesystem::delete($path . DS . $file);
 		}
 
 		if ($stream)
@@ -199,7 +196,7 @@ class Media extends Base
 			// Delete previous thumb
 			if (file_exists($path . DS . 'thumb.png'))
 			{
-				$fileSystem->delete($path . DS . 'thumb.png');
+				Filesystem::delete($path . DS . 'thumb.png');
 			}
 
 			// create thumb
@@ -300,11 +297,8 @@ class Media extends Base
 		}
 		else
 		{
-			// Filesystem
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 			// Attempt to delete the file
-			if (!$fileSystem->delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
 				if ($ajax)
@@ -321,7 +315,7 @@ class Media extends Base
 			$curthumb = file_exists($path . DS . $curthumb) ? $curthumb : 'thumb.png';
 			if (file_exists($path . DS . $curthumb))
 			{
-				if (!$fileSystem->delete($path . DS . $curthumb))
+				if (!Filesystem::delete($path . DS . $curthumb))
 				{
 					$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
 					if ($ajax)

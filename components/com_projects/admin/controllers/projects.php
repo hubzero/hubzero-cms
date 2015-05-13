@@ -609,8 +609,6 @@ class Projects extends AdminController
 		// Erase all files, remove files repository
 		if ($alias)
 		{
-			$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 			// Delete base dir for .git repos
 			$dir 		= $alias;
 			$prefix 	= $this->config->get('offroot', 0) ? '' : PATH_CORE ;
@@ -619,7 +617,7 @@ class Projects extends AdminController
 
 			if (is_dir($path))
 			{
-				$this->fileSystem->deleteDirectory($path);
+				Filesystem::deleteDirectory($path);
 			}
 
 			// Delete images/preview directories
@@ -628,14 +626,8 @@ class Projects extends AdminController
 
 			if (is_dir($webpath))
 			{
-				$this->fileSystem->deleteDirectory($webpath);
+				Filesystem::deleteDirectory($webpath);
 			}
-		}
-
-		// Erase all publications
-		if ($this->_publishing)
-		{
-			// TBD
 		}
 
 		// Redirect

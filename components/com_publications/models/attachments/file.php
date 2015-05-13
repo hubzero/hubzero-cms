@@ -57,9 +57,6 @@ class File extends Base
 		$configs	= new stdClass;
 		$typeParams = $element->typeParams;
 
-		// Filesystem
-		$configs->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 		// which directory to copy files to
 		$configs->directory = isset($typeParams->directory) && $typeParams->directory
 							? $typeParams->directory : $pub->secret;
@@ -579,7 +576,7 @@ class File extends Base
 		// Create new path
 		if (!is_dir( $newPath ))
 		{
-			$configs->fileSystem->makeDirectory( $newPath, 0755, true, true );
+			Filesystem::makeDirectory( $newPath, 0755, true, true );
 		}
 
 		// Loop through attachments
@@ -605,11 +602,11 @@ class File extends Base
 			// Make sure we have subdirectories
 			if (!is_dir(dirname($copyTo)))
 			{
-				$configs->fileSystem->makeDirectory( dirname($copyTo), 0755, true, true );
+				Filesystem::makeDirectory( dirname($copyTo), 0755, true, true );
 			}
 
 			// Copy file
-			if (!$configs->fileSystem->copy($copyFrom, $copyTo))
+			if (!Filesystem::copy($copyFrom, $copyTo))
 			{
 				$pAttach->delete();
 			}
@@ -785,7 +782,7 @@ class File extends Base
 		// Create pub version path
 		if (!is_dir( $path ))
 		{
-			if (!$configs->fileSystem->makeDirectory( $path, 0755, true, true ))
+			if (!Filesystem::makeDirectory( $path, 0755, true, true ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
@@ -1122,7 +1119,7 @@ class File extends Base
 		// Create pub version path
 		if (!is_dir( $configs->pubPath ))
 		{
-			if (!$configs->fileSystem->makeDirectory( $configs->pubPath, 0755, true, true ))
+			if (!Filesystem::makeDirectory( $configs->pubPath, 0755, true, true ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
@@ -1139,11 +1136,11 @@ class File extends Base
 			// If parent dir does not exist, we must create it
 			if ($configs->dirHierarchy && !file_exists(dirname($copyTo)))
 			{
-				$configs->fileSystem->makeDirectory(dirname($copyTo), 0755, true, true);
+				Filesystem::makeDirectory(dirname($copyTo), 0755, true, true);
 			}
 			if (!is_file($copyTo) || $update)
 			{
-				$configs->fileSystem->copy($copyFrom, $copyTo);
+				Filesystem::copy($copyFrom, $copyTo);
 			}
 		}
 
@@ -1198,12 +1195,12 @@ class File extends Base
 		// Delete file
 		if (is_file( $deletePath ))
 		{
-			if ($configs->fileSystem->delete($deletePath))
+			if (Filesystem::delete($deletePath))
 			{
 				// Also delete hash file
 				if (is_file($hfile))
 				{
-					$configs->fileSystem->delete($hfile);
+					Filesystem::delete($hfile);
 				}
 
 				// Remove any related files managed by handler

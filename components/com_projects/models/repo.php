@@ -85,8 +85,6 @@ class Repo extends Object
 		$this->set('project', $project);
 		$this->set('name', $name);
 
-		$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 		// Initialiaze repo
 		$this->_ini();
 
@@ -1069,7 +1067,7 @@ class Repo extends Object
 		}
 
 		// Proceed with copy
-		if (!$this->fileSystem->copy($dataPath, $where))
+		if (!Filesystem::copy($dataPath, $where))
 		{
 			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_INSERT'));
 			return false;
@@ -1181,7 +1179,7 @@ class Repo extends Object
 			// Create dir to extract into
 			if (!is_dir($extractPath))
 			{
-				$this->fileSystem->makeDirectory($extractPath);
+				Filesystem::makeDirectory($extractPath);
 			}
 
 			try
@@ -1225,7 +1223,6 @@ class Repo extends Object
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
 
 		// Now copy extracted contents into project
-		$extracted = $this->fileSystem->directories($extractPath);
 		$extracted = \JFolder::files($extractPath, '.', true, true,
 			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
 
@@ -1269,7 +1266,7 @@ class Repo extends Object
 			// Provision directory
 			if ($safe_dir && !$skipDir && !is_dir($target . DS . $safe_dir ))
 			{
-				if ($this->fileSystem->makeDirectory( $target . DS . $safe_dir, 0755, true, true ))
+				if (Filesystem::makeDirectory( $target . DS . $safe_dir, 0755, true, true ))
 				{
 					// File object
 					$localDirPath = $dirPath ? $dirPath . DS . $safe_dir : $safe_dir;
@@ -1285,7 +1282,7 @@ class Repo extends Object
 			}
 
 			// Copy file into project
-			if ($this->fileSystem->copy($e, $target . DS . $safeName))
+			if (Filesystem::copy($e, $target . DS . $safeName))
 			{
 				// File object
 				$fileObject        = new Models\File(trim($localPath), $this->get('path'));
@@ -1346,7 +1343,7 @@ class Repo extends Object
 	{
 		if ($this->get('path') && !is_dir($this->get('path')))
 		{
-			if (!$this->fileSystem->makeDirectory($this->get('path'), 0755, true, true))
+			if (!Filesystem::makeDirectory($this->get('path'), 0755, true, true))
 			{
 				$this->setError( Lang::txt('COM_PROJECTS_FILES_ERROR_UNABLE_TO_CREATE_PATH') );
 				return false;

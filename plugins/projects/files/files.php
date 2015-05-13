@@ -223,9 +223,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 										'auto'		=> NULL
 										);
 
-			// Hubzero library classes
-			$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 			// Set routing
 			$this->_route = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
 
@@ -1680,19 +1677,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename($serve);
-		$xserver->disposition($disp);
-		$xserver->acceptranges(false); // @TODO fix byte range support
-		$xserver->saveas(basename($file));
+		$server = new \Hubzero\Content\Server();
+		$server->filename($serve);
+		$server->disposition($disp);
+		$server->acceptranges(false); // @TODO fix byte range support
+		$server->saveas(basename($file));
 
-		$result = $xserver->serve();
+		$result = $server->serve();
 
 		if ($deleteTemp)
 		{
 			// Delete downloaded temp file
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			$fileSystem->delete($serve);
+			Filesystem::delete($serve);
 		}
 
 		if (!$result)
@@ -2118,7 +2114,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Make sure output dir exists
 		if (!is_dir( PATH_APP . DS . $outputDir ))
 		{
-			if (!$this->fileSystem->makeDirectory( PATH_APP . DS . $outputDir ))
+			if (!Filesystem::makeDirectory( PATH_APP . DS . $outputDir ))
 			{
 				$this->setError( Lang::txt('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -2222,7 +2218,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Make sure we can handle preview of this type of file
 			if ($file->get('ext') == 'pdf' || $file->isImage() || !$file->isBinary())
 			{
-				$this->fileSystem->copy($file->get('fullPath'), PATH_APP . $outputDir . DS . $tempBase);
+				Filesystem::copy($file->get('fullPath'), PATH_APP . $outputDir . DS . $tempBase);
 				$contentFile = $tempBase;
 			}
 		}
@@ -2290,7 +2286,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$pdfName = str_replace('temp__', '', basename($contentFile));
 				$where 	 = $this->subdir ? $this->subdir. DS . $pdfName : $pdfName;
 
-				if ($this->fileSystem->copy(PATH_APP . $outputDir . DS . $contentFile, $this->_path . DS . $where))
+				if (Filesystem::copy(PATH_APP . $outputDir . DS . $contentFile, $this->_path . DS . $where))
 				{
 					// Checkin into repo
 					$params = array('subdir' => $this->subdir);
@@ -3538,7 +3534,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
 				if ($remote['status'] != 'D' && $local_dir && !is_dir( $this->_path . DS . $local_dir ))
 				{
-					if ($this->fileSystem->makeDirectory( $this->_path . DS . $local_dir ))
+					if (Filesystem::makeDirectory( $this->_path . DS . $local_dir ))
 					{
 						$created = $this->_git->makeEmptyFolder($local_dir, false);
 						$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
@@ -3685,7 +3681,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Add item from remote to local (new)
 						if ($remote['type'] == 'folder')
 						{
-							if ($this->fileSystem->makeDirectory( $this->_path . DS . $filename, 0755, true, true ))
+							if (Filesystem::makeDirectory( $this->_path . DS . $filename, 0755, true, true ))
 							{
 								$created = $this->_git->makeEmptyFolder($filename, false);
 								$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
@@ -4124,7 +4120,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!is_dir( PATH_APP . $path ))
 		{
-			if (!$this->fileSystem->makeDirectory( PATH_APP . $path, 0755, true, true ))
+			if (!Filesystem::makeDirectory( PATH_APP . $path, 0755, true, true ))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -4149,14 +4145,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$subdir = trim($this->subdir, DS);
 		$fullpath = $subdir ? $this->_path. DS . $subdir : $this->_path;
 
-		$get = $this->fileSystem->files($fullpath);
+		$get = Filesystem::files($fullpath);
 
 		$files = array();
 		if ($get)
 		{
 			foreach ($get as $file)
 			{
-				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
+				if (substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html')
 				{
 					$file = str_replace($this->_path . DS, '', $file);
 					$entry = new \Components\Projects\Models\File(trim($file), $this->_path);
@@ -4497,9 +4493,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			if (!is_dir($this->_logPath))
 			{
-				$this->fileSystem->makeDirectory($this->_logPath);
+				Filesystem::makeDirectory($this->_logPath);
 			}
-			$sfile 	 = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
 		}
 		else
 		{

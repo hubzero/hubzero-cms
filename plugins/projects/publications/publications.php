@@ -195,9 +195,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->_video_ext = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('video_types', 'avi, mpeg, mov, wmv' ));
 
-		// Hubzero library classes
-		$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 		// Check if exists or new
 		if (!$this->model->exists())
 		{
@@ -2455,7 +2452,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Delete all version files
 					if (is_dir($vPath))
 					{
-						$this->fileSystem->deleteDirectory($vPath);
+						Filesystem::deleteDirectory($vPath);
 					}
 
 					// Delete access accosiations
@@ -2472,7 +2469,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						// Delete all files
 						if (is_dir($path))
 						{
-							$this->fileSystem->delete($path);
+							Filesystem::delete($path);
 						}
 
 						$pub->publication->delete($pid);
@@ -2666,7 +2663,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!is_dir( PATH_APP . $path ))
 		{
-			if (!$this->fileSystem->makeDirectory( PATH_APP . $path ))
+			if (!Filesystem::makeDirectory( PATH_APP . $path ))
 			{
 				$this->setError(\Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -2702,14 +2699,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Copy files from member directory
-		if (!$this->fileSystem->copyDirectory($memberPath, $this->model->repo()->get('path')))
+		if (!Filesystem::copyDirectory($memberPath, $this->model->repo()->get('path')))
 		{
 			$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
 			return false;
 		}
 
+		// Set permissions to 0755
+		Filesystem::setPermissions($newpath);
+
 		// Read copied files
-		$get = $this->fileSystem->files($this->model->repo()->get('path'));
+		$get = Filesystem::files($this->model->repo()->get('path'));
 
 		$num = count($get);
 		$checkedin = 0;
@@ -2724,7 +2724,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				{
 					// Checkin into repo
 					$this->model->repo()->call('checkin', array(
-						'file'   => $this->model->repo()->getMetadata($filename, 'file', array())
+						'file' => $this->model->repo()->getMetadata($filename, 'file', array())
 						)
 					);
 					$checkedin++;
@@ -2734,7 +2734,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($num == $checkedin)
 		{
 			// Clean up member files
-			$this->fileSystem->deleteDirectory($memberPath);
+			Filesystem::deleteDirectory($memberPath);
 			return true;
 		}
 

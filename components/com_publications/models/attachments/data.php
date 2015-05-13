@@ -362,7 +362,7 @@ class Data extends Base
 		// Create new version path
 		if (!is_dir( $configs->dataPath ))
 		{
-			if (!\JFolder::create( $configs->dataPath ))
+			if (!Filesystem::makeDirectory( $configs->dataPath ))
 			{
 				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
@@ -370,7 +370,7 @@ class Data extends Base
 		}
 
 		// Get actor
-		$uid   = User::get('id');
+		$uid = User::get('id');
 
 		// Counters
 		$i = 0;
@@ -914,7 +914,6 @@ class Data extends Base
 		// Copy files from repo to published location
 		if (!empty($files))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
 			foreach ($files as $file)
 			{
 				if (!file_exists( $repoPath . DS . $file))
@@ -925,14 +924,14 @@ class Data extends Base
 				// If parent dir does not exist, we must create it
 				if (!file_exists(dirname($configs->dataPath . DS . $file)))
 				{
-					$fileSystem->makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
+					Filesystem::makeDirectory(dirname($configs->dataPath . DS . $file), 0755, true, true);
 				}
 
-				if ($fileSystem->copy($repoPath . DS . $file, $configs->dataPath . DS . $file))
+				if (Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $file))
 				{
 					// Generate thumbnail
 					$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
-					$fileSystem->copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
+					Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
 
 					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
 					if (count($hi->getErrors()) == 0)
@@ -946,8 +945,8 @@ class Data extends Base
 					}
 
 					// Generate medium image
-					$med 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
-					$fileSystem->copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
+					$med = \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
+					Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
 
 					$hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);
 					if (count($hi->getErrors()) == 0)

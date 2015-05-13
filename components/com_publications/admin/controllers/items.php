@@ -1532,13 +1532,12 @@ class Items extends AdminController
 
 					// Build publication path
 					$path    =  PATH_APP . DS . trim($this->config->get('webpath'), DS)
-							. DS .  \Hubzero\Utility\String::pad( $id );
+							. DS . \Hubzero\Utility\String::pad( $id );
 
 					// Delete all files
 					if (is_dir($path))
 					{
-						$fileSystem = new \Hubzero\Filesystem\Filesystem();
-						$fileSystem->deleteDirectory($path);
+						Filesystem::deleteDirectory($path);
 					}
 				}
 			}
@@ -1589,8 +1588,7 @@ class Items extends AdminController
 		// Delete all files
 		if (is_dir($path))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-			$fileSystem->deleteDirectory($path);
+			Filesystem::deleteDirectory($path);
 		}
 
 		return true;

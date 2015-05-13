@@ -159,9 +159,6 @@ class Batchcreate extends AdminController
 
 		$this->data = NULL;
 
-		// Filesystem
-		$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 		// Project ID must be supplied
 		$this->project = new \Components\Projects\Models\Project($id);
 		if ($this->project->exists())

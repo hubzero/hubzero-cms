@@ -1095,9 +1095,9 @@ class Html extends Object
 	public static function virusCheck( $fpath = '' )
 	{
 		jimport('joomla.filesystem.file');
-		if (!\JFile::isSafe($fpath))
+		if (!Filesystem::isSafe($fpath))
 		{
-			\JFile::delete($fpath);
+			Filesystem::delete($fpath);
 			return true;
 		}
 

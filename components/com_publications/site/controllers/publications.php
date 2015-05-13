@@ -922,9 +922,7 @@ class Publications extends SiteController
 
 		if (!is_dir( $path ))
 		{
-			$fileSystem = new \Hubzero\Filesystem\Filesystem();
-
-			if (!$fileSystem->makeDirectory( PATH_APP . $path, 0755, true, true))
+			if (!Filesystem::makeDirectory( PATH_APP . $path, 0755, true, true))
 			{
 				$this->setError( 'Error. Unable to create path.' );
 			}

@@ -76,9 +76,6 @@ class Git extends Models\Adapter
 		// Git helper
 		$this->_git = new Helpers\Git($this->_path);
 
-		// File manager
-		$this->fileSystem = new \Hubzero\Filesystem\Filesystem();
-
 		$this->set('remote', $remote);
 	}
 
@@ -461,7 +458,7 @@ class Git extends Models\Adapter
 
 		if (!$this->get('remote'))
 		{
-			if ($this->fileSystem->makeDirectory($file->get('fullPath'), 0755, true, true))
+			if (Filesystem::makeDirectory($file->get('fullPath'), 0755, true, true))
 			{
 				$this->checkin($params);
 				return true;
@@ -494,7 +491,7 @@ class Git extends Models\Adapter
 		if (!$this->get('remote') && file_exists($file->get('fullPath')))
 		{
 			// Remove directory that is not in Git
-			if (!$this->fileSystem->deleteDirectory($file->get('fullPath')))
+			if (!Filesystem::deleteDirectory($file->get('fullPath')))
 			{
 				return false;
 			}
@@ -527,7 +524,7 @@ class Git extends Models\Adapter
 		if (!$this->get('remote') && file_exists($file->get('fullPath')))
 		{
 			// Remove file that is not in Git
-			if (!$this->fileSystem->delete($file->get('fullPath')))
+			if (!Filesystem::delete($file->get('fullPath')))
 			{
 				return false;
 			}
