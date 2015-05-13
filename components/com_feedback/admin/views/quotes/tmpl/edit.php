@@ -181,7 +181,7 @@ jQuery(document).ready(function($) {
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FEEDBACK_SHORT_QUOTE_NOTE'); ?>">
 				<label for="field-short_quote"><?php echo Lang::txt('COM_FEEDBACK_SHORT_QUOTE'); ?>:</label><br />
-				<?php echo $editor->display('short_quote', $short_quote, '', '', '40', '10', false, 'field-short_quote'); ?>
+				<?php echo $this->editor('short_quote', $short_quote, 40, 10, 'field-short_quote'); ?>
 				<span class="hint"><?php echo Lang::txt('COM_FEEDBACK_SHORT_QUOTE_NOTE'); ?></span>
 			</div>
 
@@ -193,7 +193,7 @@ jQuery(document).ready(function($) {
 
 			<div class="input-wrap">
 				<label for="field-quote"><?php echo Lang::txt('COM_FEEDBACK_FULL_QUOTE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo $editor->display('quote',  stripslashes($this->row->quote) , '', '', '50', '10', false, 'field-quote'); ?>
+				<?php echo $this->editor('quote', stripslashes($this->row->quote), 50, 10, 'field-quote'); ?>
 			</div>
 
 			<div class="input-wrap">
@@ -203,7 +203,7 @@ jQuery(document).ready(function($) {
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FEEDBACK_EDITOR_NOTES_EXPLANATION'); ?>">
 				<label for="field-notes"><?php echo Lang::txt('COM_FEEDBACK_EDITOR_NOTES'); ?>:</label><br />
-				<?php echo $editor->display('notes',  stripslashes($this->row->notes) , '', '', '50', '10', false, 'field-notes'); ?>
+				<?php echo $this->editor('notes', stripslashes($this->row->notes), 50, 10, 'field-notes'); ?>
 				<span class="hint"><?php echo Lang::txt('COM_FEEDBACK_EDITOR_NOTES_EXPLANATION'); ?></span>
 			</div>
 		</fieldset>
