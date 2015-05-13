@@ -56,7 +56,7 @@ class Attachment extends Object
 	 *
 	 * @access protected
 	 */
-	public function __construct($parent = null) 
+	public function __construct($parent = null)
 	{
 		$this->_parent = $parent;
 	}
@@ -67,7 +67,7 @@ class Attachment extends Object
 	* @access public
 	* @return string type of the parameter
 	*/
-	public function getName() 
+	public function getName()
 	{
 		return $this->_name;
 	}
@@ -78,7 +78,7 @@ class Attachment extends Object
 	* @access public
 	* @return string type of the parameter
 	*/
-	public function getConnector() 
+	public function getConnector()
 	{
 		return $this->_connector;
 	}

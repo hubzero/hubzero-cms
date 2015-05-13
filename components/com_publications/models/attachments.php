@@ -71,7 +71,7 @@ class Attachments extends Object
 		$this->_db 		= $db;
 		$this->_path[] 	= dirname(__FILE__) . DS . 'attachments';
 	}
-	
+
 	/**
 	 * Get attachments connector
 	 *
