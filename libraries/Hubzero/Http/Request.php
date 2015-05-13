@@ -95,13 +95,13 @@ class Request extends BaseRequest
 			case 'post':
 			case 'request':
 				$hash = 'request';
-				$this->post->set($name, $value);
+				//$this->request->set($name, $value);
 			break;
 
 			case 'get':
 			case 'query':
 				$hash = 'query';
-				$this->request->set($name, $value);
+				//$this->request->set($name, $value);
 			break;
 
 			case 'header':
