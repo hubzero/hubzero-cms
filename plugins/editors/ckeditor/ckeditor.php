@@ -451,12 +451,15 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 				array_push($css, $templateCss);
 			}
 
-			$head = Document::getHeadData();
-
-			// add already added stylesheets
-			foreach ($head['styleSheets'] as $sheet => $attribs)
+			if (Document::getType() == 'html')
 			{
-				array_push($css, $sheet);
+				$head = Document::getHeadData();
+
+				// add already added stylesheets
+				foreach ($head['styleSheets'] as $sheet => $attribs)
+				{
+					array_push($css, $sheet);
+				}
 			}
 
 			// set the content css
