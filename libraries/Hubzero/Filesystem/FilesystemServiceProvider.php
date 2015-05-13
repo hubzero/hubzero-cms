@@ -31,6 +31,7 @@
 namespace Hubzero\Filesystem;
 
 use Hubzero\Filesystem\Adapter\Local;
+use Hubzero\Filesystem\Adapter\Ftp;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -47,7 +48,20 @@ class FilesystemServiceProvider extends ServiceProvider
 	{
 		$this->app['filesystem'] = function($app)
 		{
-			$adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+			if ($app['config']->get('ftp_enable'))
+			{
+				$adapter = new Ftp(array(
+					'host'     => $app['config']->get('ftp_host'),
+					'port'     => $app['config']->get('ftp_port'),
+					'username' => $app['config']->get('ftp_user'),
+					'password' => $app['config']->get('ftp_pass'),
+					'root'     => $app['config']->get('ftp_root'),
+				));
+			}
+			else
+			{
+				$adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+			}
 
 			return new Filesystem($adapter);
 		};
