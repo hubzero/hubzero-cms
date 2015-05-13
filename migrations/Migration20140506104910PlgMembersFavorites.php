@@ -25,7 +25,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 			$this->db->setQuery($query);
 			if ($results = $this->db->loadObjectList())
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 				$objs  = array();
 				$usrs  = array();
@@ -55,7 +55,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 							{
 								// No default collection.
 								// So, we make one.
-								$tbl = new CollectionsTableCollection($this->db);
+								$tbl = new \Components\Collections\Tables\Collection($this->db);
 								$tbl->setup($result->uid, 'member');
 								$usrs[$result->uid] = $tbl->id;
 							}
@@ -69,7 +69,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 						if (!isset($objs[$result->oid]))
 						{
 							// Check if an item entry exists
-							$b = new CollectionsTableItem($this->db);
+							$b = new \Components\Collections\Tables\Item($this->db);
 							$b->loadType($result->oid, 'resource');
 							if (!$b->id)
 							{
@@ -106,7 +106,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 						}
 
 						// Create a post associating the item to a collection
-						$stick = new CollectionsTablePost($this->db);
+						$stick = new \Components\Collections\Tables\Post($this->db);
 						$stick->item_id       = $objs[$result->oid];
 						$stick->collection_id = $usrs[$result->uid];
 						$stick->created_by    = $result->uid;
