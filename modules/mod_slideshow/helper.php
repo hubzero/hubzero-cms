@@ -33,6 +33,7 @@ namespace Modules\Slideshow;
 
 use Hubzero\Document\Assets;
 use Hubzero\Module\Module;
+use Filesystem;
 use Lang;
 
 /**
@@ -71,13 +72,10 @@ class Helper extends Module
 
 		$swffile = rtrim(Assets::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
 		// check for directory
 		if (!is_dir(PATH_APP . DS . $image_dir ))
 		{
-			if (!\JFolder::create(PATH_APP . DS . $image_dir ))
+			if (!Filesystem::makeDirectory(PATH_APP . DS . $image_dir ))
 			{
 				echo Lang::txt('failed to create image directory') . ' ' . $image_dir;
 				$noflash = 1;
@@ -90,34 +88,24 @@ class Helper extends Module
 		}
 
 		$images = array();
-		$files = \JFolder::files(PATH_APP . DS . $image_dir, '.', false, true, array());
-		if (count($files)==0)
+		$files = Filesystem::files(PATH_APP . DS . $image_dir, '.', false, true, array());
+		if (count($files) == 0)
 		{
 			$image_dir = 'modules/mod_slideshow/assets/flash/images';
 		}
 
 		$noflash_file = 'modules/mod_slideshow/assets/flash/images/default_' . $width . 'x' . $height . '.jpg';
 
-		$d = @dir(PATH_APP . DS . $image_dir);
-
-		if ($d)
+		if (is_dir(PATH_APP . DS . $image_dir))
 		{
-			// fetch images
-			while (false !== ($entry = $d->read()))
+			$files = Filesystem::files(PATH_APP . DS . $image_dir, '.', false, true);
+			foreach ($files as $file)
 			{
-				$img_file = $entry;
-				if (is_file(PATH_APP . DS . $image_dir . DS . $img_file)
-				 && substr($entry, 0, 1) != '.'
-				 && strtolower($entry) !== 'index.html')
+				if (preg_match("/bmp|gif|jpg|png|swf$/i", strtolower($file)))
 				{
-					if (preg_match("#bmp|gif|jpg|png|swf#i", strtolower($img_file) ))
-					{
-						$images[] = $img_file;
-					}
+					$images[] = $file;
 				}
 			}
-
-			$d->close();
 
 			if (count($images) > 0)
 			{

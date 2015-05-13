@@ -81,8 +81,7 @@ if ($this->feed)
 		$path = DS . trim($this->params->get('webpath', '/site/youtube'), DS);
 		if (!is_dir(PATH_APP . $path))
 		{
-			jimport('joomla.filesystem.folder');
-			JFolder::create(PATH_APP . $path);
+			Filesystem::makeDirectory(PATH_APP . $path);
 		}
 		$isDir = is_dir(PATH_APP . $path);
 

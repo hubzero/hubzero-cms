@@ -32,7 +32,6 @@ namespace Modules\FeedYoutube;
 
 use Hubzero\Module\Module;
 use stdclass;
-use JFactory;
 use Lang;
 
 /**
@@ -62,7 +61,7 @@ class Helper extends Module
 			return;
 		}
 
-		$rssDoc = JFactory::getXMLparser('RSS', $options);
+		$rssDoc = \JFactory::getXMLparser('RSS', $options);
 
 		$this->feed = new stdclass();
 
