@@ -81,30 +81,6 @@ class Toolbar extends Object
 	}
 
 	/**
-	 * Stores the singleton instances of various toolbar.
-	 *
-	 * @var JToolbar
-	 */
-	//protected static $instances = array();
-
-	/**
-	 * Returns the global JToolBar object, only creating it if it
-	 * doesn't already exist.
-	 *
-	 * @param   string  $name  The name of the toolbar.
-	 * @return  object  The JToolBar object.
-	 */
-	/*public static function getInstance($name = 'toolbar')
-	{
-		if (empty(self::$instances[$name]))
-		{
-			self::$instances[$name] = new static($name);
-		}
-
-		return self::$instances[$name];
-	}*/
-
-	/**
 	 * Push button onto the end of the toolbar array.
 	 *
 	 * @return  string  The set value.
@@ -231,27 +207,13 @@ class Toolbar extends Object
 			return $this->_buttons[$signature];
 		}
 
-		/*if (!class_exists('Button'))
-		{
-			throw new \RuntimeException(\Lang::txt('JLIB_HTML_BUTTON_BASE_CLASS', $buttonClass, $buttonFile), 500);
-		}*/
-
 		$buttonClass = __NAMESPACE__ . '\\Toolbar\\Button\\' . $type;
 		if (!class_exists($buttonClass))
 		{
-			if (isset($this->_buttonPath))
-			{
-				$dirs = $this->_buttonPath;
-			}
-			else
-			{
-				$dirs = array();
-			}
+			$dirs = isset($this->_buttonPath) ? $this->_buttonPath : array();
+			$file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))  . '.php';
 
-			$file = \JFilterInput::getInstance()->clean(str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)) . '.php', 'path');
-
-			jimport('joomla.filesystem.path');
-			if ($buttonFile = \JPath::find($dirs, $file))
+			if ($buttonFile = $this->find($dirs, $file))
 			{
 				include_once $buttonFile;
 			}
@@ -264,21 +226,61 @@ class Toolbar extends Object
 		if (!class_exists($buttonClass))
 		{
 			throw new \Exception("Module file $buttonFile does not contain class $buttonClass.", 500);
-			return false;
 		}
+
 		$this->_buttons[$signature] = new $buttonClass($this);
 
 		return $this->_buttons[$signature];
 	}
 
 	/**
-	 * Add a directory where JToolBar should search for button types in LIFO order.
+	 * Searches the directory paths for a given file.
+	 *
+	 * @param   mixed   $paths  An path string or array of path strings to search in
+	 * @param   string  $file   The file name to look for.
+	 * @return  mixed   The full path and file name for the target file, or boolean false if the file is not found in any of the paths.
+	 */
+	protected function find($paths, $file)
+	{
+		settype($paths, 'array'); //force to array
+
+		// Start looping through the path set
+		foreach ($paths as $path)
+		{
+			// Get the path to the file
+			$fullname = $path . '/' . $file;
+
+			// Is the path based on a stream?
+			if (strpos($path, '://') === false)
+			{
+				// Not a stream, so do a realpath() to avoid directory
+				// traversal attempts on the local file system.
+				$path = realpath($path); // needed for substr() later
+				$fullname = realpath($fullname);
+			}
+
+			// The substr() check added to make sure that the realpath()
+			// results in a directory registered so that
+			// non-registered directories are not accessible via directory
+			// traversal attempts.
+			if (file_exists($fullname) && substr($fullname, 0, strlen($path)) == $path)
+			{
+				return $fullname;
+			}
+		}
+
+		// Could not find the file in the set of paths
+		return false;
+	}
+
+	/**
+	 * Add a directory where ToolBar should search for button types in LIFO order.
 	 *
 	 * You may either pass a string or an array of directories.
 	 *
-	 * JToolbar will be searching for an element type in the same order you
+	 * Toolbar will be searching for an element type in the same order you
 	 * added them. If the parameter type cannot be found in the custom folders,
-	 * it will look in libraries/joomla/html/toolbar/button.
+	 * it will look in __DIR__ . /toolbar/button.
 	 *
 	 * @param   mixed  $path  Directory or directories to search.
 	 * @return  void
