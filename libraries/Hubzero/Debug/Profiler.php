@@ -47,6 +47,13 @@ class Profiler extends Object
 	protected $started = 0;
 
 	/**
+	 * The start memory.
+	 *
+	 * @var  integer
+	 */
+	protected $memory = 0;
+
+	/**
 	 * The prefix to use in the output
 	 *
 	 * @var  string
@@ -83,6 +90,7 @@ class Profiler extends Object
 		$this->started  = $this->now();
 		$this->prefix   = '';
 		$this->marks    = array();
+		$this->memory   = memory_get_usage(true);
 	}
 
 	/**
@@ -167,7 +175,7 @@ class Profiler extends Object
 	 */
 	public function memory()
 	{
-		$memory = 0;
+		$memory = $this->memory;
 
 		foreach ($this->marks as $mark)
 		{
