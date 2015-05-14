@@ -152,7 +152,7 @@ class Todo extends \JTable
 					break;
 
 				case 'due':
-					$sort .= 'p.duedate ' . $sortdir;
+					$sort .= 'due DESC, p.duedate ' . $sortdir;
 					break;
 
 				case 'complete':
