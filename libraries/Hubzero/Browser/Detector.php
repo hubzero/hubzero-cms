@@ -159,11 +159,11 @@ class Detector extends Object
 	 * @var    array
 	 */
 	protected $images = array(
-		'jpeg', 
-		'gif', 
-		'png', 
-		'pjpeg', 
-		'x-png', 
+		'jpeg',
+		'gif',
+		'png',
+		'pjpeg',
+		'x-png',
 		'bmp'
 	);
 
@@ -489,20 +489,20 @@ class Detector extends Object
 		// same logic, check in order to catch the os's in order, last is always default item
 		$a_unix = array(
 			'unixware', 'solaris', 'sunos', 'sun4', 'sun5', 'suni86', 'sun',
-			'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9', 
-			'hpux10', 'hpux11', 'hpux', 'hp-ux', 'aix1', 'aix2', 'aix3', 'aix4', 
-			'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant', 'dec', 'sinix', 
+			'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9',
+			'hpux10', 'hpux11', 'hpux', 'hp-ux', 'aix1', 'aix2', 'aix3', 'aix4',
+			'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant', 'dec', 'sinix',
 			'unix'
 		);
 		// only sometimes will you get a linux distro to id itself...
 		$a_linux = array(
-			'kanotix', 'ubuntu', 'mepis', 'debian', 'suse', 'redhat', 'slackware', 
+			'kanotix', 'ubuntu', 'mepis', 'debian', 'suse', 'redhat', 'slackware',
 			'mandrake', 'gentoo', 'linux'
 		);
 		// note, order of os very important in os array, you will get failed ids if changed
 		$a_os = array(
-			'beos', 'os2', 'amiga', 'webtv', 'android', 'iphone', 'ipad', 'mac', 'nt', 'win', 
-			$a_unix, 
+			'beos', 'os2', 'amiga', 'webtv', 'android', 'iphone', 'ipad', 'mac', 'nt', 'win',
+			$a_unix,
 			$a_linux
 		);
 
@@ -631,11 +631,11 @@ class Detector extends Object
 			}
 			// check that it's an array, check it's the last item 
 			// in the main os array, the linux one that is
-			elseif (is_array($s_os) && ($i == (count($a_os) - 1))) 
+			elseif (is_array($s_os) && ($i == (count($a_os) - 1)))
 			{
 				for ($j = 0; $j < count($s_os); $j++)
 				{
-					if (stristr($this->lowerAgent, $s_os[$j])) 
+					if (stristr($this->lowerAgent, $s_os[$j]))
 					{
 						$this->platform = 'Linux';
 						// assign linux distro from the linux array, there's a default
