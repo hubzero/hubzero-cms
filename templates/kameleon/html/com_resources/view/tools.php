@@ -34,7 +34,7 @@ $this->css()
      ->js();
 
 $txt = '';
-$mode = strtolower(JRequest::getWord('mode', ''));
+$mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {

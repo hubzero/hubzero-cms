@@ -31,7 +31,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-$hide = JRequest::getInt('hidemainmenu');
+$hide = Request::getInt('hidemainmenu');
 ?>
 <ul id="submenu">
 	<?php foreach ($list as $item): ?>

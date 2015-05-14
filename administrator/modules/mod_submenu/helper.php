@@ -46,7 +46,7 @@ class Helper extends Module
 	public function display()
 	{
 		// Initialise variables.
-		$list = JToolBar::getInstance('submenu')->getItems();
+		$list = Submenu::getItems();
 
 		if (!is_array($list) || !count($list))
 		{

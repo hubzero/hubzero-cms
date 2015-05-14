@@ -35,7 +35,7 @@ $this->css()
 
 $txt = '';
 $html = '';
-$mode = strtolower(JRequest::getWord('mode', ''));
+$mode = strtolower(Request::getWord('mode', ''));
 
 if ($mode != 'preview')
 {
@@ -230,7 +230,7 @@ if (file_exists(PATH_APP . $thumb))
 					$this->helper = new \Components\Resources\Helpers\Helper($child->id, $this->database);
 					$this->helper->getChildren();
 
-					$child_params = new JRegistry($child->params);
+					$child_params = new \Hubzero\Config\Registry($child->params);
 					$link_action = $child_params->get( 'link_action', '' );
 
 					$child->title = $this->escape($child->title);
@@ -290,8 +290,8 @@ if (file_exists(PATH_APP . $thumb))
 									} elseif ($grandchild->logicaltype == 51) {
 										$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 									} else {
-										$grandchildParams  = new JRegistry($grandchild->params);
-										$grandchildAttribs = new JRegistry($grandchild->attribs);
+										$grandchildParams  = new \Hubzero\Config\Registry($grandchild->params);
+										$grandchildAttribs = new \Hubzero\Config\Registry($grandchild->attribs);
 										$linkAction = $grandchildParams->get( 'link_action', 0 );
 										$width      = $grandchildAttribs->get('width', 640) + 20;
 										$height     = $grandchildAttribs->get('height', 360) + 60;

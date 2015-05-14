@@ -74,7 +74,7 @@ elseif (in_array(User::get('id'), $group->get('invitees')))
 }
 
 //is membership control managed on group?
-$params = new JRegistry($group->get('params'));
+$params = new \Hubzero\Config\Registry($group->get('params'));
 $membership_control = $params->get('membership_control', 1);
 ?>
 <!DOCTYPE html>
@@ -139,7 +139,7 @@ $membership_control = $params->get('membership_control', 1);
 						<?php elseif ($group->get('join_policy') == 0 && $membership_control == 1) : ?>
 							<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=join'); ?>" class="open">
 								<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_JOIN'); ?></span>
-							</a>	
+							</a>
 						<?php endif; ?>
 					</div>
 
@@ -189,7 +189,7 @@ $membership_control = $params->get('membership_control', 1);
 									</li>
 								<?php endif; ?>
 								<li id="account-login">
-									<a href="<?php echo Route::url('index.php?option=com_groups&cn='.JRequest::getCmd('cn','').'&task=login&return=' . base64_encode($return)); ?>" title="<?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>">
+									<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . Request::getCmd('cn','') . '&task=login&return=' . base64_encode($return)); ?>" title="<?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>">
 										<?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>
 									</a>
 								</li>
