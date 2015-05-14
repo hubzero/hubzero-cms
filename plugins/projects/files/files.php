@@ -349,6 +349,43 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 	}
 
+	/**
+	 * Event call to get side content for main project page
+	 *
+	 * @return
+	 */
+	public function onProjectMiniList($model)
+	{
+		if (!$model->exists() || !$model->access('content'))
+		{
+			return false;
+		}
+		$this->repo = new \Components\Projects\Models\Repo($model, 'local');
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'files',
+				'name'    => 'mini'
+			)
+		);
+
+		// Set params
+		$view->params = array(
+			'limit'                => $this->params->get('sidelimit', 5),
+			'start'                => 0,
+			'sortby'               => 'date',
+			'sortdir'              => 'DESC',
+			'getParents'           => false,
+			'getChildren'          => true
+		);
+
+		// Retrieve items
+		$view->files = $this->repo->filelist($view->params);
+		$view->model = $model;
+		return $view->loadTemplate();
+	}
+
 	//----------------------------------------
 	// Views and Processors
 	//----------------------------------------

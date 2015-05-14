@@ -257,6 +257,17 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Side blocks from other plugins?
+		$sections = Event::trigger( 'projects.onProjectMiniList', array( $this->model));
+
+		if (!empty($sections))
+		{
+			foreach ($sections as $section)
+			{
+				$html .= !empty($section) ? $section : NULL;
+			}
+		}
+
 		return $html;
 	}
 

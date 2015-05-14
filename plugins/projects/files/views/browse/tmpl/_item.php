@@ -40,6 +40,7 @@ if ($this->item->get('remote'))
 		$name = preg_replace("/." . $this->item->get('ext') . "\z/", "", $this->item->get('name'));
 	}
 }
+$ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 ?>
 <tr class="mini faded mline">
 	<?php if ($this->model->access('content')) { ?>
@@ -48,7 +49,7 @@ if ($this->item->get('remote'))
 	</td>
 	<?php } ?>
 	<td class="top_valign nobsp">
-		<img src="<?php echo $this->item->get('icon'); ?>" alt="<?php echo $this->item->get('ext'); ?>" />
+		<?php echo $this->item->drawIcon($ext); ?>
 		<?php if ($this->item->get('type') == 'file') { ?>
 		<a href="<?php echo $this->url
 		. '/?action=download' . $subdirPath
@@ -58,7 +59,7 @@ if ($this->item->get('remote'))
 		<?php } ?>
 	</td>
 	<td class="shrinked"></td>
-	<td class="shrinked"><?php echo $this->item->get('formattedSize'); ?></td>
+	<td class="shrinked"><?php echo $this->item->getSize('formatted'); ?></td>
 	<td class="shrinked">
 	<?php if (!$this->item->get('untracked') && $this->item->get('type') == 'file') { ?>
 		<a href="<?php echo $this->url . '/?action=history' . $subdirPath . '&amp;asset=' . urlencode($this->item->get('name')); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>

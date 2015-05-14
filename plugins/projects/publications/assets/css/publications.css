@@ -61,6 +61,25 @@
 		color: #666;
 	}
 
+/* Mini List
+--------------------------------------------- */
+
+	.pub-thumb {
+		position: absolute;
+	}
+	.pub-details {
+		margin-left: 50px;
+		display: block;
+	}
+	.pub-details .title,
+	.pub-details .details {
+		margin-left: 0;
+	}
+	.pub-thumb img {
+		width: 40px;
+		height: 40px;
+	}
+
 /* Metadata panel
 --------------------------------------------- */
 

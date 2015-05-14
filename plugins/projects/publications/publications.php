@@ -330,6 +330,44 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Event call to get side content for main project page
+	 *
+	 * @return
+	 */
+	public function onProjectMiniList($model)
+	{
+		if (!$model->exists() || !$model->access('content'))
+		{
+			return false;
+		}
+
+		// Instantiate a publication object
+		$pub = new \Components\Publications\Models\Publication();
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'mini'
+			)
+		);
+
+		// Filters for returning results
+		$view->filters = array(
+			'project'	 => $model->get('id'),
+			'limit'      => $this->params->get('sidelimit', 5),
+			'start'		 => 0,
+			'dev'        => 1,
+			'sortby'	 => 'date_created',
+			'sortdir'	 => 'DESC'
+		);
+
+		$view->items = $pub->entries( 'list', $view->filters );
+		$view->model = $model;
+		return $view->loadTemplate();
+	}
+
+	/**
 	 * Browse publications
 	 *
 	 * @return     string

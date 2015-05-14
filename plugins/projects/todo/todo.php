@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Include model
+include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'models' . DS . 'todo.php');
+
 /**
  * Projects todo's
  */
@@ -161,10 +165,6 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Include model
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'models' . DS . 'todo.php');
-
 			// Get our To do model
 			$this->todo = new \Components\Projects\Models\Todo();
 
@@ -196,6 +196,43 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$arr['referer'] = $this->_referer;
 		$arr['msg']     = $this->_message;
 		return $arr;
+	}
+
+	/**
+	 * Event call to get side content for main project page
+	 *
+	 * @return
+	 */
+	public function onProjectMiniList($model)
+	{
+		if (!$model->exists() || !$model->access('content'))
+		{
+			return false;
+		}
+
+		// Get our To do model
+		$this->todo = new \Components\Projects\Models\Todo();
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'todo',
+				'name'    => 'mini'
+			)
+		);
+
+		// Filters for returning results
+		$view->filters = array(
+			'projects'	 => array($model->get('id')),
+			'limit'      => $this->params->get('sidelimit', 5),
+			'start'		 => 0,
+			'sortby'	 => 'due',
+			'sortdir'	 => 'ASC'
+		);
+
+		$view->items = $this->todo->entries('list', $view->filters);
+		$view->model = $model;
+		return $view->loadTemplate();
 	}
 
 	/**
