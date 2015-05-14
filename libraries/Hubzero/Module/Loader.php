@@ -250,10 +250,10 @@ class Loader
 		$app = \JFactory::getApplication();
 
 		// Record the scope.
-		$scope = $app->scope;
+		$scope = $this->app->has('scope') ? $this->app->get('scope') : null;
 
 		// Set scope to component name
-		$app->scope = $module->module;
+		$this->app->set('scope', $module->module);
 
 		// Get module parameters
 		$params = new Registry($module->params);
@@ -323,8 +323,9 @@ class Loader
 			}
 		}
 
-		//revert the scope
-		$app->scope = $scope;
+		// Revert the scope
+		$this->app->forget('scope');
+		$this->app->set('scope', $scope);
 
 		if (null !== $this->profiler)
 		{
@@ -390,8 +391,8 @@ class Loader
 			return $clean;
 		}
 
-		$Itemid   = \Request::getInt('Itemid');
-		//$app      = \JFactory::getApplication();
+		$Itemid   = $this->app['request']->getInt('Itemid');
+
 		$user     = \User::getRoot();
 		$groups   = implode(',', $user->getAuthorisedViewLevels());
 		$lang     = $this->app['language']->getTag();
@@ -438,7 +439,9 @@ class Loader
 
 			if ($db->getErrorNum())
 			{
-				\Notify::error(\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+				$this->app['notification']->error(
+					$this->app['language']->txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg())
+				);
 
 				return $clean;
 			}

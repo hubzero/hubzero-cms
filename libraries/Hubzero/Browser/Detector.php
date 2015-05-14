@@ -247,32 +247,6 @@ class Detector extends Object
 		{
 			$this->_setPlatform();
 
-			// Determine browser and version
-			// Note: chrome must be before safari
-			/*$browsers = array(
-				'firefox', 'msie', 'opera', 'chrome', 'icab', 'safari',
-				'mozilla', 'seamonkey', 'konqueror', 'netscape',
-				'gecko', 'navigator', 'mosaic', 'lynx', 'amaya',
-				'omniweb', 'avant', 'camino', 'flock', 'aol'
-			);
-
-			foreach ($browsers as $b)
-			{
-				if (preg_match("#($b)[/ ]?([0-9.]*)#", $this->lowerAgent, $match)) 
-				{
-					$this->setBrowser($match[1]);
-
-					$this->majorVersion = strstr($match[2], '.', true);
-					$this->minorVersion = substr($match[2], strlen($this->majorVersion . '.'));
-					if (preg_match("#(version)[/ ]?([0-9.]*)#", $this->lowerAagent, $match)) 
-					{
-						$this->majorVersion = strstr($match[2], '.', true);
-						$this->minorVersion = substr($match[2], strlen($this->majorVersion . '.'));
-					}
-					break;
-				}
-			}*/
-
 			if (strpos($this->lowerAgent, 'mobileexplorer') !== false
 				|| strpos($this->lowerAgent, 'openwave') !== false
 				|| strpos($this->lowerAgent, 'opera mini') !== false
@@ -372,7 +346,7 @@ class Detector extends Object
 				$this->setBrowser('avantgo');
 				$this->mobile = true;
 			}
-			elseif (preg_match('|Konqueror/([0-9]+)|', $this->agent, $version) || preg_match('|Safari/([0-9]+)\.?([0-9]+)?|', $this->agent, $version))
+			elseif (preg_match('|[Kk]onqueror/([0-9]+)|', $this->agent, $version) || preg_match('|Safari/([0-9]+)\.?([0-9]+)?|', $this->agent, $version))
 			{
 				// Konqueror and Apple's Safari both use the KHTML
 				// rendering engine.
@@ -499,7 +473,7 @@ class Detector extends Object
 			$this->platform = 'unix';
 		}*/
 		$this->device = 'computer';
-		
+
 		// Determine platform
 		//
 		// packs the os array
@@ -739,7 +713,7 @@ class Detector extends Object
 	{
 		if (preg_match('|Version[/ ]([0-9.]+)|', $this->agent, $version))
 		{
-			list ($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
+			list($this->majorVersion, $this->minorVersion) = explode('.', $version[1]);
 
 			return;
 		}
@@ -747,8 +721,6 @@ class Detector extends Object
 		// Can't identify browser version
 		$this->majorVersion = 0;
 		$this->minorVersion = 0;
-
-		\JFactory::getLogger()->notice("Can't identify browser version. Agent: " . $this->agent);
 	}
 
 	/**

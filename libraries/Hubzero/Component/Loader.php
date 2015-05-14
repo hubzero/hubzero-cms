@@ -32,6 +32,7 @@ namespace Hubzero\Component;
 
 use Hubzero\Component\Router\Legacy;
 use Hubzero\Container\Container;
+use Hubzero\Config\Registry;
 use ReflectionClass;
 use Exception;
 use stdClass;
@@ -159,9 +160,6 @@ class Loader
 	 */
 	public function render($option, $params = array())
 	{
-		// Initialise variables.
-		$app = \JFactory::getApplication();
-
 		// Load template language files.
 		$template = $this->app['template']->template;
 
@@ -178,15 +176,15 @@ class Loader
 		$option = $this->canonical($option);
 
 		// Record the scope
-		$scope = $app->scope;
+		$scope = $this->app->has('scope') ? $this->app->get('scope') : null;
 
 		// Set scope to component name
-		$app->scope = $option;
+		$this->app->set('scope', $option);
 
 		// Build the component path.
 		$file   = substr($option, 4);
 
-		$client = ($this->app->isAdmin() ? 'admin' : 'site');
+		$client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
 
 		// Get component path
 		if (is_dir(PATH_CORE . DS . 'components' . DS . $option . DS . $client))
@@ -223,7 +221,8 @@ class Loader
 		$contents = $this->execute($path);
 
 		// Revert the scope
-		$app->scope = $scope;
+		$this->app->forget('scope');
+		$this->app->set('scope', $scope);
 
 		return $contents;
 	}
@@ -354,10 +353,7 @@ class Loader
 		// Convert the params to an object.
 		if (is_string(self::$components[$option]->params))
 		{
-			$temp = new \JRegistry;
-			$temp->loadString(self::$components[$option]->params);
-
-			self::$components[$option]->params = $temp;
+			self::$components[$option]->params = new Registry(self::$components[$option]->params);
 		}
 
 		return self::$components[$option];

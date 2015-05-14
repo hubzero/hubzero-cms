@@ -61,6 +61,11 @@ class Ini extends Base
 			return false;
 		}
 
+		if ((substr($data, 0, 1) == '{') && (substr($data, -1, 1) == '}'))
+		{
+			return false;
+		}
+
 		try
 		{
 			$obj = parse_ini_string($data);
