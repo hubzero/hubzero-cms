@@ -32,6 +32,10 @@ namespace Hubzero\Filesystem;
 
 use Hubzero\Filesystem\Adapter\Local;
 use Hubzero\Filesystem\Adapter\Ftp;
+use Hubzero\Filesystem\Macro\EmptyDirectory;
+use Hubzero\Filesystem\Macro\Directories;
+use Hubzero\Filesystem\Macro\Files;
+use Hubzero\Filesystem\Macro\DirectoryTree;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -63,7 +67,13 @@ class FilesystemServiceProvider extends ServiceProvider
 				$adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
 			}
 
-			return new Filesystem($adapter);
+			$filesystem = new Filesystem($adapter);
+			$filesystem->addMacro(new EmptyDirectory)
+			           ->addMacro(new Directories)
+			           ->addMacro(new Files)
+			           ->addMacro(new DirectoryTree);
+
+			return $filesystem;
 		};
 	}
 }

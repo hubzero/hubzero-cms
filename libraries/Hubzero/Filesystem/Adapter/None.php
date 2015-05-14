@@ -38,10 +38,7 @@ use Hubzero\Filesystem\AdapterInterface;
 class None implements AdapterInterface
 {
 	/**
-	 * Determine if a file exists.
-	 *
-	 * @param   string  $path
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function exists($path)
 	{
@@ -49,10 +46,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Get the contents of a file.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function read($path)
 	{
@@ -60,11 +54,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Write the contents of a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function write($path, $contents)
 	{
@@ -72,11 +62,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Prepend to a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function prepend($path, $contents)
 	{
@@ -84,11 +70,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Append to a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function append($path, $contents)
 	{
@@ -96,10 +78,31 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Delete the file at a given path.
-	 *
-	 * @param   mixed  $paths  string|array
-	 * @return  bool
+	 * {@inheritdoc}
+	 */
+	public function move($path, $target)
+	{
+		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function rename($path, $target)
+	{
+		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function copy($path, $target)
+	{
+		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
 	 */
 	public function delete($path)
 	{
@@ -119,47 +122,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Move a file to a new location.
-	 *
-	 * @param   string  $path
-	 * @param   string  $target
-	 * @return  bool
-	 */
-	public function move($path, $target)
-	{
-		return false;
-	}
-
-	/**
-	 * Rename a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $target
-	 * @return  bool
-	 */
-	public function rename($path, $target)
-	{
-		return false;
-	}
-
-	/**
-	 * Copy a file to a new location.
-	 *
-	 * @param   string  $path
-	 * @param   string  $target
-	 * @return  bool
-	 */
-	public function copy($path, $target)
-	{
-		return false;
-	}
-
-	/**
-	 * Searches the directory paths for a given file.
-	 *
-	 * @param   mixed   $paths  An path string or array of path strings to search in
-	 * @param   string  $file   The file name to look for.
-	 * @return  mixed   Full path and name for the target file, or false if file not found.
+	 * {@inheritdoc}
 	 */
 	public function find($paths, $file)
 	{
@@ -167,10 +130,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Extract the file name from a file path.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function name($path)
 	{
@@ -178,10 +138,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Extract the file extension from a file path.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function extension($path)
 	{
@@ -191,10 +148,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Get the file type of a given file.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function type($path)
 	{
@@ -202,10 +156,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Get the file size of a given file.
-	 *
-	 * @param   string  $path
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function size($path)
 	{
@@ -213,10 +164,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Get the file's last modification time.
-	 *
-	 * @param   string  $path
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function lastModified($path)
 	{
@@ -224,10 +172,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Get the file's last modification time.
-	 *
-	 * @param   string  $path
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function mimetype($path)
 	{
@@ -268,30 +213,11 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Run a virus scan against a file
-	 *
-	 * @param   string   $file  The name of the file [not full path]
-	 * @return  boolean
+	 * {@inheritdoc}
 	 */
 	public function isSafe($file)
 	{
 		return true;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		return $this->listContents($path, $filter, $recursive, $full, $exclude);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		return $this->listContents($path, $filter, $recursive, $full, $exclude);
 	}
 
 	/**
@@ -303,13 +229,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Create a directory.
-	 *
-	 * @param   string  $path
-	 * @param   int     $mode
-	 * @param   bool    $recursive
-	 * @param   bool    $force
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
 	{
@@ -317,12 +237,7 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Copy a directory from one location to another.
-	 *
-	 * @param   string  $directory
-	 * @param   string  $destination
-	 * @param   int     $options
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function copyDirectory($directory, $destination, $options = null)
 	{
@@ -330,26 +245,9 @@ class None implements AdapterInterface
 	}
 
 	/**
-	 * Recursively delete a directory.
-	 *
-	 * The directory itself may be optionally preserved.
-	 *
-	 * @param   string  $directory
-	 * @param   bool    $preserve
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function deleteDirectory($directory, $preserve = false)
-	{
-		return false;
-	}
-
-	/**
-	 * Empty the specified directory of all files and folders.
-	 *
-	 * @param   string  $directory
-	 * @return  bool
-	 */
-	public function emptyDirectory($directory)
 	{
 		return false;
 	}

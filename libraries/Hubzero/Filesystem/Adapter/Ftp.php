@@ -325,6 +325,8 @@ class Ftp extends AbstractFtpAdapter
 
 	/**
 	 * Connect to the FTP server.
+	 *
+	 * @return  void
 	 */
 	public function connect()
 	{
@@ -460,11 +462,7 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Prepend to a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function prepend($path, $contents)
 	{
@@ -477,11 +475,7 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Append to a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function append($path, $contents)
 	{
@@ -518,11 +512,7 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Searches the directory paths for a given file.
-	 *
-	 * @param   mixed   $paths  An path string or array of path strings to search in
-	 * @param   string  $file   The file name to look for.
-	 * @return  mixed   Full path and name for the target file, or false if file not found.
+	 * {@inheritdoc}
 	 */
 	public function find($paths, $file)
 	{
@@ -597,12 +587,7 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Copy a directory from one location to another.
-	 *
-	 * @param   string  $directory
-	 * @param   string  $destination
-	 * @param   int     $options
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function copyDirectory($path, $target, $options = null)
 	{
@@ -664,10 +649,7 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Determine if the given path is a directory.
-	 *
-	 * @param   string  $directory
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function isDirectory($directory)
 	{
@@ -675,14 +657,10 @@ class Ftp extends AbstractFtpAdapter
 		$result = $result ? true : false;
 
 		return $result;
-		//return is_dir('ftp://' . $this->getUsername() . ':' . $this->getPassword() . '@' . $this->getHost() . $directory);
 	}
 
 	/**
-	 * Determine if the given path is writable.
-	 *
-	 * @param   string  $path
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function isWritable($path)
 	{
@@ -690,10 +668,7 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Determine if the given path is a file.
-	 *
-	 * @param   string  $file
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function isFile($file)
 	{
@@ -701,14 +676,10 @@ class Ftp extends AbstractFtpAdapter
 		$result = $result ? false : true;
 
 		return $result;
-		//return is_file('ftp://' . $this->getUsername() . ':' . $this->getPassword() . '@' . $this->getHost() . $directory);
 	}
 
 	/**
-	 * Run a virus scan against a file
-	 *
-	 * @param   string   $file  The name of the file [not full path]
-	 * @return  boolean
+	 * {@inheritdoc}
 	 */
 	public function isSafe($file)
 	{
@@ -767,7 +738,7 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Ensure a directory exists.
 	 *
-	 * @param string $dirname
+	 * @param  string  $dirname
 	 */
 	public function ensureDirectory($dirname)
 	{
@@ -778,59 +749,9 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
-	 * Get an array of all files in a directory.
-	 *
-	 * @param   string  $directory
-	 * @return  array
-	 */
-	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		$items = array();
-
-		if (is_dir($path))
-		{
-			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
-			{
-				if ($file['type'] == 'file')
-				{
-					$items[] = $file['path'];
-				}
-			}
-		}
-
-		return $items;
-	}
-
-	/**
-	 * Get all of the directories within a given directory.
-	 *
-	 * @param   string  $path
-	 * @return  array
-	 */
-	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		$items = array();
-
-		if (is_dir($path))
-		{
-			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
-			{
-				if ($file['type'] == 'path')
-				{
-					$items[] = $file['path'];
-				}
-			}
-		}
-
-		return $items;
-	}
-
-	/**
 	 * {@inheritdoc}
-	 *
-	 * @param string $directory
 	 */
-	protected function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
 		$listing = ftp_rawlist($this->getConnection(), '-lna ' . $path, $recursive);
 
@@ -840,10 +761,9 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Normalize a directory listing.
 	 *
-	 * @param array  $listing
-	 * @param string $prefix
-	 *
-	 * @return array directory listing
+	 * @param   array   $listing
+	 * @param   string  $prefix
+	 * @return  array   Directory listing
 	 */
 	protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
@@ -876,8 +796,8 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Sort a directory listing.
 	 *
-	 * @param array $result
-	 * @return array sorted listing
+	 * @param   array  $result
+	 * @return  array  Sorted listing
 	 */
 	protected function sortListing(array $result)
 	{
@@ -894,9 +814,9 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Normalize a file entry.
 	 *
-	 * @param string $item
-	 * @param string $base
-	 * @return array normalized file array
+	 * @param   string  $item
+	 * @param   string  $base
+	 * @return  array   Normalized file array
 	 */
 	protected function normalizeObject($item, $base)
 	{
@@ -920,8 +840,8 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Get the file type from the permissions.
 	 *
-	 * @param string $permissions
-	 * @return string file type
+	 * @param   string  $permissions
+	 * @return  string  File type
 	 */
 	protected function detectType($permissions)
 	{
@@ -931,8 +851,8 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Normalize a permissions string.
 	 *
-	 * @param string $permissions
-	 * @return int
+	 * @param   string  $permissions
+	 * @return  int
 	 */
 	protected function normalizePermissions($permissions)
 	{
@@ -964,9 +884,8 @@ class Ftp extends AbstractFtpAdapter
 	/**
 	 * Filter out dot-directories.
 	 *
-	 * @param array $list
-	 *
-	 * @return array
+	 * @param   array  $list
+	 * @return  array
 	 */
 	public function removeDotDirectories(array $list)
 	{
@@ -985,6 +904,8 @@ class Ftp extends AbstractFtpAdapter
 
 	/**
 	 * Disconnect on destruction.
+	 *
+	 * @return  void
 	 */
 	public function __destruct()
 	{

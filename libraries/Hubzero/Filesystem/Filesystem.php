@@ -48,6 +48,13 @@ class Filesystem
 	protected $adapter;
 
 	/**
+	 * Macros list
+	 *
+	 * @var  array
+	 */
+	protected $macros = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   object  $adapter  AdapterInterface
@@ -386,7 +393,7 @@ class Filesystem
 	}
 
 	/**
-	 * Get an array of all files in a directory.
+	 * Get all contents within a given directory.
 	 *
 	 * @param   string   $path     The path of the folder to read.
 	 * @param   string   $filter   A filter for file names.
@@ -395,28 +402,11 @@ class Filesystem
 	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
 	 * @return  array
 	 */
-	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+	public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
 	{
 		$path = Util::normalizePath($path);
 
-		return (array) $this->adapter->files($path, $filter, $recursive, $full, $exclude);
-	}
-
-	/**
-	 * Get all of the directories within a given directory.
-	 *
-	 * @param   string   $path     The path of the folder to read.
-	 * @param   string   $filter   A filter for file names.
-	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full     True to return the full path to the file.
-	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
-	 * @return  array
-	 */
-	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		$path = Util::normalizePath($path);
-
-		return (array) $this->adapter->directories($path, $filter, $recursive, $full, $exclude);
+		return (array) $this->adapter->listContents($path, $filter, $recursive, $full, $exclude);
 	}
 
 	/**
@@ -470,17 +460,6 @@ class Filesystem
 		$this->assertPresent($path);
 
 		return (bool) $this->adapter->deleteDirectory($path, $preserve);
-	}
-
-	/**
-	 * Empty the specified directory of all files and folders.
-	 *
-	 * @param   string  $directory
-	 * @return  bool
-	 */
-	public function emptyDirectory($directory)
-	{
-		return $this->deleteDirectory($directory, true);
 	}
 
 	/**
@@ -557,5 +536,55 @@ class Filesystem
 		{
 			throw new FileExistsException($path);
 		}
+	}
+
+	/**
+	 * Register a macro.
+	 *
+	 * @param   object  $plugin  MacroInterface
+	 * @return  $this
+	 */
+	public function addMacro(MacroInterface $macro)
+	{
+		if (!method_exists($macro, 'handle'))
+		{
+			throw new \LogicException(sprintf('%s does not have a handle method.', get_class($macro)));
+		}
+
+		$this->macros[$macro->getMethod()] = $macro;
+
+		return $this;
+	}
+
+	/**
+	 * Checks if macro is registered.
+	 *
+	 * @param   string  $name
+	 * @return  bool
+	 */
+	public function hasMacro($method)
+	{
+		return isset($this->macros[$method]);
+	}
+
+	/**
+	 * Call a macro.
+	 *
+	 * @param   string  $method
+	 * @param   array   $arguments
+	 * @return  mixed
+	 * @throws  BadMethodCallException
+	 */
+	public function __call($method, array $arguments)
+	{
+		if ($this->hasMacro($method))
+		{
+			$macro = $this->macros[$method];
+			$macro->setFilesystem($this);
+
+			return call_user_func_array(array($macro, 'handle'), $arguments);
+		}
+
+		throw new \BadMethodCallException('Call to undefined method ' . __CLASS__ . '::' . $method);
 	}
 }

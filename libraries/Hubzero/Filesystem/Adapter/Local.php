@@ -63,10 +63,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Determine if a file exists.
-	 *
-	 * @param   string  $path
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function exists($path)
 	{
@@ -74,10 +71,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Get the contents of a file.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function read($path)
 	{
@@ -87,11 +81,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Write the contents of a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function write($path, $contents)
 	{
@@ -99,11 +89,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Prepend to a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function prepend($path, $contents)
 	{
@@ -116,11 +102,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Append to a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $contents
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function append($path, $contents)
 	{
@@ -128,10 +110,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Delete the file at a given path.
-	 *
-	 * @param   mixed  $paths  string|array
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function delete($path)
 	{
@@ -189,11 +168,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Move a file to a new location.
-	 *
-	 * @param   string  $path
-	 * @param   string  $target
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function move($path, $target)
 	{
@@ -201,11 +176,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Rename a file.
-	 *
-	 * @param   string  $path
-	 * @param   string  $target
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function rename($path, $target)
 	{
@@ -213,11 +184,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Copy a file to a new location.
-	 *
-	 * @param   string  $path
-	 * @param   string  $target
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function copy($path, $target)
 	{
@@ -225,11 +192,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Searches the directory paths for a given file.
-	 *
-	 * @param   mixed   $paths  An path string or array of path strings to search in
-	 * @param   string  $file   The file name to look for.
-	 * @return  mixed   Full path and name for the target file, or false if file not found.
+	 * {@inheritdoc}
 	 */
 	public function find($paths, $file)
 	{
@@ -262,10 +225,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Extract the file name from a file path.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function name($path)
 	{
@@ -273,10 +233,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Extract the file extension from a file path.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function extension($path)
 	{
@@ -284,10 +241,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Get the file type of a given file.
-	 *
-	 * @param   string  $path
-	 * @return  string
+	 * {@inheritdoc}
 	 */
 	public function type($path)
 	{
@@ -295,10 +249,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Get the file size of a given file.
-	 *
-	 * @param   string  $path
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function size($path)
 	{
@@ -316,10 +267,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Get the file's last modification time.
-	 *
-	 * @param   string  $path
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function lastModified($path)
 	{
@@ -327,10 +275,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Get the file mime type.
-	 *
-	 * @param   string  $path
-	 * @return  int
+	 * {@inheritdoc}
 	 */
 	public function mimetype($path)
 	{
@@ -356,10 +301,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Determine if the given path is a directory.
-	 *
-	 * @param   string  $directory
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function isDirectory($directory)
 	{
@@ -367,10 +309,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Determine if the given path is writable.
-	 *
-	 * @param   string  $path
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function isWritable($path)
 	{
@@ -378,10 +317,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Determine if the given path is a file.
-	 *
-	 * @param   string  $file
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function isFile($file)
 	{
@@ -389,10 +325,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Run a virus scan against a file
-	 *
-	 * @param   string   $file  The name of the file [not full path]
-	 * @return  boolean
+	 * {@inheritdoc}
 	 */
 	public function isSafe($file)
 	{
@@ -417,68 +350,6 @@ class Local implements AdapterInterface
 		}
 
 		return true;
-	}
-
-	/**
-	 * Get an array of all files in a directory.
-	 *
-	 * @param   string   $path     The path of the folder to read.
-	 * @param   string   $filter   A filter for file names.
-	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full     True to return the full path to the file.
-	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
-	 * @return  array
-	 */
-	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		$items = array();
-
-		if (is_dir($path))
-		{
-			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
-			{
-				if ($file['type'] == 'file')
-				{
-					$items[] = $file['path'];
-				}
-			}
-		}
-
-		return $items;
-	}
-
-	/**
-	 * Get all of the directories within a given directory.
-	 *
-	 * @param   string   $path     The path of the folder to read.
-	 * @param   string   $filter   A filter for file names.
-	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full     True to return the full path to the file.
-	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
-	 * @return  array
-	 */
-	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
-	{
-		/*$items = $this->listContents($path, $filter, $recursive, $full, $exclude);
-
-		return array_filter($items, function($file)
-		{
-			return $file['type'] == 'path';
-		});*/
-		$items = array();
-
-		if (is_dir($path))
-		{
-			foreach ($this->listContents($path, $filter, $recursive, $full, $exclude) as $file)
-			{
-				if ($file['type'] == 'path')
-				{
-					$items[] = $file['path'];
-				}
-			}
-		}
-
-		return $items;
 	}
 
 	/**
@@ -562,13 +433,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Create a directory.
-	 *
-	 * @param   string  $path
-	 * @param   int     $mode
-	 * @param   bool    $recursive
-	 * @param   bool    $force
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
 	{
@@ -581,12 +446,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Copy a directory from one location to another.
-	 *
-	 * @param   string  $directory
-	 * @param   string  $destination
-	 * @param   int     $options
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function copyDirectory($directory, $destination, $options = null)
 	{
@@ -631,13 +491,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Recursively delete a directory.
-	 *
-	 * The directory itself may be optionally preserved.
-	 *
-	 * @param   string  $directory
-	 * @param   bool    $preserve
-	 * @return  bool
+	 * {@inheritdoc}
 	 */
 	public function deleteDirectory($directory, $preserve = false)
 	{
@@ -667,17 +521,6 @@ class Local implements AdapterInterface
 		if (!$preserve) @rmdir($directory);
 
 		return true;
-	}
-
-	/**
-	 * Empty the specified directory of all files and folders.
-	 *
-	 * @param   string  $directory
-	 * @return  bool
-	 */
-	public function emptyDirectory($directory)
-	{
-		return $this->deleteDirectory($directory, true);
 	}
 
 	/**
