@@ -44,6 +44,14 @@ class JRequest
 	 */
 	public static function ip()
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('request'))
+			{
+				return \App::get('request')->ip();
+			}
+		}
+
 		$address = '0.0.0.0';
 
 		if (isset($_SERVER['HTTP_CLIENT_IP']))
@@ -106,6 +114,14 @@ class JRequest
 	 */
 	public static function getMethod()
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('request'))
+			{
+				return \App::get('request')->method();
+			}
+		}
+
 		$method = strtoupper($_SERVER['REQUEST_METHOD']);
 		return $method;
 	}
@@ -143,6 +159,14 @@ class JRequest
 	 */
 	public static function getVar($name, $default = null, $hash = 'default', $type = 'none', $mask = 0)
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('request'))
+			{
+				return \App::get('request')->getVar($name, $default, $hash, $type, $mask);
+			}
+		}
+
 		// Ensure hash and type are uppercase
 		$hash = strtoupper($hash);
 		if ($hash === 'METHOD')
@@ -389,6 +413,14 @@ class JRequest
 	 */
 	public static function setVar($name, $value = null, $hash = 'method', $overwrite = true)
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('request'))
+			{
+				return \App::get('request')->setVar($name, $value, $hash, $overwrite);
+			}
+		}
+
 		// If overwrite is true, makes sure the variable hasn't been set yet
 		if (!$overwrite && array_key_exists($name, $_REQUEST))
 		{

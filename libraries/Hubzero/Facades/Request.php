@@ -33,7 +33,7 @@ namespace Hubzero\Facades;
 /**
  * Request facade
  */
-class Request extends \JRequest
+class Request extends Facade
 {
 	/**
 	 * Get the registered name.
@@ -43,97 +43,6 @@ class Request extends \JRequest
 	protected static function getAccessor()
 	{
 		return 'request';
-	}
-
-	/**
-	 * Get the current path info for the request.
-	 *
-	 * @return  string
-	 */
-	public static function base($pathonly = false)
-	{
-		return \JURI::base($pathonly);
-	}
-
-	/**
-	 * Returns the root URI for the request.
-	 *
-	 * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
-	 * @param   string   $path      The path
-	 * @return  string  The root URI string.
-	 */
-	public static function root($pathonly = false, $path = null)
-	{
-		return \JURI::root($pathonly, $path);
-	}
-
-	/**
-	 * Returns the URL for the request, minus the query.
-	 *
-	 * @return  string
-	 */
-	public static function current($query = false)
-	{
-		return \JURI::current() . ($query ? '?' . \JURI::getInstance()->getQuery() : '');
-	}
-
-	/**
-	 * Returns the path.
-	 *
-	 * @return  string
-	 */
-	public static function path()
-	{
-		return \JURI::getInstance()->getPath();
-	}
-
-	/**
-	 * Returns the path.
-	 *
-	 * @return  string
-	 */
-	public static function method()
-	{
-		return self::getMethod();
-	}
-
-	/**
-	 * Returns the scheme.
-	 *
-	 * @return  string
-	 */
-	public static function scheme()
-	{
-		return \JURI::getInstance()->toString(array('scheme'));
-	}
-
-	/**
-	 * Returns the host.
-	 *
-	 * @return  string
-	 */
-	public static function host()
-	{
-		return \JURI::getInstance()->toString(array('host'));
-	}
-
-	/**
-	 * Returns the scheme.
-	 *
-	 * @return  string
-	 */
-	public static function isSecure()
-	{
-		return (self::scheme() == 'https');
-	}
-
-	/**
-	 * Temporary placeholder
-	 *
-	 * @return  void
-	 */
-	public static function createFromGlobals()
-	{
 	}
 
 	/**
@@ -161,5 +70,41 @@ class Request extends \JRequest
 		}
 
 		return $new_state;
+	}
+
+		/**
+	 * Checks for a form token in the request.
+	 *
+	 * Use in conjunction with JHtml::_('form.token').
+	 *
+	 * @param   string  $method  The request method in which to look for the token key.
+	 *
+	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @deprecated  12.1 Use JSession::checkToken() instead.
+	 * @since       11.1
+	 */
+	public static function checkToken($method = 'post')
+	{
+		$token = \Session::getFormToken();
+		if (!self::getVar($token, '', $method, 'alnum'))
+		{
+			$session = \App::get('session');
+			if ($session->isNew())
+			{
+				// Redirect to login screen.
+				$return = \Route::url('index.php');
+				\App::redirect($return, \Lang::txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'), 'error');
+				\App::close();
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
