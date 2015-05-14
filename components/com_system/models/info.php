@@ -191,21 +191,20 @@ class Info extends \JModelLegacy
 		{
 			$this->directories = array();
 
-			jimport('joomla.filesystem.folder');
 			$cparams = \Component::params('com_media');
 
 			$this->_addDirectory('administrator/components', JPATH_ADMINISTRATOR . '/components');
 			$this->_addDirectory('administrator/language', JPATH_ADMINISTRATOR . '/language');
 
 			// List all admin languages
-			$admin_langs = \JFolder::folders(JPATH_ADMINISTRATOR . '/language');
+			$admin_langs = \Filesystem::directories(JPATH_ADMINISTRATOR . '/language');
 			foreach ($admin_langs as $alang)
 			{
 				$this->_addDirectory('administrator/language/' . $alang, JPATH_ADMINISTRATOR . '/language/' . $alang);
 			}
 
 			// List all manifests folders
-			$manifests = \JFolder::folders(JPATH_ADMINISTRATOR . '/manifests');
+			$manifests = \Filesystem::directories(JPATH_ADMINISTRATOR . '/manifests');
 			foreach ($manifests as $_manifest)
 			{
 				$this->_addDirectory('administrator/manifests/' . $_manifest, JPATH_ADMINISTRATOR . '/manifests/' . $_manifest);
@@ -218,7 +217,7 @@ class Info extends \JModelLegacy
 
 			$this->_addDirectory($cparams->get('image_path'), JPATH_SITE . '/' . $cparams->get('image_path'));
 
-			$image_folders = \JFolder::folders(JPATH_SITE . '/' . $cparams->get('image_path'));
+			$image_folders = \Filesystem::directories(JPATH_SITE . '/' . $cparams->get('image_path'));
 			// List all images folders
 			foreach ($image_folders as $folder)
 			{
@@ -227,7 +226,7 @@ class Info extends \JModelLegacy
 
 			$this->_addDirectory('language', JPATH_SITE . '/language');
 			// List all site languages
-			$site_langs = \JFolder::folders(JPATH_SITE . '/language');
+			$site_langs = \Filesystem::directories(JPATH_SITE . '/language');
 			foreach ($site_langs as $slang)
 			{
 				$this->_addDirectory('language/' . $slang, JPATH_SITE . '/language/' . $slang);
@@ -239,7 +238,7 @@ class Info extends \JModelLegacy
 			$this->_addDirectory('modules', JPATH_SITE . '/modules');
 			$this->_addDirectory('plugins', JPATH_PLUGINS);
 
-			$plugin_groups = \JFolder::folders(JPATH_PLUGINS);
+			$plugin_groups = \Filesystem::directories(JPATH_PLUGINS);
 			foreach ($plugin_groups as $folder)
 			{
 				$this->_addDirectory('plugins/' . $folder, JPATH_PLUGINS . '/' . $folder);

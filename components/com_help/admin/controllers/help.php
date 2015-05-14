@@ -229,8 +229,7 @@ class Help extends AdminController
 			$path = $helpPagesPath2;
 		}
 
-		jimport('joomla.filesystem.folder');
-		$pages = \JFolder::files($path , '.phtml');
+		$pages = \Filesystem::files($path , '.phtml');
 
 		// Return pages
 		return array(

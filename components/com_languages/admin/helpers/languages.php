@@ -76,8 +76,6 @@ class LanguagesHelper
 	 */
 	public static function parseFile($filename)
 	{
-		jimport('joomla.filesystem.file');
-
 		if (!Filesystem::exists($filename))
 		{
 			return array();

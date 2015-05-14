@@ -33,7 +33,12 @@ namespace Components\Events\Admin\Controllers;
 use Components\Events\Tables\Category;
 use Components\Events\Tables\Configs;
 use Hubzero\Component\AdminController;
+use Filesystem;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Events controller for categories
@@ -274,9 +279,8 @@ class Categories extends AdminController
 		$arr = array(null);
 
 		// Get the files and folders
-		jimport('joomla.filesystem.folder');
-		$files   = \JFolder::files($path, $filter, $recurse, $fullpath);
-		$folders = \JFolder::folders($path, $filter, $recurse, $fullpath);
+		$files   = Filesystem::files($path, $filter, $recurse, $fullpath);
+		$folders = Filesystem::directories($path, $filter, $recurse, $fullpath);
 		// Merge files and folders into one array
 		if (is_array($files) && is_array($folders))
 		{

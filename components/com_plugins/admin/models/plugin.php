@@ -206,9 +206,6 @@ class PluginsModelPlugin extends JModelAdmin
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		// Initialise variables.
 		$folder  = $this->getState('item.folder');
 		$element = $this->getState('item.element');

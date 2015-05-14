@@ -36,6 +36,7 @@ use Components\Wiki\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
+use Filesystem;
 use Exception;
 use Request;
 use User;
@@ -224,7 +225,6 @@ class Media extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
 			if (!Filesystem::makeDirectory($path))
 			{
 				echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY')));
@@ -256,9 +256,8 @@ class Media extends SiteController
 		$filename = $pathinfo['filename'];
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = \Filesystem::clean($filename);
+		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -356,8 +355,7 @@ class Media extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY'));
 				$this->displayTask();
@@ -366,13 +364,12 @@ class Media extends SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!\Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_UPLOADING'));
 		}
@@ -441,8 +438,7 @@ class Media extends SiteController
 		if (is_dir($path))
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::deleteDirectory($path))
+			if (!Filesystem::deleteDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -508,8 +504,7 @@ class Media extends SiteController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $file));
 			}

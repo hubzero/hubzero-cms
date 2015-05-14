@@ -511,9 +511,6 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		//import joomla plugin helpers
-		jimport('joomla.plugin.helper');
-
 		// Get plugins
 		Plugin::import('mw', $app->name);
 
@@ -973,9 +970,6 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$app->name     = $row->appname;
 		$app->username = $row->username;
 
-		//import joomla plugin helpers
-		jimport('joomla.plugin.helper');
-
 		// Get plugins
 		Plugin::import('mw', $app->name);
 
@@ -1047,9 +1041,6 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			$this->errorMessage(400, 'Session Doesn\'t Exist or Does Not Belong to User');
 			return;
 		}
-
-		//import joomla plugin helpers
-		jimport('joomla.plugin.helper');
 
 		//get middleware plugins
 		Plugin::import('mw', $ms->appname);
@@ -1147,9 +1138,8 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$path = DS . $com_tools_params->get('storagepath', 'webdav' . DS . 'home') . DS . $result->get('username');
 
 		//get a list of files
-		jimport('joomla.filesystem.folder');
 		$files = array();
-		//$files = \JFolder::files($path, '.', true, true, array('.svn', 'CVS'));
+		//$files = Filesystem::files($path, '.', true, true, array('.svn', 'CVS'));
 
 		//return result
 		$object = new stdClass();

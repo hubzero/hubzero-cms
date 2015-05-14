@@ -47,7 +47,6 @@ class MediaHelper
 	{
 		$params = Component::params('com_media');
 
-		jimport('joomla.filesystem.file');
 		$format = Filesystem::extension($file['name']);
 
 		$allowable = explode(',', $params->get('upload_extensions'));

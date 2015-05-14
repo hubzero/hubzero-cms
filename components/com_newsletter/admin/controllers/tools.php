@@ -99,9 +99,6 @@ class Tools extends AdminController
 				return;
 			}
 
-			//import joomla filesystem lib
-			jimport('joomla.filesystem.folder');
-
 			//create path if doesnt exist
 			if (!is_dir($uploadPath))
 			{

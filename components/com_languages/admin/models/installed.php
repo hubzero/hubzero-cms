@@ -111,7 +111,8 @@ class LanguagesModelInstalled extends JModelList
 	 */
 	public function &getClient()
 	{
-		if (is_null($this->client)) {
+		if (is_null($this->client))
+		{
 			$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
 		}
 
@@ -126,7 +127,8 @@ class LanguagesModelInstalled extends JModelList
 	 */
 	public function &getFtp()
 	{
-		if (is_null($this->ftp)) {
+		if (is_null($this->ftp))
+		{
 			$this->ftp = JClientHelper::setCredentialsFromRequest('ftp');
 		}
 
@@ -162,7 +164,7 @@ class LanguagesModelInstalled extends JModelList
 			$langlist = $this->getLanguageList();
 
 			// Compute all the languages
-			$data	= array ();
+			$data = array();
 
 			foreach ($langlist as $lang)
 			{
@@ -171,7 +173,8 @@ class LanguagesModelInstalled extends JModelList
 				$row = new JObject();
 				$row->language = $lang;
 
-				if (!is_array($info)) {
+				if (!is_array($info))
+				{
 					continue;
 				}
 
@@ -182,10 +185,12 @@ class LanguagesModelInstalled extends JModelList
 
 				// if current than set published
 				$params = Component::params('com_languages');
-				if ($params->get($client->name, 'en-GB') == $row->language) {
+				if ($params->get($client->name, 'en-GB') == $row->language)
+				{
 					$row->published	= 1;
 				}
-				else {
+				else
+				{
 					$row->published = 0;
 				}
 
@@ -199,17 +204,21 @@ class LanguagesModelInstalled extends JModelList
 			$start = $this->getState('list.start');
 			$total = $this->getTotal();
 
-			if ($limit == 0) {
+			if ($limit == 0)
+			{
 				$start = 0;
 				$end = $total;
 			}
-			else {
-				if ($start > $total) {
+			else
+			{
+				if ($start > $total)
+				{
 					$start = $total - $total % $limit;
 				}
 				$end = $start + $limit;
 
-				if ($end > $total) {
+				if ($end > $total)
+				{
 					$end = $total;
 				}
 			}
@@ -266,7 +275,8 @@ class LanguagesModelInstalled extends JModelList
 	 */
 	public function getTotal()
 	{
-		if (is_null($this->total)) {
+		if (is_null($this->total))
+		{
 			$langlist = $this->getLanguageList();
 			$this->total = count($langlist);
 		}
@@ -282,7 +292,8 @@ class LanguagesModelInstalled extends JModelList
 	 */
 	public function publish($cid)
 	{
-		if ($cid) {
+		if ($cid)
+		{
 			$client	= $this->getClient();
 
 			$params = Component::params('com_languages');
@@ -292,25 +303,29 @@ class LanguagesModelInstalled extends JModelList
 			$id = $table->find(array('element' => 'com_languages'));
 
 			// Load
-			if (!$table->load($id)) {
+			if (!$table->load($id))
+			{
 				$this->setError($table->getError());
 				return false;
 			}
 
 			$table->params = (string)$params;
 			// pre-save checks
-			if (!$table->check()) {
+			if (!$table->check())
+			{
 				$this->setError($table->getError());
 				return false;
 			}
 
 			// save the changes
-			if (!$table->store()) {
+			if (!$table->store())
+			{
 				$this->setError($table->getError());
 				return false;
 			}
 		}
-		else {
+		else
+		{
 			$this->setError(Lang::txt('COM_LANGUAGES_ERR_NO_LANGUAGE_SELECTED'));
 			return false;
 		}
@@ -330,10 +345,11 @@ class LanguagesModelInstalled extends JModelList
 	 */
 	protected function getFolders()
 	{
-		if (is_null($this->folders)) {
+		if (is_null($this->folders))
+		{
 			$path = $this->getPath();
-			jimport('joomla.filesystem.folder');
-			$this->folders = JFolder::folders($path, '.', false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'));
+
+			$this->folders = Filesystem::directories($path, '.', false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'));
 		}
 
 		return $this->folders;
@@ -347,9 +363,10 @@ class LanguagesModelInstalled extends JModelList
 	 */
 	protected function getPath()
 	{
-		if (is_null($this->path)) {
+		if (is_null($this->path))
+		{
 			$client = $this->getClient();
-			$this->path = JLanguage::getLanguagePath($client->path);
+			$this->path = Lang::getLanguagePath($client->path);
 		}
 
 		return $this->path;

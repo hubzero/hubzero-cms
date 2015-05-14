@@ -240,8 +240,6 @@ class Application extends AdminController
 	 */
 	public function refreshHelp()
 	{
-		jimport('joomla.filesystem.file');
-
 		// Set FTP credentials, if given
 		\JClientHelper::setCredentialsFromRequest('ftp');
 
@@ -267,7 +265,7 @@ class Application extends AdminController
 	public function removerootTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken('get') or die('Invalid Token');
+		\Session::checkToken('get') or die('Invalid Token');
 
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin'))

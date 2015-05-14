@@ -84,8 +84,6 @@ if (!$no_html) {
 				<?php
 				if ($this->docs)
 				{
-					jimport('joomla.filesystem.file');
-
 					foreach ($this->docs as $path => $name)
 					{
 						$ext = Filesystem::extension($name);

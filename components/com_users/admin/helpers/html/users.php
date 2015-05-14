@@ -32,7 +32,6 @@ class JHtmlUsers
 		$src = preg_replace('#[^A-Z0-9\-_\./]#i', '', $src);
 		$file = JPATH_SITE . '/' . $src;
 
-		jimport('joomla.filesystem.path');
 		JPath::check($file);
 
 		if (!file_exists($file))
@@ -40,7 +39,7 @@ class JHtmlUsers
 			return '';
 		}
 
-		return '<img src="' . JUri::root() . $src . '" alt="" />';
+		return '<img src="' . Request::root() . $src . '" alt="" />';
 	}
 
 	/**

@@ -652,10 +652,9 @@ class Page extends SiteController
 		{
 			if (is_dir($path . DS . $lid))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\JFolder::move($path . DS . $lid, $path . DS . $this->page->get('id')))
+				if (!\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id')))
 				{
-					$this->setError(\JFolder::move($path . DS . $lid, $path . DS . $this->page->get('id')));
+					$this->setError(\Filesystem::move($path . DS . $lid, $path . DS . $this->page->get('id')));
 				}
 				$wpa->setPageID($lid, $this->page->get('id'));
 			}

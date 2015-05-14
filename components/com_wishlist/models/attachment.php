@@ -167,7 +167,6 @@ class Attachment extends Base
 	 */
 	public function isAllowedType()
 	{
-		jimport('joomla.filesystem.file');
 		$ext = strtolower(\Filesystem::extension($this->get('filename')));
 
 		if (!in_array($ext, explode(',', $this->config('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'))))

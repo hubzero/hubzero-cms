@@ -250,8 +250,9 @@ class Application extends JModelForm
 		$prev = \Hubzero\Utility\Arr::fromObject($prev);
 
 		// Create the new configuration object, and unset the root_user property
-		$config = new JRegistry('config');
 		unset($prev['root_user']);
+
+		$config = new JRegistry('config');
 		$config->loadArray($prev);
 
 		// Write the configuration file.
@@ -267,9 +268,6 @@ class Application extends JModelForm
 	 */
 	private function writeConfigFile(JRegistry $config)
 	{
-		jimport('joomla.filesystem.path');
-		jimport('joomla.filesystem.file');
-
 		// Set the configuration file path.
 		$file = JPATH_CONFIGURATION . '/configuration.php';
 

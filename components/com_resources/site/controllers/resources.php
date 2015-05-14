@@ -2103,7 +2103,6 @@ class Resources extends SiteController
 			return;
 		}
 
-		jimport('joomla.filesystem.file');
 		$ext = strtolower(\Filesystem::extension($filename));
 		if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml')))
 		{
@@ -2329,7 +2328,6 @@ class Resources extends SiteController
 
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
 			if (!\Filesystem::makeDirectory($path))
 			{
 				$this->setError('Error. Unable to create path.');

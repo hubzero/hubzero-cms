@@ -144,8 +144,7 @@ class Finder
 		if (is_dir($helpPagesPath))
 		{
 			// Get help pages for this component
-			jimport('joomla.filesystem.folder');
-			$pages = \JFolder::files($helpPagesPath , '.' . self::$ext);
+			$pages = \Filesystem::files($helpPagesPath , '.' . self::$ext);
 		}
 
 		// Return pages

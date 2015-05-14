@@ -278,7 +278,6 @@ class Elements
 	public function loadFile($file, $format = 'JSON', $options = array())
 	{
 		// Get the contents of the file
-		jimport('joomla.filesystem.file');
 		$data = \Filesystem::read($file);
 
 		return $this->loadString($data, $format, $options);

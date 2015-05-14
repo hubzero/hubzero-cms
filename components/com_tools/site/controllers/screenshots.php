@@ -313,16 +313,13 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
-
-			if (!\Filesystem::exists($path . DS . $file))
+			if (!Filesystem::exists($path . DS . $file))
 			{
 				$this->displayTask($pid, $version);
 				return;
 			}
 
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($pid, $version);
@@ -332,7 +329,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			{
 				// Delete thumbnail
 				$tn = \Components\Resources\Helpers\Html::thumbnail($file);
-				\Filesystem::delete($path . DS . $tn);
+				Filesystem::delete($path . DS . $tn);
 
 				// Instantiate a new screenshot object
 				$ss = new \Components\Resources\Tables\Screenshot($this->database);
@@ -387,8 +384,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = \Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		$file['name'] = str_replace('-tn', '', $file['name']);
 		$file_basename = substr($file['name'], 0, strripos($file['name'], '.')); // strip extention
@@ -456,8 +452,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH') . $path);
 				$this->displayTask($pid, $version);
@@ -723,12 +718,10 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$src     = $this->_buildUploadPath($srcdir, '');
 		$dest    = $this->_buildUploadPath($destdir, '');
 
-		jimport('joomla.filesystem.folder');
-
 		// Make sure the path exist
 		if (!is_dir($src))
 		{
-			if (!\Filesystem::makeDirectory($src))
+			if (!Filesystem::makeDirectory($src))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return false;
@@ -737,13 +730,13 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		Log::debug(__FUNCTION__ . "() $src");
 
 		// do we have files to transfer?
-		$files = \JFolder::files($src, '.', false, true, array());
+		$files = Filesystem::files($src, '.', false, true, array());
 		Log::debug(__FUNCTION__ . "() $files");
 		if (!empty($files))
 		{
 			// Copy directory
 			Log::debug(__FUNCTION__ . "() copying $src to $dest");
-			if (!\Filesystem::copyDirectory($src, $dest, '', true))
+			if (!Filesystem::copyDirectory($src, $dest, '', true))
 			{
 				return false;
 			}
@@ -880,9 +873,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	 */
 	private function _getChildType($filename)
 	{
-		jimport('joomla.filesystem.file');
-
-		$ftype = strtolower(\Filesystem::extension($filename));
+		$ftype = strtolower(Filesystem::extension($filename));
 
 		switch ($ftype)
 		{

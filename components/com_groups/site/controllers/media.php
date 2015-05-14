@@ -302,8 +302,8 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		if (is_dir($this->path))
 		{
 			//get list of files
-			$folders = JFolder::folders($this->path, '.', false);
-			$files   = JFolder::files($this->path, '.', false);
+			$folders = Filesystem::directories($this->path, '.', false);
+			$files   = Filesystem::files($this->path, '.', false);
 
 			// filter by type
 			if (isset($this->view->type) && $this->view->type != '')
@@ -925,8 +925,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			$base .= $_SERVER['HTTP_HOST'];
 			$listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media&task=listfiles&listdir='.$listdir.'&tmpl=component&type='.$type.'&CKEditor='.$ckeditor.'&CKEditorFuncNum='.$ckeditorFunc;
 
-			$app = JFactory::getApplication();
-			$app->redirect($listFilesUrl);
+			App::redirect($listFilesUrl);
 		}
 		else
 		{
@@ -1073,7 +1072,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 
 		// rename folder
-		JFolder::move($oldFolder, $newFolder);
+		Filesystem::move($oldFolder, $newFolder);
 
 		// output return folder
 		echo $returnFolder;
@@ -1152,7 +1151,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 
 		// move folder
-		JFolder::move($oldPath, $newPath);
+		Filesystem::move($oldPath, $newPath);
 
 		// output return folder
 		echo $returnFolder;

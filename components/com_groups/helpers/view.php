@@ -275,18 +275,18 @@ class GroupsHelperView
 				}
 
 				// do we have child menu items
-		        if (!is_array($page->get('children')))
-		        {
-		            $out .= '</li>';
-		        }
-		        else
-		        {
+				if (!is_array($page->get('children')))
+				{
+					$out .= '</li>';
+				}
+				else
+				{
 					$out .= self::buildRecursivePageMenu($group, $page->get('children')) . '</li>';
-		        }
-		    }
-		    $out .= '</ul>';
+				}
+			}
+			$out .= '</ul>';
 		}
-	    return $out;
+		return $out;
 	}
 
 	/**
@@ -430,16 +430,13 @@ class GroupsHelperView
 			return $pageTemplates;
 		}
 
-		// import joomla filesystem
-		jimport('joomla.filesystem.folder');
-
 		// load com_groups params to get group folder path
 		$params = Component::params('com_groups');
 		$base = $params->get('uploadpath', '/site/groups');
 		$base = DS . trim($base, DS) . DS . $group->get('gidNumber') . DS . 'template';
 
 		// get all php files in template directory
-		$files = \JFolder::files(PATH_APP . $base, '\\.php', false, true);
+		$files = Filesystem::files(PATH_APP . $base, '\\.php', false, true);
 
 		// check to see if any of our files are page templates
 		foreach ($files as $file)

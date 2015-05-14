@@ -78,7 +78,7 @@ class AdminModelHelp extends JModelLegacy
 		if (is_null($this->lang_tag))
 		{
 			$this->lang_tag = Lang::getTag();
-			jimport('joomla.filesystem.folder');
+
 			if (!Filesystem::exists(JPATH_BASE . '/help/' . $this->lang_tag))
 			{
 				$this->lang_tag = 'en-GB'; // use english as fallback
@@ -100,7 +100,7 @@ class AdminModelHelp extends JModelLegacy
 			$help_search = $this->getHelpSearch();
 
 			// Get Help files
-			$files = JFolder::files(JPATH_BASE . '/help/' . $lang_tag, '\.xml$|\.html$');
+			$files = Filesystem::files(JPATH_BASE . '/help/' . $lang_tag, '\.xml$|\.html$');
 			$this->toc = array();
 			foreach ($files as $file)
 			{

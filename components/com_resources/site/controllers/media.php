@@ -192,7 +192,6 @@ class Media extends SiteController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
 			if (!\Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));

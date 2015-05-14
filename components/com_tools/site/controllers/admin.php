@@ -394,8 +394,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		$result = true;
 
-		$xlog = JFactory::getLogger();
-		$xlog->debug("publish(): checkpoint 1:$result");
+		Log::debug("publish(): checkpoint 1:$result");
 
 		// get config
 
@@ -436,7 +435,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		}
 
 		// Log checkpoint
-		$xlog->debug("publish(): checkpoint 2:$result, check revision");
+		Log::debug("publish(): checkpoint 2:$result, check revision");
 
 		// check if version is valid
 		if (!ToolsModelTool::validateVersion($status['version'], $error_v, $this->_toolid))
@@ -446,7 +445,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		}
 
 		// Log checkpoint
-		$xlog->debug("publish(): checkpoint 3:$result, running finalize tool");
+		Log::debug("publish(): checkpoint 3:$result, running finalize tool");
 
 		// Run finalizetool
 		if (!$this->getError())
@@ -462,7 +461,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$xlog->debug("publish(): checkpoint 4:$result, running doi stuff");
+		Log::debug("publish(): checkpoint 4:$result, running doi stuff");
 
 		// Register DOI handle
 		if ($result && $this->config->get('new_doi', 0))
@@ -539,7 +538,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$hztv_cur = $hzt->getCurrentVersion();
 			$hztv_dev = $hzt->getDevelopmentVersion();
 
-			$xlog->debug("publish(): checkpoint 6:$result, running database stuff");
+			Log::debug("publish(): checkpoint 6:$result, running database stuff");
 
 			// create tool instance in the database
 			$newtool = $status['toolname'] . '_r' . $status['revision'];
@@ -661,16 +660,14 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$xlog->debug("publish(): checkpoint 7:$result, gather output");
+		Log::debug("publish(): checkpoint 7:$result, gather output");
 
 		// Set errors to view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		// Set messages to view
 		$this->view->messages = $this->getMessages();
 
@@ -694,9 +691,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 	 */
 	protected function _finalizeTool(&$out = '')
 	{
-		$xlog = JFactory::getLogger();
-
-		$xlog->debug("finalizeTool(): checkpoint 1");
+		Log::debug("finalizeTool(): checkpoint 1");
 
 		if (!$this->_toolid)
 		{
@@ -709,7 +704,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$tarball_path = rtrim(PATH_CORE . DS . $tarball_path, DS);
 		}
 
-		$xlog->debug("finalizeTool(): checkpoint 2");
+		Log::debug("finalizeTool(): checkpoint 2");
 
 		// Create a Tool object
 		$obj = new Tool($this->database);
@@ -720,8 +715,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			// Make sure the path exist
 			if (!is_dir('/tmp'))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\Filesystem::makeDirectory('/tmp'))
+				if (!Filesystem::makeDirectory('/tmp'))
 				{
 					$out .= Lang::txt('COM_TOOLS_ERR_UNABLE_TO_CREATE_PATH') . ' /tmp';
 					return false;
@@ -735,7 +729,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			chmod($fname, 0664);
 
 			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . PATH_CORE . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
-			$xlog->debug("finalizeTool(): checkpoint 3: $command");
+			Log::debug("finalizeTool(): checkpoint 3: $command");
 
 			if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_VERSION_FINALIZED')))
 			{
@@ -757,24 +751,25 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			// Make sure the upload path exist
 			if (!is_dir($file_path))
 			{
-				jimport('joomla.filesystem.folder');
-				if (!\Filesystem::makeDirectory($file_path))
+				if (!Filesystem::makeDirectory($file_path))
 				{
-					$xlog->debug("findalizeTool(): failed to create tarball path $file_path");
+					Log::debug("findalizeTool(): failed to create tarball path $file_path");
 					$out .= Lang::txt('COM_TOOLS_ERR_UNABLE_TO_CREATE_TAR_PATH');
 					return false;
 				}
 			}
-			$xlog->debug("finalizeTool(): checkpoint 4: " . DS . 'tmp' . DS . $tar . " to " . $file_path . '/' . $tar);
+
+			Log::debug("finalizeTool(): checkpoint 4: " . DS . 'tmp' . DS . $tar . " to " . $file_path . '/' . $tar);
+
 			if (!@copy(DS . 'tmp' . DS . $tar, $file_path . '/' . $tar))
 			{
 				$out .= " failed to copy $tar to $file_path";
-				$xlog->debug("findalizeTool(): failed tarball copy");
+				Log::debug("findalizeTool(): failed tarball copy");
 				return false;
 			}
 			else
 			{
-				$xlog->debug("findalizeTool(): deleting tmp files");
+				Log::debug("findalizeTool(): deleting tmp files");
 				exec ('sudo -u apps rm -f /tmp/' . $tar, $out, $result);
 			}
 			return true;

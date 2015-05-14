@@ -31,10 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import needed Joomla! libs
-jimport('joomla.filesystem.folder');
-jimport('joomla.application.component.view');
-
 // enable only if PRO is enabled
 if (!User::get('proEnabled'))
 {

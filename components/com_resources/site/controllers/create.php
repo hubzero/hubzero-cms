@@ -1550,8 +1550,6 @@ class Create extends SiteController
 			return false;
 		}
 
-		jimport('joomla.filesystem.folder');
-
 		// Load resource info
 		$row = new Resource($this->database);
 		$row->load($id);

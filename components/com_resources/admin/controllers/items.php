@@ -977,8 +977,6 @@ class Items extends AdminController
 		$tmpid = Request::getInt('tmpid', 0, 'post');
 		if ($tmpid != Html::niceidformat($row->id))
 		{
-			jimport('joomla.filesystem.folder');
-
 			// Build the full paths
 			$path    = Html::dateToPath($row->created);
 			$dir_id  = Html::niceidformat($row->id);
@@ -1161,8 +1159,6 @@ class Items extends AdminController
 			$this->setMessage(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
 			return $this->cancelTask();
 		}
-
-		jimport('joomla.filesystem.folder');
 
 		foreach ($ids as $id)
 		{

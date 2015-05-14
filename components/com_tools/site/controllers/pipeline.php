@@ -625,7 +625,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if (!$reason)
 			{
 				$this->view->license_choice = $this->license_choice;
-				$this->view->code			= $hztv->codeaccess;
+				$this->view->code           = $hztv->codeaccess;
 
 				// display license page with error
 				$this->setError(Lang::txt('COM_TOOLS_LICENSE_CLOSED_SOURCE_NEED_REASON'));
@@ -634,7 +634,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				jimport('joomla.filesystem.folder');
 				$path = DS . 'site/protected';
 				if (is_dir(PATH_APP . $path))
 				{

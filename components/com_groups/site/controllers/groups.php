@@ -982,7 +982,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if (is_dir($path))
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
 			if (!Filesystem::deleteDirectory($path))
 			{
 				$this->setNotification(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');

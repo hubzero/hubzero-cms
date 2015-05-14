@@ -74,8 +74,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::makeDirectory($path))
+			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();

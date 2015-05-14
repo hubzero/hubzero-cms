@@ -292,7 +292,6 @@ class CategoriesModelCategory extends JModelAdmin
 		$section   = $this->getState('category.section');
 
 		// Get the component form if it exists
-		jimport('joomla.filesystem.path');
 		$name = 'category' . ($section ? ('.' . $section) : '');
 
 		// Looking first in the component models/forms folder

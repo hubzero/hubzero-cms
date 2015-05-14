@@ -1043,7 +1043,6 @@ class Page extends Model
 		$this->tag('');
 
 		// Remove files
-		jimport('joomla.filesystem.folder');
 		$path = PATH_APP . DS . trim($this->config('filepath', '/site/wiki'), DS);
 		if (is_dir($path . DS . $this->get('id')))
 		{

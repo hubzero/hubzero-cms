@@ -439,8 +439,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.folder');
-			if (!\Filesystem::deleteDirectory($path . $folder))
+			if (!Filesystem::deleteDirectory($path . $folder))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -486,8 +485,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!\Filesystem::delete($path . DS . $file))
+			if (!Filesystem::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 			}

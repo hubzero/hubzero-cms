@@ -125,8 +125,6 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			<?php
 			if ($rows)
 			{
-				jimport('joomla.filesystem.file');
-
 				$database = \JFactory::getDBO();
 				$asset = new \Components\Wiki\Tables\Attachment($database);
 

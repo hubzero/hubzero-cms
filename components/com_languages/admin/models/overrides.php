@@ -172,8 +172,8 @@ class LanguagesModelOverrides extends JModelList
 
 		// Add filters to the session because they won't be stored there
 		// by 'getUserStateFromRequest' if they aren't in the current request
-		$app->setUserState('com_languages.overrides.filter.client', $client);
-		$app->setUserState('com_languages.overrides.filter.language', $language);
+		User::setState('com_languages.overrides.filter.client', $client);
+		User::setState('com_languages.overrides.filter.language', $language);
 
 		// List state information
 		parent::populateState('key', 'asc');
@@ -199,8 +199,8 @@ class LanguagesModelOverrides extends JModelList
 
 		// Get all languages of frontend and backend
 		$languages = array();
-		$site_languages  = JLanguage::getKnownLanguages(JPATH_SITE);
-		$admin_languages = JLanguage::getKnownLanguages(JPATH_ADMINISTRATOR);
+		$site_languages  = Lang::getKnownLanguages(JPATH_SITE);
+		$admin_languages = Lang::getKnownLanguages(JPATH_ADMINISTRATOR);
 
 		// Create a single array of them
 		foreach ($site_languages as $tag => $language)
@@ -240,7 +240,6 @@ class LanguagesModelOverrides extends JModelList
 			return false;
 		}
 
-		jimport('joomla.filesystem.file');
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
 		// Parse the override.ini file in oder to get the keys and strings

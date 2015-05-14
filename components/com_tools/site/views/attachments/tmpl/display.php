@@ -77,8 +77,6 @@ if ($this->children)
 	$files = array(13,15,26,33,35,38);
 	$n = count($this->children);
 
-	jimport('joomla.filesystem.file');
-
 	if ($this->allowupload)
 	{
 		$out .= '<p>'.Lang::txt('COM_TOOLS_ATTACH_EDIT_TITLE_EXPLANATION').'</p>'."\n";
@@ -114,8 +112,8 @@ if ($this->children)
 		$type = '';
 		$liclass = '';
 
-		$type = \Filesystem::extension($url);
-		$type = (strlen($type) > 3) ? substr($type, 0, 3): $type;
+		$type = Filesystem::extension($url);
+		$type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;
 		if ($child->type == 12)
 		{
 			$liclass = ' class="ftitle html';

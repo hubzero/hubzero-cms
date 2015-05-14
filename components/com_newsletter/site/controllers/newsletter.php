@@ -209,7 +209,6 @@ class Newsletter extends SiteController
 		if (!is_dir($newsletterPdfFolder))
 		{
 			// Build the path if it doesn't exist
-			jimport('joomla.filesystem.folder');
 			if (!\Filesystem::makeDirectory($newsletterPdfFolder))
 			{
 				App::redirect(

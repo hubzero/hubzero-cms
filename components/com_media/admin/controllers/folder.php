@@ -7,9 +7,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-
 /**
  * Folder Media Controller
  *
@@ -27,7 +24,7 @@ class MediaControllerFolder extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get some data from the request
 		$tmpl   = Request::getCmd('tmpl');
@@ -35,7 +32,8 @@ class MediaControllerFolder extends JControllerLegacy
 		$folder = Request::getVar('folder', '', '', 'path');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
-		if ($tmpl == 'component') {
+		if ($tmpl == 'component')
+		{
 			// We are inside the iframe
 			$redirect .= '&view=mediaList&tmpl=component';
 		}
@@ -71,13 +69,14 @@ class MediaControllerFolder extends JControllerLegacy
 					continue;
 				}
 
-				$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
+				$fullPath = \Hubzero\Filesystem\Util::normalizePath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
 				$object_file = new JObject(array('filepath' => $fullPath));
 				if (is_file($fullPath))
 				{
 					// Trigger the onContentBeforeDelete event.
 					$result = Event::trigger('content.onContentBeforeDelete', array('com_media.file', &$object_file));
-					if (in_array(false, $result, true)) {
+					if (in_array(false, $result, true))
+					{
 						// There are some errors in the plugins
 						JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 						continue;
@@ -91,12 +90,13 @@ class MediaControllerFolder extends JControllerLegacy
 				}
 				elseif (is_dir($fullPath))
 				{
-					$contents = JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
+					$contents = Filesystem::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
 					if (empty($contents))
 					{
 						// Trigger the onContentBeforeDelete event.
 						$result = Event::trigger('content.onContentBeforeDelete', array('com_media.folder', &$object_file));
-						if (in_array(false, $result, true)) {
+						if (in_array(false, $result, true))
+						{
 							// There are some errors in the plugins
 							JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 							continue;
@@ -128,7 +128,7 @@ class MediaControllerFolder extends JControllerLegacy
 	public function create()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$folder      = Request::getCmd('foldername', '');
 		$folderCheck = Request::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
@@ -156,7 +156,7 @@ class MediaControllerFolder extends JControllerLegacy
 				return false;
 			}
 
-			$path = JPath::clean(COM_MEDIA_BASE . '/' . $parent . '/' . $folder);
+			$path = \Hubzero\Filesystem\Util::normalizePath(COM_MEDIA_BASE . '/' . $parent . '/' . $folder);
 			if (!is_dir($path) && !is_file($path))
 			{
 				// Trigger the onContentBeforeSave event.

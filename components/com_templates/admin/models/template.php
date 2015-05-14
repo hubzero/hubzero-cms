@@ -60,7 +60,6 @@ class TemplatesModelTemplate extends JModelLegacy
 			||	$lang->load('tpl_' . $template->element, $client->path . '/templates/' . $template->element, null, false, true);
 
 			// Check if the template path exists.
-
 			if (is_dir($path))
 			{
 				$result['main'] = array();
@@ -76,7 +75,7 @@ class TemplatesModelTemplate extends JModelLegacy
 				$result['main']['offline'] = $this->getFile($path, 'offline.php');
 
 				// Handle the CSS files.
-				$files = JFolder::files($path.'/css', '\.css$', true, true);
+				$files = Filesystem::files($path.'/css', '\.css$', true, true);
 
 				foreach ($files as $file)
 				{
@@ -122,7 +121,8 @@ class TemplatesModelTemplate extends JModelLegacy
 	 */
 	public function &getTemplate()
 	{
-		if (empty($this->template)) {
+		if (empty($this->template))
+		{
 			// Initialise variables.
 			$pk = $this->getState('extension.id');
 			$db = $this->getDbo();
@@ -137,14 +137,20 @@ class TemplatesModelTemplate extends JModelLegacy
 			);
 
 			$result = $db->loadObject();
-			if (empty($result)) {
-				if ($error = $db->getErrorMsg()) {
+			if (empty($result))
+			{
+				if ($error = $db->getErrorMsg())
+				{
 					$this->setError($error);
-				} else {
+				}
+				else
+				{
 					$this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
 				}
 				$this->template = false;
-			} else {
+			}
+			else
+			{
 				$this->template = $result;
 			}
 		}
@@ -190,7 +196,6 @@ class TemplatesModelTemplate extends JModelLegacy
 	{
 		if ($template = $this->getTemplate())
 		{
-			jimport('joomla.filesystem.folder');
 			$client = JApplicationHelper::getClientInfo($template->client_id);
 			$fromPath = JPath::clean($client->path.'/templates/'.$template->element.'/');
 
@@ -211,7 +216,7 @@ class TemplatesModelTemplate extends JModelLegacy
 				return false;
 			}
 
-		return true;
+			return true;
 		}
 		else
 		{
@@ -229,9 +234,8 @@ class TemplatesModelTemplate extends JModelLegacy
 	public function cleanup()
 	{
 		// Clear installation messages
-		$app = JFactory::getApplication();
-		$app->setUserState('com_installer.message', '');
-		$app->setUserState('com_installer.extension_message', '');
+		User::setState('com_installer.message', '');
+		User::setState('com_installer.extension_message', '');
 
 		// Delete temporary directory
 		return Filesystem::deleteDirectory($this->getState('to_path'));
@@ -249,11 +253,10 @@ class TemplatesModelTemplate extends JModelLegacy
 		// Rename Language files
 		// Get list of language files
 		$result = true;
-		$files = JFolder::files($this->getState('to_path'), '.ini', true, true);
+		$files = Filesystem::files($this->getState('to_path'), '.ini', true, true);
 		$newName = strtolower($this->getState('new_name'));
 		$oldName = $this->getTemplate()->element;
 
-		jimport('joomla.filesystem.file');
 		foreach ($files as $file)
 		{
 			$newFile = str_replace($oldName, $newName, $file);

@@ -55,8 +55,7 @@ class MediaModelManager extends JModelLegacy
 		$com_media_base_uni = str_replace(DIRECTORY_SEPARATOR, '/', COM_MEDIA_BASE);
 
 		// Get the list of folders
-		jimport('joomla.filesystem.folder');
-		$folders = JFolder::folders($base, '.', true, true);
+		$folders = Filesystem::directories($base, '.', true, true);
 
 		Document::setTitle(Lang::txt('COM_MEDIA_INSERT_IMAGE'));
 
@@ -98,8 +97,7 @@ class MediaModelManager extends JModelLegacy
 		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_MEDIA_BASE.'/');
 
 		// Get the list of folders
-		jimport('joomla.filesystem.folder');
-		$folders = JFolder::folders($base, '.', true, true);
+		$folders = Filesystem::directories($base, '.', true, true);
 
 		$tree = array();
 
@@ -138,7 +136,8 @@ class MediaModelManager extends JModelLegacy
 	function getFolderTree($base = null)
 	{
 		// Get some paths from the request
-		if (empty($base)) {
+		if (empty($base))
+		{
 			$base = COM_MEDIA_BASE;
 		}
 
@@ -160,18 +159,23 @@ class MediaModelManager extends JModelLegacy
 
 		list($path) = $mkData(new SplFileInfo($base));
 
-		foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base), RecursiveIteratorIterator::SELF_FIRST) as $file) {
+		foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base), RecursiveIteratorIterator::SELF_FIRST) as $file)
+		{
 			// skip hidden files and non-directories
-			if (substr($file->getFileName(), 0, 1) == '.' || !$file->isDir()) {
+			if (substr($file->getFileName(), 0, 1) == '.' || !$file->isDir())
+			{
 				continue;
 			}
 			list($data, $rel, $parent) = $mkData($file);
 
 			// find a place to put the node by walking through parents
 			$pos =& $path;
-			if (($parents = explode(DIRECTORY_SEPARATOR, $parent))) {
-				foreach ($parents as $idx=>$par) {
-					if ($key = implode(DIRECTORY_SEPARATOR, array_slice($parents, 0, $idx + 1))) {
+			if (($parents = explode(DIRECTORY_SEPARATOR, $parent)))
+			{
+				foreach ($parents as $idx=>$par)
+				{
+					if ($key = implode(DIRECTORY_SEPARATOR, array_slice($parents, 0, $idx + 1)))
+					{
 						$pos =& $pos['children'][$key];
 					}
 				}

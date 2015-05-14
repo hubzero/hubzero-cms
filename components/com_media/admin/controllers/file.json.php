@@ -7,9 +7,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-
 /**
  * File Media Controller
  *
@@ -28,7 +25,8 @@ class MediaControllerFile extends JControllerLegacy
 	{
 		$params = Component::params('com_media');
 		// Check for request forgeries
-		if (!JSession::checkToken('request')) {
+		if (!Session::checkToken('request'))
+		{
 			$response = array(
 				'status' => '0',
 				'error' => Lang::txt('JINVALID_TOKEN')
@@ -38,12 +36,12 @@ class MediaControllerFile extends JControllerLegacy
 		}
 
 		// Get the user
-		$log		= JLog::getInstance('upload.error.php');
+		$log = JLog::getInstance('upload.error.php');
 
 		// Get some data from the request
-		$file		= Request::getVar('Filedata', '', 'files', 'array');
-		$folder		= Request::getVar('folder', '', '', 'path');
-		$return		= Request::getVar('return-url', null, 'post', 'base64');
+		$file   = Request::getVar('Filedata', '', 'files', 'array');
+		$folder = Request::getVar('folder', '', '', 'path');
+		$return = Request::getVar('return-url', null, 'post', 'base64');
 
 		if (
 			$_SERVER['CONTENT_LENGTH']>($params->get('upload_maxsize', 0) * 1024 * 1024) ||
@@ -53,8 +51,8 @@ class MediaControllerFile extends JControllerLegacy
 		)
 		{
 			$response = array(
-					'status' => '0',
-					'error' => Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE')
+				'status' => '0',
+				'error' => Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE')
 			);
 			echo json_encode($response);
 			return;
@@ -64,14 +62,14 @@ class MediaControllerFile extends JControllerLegacy
 		JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Make the filename safe
-		$file['name']	= Filesystem::clean($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 
 		if (isset($file['name']))
 		{
 			// The request is valid
 			$err = null;
 
-			$filepath = JPath::clean(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
+			$filepath = \Hubzero\Filesystem\Util::normalizePath(COM_MEDIA_BASE . '/' . $folder . '/' . strtolower($file['name']));
 
 			if (!MediaHelper::canUpload($file, $err))
 			{
@@ -88,7 +86,8 @@ class MediaControllerFile extends JControllerLegacy
 			$object_file = new JObject($file);
 			$object_file->filepath = $filepath;
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
-			if (in_array(false, $result, true)) {
+			if (in_array(false, $result, true))
+			{
 				// There are some errors in the plugins
 				$log->addEntry(array('comment' => 'Errors before save: '.$filepath.' : '.implode(', ', $object_file->getErrors())));
 				$response = array(

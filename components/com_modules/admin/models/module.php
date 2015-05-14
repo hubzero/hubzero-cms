@@ -567,17 +567,15 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
-		$app = JFactory::getApplication();
-
 		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_modules.edit.module.data', array());
+		$data = User::getState('com_modules.edit.module.data', array());
 
 		if (empty($data))
 		{
 			$data = $this->getItem();
 
 			// This allows us to inject parameter settings into a new module.
-			$params = $app->getUserState('com_modules.add.module.params');
+			$params = User::getState('com_modules.add.module.params');
 			if (is_array($params))
 			{
 				$data->set('params', $params);
@@ -788,9 +786,6 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		// Initialise variables.
 		$lang     = Lang::getRoot();
 		$clientId = $this->getState('item.client_id');

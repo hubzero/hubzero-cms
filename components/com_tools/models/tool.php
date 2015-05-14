@@ -487,7 +487,6 @@ class ToolsModelTool
 	function _mysql_update($all = false)
 	{
 		$db =  JFactory::getDBO();
-		$xlog =  JFactory::getLogger();
 
 		$query = "UPDATE #__tool SET ";
 
@@ -591,7 +590,7 @@ class ToolsModelTool
 
 					$order ++;
 				}
-				$xlog->debug($query);
+				\Log::debug($query);
 				$db->setQuery($query);
 
 				if (!$db->query())
@@ -1458,7 +1457,6 @@ class ToolsModelTool
 	public static function validate(&$tool, &$err, $id)
 	{
 		$db =  JFactory::getDBO();
-		$xlog =  JFactory::getLogger();
 
 		$query = "SELECT t.id FROM #__tool AS t WHERE LOWER(t.toolname)=LOWER(" .  $db->Quote($tool['toolname']) . ") ";
 
@@ -1483,7 +1481,6 @@ class ToolsModelTool
 		}
 
 		// Check if repository exists under /apps - added to allow for auto-AddRepo
-		jimport('joomla.filesystem.folder');
 		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname'])))
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
@@ -1601,7 +1598,6 @@ class ToolsModelTool
 	public static function validateVersion($newversion, &$err, $id)
 	{
 		$db =  JFactory::getDBO();
-		$xlog =  JFactory::getLogger();
 
 		$err = '';
 
@@ -1620,7 +1616,7 @@ class ToolsModelTool
 			$db->setQuery($query);
 
 			$result = $db->loadResult();
-			$xlog->debug("validateVersion($newversion,$id) = $result");
+			\Log::debug("validateVersion($newversion,$id) = $result");
 			if (!empty($result))
 			{
 				$err = Lang::txt('COM_TOOLS_ERR_VERSION_EXISTS');

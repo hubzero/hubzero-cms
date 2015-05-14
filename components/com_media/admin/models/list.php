@@ -6,9 +6,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-
 /**
  * Media Component List Model
  *
@@ -68,7 +65,8 @@ class MediaModelList extends JModelLegacy
 		static $list;
 
 		// Only process the list once per request
-		if (is_array($list)) {
+		if (is_array($list))
+		{
 			return $list;
 		}
 
@@ -76,31 +74,34 @@ class MediaModelList extends JModelLegacy
 		$current = $this->getState('folder');
 
 		// If undefined, set to empty
-		if ($current == 'undefined') {
+		if ($current == 'undefined')
+		{
 			$current = '';
 		}
 
 		// Initialise variables.
-		if (strlen($current) > 0) {
+		if (strlen($current) > 0)
+		{
 			$basePath = COM_MEDIA_BASE.'/'.$current;
 		}
-		else {
+		else
+		{
 			$basePath = COM_MEDIA_BASE;
 		}
 
 		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_MEDIA_BASE.'/');
 
-		$images		= array ();
-		$folders	= array ();
-		$docs		= array ();
+		$images  = array();
+		$folders = array();
+		$docs    = array();
 
 		$fileList = false;
 		$folderList = false;
 		if (file_exists($basePath))
 		{
 			// Get the list of files and folders from the given folder
-			$fileList	= JFolder::files($basePath);
-			$folderList = JFolder::folders($basePath);
+			$fileList   = Filesystem::files($basePath);
+			$folderList = Filesystem::directories($basePath);
 		}
 
 		// Iterate over the files if they exist
@@ -108,11 +109,12 @@ class MediaModelList extends JModelLegacy
 		{
 			foreach ($fileList as $file)
 			{
-				if (is_file($basePath.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
+				if (is_file($basePath.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html')
+				{
 					$tmp = new \Hubzero\Base\Object();
 					$tmp->name = $file;
 					$tmp->title = $file;
-					$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $file));
+					$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', \Hubzero\Filesystem\Util::normalizePath($basePath . '/' . $file));
 					$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
 					$tmp->size = filesize($tmp->path);
 
@@ -129,27 +131,31 @@ class MediaModelList extends JModelLegacy
 						case 'jpeg':
 						case 'ico':
 							$info = @getimagesize($tmp->path);
-							$tmp->width		= @$info[0];
-							$tmp->height	= @$info[1];
-							$tmp->type		= @$info[2];
-							$tmp->mime		= @$info['mime'];
+							$tmp->width  = @$info[0];
+							$tmp->height = @$info[1];
+							$tmp->type   = @$info[2];
+							$tmp->mime   = @$info['mime'];
 
-							if (($info[0] > 60) || ($info[1] > 60)) {
+							if (($info[0] > 60) || ($info[1] > 60))
+							{
 								$dimensions = MediaHelper::imageResize($info[0], $info[1], 60);
 								$tmp->width_60 = $dimensions[0];
 								$tmp->height_60 = $dimensions[1];
 							}
-							else {
+							else
+							{
 								$tmp->width_60 = $tmp->width;
 								$tmp->height_60 = $tmp->height;
 							}
 
-							if (($info[0] > 16) || ($info[1] > 16)) {
+							if (($info[0] > 16) || ($info[1] > 16))
+							{
 								$dimensions = MediaHelper::imageResize($info[0], $info[1], 16);
 								$tmp->width_16 = $dimensions[0];
 								$tmp->height_16 = $dimensions[1];
 							}
-							else {
+							else
+							{
 								$tmp->width_16 = $tmp->width;
 								$tmp->height_16 = $tmp->height;
 							}
@@ -175,7 +181,7 @@ class MediaModelList extends JModelLegacy
 			{
 				$tmp = new \Hubzero\Base\Object();
 				$tmp->name = basename($folder);
-				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
+				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', \Hubzero\Filesystem\Util::normalizePath($basePath . '/' . $folder));
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
 				$count = MediaHelper::countFiles($tmp->path);
 				$tmp->files = $count[0];

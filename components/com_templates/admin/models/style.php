@@ -329,22 +329,23 @@ class TemplatesModelStyle extends JModelAdmin
 		$template	= $this->getState('item.template');
 		$lang		= Lang::getRoot();
 		$client		= JApplicationHelper::getClientInfo($clientId);
-		if (!$form->loadFile('style_'.$client->name, true)) {
+
+		if (!$form->loadFile('style_'.$client->name, true))
+		{
 			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
-		$formFile	= JPath::clean($client->path.'/templates/'.$template.'/templateDetails.xml');
+		$formFile = JPath::clean($client->path.'/templates/'.$template.'/templateDetails.xml');
 
 		// Load the core and/or local language file(s).
 			$lang->load('tpl_'.$template, $client->path, null, false, true)
 		||	$lang->load('tpl_'.$template, $client->path.'/templates/'.$template, null, false, true);
 
-		if (file_exists($formFile)) {
+		if (file_exists($formFile))
+		{
 			// Get the template form.
-			if (!$form->loadFile($formFile, false, '//config')) {
+			if (!$form->loadFile($formFile, false, '//config'))
+			{
 				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 		}
@@ -352,18 +353,21 @@ class TemplatesModelStyle extends JModelAdmin
 		// Disable home field if it is default style
 
 		if ((is_array($data) && array_key_exists('home', $data) && $data['home']=='1')
-			|| ((is_object($data) && isset($data->home) && $data->home=='1'))){
+			|| ((is_object($data) && isset($data->home) && $data->home=='1')))
+		{
 			$form->setFieldAttribute('home', 'readonly', 'true');
 		}
 
 		// Attempt to load the xml file.
-		if (!$xml = simplexml_load_file($formFile)) {
+		if (!$xml = simplexml_load_file($formFile))
+		{
 			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
 		// Get the help data from the XML file if present.
 		$help = $xml->xpath('/extension/help');
-		if (!empty($help)) {
+		if (!empty($help))
+		{
 			$helpKey = trim((string) $help[0]['key']);
 			$helpURL = trim((string) $help[0]['url']);
 

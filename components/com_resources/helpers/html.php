@@ -1299,7 +1299,6 @@ class Html
 
 			$path = PATH_APP . $path;
 
-			jimport('joomla.filesystem.file');
 			$type = strtoupper(\Filesystem::extension($path));
 
 			//check to see if we have a json file (HUBpresenter)

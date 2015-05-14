@@ -199,7 +199,6 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			if (file_exists($this->logo('path') . DS . $file))
 			{
 				// Remove picture
-				jimport('joomla.filesystem.file');
 				if (!\Filesystem::delete($this->logo('path') . DS . $file))
 				{
 					$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));

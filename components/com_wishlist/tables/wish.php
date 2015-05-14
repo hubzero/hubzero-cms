@@ -492,8 +492,6 @@ class Wish extends \JTable
 
 			$path = PATH_APP . DS . trim($config->get('webpath', '/site/wishes'), DS) . DS . $oid;
 
-			jimport('joomla.filesystem.file');
-
 			foreach ($attachments as $attachment)
 			{
 				if (file_exists($path . DS . $attachment->filename) or !$attachment->filename)
