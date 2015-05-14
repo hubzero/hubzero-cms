@@ -183,6 +183,11 @@ class Git extends Models\Adapter
 					// Recursive check
 					if ($getChildren || (!$getChildren && ($file->getDirLevel($dirPath) >  $file->getDirLevel($file->get('dirname')))))
 					{
+						$folders[] = $file->get('localPath');
+						if (!$getParents)
+						{
+							continue;
+						}
 						$items[$file->get('name')]   = $file;
 
 						// Collect info for sorting
@@ -206,8 +211,6 @@ class Git extends Models\Adapter
 								$sorting[] = strtolower($file->get('name'));
 							break;
 						}
-
-						$folders[] = $file->get('localPath');
 					}
 				}
 			}
