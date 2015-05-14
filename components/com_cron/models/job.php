@@ -36,6 +36,7 @@ use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Hubzero\Debug\Profiler;
+use Hubzero\Config\Registry;
 use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'job.php');
@@ -77,7 +78,7 @@ class Job extends Model
 	{
 		parent::__construct($oid);
 
-		$this->set('params', new \JRegistry($this->get('params')));
+		$this->set('params', new Registry($this->get('params')));
 
 		$this->_profiler = new Profiler('cron_job_' . $this->get('id'));
 	}

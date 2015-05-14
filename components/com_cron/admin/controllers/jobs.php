@@ -321,6 +321,8 @@ class Jobs extends AdminController
 				continue;
 			}
 
+			$job->mark('start_run');
+
 			// Show related content
 			$results = Event::trigger('cron.' . $job->get('event'), array($job));
 			if ($results)
@@ -341,6 +343,7 @@ class Jobs extends AdminController
 				}
 			}
 
+			$job->mark('end_run');
 			$job->set('last_run', Date::toLocal('Y-m-d H:i:s'));
 			$job->set('next_run', $job->nextRun());
 			$job->store();
