@@ -39,6 +39,7 @@ $this->css('introduction.css', 'system')
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
+	<?php if (JFactory::getUser()->authorise('core.create', $this->option)) { ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last">
@@ -48,6 +49,7 @@ $this->css('introduction.css', 'system')
 			</li>
 		</ul>
 	</div><!-- / #content-header-extra -->
+	<?php } ?>
 </header>
 
 <?php

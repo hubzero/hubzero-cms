@@ -384,6 +384,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 */
 	public function newTask()
 	{
+		if (!$this->juser->authorise('core.create', $this->_option))
+		{
+			return $this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_GROUPS_ERROR_NOT_AUTH'),
+				'warning'
+			);
+		}
+
 		$this->editTask();
 	}
 
@@ -402,6 +411,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			$this->loginTask(JText::_('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
 			return;
+		}
+
+		if (!$this->juser->authorise('core.edit', $this->_option))
+		{
+			return $this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_GROUPS_ERROR_NOT_AUTH'),
+				'warning'
+			);
 		}
 
 		//are we creating a new group?
@@ -531,6 +549,17 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Incoming
 		$g_gidNumber    	= JRequest::getInt('gidNumber', 0, 'post');
+
+		if ((!$g_gidNumber && !$this->juser->authorise('core.create', $this->_option))
+		 || ($g_gidNumber && !$this->juser->authorise('core.edit', $this->_option)))
+		{
+			return $this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_GROUPS_ERROR_NOT_AUTH'),
+				'warning'
+			);
+		}
+
 		$g_cn           	= trim(JRequest::getVar('cn', '', 'post'));
 		$g_description  	= preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
 		$g_discoverability	= JRequest::getInt('discoverability', 0, 'post');
