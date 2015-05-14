@@ -531,7 +531,7 @@ class Detector extends Object
 
 					case 'win':
 						$this->platform = 'Windows';
-						if (stristr($this->lowerAgent, '95')) 
+						if (stristr($this->lowerAgent, '95'))
 						{
 							$this->platformVersion = '95';
 						}
