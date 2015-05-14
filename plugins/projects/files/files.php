@@ -31,6 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Include external file connection
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'tables' . DS . 'remotefile.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'helpers' . DS . 'connect.php');
+
 // Include some helpers
 include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 	. DS . 'helpers' . DS . 'compiler.php' );

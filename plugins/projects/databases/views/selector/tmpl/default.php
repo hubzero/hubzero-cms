@@ -60,6 +60,7 @@ if ($attachments)
 		$selected[] = $attach->object_name;
 	}
 }
+
 ?>
 <div id="abox-content-wrap">
 	<div id="abox-content">
@@ -88,7 +89,9 @@ if ($attachments)
 				<input type="hidden" name="move" value="continue" />
 				<input type="hidden" id="selecteditems" name="selecteditems" value="" />
 			</fieldset>
-			<?php if ($this->items) { ?>
+			<?php if ($this->model->isProvisioned()) { ?>
+				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_PROVISIONED'); ?></p>
+			<?php } elseif ($this->items) { ?>
 			<ul class="pub-selector database-selector" id="pub-selector">
 				<?php foreach ($this->items as $item) {
 					$liId = 'choice-' . $item->database_name;

@@ -99,26 +99,11 @@ class Base extends SiteController
 				. DS . 'models' . DS . 'publication.php');
 		}
 
-		// Database development on?
-		if (Plugin::isEnabled('projects', 'databases'))
-		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'tables' . DS . 'database.php');
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'tables' . DS . 'database.version.php');
-		}
-
 		// Logging and stats
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'tables' . DS . 'stats.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'tables' . DS . 'log.php');
-
-		// Include external file connection
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'remotefile.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'helpers' . DS . 'connect.php');
 	}
 
 	/**

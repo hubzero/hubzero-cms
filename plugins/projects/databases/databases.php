@@ -31,6 +31,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'tables' . DS . 'database.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'tables' . DS . 'database.version.php');
+
 /**
  * Projects - Databases plugin
  */
@@ -219,14 +224,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
-		// Check that project exists
-		if (!$model->exists())
-		{
-			return $arr;
-		}
 
 		// Check authorization
-		if (!$model->access('member'))
+		if ($model->exists() && !$model->access('member'))
 		{
 			return $arr;
 		}

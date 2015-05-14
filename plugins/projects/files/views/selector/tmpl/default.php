@@ -176,11 +176,14 @@ if ($this->task == 'filter')
 // Get folder array
 $subdirOptions = array();
 $subdirOptions[] = array('path' => '', 'label' => 'home directory');
-foreach ($this->items as $item)
+if ($this->items)
 {
-	if ($item->get('type') == 'folder')
+	foreach ($this->items as $item)
 	{
-		$subdirOptions[] = array('path' => $item->get('localPath'), 'label' => $item->get('localPath'));
+		if ($item->get('type') == 'folder')
+		{
+			$subdirOptions[] = array('path' => $item->get('localPath'), 'label' => $item->get('localPath'));
+		}
 	}
 }
 

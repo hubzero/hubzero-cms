@@ -77,6 +77,7 @@ class Publications extends SiteController
 		$this->registerTask('start', 'contribute');
 		$this->registerTask('publication', 'contribute');
 
+		$this->_task = trim(Request::getVar( 'task', '' ));
 		if (($this->_id || $this->_alias) && !$this->_task)
 		{
 			$this->_task = 'page';
@@ -1160,13 +1161,6 @@ class Publications extends SiteController
 		$this->view->option = $this->_option;
 		$this->view->config = $this->config;
 
-		// Add projects stylesheet
-		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
-		\Hubzero\Document\Assets::addComponentScript('com_projects');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','uploader');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','jquery.fileuploader.js');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','jquery.queueuploader.js');
-
 		// Set page title
 		$this->_task_title = Lang::txt('COM_PUBLICATIONS_SUBMIT');
 		$this->_buildTitle();
@@ -1175,7 +1169,7 @@ class Publications extends SiteController
 		$this->_buildPathway();
 
 		// What plugin requested?
-		$allowed = array('team', 'files', 'notes', 'publications', 'links');
+		$allowed = array('team', 'files', 'notes', 'databases', 'publications', 'links');
 		$plugin  = in_array($active, $allowed) ? $active : 'publications';
 
 		if (User::isGuest() && ($action == 'login' || $this->_task == 'start'))
@@ -1188,7 +1182,7 @@ class Publications extends SiteController
 		}
 
 		// Get project model
-		$project = new \Components\Projects\Models\Project($this->_identifier);
+		$project = new \Components\Projects\Models\Project();
 
 		// Get project information
 		if ($pid)

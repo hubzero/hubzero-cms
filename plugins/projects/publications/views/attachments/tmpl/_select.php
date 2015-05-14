@@ -44,7 +44,7 @@ switch ($this->type)
 $route = $this->pub->link('editbase');
 $selectUrl   = $prov
 		? Route::url( $route) . '?active=' . $active . '&amp;action=select&amp;p=' . $this->props
-			. '&amp;vid=' . $this->pub->version_id
+			. '&amp;pid=' . $this->pub->id . '&amp;vid=' . $this->pub->version_id
 		: Route::url( $route . '&active=' . $active . '&action=select') .'/?p=' . $this->props . '&amp;pid=' . $this->pub->id . '&amp;vid=' . $this->pub->version_id;
 
 ?>

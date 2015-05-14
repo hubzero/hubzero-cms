@@ -707,7 +707,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$parts   = explode('-', $props);
 
 		// Check permission
-		if (!$this->model->access('content'))
+		if ($this->model->exists() && !$this->model->access('content'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
@@ -735,6 +735,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				'type'      => 'error');
 			return;
 		}
+
 		// Is this pub from this project?
 		if (!$pub->belongsToProject($this->model->get('id')))
 		{
@@ -1000,7 +1001,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check permission
-		if (!$this->model->access('content'))
+		if ($this->model->exists() && !$this->model->access('content'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
@@ -1064,7 +1065,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$base = Request::getVar( 'base', 'files' );
 
 		// Check permission
-		if (!$this->model->access('content'))
+		if ($this->model->exists() && !$this->model->access('content'))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
@@ -2704,9 +2705,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
 			return false;
 		}
-
-		// Set permissions to 0755
-		Filesystem::setPermissions($newpath);
 
 		// Read copied files
 		$get = Filesystem::files($this->model->repo()->get('path'));
