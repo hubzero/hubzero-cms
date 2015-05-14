@@ -54,7 +54,7 @@ class Element extends Object
 	 *
 	 * @access protected
 	 */
-	public function __construct($parent = null) 
+	public function __construct($parent = null)
 	{
 		$this->_parent = $parent;
 	}
@@ -65,7 +65,7 @@ class Element extends Object
 	* @access public
 	* @return string type of the parameter
 	*/
-	public function getName() 
+	public function getName()
 	{
 		return $this->_name;
 	}
@@ -83,10 +83,10 @@ class Element extends Object
 		$name	= $element->name;
 		$label	= isset($element->label) ? $element->label : $element->name;
 		$descr	= isset($element->description) ? $element->description : '';
-		
+
 		// Make sure we have a valid label
 		$label = $label ? $label : $name;
-		
+
 		$result = new stdClass;
 		$result->label = $this->fetchTooltip($label, $descr, $element, $control_name, $name);
 		$result->element = $this->fetchElement($name, $value, $element, $control_name);
@@ -112,11 +112,11 @@ class Element extends Object
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
-		if ($description) 
+		if ($description)
 		{
 			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}
@@ -136,11 +136,11 @@ class Element extends Object
 	 * @param   string  $control_name  Control name (eg, control[fieldname])
 	 * @return  string  HTML
 	 */
-	public function fetchElement($name, $value, &$element, $control_name) 
+	public function fetchElement($name, $value, &$element, $control_name)
 	{
 		return '';
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -150,11 +150,11 @@ class Element extends Object
 	 * @param   string  $control_name  Control name (eg, control[fieldname])
 	 * @return  string  HTML
 	 */
-	public function fetchOptions($name, $value, &$element, $control_name) 
+	public function fetchOptions($name, $value, &$element, $control_name)
 	{
 		return Lang::txt('(none)');
 	}
-	
+
 	/**
 	 * Display a value
 	 *
@@ -168,7 +168,7 @@ class Element extends Object
 
 	/**
 	 * Create html tag for element.
-	 * 
+	 *
 	 * @param  string $tag    Tag Name
 	 * @param  sting  $value  Tag Value
 	 * @param  string $prefix Tag prefix
