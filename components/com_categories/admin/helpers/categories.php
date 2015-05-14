@@ -27,35 +27,39 @@ class CategoriesHelper
 	public static function addSubmenu($extension)
 	{
 		// Avoid nonsense situation.
-		if ($extension == 'com_categories') {
+		if ($extension == 'com_categories')
+		{
 			return;
 		}
 
 		$parts = explode('.', $extension);
 		$component = $parts[0];
 
-		if (count($parts) > 1) {
+		if (count($parts) > 1)
+		{
 			$section = $parts[1];
 		}
 
 		// Try to find the component helper.
-		$eName	= str_replace('com_', '', $component);
-		$file	= JPath::clean(JPATH_ADMINISTRATOR.'/components/'.$component.'/helpers/'.$eName.'.php');
+		$eName = str_replace('com_', '', $component);
+		$file  = Filesystem::cleanPath(JPATH_ADMINISTRATOR.'/components/'.$component.'/helpers/'.$eName.'.php');
 
 		if (file_exists($file)) {
 			require_once $file;
 
-			$prefix	= ucfirst(str_replace('com_', '', $component));
-			$cName	= $prefix.'Helper';
+			$prefix = ucfirst(str_replace('com_', '', $component));
+			$cName  = $prefix.'Helper';
 
-			if (class_exists($cName)) {
-
-				if (is_callable(array($cName, 'addSubmenu'))) {
+			if (class_exists($cName))
+			{
+				if (is_callable(array($cName, 'addSubmenu')))
+				{
 					$lang = Lang::getRoot();
 					// loading language file from the administrator/language directory then
 					// loading language file from the administrator/components/*extension*/language directory
-						$lang->load($component, JPATH_BASE, null, false, true)
-						|| $lang->load($component, JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true);
+					$lang->load($component, JPATH_BASE, null, false, true)
+					|| $lang->load($component, Filesystem::cleanPath(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true);
+
 					call_user_func(array($cName, 'addSubmenu'), 'categories'.(isset($section)?'.'.$section:''));
 				}
 			}
@@ -67,7 +71,6 @@ class CategoriesHelper
 	 *
 	 * @param	string	$extension	The extension.
 	 * @param	int		$categoryId	The category ID.
-	 *
 	 * @return	Object
 	 * @since	1.6
 	 */

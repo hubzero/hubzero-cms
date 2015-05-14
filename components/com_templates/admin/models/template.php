@@ -52,7 +52,7 @@ class TemplatesModelTemplate extends JModelLegacy
 		if ($template = $this->getTemplate())
 		{
 			$client = JApplicationHelper::getClientInfo($template->client_id);
-			$path   = JPath::clean($client->path.'/templates/'.$template->element.'/');
+			$path   = Filesystem::cleanPath($client->path.'/templates/'.$template->element.'/');
 			$lang   = Lang::getRoot();
 
 			// Load the core and/or local language file(s).
@@ -197,7 +197,7 @@ class TemplatesModelTemplate extends JModelLegacy
 		if ($template = $this->getTemplate())
 		{
 			$client = JApplicationHelper::getClientInfo($template->client_id);
-			$fromPath = JPath::clean($client->path.'/templates/'.$template->element.'/');
+			$fromPath = Filesystem::cleanPath($client->path.'/templates/'.$template->element.'/');
 
 			// Delete new folder if it exists
 			$toPath = $this->getState('to_path');

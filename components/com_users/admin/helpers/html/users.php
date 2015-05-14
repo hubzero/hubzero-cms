@@ -32,7 +32,7 @@ class JHtmlUsers
 		$src = preg_replace('#[^A-Z0-9\-_\./]#i', '', $src);
 		$file = JPATH_SITE . '/' . $src;
 
-		JPath::check($file);
+		\Hubzero\Filesystem\Util::checkPath($file);
 
 		if (!file_exists($file))
 		{

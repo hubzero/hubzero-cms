@@ -151,7 +151,7 @@ class PluginsModelPlugin extends JModelAdmin
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the plugin XML.
-			$path = JPath::clean(JPATH_PLUGINS.'/'.$table->folder.'/'.$table->element.'/'.$table->element.'.xml');
+			$path = Filesystem::cleanPath(JPATH_PLUGINS.'/'.$table->folder.'/'.$table->element.'/'.$table->element.'.xml');
 
 			if (file_exists($path))
 			{
@@ -232,11 +232,11 @@ class PluginsModelPlugin extends JModelAdmin
 		}
 
 		// Try 1.6 format: /plugins/folder/element/element.xml
-		$formFile = JPath::clean(JPATH_PLUGINS.'/'.$folder.'/'.$element.'/'.$element.'.xml');
+		$formFile = Filesystem::cleanPath(JPATH_PLUGINS.'/'.$folder.'/'.$element.'/'.$element.'.xml');
 		if (!file_exists($formFile))
 		{
 			// Try 1.5 format: /plugins/folder/element/element.xml
-			$formFile = JPath::clean(JPATH_PLUGINS.'/'.$folder.'/'.$element.'.xml');
+			$formFile = Filesystem::cleanPath(JPATH_PLUGINS.'/'.$folder.'/'.$element.'.xml');
 			if (!file_exists($formFile))
 			{
 				throw new Exception(Lang::txt('COM_PLUGINS_ERROR_FILE_NOT_FOUND', $element.'.xml'));

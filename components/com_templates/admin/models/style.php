@@ -288,7 +288,7 @@ class TemplatesModelStyle extends JModelAdmin
 
 			// Get the template XML.
 			$client = JApplicationHelper::getClientInfo($table->client_id);
-			$path   = JPath::clean($client->path.'/templates/'.$table->template.'/templateDetails.xml');
+			$path   = Filesystem::cleanPath($client->path.'/templates/'.$table->template.'/templateDetails.xml');
 
 			if (file_exists($path))
 			{
@@ -335,7 +335,7 @@ class TemplatesModelStyle extends JModelAdmin
 			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
-		$formFile = JPath::clean($client->path.'/templates/'.$template.'/templateDetails.xml');
+		$formFile = Filesystem::cleanPath($client->path.'/templates/'.$template.'/templateDetails.xml');
 
 		// Load the core and/or local language file(s).
 			$lang->load('tpl_'.$template, $client->path, null, false, true)

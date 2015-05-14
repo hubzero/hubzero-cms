@@ -806,8 +806,7 @@ class Elements
 
 			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
 
-			jimport('joomla.filesystem.path');
-			if ($elementFile = \JPath::find($dirs, $file))
+			if ($elementFile = \Filesystem::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

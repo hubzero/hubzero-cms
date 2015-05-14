@@ -29,12 +29,14 @@ class MediaControllerFile extends JControllerLegacy
 	public function upload()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+
 		$params = Component::params('com_media');
+
 		// Get some data from the request
-		$files			= Request::getVar('Filedata', '', 'files', 'array');
-		$return			= Request::getVar('return-url', null, 'post', 'base64');
-		$this->folder	= Request::getVar('folder', '', '', 'path');
+		$files  = Request::getVar('Filedata', '', 'files', 'array');
+		$return = Request::getVar('return-url', null, 'post', 'base64');
+		$this->folder = Request::getVar('folder', '', '', 'path');
 
 		// Set the redirect
 		if ($return)
@@ -156,7 +158,7 @@ class MediaControllerFile extends JControllerLegacy
 			'tmp_name'	=> $tmp_name,
 			'error'		=> $error,
 			'size'		=> $size,
-			'filepath'	=> JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
+			'filepath'	=> Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
 		);
 	}
 
@@ -229,7 +231,7 @@ class MediaControllerFile extends JControllerLegacy
 				continue;
 			}
 
-			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
+			$fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
 			$object_file = new JObject(array('filepath' => $fullPath));
 			if (is_file($fullPath))
 			{

@@ -87,9 +87,7 @@ class Utilities
 	 */
 	public static function normalizePath($path)
 	{
-		jimport('joomla.filesystem.path');
-
-		$path = \JPath::clean($path);
+		$path = \Filesystem::cleanPath($path);
 
 		// Make sure the path doesn't end with a slash
 		$path = rtrim($path, DS);

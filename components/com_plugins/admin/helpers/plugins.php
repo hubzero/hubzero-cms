@@ -93,7 +93,7 @@ class PluginsHelper
 		$data = new \Hubzero\Base\Object;
 
 		// Check of the xml file exists
-		$filePath = JPath::clean($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
+		$filePath = Filesystem::cleanPath($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
 		if (is_file($filePath))
 		{
 			$xml = JInstaller::parseXMLInstallFile($filePath);

@@ -24,12 +24,12 @@ class TemplatesHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_TEMPLATES_SUBMENU_STYLES'),
-			'index.php?option=com_templates&view=styles',
+			Route::url('index.php?option=com_templates&view=styles'),
 			$vName == 'styles'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_TEMPLATES_SUBMENU_TEMPLATES'),
-			'index.php?option=com_templates&view=templates',
+			Route::url('index.php?option=com_templates&view=templates'),
 			$vName == 'templates'
 		);
 	}
@@ -45,7 +45,8 @@ class TemplatesHelper
 
 		$actions = JAccess::getActions('com_templates');
 
-		foreach ($actions as $action) {
+		foreach ($actions as $action)
+		{
 			$result->set($action->name, User::authorise($action->name, 'com_templates'));
 		}
 
@@ -78,7 +79,8 @@ class TemplatesHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		if ($clientId != '*') {
+		if ($clientId != '*')
+		{
 			$query->where('client_id='.(int) $clientId);
 		}
 
@@ -98,16 +100,18 @@ class TemplatesHelper
 		$data = new JObject;
 
 		// Check of the xml file exists
-		$filePath = JPath::clean($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
+		$filePath = Filesystem::cleanPath($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
 		if (is_file($filePath))
 		{
 			$xml = JInstaller::parseXMLInstallFile($filePath);
 
-			if ($xml['type'] != 'template') {
+			if ($xml['type'] != 'template')
+			{
 				return false;
 			}
 
-			foreach ($xml as $key => $value) {
+			foreach ($xml as $key => $value)
+			{
 				$data->set($key, $value);
 			}
 		}

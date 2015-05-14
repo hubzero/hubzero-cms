@@ -295,12 +295,12 @@ class CategoriesModelCategory extends JModelAdmin
 		$name = 'category' . ($section ? ('.' . $section) : '');
 
 		// Looking first in the component models/forms folder
-		$path = JPath::clean(JPATH_ADMINISTRATOR . "/components/$component/models/forms/$name.xml");
+		$path = Filesystem::cleanPath(JPATH_ADMINISTRATOR . "/components/$component/models/forms/$name.xml");
 
 		// Old way: looking in the component folder
 		if (!file_exists($path))
 		{
-			$path = JPath::clean(JPATH_ADMINISTRATOR . "/components/$component/$name.xml");
+			$path = Filesystem::cleanPath(JPATH_ADMINISTRATOR . "/components/$component/$name.xml");
 		}
 
 		if (file_exists($path))
@@ -316,7 +316,7 @@ class CategoriesModelCategory extends JModelAdmin
 
 		// Try to find the component helper.
 		$eName = str_replace('com_', '', $component);
-		$path = JPath::clean(JPATH_ADMINISTRATOR . "/components/$component/helpers/category.php");
+		$path = Filesystem::cleanPath(JPATH_ADMINISTRATOR . "/components/$component/helpers/category.php");
 
 		if (file_exists($path))
 		{
@@ -326,8 +326,8 @@ class CategoriesModelCategory extends JModelAdmin
 			if (class_exists($cName) && is_callable(array($cName, 'onPrepareForm')))
 			{
 					Lang::load($component, JPATH_BASE, null, false, true)
-				||	Lang::load($component, JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true)
-				||	Lang::load($component, JPath::clean(JPATH_SITE . '/components/' . $component . '/admin'), null, false, true);
+				||	Lang::load($component, Filesystem::cleanPath(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true)
+				||	Lang::load($component, Filesystem::cleanPath(JPATH_SITE . '/components/' . $component . '/admin'), null, false, true);
 				call_user_func_array(array($cName, 'onPrepareForm'), array(&$form));
 
 				// Check for an error.

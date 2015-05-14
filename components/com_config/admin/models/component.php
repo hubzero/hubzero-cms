@@ -70,8 +70,8 @@ class Component extends \JModelForm
 		// Set an alternative path for the configuration file.
 		if ($path = Request::getString('path'))
 		{
-			$path = \JPath::clean(JPATH_SITE . '/' . $path);
-			\JPath::check($path);
+			$path = Filesystem::cleanPath(JPATH_SITE . '/' . $path);
+			\Hubzero\Filesystem\Util::checkCheck($path);
 			$this->setState('component.path', $path);
 		}
 	}
@@ -131,7 +131,7 @@ class Component extends \JModelForm
 		|| Lang::load($option, JPATH_SITE . "/components/$option/admin", null, false, true)
 		|| Lang::load($option, JPATH_BASE . "/components/$option", null, false, true);
 
-		return \Component::load($option);
+		return Component::load($option);
 	}
 
 	/**
