@@ -33,8 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Include some helpers
 include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
-	. DS . 'helpers' . DS . 'githelper.php' );
-include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 	. DS . 'helpers' . DS . 'compiler.php' );
 
 // Get repo model

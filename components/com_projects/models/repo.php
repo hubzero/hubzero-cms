@@ -1222,8 +1222,7 @@ class Repo extends Object
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
 		$dirPath   = isset($params['subdir']) ? $params['subdir'] : NULL;
 
-		// Now copy extracted contents into project
-		$extracted = \JFolder::files($extractPath, '.', true, true,
+		$extracted = Filesystem::files($extractPath, '.', true, true,
 			$exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX' ));
 
 		$z = 0;

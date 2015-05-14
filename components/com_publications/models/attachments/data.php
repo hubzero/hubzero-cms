@@ -712,7 +712,7 @@ class Data extends Base
 		$dataFiles = array();
 		if (is_dir($configs->dataPath))
 		{
-			$dataFiles = \JFolder::files($configs->dataPath, '.', true, true);
+			$dataFiles = Filesystem::files($configs->dataPath, '.', true, true);
 		}
 
 		if (!empty($dataFiles))
@@ -815,7 +815,7 @@ class Data extends Base
 		$dataFiles = array();
 		if (is_dir($configs->dataPath))
 		{
-			$dataFiles = \JFolder::files($configs->dataPath, '.', true, true);
+			$dataFiles = Filesystem::files($configs->dataPath, '.', true, true);
 		}
 		if (!empty($dataFiles))
 		{
