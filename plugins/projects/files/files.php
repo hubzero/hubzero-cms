@@ -41,6 +41,8 @@ include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 	. DS . 'models' . DS . 'repo.php');
 
+require_once(__DIR__ . '/helpers/sync.php');
+
 /**
  * Projects Files plugin
  */
@@ -87,13 +89,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * @var	   array
 	 */
 	protected $_case = 'files';
-
-	/**
-	 * Url for project
-	 *
-	 * @var	   array
-	 */
-	protected $_route = NULL;
 
 	/**
 	 * Component name
@@ -211,21 +206,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_path = $this->repo->get('path');
 			}
 
-			// Remote connections
-			$this->_connect		= NULL;
-			$this->_rServices	= array();
-			$this->_rSync		= array('service'	=> NULL,
-										'status' 	=> NULL,
-										'message' 	=> NULL,
-										'debug' 	=> NULL,
-										'error' 	=> NULL,
-										'output' 	=> NULL,
-										'auto'		=> NULL
-										);
-
-			// Set routing
-			$this->_route = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
-
 			//  Establish connection to external services
 			if ($this->model->exists() && !$this->model->isProvisioned())
 			{
@@ -234,13 +214,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$this->_uid,
 					date_default_timezone_get()
 				);
-				$this->_logPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'logs');
-
-				// Get services the project is connected to
-				$this->_rServices = $this->_connect->getActive();
 
 				// Sync service is Google
-				if (!empty($this->_rServices) && $this->repo->isLocal())
+				if (!empty($this->_connect->_active) && $this->repo->isLocal())
 				{
 					$this->_remoteService = 'google';
 				}
@@ -341,9 +317,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				case 'filter':
 					$arr['html'] 	= $this->_select();
 					break;
-				case 'browser':
-					$arr['html'] 	= $this->_browser();
-					break;
 
 				// Connections
 				case 'connect':
@@ -405,7 +378,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Sync active?
 		$remotes = array();
 		$view->connect       = $this->_connect;
-		$view->services      = $this->_rServices;
+		$view->services      = $this->_connect->_active;
 		$view->connections	 = $this->_connect->getConnections($this->_uid);
 
 		// Get stored remote connections
@@ -419,7 +392,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			);
 
 			$view->sync 		 = $sync == 2 ? 0 : $this->model->params->get('google_sync_queue', 0);
-			$view->rSync 		 = $this->_rSync;
+			$view->rSync 		 = new Sync($this->_connect);
 			$view->sharing 		 = 1;
 		}
 
@@ -447,7 +420,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$view->publishing	= false; // do not show publishing info
 		$view->title		= $this->_area['title'];
-		$view->url 			= Route::url($this->_route . '&active=files');
+		$view->url 			= Route::url($this->model->link('files'));
 		$view->option 		= $this->_option;
 		$view->subdir 		= $this->subdir;
 		$view->model 		= $this->model;
@@ -590,126 +563,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Browser for within publications (Old flow)
-	 *
-	 * @return     string
-	 */
-	protected function _browser()
-	{
-		// Incoming
-		$content 	= Request::getVar('content', 'files');
-		$ajax 		= Request::getInt('ajax', 0);
-		$primary 	= Request::getInt('primary', 1);
-		$images 	= Request::getInt('images', 0);
-		$pid 		= Request::getInt('pid', 0);
-
-		if (!$ajax)
-		{
-			return false;
-		}
-
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'projects',
-				'element'	=>'files',
-				'name'		=>'browser'
-			)
-		);
-
-		// Get file list
-		if (!$this->model->exists())
-		{
-			$view->files = $this->_getMemberFiles();
-		}
-		elseif ($content == 'files')
-		{
-			// Set query params
-			$params = array(
-				'limit'                => Request::getInt('limit', 0),
-				'start'                => Request::getInt('limitstart', 0),
-				'sortby'               => Request::getVar('sortby', 'localpath'),
-				'sortdir'              => Request::getVar('sortdir', 'ASC'),
-				'showFullMetadata'     => false,
-				'getParents'           => false, // show folders
-				'getChildren'          => true,
-			);
-
-			$view->files = $this->repo->call('filelist', $params);
-		}
-		else
-		{
-			$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
-			return;
-		}
-
-		// Does the publication exist?
-		$versionid 	= Request::getInt('versionid', 0);
-		$pContent 	= new \Components\Publications\Tables\Attachment( $this->_database );
-		$role    	= $primary ? '1': '0';
-		$other 		= $primary ? '0' : '1';
-
-		if (!$images)
-		{
-			$view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role));
-		}
-		else
-		{
-			// Common extensions (for gallery)
-			$pubparams 	= Plugin::params( 'projects', 'publications' );
-
-			$view->image_ext = \Components\Projects\Helpers\Html::getParamArray(
-								$pubparams->get('image_types', 'bmp, jpeg, jpg, png, gif' ));
-			$view->video_ext = \Components\Projects\Helpers\Html::getParamArray(
-								$pubparams->get('video_types', 'avi, mpeg, mov, wmv' ));
-
-			$other = 1;
-
-			// Get current screenshots
-			$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
-			$view->shots = $pScreenshot->getScreenshots($versionid);
-		}
-
-		$view->exclude = $pContent->getAttachments(
-			$versionid,
-			$filters = array('role' => $other, 'select' => 'a.path')
-		);
-
-		if ($view->exclude && !$images)
-		{
-			$excude_files = array();
-			foreach ($view->exclude as $exclude)
-			{
-				$excude_files[] = str_replace($this->_path. DS, '', trim($exclude->path));
-			}
-			$view->exclude = $excude_files;
-		}
-
-		$view->primary 		= $primary;
-		$view->images 		= $images;
-		$view->total 		= 0;
-		$view->params 		= $this->model->params;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->model 		= $this->model;
-		$view->repo    		= $this->repo;
-		$view->uid 			= $this->_uid;
-		$view->subdir 		= $this->subdir;
-		$view->base 		= $content;
-		$view->config 		= $this->model->config();
-		$view->pid 			= $pid;
-		$view->title		= $this->_area['title'];
-
-		// Get messages	and errors
-		$view->msg = $this->_msg;
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
-		return $view->loadTemplate();
-	}
-
-	/**
 	 * Upload view
 	 *
 	 * @return     void, redirect
@@ -747,7 +600,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->quota = $quota
 			? $quota
 			: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
-		$view->url = Route::url($this->_route . '&active=files');
+		$view->url = Route::url($this->model->link('files'));
 
 		$view->unused 		= $view->quota - $dirsize;
 		$view->option 		= $this->_option;
@@ -789,7 +642,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$url  = $this->_route . '&active=files';
+			$url  = $this->model->link('files');
 			$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 			$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 			$url  = Route::url($url);
@@ -919,8 +772,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->uid 			= $this->_uid;
 		$view->ajax 		= 1;
 		$view->subdir 		= $this->subdir;
-		$view->url			= Route::url($this->_route . '&active=files');
-		$view->path 		= $this->_path;
+		$view->url			= Route::url($this->model->link('files'));
 
 		if ($this->getError())
 		{
@@ -967,7 +819,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -1012,7 +864,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -1058,7 +910,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			);
 
 			$view->items 		= array();
-			$view->services		= $this->_rServices;
+			$view->services		= $this->_connect->_active;
 			$view->connections	= $this->_connect->getConnections();
 			$view->connect		= $this->_connect;
 			$view->database 	= $this->_database;
@@ -1068,7 +920,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->subdir 		= $this->subdir;
-			$view->url			= Route::url($this->_route . '&active=files');
+			$view->url			= Route::url($this->model->link('files'));
 			$view->path 		= $this->_path;
 			if (empty($items))
 			{
@@ -1148,7 +1000,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -1205,7 +1057,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->ajax 		= 1;
 			$view->subdir 		= $this->subdir;
-			$view->url			= Route::url($this->_route . '&active=files');
+			$view->url			= Route::url($this->model->link('files'));
 			$view->path 		= $this->_path;
 			return $view->loadTemplate();
 		}
@@ -1236,7 +1088,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -1287,7 +1139,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->path 		= $this->_path;
 			$view->items 		= array();
 			$view->database 	= $this->_database;
-			$view->services		= $this->_rServices;
+			$view->services		= $this->_connect->_active;
 			$view->connections	= $this->_connect->getConnections();
 			$view->connect		= $this->_connect;
 			$view->option 		= $this->_option;
@@ -1296,7 +1148,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->uid 			= $this->_uid;
 			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->subdir 		= $this->subdir;
-			$view->url			= Route::url($this->_route . '&active=files');
+			$view->url			= Route::url($this->model->link('files'));
 			if (empty($items))
 			{
 				$view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
@@ -1385,7 +1237,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -1436,7 +1288,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Redirect to file list
-		$view->url = Route::url($this->_route . '&active=files');
+		$view->url = Route::url($this->model->link('files'));
 
 		// Collective vars
 		$versions 		= array();
@@ -1586,7 +1438,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Run diff
 		$view->diff = $this->repo->diff($params);
 
-		$view->url 	        = Route::url($this->_route . '&active=files');
+		$view->url 	        = Route::url($this->model->link('files'));
 		$view->config		= $this->model->config();
 		$view->file 		= $params['file'];
 		$view->option 		= $this->_option;
@@ -1748,7 +1600,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -1877,7 +1729,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// File download
 		if (count($items) > 1)
 		{
-			$archive = $this->_archiveFiles($items, $this->_path, $this->subdir);
+			$archive = $this->_archiveFiles($items);
 
 			if (!$archive)
 			{
@@ -2034,7 +1886,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
@@ -2130,7 +1982,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->file    = $file;
 		$view->oWidth  = '780';
 		$view->oHeight = '460';
-		$view->url	   = Route::url($this->_route . '&active=files');
+		$view->url	   = Route::url($this->model->link('files'));
 		$cExt          = 'pdf';
 
 		// Take out Google native extension if present
@@ -2196,7 +2048,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$logFile = $tempBase . '.log';
 			if (file_exists(PATH_APP . $outputDir . DS . $logFile ))
 			{
-				$log = $this->_readFile(PATH_APP . $outputDir . DS . $logFile, '', true);
+				$log = Filesystem::read(PATH_APP . $outputDir . DS . $logFile);
 			}
 
 			if (!$contentFile)
@@ -2223,7 +2075,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -2415,7 +2267,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build return url
-		$url  = $this->_route . '&active=files';
+		$url  = $this->model->link('files');
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
@@ -2829,9 +2681,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->ajax   = Request::getInt('ajax', 0);
 
 		// Build URL
-		$url  = $this->_route . '&active=files';
-		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
-		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
+		$url          = $this->model->link('files');
+		$url         .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
+		$url         .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$view->url    = $url;
 		$view->subdir = $this->subdir;
 
@@ -2857,7 +2709,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$removeData = Request::getInt('removedata', 1);
 
 		// Build pub url
-		$url = Route::url($this->_route . '&active=files');
+		$url = Route::url($this->model->link('files'));
 
 		// Build return URL
 		$return = $callback ? $callback : $url . '?action=connect';
@@ -2917,10 +2769,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->database 	= $this->_database;
 		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
-		$view->route		= $this->_route;
 		$view->url 			= $url;
 		$view->title		= $this->_area['title'];
-		$view->services		= $this->_connect->getVar('_services');
+		$view->services		= $this->_connect->getServices();
 		$view->connect		= $this->_connect;
 
 		// Get refreshed params
@@ -2954,15 +2805,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Timed sync?
 		$autoSync = $this->params->get('auto_sync', 0);
+		$this->_rSync = new Sync($this->_connect);
 
 		// Remote service(s) active?
-		if (!empty($this->_rServices) && $this->repo->isLocal())
+		if (!empty($this->_connect->_active) && $this->repo->isLocal())
 		{
 			// Get remote files for each active service
-			foreach ($this->_rServices as $servicename)
+			foreach ($this->_connect->_active as $servicename)
 			{
 				// Set syncing service
-				$this->_rSync['service'] = $servicename;
+				$this->_rSync->set('service', $servicename);
 
 				// Get time of last sync
 				$synced = $this->model->params->get($servicename . '_sync');
@@ -2987,20 +2839,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 
 				// Send sync request
-				$success = $this->_sync( $servicename, $queue, $auto);
+				$success = $this->_rSync->sync($servicename, $queue, $auto);
 
 				// Unlock sync
 				if ($success)
 				{
-					$this->_lockSync($servicename, true);
+					$this->_rSync->lockSync($servicename, true);
 				}
 
 				// Success message
-				$this->_rSync['message'] = Lang::txt('PLG_PROJECTS_FILES_SYNC_SUCCESS');
+				$this->_rSync->set('message', Lang::txt('PLG_PROJECTS_FILES_SYNC_SUCCESS'));
 			}
 		}
 
-		$this->_rSync['auto'] = $auto;
+		$this->_rSync->set('auto', $auto);
 
 		if (!$ajax)
 		{
@@ -3008,819 +2860,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$this->_rSync['output'] = $this->_browse();
-			return json_encode($this->_rSync);
+			$this->_rSync->set('output', $this->_browse());
+			return json_encode($this->_rSync->getStatus());
 		}
-	}
-
-	/**
-	 * Sync local and remote changes since last sync
-	 *
-	 * @param    string		$service	Remote service name
-	 * @return   void
-	 */
-	protected function _sync ($service = 'google', $queue = false, $auto = false)
-	{
-		// Lock sync
-		if (!$this->_lockSync($service, false, $queue))
-		{
-			// Return error
-			if ($auto == false)
-			{
-				$this->_rSync['error'] = Lang::txt('PLG_PROJECTS_FILES_SYNC_DELAYED');
-			}
-
-			return false;
-		}
-
-		if (!isset($this->_git))
-		{
-			$this->_git = new \Components\Projects\Helpers\Git($this->_path);
-		}
-
-		// Clean up status
-		$this->_writeToFile('');
-
-		// Record sync status
-		$this->_writeToFile(ucfirst($service) . ' '. Lang::txt('PLG_PROJECTS_FILES_SYNC_STARTED') );
-
-		// Get time of last sync
-		$synced = $this->model->params->get($service . '_sync', 1);
-
-		// Get disk usage
-		$diskUsage = $this->repo->call('getDiskUsage',
-			$params = array(
-				'working' => true,
-				'history' => $this->params->get('disk_usage')
-			)
-		);
-
-		$quota 	   = $this->model->params->get('quota')
-					? $this->model->params->get('quota')
-					: \Components\Projects\Helpers\Html::convertSize( floatval($this->model->config()->get('defaultQuota', '1')), 'GB', 'b');
-		$avail 	   = $quota - $diskUsage;
-
-		// Last synced remote/local change
-		$lastRemoteChange = $this->model->params->get($service . '_last_remote_change', NULL);
-		$lastLocalChange  = $this->model->params->get($service . '_last_local_change', NULL);
-
-		// Get last change ID for project creator
-		$lastSyncId = $this->model->params->get($service . '_sync_id', NULL);
-		$prevSyncId = $this->model->params->get($service . '_prev_sync_id', NULL);
-
-		// User ID of project owner
-		$projectOwner = $this->model->get('owned_by_user');
-
-		// Are we syncing project home directory or other?
-		$localDir   = $this->_connect->getConfigParam($service, 'local_dir');
-		$localDir   = $localDir == '#home' ? '' : $localDir;
-
-		$localPath  = $this->_path;
-		$localPath .= $localDir ? DS . $localDir : '';
-
-		// Record sync status
-		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_ESTABLISH_REMOTE_CONNECT') );
-
-		// Get service API - always project owner!
-		$this->_connect->getAPI($service, $projectOwner);
-
-		// Collector arrays
-		$locals 		= array();
-		$remotes 		= array();
-		$localFolders 	= array();
-		$remoteFolders 	= array();
-		$failed			= array();
-		$deletes		= array();
-		$timedRemotes	= array();
-
-		// Sync start time
-		$startTime =  date('c');
-		$passed    = $synced != 1 ? \Components\Projects\Helpers\Html::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
-
-		// Start debug output
-		$output  = ucfirst($service) . "\n";
-		$output .= $synced != 1 ? 'Last sync (local): ' . $synced
-				. ' | (UTC): ' . gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
-		$output .= 'Previous sync ID: ' . $prevSyncId . "\n";
-		$output .= 'Current sync ID: ' . $lastSyncId . "\n";
-		$output .= 'Last synced remote change: '.  $lastRemoteChange . "\n";
-		$output .= 'Last synced local change: '.  $lastLocalChange . "\n";
-		$output .= 'Time passed since last sync: ' . $passed . "\n";
-		$output .= 'Local sync start time: '.  $startTime . "\n";
-		$output .= 'Initiated by (user ID): '.  $this->_uid . ' [';
-		$output .= ($auto == true) ? 'Auto sync' : 'Manual sync request';
-		$output .= ']' . "\n";
-
-		// Record sync status
-		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_STRUCTURE_REMOTE') );
-
-		// Get stored remote connections
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-		$connections = $objRFile->getRemoteConnections($this->model->get('id'), $service);
-
-		// Get remote folder structure (to find out remote ids)
-		$this->_connect->getFolderStructure($service, $projectOwner, $remoteFolders);
-
-		// Record sync status
-		$this->_writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_COLLECT_LOCAL') );
-
-		// Collector for local renames
-		$localRenames = array();
-
-		$fromLocal = ($synced == $lastLocalChange || !$lastLocalChange) ? $synced : $lastLocalChange;
-
-		// Get all local changes since last sync
-		$locals = $this->_git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections );
-
-		// Record sync status
-		$this->_writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_COLLECT_REMOTE') );
-
-		// Get all remote files that changed since last sync
-		$newSyncId  = 0;
-		$nextSyncId = 0;
-		if ($lastSyncId > 1)
-		{
-			// Via Changes feed
-			$newSyncId = $this->_connect->getChangedItems(
-				$service, $projectOwner,
-				$lastSyncId, $remotes,
-				$deletes, $connections
-			);
-		}
-		else
-		{
-			// Via List feed
-			$remotes = $this->_connect->getRemoteItems($service, $projectOwner, '', $connections);
-			$newSyncId = 1;
-		}
-
-		// Record sync status
-		$this->_writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_VERIFY_REMOTE') );
-
-		// Possible that we've missed a change?
-		if ( $newSyncId > $lastSyncId )
-		{
-			$output .= '!!! Changes detected - new change ID: ' . $newSyncId . "\n";
-		}
-		else
-		{
-			$output .= '>>> Returned change ID: ' . $newSyncId . "\n";
-		}
-
-		$output .= empty($remotes)
-				? 'No changes brought in by Changes feed' . "\n"
-				: 'Changes feed has ' . count($remotes) . ' changes' . "\n";
-
-		$from = ($synced == $lastRemoteChange || !$lastRemoteChange)
-				? date("c", strtotime($synced) - (1)) : date("c", strtotime($lastRemoteChange));
-
-		// Get changes via List feed (to make sure we get ALL changes)
-		// We need this because Changes feed is not 100% reliable
-		if ( $newSyncId > $lastSyncId)
-		{
-			$timedRemotes = $this->_connect->getRemoteItems($service, $projectOwner, $from, $connections);
-		}
-
-		// Record timed remote changes (for debugging)
-		if (!empty($timedRemotes))
-		{
-			$output .= 'Timed remote changes since ' . $from . ' (' . count($timedRemotes) . '):' . "\n";
-			foreach ($timedRemotes as $tr => $trinfo)
-			{
-				$output .= $tr . ' changed ' . date("c", $trinfo['time'])
-						. ' status ' . $trinfo['status'] . ' ' . $trinfo['fileSize'] . "\n";
-			}
-
-			// Pick up missed changes
-			if ($remotes != $timedRemotes)
-			{
-				$output .= empty($remotes)
-					? 'Using exclusively timed changes ' . "\n"
-					: 'Mixing in timed changes ' . "\n";
-
-				$remotes = array_merge($timedRemotes, $remotes);
-			}
-		}
-		else
-		{
-			$output .= 'No timed changes since ' . $from . "\n";
-		}
-
-		if ($this->_connect->getError())
-		{
-			$this->_writeToFile( '' );
-			$this->_rSync['error'] = Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR_OUPS') . ' ' . $this->_connect->getError();
-			$this->_lockSync($service, true);
-			return false;
-		}
-
-		// Collector arrays for processed files
-		$processedLocal 	= array();
-		$processedRemote 	= array();
-		$conflicts			= array();
-
-		// Record sync status
-		$this->_writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_EXPORTING_LOCAL') );
-
-		$output .= 'Local changes:' . "\n";
-
-		// Go through local changes
-		if (count($locals) > 0)
-		{
-			$lChange = NULL;
-			foreach ($locals as $filename => $local)
-			{
-				$output .= ' * Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
-
-				// Get latest change
-				$lChange = $local['time'] > $lChange ? $local['time'] : $lChange;
-
-				// Skip renamed files (local renames are handled later)
-				if (in_array($filename, $localRenames) && !file_exists($local['fullPath']))
-				{
-					$output .= '## skipped rename from '. $filename . "\n";
-					continue;
-				}
-
-				// Do we have a matching remote change?
-				$match = !empty($remotes)
-					&& isset($remotes[$filename])
-					&& $local['type'] == $remotes[$filename]['type']
-					? $remotes[$filename] : NULL;
-
-				// Check against individual item sync time (to avoid repeat sync)
-				if ($local['synced'] && ($local['synced']  > $local['modified']))
-				{
-					$output .= '## item in sync: '. $filename . ' local: '
-						. $local['modified'] . ' synced: ' . $local['synced'] . "\n";
-					$processedLocal[$filename] = $local;
-					continue;
-				}
-				// Record sync status
-				$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' '
-					. \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
-
-				// Item renamed
-				if ($local['status'] == 'R')
-				{
-					if ($local['remoteid'])
-					{
-						// Rename remote item
-						$renamed = $this->_connect->renameRemoteItem(
-							$this->model->get('id'), $service, $projectOwner,
-							$local['remoteid'], $local,  $local['rParent']
-						);
-
-						$output .= '>> renamed ' . $local['rename'] . ' to ' . $filename . "\n";
-						$processedLocal[$filename] = $local;
-
-						if ($local['type'] == 'folder')
-						{
-							$this->_connect->fixConvertedItems($service, $this->_uid, $local['rename'], 'R', $filename);
-						}
-
-						continue;
-					}
-				}
-				// Item moved
-				if ($local['status'] == 'W')
-				{
-					if ($local['remoteid'])
-					{
-						// Determine new remote parent
-						$parentId = $this->_connect->prepRemoteParent($this->model->get('id'), $service, $projectOwner, $local, $remoteFolders);
-
-						if ($parentId != $local['rParent'])
-						{
-							// Move to new parent
-							$moved = $this->_connect->moveRemoteItem(
-								$this->model->get('id'), $service, $projectOwner,
-								$local['remoteid'], $local,  $parentId
-							);
-
-							$output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id '
-								. $parentId . ')' . "\n";
-							$processedLocal[$filename] = $local;
-
-							if ($local['type'] == 'folder')
-							{
-								$this->_connect->fixConvertedItems($service, $this->_uid, $local['rename'], 'W', $filename, $parentId);
-							}
-
-							continue;
-						}
-					}
-				}
-
-				// Check for match in remote changes
-				if ($match && (($match['time'] - strtotime($from)) > 0))
-				{
-					// skip - remote change prevails
-					$output .= '== local and remote change match (choosing remote over local): '. $filename . "\n";
-					$conflicts[$filename] = $local['remoteid'];
-				}
-				else
-				{
-					// Local change needs to be transferred
-					if ($local['status'] == 'D')
-					{
-						$deleted   = 0;
-
-						// Delete operation
-						if ($local['remoteid'])
-						{
-							// Delete remote file
-							$deleted = $this->_connect->deleteRemoteItem(
-								$this->model->get('id'), $service, $projectOwner,
-								$local['remoteid'], false
-							);
-
-							// Delete from remote
-							$output .= '-- deleted from remote: '. $filename . "\n";
-						}
-						else
-						{
-							// skip (deleted non-synced file)
-							$output .= '## skipped deleted non-synced item: '. $filename . "\n";
-							$deleted = 1;
-						}
-
-						if ($local['type'] == 'folder')
-						{
-							$this->_connect->fixConvertedItems($service, $this->_uid, $filename, 'D');
-						}
-
-						// Delete connection record if exists
-						if ($deleted)
-						{
-							$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-							$objRFile->deleteRecord( $this->model->get('id'), $service, $local['remoteid'], $filename);
-						}
-					}
-					else
-					{
-						// Not updating converted files via sync
-						if ($local['converted'] == 1)
-						{
-							$output .= '## skipped locally changed converted file: '. $filename . "\n";
-						}
-						else
-						{
-							// Item in directory? Make sure we have correct remote dir structure in place
-							$parentId = $this->_connect->prepRemoteParent($this->model->get('id'), $service, $projectOwner, $local, $remoteFolders);
-
-							// Add/update operation
-							if ($local['remoteid'])
-							{
-								// Update remote file
-								$updated = $this->_connect->updateRemoteFile(
-									$this->model->get('id'), $service, $projectOwner,
-									$local['remoteid'], $local, $parentId
-								);
-
-								$output .= '++ sent update from local to remote: '. $filename . "\n";
-							}
-							else
-							{
-								// Add item from local to remote (new)
-								if ($local['type'] == 'folder')
-								{
-									// Create remote folder
-									$created = $this->_connect->createRemoteFolder(
-										$this->model->get('id'), $service, $projectOwner,
-										basename($filename), $filename,  $parentId, $remoteFolders
-									);
-
-									$output .= '++ created remote folder: '. $filename . "\n";
-
-								}
-								elseif ($local['type'] == 'file')
-								{
-									// Create remote file
-									$created = $this->_connect->addRemoteFile(
-										$this->model->get('id'), $service, $projectOwner,
-										$local, $parentId
-									);
-
-									$output .= '++ added new file to remote: '. $filename . "\n";
-								}
-							}
-						}
-					}
-				}
-
-				$processedLocal[$filename] = $local;
-				$lastLocalChange = $lChange ? date('c', $lChange + 1) : NULL;
-			}
-		}
-		else
-		{
-			$output .= 'No local changes since last sync'. "\n";
-		}
-
-		$newRemotes   = array();
-
-		// Record sync status
-		$this->_writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_REFRESHING_REMOTE') );
-
-		// Get new change ID after local changes got sent to remote
-		if (!empty($locals))
-		{
-			$newSyncId = $this->_connect->getChangedItems($service, $projectOwner,
-				$newSyncId, $newRemotes, $deletes, $connections);
-		}
-
-		// Get very last received remote change
-		if (!empty($remotes))
-		{
-			$tChange = strtotime($lastRemoteChange);
-			foreach ($remotes as $r => $ri)
-			{
-				$tChange = $ri['time'] > $tChange ? $ri['time'] : $tChange;
-			}
-
-			$lastRemoteChange = $tChange ? date('c', $tChange) : NULL;
-		}
-
-		// Make sure we have thumbnails for updates from local repo
-		if (!empty($newRemotes) && $synced != 1)
-		{
-			$tChange = strtotime($lastRemoteChange);
-			foreach ($newRemotes as $filename => $nR)
-			{
-				// Generate local thumbnail
-				if ($nR['thumb'])
-				{
-					$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
-					$this->_connect->generateThumbnail($service, $projectOwner,
-						$nR, $this->model->config(), $this->model->get('alias'));
-				}
-
-				$tChange = $nR['time'] > $tChange ? $nR['time'] : $tChange;
-			}
-
-			// Pick up last remote change
-			$lastRemoteChange = $tChange ? date('c', $tChange) : NULL;
-		}
-
-		// Record sync status
-		$this->_writeToFile( Lang::txt('PLG_PROJECTS_FILES_SYNC_IMPORTING_REMOTE') );
-
-		$output .= 'Remote changes:' . "\n";
-
-		// Go through remote changes
-		if (count($remotes) > 0 && $synced != 1)
-		{
-			// Get email/name pairs of connected project owners
-			$objO = new \Components\Projects\Tables\Owner( $this->_database );
-			$connected = $objO->getConnected($this->model->get('id'), $service);
-
-			// Examine each change
-			foreach ($remotes as $filename => $remote)
-			{
-				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'];
-				$output .= $remote['fileSize'] ? ' - ' . $remote['fileSize'] . ' bytes' : '';
-				$output .= "\n";
-
-				// Do we have a matching local change?
-				$match = !empty($locals)
-					&& isset($locals[$filename])
-					&& $remote['type'] == $locals[$filename]['type']
-					? $locals[$filename] : array();
-
-				// Check for match in local changes
-				// Remote usually prevails, unless it's older than last synced remote change
-				if ($match && (($match['modified'] > $remote['modified']) > 0))
-				{
-					// skip
-					$output .= '== local and remote change match, but remote is older, picking local: '. $filename . "\n";
-					$conflicts[$filename] = $local['remoteid'];
-					continue;
-				}
-
-				$updated 	= 0;
-				$deleted   	= 0;
-
-				// Get change author for Git
-				$email = 'sync@sync.org';
-				$name = utf8_decode($remote['author']);
-				if ($connected && isset($connected[$name]))
-				{
-					$email = $connected[$name];
-				}
-				else
-				{
-					// Email from profile?
-					$email = $objO->getProfileEmail($name, $this->model->get('id'));
-				}
-				$author = $this->_git->getGitAuthor($name, $email);
-
-				// Change acting user to whoever did the remote change
-				$uid = $objO->getProfileId( $email, $this->model->get('id'));
-				if ($uid)
-				{
-					$this->_uid = $uid;
-				}
-
-				// Set Git author date (GIT_AUTHOR_DATE)
-				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
-
-				// Record sync status
-				$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
-
-				// Item in directory? Make sure we have correct local dir structure
-				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
-				if ($remote['status'] != 'D' && $local_dir && !is_dir( $this->_path . DS . $local_dir ))
-				{
-					if (Filesystem::makeDirectory( $this->_path . DS . $local_dir ))
-					{
-						$created = $this->_git->makeEmptyFolder($local_dir, false);
-						$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-							. '  ' . escapeshellarg($local_dir);
-						$this->_git->gitCommit($commitMsg, $author, $cDate);
-					}
-					else
-					{
-						// Error
-						$output .= '[error] failed to provision local directory for: '. $filename . "\n";
-						$failed[] = $filename;
-						continue;
-					}
-				}
-
-				// Send remote change to local (whether or not there is local change)
-				// Remote version always prevails
-				if ($remote['status'] == 'D')
-				{
-					if (file_exists($this->_path . DS . $filename))
-					{
-						// Delete in Git
-						$deleted = $this->_git->gitDelete($filename, $remote['type'], $commitMsg);
-						if ($deleted)
-						{
-							$this->_git->gitCommit($commitMsg, $author, $cDate);
-
-							// Delete local file or directory
-							$output .= '-- deleted from local: '. $filename . "\n";
-						}
-						else
-						{
-							// Error
-							$output .= '[error] failed to delete from local: '. $filename . "\n";
-							$failed[] = $filename;
-							continue;
-						}
-					}
-					else
-					{
-						// skip (deleted non-synced file)
-						$output .= $remote['converted'] == 1
-									? '-- deleted converted: '. $filename . "\n"
-									: '## skipped deleted non-synced item: '. $filename . "\n";
-						$deleted = 1;
-					}
-
-					// Delete connection record if exists
-					if ($deleted)
-					{
-						$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-						$objRFile->deleteRecord( $this->model->get('id'), $service, $remote['remoteid']);
-					}
-				}
-				elseif ($remote['status'] == 'R' || $remote['status'] == 'W')
-				{
-					// Rename/move in Git
-					if (file_exists($this->_path . DS . $remote['rename']))
-					{
-						$output .= '>> rename from: '. $remote['rename'] . ' to ' . $filename . "\n";
-
-						if ($this->_git->gitMove($remote['rename'], $filename, $remote['type'], $commitMsg))
-						{
-							$this->_git->gitCommit($commitMsg, $author, $cDate);
-							$output .= '>> renamed/moved item locally: '. $filename . "\n";
-							$updated = 1;
-						}
-						else
-						{
-							// Error
-							$output .= '[error] failed to rename/move item locally: '. $filename . "\n";
-							$failed[] = $filename;
-							continue;
-						}
-					}
-
-					if ($remote['converted'] == 1)
-					{
-						$output .= '>> renamed/moved item locally converted: '. $filename . "\n";
-						$updated = 1;
-					}
-				}
-				else
-				{
-					if ($remote['converted'] == 1)
-					{
-						// Not updating converted files via sync
-						$output .= '## skipped converted remotely changed file: '. $filename . "\n";
-						$updated = 1;
-					}
-					elseif (file_exists($this->_path . DS . $filename))
-					{
-						// Update
-						if ($remote['type'] == 'file')
-						{
-							// Check md5 hash - do we have identical files?
-							$md5Checksum = hash_file('md5', $this->_path . DS . $filename);
-							if ($remote['md5'] == $md5Checksum)
-							{
-								// Skip update
-								$output .= '## update skipped: local and remote versions identical: '
-										. $filename . "\n";
-								$updated = 1;
-							}
-							else
-							{
-								// Download remote file
-								if ($this->_connect->downloadFileCurl(
-									$service,
-									$projectOwner,
-									$remote['url'],
-									$this->_path . DS . $remote['local_path'])
-								)
-								{
-									// Checkin into repo
-									$this->repo->call('checkin', array(
-										'file'   => $this->repo->getMetadata($filename, 'file', array()),
-										'author' => $author,
-										'date'   => $cDate
-										)
-									);
-
-									$output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
-									$output .= '++ sent update from remote to local: '. $filename . "\n";
-									$updated = 1;
-								}
-								else
-								{
-									// Error
-									$output .= '[error] failed to update local file with remote change: '. $filename . "\n";
-									$failed[] = $filename;
-									continue;
-								}
-							}
-						}
-						else
-						{
-							$output .= '## skipped folder in sync: '. $filename . "\n";
-							$updated = 1;
-						}
-					}
-					else
-					{
-						// Add item from remote to local (new)
-						if ($remote['type'] == 'folder')
-						{
-							if (Filesystem::makeDirectory( $this->_path . DS . $filename, 0755, true, true ))
-							{
-								$created = $this->_git->makeEmptyFolder($filename, false);
-								$commitMsg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
-									. '  ' . escapeshellarg($filename);
-								$this->_git->gitCommit($commitMsg, $author, $cDate);
-								$output .= '++ created local folder: '. $filename . "\n";
-								$updated = 1;
-							}
-							else
-							{
-								// error
-								$output .= '[error] failed to create local folder: '. $filename . "\n";
-								$failed[] = $filename;
-								continue;
-							}
-						}
-						else
-						{
-							// Check against quota
-							$checkAvail = $avail - $remote['fileSize'];
-							if ($checkAvail <= 0)
-							{
-								// Error
-								$output .= '[error] not enough space for '. $filename . ' (' . $remote['fileSize']
-										. ' bytes) avail space:' . $checkAvail . "\n";
-								$failed[] = $filename;
-								continue;
-							}
-							else
-							{
-								$avail   = $checkAvail;
-								$output .= 'file size ok: ' . $remote['fileSize'] . ' bytes ' . "\n";
-							}
-
-							// Download remote file
-							if ($this->_connect->downloadFileCurl(
-								$service,
-								$projectOwner,
-								$remote['url'],
-								$this->_path . DS . $remote['local_path'])
-							)
-							{
-								// Git add & commit
-								$this->_git->gitAdd($filename, $commitMsg);
-								$this->_git->gitCommit($commitMsg, $author, $cDate);
-
-								$output .= '++ added new file to local: '. $filename . "\n";
-								$updated = 1;
-
-								// Store in session
-								$this->registerUpdate('uploaded', $filename);
-							}
-							else
-							{
-								// Error
-								$output .= '[error] failed to add new local file: '. $filename . "\n";
-								$failed[] = $filename;
-								continue;
-							}
-						}
-					}
-				}
-
-				// Update connection record
-				if ($updated)
-				{
-					$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
-					$objRFile->updateSyncRecord(
-						$this->model->get('id'), $service, $this->_uid,
-						$remote['type'], $remote['remoteid'], $filename,
-						$match, $remote
-					);
-
-					$lastLocalChange = date('c', time() + 1);
-
-					// Generate local thumbnail
-					if ($remote['thumb'] && $remote['status'] != 'D')
-					{
-						$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' '
-						. \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
-						$this->_connect->generateThumbnail($service, $projectOwner, $remote,
-							$this->model->config(), $this->model->get('alias'));
-					}
-				}
-
-				$processedRemote[$filename] = $remote;
-			}
-		}
-		else
-		{
-			$output .= 'No remote changes since last sync' . "\n";
-		}
-
-		// Hold on by one second (required as a forced breather before next sync request)
-		sleep(1);
-
-		// Log time
-		$endTime = date('c');
-		$length  = \Components\Projects\Helpers\Html::timeDifference(strtotime($endTime) - strtotime($startTime));
-
-		$output .= 'Sync complete:' . "\n";
-		$output .= 'Local time: '. $endTime . "\n";
-		$output .= 'UTC time: '.  Date::toSql() . "\n";
-		$output .= 'Sync completed in: '.  $length . "\n";
-
-		// Determine next sync ID
-		if (!$nextSyncId)
-		{
-			$nextSyncId  = ($newSyncId > $lastSyncId || count($remotes) > 0) ? ($newSyncId + 1) : $lastSyncId;
-		}
-
-		// Save sync time
-		$this->model->saveParam($service . '_sync', $endTime);
-
-		// Save change id for next sync
-		$this->model->saveParam($service . '_sync_id', ($nextSyncId));
-		$output .= 'Next sync ID: ' . $nextSyncId . "\n";
-
-		$this->model->saveParam($service . '_prev_sync_id', $lastSyncId);
-
-		$output .= 'Saving last synced remote change at: ' . $lastRemoteChange . "\n";
-		$this->model->saveParam($service . '_last_remote_change', $lastRemoteChange);
-
-		$output .= 'Saving last synced local change at: ' . $lastLocalChange . "\n";
-		$this->model->saveParam($service . '_last_local_change', $lastLocalChange);
-
-		// Debug output
-		$temp = $this->_logPath;
-		$this->_writeToFile($output, $temp . DS . 'sync.' . Date::of('now')->format('Y-m') . '.log', true);
-
-		// Record sync status
-		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE_UPDATE_VIEW') );
-
-		// Unlock sync
-		$this->_lockSync($service, true);
-
-		// Clean up status
-		$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE'));
-
-		$this->_rSync['status'] = 'success';
-		return true;
 	}
 
 	/**
@@ -3832,9 +2874,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		$service 	= Request::getVar('service', 'google');
 
-		$this->_writeToFile( '' );
-		$this->_rSync['error'] = Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR');
-		$this->_lockSync($service, true);
+		$this->_rSync = new Sync($this->_connect);
+		$this->_rSync->writeToFile( '' );
+		$this->_rSync->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR'));
+		$this->_rSync->lockSync($service, true);
 		return;
 	}
 
@@ -3845,13 +2888,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function syncStatus()
 	{
+		$this->_rSync = new Sync($this->_connect);
+
 		// Incoming
 		$pid 		= Request::getInt('id', 0);
 		$service 	= Request::getVar('service', 'google');
 		$status 	= array('status' => '', 'msg' => time(), 'output' => '');
 
 		// Read status file
-		$rFile = $this->_readFile();
+		$rFile = $this->_rSync->readFile();
 
 		// Report sync progress
 		if ($rFile && $rFile != Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE'))
@@ -3906,105 +2951,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Check if sync operation is in progress
-	 *
-	 * @param    string		$service	Remote service name
-	 * @return   Boolean
-	 */
-	protected function _checkSyncLock ($service = 'google')
-	{
-		$syncLock = $this->model->params->get($service . '_sync_lock', '');
-		return $syncLock ? true : false;
-	}
-
-	/**
-	 * Lock/unlock sync operation
-	 *
-	 * @param    string		$service	Remote service name
-	 * @return   void
-	 */
-	protected function _lockSync ($service = 'google', $unlock = false, $queue = 0 )
-	{
-		$pparams 	= $this->model->params;
-		$synced 	= $pparams->get($service . '_sync');
-		$syncLock 	= $pparams->get($service . '_sync_lock');
-		$syncQueue 	= $pparams->get($service . '_sync_queue', 0);
-
-		// Request to unlock sync
-		if ($unlock == true)
-		{
-			$this->model->saveParam($service . '_sync_lock', '');
-			$this->_rSync['status'] = 'complete';
-
-			// Clean up status
-			$this->_writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE'));
-
-			// Repeat sync? (another request in queue)
-			if ($syncQueue > 0)
-			{
-				// Clean up queue
-				$this->model->saveParam($service . '_sync_queue', 0);
-			}
-
-			return true;
-		}
-
-		// Is there time lock?
-		$timeLock = $this->params->get('sync_lock', 0);
-		if ($timeLock)
-		{
-			$timecheck = date('c', time() - (1 * $timeLock * 60));
-		}
-
-		// Can't run sync - too soon
-		if ($timeLock && $synced && $synced > $timecheck && !$queue)
-		{
-			$this->_rSync['status'] = 'locked';
-			return false;
-		}
-		elseif ($syncLock)
-		{
-			// Add request to queue
-			if ($queue && $syncQueue == 0)
-			{
-				$this->model->saveParam($service . '_sync_queue', 1);
-				return false;
-			}
-
-			// Past hour - sync should have been complete, unlock
-			$timecheck = date('c', time() - (1 * 60 * 60));
-
-			if ($synced && $synced >= $timecheck)
-			{
-				$this->_rSync['status'] = 'locked';
-				return false;
-			}
-		}
-
-		// Lock sync
-		$this->model->saveParam($service . '_sync_lock', $this->_uid);
-		$this->_rSync['status'] = 'progress';
-		return true;
-	}
-
-	/**
 	 * Archive files
 	 *
 	 * @param      array 	$files
-	 * @param      array  	$folders
-	 * @param      string  	$projectPath
-	 * @param      string  	$subdir
 	 *
 	 * @return     array or false
 	 */
-	private function _archiveFiles( $items, $projectPath = '', $subdir = '' )
+	private function _archiveFiles( $items)
 	{
 		if (!extension_loaded('zip'))
 		{
 			return false;
 		}
 
-		if (!$projectPath || !is_dir($projectPath))
+		if (!$this->_path || !is_dir($this->_path))
 		{
 			return false;
 		}
@@ -4018,9 +2978,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get temp directory
 		$base_path 		= sys_get_temp_dir();
-		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
-		$path 			= $subdir ? $projectPath. DS . $subdir : $projectPath;
-		$combinedSize  	= 0;
+		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6, 6, 0, 1, 1) . '.zip';
+		$path 			= $this->subdir ? $this->_path. DS . $this->subdir : $this->_path;
+		$combinedSize   = 0;
 		$tarpath        =  $base_path . DS . $tarname;
 
 		$zip = new ZipArchive;
@@ -4090,7 +3050,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$remotes = array();
 		if (!empty($this->_remoteService))
 		{
-			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
+			$objRFile = new \Components\Projects\Tables\RemoteFile($this->_database);
 			$remotes  = $objRFile->getRemoteFiles(
 				$this->model->get('id'),
 				$this->_remoteService,
@@ -4381,8 +3341,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Record activity
 			$aid = $model->recordActivity( $activity, $parsedRef, 'project files',
-				Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $model->get('alias') . '&active=files'), 'files', 1
+				Route::url($model->link('files')), 'files', 1
 			);
 		}
 	}
@@ -4473,71 +3432,5 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		return $combined;
-	}
-
-	/**
-	 * Write sync status to file
-	 *
-	 * @return   void
-	 */
-	protected function _writeToFile($content = '', $filename = '', $append = false, $dir = 'logs' )
-	{
-		// Get temp path
-		if (!$filename)
-		{
-			if (empty($this->_logPath))
-			{
-				return false;
-			}
-			if (!is_dir($this->_logPath))
-			{
-				Filesystem::makeDirectory($this->_logPath);
-			}
-			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
-		}
-		else
-		{
-			$sfile = $filename;
-		}
-
-		$place   = $append == true ? 'a' : 'w';
-		$content = $append ? $content . "\n" : $content;
-
-		$handle  = fopen($sfile, $place);
-		fwrite($handle, $content);
-		fclose($handle);
-	}
-
-	/**
-	 * Read sync status from file (last line)
-	 *
-	 * @return   void
-	 */
-	protected function _readFile($filename = '', $dir = 'logs', $readAll = false)
-	{
-		// Get temp path
-		if (!$filename)
-		{
-			$sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
-		}
-		else
-		{
-			$sfile = $filename;
-		}
-
-		if (is_file($sfile))
-		{
-			if ($readAll == true)
-			{
-				return file_get_contents($sfile);
-			}
-			else
-			{
-				// Return last line
-				return exec('tail -n 1 ' . $sfile);
-			}
-		}
-
-		return NULL;
 	}
 }

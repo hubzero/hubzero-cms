@@ -1144,11 +1144,14 @@ class Project extends Model
 		switch (strtolower($type))
 		{
 			case 'publications':
-				$link = $this->_base . '&active=publications';
-			break;
-
 			case 'files':
-				$link = $this->_base . '&active=files';
+			case 'team':
+			case 'feed':
+			case 'links':
+			case 'databases':
+			case 'notes':
+			case 'todo':
+				$link = $this->_base . '&active=' . strtolower($type);
 			break;
 
 			case 'setup':

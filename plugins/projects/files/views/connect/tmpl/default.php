@@ -34,7 +34,7 @@ $creator = $this->model->access('owner') ? 1 : 0;
 $i = 0;
 ?>
 <div id="plg-header">
-	<h3 class="files"><a href="<?php echo Route::url('index.php?option='.$this->option . '&alias=' . $this->model->get('alias') . '&active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></span></h3>
+	<h3 class="files"><a href="<?php echo Route::url($this->model->link('files')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></span></h3>
 </div>
 
 <p><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_EXPLAIN'); ?></p>
@@ -43,29 +43,32 @@ $i = 0;
 		<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_ABOUT'); ?></p>
 	</div>
 	<div class="subject">
-	<?php foreach ($this->services as $servicename) {
+	<?php foreach ($this->services as $servicename)
+	{
 		$service 	= $this->connect->getConfigs($servicename, false);
 		$connected 	= $this->oparams->get($servicename . '_token') ? 1 : 0;
 
 		$service['active'] 	= $this->params->get($servicename . '_token');
 
-		$allowed 	= ($creator || $service['active']) ? 1 : 0;
+		$allowed = ($creator || $service['active']) ? 1 : 0;
 
 		if (!$service['active'])
 		{
 			$connected = 0;
 		}
 
-		$objO = new \Components\Projects\Tables\Owner( $this->database );
+		$objO = $this->model->table('Owner');
 		$numConnected = $objO->getConnected($this->model->get('id'), $servicename);
 		$teamCount = $objO->countOwners($this->model->get('id'));
 
 		// Skip unavailable services entirely
-		if (!$service['on']) {
+		if (!$service['on'])
+		{
 			continue;
 		}
 
-		$openUrl = $servicename == 'google' ? 'https://drive.google.com/?authuser=0#folders/'.$service['remote_dir_id'] : '';
+		$openUrl = $servicename == 'google'
+			? 'https://drive.google.com/?authuser=0#folders/' . $service['remote_dir_id'] : '';
 
 	?>
 	<div class="connect-service <?php echo !$service['on'] ? 'inactive' : ''; ?> <?php echo $servicename; ?>">
@@ -75,7 +78,7 @@ $i = 0;
 				<p><span class="connected"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_CONNECTED')); ?></span></p>
 				<p><?php echo $this->oparams->get($servicename . '_email'); ?></p>
 			<?php } else { ?>
-				<p class="connect-action"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect&amp;service=' . $servicename; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></a></p>
+				<p class="connect-action"><a href="<?php echo Route::url($this->model->link('files') . '&action=connect&service=' . $servicename); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></a></p>
 			<?php } ?>
 		</div>
 		<?php } ?>
@@ -95,11 +98,11 @@ $i = 0;
 			<?php $removeData = $creator ? '&removedata=1' : '';  ?>
 			<p>
 				<span class=" <?php echo $creator ? ' creator' : ''; ?>">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=disconnect&amp;service=' . $servicename . $removeData; ?>" id="disconnect"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData); ?>" id="disconnect"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</a>
 				</span>
 				&nbsp; &nbsp;
 				<span>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect&amp;reauth=1&amp;service=' . $servicename; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_REAUTH'); ?> &raquo;</a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&action=connect&reauth=1&service=' . $servicename); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_REAUTH'); ?> &raquo;</a>
 				</span>
 			</p>
 			<?php } ?>

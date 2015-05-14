@@ -135,20 +135,10 @@ class Connect extends Object {
 		// Set configurations
 		$this->setConfigs();
 
+		$this->getActive();
+
 		// Set local timezone after loading library (so that local and remote sync)
 		date_default_timezone_set($zone);
-	}
-
-	/**
-	 * Get variable
-	 *
-	 * @param	   string	$var	Variable name
-	 *
-	 * @return	   false or array with configs
-	 */
-	public function getVar ($var = '')
-	{
-		return $this->$var;
 	}
 
 	/**
@@ -193,18 +183,33 @@ class Connect extends Object {
 	 */
 	public function getActive()
 	{
-		$active = array();
+		if (isset($this->_active))
+		{
+			return $this->_active;
+		}
+		$this->_active = array();
 		foreach ($this->_services as $servicename)
 		{
 			$configs = $this->getConfigs($servicename, true);
 
 			if ($configs && $configs['active'])
 			{
-				$active[] = $servicename;
+				$this->_active[] = $servicename;
 			}
 		}
 
-		return $active;
+		return $this->_active;
+	}
+
+	/**
+	 * Get services
+	 *
+	 *
+	 * @return	   array
+	 */
+	public function getServices()
+	{
+		return $this->_services;
 	}
 
 	/**

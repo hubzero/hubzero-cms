@@ -68,7 +68,7 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 		{
 			foreach ($this->services as $service)
 			{
-				$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->model->params->get($service . '_sync', '');
+				$lastsync = $this->rSync->get('status') == 'complete' ? date("c") : $this->model->params->get($service . '_sync', '');
 				if ($lastsync)
 				{
 					$lastsync = '<span class="faded">' . Lang::txt('PLG_PROJECTS_FILES_LAST_SYNC') . ' ' . \Components\Projects\Helpers\Html::timeAgo($lastsync, false) . ' ' . Lang::txt('COM_PROJECTS_AGO') . ' </span>' ;
