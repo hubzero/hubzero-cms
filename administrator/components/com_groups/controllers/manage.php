@@ -384,6 +384,36 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onGroupAfterSave', array($before, $group));
 
+		// create home page
+		if ($isNew)
+		{
+			// create page
+			$page = new GroupsModelPage(array(
+				'gidNumber' => $group->get('gidNumber'),
+				'parent'    => 0,
+				'lft'       => 1,
+				'rgt'       => 2,
+				'depth'     => 0,
+				'alias'     => 'overview',
+				'title'     => 'Overview',
+				'state'     => 1,
+				'privacy'   => 'default',
+				'home'      => 1
+			));
+			$page->store(false);
+
+			// create page version
+			$version = new GroupsModelPageVersion(array(
+				'pageid'     => $page->get('id'),
+				'version'    => 1,
+				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
+				'created'    => JFactory::getDate(),
+				'created_by' => JFactory::getUser()->get('id'),
+				'approved'   => 1
+			));
+			$version->store(false);
+		}
+
 		// log edit
 		GroupsModelLog::log(array(
 			'gidNumber' => $group->get('gidNumber'),
@@ -651,7 +681,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 	/**
 	 * Fetch from Gitlab
-	 * 
+	 *
 	 * @return void
 	 */
 	public function updateTask()
@@ -786,7 +816,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 	/**
 	 * Merge From from Gitlab
-	 * 
+	 *
 	 * @return void
 	 */
 	public function doUpdateTask()
