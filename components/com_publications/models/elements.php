@@ -272,7 +272,7 @@ class Elements
 	public function loadFile($file, $format = 'JSON', $options = array())
 	{
 		// Get the contents of the file
-		$data = \JFile::read($file);
+		$data = Filesystem::read($file);
 
 		return $this->loadString($data, $format, $options);
 	}
@@ -325,12 +325,12 @@ class Elements
 						return false;
 					}
 					$element = new stdClass();
-					$element->name = $field[0];
-					$element->label = $field[1];
-					$element->type = $field[2];
-					$element->required = $field[3];
-					$element->value = preg_replace('/<br\\s*?\/??>/i', "", end($field));
-					$element->default = '';
+					$element->name        = $field[0];
+					$element->label       = $field[1];
+					$element->type        = $field[2];
+					$element->required    = $field[3];
+					$element->value       = preg_replace('/<br\\s*?\/??>/i', "", end($field));
+					$element->default     = '';
 					$element->description = '';
 
 					$obj->fields[] = $element;
@@ -488,9 +488,12 @@ class Elements
 	 */
 	public function isAssociative($array)
 	{
-		if (is_array($array)) {
-			foreach (array_keys($array) as $k => $v) {
-				if ($k !== $v) {
+		if (is_array($array))
+		{
+			foreach (array_keys($array) as $k => $v)
+			{
+				if ($k !== $v)
+				{
 					return true;
 				}
 			}
@@ -676,13 +679,13 @@ class Elements
 		if ($element === false)
 		{
 			$result = new stdClass;
-			$result->label = $node->label;
-			$result->element = Lang::txt('Element not defined for type').' = '.$type;
+			$result->label       = $node->label;
+			$result->element     = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
-			$result->text = $result->label;
-			$result->name = $result->name;
-			$result->default = '';
-			$result->type = $type;
+			$result->text        = $result->label;
+			$result->name        = $result->name;
+			$result->default     = '';
+			$result->type        = $type;
 			return $result;
 		}
 
@@ -711,13 +714,13 @@ class Elements
 		if ($element === false)
 		{
 			$result = new stdClass;
-			$result->label = $node->label;
-			$result->element = Lang::txt('Element not defined for type').' = '.$type;
+			$result->label       = $node->label;
+			$result->element     = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
-			$result->text = $result->label;
-			$result->name = $result->name;
-			$result->default = '';
-			$result->type = $type;
+			$result->text        = $result->label;
+			$result->name        = $result->name;
+			$result->default     = '';
+			$result->type        = $type;
 			return $result;
 		}
 

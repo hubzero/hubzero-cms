@@ -304,7 +304,7 @@ class Html
 				}
 				if (strtolower($name) == $active)
 				{
-					Pathway::append($cat[$name],$url);
+					Pathway::append($cat[$name], $url);
 
 					if ($active != 'about')
 					{

@@ -111,10 +111,10 @@ class Element extends Object
 	 */
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
-		$output = '<label id="'.$control_name.'-'.$name.'-lbl" for="'.$control_name.'-'.$name.'"';
+		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description) 
 		{
-			$output .= ' class="hasTip" title="' . Lang::txt($label).'::' . Lang::txt($description).'">';
+			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
 		} 
 		else 
 		{
@@ -164,5 +164,18 @@ class Element extends Object
 	public function display($value)
 	{
 		return $value;
+	}
+
+	/**
+	 * Create html tag for element.
+	 * 
+	 * @param  string $tag    Tag Name
+	 * @param  sting  $value  Tag Value
+	 * @param  string $prefix Tag prefix
+	 * @return string HTML
+	 */
+	public function toHtmlTag($tag, $value, $prefix = 'nb:')
+	{
+		return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
 	}
 }
