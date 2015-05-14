@@ -225,6 +225,43 @@ class Local implements AdapterInterface
 	}
 
 	/**
+	 * Searches the directory paths for a given file.
+	 *
+	 * @param   mixed   $paths  An path string or array of path strings to search in
+	 * @param   string  $file   The file name to look for.
+	 * @return  mixed   Full path and name for the target file, or false if file not found.
+	 */
+	public function find($paths, $file)
+	{
+		$paths = is_array($path) ? $path : array($path);
+
+		foreach ($paths as $path)
+		{
+			$fullname = $path . DS . $file;
+
+			// Is the path based on a stream?
+			if (strpos($path, '://') === false)
+			{
+				// Not a stream, so do a realpath() to avoid directory
+				// traversal attempts on the local file system.
+				$path     = realpath($path);
+				$fullname = realpath($fullname);
+			}
+
+			// The substr() check added to make sure that the realpath()
+			// results in a directory registered so that
+			// non-registered directories are not accessible via directory
+			// traversal attempts.
+			if (file_exists($fullname) && substr($fullname, 0, strlen($path)) == $path)
+			{
+				return $fullname;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Extract the file name from a file path.
 	 *
 	 * @param   string  $path
@@ -385,7 +422,11 @@ class Local implements AdapterInterface
 	/**
 	 * Get an array of all files in a directory.
 	 *
-	 * @param   string  $directory
+	 * @param   string   $path     The path of the folder to read.
+	 * @param   string   $filter   A filter for file names.
+	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param   boolean  $full     True to return the full path to the file.
+	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
 	 * @return  array
 	 */
 	public function files($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
@@ -409,7 +450,11 @@ class Local implements AdapterInterface
 	/**
 	 * Get all of the directories within a given directory.
 	 *
-	 * @param   string  $path
+	 * @param   string   $path     The path of the folder to read.
+	 * @param   string   $filter   A filter for file names.
+	 * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param   boolean  $full     True to return the full path to the file.
+	 * @param   array    $exclude  Array with names of files which should not be shown in the result.
 	 * @return  array
 	 */
 	public function directories($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))

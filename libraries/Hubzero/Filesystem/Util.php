@@ -31,7 +31,7 @@
 namespace Hubzero\Filesystem;
 
 use Hubzero\Filesystem\Util\MimeType;
-use LogicException;
+use Hubzero\Filesystem\Exception\PathViolationException;
 
 class Util
 {
@@ -63,45 +63,66 @@ class Util
 	}
 
 	/**
+	 * Checks for snooping outside of the file system root.
+	 *
+	 * @param   string  $path  A file system path to check.
+	 * @param   string  $ds    Directory separator (optional).
+	 * @return  string  A cleaned version of the path or exit on error.
+	 */
+	public static function checkPath($path, $ds = DIRECTORY_SEPARATOR)
+	{
+		if (strpos($path, '..') !== false)
+		{
+			throw new PathViolationException('Use of relative paths not permitted');
+		}
+
+		$path = self::normalizePath($path);
+
+		if (PATH_ROOT != '' && strpos($path, self::normalizePath(PATH_ROOT)) !== 0)
+		{
+			// Don't translate
+			throw new PathViolationException('Snooping out of bounds @ ' . $path);
+		}
+
+		return $path;
+	}
+
+	/**
 	 * Normalize path.
 	 *
-	 * @param   string $path
-	 * @throws  LogicException
+	 * @param   string  $path
 	 * @return  string
+	 * @throws  InvalidArgumentException
 	 */
 	public static function normalizePath($path, $ds = DIRECTORY_SEPARATOR)
 	{
-		$normalized = trim($path);
+		if (!is_string($path) && !empty($path))
+		{
+			throw new \InvalidArgumentException('$path is not a string.');
+		}
+
+		$path = trim($path);
 
 		// Remove any kind of funky unicode whitespace
-		$normalized = preg_replace('#\p{C}+|^\./#u', '', $path);
-		/*$normalized = static::normalizeRelativePath($normalized);
+		$path = preg_replace('#\p{C}+|^\./#u', '', $path);
 
-		if (preg_match('#/\.{2}|^\.{2}/|^\.{2}$#', $normalized))
+		if (empty($path))
 		{
-			throw new LogicException('Path is outside of the defined root, path: ['.$path.'], resolved: ['.$normalized.']');
+			$path = PATH_ROOT;
 		}
-
-		$normalized = preg_replace('#\\\{2,}#', '\\', trim($normalized, '\\'));
-		$normalized = preg_replace('#/{2,}#', '/', trim($normalized, '/'));*/
-		if (empty($normalized))
-		{
-			$normalized = PATH_ROOT;
-		}
-
 		// Remove double slashes and backslashes and convert all slashes
 		// and backslashes to DIRECTORY_SEPARATOR. If dealing with a UNC
 		// path don't forget to prepend the path with a backslash.
-		if ($ds == '\\' && $normalized[0] == '\\' && $normalized[1] == '\\')
+		else if ($ds == '\\' && $path[0] == '\\' && $path[1] == '\\')
 		{
-			$normalized = "\\" . preg_replace('#[/\\\\]+#', $ds, $normalized);
+			$path = "\\" . preg_replace('#[/\\\\]+#', $ds, $path);
 		}
 		else
 		{
-			$normalized = preg_replace('#[/\\\\]+#', $ds, $normalized);
+			$path = preg_replace('#[/\\\\]+#', $ds, $path);
 		}
 
-		return $normalized;
+		return $path;
 	}
 
 	/**

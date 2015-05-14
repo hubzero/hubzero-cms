@@ -155,6 +155,18 @@ class None implements AdapterInterface
 	}
 
 	/**
+	 * Searches the directory paths for a given file.
+	 *
+	 * @param   mixed   $paths  An path string or array of path strings to search in
+	 * @param   string  $file   The file name to look for.
+	 * @return  mixed   Full path and name for the target file, or false if file not found.
+	 */
+	public function find($paths, $file)
+	{
+		return false;
+	}
+
+	/**
 	 * Extract the file name from a file path.
 	 *
 	 * @param   string  $path

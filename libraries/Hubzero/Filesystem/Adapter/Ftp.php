@@ -518,6 +518,30 @@ class Ftp extends AbstractFtpAdapter
 	}
 
 	/**
+	 * Searches the directory paths for a given file.
+	 *
+	 * @param   mixed   $paths  An path string or array of path strings to search in
+	 * @param   string  $file   The file name to look for.
+	 * @return  mixed   Full path and name for the target file, or false if file not found.
+	 */
+	public function find($paths, $file)
+	{
+		$paths = is_array($path) ? $path : array($path);
+
+		foreach ($paths as $path)
+		{
+			$fullname = $path . DS . $file;
+
+			if ($this->isFile($fullname) && substr($fullname, 0, strlen($path)) == $path)
+			{
+				return $fullname;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
