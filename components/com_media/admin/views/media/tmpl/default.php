@@ -34,16 +34,16 @@ defined('_JEXEC') or die;
 				</form>
 			<?php endif; ?>
 
-			<form action="index.php?option=com_media" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data" >
+			<form action="<?php echo Route::url('index.php?option=com_media'); ?>" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data" >
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="cb1" id="cb1" value="0" />
 				<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
 			</form>
 
-			<form action="index.php?option=com_media&amp;task=folder.create&amp;tmpl=<?php echo Request::getCmd('tmpl', 'index');?>" name="folderForm" id="folderForm" method="post">
+			<form action="<?php echo Route::url('index.php?option=com_media&task=folder.create&tmpl=' . Request::getCmd('tmpl', 'index'));?>" name="folderForm" id="folderForm" method="post">
 				<fieldset id="folderview">
 					<div class="view">
-						<iframe src="index.php?option=com_media&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder;?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
+						<iframe src="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->folder); ?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
 					</div>
 					<legend><?php echo Lang::txt('COM_MEDIA_FILES'); ?></legend>
 					<div class="path">
@@ -60,7 +60,7 @@ defined('_JEXEC') or die;
 
 			<?php if (User::authorise('core.create', 'com_media')):?>
 			<!-- File Upload Form -->
-			<form action="<?php echo Request::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;format=html" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+			<form action="<?php echo Route::url('index.php?option=com_media&task=file.upload&tmpl=component&' . $this->session->getName().'='.$this->session->getId() . '&' . Session::getFormToken() . '=1&format=html'); ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 				<fieldset id="uploadform">
 					<legend><?php echo $this->config->get('upload_maxsize')=='0' ? Lang::txt('COM_MEDIA_UPLOAD_FILES_NOLIMIT') : Lang::txt('COM_MEDIA_UPLOAD_FILES', $this->config->get('upload_maxsize')); ?></legend>
 					<fieldset id="upload-noflash" class="actions">
