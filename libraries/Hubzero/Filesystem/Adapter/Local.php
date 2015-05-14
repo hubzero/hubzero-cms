@@ -290,7 +290,7 @@ class Local implements AdapterInterface
 	}
 
 	/**
-	 * Get the file's last modification time.
+	 * Get the file mime type.
 	 *
 	 * @param   string  $path
 	 * @return  int
@@ -299,7 +299,7 @@ class Local implements AdapterInterface
 	{
 		$mimeType = null;
 
-		if (class_exists('Finfo'))
+		if (class_exists('Finfo') && $this->exists($path))
 		{
 			$finfo = new Finfo(FILEINFO_MIME_TYPE);
 			$mimeType = $finfo->file($path);
