@@ -206,6 +206,16 @@ Class GroupsTablePageVersion extends JTable
 			$sql .= " ORDER BY " . $filters['orderby'];
 		}
 
+		if (isset($filters['limit']))
+		{
+			$sql .= " LIMIT " . $filters['limit'];
+		}
+
+		if (isset($filters['offset']))
+		{
+			$sql .= " OFFSET " . $filters['offset'];
+		}
+
 		return $sql;
 	}
 }
