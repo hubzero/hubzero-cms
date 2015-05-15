@@ -247,17 +247,20 @@ class Loader
 	 * Get component router
 	 *
 	 * @param   string  $option  Name of the component
+	 * @param   string  $client  Client to load the router for
 	 * @return  object  Component router
 	 */
-	public function router($option)
+	public function router($option, $client = null)
 	{
 		$option = $this->canonical($option);
+		$client = ($client ? $client : $this->app['client']->alias);
+		$key    = $option . $client;
 
-		if (!isset(self::$routers[$option]))
+		if (!isset(self::$routers[$key]))
 		{
 			$compname = ucfirst(substr($option, 4));
 
-			$client = ucfirst($this->app['client']->alias);
+			$client = ucfirst($client);
 
 			$name  = $compname . 'Router';
 			$name2 = '\\Components\\' . $compname . '\\' . $client . '\\Router';
@@ -286,7 +289,7 @@ class Loader
 
 				if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 				{
-					self::$routers[$option] = new $name;
+					self::$routers[$key] = new $name;
 				}
 			}
 			else if (class_exists($name2))
@@ -295,17 +298,17 @@ class Loader
 
 				if (in_array('Hubzero\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames()))
 				{
-					self::$routers[$option] = new $name2;
+					self::$routers[$key] = new $name2;
 				}
 			}
 
 			if (!isset(self::$routers[$option]))
 			{
-				self::$routers[$option] = new Legacy($compname);
+				self::$routers[$key] = new Legacy($compname);
 			}
 		}
 
-		return self::$routers[$option];
+		return self::$routers[$key];
 	}
 
 	/**
