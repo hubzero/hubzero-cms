@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Include note model
+include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+	. DS . 'models' . DS . 'note.php');
+
 /**
  * Projects Notes (wiki) plugin
  */
@@ -135,10 +139,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$groupname = $group_prefix . $model->get('alias');
 		$scope = 'projects' . DS . $model->get('alias') . DS . 'notes';
 
-		// Include note model
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-			. DS . 'models' . DS . 'note.php');
-
 		// Get our model
 		$note = new \Components\Projects\Models\Note($scope, $groupname, $model->get('id'));
 
@@ -210,10 +210,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$this->_pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
 			$this->_masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
-
-			// Include note model
-			include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'models' . DS . 'note.php');
 
 			// Get our model
 			$this->note = new \Components\Projects\Models\Note(
@@ -792,5 +788,75 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		$view->display();
 		return true;
+	}
+
+	/**
+	 * Event call to get side content for main project page
+	 *
+	 * @return
+	 */
+	public function onProjectMiniList($model)
+	{
+		if (!$model->exists() || !$model->access('content'))
+		{
+			return false;
+		}
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'notes',
+				'name'    => 'mini'
+			)
+		);
+
+		$group = $model->config()->get('group_prefix', 'pr-') . $model->get('alias');
+		$masterScope = 'projects' . DS . $model->get('alias') . DS . 'notes';
+
+		// Get our model
+		$note = new \Components\Projects\Models\Note(
+			$masterScope,
+			$group,
+			$model->get('id')
+		);
+		$view->notes = $note->getNotes();
+		$view->model = $model;
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Event call to get content for public project page
+	 *
+	 * @return
+	 */
+	public function onProjectPublicList($model)
+	{
+		if (!$model->exists() || !$model->access('content') || !$model->isPublic())
+		{
+			return false;
+		}
+		if (!$model->params->get('notes_public', 0))
+		{
+			return false;
+		}
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'notes',
+				'name'    => 'publist'
+			)
+		);
+
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'publicstamp.php');
+
+		$database 	= JFactory::getDBO();
+		$objSt 		= new \Components\Projects\Tables\Stamp( $database );
+
+		$view->items = $objSt->getPubList($model->get('id'), 'notes');
+		$view->page  = new \Components\Wiki\Tables\Page( $database );
+		$view->model = $model;
+		return $view->loadTemplate();
 	}
 }

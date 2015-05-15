@@ -25,32 +25,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
-include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
-
-$database 	= JFactory::getDBO();
-$objSt 		= new \Components\Projects\Tables\Stamp( $database );
-$page		= new \Components\Wiki\Tables\Page( $database );
-
-// Get listed public notes
-$items = $objSt->getPubList($this->project->get('id'), 'notes');
-
-$link = Route::url('index.php?option=com_projects&task=get') . '/?s=';
-
-if ($items) {
+if (count($this->items) > 0) {
 ?>
 <div class="public-list-header">
 	<h3><?php echo ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')); ?> <?php echo Lang::txt('COM_PROJECTS_NOTES'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul>
-		<?php foreach ($items as $item) {
+		<?php foreach ($this->items as $item) {
 			$ref = json_decode($item->reference);
 
-			if (isset($ref->pageid) && $page->loadById( $ref->pageid ))
+			if (isset($ref->pageid) && $this->page->loadById( $ref->pageid ))
 			{
 		?>
-		<li class="notes"><a href="<?php echo $link . $item->stamp; ?>"><?php echo $page->title; ?></li>
+		<li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $this->page->title; ?></li>
 		<?php }
 		} ?>
 	</ul>
