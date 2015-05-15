@@ -113,7 +113,7 @@ class Filesystem
 
 		$this->assertPresent($path);
 
-		return (bool) $this->adapter->read($path);
+		return (string) $this->adapter->read($path);
 	}
 
 	/**
