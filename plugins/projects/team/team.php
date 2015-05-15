@@ -214,6 +214,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to get side content for main project page
+	 * Will show recent visits and who is online
 	 *
 	 * @return
 	 */
@@ -223,6 +224,26 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
+
+		// Get team
+		$team = $model->team();
+
+		// Display team visits only on multiple-member projects
+		if (count($team) == 1)
+		{
+			return false;
+		}
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'team',
+				'name'    => 'mini'
+			)
+		);
+		$view->team  = $team;
+		$view->model = $model;
+		return $view->loadTemplate();
 	}
 
 	/**
