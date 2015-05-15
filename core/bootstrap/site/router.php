@@ -1147,7 +1147,7 @@ class JRouterSite extends JRouter
 		{
 			$compname = ucfirst(substr($component, 4));
 
-			$client = \JFactory::getApplication()->isAdmin() ? 'Admin' : 'Site';
+			$client = 'Site'; //\JFactory::getApplication()->isAdmin() ? 'Admin' : 'Site';
 
 			$name  = $compname . 'Router';
 			$name2 = '\\Components\\' . $compname . '\\' . $client . '\\Router';
