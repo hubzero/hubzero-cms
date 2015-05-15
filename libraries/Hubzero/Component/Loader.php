@@ -356,7 +356,7 @@ class Loader
 		// Convert the params to an object.
 		if (is_string(self::$components[$option]->params))
 		{
-			self::$components[$option]->params = new Registry(self::$components[$option]->params);
+			self::$components[$option]->params = new \JRegistry(self::$components[$option]->params);
 		}
 
 		return self::$components[$option];
