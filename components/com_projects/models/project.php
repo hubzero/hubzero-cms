@@ -1179,6 +1179,7 @@ class Project extends Model
 
 			case 'stamp':
 				$link = 'index.php?option=com_projects&task=get';
+			break;
 
 			case 'permalink':
 			default:
