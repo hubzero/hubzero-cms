@@ -365,6 +365,17 @@ class Application extends Container
 	}
 
 	/**
+	 * Provides a secure hash based on a seed
+	 *
+	 * @param   string  $seed  Seed string.
+	 * @return  string  A secure hash
+	 */
+	public function hash($seed)
+	{
+		return md5($this['config']->get('secret') . $seed);
+	}
+
+	/**
 	 * Boot the application's service providers.
 	 *
 	 * @return  void

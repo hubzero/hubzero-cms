@@ -24,18 +24,29 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return array(
-	'Hubzero\Session\SessionServiceProvider',
-	'Hubzero\Auth\AuthServiceProvider',
-	'Hubzero\Document\DocumentServiceProvider',
-	'Hubzero\Html\ToolbarServiceProvider',
-	'Hubzero\Module\ModuleServiceProvider',
-	'Hubzero\Notification\NotificationServiceProvider',
-	'Hubzero\Template\TemplateServiceProvider',
-	'Hubzero\Cache\CacheServiceProvider',
-	'Hubzero\Html\EditorServiceProvider',
-);
+namespace Hubzero\Auth;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Authentication service provider
+ */
+class AuthServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['auth'] = function($app)
+		{
+			return new Manager($app);
+		};
+	}
+}

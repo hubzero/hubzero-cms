@@ -30,6 +30,7 @@
 
 return array(
 	'Hubzero\Session\SessionServiceProvider',
+	'Hubzero\Auth\AuthServiceProvider',
 	'Hubzero\Document\DocumentServiceProvider',
 	'Hubzero\Module\ModuleServiceProvider',
 	'Hubzero\Pathway\PathwayServiceProvider',
