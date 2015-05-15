@@ -99,8 +99,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$model->member();
-		$counts['team'] = $model->_tblOwner->countOwners($model->get('id'), $filters = array());
+		$counts['team'] = count($model->team());
 
 		return $counts;
 	}
@@ -213,6 +212,50 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 
+	/**
+	 * Event call to get side content for main project page
+	 *
+	 * @return
+	 */
+	public function onProjectMiniList($model)
+	{
+		if (!$model->exists() || !$model->access('content'))
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Event call to get content for public project page
+	 *
+	 * @return
+	 */
+	public function onProjectPublicList($model)
+	{
+		if (!$model->exists() || !$model->access('content') || !$model->isPublic())
+		{
+			return false;
+		}
+		if (!$model->params->get('team_public', 0))
+		{
+			return false;
+		}
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'team',
+				'name'    =>'view',
+				'layout'  =>'horizontal'
+			)
+		);
+
+		// Get team
+		$view->team  = $model->team($filters = array('status' => 1));
+		$view->model = $model;
+		return $view->loadTemplate();
+	}
+
 	//----------------------------------------
 	// Views
 	//----------------------------------------
@@ -238,8 +281,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			)
 		);
 
+		$view->total = count($this->model->team());
+
 		// Instantiate project owner
-		$objO                      = $this->model->table('Owner');
 		$view->filters['limit']    = Request::getVar(
 			'limit',
 			intval($this->params->get('limit', 25)),
@@ -255,22 +299,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get all active team members
-		$view->team = $objO->getOwners($this->model->get('id'), $view->filters);
-
-		// Get total count
-		$count_filters = $view->filters;
-		$count_filters['limit'] = 0;
-		$view->total = $objO->countOwners($this->model->get('id'), $count_filters);
-
-		// Get native count
-		$count_filters['native'] = 1;
-		$view->native_count = $objO->countOwners($this->model->get('id'), $count_filters );
+		$view->team = $this->model->team($view->filters, true);
 
 		// Get managers count
-		$view->managers_count = count($objO->getIds($this->model->get('id'), $role = 1));
+		$view->managers_count = count($this->model->table('Owner')->getIds($this->model->get('id'), $role = 1));
 
 		// Get count of project groups
-		$groups = $objO->getProjectGroups( $this->model->get('id') );
+		$groups = $this->model->table('Owner')->getProjectGroups( $this->model->get('id') );
 		$view->count_groups = $groups ? count($groups) : 0;
 
 		$view->params 		= $this->model->params;

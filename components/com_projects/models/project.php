@@ -930,6 +930,25 @@ class Project extends Model
 	}
 
 	/**
+	 * Get project team
+	 *
+	 * @return  object
+	 */
+	public function team($filters = array(), $refresh = false)
+	{
+		if (!isset($this->_tblOwner))
+		{
+			$this->_tblOwner = new Tables\Owner($this->_db);
+		}
+		if (!isset($this->_team) || $refresh == true)
+		{
+			$this->_team = $this->_tblOwner->getOwners($this->get('id'), $filters);
+		}
+
+		return $this->_team;
+	}
+
+	/**
 	 * Get project table
 	 *
 	 * @return  object

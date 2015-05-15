@@ -538,7 +538,7 @@ class Owner extends \JTable
 		}
 		if (isset($filters['role']))
 		{
-			$query .= " AND o.role=".intval($filters['role']);
+			$query .= " AND o.role=" . intval($filters['role']);
 		}
 		if ($connected)
 		{
