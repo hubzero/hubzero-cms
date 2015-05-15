@@ -289,6 +289,50 @@
 		margin-right: 235px;
 	}*/
 
+	/* Forum settings dialog */
+	.edit-forum-options-panel {
+		display: none;
+		position: absolute;
+		z-index: 1;
+		background: #FFFFFF;
+		border: 2px solid #CCCCCC;
+		padding: 20px;
+		top: 0;
+		right: 246px;
+		width: 300px;
+		border-radius: 5px;
+	}
+	.edit-forum-options-panel:before,
+	.edit-forum-options-panel:after {
+		content: "";
+		position: absolute;
+		border-style: solid;
+	}
+	.edit-forum-options-panel:before {
+		top: 14px;
+		right: -30px;
+		bottom: auto;
+		border-color: transparent transparent transparent #CCC;
+		border-width: 15px;
+	}
+	.edit-forum-options-panel:after {
+		top: 17px;
+		right: -24px;
+		bottom: auto;
+		border-color: transparent transparent transparent #FFF;
+		border-width: 12px;
+	}
+	.edit-forum-options-as {
+		margin-left: 15px;
+		font-style: italic;
+	}
+	.edit-forum-options-actions {
+		margin-top: 10px;
+	}
+	.edit-forum-options-cancel {
+		float: right;
+	}
+
 @media only screen and (max-width: 1064px) {
 	.group_forum .aside,
 	.group_forum .subject {

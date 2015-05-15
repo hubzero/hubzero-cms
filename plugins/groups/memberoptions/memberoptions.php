@@ -195,19 +195,27 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 			return $this->edit();
 		}
 
-		if (!$postSaveRedirect)
+		if (Request::getInt('no_html'))
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit'),
-				Lang::txt('You have successfully updated your email settings')
-			);
+			echo json_encode(array('success' => true));
+			exit();
 		}
 		else
 		{
-			App::redirect(
-				$postSaveRedirect,
-				Lang::txt('You have successfully updated your email settings')
-			);
+			if (!$postSaveRedirect)
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit'),
+					Lang::txt('You have successfully updated your email settings')
+				);
+			}
+			else
+			{
+				App::redirect(
+					$postSaveRedirect,
+					Lang::txt('You have successfully updated your email settings')
+				);
+			}
 		}
 	}
 

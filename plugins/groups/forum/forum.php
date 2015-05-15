@@ -1416,7 +1416,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 						$sendEmail = $groupMemberOption->optionvalue;
 					}
 
-					if ($sendEmail)
+					if ($sendEmail == 1)
 					{
 						$userIDsToEmail[] = $user->get('id');
 					}
