@@ -75,7 +75,7 @@ $this->css()
 								<ul class="articles">
 								<?php foreach ($popular as $row) { ?>
 									<li>
-										<a href="<?php echo $row->link(); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
+										<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
 											<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 										</a>
 									</li>
@@ -97,7 +97,7 @@ $this->css()
 								<ul class="articles">
 								<?php foreach ($recent as $row) { ?>
 									<li>
-										<a href="<?php echo $row->link(); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
+										<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
 											<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 										</a>
 									</li>
@@ -142,7 +142,7 @@ $this->css()
 								<ul class="articles">
 								<?php foreach ($articles as $article) { ?>
 									<li>
-										<a href="<?php echo $article->link(); ?>">
+										<a href="<?php echo Route::url($article->link()); ?>">
 											<?php echo $this->escape(stripslashes($article->get('title'))); ?>
 										</a>
 									</li>
