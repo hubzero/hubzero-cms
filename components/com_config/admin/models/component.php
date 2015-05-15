@@ -131,7 +131,7 @@ class Component extends \JModelForm
 		|| Lang::load($option, JPATH_SITE . "/components/$option/admin", null, false, true)
 		|| Lang::load($option, JPATH_BASE . "/components/$option", null, false, true);
 
-		return Component::load($option);
+		return \Component::load($option);
 	}
 
 	/**
