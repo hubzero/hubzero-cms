@@ -108,9 +108,9 @@ $app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
 |
 */
 
-$routes = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'routes.php';
+//$routes = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'routes.php';
 
-if (file_exists($routes)) require $routes;
+//if (file_exists($routes)) require $routes;
 
 /*
 |--------------------------------------------------------------------------

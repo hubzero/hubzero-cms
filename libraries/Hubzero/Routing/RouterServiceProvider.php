@@ -47,7 +47,7 @@ class RouterServiceProvider extends Middleware
 	{
 		$this->app['router'] = function($app)
 		{
-			return new Router;
+			return new Manager($app);
 		};
 	}
 
