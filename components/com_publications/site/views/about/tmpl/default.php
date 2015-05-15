@@ -64,16 +64,12 @@ $schema 	= $metaElements->getSchema();
 <div class="pubabout">
 <?php
 	// Show gallery images
-	if ($this->publication->params->get('show_gallery'))
-	{
-		// Get handler model
-		$modelHandler = new \Components\Publications\Models\Handlers($this->database);
+	$modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
-		// Load image handler
-		if ($handler = $modelHandler->ini('imageviewer'))
-		{
-			echo $handler->showImageBand($this->publication);
-		}
+	// Load image handler
+	if ($handler = $modelHandler->ini('imageviewer'))
+	{
+		echo $handler->showImageBand($this->publication);
 	}
 ?>
 
