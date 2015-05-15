@@ -100,7 +100,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$pageVersionArchive = new GroupsModelPageVersionArchive();
 		$this->_versions = $pageVersionArchive->versions('list', array(
 			'pageid'  => $this->get('id', -1),
-			'orderby' => 'version DESC'
+			'orderby' => 'version DESC',
+			'limit'   => 25
 		));
 	}
 
@@ -332,7 +333,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get Parent Parent
-	 * 
+	 *
 	 * @return object  GroupsModelPage Object
 	 */
 	public function getParent()
@@ -342,8 +343,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get Page Children
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getChildren()
 	{
@@ -361,7 +362,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get Parents Recursively
-	 * 
+	 *
 	 * @param  [type] $page      [description]
 	 * @param  string $direction [description]
 	 * @return [type]            [description]
@@ -372,7 +373,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		// this way we have access to all page vars
 		$parents = new \Hubzero\Base\Model\ItemList();
 
-		// starting at current page loop through in 
+		// starting at current page loop through in
 		// reverse order until our parent page doesnt have a parent
 		while ($page->get('parent') != 0)
 		{
@@ -386,7 +387,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Display indicator of Heirarchy
-	 * 
+	 *
 	 * @param  [type] $hierarchyIndicator [description]
 	 * @return [type]                     [description]
 	 */

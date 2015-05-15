@@ -89,13 +89,13 @@ $this->css()
 				</a>
 			</div>
 		</div>
-		
+
 		<div class="content">
 			<div class="versions">
 				<?php foreach ($this->page->versions()->reverse() as $k => $pageVersion) : ?>
 					<?php $cls = ($k+1 == $this->page->versions()->count()) ? ' current' : ''; ?>
-					<div class="version <?php echo $cls; ?>" 
-						data-cycle-hash="v<?php echo $pageVersion->get('version'); ?>" 
+					<div class="version <?php echo $cls; ?>"
+						data-cycle-hash="v<?php echo $pageVersion->get('version'); ?>"
 						data-cycle-title="Version # <?php echo $pageVersion->get('version'); ?>"
 						data-raw-url="<?php echo $pageVersion->url('raw'); ?>"
 						data-restore-url="<?php echo ($k+1 != $this->page->versions()->count()) ? $pageVersion->url('restore') : null; ?>">
@@ -173,11 +173,16 @@ $this->css()
 								else
 								{
 									$previous = $this->page->version($previousVersion);
-									$previous = explode("\n", $previous->content('raw'));
+
+									// make view OK with the LIMIT
+									if (!empty($previous))
+									{
+										$previous = explode("\n", $previous->content('raw'));
+									}
 								}
 
 								// define function to format context's
-								// basically make sure lines that are not different 
+								// basically make sure lines that are not different
 								// are outputted as code not rendered html
 								$contextFormatter = function($context)
 								{
