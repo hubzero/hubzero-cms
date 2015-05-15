@@ -31,6 +31,7 @@
 namespace Hubzero\Auth;
 
 use Hubzero\Base\Object;
+use Hubzero\Container\Container;
 
 /**
  * Authentication class, provides an interface for the authentication system
@@ -203,7 +204,7 @@ class Guard extends Object
 	public function authenticate($credentials, $options = array())
 	{
 		// Get plugins
-		$plugins = $this->app['plugin']->get('authentication');
+		$plugins = $this->app['plugin']->byType('authentication');
 
 		// Create authentication response
 		$response = new Response;
@@ -242,7 +243,7 @@ class Guard extends Object
 			$plugin->onUserAuthenticate($credentials, $options, $response);
 
 			// If authentication is successful break out of the loop
-			if ($response->status === static::STATUS_SUCCESS)
+			if ($response->status === Status::SUCCESS)
 			{
 				if (empty($response->type))
 				{

@@ -161,6 +161,19 @@ class Handler
 	}
 
 	/**
+	 * Clear all messages
+	 *
+	 * @param   string  $domain
+	 * @return  object
+	 */
+	public function clear($domain = null)
+	{
+		$this->storage->retrieve($domain);
+
+		return $this;
+	}
+
+	/**
 	 * Get the instance as an array.
 	 *
 	 * @param   string   $domain

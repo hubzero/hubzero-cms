@@ -302,7 +302,7 @@ class Loader
 				}
 			}
 
-			if (!isset(self::$routers[$option]))
+			if (!isset(self::$routers[$key]))
 			{
 				self::$routers[$key] = new Legacy($compname);
 			}

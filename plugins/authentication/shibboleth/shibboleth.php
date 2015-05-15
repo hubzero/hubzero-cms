@@ -522,7 +522,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 			if ($hzal === FALSE)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -532,7 +532,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$this->log('hzal', $hzal);
 			$response->auth_link = $hzal;
 			$response->type = 'shibboleth';
-			$response->status = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname = isset($options['shibboleth']['displayName']) ? ucwords(strtolower($options['shibboleth']['displayName'])) : $options['shibboleth']['username'];
 
 			if (!empty($hzal->user_id))
@@ -573,7 +573,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'An error occurred verifying your credentials.';
 		}
 	}

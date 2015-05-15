@@ -67,9 +67,7 @@ class Manager
 	 */
 	public function getDefaultClient()
 	{
-		return isset($this->app['client']->alias)
-			? $this->app['client']->alias
-			: $this->app['client']->name;
+		return $this->app['client']->name;
 	}
 
 	/**

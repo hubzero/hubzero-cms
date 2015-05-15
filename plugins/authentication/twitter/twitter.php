@@ -180,7 +180,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 
 			if ($hzal === false)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -188,7 +188,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			// Set response variables
 			$response->auth_link = $hzal;
 			$response->type      = 'twitter';
-			$response->status    = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $account->name;
 
 			if (!empty($hzal->user_id))
@@ -228,7 +228,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}

@@ -77,15 +77,15 @@ class Manager
 
 		$response = $guard->authenticate($credentials, $options);
 
-		if ($response->status === Status::STATUS_SUCCESS)
+		if ($response->status === Status::SUCCESS)
 		{
 			// validate that the user should be able to login (different to being authenticated)
 			// this permits authentication plugins blocking the user
 			$authorisations = $guard->authorise($response, $options);
 
 			$denied_states = array(
-				Status::STATUS_EXPIRED,
-				Status::STATUS_DENIED
+				Status::EXPIRED,
+				Status::DENIED
 			);
 
 			foreach ($authorisations as $authorisation)
@@ -104,10 +104,10 @@ class Manager
 					// Return the error.
 					switch ($authorisation->status)
 					{
-						case Status::STATUS_EXPIRED:
+						case Status::EXPIRED:
 							return new Exception($this->app['language']->txt('JLIB_LOGIN_EXPIRED'), 102002, E_WARNING);
 							break;
-						case Status::STATUS_DENIED:
+						case Status::DENIED:
 							return new Exception($this->app['language']->txt('JLIB_LOGIN_DENIED'), 102003, E_WARNING);
 							break;
 						default:
@@ -162,7 +162,7 @@ class Manager
 		}
 
 		// If status is success, any error will have been raised by the user plugin
-		if ($response->status !== Status::STATUS_SUCCESS)
+		if ($response->status !== Status::SUCCESS)
 		{
 			return new Exception($response->error_message, 102001, E_WARNING);
 		}

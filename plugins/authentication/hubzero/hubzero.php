@@ -67,7 +67,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		// HUBzero does not like blank passwords
 		if (empty($credentials['password']))
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Empty passwords are not allowed.';
 			return false;
 		}
@@ -99,7 +99,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 
 		if (is_array($result) && count($result) > 1)
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = "We're unable to identify your account via email.  Please login using your username.";
 			return false;
 		}
@@ -117,7 +117,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 				$response->username      = $user->username;
 				$response->email         = $user->email;
 				$response->fullname      = $user->name;
-				$response->status        = JAUTHENTICATE_STATUS_SUCCESS;
+				$response->status        = \Hubzero\Auth\Status::SUCCESS;
 				$response->error_message = '';
 
 				// Check validity and age of password
@@ -146,13 +146,13 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Username and password do not match or you do not have an account yet.';
 			}
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}

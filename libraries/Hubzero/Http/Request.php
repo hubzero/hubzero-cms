@@ -346,8 +346,11 @@ class Request extends BaseRequest
 	 */
 	public function base($pathonly = false)
 	{
-		$path = trim($this->getBasePath(), '/');
-		return ($pathonly ? '' : $this->root()) . ($path ? '/' . $path : '');
+		$path = $this->getBasePath();
+
+		if ($pathonly) return $path;
+
+		return $this->root() . ($path ? trim($path, '/') . '/' : '');
 	}
 
 	/**
@@ -510,6 +513,24 @@ class Request extends BaseRequest
 	public function cookie($key = null, $default = null)
 	{
 		return $this->retrieveItem('cookies', $key, $default);
+	}
+
+	/**
+	 * Retrieve a file from the request.
+	 *
+	 * @param   string  $key
+	 * @param   mixed   $default
+	 * @return  mixed
+	 */
+	public function file($key = null, $default = null)
+	{
+		$array = $this->files->all();
+
+		if (is_null($key)) return $array;
+
+		if (isset($array[$key])) return $array[$key];
+
+		return $default;
 	}
 
 	/**

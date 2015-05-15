@@ -213,7 +213,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 			if ($hzal === false)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -222,7 +222,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 			$response->auth_link = $hzal;
 			$response->type = 'pucas';
-			$response->status = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status = \Hubzero\Auth\Status::SUCCESS;
 
 			$email = phpCAS::getAttribute('email');
 			$name  = phpCAS::getAttribute('fullname');
@@ -274,7 +274,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}

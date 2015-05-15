@@ -209,7 +209,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			catch (\Facebook\FacebookRequestException $e)
 			{
 				// Error message?
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
 				return;
 			}
@@ -220,7 +220,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 			if ($hzal === false)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -230,7 +230,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			// Set response variables
 			$response->auth_link = $hzal;
 			$response->type      = 'facebook';
-			$response->status    = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $fullname;
 
 			if (!empty($hzal->user_id))
@@ -272,7 +272,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}
@@ -323,7 +323,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			catch (\Facebook\FacebookRequestException $e)
 			{
 				// Error message?
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
 				return;
 			}

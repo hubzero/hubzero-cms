@@ -224,7 +224,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 
 			if ($hzal === false)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -234,7 +234,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			// Set response variables
 			$response->auth_link = $hzal;
 			$response->type      = 'google';
-			$response->status    = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $user_profile['name'];
 
 			if (!empty($hzal->user_id))
@@ -276,7 +276,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}

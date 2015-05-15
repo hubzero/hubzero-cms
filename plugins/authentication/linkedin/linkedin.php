@@ -258,7 +258,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 			if ($hzal === false)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -268,7 +268,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			// Set response variables
 			$response->auth_link = $hzal;
 			$response->type      = 'linkedin';
-			$response->status    = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $full_name;
 
 			if (!empty($hzal->user_id))
@@ -310,7 +310,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		}
 		else // no authorization
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}

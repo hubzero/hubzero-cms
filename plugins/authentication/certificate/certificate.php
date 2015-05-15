@@ -153,7 +153,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 
 			if ($hzal === false)
 			{
-				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = 'Unknown user and new user registration is not permitted.';
 				return;
 			}
@@ -162,7 +162,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 
 			$response->auth_link = $hzal;
 			$response->type      = 'certificate';
-			$response->status    = JAUTHENTICATE_STATUS_SUCCESS;
+			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $username;
 
 			// Try to deduce fullname from potential patern (ex: LAST.FIRST.MIDDLE.ID)
@@ -208,7 +208,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->status = \Hubzero\Auth\Status::FAILURE;
 			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}
