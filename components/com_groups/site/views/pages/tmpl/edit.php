@@ -163,8 +163,7 @@ if ($this->page->get('id'))
 							}
 
 							// display with ckeditor
-							jimport( 'joomla.html.editor' );
-							$editor = new JEditor( 'ckeditor' );
+							$editor = new \Hubzero\Html\Editor('ckeditor');
 							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
 
