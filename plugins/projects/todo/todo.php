@@ -224,7 +224,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Filters for returning results
 		$view->filters = array(
 			'projects'	 => array($model->get('id')),
-			'limit'      => $this->params->get('sidelimit', 5),
+			'limit'      => $model->config()->get('sidebox_limit', 5),
 			'start'		 => 0,
 			'sortby'	 => 'due',
 			'sortdir'	 => 'ASC'

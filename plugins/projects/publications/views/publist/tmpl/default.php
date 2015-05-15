@@ -25,39 +25,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
-
-if (!$publishing)
-{
-	return false;
-}
-
-$database 	= JFactory::getDBO();
-
-$filters = array();
-$filters['sortby']   		= 'title';
-$filters['sortdir']  		= 'ASC';
-$filters['project']  		= $this->project->id;
-
-// Get project publications
-$objP  = new \Components\Publications\Tables\Publication($database);
-$items = $objP->getRecords($filters);
-
-// URL
-$route 	= 'index.php?option=com_publications';
-
-if ($items) {
+if (!empty($this->items)) {
 ?>
 <div class="public-list-header">
 	<h3><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul class="public-list">
-		<?php foreach ($items as $item) {
+		<?php foreach ($this->items as $pub) {
 		?>
-		<li><a href="<?php echo Route::url($route . '&id=' . $item->id);  ?>"><span class="pub-image"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $item->id . '&v=' . $item->version_id) . '/Image:thumb'; ?>" alt="" /></span> <?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . Date::of($item->published_up)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url('index.php?option=com_publications&category=' . $item->cat_url) . '">' . $item->cat_name . '</a>'; ?></span></li>
-		<?php
-		} ?>
+		<li>
+			<span class="pub-thumb"><img src="<?php echo Route::url($pub->link('thumb')); ?>" alt=""/></span>
+			<span class="pub-details">
+				<a href="<?php echo Route::url($pub->link('version')); ?>" title="<?php echo $this->escape($pub->get('title')); ?>"><?php echo stripslashes($pub->get('title')) . ' v.' . $pub->get('version_label'); ?></a>
+				 <span class="public-list-info">
+					- <?php echo Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . $pub->published('date') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url($pub->link('category')) . '">' . $pub->category()->name . '</a>'; ?>
+				</span>
+			</span>
+		</li><?php } ?>
 	</ul>
 </div>
 <?php } ?>

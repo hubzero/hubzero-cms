@@ -26,11 +26,13 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<div class="sidebox">
-		<h4 class="assets"><a href="<?php echo Route::url($this->model->link('files')); ?>" class="hlink"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_RECENTLY_ADDED')); ?></a>
+<div class="sidebox<?php if (count($this->files) == 0) { echo ' suggestions'; } ?>">
+		<h4><a href="<?php echo Route::url($this->model->link('files')); ?>" class="hlink"><?php echo (count($this->files) == 0) ? Lang::txt('COM_PROJECTS_FILES') : Lang::txt('PLG_PROJECTS_FILES_RECENTLY_ADDED'); ?></a>
 </h4>
 <?php if (count($this->files) == 0) { ?>
-	<p class="mini"><?php echo Lang::txt('PLG_PROJECTS_FILES_NONE'); ?></p>
+	<p class="s-files">
+		<a href="<?php echo Route::url($this->model->link('files')); ?>"><?php echo Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES'); ?></a>
+	</p>
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->files as $file) {

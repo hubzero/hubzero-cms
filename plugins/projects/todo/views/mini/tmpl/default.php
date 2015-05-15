@@ -25,17 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div class="sidebox">
-		<h4 class="todo"><a href="<?php echo Route::url($this->model->link('todo')); ?>" class="hlink" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_TODO')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_TAB_TODO')); ?></a>
+<div class="sidebox<?php if (count($this->items) == 0) { echo ' suggestions'; } ?>">
+		<h4><a href="<?php echo Route::url($this->model->link('todo')); ?>" class="hlink" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_TODO')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_TAB_TODO')); ?></a>
 <?php if (count($this->items) > 0) { ?>
 	<span><a href="<?php echo Route::url($this->model->link('todo')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL')); ?> </a></span>
 <?php } ?>
 </h4>
 <?php if (count($this->items) == 0) { ?>
-	<div class="noitems">
-		<p><?php echo Lang::txt('COM_PROJECTS_NO_TODOS'); ?></p>
-		<p class="addnew"><a href="<?php echo Route::url($this->model->link('todo')); ?>"><?php echo Lang::txt('COM_PROJECTS_ADD_TODO'); ?></a></p>
-	</div>
+		<p class="s-todo"><a href="<?php echo Route::url($this->model->link('todo')); ?>"><?php echo Lang::txt('COM_PROJECTS_ADD_TODO'); ?></a></p>
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->items as $row) {

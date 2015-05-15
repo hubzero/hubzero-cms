@@ -355,10 +355,49 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Filters for returning results
 		$view->filters = array(
 			'project'	 => $model->get('id'),
-			'limit'      => $this->params->get('sidelimit', 5),
+			'limit'      => $model->config()->get('sidebox_limit', 5),
 			'start'		 => 0,
 			'dev'        => 1,
 			'sortby'	 => 'date_created',
+			'sortdir'	 => 'DESC'
+		);
+
+		$view->items = $pub->entries( 'list', $view->filters );
+		$view->model = $model;
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Event call to get content for public project page
+	 *
+	 * @return
+	 */
+	public function onProjectPublicList($model)
+	{
+		if (!$model->exists() || !$model->access('content') || !$model->isPublic())
+		{
+			return false;
+		}
+		if (!$model->params->get('publications_public', 0))
+		{
+			return false;
+		}
+
+		// Instantiate a publication object
+		$pub = new \Components\Publications\Models\Publication();
+
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => 'publist'
+			)
+		);
+
+		// Filters for returning results
+		$view->filters = array(
+			'project'	 => $model->get('id'),
+			'sortby'	 => 'date_published',
 			'sortdir'	 => 'DESC'
 		);
 

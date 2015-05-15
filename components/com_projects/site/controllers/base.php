@@ -485,15 +485,8 @@ class Base extends SiteController
 		$from['name']  	= Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
 		$from['email'] 	= Config::get('mailfrom');
 
-		// Get team/managers
-		$filters = array( 'select'=> 'o.userid, o.invited_code, o.invited_email, o.role ', 'sortby' => 'status' );
-		if ($managers_only)
-		{
-			$filters['role'] = 1;
-		}
 		// Get team
-		$objO = $this->model->table('Owner');
-		$team = $objO->getOwners( $this->model->get('id'), $filters );
+		$team = $this->model->team();
 
 		// Must have addressees
 		if (empty($team))
@@ -513,6 +506,10 @@ class Base extends SiteController
 		// Send out message/email
 		foreach ($team as $member)
 		{
+			if ($managers_only && $member->role != 1)
+			{
+				continue;
+			}
 			$eview->role = $member->role;
 			if ($member->userid && $member->userid != User::get('id') )
 			{

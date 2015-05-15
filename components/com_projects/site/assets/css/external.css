@@ -12,6 +12,22 @@
  Public page CSS
 --------------------------------------------- */
 
+.pub-thumb {
+	position: absolute;
+}
+.pub-details {
+	margin-left: 50px;
+	display: block;
+}
+.pub-details .title,
+.pub-details .details {
+	margin-left: 0;
+}
+.pub-thumb img {
+	width: 30px;
+	height: 30px;
+}
+
 /* Team list (horizontal) */
 --------------------------------------------- */
 #team-horiz {

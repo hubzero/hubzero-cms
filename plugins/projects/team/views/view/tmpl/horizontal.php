@@ -35,6 +35,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<ul>
 			<?php foreach ($this->team as $owner)
 			{
+				if (!$owner->userid || $owner->status != 1)
+				{
+					continue;
+				}
 				// Get profile thumb image
 				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 				$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
@@ -49,6 +53,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</ul>
 	<?php } else { ?>
 		<div class="noresults"><?php echo Lang::txt('COM_PROJECTS_EXTERNAL_NO_TEAM'); ?></div>
-	<?php }	?>
+	<?php } ?>
 	<div class="clear"></div>
 </div>

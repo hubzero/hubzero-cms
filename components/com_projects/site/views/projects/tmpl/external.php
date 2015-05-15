@@ -61,6 +61,7 @@ $this->css('theme' . $theme . '.css');
 	     ->set('publicView', true)
 	     ->set('option', $this->option)
 	     ->display();
+
 	// Draw top menu
 	$this->view('_topmenu', 'projects')
 		 ->set('model', $this->model)
@@ -82,73 +83,19 @@ $this->css('theme' . $theme . '.css');
 					<?php echo $this->model->about('parsed'); ?>
 				</div>
 				<?php } ?>
+				<?php
+				// Side blocks from plugins?
+				$sections = Event::trigger( 'projects.onProjectPublicList', array( $this->model));
 
-				<?php if ($this->params->get('publications_public', 0))
+				if (!empty($sections))
 				{
-					// Show team
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder' =>'projects',
-							'element'=>'publications',
-							'name'   =>'publist'
-						)
-					);
-					$view->option 	 = $this->option;
-					$view->project 	 = $this->project;
-					$view->pubconfig = $this->config;
-					echo $view->loadTemplate();
-				 } ?>
+					foreach ($sections as $section)
+					{
+						echo !empty($section) ? $section : NULL;
+					}
+				}
+				?>
 
-				<?php if ($this->params->get('files_public', 1))
-				{
-					// Show files
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder'  =>'projects',
-							'element' =>'files',
-							'name'    =>'publist'
-						)
-					);
-					$view->option 	= $this->option;
-					$view->model 	= $this->model;
-					echo $view->loadTemplate();
-				 } ?>
-
-				<?php if ($this->params->get('notes_public', 1))
-				{
-					// Show team
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder'  =>'projects',
-							'element' =>'notes',
-							'name'    =>'publist'
-						)
-					);
-					$view->option 	= $this->option;
-					$view->project 	= $this->model;
-					echo $view->loadTemplate();
-				 } ?>
-
-				<?php if ($this->params->get('team_public', 0))
-				{
-					// Get team
-					$team = $this->model->_tblOwner->getOwners( $this->model->get('id'), $filters = array('status' => 1) );
-
-					// Show team
-					$view = new \Hubzero\Plugin\View(
-						array(
-							'folder' =>'projects',
-							'element'=>'team',
-							'name'   =>'view',
-							'layout' =>'horizontal'
-						)
-					);
-					$view->option 	= $this->option;
-					$view->project 	= $this->project;
-					$view->goto 	= 'alias=' . $this->project->alias;
-					$view->team 	= $team;
-					echo $view->loadTemplate();
-				 } ?>
 		</section><!-- / .main section -->
 	</div>
 </div>

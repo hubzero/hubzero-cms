@@ -572,6 +572,8 @@
 	}
 	.sidebox.suggestions p {
 		margin: 0.3em 0.5em;
+		border: none;
+		background: #f8ffff;
 	}
 
 /* Prev/next paging
@@ -2057,6 +2059,7 @@
 		color: #8f8faa;
 	}
 	.feature #feature-publications .ima:before,
+	.suggestions .s-publications a:before,
 	.publications:before, .publication:before {
 		content: "\f058";
 		color: #52ad4b;

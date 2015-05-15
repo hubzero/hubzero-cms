@@ -222,41 +222,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$database = JFactory::getDBO();
-
-		$limit = $model->config()->get('sidebox_limit', 3);
-
-		// Acting member
-		$member = $model->member();
-		if (!is_object($member->params))
-		{
-			$member->params = new \JParameter($member->params);
-		}
-
-		// Show welcome screen?
-		if ($member && is_object($member->params) && $member->params->get('hide_welcome') == 1)
-		{
-			// Get suggestions
-			$suggestions = \Components\Projects\Helpers\Html::getSuggestions( $model );
-
-			// Show side module with suggestions
-			if (count($suggestions) > 1 && $member->num_visits < 20)
-			{
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'projects',
-						'element' => 'blog',
-						'name'    => 'modules',
-						'layout'  => 'suggestions'
-					)
-				);
-				$view->option 		= $this->_option;
-				$view->suggestions 	= $suggestions;
-				$view->model 		= $model;
-				$html 		       .= $view->loadTemplate();
-			}
-		}
-
 		// Side blocks from other plugins?
 		$sections = Event::trigger( 'projects.onProjectMiniList', array( $this->model));
 

@@ -227,6 +227,9 @@
 		clear: both;
 		width: 100%;
 	}
+	.sidebox.suggestions p {
+		text-align: center;
+	}
 }
 @media all and (max-width: 900px) {
 	.main-menu ul.projecttools li a span {

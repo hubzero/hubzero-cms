@@ -372,7 +372,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Set params
 		$view->params = array(
-			'limit'                => $this->params->get('sidelimit', 5),
+			'limit'                => $model->config()->get('sidebox_limit', 5),
 			'start'                => 0,
 			'sortby'               => 'date',
 			'sortdir'              => 'DESC',
