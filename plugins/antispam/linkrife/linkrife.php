@@ -49,6 +49,7 @@ class plgAntispamLinkRife extends \Hubzero\Plugin\Plugin
 		$linkrife = new \Plugins\Antispam\LinkRife\Detector();
 		$linkrife->setMaxLinkAllowed($this->params->get('linkFrequency', 10));
 		$linkrife->setMaxRatio($this->params->get('linkRatio', 40));
+		$linkrife->setLinkValidation($this->params->get('linkValidation', 0));
 
 		return $linkrife;
 	}

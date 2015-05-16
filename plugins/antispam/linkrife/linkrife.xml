@@ -51,6 +51,10 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="linkFrequency" type="text" size="10" default="10" label="PLG_ANTISPAM_LINKRIFE_PARAM_LINKFREQUENCY_LABEL" description="PLG_ANTISPAM_LINKRIFE_PARAM_LINKFREQUENCY_DESC" />
 				<field name="linkRatio" type="text" size="10" default="40" label="PLG_ANTISPAM_LINKRIFE_PARAM_LINKRATIO_LABEL" description="PLG_ANTISPAM_LINKRIFE_PARAM_LINKRATIO_DESC" />
+				<field name="linkValidation" type="list" default="0" label="PLG_ANTISPAM_LINKRIFE_PARAM_LINKVALIDATION_LABEL" description="PLG_ANTISPAM_LINKRIFE_PARAM_LINKVALIDATION_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

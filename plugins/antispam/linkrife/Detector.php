@@ -65,6 +65,13 @@ class Detector implements DetectorInterface
 	protected $maxRatio = 40;
 
 	/**
+	 * Validate found links?
+	 *
+	 * @var  boolean
+	 */
+	protected $linkValidation = 0;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $options
@@ -80,6 +87,11 @@ class Detector implements DetectorInterface
 		if (isset($options['maxRatio']))
 		{
 			$this->setMaxRatio($options['maxRatio']);
+		}
+
+		if (isset($options['linkValidation']))
+		{
+			$this->setLinkValidation($options['linkValidation']);
 		}
 	}
 
@@ -131,6 +143,79 @@ class Detector implements DetectorInterface
 	}
 
 	/**
+	 * Set the link validation setting
+	 *
+	 * @param   integer  $validate
+	 * @return  object
+	 */
+	public function setLinkValidation($validate)
+	{
+		$this->linkValidation = $validate;
+
+		return $this;
+	}
+
+	/**
+	 * Get the link validation setting
+	 *
+	 * @return  integer
+	 */
+	public function getLinkValidation()
+	{
+		return $this->linkValidation;
+	}
+
+	/**
+	 * Check if a URL is in SpamHaus' registry
+	 *
+	 * @param   string   $input  URL to check
+	 * @return  boolean
+	 */
+	public function isBlacklisted($input)
+	{
+		if (!function_exists('dns_get_record'))
+		{
+			return false;
+		}
+
+		$parsed = parse_url($input);
+
+		if (!isset($parsed['host']))
+		{
+			return false;
+		}
+
+		// Remove www. from domain (but not from www.com)
+		$parsed['host'] = preg_replace('/^www\.(.+\.)/i', '$1', $parsed['host']);
+
+		// The 3 major blacklists
+		$blacklists = array(
+			'zen.spamhaus.org',
+			'multi.surbl.org',
+			'black.uribl.com',
+		);
+
+		// Check against each black list, exit if blacklisted
+		foreach ($blacklists as $i => $blacklist)
+		{
+			// SpamHaus requires the IP be reversed
+			if ($i == 0)
+			{
+				$parsed['host'] = implode('.', array_reverse(explode('.', $parsed['host']), false));
+			}
+			$domain = $parsed['host'] . '.' . $blacklist . '.';
+			$record = dns_get_record($domain);
+
+			if (count($record) > 0)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * {@inheritDocs}
 	 */
 	public function detect($data)
@@ -150,6 +235,17 @@ class Detector implements DetectorInterface
 			// If the link count is more than the maximum allowed
 			// the string is automatically considered spam..
 			return true;
+		}
+
+		if ($this->linkValidation)
+		{
+			foreach ($matches[0] as $match)
+			{
+				if ($this->isBlacklisted($match))
+				{
+					return true;
+				}
+			}
 		}
 
 		// Get the ratio of words to link
