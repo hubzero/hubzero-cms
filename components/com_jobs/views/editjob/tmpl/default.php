@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode
 
 	$hubzero_Geo = new \Hubzero\Geocode\Geocode();
-	$countries = $hubzero_Geo->getcountries();
+	$countries = $hubzero_Geo->countries();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

@@ -435,13 +435,16 @@ $defaultCountries = array(
 								<select style="display: block" name="countryorigin" id="countryorigin">
 									<option value="">Select country...</option>
 								<?php
-									$countries = \Hubzero\Geocode\Geocode::getcountries();
-									if (!$countries) {
+									$countries = \Hubzero\Geocode\Geocode::countries();
+									if (!$countries)
+									{
 										$countries = $defaultCountries;
 									}
-									foreach ($countries as $c) {
+									foreach ($countries as $c)
+									{
 										echo '<option value="' . $c['code'] . '"';
-										if ($country == $c['code']) {
+										if (strtoupper($country) == strtoupper($c['code']))
+										{
 											echo ' selected="selected"';
 										}
 										echo '>' . htmlentities($c['name'], ENT_COMPAT, 'UTF-8') . '</option>'."\n";
