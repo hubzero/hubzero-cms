@@ -169,8 +169,8 @@ class Request extends BaseRequest
 	public function getInt($key, $default = 0, $hash = 'input')
 	{
 		preg_match('/-?[0-9]+/', (string) $this->getVar($key, $default, $hash), $matches);
-		$result = @ (int) $matches[0];
-		return (!is_null($result) ? $result : $default);
+		$result = @ $matches[0];
+		return (!is_null($result) ? (int) $result : $default);
 	}
 
 	/**
