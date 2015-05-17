@@ -41,8 +41,8 @@ $class = \Components\Publications\Helpers\Html::getPubStateProperty($this->row, 
 			<span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span>
 			<span class="block">
 				<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_BY') . ' ' . $this->row->creator('name') ; ?>
-				<?php if (!$this->row->project()->isProvisioned()) { 
-				echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' . $this->row->project()->link() . '">' . \Hubzero\Utility\String::truncate(stripslashes($this->row->project()->get('title')), 80) . '</a>'; 
+				<?php if (!$this->row->project()->isProvisioned()) {
+				echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' . $this->row->project()->link() . '">' . \Hubzero\Utility\String::truncate(stripslashes($this->row->project()->get('title')), 80) . '</a>';
 			} ?></span>
 		</span>
 	</span>
