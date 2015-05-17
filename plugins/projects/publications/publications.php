@@ -415,7 +415,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= Request::getInt('limit', 25);
+		$filters['limit'] 	 		= Request::getInt('limit', Config::get('list_limit'));
 		$filters['start'] 	 		= Request::getInt('limitstart', 0);
 		$filters['sortby']   		= Request::getVar('sortby', 'title');
 		$filters['sortdir']  		= Request::getVar('sortdir', 'ASC');
@@ -2685,42 +2685,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				'folder'  =>'projects',
 				'element' =>'publications',
 				'name'    =>'browse',
-				'layout'  =>'intro'
+				'layout'  =>'provisioned'
 			)
 		);
 		$view->option  		= $this->_option;
-		$view->pubconfig 	= $this->_pubconfig;
-		$view->outside  	= 1;
 		$view->juser   		= User::getRoot();
-		$view->uid 			= $this->_uid;
 		$view->database		= $this->_database;
 
-		// Get publications
-		if (!User::isGuest())
-		{
-			$view->filters = array();
-
-			// Get user projects
-			$obj = new \Components\Projects\Tables\Project( $this->_database );
-			$view->filters['projects']  = $obj->getUserProjectIds(User::get('id'), 0, 1);
-
-			$view->filters['mine']		= User::get('id');
-			$view->filters['dev']		= 1;
-			$view->filters['sortby']	= 'mine';
-			$view->filters['limit']  	= Request::getInt( 'limit', 3 );
-
-			// Get publications created by user
-			$objP = new \Components\Publications\Tables\Publication( $this->_database );
-			$view->mypubs = $objP->getRecords( $view->filters );
-
-			// Get pub count
-			$view->mypubs_count = $objP->getCount( $view->filters );
-
-			// Get other pubs that user can manage
-			$view->filters['coauthor'] = 1;
-			$view->coauthored = $objP->getRecords( $view->filters );
-			$view->coauthored_count = $objP->getCount( $view->filters );
-		}
+		// Instantiate a publication object
+		$view->pub     = new \Components\Publications\Models\Publication();
+		$view->project = $this->model;
 
 		return $view->loadTemplate();
 	}

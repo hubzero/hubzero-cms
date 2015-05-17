@@ -1913,7 +1913,8 @@
 	.browse:before,
 	.main-menu ul.projecttools li.assets span:before,
 	.defaultimage:before,
-	.feed:before {
+	.feed:before,
+	.project-icon:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -1943,9 +1944,17 @@
 		content: "\f05a";
 		color: #89c685;
 	}
-	.defaultimage:before {
+	.defaultimage:before,
+	.project-icon:before {
 		content: "\f03f";
 		color: #aea79a;
+	}
+	.project-icon:before {
+		width: 52px;
+		height: 52px;
+		font-size: 52px;
+		padding: 0.5em 0.1em;
+		float: left;
 	}
 	.newsupdate:before, .feed:before {
 		content: "\f053";

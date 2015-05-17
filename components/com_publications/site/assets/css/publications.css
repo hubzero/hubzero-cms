@@ -1359,7 +1359,6 @@
 	ul.mypubs li {
 		margin: 0.2em 0 0.2em 0;
 		padding: 0.5em 0.5em;
-		border-bottom: 1px dotted #e2e2e2;
 		background: #ffffff;
 	}
 	ul.mypubs li:last-child {
@@ -1410,20 +1409,23 @@
 	.mypub-newversion {
 		padding-right: 1em;
 	}
-	#contrib-start {
-		margin-left: 1em;
-		padding: 0 1em 2em 2.5em;
-		font-size: 90%;
+	.contrib-start {
+		padding: 0.5em 1em;
+		margin: 0 0 2em 0;
+		background: #fff9ef;
+		border: 4px solid #f4eee3;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
 	}
-	.getstarted-links {
-		padding: 0.5em 0;
-		background: #f8ffff;
-		border-top: 1px solid #c8e6e4;
-		border-bottom: 1px solid #c8e6e4;
+	.contrib-start.simple {
+		background: #f4fcff;
+		border: 4px solid #d4eeed;
 	}
-	.getstarted-links a {
-		padding-top: 0.2em;
-		padding-bottom: 0.2em;
+	.contribute h3 {
+		margin-top: 0;
+	}
+	.contribute #pubintro {
+		margin-top: 3em;
 	}
 	.pub-thumb {
 		position: absolute;

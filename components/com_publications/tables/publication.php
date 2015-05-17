@@ -125,7 +125,6 @@ class Publication extends \JTable
 		$dev 			= isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
 		$projects 		= isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
 		$mine 			= isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
-		$coauthor 		= isset($filters['coauthor']) && $filters['coauthor'] == 1 ? 1 : 0;
 		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
 		$query  = "FROM ";
@@ -177,13 +176,10 @@ class Publication extends \JTable
 					}
 					$p_query = substr($p_query,0,strlen($p_query) - 1);
 					$query .= " AND (C.project_id IN (" . $p_query . ")) ";
-					$query .= $coauthor
-							? " AND C.created_by != " . intval($filters['mine'])
-							: " AND C.created_by=" . intval($filters['mine']);
 				}
 				else
 				{
-					$query .= $coauthor ? " AND 2=1" : " AND C.created_by=".intval($filters['mine']);
+					$query .= "AND C.created_by=" . intval($filters['mine']);
 				}
 			}
 			// Individual assigned curator?
