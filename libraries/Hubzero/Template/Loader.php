@@ -202,9 +202,7 @@ class Loader
 		$item = $menu->getActive();
 		if (!$item)
 		{
-			//$iid = $this->app['request']->getInt('Itemid', 0, 'get');
-			$iid = 0; //$iid ?: $this->app['request']->getInt('Itemid', 0, 'get');
-			$item = $menu->getItem($iid);
+			$item = $menu->getItem($this->app['request']->getInt('Itemid', 0));
 		}
 
 		$id = 0;
@@ -215,20 +213,20 @@ class Loader
 		}
 		$condition = '';
 
-		$tid = 0; //$this->app['request']->getVar('templateStyle', 0);
+		$tid = $this->app['request']->getVar('templateStyle', 0);
 		if (is_numeric($tid) && (int) $tid > 0)
 		{
 			$id = (int) $tid;
 		}
 
-		$cache = \JFactory::getCache('com_templates', '');
+		$cache = $this->app['cache.store'];
 		$tag = '';
 		/*if ($this->_language_filter)
 		{
 			$tag = $this->app['language']->getTag();
 		}*/
 
-		if (!$templates = $cache->get('templates0' . $tag))
+		if (!$templates = $cache->get('com_templates.templates0' . $tag))
 		{
 			// Load styles
 			$db = \JFactory::getDbo();
@@ -253,7 +251,7 @@ class Loader
 					$templates[0] = clone $template;
 				}
 			}
-			$cache->store($templates, 'templates0' . $tag);
+			$cache->put('com_templates.templates0' . $tag, $templates, $this->app['config']->get('cachetime', 15));
 		}
 
 		if (isset($templates[$id]))

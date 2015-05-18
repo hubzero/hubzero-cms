@@ -335,9 +335,15 @@ class Loader
 		$query->where($query->qn('element') . ' = ' . $db->quote($option));
 		$db->setQuery($query);
 
-		$cache = \JFactory::getCache('_system', 'callback');
+		$cache = $this->app['cache.store'];
 
-		self::$components[$option] = $cache->get(array($db, 'loadObject'), null, $option, false);
+		if (!($data = $cache->get('_system.' . $option)))
+		{
+			$data = $db->loadObject();
+			$cache->put('_system.' . $option, $data, $this->app['config']->get('cachetime', 15));
+		}
+
+		self::$components[$option] = $data;
 
 		if ($error = $db->getErrorMsg())// || empty(self::$components[$option]))
 		{

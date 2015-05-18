@@ -219,6 +219,6 @@ class Cache extends \JModelList
 	 */
 	public function purge()
 	{
-		return \JFactory::getCache('')->gc();
+		return $this->getCache()->gc();
 	}
 }

@@ -247,8 +247,6 @@ class Loader
 			$this->profiler->mark('beforeRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
 
-		$app = \JFactory::getApplication();
-
 		// Record the scope.
 		$scope = $this->app->has('scope') ? $this->app->get('scope') : null;
 
@@ -398,8 +396,8 @@ class Loader
 		$lang     = $this->app['language']->getTag();
 		$clientId = (int) $this->app['client']->id;
 
-		$cache = \JFactory::getCache('com_modules', '');
-		$cacheid = md5(serialize(array($Itemid, $groups, $clientId, $lang)));
+		$cache = $this->app['cache.store'];
+		$cacheid = 'com_modules.' . md5(serialize(array($Itemid, $groups, $clientId, $lang)));
 
 		if (!($clean = $cache->get($cacheid)))
 		{
@@ -472,14 +470,6 @@ class Loader
 				// Only accept modules without explicit exclusions.
 				if (!$negHit)
 				{
-					// Determine if this is a 1.0 style custom module (no mod_ prefix)
-					// This should be eliminated when the class is refactored.
-					// $module->user is deprecated.
-					//$file = $module->module;
-					//$custom = substr($file, 0, 4) == 'mod_' ? 0 : 1;
-					//$module->user = $custom;
-					// 1.0 style custom module name is given by the title field, otherwise strip off "mod_"
-					//$module->name = $custom ? $module->module : substr($file, 4);
 					$module->name     = substr($module->module, 4);
 					$module->style    = null;
 					$module->position = strtolower($module->position);
@@ -493,7 +483,7 @@ class Loader
 			// Return to simple indexing that matches the query order.
 			$clean = array_values($clean);
 
-			$cache->store($clean, $cacheid);
+			$cache->put($cacheid, $clean, $this->app['config']->get('cachetime', 15));
 		}
 
 		return $clean;
@@ -625,7 +615,7 @@ class Loader
 	public function params($id)
 	{
 		//database object
-		$db = \JFactory::getDBO();
+		$db = $this->app['db'];
 
 		//select module params based on name passed in
 		if (is_numeric($id))

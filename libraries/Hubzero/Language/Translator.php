@@ -1322,7 +1322,7 @@ class Translator extends Object
 		if (empty($languages))
 		{
 			// Installation uses available languages
-			if (\JFactory::getApplication()->getClientId() == 2)
+			if (\App::get('client')->id == 2)
 			{
 				$languages[$key] = array();
 				$knownLangs = self::getKnownLanguages(JPATH_BASE);
@@ -1334,8 +1334,8 @@ class Translator extends Object
 			}
 			else
 			{
-				$cache = \JFactory::getCache('com_languages', '');
-				if (!$languages = $cache->get('languages'))
+				$cache = \App::get('cache.store');
+				if (!$languages = $cache->get('com_languages.languages'))
 				{
 					$db = \JFactory::getDBO();
 					$query = $db->getQuery(true);
@@ -1358,7 +1358,7 @@ class Translator extends Object
 						}
 					}
 
-					$cache->store($languages, 'languages');
+					$cache->put('com_languages.languages', $languages, \App::get('config')->get('cachetime', 15));
 				}
 			}
 		}
