@@ -238,8 +238,7 @@ class BillBoards extends AdminController
 		}
 
 		// Clear the component's cache
-		$cache = \JFactory::getCache('com_billboards');
-		$cache->clean();
+		Cache::clean('com_billboards');
 
 		// Redirect
 		App::redirect(

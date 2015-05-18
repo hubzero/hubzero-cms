@@ -97,8 +97,7 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$cache = JFactory::getCache();
-		$cache->gc();
+		Cache::gc();
 
 		return true;
 	}
@@ -117,7 +116,6 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
 		}
 
 		$docs = array();
-		jimport('joomla.filesystem.file');
 
 		$dirIterator = new DirectoryIterator($this->_path);
 		foreach ($dirIterator as $file)
@@ -131,7 +129,7 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
 			{
 				$name = $file->getFilename();
 
-				$ext = JFile::getExt($name);
+				$ext = Filesystem::extension($name);
 
 				if (('cvs' == strtolower($name))
 				 || ('.svn' == strtolower($name))
@@ -153,7 +151,7 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($docs as $p => $n)
 			{
-				JFile::delete($p);
+				Filesystem::delete($p);
 			}
 		}
 

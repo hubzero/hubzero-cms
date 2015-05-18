@@ -31,6 +31,7 @@
 namespace Modules\Menu;
 
 use Hubzero\Module\Module;
+use Cache;
 use Route;
 use User;
 
@@ -82,9 +83,10 @@ class Helper extends Module
 		$user = User::getRoot();
 		$levels = $user->getAuthorisedViewLevels();
 		asort($levels);
-		$key = 'menu_items' . $params . implode(',', $levels) . '.' . $active->id;
-		$cache = \JFactory::getCache('mod_menu', '');
-		if (!($items = $cache->get($key)))
+
+		$key = 'mod_menu.' . 'menu_items' . $params . implode(',', $levels) . '.' . $active->id;
+
+		if (!($items = Cache::get($key)))
 		{
 			// Initialise variables.
 			$list     = array();
@@ -185,7 +187,7 @@ class Helper extends Module
 				}
 			}
 
-			$cache->store($items, $key);
+			Cache::put($key, $items, intval($params->get('cache_time', 900)) / 60);
 		}
 		return $items;
 	}

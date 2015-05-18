@@ -211,7 +211,7 @@ class Application extends JModelForm
 		// Clean the cache if disabled but previously enabled.
 		if (!$data['caching'] && $prev['caching'])
 		{
-			JFactory::getCache()->clean();
+			\Cache::clean();
 		}
 
 		// Create the new configuration object.

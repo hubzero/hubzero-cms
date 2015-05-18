@@ -62,10 +62,12 @@ switch ($this->params->get('defaultDataset', 'cumulative'))
 
 if (intval($this->params->get('cache', 1)))
 {
-	$cache = JFactory::getCache('callback');
-	$cache->setCaching(1);
-	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id, $prd);
+	if (!($results = Cache::get('resources.usage' . $this->resource->id . 'overview')))
+	{
+		$results = plgResourcesUsage::getOverview($this->resource->id, $prd);
+
+		Cache::put('resources.usage' . $this->resource->id . 'overview', $results, intval($this->params->get('cache_time', 15)));
+	}
 }
 else
 {
@@ -244,15 +246,16 @@ if ($results)
 
 					if (intval($this->params->get('cache', 1)))
 					{
-						$cache = JFactory::getCache('callback');
-						$cache->setCaching(1);
-						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-						$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
+						if (!($dataset = Cache::get('resources.usage' . $this->resource->id . 'type')))
+						{
+							$dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
+
+							Cache::put('resources.usage' . $this->resource->id . 'type', $dataset, intval($this->params->get('cache_time', 15)));
+						}
 					}
 					else
 					{
 						$dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
-
 					}
 					//$data = array();
 					$r = array();
@@ -359,10 +362,12 @@ if ($results)
 						<?php
 						if (intval($this->params->get('cache', 1)))
 						{
-							$cache = JFactory::getCache('callback');
-							$cache->setCaching(1);
-							$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-							$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
+							if (!($dataset = Cache::get('resources.usage' . $this->resource->id . 'country')))
+							{
+								$dataset = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
+
+								Cache::put('resources.usage' . $this->resource->id . 'country', $dataset, intval($this->params->get('cache_time', 15)));
+							}
 						}
 						else
 						{
@@ -477,10 +482,12 @@ if ($results)
 						<?php
 						if (intval($this->params->get('cache', 1)))
 						{
-							$cache = JFactory::getCache('callback');
-							$cache->setCaching(1);
-							$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-							$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
+							if (!($results = Cache::get('resources.usage' . $this->resource->id . 'domains')))
+							{
+								$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
+
+								Cache::put('resources.usage' . $this->resource->id . 'domains', $results, intval($this->params->get('cache_time', 15)));
+							}
 						}
 						else
 						{

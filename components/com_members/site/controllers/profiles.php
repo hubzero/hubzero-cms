@@ -351,10 +351,12 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Initiate a contributor object
 		$c = new MembersProfile($this->database);
 
-		$cache = JFactory::getCache('callback');
-		$cache->setCaching(1);
-		$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
-		$stats = $cache->call(array($this, 'stats'));
+		if (!($stats = Cache::get('members.stats')))
+		{
+			$stats = $this->stats();
+
+			Cache::put('members.stats', $stats, intval($this->params->get('cache_time', 15)));
+		}
 
 		// Get record count of ALL members
 		$this->view->total_members = $stats->total_members; //$c->getCount(array('show' => ''), true);
