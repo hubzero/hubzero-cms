@@ -82,7 +82,15 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$this->view->obj      = $this->obj      = $obj;
 		$this->view->obj_id   = $this->obj_id   = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
 		$this->view->obj_type = $this->obj_type = substr($option, 4);
+
+		// Removes invalid anchor from url
+		if ($url && $extras = explode('#', $url))
+		{
+			$url = str_replace('#' . $extras[1], '', $url);
+		}
+
 		$this->view->url      = $this->url      = ($url ? $url : JRoute::_('index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments'));
+
 		$this->view->depth    = 0;
 
 		$this->_authorize();
