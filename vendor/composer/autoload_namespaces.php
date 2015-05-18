@@ -14,6 +14,7 @@ return array(
     'Predis' => array($vendorDir . '/predis/predis/lib'),
     'PHPQRCode' => array($vendorDir . '/aferrandini/phpqrcode/lib'),
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
+    'Mandrill' => array($vendorDir . '/mandrill/mandrill/src'),
     'Hubzero' => array($baseDir . '/libraries'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),

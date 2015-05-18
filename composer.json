@@ -73,7 +73,8 @@
         "aferrandini/phpqrcode": "1.0.1",
         "google/apiclient": "1.1.*",
         "guzzlehttp/guzzle": "5.2.*",
-        "authy/php": "2.*"
+        "authy/php": "2.*",
+        "mandrill/mandrill": "1.0.*"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
