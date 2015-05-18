@@ -1,0 +1,72 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/publications/watch/assets/css/watch.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Publications Watch plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+.watch {
+	background: #f8ffff;
+	background: -moz-linear-gradient(top, #f8ffff, #FFFFFF);
+	border: 2px solid #d4eeed;
+	padding: 0.5em 1em 0.5em 0;
+	margin: 0 0 2em 0;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 90%;
+	line-height: 1.3em;
+}
+.watch.watching {
+	background: #ecffe8;
+	background: -moz-linear-gradient(top, #ecffe8, #FFFFFF);
+	border: 2px solid #cbe1c6;
+	color: green;
+}
+.watch a {
+	border: none;
+}
+.watch:before {
+	width: 45px;
+	height: 45px;
+	font-size: 45px;
+	font-family: 'Fontcons';
+	color: #c4d2d6;
+	content: "\f095";
+	float: left;
+	padding: 0.5em 0.2em;
+}
+.watch.watching:before {
+	color: #93c089;
+	content: "\2611";
+}
+/* Info tips
+--------------------------------------------- */
+
+.pub-info-pop:before {
+	content: "\f059";
+	width: 22px;
+	height: 22px;
+	font-size: 22px;
+	font-family: 'Fontcons';
+	color: #333;
+	margin-right: 0.2em;
+	font-weight: normal;
+}
+
+.pub-info-pop {
+	padding: 0.2em 1em;
+	margin: 0;
+	color: #999;
+	line-height: 1.2em;
+	font-size: 1em;
+	float: right;
+	margin-right: -2em;
+}
