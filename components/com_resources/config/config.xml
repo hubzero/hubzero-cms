@@ -60,6 +60,7 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 	</fieldset>
 	<fieldset name="creation">
+		<field name="email_when_submitted" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="COM_RESOURCES_EMAIL_SUBMITTED_LABEL" description="COM_RESOURCES_EMAIL_SUBMITTED_DESC" />
 		<field name="autoapprove" type="radio" default="0" label="COM_RESOURCES_AUTOAPPROVE_LABEL" description="COM_RESOURCES_AUTOAPPROVE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
