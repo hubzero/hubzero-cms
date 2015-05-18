@@ -418,6 +418,7 @@ class Detector implements DetectorInterface
 	{
 		$g = $good_count;
 		$b = $bad_count;
+		$found = false;
 
 		$token_prob = new TokenProb($this->getDbo());
 		$token_prob->loadByToken($token);
@@ -426,6 +427,7 @@ class Detector implements DetectorInterface
 		{
 			$g += (int)$token_prob->in_ham;
 			$b += (int)$token_prob->in_spam;
+			$found = true;
 		}
 
 		$g *= self::GOOD_TOKEN_WEIGHT;
@@ -438,6 +440,11 @@ class Detector implements DetectorInterface
 			if ($g == 0)
 			{
 				$prob = ($b > self::CERTAIN_SPAM_COUNT) ? self::CERTAIN_SPAM_SCORE : self::LIKELY_SPAM_SCORE;
+			}
+
+			if (!$found)
+			{
+				$this->increaseTokenCount($good_count, $bad_count);
 			}
 
 			if ($token_prob->id)

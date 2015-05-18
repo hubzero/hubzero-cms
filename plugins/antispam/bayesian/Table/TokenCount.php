@@ -43,7 +43,7 @@ class TokenCount extends \JTable
 	 */
 	public function __construct($db)
 	{
-		parent::__construct('#__antispam_token_count', 'id', $db);
+		parent::__construct('#__antispam_token_counts', 'id', $db);
 	}
 
 	/**
