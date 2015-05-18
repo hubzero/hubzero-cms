@@ -76,16 +76,14 @@ $this->css('introduction.css', 'system')
 
 			if ($this->config->get('cache', 1))
 			{
-				$cache = JFactory::getCache('tags', 'callback');
-				$cache->setCaching(1);
-				$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
+				$ttl = intval($this->config->get('cache_time', 15));
 
-				$cloud = $cache->call(
-					array($this->cloud, 'render'),
-					'html',
-					$filters,
-					true
-				);
+				if (!($cloud = Cache::get('tags.recent')))
+				{
+					$cloud = $this->cloud->render('html', $filters, true);
+
+					Cache::put('tags.recent', $cloud, $ttl);
+				}
 			}
 			else
 			{
@@ -109,7 +107,12 @@ $this->css('introduction.css', 'system')
 
 			if ($this->config->get('cache', 1))
 			{
-				$cloud = $cache->call(array($this->cloud, 'render'), 'html', $filters, true);
+				if (!($cloud = Cache::get('tags.top')))
+				{
+					$cloud = $this->cloud->render('html', $filters, true);
+
+					Cache::put('tags.top', $cloud, $ttl);
+				}
 			}
 			else
 			{
