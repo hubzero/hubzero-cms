@@ -567,7 +567,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			}
 		}
 
-		// if deleting lets set the first childs parent 
+		// if deleting lets set the first childs parent
 		// to be the deleted pages parents
 		else if ($state == 2)
 		{
@@ -756,7 +756,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 	/**
 	 * Restore Page Version
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function restoreTask()

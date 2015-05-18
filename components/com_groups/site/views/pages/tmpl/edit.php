@@ -69,9 +69,9 @@ $parent    = $this->page->get('parent', 0);
 
 // determine comments setting
 $groupParams = new JRegistry($this->group->get('params'));
-$groupCommentSetting = $groupParams->get('page_comments', $this->config->get('page_comments', 0));
+$groupCommentSetting = $groupParams->get('page_comments', $this->config->get('page_comments', 3));
 $groupCommentSettingString = ($groupCommentSetting == 1) ? 'Yes' : 'No';
-$comments  = intval($this->page->get('comments', $groupCommentSetting));
+$comments  = intval($this->page->get('comments', 3));
 
 // default some form vars
 $pageHeading = Lang::txt("COM_GROUPS_PAGES_ADD_PAGE");
@@ -235,7 +235,7 @@ if ($this->page->get('id'))
 						</select>
 						<span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_HINT'); ?></span>
 					</label>
-					
+
 					<?php if ($this->page->get('home') == 0) : ?>
 						<label for="page-parent" class="page-parent-label">
 							<strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PARENT'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
@@ -258,7 +258,7 @@ if ($this->page->get('id'))
 							<strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_ORDER'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
 							<select name="page[left]" class="page-ordering fancy-select">
 								<?php foreach ($this->pages as $page) : ?>
-									
+
 									<?php $sel = ($page->get('title') == $title) ? 'selected="selected"' : ''; ?>
 									<option <?php echo $sel; ?> data-parent="<?php echo $page->get('parent'); ?>" value="<?php echo $page->get('lft'); ?>">
 										<?php echo $page->get('lft') . ' ' . $page->get('title'); ?>
@@ -274,14 +274,14 @@ if ($this->page->get('id'))
 					<label>
 						<strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
 						<select name="page[comments]" class="fancy-select">
-							<option><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString); ?></option>
+							<option value="3" <?php if ($comments === 3) { echo "selected"; } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString); ?></option>
 							<option value="0" <?php if ($comments === 0) { echo "selected"; } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
 							<option value="1" <?php if ($comments === 1) { echo "selected"; } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
 							<option value="2" <?php if ($comments === 2) { echo "selected"; } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
 						</select>
 						<span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_HINT'); ?></span>
 					</label>
-					
+
 					<?php if ($this->group->isSuperGroup() && count($this->pageTemplates) > 0) : ?>
 						<hr class="divider" />
 

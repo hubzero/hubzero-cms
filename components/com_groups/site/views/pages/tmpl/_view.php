@@ -34,7 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 // group params for displaying comments/author
 // use global params if group has not set params
 $groupParams     = new JRegistry($this->group->get('params'));
-$displayComments = $groupParams->get('page_comments', $this->config->get('page_comments', 0));
+$displayComments = $groupParams->get('page_comments', $this->config->get('page_comments', 3));
+
 $displayAuthor   = $groupParams->get('page_author', $this->config->get('page_author', 0));
 
 // take page setting if we have one
@@ -119,7 +120,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 				$categoryLink     = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&filter=' . $category->get('id'));
 			?>
 
-			
+
 			<div class="page-meta col span10">
 				<?php if ($this->page->get('id') != 0) : ?>
 					<span class="created" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdDate, $createdBy); ?>">
