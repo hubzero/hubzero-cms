@@ -980,7 +980,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function onAfterSave( $pub, $versionNumber = 1 )
+	public function onAfterSave( $pub )
 	{
 		// No afterSave actions when backing one step
 		if ($this->_task == 'rewind')
@@ -1006,7 +1006,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				   $this->get('_activity'), $pub->id, $pubTitle,
 				   Route::url('index.php?option=' . $this->_option .
 				   '&alias=' . $this->model->get('alias') . '&active=publications' .
-				   '&pid=' . $pub->id . '&version=' . $versionNumber), 'publication', 1 );
+				   '&pid=' . $pub->id . '&version=' . $pub->get('version_number')), 'publication', 1 );
 		}
 	}
 
@@ -1851,7 +1851,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->set('_activity', $action);
 
 					// Record action, notify team
-					$this->onAfterSave( $pub, $new->version_number );
+					$pub->set('version_number', $new->version_number);
+					$pub->set('version_label', $new->version_label);
+					$this->onAfterSave( $pub );
 				}
 				else
 				{
