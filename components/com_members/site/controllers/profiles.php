@@ -161,6 +161,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = strtolower(trim(Request::getString('value', '')));
+		$originalQuery = $filters['search'];
 
 		// match against orcid id
 		if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search']))
@@ -226,6 +227,17 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				$json[] = $obj;
 			}
 		}
+
+		//original query
+		$obj = array();
+		$obj['name'] = $originalQuery;
+		$obj['id'] = $originalQuery;
+		$obj['org'] = '';
+		$obj['picture'] = '';
+		$obj['orig'] = true;
+
+		//add back original query
+		array_unshift($json, $obj);
 
 		echo json_encode($json);
 	}
