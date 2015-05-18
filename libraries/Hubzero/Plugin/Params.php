@@ -98,7 +98,7 @@ class Params extends \JTable
 		return parent::load(array(
 			'object_id' => (int) $oid,
 			'folder'    => (string) $folder,
-			'element'   => (int) $element
+			'element'   => (string) $element
 		));
 	}
 

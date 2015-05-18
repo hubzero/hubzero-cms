@@ -1847,11 +1847,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$settings = JRequest::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);
-		if (!$row->bind($settings))
-		{
-			$this->setError($row->getError());
-			return $this->_settings();
-		}
+		$row->loadPlugin($this->group->get('gidNumber'), $this->_type, $this->_name);
 
 		// Get parameters
 		$prms = JRequest::getVar('params', array(), 'post');
