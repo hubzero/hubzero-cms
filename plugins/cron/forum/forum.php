@@ -229,7 +229,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 		$user = User::getInstance($user);
 
 		// Build message
-		$message = new \Hubzero\Mail\Message();
+		$message = App::get('mailer');
 		$message->setSubject(Lang::txt('PLG_GROUPS_FORUM') . ': ' . Lang::txt('PLG_GROUPS_FORUM_SUBJECT_EMAIL_DIGEST'))
 				->addFrom(Config::get('mailfrom'), Config::get('sitename'))
 				->addTo($user->get('email'), $user->get('name'))
@@ -240,7 +240,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 		$message->addPart($html, 'text/html');
 
 		// Send mail
-		if (!$message->send())
+		if (!$message->send($this->params->get('email_transport_mechanism')))
 		{
 			$this->setError('Failed to mail %s', $user->get('email'));
 		}
