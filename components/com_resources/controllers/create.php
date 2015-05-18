@@ -1284,6 +1284,65 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$this->step_review();
 				return;
 			}
+
+			// Get any set emails that should be notified of ticket submission
+			$defs = explode(',', $this->config->get('email_when_submitted', '{config.mailfrom}'));
+
+			if (!empty($defs))
+			{
+				// Get some email settings
+				$jconfig = JFactory::getConfig();
+
+				$message = new \Hubzero\Mail\Message();
+				$message->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::sprintf('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id));
+				$message->addFrom(
+					$jconfig->getValue('config.mailfrom'),
+					$jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_option))
+				);
+
+				// Plain text email
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'submitted_plain'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->resource   = $resource;
+				$eview->delimiter  = '';
+
+				$plain = $eview->loadTemplate();
+				$plain = str_replace("\n", "\r\n", $plain);
+
+				$message->addPart($plain, 'text/plain');
+
+				// HTML email
+				$eview->setLayout('submitted_html');
+
+				$html = $eview->loadTemplate();
+				$html = str_replace("\n", "\r\n", $html);
+
+				$message->addPart($html, 'text/html');
+
+				// Loop through the addresses
+				foreach ($defs as $def)
+				{
+					$def = trim($def);
+
+					// Check if the address should come from Joomla config
+					if ($def == '{config.mailfrom}')
+					{
+						$def = $jconfig->getValue('config.mailfrom');
+					}
+
+					// Check for a valid address
+					if (\Hubzero\Utility\Validate::email($def))
+					{
+						// Send e-mail
+						$message->setTo(array($def));
+						$message->send();
+					}
+				}
+			}
 		}
 
 		// Is this resource licensed under Creative Commons?
