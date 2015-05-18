@@ -48,21 +48,21 @@ class IoTest extends BaseTest
   {
     $client = $this->getClient();
     $io = new Google_IO_Stream($client);
-    $this->processEntityRequest($io, $client);
+    $this->processEntityRequest($io);
   }
 
   public function testStreamCacheHit()
   {
     $client = $this->getClient();
     $io = new Google_IO_Stream($client);
-    $this->cacheHit($io, $client);
+    $this->cacheHit($io);
   }
 
   public function testStreamAuthCache()
   {
     $client = $this->getClient();
     $io = new Google_IO_Stream($client);
-    $this->authCache($io, $client);
+    $this->authCache($io);
   }
 
   /**
@@ -99,7 +99,7 @@ class IoTest extends BaseTest
     }
     $client = $this->getClient();
     $io = new Google_IO_Curl($client);
-    $this->processEntityRequest($io, $client);
+    $this->processEntityRequest($io);
   }
 
   public function testCurlCacheHit()
@@ -109,7 +109,7 @@ class IoTest extends BaseTest
     }
     $client = $this->getClient();
     $io = new Google_IO_Curl($client);
-    $this->cacheHit($io, $client);
+    $this->cacheHit($io);
   }
 
   public function testCurlAuthCache()
@@ -119,7 +119,7 @@ class IoTest extends BaseTest
     }
     $client = $this->getClient();
     $io = new Google_IO_Curl($client);
-    $this->authCache($io, $client);
+    $this->authCache($io);
   }
 
   /**
@@ -132,6 +132,80 @@ class IoTest extends BaseTest
     }
     $io = new Google_IO_Curl($this->getClient());
     $this->invalidRequest($io);
+  }
+
+  public function testCacheRevalidate()
+  {
+    $client = $this->getClient();
+
+    $req = new Google_Http_Request('/test', 'GET');
+    $req->setRequestHeaders(array('Accept' => '*/*'));
+    $req->setResponseBody('{"a": "foo"}');
+    $req->setResponseHttpCode(200);
+    $req->setResponseHeaders(
+        array(
+            'cache-control' => 'private',
+            'etag' => '"this-is-an-etag"',
+            'expires' => '-1',
+            'date' => 'Sun, 1 Jan 2012 09:00:56 GMT',
+            'content-type' => 'application/json; charset=UTF-8',
+        )
+    );
+
+    $io = $this->getMockBuilder('Google_IO_Abstract')
+               ->setConstructorArgs(array($client))
+               ->setMethods(
+                   array(
+                       'getCachedRequest',
+                       'checkMustRevalidateCachedRequest'
+                   )
+               )
+               ->getMockForAbstractClass();
+
+    $io->expects($this->once())
+       ->method('getCachedRequest')
+       ->will($this->returnValue($req));
+
+    $io->expects($this->once())
+       ->method('checkMustRevalidateCachedRequest')
+       ->will($this->returnValue(true));
+
+    $io->expects($this->once())
+       ->method('executeRequest')
+       ->will(
+           $this->returnValue(
+               array(
+                   '{"a": "foo"}',
+                   array(
+                       'te' => 'gzip',
+                       'connection' => 'Keep-Alive, Foo, Bar',
+                       'foo' => '123',
+                       'keep-alive' => 'timeout=30',
+                       'cache-control' => 'private',
+                       'eTag' => '"this-is-a-new-etag"',
+                       "expires" => 'Sun, 22 Jan 2022 09:00:56 GMT',
+                       'date' => 'Sun, 1 Jan 2012 09:00:56 GMT',
+                       'content-type' => 'application/json; charset=UTF-8',
+                   ),
+                   304
+               )
+           )
+       );
+
+    $res = $io->makeRequest(new Google_Http_Request('/test', 'GET'));
+
+    $this->assertEquals('{"a": "foo"}', $res->getResponseBody());
+    $this->assertEquals(200, $res->getResponseHttpCode());
+    $this->assertEquals(
+        array(
+            'cache-control' => 'private',
+            'etag' => '"this-is-a-new-etag"',
+            "expires" => 'Sun, 22 Jan 2022 09:00:56 GMT',
+            'date' => 'Sun, 1 Jan 2012 09:00:56 GMT',
+            'content-type' => 'application/json; charset=UTF-8',
+        ),
+        $res->getResponseHeaders()
+    );
   }
 
   // Asserting Functions
@@ -150,7 +224,7 @@ class IoTest extends BaseTest
     $io->makeRequest($req);
   }
 
-  public function cacheHit($io, $client)
+  public function cacheHit($io)
   {
     $url = "http://www.googleapis.com";
     // Create a cacheable request/response.
@@ -180,7 +254,7 @@ class IoTest extends BaseTest
     $this->assertEquals(200, $res->getResponseHttpCode());
   }
 
-  public function authCache($io, $client)
+  public function authCache($io)
   {
     $url = "http://www.googleapis.com/protected/resource";
 
@@ -263,7 +337,7 @@ class IoTest extends BaseTest
     }
   }
 
-  public function processEntityRequest($io, $client)
+  public function processEntityRequest($io)
   {
     $req = new Google_Http_Request("http://localhost.com");
     $req->setRequestMethod("POST");

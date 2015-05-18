@@ -34,6 +34,11 @@ class ApiClientTest extends BaseTest
     $this->assertEquals("{\"access_token\":\"1\"}", $client->getAccessToken());
   }
 
+  public function testClientConstructor()
+  {
+    $this->assertInstanceOf('Google_Client', $this->getClient());
+  }
+
   /**
    * @expectedException Google_Auth_Exception
    */
@@ -183,5 +188,25 @@ class ApiClientTest extends BaseTest
         100,
         $config->getClassConfig('Google_IO_Abstract', 'request_timeout_seconds')
     );
+  }
+
+  public function testServiceAccountJson()
+  {
+    $client = new Google_Client();
+    $c = $client->loadServiceAccountJson(
+        __DIR__ . "/testdata/service-12345.json",
+        array()
+    );
+    $this->assertInstanceOf('Google_Auth_AssertionCredentials', $c);
+  }
+
+  public function testRsaServiceAccountJson()
+  {
+    $client = new Google_Client();
+    $c = $client->loadServiceAccountJson(
+        __DIR__ . "/testdata/service-rsa-12345.json",
+        array()
+    );
+    $this->assertInstanceOf('Google_Auth_AssertionCredentials', $c);
   }
 }

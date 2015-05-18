@@ -63,6 +63,22 @@ After you have set the HTML and CSS, you can call the `emogrify` method to merge
 
     $mergedHtml = $emogrifier->emogrify();
 
+## Options
+
+There are several options that you can set on the Emogrifier object before 
+calling the `emogrify` method:
+
+* `$emogrifier->disableStyleBlocksParsing()` - By default, Emogrifier will grab
+  all `<style>` blocks in the HTML and will apply the CSS styles as inline
+  "style" attributes to the HTML. The `<style>` blocks will then be removed 
+  from the HTML. If you want to disable this functionality so that Emogrifier
+  leaves these `<style>` blocks in the HTML and does not parse them, you should
+  use this option.
+* `$emogrifier->disableInlineStylesParsing()` - By default, Emogrifier
+  preserves all of the "style" attributes on tags in the HTML you pass to it.
+  However if you want to discard all existing inline styles in the HTML before
+  the CSS is applied, you should use this option.
+
 
 ## Installing with Composer
 
@@ -120,7 +136,10 @@ The following selectors are not implemented yet:
   will not grab CSS files referenced in <link> elements (the problem email clients are going to ignore these tags
   anyway, so why leave them in your HTML?).
 * Even with styles inline, certain CSS properties are ignored by certain email clients. For more information,
-  review documentation [here](http://www.email-standards.org/).
+  refer to these resources:
+    * [http://www.email-standards.org/](http://www.email-standards.org/)
+    * [https://www.campaignmonitor.com/css/](https://www.campaignmonitor.com/css/)
+    * [http://templates.mailchimp.com/resources/email-client-css-support/](http://templates.mailchimp.com/resources/email-client-css-support/)
 * All CSS attributes that apply to a node will be applied, even if they are redundant. For example, if you define a
   font attribute _and_ a font-size attribute, both attributes will be applied to that node (in other words, the more
   specific attribute will not be combined into the more general attribute).
@@ -130,6 +149,7 @@ The following selectors are not implemented yet:
 * Finally, Emogrifier only supports CSS1 level selectors and a few CSS2 level selectors (but not all of them). It
   does not support pseudo selectors (Emogrifier works by converting CSS selectors to XPath selectors, and pseudo
   selectors cannot be converted accurately).
+* `!important` currently is not supported yet.
 
 
 ## Maintainer
@@ -143,6 +163,19 @@ Those that wish to contribute bug fixes, new features, refactorings and clean-up
 When you contribute, please take the following things into account:
 
 * Please cover all changes with unit tests and make sure that your code does not break any existing tests.
+* To run the existing PHPUnit tests, run the following 
+  command:
+  
+      composer install
+  
+  and then run this command:
+  
+      vendor/bin/phpunit Tests/
+  
+  If you want to uninstall the development packages that were installed when 
+  you ran `composer install`, you can run this command:
+  
+      composer install --no-dev
 * Please use the same coding style (PSR-2) as the rest of the code. Indentation is four spaces.
 * Please make your code clean, well-readable and easy to understand.
 * If you add new methods or fields, please use proper PHPDoc for the new methods/fields.

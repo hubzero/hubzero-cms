@@ -369,10 +369,9 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
                 => array('span[title] {' . $styleRule . '} ', '#<span title="bonjour" ' . $styleAttribute . '>#'),
             'attribute presence selector SPAN[title] not matches element without any attributes'
                 => array('span[title] {' . $styleRule . '} ', '#<span>#'),
-            'attribute value selector SPAN[title] matches element with matching attribute value'
-                => array(
-                    'span[title="bonjour"] {' . $styleRule . '} ', '#<span title="bonjour" ' . $styleAttribute . '>#'
-                ),
+            'attribute value selector SPAN[title] matches element with matching attribute value' => array(
+                'span[title="bonjour"] {' . $styleRule . '} ', '#<span title="bonjour" ' . $styleAttribute . '>#'
+            ),
             'attribute value selector SPAN[title] not matches element with other attribute value'
                 => array('span[title="bonjour"] {' . $styleRule . '} ', '#<span title="buenas dias">#'),
             'attribute value selector SPAN[title] not matches element without any attributes'
@@ -750,31 +749,26 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
     public function validMediaPreserveDataProvider()
     {
         return array(
-            'style in "only screen and size" media type rule'
-                => array(
-                    '@media only screen and (min-device-width: 320px) and (max-device-width: 480px) '
-                        . '{ h1 { color:red; } }'
-                ),
-            'style in "screen size" media type rule'
-                => array(
-                    '@media screen and (min-device-width: 320px) and (max-device-width: 480px) '
-                        . '{ h1 { color:red; } }'
-                ),
-            'style in "only screen and screen size" media type rule'
-                => array(
-                    '@media only screen and (min-device-width: 320px) and (max-device-width: 480px) '
-                        . '{ h1 { color:red; } }'
-                ),
-            'style in "all and screen size" media type rule'
-                => array(
-                    '@media all and (min-device-width: 320px) and (max-device-width: 480px) '
-                        . '{ h1 { color:red; } }'
-                ),
-            'style in "only all and" media type rule'
-                => array(
-                    '@media only all and (min-device-width: 320px) and (max-device-width: 480px) '
-                        . '{ h1 { color:red; } }'
-                ),
+            'style in "only screen and size" media type rule' => array(
+                '@media only screen and (min-device-width: 320px) and (max-device-width: 480px) '
+                    . '{ h1 { color:red; } }'
+            ),
+            'style in "screen size" media type rule' => array(
+                '@media screen and (min-device-width: 320px) and (max-device-width: 480px) '
+                    . '{ h1 { color:red; } }'
+            ),
+            'style in "only screen and screen size" media type rule' => array(
+                '@media only screen and (min-device-width: 320px) and (max-device-width: 480px) '
+                    . '{ h1 { color:red; } }'
+            ),
+            'style in "all and screen size" media type rule' => array(
+                '@media all and (min-device-width: 320px) and (max-device-width: 480px) '
+                    . '{ h1 { color:red; } }'
+            ),
+            'style in "only all and" media type rule' => array(
+                '@media only all and (min-device-width: 320px) and (max-device-width: 480px) '
+                    . '{ h1 { color:red; } }'
+            ),
             'style in "all" media type rule' => array('@media all {p {color: #000;}}'),
             'style in "only screen" media type rule' => array('@media only screen { h1 { color:red; } }'),
             'style in "only all" media type rule' => array('@media only all { h1 { color:red; } }'),
@@ -947,6 +941,79 @@ class EmogrifierTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains(
             '<html style="' . $styleAttributeValue . '">',
+            $this->subject->emogrify()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function emogrifyWhenDisabledNotAppliesCssFromStyleBlocks()
+    {
+        $styleAttributeValue = 'color: #ccc;';
+        $html = $this->html5DocumentType . self::LF .
+            '<html><style type="text/css">html {' . $styleAttributeValue . '}</style></html>';
+        $this->subject->setHtml($html);
+        $this->subject->disableStyleBlocksParsing();
+
+        $this->assertNotContains(
+            '<html style="' . $styleAttributeValue . '">',
+            $this->subject->emogrify()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function emogrifyWhenStyleBlocksParsingDisabledKeepInlineStyles()
+    {
+        $styleAttributeValue = 'text-align: center;';
+        $html = $this->html5DocumentType . self::LF .
+            '<html><head><style type="text/css">p { color: #ccc; }</style></head>'
+                . '<body><p style="' . $styleAttributeValue . '">paragraph</p></body></html>';
+        $expected = '<p style="' . $styleAttributeValue . '">';
+        $this->subject->setHtml($html);
+        $this->subject->disableStyleBlocksParsing();
+
+        $this->assertContains(
+            $expected,
+            $this->subject->emogrify()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function emogrifyWhenDisabledNotAppliesCssFromInlineStyles()
+    {
+        $styleAttributeValue = 'color: #ccc;';
+        $html = $this->html5DocumentType . self::LF .
+            '<html style="' . $styleAttributeValue . '"></html>';
+        $expected = '<html></html>';
+        $this->subject->setHtml($html);
+        $this->subject->disableInlineStyleAttributesParsing();
+
+        $this->assertContains(
+            $expected,
+            $this->subject->emogrify()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function emogrifyWhenInlineStyleAttributesParsingDisabledKeepStyleBlockStyles()
+    {
+        $styleAttributeValue = 'color: #ccc;';
+        $html = $this->html5DocumentType . self::LF .
+            '<html><head><style type="text/css">p { ' . $styleAttributeValue . ' }</style></head>'
+                . '<body><p style="text-align: center;">paragraph</p></body></html>';
+        $expected = '<p style="' . $styleAttributeValue . '">';
+        $this->subject->setHtml($html);
+        $this->subject->disableInlineStyleAttributesParsing();
+
+        $this->assertContains(
+            $expected,
             $this->subject->emogrify()
         );
     }

@@ -21,7 +21,7 @@ include_once "templates/base.php";
   Make an API request authenticated with a service
   account.
  ************************************************/
-require_once realpath(dirname(__FILE__) . '/../autoload.php');
+require_once realpath(dirname(__FILE__) . '/../src/Google/autoload.php');
 
 /************************************************
   ATTENTION: Fill in these values! You can get
@@ -41,10 +41,11 @@ $service_account_name = ''; //Email Address
 $key_file_location = ''; //key.p12
 
 echo pageHeader("Service Account Access");
-if ($client_id == '<YOUR_CLIENT_ID>'
+if (strpos($client_id, "googleusercontent") == false
     || !strlen($service_account_name)
     || !strlen($key_file_location)) {
   echo missingServiceAccountDetailsWarning();
+  exit;
 }
 
 $client = new Google_Client();

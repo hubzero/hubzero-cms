@@ -22,7 +22,7 @@ echo pageHeader("Batching Queries");
   books API again as an example, but this time we
   will batch up two queries into a single call.
  ************************************************/
-require_once realpath(dirname(__FILE__) . '/../autoload.php');
+require_once realpath(dirname(__FILE__) . '/../src/Google/autoload.php');
 
 /************************************************
   We create the client and set the simple API
@@ -34,8 +34,9 @@ $client = new Google_Client();
 $client->setApplicationName("Client_Library_Examples");
 $apiKey = "<YOUR_API_KEY>"; // Change to your API key.
 // Warn if the API key isn't changed!
-if ($apiKey == '<YOUR_API_KEY>') {
+if (strpos($apiKey, "<") !== false) {
   echo missingApiKeyWarning();
+  exit;
 } else {
   $client->setDeveloperKey($apiKey);
 
