@@ -74,7 +74,7 @@ class Cache extends \JModelList
 		$clientId = Request::getState($this->context . '.filter.client_id', 'filter_client_id', 0, 'int');
 		$this->setState('clientId', $clientId == 1 ? 1 : 0);
 
-		$client = \JApplicationHelper::getClientInfo($clientId);
+		$client = \Hubzero\Base\ClientManager::client($clientId);
 		$this->setState('client', $client);
 
 		parent::populateState('group', 'asc');

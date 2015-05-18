@@ -292,15 +292,13 @@ class Page extends SiteController
 		if (intval($this->book->config('cache', 1)))
 		{
 			// Caching
-			// Default time is 15 minutes
-			$cache = \JFactory::getCache('wiki', 'callback');
-			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->book->config('cache_time', 15)));
+			if (!($rendered = Cache::get('wiki.r' . $this->view->revision->get('id'))))
+			{
+				$rendered = $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true);
 
-			$this->view->revision->set('pagehtml', $cache->call(
-				array($p, 'parse'),
-				$this->view->revision->get('pagetext'), $wikiconfig, true, true
-			));
+				Cache::put('wiki.r' . $this->view->revision->get('id'), $rendered, intval($this->book->config('cache_time', 15)));
+			}
+			$this->view->revision->set('pagehtml', $rendered);
 		}
 		else
 		{
@@ -787,8 +785,7 @@ class Page extends SiteController
 					$this->setError(Lang::txt('COM_WIKI_UNABLE_TO_DELETE'));
 				}
 
-				$cache = \JFactory::getCache('wiki', 'callback');
-				$cache->clean('wiki');
+				Cache::clean('wiki');
 			break;
 
 			default:

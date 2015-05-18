@@ -51,15 +51,9 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
-
-		if (!$debug && intval($this->params->get('cache', 0)))
+		if ($content = $this->getCacheContent())
 		{
-			$cache = \JFactory::getCache('callback');
-			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . Date::toSql() . ' -->';
+			echo $content;
 			return;
 		}
 

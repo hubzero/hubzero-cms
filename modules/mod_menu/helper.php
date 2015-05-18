@@ -31,9 +31,7 @@
 namespace Modules\Menu;
 
 use Hubzero\Module\Module;
-use JFactory;
 use Route;
-use JSite;
 use User;
 
 /**
@@ -53,7 +51,7 @@ class Helper extends Module
 		$module = $this->module;
 
 		$list      = self::getList($params);
-		$app       = JFactory::getApplication();
+		$app       = \JFactory::getApplication();
 		$menu      = $app->getMenu();
 		$active    = $menu->getActive();
 		$active_id = isset($active) ? $active->id : $menu->getDefault()->id;
@@ -75,7 +73,7 @@ class Helper extends Module
 	 */
 	static function getList(&$params)
 	{
-		$app  = JFactory::getApplication();
+		$app  = \JFactory::getApplication();
 		$menu = $app->getMenu();
 
 		// If no active menu, use default
@@ -85,12 +83,12 @@ class Helper extends Module
 		$levels = $user->getAuthorisedViewLevels();
 		asort($levels);
 		$key = 'menu_items' . $params . implode(',', $levels) . '.' . $active->id;
-		$cache = JFactory::getCache('mod_menu', '');
+		$cache = \JFactory::getCache('mod_menu', '');
 		if (!($items = $cache->get($key)))
 		{
 			// Initialise variables.
 			$list     = array();
-			$db       = JFactory::getDbo();
+			$db       = \JFactory::getDbo();
 
 			$path     = $active->tree;
 			$start    = (int) $params->get('startLevel');
@@ -152,7 +150,7 @@ class Helper extends Module
 							break;
 
 						default:
-							$router = JSite::getRouter();
+							$router = \JSite::getRouter();
 							if ($router->getMode() == JROUTER_MODE_SEF)
 							{
 								$item->flink = 'index.php?Itemid=' . $item->id;

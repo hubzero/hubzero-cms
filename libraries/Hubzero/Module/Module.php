@@ -32,6 +32,8 @@ namespace Hubzero\Module;
 
 use Hubzero\Base\Object;
 use Hubzero\Document\Assets;
+use Hubzero\Utility\Date;
+use App;
 
 /**
  * Base class for modules
@@ -86,7 +88,51 @@ class Module extends Object
 	 */
 	public function getLayoutPath($layout='default')
 	{
-		return \App::get('module')->getLayoutPath($this->module->module, $layout);
+		return App::get('module')->getLayoutPath($this->module->module, $layout);
+	}
+
+	/**
+	 * Get the cached contents of a module
+	 * caching it, if it doesn't already exist
+	 *
+	 * @return  string
+	 */
+	public function getCacheContent()
+	{
+		$content = '';
+
+		if (!App::has('cache.store'))
+		{
+			return $content;
+		}
+
+		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
+		$key   = 'modules.' . $this->module->id;
+		$ttl   = intval($this->params->get('cache', 0));
+
+		if ($debug || !$ttl)
+		{
+			return $content;
+		}
+
+		if (!($content = App::get('cache.store')->get($key)))
+		{
+			ob_start();
+			$this->run();
+			$content = ob_get_contents();
+			ob_end_clean();
+
+			$content .= '<!-- cached ' . with(new Date('now'))->toSql() . ' -->';
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ttl = (!$ttl || $ttl == 15 ?: $ttl / 60);
+
+			App::get('cache.store')->put($key, $content, $ttl);
+		}
+
+		return $content;
 	}
 }
 

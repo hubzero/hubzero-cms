@@ -49,7 +49,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<fieldset id="filter-bar">
 		<div class="filter-select">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
-				<?php echo JHtml::_('select.options', \Components\Cache\Helpers\Cache::getClientOptions(), 'value', 'text', $this->state->get('clientId'));?>
+				<?php foreach (\Components\Cache\Helpers\Cache::getClientOptions() as $option) : ?>
+					<option value="<?php echo $option->value; ?>"<?php if ($option->value == $this->state->get('clientId')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($option->text); ?></option>
+				<?php endforeach; ?>
 			</select>
 		</div>
 	</fieldset>
@@ -78,7 +80,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<tfoot>
 			<tr>
 				<td colspan="5">
-					<?php echo $this->pagination->getListFooter(); ?>
+					<?php echo $this->pagination->render(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -100,7 +102,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo $item->count; ?>
 					</td>
 					<td class="center">
-						<?php echo \Hubzero\Utility\Number::format('bytes', $item->size * 1024); ?>
+						<?php echo \Hubzero\Utility\Number::formatBytes($item->size * 1024); ?>
 					</td>
 				</tr>
 			<?php $i++; endforeach; ?>

@@ -30,6 +30,7 @@
 
 namespace Components\Cache\Helpers;
 
+use stdClass;
 use Submenu;
 use Route;
 use Lang;
@@ -46,10 +47,18 @@ class Cache
 	 */
 	static function getClientOptions()
 	{
+		$site = new stdClass;
+		$site->value = 0;
+		$site->text = Lang::txt('JSITE');
+
+		$admin = new stdClass;
+		$admin->value = 1;
+		$admin->text = Lang::txt('JADMINISTRATOR');
+
 		// Build the filter options.
 		return array(
-			\JHtml::_('select.option', '0', Lang::txt('JSITE')),
-			\JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'))
+			$site,
+			$admin
 		);
 	}
 

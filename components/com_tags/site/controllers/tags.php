@@ -41,6 +41,7 @@ use Request;
 use Pathway;
 use Config;
 use Event;
+use Cache;
 use Route;
 use Lang;
 use User;
@@ -851,13 +852,7 @@ class Tags extends SiteController
 	 */
 	public function cleancacheTask($redirect=true)
 	{
-		$cache = \JCache::getInstance('', array(
-			'defaultgroup' => '',
-			'storage'      => Config::get('cache_handler', ''),
-			'caching'      => true,
-			'cachebase'    => Config::get('cache_path', PATH_APP . DS . 'cache')
-		));
-		$cache->clean('tags');
+		Cache::clean('tags');
 
 		if (!$redirect)
 		{

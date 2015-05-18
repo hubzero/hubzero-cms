@@ -37,6 +37,7 @@ use Exception;
 use Request;
 use Config;
 use Notify;
+use Cache;
 use Event;
 use Route;
 use Lang;
@@ -259,13 +260,7 @@ class Entries extends AdminController
 	 */
 	public function cleancacheTask($redirect=true)
 	{
-		$cache = \JCache::getInstance('', array(
-			'defaultgroup' => '',
-			'storage'      => Config::get('cache_handler', ''),
-			'caching'      => true,
-			'cachebase'    => Config::get('cache_path', PATH_APP . DS . 'cache')
-		));
-		$cache->clean('tags');
+		Cache::clean('tags');
 
 		if (!$redirect)
 		{

@@ -1062,13 +1062,7 @@ class Page extends Model
 		$this->log('page_deleted');
 
 		// Clear cached data
-		$cache = \JCache::getInstance('', array(
-			'defaultgroup' => '',
-			'storage'      => Config::get('cache_handler', ''),
-			'caching'      => true,
-			'cachebase'    => Config::get('cache_path', PATH_APP . '/cache')
-		));
-		$cache->clean('wiki');
+		\Cache::clean('wiki');
 
 		// Hey, no errors!
 		return true;
