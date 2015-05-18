@@ -25,8 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$link 	 = rtrim(Request::base(), DS) . DS . trim(Route::url($this->model->link('editversion')), DS);
-$pubLink = rtrim(Request::base(), DS) . DS . trim(Route::url($this->model->link('version')), DS);
+$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$link = $base . DS . trim(Route::url($this->model->link('editversion')), DS);
+$pubLink = $base . DS . trim(Route::url($this->model->link('version')), DS);
 
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";
