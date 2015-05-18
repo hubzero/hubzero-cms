@@ -193,7 +193,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 			}
 
 			// mark comments for experts
-			$params = new JRegistry();
+			$params = new \Hubzero\Config\Registry();
 			$params->set('onCommentMark', function($comment) use ($experts)
 			{
 				if (in_array($comment->creator('id'), $experts))

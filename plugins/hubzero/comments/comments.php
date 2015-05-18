@@ -79,7 +79,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		$this->_authorize();
 
-		if ($params instanceof JRegistry)
+		if ($params instanceof \Hubzero\Config\Registry)
 		{
 			$this->params->merge($params);
 			$this->params->set('onCommentMark', $params->get('onCommentMark'));
