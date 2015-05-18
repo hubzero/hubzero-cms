@@ -85,14 +85,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$this->params->set('onCommentMark', $params->get('onCommentMark'));
 		}
 
-		$this->view->params   = $this->params;
-
-		// set allowed Extensions
-		// defaults to set of image extensions defined in \Hubzero\Item\Comment
-		//$this->comment = new \Hubzero\Item\Comment($this->database);
-		//$this->comment->setAllowedExtensions($allowedExtensions);
 		$this->comment = new \Plugins\Hubzero\Comments\Models\Comment();
 
+		$this->view->params   = $this->params;
 		$this->view->task     = $this->task    = Request::getVar('action', '');
 
 		switch ($this->task)
@@ -117,12 +112,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			default:         $this->_view();   break;
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Return the Input tag
@@ -281,8 +273,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$v = new \Hubzero\Item\Vote($this->database);
 		$v->created_by = User::get('id');
 		$v->item_type  = 'comment';
-		//$v->item_id    = Request::getInt('comment', 0);
-		//$v->vote       = Request::getVar('vote', 'up');
+
 		if ($item_id = Request::getInt('voteup', 0))
 		{
 			$v->vote    = 1;
@@ -363,20 +354,11 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view()
 	{
-		/*$this->view->comments = $this->comment->getComments(
-			$this->obj_type,
-			$this->obj_id,
-			0,
-			$this->params->get('comments_limit', 25)
-		);*/
 		$this->view->comments = $this->comment->replies('list', array(
 			'item_type' => $this->obj_type,
 			'item_id'   => $this->obj_id,
 			'limit'     => $this->params->get('comments_limit', 25)
 		));
-
-		// get the accepted file types
-		//$this->view->extensions = $this->comment->getAllowedExtensions();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -511,8 +493,6 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
 		// Set the mime encoding for the document
 		Document::setType('feed');
 
@@ -593,7 +573,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 						// URL link to article
 						$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
 
-						$author = Lang::txt('COM_KB_ANONYMOUS');
+						$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
 						if (!$reply->anonymous)
 						{
 							$cuser  = User::getInstance($reply->created_by);
@@ -601,24 +581,20 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 						}
 
 						// Prepare the title
-						$title = Lang::txt('Reply to comment #%s by %s', $row->id, $author) . ' @ ' . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+						$title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $row->id, $author) . ' @ ' . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 						// Strip html from feed item description text
 						if ($reply->reports)
 						{
-							$description = Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
+							$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
 						}
 						else
 						{
 							$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
 						}
 						$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-						/*if ($this->params->get('feed_entries') == 'partial')
-						{
-							$description = \Hubzero\Utility\String::truncate($description, 300);
-						}*/
 
-						@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
+						@$date = ($reply->created ? gmdate('r', strtotime($reply->created)) : '');
 
 						// Load individual item creator class
 						$item = new \Hubzero\Document\Type\Feed\Item();
@@ -639,7 +615,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								// URL link to article
 								$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
 
-								$author = Lang::txt('COM_KB_ANONYMOUS');
+								$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
 								if (!$response->anonymous)
 								{
 									$cuser  = User::getInstance($response->created_by);
@@ -647,24 +623,20 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								}
 
 								// Prepare the title
-								$title = Lang::txt('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+								$title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
 								// Strip html from feed item description text
 								if ($response->reports)
 								{
-									$description = Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
+									$description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
 								}
 								else
 								{
 									$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
 								}
 								$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-								/*if ($this->params->get('feed_entries') == 'partial')
-								{
-									$description = \Hubzero\Utility\String::truncate($description, 300, 0);
-								}*/
 
-								@$date = ($response->created ? date('r', strtotime($response->created)) : '');
+								@$date = ($response->created ? gmdate('r', strtotime($response->created)) : '');
 
 								// Load individual item creator class
 								$item = new \Hubzero\Document\Type\Feed\Item();

@@ -211,7 +211,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$font_file = $font_file = dirname(__FILE__) . DS . 'adlibBT.png';
+			$font_file = $font_file = __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.png';
 			$font = imagecreatefrompng($font_file);
 			imagealphablending($font, true);
 			$fontfile_width = imagesx($font);
@@ -459,7 +459,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 			$angle = rand(-45,45);
 			$y = intval(rand((int)($size * 1.5), (int)($this->ly - ($size / 7))));
 
-			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, dirname(__FILE__) . DS . 'adlibBT.TTF', $security_code[$i]);
+			@imagettftext($image, $size, $angle, $x + (int)($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
 			$x += ($size *2);
 		}
 
