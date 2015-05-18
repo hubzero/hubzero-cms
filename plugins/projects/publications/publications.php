@@ -432,21 +432,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		// Instantiate a publication object
+		$view->pub = new \Components\Publications\Models\Publication();
 
 		// Get all publications
-		$view->rows = $objP->getRecords($filters);
+		$view->rows = $view->pub->entries( 'list', $filters );
 
 		// Get total count
-		$view->total = $objP->getCount($filters);
-
-		// Areas required for publication
-		$view->required = array('content', 'description', 'license', 'authors');
-
-		// Get master publication types
-		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
-		$choices = $mt->getTypes('alias', 1);
+		$view->total = $view->pub->entries( 'count', $filters );
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
@@ -462,11 +455,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->model;
-		$view->uid 			= $this->_uid;
 		$view->filters 		= $filters;
-		$view->config 		= $this->model->config();
-		$view->pubconfig 	= $this->_pubconfig;
-		$view->choices 		= $choices;
 		$view->title		= $this->_area['title'];
 
 		// Get messages	and errors

@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$this->css('css/impact');
+$this->css('impact');
 
 if ($this->pub->exists())
 {
@@ -86,6 +86,9 @@ tooltip: true,
 <div class="pubstats">
 <?php if ($this->pubstats) {
 ?>
+<?php if ($this->pub) { ?>
+<p class="viewallstats"><a href="<?php echo Route::url($this->project->link('publications') . '&action=stats'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS'); ?> &raquo;</a></p>
+<?php } ?>
 <?php if (!$this->pub->exists() && $this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES'); ?>.</p>
 <?php } ?>
@@ -94,10 +97,6 @@ tooltip: true,
 <script src="/media/system/js/flot/jquery.flot.pie.min.js"></script>
 <script src="/media/system/js/flot/jquery.flot.resize.js"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
-
-<?php if ($this->pub) { ?>
-<p class="viewallstats"><a href="<?php echo Route::url($this->pub->link('editbase') . '&action=stats'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS'); ?> &raquo;</a></p>
-<?php } ?>
 
 <?php
 	foreach ($this->pubstats as $stat)
