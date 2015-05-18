@@ -215,7 +215,6 @@ class Router extends Base
 				case 'download':
 				case 'wiki':
 				case 'play':
-				case 'watch':
 				case 'serve':
 				case 'video':
 					$vars['task'] = $segments[1];

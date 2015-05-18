@@ -813,6 +813,13 @@ class Curation extends SiteController
 			$authors = array($pub->created_by);
 		}
 
+		// New version released?
+		if ($status == 1 && $pub->get('version_number') > 1)
+		{
+			// Notify subsrcibers
+			Event::trigger( 'publications.onWatch', array( $pub ));
+		}
+
 		// Make sure there are no duplicates
 		$authors = array_unique($authors);
 
