@@ -95,13 +95,13 @@ $this->css()
 							</div>
 							<fieldset>
 								<label>
-									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('COM_PROJECTS_PROJECT_TITLE').' :: ' . Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?>">&nbsp;</span>
+									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('COM_PROJECTS_PROJECT_TITLE') . ' :: ' . Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?>">&nbsp;</span>
 									<?php echo Lang::txt('COM_PROJECTS_PROJECT_TITLE'); ?>
 									<input name="title" maxlength="250" type="text" value="<?php echo $this->pub->title; ?>" class="long" />
 								</label>
 
 								<label>
-									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('COM_PROJECTS_CHOOSE_ALIAS').'::'.Lang::txt('COM_PROJECTS_HINTS_NAME'); ?>">&nbsp;</span>
+									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('COM_PROJECTS_CHOOSE_ALIAS') . '::' . Lang::txt('COM_PROJECTS_HINTS_NAME'); ?>">&nbsp;</span>
 									<?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?>
 									<input name="new-alias" id="new-alias" maxlength="30" type="text" value="<?php echo $this->suggested; ?>" class="long" />
 								</label>

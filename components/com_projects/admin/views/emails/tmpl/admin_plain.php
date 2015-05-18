@@ -25,7 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$projectUrl = rtrim(Request::base(), DS) . DS . trim(Route::url($this->project->link()), DS);
+$base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
+$projectUrl = $base . DS . trim(Route::url($this->project->link()), DS);
 
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";
