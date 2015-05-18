@@ -39,7 +39,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th rowspan="2">
-					<?php echo $this->grid('sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Jhtml::_('grid.sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">
 					<?php echo Lang::txt('COM_MENUS_HEADING_NUMBER_MENU_ITEMS'); ?>
@@ -48,7 +48,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 					<?php echo Lang::txt('COM_MENUS_HEADING_LINKED_MODULES'); ?>
 				</th>
 				<th width="1%" class="nowrap" rowspan="2">
-					<?php echo $this->grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Jhtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			<tr>
