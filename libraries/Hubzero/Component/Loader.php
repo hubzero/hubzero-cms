@@ -335,7 +335,10 @@ class Loader
 		$query->where($query->qn('element') . ' = ' . $db->quote($option));
 		$db->setQuery($query);
 
-		$cache = $this->app['cache.store'];
+		if (!$this->app->has('cache.store') || !($cache = $this->app['cache.store']))
+		{
+			$cache = new \Hubzero\Cache\Storage\None();
+		}
 
 		if (!($data = $cache->get('_system.' . $option)))
 		{

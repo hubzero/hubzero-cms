@@ -274,7 +274,10 @@ class Loader implements LoaderInterface
 			return self::$plugins;
 		}
 
-		$cache = \App::get('cache.store', '');
+		if (!\App::has('cache.store') || !($cache = \App::get('cache.store')))
+		{
+			$cache = new \Hubzero\Cache\Storage\None();
+		}
 
 		$levels = implode(',', User::getAuthorisedViewLevels());
 

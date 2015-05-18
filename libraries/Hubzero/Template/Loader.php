@@ -219,7 +219,11 @@ class Loader
 			$id = (int) $tid;
 		}
 
-		$cache = $this->app['cache.store'];
+		if (!$this->app->has('cache.store') || !($cache = $this->app['cache.store']))
+		{
+			$cache = new \Hubzero\Cache\Storage\None();
+		}
+
 		$tag = '';
 		/*if ($this->_language_filter)
 		{
