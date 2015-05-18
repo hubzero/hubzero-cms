@@ -43,6 +43,20 @@ class Message extends \Swift_Message
 	private $_failures = null;
 
 	/**
+	 * Message tags
+	 *
+	 * @var array
+	 **/
+	private $_tags = [];
+
+	/**
+	 * Message transporters
+	 *
+	 * @var array
+	 **/
+	private static $_transporters = [];
+
+	/**
 	 * Check if message needs to be sent as multipart
 	 * MIME message or if it has only one part.
 	 *
@@ -88,53 +102,65 @@ class Message extends \Swift_Message
 	{
 		$transporter = $transporter ? $transporter : \Config::get('mailer');
 
-		switch (strtolower($transporter))
+		if (is_object($transporter) && ($transporter instanceof \Swift_Transport))
 		{
-			case 'smtp':
-				if (!isset($options['host']))
-				{
-					$options['host'] = \Config::get('smtphost');
-				}
-				if (!isset($options['port']))
-				{
-					$options['port'] = \Config::get('smtpport');
-				}
-				if (!isset($options['username']))
-				{
-					$options['username'] = \Config::get('smtpuser');
-				}
-				if (!isset($options['password']))
-				{
-					$options['password'] = \Config::get('smtppass');
-				}
-
-				if (!empty($options))
-				{
-					$transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port']);
-					$transport->setUsername($options['username'])
-					          ->setUsername($options['password']);
-				}
-			break;
-
-			case 'sendmail':
-				if (!isset($options['command']))
-				{
-					$options['command'] = '/usr/sbin/exim -bs';
-				}
-				$transport = \Swift_SendmailTransport::newInstance($options['command']);
-			break;
-
-			case 'mail':
-			default:
-				$transport = \Swift_MailTransport::newInstance();
-				//set mail additional args (mail return path - used for bounces)
-				//$transport->setExtraParams('-f hubmail-bounces@' . $_SERVER['HTTP_HOST']);
-			break;
+			// We were given a valid tranport mechanisms, so just use it
+			$transport = $transporter;
 		}
-
-		if (!($transport instanceof \Swift_Transport))
+		elseif (is_string($transporter) && self::hasTrasporter($transporter))
 		{
-			throw new \InvalidArgumentException('Invalid transport specified');
+			$transport = self::getTrasporter($transporter);
+		}
+		else
+		{
+			switch (strtolower($transporter))
+			{
+				case 'smtp':
+					if (!isset($options['host']))
+					{
+						$options['host'] = \Config::get('smtphost');
+					}
+					if (!isset($options['port']))
+					{
+						$options['port'] = \Config::get('smtpport');
+					}
+					if (!isset($options['username']))
+					{
+						$options['username'] = \Config::get('smtpuser');
+					}
+					if (!isset($options['password']))
+					{
+						$options['password'] = \Config::get('smtppass');
+					}
+
+					if (!empty($options))
+					{
+						$transport = \Swift_SmtpTransport::newInstance($options['host'], $options['port']);
+						$transport->setUsername($options['username'])
+						          ->setUsername($options['password']);
+					}
+				break;
+
+				case 'sendmail':
+					if (!isset($options['command']))
+					{
+						$options['command'] = '/usr/sbin/exim -bs';
+					}
+					$transport = \Swift_SendmailTransport::newInstance($options['command']);
+				break;
+
+				case 'mail':
+				default:
+					$transport = \Swift_MailTransport::newInstance();
+					//set mail additional args (mail return path - used for bounces)
+					//$transport->setExtraParams('-f hubmail-bounces@' . $_SERVER['HTTP_HOST']);
+				break;
+			}
+
+			if (!($transport instanceof \Swift_Transport))
+			{
+				throw new \InvalidArgumentException('Invalid transport specified');
+			}
 		}
 
 		$mailer = \Swift_Mailer::newInstance($transport);
@@ -220,5 +246,60 @@ class Message extends \Swift_Message
 		}
 
 		return $this->embed($attachment);
+	}
+
+	/**
+	 * Sets tags on the message
+	 *
+	 * @param   array  $tags The tags to set
+	 * @return  void
+	 */
+	public function setTags($tags)
+	{
+		$this->_tags = $tags;
+	}
+
+	/**
+	 * Grabs the message tags
+	 *
+	 * @return  array
+	 */
+	public function getTags()
+	{
+		return $this->_tags;
+	}
+
+	/**
+	 * Adds a transport mechanisms to the known list
+	 *
+	 * @param   string  $name         the mechanism name
+	 * @param   object  $transporter  the transporter object
+	 * @return  void
+	 **/
+	public static function addTransporter($name, $transporter)
+	{
+		self::$_transporters[$name] = $transporter;
+	}
+
+	/**
+	 * Checks to see if a transporter by the given name exists
+	 *
+	 * @param  string $name the transporter name
+	 * @return bool
+	 **/
+	public static function hasTrasporter($name)
+	{
+		return isset(self::$_transporters[$name]);
+	}
+
+	/**
+	 * Gets the named transporter
+	 *
+	 * @param  string $name the transporter name
+	 * @return object
+	 **/
+	public static function getTrasporter($name)
+	{
+		return self::$_transporters[$name];
 	}
 }
