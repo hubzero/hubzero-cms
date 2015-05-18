@@ -270,7 +270,7 @@ class File extends None
 		$path = implode(DS, $parts);
 		$path = $this->directory . ($path ? DS . $this->cleanPath($path) : '');
 
-		return $path . DS . $this->id($name) . '.php';
+		return $path . DS . $this->id($key) . '.php';
 	}
 
 	/**
