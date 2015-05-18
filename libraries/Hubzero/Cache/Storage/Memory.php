@@ -194,6 +194,31 @@ class Memory extends None
 	}
 
 	/**
+	 * Garbage collect expired cache data
+	 *
+	 * @return  boolean
+	 */
+	public function gc()
+	{
+		$prefix = $this->options['hash'] . '-cache-';
+
+		foreach ($this->data as $key => $value)
+		{
+			if (substr($key, 0, strlen($prefix)) == $prefix)
+			{
+				$value = $this->data[$key];
+
+				if ($this->isDataExpired($value))
+				{
+					unset($this->data[$key]);
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get the expiration time based on the given minutes.
 	 *
 	 * @param   integer  $minutes

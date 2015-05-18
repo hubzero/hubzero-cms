@@ -234,6 +234,48 @@ class File extends None
 	}
 
 	/**
+	 * Garbage collect expired cache data
+	 *
+	 * @return  void
+	 */
+	public function gc()
+	{
+		$result = true;
+
+		$path = $this->directory;
+
+		if (is_dir($path))
+		{
+			$skip = array('.svn', 'cvs', '.ds_store', '__macosx', 'index.html');
+
+			foreach (new DirectoryIterator($path) as $file)
+			{
+				if (!$file->isDot() && !in_array(strtolower($file->getFilename()), $skip))
+				{
+					if (!file_exists($file->getPathname()))
+					{
+						continue;
+					}
+
+					$data = @unserialize(file_get_contents($file->getPathname()));
+
+					if (!$data)
+					{
+						throw new RuntimeException('Cache file is invalid.');
+					}
+
+					if ($this->isDataExpired($data))
+					{
+						$result = $this->forget($key);
+					}
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Get the expiration time based on the given minutes.
 	 *
 	 * @param   integer  $minutes
@@ -265,9 +307,8 @@ class File extends None
 	protected function path($key)
 	{
 		$parts = explode('.', $key);
-		$name = array_pop($parts);
 
-		$path = implode(DS, $parts);
+		$path = array_shift($parts);
 		$path = $this->directory . ($path ? DS . $this->cleanPath($path) : '');
 
 		return $path . DS . $this->id($key) . '.php';

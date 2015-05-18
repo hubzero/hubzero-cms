@@ -160,6 +160,16 @@ class None implements StorageInterface
 	}
 
 	/**
+	 * Garbage collect expired cache data
+	 *
+	 * @return  boolean
+	 */
+	public function gc()
+	{
+		return true;
+	}
+
+	/**
 	 * Get a cache_id string from an id/group pair
 	 *
 	 * @param   string  $id  The cache data id
@@ -168,8 +178,8 @@ class None implements StorageInterface
 	protected function id($key)
 	{
 		$parts = explode('.', $key);
-		$name  = array_pop($parts);
-		$group = implode('.', $parts);
+		$group = array_shift($parts);
+		$name  = implode('.', $parts);
 
 		$id = md5($this->options['client'] . '-' . $name . '-' . $this->options['language']);
 

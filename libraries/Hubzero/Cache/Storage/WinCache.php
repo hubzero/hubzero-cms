@@ -162,4 +162,24 @@ class WinCache extends None
 
 		return true;
 	}
+
+	/**
+	 * Force garbage collect expired cache data as items are removed only on get/add/delete/info etc
+	 *
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function gc()
+	{
+		$hash = $this->options['hash'];
+
+		$allinfo = wincache_ucache_info();
+
+		foreach ($allinfo['cache_entries'] as $key)
+		{
+			if (strpos($key['key_name'], $hash . '-cache-'))
+			{
+				wincache_ucache_get($key['key_name']);
+			}
+		}
+	}
 }

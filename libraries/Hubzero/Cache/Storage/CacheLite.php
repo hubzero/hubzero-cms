@@ -258,6 +258,43 @@ class CacheLite extends None
 	}
 
 	/**
+	 * Garbage collect expired cache data
+	 *
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function gc()
+	{
+		$this->engine->setOption('automaticCleaningFactor', 1);
+		$this->engine->setOption('hashedDirectoryLevel', 1);
+
+		$success1 = $this->engine->clean($this->directory . DS, false, 'old');
+
+		if (!($dh = opendir($this->directory . DS)))
+		{
+			return false;
+		}
+
+		$result = true;
+
+		while ($file = readdir($dh))
+		{
+			if ($file != '.' && $file != '..' && $file != '.svn')
+			{
+				$file2 = $this->directory . DS . $file;
+
+				if (is_dir($file2))
+				{
+					$result = ($result and $this->engine->clean($file2 . DS, false, 'old'));
+				}
+			}
+		}
+
+		$success = ($success1 && $result);
+
+		return $success;
+	}
+
+	/**
 	 * Get the full path for the given cache key.
 	 *
 	 * @param   string  $key

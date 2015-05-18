@@ -160,8 +160,6 @@ class Apc extends None
 	 */
 	public function clean($group = null)
 	{
-		//$this->apcu ? apcu_clear_cache() : apc_clear_cache('user');
-
 		$hash = $this->options['hash'];
 
 		$allinfo = $this->apcu ? apcu_cache_info() : apc_cache_info('user');
@@ -174,5 +172,27 @@ class Apc extends None
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Force garbage collect expired cache data as items are removed only on fetch!
+	 *
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function gc()
+	{
+		$hash = $this->options['hash'];
+
+		$allinfo = $this->apcu ? apcu_cache_info() : apc_cache_info('user');
+
+		$keys = $allinfo['cache_list'];
+
+		foreach ($allinfo['cache_list'] as $key)
+		{
+			if (strpos($key['info'], $hash . '-cache-'))
+			{
+				$this->apcu ? apcu_fetch($key['info']) : apc_fetch($key['info']);
+			}
+		}
 	}
 }

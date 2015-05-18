@@ -181,4 +181,14 @@ class Eaccelerator extends None
 
 		return true;
 	}
+
+	/**
+	 * Garbage collect expired cache data
+	 *
+	 * @return  boolean  True on success, false otherwise.
+	 */
+	public function gc()
+	{
+		return eaccelerator_gc();
+	}
 }

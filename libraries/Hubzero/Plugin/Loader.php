@@ -274,11 +274,11 @@ class Loader implements LoaderInterface
 			return self::$plugins;
 		}
 
-		$cache = \JFactory::getCache('com_plugins', '');
+		$cache = \App::get('cache.store', '');
 
 		$levels = implode(',', User::getAuthorisedViewLevels());
 
-		if (!(self::$plugins = $cache->get($levels)))
+		if (!(self::$plugins = $cache->get('com_plugins.' . $levels)))
 		{
 			$db = \JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -298,7 +298,7 @@ class Loader implements LoaderInterface
 				throw new Exception($error, 500);
 			}
 
-			$cache->store(self::$plugins, $levels);
+			$cache->put('com_plugins.' . $levels, self::$plugins, \App::get('config')->get('cachetime', 15));
 		}
 
 		return self::$plugins;
