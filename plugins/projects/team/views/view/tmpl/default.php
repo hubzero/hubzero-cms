@@ -28,9 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 
-$goto  = '&alias=' . $this->model->get('alias');
-$url = 'index.php?option=' . $this->option . $goto . '&active=team';
-
 ?>
 <div id="plg-header">
 	<h3 class="team"><?php echo $this->title; ?></h3>
@@ -38,13 +35,13 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 <?php if ($this->model->access('manager')) { ?>
 <ul id="page_options" class="pluginOptions">
 	<li>
-		<a class="icon-edit btn"  href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit' . $goto . '&active=team'); ?>">
+		<a class="icon-edit btn"  href="<?php echo Route::url($this->model->link('team')); ?>">
 			<?php echo Lang::txt('COM_PROJECTS_EDIT_TEAM'); ?>
 		</a>
 	</li>
 </ul>
 <?php } ?>
-<form id="plg-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . $goto . '&active=team'); ?>">
+<form id="plg-form" method="post" action="<?php echo Route::url($this->model->link('team')); ?>">
  <div>
 	<input type="hidden" id="id" name="id" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="task" value="view" />
@@ -54,17 +51,17 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 	<div class="list-menu">
 		<ul class="entries-menu order-options">
 			<li>
-				<a class="sort-title<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_JOINED')); ?>">
+				<a class="sort-title<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_JOINED')); ?>">
 					&darr; <?php echo Lang::txt('COM_PROJECTS_JOINED'); ?>
 				</a>
 			</li>
 			<li>
-				<a class="sort-title<?php if ($this->filters['sortby'] == 'role') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_ROLE')); ?>">
+				<a class="sort-title<?php if ($this->filters['sortby'] == 'role') { echo ' active'; } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_ROLE')); ?>">
 					&darr; <?php echo Lang::txt('COM_PROJECTS_ROLE'); ?>
 				</a>
 			</li>
 			<li>
-				<a class="sort-title<?php if ($this->filters['sortby'] == 'name') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_NAME')); ?>">
+				<a class="sort-title<?php if ($this->filters['sortby'] == 'name') { echo ' active'; } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_NAME')); ?>">
 					&darr; <?php echo Lang::txt('COM_PROJECTS_NAME'); ?>
 				</a>
 			</li>
@@ -161,5 +158,5 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 </form>
 
 <?php if ((!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()) { ?>
-<p class="extras"><span class="rightfloat"><a href="<?php echo Route::url('index.php?option=' . $this->option . $goto . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></span></p>
+<p class="extras"><span class="rightfloat"><a href="<?php echo Route::url($this->model->link('team') . '&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></span></p>
 <?php } ?>
