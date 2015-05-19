@@ -43,7 +43,7 @@ $RE->getContributors();
 // Get the component params and merge with resource params
 $config = Component::params('com_resources');
 
-$rparams = new JRegistry($this->row->params);
+$rparams = new \Hubzero\Config\Registry($this->row->params);
 $params = $config;
 $params->merge($rparams);
 

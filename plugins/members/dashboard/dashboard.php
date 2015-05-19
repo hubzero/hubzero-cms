@@ -191,8 +191,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 				// merge user params with hub wide params
 				if (isset($preference->parameters))
 				{
-					$params  = new JRegistry($module->params);
-					$uparams = new JRegistry($preference->parameters);
+					$params  = new \Hubzero\Config\Registry($module->params);
+					$uparams = new \Hubzero\Config\Registry($preference->parameters);
 					$params->merge($uparams);
 					$module->params = $params->toString();
 				}
@@ -249,8 +249,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			// merge user params with hub wide params
 			if (isset($preference->parameters))
 			{
-				$params  = new JRegistry($module->params);
-				$uparams = new JRegistry($preference->parameters);
+				$params  = new \Hubzero\Config\Registry($module->params);
+				$uparams = new \Hubzero\Config\Registry($preference->parameters);
 				$params->merge($uparams);
 				$module->params = $params->toString();
 			}

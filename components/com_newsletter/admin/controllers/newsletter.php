@@ -37,6 +37,7 @@ use Components\Newsletter\Tables\Mailing;
 use Components\Newsletter\Tables\PrimaryStory;
 use Components\Newsletter\Tables\SecondaryStory;
 use Hubzero\Component\AdminController;
+use Hubzero\Config\Registry;
 use stdClass;
 use Request;
 use Config;
@@ -258,7 +259,7 @@ class Newsletter extends AdminController
 		if (isset($newsletter['params']))
 		{
 			//load previous params
-			$params = new \JParameter($newsletterNewsletter->params);
+			$params = new Registry($newsletterNewsletter->params);
 
 			//set from name
 			if (isset($newsletter['params']['from_name']))
@@ -792,7 +793,7 @@ class Newsletter extends AdminController
 		$mailReplytoAddress = $this->config->get('newsletter_replyto_address', $defaultMailReplytoAddress);
 
 		//parse newsletter specific emails
-		$params = new \JRegistry($newsletter->params);
+		$params = new Registry($newsletter->params);
 		$mailFromName       = $params->get('from_name', $mailFromName);
 		$mailFromAddress    = $params->get('from_address', $mailFromAddress);
 		$mailReplytoName    = $params->get('replyto_name', $mailReplytoName);

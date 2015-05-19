@@ -1019,8 +1019,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get parameters
-		$p = new JRegistry('');
-		$p->loadArray(Request::getVar('params', array(), 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getVar('params', array(), 'post'));
 
 		$row->params = $p->toString();
 

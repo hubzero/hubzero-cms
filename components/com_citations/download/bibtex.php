@@ -71,7 +71,7 @@ class Bibtex extends Downloadable
 		$exclude = array_values(array_filter(array_map('trim', explode("\n", $exclude))));
 
 		//get fields to not include for specific citation
-		$cparams = new \JRegistry($row->params);
+		$cparams = new \Hubzero\Config\Registry($row->params);
 		$citation_exclude = $cparams->get('exclude', '');
 		if (strpos($citation_exclude, ',') !== false)
 		{

@@ -356,9 +356,9 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 					$component = new JTableExtension($this->database);
 					$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
-					$params = new JRegistry($component->params);
+					$params = new \Hubzero\Config\Registry($component->params);
 					$params->set('homedir',$hubHomeDir);
-					$component->params = $params->__toString();
+					$component->params = $params->toString();
 					$component->store();
 				}
 			}

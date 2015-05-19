@@ -26,14 +26,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
+$step     = $this->step;
+$block    = $this->pub->_curationModel->_progress->blocks->$step;
 $complete = $block->status->status;
-$name	  = $block->name;
+$name     = $block->name;
 
 $props = $name . '-' . $this->step;
 
-$required 		= $this->manifest->params->required;
+$required = $this->manifest->params->required;
 
 $elName = "tagsPick";
 
@@ -78,7 +78,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
 		<?php foreach ($this->categories as $cat)
 		{
-			$params = new JRegistry($cat->params);
+			$params = new \Hubzero\Config\Registry($cat->params);
 
 			// Skip inaplicable category
 			if (!$params->get('type_' . $this->pub->base, 1))
@@ -87,8 +87,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			}
 			?>
 				<div class="pubtype-block">
-			 		<input type="radio" name="pubtype" value="<?php echo $cat->id; ?>"
-				<?php if ($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> class="radio" />		<?php echo $cat->name; ?>
+					<input type="radio" name="pubtype" value="<?php echo $cat->id; ?>" <?php if ($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> class="radio" />
+					<?php echo $cat->name; ?>
 					<span><?php echo $cat->description; ?></span>
 				</div>
 		<?php } ?>

@@ -72,29 +72,26 @@ class Items extends AdminController
 		// Instantiate a new view
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
-		// Get configuration
-		$app = \JFactory::getApplication();
-
 		// Get paging variables
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.items.limit',
 				'limit',
 				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.items.limitstart',
 				'limitstart',
 				0,
 				'int'
 			),
-			'filterby' => $app->getUserStateFromRequest(
+			'filterby' => Request::getState(
 				$this->_option . '.items.filterby',
 				'filterby',
 				'all'
 			),
-			'sortby' => $app->getUserStateFromRequest(
+			'sortby' => Request::getState(
 				$this->_option . '.items.sortby',
 				'sortby',
 				'date'
@@ -147,7 +144,7 @@ class Items extends AdminController
 		if ($id)
 		{
 			// Get parameters
-			$params = new \JRegistry($this->view->row->params);
+			$params = new \Hubzero\Config\Registry($this->view->row->params);
 			$this->view->row->size  = $params->get('size', '');
 			$this->view->row->color = $params->get('color', '');
 		}
@@ -234,7 +231,7 @@ class Items extends AdminController
 			throw new Exception($row->getError(), 500);
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_STORE_MSG_SAVED')
 		);
@@ -301,7 +298,7 @@ class Items extends AdminController
 				// Check for an ID
 				if (!$id)
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_STORE_ALERT_SELECT_ITEM') . ' ' . ($publish == 1 ? 'published' : 'unpublished'),
 						'error'
@@ -322,11 +319,11 @@ class Items extends AdminController
 				// Set message
 				if ($publish == '1')
 				{
-					$this->setMessage(Lang::txt('COM_STORE_MSG_ITEM_ADDED'));
+					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_ADDED'));
 				}
 				else if ($publish == '0')
 				{
-					$this->setMessage(Lang::txt('COM_STORE_MSG_ITEM_DELETED'));
+					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_DELETED'));
 				}
 			break;
 
@@ -337,7 +334,7 @@ class Items extends AdminController
 				// Check for an ID
 				if (!$id)
 				{
-					$this->setRedirect(
+					App::redirect(
 						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_STORE_ALERT_SELECT_ITEM') . ' ' . ($avail == 1 ? 'available' : 'unavailable'),
 						'error'
@@ -358,16 +355,16 @@ class Items extends AdminController
 				// Set message
 				if ($avail == '1')
 				{
-					$this->setMessage(Lang::txt('COM_STORE_MSG_ITEM_AVAIL'));
+					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_AVAIL'));
 				}
 				else if ($avail == '0')
 				{
-					$this->setMessage(Lang::txt('COM_STORE_MSG_ITEM_UNAVAIL'));
+					Notify::success(Lang::txt('COM_STORE_MSG_ITEM_UNAVAIL'));
 				}
 			break;
 		}
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}

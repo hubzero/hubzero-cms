@@ -38,6 +38,7 @@ use Components\Citations\Tables\Author;
 use Components\Citations\Tables\Tags;
 use Components\Citations\Helpers\Format;
 use Hubzero\Component\AdminController;
+use Hubzero\Config\Registry;
 use Exception;
 use Request;
 use Config;
@@ -159,7 +160,7 @@ class Citations extends AdminController
 			$this->view->badges = Format::citationBadges($this->view->row, \JFactory::getDBO(), false);
 
 			//parse citation params
-			$this->view->params = new \JRegistry($this->view->row->params);
+			$this->view->params = new Registry($this->view->row->params);
 		}
 		else
 		{
@@ -177,7 +178,7 @@ class Citations extends AdminController
 			$this->view->badges = array();
 
 			//empty params object
-			$this->view->params = new \JRegistry('');
+			$this->view->params = new Registry('');
 		}
 
 		//are we padding back the citation data
@@ -332,7 +333,7 @@ class Citations extends AdminController
 		}
 
 		//set params
-		$cparams = new \JRegistry($this->_getParams($row->id));
+		$cparams = new Registry($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
 		$row->params = $cparams->toString();

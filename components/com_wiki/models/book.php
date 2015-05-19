@@ -75,7 +75,7 @@ class Book extends Object
 	private $_db = null;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

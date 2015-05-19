@@ -91,7 +91,7 @@ class Entry extends Model
 	private $_creator = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -133,7 +133,7 @@ class Entry extends Model
 				$this->bind($oid);
 			}
 
-			$this->params = new \JRegistry($this->_tbl->get('params'));
+			$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
 		}
 	}
 
@@ -143,7 +143,7 @@ class Entry extends Model
 	 * @param   mixed    $oid       ID (int) or alias (string)
 	 * @param   string   $scope     site|member|group
 	 * @param   integer  $scope_id  ID of the scope object
-	 * @return  object   BlogModelentry
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $scope=null, $scope_id=null)
 	{

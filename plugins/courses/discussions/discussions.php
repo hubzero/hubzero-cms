@@ -327,7 +327,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->offering = $offering;
 		$this->database = JFactory::getDBO();
 
-		$this->params->merge(new JRegistry($offering->section()->get('params')));
+		$this->params->merge(new \Hubzero\Config\Registry($offering->section()->get('params')));
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($response->get('name') == $active)
@@ -503,7 +503,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		$this->params->merge(new JRegistry($course->offering()->section()->get('params')));
+		$this->params->merge(new \Hubzero\Config\Registry($course->offering()->section()->get('params')));
 
 		$this->_active = 'outline';
 

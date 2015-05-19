@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->js('_not_enrolled.js')
      ->css('_not_enrolled.css');
 
-$oparams = new JRegistry($this->course->offering()->get('params'));
+$oparams = new \Hubzero\Config\Registry($this->course->offering()->get('params'));
 
 $price = 'free';
 if ($cost = $oparams->get('store_price', false))

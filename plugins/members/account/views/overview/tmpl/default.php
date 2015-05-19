@@ -60,7 +60,7 @@ $this->css()
 				{
 					// Get the display name for the current plugin being used
 					$plugin       = Plugin::byType('authentication', $hzala['auth_domain_name']);
-					$pparams      = new JRegistry($plugin->params);
+					$pparams      = new \Hubzero\Config\Registry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 					?>
 					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
@@ -84,7 +84,7 @@ $this->css()
 				{
 					// Get the display name for the current plugin being used
 					$plugin       = Plugin::byType('authentication', $domain->name);
-					$pparams      = new JRegistry($plugin->params);
+					$pparams      = new \Hubzero\Config\Registry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($domain->name));
 					?>
 					<a href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">

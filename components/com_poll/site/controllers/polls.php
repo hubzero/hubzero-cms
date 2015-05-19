@@ -90,7 +90,7 @@ class Polls extends SiteController
 		// right from the menu item itself
 		if (is_object($menu))
 		{
-			$menu_params = new \JRegistry($menu->params);
+			$menu_params = new \Hubzero\Config\Registry($menu->params);
 			if (!$menu_params->get('page_title'))
 			{
 				$params->set('page_title', $poll->title);
@@ -266,7 +266,7 @@ class Polls extends SiteController
 		// right from the menu item itself
 		if (is_object($menu))
 		{
-			$menu_params = new \JRegistry($menu->params);
+			$menu_params = new \Hubzero\Config\Registry($menu->params);
 			if (!$menu_params->get('page_title'))
 			{
 				$params->set('page_title', $poll->title);

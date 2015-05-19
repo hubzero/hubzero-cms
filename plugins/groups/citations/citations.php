@@ -781,8 +781,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return a path to super group override
-	 * @param  [type] $name [description]
-	 * @return [type]       [description]
+	 *
+	 * @param   string  $name  Plugin name
+	 * @return  string
 	 */
 	public function _superGroupViewOverride($name)
 	{
@@ -799,8 +800,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return a path to super group helper
-	 * @param  [type] NULL [description]
-	 * @return [type]       [description]
+	 *
+	 * @return  string
 	 */
 	public function _superGroupHelper()
 	{
@@ -819,7 +820,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Redirect to login form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _loginTask()
 	{
@@ -834,7 +835,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Redirect to citation importer
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _import()
 	{

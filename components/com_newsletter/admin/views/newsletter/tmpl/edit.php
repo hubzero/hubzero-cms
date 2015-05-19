@@ -219,7 +219,7 @@ function submitbutton(pressbutton)
 			</table>
 
 			<?php
-				$params = new JRegistry($this->newsletter->params);
+				$params = new \Hubzero\Config\Registry($this->newsletter->params);
 			?>
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>

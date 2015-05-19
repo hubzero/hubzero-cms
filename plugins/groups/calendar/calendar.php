@@ -478,14 +478,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//create the view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'calendar',
-				'name'    => 'calendar',
-				'layout'  => 'edit'
-			)
-		);
+		$view = $this->view('edit', 'calendar');
 
 		//get the passed in event id
 		$eventId = Request::getInt('event_id', 0, 'get');
@@ -642,8 +635,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//stringify params
 		if (isset($event['params']) && count($event['params']) > 0)
 		{
-			$params = new JRegistry('');
-			$params->loadArray($event['params']);
+			$params = new \Hubzero\Config\Registry($event['params']);
 			$event['params'] = $params->toString();
 		}
 
@@ -749,7 +741,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//for rediction purposes
 		$publish_up = strtotime($eventsModelEvent->get('publish_up'));
-		$year = date('Y', $publish_up);
+		$year  = date('Y', $publish_up);
 		$month = date('m', $publish_up);
 
 		// check to see if user has the right permissions to delete
@@ -1013,7 +1005,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// normalize until date
 		if (isset($recurrence['UNTIL']))
 		{
-			$tz = JFactory::getApplication()->getCfg('offset');
+			$tz = Config::get('offset');
 			$until = new DateTime($recurrence['UNTIL']);
 			$until->setTimezone(new DateTimezone($tz));
 			$recurrence['UNTIL'] = $until->format('m/d/Y');
@@ -1107,7 +1099,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->race       = (isset($this->race)) ? $this->race : null;
 
 		//add params to view
-		$view->params = new JRegistry($view->event->get('params'));
+		$view->params = new \Hubzero\Config\Registry($view->event->get('params'));
 
 		if (!$this->user->get('guest'))
 		{
@@ -1154,7 +1146,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event = new \Components\Events\Models\Event($event_id);
 
 		// get event params
-		$params = new JRegistry($event->get('params'));
+		$params = new \Hubzero\Config\Registry($event->get('params'));
 
 		//array to hold any errors
 		$errors = array();
@@ -1240,8 +1232,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$r = $race;
 		unset($r['nativetribe']);
 		$r = (empty($r)) ? array() : $r;
-		$sql = "INSERT INTO #__events_respondent_race_rel(respondent_id,race,tribal_affiliation)
-		        VALUES(".$this->database->quote($eventsRespondent->id).", ".$this->database->quote(implode(',', $r)).", ".$this->database->quote($race['nativetribe']).")";
+		$sql = "INSERT INTO `#__events_respondent_race_rel` (respondent_id, race, tribal_affiliation)
+		        VALUES (".$this->database->quote($eventsRespondent->id).", ".$this->database->quote(implode(',', $r)).", ".$this->database->quote($race['nativetribe']).")";
 		$this->database->setQuery($sql);
 		$this->database->query();
 
@@ -1419,7 +1411,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		foreach ($registrants as $registrant)
 		{
 			$sql = "SELECT CONCAT(race, ',', tribal_affiliation) as race
-			        FROM #__events_respondent_race_rel
+			        FROM `#__events_respondent_race_rel`
 			        WHERE respondent_id=" . $this->database->quote($registrant->id);
 			$this->database->setQuery($sql);
 			$race = $this->database->loadResult();
@@ -1788,7 +1780,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get all future events for this group cal
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	private function _getAllFutureEvents()
 	{
@@ -1807,7 +1799,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get all future events that start or finish this month
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	private function _getFutureEventsThisMonth()
 	{
@@ -1826,11 +1818,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	/**
 	 * Send an email
 	 *
-	 * @param      array &$hub Parameter description (if any) ...
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @param      unknown $subject Parameter description (if any) ...
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string   $to
+	 * @param   array    $from
+	 * @param   string   $subject
+	 * @param   string   $body
+	 * @return  boolean
 	 */
 	private function _sendEmail($to, $from, $subject, $body)
 	{

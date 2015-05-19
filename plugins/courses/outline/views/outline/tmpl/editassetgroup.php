@@ -58,7 +58,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 		foreach ($plugins as $plugin)
 		{
 			$p = Plugin::byType('courses', $plugin['name']);
-			$default = new JRegistry($p->params);
+			$default = new \Hubzero\Config\Registry($p->params);
 
 			$param = new JParameter(
 				(is_object($data) ? $data->toString() : $data),

@@ -294,7 +294,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 					{
 						// Load the default method
 						$p = Plugin::byType('members', 'messages');
-						$pp = new JRegistry((is_object($p) ? $p->params : ''));
+						$pp = new \Hubzero\Config\Registry((is_object($p) ? $p->params : ''));
 
 						$d = $pp->get('default_method', 'email');
 

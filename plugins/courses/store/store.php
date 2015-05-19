@@ -77,13 +77,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			'controls' => ''
 		);
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'metadata'
-			)
-		);
+		$view = $this->view('default', 'metadata');
 		$view->option     = Request::getCmd('option', 'com_courses');
 		$view->controller = Request::getWord('controller', 'course');
 		$view->course     = $course;
@@ -149,7 +143,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$params = new JRegistry($model->get('params'));
+		$params = new \Hubzero\Config\Registry($model->get('params'));
 
 		if ($params->get('store_product', 0))
 		{
@@ -239,7 +233,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$params = new JRegistry($model->get('params'));
+		$params = new \Hubzero\Config\Registry($model->get('params'));
 
 		if ($product = $params->get('store_product_id', 0))
 		{

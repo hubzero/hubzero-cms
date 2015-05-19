@@ -55,21 +55,21 @@ require_once(__DIR__ . DS . 'comment.php');
 class Page extends Model
 {
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
 	private $_params = null;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
 	private $_config = null;
 
 	/**
-	 * WikiModelIterator
+	 * Iterator
 	 *
 	 * @var object
 	 */
@@ -173,7 +173,7 @@ class Page extends Model
 
 		$this->set('title', $this->_tbl->getTitle());
 
-		$this->_params = new \JRegistry($this->get('params'));
+		$this->_params = new \Hubzero\Config\Registry($this->get('params'));
 	}
 
 	/**

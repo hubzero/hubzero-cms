@@ -71,7 +71,7 @@ class Results extends SiteController
 			$menu->params = '';
 		}
 
-		$menu->param = new \JRegistry($menu->params);
+		$menu->param = new \Hubzero\Config\Registry($menu->params);
 
 		// Incoming
 		$this->view->period = Request::getVar('period', $menu->param->get('period', 'month'));

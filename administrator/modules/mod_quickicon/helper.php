@@ -67,7 +67,7 @@ class Helper extends Module
 	 * This method returns the array by reference so it can be
 	 * used to add custom buttons or remove default ones.
 	 *
-	 * @param   object  $params  JRegistry
+	 * @param   object  $params  Registry
 	 * @return  array   An array of buttons
 	 */
 	public static function &getButtons($params)

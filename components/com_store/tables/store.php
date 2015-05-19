@@ -69,7 +69,7 @@ class Store extends \JTable
 	 *
 	 * @param   string  $rtrn     Return data (record count or array or records)
 	 * @param   array   $filters  Filters to build query from
-	 * @param   object  $config   \JRegistry
+	 * @param   object  $config   Registry
 	 * @return  mixed
 	 */
 	public function getItems($rtrn='count', $filters, $config)
@@ -143,7 +143,7 @@ class Store extends \JTable
 					$row->root = PATH_APP;
 
 					// Get parameters
-					$params = new \JRegistry($row->params);
+					$params = new \Hubzero\Config\Registry($row->params);
 					$row->size  = $params->get('size', '');
 					$row->color = $params->get('color', '');
 				}

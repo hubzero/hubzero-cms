@@ -66,7 +66,7 @@ class Archive extends Object
 	private $_db = NULL;
 
 	/**
-	 * \JRegistry
+	 * Registry
 	 *
 	 * @var  object
 	 */
@@ -248,7 +248,7 @@ class Archive extends Object
 	 *
 	 * @param   string  $property  Param to return
 	 * @param   mixed   $default   Value to return if property not found
-	 * @return  object  JRegistry
+	 * @return  object  Registry
 	 * @since   1.3.1
 	 */
 	public function config($property=null, $default=null)

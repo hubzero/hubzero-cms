@@ -39,8 +39,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $isMember       = $this->course->access('view'); //$this->config->get('access-view-course');
 $isManager      = $this->course->access('manage'); //$this->config->get('access-manage-course');
 $isNowOnManager = ($isManager) ? true : false;
-$oparams        = new JRegistry($this->course->offering()->get('params'));
-$sparams        = new JRegistry($this->course->offering()->section()->get('params'));
+$oparams        = new \Hubzero\Config\Registry($this->course->offering()->get('params'));
+$sparams        = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
 
 $price = 'free';
 if ($oparams->get('store_price', false))

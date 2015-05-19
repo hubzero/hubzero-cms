@@ -1955,8 +1955,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get parameters
-		$p = new JRegistry('');
-		$p->loadArray(Request::getVar('params', '', 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
 
 		$row->params = $p->toString();
 

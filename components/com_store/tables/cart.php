@@ -101,8 +101,8 @@ class Cart extends \JTable
 					$total = $total + $price;
 				}
 
-				$params     = new \JRegistry($r->params);
-				$selections = new \JRegistry($r->selections);
+				$params     = new \Hubzero\Config\Registry($r->params);
+				$selections = new \Hubzero\Config\Registry($r->selections);
 
 				// get size selection
 				$r->sizes         = $params->get('size', '');

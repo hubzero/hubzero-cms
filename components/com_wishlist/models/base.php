@@ -39,7 +39,7 @@ use Component;
 class Base extends Model
 {
 	/**
-	 * \JRegistry
+	 * Registry
 	 *
 	 * @var  object
 	 */

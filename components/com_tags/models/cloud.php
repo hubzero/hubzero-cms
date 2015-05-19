@@ -54,7 +54,7 @@ class Cloud extends Object
 	/**
 	 * The object to be tagged
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	protected $_scope_id = null;
 
@@ -73,7 +73,7 @@ class Cloud extends Object
 	protected $_db = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var array
 	 */

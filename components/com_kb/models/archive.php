@@ -86,7 +86,7 @@ class Archive extends Object
 	private $_db = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

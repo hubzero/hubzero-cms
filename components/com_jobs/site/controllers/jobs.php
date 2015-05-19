@@ -2253,7 +2253,7 @@ class Jobs extends SiteController
 	 */
 	public function getServiceParams(&$service)
 	{
-		$params = new \JRegistry($service->params);
+		$params = new \Hubzero\Config\Registry($service->params);
 		$service->maxads = $params->get('maxads', '');
 		$service->maxads = intval(str_replace(' ', '', $service->maxads));
 	}

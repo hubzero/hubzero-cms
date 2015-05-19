@@ -32,6 +32,7 @@ namespace Components\Forum\Models;
 
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
+use Hubzero\Config\Registry;
 use InvalidArgumentException;
 use Component;
 use Lang;
@@ -130,7 +131,7 @@ class Base extends Model
 	 */
 	public function config($key=null, $default=null)
 	{
-		if (!($this->_config instanceof \JRegistry))
+		if (!($this->_config instanceof Registry))
 		{
 			$this->_config = Component::params('com_forum');
 		}

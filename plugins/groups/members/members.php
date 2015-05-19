@@ -151,7 +151,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$this->css('members.css')
 			     ->js('members.js');
 
-			$gparams = new JRegistry($group->get('params'));
+			$gparams = new \Hubzero\Config\Registry($group->get('params'));
 			$this->membership_control = $gparams->get('membership_control', 1);
 
 			$oparams = Component::params($this->_option);
@@ -190,13 +190,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				// Get group members based on their status
 				// Note: this needs to happen *after* any potential actions ar performed above
 
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'groups',
-						'element' => 'members',
-						'name'    => 'browse'
-					)
-				);
+				$view = $this->view('default', 'browse');
 
 				$view->membership_control = $this->membership_control;
 
@@ -287,7 +281,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		if (count($pending) > 0 && in_array(User::get('id'), $group->get("managers")))
 		{
 			$title = Lang::txt('PLG_GROUPS_MEMBERS_GROUP_HAS_REQUESTS', $group->get('description'), count($pending));
-			$link = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=members&filter=pending');
+			$link  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=members&filter=pending');
 			$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . Lang::txt('PLG_GROUPS_MEMBERS_ALERT') . '</h5>' . $title . '</span></a>';
 		}
 
@@ -531,8 +525,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'comments'  => $users
 		));
 
-		$start = Request::getVar("limitstart", 0);
-		$limit = Request::getVar("limit", 25);
+		$start  = Request::getVar("limitstart", 0);
+		$limit  = Request::getVar("limit", 25);
 		$filter = Request::getVar("filter", "members");
 
 		App::redirect(
@@ -617,8 +611,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'comments'  => $users
 		));
 
-		$start = Request::getVar("limitstart", 0);
-		$limit = Request::getVar("limit", 25);
+		$start  = Request::getVar("limitstart", 0);
+		$limit  = Request::getVar("limit", 25);
 		$filter = Request::getVar("filter", "members");
 
 		App::redirect(
@@ -1042,7 +1036,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->available_permissions = array(
 			'group.invite' => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPINVITE'),
 			'group.edit'   => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPEDIT'),
-			'group.pages'   => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES'),
+			'group.pages'  => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES'),
 		);
 
 		// pass vars to view
@@ -1187,8 +1181,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid = Request::getVar('uid', '','post');
-		$role = Request::getVar('role','','post');
+		$uid     = Request::getVar('uid', '','post');
+		$role    = Request::getVar('role','','post');
 		$no_html = Request::getInt('no_html', 0,'post');
 
 		if (!$uid || !$role)
@@ -1224,7 +1218,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$uid = Request::getVar('uid','');
+		$uid  = Request::getVar('uid','');
 		$role = Request::getVar('role','');
 
 		if (!$uid || !$role)

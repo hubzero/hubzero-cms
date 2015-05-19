@@ -31,6 +31,8 @@
 namespace Modules\Login;
 
 use Hubzero\Module\Module;
+use Hubzero\Config\Registry;
+use Request;
 use Lang;
 
 /**
@@ -46,7 +48,7 @@ class Helper extends Module
 	public function display()
 	{
 		$return  = self::getReturnURI();
-		$freturn = base64_encode('index.php' . \JFactory::getURI()->toString(array('query')));
+		$freturn = base64_encode('index.php' . Request::getQueryString());
 
 		$returnQueryString = (!empty($return)) ? "&return={$return}" : '';
 		$authenticators    = [];
@@ -54,7 +56,7 @@ class Helper extends Module
 
 		foreach ($plugins as $p)
 		{
-			$pparams = new \JRegistry($p->params);
+			$pparams = new Registry($p->params);
 
 			// Make sure it supports admin login
 			if (!$pparams->get('admin_login', false)) continue;
@@ -62,7 +64,7 @@ class Helper extends Module
 			// If it's the default hubzero plugin, don't include it in the list (we'll include it separately)
 			if ($p->name == 'hubzero')
 			{
-				$site_display = $pparams->get('display_name', Config::get('sitename'));
+				$site_display = $pparams->get('display_name', \Config::get('sitename'));
 				$basic = true;
 			}
 			else
@@ -96,14 +98,12 @@ class Helper extends Module
 	 */
 	public static function getReturnURI()
 	{
-		$return = 'index.php' . \JFactory::getURI()->toString(array('query'));
+		$return = 'index.php' . Request::getQueryString());
 		if ($return != 'index.php?option=com_login')
 		{
 			return base64_encode($return);
 		}
-		else
-		{
-			return base64_encode('index.php');
-		}
+
+		return base64_encode('index.php');
 	}
 }

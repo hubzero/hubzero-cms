@@ -149,7 +149,7 @@ class InstallerModelDatabase extends InstallerModel
 	{
 		$table = JTable::getInstance('Extension');
 		$table->load('700');
-		$cache = new JRegistry($table->manifest_cache);
+		$cache = new \Hubzero\Config\Registry($table->manifest_cache);
 		return $cache->get('version');
 	}
 
@@ -162,7 +162,7 @@ class InstallerModelDatabase extends InstallerModel
 	{
 		$table = JTable::getInstance('Extension');
 		$table->load('700');
-		$cache = new JRegistry($table->manifest_cache);
+		$cache = new \Hubzero\Config\Registry($table->manifest_cache);
 		$updateVersion =  $cache->get('version');
 		$cmsVersion = new JVersion();
 		if ($updateVersion == $cmsVersion->getShortVersion())
@@ -214,7 +214,7 @@ class InstallerModelDatabase extends InstallerModel
 			$contentParams = Component::params('com_content');
 			if ($contentParams->get('filters'))
 			{
-				$newParams = new JRegistry();
+				$newParams = new \Hubzero\Config\Registry();
 				$newParams->set('filters', $contentParams->get('filters'));
 				$table->params = (string) $newParams;
 				$table->store();

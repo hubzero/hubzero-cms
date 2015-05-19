@@ -238,13 +238,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		// Get course members based on their status
 		// Note: this needs to happen *after* any potential actions ar performed above
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		//vars for view
 		$view->authorized = $this->authorized;
@@ -292,13 +286,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 	private function _edit()
 	{
 		//create view object
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'edit'
-			)
-		);
+		$view = $this->view('default', 'edit');
 
 		//get incoming
 		$id = Request::getInt('id', 0);

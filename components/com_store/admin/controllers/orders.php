@@ -156,8 +156,8 @@ class Orders extends AdminController
 			{
 				foreach ($orderitems as $r)
 				{
-					$params = new \JRegistry($r->params);
-					$selections = new \JRegistry($r->selections);
+					$params = new Registry($r->params);
+					$selections = new Registry($r->selections);
 
 					// Get size selection
 					$r->sizes        = $params->get('size', '');

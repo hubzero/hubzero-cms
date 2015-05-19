@@ -144,7 +144,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$registration->ORCID        = $this->_registrationField('registrationORCID','OOOO','edit');
 
 		//get member params
-		$rparams = new JRegistry($this->member->get('params'));
+		$rparams = new \Hubzero\Config\Registry($this->member->get('params'));
 
 		//get profile plugin's params
 		$params = $this->params;

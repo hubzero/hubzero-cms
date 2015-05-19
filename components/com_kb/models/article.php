@@ -36,6 +36,7 @@ use Hubzero\Base\Object;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\Utility\String;
+use Hubzero\Config\Registry;
 use stdClass;
 use Request;
 use Route;
@@ -107,7 +108,7 @@ class Article extends Model
 	private $_base = 'index.php?option=com_kb';
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -170,7 +171,7 @@ class Article extends Model
 			}
 		}
 
-		$params = new \JRegistry($this->get('params'));
+		$params = new Registry($this->get('params'));
 
 		$this->_params = Component::params('com_kb');
 		$this->_params->merge($params);

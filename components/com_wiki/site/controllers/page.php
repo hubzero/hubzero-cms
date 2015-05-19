@@ -575,8 +575,8 @@ class Page extends SiteController
 		$this->page->set('scope', trim(Request::getVar('scope', '', 'post')));
 
 		// Get parameters
-		$params = new \JRegistry($this->page->get('params', ''));
-		$params->loadArray(Request::getVar('params', array(), 'post'));
+		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));
+		$params->merge(Request::getVar('params', array(), 'post'));
 
 		$this->page->set('params', $params->toString());
 

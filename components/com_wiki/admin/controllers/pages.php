@@ -208,8 +208,8 @@ class Pages extends AdminController
 		$params = Request::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
-			$pparams = new \JRegistry($row->get('params'));
-			$pparams->loadArray($params);
+			$pparams = new \Hubzero\Config\Registry($row->get('params'));
+			$pparams->merge($params);
 
 			$row->set('params', $pparams->toString());
 		}

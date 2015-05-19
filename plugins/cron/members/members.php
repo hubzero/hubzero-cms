@@ -153,7 +153,7 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
 
 			// do we have ratings on reviews enabled?
 			$param = Plugin::byType('resources', 'reviews');
-			$plparam = new JRegistry($param->params);
+			$plparam = new \Hubzero\Config\Registry($param->params);
 			$voting = $plparam->get('voting');
 
 			$accumulated = 0;

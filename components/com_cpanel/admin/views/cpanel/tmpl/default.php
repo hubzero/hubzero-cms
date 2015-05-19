@@ -37,14 +37,13 @@ Toolbar::help('cpanel');
 
 echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
 
-$modules = \Module::byPosition('cpanel');
+$modules = Module::byPosition('cpanel');
 
 foreach ($modules as $module)
 {
-	$output = \Module::render($module);
+	$output = Module::render($module);
 
-	$params = new JRegistry;
-	$params->loadString($module->params);
+	$params = new \Hubzero\Config\Registry($module->params);
 
 	if ($params->get('automatic_title', '0') == '0')
 	{

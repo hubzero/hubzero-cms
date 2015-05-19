@@ -37,6 +37,7 @@ use Hubzero\Component\AdminController;
 use stdClass;
 use Request;
 use Config;
+use Notify;
 use Event;
 use Route;
 use Lang;
@@ -255,8 +256,7 @@ class Jobs extends AdminController
 			$row->set('next_run', $row->nextRun());
 		}
 
-		$p = new \JRegistry('');
-		$p->loadArray(Request::getVar('params', '', 'post'));
+		$p = new \Hubzero\Config\Registry(Request::getVar('params', '', 'post'));
 
 		$row->set('params', $p->toString());
 
@@ -393,7 +393,7 @@ class Jobs extends AdminController
 		{
 			if (!$obj->delete(intval($id)))
 			{
-				$this->addComponentMessage($obj->getError(), 'error');
+				Notify::error($obj->getError());
 			}
 		}
 
@@ -442,7 +442,7 @@ class Jobs extends AdminController
 			$row->set('state', $state);
 			if (!$row->store())
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				Notify::error($row->getError());
 				continue;
 			}
 
@@ -452,11 +452,11 @@ class Jobs extends AdminController
 		// Set message
 		if ($state == 1)
 		{
-			$this->setMessage(Lang::txt('COM_CRON_ITEMS_PUBLISHED', $total));
+			Notify::success(Lang::txt('COM_CRON_ITEMS_PUBLISHED', $total));
 		}
 		else
 		{
-			$this->setMessage(Lang::txt('COM_CRON_ITEMS_UNPUBLISHED', $total));
+			Notify::success(Lang::txt('COM_CRON_ITEMS_UNPUBLISHED', $total));
 		}
 
 		App::redirect(

@@ -43,18 +43,21 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 		// Ensure that constructor is called one time
 		self::$cookie = SID == '';
-		if (!self::$default_lang) {
+
+		if (!self::$default_lang)
+		{
 			$app = JFactory::getApplication();
 			$router = $app->getRouter();
-			if ($app->isSite()) {
-				// setup language data
 
-				self::$mode_sef 	= ($router->getMode() == JROUTER_MODE_SEF) ? true : false;
-				self::$sefs 		= JLanguageHelper::getLanguages('sef');
-				self::$lang_codes 	= JLanguageHelper::getLanguages('lang_code');
+			if ($app->isSite())
+			{
+				// setup language data
+				self::$mode_sef     = ($router->getMode() == JROUTER_MODE_SEF) ? true : false;
+				self::$sefs         = JLanguageHelper::getLanguages('sef');
+				self::$lang_codes   = JLanguageHelper::getLanguages('lang_code');
 				self::$default_lang = Component::params('com_languages')->get('site', 'en-GB');
-				self::$default_sef 	= self::$lang_codes[self::$default_lang]->sef;
-				self::$homes		= MultilangstatusHelper::getHomepages();
+				self::$default_sef  = self::$lang_codes[self::$default_lang]->sef;
+				self::$homes        = MultilangstatusHelper::getHomepages();
 
 				$user = User::getRoot();
 				$levels = $user->getAuthorisedViewLevels();
@@ -68,7 +71,9 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 				$app->setLanguageFilter(true);
 				$uri = JFactory::getURI();
-				if (self::$mode_sef) {
+
+				if (self::$mode_sef)
+				{
 					// Get the route path from the request.
 					$path = JString::substr($uri->toString(), JString::strlen($uri->base()));
 
@@ -82,26 +87,32 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					// The language segment is always at the beginning of the route path if it exists.
 					$sef = $uri->getVar('lang');
 
-					if (!empty($parts) && empty($sef)) {
+					if (!empty($parts) && empty($sef))
+					{
 						$sef = reset($parts);
 					}
 				}
-				else {
+				else
+				{
 					$sef = $uri->getVar('lang');
 				}
-				if (isset(self::$sefs[$sef])) {
+				if (isset(self::$sefs[$sef]))
+				{
 					$lang_code = self::$sefs[$sef]->lang_code;
 					// Create a cookie
-					$cookie_domain 	= Config::get('cookie_domain', '');
-					$cookie_path 	= Config::get('cookie_path', '/');
+					$cookie_domain = Config::get('cookie_domain', '');
+					$cookie_path   = Config::get('cookie_path', '/');
 					setcookie(JApplication::getHash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
 					// set the request var
 					Request::setVar('language', $lang_code);
 				}
 			}
+
 			parent::__construct($subject, $config);
+
 			// 	Detect browser feature
-			if ($app->isSite()) {
+			if ($app->isSite())
+			{
 				$app->setDetectBrowser($this->params->get('detect_browser', '1')=='1');
 			}
 		}
@@ -287,14 +298,17 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			}
 
 			$lang_code = isset(self::$sefs[$sef]) ? self::$sefs[$sef]->lang_code : '';
-			if ($lang_code && JLanguage::exists($lang_code)) {
+			if ($lang_code && Lang::exists($lang_code))
+			{
 				array_shift($parts);
 				$uri->setPath(implode('/', $parts));
 			}
 		}
-		else {
+		else
+		{
 			$sef = $uri->getVar('lang');
-			if (!isset(self::$sefs[$sef])) {
+			if (!isset(self::$sefs[$sef]))
+			{
 				$sef = isset(self::$lang_codes[$lang_code]) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
 				$uri->setVar('lang', $sef);
 				$post = Request::get('POST');
@@ -308,6 +322,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		$array = array('lang' => $sef);
 		return $array;
 	}
+
 	/**
 	 * before store user method
 	 *
@@ -322,17 +337,18 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserBeforeSave($user, $isnew, $new)
 	{
-		if ($this->params->get('automatic_change', '1')=='1' && key_exists('params', $user))
+		if ($this->params->get('automatic_change', '1')=='1' && array_key_exists('params', $user))
 		{
-			$registry = new JRegistry();
-			$registry->loadString($user['params']);
+			$registry = new \Hubzero\Config\Registry($user['params']);
+
 			self::$_user_lang_code = $registry->get('language');
-			if (empty(self::$_user_lang_code)) {
+
+			if (empty(self::$_user_lang_code))
+			{
 				self::$_user_lang_code = self::$default_lang;
 			}
 		}
 	}
-
 
 	/**
 	 * after store user method
@@ -351,10 +367,11 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	{
 		if ($this->params->get('automatic_change', '1')=='1' && key_exists('params', $user) && $success)
 		{
-			$registry = new JRegistry();
-			$registry->loadString($user['params']);
+			$registry = new \Hubzero\Config\Registry($user['params']);
+
 			$lang_code = $registry->get('language');
-			if (empty($lang_code)) {
+			if (empty($lang_code))
+			{
 				$lang_code = self::$default_lang;
 			}
 			$app = JFactory::getApplication();
@@ -451,7 +468,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 	{
 		$app = JFactory::getApplication();
 
-		if ($app->isSite() && $this->params->get('alternate_meta') && Document::getType() == 'html')
+		if (App::isSite() && $this->params->get('alternate_meta') && Document::getType() == 'html')
 		{
 			// Get active menu item
 			$active = $app->getMenu()->getActive();
@@ -461,7 +478,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get menu item link
-			if ($app->getCfg('sef'))
+			if (Config::get('sef'))
 			{
 				$active_link = Route::url('index.php?Itemid='.$active->id, false);
 			}
@@ -476,7 +493,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 			// Get current link
 			$current_link = Request::getUri();
-			if ($current_link == JUri::base(true).'/')
+			if ($current_link == Request::base(true).'/')
 			{
 				$current_link .= 'index.php';
 			}
@@ -502,7 +519,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 						if (isset($associations[$language->lang_code]))
 						{
 							$item = $menu->getItem($associations[$language->lang_code]);
-							if ($item && JLanguage::exists($language->lang_code))
+							if ($item && Lang::exists($language->lang_code))
 							{
 								if (Config::get('sef'))
 								{

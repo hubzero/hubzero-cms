@@ -43,7 +43,7 @@ else
 
 if ($offering->exists())
 {
-	$params = new JRegistry($offering->get('params'));
+	$params = new \Hubzero\Config\Registry($offering->get('params'));
 
 	$product = null;
 

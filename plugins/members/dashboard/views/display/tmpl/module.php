@@ -30,7 +30,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // create user params registry
-$params = new JRegistry($this->module->params);
+$params = new \Hubzero\Config\Registry($this->module->params);
 
 // load module params fields
 $fields = new JForm($this->module->module);

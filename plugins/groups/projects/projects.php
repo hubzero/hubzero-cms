@@ -239,13 +239,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$filters['sortdir']  = Request::getVar('sortdir', 'DESC');
 
 		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'projects',
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		$obj = new \Components\Projects\Tables\Project($this->_database);
 		if ($which == 'all')
@@ -297,13 +291,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
 
 		// Build the final HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'projects',
-				'name'    => 'updates'
-			)
-		);
+		$view = $this->view('default', 'updates');
 
 		// Set filters
 		$filters = array();
@@ -475,8 +463,16 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 					$deletable = 0;
 
 					$prep[] = array(
-						'activity' => $a, 'eid' => $eid, 'etbl' => $etbl, 'body' => $ebody, 'deletable' => $deletable, 'comments' => $comments,
-						'class' => $class, 'timeclass' => $timeclass, 'projectid' => $a->projectid, 'recorded' => $a->recorded
+						'activity'  => $a,
+						'eid'       => $eid,
+						'etbl'      => $etbl,
+						'body'      => $ebody,
+						'deletable' => $deletable,
+						'comments'  => $comments,
+						'class'     => $class,
+						'timeclass' => $timeclass,
+						'projectid' => $a->projectid,
+						'recorded'  => $a->recorded
 					);
 				}
 			}
@@ -493,13 +489,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	private function browse()
 	{
 		//create plugin view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => 'projects',
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		//instatiate db
 		$db = JFactory::getDBO();

@@ -32,6 +32,7 @@ namespace Components\Answers\Models;
 
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
+use Hubzero\Config\Registry;
 use Component;
 use Lang;
 use Date;
@@ -49,7 +50,7 @@ class Base extends Model
 	protected $_creator = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -132,7 +133,7 @@ class Base extends Model
 	 */
 	public function config($key=null, $default=null)
 	{
-		if (!($this->_config instanceof \JRegistry))
+		if (!($this->_config instanceof Registry))
 		{
 			$this->_config = Component::params('com_answers');
 		}
