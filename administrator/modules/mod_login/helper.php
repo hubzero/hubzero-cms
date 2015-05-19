@@ -98,7 +98,7 @@ class Helper extends Module
 	 */
 	public static function getReturnURI()
 	{
-		$return = 'index.php' . Request::getQueryString());
+		$return = 'index.php' . Request::getQueryString();
 		if ($return != 'index.php?option=com_login')
 		{
 			return base64_encode($return);
