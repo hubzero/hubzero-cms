@@ -48,9 +48,9 @@ class PathwayServiceProvider extends ServiceProvider
 		{
 			$trail = new Trail();
 
-			if (file_exists(PATH_CORE . DS . 'bootstrap' . DS . $app['client']->name . DS . 'breadcrumps.php'))
+			if (file_exists(PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $app['client']->name . DS . 'breadcrumbs.php'))
 			{
-				require PATH_CORE . DS . 'bootstrap' . DS . $app['client']->name . DS . 'breadcrumps.php';
+				require PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $app['client']->name . DS . 'breadcrumbs.php';
 			}
 
 			return $trail;
