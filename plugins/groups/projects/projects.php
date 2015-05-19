@@ -323,7 +323,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$activities = $objAC->getActivities(0, $afilters, 0, User::get('id'), $projects);
 		$view->activities = $this->prepActivities($activities, 'com_projects', User::get('id'), $view->filters, $view->limit);
 
-		$view->uid      = User::et('id');
+		$view->uid      = User::get('id');
 		$view->config   = $this->_config;
 		$view->option   = 'com_projects';
 		$view->database = $this->_database;
