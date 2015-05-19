@@ -244,7 +244,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$view->newcount     = $this->model->table()->getUpdateCount(
 			$projects,
 			$this->_user->get('id')
-		); 
+		);
 		$view->projectcount = $this->_total;
 		$view->uid          = $this->_user->get('id');
 
