@@ -32,13 +32,13 @@ $privacyTxt = $this->row->isPublic()
 ?>
 <tr class="mline" id="tr_<?php echo $this->row->get('id'); ?>">
 	<td class="th_image">
-		<a href="<?php echo Route::url('index.php?option=' . $this->option .  '&task=view&alias=' . $this->row->get('alias')); ?>">
-			<img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->row->get('alias') . '&task=media'); ?>" alt="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" title="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+		<a href="<?php echo Route::url($row->link()); ?>">
+			<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" title="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 		</a>
 	</td>
 	<td class="th_privacy"><span class="privacy-icon<?php echo !$this->row->isPublic() ? ' private' : ''; ?>" title="<?php echo ucfirst($privacyTxt) . ' ' . Lang::txt('COM_PROJECTS_PROJECT'); ?>"></span></td>
 	<td class="th_title">
-		<a href="<?php echo Route::url('index.php?option=' . $this->option .  '&task=view&alias=' . $this->row->get('alias')); ?>">
+		<a href="<?php echo Route::url($row->link()); ?>">
 		<?php echo $this->escape(stripslashes($this->row->get('title')));  ?>
 		</a>
 	</td>
@@ -91,16 +91,16 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 	<td class="mini"><?php echo $info; ?></td>
 	<td class="mini">
 	<?php if ($this->row->isActive()) {
-		echo '<span class="active green">'.Lang::txt('COM_PROJECTS_ACTIVE').'</span>';
+		echo '<span class="active green">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
 	}
 	else if ($this->row->inSetup()) {
-		echo '<span class="setup">'.Lang::txt('COM_PROJECTS_STATUS_SETUP').'</span> '.Lang::txt('COM_PROJECTS_IN_PROGRESS');
+		echo '<span class="setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> '.Lang::txt('COM_PROJECTS_IN_PROGRESS');
 	}
 	else if ($this->row->isInactive()) {
-		echo '<span class="faded italic">'.Lang::txt('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
+		echo '<span class="faded italic">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
 	}
 	else if ($this->row->isPending()) {
-		echo '<span class="italic pending">'.Lang::txt('COM_PROJECTS_STATUS_PENDING').'</span>';
+		echo '<span class="italic pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
 	}
 	$commentCount = 0;
 	if ($this->row->get('admin_notes')) {

@@ -153,10 +153,10 @@ class Activity extends \JTable
 			$tquery = '';
 			foreach ($projects as $project)
 			{
-				$tquery .= "'".$project."',";
+				$tquery .= "'" . $project . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") ";
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
 		}
 		if ($class)
 		{

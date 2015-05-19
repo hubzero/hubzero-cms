@@ -1177,6 +1177,10 @@ class Project extends Model
 				$link = $this->_base . '&task=setup';
 			break;
 
+			case 'thumb':
+				$link = $this->_base . '&task=media';
+			break;
+
 			case 'stamp':
 				$link = 'index.php?option=com_projects&task=get';
 			break;
