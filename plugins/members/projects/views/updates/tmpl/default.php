@@ -29,9 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 $this->css();
+
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>
 <div class="aside">
@@ -49,33 +48,21 @@ $this->css();
 	<div class="entries-filters">
 		<ul class="entries-menu">
 			<li>
-				<a href="<?php echo Route::url('index.php?option=com_members&id='.$this->uid.'&active=projects&action=all'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects&action=all'); ?>">
+					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
 				</a>
 			</li>
 			<li>
-				<a class="active" href="<?php echo Route::url('index.php?option=com_members&id='.$this->uid.'&active=projects&action=updates'); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+				<a class="active" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects&action=updates'); ?>">
+					<?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
 				</a>
 			</li>
 		</ul>
 	</div>
 	<div id="project-updates">
-		<div id="latest_activity" class="infofeed">
-			<?php
-			// Display item list
-			$this->view('default', 'activity')
-			     ->set('option', $this->option)
-			     ->set('activities', $this->activities)
-			     ->set('limit', $this->limit)
-			     ->set('total', $this->total)
-			     ->set('filters', $this->filters)
-			     ->set('uid', $this->uid)
-			     ->set('database', $this->database)
-			     ->set('config', $this->config)
-			     ->display();
-			?>
-		</div> <!-- / .infofeed -->
+		<?php
+		echo $this->content;
+		?>
 	</div>
 </div><!-- / .subject -->
 <div class="clear"></div>

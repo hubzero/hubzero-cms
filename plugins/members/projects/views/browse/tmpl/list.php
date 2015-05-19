@@ -29,9 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$projects = $this->rows;
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
+
 switch ($this->which)
 {
 	case 'group': $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_GROUP'); break;
@@ -41,50 +40,58 @@ switch ($this->which)
 	case 'all':   $title = Lang::txt('PLG_MEMBERS_PROJECTS_SHOW_ALL');   break;
 }
 ?>
-<h4 class="th_header"><?php echo $title.' ('.count($projects).')'; ?></h4>
-<?php if ($projects && count($projects) > 0) { ?>
+
+<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
+
+<?php if (count($this->rows) > 0) { ?>
 <table class="listing">
 	<thead>
 		<tr>
 			<th class="th_image" colspan="2"></th>
-			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$this->user->get('id').'&active=projects&action=all&sortby=title&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
-			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$this->user->get('id').'&active=projects&action=all&sortby=status&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
-			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id='.$this->user->get('id').'&active=projects&action=all&sortby=role&sortdir='.$sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=title&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=status&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
+			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=role&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
 		</tr>
 	</thead>
 	<tbody>
 <?php
 	$i = 0;
-	foreach ($projects as $row)
+	foreach ($this->rows as $row)
 	{
-			$goto  = 'alias=' . $row->alias;
-			$role = $row->role == 1 ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR');
-			$setup = ($row->setup_stage < $setup_complete) ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP') : '';
+			$role = $row->access('manager')
+				? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_MANAGER')
+				: Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR');
+			$role = $row->access('readonly')
+				? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_REVIEWER')
+				: $role;
 
-			$i++; ?>
+			$setup = $row->inSetup() ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP') : '';
+
+			$i++;
+	?>
 			<tr class="mline">
-				<td class="th_image"><a href="<?php echo Route::url('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo htmlentities($this->escape($row->title)); ?>"  class="project-image" /></a> <?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?></td>
-				<td class="th_privacy"><?php if ($row->private == 1) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?></td>
-				<td class="th_title"><a href="<?php echo Route::url('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><?php echo $this->escape($row->title); ?></a>
+				<td class="th_image"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo htmlentities($this->escape($row->get('title'))); ?>"  class="project-image" /></a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?></td>
+				<td class="th_privacy"><?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?></td>
+				<td class="th_title"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
 				<?php if ($this->which != 'owned') { ?><span class="block">
-				<?php echo ($row->owned_by_group) ? $row->groupname : $row->authorname; ?></span>
+				<?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
 				<?php } ?>
 				</td>
 				<td class="th_status">
 				<?php
 					$html = '';
-					if ($row->owner && $row->confirmed == 1) {
-						if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
-							$html .= '<span class="active"><a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.Lang::txt('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT').'">&raquo; '.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE').'</a></span>';
+					if ($row->access('owner')) {
+						if ($row->isActive()) {
+							$html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
 						}
-						else if ($row->setup_stage < $setup_complete) {
-								$html .= '<span class="setup"><a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.Lang::txt('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP').'">&raquo; '.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP').'</a></span> ';
+						else if ($row->inSetup()) {
+								$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP') . '</a></span> ';
 						}
-						else if ($row->state == 0) {
-							$html .= '<span class="suspended">'.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED').'</span> ';
+						else if ($row->isInactive()) {
+							$html .= '<span class="suspended">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
 						}
-						else if ($row->state == 5) {
-							$html .= '<span class="pending">'.Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_PENDING').'</span> ';
+						else if ($row->isPending()) {
+							$html .= '<span class="pending">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_PENDING') . '</span> ';
 						}
 					}
 					echo $html;
@@ -92,14 +99,14 @@ switch ($this->which)
 				?>
 				</td>
 				<td class="th_role">
-					<?php echo $row->role == 1 ? Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_COLLABORATOR') ;?>
+					<?php echo $role; ?>
 				</td>
 			</tr>
 <?php
 	}
 ?>
 	</tbody>
-	</table>
+</table>
 <?php } else { ?>
 	<p class="noresults"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_NO_PROJECTS'); ?></p>
 <?php } ?>
