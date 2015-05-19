@@ -314,7 +314,18 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Get count
 		$view->total = $objAC->getActivities($this->model->get('id'), $view->filters, 1, $this->_uid);
 
-		$view->activities = $this->_prepActivities($view->filters, $view->limit);
+		// get activities
+		$activities = $objAC->getActivities (
+			$this->model->get('id'),
+			$view->filters,
+			0,
+			$this->_uid
+		);
+		$view->activities = $this->_prepActivities(
+			$activities,
+			$view->filters,
+			$view->limit
+		);
 
 		// Output html
 		$view->params 		= new JParameter($this->model->params);
@@ -421,8 +432,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option
-			. '&alias=' . $this->model->get('alias') . '&active=feed');
+		$this->_referer = Route::url($this->model->link());
 		return;
 	}
 
@@ -526,7 +536,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=feed');
+		$this->_referer = Route::url($this->model->link('feed'));
 		return;
 	}
 
@@ -549,8 +559,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				'name'    => 'activity'
 			)
 		);
+
 		$objAC                  = $this->model->table('Activity');
 		$view->filters 			= array();
+
 		$view->total 			= $objAC->getActivities(
 			$this->model->get('id'),
 			$view->filters,
@@ -561,11 +573,72 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view->filters['limit'] = Request::getVar('limit', $view->limit, 'request');
 		$view->option 			= $this->_option;
 		$view->model 			= $this->model;
-		$view->activities 		= $this->_prepActivities($view->filters, $view->limit);
-		$view->goto  			= '&alias=' . $this->model->get('alias');
+
+		$activities = $objAC->getActivities(
+			$this->model->get('id'),
+			$view->filters,
+			0,
+			$this->_uid
+		);
+		$view->activities = $this->_prepActivities(
+			$activities,
+			$view->filters,
+			$view->limit
+		);
+
 		$view->uid 				= $this->_uid;
 		$view->database 		= $this->_database;
 		$view->title			= $this->_area['title'];
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Activity data in multiple projects (members/groups plugins)
+	 *
+	 * @param      array 	$filters    Query filters
+	 * @param      integer  $limit 		Number of entries
+	 *
+	 * @return     array
+	 */
+	public function onShared($area, $model, $projects, $uid, $filters)
+	{
+		// Check if our area is the one we want to return results for
+		if ($area != 'feed')
+		{
+			return;
+		}
+
+		$this->model     = $model;
+		$this->_database = JFactory::getDBO();
+		$this->_uid      = $uid;
+		$this->miniView  = true;
+
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'blog',
+				'name'    => 'activity',
+				'layout'  => 'shared'
+			)
+		);
+		$view->limit   = isset($filters['limit']) ? $filters['limit'] : 0;
+		$view->filters = $filters;
+
+		// Get and sort activities
+		$objAC = $this->model->table('Activity');
+		$activities = $objAC->getActivities(0, $filters, 0, $uid, $projects);
+		$view->activities = $this->_prepActivities(
+			$activities,
+			$filters,
+			$view->limit
+		);
+
+		// Get total
+		$view->total = $objAC->getActivities(0, array(), 1, $uid, $projects);
+
+		$view->uid   = $this->_uid;
+		$view->model = $this->model;
 		return $view->loadTemplate();
 	}
 
@@ -577,11 +650,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array
 	 */
-	protected function _prepActivities($filters, $limit)
+	protected function _prepActivities($activities, $filters, $limit)
 	{
-		// Get latest activity
 		$objAC = $this->model->table('Activity');
-		$activities = $objAC->getActivities ($this->model->get('id'), $filters, 0, $this->_uid);
 
 		// Instantiate some classes
 		$objM = new \Components\Projects\Tables\Blog($this->_database);
@@ -603,7 +674,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				if ($a->class == 'quote')
 				{
 					// Get comment
-					$c = $objC->getComments(NULL, NULL, $a->id, $this->model->member()->lastvisit);
+					$c = $objC->getComments(NULL, NULL, $a->id);
 					if (!$c)
 					{
 						continue;
@@ -617,7 +688,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					{
 						// get and add parent activity
 						$filters['id'] = $c->parent_activity;
-						$pa = $objAC->getActivities ($this->model->get('id'), $filters, 0, $this->_uid);
+						$pa = $objAC->getActivities ($a->projectid, $filters, 0, $this->_uid);
 						if ($pa && count($pa) > 0)
 						{
 							$a = $pa[0];
@@ -634,9 +705,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				{
 					$shown[] = $a->id;
 					$class = $a->class ? $a->class : 'activity';
-					$new = $this->model->member()->lastvisit
-						&& $this->model->member()->lastvisit <= $a->recorded
-						? true : false;
 
 					// Display hyperlink
 					if ($a->highlighted && $a->url)
@@ -650,13 +718,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					$eid         = $a->id;
 					$etbl        = 'activity';
 					$deletable   = 0;
-					$preview     = '';
 
 					// Get blog entry
 					if ($class == 'blog')
 					{
 						$blog = $objM->getEntries(
-							$this->model->get('id'),
+							$a->projectid,
 							$bfilters = array('activityid' => $a->id),
 							$a->referenceid
 						);
@@ -673,7 +740,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					elseif ($class == 'todo')
 					{
 						$todo = $objTD->getTodos(
-							$this->model->get('id'),
+							$a->projectid,
 							$tfilters = array('activityid' => $a->id),
 							$a->referenceid
 						);
@@ -686,18 +753,27 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 						$ebody 		= $this->drawBodyText($content);
 						$eid 		= $a->referenceid;
 						$etbl 		= 'todo';
-						$deletable  = 0; // Cannot delete to-do related activity
 					}
 
 					// Get/parse & save item preview if available
-					$preview = $this->getItemPreview($class, $a);
+					$preview = empty($this->miniView) ? $this->getItemPreview($class, $a) : '';
 
 					// Get comments
-					$comments = $objC->getComments($eid, $etbl);
+					if ($a->commentable)
+					{
+						$comments = $objC->getComments($eid, $etbl);
+					}
+					else
+					{
+						$comments = null;
+					}
 
 					// Is user allowed to delete item?
-					$deletable = $deletable && $this->model->access('content')
-						&& ($a->userid == $this->_uid or $this->model->access('manager')) ? 1 : 0;
+					$deletable = empty($this->miniView)
+						&& $deletable
+						&& $this->model->access('content')
+						&& ($a->userid == $this->_uid or $this->model->access('manager'))
+						? 1 : 0;
 
 					$prep[] = array(
 						'activity'   => $a,
@@ -707,7 +783,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 						'deletable'  => $deletable,
 						'comments'   => $comments,
 						'class'      => $class,
-						'new'        => $new,
 						'preview'    => $preview
 					);
 				}
@@ -1014,7 +1089,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=feed');
+		$this->_referer = Route::url($this->model->link());
 		return;
 	}
 
@@ -1073,8 +1148,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option
-			. '&alias=' . $this->model->get('alias') . '&active=feed');
+		$this->_referer = Route::url($this->model->link());
 		return;
 	}
 }

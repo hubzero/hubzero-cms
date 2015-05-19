@@ -30,9 +30,8 @@ $a = $this->activity;
 // Add Comment
 if ($a->commentable && $this->model->access('content')) { ?>
 <div class="addcomment <?php if (count($this->comments) == 0) { echo 'hidden'; } ?>" id="commentform_<?php echo $a->id; ?>">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=feed'); ?>" method="post">
+	<form action="<?php echo Route::url($this->model->link('feed')); ?>" method="post">
 		<fieldset>
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 			<input type="hidden" name="action" value="savecomment" />
 			<input type="hidden" name="task" value="view" />

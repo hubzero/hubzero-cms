@@ -36,11 +36,11 @@ if (!$this->comments || count($this->comments) == 0)
 	{
 		// Show comments
 		$this->view('_comment')
-	     ->set('option', $this->option)
 	     ->set('comment', $comment)
 	     ->set('model', $this->model)
 		 ->set('activity', $this->activity)
 		 ->set('uid', $this->uid)
+		 ->set('edit', $this->edit)
 	     ->display();
 	} ?>
 </ol>

@@ -25,33 +25,47 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$activity 	= $this->activity;
-$a 			= $activity['activity'];
-$class 		= $activity['class'];
-$deletable 	= $activity['deletable'];
-$etbl 		= $activity['etbl'];
-$eid 		= $activity['eid'];
-$ebody 		= $activity['body'];
-$comments 	= $activity['comments'];
-$new 		= $activity['new'];
-$preview    = $activity['preview'];
+$activity 	 = $this->activity;
+$a 			 = $activity['activity'];
+$class 		 = $activity['class'];
+$deletable 	 = empty($this->edit) ? $activity['deletable'] : false;
+$etbl 		 = $activity['etbl'];
+$eid 		 = $activity['eid'];
+$ebody 		 = $activity['body'];
+$comments 	 = $activity['comments'];
+$preview     = $activity['preview'];
+$showProject = isset($this->showProject) ? $this->showProject : false;
+$edit 	     = isset($this->edit) ? $this->edit : true;
 
 $creator = \Hubzero\User\Profile::getInstance($a->userid);
+
+$new = $this->model->member()->lastvisit
+	&& $this->model->member()->lastvisit <= $a->recorded
+	? true : false;
 
 ?>
 		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>">
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
 				<?php if ($deletable) { ?>
 				<span class="m_options">
-					<span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=feed') . '/?action=delete&amp;tbl=' . $etbl . '&amp;eid=' . $eid;  ?>">x</a>
+					<span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo Route::url($this->model->link('feed') .  '&action=delete&tbl=' . $etbl . '&eid=' . $eid);  ?>">x</a>
 					</span>
 				</span>
 				<?php } ?>
-				<div class="blog-item"><img class="blog-author" src="<?php echo $creator->getPicture($a->admin); ?>" alt="" />
+				<div class="blog-item">
+					<?php if ($showProject) { ?>
+						<img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" />
+					<?php } else { ?>
+						<img class="blog-author" src="<?php echo $creator->getPicture($a->admin); ?>" alt="" />
+					<?php } ?>
 					<div class="blog-content">
+						<?php if ($showProject) { ?>
+						<span class="project-name"><a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->model->get('title'), 65); ?></a>
+						</span>
+						<?php } ?>
 						<span class="actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
 						<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
-						<?php  if ($a->commentable && count($comments) == 0) { ?>
+						<?php  if ($edit && $a->commentable && count($comments) == 0) { ?>
 						<span class="item-time">
 						<?php if ($this->model->access('content')) { ?>
 							&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a>
@@ -68,18 +82,17 @@ $creator = \Hubzero\User\Profile::getInstance($a->userid);
 			<?php
 				// Show comments
 				$this->view('_comments')
-			     ->set('option', $this->option)
 			     ->set('comments', $comments)
 			     ->set('model', $this->model)
 				 ->set('activity', $a)
 				 ->set('uid', $this->uid)
+				 ->set('edit', $edit)
 			     ->display();
 
 				// Add comment
-				if ($this->model->access('content'))
+				if ($edit && $this->model->access('content'))
 				{
 					$this->view('_addcomment')
-				     ->set('option', $this->option)
 				     ->set('comments', $comments)
 				     ->set('model', $this->model)
 					 ->set('activity', $a)

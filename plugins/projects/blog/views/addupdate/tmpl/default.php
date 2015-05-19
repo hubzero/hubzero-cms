@@ -31,7 +31,7 @@ if (!$this->model->access('content'))
 }
 ?>
 <div id="blab" class="miniblog">
-	<form id="blogForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . $this->goto) . '/?active=feed'; ?>">
+	<form id="blogForm" method="post" action="<?php echo Route::url($this->model->link()); ?>">
 		<fieldset>
 			<textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="Got an update?"></textarea>
 			<p id="blog-submitarea">

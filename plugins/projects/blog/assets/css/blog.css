@@ -190,10 +190,15 @@
 	.admin-action:before {
 		color: #fce48a !important;
 	}
-	.infofeed .blog-item img.blog-author {
+	.infofeed .blog-item img.blog-author,
+	.infofeed .blog-item img.project-image {
 		float: left;
 		margin-right: 1.5em;
 		width: 40px;
+	}
+	.infofeed .blog-item img.project-image {
+		width: 50px;
+		margin-bottom: 2em;
 	}
 	.infofeed .sameline:before {
 		content: ":";
@@ -351,7 +356,8 @@
 		display: block;
 		margin-right: 1.5em;
 	}
-	#plg-content .comments {
+	#plg-content .comments,
+	#project-updates .comments {
 		list-style: none;
 		padding: 0.5em 0 0 0;
 		margin: 1em 0 0 0;
@@ -359,7 +365,8 @@
 		width: 100%;
 		background: #f4f6f8;
 	}
-	#plg-content .comments li {
+	#plg-content .comments li,
+	#project-updates .comments li {
 		margin: 0;
 		border: none;
 		padding: 0.5em 2em 0.5em 0.5em;
@@ -369,7 +376,8 @@
 		clear: none;
 		padding-left: 4em !important;
 	}
-	#plg-content .comments .body {
+	#plg-content .comments .body,
+	#project-updates .comments .body {
 		font-size: 90%;
 	}
 	#plg-content .addcomment {
@@ -377,6 +385,7 @@
 		background: #f4f6f8;
 	}
 	#plg-content .newitem .comments,
+	#project-updates .newitem .comments,
 	#plg-content .newitem .addcomment {
 		background: #fff6ef;
 	}

@@ -50,12 +50,10 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 
 ?>
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
-	<?php if ($deletable && $this->model->access('content')) { ?>
+	<?php if ($this->edit && $deletable && $this->model->access('content')) { ?>
 		<span class="m_options">
 			<span class="delit" id="pu_<?php echo $comment->id; ?>">
-			 <a href="<?php echo Route::url('index.php?option=' . $this->option
-			. '&alias=' . $this->model->get('alias') . '&task=view&active=feed')
-			.'/?action=deletecomment&amp;cid=' . $comment->id; ?>">x</a>
+			 <a href="<?php echo Route::url($this->model->link('feed') .'&action=deletecomment&amp;cid=' . $comment->id); ?>">x</a>
 			</span>
 		</span>
 		<?php } ?>
