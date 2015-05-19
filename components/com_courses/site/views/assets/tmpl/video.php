@@ -211,9 +211,9 @@ elseif ($type == 'html5')
 if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
-	require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+	require_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'mediatracking.php');
 	$dbo = \JFactory::getDBO();
-	$mediaTracking = new ResourceMediaTracking($dbo);
+	$mediaTracking = new \Components\Resources\Tables\MediaTracking($dbo);
 
 	// Get tracking for this user for this resource
 	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $this->asset->id, 'course');
