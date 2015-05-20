@@ -15,6 +15,7 @@
 
 */
 @import url("emocons.css");
+@import url("icons.css");
 
 	#project-innerwrap {
 		background: #fff9ef;
@@ -1862,67 +1863,9 @@
 
 /* Plugin header
 --------------------------------------------- */
-
 	#plg-header a {
 		color: #000;
 		border-bottom: 1px dotted #000;
-	}
-
-/* Font-based styles
---------------------------------------------- */
-	.i_user:before,
-	.i_user:after,
-	.i_group:before,
-	.i_group:after,
-	.team:before,
-	.team:after,
-	.inform:before,
-	.inform:after,
-	.newsupdate:before,
-	.newsupdate:after,
-	.files:before,
-	.files:after,
-	.todo:before,
-	.todo:after,
-	.addnew:before,
-	.addnew:after,
-	.re_sort:before,
-	.re_sort:after,
-	.project:before,
-	.project:after,
-	#introduction li:before,
-	#introduction li:after,
-	.infofeed .admin:before,
-	.infofeed .admin:after,
-	.notes:before,
-	.notes:after,
-	.blog:before,
-	.blog:after,
-	.publication:before,
-	.publication:after,
-	.publications:before,
-	.apps:before,
-	.apps:after,
-	.tools:before,
-	.tools:after,
-	.databases:before,
-	.databases:after,
-	.admin-note:before,
-	.private:before,
-	.s-private:before,
-	.browse:before,
-	.main-menu ul.projecttools li.assets span:before,
-	.defaultimage:before,
-	.feed:before,
-	.project-icon:before {
-		content: "";
-		width: 16px;
-		height: 16px;
-		font-size: 16px;
-		font-family: 'Fontcons';
-		color: #aaa;
-		margin-right: 0.3em;
-		vertical-align: middle;
 	}
 	.main-menu ul.projecttools li.assets span:before {
 		color: #dbd2c3;
@@ -1936,157 +1879,6 @@
 	.sidebox h4:before {
 		font-weight: normal;
 		color: #b8b8b8;
-	}
-	.i_user:before {
-		content: "\f007";
-	}
-	.inform:before {
-		content: "\f05a";
-		color: #89c685;
-	}
-	.defaultimage:before,
-	.project-icon:before {
-		content: "\f03f";
-		color: #aea79a;
-	}
-	.project-icon:before {
-		width: 52px;
-		height: 52px;
-		font-size: 52px;
-		padding: 0.5em 0.1em;
-		float: left;
-	}
-	.newsupdate:before, .feed:before {
-		content: "\f053";
-		color: #6897a4;
-	}
-	.project:before {
-		content: "\f085";
-	}
-	.infofeed .admin:before {
-		content: "\f085";
-		color: #55c64c;
-	}
-	.apps:before, .tools:before {
-		content: "\2692";
-		color: #c6874e;
-	}
-	.databases:before {
-		content: "\f001";
-		color: #c6a68d;
-	}
-	.private:before,
-	.s-private:before {
-		content: "\f023";
-		color: #666;
-		width: 14px;
-		height: 14px;
-		font-size: 14px;
-	}
-	.browse:before {
-		content: "\f002";
-	}
-	.main-menu ul.projecttools li.assets span:before {
-		content: "\f0d7";
-	}
-	.main-menu ul.projecttools li a:before, .main-menu ul.projecttools li.assets span:before {
-		position: absolute;
-		margin-left: -20px;
-	}
-	.addnew:before {
-		content: "\2295";
-		color: #52ad4b;
-	}
-	.re_sort:after {
-		content: "\2193";
-		margin-left: 0.2em;
-		width: 8px;
-		height: 8px;
-		font-size: 8px;
-	}
-	.activesort .re_sort:after {
-		color: #000;
-		font-weight: normal;
-	}
-	#introduction li:before {
-		content: "\2714";
-		color: #55c64c;
-		vertical-align: top;
-	}
-	.admin-note:before {
-		content: "\275D";
-		width: 14px;
-		height: 14px;
-		font-size: 14px;
-		color: #CCCCCC;
-	}
-	#suggestions .s-apps a:before, .suggestions .s-apps a:before,
-	.feature #feature-app .ima:before,
-	#suggestions .s-tools a:before, .suggestions .s-tools a:before,
-	.feature #feature-tool .ima:before {
-		content: "\2692";
-		color: #c6874e;
-	}
-	#suggestions .s-files a:before, .suggestions .s-files a:before,
-	.feature #feature-files .ima:before,
-	.files:before {
-		content: "\f016";
-		color: #6897a4;
-	}
-	#suggestions .s-databases a:before, .suggestions .s-databases a:before,
-	.feature #feature-databases .ima:before {
-		content: "\f001";
-		color: #c6a68d;
-	}
-	#suggestions .s-team a:before, .suggestions .s-team a:before,
-	.feature #feature-team .ima:before, .team:before, .i_group:before {
-		content: "\f042";
-	}
-	#suggestions .s-picture a:before, .suggestions .s-picture a:before {
-		content: "\f03e";
-		color: #87a590;
-	}
-	#suggestions .s-about a:before, .suggestions .s-about a:before {
-		content: "\270D";
-	}
-	#suggestions .s-links a:before, .suggestions .s-links a:before {
-		content: "\26D3";
-	}
-	#suggestions .s-todo a:before, .suggestions .s-todo a:before,
-	.feature #feature-todo .ima:before, .todo:before {
-		content: "\f08d";
-		color: #c6a68d;
-	}
-	#suggestions .s-notes a:before, .suggestions .s-notes a:before,
-	.feature #feature-notes .ima:before,
-	.notes:before {
-		content: "\f0c1";
-		color: #8f8faa;
-	}
-	.feature #feature-blog .ima:before, .blog:before {
-		content: "\f075";
-		color: #8f8faa;
-	}
-	.feature #feature-publications .ima:before,
-	.suggestions .s-publications a:before,
-	.publications:before, .publication:before {
-		content: "\f058";
-		color: #52ad4b;
-	}
-	.feature #feature-activity .ima:before {
-		content: "\f080";
-		color: #c6a68d;
-	}
-	.feature #feature-more .ima:before {
-		content: "\22EF";
-	}
-	#suggestions .s-series a:before,
-	#suggestions .s-collections a:before {
-		content: "\f060";
-	}
-	#suggestions .s-gallery a:before {
-		content: "\f08c";
-		color: #48704c;
 	}
 
 /* IE7 hacks

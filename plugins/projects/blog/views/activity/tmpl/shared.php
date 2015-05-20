@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-     ->css('projects', 'com_projects')
+     ->css('icons', 'com_projects')
 	 ->css('emocons', 'com_projects');
 
 $this->js();

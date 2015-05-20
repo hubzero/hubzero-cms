@@ -1001,9 +1001,23 @@ class Project extends Model
 			case 'count':
 				return (int) $this->_tbl->getCount($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
 			break;
+
+			case 'group':
+				$group = isset($filters['group']) ? $filters['group'] : NULL;
+				$results = $this->_tbl->getGroupProjects(
+					$group,
+					User::get('id'),
+					$filters,
+					$setupComplete
+				);
+			break;
+
+			default:
+			$results = $this->_tbl->getRecords($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
+			break;
 		}
 
-		if ($results = $this->_tbl->getRecords($filters, $admin, User::get('id'), $showDeleted, $setupComplete))
+		if ($results)
 		{
 			foreach ($results as $key => $result)
 			{
