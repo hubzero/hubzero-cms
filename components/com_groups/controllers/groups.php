@@ -635,18 +635,21 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Run content through validation and spam filters
-		JPluginHelper::importPlugin('content');
-		$results = JDispatcher::getInstance()->trigger('onContentBeforeSave', array(
-			'com_groups.group.description',
-			&$g_public_desc,
-			($this->_task == 'new')
-		));
-		foreach ($results as $result)
+		if (trim($g_public_desc))
 		{
-			if ($result === false)
+			JPluginHelper::importPlugin('content');
+			$results = JDispatcher::getInstance()->trigger('onContentBeforeSave', array(
+				'com_groups.group.description',
+				&$g_public_desc,
+				($this->_task == 'new')
+			));
+			foreach ($results as $result)
 			{
-				$this->setNotification(JText::_('COM_GROUPS_SAVE_ERROR_FAILED_VALIDATION'), 'error');
-				break;
+				if ($result === false)
+				{
+					$this->setNotification(JText::_('COM_GROUPS_SAVE_ERROR_FAILED_VALIDATION'), 'error');
+					break;
+				}
 			}
 		}
 
