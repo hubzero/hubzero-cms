@@ -39,6 +39,7 @@ $this->css();
 	<?php echo Lang::txt('PLG_MEMBERS_GROUPS'); ?>
 </h3>
 
+<?php if (User::authorise('core.create', 'com_groups')) { ?>
 <ul id="page_options">
 	<li>
 		<a class="icon-add btn add" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>">
@@ -46,6 +47,7 @@ $this->css();
 		</a>
 	</li>
 </ul>
+<?php } ?>
 
 <?php if ($this->total) { ?>
 	<div class="container">

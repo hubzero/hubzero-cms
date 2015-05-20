@@ -163,6 +163,11 @@ class Helper extends Module
 		}
 		$this->groups = $groups;
 
+		if (!User::authorise('core.create', 'com_groups'))
+		{
+			$this->params->set('button_show_add', 0);
+		}
+
 		require $this->getLayoutPath();
 	}
 }
