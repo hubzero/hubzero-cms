@@ -1815,25 +1815,26 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				// Create new version
 				$new 				=  new \Components\Publications\Tables\Version( $this->_database );
-				$new 				= $pub->version; // copy of default version
-				$new->id 			= 0;
-				$new->created 		= Date::toSql();
-				$new->created_by 	= $this->_uid;
-				$new->modified 		= Date::toSql();
-				$new->modified_by 	= $this->_uid;
-				$new->rating 		= '0.0';
-				$new->state 		= 3;
-				$new->version_label = $label;
-				$new->doi 			= '';
-				$new->secret 		= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
-				$new->version_number= $pub->versionCount() + 1;
-				$new->main 			= 0;
-				$new->release_notes = NULL; // Release notes will need to be different
-				$new->submitted 	= NULL;
-				$new->reviewed 		= NULL;
-				$new->reviewed_by   = 0;
-				$new->curation		= NULL; // Curation manifest needs to reflect any new requirements
-				$new->params		= NULL; // Accept fresh configs
+				// Copy from previous version
+				$new->publication_id = $pub->get('publication_id');
+				$new->title          = $pub->get('title');
+				$new->abstract       = $pub->get('abstract');
+				$new->description    = $pub->get('description');
+				$new->metadata       = $pub->get('metadata');
+				$new->release_notes  = $pub->get('release_notes');
+				$new->license_type   = $pub->get('license_type');
+				$new->license_text   = $pub->get('license_text');
+				$new->access         = $pub->get('access');
+
+				$new->created 		 = Date::toSql();
+				$new->created_by 	 = $this->_uid;
+				$new->modified 		 = Date::toSql();
+				$new->modified_by 	 = $this->_uid;
+				$new->state 		 = 3;
+				$new->main 			 = 0;
+				$new->version_label  = $label;
+				$new->version_number = $pub->versionCount() + 1;
+				$new->secret 		 = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 
 				if ($new->store())
 				{
