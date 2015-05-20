@@ -278,12 +278,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td class="priority-3">
-					<a class="state <?php echo $class; ?> hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . $filterstring . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $alt; ?> :: <?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+					<a class="state <?php echo $class; ?> hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . $filterstring . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $alt; ?> :: <?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
 				<td class="priority-3">
-					<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . $filterstring . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+					<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . $filterstring . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
 						<span><?php echo $this->escape(Lang::txt($row->groupname)); ?></span>
 					</a>
 				</td>

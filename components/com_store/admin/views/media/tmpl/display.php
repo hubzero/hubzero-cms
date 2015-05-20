@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=delete&current=' . $this->file . '&id=' . $this->id . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo Lang::txt('COM_STORE_DELETE'); ?> ]</a></td>
+				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=delete&current=' . $this->file . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('COM_STORE_DELETE'); ?> ]</a></td>
 			</tr>
 <?php } else { ?>
 			<tr>

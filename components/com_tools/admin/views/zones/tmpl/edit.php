@@ -211,7 +211,7 @@ function submitbutton(pressbutton)
 						     ->js('jquery.fileuploader.js', 'system');
 					?>
 					<div style="padding-top: 2.5em">
-						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&id=' . $this->row->get('id') . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
+						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
 							<noscript>
 								<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&id=' . $this->row->get('id')); ?>"></iframe>
 							</noscript>
@@ -257,7 +257,7 @@ function submitbutton(pressbutton)
 								</tr>
 								<tr>
 									<td><input type="hidden" name="currentfile" id="currentfile" value="<?php echo $file; ?>" /></td>
-									<td><a id="img-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo Lang::txt('DELETE'); ?> ]</a></td>
+									<td><a id="img-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('DELETE'); ?> ]</a></td>
 								</tr>
 							</tbody>
 						</table>

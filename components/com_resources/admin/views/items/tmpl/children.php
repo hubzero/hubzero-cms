@@ -288,7 +288,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span><?php echo $alt; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->child_id . '&pid=' . $this->filters['parent_id'] . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+						<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->child_id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>

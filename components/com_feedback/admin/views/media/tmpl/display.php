@@ -106,7 +106,7 @@ window.onload = passparam;
 			</tr>
 			<tr>
 				<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=delete&qid=' . $this->qid . '&id=' . $this->id . '&type=' . $this->type . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo Lang::txt('DELETE'); ?> ]</a></td>
+				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=delete&qid=' . $this->qid . '&id=' . $this->id . '&type=' . $this->type . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('DELETE'); ?> ]</a></td>
 			</tr>
 <?php } else { ?>
 			<tr>

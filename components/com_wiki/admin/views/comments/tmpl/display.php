@@ -171,12 +171,12 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->name)); ?>
 				</td>
 				<td class="priority-5">
-					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state2 . '&id=' . $row->id . '&pageid=' . $this->filters['pageid'] . '&' . JUtility::getToken() . '=1'); ?>">
+					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state2 . '&id=' . $row->id . '&pageid=' . $this->filters['pageid'] . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $calt2; ?></span>
 					</a>
 				</td>
 				<td class="priority-2">
-					<a class="state <?php echo $cls1; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $state1 . '&id=' . $row->id . '&pageid=' . $this->filters['pageid'] . '&' . JUtility::getToken() . '=1'); ?>">
+					<a class="state <?php echo $cls1; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $state1 . '&id=' . $row->id . '&pageid=' . $this->filters['pageid'] . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $calt1; ?></span>
 					</a>
 				</td>

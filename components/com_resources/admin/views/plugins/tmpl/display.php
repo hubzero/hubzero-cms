@@ -153,7 +153,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>

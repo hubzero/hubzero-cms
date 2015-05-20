@@ -135,7 +135,7 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-					<a class="state trash" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;id[]=<?php echo $row->sessnum; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
+					<a class="state trash" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;id[]=<?php echo $row->sessnum; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
 						<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
 					</a>
 				</td>

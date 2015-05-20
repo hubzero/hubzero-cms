@@ -168,7 +168,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo Lang::txt('Set this to %s',$task);?>">
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('Set this to %s',$task);?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>

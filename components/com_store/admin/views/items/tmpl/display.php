@@ -168,7 +168,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $a_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $a_task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $a_alt; ?>">
+					<a class="state <?php echo $a_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $a_task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $a_alt; ?>">
 						<span><?php echo $a_alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -179,7 +179,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $p_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $p_task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $p_alt; ?>">
+					<a class="state <?php echo $p_class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $p_task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $p_alt; ?>">
 						<span></span>
 					</a>
 				<?php } else { ?>

@@ -163,8 +163,8 @@ class Mailinglist extends SiteController
 		if (!Request::checkToken()) die('Invalid Token');
 
 		//get request vars
-		$list   = Request::getInt('list_' . \JUtility::getToken(), '', 'post');
-		$email  = Request::getVar('email_' . \JUtility::getToken(), User::get('email'), 'post');
+		$list   = Request::getInt('list_' . \Session::getFormToken(), '', 'post');
+		$email  = Request::getVar('email_' . \Session::getFormToken(), User::get('email'), 'post');
 		$sid    = Request::getInt('subscriptionid', 0);
 		$hp1    = Request::getVar('hp1', '', 'post');
 		$return = base64_decode(Request::getVar('return', '/', 'post'));

@@ -134,7 +134,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 				<td>
-					<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl'] . '&' . JUtility::getToken() . '=1'); ?>">
+					<a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl'] . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('[ x ]'); ?>" /></span>
 					</a>
 				</td>

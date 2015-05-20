@@ -228,7 +228,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td class="priority-3">
-					<a class="state <?php echo $state; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->uidNumber . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_SET_TASK', $task); ?>">
+					<a class="state <?php echo $state; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_SET_TASK', $task); ?>">
 						<span class="text"><?php echo $alt; ?></span>
 					</a>
 				</td>

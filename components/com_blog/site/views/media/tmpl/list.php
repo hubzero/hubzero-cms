@@ -83,7 +83,7 @@ $this->css();
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . basename($folder) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo basename($folder); ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . basename($folder) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo basename($folder); ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
 								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>
@@ -97,7 +97,7 @@ $this->css();
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . basename($doc) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo basename($doc); ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . basename($doc) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo basename($doc); ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
 								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>

@@ -170,7 +170,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td class="priority-3">
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=makedefault&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=makedefault&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
 					<?php if ($row->get('is_default')) { ?>
 						<span class="state yes">
 							<span class="text"><?php echo Lang::txt('JYES'); ?></span>
@@ -190,25 +190,25 @@ foreach ($this->rows as $row)
 			<?php if ($canDo->get('core.edit.state')) { ?>
 				<td>
 					<?php if ($row->get('state') == 1) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
 						<span class="state publish">
 							<span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($row->get('state') == 2) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state trash">
 							<span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($row->get('state') == 3) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state pending">
 							<span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($row->get('state') == 0) { ?>
-					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state unpublish">
 							<span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
 						</span>

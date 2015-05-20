@@ -113,7 +113,7 @@ $app = \JFactory::getApplication();
 							<?php echo $folderName; ?>
 						</td>
 						<td style="width:16px;">
-							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . JUtility::getToken() . '=1'); ?>" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
 								<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>
@@ -136,7 +136,7 @@ $app = \JFactory::getApplication();
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td style="width:16px;">
-							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . JUtility::getToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
 								<img src="<?php echo Request::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>

@@ -153,7 +153,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&' . JUtility::getToken() . '=1'); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&' . Session::getFormToken() . '=1'); ?>">
 							<?php echo Lang::txt('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version')))); ?>
 						</a>
 					<?php } else { ?>
@@ -167,7 +167,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $class . ' ' . $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&approve=' . $task . '&' . JUtility::getToken() . '=1'); ?>">
+						<a class="access <?php echo $class . ' ' . $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&approve=' . $task . '&' . Session::getFormToken() . '=1'); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>

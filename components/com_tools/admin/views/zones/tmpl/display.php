@@ -101,7 +101,7 @@ if ($this->rows)
 					<?php echo $this->escape(stripslashes($row->get('type'))); ?>
 				</td>
 				<td>
-					<a class="state <?php echo ($row->get('state') == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . ($row->get('state') == 'up' ? 'down' : 'up') . '&' . JUtility::getToken() . '=1'); ?>">
+					<a class="state <?php echo ($row->get('state') == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . ($row->get('state') == 'up' ? 'down' : 'up') . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->get('state'))); ?></span>
 					</a>
 				</td>

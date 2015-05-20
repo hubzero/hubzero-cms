@@ -182,7 +182,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&wish=' . $this->filters['wish'] . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SET_TASK', $task);?>">
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&wish=' . $this->filters['wish'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SET_TASK', $task);?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -193,7 +193,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="<?php echo $aclass; ?> state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $atask . '&id=' . $row->id . '&wish=' . $row->wish . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $aalt; ?>">
+						<a class="<?php echo $aclass; ?> state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $atask . '&id=' . $row->id . '&wish=' . $row->wish . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $aalt; ?>">
 							<span><?php echo $aalt; ?></span>
 						</a>
 					<?php } else { ?>
