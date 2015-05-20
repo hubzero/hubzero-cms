@@ -277,15 +277,15 @@ function submitbutton(pressbutton)
 				</span>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_HINT'); ?>">
+			<div class="input-wrap" data-hint="<?php echo str_replace('<br />', "\n", JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_HINT')); ?>">
 				<label for="field-importmode">
 					<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE'); ?>
 				</label><br />
-				<select name="import[mode]" id="field-importmode" disabled="disabled">
+				<select name="import[mode]" id="field-importmode">
 					<option value="UPDATE">
 						<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_UPDATE'); ?>
 					</option>
-					<option <?php if ($this->import->get('mode') == JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_PATCH')) { echo 'selected="selected"'; } ?> value="PATCH">
+					<option <?php if ($this->import->get('mode') == 'PATCH') { echo 'selected="selected"'; } ?> value="PATCH">
 						<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_PATCH'); ?>
 					</option>
 				</select>

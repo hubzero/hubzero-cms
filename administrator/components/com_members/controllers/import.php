@@ -611,14 +611,14 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	{
 		$profile = new MembersProfile($this->database);
 
-		$skip = array('gid', 'proxyPassword', 'loginShell', 'ftpShell', 'shadowExpire', 'params', 'proxyUidnumber');
+		$skip = array('gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword', 'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber');
 
 		$fields = array();
 		$row    = array();
 
 		foreach ($profile->getProperties() as $key => $val)
 		{
-			if (in_array($key, $skip))
+			if (in_array(strtolower($key), $skip))
 			{
 				continue;
 			}
