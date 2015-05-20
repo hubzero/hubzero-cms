@@ -36,4 +36,5 @@ return array(
 	'Notify'   => 'Hubzero\Facades\Notify',
 	'Cache'    => 'Hubzero\Facades\Cache',
 	'Document' => 'Hubzero\Facades\Document',
+	'Html'     => 'Hubzero\Facades\Html',
 );

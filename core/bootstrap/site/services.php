@@ -38,5 +38,6 @@ return array(
 	'Hubzero\Template\TemplateServiceProvider',
 	'Hubzero\Cache\CacheServiceProvider',
 	'Hubzero\Html\EditorServiceProvider',
+	'Hubzero\Html\BuilderServiceProvider',
 	'Hubzero\Mail\MailerServiceProvider',
 );

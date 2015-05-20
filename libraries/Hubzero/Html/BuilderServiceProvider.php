@@ -24,17 +24,29 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return array(
-	'Session'  => 'Hubzero\Facades\Session',
-	'Toolbar'  => 'Hubzero\Facades\Toolbar',
-	'Submenu'  => 'Hubzero\Facades\Submenu',
-	'Module'   => 'Hubzero\Facades\Module',
-	'Notify'   => 'Hubzero\Facades\Notify',
-	'Cache'    => 'Hubzero\Facades\Cache',
-	'Document' => 'Hubzero\Facades\Document',
-	'Html'     => 'Hubzero\Facades\Html',
-);
+namespace Hubzero\Html;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * HTML Helper service provider
+ */
+class BuilderServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app['html.builder'] = function($app)
+		{
+			return new Builder();
+		};
+	}
+}
