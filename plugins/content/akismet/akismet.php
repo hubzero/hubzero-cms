@@ -76,10 +76,20 @@ class plgContentAkismet extends JPlugin
 		        ->set('akismetServer', $this->params->get('akismetServer', 'rest.akismet.com'))
 		        ->set('akismetVersion', $this->params->get('akismetVersion', '1.1'));
 
+		$ip = JRequest::ip();
+		$uid = JFactory::getUser()->get('id');
+		$username = JFactory::getUser()->get('username');
+		$fallback = 'option=' . JRequest::getCmd('option') . '&controller=' . JRequest::getCmd('controller') . '&task=' . JRequest::getCmd('task');
+		$from = JRequest::getVar('REQUEST_URI', $fallback, 'server');
+		$from = $from ?: $fallback;
+
 		if ($service->isSpam($content))
 		{
+			JFactory::getSpamLogger()->info('spam ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 			return false;
 		}
+
+		JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 	}
 
 	/**

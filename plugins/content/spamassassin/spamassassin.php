@@ -79,10 +79,20 @@ class plgContentSpamassassin extends JPlugin
 		        ->set('server', $this->params->get('server', 'http://spamcheck.postmarkapp.com/filter'))
 		        ->set('verbose', $this->params->get('verbose', 0));
 
+		$ip = JRequest::ip();
+		$uid = JFactory::getUser()->get('id');
+		$username = JFactory::getUser()->get('username');
+		$fallback = 'option=' . JRequest::getCmd('option') . '&controller=' . JRequest::getCmd('controller') . '&task=' . JRequest::getCmd('task');
+		$from = JRequest::getVar('REQUEST_URI', $fallback, 'server');
+		$from = $from ?: $fallback;
+
 		if ($service->isSpam($content))
 		{
+			JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 			return false;
 		}
+
+		JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 	}
 
 	/**

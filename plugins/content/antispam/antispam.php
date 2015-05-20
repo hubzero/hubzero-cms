@@ -78,14 +78,24 @@ class plgContentAntispam extends JPlugin
 				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
 				. 'texas holdem, fisting'));
 
+		$ip = JRequest::ip();
+		$uid = JFactory::getUser()->get('id');
+		$username = JFactory::getUser()->get('username');
+		$fallback = 'option=' . JRequest::getCmd('option') . '&controller=' . JRequest::getCmd('controller') . '&task=' . JRequest::getCmd('task');
+		$from = JRequest::getVar('REQUEST_URI', $fallback, 'server');
+		$from = $from ?: $fallback;
+
 		if ($service->isSpam($content))
 		{
+			JFactory::getSpamLogger()->info('spam ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 			if ($message = $this->params->get('message'))
 			{
 				\JFactory::getApplication()->enqueueMessage($message, 'error');
 			}
 			return false;
 		}
+
+		JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 	}
 
 	/**
