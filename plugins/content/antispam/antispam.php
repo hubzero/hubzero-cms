@@ -37,14 +37,16 @@ defined('_JEXEC') or die;
 class plgContentAntispam extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Finder before save content method
+	 * Before save content method
+	 *
 	 * Article is passed by reference, but after the save, so no changes will be saved.
 	 * Method is called right after the content is saved
 	 *
-	 * @param  string   $context  The context of the content passed to the plugin (added in 1.6)
-	 * @param  object   $article  A JTableContent object
-	 * @param  boolean  $isNew    If the content is just about to be created
-	 * @since  2.5
+	 * @param   string   $context  The context of the content passed to the plugin (added in 1.6)
+	 * @param   object   $article  A JTableContent object
+	 * @param   boolean  $isNew    If the content is just about to be created
+	 * @return  void
+	 * @since   2.5
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
@@ -68,7 +70,6 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 		// Get the detector manager
 		$service = new \Hubzero\Spam\Checker();
 
-
 		foreach (Event::trigger('antispam.onAntispamDetector') as $detector)
 		{
 			if (!$detector) continue;
@@ -80,7 +81,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 		$result = $service->check($content);
 
 		// If the content was detected as spam...
-		if ($service->check($content)->isSpam())
+		if ($result->isSpam())
 		{
 			// Learn from it?
 			if ($this->params->get('learn_spam', 1))
@@ -94,7 +95,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 			// If a message was set...
 			if ($message = $this->params->get('message'))
 			{
-				\JFactory::getApplication()->enqueueMessage($message, 'error');
+				Notify::error($message);
 			}
 
 			return false;
