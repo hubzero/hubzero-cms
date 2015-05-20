@@ -30,23 +30,13 @@
 
 namespace Hubzero\Html\Builder;
 
+use Hubzero\Utility\Date;
+
 /**
  * Utility class for form elements
  */
 class Input
 {
-	/**
-	 * Displays a hidden token field to reduce the risk of CSRF exploits
-	 *
-	 * Use in conjunction with Session::checkToken
-	 *
-	 * @return  string  A hidden input field with a token
-	 */
-	public static function token()
-	{
-		return self::input('hidden', \App::get('session')->getFormToken(), 1) . "\n";
-	}
-
 	/**
 	 * Create a form input field.
 	 *
@@ -73,6 +63,18 @@ class Input
 		$options = array_merge($options, $merge);
 
 		return '<input' . self::attributes($options) . ' />';
+	}
+
+	/**
+	 * Displays a hidden token field to reduce the risk of CSRF exploits
+	 *
+	 * Use in conjunction with Session::checkToken
+	 *
+	 * @return  string  A hidden input field with a token
+	 */
+	public static function token()
+	{
+		return self::input('hidden', \App::get('session')->getFormToken(), 1) . "\n";
 	}
 
 	/**
@@ -149,6 +151,74 @@ class Input
 	public static function file($name, $options = array())
 	{
 		return self::input('file', $name, null, $options);
+	}
+
+	/**
+	 * Displays a calendar control field
+	 *
+	 * @param   string  $name
+	 * @param   string  $value
+	 * @param   array   $options
+	 * @return  string  HTML markup for a calendar field
+	 */
+	public static function calendar($name, $value = null, $options = array())
+	{
+		static $done;
+
+		if ($done === null)
+		{
+			$done = array();
+		}
+
+		$readonly = isset($options['readonly']) && $options['readonly'] == 'readonly';
+		$disabled = isset($options['disabled']) && $options['disabled'] == 'disabled';
+
+		$format = 'yy-mm-dd';
+		if (isset($options['format']))
+		{
+			$format = $options['format'] ? $options['format'] : $format;
+			unset($options['format']);
+		}
+
+		if (!$readonly && !$disabled)
+		{
+			// Load the calendar behavior
+			Behavior::calendar();
+			Behavior::tooltip();
+
+			// Only display the triggers once for each control.
+			if (!in_array($id, $done))
+			{
+				$format = ($format == 'Y-m-d H:i:s' || $format == '%Y-%m-%d %H:%M:%S' || $format == 'Y-m-d' ? 'yy-mm-dd' : $format);
+
+				\App::get('document')->addScriptDeclaration("
+					jQuery(document).ready(function($){
+						$('#" . $id . "').datetimepicker({
+							duration: '',
+							showTime: true,
+							constrainInput: false,
+							stepMinutes: 1,
+							stepHours: 1,
+							altTimeField: '',
+							time24h: true,
+							dateFormat: '" . $format . "',
+							timeFormat: 'HH:mm:00'
+						});
+					});
+				");
+
+				$done[] = $id;
+			}
+
+			return '<span class="input-datetime">' . self::text($name, $value, $options) . '</span>';
+		}
+		else
+		{
+			$value = (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : '');
+
+			return self::text($name . 'disabled', (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : ''), $options) .
+				   self::hidden($name, $value, $options);
+		}
 	}
 
 	/**
