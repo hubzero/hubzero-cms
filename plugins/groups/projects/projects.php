@@ -114,7 +114,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		// Load classes
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'project.php');
-	
+
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
 
@@ -210,7 +210,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		// Load classes
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'project.php');
-	
+
 		// Model
 		$this->model = new \Components\Projects\Models\Project();
 
@@ -324,4 +324,3 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 }
-

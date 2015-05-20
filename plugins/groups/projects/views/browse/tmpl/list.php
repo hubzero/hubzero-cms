@@ -64,7 +64,7 @@ switch ($this->which)
 				$setup = $row->inSetup() ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') : '';
 
 				$i++;
- ?>
+?>
 				<tr class="mline">
 					<td class="th_image"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>"  class="project-image" /></a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?></td>
 					<td class="th_privacy"><?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ; } ?></td>
