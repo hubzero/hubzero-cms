@@ -32,10 +32,10 @@ namespace Hubzero\Spam;
 
 use Hubzero\Spam\Detector\DetectorInterface;
 use Hubzero\Spam\StringProcessor\StringProcessorInterface;
-use RuntimeException;
+use Hubzero\Error\Exception\RuntimeException;
 
 /**
- * Spam detector
+ * Spam checker
  */
 class Checker
 {
@@ -47,12 +47,17 @@ class Checker
 	protected $detectors = array();
 
 	/**
-	 * @var StringProcessorInterface
+	 * StringProcessorInterface
+	 *
+	 * @var  object
 	 */
 	protected $stringProcessor;
 
 	/**
-	 * @param StringProcessorInterface $stringProcessor
+	 * Set string processor
+	 *
+	 * @param   object  $stringProcessor
+	 * @return  void
 	 */
 	public function setStringProcessor(StringProcessorInterface $stringProcessor)
 	{
@@ -83,7 +88,11 @@ class Checker
 			}
 		}
 
-		return new Result($failure > 0);
+		$result = new Result($failure > 0);
+
+		$this->log($result->isSpam());
+
+		return $result;
 	}
 
 	/**
@@ -91,7 +100,7 @@ class Checker
 	 *
 	 * @param   object  $spamDetector  SpamDetectorInterface
 	 * @return  object  SpamDetector
-	 * @throws  \RuntimeException
+	 * @throws  RuntimeException
 	 */
 	public function registerDetector(DetectorInterface $spamDetector)
 	{
@@ -165,7 +174,7 @@ class Checker
 	 */
 	protected function getIp()
 	{
-		return \Request::ip();
+		return \App::get('request')->ip();
 	}
 
 	/**
@@ -175,7 +184,7 @@ class Checker
 	 */
 	protected function getUserAgent()
 	{
-		return \Request::getVar('HTTP_USER_AGENT', null, 'server');
+		return \App::get('request')->getVar('HTTP_USER_AGENT', null, 'server');
 	}
 
 	/**
@@ -191,6 +200,40 @@ class Checker
 			$class = get_class($class);
 		}
 
-		return $class; //substr($class, strrpos($class, '\\') + 1);
+		return $class;
+	}
+
+	/**
+	 * Log results of the check
+	 *
+	 * @param   string  $isSpam  Spam detection result
+	 * @return  void
+	 */
+	protected function log($isSpam)
+	{
+		if (!\App::has('log.spam'))
+		{
+			return;
+		}
+
+		$request = \App::get('request');
+
+		$fallback  = 'option=' . $request->getCmd('option');
+		$fallback .= '&controller=' . $request->getCmd('controller');
+		$fallback .= '&task=' . $request->getCmd('task');
+
+		$from = $request->getVar('REQUEST_URI', $fallback, 'server');
+		$from = $from ?: $fallback;
+
+		$data = array(
+			($isSpam ? 'spam' : 'ham'),
+			$this->getIp(),
+			\User::get('id'),
+			\User::get('username'),
+			$from
+		);
+
+		$logger = \App::get('log.spam');
+		$logger->info(implode(' ', $data));
 	}
 }

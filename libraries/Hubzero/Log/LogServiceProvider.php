@@ -49,12 +49,14 @@ class LogServiceProvider extends ServiceProvider
 		$this->registerDebugLog();
 
 		$this->registerAuthLog();
+
+		$this->registerSpamLog();
 	}
 
 	/**
 	 * Register the debug log.
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function registerDebugLog()
 	{
@@ -80,7 +82,7 @@ class LogServiceProvider extends ServiceProvider
 	/**
 	 * Register the auth log.
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function registerAuthLog()
 	{
@@ -98,6 +100,32 @@ class LogServiceProvider extends ServiceProvider
 			}
 
 			$log->useFiles($path . DS . 'cmsauth.log', 'info', "%datetime% %message%\n", 'Y-m-d H:i:s', 0640);
+
+			return $log;
+		};
+	}
+
+	/**
+	 * Register the spam log.
+	 *
+	 * @return  void
+	 */
+	public function registerSpamLog()
+	{
+		$this->app['log.spam'] = function($app)
+		{
+			$log = new Writer(
+				new Monolog($app['config']->get('application_env')),
+				$app['dispatcher']
+			);
+
+			$path = $app['config']->get('log_path');
+			if (is_dir('/var/log/hubzero'))
+			{
+				$path = '/var/log/hubzero';
+			}
+
+			$log->useFiles($path . DS . 'cmsspam.log', 'debug', '', 'Y-m-d H:i:s', 0640);
 
 			return $log;
 		};
