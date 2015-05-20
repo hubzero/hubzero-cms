@@ -167,6 +167,11 @@ class modMyGroups extends \Hubzero\Module\Module
 		// Push the module CSS to the template
 		$this->css();
 
+		if (!$juser->authorise('core.create', 'com_groups'))
+		{
+			$this->params->set('button_show_add', 0);
+		}
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }
