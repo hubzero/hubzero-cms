@@ -532,7 +532,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Incoming
-		$g_gidNumber    	= Request::getInt('gidNumber', 0, 'post');
+		$g_gidNumber = Request::getInt('gidNumber', 0, 'post');
 
 		if ((!$g_gidNumber && !User::authorise('core.create', $this->_option))
 		 || ($g_gidNumber && !User::authorise('core.edit', $this->_option)))
@@ -544,18 +544,18 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			);
 		}
 
-		$g_cn           	= trim(Request::getVar('cn', '', 'post'));
-		$g_description  	= preg_replace('/\s+/', ' ',trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
-		$g_discoverability	= Request::getInt('discoverability', 0, 'post');
-		$g_public_desc  	= trim(Request::getVar('public_desc',  '', 'post', 'none', 2));
-		$g_private_desc 	= trim(Request::getVar('private_desc', '', 'post', 'none', 2));
-		$g_restrict_msg 	= trim(Request::getVar('restrict_msg', '', 'post', 'none', 2));
-		$g_join_policy  	= Request::getInt('join_policy', 0, 'post');
-		$tags 				= trim(Request::getVar('tags', ''));
-		$lid 				= Request::getInt('lid', 0, 'post');
-		$customization      = Request::getVar('group', '', 'POST', 'none', 2);
-		$plugins            = Request::getVar('group_plugin', '', 'POST');
-		$params             = Request::getVar('params', array(), 'POST');
+		$g_cn              = trim(Request::getVar('cn', '', 'post'));
+		$g_description     = preg_replace('/\s+/', ' ',trim(Request::getVar('description', Lang::txt('NONE'), 'post')));
+		$g_discoverability = Request::getInt('discoverability', 0, 'post');
+		$g_public_desc     = trim(Request::getVar('public_desc',  '', 'post', 'none', 2));
+		$g_private_desc    = trim(Request::getVar('private_desc', '', 'post', 'none', 2));
+		$g_restrict_msg    = trim(Request::getVar('restrict_msg', '', 'post', 'none', 2));
+		$g_join_policy     = Request::getInt('join_policy', 0, 'post');
+		$tags              = trim(Request::getVar('tags', ''));
+		$lid               = Request::getInt('lid', 0, 'post');
+		$customization     = Request::getVar('group', '', 'POST', 'none', 2);
+		$plugins           = Request::getVar('group_plugin', '', 'POST');
+		$params            = Request::getVar('params', array(), 'POST');
 
 		$g_discussion_email_autosubscribe = Request::getInt('discussion_email_autosubscribe', 0, 'post');
 
@@ -616,6 +616,24 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		foreach ($plugins as $plugin)
 		{
 			$plugin_access .= $plugin['name'] . '=' . $plugin['access'] . ',' . "\n";
+		}
+
+		// Run content through validation and spam filters
+		if (trim($g_public_desc))
+		{
+			$results = Event::trigger('content.onContentBeforeSave', array(
+				'com_groups.group.public_desc',
+				&$g_public_desc,
+				($this->_task == 'new')
+			));
+			foreach ($results as $result)
+			{
+				if ($result === false)
+				{
+					$this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_FAILED_VALIDATION'), 'error');
+					break;
+				}
+			}
 		}
 
 		// Push back into edit mode if any errors
