@@ -180,11 +180,22 @@ class Input
 			unset($options['format']);
 		}
 
+		if (!isset($options['class']))
+		{
+			$options['class'] = 'calendar-field';
+		}
+		else
+		{
+			$options['class'] = ' calendar-field';
+		}
+
 		if (!$readonly && !$disabled)
 		{
 			// Load the calendar behavior
 			Behavior::calendar();
 			Behavior::tooltip();
+
+			$id = self::getIdAttribute($name, $options);
 
 			// Only display the triggers once for each control.
 			if (!in_array($id, $done))
