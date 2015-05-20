@@ -147,17 +147,17 @@ $this->css()
 							</span>
 						<?php } ?>
 						<p>
-							<?php if ($row->creator('public')) { ?>
-								<a href="<?php echo Route::url($row->creator()->getLink()); ?>">
-									<?php echo $name; ?>
-								</a>
-							<?php } else { ?>
-								<?php echo $name; ?>
-							<?php } ?>
-							<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ONTO'); ?>
-							<a href="<?php echo Route::url($row->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-							</a>
+							<?php
+							$who = $name;
+							if ($row->creator('public'))
+							{
+								$who = '<a href="' . Route::url($row->creator()->getLink()) . '">' . $name . '</a>';
+							}
+
+							$where = '<a href="' . Route::url($row->link()) . '">' . $this->escape(stripslashes($row->get('title'))) . '</a>';
+
+							echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ONTO', $who, $where);
+							?>
 							<br />
 							<span class="entry-date">
 								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_AT'); ?></span>

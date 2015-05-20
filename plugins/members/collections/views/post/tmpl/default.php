@@ -105,13 +105,17 @@ $this->css()
 				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->post->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo Route::url($this->post->creator()->getLink()); ?>">
-					<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
-				</a>
-				onto
-				<a href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>">
-					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
-				</a>
+				<?php
+				$who = $this->escape(stripslashes($this->post->creator('name')));
+				if ($this->post->creator('public'))
+				{
+					$who = '<a href="' . Route::url($this->post->creator()->getLink()) . '">' . $name . '</a>';
+				}
+
+				$where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+
+				echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ONTO', $who, $where);
+				?>
 				<br />
 				<span class="entry-date">
 					<span class="entry-date-at">@</span>
@@ -137,9 +141,7 @@ $this->css()
 						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
-						said
-						<br />
+						<a href="<?php echo Route::url('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
 						<span class="entry-date">
 							<span class="entry-date-at">@</span>
 							<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo Date::of($comment->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
@@ -168,9 +170,7 @@ $this->css()
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes(User::get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>
-					will say
-					<br />
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a> will say <br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span>
 						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>

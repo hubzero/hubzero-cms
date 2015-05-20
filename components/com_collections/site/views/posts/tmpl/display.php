@@ -128,17 +128,17 @@ if (!$no_html) {
 							</span>
 						<?php } ?>
 						<p>
-							<?php if ($this->post->creator('public')) { ?>
-								<a href="<?php echo Route::url($this->post->creator()->getLink() . '&active=collections'); ?>">
-									<?php echo $name; ?>
-								</a>
-							<?php } else { ?>
-								<?php echo $name; ?>
-							<?php } ?>
-							<?php echo Lang::txt('COM_COLLECTIONS_ONTO'); ?>
-							<a href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>">
-								<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
-							</a>
+							<?php
+							$who = $name;
+							if ($this->post->creator('public'))
+							{
+								$who = '<a href="' . Route::url($this->post->creator()->getLink() . '&active=collections') . '">' . $name . '</a>';
+							}
+
+							$where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+
+							echo Lang::txt('COM_COLLECTIONS_ONTO', $who, $where);
+							?>
 							<br />
 							<span class="entry-date">
 								<span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
