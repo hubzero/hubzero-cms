@@ -137,8 +137,8 @@ class Curation extends Object
 	/**
 	 * Get blocks in order
 	 *
-	 * @param      string  $manifest         Publication manifest
-	 * @param      string  $masterManifest   Master type manifest
+	 * @param      string  $manifest  Publication manifest (version used at time of publication)
+	 * @param      string  $masterManifest  Master type manifest (current version)
 	 * @return  boolean
 	 */
 	private function _setBlocks($manifest = NULL, $masterManifest = NULL)
@@ -226,6 +226,15 @@ class Curation extends Object
 			}
 		}
 
+		// Top-level params come from master manifest (current version wins)
+		if ($masterManifest && isset($masterManifest->params))
+		{
+			foreach ($masterManifest->params as $param => $value)
+			{
+				$manifest->params->$param = $value;
+			}
+		}
+
 		$this->_manifest = $manifest;
 		$this->_blocks   = $manifest->blocks;
 
@@ -241,7 +250,8 @@ class Curation extends Object
 	 */
 	public function setBlock($name = NULL, $blockId = 0)
 	{
-		if ($blockId && (!isset($this->_blocks->$blockId) || $this->_blocks->$blockId->name != $name))
+		if ($blockId && (!isset($this->_blocks->$blockId)
+			|| $this->_blocks->$blockId->name != $name))
 		{
 			$blockId = $this->getBlockId($name);
 		}
