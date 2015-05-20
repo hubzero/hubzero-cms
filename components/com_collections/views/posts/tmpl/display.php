@@ -130,17 +130,17 @@ if (!$no_html) {
 							</span>
 						<?php } ?>
 						<p>
-							<?php if ($this->post->creator('public')) { ?>
-								<a href="<?php echo JRoute::_($this->post->creator()->getLink() . '&active=collections'); ?>">
-									<?php echo $name; ?>
-								</a>
-							<?php } else { ?>
-								<?php echo $name; ?>
-							<?php } ?>
-							<?php echo JText::_('COM_COLLECTIONS_ONTO'); ?>
-							<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
-								<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
-							</a>
+							<?php
+							$who = $name;
+							if ($this->post->creator('public'))
+							{
+								$who = '<a href="' . JRoute::_($this->post->creator()->getLink() . '&active=collections') . '">' . $name . '</a>';
+							}
+
+							$where = '<a href="' . JRoute::_($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+
+							echo JText::sprintf('COM_COLLECTIONS_ONTO', $who, $where);
+							?>
 							<br />
 							<span class="entry-date">
 								<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>

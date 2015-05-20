@@ -199,17 +199,17 @@ $this->css()
 							</span>
 						<?php } ?>
 						<p>
-							<?php if ($row->creator('public')) { ?>
-								<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>">
-									<?php echo $name; ?>
-								</a>
-							<?php } else { ?>
-								<?php echo $name; ?>
-							<?php } ?>
-							<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_ONTO'); ?>
-							<a href="<?php echo JRoute::_($row->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-							</a>
+							<?php
+							$who = $name;
+							if ($row->creator('public'))
+							{
+								$who = '<a href="' . JRoute::_($row->creator()->getLink()) . '">' . $name . '</a>';
+							}
+
+							$where = '<a href="' . JRoute::_($row->link()) . '">' . $this->escape(stripslashes($row->get('title'))) . '</a>';
+
+							echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_ONTO', $who, $where);
+							?>
 							<br />
 							<span class="entry-date">
 								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_AT'); ?></span>
