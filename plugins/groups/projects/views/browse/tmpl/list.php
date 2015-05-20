@@ -29,9 +29,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$projects = $this->rows;
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 switch ($this->which)
 {
 	case 'group': $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_GROUP'); break;
@@ -41,72 +38,63 @@ switch ($this->which)
 	case 'all':   $title = Lang::txt('PLG_GROUPS_PROJECTS_SHOW_ALL');   break;
 }
 ?>
-<?php if ($projects && count($projects) > 0) { ?>
+<?php if (count($this->rows) > 0) { ?>
 	<table class="listing entries">
-		<caption><?php echo $title.' ('.count($projects).')'; ?></caption>
+		<caption><?php echo $title . ' (' . count($this->rows) . ')'; ?></caption>
 		<thead>
 			<tr>
 				<th class="th_image" colspan="2"></th>
-				<th><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></th>
-				<th><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>
-				<th><?php echo Lang::txt('COM_PROJECTS_MY_ROLE'); ?></th>
+				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_TITLE'); ?></th>
+				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_STATUS'); ?></th>
+				<th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_MY_ROLE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php
 			$i = 0;
-			foreach ($projects as $row)
+			foreach ($this->rows as $row)
 			{
-				$goto  = 'alias=' . $row->alias;
-				$owned_by = '';
-				if ($row->owned_by_group)
-				{
-					$owned_by .= Lang::txt('PLG_GROUPS_GROUP').' <a href="">'.\Hubzero\Utility\String::truncate($row->groupname, 40).'</a> | ';
-				}
-				else if ($row->created_by_user == $this->user->get('id'))
-				{
-					//$owned_by .= Lang::txt('PLG_GROUPS_ME');
-				}
-				else
-				{
-					$owned_by .= '<a href="">'.$row->authorname.'</a> | ';
-				}
-				$role = $row->role == 1 ? Lang::txt('PLG_GROUPS_STATUS_MANAGER') : Lang::txt('PLG_GROUPS_STATUS_COLLABORATOR');
-				$setup = ($row->setup_stage < $setup_complete) ? Lang::txt('PLG_GROUPS_STATUS_SETUP') : '';
+				$role = $row->access('manager')
+					? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER')
+					: Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR');
+				$role = $row->access('readonly')
+					? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_REVIEWER')
+					: $role;
 
-				$i++; ?>
+				$setup = $row->inSetup() ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') : '';
+
+				$i++;
+ ?>
 				<tr class="mline">
-					<td class="th_image"><a href="<?php echo Route::url('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape($row->title); ?>"  class="project-image" /></a> <?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?></td>
-					<td class="th_privacy"><?php if ($row->private == 1) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?></td>
-					<td class="th_title"><a href="<?php echo Route::url('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape($row->title).' ('.$row->alias.')'; ?>"><?php echo $this->escape($row->title); ?></a>
+					<td class="th_image"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>"  class="project-image" /></a> <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?></td>
+					<td class="th_privacy"><?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ; } ?></td>
+					<td class="th_title"><a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
 					<?php if ($this->which != 'owned') { ?><span class="block">
-					<?php echo ($row->owned_by_group) ? $row->groupname : $row->authorname; ?></span>
+					<?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
 					<?php } ?>
 					</td>
 					<td class="th_status">
 					<?php
 						$html = '';
-						if ($row->owner && $row->confirmed == 1)
-						{
-							if ($row->state == 1 && $row->setup_stage >= $setup_complete)
-							{
-								$html .= '<span class="active"><a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.Lang::txt('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.Lang::txt('PLG_GROUPS_STATUS_ACTIVE').'</a></span>';
+						if ($row->access('owner')) {
+							if ($row->isActive()) {
+								$html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
 							}
-							else if ($row->setup_stage < $setup_complete)
-							{
-								$html .= '<span class="setup"><a href="'.Route::url('index.php?option='.$this->option.'&task=view&'.$goto).'" title="'.Lang::txt('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.Lang::txt('PLG_GROUPS_STATUS_SETUP').'</a></span> ';
+							else if ($row->inSetup()) {
+									$html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
 							}
-							else if ($row->state == 0)
-							{
-								$html .= '<span class="faded italic">'.Lang::txt('PLG_GROUPS_STATUS_SUSPENDED').'</span> ';
+							else if ($row->isInactive()) {
+								$html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
+							}
+							else if ($row->isPending()) {
+								$html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
 							}
 						}
 						echo $html;
-
 					?>
 					</td>
 					<td class="th_role">
-						<?php echo $row->role == 1 ? Lang::txt('PLG_GROUPS_STATUS_MANAGER') : Lang::txt('PLG_GROUPS_STATUS_COLLABORATOR') ;?>
+						<?php echo $role; ?>
 					</td>
 				</tr>
 		<?php
@@ -116,7 +104,7 @@ switch ($this->which)
 	</table>
 <?php } else { ?>
 	<div class="entries">
-		<h4 class="th_header"><?php echo $title.' ('.count($projects).')'; ?></h4>
+		<h4 class="th_header"><?php echo $title . ' (' . count($this->rows) . ')'; ?></h4>
 		<p class="noprojects"><?php echo Lang::txt('PLG_GROUPS_NO_PROJECTS'); ?></p>
 	</div>
 <?php } ?>

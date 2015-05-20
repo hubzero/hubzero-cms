@@ -31,52 +31,36 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-$cn = $this->group->get('cn');
-$gid = $this->group->get('gidNumber');
-
 $this->css();
+
 ?>
 <section class="main section" id="s-projects">
 	<div class="subject">
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
-					<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$cn.'&active=projects&action=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+					<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
 					</a>
 				</li>
 				<li>
-					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn='.$cn.'&active=projects&action=updates'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
 					</a>
 				</li>
 			</ul>
 		</div>
-		<div class="container">
+
 			<div id="project-updates">
-				<div id="latest_activity" class="infofeed">
 				<?php
-					// Display item list
-					$this->view('default', 'activity')
-					     ->set('option', $this->option)
-					     ->set('activities', $this->activities)
-					     ->set('limit', $this->limit)
-					     ->set('total', $this->total)
-					     ->set('filters', $this->filters)
-					     ->set('uid', $this->uid)
-					     ->set('database', $this->database)
-					     ->set('config', $this->config)
-					     ->set('gid', $gid)
-					     ->display();
-					?>
-				</div> <!-- / .infofeed -->
+				echo $this->content;
+				?>
 			</div>
-		</div>
+
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<div class="container">
 			<h3>Create a Project</h3>
 			<p>Have a new project? Want to create a dedicated space for project collaboration? Create a project today!</p>
-			<p><a class="icon-add btn" href="/projects/start?gid=<?php echo $gid; ?>">Add Project</a></p>
+			<p><a class="icon-add btn" href="/projects/start?gid=<?php echo $this->group->get('gidNumber'); ?>">Add Project</a></p>
 		</div>
 		<div class="container">
 			<h3>Your Projects</h3>

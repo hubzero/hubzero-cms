@@ -56,9 +56,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		$this->_config = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
-		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$this->_total = 0;
-		$this->_projects = array();
 	}
 
 	/**
@@ -114,17 +111,27 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		// Load classes
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'models' . DS . 'project.php');
+	
+		// Model
+		$this->model = new \Components\Projects\Models\Project();
+
+		$this->_projects = $this->model->table()->getGroupProjectIds(
+			$group->get('gidNumber'),
+			User::get('id')
+		);
 
 		// Set filters
-		$filters = array();
-		$filters['group']  = $group->get('gidNumber');
-		$filters['mine']     = 1;
-
-		// Get a record count
-		$obj = new \Components\Projects\Tables\Project($this->_database);
-		$this->_projects = $obj->getGroupProjectIds($group->get('gidNumber'), User::get('id'));
+		$this->_filters = array(
+			'mine'    => 1,
+			'updates' => 1,
+			'getowner'=> 1,
+			'group'   => $group->get('gidNumber'),
+			'sortby'  => Request::getVar('sortby', 'title'),
+			'sortdir' => Request::getVar('sortdir', 'ASC')
+		);
 
 		//if we want to return content
 		if ($return == 'html')
@@ -153,7 +160,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -169,9 +176,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
-
-			// Load classes
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 			// Which view
 			$task = $action ? strtolower(trim($action)) : Request::getVar('action', '');
@@ -203,21 +207,26 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterStoreGroup($group)
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
+		// Load classes
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'models' . DS . 'project.php');
+	
+		// Model
+		$this->model = new \Components\Projects\Models\Project();
 
 		// Get group projects
-		$obj  = new \Components\Projects\Tables\Project($this->_database);
-		$objO = new \Components\Projects\Tables\Owner( $this->_database );
-		$projects = $obj->getGroupProjects($group->get('gidNumber'), User::get('id'));
+		$projects = $this->model->table()->getGroupProjects(
+			$group->get('gidNumber'),
+			User::get('id')
+		);
 
 		// Project-group sync
 		if ($projects)
 		{
 			foreach ($projects as $project)
 			{
-				$objO->reconcileGroups($project->id, $project->owned_by_group);
-				$objO->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+				$this->model->table()->reconcileGroups($project->id, $project->owned_by_group);
+				$this->model->table()->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
 			}
 		}
 	}
@@ -230,25 +239,16 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view($which = 'owned')
 	{
-		// Set filters
-		$filters = array();
-		$filters['mine']     = 1;
-		$filters['updates']  = 1;
-		$filters['sortby']   = Request::getVar('sortby', 'status');
-		$filters['getowner'] = 1;
-		$filters['sortdir']  = Request::getVar('sortdir', 'DESC');
-
 		// Build the final HTML
 		$view = $this->view('default', 'browse');
 
-		$obj = new \Components\Projects\Tables\Project($this->_database);
 		if ($which == 'all')
 		{
-			$filters['which'] = 'owned';
-			$view->owned = $obj->getGroupProjects($this->group->get('gidNumber'), User::get('id'), $filters, $this->_setup_complete);
+			$this->_filters['which'] = 'owned';
+			$view->owned = $this->model->entries('group', $this->_filters);
 
-			$filters['which'] = 'other';
-			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), User::get('id'), $filters, $this->_setup_complete);
+			$this->_filters['which'] = 'other';
+			$view->rows = $this->model->entries('group', $this->_filters);
 		}
 		else
 		{
@@ -258,16 +258,16 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			{
 				$which = 'owned';
 			}
-			$filters['which'] = $which;
-			$view->rows = $obj->getGroupProjects($this->group->get('gidNumber'), User::get('id'), $filters, $this->_setup_complete);
+			$this->_filters['which'] = $which;
+			$view->rows = $this->model->entries('group', $this->_filters);
 		}
 
 		// Get counts
 		$view->projectcount = count($this->_projects);
-		$view->newcount = $obj->getUpdateCount($this->_projects, User::get('id'));
+		$view->newcount = $this->model->table()->getUpdateCount($this->_projects, User::get('id'));
 
 		$view->which   = $which;
-		$view->filters = $filters;
+		$view->filters = $this->_filters;
 		$view->config  = $this->_config;
 		$view->option  = 'com_projects';
 		$view->group   = $this->group;
@@ -286,245 +286,41 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _updates()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
-
 		// Build the final HTML
-		$view = $this->view('default', 'updates');
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'groups',
+				'element' => 'projects',
+				'name'    => 'updates'
+			)
+		);
 
-		// Set filters
-		$filters = array();
-		$filters['mine']     = 1;
-		$filters['updates']  = 1;
-		$filters['sortby']   = Request::getVar('sortby', 'title');
-		$filters['getowner'] = 1;
-		$filters['sortdir']  = Request::getVar('sortdir', 'ASC');
+		$view->filters = array('limit' => Request::getVar('limit', 25, 'request'));
 
-		// Get all projects group has access to
-		$obj = new \Components\Projects\Tables\Project($this->_database);
-		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), User::get('id'));
-		$view->projectcount = count($projects);
+		// Get shared updates feed from blog plugin
+		$results = Event::trigger( 'projects.onShared', array(
+			'feed',
+			$this->model,
+			$this->_projects,
+			User::get('id'),
+			$view->filters
+		));
 
-		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), User::get('id'), 1); // active only
-		$view->newcount = $obj->getUpdateCount($projects, User::get('id'));
-
-		// Get activity class
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
-		$objAC = new \Components\Projects\Tables\Activity($this->_database);
-
-		$afilters = array();
-		$view->total = $objAC->getActivities(0, $afilters, 1, User::get('id'), $projects);
-		$view->limit = 25;
-
-		$afilters['limit'] = Request::getVar('limit', 25, 'request');
-		$view->filters = $afilters;
-
-		$activities = $objAC->getActivities(0, $afilters, 0, User::get('id'), $projects);
-		$view->activities = $this->prepActivities($activities, 'com_projects', User::get('id'), $view->filters, $view->limit);
-
+		$view->content      = !empty($results) && isset($results[0]) ? $results[0] : NULL;
+		$view->newcount     = $this->model->table()->getUpdateCount(
+			$this->_projects,
+			User::get('id')
+		);
+		$view->projectcount = count($this->_projects);
 		$view->uid      = User::get('id');
 		$view->config   = $this->_config;
-		$view->option   = 'com_projects';
-		$view->database = $this->_database;
 		$view->group    = $this->group;
+
 		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}
 
-		return $view->loadTemplate();
-	}
-
-	/**
-	 * View entries
-	 *
-	 * @param      string  $activities The type of entries to display
-	 * @param      string  $option     Component name
-	 * @param      integer $uid        User ID
-	 * @param      array   $filters    Filters to apply
-	 * @param      integer $limit      Number of records to display
-	 * @return     string
-	 */
-	protected function prepActivities($activities, $option, $uid, $filters, $limit)
-	{
-		// Get latest activity
-		$objAC = new \Components\Projects\Tables\Activity($this->_database);
-		$objM  = new \Components\Projects\Tables\Blog($this->_database);
-		$objC  = new \Components\Projects\Tables\Comment($this->_database);
-		$objTD = new \Components\Projects\Tables\Todo($this->_database);
-
-		// Collectors
-		$shown   = array();
-		$newc    = array();
-		$skipped = array();
-		$prep    = array();
-
-		// Loop through activities
-		if ($activities && count($activities) > 0)
-		{
-			foreach ($activities as $a)
-			{
-				// Is this a comment?
-				if ($a->class == 'quote')
-				{
-					// Get comment
-					$c = $objC->getComments(NULL, NULL, $a->id);
-
-					// Bring up commented item
-					$needle  = array('id' => $c->parent_activity);
-					$key     = \Components\Projects\Helpers\Html::myArraySearch($needle, $activities);
-					$shown[] = $a->id;
-					if (!$key)
-					{
-						// get and add parent activity
-						$filters['id'] = $c->parent_activity;
-						$pa = $objAC->getActivities($a->projectid, $filters, 0, $uid);
-						if ($pa && count($pa) > 0)
-						{
-							$a = $pa[0];
-						}
-					}
-					else
-					{
-						$a = $activities[$key];
-					}
-					$a->new = isset($c->newcount) ? $c->newcount : 0;
-				}
-
-				if (!in_array($a->id, $shown))
-				{
-					$shown[]   = $a->id;
-					$class     = $a->class ? $a->class : 'activity';
-					$timeclass = '';
-
-					// Display hyperlink
-					if ($a->highlighted && $a->url)
-					{
-						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">' . $a->highlighted . '</a>', $a->activity);
-					}
-
-					// Set vars
-					$body = '';
-					$eid  = $a->id;
-					$etbl = 'activity';
-					$deletable = 0;
-
-					// Get blog entry
-					if ($class == 'blog')
-					{
-						$blog = $objM->getEntries($a->projectid, $bfilters = array('activityid' => $a->id), $a->referenceid);
-						if (!$blog)
-						{
-							continue;
-						}
-						$body = $blog ? $blog[0]->blogentry : '';
-						$eid  = $blog[0]->id;
-						$etbl = 'blog';
-						$deletable = 1;
-					}
-
-					// Get todo item
-					if ($class == 'todo')
-					{
-						$todo = $objTD->getTodos($a->projectid, $tfilters = array('activityid' => $a->id), $a->referenceid);
-						if (!$todo)
-						{
-							continue;
-						}
-						$body = $todo ? $todo[0]->content : '';
-						$eid  = $todo[0]->id;
-						$etbl = 'todo';
-						$deletable = 0; // Cannot delete to-do related activity
-					}
-
-					// Embed links
-					if ($body)
-					{
-						$body = \Components\Projects\Helpers\Html::replaceUrls($body, 'external');
-					}
-
-					// Style body text
-					$ebody  = $body ? '&#58; <span class="body' : '';
-					$ebody .= $body && strlen($body) > 50 ? ' newline' : '';
-					$ebody .= $body ? '">' . $body . '</span>' : '';
-
-					// Get comments
-					if ($a->commentable)
-					{
-						$comments = $objC->getComments($eid, $etbl);
-					}
-					else
-					{
-						$comments = null;
-					}
-
-					// Is user allowed to delete item?
-					$deletable = 0;
-
-					$prep[] = array(
-						'activity'  => $a,
-						'eid'       => $eid,
-						'etbl'      => $etbl,
-						'body'      => $ebody,
-						'deletable' => $deletable,
-						'comments'  => $comments,
-						'class'     => $class,
-						'timeclass' => $timeclass,
-						'projectid' => $a->projectid,
-						'recorded'  => $a->recorded
-					);
-				}
-			}
-		}
-
-		return $prep;
-	}
-
-	/**
-	 * Browse entries
-	 *
-	 * @return     string
-	 */
-	private function browse()
-	{
-		//create plugin view
-		$view = $this->view('default', 'browse');
-
-		//instatiate db
-		$db = JFactory::getDBO();
-
-		//select all projects either belonging to the group or the group is collaborating on
-		$sql = "SELECT DISTINCT
-					p.id as id,
-					p.alias as alias,
-					p.title as title,
-					p.picture as picture,
-					p.type as type,
-					p.private as private,
-					p.created as created,
-					p.owned_by_user as owned_by_user,
-					p.owned_by_group as owned_by_group
-				FROM #__projects as p, #__project_owners as po
-				WHERE p.id=po.projectid
-				AND p.state=1
-				AND po.groupid=" . $db->quote($this->group->get('gidNumber')) . " ORDER BY p.owned_by_group DESC";
-
-		//set the query
-		$db->setQuery($sql);
-
-		//get the results
-		$projects = $db->loadAssocList();
-
-		// Get the component parameters
-		$view->project_params = Component::params('com_projects');
-
-		//push vars to the view
-		$view->projects = $projects;
-		$view->group    = $this->group;
-		$view->user     = User::getRoot();
-
-		//return the view
 		return $view->loadTemplate();
 	}
 }

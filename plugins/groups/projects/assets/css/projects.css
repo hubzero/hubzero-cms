@@ -29,14 +29,6 @@
 	.entries caption span {
 		color: #aaa;
 	}
-
-/* tbody 
-	.entries tbody td {
-		text-align: left;
-		border-bottom: 1px solid #eee;
-		padding: 10px;
-		background-color:#fff;
-	}*/
 	.entries tbody td img {
 		max-width:100%;
 	}
@@ -246,133 +238,7 @@
 		*background: transparent url("/components/com_projects/assets/img/icons/lock.png") 0 3px no-repeat;	
 		*padding: 5px 8px;
 	}
-	
-/* News feed 
---------------------------------------------- */
-	#project-updates {
-		padding: 1em;
-		background: #FFF;
-		border: 2px solid #e9e9e9;
-	}
-	#project-updates .infofeed img {
-		width: 30px;
-		height: 30px;
-	}
-	.infofeed {
-		margin-bottom: 2em;
-		width: 98%;
-	}
-	.infofeed table {
-		padding: 0;
-		border: none;
-		margin: 0;
-	}
-	.infofeed ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		margin-top: 1em;
-	}
-	.infofeed tr {
-		border-bottom: 1px solid #f2f2f2;
-		padding-top: 0.3em;
-		padding-bottom: 0.7em;
-		padding-right: 0;
-		margin: 0;
-		color: #999;
-	}
-	.infofeed td {
-		border-bottom: 1px solid #f2f2f2;
-	}
-	.infofeed tr div {
-		padding-right: 1.5em;
-	}
-	.infofeed h4, .sumup {
-		padding: 0.3em 0.5em;
-		background: #ededed;
-		border-top: 1px solid #cccccc;
-	}
-	.infofeed .todo, .infofeed .calendar, 
-	.infofeed .message, .infofeed .activity, 
-	.infofeed .ialert, .infofeed .settings,
-	.infofeed .team, .infofeed .project, .infofeed .admin,
-	.infofeed .notes, .infofeed .blog {
-		padding-left: 20px;
-	}
-	.infofeed span.body {
-		font-style: italic;
-		color: #444;
-		margin: 0;
-		padding: 0 100px 0 0;
-		display: inline-block;
-		/* For IE 7 */
-		zoom: 1;
-		*display: inline;
-	}
-	.infofeed span.comment {
-		margin: 0;
-		padding: 0;
-		font-size: 85%;
-		margin-left: 1.5em;
-	}
-	.infofeed span.actor {
-		font-weight: bold;
-		color: #666;
-	}
-	.infofeed .comments {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		border: none;
-		width: 100%;
-		margin-left: 1.5em;
-	}
-	.infofeed .comments li {
-		padding: 0.5em 2em 0.5em 30px;
-		margin: 0;
-		border: none;
-		background: #f2f2f2;
-		*background: #f2f2f2 url("/components/com_projects/assets/img/icons/quotes.gif") 6px 6px no-repeat !important;		
-		color: #444;
-		border-bottom: 1px solid #FFF;
-		margin-right: 0;
-	}
-	.infofeed .comments .mline:hover {
-		*background: #f2f2f2 url("/components/com_projects/assets/img/icons/quotes.gif") 6px 6px no-repeat;
-	}
-	.rightfloat {
-		float: right;
-		font-size: 85%;
-	}
-	.mini {
-		font-size: 85% !important;
-	}
-	.faded {
-		color: #999 !important;
-	}
-	.project-name {
-		display: block;
-		font-size: 85%;
-	}
-	.project-name a {
-		/*color: #888*/
-		border-bottom: 1px dotted #CCC !important;
-	}
-	.urgency {
-		color: red !important;
-	}
-	.p-ima {
-		width: 40px;
-	}
-	.p-ima a {
-		border: none;
-	}
-	.entries-menu .s-new {
-		position: relative;
-		display: inline;
-		margin-left: 0.3em;
-		padding: 0.1em 0.4em;
-	}
+
 /* Prev/next paging
 --------------------------------------------- */
 	.nav_pager {
@@ -391,116 +257,9 @@
 	.nav_pager span.prominent {
 		color: #000000;
 	}
-	#more-updates {
+	.more-updates {
 		background: #ededed;
 		margin-top: 2em;
-	}
-
-/* Activity icons 
---------------------------------------------- */
-	.infofeed .settings {
-		*background: url("/components/com_projects/assets/img/icons/settings.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .team {
-		*background: url("/components/com_projects/assets/img/icons/group.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .admin {
-		*background: url("/components/com_projects/assets/img/icons/admin.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .quote {
-		*background: url("/components/com_projects/assets/img/icons/quotes.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .project, .project {
-		*background: url("/components/com_projects/assets/img/icons/plane.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .todo {		
-		*background: url("/components/com_projects/assets/img/icons/pin.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .activity {		
-		*background: url("/components/com_projects/assets/img/icons/activity.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .publication {		
-		*background: url("/components/com_projects/assets/img/icons/publication.gif") 0 0.2em no-repeat;
-	}
-	.infofeed .notes {
-		*background: url("/components/com_projects/assets/img/icons/feather.gif") 0 0.2em no-repeat;
-	}
-	.buzz, .infofeed .blog {		
-		*background: url("/components/com_projects/assets/img/icons/talker.gif") 0 0.2em no-repeat;
-	}
-	.infofeed div {
-		background: none;
-		padding-left: 20px;
-	}
-	.infofeed div:before,
-	.infofeed .comments li:before,
-	.re_sort:after {
-		content: "";
-		width: 16px;
-		height: 16px;
-		font-size: 16px;
-		font-family: 'Fontcons';
-		color: #aaa;
-		margin-right: 0.3em;
-		vertical-align: middle;	
-		position: absolute;
-		margin-left: -20px;
-	}
-	.infofeed .comments li:before {
-		content: "\275D";
-		width: 14px;
-		height: 14px;
-		font-size: 14px;
-		color: #CCCCCC;
-	}
-	.infofeed .team:before {
-		content: "\f042";
-	}
-	.infofeed .newsupdate:before {
-		content: "\f053"; 
-		color: #6897a4;
-	}
-	.infofeed .files:before {
-		content: "\f016"; 
-	/*	content: "\f07c"; */
-		color: #6897a4;
-	}
-	.infofeed .project:before {
-		content: "\f085";
-	}
-	.infofeed .admin:before {
-		content: "\f085";
-		color: #55c64c;
-	}
-	.infofeed .apps:before,
-	.infofeed .tools:before  {
-		content: "\2692";
-	}
-	.infofeed .databases:before {
-		content: "\f001";
-		color: #c6a68d;
-	}
-	.infofeed .todo:before {
-		content: "\f08d";
-		color: #c6a68d;
-	}
-	.infofeed .notes:before {
-		content: "\f06c";
-		color: #8f8faa;
-	}
-	.infofeed .blog:before {
-		content: "\f075";
-		color: #c6a68d;
-	}
-	.infofeed .publications:before, .infofeed .publication:before {
-		content: "\f058";
-		color: #52ad4b;
-	}
-	.infofeed .mline:before {
-		color: #CCC;
-	}
-	.infofeed .admin:before {
-		color: #fce48a;
 	}
 	.admin-action:before {
 		color: #fce48a !important;
@@ -522,4 +281,10 @@
 		border-top: 1px solid #ace4e1;
 		border-bottom: 1px solid #ace4e1;
 		font-size: 90%;
+	}
+	.activity-item  {
+		background: white;
+	}
+	.hidden {
+		display: none !important;
 	}

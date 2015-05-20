@@ -29,29 +29,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 $this->css();
+
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<h3 class="heading">Group Projects</h3>
+<h3 class="heading"><?php echo Lang::txt('PLG_GROUPS_PROJECTS'); ?></h3>
 
 <section class="main section" id="s-projects">
 	<div class="subject">
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
-					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects&action=all'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+					<a class="active" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
 					</a>
 				</li>
 				<li>
-					<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects&action=updates'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+					<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) { echo '<span class="s-new">' . $this->newcount . '</span>'; } ?>
 					</a>
 				</li>
 			</ul>
