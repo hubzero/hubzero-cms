@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 			<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
 			<select name="access" id="filter-access" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->filters['access']); ?>
+				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 		</div>
 	</fieldset>
@@ -211,5 +211,5 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>
