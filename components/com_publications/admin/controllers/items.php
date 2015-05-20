@@ -888,8 +888,10 @@ class Items extends AdminController
 					{
 						$this->model->version->accepted = Date::toSql();
 
-						// Store curation manifest
-						$this->model->version->curation = json_encode($this->model->_curationModel->_manifest);
+						// Get and save manifest and its version
+						$versionNumber = $this->model->_curationModel->checkCurationVersion();
+						$this->model->version->set('curation', json_encode($this->model->_curationModel->_manifest));
+						$this->model->version->set('curation_version_id', $versionNumber);
 
 						// Mark as curated/non-curated
 						$this->model->version->saveParam($this->model->version->id, 'curated', 1);

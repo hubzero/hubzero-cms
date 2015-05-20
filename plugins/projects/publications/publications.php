@@ -2175,7 +2175,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			if ($state == 1)
 			{
-				$pub->version->set('curation', json_encode($this->model->_curationModel->_manifest));
+				// Get and save manifest and its version
+				$versionNumber = $this->_pub->_curationModel->checkCurationVersion();
+				$pub->version->set('curation', json_encode($this->_pub->_curationModel->_manifest));
+				$pub->version->set('curation_version_id', $versionNumber);
 			}
 
 			// Save data

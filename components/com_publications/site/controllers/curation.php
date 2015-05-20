@@ -557,8 +557,15 @@ class Curation extends SiteController
 		// Set curation
 		$this->_pub->setCuration();
 
+		$curation = json_encode($this->_pub->_curationModel->_manifest);
+		//$curation = $this->_pub->masterType()->curation;
+
+		// Get manifest version
+		$versionNumber = $this->_pub->_curationModel->checkCurationVersion();
+
 		// Store curation manifest
-		$this->_pub->version->set('curation', json_encode($this->_pub->_curationModel->_manifest));
+		$this->_pub->version->set('curation', $curation);
+		$this->_pub->version->set('curation_version_id', $versionNumber);
 
 		if (!$this->_pub->version->store())
 		{

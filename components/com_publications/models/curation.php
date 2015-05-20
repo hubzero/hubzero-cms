@@ -46,13 +46,10 @@ include_once(__DIR__ . DS . 'handlers.php');
 // Include tables
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.version.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-
-// Get language file
-$lang = \JFactory::getLanguage();
-$lang->load('com_publications_curation');
 
 /**
  * Publications curation class
@@ -2386,5 +2383,60 @@ class Curation extends Object
 		$view->activenum	 = $this->_blockorder;
 		$view->database		 = $this->_db;
 		$view->display();
+	}
+
+	/**
+	 * Get curation manifest version
+	 *
+	 * @return  string HTML
+	 */
+	public function getCurationVersion($id = 0)
+	{
+		if (!isset($this->_curationVersion) || $id != $this->_curationVersion->id)
+		{
+			$this->_curationVersion = new Tables\CurationVersion($this->_db);
+			if (intval($id) > 0)
+			{
+				$this->_curationVersion->load($id);
+			}
+			else
+			{
+				// Load latest by type
+				$this->_curationVersion->loadLatest($this->_pub->get('master_type'));
+			}
+		}
+
+		return $this->_curationVersion;
+	}
+
+	/**
+	 * Save curation manifest version if new, return latest id
+	 *
+	 * @return  string HTML
+	 */
+	public function checkCurationVersion()
+	{
+		// Get current master type manifest
+		$manifest = $this->_pub->masterType()->curation;
+
+		// Get saved current version
+		$current = $this->getCurationVersion();
+
+		// Save this version if changed
+		if (!$current || $current->curation != $manifest)
+		{
+			$versionNumber = $current ? $current->version_number + 1 : 1;
+			$this->_curationVersion                 = new Tables\CurationVersion($this->_db);
+			$this->_curationVersion->type_id        = $this->_pub->get('master_type');
+			$this->_curationVersion->curation       = $manifest;
+			$this->_curationVersion->created        = Date::toSql();
+			$this->_curationVersion->version_number = $versionNumber;
+			if ($this->_curationVersion->store())
+			{
+				return $this->_curationVersion->id;
+			}
+		}
+
+		return $current->id;
 	}
 }

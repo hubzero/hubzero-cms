@@ -215,7 +215,7 @@ class Doi extends Object
 
 		// Project creator as contributor
 		$project = $pub->project();
-		$this->mapUser($project->owned_by_user, array(), 'contributor');
+		$this->mapUser($project->get('owned_by_user'), array(), 'contributor');
 
 		// Map resource type
 		$category = $pub->category();
