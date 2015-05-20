@@ -137,5 +137,5 @@ Toolbar::help('poll');
 	<input type="hidden" name="cid[]" value="<?php echo $this->poll->id; ?>" />
 	<input type="hidden" name="textfieldcheck" value="<?php echo $n; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -78,6 +78,6 @@ $this->js('setpassword')
 				<?php echo Lang::txt('Submit'); ?>
 			</button>
 		</p>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </section>

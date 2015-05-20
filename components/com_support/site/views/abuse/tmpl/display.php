@@ -102,7 +102,7 @@ if (!$no_html)
 				<input type="hidden" name="link" value="<?php echo $this->escape($this->report->href); ?>" />
 				<input type="hidden" name="no_html" value="<?php echo $no_html; ?>" />
 
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 
 				<label for="field-report">
 					<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_DESCRIPTION'); ?>

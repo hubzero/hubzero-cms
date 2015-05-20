@@ -174,7 +174,7 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo Lang::txt('COM_WIKI_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<p class="submit">
 							<input type="submit" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />

@@ -386,7 +386,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 
 					<div class="sidenote">
 						<p>

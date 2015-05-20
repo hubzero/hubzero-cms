@@ -138,7 +138,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="referenceid" value="<?php echo $this->wishlist->get('referenceid'); ?>" />
 						<input type="hidden" name="cat" value="wish" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?></span>

@@ -142,7 +142,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 
 			<p class="submit">
 				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_BLOG_SAVE'); ?>" />

@@ -158,7 +158,7 @@ else
 						<input type="hidden" name="alias" value="<?php echo $this->escape($this->article->get('alias')); ?>" />
 						<input type="hidden" name="task" value="savecomment" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('COM_KB_ENTER_COMMENTS'); ?></span>

@@ -168,5 +168,5 @@ Toolbar::cancel();
 	<input type="hidden" name="id[]" value="<?php echo $this->list->id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

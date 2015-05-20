@@ -97,5 +97,5 @@ function submitbutton(pressbutton, section)
 	<input type="hidden" name="category[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="category[access]" value="<?php echo $this->row->access; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

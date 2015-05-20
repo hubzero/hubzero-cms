@@ -202,5 +202,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="dosendnewsletter" />
 	<input type="hidden" name="nid" value="<?php echo $this->newsletter->id; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -105,7 +105,7 @@ if ($this->wishlist->exists())
 				<input type="hidden" name="status" value="<?php echo $this->escape($this->wish->get('status')); ?>" />
 				<input type="hidden" name="id" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 
 				<label for="subject">
 					<?php echo Lang::txt('COM_WISHLIST_SUMMARY_OF_WISH'); ?> <span class="required"><?php echo Lang::txt('COM_WISHLIST_REQUIRED'); ?></span>

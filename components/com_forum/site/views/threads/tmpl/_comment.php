@@ -148,7 +148,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="save" />
 
-							<?php echo JHTML::_('form.token'); ?>
+							<?php echo Html::input('token'); ?>
 
 							<label for="field_<?php echo $this->comment->get('id'); ?>_comment">
 								<span class="label-text"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?></span>

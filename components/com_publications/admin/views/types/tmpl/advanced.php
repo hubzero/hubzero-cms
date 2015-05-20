@@ -64,5 +64,5 @@ function submitbutton(pressbutton)
 				<textarea cols="50" rows="10" name="curation"><?php echo json_encode($manifest); ?></textarea>
 			</div>
 		</fieldset>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

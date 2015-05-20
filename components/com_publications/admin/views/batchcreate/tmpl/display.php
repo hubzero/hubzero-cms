@@ -71,6 +71,6 @@ $this->js('batchcreate');
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="process" />
 	<input type="hidden" name="base" value="files" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 	</fieldset>
 </form>

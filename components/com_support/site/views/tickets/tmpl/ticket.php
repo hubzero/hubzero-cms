@@ -632,7 +632,7 @@ $cc = array();
 				<input type="hidden" name="cc" id="acmembers" value="<?php echo implode(', ', $cc); ?>" />
 			<?php } // ACL can create comments (admin) ?>
 
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 
 				<p class="submit">
 					<input type="submit" value="<?php echo Lang::txt('COM_SUPPORT_SUBMIT_COMMENT'); ?>" />

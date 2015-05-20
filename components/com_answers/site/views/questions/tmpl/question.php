@@ -339,7 +339,7 @@ if (!$this->question->get('anonymous'))
 								<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 								<input type="hidden" name="task" value="savea" />
 
-								<?php echo JHTML::_('form.token'); ?>
+								<?php echo Html::input('token'); ?>
 
 								<input type="hidden" name="response[id]" value="0" />
 								<input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />

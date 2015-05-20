@@ -122,6 +122,6 @@ $this->css();
 			<input type="hidden" name="controller" value="categories" />
 			<input type="hidden" name="task" value="save" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	</section><!-- / .below section -->

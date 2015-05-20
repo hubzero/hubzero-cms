@@ -317,7 +317,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			<input type="hidden" name="listid" value="<?php echo $this->wishlist->get('id'); ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->wishlist->get('id'); ?>" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	</section>
 <?php } // end if authorized ?>

@@ -87,7 +87,7 @@ $offerings = $course->offerings();
 			</tbody>
 		</table>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 	<form action="index.php" method="post" id="adminForm">
 		<table class="paramlist admintable">
@@ -171,7 +171,7 @@ $offerings = $course->offerings();
 			</tbody>
 		</table>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<script type="text/javascript">
 			function update()

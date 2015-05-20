@@ -62,7 +62,7 @@ $this->css('poll_bars.css');
 			<input type="hidden" name="option" value="com_poll" />
 			<input type="hidden" name="task" value="vote" />
 			<input type="hidden" name="id" value="<?php echo $this->poll->id; ?>" />
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	<?php } else { ?>
 		<p><?php echo Lang::txt('COM_POLL_NO_RESULTS'); ?></p>

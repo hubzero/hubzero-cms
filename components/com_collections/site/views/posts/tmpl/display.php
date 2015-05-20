@@ -227,7 +227,7 @@ if (!$no_html) {
 							<input type="hidden" name="task" value="savecomment" />
 							<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-							<?php echo JHTML::_('form.token'); ?>
+							<?php echo Html::input('token'); ?>
 
 							<label for="comment-anonymous" id="comment-anonymous-label">
 								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />

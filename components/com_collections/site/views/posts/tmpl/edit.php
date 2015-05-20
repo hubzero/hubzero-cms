@@ -249,7 +249,7 @@ if (!$dir)
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="save" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_SAVE'); ?>" />

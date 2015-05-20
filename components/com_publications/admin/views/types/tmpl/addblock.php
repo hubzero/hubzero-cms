@@ -89,5 +89,5 @@ function submitbutton(pressbutton)
 				</div>
 			</fieldset>
 		</fieldset>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

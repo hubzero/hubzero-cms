@@ -314,5 +314,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="save" />
 	<input type="hidden" name="import[id]" value="<?php echo $this->import->get('id'); ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -93,7 +93,7 @@ Toolbar::cancel();
 				<input type="text" name="profile[surname]" id="surname" />
 			</div>
 		</fieldset>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 	<div class="col width-40 fltrt">
 		<p class="warning"><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_NOTE'); ?></p>

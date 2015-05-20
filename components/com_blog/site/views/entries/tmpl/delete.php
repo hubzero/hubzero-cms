@@ -74,7 +74,7 @@ $this->css()
 			<input type="hidden" name="process" value="1" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 
 			<p class="submit">
 				<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>" />

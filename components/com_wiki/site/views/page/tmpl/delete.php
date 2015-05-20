@@ -101,7 +101,7 @@ if (!$this->sub)
 			<input type="hidden" name="task" value="delete" />
 		<?php } ?>
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</fieldset><div class="clear"></div>
 
 		<p class="submit">

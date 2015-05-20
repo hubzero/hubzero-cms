@@ -200,5 +200,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="username" value="<?php echo $this->escape(User::get('username')); ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

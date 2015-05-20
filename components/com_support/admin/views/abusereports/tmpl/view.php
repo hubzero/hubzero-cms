@@ -147,5 +147,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="id" value="<?php echo $this->report->id; ?>" />
 	<input type="hidden" name="parentid" value="<?php echo $this->parentid; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

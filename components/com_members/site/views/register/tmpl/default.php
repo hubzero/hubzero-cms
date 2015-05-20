@@ -998,7 +998,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="act" value="submit" />
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
 

@@ -274,7 +274,7 @@ $this->css()
 										<input type="hidden" name="rid" value="<?php echo $this->escape($this->wishlist->get('referenceid')); ?>" />
 										<input type="hidden" name="wishid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 
-										<?php echo JHTML::_('form.token'); ?>
+										<?php echo Html::input('token'); ?>
 
 										<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
 									</td>
@@ -691,7 +691,7 @@ $this->css()
 						<input type="hidden" name="item_type" value="wish" />
 						<input type="hidden" name="parent" value="" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment<?php echo $this->wish->get('id'); ?>">
 							<?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
@@ -788,7 +788,7 @@ $this->css()
 						<input type="hidden" name="created_by" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="task" value="saveplan" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<p class="submit">
 							<input type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />

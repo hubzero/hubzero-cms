@@ -276,5 +276,5 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 	<?php endif;*/ ?>
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

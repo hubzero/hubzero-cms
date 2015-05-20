@@ -91,7 +91,7 @@ $this->css()
 									<input type="hidden" name="fields[access]" value="0" />
 									<input type="hidden" name="controller" value="sections" />
 									<input type="hidden" name="task" value="save" />
-									<?php echo JHTML::_('form.token'); ?>
+									<?php echo Html::input('token'); ?>
 								</form>
 							<?php } else { ?>
 								<?php echo $this->escape(stripslashes($section->get('title'))); ?>
@@ -275,7 +275,7 @@ $this->css()
 							<input type="hidden" name="fields[scope]" value="site" />
 							<input type="hidden" name="fields[scope_id]" value="0" />
 							<input type="hidden" name="fields[access]" value="0" />
-							<?php echo JHTML::_('form.token'); ?>
+							<?php echo Html::input('token'); ?>
 						</fieldset>
 					</form>
 				</div>
@@ -310,7 +310,7 @@ $this->css()
 						<input type="hidden" name="fields[scope_id]" value="0" />
 						<input type="hidden" name="fields[access]" value="0" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 					</fieldset>
 				</form>
 			</div><!-- / .container -->

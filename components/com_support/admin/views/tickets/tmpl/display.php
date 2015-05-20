@@ -327,7 +327,7 @@ $this->css();
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="boxchecked" value="0" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</form>
 
 			</div><!-- / .pane-inner -->

@@ -47,5 +47,5 @@ $lang = \Lang::getTag();
 
 	<?php include_once(JPATH_COMPONENT . DS . 'help' . DS . $lang . DS . 'oaipmh.phtml'); ?>
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

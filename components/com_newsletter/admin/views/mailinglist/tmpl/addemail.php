@@ -108,5 +108,5 @@ Toolbar::cancel('cancelemail');
 	<input type="hidden" name="mid" value="<?php echo $this->list->id; ?>" />
 	<input type="hidden" name="task" value="doimportemail" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

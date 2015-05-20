@@ -212,7 +212,7 @@ if (!$this->sub)
 					<?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
 				</label>
 
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 
 				<p class="submit"><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" /></p>
 				<div class="sidenote">

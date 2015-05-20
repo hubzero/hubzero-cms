@@ -65,7 +65,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 					<input class="btn btn-primary" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
 				</p>
 			</fieldset>
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	</div>
 	<div class="col width-30 fltrt">

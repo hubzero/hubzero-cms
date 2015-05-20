@@ -100,5 +100,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 	<input type="hidden" name="task" value="pierce" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

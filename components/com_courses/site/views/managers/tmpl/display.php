@@ -94,7 +94,7 @@ $offerings = $this->course->offerings();
 			<input type="hidden" name="task" value="add" />
 		</fieldset>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 
 	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" class="course-managers-form" id="managersForm">
@@ -173,6 +173,6 @@ $offerings = $this->course->offerings();
 			</tbody>
 		</table>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>

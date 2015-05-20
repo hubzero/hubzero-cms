@@ -83,6 +83,6 @@ $this->js('feeds');
 			<input type="submit" id="submitBtn" class="btn btn-success" name="formsubmitBtn" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_SUBMIT'); ?>" />
 		</p>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </section><!-- / .main section -->

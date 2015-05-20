@@ -199,7 +199,7 @@ $this->thread->set('category', $this->category->get('alias'));
 					<input type="hidden" name="controller" value="threads" />
 					<input type="hidden" name="task" value="save" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</form>
 			<?php } ?>
 		</div><!-- / .subject -->

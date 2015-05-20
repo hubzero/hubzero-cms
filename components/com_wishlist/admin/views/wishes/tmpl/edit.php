@@ -258,5 +258,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="wishlist" value="<?php echo $this->wishlist; ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

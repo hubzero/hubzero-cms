@@ -136,7 +136,7 @@ if (!$tmpl)
 		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 		<input type="hidden" name="task" value="save" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 	<script type="text/javascript">
 		function submitbutton(pressbutton)
@@ -263,7 +263,7 @@ if (!$tmpl)
 		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 		<input type="hidden" name="task" value="save" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 	<script type="text/javascript">
 		function submitbutton(pressbutton)

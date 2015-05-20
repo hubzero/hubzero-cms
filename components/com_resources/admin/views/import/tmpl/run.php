@@ -208,5 +208,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="id" value="<?php echo $this->import->get('id'); ?>" />
 	<input type="hidden" name="dryrun" value="<?php echo $this->dryRun; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

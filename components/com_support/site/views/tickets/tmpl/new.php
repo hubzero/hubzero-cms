@@ -326,7 +326,7 @@ $group = Request::getVar('group', '');
 			</fieldset><div class="clear"></div>
 		<?php } ?>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_SUPPORT_SUBMIT'); ?>" />

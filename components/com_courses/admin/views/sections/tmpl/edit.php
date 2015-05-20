@@ -818,5 +818,5 @@ jQuery(document).ready(function($){
 		</div>
 	</div>
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

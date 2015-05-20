@@ -372,7 +372,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<input type="hidden" name="task" value="save" />
 		<?php } ?>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input type="submit" class="btn" name="preview" value="<?php echo Lang::txt('COM_WIKI_PREVIEW'); ?>" /> &nbsp;

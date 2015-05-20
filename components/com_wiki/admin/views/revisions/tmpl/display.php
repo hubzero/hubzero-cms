@@ -206,5 +206,5 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="pageid" value="<?php echo $this->filters['pageid']; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

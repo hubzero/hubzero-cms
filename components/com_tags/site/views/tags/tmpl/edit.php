@@ -87,7 +87,7 @@ $this->css()
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="save" />
 
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 
 				<input type="hidden" name="limit" value="<?php echo $this->escape($this->filters['limit']); ?>" />
 				<input type="hidden" name="limitstart" value="<?php echo $this->escape($this->filters['start']); ?>" />

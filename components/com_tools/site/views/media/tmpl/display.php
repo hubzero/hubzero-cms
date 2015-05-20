@@ -83,5 +83,5 @@ $this->css('component.css');
 		</table>
 	<?php } ?>
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

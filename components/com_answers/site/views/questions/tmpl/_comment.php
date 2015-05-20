@@ -162,7 +162,7 @@ $this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : 
 						<input type="hidden" name="rid" value="<?php echo $this->question->get('id'); ?>" />
 						<input type="hidden" name="task" value="savereply" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>

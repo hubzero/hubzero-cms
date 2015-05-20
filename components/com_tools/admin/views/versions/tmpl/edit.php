@@ -144,5 +144,5 @@ function submitbutton(pressbutton)
 			<?php endif; ?>
 		</fieldset>
 	</div>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

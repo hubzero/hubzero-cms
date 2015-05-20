@@ -74,5 +74,5 @@ $content = $this->page->version()->get('content');
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="task" value="save" />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

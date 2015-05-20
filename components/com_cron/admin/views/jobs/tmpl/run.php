@@ -117,5 +117,5 @@ function prettyPrint($json)
 		</tbody>
 	</table>
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

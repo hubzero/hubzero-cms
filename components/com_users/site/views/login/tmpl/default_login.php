@@ -160,7 +160,7 @@ endforeach;
 				<input type="hidden" name="task" value="user.login" />
 				<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
 				<input type="hidden" name="freturn" value="<?php echo $this->freturn; ?>" />
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 			</form>
 		</div>
 	</div>

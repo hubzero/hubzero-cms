@@ -147,5 +147,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="save" />
 	<input type="hidden" name="hook[id]" value="<?php echo $this->hook->get('id'); ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -103,7 +103,7 @@ $this->css('course.css')
 					<input type="hidden" name="controller" value="course" />
 					<input type="hidden" name="task" value="save" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 
 					<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
 					<input type="hidden" name="course[id]" value="<?php echo $this->escape($this->course->get('id')); ?>" />
@@ -278,7 +278,7 @@ $this->css('course.css')
 						<input type="hidden" name="controller" value="course" />
 						<input type="hidden" name="task" value="savepage" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
 						<input type="hidden" name="page[id]" value="<?php echo $this->escape($page->get('id')); ?>" />
@@ -342,7 +342,7 @@ $this->css('course.css')
 				<input type="hidden" name="controller" value="course" />
 				<input type="hidden" name="task" value="save" />
 
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 
 				<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
 				<input type="hidden" name="course[id]" value="<?php echo $this->escape($this->course->get('id')); ?>" />

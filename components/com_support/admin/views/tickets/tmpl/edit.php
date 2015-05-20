@@ -620,7 +620,7 @@ if (!$no_html)
 		<input type="hidden" name="task" value="save" />
 	<?php } ?>
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>
 <?php if (!$no_html) { ?>
 <script type="text/javascript">

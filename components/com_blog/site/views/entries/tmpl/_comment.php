@@ -89,7 +89,7 @@ else
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 						<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>
@@ -158,7 +158,7 @@ else
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="task" value="savecomment" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>

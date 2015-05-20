@@ -46,6 +46,6 @@ if ($this->html)
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="action" value="" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 <?php } ?>

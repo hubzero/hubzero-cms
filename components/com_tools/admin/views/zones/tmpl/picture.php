@@ -110,6 +110,6 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 			</tbody>
 		</table>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>
