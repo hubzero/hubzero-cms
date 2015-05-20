@@ -29,9 +29,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 $this->css();
+
 ?>
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS'); ?></h3>
 

@@ -55,9 +55,6 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		// load plugin parameters
 		$this->_config = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
-		$this->_user = User::getRoot();
-		$this->_filters = array();
-		$this->_total = 0;
 	}
 
 	/**

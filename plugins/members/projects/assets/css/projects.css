@@ -140,6 +140,7 @@
 	.th_privacy {
 		margin: 0;
 		padding: 0;
+		width: 5%;
 	}
 	.th_status, .th_role {
 		width: 4em;
@@ -289,4 +290,7 @@
 		border-top: 1px solid #ace4e1;
 		border-bottom: 1px solid #ace4e1;
 		font-size: 90%;
+	}
+	.hidden {
+		display: none !important;
 	}

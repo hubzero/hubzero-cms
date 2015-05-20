@@ -49,7 +49,9 @@ switch ($this->which)
 		<tr>
 			<th class="th_image" colspan="2"></th>
 			<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=title&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a></th>
+			<?php if ($this->which == 'owned') { ?>
 			<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=status&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a></th>
+			<?php } ?>
 			<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=role&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a></th>
 		</tr>
 	</thead>
@@ -77,6 +79,7 @@ switch ($this->which)
 				<?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
 				<?php } ?>
 				</td>
+				<?php if ($this->which == 'owned') { ?>
 				<td class="th_status">
 				<?php
 					$html = '';
@@ -95,8 +98,8 @@ switch ($this->which)
 						}
 					}
 					echo $html;
-
 				?>
+				<?php } ?>
 				</td>
 				<td class="th_role">
 					<?php echo $role; ?>
