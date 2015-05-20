@@ -65,6 +65,13 @@ if ($this->import->exists()) { ?>
 								<option value="usageAgreement" <?php if ($mapping['field'] == 'usageAgreement') { echo 'selected="selected"'; } ?>>usageAgreement</option>
 								<option value="note" <?php if ($mapping['field'] == 'note') { echo 'selected="selected"'; } ?>>note</option>
 								<option value="homeDirectory" <?php if ($mapping['field'] == 'homeDirectory') { echo 'selected="selected"'; } ?>>homeDirectory</option>
+								<option value="modifiedDate" <?php if ($mapping['field'] == 'modifiedDate') { echo 'selected="selected"'; } ?>>modifiedDate</option>
+								<option value="locked" <?php if ($mapping['field'] == 'locked') { echo 'selected="selected"'; } ?>>locked</option>
+							</optgroup>
+							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_REGISTER'); ?>">
+								<option value="regIP" <?php if ($mapping['field'] == 'regIP') { echo 'selected="selected"'; } ?>>regIP</option>
+								<option value="regHost" <?php if ($mapping['field'] == 'regHost') { echo 'selected="selected"'; } ?>>regHost</option>
+								<option value="registerDate" <?php if ($mapping['field'] == 'registerDate') { echo 'selected="selected"'; } ?>>registerDate</option>
 							</optgroup>
 							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_NAME'); ?>">
 								<option value="name" <?php if ($mapping['field'] == 'name') { echo 'selected="selected"'; } ?>>name</option>
@@ -81,6 +88,9 @@ if ($this->import->exists()) { ?>
 								<option value="url" <?php if ($mapping['field'] == 'url') { echo 'selected="selected"'; } ?>>url</option>
 								<option value="orcid" <?php if ($mapping['field'] == 'orcid') { echo 'selected="selected"'; } ?>>orcid</option>
 								<option value="interests" <?php if ($mapping['field'] == 'interests') { echo 'selected="selected"'; } ?>>interests</option>
+								<option value="reason" <?php if ($mapping['field'] == 'reason') { echo 'selected="selected"'; } ?>>reason</option>
+								<option value="picture" <?php if ($mapping['field'] == 'picture') { echo 'selected="selected"'; } ?>>picture</option>
+								<option value="vip" <?php if ($mapping['field'] == 'vip') { echo 'selected="selected"'; } ?>>vip</option>
 							</optgroup>
 							<optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_DEMOGRAPHICS'); ?>">
 								<option value="countryresident" <?php if ($mapping['field'] == 'countryresident') { echo 'selected="selected"'; } ?>>countryresident</option>
