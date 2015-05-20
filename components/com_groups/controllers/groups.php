@@ -548,7 +548,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Incoming
-		$g_gidNumber    	= JRequest::getInt('gidNumber', 0, 'post');
+		$g_gidNumber = JRequest::getInt('gidNumber', 0, 'post');
 
 		if ((!$g_gidNumber && !$this->juser->authorise('core.create', $this->_option))
 		 || ($g_gidNumber && !$this->juser->authorise('core.edit', $this->_option)))
@@ -632,6 +632,22 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		foreach ($plugins as $plugin)
 		{
 			$plugin_access .= $plugin['name'] . '=' . $plugin['access'] . ',' . "\n";
+		}
+
+		// Run content through validation and spam filters
+		JPluginHelper::importPlugin('content');
+		$results = JDispatcher::getInstance()->trigger('onContentBeforeSave', array(
+			'com_groups.group.description',
+			&$g_public_desc,
+			($this->_task == 'new')
+		));
+		foreach ($results as $result)
+		{
+			if ($result === false)
+			{
+				$this->setNotification(JText::_('COM_GROUPS_SAVE_ERROR_FAILED_VALIDATION'), 'error');
+				break;
+			}
 		}
 
 		// Push back into edit mode if any errors
