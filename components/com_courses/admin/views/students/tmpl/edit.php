@@ -141,7 +141,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-enrolled"><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'field-enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+				<?php echo Html::input('calendar', 'fields[enrolled]', $this->row->get('enrolled'), array('id' => 'field-enrolled')); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="field-token"><?php echo Lang::txt('COM_COURSES_FIELD_SERIAL_NUM'); ?></label><br />

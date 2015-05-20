@@ -411,7 +411,7 @@ function popratings()
 				<div class="input-wrap">
 					<label for="publish_up"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
 					<?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s') : ''); ?>
-					<?php echo JHTML::_('calendar', $up, 'publish_up', 'publish_up', "Y-m-d H:i:s", array('class' => 'inputbox')); ?>
+					<?php echo Html::input('calendar', 'publish_up', $up); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="publish_down"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
@@ -422,7 +422,7 @@ function popratings()
 							$down = Date::of($this->row->publish_down)->toLocal('Y-m-d H:i:s');
 						}
 					?>
-					<?php echo JHTML::_('calendar', $down, 'publish_down', 'publish_down', "Y-m-d H:i:s", array('class' => 'inputbox')); ?>
+					<?php echo Html::input('calendar', 'publish_down', $down); ?>
 				</div>
 			<?php // } ?>
 		</div>

@@ -513,12 +513,12 @@ jQuery(document).ready(function($){
 
 			<div class="input-wrap">
 				<label for="field-publish_up"><?php echo Lang::txt('COM_CRON_FIELD_START_RUNNING'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), 'fields[publish_up]', 'field-publish_up'); ?>
+				<?php echo Html::input('calendar', 'fields[publish_up]', $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), array('id' => 'field-publish_up'); ?>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-publish_down"><?php echo Lang::txt('COM_CRON_FIELD_STOP_RUNNING'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), 'fields[publish_down]', 'field-publish_down'); ?>
+				<?php echo Html::input('calendar', 'fields[publish_down]', $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), array('id' => 'field-publish_down')); ?>
 			</div>
 		</fieldset>
 	</div>

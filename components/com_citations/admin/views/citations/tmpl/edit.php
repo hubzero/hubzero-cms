@@ -172,12 +172,12 @@ Joomla.submitbutton = function(pressbutton) {
 
 			<div class="input-wrap">
 				<label for="field-publish_up"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''), 'fields[publish_up]', 'field-publish_up'); ?>
+				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-publish_down"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''), 'fields[publish_down]', 'field-publish_down'); ?>
+				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
 			</div>
 		</fieldset>
 	</div>

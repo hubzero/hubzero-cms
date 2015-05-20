@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-created"><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->escape($this->revision->get('created')), 'revision[created]', 'field-created'); ?>
+				<?php echo Html::input('calendar', 'revision[created]', $this->escape($this->revision->get('created')), array('id' => 'field-created')); ?>
 			</div>
 		</fieldset>
 	</div>

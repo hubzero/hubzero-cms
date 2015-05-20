@@ -190,11 +190,11 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="startdate"><?php echo Lang::txt('COM_JOBS_FIELD_STARTDATE'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $startdate, 'startdate', 'startdate'); ?>
+				<?php echo Html::input('calendar', 'startdate', $startdate); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="closedate"><?php echo Lang::txt('COM_JOBS_FIELD_DUEDATE'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $closedate, 'closedate', 'closedate'); ?>
+				<?php echo Html::input('calendar', 'closedate', $closedate); ?>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?>">
 				<label for="applyExternalUrl"><?php echo Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL'); ?>:</label><br />

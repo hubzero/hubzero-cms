@@ -124,13 +124,13 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?>">
 				<label for="field-created"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('created'), 'fields[created]', 'field-created'); ?>
+				<?php echo Html::input('calendar', 'fields[created]', $this->row->get('created'), array('id' => 'field-created')); ?>
 				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?>">
 				<label for="field-expires"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('expires'), 'fields[expires]', 'field-expires'); ?>
+				<?php echo Html::input('calendar', 'fields[expires]', $this->row->get('expires'), array('id' => 'field-expires')); ?>
 				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?></span>
 			</div>
 		</fieldset>

@@ -376,7 +376,7 @@ function popratings()
 	</div>
 	<div class="input-wrap">
 		<label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-			<?php echo JHTML::_('calendar', ($this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : ''), 'published_up', 'published_up'); ?>
+			<?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
 	</div>
 		<div class="input-wrap">
 			<label for="publish_down"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
@@ -388,7 +388,7 @@ function popratings()
 						? Date::of($this->model->version->published_down)->toLocal('Y-m-d H:i:s') : NULL;
 				}
 			?>
-			<?php echo JHTML::_('calendar', $down, 'published_down', 'published_down'); ?>
+			<?php echo Html::input('calendar', 'published_down', $down); ?>
 		</div>
 	<div class="input-wrap">
 		<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DOI'); ?>:</label>

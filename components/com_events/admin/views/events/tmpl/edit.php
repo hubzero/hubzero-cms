@@ -122,12 +122,12 @@ var HUB = {};
 
 			<div class="input-wrap">
 				<label for="field-publish_up"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STARTDATE'); ?></label><br />
-				<?php echo JHTML::_('calendar', $this->row->publish_up, 'publish_up', 'field-publish_up'); ?>
+				<?php echo Html::input('calendar', 'publish_up', $this->row->publish_up, array('id' => 'field-publish_up')); ?>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-publish_down"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ENDDATE'); ?></label><br />
-				<?php echo JHTML::_('calendar', $this->row->publish_down, 'publish_down', 'field-publish_down'); ?>
+				<?php echo Html::input('calendar', 'publish_down', $this->row->publish_down, array('id' => 'field-publish_down')); ?>
 			</div>
 		</fieldset>
 
@@ -148,7 +148,7 @@ var HUB = {};
 
 			<div class="input-wrap">
 				<label for="field-registerby"><?php echo Lang::txt('COM_EVENTS_REGISTER_BY'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->row->registerby, 'registerby', 'field-registerby'); ?>
+				<?php echo Html::input('calendar', 'registerby', $this->row->registerby, array('id' => 'field-registerby')); ?>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_EMAIL_HINT'); ?>">

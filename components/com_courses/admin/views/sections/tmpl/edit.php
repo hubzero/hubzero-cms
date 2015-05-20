@@ -185,25 +185,25 @@ jQuery(document).ready(function($){
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>">
 						<label for="field-publish_up"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), 'fields[publish_up]', 'field-publish_up'); ?>
+						<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), array('id' => 'field-publish_up')); ?>
 						<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>">
 						<label for="field-start_date"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', ($this->row->get('start_date') != '0000-00-00 00:00:00' ? $this->row->get('start_date') : ''), 'fields[start_date]', 'field-start_date'); ?>
+						<?php echo Html::input('calendar', 'fields[start_date]', ($this->row->get('start_date') != '0000-00-00 00:00:00' ? $this->row->get('start_date') : ''), array('id' => 'field-start_date')); ?>
 						<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>">
 						<label for="field-end date"><?php echo Lang::txt('COM_COURSES_FIELD_FINISHES'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', ($this->row->get('end_date') != '0000-00-00 00:00:00' ? $this->row->get('end_date') : ''), 'fields[end_date]', 'field-end_date'); ?>
+						<?php echo Html::input('calendar', 'fields[end_date]', ($this->row->get('end_date') != '0000-00-00 00:00:00' ? $this->row->get('end_date') : ''), array('id' => 'field-end_date')); ?>
 						<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>">
 						<label for="field-publish_down"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), 'fields[publish_down]', 'field-publish_down'); ?>
+						<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), array('id' => 'field-publish_down')); ?>
 						<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?></span>
 					</div>
 				</fieldset>
@@ -509,12 +509,10 @@ jQuery(document).ready(function($){
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][id]" value="<?php echo $this->row->date('asset_group', $agt->get('id'))->get('id'); ?>" />
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope]" value="asset_group" />
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope_id]" value="<?php echo $agt->get('id'); ?>" />
-											<?php //echo JHTML::_('calendar', $unit->get('publish_up'), 'dates[' . $i . '][publish_up]', 'dates_' . $i . '_publish_up', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
 											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up" class="datetime-field" value="<?php echo (!$agt->get('publish_up') || $agt->get('publish_up') == $unit->get('publish_up') || $agt->get('publish_up') == $nullDate ? '' : Date::of($agt->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
 										</td>
 										<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 										<td>
-											<?php //echo JHTML::_('calendar', $unit->get('publish_down'), 'dates[' . $i . '][publish_down]', 'dates_' . $i . '_publish_down', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
 											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_down" class="datetime-field" value="<?php echo (!$agt->get('publish_down') || $agt->get('publish_down') == $unit->get('publish_down') || $agt->get('publish_down') == $nullDate ? '' : Date::of($agt->get('publish_down'))->toLocal('Y-m-d H:i:s')); ?>" />
 										</td>
 									</tr>

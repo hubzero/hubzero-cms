@@ -110,14 +110,14 @@ function submitbutton(pressbutton)
 			<div class="col width-50 fltlft">
 				<div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
 					<label for="publish_up"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-					<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), 'fields[publish_up]', 'publish_up'); ?>
+					<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), array('id' => 'publish_up')); ?>
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
 					<label for="publish_down"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS'); ?>:</label><br />
-					<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), 'fields[publish_down]', 'publish_down'); ?>
+					<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), array('id' => 'publish_down')); ?>
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
 				</div>
 			</div>
