@@ -2247,7 +2247,7 @@ class Publication extends Object
 				$date = (Date::of($row->published_up)->toUnix() > Date::toUnix()) ? Lang::txt('to be') . ' ' : '';
 				$date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
 					. ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-				
+
 				break;
 
 			case 3:
