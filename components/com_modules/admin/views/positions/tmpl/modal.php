@@ -9,17 +9,17 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 
-$function	= Request::getCmd('function', 'jSelectPosition');
-$lang		= Lang::getRoot();
-$ordering	= $this->escape($this->state->get('list.ordering'));
-$direction	= $this->escape($this->state->get('list.direction'));
-$clientId	= $this->state->get('filter.client_id');
-$state		= $this->state->get('filter.state');
-$template	= $this->state->get('filter.template');
-$type		= $this->state->get('filter.type');
+$function  = Request::getCmd('function', 'jSelectPosition');
+$lang      = Lang::getRoot();
+$ordering  = $this->escape($this->state->get('list.ordering'));
+$direction = $this->escape($this->state->get('list.direction'));
+$clientId  = $this->state->get('filter.client_id');
+$state     = $this->state->get('filter.state');
+$template  = $this->state->get('filter.template');
+$type      = $this->state->get('filter.type');
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('COM_MODULES'); ?></h2>
 <form action="<?php echo Route::url('index.php?option=com_modules&view=positions&layout=modal&tmpl=component&function='.$function.'&client_id=' .$clientId);?>" method="post" name="adminForm" id="adminForm">
@@ -37,17 +37,17 @@ $type		= $this->state->get('filter.type');
 		<div class="col width-60 fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', JHtml::_('modules.templateStates'), 'value', 'text', $state, true);?>
+				<?php echo Html::select('options', Html::modules('templateStates'), 'value', 'text', $state, true);?>
 			</select>
 
 			<select name="filter_type" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE');?></option>
-				<?php echo Html::select('options', JHtml::_('modules.types'), 'value', 'text', $type, true);?>
+				<?php echo Html::select('options', Html::modules('types'), 'value', 'text', $type, true);?>
 			</select>
 
 			<select name="filter_template" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE');?></option>
-				<?php echo Html::select('options', JHtml::_('modules.templates', $clientId), 'value', 'text', $template, true);?>
+				<?php echo Html::select('options', Html::modules('templates', $clientId), 'value', 'text', $template, true);?>
 			</select>
 		</div>
 	</fieldset>
@@ -56,10 +56,10 @@ $type		= $this->state->get('filter.type');
 		<thead>
 			<tr>
 				<th class="title" width="20%">
-					<?php echo $this->grid('sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
 				</th>
 				<th>
-					<?php echo $this->grid('sort', 'COM_MODULES_HEADING_TEMPLATES', 'templates', $direction, $ordering); ?>
+					<?php echo Html::grid('sort', 'COM_MODULES_HEADING_TEMPLATES', 'templates', $direction, $ordering); ?>
 				</th>
 			</tr>
 		</thead>
@@ -71,7 +71,7 @@ $type		= $this->state->get('filter.type');
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php $i=1; foreach ($this->items as $value=>$templates) : ?>
+		<?php $i=1; foreach ($this->items as $value => $templates) : ?>
 			<tr class="row<?php echo $i=1-$i;?>">
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $value; ?>');"><?php echo $this->escape($value); ?></a>

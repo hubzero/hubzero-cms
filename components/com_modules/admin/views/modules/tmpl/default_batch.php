@@ -10,11 +10,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$clientId = $this->state->get('filter.client_id');
+$clientId  = $this->state->get('filter.client_id');
 $published = $this->state->get('filter.published');
 ?>
 <fieldset class="batch">
 	<legend><span><?php echo Lang::txt('COM_MODULES_BATCH_OPTIONS');?></span></legend>
+
 	<p><?php echo Lang::txt('COM_MODULES_BATCH_TIP'); ?></p>
 
 	<div class="col width-50 fltlft">
@@ -27,9 +28,9 @@ $published = $this->state->get('filter.published');
 		</div>
 	</div>
 	<div class="col width-50 fltrt">
-	<?php if ($published >= 0) : ?>
-		<?php echo JHtml::_('modules.positions', $clientId);?>
-	<?php endif; ?>
+		<?php if ($published >= 0) : ?>
+			<?php echo Html::modules('positions', $clientId); ?>
+		<?php endif; ?>
 
 		<div class="input-wrap">
 			<button type="submit" onclick="Joomla.submitbutton('module.batch');">

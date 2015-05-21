@@ -99,8 +99,8 @@ $menuTypes = MenusHelper::getMenuLinks();
 				<div class="clr"></div>
 
 				<?php
-				$count 	= count($type->links);
-				$i		= 0;
+				$count = count($type->links);
+				$i     = 0;
 				if ($count) :
 				?>
 				<ul class="menu-links">

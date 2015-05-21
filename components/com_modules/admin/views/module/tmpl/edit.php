@@ -9,10 +9,11 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
-JHtml::_('behavior.combobox');
+Html::behavior('combobox');
+
 $hasContent = empty($this->item->module) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
 
 $script = "Joomla.submitbutton = function(task)

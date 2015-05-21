@@ -71,8 +71,8 @@ class ModulesModelSelect extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
@@ -112,13 +112,13 @@ class ModulesModelSelect extends JModelList
 
 		// Initialise variables.
 		$client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
-		$lang	= Lang::getRoot();
+		$lang   = Lang::getRoot();
 
 		// Loop through the results to add the XML metadata,
 		// and load language support.
 		foreach ($items as &$item)
 		{
-			$path = JPath::clean($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
+			$path = Filesystem::normalizePath($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
 			if (file_exists($path))
 			{
 				$item->xml = simplexml_load_file($path);
@@ -128,7 +128,7 @@ class ModulesModelSelect extends JModelList
 				$item->xml = null;
 			}
 
-					// 1.5 Format; Core files or language packs then
+			// 1.5 Format; Core files or language packs then
 			// 1.6 3PD Extension Support
 				$lang->load($item->module . '.sys', $client->path, null, false, true)
 			||	$lang->load($item->module . '.sys', $client->path . '/modules/' . $item->module, null, false, true);

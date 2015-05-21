@@ -51,28 +51,34 @@ class ModulesViewModule extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
-		$canDo		= ModulesHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
-		$item		= $this->get('Item');
+		$isNew      = ($this->item->id == 0);
+		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
+		$canDo      = ModulesHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
+		$item       = $this->get('Item');
 
 		Toolbar::title( Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)), 'module.png');
 
 		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create') )) {
+		if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create') ))
+		{
 			Toolbar::apply('module.apply');
 			Toolbar::save('module.save');
 		}
-		if (!$checkedOut && $canDo->get('core.create')) {
+		if (!$checkedOut && $canDo->get('core.create'))
+		{
 			Toolbar::save2new('module.save2new');
 		}
 			// If an existing item, can save to a copy.
-		if (!$isNew && $canDo->get('core.create')) {
+		if (!$isNew && $canDo->get('core.create'))
+		{
 			Toolbar::save2copy('module.save2copy');
 		}
-		if (empty($this->item->id))  {
+		if (empty($this->item->id))
+		{
 			Toolbar::cancel('module.cancel');
-		} else {
+		}
+		else
+		{
 			Toolbar::cancel('module.cancel', 'JTOOLBAR_CLOSE');
 		}
 

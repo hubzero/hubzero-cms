@@ -23,18 +23,18 @@ class ModulesViewSelect extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$state		= $this->get('State');
-		$items		= $this->get('Items');
+		$state = $this->get('State');
+		$items = $this->get('Items');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500, E_ERROR);
 			return false;
 		}
 
-		$this->assignRef('state',		$state);
-		$this->assignRef('items',		$items);
+		$this->assignRef('state', $state);
+		$this->assignRef('items', $items);
 
 		parent::display($tpl);
 	}

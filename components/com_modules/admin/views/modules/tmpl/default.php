@@ -49,7 +49,7 @@ $saveOrder = $listOrder == 'ordering';
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
@@ -133,13 +133,13 @@ $saveOrder = $listOrder == 'ordering';
 					<?php endif; ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('modules.state', $item->published, $i, $canChange, 'cb'); ?>
+					<?php echo Html::modules('state', $item->published, $i, $canChange, 'cb'); ?>
 				</td>
 				<td class="left">
 					<?php if ($item->position) : ?>
 						<?php echo $item->position; ?>
 					<?php else : ?>
-						<?php echo ':: '.Lang::txt('JNONE').' ::'; ?>
+						<?php echo ':: ' . Lang::txt('JNONE') . ' ::'; ?>
 					<?php endif; ?>
 				</td>
 				<td class="order">
@@ -153,8 +153,8 @@ $saveOrder = $listOrder == 'ordering';
 								<span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, (@$this->items[$i+1]->position == $item->position), 'modules.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
 							<?php endif; ?>
 						<?php endif; ?>
-						<?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-						<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
+						<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
+						<input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled; ?> class="text-area-order" />
 					<?php else : ?>
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>

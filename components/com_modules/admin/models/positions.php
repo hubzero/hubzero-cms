@@ -27,7 +27,8 @@ class ModulesModelPositions extends JModelList
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'value',
 				'templates',
@@ -83,74 +84,83 @@ class ModulesModelPositions extends JModelList
 	{
 		if (!isset($this->items))
 		{
-			$lang				= Lang::getRoot();
-			$search				= $this->getState('filter.search');
-			$state				= $this->getState('filter.state');
-			$clientId			= $this->getState('filter.client_id');
-			$filter_template	= $this->getState('filter.template');
-			$type				= $this->getState('filter.type');
-			$ordering			= $this->getState('list.ordering');
-			$direction			= $this->getState('list.direction');
-			$limitstart			= $this->getState('list.start');
-			$limit				= $this->getState('list.limit');
-			$client				= JApplicationHelper::getClientInfo($clientId);
+			$lang            = Lang::getRoot();
+			$search          = $this->getState('filter.search');
+			$state           = $this->getState('filter.state');
+			$clientId        = $this->getState('filter.client_id');
+			$filter_template = $this->getState('filter.template');
+			$type            = $this->getState('filter.type');
+			$ordering        = $this->getState('list.ordering');
+			$direction       = $this->getState('list.direction');
+			$limitstart      = $this->getState('list.start');
+			$limit           = $this->getState('list.limit');
+			$client          = JApplicationHelper::getClientInfo($clientId);
 
 			if ($type!='template')
 			{
 				// Get the database object and a new query object.
-				$query	= $this->_db->getQuery(true);
+				$query = $this->_db->getQuery(true);
 				$query->select('DISTINCT(position) as value');
 				$query->from('#__modules');
 				$query->where($this->_db->quoteName('client_id').' = '.(int) $clientId);
-				if ($search) {
+				if ($search)
+				{
 					$query->where('position LIKE '.$this->_db->Quote('%'.$this->_db->escape($search, true).'%'));
 				}
 
 				$this->_db->setQuery($query);
 				$positions = $this->_db->loadObjectList('value');
 				// Check for a database error.
-				if ($error = $this->_db->getErrorMsg()) {
+				if ($error = $this->_db->getErrorMsg())
+				{
 					$this->setError($error);
 					return false;
 				}
-				foreach ($positions as $value=>$position) {
+				foreach ($positions as $value => $position)
+				{
 					$positions[$value] = array();
 				}
 			}
 			else
 			{
-				$positions=array();
+				$positions = array();
 			}
 
 			// Load the positions from the installed templates.
 			foreach (ModulesHelper::getTemplates($clientId) as $template)
 			{
-				$path = JPath::clean($client->path.'/templates/'.$template->element.'/templateDetails.xml');
+				$path = \Hubzero\Filesystem\Util::normalizePath($client->path.'/templates/'.$template->element.'/templateDetails.xml');
 
 				if (file_exists($path))
 				{
 					$xml = simplexml_load_file($path);
 					if (isset($xml->positions[0]))
 					{
-						$lang->load('tpl_'.$template->element.'.sys', $client->path, null, false, true)
-					||	$lang->load('tpl_'.$template->element.'.sys', $client->path.'/templates/'.$template->element, null, false, true);
-					foreach ($xml->positions[0] as $position)
+							$lang->load('tpl_'.$template->element.'.sys', $client->path, null, false, true)
+						||	$lang->load('tpl_'.$template->element.'.sys', $client->path.'/templates/'.$template->element, null, false, true);
+
+						foreach ($xml->positions[0] as $position)
 						{
 							$value = (string)$position['value'];
 							$label = (string)$position;
-							if (!$value) {
+							if (!$value)
+							{
 								$value = $label;
 								$label = preg_replace('/[^a-zA-Z0-9_\-]/', '_', 'TPL_'.$template->element.'_POSITION_'.$value);
 								$altlabel = preg_replace('/[^a-zA-Z0-9_\-]/', '_', 'COM_MODULES_POSITION_'.$value);
-								if (!$lang->hasKey($label) && $lang->hasKey($altlabel)) {
+								if (!$lang->hasKey($label) && $lang->hasKey($altlabel))
+								{
 									$label = $altlabel;
 								}
 							}
-							if ($type=='user' || ($state!='' && $state!=$template->enabled)) {
+							if ($type=='user' || ($state!='' && $state!=$template->enabled))
+							{
 								unset($positions[$value]);
 							}
-							elseif (preg_match(chr(1).$search.chr(1).'i', $value) && ($filter_template=='' || $filter_template==$template->element)) {
-								if (!isset($positions[$value])) {
+							elseif (preg_match(chr(1).$search.chr(1).'i', $value) && ($filter_template=='' || $filter_template==$template->element))
+							{
+								if (!isset($positions[$value]))
+								{
 									$positions[$value] = array();
 								}
 								$positions[$value][$template->name]=$label;
@@ -160,23 +170,30 @@ class ModulesModelPositions extends JModelList
 				}
 			}
 			$this->total = count($positions);
-			if ($limitstart >= $this->total) {
+			if ($limitstart >= $this->total)
+			{
 				$limitstart = $limitstart < $limit ? 0 : $limitstart - $limit;
 				$this->setState('list.start', $limitstart);
 			}
-			if ($ordering == 'value') {
-				if ($direction == 'asc') {
+			if ($ordering == 'value')
+			{
+				if ($direction == 'asc')
+				{
 					ksort($positions);
 				}
-				else {
+				else
+				{
 					krsort($positions);
 				}
 			}
-			else {
-				if ($direction == 'asc') {
+			else
+			{
+				if ($direction == 'asc')
+				{
 					asort($positions);
 				}
-				else {
+				else
+				{
 					arsort($positions);
 				}
 			}

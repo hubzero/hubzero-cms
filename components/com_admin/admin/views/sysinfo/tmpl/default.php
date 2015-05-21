@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 // Add specific helper files for html generation
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 // Load switcher behavior
 Html::behavior('switcher', 'submenu');
 ?>
