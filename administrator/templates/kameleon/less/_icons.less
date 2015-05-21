@@ -159,9 +159,9 @@
 	/* Checked out */
 	.checkedout:before {
 		content: "\f023";
-		color: #999;
-		font-size: 16px;
-		line-height: 16px;
+		color: #ff7800;
+		font-size: 1.2em;
+		line-height: 1;
 		font-family: 'Fontcons';
 	}
 	.checkedout:hover:before {
@@ -170,8 +170,13 @@
 	/* Default */
 	.default:before {
 		content: "\2605";
+		color: #F8D201;
 	}
-	.default:hover:before {
+	.notdefault:before {
+		content: "\2606";
+		color: #ccc;
+	}
+	.notdefault:hover:before {
 		color: #F8D201;
 	}
 	/* Delete */
@@ -199,7 +204,14 @@
 	.downarrow:hover:before {
 		color: #333;
 	}
-	
+	.preview:before {
+		content: "\f06e";
+	}
+	.nopreview:before {
+		content: "\f070";
+		color: #ccc;
+	}
+
 	// Glyphs
 	.glyph {
 		&:before {
