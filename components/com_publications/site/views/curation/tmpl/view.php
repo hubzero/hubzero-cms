@@ -31,11 +31,8 @@ $this->css()
 	 ->css('curation.css')
 	 ->js('curation.js');
 
-// Get blocks
-$blocks = $this->pub->_curationModel->_blocks;
-
-$status    = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
-$class 	   = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
+$status = $this->pub->getStatusName();
+$class  = $this->pub->getStatusCss();
 $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
 
 ?>
@@ -95,7 +92,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 			</div>
 		<?php } ?>
 		<div class="curation-blocks">
-<?php foreach ($blocks as $blockId => $block) {
+<?php foreach ($this->pub->curation('blocks') as $blockId => $block) {
 
 	// Skip inactive blocks
 	if (isset($block->active) && $block->active == 0)
@@ -116,8 +113,8 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 	<div id="addnotice" class="addnotice">
 		<form id="notice-form" name="noticeForm" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" method="post">
 		 <fieldset>
-			<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
-			<input type="hidden" name="vid" value="<?php echo $this->pub->version_id; ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->pub->get('id'); ?>" />
+			<input type="hidden" name="vid" value="<?php echo $this->pub->get('version_id'); ?>" />
 			<input type="hidden" name="ajax" value="1" />
 			<input type="hidden" name="no_html" value="1" />
 			<input type="hidden" name="p" id="props" value="" />

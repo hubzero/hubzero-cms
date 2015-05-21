@@ -85,6 +85,10 @@ $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : 
 $updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
 $handlerOptions = count($this->attachments) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : NULL;
+
+$elementUrl = Route::url($this->pub->link('editversion') . '&section='
+	. $section . '&step=' . $blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
@@ -94,7 +98,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->versionAlias . '&el=' . $this->elementId . '#' . $elName; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 		</div>
 		<div class="block-aside-omega"></div>

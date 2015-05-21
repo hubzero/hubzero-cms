@@ -73,7 +73,7 @@ $schema 	= $elements->getSchema();
 
 $canedit 	= 1;
 $now 		= JFactory::getDate()->toSql();
-$status 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->model, 'status');
+$status 	= $this->model->getStatusName();
 
 $rating = $this->model->get('master_rating') == 9.9 ? 0.0 : $this->model->get('master_rating') ;
 $params = $this->model->params;

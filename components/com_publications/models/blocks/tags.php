@@ -140,21 +140,8 @@ class Tags extends Base
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_blockId;
 
-		// Get tags
-		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
-
-		$tags_men = $tagsHelper->get_tags_on_object($pub->id, 0, 0, 0, 0);
-
-		$mytagarray = array();
-		foreach ($tags_men as $tag_men)
-		{
-			$mytagarray[] = $tag_men['raw_tag'];
-		}
-		$view->tags = implode(', ', $mytagarray);
-
 		// Get categories
-		$rt = new \Components\Publications\Tables\Category( $this->_parent->_db );
-		$view->categories = $rt->getContribCategories();
+		$view->categories = $pub->category()->getContribCategories();
 
 		if ($this->getError())
 		{

@@ -25,49 +25,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$project = $this->pub->_project;
+// Get block properties
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
-// Build url
-$route = $this->pub->_project->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->get('alias') . '&active=publications';
-
-$url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
-
-$title 	 = $this->manifest->title;
-
-// Get block completion status
-$step 	  =  $this->step;
-$complete =  $this->pub->_curationModel->_progress->blocks->$step->status->status;
-
-$manifest = $this->pub->_curationModel->_progress->blocks->$step->manifest;
-$name	  = $this->pub->_curationModel->_progress->blocks->$step->name;
-
-// Is panel content (of any kind) required?
-$required = isset($manifest->params->required) ? $manifest->params->required : 0;
-
-$noElements = $manifest->elements ? false : true;
-
-$about = $manifest->adminTips ? $manifest->adminTips : $manifest->about;
-
-$props = $name . '-' . $step;
+// Side text from block manifest
+$about = $this->manifest->adminTips ? $this->manifest->adminTips : $this->manifest->about;
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'curator');
+$curatorStatus = $this->pub->curation()->getCurationStatus($this->pub, $this->step, 0, 'curator');
 
 ?>
 <div class="curation-block">
-	<h4><?php echo $title; ?></h4>
-	<?php if ($noElements) { ?>
+	<h4><?php echo $this->manifest->title; ?></h4>
+	<?php if (!$this->pub->curation('blocks', $this->step, 'hasElements')) { ?>
 		<div id="<?php echo 'element' . $this->active; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : ''; ?>">
 		<div class="element_overview">
 			<div class="block-aside"><div class="block-info"><?php echo $about; ?></div>
 			</div>
-			<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, $url, $title); ?>
+			<?php echo $this->pub->curation()->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->title); ?>
 			<div class="block-subject">
-				<h5 class="element-title"><?php echo $manifest->label; ?></h5>
-				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', 'element' . $this->active); ?>
+				<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
+				<?php echo $this->pub->curation()->drawCurationNotice($curatorStatus, $props, 'curator', 'element' . $this->active); ?>
 				<?php echo $this->content; ?>
 			</div>
 		</div>

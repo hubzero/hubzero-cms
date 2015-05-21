@@ -25,25 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->model->isProvisioned()
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
-
-// Save Selection URL
-$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
-
-$i = 0;
-
-$block   = $this->block;
-$step  	 = $this->step;
-
-// Get requirements
-$blocks   = $this->publication->_curationModel->_progress->blocks;
-$params   = $blocks->$step->manifest->params;
-
 $selected = array();
-
 if (count($this->authors) > 0)
 {
 	foreach ($this->authors as $sel)
@@ -52,10 +34,7 @@ if (count($this->authors) > 0)
 	}
 }
 
-$newauthorUrl   = $this->model->isProvisioned()
-		? Route::url( $route) . '?active=team&action=newauthor'
-		: Route::url( $route . '&active=team&action=newauthor') .'/?p=' . $this->props . '&amp;pid='
-		. $this->publication->id . '&amp;vid=' . $this->publication->version_id;
+$newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=team&action=newauthor&p=' . $this->props);
 
 ?>
 <div id="abox-content-wrap">
@@ -67,18 +46,18 @@ $newauthorUrl   = $this->model->isProvisioned()
 		<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?></a>
 		<?php } ?>
 	</span></h3>
-<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
+<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
+		<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" name="selecteditems" id="selecteditems" value="" />
 		<input type="hidden" name="p" id="p" value="<?php echo $this->props; ?>" />
-		<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
-		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-		<input type="hidden" name="section" value="<?php echo $block; ?>" />
-		<input type="hidden" name="step" value="<?php echo $step; ?>" />
+		<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
+		<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
+		<input type="hidden" name="section" value="<?php echo $this->block; ?>" />
+		<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />
 		<input type="hidden" name="move" value="continue" />
@@ -98,7 +77,6 @@ $newauthorUrl   = $this->model->isProvisioned()
 			$view->option 		= $this->option;
 			$view->model 		= $this->model;
 			$view->selected		= $selected;
-			$view->params 		= $params;
 			$view->publication  = $this->publication;
 			$view->team			= $this->team;
 			echo $view->loadTemplate();

@@ -76,10 +76,6 @@ class Content extends Base
 		// Register blockId
 		$this->_blockId	= $blockId;
 
-		// Get extra params
-		$params 	 = $this->_manifest->params;
-		$useHanlders = isset($params->use_hanlders) && $params->use_hanlders == 1 ? true : false;
-
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -105,28 +101,12 @@ class Content extends Base
 			);
 		}
 
-		// Build url
-		$route = $pub->_project->isProvisioned()
-					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias='
-						. $pub->_project->get('alias') . '&active=publications';
-
-		$pub->url = Route::url($route . '&pid=' . $pub->id . '&section='
-			. $this->_name . '&step=' . $blockId . '&move=continue');
-
 		// Make sure we have attachments
-		if (!isset($pub->_attachments))
-		{
-			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}
+		$pub->attachments();
 
 		// Get block status
-		$status = self::getStatus($pub);
-
-		// Get block status review
-		$status->review = $pub->_curationModel->_progress->blocks->$blockId->review;
+		$status = $pub->curation('blocks', $blockId, 'status');
+		$status->review = $pub->curation('blocks', $blockId, 'review');
 
 		// Get block element model
 		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
@@ -143,7 +123,8 @@ class Content extends Base
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
-		$view->showControls	= isset($master->params->collapse_elements) && $master->params->collapse_elements == 1 ? 3 : 1;
+		$view->showControls	= isset($master->params->collapse_elements)
+							&& $master->params->collapse_elements == 1 ? 3 : 1;
 		$view->status		= $status;
 		$view->master		= $master;
 
@@ -174,12 +155,7 @@ class Content extends Base
 		}
 
 		// Make sure we have current attachments
-		if (!isset($pub->_attachments))
-		{
-			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}
+		$pub->attachments();
 
 		// Save each element
 		$saved = 0;
@@ -230,12 +206,7 @@ class Content extends Base
 	public function transferData( $manifest, $pub, $oldVersion, $newVersion )
 	{
 		// Make sure we have attachments
-		if (!isset($pub->_attachments))
-		{
-			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}
+		$pub->attachments();
 
 		// Get attachment type model
 		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
@@ -296,15 +267,10 @@ class Content extends Base
 		}
 
 		// Make sure we have attachments
-		if (!isset($pub->_attachments))
-		{
-			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}
+		$pub->attachments();
 
 		// Start status
-		$status 	 = new \Components\Publications\Models\Status();
+		$status = new \Components\Publications\Models\Status();
 
 		// Check against manifested requirements
 		if ($this->_manifest)

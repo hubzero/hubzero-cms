@@ -161,14 +161,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// What's the publication status?
-	$status = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'status');
-	$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
-	$task 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'task');
-	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00'
-			? Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'))
-			: Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+	$status = $this->model->getStatusName($row->state);
+	$class  = $this->model->getStatusCss($row->state);
+
+	$date 	= $row->modified() ? $row->modified('datetime') : $row->created('datetime');
 ?>
-			<tr class="<?php echo "row$k"; ?> <?php echo $row->state == 5 ? 'attention' : ''; ?>">
+			<tr class="<?php echo "row$k"; ?> <?php echo $row->isPending() ? 'attention' : ''; ?>">
 				<td>
 					<?php echo $checked; ?>
 				</td>

@@ -341,10 +341,9 @@ class Curation extends Object
 	 * Get manifests elements of interest
 	 *
 	 * @param   integer  $role		Element role
-	 * @param   object   $handler	Handler
 	 * @return  array
 	 */
-	public function getElements( $role = 1, $handler = NULL )
+	public function getElements( $role = 1, $type = 'file' )
 	{
 		if (!$this->_blocks)
 		{
@@ -365,7 +364,7 @@ class Curation extends Object
 			{
 				foreach ($block->elements as $elId => $element)
 				{
-					if ($element->params->type != 'file')
+					if ($type && $element->params->type != $type)
 					{
 						// continue;
 					}
@@ -765,11 +764,11 @@ class Curation extends Object
 		}
 
 		// Record update time
-		$data 				= new stdClass;
-		$data->updated 		= Date::toSql();
-		$data->updated_by 	= $actor;
+		$data 				 = new stdClass;
+		$data->updated 		 = Date::toSql();
+		$data->updated_by 	 = $actor;
 		$data->review_status = 3;
-		$data->update		= stripslashes($reason);
+		$data->update		 = stripslashes($reason);
 		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 
 		$this->set('_message', 'Your request has been saved');
@@ -841,7 +840,7 @@ class Curation extends Object
 			$result->blocks->$blockId 				= new stdClass();
 			$result->blocks->$blockId->name 		= $block->name;
 			$result->blocks->$blockId->manifest 	= $block;
-			$result->blocks->$blockId->firstElement= self::getFirstElement($block->name, $this->_pub, $blockId);
+			$result->blocks->$blockId->firstElement = self::getFirstElement($block->name, $this->_pub, $blockId);
 
 			if ($autoStatus->status > 0)
 			{
@@ -862,6 +861,10 @@ class Curation extends Object
 				{
 					foreach ($block->elements as $elementId => $element)
 					{
+						if (isset($element->active) && $element->active == 0)
+						{
+							continue;
+						}
 						if ($autoStatus->elements->$elementId->status == 0 && $reviewStatus->elements->$elementId->status == 2)
 						{
 							$i--;
@@ -1204,6 +1207,10 @@ class Curation extends Object
 		{
 			foreach ($this->_blocks->$blockId->elements as $id => $element)
 			{
+				if (isset($element->active) && $element->active == 0)
+				{
+					continue;
+				}
 				if ($id == $activeId)
 				{
 					$start = 1;
@@ -1248,6 +1255,10 @@ class Curation extends Object
 		{
 			foreach ($this->_blocks->$blockId->elements as $id => $element)
 			{
+				if (isset($element->active) && $element->active == 0)
+				{
+					continue;
+				}
 				if ($id == $activeId)
 				{
 					$start = 1;
@@ -1326,6 +1337,10 @@ class Curation extends Object
 
 			foreach ($manifest->elements as $elementId => $element)
 			{
+				if (isset($element->active) && $element->active == 0)
+				{
+					continue;
+				}
 				$props = $block . '-' . $blockId . '-' . $elementId;
 
 				if (!isset($status->elements))

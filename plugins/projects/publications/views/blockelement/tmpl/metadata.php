@@ -94,6 +94,10 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
 $updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
+
+$elementUrl = Route::url($this->pub->link('editversion') . '&section='
+	. $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
@@ -104,7 +108,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->versionAlias . '&el=' . $this->elementId . '#element' . $this->elementId; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo Lang::txt('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $elementUrl; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 			<?php if (!$coming && $value) {
 				// Parse editor text

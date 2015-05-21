@@ -379,29 +379,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Load classes
-		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
-		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
+		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
 
-		// Load publication version
-		$view->version->load($vid);
-		if (!$view->version->id)
+		if (!$view->publication->exists())
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// Get publication
-		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->model->get('id'));
-
-		if (!$view->publication)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// On error
-		if ($this->getError())
-		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 			// Output error
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -417,22 +399,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		// Load master type
-		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
-		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->model;
-
-		// Get curation model
-		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
+		// Set curation
+		$view->publication->setCuration();
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
 		{
 			$block = 'authors';
 		}
-
-		// Set pub assoc and load curation
-		$view->publication->_curationModel->setPubAssoc($view->publication);
 
 		// Get css
 		if (!$ajax)
@@ -441,7 +415,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project owner
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 		$view->filters['limit']    		=  0;
 		$view->filters['start']    		= Request::getInt( 't_limitstart', 0);
 		$view->filters['sortby']   		= Request::getVar( 't_sortby', 'name');
@@ -453,7 +427,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->team = $objO->getOwners($this->model->get('id'), $view->filters);
 
 		// Get current authors
-		$pa = new \Components\Publications\Tables\Author($this->_database);
+		$pa = $view->publication->table('Author');
 		$view->authors = $pa->getAuthors($vid);
 
 		// Exclude any owners?

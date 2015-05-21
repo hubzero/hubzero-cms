@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$status = \Components\Publications\Helpers\Html::getPubStateProperty($this->row, 'status', 0);
-$class = \Components\Publications\Helpers\Html::getPubStateProperty($this->row, 'class');
 ?>
 <li>
 	<span class="mypub-options">
@@ -38,7 +36,7 @@ $class = \Components\Publications\Helpers\Html::getPubStateProperty($this->row, 
 		<?php echo $this->row->get('title'); ?>
 		<span class="block faded mini">
 			<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->row->get('version_label'); ?>
-			<span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span>
+			<span class="<?php echo $this->row->getStatusCss(); ?> major_status"><?php echo $this->row->getStatusName(); ?></span>
 			<span class="block">
 				<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_BY') . ' ' . $this->row->creator('name') ; ?>
 				<?php if (!$this->row->project()->isProvisioned()) {

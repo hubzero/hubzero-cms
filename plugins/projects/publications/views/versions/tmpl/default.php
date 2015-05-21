@@ -60,9 +60,9 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 			$doi_notice = $doi ? $doi : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA');
 
 			// Version status
-			$status = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'status');
-			$class  = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
-			$date   = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
+			$status = $this->pub->getStatusName($v->state);
+			$class  = $this->pub->getStatusCss($v->state);
+			$date   = $this->pub->getStatusDate($v);
 
 			$options = '<a href="' . Route::url($this->pub->link('edit') . '&version=' . $v->version_number) . '">'
 			. Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION') . '</a>';

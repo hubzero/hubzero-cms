@@ -29,8 +29,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $creator = $this->pub->creator('name') . ' (' . $this->pub->creator('username') . ')';
 
 // Version status
-$status = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
-$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
+$status = $this->pub->getStatusName();
+$class  = $this->pub->getStatusCss();
 
 // Get block content
 $blockcontent = $this->pub->_curationModel->parseBlock('edit');

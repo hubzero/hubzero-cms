@@ -39,7 +39,7 @@ $this->css();
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->items as $pub) {
-			$status = \Components\Publications\Helpers\Html::getPubStateProperty($pub, 'status', 0);
+			$status = $pub->getStatusName();
 		?>
 		<li>
 			<span class="pub-thumb"><img src="<?php echo Route::url($pub->link('thumb')); ?>" alt=""/></span>

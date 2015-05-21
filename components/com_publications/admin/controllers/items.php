@@ -100,13 +100,14 @@ class Items extends AdminController
 			''
 		));
 
-		$model = new Tables\Publication($this->database);
+		// Instantiate a publication object
+		$this->view->model = new Models\Publication($this->database);
 
 		// Get record count
-		$this->view->total = $model->getCount($this->view->filters, true);
+		$this->view->total = $this->view->model->entries( 'count', $this->view->filters, true );
 
 		// Get publications
-		$this->view->rows = $model->getRecords($this->view->filters, true);
+		$this->view->rows = $this->view->model->entries( 'list', $this->view->filters, true );
 
 		$this->view->config = $this->config;
 
@@ -1179,23 +1180,25 @@ class Items extends AdminController
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['cat']   = Request::getVar('cat', '');
-		$this->view->return['sortby']   = Request::getVar('sortby', '');
+		$this->view->return['cat']    = Request::getVar('cat', '');
+		$this->view->return['sortby'] = Request::getVar('sortby', '');
 		$this->view->return['status'] = Request::getVar('status', '');
 
-		// Instantiate project publication
-		$objP = new Tables\Publication( $this->database );
-		$objV = new Tables\Version( $this->database );
+		// Load publication model
+		$this->view->pub  = new Models\Publication( $id, 'default');
 
-		$this->view->pub = $objP->getPublication($id);
 		if (!$this->view->pub)
 		{
-			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'), 404);
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
+				'notice'
+			);
 			return;
 		}
 
 		// Get versions
-		$this->view->versions = $objV->getVersions( $id, $filters = array('withdev' => 1));
+		$this->view->versions = $this->view->pub->version->getVersions( $id, $filters = array('withdev' => 1));
 
 		// Set any errors
 		if ($this->getError())

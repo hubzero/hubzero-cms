@@ -38,14 +38,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div>
 <?php } else { ?>
 	<ul>
-		<?php foreach ($this->items as $pub) {
-			$status = \Components\Publications\Helpers\Html::getPubStateProperty($pub, 'status', 0);
-		?>
+		<?php foreach ($this->items as $pub) { ?>
 	<li>
 		 <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications') . '/?pid=' . $pub->id; ?>" title="<?php echo $pub->title; ?>">
 		<?php echo \Hubzero\Utility\String::truncate($pub->title, 50); ?></a>
 		 <span class="block faded mini">
-			<span>v. <?php echo $pub->version_label; ?> (<?php echo $status; ?>)</span>
+			<span>v. <?php echo $pub->version_label; ?></span>
 		</span>
 	   </li><?php } ?>
 	</ul><?php } ?>

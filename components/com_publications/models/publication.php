@@ -621,6 +621,87 @@ class Publication extends Object
 	}
 
 	/**
+	 * Get curation model or its properties
+	 *
+	 * @param      string 	$property
+	 * @return     mixed
+	 */
+	public function curation($property = NULL, $blockId = NULL, $blockProperty = NULL)
+	{
+		if (!isset($this->_curationModel))
+		{
+			$this->setCuration();
+		}
+		switch ($property)
+		{
+			case 'progress':
+				return $this->_curationModel->_progress;
+			break;
+
+			case 'blocks':
+				if ($blockId && isset($this->_curationModel->_progress->blocks->$blockId))
+				{
+					if ($blockProperty)
+					{
+						switch ($blockProperty)
+						{
+							case 'complete':
+								return $this->_curationModel->_progress->blocks->$blockId->status->status;
+								break;
+
+							case 'props':
+								return $this->_curationModel->_progress->blocks->$blockId->name . '-' . $blockId;
+								break;
+
+							case 'required':
+								return isset($this->_curationModel->_progress->blocks->$blockId->manifest->params->required) ?  $this->_curationModel->_progress->blocks->$blockId->manifest->params->required : 0;
+								break;
+
+							case 'hasElements':
+								return empty($this->_curationModel->_progress->blocks->$blockId->manifest->elements) ?  false : true;
+								break;
+
+							default:
+								if (isset($this->_curationModel->_progress->blocks->$blockId->$blockProperty))
+								{
+									return $this->_curationModel->_progress->blocks->$blockId->$blockProperty;
+								}
+								else
+								{
+									return NULL;
+								}
+								break;
+						}
+					}
+					return $this->_curationModel->_progress->blocks->$blockId;
+				}
+				elseif ($blockId)
+				{
+					// Block does not exist or is inactive
+					return false;
+				}
+				return $this->_curationModel->_progress->blocks;
+			break;
+
+			case 'complete':
+				return $this->_curationModel->_progress->complete;
+			break;
+
+			case 'lastBlock':
+				return $this->_curationModel->_progress->lastBlock;
+			break;
+
+			case 'firstBlock':
+				return $this->_curationModel->_progress->firstBlock;
+			break;
+
+			default:
+				return $this->_curationModel;
+			break;
+		}
+	}
+
+	/**
 	 * Get the category of this entry
 	 *
 	 * @return     mixed
@@ -1851,7 +1932,7 @@ class Publication extends Object
 			break;
 
 			case 'edit':
-				$link = $this->_editBase . '&pid=' . $this->get('id');
+				$link = $this->get('id') ? $this->_editBase . '&pid=' . $this->get('id') : $this->_editBase;
 			break;
 
 			case 'editversion':
@@ -2051,5 +2132,138 @@ class Publication extends Object
 		}
 
 		return $this->get('id');
+	}
+
+	/**
+	 * Get status name
+	 *
+	 * @param      int $status
+	 * @return     string HTML
+	 */
+	public function getStatusName($status = NULL)
+	{
+		if ($status === NULL)
+		{
+			$status = $this->get('state');
+		}
+
+		switch ($status)
+		{
+			case 0:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
+				break;
+
+			case 1:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
+				break;
+
+			case 3:
+			default:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
+				break;
+
+			case 4:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_READY');
+				break;
+
+			case 5:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
+				break;
+
+			case 7:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
+				break;
+		}
+
+		return $name;
+	}
+
+	/**
+	 * Get status name
+	 *
+	 * @param      int $status
+	 * @return     string HTML
+	 */
+	public function getStatusCss($status = NULL)
+	{
+		if ($status === NULL)
+		{
+			$status = $this->get('state');
+		}
+
+		switch ($status)
+		{
+			case 0:
+				$name = 'unpublished';
+				break;
+
+			case 1:
+				$name = 'published';
+				break;
+
+			case 3:
+			default:
+				$name = 'draft';
+				break;
+
+			case 4:
+				$name = 'ready';
+				break;
+
+			case 5:
+				$name = 'pending';
+				break;
+
+			case 7:
+				$name = 'wip';
+				break;
+		}
+
+		return $name;
+	}
+
+	/**
+	 * Get status date
+	 *
+	 * @param      object $row
+	 * @return     string HTML
+	 */
+	public function getStatusDate($row = NULL)
+	{
+		if ($row === NULL)
+		{
+			$row    = $this->version;
+		}
+		$status = $row && isset($row->state) ? $row->state : $this->get('state');
+
+		switch ($status)
+		{
+			case 0:
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
+						. ' ' . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+
+			case 1:
+				$date = (Date::of($row->published_up)->toUnix() > Date::toUnix()) ? Lang::txt('to be') . ' ' : '';
+				$date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
+					. ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				
+				break;
+
+			case 3:
+			case 4:
+			default:
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
+					. ' ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+
+			case 5:
+			case 7:
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
+						. ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+		}
+
+		return $date;
 	}
 }

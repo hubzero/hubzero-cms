@@ -101,20 +101,9 @@ class Description extends Base
 			);
 		}
 
-		// Build url
-		$route = $pub->_project->isProvisioned()
-					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias='
-						. $pub->_project->get('alias') . '&active=publications';
-
-		$pub->url = Route::url($route . '&pid=' . $pub->id . '&section='
-			. $this->_name . '&step=' . $blockId . '&move=continue');
-
 		// Get block status
-		$status = self::getStatus($pub);
-
-		// Get block status review
-		$status->review = $pub->_curationModel->_progress->blocks->$blockId->review;
+		$status = $pub->curation('blocks', $blockId, 'status');
+		$status->review = $pub->curation('blocks', $blockId, 'review');
 
 		// Get block element model
 		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
@@ -131,7 +120,8 @@ class Description extends Base
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $blockId;
-		$view->showControls	= isset($master->params->collapse_elements) && $master->params->collapse_elements == 1 ? 3 : 1;
+		$view->showControls	= isset($master->params->collapse_elements)
+							&& $master->params->collapse_elements == 1 ? 3 : 1;
 		$view->status		= $status;
 		$view->master		= $master;
 

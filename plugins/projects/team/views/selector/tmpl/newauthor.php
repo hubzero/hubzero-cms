@@ -25,25 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->model->isProvisioned()
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
-
-// Save Selection URL
-$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
-
-$i = 0;
-
-$block   = $this->block;
-$step  	 = $this->step;
-
-// Get requirements
-$blocks   = $this->publication->_curationModel->_progress->blocks;
-$params   = $blocks->$step->manifest->params;
-
 $selected = array();
-
 if (count($this->authors) > 0)
 {
 	foreach ($this->authors as $sel)
@@ -56,7 +38,7 @@ if (count($this->authors) > 0)
 <script src="/plugins/projects/team/assets/js/selector.js"></script>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?> </h3>
-		<form id="add-author" class="add-author" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
+		<form id="add-author" class="add-author" method="post" action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

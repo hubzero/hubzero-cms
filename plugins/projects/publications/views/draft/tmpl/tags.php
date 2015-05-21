@@ -26,19 +26,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get block properties
-$step     = $this->step;
-$block    = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name     = $block->name;
-
-$props = $name . '-' . $this->step;
-
-$required = $this->manifest->params->required;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 $elName = "tagsPick";
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
 ?>
 
@@ -56,12 +51,12 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 						<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 
 						<?php
-						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
+						$tf = Event::trigger( 'hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->pub->getTagsForEditing())) );
 
 						if (count($tf) > 0) {
 							echo $tf[0];
 						} else {
-							echo '<textarea name="tags" id="tags" rows="6" cols="35">'. $this->tags .'</textarea>'."\n";
+							echo '<textarea name="tags" id="tags" rows="6" cols="35">'. $this->pub->getTagsForEditing() .'</textarea>'."\n";
 						}
 						?>
 				</div>

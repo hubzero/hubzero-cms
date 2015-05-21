@@ -48,16 +48,17 @@ if ($this->pub->version->get('doi'))
 $creator = $this->pub->creator('name') . ' (' . $this->pub->creator('username') . ')';
 
 // Version status
-$status = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
-$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
+$status = $this->pub->getStatusName();
+$class  = $this->pub->getStatusCss();
 
-$complete 	= $this->pub->_curationModel->_progress->complete;
+// Is draft ready?
+$complete = $this->pub->curation('complete');
 
 $showCitations  = $this->pub->_category->_params->get('show_citations', 1);
 $allowUnpublish = $this->pub->_category->_params->get('option_unpublish', 0);
 
 // We also need a citations block
-$blockActive   = $this->pub->_curationModel->blockExists('citations');
+$blockActive   = $this->pub->curation()->blockExists('citations');
 $showCitations = $blockActive ? $showCitations : 0;
 
 // Check if publication is within grace period (published status)

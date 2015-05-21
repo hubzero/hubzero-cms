@@ -25,24 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$url = Route::url($this->publication->link('edit'));
-
-$title = Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block));
-$req   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block));
-
-$block   = $this->block;
-$blockId = $this->blockId;
-$elId 	 = $this->element;
-
 // Get requirements
-$blocks   = $this->publication->_curationModel->_progress->blocks;
-$manifest = $blocks->$blockId->manifest;
-
-$selections = NULL;
-$selected 	= NULL;
+$manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 
 // Get selections
-if ($block == 'license')
+$selections = NULL;
+$selected   = NULL;
+if ($this->block == 'license')
 {
 	$objL 			= new \Components\Publications\Tables\License( $this->database);
 	$selected 		= $objL->getPubLicense( $this->publication->get('version_id') );
@@ -57,13 +46,13 @@ if ($block == 'license')
 ?>
 <script src="/plugins/projects/publications/assets/js/selector.js"></script>
 <div id="abox-content">
-<h3><?php echo $title; ?> 	<span class="abox-controls">
+<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block)); ?> 	<span class="abox-controls">
 				<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_SAVE_SELECTION'); ?></a>
 				<?php if ($this->ajax) { ?>
 				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
 				<?php } ?>
 			</span></h3>
-<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
+<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url($this->publication->link('edit')); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 		<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
@@ -72,10 +61,10 @@ if ($block == 'license')
 		<input type="hidden" id="p" name="p" value="<?php echo $this->props; ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
 		<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
-		<input type="hidden" name="section" value="<?php echo $block; ?>" />
-		<input type="hidden" name="step" value="<?php echo $blockId; ?>" />
-		<input type="hidden" name="element" value="<?php echo $elId; ?>" />
-		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
+		<input type="hidden" name="section" value="<?php echo $this->block; ?>" />
+		<input type="hidden" name="step" value="<?php echo $this->blockId; ?>" />
+		<input type="hidden" name="element" value="<?php echo $this->element; ?>" />
+		<input type="hidden" name="el" value="<?php echo $this->element; ?>" />
 		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />
@@ -93,7 +82,7 @@ if ($block == 'license')
 		else
 		{
 	?>
-	<p class="requirement" id="req"><?php echo $req; ?></p>
+	<p class="requirement" id="req"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block)); ?></p>
 	<div id="content-selector" class="content-selector">
 		<?php
 			// Show selection
@@ -112,7 +101,7 @@ if ($block == 'license')
 			$view->publication  = $this->publication;
 			$view->selected		= $selected;
 			$view->selections	= $selections;
-			$view->url			= $url;
+			$view->url			= Route::url($this->publication->link('edit'));
 			echo $view->loadTemplate();
 		?>
 	</div>

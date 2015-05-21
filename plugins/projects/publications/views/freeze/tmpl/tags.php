@@ -25,21 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
-
-$props = $name . '-' . $this->step;
-
-$required 		= $this->manifest->params->required;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 $elName = "tagsPick";
-
-$model = new \Components\Publications\Models\Publication($this->pub);
 
 ?>
 
@@ -47,9 +38,9 @@ $model = new \Components\Publications\Models\Publication($this->pub);
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 <?php  // Show tags
-	if ($this->tags) {
-			$model->getTagCloud( 1 );
-			echo $model->_tagCloud;
+	if ($this->pub->getTagsForEditing()) {
+			$this->pub->getTagCloud( 1 );
+			echo $this->pub->_tagCloud;
 	}
 	else {
 		echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>';

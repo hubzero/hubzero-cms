@@ -28,9 +28,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 $row = $this->row;
 
 // What's the publication status?
-$status = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'status', 0);
-$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
-$date 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'date');
+$status = $row->getStatusName();
+$class  = $row->getStatusCss();
+$date   = $row->getStatusDate();
 
 $trClass = $this->i % 2 == 0 ? ' even' : ' odd';
 

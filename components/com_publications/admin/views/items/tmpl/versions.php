@@ -71,13 +71,13 @@ function submitbutton(pressbutton)
 $k = 0;
 	foreach ($this->versions as $v) {
 	// Get DOI
-	$doi = $v->doi ? 'doi:'.$v->doi : '';
+	$doi = $v->doi ? 'doi:' . $v->doi : '';
 	$doi_notice = $doi ? $doi : Lang::txt('COM_PUBLICATIONS_NA');
 
 	// Version status
-	$status = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'status');
-	$class = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
-	$date = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
+	$status = $this->pub->getStatusName($v->state);
+	$class  = $this->pub->getStatusCss($v->state);
+	$date   = $this->pub->getStatusDate($v);
 
 	?>
 	<tr class="mini <?php if ($v->main == 1) { echo ' vprime'; } ?>">
