@@ -31,6 +31,7 @@
 namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
+use Hubzero\Html\Builder\Behavior;
 
 /**
  * Renders a popup window button
@@ -60,7 +61,7 @@ class Popup extends Button
 	 */
 	public function fetchButton($type = 'Popup', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0, $onClose = '')
 	{
-		\JHtml::_('behavior.modal');
+		Behavior::modal();
 
 		$text   = \Lang::txt($text);
 		$class  = $this->fetchIconClass($name);

@@ -58,6 +58,8 @@ class Helper extends Module
 	{
 		$buttons = self::getButtons($this->params);
 
+		include_once __DIR__ . DS . 'icons.php';
+
 		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 

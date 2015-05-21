@@ -94,7 +94,7 @@ $browser = new \Hubzero\Browser\Detector();
 				$task = Request::getCmd('task');
 				$hideLinks = Request::getInt('hidemainmenu');
 
-				$logoutLink = Route::url('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+				$logoutLink = Route::url('index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1');
 				if ($task == 'edit' || $task == 'editA' || $hideLinks) :
 					$logoutLink = '';
 				endif;

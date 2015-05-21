@@ -79,16 +79,16 @@ class Behavior
 		// or plugins may have already pushed.
 		if ($type == 'core')
 		{
-			self::_pushScriptTo(0, App::get('request')->root(true) . '/media/system/js/jquery.js');
+			self::_pushScriptTo(0, rtrim(App::get('request')->root(true), '/') . '/media/system/js/jquery.js');
 
 			if (App::isAdmin())
 			{
-				\JHtml::_('script', 'system/core.js', false, true);
+				Asset::script('system/core.js', false, true);
 			}
 		}
 		else
 		{
-			self::_pushScriptTo(1, App::get('request')->root(true) . '/media/system/js/jquery.ui.js');
+			self::_pushScriptTo(1, rtrim(App::get('request')->root(true), '/') . '/media/system/js/jquery.ui.js');
 		}
 		self::$loaded[__METHOD__][$type] = true;
 
@@ -112,7 +112,7 @@ class Behavior
 			return;
 		}
 
-		$document = App::get('document');
+		$document = App::get('document')->instance();
 
 		if ($document instanceof \Hubzero\Document\Type\Html)
 		{
@@ -226,7 +226,7 @@ class Behavior
 
 		self::framework();
 
-		\JHtml::_('script', 'system/validate.js', true, true);
+		Asset::script('system/validate.js', true, true);
 
 		self::$loaded[__METHOD__] = true;
 	}
@@ -250,12 +250,12 @@ class Behavior
 
 		if ($type == 'core')
 		{
-			\JHtml::_('script', 'system/flot/jquery.flot.min.js', true, true);
-			\JHtml::_('script', 'system/flot/jquery.flot.tooltip.min.js', true, true);
+			Asset::script('system/flot/jquery.flot.min.js', true, true);
+			Asset::script('system/flot/jquery.flot.tooltip.min.js', true, true);
 		}
 		else
 		{
-			\JHtml::_('script', 'system/flot/jquery.flot.' . $type . '.min.js', true, true);
+			Asset::script('system/flot/jquery.flot.' . $type . '.min.js', true, true);
 		}
 
 		self::$loaded[__METHOD__][$type] = true;
@@ -278,7 +278,7 @@ class Behavior
 
 		self::framework(true);
 
-		\JHtml::_('script', 'system/switcher.js', false, true);
+		Asset::script('system/switcher.js', false, true);
 
 		App::get('document')->addScriptDeclaration(
 			"jQuery(document).ready(function($){
@@ -306,7 +306,7 @@ class Behavior
 
 		self::framework();
 
-		\JHtml::_('script', 'system/combobox.js', true, true);
+		Asset::script('system/combobox.js', true, true);
 
 		self::$loaded[__METHOD__] = true;
 	}
@@ -362,7 +362,7 @@ class Behavior
 		$opt['onShow']			= (isset($params['onShow'])) ? '\\' . $params['onShow'] : null;
 		$opt['onHide']			= (isset($params['onHide'])) ? '\\' . $params['onHide'] : null;
 
-		$options = JHtmlBehavior::_getJSObject($opt);*/
+		$options = Behavior::getJSObject($opt);*/
 
 		\App::get('document')->addScriptDeclaration(
 			"jQuery(document).ready(function($){
@@ -417,7 +417,7 @@ class Behavior
 		{
 			self::framework();
 
-			\JHtml::_('script', 'system/jquery.fancybox.js', true, true);
+			Asset::script('system/jquery.fancybox.js', true, true);
 		}
 
 		$sig = md5(serialize(array($selector, $params)));
@@ -501,7 +501,7 @@ class Behavior
 
 		self::framework();
 
-		\JHtml::_('script', 'system/multiselect.js', true, true);
+		Asset::script('system/multiselect.js', true, true);
 
 		// Attach multiselect to document
 		App::get('document')->addScriptDeclaration(
@@ -537,8 +537,8 @@ class Behavior
 	{
 		self::framework();
 
-		/*JHtml::_('script', 'system/mootree.js', true, true, false, false);
-		JHtml::_('stylesheet', 'system/mootree.css', array(), true);
+		/*Asset::script('system/mootree.js', true, true, false, false);
+		Asset::stylesheet('system/mootree.css', array(), true);
 
 		if (isset(self::$loaded[__METHOD__][$id]))
 		{
@@ -549,7 +549,7 @@ class Behavior
 		$opt['div']		= (array_key_exists('div', $params)) ? $params['div'] : $id . '_tree';
 		$opt['mode']	= (array_key_exists('mode', $params)) ? $params['mode'] : 'folders';
 		$opt['grid']	= (array_key_exists('grid', $params)) ? '\\' . $params['grid'] : true;
-		$opt['theme']	= (array_key_exists('theme', $params)) ? $params['theme'] : JHtml::_('image', 'system/mootree.gif', '', array(), true, true);
+		$opt['theme']	= (array_key_exists('theme', $params)) ? $params['theme'] : Asset::image('system/mootree.gif', '', array(), true, true);
 
 		// Event handlers
 		$opt['onExpand']	= (array_key_exists('onExpand', $params)) ? '\\' . $params['onExpand'] : null;
@@ -604,12 +604,12 @@ class Behavior
 			App::get('document')->addScriptDeclaration($translation);
 		}*/
 
-		\JHtml::_('stylesheet', 'system/jquery.datepicker.css', array('media' => 'all'), true);
-		\JHtml::_('stylesheet', 'system/jquery.timepicker.css', array('media' => 'all'), true);
+		Asset::stylesheet('system/jquery.datepicker.css', array('media' => 'all'), true);
+		Asset::stylesheet('system/jquery.timepicker.css', array('media' => 'all'), true);
 
 		self::framework(true);
 
-		\JHtml::_('script', 'system/jquery.timepicker.js', false, true);
+		Asset::script('system/jquery.timepicker.js', false, true);
 
 		self::$loaded[__METHOD__] = true;
 	}
@@ -628,8 +628,8 @@ class Behavior
 
 		self::framework(true);
 
-		JHtml::_('stylesheet', 'system/jquery.colpick.css', array('media' => 'all'), true);
-		JHtml::_('script', 'system/jquery.colpick.js', false, true);
+		Asset::stylesheet('system/jquery.colpick.css', array('media' => 'all'), true);
+		Asset::script('system/jquery.colpick.js', false, true);
 
 		App::get('document')
 			->addScriptDeclaration(
@@ -713,7 +713,7 @@ class Behavior
 			return;
 		}
 
-		\JHtml::_('script', 'system/jquery.highlighter.js', true, true);
+		Asset::script('system/jquery.highlighter.js', true, true);
 
 		$terms = str_replace('"', '\"', $terms);
 

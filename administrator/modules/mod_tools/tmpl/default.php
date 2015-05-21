@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-//JHTML::_('behavior.chart', 'resize');
-JHTML::_('behavior.chart', 'pie');
+//Html::behavior('chart', 'resize');
+Html::behavior('chart', 'pie');
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">

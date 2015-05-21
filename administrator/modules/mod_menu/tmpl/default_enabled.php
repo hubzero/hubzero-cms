@@ -33,7 +33,7 @@ defined('_JEXEC') or die;
 
 $shownew = (boolean) $params->get('shownew', 1);
 $user = User::getRoot();
-$lang = JFactory::getLanguage();
+$lang = Lang::getRoot();
 
 //
 // Site SubMenu
@@ -240,27 +240,15 @@ if ($user->authorise('core.manage', 'com_menus'))
 		}
 		elseif ($menuType->home == 1 && $menuType->language == '*')
 		{
-			//$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-default.png', '*', array('title' => Lang::txt('MOD_MENU_HOME_DEFAULT')), true).'</span>';
 			$titleicon = ' <span class="home" title="' . Lang::txt('MOD_MENU_HOME_DEFAULT') . '">' . '*' . '</span>';
 		}
 		elseif ($menuType->home > 1)
 		{
-			//$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-language.png', $menuType->home, array('title' => Lang::txt('MOD_MENU_HOME_MULTIPLE')), true).'</span>';
 			$titleicon = ' <span class="home multiple" title="' . Lang::txt('MOD_MENU_HOME_MULTIPLE') . '">' . $menuType->home . '</span>';
 		}
 		else
 		{
-			/*$image = JHtml::_('image', 'mod_languages/' . $menuType->image . '.gif', NULL, NULL, true, true);
-			if (!$image)
-			{
-				//$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-language.png', $alt, array('title' => $menuType->title_native), true).'</span>';
-				$titleicon = ' <span title="' . $menuType->title_native . '">' . $alt . '</span>';
-			}
-			else
-			{*/
-				//$titleicon = ' <span>'.JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true).'</span>';
-				$titleicon = ' <span title="' . $menuType->title_native . '">' . $alt . '</span>';
-			//}
+			$titleicon = ' <span title="' . $menuType->title_native . '">' . $alt . '</span>';
 		}
 		$menu->addChild(
 			new \Modules\Menu\Node($menuType->title, 'index.php?option=com_menus&view=items&menutype=' . $menuType->menutype, 'class:menu', null, null, $titleicon), $createMenu

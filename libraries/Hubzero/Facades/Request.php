@@ -72,17 +72,13 @@ class Request extends Facade
 		return $new_state;
 	}
 
-		/**
+	/**
 	 * Checks for a form token in the request.
 	 *
-	 * Use in conjunction with JHtml::_('form.token').
+	 * Use in conjunction with Html::input('token').
 	 *
 	 * @param   string  $method  The request method in which to look for the token key.
-	 *
 	 * @return  boolean  True if found and valid, false otherwise.
-	 *
-	 * @deprecated  12.1 Use JSession::checkToken() instead.
-	 * @since       11.1
 	 */
 	public static function checkToken($method = 'post')
 	{

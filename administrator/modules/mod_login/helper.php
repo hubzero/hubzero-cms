@@ -34,6 +34,7 @@ use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
 use Request;
 use Lang;
+use Html;
 
 /**
  * Module class for displaying a login form
@@ -48,7 +49,7 @@ class Helper extends Module
 	public function display()
 	{
 		$return  = self::getReturnURI();
-		$freturn = base64_encode('index.php' . Request::getQueryString());
+		$freturn = base64_encode('index.php?' . Request::getQueryString());
 
 		$returnQueryString = (!empty($return)) ? "&return={$return}" : '';
 		$authenticators    = [];
@@ -86,9 +87,9 @@ class Helper extends Module
 	{
 		$languages = array();
 		$languages = Lang::getList(null, JPATH_ADMINISTRATOR, false, true);
-		array_unshift($languages, \JHtml::_('select.option', '', Lang::txt('JDEFAULT')));
+		array_unshift($languages, Html::select('option', '', Lang::txt('JDEFAULT')));
 
-		return \JHtml::_('select.genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);
+		return Html::select('genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);
 	}
 
 	/**
@@ -98,7 +99,7 @@ class Helper extends Module
 	 */
 	public static function getReturnURI()
 	{
-		$return = 'index.php' . Request::getQueryString();
+		$return = 'index.php?' . Request::getQueryString();
 		if ($return != 'index.php?option=com_login')
 		{
 			return base64_encode($return);

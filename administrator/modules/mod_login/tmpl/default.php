@@ -35,7 +35,7 @@ $this->css('login')
      ->css('providers', 'com_users')
      ->js('login');
 
-JHtml::_('behavior.keepalive');
+Html::behavior('keepalive');
 ?>
 
 <div class="hz_user">
@@ -88,7 +88,7 @@ JHtml::_('behavior.keepalive');
 				<input type="hidden" name="task"          value="login" />
 				<input type="hidden" name="return"        value="<?php echo $return; ?>" />
 				<input type="hidden" name="freturn"       value="<?php echo $freturn; ?>" />
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo Html::input('token'); ?>
 			</form>
 		</div>
 	</div>

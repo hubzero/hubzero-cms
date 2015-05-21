@@ -133,7 +133,7 @@ class Tabs
 				});'
 			);
 
-			\JHtml::_('script', 'system/jquery.tabs.js', false, true);
+			Asset::script('system/jquery.tabs.js', false, true);
 
 			$loaded[(string) $group] = true;
 		}

@@ -1,3 +1,10 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_whosonline/assets/css/mod_whosonline.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 .whosonline-summary {
 	background: #FFF;
 	border-top: 1px solid #DFDFDF;
@@ -34,4 +41,20 @@
 
 .whosonline-list .view-all {
 	text-align: center;
+}
+.whosonline-list .force-logout:before {
+	content: "\f08b";
+	font-family: "Fontcons";
+	margin-right: 2em;
+	white-space: nowrap;
+}
+.whosonline-list .force-logout {
+	display: block;
+	width: 1em;
+	height: 1em;
+	overflow: hidden;
+	font-size: 1.2em;
+}
+.whosonline-list .force-logout:hover {
+	color: red;
 }

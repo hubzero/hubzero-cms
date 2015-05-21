@@ -37,6 +37,7 @@ use Exception;
 use Request;
 use Route;
 use Lang;
+use Html;
 use App;
 
 // Course model pulls in other classes we need
@@ -672,19 +673,19 @@ class Pages extends AdminController
 		$dirs = $this->_recursiveListDir($this->view->path);
 
 		$folders   = array();
-		$folders[] = \Html::select('option', '/');
+		$folders[] = Html::select('option', '/');
 		if ($dirs)
 		{
 			foreach ($dirs as $dir)
 			{
-				$folders[] = \Html::select('option', substr($dir, strlen($this->view->path)));
+				$folders[] = Html::select('option', substr($dir, strlen($this->view->path)));
 			}
 		}
 		sort($folders);
 
 		// Create folder <select> list
-		$this->view->dirPath = \JHTML::_(
-			'select.genericlist',
+		$this->view->dirPath = Html::select(
+			'genericlist',
 			$folders,
 			'subdir',
 			'onchange="goUpDir()" ',

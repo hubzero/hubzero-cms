@@ -31,6 +31,7 @@
 namespace Hubzero\Html\Toolbar\Button;
 
 use Hubzero\Html\Toolbar\Button;
+use Hubzero\Html\Builder\Behavior;
 
 /**
  * Renders a standard button with a confirm dialog
@@ -99,7 +100,8 @@ class Confirm extends Button
 	 */
 	protected function _getCommand($msg, $name, $task, $list)
 	{
-		\JHtml::_('behavior.framework');
+		Behavior::framework();
+
 		$message = \Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
 		$message = addslashes($message);
 

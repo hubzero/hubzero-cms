@@ -412,11 +412,7 @@ class Grid
 	 * @param   string|array  $prefix    An optional task prefix or an array of options
 	 * @param   boolean       $enabled   An optional setting for access control on the action.
 	 * @param   string        $checkbox  An optional prefix for checkboxes.
-	 *
 	 * @return  string  The HTML code
-	 *
-	 * @see     JHtmlJGrid::state
-	 * @since   11.1
 	 */
 	public static function isdefault($value, $i, $prefix = '', $enabled = true, $checkbox = 'cb')
 	{
@@ -451,7 +447,7 @@ class Grid
 	 * @param   boolean  $enabled         An optional setting for access control on the action.
 	 * @param   boolean  $translate       An optional setting for translation.
 	 * @param   string   $checkbox        An optional prefix for checkboxes.
-	 * @return string    The Html code
+	 * @return  string   The Html code
 	 */
 	public static function action($i, $task, $prefix = '', $text = '', $active_title = '', $inactive_title = '', $tip = false, $active_class = '', $inactive_class = '', $enabled = true, $translate = true, $checkbox = 'cb')
 	{

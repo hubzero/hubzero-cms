@@ -30,6 +30,8 @@
 
 namespace Hubzero\Html;
 
+use Hubzero\Html\Builder\Select;
+use Hubzero\Html\Builder\Behavior;
 use Hubzero\Utility\Date;
 use Lang;
 use User;
@@ -58,10 +60,10 @@ class Grid
 		$title .= '::' . Lang::txt('JGLOBAL_CLICK_TO_TOGGLE_STATE');
 
 		// Build the <a> tag.
-		$bool = ($value) ? 'true' : 'false';
-		$task = ($value) ? $taskOff : $taskOn;
+		$bool   = ($value) ? 'true' : 'false';
+		$task   = ($value) ? $taskOff : $taskOn;
 		$toggle = (!$task) ? false : true;
-		$bool .= ($value) ? ' on' : ' off';
+		$bool  .= ($value) ? ' on' : ' off';
 
 		if ($toggle)
 		{
@@ -211,23 +213,23 @@ class Grid
 		$options = array();
 		if (!array_key_exists('published', $config) || $config['published'])
 		{
-			$options[] = \JHtml::_('select.option', '1', 'JPUBLISHED');
+			$options[] = Select::option('1', 'JPUBLISHED');
 		}
 		if (!array_key_exists('unpublished', $config) || $config['unpublished'])
 		{
-			$options[] = \JHtml::_('select.option', '0', 'JUNPUBLISHED');
+			$options[] = Select::option('0', 'JUNPUBLISHED');
 		}
 		if (!array_key_exists('archived', $config) || $config['archived'])
 		{
-			$options[] = \JHtml::_('select.option', '2', 'JARCHIVED');
+			$options[] = Select::option('2', 'JARCHIVED');
 		}
 		if (!array_key_exists('trash', $config) || $config['trash'])
 		{
-			$options[] = \JHtml::_('select.option', '-2', 'JTRASHED');
+			$options[] = Select::option('-2', 'JTRASHED');
 		}
 		if (!array_key_exists('all', $config) || $config['all'])
 		{
-			$options[] = \JHtml::_('select.option', '*', 'JALL');
+			$options[] = Select::option('*', 'JALL');
 		}
 		return $options;
 	}
@@ -261,8 +263,7 @@ class Grid
 			$state['T'] = Lang::txt($trashed);
 		}
 
-		return \JHtml::_(
-			'select.genericlist',
+		return Select::genericlist(
 			$state,
 			'filter_state',
 			array(
@@ -413,11 +414,7 @@ class Grid
 	 * @param   string|array  $prefix    An optional task prefix or an array of options
 	 * @param   boolean       $enabled   An optional setting for access control on the action.
 	 * @param   string        $checkbox  An optional prefix for checkboxes.
-	 *
 	 * @return  string  The HTML code
-	 *
-	 * @see     JHtmlJGrid::state
-	 * @since   11.1
 	 */
 	public static function isdefault($value, $i, $prefix = '', $enabled = true, $checkbox = 'cb')
 	{
@@ -452,7 +449,7 @@ class Grid
 	 * @param   boolean  $enabled         An optional setting for access control on the action.
 	 * @param   boolean  $translate       An optional setting for translation.
 	 * @param   string   $checkbox        An optional prefix for checkboxes.
-	 * @return string    The Html code
+	 * @return  string   The Html code
 	 */
 	public static function action($i, $task, $prefix = '', $text = '', $active_title = '', $inactive_title = '', $tip = false, $active_class = '', $inactive_class = '', $enabled = true, $translate = true, $checkbox = 'cb')
 	{
@@ -473,7 +470,7 @@ class Grid
 
 		if ($tip)
 		{
-			\JHtml::_('behavior.tooltip');
+			Behavior::tooltip();
 		}
 
 		if ($enabled)

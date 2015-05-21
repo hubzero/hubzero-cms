@@ -31,7 +31,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-$html = JHtml::_('icons.buttons', $buttons);
+$html = \Modules\QuickIcon\Icons::buttons($buttons);
 ?>
 <?php if (!empty($html)): ?>
 	<?php $this->css(); ?>

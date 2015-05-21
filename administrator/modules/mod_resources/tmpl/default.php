@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-//JHTML::_('behavior.chart', 'resize');
-JHTML::_('behavior.chart', 'pie');
+//Html::behavior('chart', 'resize');
+Html::behavior('chart', 'pie');
 
 $total = $this->draftInternal + $this->draftUser + $this->pending + $this->published + $this->unpublished + $this->removed;
 $this->draft = $this->draftInternal + $this->draftUser;

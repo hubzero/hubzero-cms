@@ -30,9 +30,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
-//JHTML::_('behavior.chart', 'resize');
+//Html::behavior('chart', 'resize');
 
-JHTML::_('behavior.chart');
+Html::behavior('chart');
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div id="container<?php echo $this->module->id; ?>" class="chart"></div>

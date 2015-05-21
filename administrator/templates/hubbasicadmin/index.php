@@ -31,7 +31,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 // Load CSS
 $this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');
@@ -83,7 +83,7 @@ $v = $browser->major();
 				$task = Request::getCmd('task');
 				$hideLinks = Request::getInt('hidemainmenu');
 
-				$logoutLink = Route::url('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+				$logoutLink = Route::url('index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1');
 				if ($task == 'edit' || $task == 'editA' || $hideLinks) :
 					$logoutLink = '';
 				endif;

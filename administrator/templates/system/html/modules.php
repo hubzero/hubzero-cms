@@ -65,15 +65,15 @@ function modChrome_sliders($module, &$params, &$attribs)
 	{
 		if ($params->get('automatic_title', '0')=='0')
 		{
-			echo JHtml::_('sliders.panel', $module->title, 'module'.$module->id);
+			echo Html::sliders('panel', $module->title, 'module'.$module->id);
 		}
 		elseif (method_exists('mod'.$module->name.'Helper', 'getTitle'))
 		{
-			echo JHtml::_('sliders.panel', call_user_func_array(array('mod'.$module->name.'Helper','getTitle'), array($params, $module)), 'module'.$module->id);
+			echo Html::sliders('panel', call_user_func_array(array('mod'.$module->name.'Helper','getTitle'), array($params, $module)), 'module'.$module->id);
 		}
 		else
 		{
-			echo JHtml::_('sliders.panel', Lang::txt('MOD_'.$module->name.'_TITLE'), 'module'.$module->id);
+			echo Html::sliders('panel', Lang::txt('MOD_'.$module->name.'_TITLE'), 'module'.$module->id);
 		}
 		echo $content;
 	}
@@ -89,15 +89,15 @@ function modChrome_tabs($module, &$params, &$attribs)
 	{
 		if ($params->get('automatic_title', '0')=='0')
 		{
-			echo JHtml::_('tabs.panel', $module->title, 'module'.$module->id);
+			echo Html::tabs('panel', $module->title, 'module'.$module->id);
 		}
 		elseif (method_exists('mod'.$module->name.'Helper', 'getTitle'))
 		{
-			echo JHtml::_('tabs.panel', call_user_func_array(array('mod'.$module->name.'Helper', 'getTitle'), array($params)), 'module'.$module->id);
+			echo Html::tabs('panel', call_user_func_array(array('mod'.$module->name.'Helper', 'getTitle'), array($params)), 'module'.$module->id);
 		}
 		else
 		{
-			echo JHtml::_('tabs.panel', Lang::txt('MOD_'.$module->name.'_TITLE'), 'module'.$module->id);
+			echo Html::tabs('panel', Lang::txt('MOD_'.$module->name.'_TITLE'), 'module'.$module->id);
 		}
 		echo $content;
 	}

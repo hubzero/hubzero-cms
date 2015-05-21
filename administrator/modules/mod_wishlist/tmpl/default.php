@@ -33,8 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
-//JHTML::_('behavior.chart', 'resize');
-JHTML::_('behavior.chart', 'pie');
+//Html::behavior('chart', 'resize');
+Html::behavior('chart', 'pie');
 
 $total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
 if ($total == 0)

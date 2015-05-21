@@ -43,7 +43,7 @@ if ($this->direction == 'rtl')
 	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js');
 

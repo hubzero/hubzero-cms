@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-JHTML::_('behavior.chart');
+Html::behavior('chart');
 ?>
 <div class="mod_courses">
 	<div class="overview-container">

@@ -96,7 +96,7 @@ foreach ($this->rows as $row)
 							</td>
 							<td>
 								<?php
-									$clientInfo = JApplicationHelper::getClientInfo($row->client_id);
+									$clientInfo = \Hubzero\Base\ClientManager::client($row->client_id);
 									echo ucfirst($clientInfo->name);
 								?>
 							</td>
@@ -105,8 +105,8 @@ foreach ($this->rows as $row)
 							</td>
 							<td>
 								<?php if ($editAuthorized) { ?>
-									<a class="force-logout" href="<?php echo Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid .'&'. JSession::getFormToken() .'=1'); ?>">
-										<?php echo JHtml::_('image', 'mod_logged/icon-16-logout.png', Lang::txt('JLOGOUT'), null, true);?>
+									<a class="force-logout" href="<?php echo Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid .'&'. Session::getFormToken() .'=1'); ?>">
+										<span><?php echo Lang::txt('JLOGOUT'); ?></span>
 									</a>
 								<?php } ?>
 							</td>
