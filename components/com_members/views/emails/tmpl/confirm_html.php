@@ -32,6 +32,12 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
+
+$this->baseURL = rtrim(str_replace('/administrator', '', $this->baseURL), '/');
+
+$link = $jconfig->get('sef') && JFactory::getApplication()->isAdmin()
+	? '/members/confirm?confirm=' . -$this->confirm
+	: JRoute::_('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" style="background-color: #fff; margin: 0; padding: 0;">
@@ -232,7 +238,7 @@ $jconfig = JFactory::getConfig();
 																</tr>
 																<tr>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left">
-																		<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm); ?>"><?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm); ?></a></p>
+																		<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $this->baseURL . $link; ?>"><?php echo $this->baseURL . $link; ?></a></p>
 																	</td>
 																</tr>
 															</tbody>
