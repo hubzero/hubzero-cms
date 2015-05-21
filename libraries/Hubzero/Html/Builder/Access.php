@@ -252,10 +252,7 @@ class Access
 	 * Gets a list of the asset groups as an array of JHtml compatible options.
 	 *
 	 * @param   array  $config  An array of options for the options
-	 *
 	 * @return  mixed  An array or false if an error occurs
-	 *
-	 * @since   11.1
 	 */
 	public static function assetgroups($config = array())
 	{
@@ -290,7 +287,7 @@ class Access
 	 * @param   mixed   $selected  The selected asset group id
 	 * @param   string  $attribs   Optional attributes for the select field
 	 * @param   array   $config    An array of options for the control
-	 * @return  mixed  An HTML string or null if an error occurs
+	 * @return  mixed   An HTML string or null if an error occurs
 	 */
 	public static function assetgrouplist($name, $selected, $attribs = null, $config = array())
 	{
