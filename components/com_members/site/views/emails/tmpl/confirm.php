@@ -30,9 +30,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->baseURL = rtrim(str_replace('/administrator', '', $this->baseURL), '/');
+
+$link = Config::get('sef') && App::isAdmin()
+	? '/members/confirm?confirm=' . -$this->confirm
+	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm);
 ?>
 This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
 
 Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
 
-<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm); ?>
+<?php echo $this->baseURL . $link; ?>

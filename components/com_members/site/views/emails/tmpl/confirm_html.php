@@ -31,6 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->baseURL = rtrim(str_replace('/administrator', '', $this->baseURL), '/');
+
+$link = Config::get('sef') && App::isAdmin()
+	? '/members/confirm?confirm=' . -$this->confirm
+	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm);
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -137,7 +142,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							</tr>
 							<tr>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
-									<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm); ?>"><?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm); ?></a></p>
+									<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $this->baseURL . $link; ?>"><?php echo $this->baseURL . $link; ?></a></p>
 								</td>
 							</tr>
 						</tbody>
