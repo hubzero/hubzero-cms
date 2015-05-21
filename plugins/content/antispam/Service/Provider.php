@@ -39,6 +39,11 @@ use Exception;
 class Provider extends AbstractAdapter
 {
 	/**
+	 * Regex for matching links
+	 */
+	const URL_REGEX = "!((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)!";
+
+	/**
 	 * Constructor
 	 *
 	 * @param   mixed  $properties
@@ -47,6 +52,7 @@ class Provider extends AbstractAdapter
 	public function __construct($properties = null)
 	{
 		$this->set('linkFrequency', 5);
+		$this->set('linkRatio', 40);
 		$this->set('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
 				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
 				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
@@ -73,30 +79,70 @@ class Provider extends AbstractAdapter
 			$this->setValue($value);
 		}
 
+		$spam = false;
+
 		if (!$this->getValue())
 		{
-			return false;
+			return $spam;
 		}
 
-		// Spammer IPs (banned)
-		$bl = array();
+		// Check the user's IP against the blacklist
 		if ($ips = $this->get('blacklist'))
 		{
-			$bl = explode(',', $ips);
-			array_map('trim', $bl);
+			$spam = $this->blacklistedIp($ips);
 		}
 
 		// Bad words
-		$words = $this->get('badwords');
-		if ($words)
+		if (!$spam && $this->get('badwords'))
 		{
-			$badwords = explode(',', $words);
-			array_map('trim', $badwords);
+			$spam = $this->pottyMouth($this->getValue());
 		}
-		else
+
+		// Check the number of links in the text
+		if (!$spam && $this->get('linkFrequency'))
 		{
-			$badwords = array();
+			$spam = $this->linkRife($this->getValue());
 		}
+
+		return $spam;
+	}
+
+	/**
+	 * Run text through IP checker
+	 *
+	 * @param   string   $ips
+	 * @return  boolean
+	 */
+	public function blacklistedIp($ips)
+	{
+		// Spammer IPs (banned)
+		if ($ips)
+		{
+			$bl = explode(',', $ips);
+			array_map('trim', $bl);
+
+			// Check the user's IP against the blacklist
+			$ip = \JRequest::ip();
+
+			if (in_array($ip, $bl))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Run text through bad word checker
+	 *
+	 * @param   string   $text
+	 * @return  boolean
+	 */
+	public function pottyMouth($text)
+	{
+		$badwords = explode(',', $this->get('badwords'));
+		array_map('trim', $badwords);
 
 		// Build an array of patterns to check againts
 		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
@@ -108,37 +154,109 @@ class Provider extends AbstractAdapter
 			}
 		}
 
-		// Set the splam flag
-		$spam = false;
-
 		// Check the text against bad words
 		foreach ($patterns as $pattern)
 		{
-			preg_match_all($pattern, $this->getValue(), $matches);
+			preg_match_all($pattern, $text, $matches);
+
 			if (count($matches[0]) >= 1)
 			{
-				$spam = true;
+				return true;
 			}
 		}
 
-		// Check the number of links in the text
-		// Very unusual to have 5 or more - usually only spammers
-		if (!$spam)
+		return false;
+	}
+
+	/**
+	 * Run text through link rife detector
+	 *
+	 * @param   string   $text
+	 * @return  boolean
+	 */
+	public function linkRife($text)
+	{
+		// We only need the text
+		$text = strip_tags($text);
+		$text = str_replace(array('&amp;', '&nbsp;'), array('&', ' '), $text);
+		$text = html_entity_decode($text);
+
+		preg_match_all(self::URL_REGEX, $text, $matches);
+		$linkCount = count($matches[0]);
+
+		$wordCount = str_word_count($text, 0, 'http: //');
+
+		if ($linkCount >= $this->get('linkFrequency'))
 		{
-			$num = substr_count($this->getValue(), 'http://');
-			if ($num >= intval($this->get('linkFrequency'))) // too many links
+			// If the link count is more than the maximum allowed
+			// the string is automatically considered spam..
+			return true;
+		}
+
+		if ($this->get('linkValidation'))
+		{
+			foreach ($matches[0] as $match)
 			{
-				$spam = true;
+				if ($this->isBlacklistedLink($match))
+				{
+					return true;
+				}
 			}
 		}
 
-		// Check the user's IP against the blacklist
-		$ip = \JRequest::ip();
-		if (in_array($ip, $bl))
+		// Get the ratio of words to link
+		$ratio = floor(($linkCount / $wordCount) * 100);
+
+		return $ratio >= $this->get('linkRatio');
+	}
+
+	/**
+	 * Check if a URL is in SpamHaus' registry
+	 *
+	 * @param   string   $input  URL to check
+	 * @return  boolean
+	 */
+	protected function isBlacklistedLink($input)
+	{
+		if (!function_exists('dns_get_record'))
 		{
-			$spam = true;
+			return false;
 		}
 
-		return $spam;
+		$parsed = parse_url($input);
+
+		if (!isset($parsed['host']))
+		{
+			return false;
+		}
+
+		// Remove www. from domain (but not from www.com)
+		$parsed['host'] = preg_replace('/^www\.(.+\.)/i', '$1', $parsed['host']);
+
+		// The 3 major blacklists
+		$blacklists = array(
+			'zen.spamhaus.org',
+			'multi.surbl.org',
+			'black.uribl.com',
+		);
+
+		// Check against each black list, exit if blacklisted
+		foreach ($blacklists as $i => $blacklist)
+		{
+			// SpamHaus requires the IP be reversed
+			if ($i == 0)
+			{
+				$parsed['host'] = implode('.', array_reverse(explode('.', $parsed['host']), false));
+			}
+			$domain = $parsed['host'] . '.' . $blacklist . '.';
+			$record = dns_get_record($domain);
+
+			if (count($record) > 0)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

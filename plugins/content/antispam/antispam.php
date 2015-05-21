@@ -70,6 +70,8 @@ class plgContentAntispam extends JPlugin
 		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Antispam\Service\Provider);
 
 		$service->set('linkFrequency', $this->params->get('linkFrequency', 5))
+		        ->set('linkRatio', $this->params->get('linkRatio', 40))
+		        ->set('linkValidation', $this->params->get('linkValidation', 0))
 		        ->set('blacklist', $this->params->get('blacklist'))
 		        ->set('badwords', $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
 				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
@@ -87,7 +89,7 @@ class plgContentAntispam extends JPlugin
 
 		if ($service->isSpam($content))
 		{
-			JFactory::getSpamLogger()->info('spam ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+			JFactory::getSpamLogger()->info('spam ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 			if ($message = $this->params->get('message'))
 			{
 				\JFactory::getApplication()->enqueueMessage($message, 'error');
@@ -95,7 +97,7 @@ class plgContentAntispam extends JPlugin
 			return false;
 		}
 
-		JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+		JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 	}
 
 	/**
