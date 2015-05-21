@@ -60,9 +60,8 @@ class Asset
 			$root = rtrim(App::get('request')->root(true), '/');
 
 			// Extract extension and strip the file
-			$strip = App::get('filesystem')->name($file);
+			$strip = preg_replace('/\.[^.]*$/', '', $file);
 			$ext   = App::get('filesystem')->extension($file);
-
 			// Detect browser and compute potential files
 			if ($detect_browser)
 			{
