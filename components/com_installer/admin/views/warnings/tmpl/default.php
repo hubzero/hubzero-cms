@@ -19,20 +19,20 @@ defined('_JEXEC') or die;
 		}
 		else
 		{
-			echo JHtml::_('sliders.start', 'warning-sliders', array('useCookie' => 1));
+			echo Html::sliders('start', 'warning-sliders', array('useCookie' => 1));
 			foreach ($this->messages as $message)
 			{
-				echo JHtml::_('sliders.panel', $message['message'], str_replace(' ', '', $message['message']));
+				echo Html::sliders('panel', $message['message'], str_replace(' ', '', $message['message']));
 				echo '<div style="padding: 5px;">' . $message['description'] . '</div>';
 			}
-			echo JHtml::_('sliders.panel', Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFO'), 'furtherinfo-pane');
+			echo Html::sliders('panel', Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFO'), 'furtherinfo-pane');
 			echo '<div style="padding: 5px;" >'. Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFODESC') .'</div>';
-			echo JHtml::_('sliders.end');
+			echo Html::sliders('end');
 		}
 		?>
 		<div class="clr"></div>
 
 		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>

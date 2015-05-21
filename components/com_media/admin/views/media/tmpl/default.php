@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 						<button type="submit"><?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?></button>
 					<?php endif; ?>
 					</div>
-					<?php echo JHtml::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</fieldset>
 			</form>
 

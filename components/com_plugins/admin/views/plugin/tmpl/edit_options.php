@@ -17,7 +17,7 @@ else :
 	foreach ($fieldSets as $name => $fieldSet) :
 		$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_'.$name.'_FIELDSET_LABEL';
 
-		echo JHtml::_('sliders.panel', Lang::txt($label), $name.'-options');
+		echo Html::sliders('panel', Lang::txt($label), $name.'-options');
 
 		if (isset($fieldSet->description) && trim($fieldSet->description)) :
 			echo '<p class="tip">'.$this->escape(Lang::txt($fieldSet->description)).'</p>';

@@ -17,7 +17,7 @@ class MediaViewImages extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		JHtml::_('behavior.framework', true);
+		Html::behavior('framework', true);
 		JHtml::_('script', 'media/popup-imagemanager.js', true, true);
 		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
 

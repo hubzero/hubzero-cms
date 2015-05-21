@@ -444,7 +444,7 @@ jQuery(document).ready(function($){
 				//$tabs = JPane::getInstance('sliders');
 
 				//echo $tabs->startPane("content-pane");
-				echo JHtml::_('sliders.start', 'content-pane');
+				echo Html::sliders('start', 'content-pane');
 
 				$nullDate = '0000-00-00 00:00:00';
 
@@ -453,7 +453,7 @@ jQuery(document).ready(function($){
 					$i = 0;
 					foreach ($this->offering->units(array(), true) as $unit)
 					{
-						echo JHtml::_('sliders.panel', stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
+						echo Html::sliders('panel', stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
 						//echo $tabs->startPanel(stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
 				?>
 							<input type="hidden" name="dates[<?php echo $i; ?>][id]" value="<?php echo $this->row->date('unit', $unit->get('id'))->get('id'); ?>" />
@@ -686,7 +686,7 @@ jQuery(document).ready(function($){
 						//echo $tabs->endPanel();
 					}
 				//echo $tabs->endPane();
-				echo JHtml::_('sliders.end');
+				echo Html::sliders('end');
 				?>
 				<!-- </fieldset> -->
 				<script type="text/javascript">

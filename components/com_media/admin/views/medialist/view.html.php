@@ -22,7 +22,7 @@ class MediaViewMediaList extends JViewLegacy
 
 		$style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
-		JHtml::_('behavior.framework', true);
+		Html::behavior('framework', true);
 
 		Document::addStyleSheet('../media/media/css/medialist-'.$style.'.css');
 		if (Lang::isRTL()) :

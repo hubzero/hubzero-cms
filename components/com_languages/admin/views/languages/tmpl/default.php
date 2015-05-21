@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $userId		= User::get('id');
 $n			= count($this->items);
@@ -35,11 +35,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<div class="filter-select fltrt">
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('languages.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo Html::select('options', JHtml::_('languages.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-			<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+			<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -54,37 +54,37 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo JHtml::_('grid.sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="title">
-					<?php echo JHtml::_('grid.sort',  'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'a.title_native', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'a.title_native', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'COM_LANGUAGES_FIELD_LANG_TAG_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_LANGUAGES_FIELD_LANG_TAG_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'COM_LANGUAGES_FIELD_LANG_CODE_LABEL', 'a.sef', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_LANGUAGES_FIELD_LANG_CODE_LABEL', 'a.sef', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'COM_LANGUAGES_HEADING_LANG_IMAGE', 'a.image', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_LANGUAGES_HEADING_LANG_IMAGE', 'a.image', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'languages.saveorder'); ?>
+						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'languages.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'COM_LANGUAGES_HOMEPAGE', '', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_LANGUAGES_HOMEPAGE', '', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.lang_id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.lang_id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -108,7 +108,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('grid.id', $i, $item->lang_id); ?>
+					<?php echo Html::grid('id', $i, $item->lang_id); ?>
 				</td>
 				<td>
 					<span class="editlinktip hasTip" title="<?php echo Lang::txt('JGLOBAL_EDIT_ITEM');?>::<?php echo $this->escape($item->title); ?>">
@@ -174,5 +174,5 @@ $saveOrder	= $listOrder == 'a.ordering';
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

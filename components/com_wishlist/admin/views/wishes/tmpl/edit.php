@@ -45,7 +45,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('wish');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 var ownerassignees = new Array;

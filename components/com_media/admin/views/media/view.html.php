@@ -23,7 +23,7 @@ class MediaViewMedia extends JViewLegacy
 
 		Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
-		JHtml::_('behavior.framework', true);
+		Html::behavior('framework', true);
 
 		JHtml::_('script', 'media/mediamanager.js', true, true);
 		JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
@@ -31,7 +31,7 @@ class MediaViewMedia extends JViewLegacy
 			JHtml::_('stylesheet', 'media/mediamanager_rtl.css', array(), true);
 		endif;
 
-		JHtml::_('behavior.modal');
+		Html::behavior('modal');
 		Document::addScriptDeclaration("
 		jQuery(document).ready(function($){
 			document.preview = $.fancybox;
@@ -74,7 +74,7 @@ class MediaViewMedia extends JViewLegacy
 
 		parent::display($tpl);
 
-		echo JHtml::_('behavior.keepalive');
+		echo Html::behavior('keepalive');
 	}
 
 	/**

@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $userId    = User::get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -30,32 +30,32 @@ $saveOrder = $listOrder == 'a.ordering';
 		<div class="filter-select fltrt">
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
 			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $this->state->get('filter.category_id'));?>
+				<?php echo Html::select('options', JHtml::_('category.options', 'com_content'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
 			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
-				<?php echo JHtml::_('select.options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'));?>
+				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'));?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_author_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_AUTHOR');?></option>
-				<?php echo JHtml::_('select.options', $this->authors, 'value', 'text', $this->state->get('filter.author_id'));?>
+				<?php echo Html::select('options', $this->authors, 'value', 'text', $this->state->get('filter.author_id'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -68,41 +68,41 @@ $saveOrder = $listOrder == 'a.ordering';
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th>
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-4" width="5%">
-					<?php echo JHtml::_('grid.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, NULL, 'desc'); ?>
+					<?php echo Html::grid('sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, NULL, 'desc'); ?>
 				</th>
 				<th class="priority-2" width="10%">
-					<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-3" width="10%">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'articles.saveorder'); ?>
+						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'articles.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th width="10%" class="priority-4">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-6">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" class="priority-5">
-					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
 				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th> -->
 				<th width="5%" class="priority-6">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="priority-5 nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -125,7 +125,7 @@ $saveOrder = $listOrder == 'a.ordering';
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo Html::grid('id', $i, $item->id); ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
@@ -208,5 +208,5 @@ $saveOrder = $listOrder == 'a.ordering';
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

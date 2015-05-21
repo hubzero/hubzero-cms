@@ -66,10 +66,10 @@ class ContentViewArchive extends JViewLegacy
 		);
 		// Year Field
 		$years = array();
-		$years[] = JHtml::_('select.option', null, Lang::txt('JYEAR'));
+		$years[] = Html::select('option', null, Lang::txt('JYEAR'));
 		for ($i = 2000; $i <= 2020; $i++)
 		{
-			$years[] = JHtml::_('select.option', $i, $i);
+			$years[] = Html::select('option', $i, $i);
 		}
 		$form->yearField = JHtml::_(
 			'select.genericlist',

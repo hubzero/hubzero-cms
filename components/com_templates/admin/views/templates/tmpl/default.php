@@ -12,9 +12,9 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('modal');
+Html::behavior('multiselect');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
@@ -31,7 +31,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<div class="filter-select fltrt">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
 				<option value="*"><?php echo Lang::txt('JGLOBAL_FILTER_CLIENT'); ?></option>
-				<?php echo JHtml::_('select.options', TemplatesHelper::getClientOptions(), 'value', 'text', $this->state->get('filter.client_id'));?>
+				<?php echo Html::select('options', TemplatesHelper::getClientOptions(), 'value', 'text', $this->state->get('filter.client_id'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -40,22 +40,22 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<table class="adminlist" id="template-mgr">
 		<thead>
 			<tr>
-				<th class="col1template">
+				<th class="priority-3">
 					&#160;
 				</th>
-				<th>
-					<?php echo JHtml::_('grid.sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.element', $listDirn, $listOrder); ?>
+				<th scope="col">
+					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.element', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JCLIENT', 'a.client_id', $listDirn, $listOrder); ?>
+				<th scope="col">
+					<?php echo Html::grid('sort', 'JCLIENT', 'a.client_id', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%" class="center">
+				<th scope="col" class="priority-4">
 					<?php echo Lang::txt('JVERSION'); ?>
 				</th>
-				<th width="15%">
+				<th scope="col" class="priority-5">
 					<?php echo Lang::txt('JDATE'); ?>
 				</th>
-				<th width="25%" >
+				<th scope="col" class="priority-3">
 					<?php echo Lang::txt('JAUTHOR'); ?>
 				</th>
 			</tr>
@@ -70,7 +70,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<tbody>
 		<?php foreach ($this->items as $i => $item) : ?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td class="center">
+				<td class="priority-3">
 					<?php echo JHtml::_('templates.thumb', $item->element, $item->client_id); ?>
 				</td>
 				<td class="template-name">
@@ -78,29 +78,29 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo  Lang::txt( 'COM_TEMPLATES_TEMPLATE_DETAILS', ucfirst($item->name)) ;?>
 					</a>
 					<p>
-					<?php if ($this->preview && $item->client_id == '0'): ?>
-						<a href="<?php echo JURI::root().'index.php?tp=1&template='.$item->element; ?>" target="_blank">
-							<?php echo  Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?>
-						</a>
-					<?php elseif ($item->client_id == '1'): ?>
-						<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'); ?>
-					<?php else: ?>
-						<span class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>::<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_DESC'); ?>">
-							<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>
-						</span>
-					<?php endif; ?>
+						<?php if ($this->preview && $item->client_id == '0'): ?>
+							<a href="<?php echo JURI::root().'index.php?tp=1&template='.$item->element; ?>" target="_blank">
+								<?php echo  Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?>
+							</a>
+						<?php elseif ($item->client_id == '1'): ?>
+							<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'); ?>
+						<?php else: ?>
+							<span class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>::<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_DESC'); ?>">
+								<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>
+							</span>
+						<?php endif; ?>
 					</p>
 				</td>
-				<td class="center">
+				<td>
 					<?php echo $item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>
 				</td>
-				<td class="center">
+				<td class="priority-4">
 					<?php echo $this->escape($item->xmldata->get('version')); ?>
 				</td>
-				<td class="center">
+				<td class="priority-5">
 					<?php echo $this->escape($item->xmldata->get('creationDate')); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if ($author = $item->xmldata->get('author')) : ?>
 						<p><?php echo $this->escape($author); ?></p>
 					<?php else : ?>
@@ -110,8 +110,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<p><?php echo $this->escape($email); ?></p>
 					<?php endif; ?>
 					<?php if ($url = $item->xmldata->get('authorUrl')) : ?>
-						<p><a href="<?php echo $this->escape($url); ?>">
-							<?php echo $this->escape($url); ?></a></p>
+						<p>
+							<a href="<?php echo $this->escape($url); ?>">
+								<?php echo $this->escape($url); ?>
+							</a>
+						</p>
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -119,11 +122,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		</tbody>
 	</table>
 
-	<div>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+
+	<?php echo Html::input('token'); ?>
 </form>

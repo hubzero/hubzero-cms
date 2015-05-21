@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $userId    = User::get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -33,22 +33,22 @@ $saveOrder = $listOrder == 'a.ordering';
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 
 			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_newsfeeds'), 'value', 'text', $this->state->get('filter.category_id'));?>
+				<?php echo Html::select('options', JHtml::_('category.options', 'com_newsfeeds'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -72,7 +72,7 @@ $saveOrder = $listOrder == 'a.ordering';
 				<th width="10%">
 					<?php echo $this->grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'newsfeeds.saveorder'); ?>
+						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'newsfeeds.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th width="5%">
@@ -109,7 +109,7 @@ $saveOrder = $listOrder == 'a.ordering';
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo Html::grid('id', $i, $item->id); ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
@@ -180,5 +180,5 @@ $saveOrder = $listOrder == 'a.ordering';
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+Html::behavior('tooltip');
+Html::behavior('modal');
 $canDo = TemplatesHelper::getActions();
 
 \Hubzero\Document\Assets::addComponentStylesheet('com_templates');
@@ -125,7 +125,7 @@ $canDo = TemplatesHelper::getActions();
 				</div>
 			</fieldset>
 			<input type="hidden" name="task" value="" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	</div>
 	<div class="clr"></div>

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /* @var $this UsersViewNotes */
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <div class="unotes">
 	<h1><?php echo Lang::txt('COM_USERS_NOTES_FOR_USER', $this->user->name, $this->user->id); ?></h1>

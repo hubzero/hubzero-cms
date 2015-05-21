@@ -9,9 +9,9 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 //load user_profile plugin language
 $lang = Lang::getRoot();
 $lang->load( 'plg_user_profile', JPATH_ADMINISTRATOR );
@@ -55,7 +55,7 @@ $lang->load( 'plg_user_profile', JPATH_ADMINISTRATOR );
 
 			<input type="hidden" name="option" value="com_users" />
 			<input type="hidden" name="task" value="profile.save" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</div>
 	</form>
 </div>

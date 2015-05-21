@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
 // Create shortcut to parameters.
 	$params = $this->state->get('params');
@@ -131,10 +131,10 @@ endif;
 	</div>
 
 	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'content-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+		<?php echo Html::sliders('start', 'content-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 		<?php // Do not show the publishing options if the edit form is configured not to. ?>
 		<?php  if ($params['show_publishing_options'] || ( $params['show_publishing_options'] = '' && !empty($editoroptions)) ): ?>
-			<?php echo JHtml::_('sliders.panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+			<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 			<fieldset class="panelform">
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('created_by'); ?>
@@ -199,7 +199,7 @@ endif;
 					  // handled separately below. ?>
 
 				<?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
-					<?php echo JHtml::_('sliders.panel', Lang::txt($fieldSet->label), $name.'-options'); ?>
+					<?php echo Html::sliders('panel', Lang::txt($fieldSet->label), $name.'-options'); ?>
 					<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
 						<p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description));?></p>
 					<?php endif; ?>
@@ -231,7 +231,7 @@ endif;
 		<?php // We need to make a separate space for the configuration
 		      // so that those fields always show to those wih permissions ?>
 		<?php if ( $this->canDo->get('core.admin')   ):  ?>
-			<?php echo JHtml::_('sliders.panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
+			<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
 			<fieldset class="panelform">
 				<?php foreach ($this->form->getFieldset('editorConfig') as $field) : ?>
 					<div class="input-wrap">
@@ -245,7 +245,7 @@ endif;
 		<?php // The url and images fields only show if the configuration is set to allow them.  ?>
 		<?php // This is for legacy reasons. ?>
 		<?php if ($params['show_urls_images_backend']): ?>
-			<?php echo JHtml::_('sliders.panel', Lang::txt('COM_CONTENT_FIELDSET_URLS_AND_IMAGES'), 'urls_and_images-options'); ?>
+			<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_URLS_AND_IMAGES'), 'urls_and_images-options'); ?>
 			<fieldset class="panelform">
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('images'); ?>
@@ -272,29 +272,29 @@ endif;
 			</fieldset>
 		<?php endif; ?>
 
-		<?php echo JHtml::_('sliders.panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
+		<?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
 			<fieldset class="panelform">
 				<?php echo $this->loadTemplate('metadata'); ?>
 
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo Html::sliders('end'); ?>
 	</div>
 
 	<div class="clr"></div>
 	<?php if ($this->canDo->get('core.admin')): ?>
 		<div class="width-100 fltlft">
-			<?php //echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+			<?php //echo Html::sliders('start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
-			<?php //echo JHtml::_('sliders.panel', Lang::txt('COM_CONTENT_FIELDSET_RULES'), 'access-rules'); ?>
+			<?php //echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">
 				<?php echo $this->form->getLabel('rules'); ?>
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
 
-			<?php //echo JHtml::_('sliders.end'); ?>
+			<?php //echo Html::sliders('end'); ?>
 		</div>
 	<?php endif; ?>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="return" value="<?php echo Request::getCmd('return');?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

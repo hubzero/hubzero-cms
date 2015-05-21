@@ -235,24 +235,24 @@ class Results extends SiteController
 
 		// Build some options for the time period <select>
 		$this->view->periodlist = array();
-		$this->view->periodlist[] = \JHtml::_('select.option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
-		$this->view->periodlist[] = \JHtml::_('select.option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
-		$this->view->periodlist[] = \JHtml::_('select.option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
-		$this->view->periodlist[] = \JHtml::_('select.option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
+		$this->view->periodlist[] = \Html::select('option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
+		$this->view->periodlist[] = \Html::select('option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
+		$this->view->periodlist[] = \Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
+		$this->view->periodlist[] = \Html::select('option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
 
 		$thisyear = strftime("%Y",time());
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('10/1/' . $y))
 			{
-				$this->view->periodlist[] = \JHtml::_('select.option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
+				$this->view->periodlist[] = \Html::select('option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
 			}
 		}
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('01/01/' . $y))
 			{
-				$this->view->periodlist[] = \JHtml::_('select.option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
+				$this->view->periodlist[] = \Html::select('option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
 			}
 		}
 

@@ -60,14 +60,14 @@ class MediaModelManager extends JModelLegacy
 		Document::setTitle(Lang::txt('COM_MEDIA_INSERT_IMAGE'));
 
 		// Build the array of select options for the folder list
-		$options[] = JHtml::_('select.option', "", "/");
+		$options[] = Html::select('option', "", "/");
 
 		foreach ($folders as $folder)
 		{
 			$folder = str_replace($com_media_base_uni, "", str_replace(DIRECTORY_SEPARATOR, '/', $folder));
 			$value  = substr($folder, 1);
 			$text   = str_replace(DIRECTORY_SEPARATOR, "/", $folder);
-			$options[] = JHtml::_('select.option', $value, $text);
+			$options[] = Html::select('option', $value, $text);
 		}
 
 		// Sort the folder list array

@@ -374,8 +374,8 @@ function popratings()
 	<?php } ?>
 
 	<?php
-		echo JHtml::_('sliders.start', 'content-pane');
-		echo JHtml::_('sliders.panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
+		echo Html::sliders('start', 'content-pane');
+		echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
 	?>
 		<div class="paramlist">
 			<div class="input-wrap">
@@ -427,7 +427,7 @@ function popratings()
 			<?php // } ?>
 		</div>
 	<?php
-		echo JHtml::_('sliders.panel', Lang::txt('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
+		echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
 	?>
 		<p>
 			<label>
@@ -444,14 +444,14 @@ function popratings()
 		<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
 	<?php
 		if ($this->row->standalone == 1) {
-			echo JHtml::_('sliders.panel', Lang::txt('COM_RESOURCES_FIELDSET_TAGS'), 'tags-page');
+			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_TAGS'), 'tags-page');
 			?>
 			<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
 			<?php
-			echo JHtml::_('sliders.panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
+			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 			echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
 		} else {
-			echo JHtml::_('sliders.panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
+			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 			?>
 			<div class="input-wrap">
 				<label for="param-link_action"><?php echo Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?>:</label><br />
@@ -465,7 +465,7 @@ function popratings()
 			<?php
 		}
 
-		echo JHtml::_('sliders.end');
+		echo Html::sliders('end');
 	?>
 
 	</div>

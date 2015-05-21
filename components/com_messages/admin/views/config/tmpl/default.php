@@ -11,9 +11,9 @@ defined('_JEXEC') or die;
 
 // Include the HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -49,6 +49,6 @@ JHtml::_('behavior.keepalive');
 	</ul>
 
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</fieldset>
 </form>

@@ -454,8 +454,8 @@ function popratings()
 </fieldset>
 
 <?php
-	echo JHtml::_('sliders.start', 'content-panel');
-	echo JHtml::_('sliders.panel', Lang::txt('COM_PUBLICATIONS_FIELDSET_PARAMETERS'), 'params-page');
+	echo Html::sliders('start', 'content-panel');
+	echo Html::sliders('panel', Lang::txt('COM_PUBLICATIONS_FIELDSET_PARAMETERS'), 'params-page');
 ?>
 	<table class="admintable">
 		<tbody>
@@ -477,7 +477,7 @@ function popratings()
 			?>
 		</tbody>
 	</table>
-<?php echo JHtml::_('sliders.end'); ?>
+<?php echo Html::sliders('end'); ?>
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
 		<fieldset>

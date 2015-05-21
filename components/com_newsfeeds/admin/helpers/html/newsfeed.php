@@ -46,9 +46,9 @@ class JHtmlNewsfeed
 	{
 		// Build the active state filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '*', Lang::txt('JOPTION_ANY'));
-		$options[]	= JHtml::_('select.option', '1', Lang::txt('JPUBLISHED'));
-		$options[]	= JHtml::_('select.option', '0', Lang::txt('JUNPUBLISHED'));
+		$options[]	= Html::select('option', '*', Lang::txt('JOPTION_ANY'));
+		$options[]	= Html::select('option', '1', Lang::txt('JPUBLISHED'));
+		$options[]	= Html::select('option', '0', Lang::txt('JUNPUBLISHED'));
 
 
 		return JHtml::_('select.genericlist', $options, 'filter_published',

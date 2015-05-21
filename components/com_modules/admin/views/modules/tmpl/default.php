@@ -9,8 +9,8 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $client    = $this->state->get('filter.client_id') ? 'administrator' : 'site';
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -29,32 +29,32 @@ $saveOrder = $listOrder == 'ordering';
 		</div>
 		<div class="filter-select fltrt">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
-				<?php echo JHtml::_('select.options', ModulesHelper::getClientOptions(), 'value', 'text', $this->state->get('filter.client_id'));?>
+				<?php echo Html::select('options', ModulesHelper::getClientOptions(), 'value', 'text', $this->state->get('filter.client_id'));?>
 			</select>
 
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', ModulesHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
+				<?php echo Html::select('options', ModulesHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
 			<select name="filter_position" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></option>
-				<?php echo JHtml::_('select.options', ModulesHelper::getPositions($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.position'));?>
+				<?php echo Html::select('options', ModulesHelper::getPositions($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.position'));?>
 			</select>
 
 			<select name="filter_module" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></option>
-				<?php echo JHtml::_('select.options', ModulesHelper::getModules($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.module'));?>
+				<?php echo Html::select('options', ModulesHelper::getModules($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.module'));?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -67,34 +67,34 @@ $saveOrder = $listOrder == 'ordering';
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="15%" class="left">
-					<?php echo JHtml::_('grid.sort',  'COM_MODULES_HEADING_POSITION', 'position', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_MODULES_HEADING_POSITION', 'position', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'modules.saveorder'); ?>
+						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'modules.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th width="10%" class="left" >
-					<?php echo JHtml::_('grid.sort', 'COM_MODULES_HEADING_MODULE', 'name', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MODULES_HEADING_MODULE', 'name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort',  'COM_MODULES_HEADING_PAGES', 'pages', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'COM_MODULES_HEADING_PAGES', 'pages', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language_title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language_title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -115,7 +115,7 @@ $saveOrder = $listOrder == 'ordering';
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo Html::grid('id', $i, $item->id); ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
@@ -194,5 +194,5 @@ $saveOrder = $listOrder == 'ordering';
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 $canDo = UsersHelper::getActions();
 
 // Get the form fieldsets.
@@ -53,13 +53,13 @@ $fieldsets = $this->form->getFieldsets();
 
 	<div class="width-40 fltrt">
 		<?php
-		echo JHtml::_('sliders.start');
+		echo Html::sliders('start');
 
 		foreach ($fieldsets as $fieldset) :
 			if ($fieldset->name == 'user_details') :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', Lang::txt($fieldset->label), $fieldset->name);
+			echo Html::sliders('panel', Lang::txt($fieldset->label), $fieldset->name);
 		?>
 		<fieldset class="panelform">
 			<?php foreach ($this->form->getFieldset($fieldset->name) as $field): ?>
@@ -74,10 +74,10 @@ $fieldsets = $this->form->getFieldsets();
 			<?php endforeach; ?>
 		</fieldset>
 		<?php endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo Html::sliders('end'); ?>
 
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 	<div class="clr"></div>
 </form>

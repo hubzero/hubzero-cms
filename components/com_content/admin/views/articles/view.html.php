@@ -41,16 +41,16 @@ class ContentViewArticles extends JViewLegacy
 
 		// Levels filter.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '1', Lang::txt('J1'));
-		$options[]	= JHtml::_('select.option', '2', Lang::txt('J2'));
-		$options[]	= JHtml::_('select.option', '3', Lang::txt('J3'));
-		$options[]	= JHtml::_('select.option', '4', Lang::txt('J4'));
-		$options[]	= JHtml::_('select.option', '5', Lang::txt('J5'));
-		$options[]	= JHtml::_('select.option', '6', Lang::txt('J6'));
-		$options[]	= JHtml::_('select.option', '7', Lang::txt('J7'));
-		$options[]	= JHtml::_('select.option', '8', Lang::txt('J8'));
-		$options[]	= JHtml::_('select.option', '9', Lang::txt('J9'));
-		$options[]	= JHtml::_('select.option', '10', Lang::txt('J10'));
+		$options[]	= Html::select('option', '1', Lang::txt('J1'));
+		$options[]	= Html::select('option', '2', Lang::txt('J2'));
+		$options[]	= Html::select('option', '3', Lang::txt('J3'));
+		$options[]	= Html::select('option', '4', Lang::txt('J4'));
+		$options[]	= Html::select('option', '5', Lang::txt('J5'));
+		$options[]	= Html::select('option', '6', Lang::txt('J6'));
+		$options[]	= Html::select('option', '7', Lang::txt('J7'));
+		$options[]	= Html::select('option', '8', Lang::txt('J8'));
+		$options[]	= Html::select('option', '9', Lang::txt('J9'));
+		$options[]	= Html::select('option', '10', Lang::txt('J10'));
 
 		$this->f_levels = $options;
 

@@ -104,6 +104,6 @@ $clientId	= $this->state->get('filter.client_id', 0);
 	<div>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 </form>

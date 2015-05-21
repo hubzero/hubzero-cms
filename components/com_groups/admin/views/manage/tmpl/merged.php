@@ -35,7 +35,7 @@ $this->css();
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 Toolbar::custom('display','back','back','COM_GROUPS_BACK', false);
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

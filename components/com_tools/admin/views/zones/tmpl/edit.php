@@ -41,7 +41,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('zone');
 
-JHtml::_('behavior.modal');
+Html::behavior('modal');
 JHtml::_('behavior.switcher', 'submenu');
 ?>
 <script type="text/javascript">

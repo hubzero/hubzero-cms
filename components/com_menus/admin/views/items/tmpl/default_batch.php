@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 $options = array(
-	JHtml::_('select.option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
-	JHtml::_('select.option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
+	Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
+	Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
 );
 $published = $this->state->get('filter.published');
 ?>
@@ -38,7 +38,7 @@ $published = $this->state->get('filter.published');
 			<div class="col width-50 fltlft">
 				<select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
 					<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-					<?php echo JHtml::_('select.options', JHtml::_('menu.menuitems', array('published' => $published)));?>
+					<?php echo Html::select('options', JHtml::_('menu.menuitems', array('published' => $published)));?>
 				</select>
 			</div>
 			<div class="col width-50 fltrt">

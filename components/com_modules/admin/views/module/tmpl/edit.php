@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 JHtml::_('behavior.combobox');
 $hasContent = empty($this->item->module) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
 
@@ -151,10 +151,10 @@ Document::addScriptDeclaration($script);
 				</tr>
 			</tbody>
 		</table>
-	<?php echo JHtml::_('sliders.start', 'module-sliders'); ?>
+	<?php echo Html::sliders('start', 'module-sliders'); ?>
 		<?php echo $this->loadTemplate('options'); ?>
 		<div class="clr"></div>
-	<?php echo JHtml::_('sliders.end'); ?>
+	<?php echo Html::sliders('end'); ?>
 	</div>
 
 	<?php if ($hasContent) : ?>
@@ -179,5 +179,5 @@ Document::addScriptDeclaration($script);
 	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

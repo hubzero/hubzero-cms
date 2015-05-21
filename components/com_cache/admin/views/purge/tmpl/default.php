@@ -50,5 +50,5 @@ Toolbar::help('purge_expired');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="com_cache" />
 
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

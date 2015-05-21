@@ -12,10 +12,10 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.framework');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.modal');
+Html::behavior('framework');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('modal');
 ?>
 
 <script type="text/javascript">
@@ -155,24 +155,24 @@ JHtml::_('behavior.modal');
 	</div>
 
 	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'menu-sliders-'.$this->item->id); ?>
+		<?php echo Html::sliders('start', 'menu-sliders-'.$this->item->id); ?>
 		<?php //Load  parameters.
 			echo $this->loadTemplate('options'); ?>
 
 			<div class="clr"></div>
 
 			<?php if (!empty($this->modules)) : ?>
-				<?php echo JHtml::_('sliders.panel', Lang::txt('COM_MENUS_ITEM_MODULE_ASSIGNMENT'), 'module-options'); ?>
+				<?php echo Html::sliders('panel', Lang::txt('COM_MENUS_ITEM_MODULE_ASSIGNMENT'), 'module-options'); ?>
 				<fieldset>
 					<?php echo $this->loadTemplate('modules'); ?>
 				</fieldset>
 			<?php endif; ?>
 
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo Html::sliders('end'); ?>
 
 		<input type="hidden" name="task" value="" />
 		<?php echo $this->form->getInput('component_id'); ?>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 		<input type="hidden" id="fieldtype" name="fieldtype" value="" />
 	</div>
 </form>

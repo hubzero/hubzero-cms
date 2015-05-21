@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -42,7 +42,7 @@ JHtml::_('behavior.keepalive');
 		</div>
 
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</fieldset>
 
 	<?php echo $this->form->getInput('extension_id'); ?>

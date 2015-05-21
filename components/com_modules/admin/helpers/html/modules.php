@@ -23,7 +23,7 @@ abstract class JHtmlModules
 		$templates = ModulesHelper::getTemplates($clientId, $state);
 		foreach ($templates as $template)
 		{
-			$options[] = JHtml::_('select.option', $template->element, $template->name);
+			$options[] = Html::select('option', $template->element, $template->name);
 		}
 		return $options;
 	}
@@ -33,8 +33,8 @@ abstract class JHtmlModules
 	static public function types()
 	{
 		$options = array();
-		$options[] = JHtml::_('select.option', 'user', 'COM_MODULES_OPTION_POSITION_USER_DEFINED');
-		$options[] = JHtml::_('select.option', 'template', 'COM_MODULES_OPTION_POSITION_TEMPLATE_DEFINED');
+		$options[] = Html::select('option', 'user', 'COM_MODULES_OPTION_POSITION_USER_DEFINED');
+		$options[] = Html::select('option', 'template', 'COM_MODULES_OPTION_POSITION_TEMPLATE_DEFINED');
 		return $options;
 	}
 
@@ -43,8 +43,8 @@ abstract class JHtmlModules
 	static public function templateStates()
 	{
 		$options = array();
-		$options[] = JHtml::_('select.option', '1', 'JENABLED');
-		$options[] = JHtml::_('select.option', '0', 'JDISABLED');
+		$options[] = Html::select('option', '1', 'JENABLED');
+		$options[] = Html::select('option', '0', 'JDISABLED');
 		return $options;
 	}
 
@@ -119,8 +119,8 @@ abstract class JHtmlModules
 	{
 		// Create the copy/move options.
 		$options = array(
-			JHtml::_('select.option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
-			JHtml::_('select.option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
+			Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
+			Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
 		);
 
 		// Create the batch selector to change select the category by which to move or copy.
@@ -133,9 +133,9 @@ abstract class JHtmlModules
 			'<option value="">' . Lang::txt('JSELECT') . '</option>',
 			'<option value="nochange">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOCHANGE') . '</option>',
 			'<option value="noposition">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOPOSITION') . '</option>',
-			JHtml::_('select.options',	self::positionList($clientId)),
+			Html::select('options',	self::positionList($clientId)),
 			'</select>',
-			JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
+			Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
 			'</fieldset>'
 		);
 

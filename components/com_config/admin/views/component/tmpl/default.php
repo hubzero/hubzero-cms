@@ -34,8 +34,8 @@ defined('_JEXEC') or die;
 $template = JFactory::getApplication()->getTemplate();
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -58,13 +58,13 @@ JHtml::_('behavior.formvalidation');
 	</fieldset>
 
 	<?php
-	echo JHtml::_('tabs.start', 'config-tabs-' . $this->component->option . '_configuration', array('useCookie' => 1));
+	echo Html::tabs('start', 'config-tabs-' . $this->component->option . '_configuration', array('useCookie' => 1));
 
 		$fieldSets = $this->form->getFieldsets();
 
 		foreach ($fieldSets as $name => $fieldSet) :
 			$label = empty($fieldSet->label) ? 'COM_CONFIG_' . $name . '_FIELDSET_LABEL' : $fieldSet->label;
-			echo JHtml::_('tabs.panel', Lang::txt($label), 'publishing-details');
+			echo Html::tabs('panel', Lang::txt($label), 'publishing-details');
 			if (isset($fieldSet->description) && !empty($fieldSet->description)) :
 				echo '<p class="tab-description">'.Lang::txt($fieldSet->description).'</p>';
 			endif;
@@ -83,12 +83,12 @@ JHtml::_('behavior.formvalidation');
 			<?php
 		endforeach;
 
-	echo JHtml::_('tabs.end');
+	echo Html::tabs('end');
 	?>
 
 	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
 	<input type="hidden" name="component" value="<?php echo $this->component->option; ?>" />
 	<input type="hidden" name="task" value="" />
 
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -64,8 +64,8 @@ class JFormFieldMenutype extends JFormFieldList
 				break;
 		}
 		// Load the javascript and css
-		JHtml::_('behavior.framework');
-		JHtml::_('behavior.modal');
+		Html::behavior('framework');
+		Html::behavior('modal');
 
 		Document::addScriptDeclaration("
 			jQuery(document).ready(function($){

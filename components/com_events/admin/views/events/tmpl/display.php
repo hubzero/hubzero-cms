@@ -44,7 +44,7 @@ Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('events');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 
 <script type="text/javascript">

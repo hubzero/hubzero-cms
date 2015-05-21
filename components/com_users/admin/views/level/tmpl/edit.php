@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 $canDo = UsersHelper::getActions();
 ?>
 
@@ -107,5 +107,5 @@ jQuery(document).ready(function($){
 	<div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

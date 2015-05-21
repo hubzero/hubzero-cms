@@ -11,9 +11,9 @@ defined('_JEXEC') or die;
 
 // Include the HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -79,9 +79,9 @@ JHtml::_('behavior.keepalive');
 	</div>
 
 	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'newsfeed-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+		<?php echo Html::sliders('start', 'newsfeed-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
-			<?php echo JHtml::_('sliders.panel', Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+			<?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 
 			<fieldset class="panelform">
 
@@ -146,9 +146,9 @@ JHtml::_('behavior.keepalive');
 
 			<?php echo $this->loadTemplate('metadata'); ?>
 
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo Html::sliders('end'); ?>
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 
 	<div class="clr"></div>

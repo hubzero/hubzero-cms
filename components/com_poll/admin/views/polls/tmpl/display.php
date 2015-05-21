@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 $canDo = \Components\Poll\Helpers\Permissions::getActions('component');
 

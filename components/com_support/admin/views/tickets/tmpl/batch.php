@@ -39,7 +39,7 @@ if (!$this->tmpl)
 	Toolbar::help('ticket');
 }
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 $this->css();
 
 $cc = array();

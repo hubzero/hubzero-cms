@@ -10,8 +10,8 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -133,15 +133,15 @@ JHtml::_('behavior.formvalidation');
 	</div>
 
 	<div class="width-40 fltrt">
-	<?php echo JHtml::_('sliders.start', 'plugin-sliders-'.$this->item->extension_id); ?>
+	<?php echo Html::sliders('start', 'plugin-sliders-'.$this->item->extension_id); ?>
 
 		<?php echo $this->loadTemplate('options'); ?>
 
 		<div class="clr"></div>
 
-	<?php echo JHtml::_('sliders.end'); ?>
+	<?php echo Html::sliders('end'); ?>
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 	</div>
 
 	<input type="hidden" name="component" value="<?php echo Request::getCmd('component', ''); ?>" />

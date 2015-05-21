@@ -13,8 +13,8 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $user		= JFactory::getUser();
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -92,7 +92,7 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php if ($canEdit) : ?>
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo Html::grid('id', $i, $item->id); ?>
 					<?php endif; ?>
 				</td>
 				<td>
@@ -124,5 +124,5 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

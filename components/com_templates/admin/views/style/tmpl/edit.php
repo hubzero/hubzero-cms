@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
 $canDo = TemplatesHelper::getActions();
 ?>
@@ -86,11 +86,11 @@ $canDo = TemplatesHelper::getActions();
 			</div>
 		</fieldset>
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 
 	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'template-sliders-'.$this->item->id); ?>
+		<?php echo Html::sliders('start', 'template-sliders-'.$this->item->id); ?>
 
 		<?php
 			//get the menu parameters that are automatically set but may be modified.
@@ -98,7 +98,7 @@ $canDo = TemplatesHelper::getActions();
 		?>
 		<div class="clr"></div>
 
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo Html::sliders('end'); ?>
 	</div>
 
 	<?php if (User::authorise('core.edit', 'com_menu') && $this->item->client_id==0):?>

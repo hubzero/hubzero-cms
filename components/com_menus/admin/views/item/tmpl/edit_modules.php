@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.framework', true);
+Html::behavior('framework', true);
 ?>
 	<script type="text/javascript">
 	// Hide/show all rows which are not assigned.

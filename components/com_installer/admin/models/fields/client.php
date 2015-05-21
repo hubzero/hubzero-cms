@@ -35,10 +35,10 @@ class JFormFieldClient extends JFormField
 		$options = array();
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = JHtml::_('select.option', $option->attributes('value'), Lang::txt(trim($option->data())));
+			$options[] = Html::select('option', $option->attributes('value'), Lang::txt(trim($option->data())));
 		}
-		$options[] = JHtml::_('select.option', '0', Lang::txt('JSITE'));
-		$options[] = JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'));
+		$options[] = Html::select('option', '0', Lang::txt('JSITE'));
+		$options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 		$return = JHtml::_('select.genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
 		return $return;
 	}

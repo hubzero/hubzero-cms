@@ -48,8 +48,8 @@ abstract class JHtmlLanguages {
 	public static function clients()
 	{
 		return array(
-			JHtml::_('select.option', 0, Lang::txt('JSITE')),
-			JHtml::_('select.option', 1, Lang::txt('JADMINISTRATOR'))
+			Html::select('option', 0, Lang::txt('JSITE')),
+			Html::select('option', 1, Lang::txt('JADMINISTRATOR'))
 		);
 	}
 
@@ -63,10 +63,10 @@ abstract class JHtmlLanguages {
 	{
 		// Build the active state filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '1', 'JPUBLISHED');
-		$options[]	= JHtml::_('select.option', '0', 'JUNPUBLISHED');
-		$options[]	= JHtml::_('select.option', '-2', 'JTRASHED');
-		$options[]	= JHtml::_('select.option', '*', 'JALL');
+		$options[]	= Html::select('option', '1', 'JPUBLISHED');
+		$options[]	= Html::select('option', '0', 'JUNPUBLISHED');
+		$options[]	= Html::select('option', '-2', 'JTRASHED');
+		$options[]	= Html::select('option', '*', 'JALL');
 
 		return $options;
 	}

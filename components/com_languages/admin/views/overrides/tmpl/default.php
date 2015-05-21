@@ -25,7 +25,7 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 		</div>
 		<div class="filter-select fltrt">
 			<select name="filter_language_client" class="inputbox" onchange="this.form.submit()">
-				<?php echo JHtml::_('select.options', $this->languages, null, 'text', $this->state->get('filter.language_client')); ?>
+				<?php echo Html::select('options', $this->languages, null, 'text', $this->state->get('filter.language_client')); ?>
 			</select>
 		</div>
 	</fieldset>
@@ -39,10 +39,10 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
 				<th width="30%" class="left">
-					<?php echo JHtml::_('grid.sort', 'COM_LANGUAGES_VIEW_OVERRIDES_KEY', 'key', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_KEY', 'key', $listDirn, $listOrder); ?>
 				</th>
 				<th class="left">
-					<?php echo JHtml::_('grid.sort', 'COM_LANGUAGES_VIEW_OVERRIDES_TEXT', 'text', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_TEXT', 'text', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap">
 					<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>
@@ -68,7 +68,7 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 		foreach ($this->items as $key => $text): ?>
 			<tr class="row<?php echo $i % 2; ?>" id="overriderrow<?php echo $i; ?>">
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $key); ?>
+					<?php echo Html::grid('id', $i, $key); ?>
 				</td>
 				<td>
 					<?php if ($canEdit): ?>
@@ -99,6 +99,6 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 </form>

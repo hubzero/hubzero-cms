@@ -62,7 +62,7 @@ if ($canDo->get('core.delete'))
 
 $this->css();
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 
 if ($this->filters['parent_id'] > 0)

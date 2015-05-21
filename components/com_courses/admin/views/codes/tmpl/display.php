@@ -52,7 +52,7 @@ if ($canDo->get('core.delete'))
 	Toolbar::deleteList('COM_COURSES_DELETE_CONFIRM', 'delete');
 }
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -38,7 +38,7 @@ Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('tickets');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 $this->css();
 ?>

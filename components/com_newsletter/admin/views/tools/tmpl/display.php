@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools.png');
 
 // add jquery
-JHtml::_('behavior.framework');
+Html::behavior('framework');
 ?>
 
 <?php

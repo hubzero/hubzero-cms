@@ -10,7 +10,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.multiselect');
+Html::behavior('multiselect');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
@@ -59,7 +59,7 @@ $ver = new JVersion;
 					?>
 						<tr class="row<?php echo $i%2; ?>">
 							<td>
-								<?php echo JHtml::_('grid.id', $i, $language->update_id, false, 'cid'); ?>
+								<?php echo Html::grid('id', $i, $language->update_id, false, 'cid'); ?>
 							</td>
 							<td>
 								<?php echo $language->name; ?>
@@ -90,5 +90,5 @@ $ver = new JVersion;
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

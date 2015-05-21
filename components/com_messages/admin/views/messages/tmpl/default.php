@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -29,7 +29,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<div class="filter-select fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', MessagesHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
+				<?php echo Html::select('options', MessagesHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -68,7 +68,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td>
-					<?php echo JHtml::_('grid.id', $i, $item->message_id); ?>
+					<?php echo Html::grid('id', $i, $item->message_id); ?>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=com_messages&view=message&message_id='.(int) $item->message_id); ?>">
@@ -92,5 +92,5 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

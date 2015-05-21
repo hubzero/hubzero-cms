@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 /* @var $this UsersViewNote */
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 ?>
 <script language="javascript" type="text/javascript">
 Joomla.submitbutton = function(task)
@@ -56,7 +56,7 @@ Joomla.submitbutton = function(task)
 			</div>
 
 			<input type="hidden" name="task" value="" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</fieldset>
 	</div>
 </form>

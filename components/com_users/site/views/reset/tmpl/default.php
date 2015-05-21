@@ -1,8 +1,8 @@
 <?php defined('_JEXEC') or die; ?>
 
 <?php
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.formvalidation');
+Html::behavior('keepalive');
+Html::behavior('formvalidation');
 ?>
 
 <?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>

@@ -11,9 +11,9 @@ defined('_JEXEC') or die;
 
 // Create the copy/move options.
 $options = array(
-	JHtml::_('select.option', 'add', Lang::txt('COM_USERS_BATCH_ADD')),
-	JHtml::_('select.option', 'del', Lang::txt('COM_USERS_BATCH_DELETE')),
-	JHtml::_('select.option', 'set', Lang::txt('COM_USERS_BATCH_SET'))
+	Html::select('option', 'add', Lang::txt('COM_USERS_BATCH_ADD')),
+	Html::select('option', 'del', Lang::txt('COM_USERS_BATCH_DELETE')),
+	Html::select('option', 'set', Lang::txt('COM_USERS_BATCH_SET'))
 );
 
 ?>
@@ -24,9 +24,9 @@ $options = array(
 	<fieldset id="batch-choose-action" class="combo">
 		<select name="batch[group_id]" class="inputbox" id="batch-group-id">
 			<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-			<?php echo JHtml::_('select.options', JHtml::_('user.groups', User::get('isRoot'))); ?>
+			<?php echo Html::select('options', JHtml::_('user.groups', User::get('isRoot'))); ?>
 		</select>
-		<?php echo JHtml::_('select.radiolist', $options, 'batch[group_action]', '', 'value', 'text', 'add') ?>
+		<?php echo Html::select('radiolist', $options, 'batch[group_action]', '', 'value', 'text', 'add') ?>
 	</fieldset>
 
 	<button type="submit" onclick="Joomla.submitbutton('user.batch');">

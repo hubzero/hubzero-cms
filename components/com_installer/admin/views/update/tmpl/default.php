@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.multiselect');
+Html::behavior('multiselect');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
@@ -49,7 +49,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				$client = $item->client_id ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
 			?>
 				<tr class="row<?php echo $i%2; ?>">
-					<td><?php echo JHtml::_('grid.id', $i, $item->update_id); ?></td>
+					<td><?php echo Html::grid('id', $i, $item->update_id); ?></td>
 					<td>
 						<span class="editlinktip hasTip" title="<?php echo Lang::txt('JGLOBAL_DESCRIPTION');?>::<?php echo $item->description ? $this->escape($item->description) : Lang::txt('COM_INSTALLER_MSG_UPDATE_NODESC'); ?>">
 						<?php echo $this->escape($item->name); ?>
@@ -79,6 +79,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>

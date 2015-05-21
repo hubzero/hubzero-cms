@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 ?>
 
 <script type="text/javascript">
@@ -103,11 +103,11 @@ JHtml::_('behavior.keepalive');
 	</div>
 
 	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'categories-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+		<?php echo Html::sliders('start', 'categories-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 		<?php echo $this->loadTemplate('options'); ?>
 		<div class="clr"></div>
 
-		<?php echo JHtml::_('sliders.panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
+		<?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
 		<fieldset class="panelform">
 			<?php echo $this->loadTemplate('metadata'); ?>
 		</fieldset>
@@ -116,7 +116,7 @@ JHtml::_('behavior.keepalive');
 		<?php foreach ($fieldSets as $name => $fieldSet) : ?>
 			<?php $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_CATEGORIES_'.$name.'_FIELDSET_LABEL'; ?>
 			<?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
-				<?php echo JHtml::_('sliders.panel', Lang::txt($label), $name.'-options'); ?>
+				<?php echo Html::sliders('panel', Lang::txt($label), $name.'-options'); ?>
 				<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
 					<p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description));?></p>
 				<?php endif; ?>
@@ -130,26 +130,26 @@ JHtml::_('behavior.keepalive');
 				</fieldset>
 			<?php endif ?>
 		<?php endforeach; ?>
-	<?php echo JHtml::_('sliders.end'); ?>
+	<?php echo Html::sliders('end'); ?>
 	</div>
 	<div class="clr"></div>
 
 	<?php if ($this->canDo->get('core.admin')): ?>
 		<div class="width-100 fltlft">
 
-			<?php //echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+			<?php //echo Html::sliders('start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
-			<?php //echo JHtml::_('sliders.panel', Lang::txt('COM_CATEGORIES_FIELDSET_RULES'), 'access-rules'); ?>
+			<?php //echo Html::sliders('panel', Lang::txt('COM_CATEGORIES_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">
 
 				<?php echo $this->form->getLabel('rules'); ?>
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
 
-			<?php //echo JHtml::_('sliders.end'); ?>
+			<?php //echo Html::sliders('end'); ?>
 		</div>
 	<?php endif; ?>
 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

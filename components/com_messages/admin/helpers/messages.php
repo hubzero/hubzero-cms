@@ -65,9 +65,9 @@ class MessagesHelper
 	{
 		// Build the filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option',	'1',	Lang::txt('COM_MESSAGES_OPTION_READ'));
-		$options[]	= JHtml::_('select.option',	'0',	Lang::txt('COM_MESSAGES_OPTION_UNREAD'));
-		$options[]	= JHtml::_('select.option',	'-2',	Lang::txt('JTRASHED'));
+		$options[]	= Html::select('option',	'1',	Lang::txt('COM_MESSAGES_OPTION_READ'));
+		$options[]	= Html::select('option',	'0',	Lang::txt('COM_MESSAGES_OPTION_UNREAD'));
+		$options[]	= Html::select('option',	'-2',	Lang::txt('JTRASHED'));
 		return $options;
 	}
 }

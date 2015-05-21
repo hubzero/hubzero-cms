@@ -50,7 +50,7 @@ if ($canDo->get('core.delete'))
 Toolbar::spacer();
 Toolbar::help('offerings');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

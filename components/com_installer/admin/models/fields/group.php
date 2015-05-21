@@ -38,7 +38,7 @@ class JFormFieldGroup extends JFormField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = JHtml::_('select.option', (string)$option->attributes()->value, Lang::txt(trim((string) $option)));
+			$options[] = Html::select('option', (string)$option->attributes()->value, Lang::txt(trim((string) $option)));
 		}
 
 		$dbo = JFactory::getDbo();
@@ -52,7 +52,7 @@ class JFormFieldGroup extends JFormField
 
 		foreach ($folders as $folder)
 		{
-			$options[] = JHtml::_('select.option', $folder, $folder);
+			$options[] = Html::select('option', $folder, $folder);
 		}
 
 		$return = JHtml::_('select.genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);

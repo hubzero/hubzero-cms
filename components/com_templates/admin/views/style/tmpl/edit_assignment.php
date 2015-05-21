@@ -23,9 +23,9 @@ $menuTypes = MenusHelper::getMenuLinks();
 			<div class="clr"></div>
 
 			<div id="menu-assignment">
-				<?php echo JHtml::_('tabs.start', 'module-menu-assignment-tabs', array('useCookie'=>1));?>
+				<?php echo Html::tabs('start', 'module-menu-assignment-tabs', array('useCookie'=>1));?>
 			<?php foreach ($menuTypes as &$type) : ?>
-				<?php echo JHtml::_('tabs.panel', $type->title ? $type->title : $type->menutype, $type->menutype.'-details'); ?>
+				<?php echo Html::tabs('panel', $type->title ? $type->title : $type->menutype, $type->menutype.'-details'); ?>
 				<ul class="menu-links">
 					<h3><?php echo $type->title ? $type->title : $type->menutype; ?></h3>
 					<?php foreach ($type->links as $link) :?>
@@ -39,6 +39,6 @@ $menuTypes = MenusHelper::getMenuLinks();
 				</ul>
 				<div class="clr"></div>
 			<?php endforeach; ?>
-				<?php echo JHtml::_('tabs.end');?>
+				<?php echo Html::tabs('end');?>
 			</div>
 		</fieldset>

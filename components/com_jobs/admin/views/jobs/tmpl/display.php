@@ -56,7 +56,7 @@ Toolbar::help('jobs');
 
 $this->css();
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

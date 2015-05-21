@@ -37,7 +37,7 @@ Toolbar::custom('display','back','back','COM_GROUPS_BACK', false);
 Toolbar::spacer();
 Toolbar::custom('doupdate', 'merge', '', 'COM_GROUPS_MERGE_CODE', false);
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

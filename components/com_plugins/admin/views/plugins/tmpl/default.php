@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -31,17 +31,17 @@ $saveOrder	= $listOrder == 'ordering';
 		<div class="filter-select fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', PluginsHelper::stateOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo Html::select('options', PluginsHelper::stateOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 
 			<select name="filter_folder" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER');?></option>
-				<?php echo JHtml::_('select.options', PluginsHelper::folderOptions(), 'value', 'text', $this->state->get('filter.folder'));?>
+				<?php echo Html::select('options', PluginsHelper::folderOptions(), 'value', 'text', $this->state->get('filter.folder'));?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -54,28 +54,28 @@ $saveOrder	= $listOrder == 'ordering';
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo JHtml::_('grid.sort', 'COM_PLUGINS_NAME_HEADING', 'name', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_PLUGINS_NAME_HEADING', 'name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'enabled', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'enabled', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'plugins.saveorder'); ?>
+						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'plugins.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th class="nowrap" width="10%">
-					<?php echo JHtml::_('grid.sort', 'COM_PLUGINS_FOLDER_HEADING', 'folder', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_PLUGINS_FOLDER_HEADING', 'folder', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
-					<?php echo JHtml::_('grid.sort', 'COM_PLUGINS_ELEMENT_HEADING', 'element', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_PLUGINS_ELEMENT_HEADING', 'element', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'access', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="1%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'extension_id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'extension_id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -95,7 +95,7 @@ $saveOrder	= $listOrder == 'ordering';
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->extension_id); ?>
+					<?php echo Html::grid('id', $i, $item->extension_id); ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
@@ -149,5 +149,5 @@ $saveOrder	= $listOrder == 'ordering';
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -30,5 +30,5 @@ defined('_JEXEC') or die;
 	<input type="hidden" name="option" value="<?php echo $this->option;?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="client" value="<?php echo $this->client->id;?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

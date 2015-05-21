@@ -36,7 +36,7 @@ Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_RELATIONSHIPS'
 
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 $this->css('tag_graph.css');
 ?>

@@ -65,9 +65,9 @@ Toolbar::help('link');
 
 // Include the HTML helpers.
 JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task) {
@@ -155,5 +155,5 @@ JHtml::_('behavior.keepalive');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

@@ -16,14 +16,14 @@ defined('_JEXEC') or die;
 	<form action="<?php echo Route::url('index.php?option=com_installer&view=warnings');?>" method="post" name="adminForm" id="adminForm">
 		<?php if ($this->errorCount === 0) : ?>
 			<p class="nowarning"><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_OK'); ?></p>
-			<?php echo JHtml::_('sliders.start', 'database-sliders', array('useCookie'=>1)); ?>
+			<?php echo Html::sliders('start', 'database-sliders', array('useCookie'=>1)); ?>
 
 		<?php else : ?>
 			<p class="warning"><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_ERRORS'); ?></p>
-			<?php echo JHtml::_('sliders.start', 'database-sliders', array('useCookie'=>1)); ?>
+			<?php echo Html::sliders('start', 'database-sliders', array('useCookie'=>1)); ?>
 
 			<?php $panelName = Lang::txts('COM_INSTALLER_MSG_N_DATABASE_ERROR_PANEL', $this->errorCount); ?>
-			<?php echo JHtml::_('sliders.panel', $panelName, 'error-panel'); ?>
+			<?php echo Html::sliders('panel', $panelName, 'error-panel'); ?>
 			<fieldset class="panelform">
 				<ul>
 					<?php if (!$this->filterParams) : ?>
@@ -52,7 +52,7 @@ defined('_JEXEC') or die;
 			</fieldset>
 		<?php endif; ?>
 
-		<?php echo JHtml::_('sliders.panel', Lang::txt('COM_INSTALLER_MSG_DATABASE_INFO'), 'furtherinfo-pane'); ?>
+		<?php echo Html::sliders('panel', Lang::txt('COM_INSTALLER_MSG_DATABASE_INFO'), 'furtherinfo-pane'); ?>
 			<fieldset class="panelform">
 			<ul>
 				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_SCHEMA_VERSION', $this->schemaVersion); ?></li>
@@ -62,12 +62,12 @@ defined('_JEXEC') or die;
 				<li><?php echo Lang::txt('COM_INSTALLER_MSG_DATABASE_SKIPPED', count($this->results['skipped'])); ?></li>
 			</ul>
 			</fieldset>
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo Html::sliders('end'); ?>
 
 		<div class="clr"> </div>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>

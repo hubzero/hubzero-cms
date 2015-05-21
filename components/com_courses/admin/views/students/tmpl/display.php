@@ -46,7 +46,7 @@ if ($canDo->get('core.delete'))
 	Toolbar::deleteList();
 }
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

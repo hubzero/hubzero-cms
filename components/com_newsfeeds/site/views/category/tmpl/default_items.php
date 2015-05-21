@@ -9,7 +9,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.framework');
+Html::behavior('framework');
 
 $n			= count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));

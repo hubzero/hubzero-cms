@@ -40,7 +40,7 @@ Toolbar::editList();
 Toolbar::spacer();
 Toolbar::deleteList();
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 ?>

@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 /* @var $this UsersViewNotes */
 
-JHtml::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
@@ -29,12 +29,12 @@ $canEdit = User::authorise('core.edit', 'com_users');
 		<div class="filter-select fltrt">
 			<select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_users.notes'), 'value', 'text', $this->state->get('filter.category_id'));?>
+				<?php echo Html::select('options', JHtml::_('category.options', 'com_users.notes'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 		</div>
 	</fieldset>
@@ -46,22 +46,22 @@ $canEdit = User::authorise('core.edit', 'com_users');
 					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_USER_HEADING', 'u.name', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_USER_HEADING', 'u.name', $listDirn, $listOrder); ?>
 				</th>
 				<th  class="left">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_SUBJECT_HEADING', 'a.subject', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_SUBJECT_HEADING', 'a.subject', $listDirn, $listOrder); ?>
 				</th>
 				<th width="20%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_CATEGORY_HEADING', 'c.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_CATEGORY_HEADING', 'c.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_REVIEW_HEADING', 'a.review_time', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_REVIEW_HEADING', 'a.review_time', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -77,7 +77,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 			<?php $canChange = User::authorise('core.edit.state',  'com_users'); ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center checklist">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo Html::grid('id', $i, $item->id); ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
@@ -125,5 +125,5 @@ $canEdit = User::authorise('core.edit', 'com_users');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

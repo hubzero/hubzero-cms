@@ -36,7 +36,7 @@ Toolbar::title( Lang::txt( 'Projects' ), 'user.png' );
 Toolbar::preferences('com_projects', '550');
 Toolbar::editList();
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $now = Date::toSql();

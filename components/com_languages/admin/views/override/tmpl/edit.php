@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function($){
@@ -109,7 +109,7 @@ JHtml::_('behavior.keepalive');
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="id" value="<?php echo $this->item->key; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 	<div class="clr"></div>
 </form>

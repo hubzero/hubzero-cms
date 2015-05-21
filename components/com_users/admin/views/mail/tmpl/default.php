@@ -27,7 +27,7 @@ $script .= "\t\t".'}'."\n";
 $script .= "\t\t".'}'."\n";
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 Document::addScriptDeclaration($script);
 ?>
@@ -68,7 +68,7 @@ Document::addScriptDeclaration($script);
 			</ul>
 		</fieldset>
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 
 	<div class="clr"></div>

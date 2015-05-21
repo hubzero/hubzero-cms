@@ -282,10 +282,10 @@ function submitbutton(pressbutton)
 						</a>
 					</legend>
 					<?php //echo $tabs->startPane("content-pane"); ?>
-					<?php echo JHtml::_('sliders.start', 'content-pane'); ?>
+					<?php echo Html::sliders('start', 'content-pane'); ?>
 						<?php for ($i=0,$n=count($primary); $i<$n; $i++) : ?>
 							<?php //echo $tabs->startPanel(($i+1) . ". " . $primary[$i]->title, "pstory-".($i+1)."") ; ?>
-							<?php echo JHtml::_('sliders.panel', ($i+1) . ". " . $primary[$i]->title, "pstory-" . ($i+1)); ?>
+							<?php echo Html::sliders('panel', ($i+1) . ". " . $primary[$i]->title, "pstory-" . ($i+1)); ?>
 								<table class="admintable">
 									<tbody>
 										<tr>
@@ -332,7 +332,7 @@ function submitbutton(pressbutton)
 							<?php //echo $tabs->endPanel(); ?>
 						<?php endfor; ?>
 					<?php //echo $tabs->endPane(); ?>
-					<?php echo JHtml::_('sliders.end'); ?>
+					<?php echo Html::sliders('end'); ?>
 				</fieldset>
 				<hr />
 				<a name="secondary-stories"></a>
@@ -344,10 +344,10 @@ function submitbutton(pressbutton)
 						</a>
 					</legend>
 					<?php //echo $tabs->startPane("content-pane2"); ?>
-					<?php echo JHtml::_('sliders.start', 'content-pane2'); ?>
+					<?php echo Html::sliders('start', 'content-pane2'); ?>
 						<?php for ($i=0,$n=count($secondary); $i<$n; $i++) : ?>
 							<?php //echo $tabs->startPanel(($i+1) . ". " . $secondary[$i]->title, "sstory-".($i+1)."") ; ?>
-							<?php echo JHtml::_('sliders.panel', ($i+1) . ". " . $secondary[$i]->title, "sstory-" . ($i+1)); ?>
+							<?php echo Html::sliders('panel', ($i+1) . ". " . $secondary[$i]->title, "sstory-" . ($i+1)); ?>
 								<table class="admintable">
 									<tbody>
 										<tr>
@@ -394,7 +394,7 @@ function submitbutton(pressbutton)
 							<?php //echo $tabs->endPanel(); ?>
 						<?php endfor; ?>
 					<?php //echo $tabs->endPane(); ?>
-					<?php echo JHtml::_('sliders.end'); ?>
+					<?php echo Html::sliders('end'); ?>
 				</fieldset>
 			<?php endif; ?>
 		<?php endif; ?>

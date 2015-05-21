@@ -46,7 +46,7 @@ class LanguagesViewOverride extends JViewLegacy
 	public function display($tpl = null)
 	{
 		Document::addStyleSheet(Request::root().'media/overrider/css/overrider.css');
-		JHtml::_('behavior.framework');
+		Html::behavior('framework');
 		Document::addScript(Request::root().'media/overrider/js/overrider.js');
 
 		$this->form  = $this->get('Form');

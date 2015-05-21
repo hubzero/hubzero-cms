@@ -38,7 +38,7 @@ Toolbar::help('tools');
 
 $this->css();
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 
 <script type="text/javascript">

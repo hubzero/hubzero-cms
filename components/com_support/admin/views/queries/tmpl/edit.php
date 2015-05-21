@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.framework');
+Html::behavior('framework');
 
 // Push some styles to the template
 $this->css('conditions.css')

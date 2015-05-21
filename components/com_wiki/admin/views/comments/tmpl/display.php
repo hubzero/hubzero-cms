@@ -50,7 +50,7 @@ if ($canDo->get('core.create'))
 Toolbar::spacer();
 Toolbar::help('comments');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

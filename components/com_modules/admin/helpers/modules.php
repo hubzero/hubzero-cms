@@ -54,9 +54,9 @@ abstract class ModulesHelper
 	{
 		// Build the filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option',	'1',	Lang::txt('JPUBLISHED'));
-		$options[]	= JHtml::_('select.option',	'0',	Lang::txt('JUNPUBLISHED'));
-		$options[]	= JHtml::_('select.option',	'-2',	Lang::txt('JTRASHED'));
+		$options[]	= Html::select('option',	'1',	Lang::txt('JPUBLISHED'));
+		$options[]	= Html::select('option',	'0',	Lang::txt('JUNPUBLISHED'));
+		$options[]	= Html::select('option',	'-2',	Lang::txt('JTRASHED'));
 		return $options;
 	}
 
@@ -69,8 +69,8 @@ abstract class ModulesHelper
 	{
 		// Build the filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '0', Lang::txt('JSITE'));
-		$options[]	= JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'));
+		$options[]	= Html::select('option', '0', Lang::txt('JSITE'));
+		$options[]	= Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 		return $options;
 	}
 
@@ -100,12 +100,12 @@ abstract class ModulesHelper
 		{
 			if (!$position)
 			{
-				$options[]	= JHtml::_('select.option', 'none', ':: '.Lang::txt('JNONE').' ::');
+				$options[]	= Html::select('option', 'none', ':: '.Lang::txt('JNONE').' ::');
 
 			}
 			else
 			{
-				$options[]	= JHtml::_('select.option', $position, $position);
+				$options[]	= Html::select('option', $position, $position);
 			}
 		}
 		return $options;
@@ -183,13 +183,13 @@ abstract class ModulesHelper
 	public static function getAssignmentOptions($clientId)
 	{
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', 'COM_MODULES_OPTION_MENU_ALL');
-		$options[] = JHtml::_('select.option', '-', 'COM_MODULES_OPTION_MENU_NONE');
+		$options[] = Html::select('option', '0', 'COM_MODULES_OPTION_MENU_ALL');
+		$options[] = Html::select('option', '-', 'COM_MODULES_OPTION_MENU_NONE');
 
 		if ($clientId == 0)
 		{
-			$options[] = JHtml::_('select.option', '1', 'COM_MODULES_OPTION_MENU_INCLUDE');
-			$options[] = JHtml::_('select.option', '-1', 'COM_MODULES_OPTION_MENU_EXCLUDE');
+			$options[] = Html::select('option', '1', 'COM_MODULES_OPTION_MENU_INCLUDE');
+			$options[] = Html::select('option', '-1', 'COM_MODULES_OPTION_MENU_EXCLUDE');
 		}
 
 		return $options;

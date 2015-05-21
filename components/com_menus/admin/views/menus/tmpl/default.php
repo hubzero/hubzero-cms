@@ -13,8 +13,8 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $uri = JFactory::getUri();
 $return = base64_encode($uri);
@@ -78,7 +78,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo Html::grid('id', $i, $item->id); ?>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=com_menus&view=items&menutype='.$item->menutype) ?> ">
@@ -136,6 +136,6 @@ $modMenuId = (int) $this->get('ModMenuId');
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 </form>

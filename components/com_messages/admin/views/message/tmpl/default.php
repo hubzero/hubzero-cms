@@ -8,7 +8,7 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-JHtml::_('behavior.framework');
+Html::behavior('framework');
 ?>
 <form action="<?php echo Route::url('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="width-60 fltlft">
@@ -27,6 +27,6 @@ JHtml::_('behavior.framework');
 		</ul>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="reply_id" value="<?php echo $this->item->message_id; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 </form>

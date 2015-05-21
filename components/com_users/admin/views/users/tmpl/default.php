@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('behavior.modal');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
+Html::behavior('modal');
 
 $canDo = UsersHelper::getActions();
 $user = User::getRoot();
@@ -36,22 +36,22 @@ $loggeduser = User::getRoot();
 
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_STATE');?></option>
-				<?php echo JHtml::_('select.options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
+				<?php echo Html::select('options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
 			<select name="filter_approved" class="inputbox" onchange="this.form.submit()">
 				<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_APPROVED');?></option>
-				<?php echo JHtml::_('select.options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
+				<?php echo Html::select('options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
 			</select>
 
 			<select name="filter_group_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_USERS_FILTER_USERGROUP');?></option>
-				<?php echo JHtml::_('select.options', UsersHelper::getGroups(), 'value', 'text', $this->state->get('filter.group_id'));?>
+				<?php echo Html::select('options', UsersHelper::getGroups(), 'value', 'text', $this->state->get('filter.group_id'));?>
 			</select>
 
 			<select name="filter_range" id="filter_range" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_USERS_OPTION_FILTER_DATE');?></option>
-				<?php echo JHtml::_('select.options', Usershelper::getRangeOptions(), 'value', 'text', $this->state->get('filter.range'));?>
+				<?php echo Html::select('options', Usershelper::getRangeOptions(), 'value', 'text', $this->state->get('filter.range'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -64,31 +64,31 @@ $loggeduser = User::getRoot();
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="5%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_ENABLED', 'a.block', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_ENABLED', 'a.block', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="5%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_APPROVED', 'a.approved', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_APPROVED', 'a.approved', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
 					<?php echo Lang::txt('COM_USERS_HEADING_GROUPS'); ?>
 				</th>
 				<th class="nowrap" width="15%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_EMAIL', 'a.email', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_EMAIL', 'a.email', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_LAST_VISIT_DATE', 'a.lastvisitDate', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_LAST_VISIT_DATE', 'a.lastvisitDate', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_REGISTRATION_DATE', 'a.registerDate', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_REGISTRATION_DATE', 'a.registerDate', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="3%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -113,7 +113,7 @@ $loggeduser = User::getRoot();
 			<tr class="row<?php echo $i % 2; if (!$canChange) { echo ' disabled'; } ?>">
 				<td class="center">
 					<?php if ($canEdit) : ?>
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo Html::grid('id', $i, $item->id); ?>
 					<?php endif; ?>
 				</td>
 				<td>
@@ -141,9 +141,9 @@ $loggeduser = User::getRoot();
 				<td class="center">
 					<?php if ($canChange) : ?>
 						<?php if ($loggeduser->id != $item->id) : ?>
-							<?php echo JHtml::_('grid.boolean', $i, !$item->block, 'users.unblock', 'users.block'); ?>
+							<?php echo Html::grid('boolean', $i, !$item->block, 'users.unblock', 'users.block'); ?>
 						<?php else : ?>
-							<?php echo JHtml::_('grid.boolean', $i, !$item->block, 'users.block', null); ?>
+							<?php echo Html::grid('boolean', $i, !$item->block, 'users.block', null); ?>
 						<?php endif; ?>
 					<?php else : ?>
 						<span class="state <?php echo Lang::txt($item->block ? 'no' : 'yes'); ?>"><span><?php echo Lang::txt($item->block ? 'JNO' : 'JYES'); ?></span></span>
@@ -151,9 +151,9 @@ $loggeduser = User::getRoot();
 				</td>
 				<td class="center">
 					<?php if ($canChange) : ?>
-						<?php echo JHtml::_('grid.boolean', $i, $item->approved, 'users.approve', null); ?>
+						<?php echo Html::grid('boolean', $i, $item->approved, 'users.approve', null); ?>
 					<?php else : ?>
-						<?php echo JHtml::_('grid.boolean', $i, $item->approved, null, null); ?>
+						<?php echo Html::grid('boolean', $i, $item->approved, null, null); ?>
 					<?php endif; ?>
 				</td>
 				<td class="center">
@@ -193,5 +193,5 @@ $loggeduser = User::getRoot();
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

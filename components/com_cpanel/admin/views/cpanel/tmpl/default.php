@@ -35,7 +35,7 @@ defined('_JEXEC') or die;
 Toolbar::title(Lang::txt('COM_CPANEL'), 'cpanel.png');
 Toolbar::help('cpanel');
 
-echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
+echo Html::sliders('start', 'panel-sliders', array('useCookie' => '1'));
 
 $modules = Module::byPosition('cpanel');
 
@@ -47,17 +47,17 @@ foreach ($modules as $module)
 
 	if ($params->get('automatic_title', '0') == '0')
 	{
-		echo JHtml::_('sliders.panel', $module->title, 'cpanel-panel-' . $module->name);
+		echo Html::sliders('panel', $module->title, 'cpanel-panel-' . $module->name);
 	}
 	elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle'))
 	{
-		echo JHtml::_('sliders.panel', call_user_func_array(array('mod' . $module->name . 'Helper', 'getTitle'), array($params)), 'cpanel-panel-' . $module->name);
+		echo Html::sliders('panel', call_user_func_array(array('mod' . $module->name . 'Helper', 'getTitle'), array($params)), 'cpanel-panel-' . $module->name);
 	}
 	else
 	{
-		echo JHtml::_('sliders.panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'cpanel-panel-' . $module->name);
+		echo Html::sliders('panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'cpanel-panel-' . $module->name);
 	}
 	echo $output;
 }
 
-echo JHtml::_('sliders.end');
+echo Html::sliders('end');

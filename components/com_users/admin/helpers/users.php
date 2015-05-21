@@ -109,8 +109,8 @@ class UsersHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', Lang::txt('JENABLED'));
-		$options[] = JHtml::_('select.option', '1', Lang::txt('JDISABLED'));
+		$options[] = Html::select('option', '0', Lang::txt('JENABLED'));
+		$options[] = Html::select('option', '1', Lang::txt('JDISABLED'));
 
 		return $options;
 	}
@@ -126,8 +126,8 @@ class UsersHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', Lang::txt('COM_USERS_ACTIVATED'));
-		$options[] = JHtml::_('select.option', '1', Lang::txt('COM_USERS_UNACTIVATED'));
+		$options[] = Html::select('option', '0', Lang::txt('COM_USERS_ACTIVATED'));
+		$options[] = Html::select('option', '1', Lang::txt('COM_USERS_UNACTIVATED'));
 
 		return $options;
 	}
@@ -143,9 +143,9 @@ class UsersHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', Lang::txt('COM_USERS_UNAPPROVED'));
-		$options[] = JHtml::_('select.option', '1', Lang::txt('COM_USERS_APPROVED_MANUALLY'));
-		$options[] = JHtml::_('select.option', '2', Lang::txt('COM_USERS_APPROVED_AUTOMATICALLY'));
+		$options[] = Html::select('option', '0', Lang::txt('COM_USERS_UNAPPROVED'));
+		$options[] = Html::select('option', '1', Lang::txt('COM_USERS_APPROVED_MANUALLY'));
+		$options[] = Html::select('option', '2', Lang::txt('COM_USERS_APPROVED_AUTOMATICALLY'));
 
 		return $options;
 	}
@@ -195,13 +195,13 @@ class UsersHelper
 	public static function getRangeOptions()
 	{
 		$options = array(
-			JHtml::_('select.option', 'today', Lang::txt('COM_USERS_OPTION_RANGE_TODAY')),
-			JHtml::_('select.option', 'past_week', Lang::txt('COM_USERS_OPTION_RANGE_PAST_WEEK')),
-			JHtml::_('select.option', 'past_1month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_1MONTH')),
-			JHtml::_('select.option', 'past_3month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_3MONTH')),
-			JHtml::_('select.option', 'past_6month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_6MONTH')),
-			JHtml::_('select.option', 'past_year', Lang::txt('COM_USERS_OPTION_RANGE_PAST_YEAR')),
-			JHtml::_('select.option', 'post_year', Lang::txt('COM_USERS_OPTION_RANGE_POST_YEAR')),
+			Html::select('option', 'today', Lang::txt('COM_USERS_OPTION_RANGE_TODAY')),
+			Html::select('option', 'past_week', Lang::txt('COM_USERS_OPTION_RANGE_PAST_WEEK')),
+			Html::select('option', 'past_1month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_1MONTH')),
+			Html::select('option', 'past_3month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_3MONTH')),
+			Html::select('option', 'past_6month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_6MONTH')),
+			Html::select('option', 'past_year', Lang::txt('COM_USERS_OPTION_RANGE_PAST_YEAR')),
+			Html::select('option', 'post_year', Lang::txt('COM_USERS_OPTION_RANGE_POST_YEAR')),
 		);
 		return $options;
 	}

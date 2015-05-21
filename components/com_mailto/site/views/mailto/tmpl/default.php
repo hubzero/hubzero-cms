@@ -8,7 +8,7 @@
 
 // no direct access
 defined('_JEXEC') or die;
-JHtml::_('behavior.keepalive');
+Html::behavior('keepalive');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(pressbutton) {
@@ -69,7 +69,7 @@ $data = $this->get('data');
 		<input type="hidden" name="task" value="send" />
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="link" value="<?php echo $data->link; ?>" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 	</form>
 </div>

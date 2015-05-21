@@ -39,7 +39,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('version');
 
-JHtml::_('behavior.modal');
+Html::behavior('modal');
 JHtml::_('behavior.switcher', 'submenu');
 ?>
 

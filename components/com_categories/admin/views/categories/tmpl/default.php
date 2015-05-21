@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.multiselect');
+Html::behavior('tooltip');
+Html::behavior('multiselect');
 
 $userId    = User::get('id');
 $extension = $this->escape($this->state->get('filter.extension'));
@@ -34,22 +34,22 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 		<div class="filter-select fltrt">
 			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
-				<?php echo JHtml::_('select.options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'));?>
+				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'));?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -62,25 +62,25 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th>
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-2">
-					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-2">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.lft', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'a.lft', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
-						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'categories.saveorder'); ?>
+						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'categories.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th class="priority-3">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ACCESS', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-4 nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 				<th class="priority-4 nowrap">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -103,7 +103,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 			?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="center">
-						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						<?php echo Html::grid('id', $i, $item->id); ?>
 					</td>
 					<td>
 						<?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->level-1) ?>
@@ -169,5 +169,5 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<input type="hidden" name="original_order_values" value="<?php echo implode($originalOrders, ','); ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

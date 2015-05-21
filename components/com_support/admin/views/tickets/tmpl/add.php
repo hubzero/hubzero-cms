@@ -39,7 +39,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('ticket');
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 $this->css();
 
 $browser = new \Hubzero\Browser\Detector();

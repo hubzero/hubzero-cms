@@ -32,7 +32,7 @@ class JFormFieldModal_Newsfeeds extends JFormField
 	protected function getInput()
 	{
 		// Load the javascript
-		JHtml::_('behavior.framework');
+		Html::behavior('framework');
 		JHtml::_('behavior.modal', 'input.modal');
 
 		// Build the script.

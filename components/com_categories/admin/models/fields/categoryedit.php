@@ -198,7 +198,7 @@ class JFormFieldCategoryEdit extends JFormFieldList
 				$parent->text = Lang::txt('JGLOBAL_ROOT_PARENT');
 				array_unshift($options, $parent);
 			}
-			array_unshift($options, JHtml::_('select.option', '0', Lang::txt('JGLOBAL_ROOT')));
+			array_unshift($options, Html::select('option', '0', Lang::txt('JGLOBAL_ROOT')));
 		}
 
 		// Merge any additional options in the XML definition.

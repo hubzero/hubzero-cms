@@ -38,7 +38,7 @@ Toolbar::addNew();
 Toolbar::editList();
 Toolbar::deleteList();
 
-JHTML::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

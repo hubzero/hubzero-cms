@@ -96,7 +96,7 @@ if (!$no_html)
 	Toolbar::spacer();
 	Toolbar::help('ticket');
 
-	JHTML::_('behavior.tooltip');
+	Html::behavior('tooltip');
 	$this->css();
 }
 ?>

@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 $function	= Request::getCmd('function', 'jSelectPosition');
 $lang		= Lang::getRoot();
@@ -37,17 +37,17 @@ $type		= $this->state->get('filter.type');
 		<div class="col width-60 fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('modules.templateStates'), 'value', 'text', $state, true);?>
+				<?php echo Html::select('options', JHtml::_('modules.templateStates'), 'value', 'text', $state, true);?>
 			</select>
 
 			<select name="filter_type" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('modules.types'), 'value', 'text', $type, true);?>
+				<?php echo Html::select('options', JHtml::_('modules.types'), 'value', 'text', $type, true);?>
 			</select>
 
 			<select name="filter_template" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('modules.templates', $clientId), 'value', 'text', $template, true);?>
+				<?php echo Html::select('options', JHtml::_('modules.templates', $clientId), 'value', 'text', $template, true);?>
 			</select>
 		</div>
 	</fieldset>
@@ -96,5 +96,5 @@ $type		= $this->state->get('filter.type');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $ordering; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $direction; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 </form>

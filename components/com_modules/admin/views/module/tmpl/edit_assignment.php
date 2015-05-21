@@ -52,7 +52,7 @@ $menuTypes = MenusHelper::getMenuLinks();
 				<label id="jform_menus-lbl" for="jform_assignment"><?php echo Lang::txt('COM_MODULES_MODULE_ASSIGN'); ?></label>
 			<!-- <fieldset id="jform_menus" class="radio"> -->
 				<select name="jform[assignment]" id="jform_assignment">
-					<?php echo JHtml::_('select.options', ModulesHelper::getAssignmentOptions($this->item->client_id), 'value', 'text', $this->item->assignment, true);?>
+					<?php echo Html::select('options', ModulesHelper::getAssignmentOptions($this->item->client_id), 'value', 'text', $this->item->assignment, true);?>
 				</select>
 			<!-- </fieldset> -->
 			</div>
@@ -77,10 +77,10 @@ $menuTypes = MenusHelper::getMenuLinks();
 
 			<div id="menu-assignment">
 
-			<?php echo JHtml::_('tabs.start', 'module-menu-assignment-tabs', array('useCookie'=>1));?>
+			<?php echo Html::tabs('start', 'module-menu-assignment-tabs', array('useCookie'=>1));?>
 
 			<?php foreach ($menuTypes as &$type) :
-				echo JHtml::_('tabs.panel', $type->title ? $type->title : $type->menutype, $type->menutype.'-details');
+				echo Html::tabs('panel', $type->title ? $type->title : $type->menutype, $type->menutype.'-details');
 
 				$chkbox_class = 'chk-menulink-' . $type->id; ?>
 
@@ -131,7 +131,7 @@ $menuTypes = MenusHelper::getMenuLinks();
 				<?php endif; ?>
 			<?php endforeach; ?>
 
-			<?php echo JHtml::_('tabs.end');?>
+			<?php echo Html::tabs('end');?>
 
 			</div>
 		</fieldset>

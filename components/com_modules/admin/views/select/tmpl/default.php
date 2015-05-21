@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
+Html::behavior('tooltip');
 ?>
 
 <h2 class="modal-title"><?php echo Lang::txt('COM_MODULES_TYPE_CHOOSE')?></h2>

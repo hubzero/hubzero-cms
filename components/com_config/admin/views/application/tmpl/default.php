@@ -40,9 +40,9 @@ Toolbar::divider();
 Toolbar::help('global_config');
 
 // Load tooltips behavior
-JHtml::_('behavior.formvalidation');
+Html::behavior('formvalidation');
 JHtml::_('behavior.switcher', 'submenu');
-JHtml::_('behavior.tooltip');
+Html::behavior('tooltip');
 
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
 $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
@@ -110,7 +110,7 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 			</div>
 		</div>
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</div>
 	<div class="clr"></div>
 </form>

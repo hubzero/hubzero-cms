@@ -62,8 +62,8 @@ class TemplatesHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', Lang::txt('JSITE'));
-		$options[] = JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'));
+		$options[] = Html::select('option', '0', Lang::txt('JSITE'));
+		$options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 
 		return $options;
 	}

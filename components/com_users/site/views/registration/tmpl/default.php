@@ -9,9 +9,9 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+Html::behavior('keepalive');
+Html::behavior('tooltip');
+Html::behavior('formvalidation');
 ?>
 <div class="registration<?php echo $this->pageclass_sfx?>">
 <?php if ($this->params->get('show_page_heading')) : ?>
@@ -51,7 +51,7 @@ JHtml::_('behavior.formvalidation');
 			<a href="<?php echo Route::url('');?>" title="<?php echo Lang::txt('JCANCEL');?>"><?php echo Lang::txt('JCANCEL');?></a>
 			<input type="hidden" name="option" value="com_users" />
 			<input type="hidden" name="task" value="registration.register" />
-			<?php echo JHtml::_('form.token');?>
+			<?php echo Html::input('token');?>
 		</div>
 	</form>
 </div>
