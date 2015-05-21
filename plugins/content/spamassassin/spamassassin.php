@@ -88,11 +88,11 @@ class plgContentSpamassassin extends JPlugin
 
 		if ($service->isSpam($content))
 		{
-			JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+			JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 			return false;
 		}
 
-		JFactory::getSpamLogger()->info('ham ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+		JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
 	}
 
 	/**
