@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELDSET_DETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-name"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME'); ?></label>
+				<label for="field-name"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="import[name]" id="field-name" value="<?php echo $this->escape($this->import->get('name')); ?>" />
 			</div>
 

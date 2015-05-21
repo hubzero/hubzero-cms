@@ -211,7 +211,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		$file   = JRequest::getVar('file', array(), 'FILES');
 
 		// Create import model object
-		$this->import = new \Members\Models\Import();
+		$this->import = new \Members\Models\Import(isset($import['id']) ? $import['id'] : null);
 
 		// Set our hooks
 		$this->import->set('hooks', json_encode($hooks));
