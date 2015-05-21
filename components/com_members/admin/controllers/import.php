@@ -47,9 +47,9 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	{
 		if (!MembersHelper::getActions('component')->get('core.admin'))
 		{
-			$this->setRedirect(
-				'index.php?option=com_members',
-				JText::_('Not authorized'),
+			App::redirect(
+				Route::url('index.php?option=com_members', false),
+				Lang::txt('Not authorized'),
 				'warning'
 			);
 		}
@@ -64,17 +64,15 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$app = JFactory::getApplication();
-
 		// Get filters
 		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
+			'limit' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				JFactory::getConfig()->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
-			'start' => $app->getUserStateFromRequest(
+			'start' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.limitstart',
 				'limitstart',
 				0,
@@ -91,23 +89,6 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 
 		$this->view->total   = $archive->imports('count', $this->view->filters);
 		$this->view->imports = $archive->imports('list', $this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
 
 		// Output the HTML
 		$this->view
@@ -133,32 +114,30 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// get the import object
-		if ($row instanceof Members\Models\Import)
-		{
-			$this->view->import = $row;
-		}
-		else
+		if (!($row instanceof Members\Models\Import))
 		{
 			// get request vars
-			$id = JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (isset($id[0]) ? $id[0] : 0);
 			}
 
-			$this->view->import = new \Members\Models\Import($id);
+			$row = new \Members\Models\Import($id);
 		}
 
+		$this->view->import = $row;
+
 		// import params
-		$this->view->params = new JParameter($this->view->import->get('params'));
+		$this->view->params = new \JParameter($this->view->import->get('params'));
 
 		// get all files in import filespace
 		if ($this->view->import->exists())
 		{
-			$this->view->files = JFolder::files($this->view->import->fileSpacePath(), '.');
+			$this->view->files = Filesystem::files($this->view->import->fileSpacePath(), '.');
 		}
 
 		// get all imports from archive
@@ -168,12 +147,9 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		));
 
 		// Set any errors
-		if ($this->getErrors())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -201,17 +177,17 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function saveTask($redirect=true)
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 
 		// Get request vars
-		$import = JRequest::getVar('import', array());
-		$hooks  = JRequest::getVar('hooks', array());
-		$params = JRequest::getVar('params', array());
-		$fields = JRequest::getVar('mapping', array());
-		$file   = JRequest::getVar('file', array(), 'FILES');
+		$import = Request::getVar('import', array());
+		$hooks  = Request::getVar('hooks', array());
+		$params = Request::getVar('params', array());
+		$fields = Request::getVar('mapping', array());
+		$file   = Request::getVar('file', array(), 'FILES');
 
 		// Create import model object
-		$this->import = new \Members\Models\Import();
+		$this->import = new \Members\Models\Import(isset($import['id']) ? $import['id'] : null);
 
 		// Set our hooks
 		$this->import->set('hooks', json_encode($hooks));
@@ -220,7 +196,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		$this->import->set('fields', json_encode($fields));
 
 		// Load current params
-		$iparams = new JRegistry($this->import->get('params'));
+		$iparams = new \Hubzero\Config\Registry($this->import->get('params'));
 
 		// Bind incoming params
 		$iparams->loadArray($params);
@@ -242,8 +218,8 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			$isNew = true;
 
 			// Set the created by/at
-			$this->import->set('created_by', JFactory::getUser()->get('id'));
-			$this->import->set('created_at', JFactory::getDate()->toSql());
+			$this->import->set('created_by', User::get('id'));
+			$this->import->set('created_at', Date::toSql());
 		}
 
 		// Do we have a data file
@@ -307,9 +283,9 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 				return;
 			}
 
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_MEMBERS_IMPORT_CREATED'),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_MEMBERS_IMPORT_CREATED'),
 				'passed'
 			);
 			return;
@@ -326,10 +302,10 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 
 		// get request vars
-		$ids = JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
@@ -344,8 +320,8 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			// attempt to delete import
 			if (!$resourceImport->delete())
 			{
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$resourceImport->getError(),
 					'error'
 				);
@@ -354,9 +330,9 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		}
 
 		//inform user & redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
-			JText::_('COM_MEMBERS_IMPORT_REMOVED'),
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
+			Lang::txt('COM_MEMBERS_IMPORT_REMOVED'),
 			'passed'
 		);
 	}
@@ -380,7 +356,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function runTask($dryRun = 0)
 	{
 		// Get request vars
-		$id = JRequest::getVar('id', array(0));
+		$id = Request::getVar('id', array(0));
 		$id = (is_array($id) ? $id[0] : $id);
 
 		// Are we test mode
@@ -395,12 +371,9 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getErrors())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -417,16 +390,16 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function doRunTask()
 	{
 		// Check token
-		//JSession::checkToken() or die('Invalid Token');
+		//Session::checkToken() or die('Invalid Token');
 
 		// Start of import
 		$start = microtime(true);
 
 		// Get request vars
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Test mode
-		$dryRun = JRequest::getBool('dryrun', 0);
+		$dryRun = Request::getBool('dryrun', 0);
 
 		// Create import model object
 		$import = new \Members\Models\Import($id);
@@ -447,7 +420,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		$time = round($end - $start, 3);
 
 		// Outputted with html entities to allow browser json formatter
-		if (JRequest::getInt('format', 0) == 1)
+		if (Request::getInt('format', 0) == 1)
 		{
 			echo htmlentities(json_encode(array(
 				'import'  => 'success',
@@ -474,7 +447,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function progressTask()
 	{
 		// get request vars
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// create import model object
 		$import = new \Members\Models\Import($id);
@@ -560,9 +533,9 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		// If we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
-			if (!JFolder::create($uploadPath))
+			if (!Filesystem::makeDirectory($uploadPath))
 			{
-				$this->setError(JText::sprintf('Failed to create target upload path "%s".', $uploadPath));
+				$this->setError(Lang::txt('Failed to create target upload path "%s".', $uploadPath));
 				return false;
 			}
 		}
