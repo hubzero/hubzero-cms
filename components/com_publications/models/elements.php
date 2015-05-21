@@ -748,6 +748,7 @@ class Elements
 			return	$this->_elements[$signature];
 		}
 
+		$type = ($type == 'list' ? 'select' : $type);
 		$elementClass = __NAMESPACE__ . '\\Element\\' . $type;
 		if (!class_exists($elementClass))
 		{

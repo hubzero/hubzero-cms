@@ -25,19 +25,20 @@
 namespace Components\Publications\Models\Element;
 
 use Components\Publications\Models\Element as Base;
+use Html;
+use Lang;
 
 /**
- * Renders a list element
+ * Renders a select list element
  */
-class List extends Base
+class Select extends Base
 {
 	/**
 	* Element type
 	*
-	* @access	protected
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Select list';
+	protected $_name = 'Select list';
 
 	/**
 	 * Return any options this element may have
@@ -55,16 +56,16 @@ class List extends Base
 		$options = array();
 		if (!$element->required)
 		{
-			$options[] = \Html::select('option', '', Lang::txt('Select...'));
+			$options[] = Html::select('option', '', Lang::txt('Select...'));
 		}
 		foreach ($element->options as $option)
 		{
 			$val	= $option->value;
 			$text	= $option->label;
-			$options[] = \Html::select('option', $val, Lang::txt($text));
+			$options[] = Html::select('option', $val, Lang::txt($text));
 		}
 
-		return '<span class="field-wrap">' . \Html::select('genericlist',  $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . Html::select('genericlist',  $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**
