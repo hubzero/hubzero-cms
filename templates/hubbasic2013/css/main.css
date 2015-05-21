@@ -1757,15 +1757,15 @@
 		list-style: none;
 		color: #57b;
 	}
-	#hubForm .optional,
-	#hubForm .required {
+	#hubForm span.optional,
+	#hubForm span.required {
 		text-transform: uppercase;
 		font-size: xx-small;
 	}
-	#hubForm .required {
+	#hubForm span.required {
 		color: red;
 	}
-	#hubForm .optional {
+	#hubForm span.optional {
 		color: #999;
 	}
 	#hubForm .hint {
@@ -1834,8 +1834,8 @@
 	#hubForm .fieldWithErrors textarea {
 		background-color: #F8E5E5;
 	}
-	#hubForm .fieldWithErrors .required,
-	#hubForm .fieldWithErrors .optional {
+	#hubForm .fieldWithErrors span.required,
+	#hubForm .fieldWithErrors span.optional {
 		font-weight: normal;
 	}
 	#hubForm table input,
