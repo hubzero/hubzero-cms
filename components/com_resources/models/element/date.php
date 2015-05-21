@@ -160,13 +160,13 @@ class Date extends Base
 			$y++;
 			for ($i, $n=$y; $i < $n; $i++)
 			{
-				$options[] = \JHTML::_('select.option', $i, $i);
+				$options[] = \Html::select('option', $i, $i);
 			}
 
 			$options = array_reverse($options);
-			array_unshift($options, \JHTML::_('select.option', '0', Lang::txt('Year...')));
+			array_unshift($options, \Html::select('option', '0', Lang::txt('Year...')));
 
-			$html[] = \JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
+			$html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
 		}
 
 		if (isset($element->month) && $element->month)
@@ -175,16 +175,16 @@ class Date extends Base
 
 			// Build the list of years
 			$options = array(
-				\JHTML::_('select.option', '0', Lang::txt('Month...'))
+				\Html::select('option', '0', Lang::txt('Month...'))
 			);
 			$i = 1;
 			$y = 13;
 			for ($i, $n=$y; $i < $n; $i++)
 			{
-				$options[] = \JHTML::_('select.option', $i, $this->_getMonth($i));
+				$options[] = \Html::select('option', $i, $this->_getMonth($i));
 			}
 
-			$html[] = \JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
+			$html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
 		}
 
 		if (isset($element->day) && $element->day)
@@ -193,16 +193,16 @@ class Date extends Base
 
 			// Build the list of years
 			$options = array(
-				\JHTML::_('select.option', '0', Lang::txt('Day...'))
+				\Html::select('option', '0', Lang::txt('Day...'))
 			);
 			$i = 1;
 			$y = 32;
 			for ($i, $n=$y; $i < $n; $i++)
 			{
-				$options[] = \JHTML::_('select.option', $i, $i);
+				$options[] = \Html::select('option', $i, $i);
 			}
 
-			$html[] = \JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
+			$html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
 		}
 
 		if ($c > 1)

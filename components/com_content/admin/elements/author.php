@@ -62,6 +62,6 @@ class JElementAuthor extends JElement
 			return false;
 		}
 
-		return JHtml::_('select.genericlist', $users, $name, 'class="inputbox" size="1"', 'value', 'text', $value);
+		return Html::select('genericlist', $users, $name, 'class="inputbox" size="1"', 'value', 'text', $value);
 	}
 }

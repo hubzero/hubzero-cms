@@ -38,7 +38,7 @@ Toolbar::help('sysinfo');
 JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 
 // Load switcher behavior
-JHtml::_('behavior.switcher', 'submenu');
+Html::behavior('switcher', 'submenu');
 
 Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 ?>

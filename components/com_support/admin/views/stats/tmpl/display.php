@@ -37,7 +37,7 @@ Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_
 Toolbar::spacer();
 Toolbar::help('stats');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 $this->css();
 
 $database = JFactory::getDBO();

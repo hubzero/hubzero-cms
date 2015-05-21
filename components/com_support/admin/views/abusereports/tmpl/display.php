@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -126,5 +126,5 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="display" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo Html::input('token'); ?>
 </form>

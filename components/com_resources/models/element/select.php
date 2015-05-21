@@ -60,16 +60,16 @@ class Select extends Base
 		$options = array();
 		if (!$element->required)
 		{
-			$options[] = \JHTML::_('select.option', '', Lang::txt('COM_RESOURCES_SELECT'));
+			$options[] = \Html::select('option', '', Lang::txt('COM_RESOURCES_SELECT'));
 		}
 		foreach ($element->options as $option)
 		{
 			$val  = $option->value;
 			$text = $option->label;
-			$options[] = \JHTML::_('select.option', $val, Lang::txt($text));
+			$options[] = \Html::select('option', $val, Lang::txt($text));
 		}
 
-		return '<span class="field-wrap">' . \JHTML::_('select.genericlist',  $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
+		return '<span class="field-wrap">' . \Html::select('genericlist',  $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
 	}
 
 	/**

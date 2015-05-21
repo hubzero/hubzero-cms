@@ -1204,7 +1204,7 @@ class Tickets extends AdminController
 		$this->database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = \JHTML::_('select.option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
+			$users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
 		}
 		else
@@ -1232,13 +1232,13 @@ class Tickets extends AdminController
 			}
 			foreach ($groups as $nme => $gusers)
 			{
-				$users[] = \JHTML::_('select.optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
+				$users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
 				$users = array_merge($users, $gusers);
-				$users[] = \JHTML::_('select.optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
+				$users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_GROUP') . ' ' . $nme);
 			}
 		}
 
-		$users = \JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
+		$users = \Html::select('genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}
@@ -1258,7 +1258,7 @@ class Tickets extends AdminController
 		$users = array();
 		if ($nouser)
 		{
-			$users[] = \JHTML::_('select.option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
+			$users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
 		}
 
 		if (strstr($group, ','))
@@ -1275,7 +1275,7 @@ class Tickets extends AdminController
 						$members = $hzg->get('members');
 
 						//$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
-						$users[] = \JHTML::_('select.optgroup', stripslashes($hzg->description));
+						$users[] = \Html::select('optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
 							$u = User::getInstance($member);
@@ -1292,7 +1292,7 @@ class Tickets extends AdminController
 							$users[] = $m;
 						}
 						//$users[] = '</optgroup>';
-						$users[] = \JHTML::_('select.option', '</OPTGROUP>');
+						$users[] = \Html::select('option', '</OPTGROUP>');
 					}
 				}
 			}
@@ -1328,7 +1328,7 @@ class Tickets extends AdminController
 			ksort($users);
 		}
 
-		$users = \JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+		$users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}

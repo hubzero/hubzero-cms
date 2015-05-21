@@ -35,7 +35,7 @@ Toolbar::preferences('com_search', '550');
 Toolbar::spacer();
 Toolbar::help('search');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 $context = array();
 if (array_key_exists('search-task', $_POST))

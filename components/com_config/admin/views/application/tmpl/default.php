@@ -41,7 +41,7 @@ Toolbar::help('global_config');
 
 // Load tooltips behavior
 Html::behavior('formvalidation');
-JHtml::_('behavior.switcher', 'submenu');
+Html::behavior('switcher', 'submenu');
 Html::behavior('tooltip');
 
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher

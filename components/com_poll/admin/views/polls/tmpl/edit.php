@@ -102,11 +102,11 @@ Toolbar::help('poll');
 			</div>
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:</label><br />
-				<?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->poll->published); ?>
+				<?php echo Html::select('booleanlist', 'published', 'class="inputbox"', $this->poll->published); ?>
 			</div>
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_POLL_FIELD_OPEN'); ?>:</label><br />
-				<?php echo JHTML::_('select.booleanlist', 'open', 'class="inputbox"', $this->poll->open); ?>
+				<?php echo Html::select('booleanlist', 'open', 'class="inputbox"', $this->poll->open); ?>
 			</div>
 		</fieldset>
 		<p class="warning"><?php echo Lang::txt('COM_POLL_WARNING'); ?></p>

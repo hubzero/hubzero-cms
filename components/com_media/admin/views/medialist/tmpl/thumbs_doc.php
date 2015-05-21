@@ -17,12 +17,12 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
 					<a style="display: block; width: 100%; height: 100%" title="<?php echo $this->_tmp_doc->name; ?>" >
-						<?php echo JHtml::_('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->name, null, true, true) ? JHtml::_('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->title, NULL, true) : JHtml::_('image', 'media/con_info.png', $this->_tmp_doc->name, NULL, true) ; ?></a>
+						<?php echo Html::asset('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->name, null, true, true) ? Html::asset('image', $this->_tmp_doc->icon_32, $this->_tmp_doc->title, NULL, true) : Html::asset('image', 'media/con_info.png', $this->_tmp_doc->name, NULL, true) ; ?></a>
 				</div>
 			</div>
 			<div class="controls">
 			<?php if (User::authorise('core.delete', 'com_media')):?>
-				<a class="delete-item" target="_top" href="index.php?option=com_media&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_doc->name; ?>" rel="<?php echo $this->_tmp_doc->name; ?>"><?php echo JHtml::_('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
+				<a class="delete-item" target="_top" href="index.php?option=com_media&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_doc->name; ?>" rel="<?php echo $this->_tmp_doc->name; ?>"><?php echo Html::asset('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_doc->name; ?>" />
 			<?php endif;?>
 			</div>

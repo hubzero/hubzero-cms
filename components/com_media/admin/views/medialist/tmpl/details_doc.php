@@ -16,7 +16,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 		<tr>
 			<td>
 				<a title="<?php echo $this->_tmp_doc->name; ?>">
-					<?php  echo JHtml::_('image', $this->_tmp_doc->icon_16, $this->_tmp_doc->title, null, true, true) ? JHtml::_('image', $this->_tmp_doc->icon_16, $this->_tmp_doc->title, array('width' => 16, 'height' => 16), true) : JHtml::_('image', 'media/con_info.png', $this->_tmp_doc->title, array('width' => 16, 'height' => 16), true);?>
+					<?php  echo Html::asset('image', $this->_tmp_doc->icon_16, $this->_tmp_doc->title, null, true, true) ? Html::asset('image', $this->_tmp_doc->icon_16, $this->_tmp_doc->title, array('width' => 16, 'height' => 16), true) : Html::asset('image', 'media/con_info.png', $this->_tmp_doc->title, array('width' => 16, 'height' => 16), true);?>
 				</a>
 			</td>
 			<td class="description"  title="<?php echo $this->_tmp_doc->name; ?>">
@@ -30,7 +30,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 			</td>
 		<?php if (User::authorise('core.delete', 'com_media')):?>
 			<td>
-				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_doc->name); ?>" rel="<?php echo $this->_tmp_doc->name; ?>"><?php echo JHtml::_('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16, 'border' => 0), true);?></a>
+				<a class="delete-item" target="_top" href="<?php echo Route::url('index.php?option=com_media&task=file.delete&tmpl=index&' . Session::getFormToken() . '=1&folder=' . $this->state->folder . '&rm[]=' . $this->_tmp_doc->name); ?>" rel="<?php echo $this->_tmp_doc->name; ?>"><?php echo Html::asset('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16, 'border' => 0), true);?></a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_doc->name; ?>" />
 			</td>
 		<?php endif;?>

@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 Html::behavior('keepalive');
 Html::behavior('tooltip');
-JHtml::_('behavior.calendar');
+Html::behavior('calendar');
 Html::behavior('formvalidation');
 
 // Create shortcut to parameters.

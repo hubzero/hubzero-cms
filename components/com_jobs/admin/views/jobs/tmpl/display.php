@@ -169,7 +169,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php echo JHTML::_('grid.id', $i, $row->id, false, 'id'); ?>
+					<?php echo Html::grid('id', $i, $row->id, false, 'id'); ?>
 				</td>
 				<td class="priority-4">
 					<?php echo $this->escape($row->code); ?>

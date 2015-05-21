@@ -48,69 +48,69 @@ Toolbar::cancel();
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL'); ?></td>
 					<td><?php
-					$level[] = JHTML::_('select.option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ALL'), 'value', 'text' );
-					$level[] = JHTML::_('select.option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SPECIAL'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $level, 'config[adminlevel]', '', 'value', 'text', $this->config->adminlevel, false, false );
+					$level[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ALL'), 'value', 'text' );
+					$level[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SPECIAL'), 'value', 'text' );
+					echo Html::select('genericlist', $level, 'config[adminlevel]', '', 'value', 'text', $this->config->adminlevel, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY'); ?></td>
 					<td><?php
-					$first[] = JHTML::_('select.option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SUNDAY_FIRST'), 'value', 'text' );
-					$first[] = JHTML::_('select.option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_MONDAY_FIRST'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $first, 'config[starday]', '', 'value', 'text', $this->config->starday, false, false );
+					$first[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SUNDAY_FIRST'), 'value', 'text' );
+					$first[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_MONDAY_FIRST'), 'value', 'text' );
+					echo Html::select('genericlist', $first, 'config[starday]', '', 'value', 'text', $this->config->starday, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWMAIL'); ?></td>
 					<td><?php
-					$viewm[] = JHTML::_('select.option', 'YES', Lang::txt('JYES'), 'value', 'text' );
-					$viewm[] = JHTML::_('select.option', 'NO', Lang::txt('JNO'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $viewm, 'config[mailview]', '', 'value', 'text', $this->config->mailview, false, false );
+					$viewm[] = Html::select('option', 'YES', Lang::txt('JYES'), 'value', 'text' );
+					$viewm[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
+					echo Html::select('genericlist', $viewm, 'config[mailview]', '', 'value', 'text', $this->config->mailview, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWBY'); ?></td>
 					<td><?php
-					$viewb[] = JHTML::_('select.option', 'YES', Lang::txt('YES'), 'value', 'text' );
-					$viewb[] = JHTML::_('select.option', 'NO', Lang::txt('JNO'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $viewb, 'config[byview]', '', 'value', 'text', $this->config->byview, false, false );
+					$viewb[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
+					$viewb[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
+					echo Html::select('genericlist', $viewb, 'config[byview]', '', 'value', 'text', $this->config->byview, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_VIEWHITS'); ?></td>
 					<td><?php
-					$viewh[] = JHTML::_('select.option', 'YES', Lang::txt('YES'), 'value', 'text' );
-					$viewh[] = JHTML::_('select.option', 'NO', Lang::txt('JNO'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $viewh, 'config[hitsview]', '', 'value', 'text', $this->config->hitsview, false, false );
+					$viewh[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
+					$viewh[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
+					echo Html::select('genericlist', $viewh, 'config[hitsview]', '', 'value', 'text', $this->config->hitsview, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT'); ?></td>
 					<td><?php
-					$datef[] = JHTML::_('select.option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FRENCH_ENGLISH'), 'value', 'text' );
-					$datef[] = JHTML::_('select.option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_US'), 'value', 'text' );
-					$datef[] = JHTML::_('select.option', '2', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_DEUTSCH'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $datef, 'config[dateformat]', '', 'value', 'text', $this->config->dateformat, false, false );
+					$datef[] = Html::select('option', '0', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FRENCH_ENGLISH'), 'value', 'text' );
+					$datef[] = Html::select('option', '1', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_US'), 'value', 'text' );
+					$datef[] = Html::select('option', '2', Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_DEUTSCH'), 'value', 'text' );
+					echo Html::select('genericlist', $datef, 'config[dateformat]', '', 'value', 'text', $this->config->dateformat, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?></td>
 					<td><?php
-					$stdTime[] = JHTML::_('select.option', 'YES', Lang::txt('YES'), 'value', 'text' );
-					$stdTime[] = JHTML::_('select.option', 'NO', Lang::txt('JNO'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $stdTime, 'config[calUseStdTime]', '', 'value', 'text', $this->config->calUseStdTime, false, false );
+					$stdTime[] = Html::select('option', 'YES', Lang::txt('YES'), 'value', 'text' );
+					$stdTime[] = Html::select('option', 'NO', Lang::txt('JNO'), 'value', 'text' );
+					echo Html::select('genericlist', $stdTime, 'config[calUseStdTime]', '', 'value', 'text', $this->config->calUseStdTime, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_STARTPAGE'); ?></td>
 					<td><?php
-					$startpg[] = JHTML::_('select.option', 'day', Lang::txt('COM_EVENTS_CAL_LANG_REP_DAY'), 'value', 'text' );
-					$startpg[] = JHTML::_('select.option', 'week', Lang::txt('COM_EVENTS_CAL_LANG_REP_WEEK'), 'value', 'text' );
-					$startpg[] = JHTML::_('select.option', 'month', Lang::txt('COM_EVENTS_CAL_LANG_REP_MONTH'), 'value', 'text' );
-					$startpg[] = JHTML::_('select.option', 'year', Lang::txt('COM_EVENTS_CAL_LANG_REP_YEAR'), 'value', 'text' );
-					$startpg[] = JHTML::_('select.option', 'categories', Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $startpg, 'config[startview]', '', 'value', 'text', $this->config->startview, false, false );
+					$startpg[] = Html::select('option', 'day', Lang::txt('COM_EVENTS_CAL_LANG_REP_DAY'), 'value', 'text' );
+					$startpg[] = Html::select('option', 'week', Lang::txt('COM_EVENTS_CAL_LANG_REP_WEEK'), 'value', 'text' );
+					$startpg[] = Html::select('option', 'month', Lang::txt('COM_EVENTS_CAL_LANG_REP_MONTH'), 'value', 'text' );
+					$startpg[] = Html::select('option', 'year', Lang::txt('COM_EVENTS_CAL_LANG_REP_YEAR'), 'value', 'text' );
+					$startpg[] = Html::select('option', 'categories', Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES'), 'value', 'text' );
+					echo Html::select('genericlist', $startpg, 'config[startview]', '', 'value', 'text', $this->config->startview, false, false );
 					?></td>
 				</tr>
 				<tr>

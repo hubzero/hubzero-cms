@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 \Hubzero\Document\Assets::addSystemScript('jquery.datetimepicker');
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.datetimepicker.css');

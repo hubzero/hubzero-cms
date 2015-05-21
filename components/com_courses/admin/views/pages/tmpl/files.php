@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 $this->css();
 $this->js('jquery.fileuploader.js', 'system');
@@ -113,5 +113,5 @@ function goUpDir()
 		<input type="hidden" name="course" value="<?php echo $this->course_id; ?>" />
 		<input type="hidden" name="task" value="upload" />
 	</fieldset>
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo Html::input('token'); ?>
 </form>

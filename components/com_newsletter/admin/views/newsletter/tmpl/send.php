@@ -39,7 +39,7 @@ Toolbar::custom('dosendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND', f
 Toolbar::cancel();
 
 // add jquery ui
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 // add newsletter js
 $this->js();

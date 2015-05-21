@@ -55,7 +55,7 @@ class JFormFieldGroup extends JFormField
 			$options[] = Html::select('option', $folder, $folder);
 		}
 
-		$return = JHtml::_('select.genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
+		$return = Html::select('genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
 
 		return $return;
 	}

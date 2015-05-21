@@ -30,7 +30,7 @@ class JHtmlNewsfeed
 		);
 		$state	= \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
 		$html	= '<a href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'
-				. JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true).'</a>';
+				. Html::asset('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true).'</a>';
 
 		return $html;
 	}
@@ -51,7 +51,7 @@ class JHtmlNewsfeed
 		$options[]	= Html::select('option', '0', Lang::txt('JUNPUBLISHED'));
 
 
-		return JHtml::_('select.genericlist', $options, 'filter_published',
+		return Html::select('genericlist', $options, 'filter_published',
 			array(
 				'list.attr' => 'class="inputbox" onchange="this.form.submit();"',
 				'list.select' => $selected

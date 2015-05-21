@@ -47,7 +47,7 @@ $dcTypes = array(
 
 $params = new JRegistry($this->row->params);
 
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 ?>
 <script type="text/javascript">

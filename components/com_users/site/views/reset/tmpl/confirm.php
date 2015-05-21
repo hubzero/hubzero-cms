@@ -26,6 +26,6 @@ Html::behavior('formvalidation');
 		<div class="clear"></div>
 
 		<p class="submit"><button type="submit" class="validate"><?php echo Lang::txt('Submit'); ?></button></p>
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </section><!-- / .main section -->

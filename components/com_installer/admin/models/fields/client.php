@@ -39,7 +39,7 @@ class JFormFieldClient extends JFormField
 		}
 		$options[] = Html::select('option', '0', Lang::txt('JSITE'));
 		$options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
-		$return = JHtml::_('select.genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
+		$return = Html::select('genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
 		return $return;
 	}
 }

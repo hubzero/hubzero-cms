@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 // Add specific helper files for html generation
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 // Load switcher behavior
-JHtml::_('behavior.switcher', 'submenu');
+Html::behavior('switcher', 'submenu');
 ?>
 
 <form action="<?php echo Route::url('index.php'); ?>" method="post" name="adminForm" id="adminForm">

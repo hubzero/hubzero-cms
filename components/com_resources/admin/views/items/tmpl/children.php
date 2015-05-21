@@ -246,8 +246,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	// See if it's checked out or not
 	if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != User::get('id'))
 	{
-		//$checked = JHTML::_('grid.checkedOut', $row, $i);
-		//$checked = JHtml::_('image', 'admin/checked_out.png', null, null, true);
+		//$checked = Html::grid('checkedOut', $row, $i);
+		//$checked = Html::asset('image', 'admin/checked_out.png', null, null, true);
 		$checked = '<span class="checkedout"></span>';
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'

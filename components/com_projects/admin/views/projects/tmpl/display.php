@@ -154,7 +154,7 @@ function submitbutton(pressbutton)
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 				?>
 				<tr class="<?php echo "row$k"; ?>">
-					<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>
+					<td><?php echo Html::grid('id', $i, $row->id, false, 'id' ); ?></td>
 					<td><?php echo $row->id; ?></td>
 					<td><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
 					<td>
@@ -186,5 +186,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo Html::input('token'); ?>
 </form>

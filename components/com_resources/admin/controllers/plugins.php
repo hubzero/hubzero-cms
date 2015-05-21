@@ -196,7 +196,7 @@ class Plugins extends AdminController
 		$this->view->manage = Event::trigger('resources.onCanManage');
 
 		$this->view->client = $this->client;
-		$this->view->states = \JHTML::_('grid.state', $this->view->filters['state']);
+		$this->view->states = \Html::grid('state', $this->view->filters['state']);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

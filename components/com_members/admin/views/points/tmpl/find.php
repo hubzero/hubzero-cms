@@ -63,5 +63,5 @@ Toolbar::title( Lang::txt( 'MEMBERS' ).': Manage Points', 'user.png' );
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="edit" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo Html::input('token'); ?>
 </form>

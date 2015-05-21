@@ -25,7 +25,7 @@ class ContentController extends JControllerLegacy
 		}
 		// Article frontpage Editor article proxying:
 		elseif (Request::getCmd('view') === 'articles' && Request::getCmd('layout') === 'modal') {
-			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
+			Html::asset('stylesheet', 'system/adminlist.css', array(), true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 

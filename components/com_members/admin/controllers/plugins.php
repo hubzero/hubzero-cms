@@ -179,7 +179,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$this->view->manage = Event::trigger('members.onCanManage');
 
 		$this->view->client = $this->client;
-		$this->view->states = JHTML::_('grid.state', $this->view->filters['state']);
+		$this->view->states = Html::grid('state', $this->view->filters['state']);
 		$this->view->user   = User::getRoot();
 
 		// Set any errors

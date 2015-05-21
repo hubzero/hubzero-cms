@@ -47,7 +47,7 @@ abstract class MenusHtmlMenus
 		$text = array();
 		foreach ($associations as $tag=>$associated) {
 			if ($associated != $itemid) {
-				$text[] = Lang::txt('COM_MENUS_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/'.$items[$associated]->image.'.gif', $items[$associated]->language_title, array('title'=>$items[$associated]->language_title), true), $items[$associated]->title, $items[$associated]->menu_title);
+				$text[] = Lang::txt('COM_MENUS_TIP_ASSOCIATED_LANGUAGE', Html::asset('image', 'mod_languages/'.$items[$associated]->image.'.gif', $items[$associated]->language_title, array('title'=>$items[$associated]->language_title), true), $items[$associated]->title, $items[$associated]->menu_title);
 			}
 		}
 		return JHtml::_('tooltip', implode('<br />', $text), Lang::txt('COM_MENUS_TIP_ASSOCIATION'), 'menu/icon-16-links.png');

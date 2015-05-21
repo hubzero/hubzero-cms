@@ -58,7 +58,7 @@ Toolbar::help('pages');
 $this->css();
 
 // include modal for raw version links
-JHtml::_('behavior.modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
+Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
 ?>
 
 <script type="text/javascript">

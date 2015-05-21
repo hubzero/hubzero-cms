@@ -258,12 +258,12 @@ class Languages extends Base
 		$languages = array();
 		foreach ($this->_codes as $code => $lang)
 		{
-			$languages[] = \JHTML::_('select.option', $code, $lang);
+			$languages[] = \Html::select('option', $code, $lang);
 		}
 
-		array_unshift($languages, \JHTML::_('select.option', '', '- '.Lang::txt('Select Language').' -'));
+		array_unshift($languages, \Html::select('option', '', '- '.Lang::txt('Select Language').' -'));
 
-		return '<span class="field-wrap">' . \JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . \Html::select('genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

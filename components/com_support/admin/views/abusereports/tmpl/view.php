@@ -55,7 +55,7 @@ if (is_object($this->reported))
 	$link = str_replace('/administrator', '', $this->reported->href);
 }
 
-JHTML::_('behavior.modal', 'a.modals');
+Html::behavior('modal', 'a.modals');
 
 ?>
 <script type="text/javascript">

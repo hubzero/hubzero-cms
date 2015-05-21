@@ -45,7 +45,7 @@ $pageNav = $this->pagination(
 	$this->filters['limit']
 );
 
-JHTML::_('behavior.modal');
+Html::behavior('modal');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

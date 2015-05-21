@@ -48,6 +48,6 @@ class JElementNewsfeed extends JElement
 
 		array_unshift($options, Html::select('option', '0', '- '.Lang::txt('COM_NEWSFEEDS_SELECT_FEED').' -', 'id', 'text'));
 
-		return JHtml::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'id', 'text', $value, $control_name.$name);
+		return Html::select('genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'id', 'text', $value, $control_name.$name);
 	}
 }

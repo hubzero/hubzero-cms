@@ -43,7 +43,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('group');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 // are we using the email gateway for group forum
 $params =  Component::params('com_groups');

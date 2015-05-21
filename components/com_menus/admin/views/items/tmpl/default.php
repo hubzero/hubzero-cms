@@ -66,39 +66,39 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="title">
-					<?php echo Jhtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo Jhtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="13%">
-					<?php echo Jhtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.lft', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'a.lft', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'items.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th width="10%">
-					<?php echo Jhtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
 					<?php echo Lang::txt('JGRID_HEADING_MENU_ITEM_TYPE'); ?>
 				</th>
 				<th width="5%">
-					<?php echo Jhtml::_('grid.sort', 'COM_MENUS_HEADING_HOME', 'a.home', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MENUS_HEADING_HOME', 'a.home', $listDirn, $listOrder); ?>
 				</th>
 				<?php
 				$assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
 				if ($assoc):
 				?>
 				<th width="5%">
-					<?php echo Jhtml::_('grid.sort', 'COM_MENUS_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MENUS_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
 				</th>
 				<?php endif;?>
 				<th width="5%">
-					<?php echo Jhtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
-					<?php echo Jhtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -176,10 +176,10 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 							<?php echo JHtml::_('jgrid.isdefault', $item->home, $i, 'items.', ($item->language != '*' || !$item->home) && $canChange);?>
 						<?php elseif ($canChange):?>
 							<a href="<?php echo Route::url('index.php?option=com_menus&task=items.unsetDefault&cid[]='.$item->id.'&'.JSession::getFormToken().'=1');?>">
-								<?php echo JHtml::_('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>Lang::txt('COM_MENUS_GRID_UNSET_LANGUAGE', $item->language_title)), true);?>
+								<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>Lang::txt('COM_MENUS_GRID_UNSET_LANGUAGE', $item->language_title)), true);?>
 							</a>
 						<?php else:?>
-							<?php echo JHtml::_('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>$item->language_title), true);?>
+							<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>$item->language_title), true);?>
 						<?php endif;?>
 					<?php endif; ?>
 				</td>

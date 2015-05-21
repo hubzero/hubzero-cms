@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JHTML::_('behavior.modal');
+Html::behavior('modal');
 
 // push scripts and styles
 $this->css()

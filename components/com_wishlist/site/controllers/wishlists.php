@@ -2235,7 +2235,7 @@ class Wishlists extends SiteController
 		$database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = \JHTML::_('select.option', '', 'No User', 'value', 'text');
+			$users[] = \Html::select('option', '', 'No User', 'value', 'text');
 			$users = array_merge($users, $database->loadObjectList());
 		}
 		else
@@ -2243,7 +2243,7 @@ class Wishlists extends SiteController
 			$users = $database->loadObjectList();
 		}
 
-		$users = \JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+		$users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}

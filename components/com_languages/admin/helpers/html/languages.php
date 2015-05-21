@@ -25,7 +25,7 @@ abstract class JHtmlLanguages {
 	public static function published($published)
 	{
 		if ($published) {
-			return JHtml::_('image', 'menu/icon-16-default.png', Lang::txt('COM_LANGUAGES_HEADING_DEFAULT'), NULL, true);
+			return Html::asset('image', 'menu/icon-16-default.png', Lang::txt('COM_LANGUAGES_HEADING_DEFAULT'), NULL, true);
 		}
 		else {
 			return '&#160;';

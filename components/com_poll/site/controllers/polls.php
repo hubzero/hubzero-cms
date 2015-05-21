@@ -161,12 +161,12 @@ class Polls extends SiteController
 			$pList[$k]->url = Route::url('index.php?option=com_poll&id=' . $p->id . ':' . $p->alias);
 		}
 
-		array_unshift($pList, \JHTML::_('select.option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
+		array_unshift($pList, \Html::select('option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
 
 		// dropdown output
 		$lists = array();
 
-		$lists['polls'] = \JHTML::_('select.genericlist', $pList, 'id',
+		$lists['polls'] = \Html::select('genericlist', $pList, 'id',
 			'class="inputbox" size="1" style="width:200px" onchange="if (this.options[selectedIndex].value != \'\') {document.location.href=this.options[selectedIndex].value}"',
 			'url', 'title',
 			Route::url('index.php?option=com_poll&id=' . $poll->id . ':' . $poll->alias)

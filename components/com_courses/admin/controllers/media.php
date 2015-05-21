@@ -457,12 +457,12 @@ class Media extends AdminController
 		$dirs = $this->_recursiveListDir($this->view->path);
 
 		$folders   = array();
-		$folders[] = \JHTML::_('select.option', '/');
+		$folders[] = \Html::select('option', '/');
 		if ($dirs)
 		{
 			foreach ($dirs as $dir)
 			{
-				$folders[] = \JHTML::_('select.option', substr($dir, strlen($this->view->path)));
+				$folders[] = \Html::select('option', substr($dir, strlen($this->view->path)));
 			}
 		}
 		sort($folders);

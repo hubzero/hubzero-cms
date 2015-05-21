@@ -51,9 +51,9 @@ $options = array();
 				<form action="<?php echo Route::url($base); ?>">
 					<label for="report-type"><?php echo Lang::txt('COM_TIME_REPORTS_SELECT_REPORT_TYPE'); ?>: </label>
 					<?php foreach ($this->reports as $report) : ?>
-						<?php $options[] = JHTML::_('select.option', $report->name, ucwords($report->name), 'value', 'text'); ?>
+						<?php $options[] = Html::select('option', $report->name, ucwords($report->name), 'value', 'text'); ?>
 					<?php endforeach; ?>
-					<?php echo JHTML::_('select.genericlist', $options, 'report_type', null, 'value', 'text', $this->report_type); ?>
+					<?php echo Html::select('genericlist', $options, 'report_type', null, 'value', 'text', $this->report_type); ?>
 					<button class="btn btn-success"><?php echo Lang::txt('COM_TIME_REPORTS_BEGIN'); ?></button>
 				</form>
 			</div>

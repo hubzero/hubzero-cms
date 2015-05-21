@@ -1469,11 +1469,11 @@ class Events extends SiteController
 			$registerby_time = Date::of($row->registerby, $timezone)->toLocal('H:i');
 
 			$arr = array(
-				\JHTML::_('select.option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
-				\JHTML::_('select.option', 1, strtolower(Lang::txt('EVENTS_YES')), 'value', 'text'),
+				\Html::select('option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
+				\Html::select('option', 1, strtolower(Lang::txt('EVENTS_YES')), 'value', 'text'),
 			);
 
-			$lists['state'] = \JHTML::_('select.genericlist', $arr, 'state', '', 'value', 'text', $row->state, false, false);
+			$lists['state'] = \Html::select('genericlist', $arr, 'state', '', 'value', 'text', $row->state, false, false);
 		}
 		else
 		{

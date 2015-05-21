@@ -67,7 +67,7 @@ else
 	$type = 'none';
 }
 
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 // If the video type is 'hubpresenter', perform next steps
 if ($type == 'hubpresenter')

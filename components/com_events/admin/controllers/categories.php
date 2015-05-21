@@ -201,11 +201,11 @@ class Categories extends AdminController
 		$max = intval($this->view->row->getCategoryCount()) + 1;
 		for ($i=1; $i < $max; $i++)
 		{
-			$order[] = \JHTML::_('select.option', $i, $i, 'value', 'text');
+			$order[] = \Html::select('option', $i, $i, 'value', 'text');
 		}
 
-		$ipos[] = \JHTML::_('select.option', 'left', Lang::txt('left'), 'value', 'text');
-		$ipos[] = \JHTML::_('select.option', 'right', Lang::txt('right'), 'value', 'text');
+		$ipos[] = \Html::select('option', 'left', Lang::txt('left'), 'value', 'text');
+		$ipos[] = \Html::select('option', 'right', Lang::txt('right'), 'value', 'text');
 
 		$this->view->iposlist = \JHTML::_(
 			'select.genericlist',
@@ -220,12 +220,12 @@ class Categories extends AdminController
 		);
 
 		$imgFiles = $this->readDirectory(PATH_CORE . DS . 'site' . DS . 'media' . DS . 'images');
-		$images = array(\JHTML::_('select.option', '', Lang::txt('Select Image'), 'value', 'text'));
+		$images = array(\Html::select('option', '', Lang::txt('Select Image'), 'value', 'text'));
 		foreach ($imgFiles as $file)
 		{
 			if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/", $file))
 			{
-				$images[] = \JHTML::_('select.option', $file, $file, 'value', 'text');
+				$images[] = \Html::select('option', $file, $file, 'value', 'text');
 			}
 		}
 

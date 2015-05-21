@@ -159,11 +159,11 @@ class Html
 			Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
 		);
-		$daynamelist[] = \JHTML::_('select.option', '-1', '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
+		$daynamelist[] = \Html::select('option', '-1', '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
 		for ($a=0; $a<7; $a++)
 		{
 			$name_of_day = '&nbsp;' . $day_name[$a];
-			$daynamelist[] = \JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
+			$daynamelist[] = \Html::select('option', $a, $name_of_day, 'value', 'text');
 		}
 		$tosend = self::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
 		return $tosend;
@@ -186,9 +186,9 @@ class Html
 				$mnh="0" . $mnh;
 			}
 			$name_of_month = self::getMonthName($mnh);
-			$monthslist[] = \JHTML::_('select.option', $mnh, $name_of_month, 'value', 'text');
+			$monthslist[] = \Html::select('option', $mnh, $name_of_month, 'value', 'text');
 		}
-		$tosend = \JHTML::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
+		$tosend = \Html::select('genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
 		return $tosend;
 	}
 
@@ -211,9 +211,9 @@ class Html
 			{
 				$dys = "0" . $dys;
 			}
-			$dayslist[] = \JHTML::_('select.option', $dys, $dys, 'value', 'text');
+			$dayslist[] = \Html::select('option', $dys, $dys, 'value', 'text');
 		}
-		$tosend = \JHTML::_('select.genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
+		$tosend = \Html::select('genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
 		return $tosend;
 	}
 
@@ -229,17 +229,17 @@ class Html
 		$y = date("Y");
 		if ($year<$y-2)
 		{
-			$yearslist[] = \JHTML::_('select.option', $year, $year, 'value', 'text');
+			$yearslist[] = \Html::select('option', $year, $year, 'value', 'text');
 		}
 		for ($i=$y-2; $i<=$y+5; $i++)
 		{
-			$yearslist[] = \JHTML::_('select.option', $i, $i, 'value', 'text');
+			$yearslist[] = \Html::select('option', $i, $i, 'value', 'text');
 		}
 		if ($year>$y+5)
 		{
-			$yearslist[] = \JHTML::_('select.option', $year, $year, 'value', 'text');
+			$yearslist[] = \Html::select('option', $year, $year, 'value', 'text');
 		}
-		$tosend = \JHTML::_('select.genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
+		$tosend = \Html::select('genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
 		return $tosend;
 	}
 
@@ -252,13 +252,13 @@ class Html
 	 */
 	public static function buildViewSelect($viewtype, $args)
 	{
-		$viewlist[] = \JHTML::_('select.option', 'view_week', Lang::txt('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
-		$viewlist[] = \JHTML::_('select.option', 'view_month', Lang::txt('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
-		$viewlist[] = \JHTML::_('select.option', 'view_year', Lang::txt('EVENTS_CAL_LANG_VIEWBYYEAR'), 'value', 'text');
-		//$viewlist[] = \JHTML::_('select.option', 'view_day', Lang::txt('EVENTS_CAL_LANG_VIEWBYDAY'), 'value', 'text');
-		//$viewlist[] = \JHTML::_('select.option', 'view_cat', Lang::txt('EVENTS_CAL_LANG_VIEWBYCAT'), 'value', 'text');
-		//$viewlist[] = \JHTML::_('select.option', 'view_search', Lang::txt('EVENTS_SEARCH_TITLE'), 'value', 'text');
-		$tosend = \JHTML::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype, false, false);
+		$viewlist[] = \Html::select('option', 'view_week', Lang::txt('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
+		$viewlist[] = \Html::select('option', 'view_month', Lang::txt('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
+		$viewlist[] = \Html::select('option', 'view_year', Lang::txt('EVENTS_CAL_LANG_VIEWBYYEAR'), 'value', 'text');
+		//$viewlist[] = \Html::select('option', 'view_day', Lang::txt('EVENTS_CAL_LANG_VIEWBYDAY'), 'value', 'text');
+		//$viewlist[] = \Html::select('option', 'view_cat', Lang::txt('EVENTS_CAL_LANG_VIEWBYCAT'), 'value', 'text');
+		//$viewlist[] = \Html::select('option', 'view_search', Lang::txt('EVENTS_SEARCH_TITLE'), 'value', 'text');
+		$tosend = \Html::select('genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype, false, false);
 		return $tosend;
 	}
 
@@ -299,9 +299,9 @@ class Html
 				$tmpi = $format ? sprintf("$format", $i) : "$i";
 			}
 			$fi = $format ? sprintf("$format", $i) : "$i";
-			$arr[] = \JHTML::_('select.option', $fi, $tmpi, 'value', 'text');
+			$arr[] = \Html::select('option', $fi, $tmpi, 'value', 'text');
 		}
-		return \JHTML::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected, false, false);
+		return \Html::select('genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected, false, false);
 	}
 
 	/**
@@ -320,11 +320,11 @@ class Html
 		$catsql = "SELECT id AS value, title AS text FROM #__categories "
 				. "WHERE extension='$option' AND published='1' ORDER BY lft";
 
-		$categories[] = \JHTML::_('select.option', '0', Lang::txt('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
+		$categories[] = \Html::select('option', '0', Lang::txt('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
 
 		$database->setQuery($catsql);
 		$categories = array_merge($categories, $database->loadObjectList());
-		$clist = \JHTML::_('select.genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false);
+		$clist = \Html::select('genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false);
 
 		return $clist;
 	}
@@ -339,49 +339,49 @@ class Html
 	public static function buildTimeZoneSelect($tzselected, $args)
 	{
 		$timezones = array(
-			\JHTML::_('select.option', -12,   Lang::txt('EVENTS_TIME_UTC_-12')),
-			\JHTML::_('select.option', -11,   Lang::txt('EVENTS_TIME_UTC_-11')),
-			\JHTML::_('select.option', -10,   Lang::txt('EVENTS_TIME_UTC_-10')),
-			\JHTML::_('select.option', -9.5,  Lang::txt('EVENTS_TIME_UTC_-930')),
-			\JHTML::_('select.option', -9,    Lang::txt('EVENTS_TIME_UTC_-9')),
-			\JHTML::_('select.option', -8,    Lang::txt('EVENTS_TIME_UTC_-8')),
-			\JHTML::_('select.option', -7,    Lang::txt('EVENTS_TIME_UTC_-7')),
-			\JHTML::_('select.option', -6,    Lang::txt('EVENTS_TIME_UTC_-6')),
-			\JHTML::_('select.option', -5,    Lang::txt('EVENTS_TIME_UTC_-5')),
-			\JHTML::_('select.option', -4,    Lang::txt('EVENTS_TIME_UTC_-4')),
-			\JHTML::_('select.option', -4.5,  Lang::txt('EVENTS_TIME_UTC_-430')),
-			\JHTML::_('select.option', -3.5,  Lang::txt('EVENTS_TIME_UTC_-330')),
-			\JHTML::_('select.option', -3,    Lang::txt('EVENTS_TIME_UTC_-3')),
-			\JHTML::_('select.option', -2,    Lang::txt('EVENTS_TIME_UTC_-2')),
-			\JHTML::_('select.option', -1,    Lang::txt('EVENTS_TIME_UTC_-1')),
-			\JHTML::_('select.option', 0,     Lang::txt('EVENTS_TIME_UTC_0')),
-			\JHTML::_('select.option', 1,     Lang::txt('EVENTS_TIME_UTC_1')),
-			\JHTML::_('select.option', 2,     Lang::txt('EVENTS_TIME_UTC_2')),
-			\JHTML::_('select.option', 3,     Lang::txt('EVENTS_TIME_UTC_3')),
-			\JHTML::_('select.option', 3.5,   Lang::txt('EVENTS_TIME_UTC_330')),
-			\JHTML::_('select.option', 4,     Lang::txt('EVENTS_TIME_UTC_4')),
-			\JHTML::_('select.option', 4.5,   Lang::txt('EVENTS_TIME_UTC_430')),
-			\JHTML::_('select.option', 5,     Lang::txt('EVENTS_TIME_UTC_5')),
-			\JHTML::_('select.option', 5.5,   Lang::txt('EVENTS_TIME_UTC_530')),
-			\JHTML::_('select.option', 5.75,  Lang::txt('EVENTS_TIME_UTC_545')),
-			\JHTML::_('select.option', 6,     Lang::txt('EVENTS_TIME_UTC_6')),
-			\JHTML::_('select.option', 6.5,   Lang::txt('EVENTS_TIME_UTC_630')),
-			\JHTML::_('select.option', 7,     Lang::txt('EVENTS_TIME_UTC_7')),
-			\JHTML::_('select.option', 8,     Lang::txt('EVENTS_TIME_UTC_8')),
-			\JHTML::_('select.option', 8.75,  Lang::txt('EVENTS_TIME_UTC_845')),
-			\JHTML::_('select.option', 9,     Lang::txt('EVENTS_TIME_UTC_9')),
-			\JHTML::_('select.option', 9.5,   Lang::txt('EVENTS_TIME_UTC_930')),
-			\JHTML::_('select.option', 10,    Lang::txt('EVENTS_TIME_UTC_10')),
-			\JHTML::_('select.option', 10.5,  Lang::txt('EVENTS_TIME_UTC_1030')),
-			\JHTML::_('select.option', 11,    Lang::txt('EVENTS_TIME_UTC_11')),
-			\JHTML::_('select.option', 11.5,  Lang::txt('EVENTS_TIME_UTC_1130')),
-			\JHTML::_('select.option', 12,    Lang::txt('EVENTS_TIME_UTC_12')),
-			\JHTML::_('select.option', 12.75, Lang::txt('EVENTS_TIME_UTC_1245')),
-			\JHTML::_('select.option', 13,    Lang::txt('EVENTS_TIME_UTC_13')),
-			\JHTML::_('select.option', 14,    Lang::txt('EVENTS_TIME_UTC_14')),
+			\Html::select('option', -12,   Lang::txt('EVENTS_TIME_UTC_-12')),
+			\Html::select('option', -11,   Lang::txt('EVENTS_TIME_UTC_-11')),
+			\Html::select('option', -10,   Lang::txt('EVENTS_TIME_UTC_-10')),
+			\Html::select('option', -9.5,  Lang::txt('EVENTS_TIME_UTC_-930')),
+			\Html::select('option', -9,    Lang::txt('EVENTS_TIME_UTC_-9')),
+			\Html::select('option', -8,    Lang::txt('EVENTS_TIME_UTC_-8')),
+			\Html::select('option', -7,    Lang::txt('EVENTS_TIME_UTC_-7')),
+			\Html::select('option', -6,    Lang::txt('EVENTS_TIME_UTC_-6')),
+			\Html::select('option', -5,    Lang::txt('EVENTS_TIME_UTC_-5')),
+			\Html::select('option', -4,    Lang::txt('EVENTS_TIME_UTC_-4')),
+			\Html::select('option', -4.5,  Lang::txt('EVENTS_TIME_UTC_-430')),
+			\Html::select('option', -3.5,  Lang::txt('EVENTS_TIME_UTC_-330')),
+			\Html::select('option', -3,    Lang::txt('EVENTS_TIME_UTC_-3')),
+			\Html::select('option', -2,    Lang::txt('EVENTS_TIME_UTC_-2')),
+			\Html::select('option', -1,    Lang::txt('EVENTS_TIME_UTC_-1')),
+			\Html::select('option', 0,     Lang::txt('EVENTS_TIME_UTC_0')),
+			\Html::select('option', 1,     Lang::txt('EVENTS_TIME_UTC_1')),
+			\Html::select('option', 2,     Lang::txt('EVENTS_TIME_UTC_2')),
+			\Html::select('option', 3,     Lang::txt('EVENTS_TIME_UTC_3')),
+			\Html::select('option', 3.5,   Lang::txt('EVENTS_TIME_UTC_330')),
+			\Html::select('option', 4,     Lang::txt('EVENTS_TIME_UTC_4')),
+			\Html::select('option', 4.5,   Lang::txt('EVENTS_TIME_UTC_430')),
+			\Html::select('option', 5,     Lang::txt('EVENTS_TIME_UTC_5')),
+			\Html::select('option', 5.5,   Lang::txt('EVENTS_TIME_UTC_530')),
+			\Html::select('option', 5.75,  Lang::txt('EVENTS_TIME_UTC_545')),
+			\Html::select('option', 6,     Lang::txt('EVENTS_TIME_UTC_6')),
+			\Html::select('option', 6.5,   Lang::txt('EVENTS_TIME_UTC_630')),
+			\Html::select('option', 7,     Lang::txt('EVENTS_TIME_UTC_7')),
+			\Html::select('option', 8,     Lang::txt('EVENTS_TIME_UTC_8')),
+			\Html::select('option', 8.75,  Lang::txt('EVENTS_TIME_UTC_845')),
+			\Html::select('option', 9,     Lang::txt('EVENTS_TIME_UTC_9')),
+			\Html::select('option', 9.5,   Lang::txt('EVENTS_TIME_UTC_930')),
+			\Html::select('option', 10,    Lang::txt('EVENTS_TIME_UTC_10')),
+			\Html::select('option', 10.5,  Lang::txt('EVENTS_TIME_UTC_1030')),
+			\Html::select('option', 11,    Lang::txt('EVENTS_TIME_UTC_11')),
+			\Html::select('option', 11.5,  Lang::txt('EVENTS_TIME_UTC_1130')),
+			\Html::select('option', 12,    Lang::txt('EVENTS_TIME_UTC_12')),
+			\Html::select('option', 12.75, Lang::txt('EVENTS_TIME_UTC_1245')),
+			\Html::select('option', 13,    Lang::txt('EVENTS_TIME_UTC_13')),
+			\Html::select('option', 14,    Lang::txt('EVENTS_TIME_UTC_14')),
 		);
 
-		return \JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
+		return \Html::select('genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
 	}
 
 	/**

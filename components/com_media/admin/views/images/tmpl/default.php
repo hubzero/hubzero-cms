@@ -17,7 +17,7 @@ echo $params->get('image_path', 'images');?>/';
 <h2 class="modal-title"><?php echo Lang::txt('COM_MEDIA'); ?></h2>
 <form action="index.php?option=com_media&amp;asset=<?php echo Request::getCmd('asset');?>&amp;author=<?php echo Request::getCmd('author');?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
-		<span id="message"></span><?php echo JHtml::_('image', 'media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
+		<span id="message"></span><?php echo Html::asset('image', 'media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
 	</div>
 	<fieldset>
 		<div class="fltlft">

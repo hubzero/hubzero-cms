@@ -72,7 +72,7 @@ if ($canDo->get('core.edit'))
 				</th>
 				<th scope="col">
 					<?php echo $this->grid('sort', 'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
-					<?php echo JHTML::_('grid.order',  $this->rows); ?>
+					<?php echo Html::grid('order',  $this->rows); ?>
 				</th>
 				<th scope="col">
 					<?php echo $this->grid('sort', 'Access', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
@@ -113,9 +113,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	//$link = Route::url( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
 	$link = 'index.php?option=com_plugins&amp;task=plugin.edit&amp;extension_id=' . $row->id . '&amp;component=' . $row->folder;
 
-	$access 	= JHTML::_('grid.access', $row, $i);
-	//$checked 	= JHTML::_('grid.checkedout', $row, $i);
-	$published 	= JHTML::_('grid.published', $row, $i);
+	$access 	= Html::grid('access', $row, $i);
+	//$checked 	= Html::grid('checkedout', $row, $i);
+	$published 	= Html::grid('published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
 

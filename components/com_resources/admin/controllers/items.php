@@ -1684,7 +1684,7 @@ class Items extends AdminController
 
 		if ($nouser)
 		{
-			$users[] = \JHTML::_('select.option', '0', Lang::txt('COM_RESOURCES_DO_NOT_CHANGE'), 'value', 'text');
+			$users[] = \Html::select('option', '0', Lang::txt('COM_RESOURCES_DO_NOT_CHANGE'), 'value', 'text');
 			$users = array_merge($users, $result);
 		}
 		else
@@ -1692,7 +1692,7 @@ class Items extends AdminController
 			$users = $result;
 		}
 
-		return \JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+		return \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 	}
 
 	/**

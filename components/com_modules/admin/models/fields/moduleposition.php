@@ -50,7 +50,7 @@ class JFormFieldModulePosition extends JFormFieldText
 		$clientId = (int) $clientId;
 
 		// Load the modal behavior script.
-		JHtml::_('behavior.modal', 'a.modal');
+		Html::behavior('modal', 'a.modal');
 
 		// Build the script.
 		$script = array();

@@ -33,7 +33,7 @@ class JFormFieldModal_Newsfeeds extends JFormField
 	{
 		// Load the javascript
 		Html::behavior('framework');
-		JHtml::_('behavior.modal', 'input.modal');
+		Html::behavior('modal', 'input.modal');
 
 		// Build the script.
 		$script = array();
@@ -77,7 +77,7 @@ class JFormFieldModal_Newsfeeds extends JFormField
 
 		$link = 'index.php?option=com_newsfeeds&amp;view=newsfeeds&amp;layout=modal&amp;tmpl=component&amp;function=jSelectChart_'.$this->id;
 
-		JHtml::_('behavior.modal', 'a.modal');
+		Html::behavior('modal', 'a.modal');
 		$html = "\n".'<div class="fltlft"><input type="text" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
 		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.Lang::txt('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.Lang::txt('COM_NEWSFEEDS_CHANGE_FEED_BUTTON').'</a></div></div>'."\n";
 		// The active newsfeed id field.

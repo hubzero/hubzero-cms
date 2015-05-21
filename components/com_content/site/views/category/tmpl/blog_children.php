@@ -29,7 +29,7 @@ $class = ' class="first"';
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
 			<?php if ($child->description) : ?>
 				<div class="category-desc">
-					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_content.category'); ?>
+					<?php echo Html::content('prepare', $child->description, '', 'com_content.category'); ?>
 				</div>
 			<?php endif; ?>
 			<?php endif; ?>

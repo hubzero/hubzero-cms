@@ -26,7 +26,7 @@ class JHtmlMessages
 			0  => array('publish_x.png', 'messages.publish',   'COM_MESSAGES_OPTION_UNREAD', 'COM_MESSAGES_MARK_AS_READ')
 		);
 		$state = \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
-		$html  = JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
+		$html  = Html::asset('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
 		if ($canChange)
 		{
 			$html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="' . Lang::txt($state[3]) . '">' . $html . '</a>';

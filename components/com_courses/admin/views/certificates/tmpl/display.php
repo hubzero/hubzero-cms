@@ -50,7 +50,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('certificates');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 $this->css('certificates.css');
 ?>

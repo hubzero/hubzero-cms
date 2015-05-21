@@ -48,7 +48,7 @@ Toolbar::spacer();
 Toolbar::help('page');
 
 // include modal for raw version links
-JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>true));
+Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>true));
 ?>
 
 <form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">

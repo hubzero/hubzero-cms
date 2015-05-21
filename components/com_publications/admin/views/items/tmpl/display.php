@@ -157,7 +157,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	else
 	{
-		$checked = JHTML::_('grid.id', $i, $row->id, false, 'id');
+		$checked = Html::grid('id', $i, $row->id, false, 'id');
 	}
 
 	// What's the publication status?

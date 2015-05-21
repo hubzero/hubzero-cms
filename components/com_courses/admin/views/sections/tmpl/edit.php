@@ -42,8 +42,8 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 
 
-JHtml::_('behavior.switcher', 'submenu');
-JHtml::_('behavior.calendar');
+Html::behavior('switcher', 'submenu');
+Html::behavior('calendar');
 
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 

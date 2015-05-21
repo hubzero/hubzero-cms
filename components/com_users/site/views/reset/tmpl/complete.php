@@ -45,6 +45,6 @@ Html::behavior('formvalidation');
 		<input type="hidden" id="pass_no_html" name="no_html" value="0" />
 		<input type="hidden" name="change" value="1" />
 		<p class="submit"><button type="submit" id="password-change-save" class="validate"><?php echo Lang::txt('Submit'); ?></button></p>
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </section><!-- / .main section -->

@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //include modal
-JHTML::_('behavior.modal');
+Html::behavior('modal');
 
 //set title
 Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');

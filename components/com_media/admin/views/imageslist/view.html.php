@@ -20,9 +20,9 @@ class MediaViewImagesList extends JViewLegacy
 		// Do not allow cache
 		JResponse::allowCache(false);
 
-		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
+		Html::asset('stylesheet', 'media/popup-imagelist.css', array(), true);
 		if (Lang::isRTL()) :
-			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
+			Html::asset('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
 		endif;
 
 		Document::addScriptDeclaration("var ImageManager = window.parent.ImageManager;");

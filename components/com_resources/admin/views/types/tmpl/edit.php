@@ -41,7 +41,7 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 $this->css();
 

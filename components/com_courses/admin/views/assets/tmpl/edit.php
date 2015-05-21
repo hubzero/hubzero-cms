@@ -45,7 +45,7 @@ if (!$this->tmpl)
 	Toolbar::cancel();
 }
 
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 if ($this->row->get('id'))
 {

@@ -38,7 +38,7 @@ if (!$this->tmpl)
 	Toolbar::cancel();
 }
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 $countries = array(
 		array('code' => '', 'name' => '- Select - ', 'continent' => 'AS'),

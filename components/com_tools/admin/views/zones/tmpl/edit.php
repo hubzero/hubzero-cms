@@ -42,7 +42,7 @@ Toolbar::spacer();
 Toolbar::help('zone');
 
 Html::behavior('modal');
-JHtml::_('behavior.switcher', 'submenu');
+Html::behavior('switcher', 'submenu');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -32,7 +32,7 @@ class JFormFieldModal_Article extends JFormField
 	protected function getInput()
 	{
 		// Load the modal behavior script.
-		JHtml::_('behavior.modal', 'a.modal');
+		Html::behavior('modal', 'a.modal');
 
 		// Build the script.
 		$script = array();

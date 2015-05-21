@@ -25,10 +25,10 @@ class MediaViewMedia extends JViewLegacy
 
 		Html::behavior('framework', true);
 
-		JHtml::_('script', 'media/mediamanager.js', true, true);
-		JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
+		Html::asset('script', 'media/mediamanager.js', true, true);
+		Html::asset('stylesheet', 'media/mediamanager.css', array(), true);
 		if (Lang::isRTL()) :
-			JHtml::_('stylesheet', 'media/mediamanager_rtl.css', array(), true);
+			Html::asset('stylesheet', 'media/mediamanager_rtl.css', array(), true);
 		endif;
 
 		Html::behavior('modal');
@@ -37,10 +37,10 @@ class MediaViewMedia extends JViewLegacy
 			document.preview = $.fancybox;
 		});");
 
-		JHtml::_('script', 'system/jquery.treeview.js', true, true, false, false);
-		JHtml::_('stylesheet', 'system/jquery.treeview.css', array(), true);
+		Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
+		Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
 		if (Lang::isRTL()) :
-			JHtml::_('stylesheet', 'media/jquery.treeview_rtl.css', array(), true);
+			Html::asset('stylesheet', 'media/jquery.treeview_rtl.css', array(), true);
 		endif;
 
 		if (DIRECTORY_SEPARATOR == '\\')

@@ -46,7 +46,7 @@ if ($tmpl != 'component')
 	Toolbar::cancel();
 }
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

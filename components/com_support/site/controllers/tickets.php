@@ -2523,7 +2523,7 @@ class Tickets extends SiteController
 		$this->database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = \JHTML::_('select.option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text');
+			$users[] = \Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
 		}
 		else
@@ -2551,15 +2551,15 @@ class Tickets extends SiteController
 			}
 			foreach ($groups as $gname => $gusers)
 			{
-				$users[] = \JHTML::_('select.optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
+				$users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
 				$users = array_merge($users, $gusers);
-				$users[] = \JHTML::_('select.optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
+				$users[] = \Html::select('optgroup', Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
 			}
 		}
 
 		ksort($users);
 
-		$users = \JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+		$users = \Html::select('genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}
@@ -2591,7 +2591,7 @@ class Tickets extends SiteController
 					{
 						$members = $hzg->get('members');
 
-						$users[] = \JHTML::_('select.optgroup', stripslashes($hzg->description));
+						$users[] = \Html::select('optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
 							$u = User::getInstance($member);
@@ -2607,7 +2607,7 @@ class Tickets extends SiteController
 
 							$users[] = $m;
 						}
-						$users[] = \JHTML::_('select.option', '</OPTGROUP>');
+						$users[] = \Html::select('option', '</OPTGROUP>');
 					}
 				}
 			}
@@ -2645,10 +2645,10 @@ class Tickets extends SiteController
 
 		if ($nouser)
 		{
-			array_unshift($users, \JHTML::_('select.option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text'));
+			array_unshift($users, \Html::select('option', '0', Lang::txt('COM_SUPPORT_NONE'), 'value', 'text'));
 		}
 
-		$users = \JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
+		$users = \Html::select('genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}

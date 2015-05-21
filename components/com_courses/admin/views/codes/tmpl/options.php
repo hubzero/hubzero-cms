@@ -42,7 +42,7 @@ if ($tmpl != 'component')
 	Toolbar::cancel();
 }
 
-JHTML::_('behavior.framework', true);
+Html::behavior('framework', true);
 
 $offset = Config::get('config.offset');
 

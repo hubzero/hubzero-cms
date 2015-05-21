@@ -91,7 +91,7 @@ class CategoriesViewCategory extends JViewLegacy
 		}
 
 		// Load specific css component
-		JHtml::_('stylesheet', $component.'/administrator/categories.css', array(), true);
+		Html::asset('stylesheet', $component.'/administrator/categories.css', array(), true);
 
 		// Prepare the toolbar.
 		Toolbar::title($title, 'category-'.($isNew?'add':'edit').' '.substr($component, 4).($section?"-$section":'').'-category-'.($isNew?'add':'edit'));

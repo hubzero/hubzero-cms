@@ -166,7 +166,7 @@ class Polls extends AdminController
 		$lists = array();
 
 		// State filter
-		$lists['state']     = \JHTML::_('grid.state', $filter_state);
+		$lists['state']     = \Html::grid('state', $filter_state);
 
 		// Table ordering
 		$lists['order_Dir'] = $filter_order_Dir;

@@ -41,7 +41,7 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-JHTML::_('behavior.modal');
+Html::behavior('modal');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 		<tr>
 			<td class="imgTotal">
 				<a href="<?php echo Route::url('index.php?option=com_media&view=mediaList&tmpl=component&folder=' . $this->state->parent); ?>" target="folderframe">
-					<?php echo JHtml::_('image', 'media/folderup_16.png', '..', array('width' => 16, 'height' => 16), true); ?>
+					<?php echo Html::asset('image', 'media/folderup_16.png', '..', array('width' => 16, 'height' => 16), true); ?>
 				</a>
 			</td>
 			<td class="description">

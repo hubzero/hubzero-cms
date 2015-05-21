@@ -45,7 +45,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('page');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 ?>
 <script type="text/javascript">
 Joomla.submitbutton = function(pressbutton) {

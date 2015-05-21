@@ -139,17 +139,17 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$quotaClass = new MembersQuotasClasses($this->database);
 		$classes    = $quotaClass->getRecords();
 		$selected   = '';
-		$options[]  = JHTML::_('select.option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text');
+		$options[]  = Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text');
 
 		foreach ($classes as $class)
 		{
-			$options[] = JHTML::_('select.option', $class->id, $class->alias, 'value', 'text');
+			$options[] = Html::select('option', $class->id, $class->alias, 'value', 'text');
 			if ($class->id == $this->view->row->class_id)
 			{
 				$selected = $class->id;
 			}
 		}
-		$this->view->classes = JHTML::_('select.genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
+		$this->view->classes = Html::select('genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
 
 		$this->view->du = $this->getQuotaUsageTask('array', $this->view->row->id);
 

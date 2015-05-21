@@ -46,7 +46,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('edittagged');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -40,7 +40,7 @@ Toolbar::spacer();
 Toolbar::help('version');
 
 Html::behavior('modal');
-JHtml::_('behavior.switcher', 'submenu');
+Html::behavior('switcher', 'submenu');
 ?>
 
 <script type="text/javascript">

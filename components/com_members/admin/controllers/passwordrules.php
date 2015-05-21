@@ -413,18 +413,18 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	 */
 	public function rulesList($current_rule='')
 	{
-		$rules[] = JHTML::_('select.option', 'minClassCharacters',  'minClassCharacters',  'value', 'text');
-		$rules[] = JHTML::_('select.option', 'minPasswordLength',   'minPasswordLength',   'value', 'text');
-		$rules[] = JHTML::_('select.option', 'maxPasswordLength',   'maxPasswordLength',   'value', 'text');
-		$rules[] = JHTML::_('select.option', 'minUniqueCharacters', 'minUniqueCharacters', 'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notBlacklisted',      'notBlacklisted',      'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notNameBased',        'notNameBased',        'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notUsernameBased',    'notUsernameBased',    'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notReused',           'notReused',           'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notStale',            'notStale',            'value', 'text');
+		$rules[] = Html::select('option', 'minClassCharacters',  'minClassCharacters',  'value', 'text');
+		$rules[] = Html::select('option', 'minPasswordLength',   'minPasswordLength',   'value', 'text');
+		$rules[] = Html::select('option', 'maxPasswordLength',   'maxPasswordLength',   'value', 'text');
+		$rules[] = Html::select('option', 'minUniqueCharacters', 'minUniqueCharacters', 'value', 'text');
+		$rules[] = Html::select('option', 'notBlacklisted',      'notBlacklisted',      'value', 'text');
+		$rules[] = Html::select('option', 'notNameBased',        'notNameBased',        'value', 'text');
+		$rules[] = Html::select('option', 'notUsernameBased',    'notUsernameBased',    'value', 'text');
+		$rules[] = Html::select('option', 'notReused',           'notReused',           'value', 'text');
+		$rules[] = Html::select('option', 'notStale',            'notStale',            'value', 'text');
 
 		$rselected = $current_rule;
 
-		return JHTML::_('select.genericlist', $rules, 'fields[rule]', '', 'value', 'text', $rselected, 'field-rule', false, false);
+		return Html::select('genericlist', $rules, 'fields[rule]', '', 'value', 'text', $rselected, 'field-rule', false, false);
 	}
 }

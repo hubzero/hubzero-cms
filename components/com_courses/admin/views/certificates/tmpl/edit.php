@@ -37,7 +37,7 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_CERTIFICATE') . ': ' . $text, 'courses.png');
 Toolbar::cancel();
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

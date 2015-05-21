@@ -62,7 +62,7 @@ if (!$surname)
 	}
 }
 
-JHtml::_('behavior.switcher', 'submenu');
+Html::behavior('switcher', 'submenu');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

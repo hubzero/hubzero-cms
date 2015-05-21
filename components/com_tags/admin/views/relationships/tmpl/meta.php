@@ -38,7 +38,7 @@ Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_FOCUS_AREAS'),
 Toolbar::spacer();
 Toolbar::help('focusareas');
 
-JHTML::_('behavior.framework');
+Html::behavior('framework');
 
 $this->js('tag_graph.js');
 
