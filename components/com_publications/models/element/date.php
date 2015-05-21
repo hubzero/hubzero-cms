@@ -106,11 +106,11 @@ class Date extends Base
 			$label = $element->label ? $element->label : $element->name;
 
 			$output = '<legend id="'.$control_name.$name.'-lgd"';
-			if (isset($element->description) && $element->description) 
+			if (isset($element->description) && $element->description)
 			{
 				$output .= ' class="hasTip" title="'.Lang::txt($label).'::'.Lang::txt($element->description).'">';
-			} 
-			else 
+			}
+			else
 			{
 				$output .= '>';
 			}
@@ -152,7 +152,7 @@ class Date extends Base
 			// Build the list of years
 			$options = array();
 			$y++;
-			for ($i, $n=$y; $i < $n; $i++) 
+			for ($i, $n=$y; $i < $n; $i++)
 			{
 				$options[] = \Html::select('option', $i, $i);
 			}
@@ -173,7 +173,7 @@ class Date extends Base
 			);
 			$i = 1;
 			$y = 13;
-			for ($i, $n=$y; $i < $n; $i++) 
+			for ($i, $n=$y; $i < $n; $i++)
 			{
 				$options[] = \Html::select('option', $i, $this->_getMonth($i));
 			}
@@ -191,11 +191,11 @@ class Date extends Base
 			);
 			$i = 1;
 			$y = 32;
-			for ($i, $n=$y; $i < $n; $i++) 
+			for ($i, $n=$y; $i < $n; $i++)
 			{
 				$options[] = \Html::select('option', $i, $i);
 			}
-			
+
 			$html[] = \Html::select('genericlist', $options, $control_name.'['.$name.'][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
 		}
 
