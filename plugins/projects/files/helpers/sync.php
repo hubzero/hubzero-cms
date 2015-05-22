@@ -808,9 +808,6 @@ class Sync extends \Hubzero\Base\Object
 
 								$output .= '++ added new file to local: '. $filename . "\n";
 								$updated = 1;
-
-								// Store in session
-								$this->registerUpdate('uploaded', $filename);
 							}
 							else
 							{
