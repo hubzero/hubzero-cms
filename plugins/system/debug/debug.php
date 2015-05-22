@@ -830,7 +830,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$bytes = \App::get('profiler')->memory();
 
 		//$html .= '<code>';
-		$html .= \JHtml::_('number.bytes', $bytes);
+		$html .= \Hubzero\Utility\Number::formatBytes($bytes);
 		//$html .= ' (' . number_format($bytes) . ' Bytes)';
 		//$html .= '</code>';
 

@@ -58,7 +58,7 @@ class JFormFieldTos extends JFormFieldRadio
 				#jform_profile_tos label {margin:0 15px 0 0 !important; width:auto;}
 				";
 		Document::addStyleDeclaration($css);
-		JHtml::_('behavior.modal');
+		Html::behavior('modal');
 
 		// Build the class for the label.
 		$class = !empty($this->description) ? 'hasTip' : '';

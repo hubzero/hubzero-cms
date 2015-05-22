@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-access"><?php echo Lang::txt('COM_KB_ACCESS_LEVEL'); ?>:</label>
 				<select name="fields[access]" id="field-access">
-					<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->row->get('access')); ?>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
 				</select>
 			</div>
 		</fieldset>

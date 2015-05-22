@@ -148,7 +148,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="action" value="savethread" />
 						<input type="hidden" name="return" value="<?php echo base64_encode(Route::url($this->base)); ?>" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_reply">
 							<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>

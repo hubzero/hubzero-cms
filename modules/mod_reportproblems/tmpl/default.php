@@ -137,7 +137,7 @@ defined('_JEXEC') or die('Restricted access');
 					<input type="hidden" name="task" value="save" />
 					<input type="hidden" name="no_html" value="1" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</fieldset>
 				<div class="submit"><input type="submit" id="send-form" value="<?php echo Lang::txt('MOD_REPORTPROBLEMS_SUBMIT'); ?>" /></div>
 			</form>

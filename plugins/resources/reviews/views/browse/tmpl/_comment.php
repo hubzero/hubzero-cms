@@ -141,7 +141,7 @@ if ($this->comment->get('resource_id'))
 					<input type="hidden" name="active" value="reviews" />
 					<input type="hidden" name="action" value="savereply" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 						<span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
@@ -217,7 +217,7 @@ if ($this->comment->get('resource_id'))
 						<input type="hidden" name="active" value="reviews" />
 						<input type="hidden" name="action" value="savereply" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>

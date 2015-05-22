@@ -6,8 +6,6 @@
 
 defined('JPATH_BASE') or die;
 
-jimport('joomla.utilities.date');
-
 /**
  * An example custom profile plugin.
  *
@@ -84,17 +82,17 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			if (!JHtml::isRegistered('users.url'))
+			if (!Html::has('users.url'))
 			{
-				JHtml::register('users.url', array(__CLASS__, 'url'));
+				Html::register('users.url', array(__CLASS__, 'url'));
 			}
-			if (!JHtml::isRegistered('users.calendar'))
+			if (!Html::has('users.calendar'))
 			{
-				JHtml::register('users.calendar', array(__CLASS__, 'calendar'));
+				Html::register('users.calendar', array(__CLASS__, 'calendar'));
 			}
-			if (!JHtml::isRegistered('users.tos'))
+			if (!Html::has('users.tos'))
 			{
-				JHtml::register('users.tos', array(__CLASS__, 'tos'));
+				Html::register('users.tos', array(__CLASS__, 'tos'));
 			}
 		}
 
@@ -105,7 +103,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	{
 		if (empty($value))
 		{
-			return JHtml::_('users.value', $value);
+			return Html::users('value', $value);
 		}
 		else
 		{
@@ -125,7 +123,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	{
 		if (empty($value))
 		{
-			return JHtml::_('users.value', $value);
+			return Html::users('value', $value);
 		}
 		else
 		{
@@ -152,7 +150,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	 * @return	boolean
 	 * @since	1.6
 	 */
-	function onContentPrepareForm($form, $data)
+	public function onContentPrepareForm($form, $data)
 	{
 		if (!($form instanceof JForm))
 		{
@@ -271,14 +269,14 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 				}
 
 				$tuples = array();
-				$order	= 1;
+				$order  = 1;
 
 				foreach ($data['profile'] as $k => $v)
 				{
 					$tuples[] = '('.$userId.', '.$db->quote('profile.'.$k).', '.$db->quote(json_encode($v)).', '.$order++.')';
 				}
 
-				$db->setQuery('INSERT INTO #__user_profiles VALUES '.implode(', ', $tuples));
+				$db->setQuery('INSERT INTO `#__user_profiles` VALUES '.implode(', ', $tuples));
 
 				if (!$db->query())
 				{
@@ -305,7 +303,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 	 * @param	boolean		$success	True if user was succesfully stored in the database
 	 * @param	string		$msg		Message
 	 */
-	function onUserAfterDelete($user, $success, $msg)
+	public function onUserAfterDelete($user, $success, $msg)
 	{
 		if (!$success)
 		{
@@ -320,7 +318,7 @@ class plgUserProfile extends \Hubzero\Plugin\Plugin
 			{
 				$db = JFactory::getDbo();
 				$db->setQuery(
-					'DELETE FROM #__user_profiles WHERE user_id = '.$userId .
+					'DELETE FROM `#__user_profiles` WHERE user_id = '.$userId .
 					" AND profile_key LIKE 'profile.%'"
 				);
 

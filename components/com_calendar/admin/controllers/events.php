@@ -122,21 +122,21 @@ class Events extends AdminController
 		$this->view->rows = $ee->getRecords($this->view->filters);
 
 		// Get list of categories
-		$categories[] = \JHTML::_('select.option', '0', '- ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
+		$categories[] = \Html::select('option', '0', '- ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
 		$this->database->setQuery("SELECT id AS value, title AS text FROM `#__categories` WHERE extension='$this->_option'");
 
 		$categories = array_merge($categories, $this->database->loadObjectList());
-		$this->view->clist = \JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
+		$this->view->clist = \Html::select('genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
 
 		//get list of groups
-		$groups[] = \JHTML::_('select.option', '0', '- ' . Lang::txt('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
+		$groups[] = \Html::select('option', '0', '- ' . Lang::txt('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
 		$sql = "SELECT DISTINCT(g.gidNumber) AS value, g.description AS text
 				FROM `#__events` AS e, `#__xgroups` AS g
 				WHERE e.scope='group'
 				AND e.scope_id=g.gidNumber";
 		$this->database->setQuery($sql);
 		$groups = array_merge($groups, $this->database->loadObjectList());
-		$this->view->glist = \JHTML::_('select.genericlist', $groups, 'group_id', 'class="inputbox"','value', 'text', $this->view->filters['scope_id'], false, false);
+		$this->view->glist = \Html::select('genericlist', $groups, 'group_id', 'class="inputbox"','value', 'text', $this->view->filters['scope_id'], false, false);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

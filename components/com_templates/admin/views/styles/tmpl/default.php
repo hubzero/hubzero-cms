@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 

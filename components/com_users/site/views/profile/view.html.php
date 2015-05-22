@@ -31,26 +31,29 @@ class UsersViewProfile extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get the view data.
-		$this->data		= $this->get('Data');
-		$this->form		= $this->get('Form');
-		$this->state	= $this->get('State');
-		$this->params	= $this->state->get('params');
+		$this->data   = $this->get('Data');
+		$this->form   = $this->get('Form');
+		$this->state  = $this->get('State');
+		$this->params = $this->state->get('params');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
 		// Check if a user was found.
-		if (!$this->data->id) {
+		if (!$this->data->id)
+		{
 			App::abort(404, Lang::txt('JERROR_USERS_PROFILE_NOT_FOUND'));
 			return false;
 		}
 
 		// Check for layout override
 		$active = JFactory::getApplication()->getMenu()->getActive();
-		if (isset($active->query['layout'])) {
+		if (isset($active->query['layout']))
+		{
 			$this->setLayout($active->query['layout']);
 		}
 
@@ -69,30 +72,34 @@ class UsersViewProfile extends JViewLegacy
 	 */
 	protected function prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$user		= JFactory::getUser();
-		$login		= $user->get('guest') ? true : false;
-		$title 		= null;
+		$menus = JFactory::getApplication()->getMenu();
+		$login = User::isGuest() ? true : false;
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
-		if ($menu) {
-			$this->params->def('page_heading', $this->params->get('page_title', $user->name));
-		} else {
+		if ($menu)
+		{
+			$this->params->def('page_heading', $this->params->get('page_title', User::get('name')));
+		}
+		else
+		{
 			$this->params->def('page_heading', Lang::txt('COM_USERS_PROFILE'));
 		}
 
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
+		if (empty($title))
+		{
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 

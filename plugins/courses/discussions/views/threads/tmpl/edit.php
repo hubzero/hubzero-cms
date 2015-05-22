@@ -152,7 +152,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 		<input type="hidden" name="section" value="<?php //echo $this->filters['section']; ?>" />
 		<input type="hidden" name="return" value="<?php //echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias)); ?>" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	<?php if (!$no_html) { ?>
 		<p class="instructions">
 			Click on a comment on the left to view a discussion or start your own above.

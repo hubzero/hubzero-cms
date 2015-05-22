@@ -147,7 +147,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="active" value="forum" />
 						<input type="hidden" name="action" value="savethread" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
 							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>

@@ -261,7 +261,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<input type="hidden" name="scope" value="<?php echo trim($scope, DS); ?>" />
 		<input type="hidden" name="action" value="save" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input type="submit" class="btn" name="preview" value="<?php echo Lang::txt('COM_WIKI_PREVIEW'); ?>" /> &nbsp;

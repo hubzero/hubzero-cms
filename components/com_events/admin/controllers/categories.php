@@ -207,8 +207,8 @@ class Categories extends AdminController
 		$ipos[] = \Html::select('option', 'left', Lang::txt('left'), 'value', 'text');
 		$ipos[] = \Html::select('option', 'right', Lang::txt('right'), 'value', 'text');
 
-		$this->view->iposlist = \JHTML::_(
-			'select.genericlist',
+		$this->view->iposlist = \Html::select(
+			'genericlist',
 			$ipos,
 			'image_position',
 			'class="inputbox" size="1"',
@@ -229,8 +229,8 @@ class Categories extends AdminController
 			}
 		}
 
-		$this->view->imagelist = \JHTML::_(
-			'select.genericlist',
+		$this->view->imagelist = \Html::select(
+			'genericlist',
 			$images,
 			'image',
 			'class="inputbox" size="1"' . " onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/M_images/blank.png'}\"",
@@ -241,8 +241,8 @@ class Categories extends AdminController
 			false
 		);
 
-		$this->view->orderlist = \JHTML::_(
-			'select.genericlist',
+		$this->view->orderlist = \Html::select(
+			'genericlist',
 			$order,
 			'ordering',
 			'class="inputbox" size="1"',

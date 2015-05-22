@@ -67,7 +67,7 @@ if (!$identifier)
 		<input type="hidden" name="post" value="<?php echo $this->post->get('id'); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$token = JUtility::getToken();
+$token = Session::getFormToken();
 
 if (is_object($this->mailinglist)) : ?>
 	<div class="mailinglist-details">
@@ -67,7 +67,7 @@ if (is_object($this->mailinglist)) : ?>
 			<input type="hidden" name="task" value="dosinglesubscribe" />
 			<input type="hidden" name="return" value="<?php echo base64_encode($_SERVER['REQUEST_URI']); ?>">
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		<?php endif; ?>
 		</fieldset>
 	</form>

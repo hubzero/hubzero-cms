@@ -189,7 +189,7 @@ $base = $this->course->offering()->link();
 						<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
 						<input type="hidden" name="return" value="<?php echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'))); ?>" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<p class="instructions">
 							<?php echo Lang::txt('Click on a comment on the left to view a discussion or start your own above.'); ?>

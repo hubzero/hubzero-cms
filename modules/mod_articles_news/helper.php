@@ -38,7 +38,7 @@ use JFactory;
 use JAccess;
 use Route;
 use Lang;
-use JHtml;
+use Html;
 use User;
 
 /**
@@ -134,7 +134,7 @@ class Helper extends Module
 				$item->linkText = Lang::txt('MOD_ARTICLES_NEWS_READMORE_REGISTER');
 			}
 
-			$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_news.content');
+			$item->introtext = Html::content('prepare', $item->introtext, '', 'mod_articles_news.content');
 
 			if (!$params->get('image'))
 			{

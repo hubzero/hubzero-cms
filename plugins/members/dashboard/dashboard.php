@@ -389,7 +389,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		include_once __DIR__ . DS . 'models' . DS . 'preferences.php';
 
 		// add assets
-		JHTML::_('behavior.modal');
+		Html::behavior('modal');
 		$this->css();
 		$this->css('dashboard.admin');
 		$this->js('dashboard.admin');

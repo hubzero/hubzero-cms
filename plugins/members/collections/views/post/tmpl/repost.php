@@ -120,7 +120,7 @@ $this->css();
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="action" value="collect" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
 		<input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_POST'); ?>" />

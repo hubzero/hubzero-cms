@@ -35,7 +35,7 @@ Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo.png');
 Toolbar::help('sysinfo');
 
 // Add specific helper files for html generation
-JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
+Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 
 // Load switcher behavior
 Html::behavior('switcher', 'submenu');

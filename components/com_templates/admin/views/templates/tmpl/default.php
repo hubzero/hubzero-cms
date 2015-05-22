@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('modal');
 Html::behavior('multiselect');
@@ -71,7 +71,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<?php foreach ($this->items as $i => $item) : ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="priority-3">
-					<?php echo JHtml::_('templates.thumb', $item->element, $item->client_id); ?>
+					<?php echo Html::templates('thumb', $item->element, $item->client_id); ?>
 				</td>
 				<td class="template-name">
 					<a href="<?php echo Route::url('index.php?option=com_templates&view=template&id='.(int) $item->extension_id); ?>">
@@ -79,7 +79,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					</a>
 					<p>
 						<?php if ($this->preview && $item->client_id == '0'): ?>
-							<a href="<?php echo JURI::root().'index.php?tp=1&template='.$item->element; ?>" target="_blank">
+							<a href="<?php echo Request::root().'index.php?tp=1&template='.$item->element; ?>" target="_blank">
 								<?php echo  Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?>
 							</a>
 						<?php elseif ($item->client_id == '1'): ?>

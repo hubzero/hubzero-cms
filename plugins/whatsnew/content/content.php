@@ -129,7 +129,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 						}
 					}
 
-					$rows[$key]->text = JHtml::_('content.prepare', $rows[$key]->text, '', 'com_content.article');
+					$rows[$key]->text = Html::content('prepare', $rows[$key]->text, '', 'com_content.article');
 					$rows[$key]->text = strip_tags($row->text);
 					$rows[$key]->href = $path;
 				}

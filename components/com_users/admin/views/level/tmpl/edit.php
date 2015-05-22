@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
 Html::behavior('tooltip');
@@ -100,7 +100,7 @@ jQuery(document).ready(function($){
 			<legend><span><?php echo Lang::txt('COM_USERS_USER_GROUPS_HAVING_ACCESS');?></span></legend>
 
 			<div class="input-wrap">
-				<?php echo JHtml::_('access.usergroups', 'jform[rules]', $this->item->rules); ?>
+				<?php echo Html::access('usergroups', 'jform[rules]', $this->item->rules); ?>
 			</div>
 		</fieldset>
 	</div>

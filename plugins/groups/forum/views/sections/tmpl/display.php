@@ -102,7 +102,7 @@ if ($this->config->get('access-manage-section')) {
 						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 						<input type="hidden" name="action" value="savesection" />
 						<input type="hidden" name="active" value="forum" />
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 					</form>
 				<?php } else { ?>
 					<?php echo $this->escape(stripslashes($section->get('title'))); ?>
@@ -213,7 +213,7 @@ if ($this->config->get('access-manage-section')) {
 					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="action" value="savesection" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</fieldset>
 			</form>
 		</div><!-- /.container -->
@@ -389,7 +389,7 @@ if ($this->config->get('access-manage-section')) {
 						<input type="hidden" name="fields[id]" value="" />
 						<input type="hidden" name="fields[access]" value="0" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 					</fieldset>
 				</form>
 			</div><!-- / .container -->

@@ -119,7 +119,7 @@ $url  = Request::getVar('REQUEST_URI', '', 'server');
 	<input type="hidden" name="collectible[item_id]" value="<?php echo $this->escape($this->item->get('id')); ?>" />
 	<input type="hidden" name="tryto" value="collect" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
 		<input type="submit" value="<?php echo Lang::txt('MOD_COLLECT_SAVE'); ?>" />

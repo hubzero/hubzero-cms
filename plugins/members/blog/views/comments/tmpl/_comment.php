@@ -92,7 +92,7 @@ else
 					<input type="hidden" name="task" value="view" />
 					<input type="hidden" name="action" value="savecomment" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 
 					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 						<span class="label-text"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?></span>

@@ -30,8 +30,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.framework', true);
-JHTML::_('behavior.modal');
+Html::behavior('framework', true);
+Html::behavior('modal');
 
 // Include global scripts
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');

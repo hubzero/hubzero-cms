@@ -104,7 +104,7 @@ $this->css();
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="action" value="savecollection" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_SAVE'); ?>" />

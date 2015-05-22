@@ -103,7 +103,7 @@ $default = $this->params->get('access-plugin');
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 	<input type="hidden" name="action" value="savecollection" />
 
 	<p class="submit">

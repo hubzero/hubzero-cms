@@ -65,7 +65,7 @@ $this->css()
 			<input type="reset" class="cancel" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_CANCEL'); ?>" />
 		</p>
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>
 <div class="clear"></div>

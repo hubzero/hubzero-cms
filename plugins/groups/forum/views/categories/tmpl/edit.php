@@ -128,7 +128,7 @@ if ($this->category->get('section_id') == 0)
 		<input type="hidden" name="active" value="forum" />
 		<input type="hidden" name="action" value="savecategory" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 	<div class="clear"></div>
 </section><!-- / .main section -->

@@ -52,11 +52,11 @@ class JFormFieldMailers extends JFormFieldList
 	protected function getOptions()
 	{
 		$options   = [];
-		$options[] = JHtml::_('select.option', '', Lang::txt('Site default'));
+		$options[] = Html::select('option', '', Lang::txt('Site default'));
 
 		foreach (Plugin::byType('mail') as $plugin)
 		{
-			$options[] = JHtml::_('select.option', $plugin->name, ucfirst($plugin->name));
+			$options[] = Html::select('option', $plugin->name, ucfirst($plugin->name));
 		}
 
 		return $options;

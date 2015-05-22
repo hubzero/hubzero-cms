@@ -33,6 +33,7 @@ namespace Modules\BreadCrumbs;
 use Hubzero\Module\Module;
 use Route;
 use Lang;
+use Html;
 use stdClass;
 
 /**
@@ -110,11 +111,11 @@ class Helper extends Module
 		{
 			if (Lang::isRTL())
 			{
-				$_separator = \JHtml::_('image', 'system/arrow_rtl.png', NULL, NULL, true);
+				$_separator = Html::asset('image', 'system/arrow_rtl.png', NULL, NULL, true);
 			}
 			else
 			{
-				$_separator = \JHtml::_('image', 'system/arrow.png', NULL, NULL, true);
+				$_separator = Html::asset('image', 'system/arrow.png', NULL, NULL, true);
 			}
 		}
 		else

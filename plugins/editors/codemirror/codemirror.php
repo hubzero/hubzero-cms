@@ -28,10 +28,10 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	 */
 	public function onInit()
 	{
-		JHtml::_('core');
+		Html::behavior('framework');
 		$uncompressed = Config::get('debug') ? '-uncompressed' : '';
-		JHtml::_('script', $this->_basePath . 'js/codemirror'.$uncompressed.'.js', false, false, false, false);
-		JHtml::_('stylesheet', $this->_basePath . 'css/codemirror.css');
+		Html::asset('script', $this->_basePath . 'js/codemirror'.$uncompressed.'.js', false, false, false, false);
+		Html::asset('stylesheet', $this->_basePath . 'css/codemirror.css');
 
 		return '';
 	}
@@ -222,7 +222,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	protected function _displayButtons($name, $buttons, $asset, $author)
 	{
 		// Load modal popup behavior
-		JHtml::_('behavior.modal', 'a.modal-button');
+		Html::behavior('modal', 'a.modal-button');
 
 		$html = array();
 		$results[] = $this->onGetInsertMethod($name);

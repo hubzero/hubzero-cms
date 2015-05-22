@@ -38,8 +38,8 @@ $group  = \Hubzero\User\Group::getInstance(Request::getCmd('cn', ''));
 $return = DS . trim(str_replace(Request::base(),'', Request::current()), DS);
 
 // include frameworks
-JHTML::_('behavior.framework', true);
-JHTML::_('behavior.modal');
+Html::behavior('framework', true);
+Html::behavior('modal');
 
 // include group script
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');

@@ -31,7 +31,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('stylesheet', 'mod_languages/template.css', array(), true);
+Html::asset('stylesheet', 'mod_languages/template.css', array(), true);
 ?>
 <div class="mod-languages<?php echo $moduleclass_sfx ?>">
 <?php if ($headerText) : ?>
@@ -42,7 +42,7 @@ JHtml::_('stylesheet', 'mod_languages/template.css', array(), true);
 	<form name="lang" method="post" action="<?php echo htmlspecialchars(JURI::current()); ?>">
 		<select class="inputbox" onchange="document.location.replace(this.value);" >
 		<?php foreach($list as $language):?>
-			<option dir=<?php echo JLanguage::getInstance($language->lang_code)->isRTL() ? '"rtl"' : '"ltr"'?> value="<?php echo $language->link;?>" <?php echo $language->active ? 'selected="selected"' : ''?>>
+			<option dir="<?php echo JLanguage::getInstance($language->lang_code)->isRTL() ? 'rtl' : 'ltr'; ?>" value="<?php echo $language->link;?>" <?php echo $language->active ? 'selected="selected"' : ''?>>
 			<?php echo $language->title_native;?></option>
 		<?php endforeach; ?>
 		</select>
@@ -54,7 +54,7 @@ JHtml::_('stylesheet', 'mod_languages/template.css', array(), true);
 			<li class="<?php echo $language->active ? 'lang-active' : '';?>" dir="<?php echo JLanguage::getInstance($language->lang_code)->isRTL() ? 'rtl' : 'ltr' ?>">
 			<a href="<?php echo $language->link;?>">
 			<?php if ($params->get('image', 1)):?>
-				<?php echo JHtml::_('image', 'mod_languages/' . $language->image . '.gif', $language->title_native, array('title'=>$language->title_native), true);?>
+				<?php echo Html::asset('image', 'mod_languages/' . $language->image . '.gif', $language->title_native, array('title'=>$language->title_native), true);?>
 			<?php else : ?>
 				<?php echo $params->get('full_name', 1) ? $language->title_native : strtoupper($language->sef);?>
 			<?php endif; ?>

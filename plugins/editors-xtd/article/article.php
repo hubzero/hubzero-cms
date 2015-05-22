@@ -57,7 +57,7 @@ class plgButtonArticle extends \Hubzero\Plugin\Plugin
 
 		Document::addScriptDeclaration($js);
 
-		JHtml::_('behavior.modal');
+		Html::behavior('modal');
 
 		/*
 		 * Use the built-in element view to select the article.

@@ -38,7 +38,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<?php echo Config::get('offline_message'); ?>
 			</p>
 <?php if (Plugin::isEnabled('authentication', 'openid')) : ?>
-			<?php JHTML::_('script', 'openid.js'); ?>
+			<?php Html::asset('script', 'openid.js'); ?>
 <?php endif; ?>
 			<form action="index.php" method="post" name="login" id="form-login">
 				<fieldset class="input">
@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<input type="hidden" name="option" value="com_user" />
 				<input type="hidden" name="task" value="login" />
 				<input type="hidden" name="return" value="<?php echo base64_encode(Request::base()) ?>" />
-				<?php echo JHTML::_( 'form.token' ); ?>
+				<?php echo Html::input('token'); ?>
 			</form>
 		</div>
 	</body>

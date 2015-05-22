@@ -204,7 +204,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	private function _displayButtons($name, $buttons, $asset, $author)
 	{
 		// Load modal popup behavior
-		JHtml::_('behavior.modal', 'a.modal-button');
+		Html::behavior('modal', 'a.modal-button');
 
 		$return = '';
 		$results[] = $this->onGetInsertMethod($name);

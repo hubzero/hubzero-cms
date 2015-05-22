@@ -70,7 +70,7 @@ if ($lang->isRTL() && $myrtl == 0) {
 				{
 					$text = JFilterOutput::stripImages($text);
 				}
-				$text = JHtml::_('string.truncate', $text, $this->params->get('feed_character_count'));
+				$text = \Hubzero\Utility\String::truncate($text, $this->params->get('feed_character_count'));
 					echo str_replace('&apos;', "'", $text);
 				?>
 

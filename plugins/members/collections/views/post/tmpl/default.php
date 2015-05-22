@@ -191,7 +191,7 @@ $this->css()
 						<input type="hidden" name="action" value="savecomment" />
 						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
 						<input type="submit" class="comment-submit" value="<?php echo Lang::txt('Post comment'); ?>" />

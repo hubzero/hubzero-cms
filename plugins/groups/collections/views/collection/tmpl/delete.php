@@ -60,7 +60,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<input type="hidden" name="board" value="<?php echo $this->collection->get('id'); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />

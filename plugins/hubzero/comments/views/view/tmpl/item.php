@@ -183,7 +183,7 @@ defined('_JEXEC') or die('Restricted access');
 								<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 								<input type="hidden" name="action" value="commentsave" />
 
-								<?php echo JHTML::_('form.token'); ?>
+								<?php echo Html::input('token'); ?>
 
 								<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 									<span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS'); ?></span>

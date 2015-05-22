@@ -122,7 +122,7 @@ $base = $this->offering->link() . '&active=pages';
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->model->get('id'); ?>" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

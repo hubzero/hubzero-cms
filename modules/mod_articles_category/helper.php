@@ -31,6 +31,7 @@
 namespace Modules\ArticlesCategory;
 
 use Hubzero\Module\Module;
+use Hubzero\Utility\String;
 use ContentHelperRoute;
 use Component;
 use stdClass;
@@ -42,7 +43,6 @@ use JModelLegacy;
 use JFactory;
 use JAccess;
 use JString;
-use JHtml;
 
 /**
  * Module class for displaying articles in a category
@@ -381,7 +381,7 @@ class Helper extends Module
 			$item->displayAuthorName = $show_author ? $item->author : '';
 			if ($show_introtext)
 			{
-				$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_category.content');
+				$item->introtext = Html::content('prepare', $item->introtext, '', 'mod_articles_category.content');
 				$item->introtext = self::_cleanIntrotext($item->introtext);
 			}
 			$item->displayIntrotext = $show_introtext ? self::truncate($item->introtext, $introtext_limit) : '';
@@ -424,15 +424,15 @@ class Helper extends Module
 		$diffLength = 0;
 
 		// First get the plain text string. This is the rendered text we want to end up with.
-		$ptString = JHtml::_('string.truncate', $html, $maxLength, $noSplit = true, $allowHtml = false);
+		$ptString = String::truncate($html, $maxLength, array('html' => true));
 
 		for ($maxLength; $maxLength < $baseLength;)
 		{
 			// Now get the string if we allow html.
-			$htmlString = JHtml::_('string.truncate', $html, $maxLength, $noSplit = true, $allowHtml = true);
+			$htmlString = String::truncate($html, $maxLength, array('html' => true));
 
 			// Now get the plain text from the html string.
-			$htmlStringToPtString = JHtml::_('string.truncate', $htmlString, $maxLength, $noSplit = true, $allowHtml = false);
+			$htmlStringToPtString = String::truncate($htmlString, $maxLength);
 
 			// If the new plain text string matches the original plain text string we are done.
 			if ($ptString == $htmlStringToPtString)

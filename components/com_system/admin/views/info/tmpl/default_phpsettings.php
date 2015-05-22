@@ -50,7 +50,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_SAFE_MODE'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['safe_mode']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['safe_mode']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_OPEN_BASEDIR'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.string', $this->php_settings['open_basedir']); ?>
+					<?php echo Html::phpsetting('string', $this->php_settings['open_basedir']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_DISPLAY_ERRORS'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['display_errors']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['display_errors']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -74,7 +74,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_SHORT_OPEN_TAGS'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['short_open_tag']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['short_open_tag']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -82,7 +82,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_FILE_UPLOADS'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['file_uploads']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['file_uploads']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -90,7 +90,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_MAGIC_QUOTES'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['magic_quotes_gpc']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['magic_quotes_gpc']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_REGISTER_GLOBALS'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['register_globals']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['register_globals']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -106,7 +106,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_OUTPUT_BUFFERING'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.boolean', $this->php_settings['output_buffering']); ?>
+					<?php echo Html::phpsetting('boolean', $this->php_settings['output_buffering']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_SESSION_SAVE_PATH'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.string', $this->php_settings['session.save_path']); ?>
+					<?php echo Html::phpsetting('string', $this->php_settings['session.save_path']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -122,7 +122,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_SESSION_AUTO_START'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.integer', $this->php_settings['session.auto_start']); ?>
+					<?php echo Html::phpsetting('integer', $this->php_settings['session.auto_start']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -130,7 +130,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_XML_ENABLED'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['xml']); ?>
+					<?php echo Html::phpsetting('set', $this->php_settings['xml']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -138,7 +138,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_ZLIB_ENABLED'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['zlib']); ?>
+					<?php echo Html::phpsetting('set', $this->php_settings['zlib']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -146,7 +146,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_ZIP_ENABLED'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['zip']); ?>
+					<?php echo Html::phpsetting('set', $this->php_settings['zip']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -154,7 +154,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_DISABLED_FUNCTIONS'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.string', $this->php_settings['disable_functions']); ?>
+					<?php echo Html::phpsetting('string', $this->php_settings['disable_functions']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -162,7 +162,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_MBSTRING_ENABLED'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['mbstring']); ?>
+					<?php echo Html::phpsetting('set', $this->php_settings['mbstring']); ?>
 				</td>
 			</tr>
 			<tr>
@@ -170,7 +170,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_ICONV_AVAILABLE'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('phpsetting.set', $this->php_settings['iconv']); ?>
+					<?php echo Html::phpsetting('set', $this->php_settings['iconv']); ?>
 				</td>
 			</tr>
 		</tbody>

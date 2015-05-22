@@ -122,7 +122,7 @@ $this->css()
 			<input type="hidden" name="no_html" id="pass_no_html" value="0" />
 			<input type="hidden" name="redirect" id="pass_redirect" value="1" />
 		</p>
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>
 <div class="clear"></div>

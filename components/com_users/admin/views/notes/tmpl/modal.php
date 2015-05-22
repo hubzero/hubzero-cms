@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 /* @var $this UsersViewNotes */
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 ?>
 <div class="unotes">
@@ -31,14 +31,14 @@ Html::behavior('tooltip');
 			</div>
 
 			<div class="fltlft utitle">
-				<?php echo JHtml::date($item->created_time, 'D d M Y H:i'); ?>
+				<?php echo Date::of($item->created_time)->toLocal('D d M Y H:i'); ?>
 			</div>
 
 			<?php $category_image = $item->cparams->get('image'); ?>
 
 			<?php if ($item->catid && isset($category_image)) : ?>
 			<div class="fltlft utitle">
-				<?php echo JHtml::_('users.image', $category_image); ?>
+				<?php echo Html::users('image', $category_image); ?>
 			</div>
 
 			<div class="fltlft utitle">

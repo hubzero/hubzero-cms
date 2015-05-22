@@ -59,7 +59,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 			$server = self::RECAPTCHA_API_SECURE_SERVER;
 		}
 
-		JHtml::_('script', $server.'/js/recaptcha_ajax.js');
+		Html::asset('script', $server.'/js/recaptcha_ajax.js');
 
 		Document::addScriptDeclaration('jQuery(document).ready(function($) {
 			Recaptcha.create("' . $pubkey . '", "dynamic_recaptcha_1", {theme: "' . $theme . '",' . $lang . 'tabindex: 0});

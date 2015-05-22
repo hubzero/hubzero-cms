@@ -17,11 +17,11 @@ defined('_JEXEC') or die;
 			<?php echo Lang::txt('COM_TEMPLATES_SITE_PREVIEW'); ?>
 		</h3>
 		<h3 class="fltrt">
-			<?php echo JHtml::_('link', $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id, Lang::txt('JBROWSERTARGET_NEW'), array('target' => '_blank')); ?>
+			<a href="<?php echo $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id; ?>" target="_blank"><?php echo Lang::txt('JBROWSERTARGET_NEW'); ?></a>
 		</h3>
 		<div class="clr"></div>
 		<div class="width-100 temprev">
-			<?php echo JHtml::_('iframe', $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id, 'previewframe',  array('class' => 'previewframe')) ?>
+			<iframe src="<?php echo $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id; ?>" name="previewframe" class="previewframe"></iframe>
 		</div>
 	</div>
 

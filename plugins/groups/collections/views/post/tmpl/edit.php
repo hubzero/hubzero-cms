@@ -221,7 +221,7 @@ $jbase = rtrim(Request::base(true), '/');
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 	<input type="hidden" name="action" value="save" />
 
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />

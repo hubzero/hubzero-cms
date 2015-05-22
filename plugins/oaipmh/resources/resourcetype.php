@@ -56,7 +56,7 @@ class JFormFieldResourcetype extends JFormFieldList
 	{
 		$options = array();
 
-		$options[] =  JHtml::_('select.option', '0', Lang::txt('All'));
+		$options[] =  Html::select('option', '0', Lang::txt('All'));
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
@@ -67,7 +67,7 @@ class JFormFieldResourcetype extends JFormFieldList
 
 		foreach ($types as $anode)
 		{
-			$options[] = JHtml::_('select.option', $anode->id, stripslashes($anode->type));
+			$options[] = Html::select('option', $anode->id, stripslashes($anode->type));
 		}
 
 		return $options;

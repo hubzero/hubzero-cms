@@ -8,13 +8,13 @@
 
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 
-$field		= Request::getCmd('field');
-$function	= 'jSelectUser_'.$field;
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$field     = Request::getCmd('field');
+$function  = 'jSelectUser_'.$field;
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
 <form action="<?php echo Route::url('index.php?option=com_users&view=users&layout=modal&tmpl=component&groups='.Request::getVar('groups', '', 'default', 'BASE64').'&excluded='.Request::getVar('excluded', '', 'default', 'BASE64'));?>" method="post" name="adminForm" id="adminForm">
@@ -29,7 +29,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</div>
 		<div class="col width-30 fltrt">
 			<label for="filter_group_id"><?php echo Lang::txt('COM_USERS_FILTER_USER_GROUP'); ?></label>
-			<?php echo JHtml::_('access.usergroup', 'filter_group_id', $this->state->get('filter.group_id'), 'onchange="this.form.submit()"'); ?>
+			<?php echo Html::access('usergroup', 'filter_group_id', $this->state->get('filter.group_id'), 'onchange="this.form.submit()"'); ?>
 		</div>
 	</fieldset>
 
@@ -37,13 +37,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th class="left">
-					<?php echo $this->grid('sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th>
-					<?php echo $this->grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
 				</th>
 				<th>
-					<?php echo $this->grid('sort', 'COM_USERS_HEADING_GROUPS', 'group_names', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_USERS_HEADING_GROUPS', 'group_names', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>

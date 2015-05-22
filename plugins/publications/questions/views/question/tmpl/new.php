@@ -51,7 +51,7 @@ $this->css();
 			<input type="hidden" name="action" value="save" />
 			<input type="hidden" name="funds" value="<?php echo $this->escape($this->funds); ?>" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 
 			<input type="hidden" name="tag" value="<?php echo $this->escape($this->tag); ?>" />
 			<input type="hidden" name="question[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />

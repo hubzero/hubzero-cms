@@ -200,7 +200,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 			{
 				$t[] = $text[0];
 
-				$t[] = (string) JHtml::_($style.'.start');
+				$t[] = (string) Html::$style('start');
 
 				foreach ($text as $key => $subtext)
 				{
@@ -220,12 +220,12 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 						{
 							$title = Lang::txt('PLG_CONTENT_PAGEBREAK_PAGE_NUM', $key + 1);
 						}
-						$t[] = (string) JHtml::_($style.'.panel', $title, 'basic-details');
+						$t[] = (string) Html::$style('panel', $title, 'basic-details');
 					}
 					$t[] = (string) $subtext;
 				}
 
-				$t[] = (string) JHtml::_($style.'.end');
+				$t[] = (string) Html::$style('end');
 
 				$row->text = implode(' ', $t);
 			}

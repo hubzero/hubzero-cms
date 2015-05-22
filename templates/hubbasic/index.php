@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.framework', true);
-JHTML::_('behavior.modal');
+Html::behavior('framework', true);
+Html::behavior('modal');
 
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 

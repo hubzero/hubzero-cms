@@ -56,16 +56,16 @@ class plgSystemJquery extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		JHTML::_('behavior.framework');
+		Html::behavior('framework');
 
 		if ($this->params->get('jqueryui'))
 		{
-			JHTML::_('behavior.framework', true);
+			Html::behavior('framework', true);
 		}
 
 		if ($this->params->get('jqueryfb'))
 		{
-			JHTML::_('behavior.modal');
+			Html::behavior('modal');
 		}
 
 		if ($this->params->get('noconflict' . $client))

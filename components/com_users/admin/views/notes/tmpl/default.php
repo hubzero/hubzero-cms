@@ -99,7 +99,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 				</td>
 				<td class="center">
 					<?php if ($item->catid && $item->cparams->get('image')) : ?>
-					<?php echo JHtml::_('users.image', $item->cparams->get('image')); ?>
+					<?php echo Html::users('image', $item->cparams->get('image')); ?>
 					<?php endif; ?>
 					<?php echo $this->escape($item->category_title); ?>
 				</td>

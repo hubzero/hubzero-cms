@@ -69,7 +69,7 @@ $this->css();
 		<input type="hidden" name="post" value="<?php echo $this->post->get('id'); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-		<?php echo JHTML::_('form.token'); ?>
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />

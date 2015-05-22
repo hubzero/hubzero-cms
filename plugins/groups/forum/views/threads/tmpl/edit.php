@@ -204,7 +204,7 @@ $this->css()
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->escape($this->section->get('alias')); ?>" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
 	</div><!-- / .subject -->

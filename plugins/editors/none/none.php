@@ -70,7 +70,7 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	void
 	 */
-	function onSave()
+	public function onSave()
 	{
 		return;
 	}
@@ -82,7 +82,7 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	string
 	 */
-	function onGetContent($id)
+	public function onGetContent($id)
 	{
 		return "document.getElementById('$id').value;\n";
 	}
@@ -95,7 +95,7 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	string
 	 */
-	function onSetContent($id, $html)
+	public function onSetContent($id, $html)
 	{
 		return "document.getElementById('$id').value = $html;\n";
 	}
@@ -105,7 +105,7 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	string
 	 */
-	function onGetInsertMethod($id)
+	public function onGetInsertMethod($id)
 	{
 		static $done = false;
 
@@ -138,7 +138,7 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	string
 	 */
-	function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
+	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
 		if (empty($id))
 		{
@@ -162,10 +162,10 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
 		return $editor;
 	}
 
-	function _displayButtons($name, $buttons, $asset, $author)
+	protected function _displayButtons($name, $buttons, $asset, $author)
 	{
 		// Load modal popup behavior
-		JHtml::_('behavior.modal', 'a.modal-button');
+		Html::behavior('modal', 'a.modal-button');
 
 		$return = '';
 		$results[] = $this->onGetInsertMethod($name);

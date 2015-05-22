@@ -97,7 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="unit" value="manage" />
 			<input type="hidden" name="action" value="savecategory" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">

@@ -82,7 +82,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('COM_SYSTEM_INFO_WEB_SERVER'); ?>
 				</th>
 				<td>
-					<?php echo JHtml::_('system.server', $this->info['server']); ?>
+					<?php echo Html::system('server', $this->info['server']); ?>
 				</td>
 			</tr>
 			<tr>

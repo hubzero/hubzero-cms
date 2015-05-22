@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('modal');
 $canDo = TemplatesHelper::getActions();
@@ -24,7 +24,7 @@ $canDo = TemplatesHelper::getActions();
 				<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION');?></legend>
 
 				<div class="input-wrap">
-					<?php echo JHtml::_('templates.thumb', $this->template->element, $this->template->client_id); ?>
+					<?php echo Html::templates('thumb', $this->template->element, $this->template->client_id); ?>
 
 					<h2><?php echo ucfirst($this->template->element); ?></h2>
 					<?php $client = JApplicationHelper::getClientInfo($this->template->client_id); ?>

@@ -59,7 +59,7 @@ defined('_JEXEC') or die;
 					<?php echo Lang::txt('JOFFLINE_MESSAGE'); ?>
 				</p>
 			<?php  endif; ?>
-			<form action="<?php echo JRoute::_('index.php', true); ?>" method="post" id="form-login">
+			<form action="<?php echo Route::url('index.php', true); ?>" method="post" id="form-login">
 				<fieldset class="input">
 					<p id="form-login-username">
 						<label for="username"><?php echo Lang::txt('JGLOBAL_USERNAME') ?></label>
@@ -82,7 +82,7 @@ defined('_JEXEC') or die;
 					<input type="hidden" name="option" value="com_users" />
 					<input type="hidden" name="task" value="user.login" />
 					<input type="hidden" name="return" value="<?php echo base64_encode(Request::base()) ?>" />
-					<?php echo JHtml::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</fieldset>
 			</form>
 		</div>

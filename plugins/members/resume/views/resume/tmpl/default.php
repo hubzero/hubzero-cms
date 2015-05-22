@@ -245,7 +245,7 @@ $this->css('jobs', 'com_jobs');
 						</label>
 					</div>
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 
 					<input type="hidden" name="action" value="uploadresume" />
 					<input type="hidden" name="path" value="<?php echo $this->escape($this->path); ?>" />

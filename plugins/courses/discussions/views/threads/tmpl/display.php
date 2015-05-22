@@ -233,7 +233,7 @@ $base = $this->offering->link() . '&active=forum';
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
 
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo Html::input('token'); ?>
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">

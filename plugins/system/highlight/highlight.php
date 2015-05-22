@@ -9,8 +9,6 @@
 
 defined('JPATH_BASE') or die;
 
-jimport('joomla.application.component.helper');
-
 /**
  * System plugin to highlight terms.
  *
@@ -74,7 +72,7 @@ class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
 		}
 
 		// Activate the highlighter.
-		JHtml::_('behavior.highlighter', $cleanTerms);
+		Html::behavior('highlighter', $cleanTerms);
 
 		// Adjust the component buffer.
 		$buf = Document::getBuffer('component');

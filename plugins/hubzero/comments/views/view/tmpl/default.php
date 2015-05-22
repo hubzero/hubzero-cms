@@ -132,7 +132,7 @@ $this->css()
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="action" value="commentsave" />
 
-							<?php echo JHTML::_('form.token'); ?>
+							<?php echo Html::input('token'); ?>
 
 							<div class="sidenote">
 								<p>

@@ -71,8 +71,8 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
 			$img = '';
 
 			// look for images in template if available
-			$starImageOn  = JHtml::_('image', 'system/rating_star.png', NULL, NULL, true);
-			$starImageOff = JHtml::_('image', 'system/rating_star_blank.png', NULL, NULL, true);
+			$starImageOn  = Html::asset('image', 'system/rating_star.png', NULL, NULL, true);
+			$starImageOff = Html::asset('image', 'system/rating_star_blank.png', NULL, NULL, true);
 
 			for ($i=0; $i < $rating; $i++)
 			{
@@ -83,7 +83,7 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
 				$img .= $starImageOff;
 			}
 			$html .= '<span class="content_rating">';
-			$html .= Lang::txt( 'PLG_VOTE_USER_RATING', $img, $rating_count );
+			$html .= Lang::txt('PLG_VOTE_USER_RATING', $img, $rating_count);
 			$html .= "</span>\n<br />\n";
 
 			if ($view == 'article' && $row->state == 1)
@@ -104,7 +104,7 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
 				$html .= '<input type="hidden" name="task" value="article.vote" />';
 				$html .= '<input type="hidden" name="hitcount" value="0" />';
 				$html .= '<input type="hidden" name="url" value="'.  htmlspecialchars($uri->toString()) .'" />';
-				$html .= JHtml::_('form.token');
+				$html .= Html::input('token');
 				$html .= '</div>';
 				$html .= '</form>';
 			}

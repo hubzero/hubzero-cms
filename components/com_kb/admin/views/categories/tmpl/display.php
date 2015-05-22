@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 			<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
 			<select name="access" id="filter-access" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-				<?php echo Html::select('options', JHtml::_('access.assetgroups'), 'value', 'text', $this->filters['access']); ?>
+				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 		</div>
 	</fieldset>

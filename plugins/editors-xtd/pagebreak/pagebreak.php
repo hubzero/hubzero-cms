@@ -42,7 +42,7 @@ class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
 
 		$link = 'index.php?option=com_content&amp;view=article&amp;layout=pagebreak&amp;tmpl=component&amp;e_name='.$name;
 
-		JHtml::_('behavior.modal');
+		Html::behavior('modal');
 
 		$button = new \Hubzero\Base\Object;
 		$button->set('modal', true);

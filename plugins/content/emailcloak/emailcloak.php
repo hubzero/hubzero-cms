@@ -91,13 +91,15 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 * Check for presence of {emailcloak=off} which is explicits disables this
 		 * bot for the item.
 		 */
-		if (JString::strpos($text, '{emailcloak=off}') !== false) {
+		if (JString::strpos($text, '{emailcloak=off}') !== false)
+		{
 			$text = JString::str_ireplace('{emailcloak=off}', '', $text);
 			return true;
 		}
 
 		// Simple performance check to determine whether bot should process further.
-		if (JString::strpos($text, '@') === false) {
+		if (JString::strpos($text, '@') === false)
+		{
 			return true;
 		}
 
@@ -111,7 +113,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		$searchText = '((?:[\x20-\x7f]|[\xA1-\xFF]|[\xC2-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF4][\x80-\xBF]{3})[^<>]+)';
 
 		//Any Image link
-		$searchImage	=	"(<img[^>]+>)";
+		$searchImage = "(<img[^>]+>)";
 
 		// Any Text with <span
 		$searchTextSpan = '(<span[^>]+>|<span>|<strong>|<strong><span[^>]+>|<strong><span>)' . $searchText . '(</span>|</strong>|</span></strong>)';
@@ -126,12 +128,13 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 */
 		$pattern = $this->_getPattern($searchEmail, $searchEmail);
 		$pattern = str_replace('"mailto:', '"http://mce_host([\x20-\x7f][^<>]+/)', $pattern);
-		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
+		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE))
+		{
 			$mail = $regs[3][0];
 			$mailText = $regs[5][0];
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
@@ -147,12 +150,13 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 */
 		$pattern = $this->_getPattern($searchEmail, $searchText);
 		$pattern = str_replace('"mailto:', '"http://mce_host([\x20-\x7f][^<>]+/)', $pattern);
-		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
+		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE))
+		{
 			$mail = $regs[3][0];
 			$mailText = $regs[5][0];
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
@@ -166,12 +170,13 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 		 * >email@amail.com</a>
 		 */
 		$pattern = $this->_getPattern($searchEmail, $searchEmail);
-		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
+		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE))
+		{
 			$mail = $regs[2][0];
 			$mailText = $regs[4][0];
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
@@ -192,7 +197,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mailText = $regs[4][0] . $regs[5][0] . $regs[6][0];
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -212,7 +217,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = $regs[2][0];
 			$mailText = $regs[4][0] . addslashes($regs[5][0]) . $regs[6][0];
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -230,7 +235,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = $regs[2][0];
 			$mailText = addslashes($regs[4][0]);
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]);
@@ -248,7 +253,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = $regs[2][0];
 			$mailText = $regs[4][0];
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -268,7 +273,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = $regs[2][0];
 			$mailText = $regs[4][0] . ($regs[5][0]);
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -288,7 +293,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = $regs[2][0];
 			$mailText = $regs[4][0] . addslashes($regs[5][0]);
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -310,7 +315,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = str_replace('&amp;', '&', $mail);
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
@@ -331,7 +336,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			// Needed for handling of Body parameter
 			$mail = str_replace('&amp;', '&', $mail);
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = $this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]);
@@ -352,7 +357,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mailText = $regs[4][0] . $regs[5][0] . $regs[6][0] . $regs[7][0];
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -372,7 +377,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = $regs[2][0] . $regs[3][0];
 			$mailText = $regs[4][0] . $regs[5][0] . addslashes($regs[6][0]) . $regs[7][0];
 
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[3][0]));
@@ -394,7 +399,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = str_replace('&amp;', '&', $mail);
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
@@ -418,7 +423,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = str_replace('&amp;', '&', $mail);
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText);
+			$replacement = $this->cloak($mail, $mode, $mailText);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
@@ -442,7 +447,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 			$mail = str_replace('&amp;', '&', $mail);
 
 			// Check to see if mail text is different from mail addy
-			$replacement = JHtml::_('email.cloak', $mail, $mode, $mailText, 0);
+			$replacement = $this->cloak($mail, $mode, $mailText, 0);
 
 			// Ensure that attributes is not stripped out by email cloaking
 			$replacement = html_entity_decode($this->_addAttributesToEmail($replacement, $regs[1][0], $regs[4][0]));
@@ -453,14 +458,106 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 
 		// Search for plain text email@amail.com
 		$pattern = '~' . $searchEmail . '([^a-z0-9]|$)~i';
-		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
+		while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE))
+		{
 			$mail = $regs[1][0];
-			$replacement = JHtml::_('email.cloak', $mail, $mode);
+			$replacement = $this->cloak($mail, $mode);
 
 			// Replace the found address with the js cloaked email
 			$text = substr_replace($text, $replacement, $regs[1][1], strlen($mail));
 		}
 
 		return true;
+	}
+
+	/**
+	 * Simple JavaScript email cloaker
+	 *
+	 * By default replaces an email with a mailto link with email cloaked
+	 *
+	 * @param   string   $mail    The -mail address to cloak.
+	 * @param   boolean  $mailto  True if text and mailing address differ
+	 * @param   string   $text    Text for the link
+	 * @param   boolean  $email   True if text is an e-mail address
+	 * @return  string  The cloaked email.
+	 */
+	public function cloak($mail, $mailto = true, $text = '', $email = true)
+	{
+		// Convert mail
+		$mail = $this->convertEncoding($mail);
+
+		// Split email by @ symbol
+		$mail = explode('@', $mail);
+		$mail_parts = explode('.', $mail[1]);
+
+		// Random number
+		$rand = rand(1, 100000);
+
+		$replacement = '<span id="cloak' . $rand . '">' . Lang::txt('JLIB_HTML_CLOAKING') . '</span>' . "<script type='text/javascript'>";
+		$replacement .= "\n //<!--";
+		$replacement .= "\n document.getElementById('cloak$rand').innerHTML = '';";
+		$replacement .= "\n var prefix = '&#109;a' + 'i&#108;' + '&#116;o';";
+		$replacement .= "\n var path = 'hr' + 'ef' + '=';";
+		$replacement .= "\n var addy" . $rand . " = '" . @$mail[0] . "' + '&#64;';";
+		$replacement .= "\n addy" . $rand . " = addy" . $rand . " + '" . implode("' + '&#46;' + '", $mail_parts) . "';";
+
+		if ($mailto)
+		{
+			// Special handling when mail text is different from mail address
+			if ($text)
+			{
+				// Convert text - here is the right place
+				$text = $this->convertEncoding($text);
+
+				if ($email)
+				{
+					// Split email by @ symbol
+					$text = explode('@', $text);
+					$text_parts = explode('.', $text[1]);
+					$replacement .= "\n var addy_text" . $rand . " = '" . @$text[0] . "' + '&#64;' + '" . implode("' + '&#46;' + '", @$text_parts) . "';";
+				}
+				else
+				{
+					$replacement .= "\n var addy_text" . $rand . " = '" . $text . "';";
+				}
+
+				$replacement .= "\n document.getElementById('cloak$rand').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy" . $rand . " + '\'>'+addy_text" . $rand . "+'<\/a>';";
+			}
+			else
+			{
+				$replacement .= "\n document.getElementById('cloak$rand').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy" . $rand . " + '\'>' + addy" . $rand . "+'<\/a>';";
+			}
+		}
+		else
+		{
+			$replacement .= "\n document.getElementById('cloak$rand').innerHTML += addy" . $rand . ";";
+		}
+
+		$replacement .= "\n //-->";
+		$replacement .= "\n </script>";
+
+		return $replacement;
+	}
+
+	/**
+	 * Convert encoded text
+	 *
+	 * @param   string  $text  Text to convert
+	 * @return  string  The converted text.
+	 */
+	protected function convertEncoding($text)
+	{
+		$text = html_entity_decode($text);
+
+		// Replace vowels with character encoding
+		$text = str_replace('a', '&#97;', $text);
+		$text = str_replace('e', '&#101;', $text);
+		$text = str_replace('i', '&#105;', $text);
+		$text = str_replace('o', '&#111;', $text);
+		$text = str_replace('u', '&#117;', $text);
+
+		$text = htmlentities($text, ENT_QUOTES, 'UTF-8', false);
+
+		return $text;
 	}
 }

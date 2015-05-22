@@ -114,7 +114,7 @@ $rows = $this->offering->announcements(array(
 					<input type="hidden" name="active" value="announcements" />
 					<input type="hidden" name="action" value="save" />
 
-					<?php echo JHTML::_('form.token'); ?>
+					<?php echo Html::input('token'); ?>
 				</form>
 			</div><!-- / .col -->
 		</div><!-- / .grid -->

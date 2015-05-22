@@ -196,14 +196,14 @@ class Categories extends AdminController
 		$max = intval($this->view->row->getCategoryCount()) + 1;
 		for ($i=1; $i < $max; $i++)
 		{
-			$order[] = \JHTML::_('select.option', $i, $i, 'value', 'text');
+			$order[] = \Html::select('option', $i, $i, 'value', 'text');
 		}
 
-		$ipos[] = \JHTML::_('select.option', 'left', Lang::txt('left'), 'value', 'text');
-		$ipos[] = \JHTML::_('select.option', 'right', Lang::txt('right'), 'value', 'text');
+		$ipos[] = \Html::select('option', 'left', Lang::txt('left'), 'value', 'text');
+		$ipos[] = \Html::select('option', 'right', Lang::txt('right'), 'value', 'text');
 
-		$this->view->iposlist = \JHTML::_(
-			'select.genericlist',
+		$this->view->iposlist = \Html::select(
+			'genericlist',
 			$ipos,
 			'image_position',
 			'class="inputbox" size="1"',
@@ -215,17 +215,17 @@ class Categories extends AdminController
 		);
 
 		$imgFiles = $this->readDirectory(PATH_CORE . DS . 'site' . DS . 'media' . DS . 'images');
-		$images = array(\JHTML::_('select.option', '', Lang::txt('Select Image'), 'value', 'text'));
+		$images = array(\Html::select('option', '', Lang::txt('Select Image'), 'value', 'text'));
 		foreach ($imgFiles as $file)
 		{
 			if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/", $file))
 			{
-				$images[] = \JHTML::_('select.option', $file, $file, 'value', 'text');
+				$images[] = \Html::select('option', $file, $file, 'value', 'text');
 			}
 		}
 
-		$this->view->imagelist = \JHTML::_(
-			'select.genericlist',
+		$this->view->imagelist = \Html::select(
+			'genericlist',
 			$images,
 			'image',
 			'class="inputbox" size="1"' . " onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/M_images/blank.png'}\"",
@@ -236,8 +236,8 @@ class Categories extends AdminController
 			false
 		);
 
-		$this->view->orderlist = \JHTML::_(
-			'select.genericlist',
+		$this->view->orderlist = \Html::select(
+			'genericlist',
 			$order,
 			'ordering',
 			'class="inputbox" size="1"',

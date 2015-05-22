@@ -31,6 +31,7 @@
 namespace Hubzero\Pagination;
 
 use Hubzero\Base\Object;
+use Hubzero\Html\Builder\Grid;
 
 /**
  * Pagination Class. Provides a common interface for content pagination for the platform.
@@ -285,7 +286,7 @@ class Paginator extends Object
 	{
 		if (($i > 0 || ($i + $this->limitstart > 0)) && $condition)
 		{
-			return \JHtml::_('jgrid.orderUp', $i, $task, '', $alt, $enabled, $checkbox);
+			return Grid::orderUp($i, $task, '', $alt, $enabled, $checkbox);
 		}
 		else
 		{
@@ -309,7 +310,7 @@ class Paginator extends Object
 	{
 		if (($i < $n - 1 || $i + $this->limitstart < $this->total - 1) && $condition)
 		{
-			return \JHtml::_('jgrid.orderDown', $i, $task, '', $alt, $enabled, $checkbox);
+			return Grid::orderDown($i, $task, '', $alt, $enabled, $checkbox);
 		}
 		else
 		{

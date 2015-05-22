@@ -46,9 +46,9 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		$app      = JFactory::getApplication();
 		$language = JFactory::getLanguage();
 
-		$mode	= (int) $this->params->get('mode', 1);
-		$theme	= array('simple', 'advanced', 'advanced');
-		$skin	= $this->params->get('skin', '0');
+		$mode  = (int) $this->params->get('mode', 1);
+		$theme = array('simple', 'advanced', 'advanced');
+		$skin  = $this->params->get('skin', '0');
 
 		switch ($skin)
 		{
@@ -68,10 +68,10 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 				$skin = 'skin : "default",';
 		}
 
-		$entity_encoding	= $this->params->def('entity_encoding', 'raw');
+		$entity_encoding = $this->params->def('entity_encoding', 'raw');
 
-		$langMode			= $this->params->def('lang_mode', 0);
-		$langPrefix			= $this->params->def('lang_code', 'en');
+		$langMode        = $this->params->def('lang_mode', 0);
+		$langPrefix      = $this->params->def('lang_code', 'en');
 
 		if ($langMode)
 		{
@@ -90,8 +90,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		/*
 		 * Lets get the default template for the site application
 		 */
-		$db		= JFactory::getDBO();
-		$query	= $db->getQuery(true);
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
 
 		$query->select('template');
 		$query->from('#__template_styles');
@@ -742,7 +742,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	private function _displayButtons($name, $buttons, $asset, $author)
 	{
 		// Load modal popup behavior
-		JHtml::_('behavior.modal', 'a.modal-button');
+		Html::behavior('modal', 'a.modal-button');
 
 		$return = '';
 		$results[] = $this->onGetInsertMethod($name);

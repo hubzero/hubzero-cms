@@ -321,7 +321,7 @@ if (count($inst) > 0)
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="action" value="savethread" />
 
-						<?php echo JHTML::_('form.token'); ?>
+						<?php echo Html::input('token'); ?>
 
 						<p class="instructions">
 							<?php echo Lang::txt('Click on a section and category to the left to view a list of comments.'); ?><br /><br />
