@@ -134,7 +134,7 @@ endif; ?>
 		$item = $menu->getItems('link', $needle, true);
 		$cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
 	?>
-		<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', '<a href="' . Route::url($cntlink) . '">' . $author . '</a>')); ?>
+		<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', '<a href="' . Route::url($cntlink) . '">' . $author . '</a>'); ?>
 	<?php else: ?>
 		<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
 	<?php endif; ?>

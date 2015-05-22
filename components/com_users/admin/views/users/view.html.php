@@ -58,7 +58,7 @@ class UsersViewUsers extends JViewLegacy
 			//Toolbar::addNew('user.add');
 		}
 
-		if ($canDo->get('core.edit')) 
+		if ($canDo->get('core.edit'))
 		{
 			Toolbar::editList('user.edit');
 		}
