@@ -57,7 +57,7 @@ else
 }
 
 // Get curator status
-if ($this->name == 'curator') 
+if ($this->name == 'curator')
 {
 	$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'curator');
 }
