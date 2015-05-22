@@ -54,7 +54,7 @@ class modLatestDiscussions extends \Hubzero\Module\Module
 		$forum = new ForumModel();
 
 		//based on param decide what to include
-		switch ($this->params->get('forum', 'both')) 
+		switch ($this->params->get('forum', 'both'))
 		{
 			case 'site':
 				$posts = $forum->posts('list', array(
@@ -100,24 +100,24 @@ class modLatestDiscussions extends \Hubzero\Module\Module
 		$p = array();
 
 		// Run through all the posts and collect some data
-		foreach ($posts as $k => $post) 
+		foreach ($posts as $k => $post)
 		{
 			if ($post->get('scope') == 'group')
 			{
 				$group = \Hubzero\User\Group::getInstance($post->get('scope_id'));
-				if (is_object($group)) 
+				if (is_object($group))
 				{
 					$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
 
-					if ($forum_access == 'nobody' 
-					 || ($forum_access == 'registered' && $juser->get('guest')) 
-					 || ($forum_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
+					if ($forum_access == 'nobody'
+					 || ($forum_access == 'registered' && $juser->get('guest'))
+					 || ($forum_access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
 					{
 						$posts->remove($k);
 						continue;
 					}
-				} 
-				else 
+				}
+				else
 				{
 					$posts->remove($k);
 					continue;
@@ -130,7 +130,7 @@ class modLatestDiscussions extends \Hubzero\Module\Module
 			{
 				$threads[$post->get('id')] = $post->get('title');
 			}
-			else 
+			else
 			{
 				$threads[$post->get('thread')] = (isset($threads[$post->get('thread')])) ? $threads[$post->get('thread')] : '';
 				if (!$threads[$post->get('thread')])
