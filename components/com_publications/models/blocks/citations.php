@@ -145,9 +145,6 @@ class Citations extends Base
 
 		if (!isset($pub->_citations))
 		{
-			$config = Component::params( 'com_publications' );
-			$pub->_citationFormat = $config->get('citation_format', 'apa');
-
 			// Get citations for this publication
 			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
@@ -194,9 +191,6 @@ class Citations extends Base
 
 		if (!isset($pub->_citations))
 		{
-			$config = Component::params( 'com_publications' );
-			$pub->_citationFormat = $config->get('citation_format', 'apa');
-
 			// Get citations for this publication
 			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
@@ -212,11 +206,13 @@ class Citations extends Base
 		$parts 	= explode("doi:", $url);
 		$doi   	= count($parts) > 1 ? $parts[1] : $url;
 
+		$citationFormat = $pub->config('citation_format', 'apa');
+
 		// Plugin params
 		$plugin_params = array(
 			$pub->id,
 			$doi,
-			$pub->_citationFormat,
+			$citationFormat,
 			$actor,
 			true
 		);
@@ -370,9 +366,6 @@ class Citations extends Base
 
 		if (!isset($pub->_citations))
 		{
-			$config = Component::params( 'com_publications' );
-			$pub->_citationFormat = $config->get('citation_format', 'apa');
-
 			// Get citations for this publication
 			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );

@@ -1499,7 +1499,7 @@ class Curation extends Object
 			if ($status->status != 3)
 			{
 				$status->updatenotice 	= Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
-					. Date::of($status->updated)->format('M d, Y H:i') . $by;
+					. Date::of($status->updated)->format('M d, Y @ H:i') . $by;
 			}
 			else
 			{

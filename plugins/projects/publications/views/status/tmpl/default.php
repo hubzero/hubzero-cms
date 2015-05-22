@@ -31,14 +31,14 @@ if ($this->pub->version->get('doi'))
 	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 
 	$cite 		 	= new stdClass();
-	$cite->title 	= $this->pub->title;
+	$cite->title 	= $this->pub->get('title');
 	$date 			= ($this->pub->published()) ? $this->pub->published() : $this->pub->submitted();
 	$cite->year  	= Date::of($date)->toLocal('Y');
 	$cite->location = '';
 	$cite->date 	= '';
 	$cite->type     = '';
 	$cite->author   = $this->pub->getUnlinkedContributors();
-	$cite->doi      = $this->pub->version->get('doi');
+	$cite->doi      = $this->pub->get('doi');
 	$cite->url      = trim(Request::base(), DS) . Route::url($this->pub->link('version'));
 
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);

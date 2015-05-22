@@ -608,7 +608,7 @@ class Link extends Base
 		$data 			= new stdClass;
 		$data->row 		= $att;
 		$data->ordering = $i;
-		$data->editUrl  = $view->editUrl;
+		$data->editUrl  = $view->pub->link('editversion');
 		$data->id		= $att->id;
 		$data->props	= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
 		$data->viewer	= $view->viewer;

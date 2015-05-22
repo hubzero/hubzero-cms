@@ -25,21 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Build url
-$route = $this->model->isProvisioned()
-	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
+// Get block properties
+$complete = $this->publication->curation('blocks', $this->step, 'complete');
+$manifest = $this->publication->curation('blocks', $this->step, 'manifest');
 
-$block   	= $this->block;
-$step  	 	= $this->step;
-$elementId 	= $this->element;
-
-// Get requirements
-$blocks   		= $this->publication->_curationModel->_progress->blocks;
-$blockParams   	= $blocks->$step->manifest->params;
-if ($blocks->$step->manifest->elements)
+$elementId = $this->element;
+if ($manifest->elements)
 {
-	$element  		= $blocks->$step->manifest->elements->$elementId;
+	$element  		= $manifest->elements->$elementId;
 	$typeParams   	= $element->params->typeParams;
 }
 else
@@ -52,11 +45,11 @@ $action 	= isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl'
 $btnLabel 	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
 $placeHolder= 'http://';
 
-$title = $block == 'citations'
+$title = $this->block == 'citations'
 	? Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_DOI')
 	: Lang::txt('PLG_PROJECTS_LINKS_SELECTOR');
 
-if ($block == 'citations')
+if ($this->block == 'citations')
 {
 	$label  	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_DOI');
 	$action 	= 'parsedoi';
@@ -64,14 +57,7 @@ if ($block == 'citations')
 	$placeHolder= 'doi:';
 }
 
-//$newCiteUrl   = 'citations/add?publication=' . $this->publication->id;
-$newCiteUrl   = $this->model->isProvisioned()
-		? Route::url( $route) . '?active=links&amp;action=newcite'
-		: Route::url( $route . '&active=links&action=newcite') .'/?p=' . $this->props . '&amp;pid='
-		. $this->publication->id . '&amp;vid=' . $this->publication->version_id;
-
-// Save Selection URL
-$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
+$newCiteUrl = Route::url( $this->publication->link('editversionid') . '&active=links&action=newcite&p=' . $this->props);
 
 ?>
 <div id="abox-content-wrap">
@@ -84,23 +70,23 @@ $url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.
 				<?php } ?>
 			</span>
 		</h3>
-		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
+		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $this->publication->link('editversionid'); ?>">
 			<fieldset >
 				<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
-				<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
+				<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="p" id="p" value="<?php echo $this->props; ?>" />
-				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
-				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-				<input type="hidden" name="section" id="section" value="<?php echo $block; ?>" />
-				<input type="hidden" name="step" value="<?php echo $step; ?>" />
-				<input type="hidden" name="element" value="<?php echo $elementId; ?>" />
+				<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
+				<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
+				<input type="hidden" name="section" id="section" value="<?php echo $this->block; ?>" />
+				<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
+				<input type="hidden" name="element" value="<?php echo $this->element; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="apply" />
 				<input type="hidden" name="move" value="continue" />
 				<input type="hidden" name="parseaction" id="parseaction" value="<?php echo $action; ?>" />
-				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo Route::url( $route); ?>" />
+				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo Route::url($this->publication->link('editbase')); ?>" />
 				<?php if ($this->model->isProvisioned()) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
@@ -109,14 +95,14 @@ $url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.
 				<div id="import-link">
 					<label>
 						<?php echo $label . ':'; ?>
-					<input type="text" name="<?php echo $block == 'citations' ? 'citation-doi' : 'url[]'; ?>" size="40" id="parse-url" placeholder="<?php echo $placeHolder; ?>" value="" />
+					<input type="text" name="<?php echo $this->block == 'citations' ? 'citation-doi' : 'url[]'; ?>" size="40" id="parse-url" placeholder="<?php echo $placeHolder; ?>" value="" />
 					<input type="hidden" name="title[]" id="parse-title" value="" />
 					<input type="hidden" name="desc[]" id="parse-description" value="" />
 					</label>
 					<div id="preview-wrap"></div>
 				</div>
 		</form>
-		<?php if ($block == 'citations') {
+		<?php if ($this->block == 'citations') {
 			$config 	  = Component::params( 'com_citations' );
 			$allow_import = $config->get('citation_import', 1);
 			if ($allow_import) { ?>

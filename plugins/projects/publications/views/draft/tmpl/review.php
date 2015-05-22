@@ -25,30 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
-// Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
-$manifest = $this->pub->_curationModel->_manifest;
-
-$props = $name . '-' . $this->step;
-
-// Build url
-$route = $this->pub->link('editbase');
-$selectUrl   = $prov
-		? Route::url( $route) . '?active=team&action=select'
-		: Route::url( $route . '&active=team&action=select') .'/?p=' . $props . '&amp;pid='
-		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
+$complete = $this->pub->curation('complete');
+$params   = $this->pub->curation('params');
 
 $elName = "reviewPanel";
 
-$complete = $this->pub->_curationModel->_progress->complete;
-
-$requireDoi   = isset($manifest->params->require_doi) ? $manifest->params->require_doi : 0;
-$showArchival = isset($manifest->params->show_archival) ? $manifest->params->show_archival : 0;
+$requireDoi   = isset($params->require_doi) ? $params->require_doi : 0;
+$showArchival = isset($params->show_archival) ? $params->show_archival : 0;
 
 // Get hub config
 $site     = trim(Request::base(), DS);
@@ -61,18 +44,17 @@ if ($this->pub->doi)
 	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 
 	$cite 		 	= new stdClass();
-	$cite->title 	= $this->pub->title;
-	$date 			= ($this->pub->published_up && $this->pub->published_up != '0000-00-00 00:00:00')
-					? $this->pub->published_up : $this->pub->submitted;
+	$cite->title 	= $this->pub->get('title');
+	$date 			= ($this->pub->published()) ? $this->pub->published() : $this->pub->submitted();
 	$cite->year  	= Date::of($date)->format('Y');
 	$cite->location = '';
 	$cite->date 	= '';
 
-	$cite->url = $site . DS . 'publications' . DS . $this->pub->id . '?v=' . $this->pub->version_number;
-	$cite->type = '';
-	$cite->author = $this->pub->getUnlinkedContributors();
-	$cite->doi = $this->pub->doi;
-	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
+	$cite->url      = $site . Route::url($this->pub->link('version'));
+	$cite->type     = '';
+	$cite->author   = $this->pub->getUnlinkedContributors();
+	$cite->doi      = $this->pub->get('doi');
+	$citation       = \Components\Citations\Helpers\Format::formatReference($cite);
 }
 
 // Embargo
@@ -131,7 +113,7 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 	 </div>
 	<?php } ?>
 	<?php // DOI block
-		if ($requireDoi == 1 || $this->pub->doi) {
+		if ($requireDoi == 1 || $this->pub->get('doi')) {
 	?>
 	 <div class="blockelement" id="review-doi">
 		<div class="element_editing">
@@ -158,7 +140,8 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 						<span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 					</label>
 
-					<?php if ($this->pub->submitter()) {
+					<?php if ($this->pub->submitter())
+					{
 						// Do we have a submitter choice?
 						$submitter  = $this->pub->submitter()->name;
 						$submitter .= $this->pub->submitter()->organization ? ', ' . $this->pub->submitter()->organization : '';
@@ -232,10 +215,10 @@ $termsUrl = $this->pub->config()->get('deposit_terms', '');
 	<div class="submitarea" id="submit-area">
 		<span class="submit-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
 		<span class="button-wrapper icon-apply">
-			<input type="submit" value="<?php echo $this->pub->state == 7 ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+			<input type="submit" value="<?php echo $this->pub->isWorked() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
 		</span>
 	</div>
 	<?php } ?>
-	<input type="hidden" name="version" value="<?php echo $this->pub->versionAlias; ?>" />
+	<input type="hidden" name="version" value="<?php echo $this->pub->versionAlias(); ?>" />
 	<input type="hidden" name="confirm" value="1" />
 </div>

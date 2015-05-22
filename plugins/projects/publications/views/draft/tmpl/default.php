@@ -34,6 +34,7 @@ $class  = $this->pub->getStatusCss();
 
 // Get block content
 $blockcontent = $this->pub->_curationModel->parseBlock('edit');
+
 ?>
 <?php 
 // Write title

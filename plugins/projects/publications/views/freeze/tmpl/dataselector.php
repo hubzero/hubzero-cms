@@ -25,13 +25,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// Get block properties
+$complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
+$props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
+$required = $this->pub->curation('blocks', $this->master->blockId, 'required');
+
+$elName   		= 'content-element' . $this->elementId;
+$max 	  		= $this->manifest->params->max;
 $multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
 				&& $this->manifest->params->typeParams->multiZip == 0)
 				? false : true;
-$required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
-$complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
-$elName   		= 'content-element' . $this->elementId;
-$max 	  		= $this->manifest->params->max;
 
 // Customize title
 $defaultTitle	= $this->manifest->params->title
@@ -64,8 +67,7 @@ else
 }
 
 // Get version params and extract bundle name
-$versionParams 	= new JParameter( $this->pub->params );
-$bundleName		= $versionParams->get($elName . 'bundlename', $defaultTitle);
+$bundleName		= $this->pub->params->get($elName . 'bundlename', $defaultTitle);
 $bundleName		= $bundleName ? $bundleName : 'bundle';
 $bundleName	   .= '.zip';
 
@@ -88,19 +90,7 @@ if ($handler)
 	$handler = $modelHandler->ini($handler);
 }
 
-$bundleUrl = Route::url('index.php?option=com_publications&task=serve&id='
-			. $this->pub->id . '&v=' . $this->pub->version_number )
-			. '?el=' . $this->elementId . '&amp;download=1';
-
-$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
-
-// Build url
-$route = $this->pub->_project->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->get('alias') . '&active=publications';
-
-$this->editUrl = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
+$bundleUrl = Route::url($this->pub->link('serve') . '&el=' . $this->elementId . '&download=1');
 
 // Get curator status
 if ($this->name == 'curator')
@@ -125,11 +115,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 		<?php if ($this->name == 'curator') { ?>
 		<div class="block-aside"><div class="block-info"><?php echo $about; ?></div>
 		</div>
-		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, $this->editUrl, $this->manifest->label); ?>
+		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->label); ?>
 		<div class="block-subject">
 		<?php } ?>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
-				<?php if (count($this->attachments)) { echo ' (' . count($this->attachments) .')'; }?>
+				<?php if (count($this->attachments)) { echo ' (' . count($this->attachments) . ')'; }?>
 				<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file') { ?><span class="download-all"><a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo Lang::txt('Download all'); ?></a></span><?php } ?></h5>
 				<?php if ($this->name == 'curator') { echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); } ?>
 		<?php if (count($this->attachments) > 0) { ?>

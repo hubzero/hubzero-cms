@@ -40,13 +40,8 @@ if ($this->row->type == 'file')
 		: Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
 }
 
-// Get block properties
-$step 	   = $this->step;
-$elementId = $this->element;
-
-$block	   = $this->pub->_curationModel->_progress->blocks->$step;
-$manifest  = $block->manifest;
-$element   = $manifest->elements->$elementId;
+// Get element properties
+$element = $this->pub->curation('blocks', $this->step, 'elements', $this->element);
 
 // Customize title
 $defaultTitle	= $element->params->title
@@ -65,7 +60,7 @@ if ($this->row->type == 'link')
 	$title = Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE');
 }
 
-$placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this->row->title : $dTitle;
+$placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->row->title : $dTitle;
 
 ?>
 <div id="abox-content">
@@ -74,8 +69,8 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 				<input type="hidden" name="aid" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
-				<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
+				<input type="hidden" name="pid" value="<?php echo $this->pub->get('id'); ?>" />
+				<input type="hidden" name="version" value="<?php echo $this->pub->get('version_number'); ?>" />
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />

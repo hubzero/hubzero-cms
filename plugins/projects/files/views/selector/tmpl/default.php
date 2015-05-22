@@ -33,35 +33,13 @@ if (!$this->ajax)
 // Get attachment type model
 $attModel = new \Components\Publications\Models\Attachments($this->database);
 
-$route = $this->model->isProvisioned()
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
-
 // Filter URL
-$filterUrl   = $this->model->isProvisioned()
-		? Route::url( $route) . '?active=files&amp;action=filter&amp;'
-		: Route::url( $route . '&active=files&amp;action=filter') .'/?';
+$filterUrl = Route::url( $this->publication->link('editversionid') . '&active=files&action=filter&p=' . $this->props . '&ajax=1&no_html=1');
 
-$filterUrl .= 'p=' . $this->props . '&amp;pid=' . $this->publication->id
-				. '&amp;vid=' . $this->publication->version_id . '&amp;ajax=1&amp;no_html=1';
-
-// Save Selection URL
-$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
-
-$parents = array();
-$i = 0;
-
-$block   = $this->block;
-$step  	 = $this->step;
 $elId 	 = $this->element;
-$default = 1; // default to first element if requested element not found
 
 // Get requirements
-$blocks   = $this->publication->_curationModel->_progress->blocks;
-$elements = $blocks->$step->manifest->elements;
-
-$element = isset($elements->$elId) ? $elements->$elId: $elements->$default;
+$element = $this->publication->curation('blocks', $this->step, 'elements', $this->element);
 $params  = $element->params;
 $max 	 = $params->max;
 $min 	 = $params->min;
@@ -118,7 +96,7 @@ else
 $req .= ':';
 
 // Get attached items
-$attachments = $this->publication->_attachments;
+$attachments = $this->publication->attachments();
 $attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : NULL;
 $attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
 
@@ -196,23 +174,23 @@ if ($this->items)
 		<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 		<?php } ?>
 	</span></h3>
-<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
+<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url( $this->publication->link('edit')); ?>">
 	<fieldset >
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
+		<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
 		<input type="hidden" id="maxitems" name="maxitems" value="<?php echo $max; ?>" />
 		<input type="hidden" id="minitems" name="minitems" value="<?php echo $min; ?>" />
 		<input type="hidden" id="p" name="p" value="<?php echo $this->props; ?>" />
 		<input type="hidden" id="filterUrl" name="filterUrl" value="<?php echo $filterUrl; ?>" />
-		<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
-		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-		<input type="hidden" name="section" value="<?php echo $block; ?>" />
+		<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
+		<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
+		<input type="hidden" name="section" value="<?php echo $this->block; ?>" />
 		<input type="hidden" name="element" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
-		<input type="hidden" name="step" value="<?php echo $step; ?>" />
+		<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />
 		<input type="hidden" name="move" value="continue" />

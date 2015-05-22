@@ -25,18 +25,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
-$complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
+// Get block properties
+$complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
+$props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
+$required = $this->pub->curation('blocks', $this->master->blockId, 'required');
+
 $elName   		= 'description-element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
 $field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
-
-$class 			= $value ? ' be-complete' : '';
-$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
-				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
-$placeholder 	= isset($this->manifest->params->placeholder)
-				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
 
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
 $aboutTxt 		= $this->manifest->adminTips
@@ -59,19 +56,10 @@ else
 	$about = $aboutTxt;
 }
 
-$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
-
-// Build url
-$route = $this->pub->_project->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->get('alias') . '&active=publications';
-
-$url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
-
 // Get curator status
-if ($this->name == 'curator') {
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'curator');
+if ($this->name == 'curator') 
+{
+	$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'curator');
 }
 
 ?>
@@ -86,7 +74,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 	<div class="element_overview">
 		<?php if ($this->name == 'curator') { ?>
 		<div class="block-aside"><div class="block-info"><?php echo $about; ?></div></div>
-		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, $url, $this->manifest->label); ?>
+		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->label); ?>
 		<div class="block-subject">
 		<?php } ?>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
@@ -102,7 +90,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 				<div class="element-value"><?php echo $value; ?></div>
 			<?php } else { ?>
 				<p class="noresults">No user input</p>
-				<?php if ($this->pub->state != 1 && ($this->status->getError() || ($required && !$complete))) { ?>
+				<?php if (!$this->pub->isPublished() && ($this->status->getError() || ($required && !$complete))) { ?>
 					<p class="witherror"><?php echo $this->status->getError() ? $this->status->getError() : Lang::txt('Missing required input'); ?></p>
 				<?php } ?>
 			<?php } ?>

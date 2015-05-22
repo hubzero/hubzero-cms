@@ -25,31 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Build url
-$route = $this->model->isProvisioned()
-	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
-
-$block   	= $this->block;
-$step  	 	= $this->step;
-$elementId 	= $this->element;
-
 // Get requirements
-$blocks   = $this->publication->_curationModel->_progress->blocks;
-$elements = $blocks->$step->manifest->elements;
-$element = isset($elements->$elementId) ? $elements->$elementId: $elements->$default;
+$element = $this->publication->curation('blocks', $this->step, 'elements', $this->element);
 $params  = $element->params;
-
-// Save Selection URL
-$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
 // Get attachment type model
 $attModel = new \Components\Publications\Models\Attachments($this->database);
 
 // Get attached items
-$attachments = $this->publication->_attachments;
-$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-$attachments = $attModel->getElementAttachments($elementId, $attachments, $params->type);
+$attachments = $this->publication->attachments();
+$attachments = isset($attachments['elements'][$this->element]) ? $attachments['elements'][$this->element] : NULL;
+$attachments = $attModel->getElementAttachments($this->element, $attachments, $params->type);
 
 // Get preselected items
 $selected = array();
@@ -72,18 +58,18 @@ if ($attachments)
 				<?php } ?>
 			</span>
 		</h3>
-		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
+		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url( $this->publication->link('edit')); ?>">
 			<fieldset >
 				<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
-				<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
+				<input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="p" id="p" value="<?php echo $this->props; ?>" />
-				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
-				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-				<input type="hidden" name="section" id="section" value="<?php echo $block; ?>" />
-				<input type="hidden" name="step" value="<?php echo $step; ?>" />
-				<input type="hidden" name="element" value="<?php echo $elementId; ?>" />
+				<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
+				<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
+				<input type="hidden" name="section" id="section" value="<?php echo $this->block; ?>" />
+				<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
+				<input type="hidden" name="element" value="<?php echo $this->element; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="apply" />
 				<input type="hidden" name="move" value="continue" />
@@ -107,7 +93,7 @@ if ($attachments)
 				<?php } ?>
 			</ul>
 			<?php } else { ?>
-			<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($route . '&active=databases'); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></span></p>
+			<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($this->model->link('databases')); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></span></p>
 		<?php } ?>
 		</form>
 	</div>

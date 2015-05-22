@@ -38,9 +38,11 @@ if (count($matches) > 0)
 	}
 }
 
-$required 		= (isset($this->manifest->params->required)
-				&& $this->manifest->params->required) ? true : false;
-$complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
+// Get block properties
+$complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
+$props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
+$required = $this->pub->curation('blocks', $this->master->blockId, 'required');
+
 $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
 $field 			= $this->manifest->params->field;
@@ -59,8 +61,6 @@ $editorMinimal 	= isset($this->manifest->params->editorMinimal)
 				? $this->manifest->params->editorMinimal : 1;
 $editorImages 	= isset($this->manifest->params->editorImages)
 				? $this->manifest->params->editorImages : 0;
-
-$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
 
 // Metadata field?
 if ($field == 'metadata')

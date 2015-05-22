@@ -25,21 +25,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$error 			= $this->status->getError();
-$required 		= (isset($this->manifest->params->required)
-				&& $this->manifest->params->required) ? true : false;
-$complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
+// Get block properties
+$complete = $this->pub->curation('blocks', $this->master->blockId, 'complete');
+$props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
+$required = $this->pub->curation('blocks', $this->master->blockId, 'required');
+
 $elName   		= 'element' . $this->elementId;
 
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
 $coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
 $last   = ($this->order == $this->total) ? 1 : 0;
 $max 	= $this->manifest->params->max;
-$prov 	= $this->pub->_project->isProvisioned() ? 1 : 0;
 
+// Get side text
 $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
-
-if ($prov == 1 && isset($this->manifest->aboutProv))
+if ($this->pub->_project->isProvisioned() && isset($this->manifest->aboutProv))
 {
 	$aboutText = $this->manifest->aboutProv;
 }
@@ -48,12 +48,6 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 {
 	$aboutText = '<p>' . $aboutText . '</p>';
 }
-
-$section  = $this->master->block;
-$blockId = $this->master->blockId;
-$props = $this->master->block . '-' . $this->master->blockId . '-' . $this->elementId;
-
-$this->editUrl = $this->pub->link('editversion');
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
@@ -77,17 +71,18 @@ if ($handler)
 	$handler = $modelHandler->ini($handler);
 }
 
-$multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
-				&& $this->manifest->params->typeParams->multiZip == 0)
-				? false : true;
+$multiZip = (isset($this->manifest->params->typeParams->multiZip)
+		&& $this->manifest->params->typeParams->multiZip == 0)
+		? false : true;
 
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
-$updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
+$updated  = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete)
+		|| $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
 $handlerOptions = count($this->attachments) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : NULL;
 
 $elementUrl = Route::url($this->pub->link('editversion') . '&section='
-	. $section . '&step=' . $blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+	. $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 
 ?>
 
@@ -108,7 +103,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo Lang::txt('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php } ?>
-				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; }?>
+				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) . ')'; }?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 			<div class="list-wrapper">
@@ -213,7 +208,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		<div class="withhandler">
 			<p class="element-move">
 			<?php // display error
-			 if ($error) { echo '<span class="element-error">' . $error . '</span>'; } ?>
+			 if ($this->status->getError()) { echo '<span class="element-error">' . $this->status->getError() . '</span>'; } ?>
 				<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
 				<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
 				</span>

@@ -626,7 +626,7 @@ class Publication extends Object
 	 * @param      string 	$property
 	 * @return     mixed
 	 */
-	public function curation($property = NULL, $blockId = NULL, $blockProperty = NULL)
+	public function curation($property = NULL, $blockId = NULL, $blockProperty = NULL, $elementId = NULL)
 	{
 		if (!isset($this->_curationModel))
 		{
@@ -647,6 +647,22 @@ class Publication extends Object
 						{
 							case 'complete':
 								return $this->_curationModel->_progress->blocks->$blockId->status->status;
+								break;
+
+							case 'elements':
+								if ($elementId)
+								{
+									if (isset($this->_curationModel->_progress->blocks->$blockId->manifest->elements->$elementId))
+									{
+										return $this->_curationModel->_progress->blocks->$blockId->manifest->elements->$elementId;
+									}
+									else
+									{
+										$first = $this->curation('blocks', $blockId, 'firstElement');
+										return $this->_curationModel->_progress->blocks->$blockId->manifest->elements->$first;
+									}
+								}
+								return $this->_curationModel->_progress->blocks->$blockId->manifest->elements;
 								break;
 
 							case 'props':
@@ -693,6 +709,10 @@ class Publication extends Object
 
 			case 'firstBlock':
 				return $this->_curationModel->_progress->firstBlock;
+			break;
+
+			case 'params':
+				return $this->_curationModel->_manifest->params;
 			break;
 
 			default:
@@ -1904,6 +1924,10 @@ class Publication extends Object
 
 			case 'serve':
 				$link = $this->_base . '&task=serve' . '&v=' . $this->get('version_number');
+			break;
+
+			case 'data':
+				$link = $this->_base . '&task=serve' . '&vid=' . $this->get('version_id');
 			break;
 
 			case 'citation':

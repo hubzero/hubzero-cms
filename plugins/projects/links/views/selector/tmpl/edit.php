@@ -33,8 +33,7 @@ $route = $this->model->isProvisioned()
 $url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
-$config = Component::params( 'com_publications' );
-$citationFormat = $config->get('citation_format', 'apa');
+$citationFormat = $this->publication->config('citation_format', 'apa');
 
 ?>
 <div id="abox-content" class="citation-edit">

@@ -345,28 +345,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Load classes
-		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
-		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
-
-		// Load publication version
-		$view->version->load($vid);
-		if (!$view->version->id)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
-		}
-
-		// Get publication
-		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->model->get('id'));
-
-		if (!$view->publication)
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
-		}
-
+		$view->publication = new \Components\Publications\Models\Publication( $pid, NULL, $vid );
 		// On error
-		if ($this->getError())
+		if (!$view->publication->exists())
 		{
 			// Output error
 			$view = new \Hubzero\Plugin\View(
@@ -379,28 +360,17 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( $this->getError() );
+			$view->setError( Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID') );
 			return $view->loadTemplate();
 		}
 
-		// Load master type
-		$mt   				= new \Components\Publications\Tables\MasterType( $this->_database );
-		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->model;
-
-		// Get attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
-		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
+		$view->publication->attachments();
 
 		// Get curation model
-		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
+		$view->publication->setCuration();
 
 		// Make sure block exists, else use default
-		if (!$view->publication->_curationModel->setBlock( $block, $step ))
-		{
-			$block = 'content';
-			$step  = 1;
-		}
+		$view->publication->_curationModel->setBlock( $block, $step );
 
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);

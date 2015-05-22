@@ -25,27 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
-$props = $name . '-' . $this->step;
-
-// Build url
-$route = $this->pub->link('editbase');
-
-$selectUrl = Route::url( $this->pub->link('project') . '&active=links&action=select' . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id);
-
-$required = $this->manifest->params->required;
+$selectUrl = Route::url( $this->pub->link('editversionid') . '&active=links&action=select' . '&p=' . $props);
 
 $elName = "citationsPick";
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
+
+$citationFormat = $this->pub->config('citation_format', 'apa');
 
 ?>
 
@@ -64,7 +56,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 				$i= 1;
 
 				$formatter = new \Components\Citations\Helpers\Format;
-				$formatter->setTemplate($this->pub->_citationFormat);
+				$formatter->setTemplate($citationFormat);
 				?>
 					<ul class="itemlist" id="citations-list">
 					<?php foreach ($this->pub->_citations as $cite) {
@@ -75,8 +67,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 						 ?>
 						<li>
 							<span class="item-options">
-									<a href="<?php echo Route::url($this->pub->link('project') . '&active=links&action=newcite&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo Route::url($this->pub->link('project') . '&active=links&action=deleteitem&cid=' . $cite->id . '&p=' . $props . '&vid=' . $this->pub->version_id . '&pid=' . $this->pub->id); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->id . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=deleteitem&cid=' . $cite->id . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>

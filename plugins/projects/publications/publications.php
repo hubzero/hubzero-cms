@@ -1086,8 +1086,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Build pub url
 		$view->route = $this->model->isProvisioned()
 					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
-		$view->url = Route::url($view->route);
+					: $this->model->link('publications');
 
 		// Do we have a choice?
 		if (count($choices) <= 1 )
@@ -1349,8 +1348,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Go to last incomplete section
 		if ($this->_task == 'continue')
 		{
-			$blocks 	= $pub->_curationModel->_progress->blocks;
-			$blockId	= $pub->_curationModel->_progress->firstBlock;
+			$blocks 	= $pub->curation('blocks');
+			$blockId	= $pub->curation('firstBlock');
 			$block		= $blockId ? $blocks->$blockId->name : 'status';
 		}
 

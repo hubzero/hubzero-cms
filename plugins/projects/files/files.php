@@ -3365,8 +3365,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _cleanData()
 	{
 		// Clean up empty values
-		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
-		$folders 	= Request::getVar( 'folder', '', 'request', 'array' );
+		$checked = Request::getVar( 'asset', array() );
+		$checked = (!is_array($checked) ? array($checked) : $checked);
+		$folders = Request::getVar( 'folder', array() );
+		$folders = (!is_array($folders) ? array($folders) : $folders);
 
 		foreach ($checked as $key => $value)
 		{
@@ -3409,8 +3411,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_cleanData();
 
 		// Incoming
-		$checked = Request::getVar( 'asset', '', 'request', 'array' );
-		$folders = Request::getVar( 'folder', '', 'request', 'array' );
+		$checked = Request::getVar( 'asset', array() );
+		$folders = Request::getVar( 'folder', array() );
 
 		$combined = array();
 		if (!empty($checked))

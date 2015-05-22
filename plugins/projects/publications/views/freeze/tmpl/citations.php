@@ -25,20 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
-
-$props = $name . '-' . $this->step;
-
-$required = $this->manifest->params->required;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 $elName = "citationsPick";
-
+$citationFormat = $this->pub->config('citation_format', 'apa');
 ?>
 
 <!-- Load content selection browser //-->
@@ -47,7 +39,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 <?php if (count($this->pub->_citations) > 0) {
 	$i= 1;
 	$formatter = new \Components\Citations\Helpers\Format;
-	$formatter->setTemplate($this->pub->_citationFormat);
+	$formatter->setTemplate($citationFormat);
 	?>
 	<div class="list-wrapper">
 		<ul class="itemlist" id="citations-list">

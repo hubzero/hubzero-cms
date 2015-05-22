@@ -68,24 +68,17 @@ class Data extends Base
 							&& $blockParams->published_editing == 0
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
-		// Get project path
-		$configs->path 	= $pub->_project->repo()->get('path');
 
-		$pubconfig = Component::params( 'com_publications' );
-		$base = $pubconfig->get('webpath');
-
-		// Log path
-		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
-
-		// Get publication path
-		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
-
-		// Get publication path
-		$configs->dataPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'data', 1);
+		// Set paths
+		$configs->path     = $pub->_project->repo()->get('path');
+		$configs->pubBase  = $pub->path('base', true);
+		$configs->logPath  = $pub->path('logs', true);
+		$configs->dataPath = $pub->path('data', true);
 
 		// Serve path for data files
 		/*$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
-		$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $pub->version_id . '&amp;task=serve';
+		$configs->servePath = Route::url($pub->link('data'));
+		//$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $pub->version_id . '&amp;task=serve';
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -369,7 +362,7 @@ class Data extends Base
 		// Create new version path
 		if (!is_dir( $configs->dataPath ))
 		{
-			if (!Filesystem::makeDirectory( $configs->dataPath ))
+			if (!Filesystem::makeDirectory( $configs->dataPath, 0755, true, true ))
 			{
 				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
@@ -638,7 +631,7 @@ class Data extends Base
 		$data 			= new stdClass;
 		$data->row 		= $att;
 		$data->ordering = $i;
-		$data->editUrl  = $view->editUrl;
+		$data->editUrl  = $view->pub->link('editversion');
 		$data->id		= $att->id;
 		$data->props	= $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId;
 		$data->viewer	= $view->viewer;

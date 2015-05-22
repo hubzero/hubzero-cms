@@ -28,9 +28,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="plg-header">
 <?php if ($this->project->isProvisioned()) { ?>
-<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
+<h3 class="prov-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
-<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
+<h3 class="publications c-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
 <?php } ?>
 </div>
 <?php if ($this->project->isProvisioned()) { ?>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$action = 'publication';
 
 		?>
-		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo $this->url . '?action=' . $action . '&amp;base=' . $current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
+		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo Route::url($this->route . '&action=' . $action . '&base=' . $current->alias); ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
 		<?php } ?>
 		<div class="clear"></div>
 	</div>
