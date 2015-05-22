@@ -35,7 +35,7 @@ class Migration20141022103600PlgResourcesAbout extends Base
 					$row = new $tbl($this->db);
 					$row->bind($record);
 
-					$p = new JRegistry($row->params);
+					$p = new \Hubzero\Config\Registry($row->params);
 					$p->set('plg_about', 1);
 					$p->set('plg_abouttool', 0);
 
@@ -69,7 +69,7 @@ class Migration20141022103600PlgResourcesAbout extends Base
 					$row = new ResourcesType($this->db);
 					$row->bind($record);
 
-					$p = new JRegistry($row->params);
+					$p = new \Hubzero\Config\Registry($row->params);
 					$p->set('plg_about', 0);
 					$p->set('plg_abouttool', 1);
 

@@ -21,7 +21,7 @@ class Migration20150224205200PlgContent extends Base
 			$this->db->setQuery($query);
 			if ($plugin = $this->db->loadObject())
 			{
-				$params = new \JRegistry($plugin->params);
+				$params = new \Hubzero\Config\Registry($plugin->params);
 				$params->set('jquery', 1);
 				$params->set('jqueryui', 1);
 				$params->set('jqueryfb', 1);
@@ -52,7 +52,7 @@ class Migration20150224205200PlgContent extends Base
 			$this->db->setQuery($query);
 			if ($plugin = $this->db->loadObject())
 			{
-				$params = new \JRegistry($plugin->params);
+				$params = new \Hubzero\Config\Registry($plugin->params);
 				$params->set('applyFormat', 1);
 				$params->set('convertFormat', 0);
 				$params->set('sanitizeBefore', 0);
@@ -68,7 +68,7 @@ class Migration20150224205200PlgContent extends Base
 			}
 			else
 			{
-				$params = new \JRegistry;
+				$params = new \Hubzero\Config\Registry;
 				$params->set('applyFormat', 1);
 				$params->set('convertFormat', 0);
 				$params->set('sanitizeBefore', 0);

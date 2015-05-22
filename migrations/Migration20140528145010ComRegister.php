@@ -28,13 +28,13 @@ class Migration20140528145010ComRegister extends Base
 				$component = new \JTableExtension($this->db);
 				$component->bind($data);
 
-				$mparams = new \JRegistry($component->params);
+				$mparams = new \Hubzero\Config\Registry($component->params);
 				foreach ($values as $key => $value)
 				{
 					$mparams->set($key, $value);
 				}
 
-				$component->params = $mparams->__toString();
+				$component->params = $mparams->toString();
 				$component->store();
 			}
 		}
@@ -110,13 +110,13 @@ class Migration20140528145010ComRegister extends Base
 			$component = new \JTableExtension($this->db);
 			$component->bind($data);
 
-			$mparams = new \JRegistry($component->params);
+			$mparams = new \Hubzero\Config\Registry($component->params);
 			foreach ($values as $key => $value)
 			{
 				$mparams->set($key, $value);
 			}
 
-			$component->params = $mparams->__toString();
+			$component->params = $mparams->toString();
 			$component->store();
 		}
 	}
