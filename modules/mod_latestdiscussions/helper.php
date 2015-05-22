@@ -166,13 +166,16 @@ class Helper extends Module
 			}
 		}
 
-		$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM `#__forum_categories` c LEFT JOIN `#__forum_sections` as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
-		$cats = $database->loadObjectList();
-		if ($cats)
+		if (count($ids) > 0)
 		{
-			foreach ($cats as $category)
+			$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM `#__forum_categories` c LEFT JOIN `#__forum_sections` as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
+			$cats = $database->loadObjectList();
+			if ($cats)
 			{
-				$categories[$category->id] = $category;
+				foreach ($cats as $category)
+				{
+					$categories[$category->id] = $category;
+				}
 			}
 		}
 
