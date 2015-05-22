@@ -40,7 +40,7 @@ class ContentViewArchive extends JViewLegacy
 		$form = new stdClass();
 		// Month Field
 		$months = array(
-			'' => Lang::txt('COM_CONTENT_MONTH'),
+			''   => Lang::txt('COM_CONTENT_MONTH'),
 			'01' => Lang::txt('JANUARY_SHORT'),
 			'02' => Lang::txt('FEBRUARY_SHORT'),
 			'03' => Lang::txt('MARCH_SHORT'),
@@ -54,8 +54,8 @@ class ContentViewArchive extends JViewLegacy
 			'11' => Lang::txt('NOVEMBER_SHORT'),
 			'12' => Lang::txt('DECEMBER_SHORT')
 		);
-		$form->monthField = JHtml::_(
-			'select.genericlist',
+		$form->monthField = Html::select(
+			'genericlist',
 			$months,
 			'month',
 			array(
@@ -71,8 +71,8 @@ class ContentViewArchive extends JViewLegacy
 		{
 			$years[] = Html::select('option', $i, $i);
 		}
-		$form->yearField = JHtml::_(
-			'select.genericlist',
+		$form->yearField = Html::select(
+			'genericlist',
 			$years,
 			'year',
 			array('list.attr' => 'size="1" class="inputbox"', 'list.select' => $state->get('filter.year'))
@@ -116,13 +116,13 @@ class ContentViewArchive extends JViewLegacy
 		$title = $this->params->get('page_title', '');
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = Config::get('sitename');
 		}
 		elseif (Config::get('sitename_pagetitles', 0) == 1)
 		{
 			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
 		{
 			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}

@@ -61,7 +61,7 @@ class JHtmlIcon
 		$attribs['title']   = Lang::txt('JGLOBAL_EMAIL');
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
 
-		$output = JHtml::_('link', Route::url($url), $text, $attribs);
+		$output = '<a href="' . Route::url($url) . '" ' . \Hubzero\Utility\Arr::toString($attribs) . '>' . $text . '</a>';
 		return $output;
 	}
 
@@ -131,13 +131,12 @@ class JHtmlIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= Lang::txt('COM_CONTENT_WRITTEN_BY', htmlspecialchars($author, ENT_COMPAT, 'UTF-8'));
 
-		$button = JHtml::_('link', Route::url($url), $text);
+		$button = '<a href="' . Route::url($url) . '">' . $text . '</a>';
 
 		$output = '<span class="hasTip" title="'.Lang::txt('COM_CONTENT_EDIT_ITEM').' :: '.$overlib.'">'.$button.'</span>';
 
 		return $output;
 	}
-
 
 	static function print_popup($article, $params, $attribs = array())
 	{
@@ -160,7 +159,7 @@ class JHtmlIcon
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
 		$attribs['rel']     = 'nofollow';
 
-		return JHtml::_('link', Route::url($url), $text, $attribs);
+		return '<a href="' . Route::url($url) . '" ' . \Hubzero\Utility\Arr::toString($attribs) . '>' . $text . '</a>';
 	}
 
 	static function print_screen($article, $params, $attribs = array())

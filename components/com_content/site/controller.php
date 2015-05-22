@@ -20,11 +20,13 @@ class ContentController extends JControllerLegacy
 	function __construct($config = array())
 	{
 		// Article frontpage Editor pagebreak proxying:
-		if (Request::getCmd('view') === 'article' && Request::getCmd('layout') === 'pagebreak') {
+		if (Request::getCmd('view') === 'article' && Request::getCmd('layout') === 'pagebreak')
+		{
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 		// Article frontpage Editor article proxying:
-		elseif (Request::getCmd('view') === 'articles' && Request::getCmd('layout') === 'modal') {
+		elseif (Request::getCmd('view') === 'articles' && Request::getCmd('layout') === 'modal')
+		{
 			Html::asset('stylesheet', 'system/adminlist.css', array(), true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
@@ -45,13 +47,13 @@ class ContentController extends JControllerLegacy
 	{
 		$cachable = true;
 
-		JHtml::_('behavior.caption');
+		Html::behavior('caption');
 
 		// Set the default view name and format from the Request.
 		// Note we are using a_id to avoid collisions with the router and the return page.
 		// Frontend is a bit messier than the backend.
-		$id		= Request::getInt('a_id');
-		$vName	= Request::getCmd('view', 'categories');
+		$id    = Request::getInt('a_id');
+		$vName = Request::getCmd('view', 'categories');
 		Request::setVar('view', $vName);
 
 		if (User::get('id') ||

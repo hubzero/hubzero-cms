@@ -15,11 +15,11 @@ $published = $this->state->get('filter.published');
 <fieldset class="batch">
 	<legend><?php echo Lang::txt('COM_NEWSFEEDS_BATCH_OPTIONS');?></legend>
 	<p><?php echo Lang::txt('COM_NEWSFEEDS_BATCH_TIP'); ?></p>
-	<?php echo JHtml::_('batch.access');?>
-	<?php echo JHtml::_('batch.language'); ?>
+	<?php echo Html::batch('access');?>
+	<?php echo Html::batch('language'); ?>
 
 	<?php if ($published >= 0) : ?>
-		<?php echo JHtml::_('batch.item', 'com_newsfeeds');?>
+		<?php echo Html::batch('item', 'com_newsfeeds');?>
 	<?php endif; ?>
 
 	<button type="submit" onclick="Joomla.submitbutton('newsfeed.batch');">

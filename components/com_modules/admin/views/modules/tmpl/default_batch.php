@@ -20,11 +20,11 @@ $published = $this->state->get('filter.published');
 
 	<div class="col width-50 fltlft">
 		<div class="input-wrap">
-			<?php echo JHtml::_('batch.access');?>
+			<?php echo Html::batch('access');?>
 		</div>
 
 		<div class="input-wrap">
-			<?php echo JHtml::_('batch.language'); ?>
+			<?php echo Html::batch('language'); ?>
 		</div>
 	</div>
 	<div class="col width-50 fltrt">

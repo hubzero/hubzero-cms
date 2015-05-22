@@ -74,7 +74,7 @@ class UsersViewNotes extends JViewLegacy
 		}
 
 		// Get the component HTML helpers
-		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+		Html::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 		// turn parameters into registry objects
 		foreach ($this->items as $item) {

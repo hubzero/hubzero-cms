@@ -64,7 +64,7 @@ Toolbar::spacer();
 Toolbar::help('link');
 
 // Include the HTML helpers.
-JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
+Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');

@@ -24,18 +24,19 @@ class UsersViewUsers extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
 		// Include the component HTML helpers.
-		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+		Html::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 		$this->addToolbar();
 		parent::display($tpl);
@@ -48,18 +49,22 @@ class UsersViewUsers extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo	= UsersHelper::getActions();
+		$canDo = UsersHelper::getActions();
 
 		Toolbar::title(Lang::txt('COM_USERS_VIEW_USERS_TITLE'), 'user');
 
-		if ($canDo->get('core.create')) {
+		if ($canDo->get('core.create'))
+		{
 			//Toolbar::addNew('user.add');
 		}
-		if ($canDo->get('core.edit')) {
+
+		if ($canDo->get('core.edit')) 
+		{
 			Toolbar::editList('user.edit');
 		}
 
-		if ($canDo->get('core.edit.state')) {
+		if ($canDo->get('core.edit.state'))
+		{
 			Toolbar::divider();
 			Toolbar::publish('users.approve', 'COM_USERS_TOOLBAR_APPROVE', true);
 			Toolbar::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
@@ -67,12 +72,14 @@ class UsersViewUsers extends JViewLegacy
 			Toolbar::divider();
 		}
 
-		if ($canDo->get('core.delete')) {
+		if ($canDo->get('core.delete'))
+		{
 			Toolbar::deleteList('', 'users.delete');
 			Toolbar::divider();
 		}
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			Toolbar::preferences('com_users');
 			Toolbar::divider();
 		}

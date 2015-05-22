@@ -9,7 +9,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 
 ?>
 <div class="category-list<?php echo $this->pageclass_sfx;?>">

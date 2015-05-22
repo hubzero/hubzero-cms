@@ -9,7 +9,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('framework');
 
@@ -61,30 +61,30 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th class="list-title" id="tableOrdering">
-					<?php  echo $this->grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
+					<?php  echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
 				</th>
 
 				<?php if ($date = $this->params->get('list_show_date')) : ?>
 				<th class="list-date" id="tableOrdering2">
 					<?php if ($date == "created") : ?>
-						<?php echo $this->grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
+						<?php echo Html::grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
-						<?php echo $this->grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
+						<?php echo Html::grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "published") : ?>
-						<?php echo $this->grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+						<?php echo Html::grid('sort', 'COM_CONTENT_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
 					<?php endif; ?>
 				</th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_author', 1)) : ?>
 				<th class="list-author" id="tableOrdering3">
-					<?php echo $this->grid('sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
 				</th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_hits', 1)) : ?>
 				<th class="list-hits" id="tableOrdering4">
-					<?php echo $this->grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th>
 				<?php endif; ?>
 			</tr>
@@ -108,7 +108,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php if ($article->params->get('access-edit')) : ?>
 						<ul class="actions">
 							<li class="edit-icon">
-								<?php echo JHtml::_('icon.edit', $article, $params); ?>
+								<?php echo Html::icon('edit', $article, $params); ?>
 							</li>
 						</ul>
 						<?php endif; ?>
@@ -127,12 +127,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							<?php $author = ($article->created_by_alias ? $article->created_by_alias : $author);?>
 
 							<?php if (!empty($article->contactid ) &&  $this->params->get('link_author') == true):?>
-								<?php echo JHtml::_(
-										'link',
-										Route::url('index.php?option=com_contact&view=contact&id='.$article->contactid),
-										$author
-								); ?>
-
+								<?php echo '<a href="' . Route::url('index.php?option=com_contact&view=contact&id='.$article->contactid) . '">' . $author . '</a>'; ?>
 							<?php else :?>
 								<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
 							<?php endif; ?>
@@ -170,7 +165,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 <?php // Code to add a link to submit an article. ?>
 <?php if ($this->category->getParams()->get('access-create')) : ?>
-	<?php echo JHtml::_('icon.create', $this->category, $this->category->params); ?>
+	<?php echo Html::icon('create', $this->category, $this->category->params); ?>
 <?php  endif; ?>
 
 <?php // Add pagination links ?>

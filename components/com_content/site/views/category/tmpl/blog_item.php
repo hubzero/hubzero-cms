@@ -14,7 +14,7 @@ $params = &$this->item->params;
 $images = json_decode($this->item->images);
 $canEdit = $this->item->params->get('access-edit');
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('framework');
 
@@ -38,17 +38,17 @@ Html::behavior('framework');
 	<ul class="actions">
 		<?php if ($params->get('show_print_icon')) : ?>
 		<li class="print-icon">
-			<?php echo JHtml::_('icon.print_popup', $this->item, $params); ?>
+			<?php echo Html::icon('print_popup', $this->item, $params); ?>
 		</li>
 		<?php endif; ?>
 		<?php if ($params->get('show_email_icon')) : ?>
 		<li class="email-icon">
-			<?php echo JHtml::_('icon.email', $this->item, $params); ?>
+			<?php echo Html::icon('email', $this->item, $params); ?>
 		</li>
 		<?php endif; ?>
 		<?php if ($canEdit) : ?>
 		<li class="edit-icon">
-			<?php echo JHtml::_('icon.edit', $this->item, $params); ?>
+			<?php echo Html::icon('edit', $this->item, $params); ?>
 		</li>
 		<?php endif; ?>
 	</ul>
@@ -155,13 +155,13 @@ Html::behavior('framework');
 					elseif ($readmore = $this->item->alternative_readmore) :
 						echo $readmore;
 						if ($params->get('show_readmore_title', 0) != 0) :
-						    echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+							echo \Hubzero\Utility\String::truncate($this->item->title, $params->get('readmore_limit'));
 						endif;
 					elseif ($params->get('show_readmore_title', 0) == 0) :
 						echo Lang::txt('COM_CONTENT_READ_MORE_TITLE');
 					else :
 						echo Lang::txt('COM_CONTENT_READ_MORE');
-						echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+						echo \Hubzero\Utility\String::truncate($this->item->title, $params->get('readmore_limit'));
 					endif; ?></a>
 		</p>
 <?php endif; ?>

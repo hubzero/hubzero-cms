@@ -22,11 +22,11 @@ $published = $this->state->get('filter.published');
 
 	<div class="col width-50 fltlft">
 		<div class="input-wrap">
-			<?php echo JHtml::_('batch.access');?>
+			<?php echo Html::batch('access');?>
 		</div>
 
 		<div class="input-wrap">
-			<?php echo JHtml::_('batch.language'); ?>
+			<?php echo Html::batch('language'); ?>
 		</div>
 	</div>
 	<div class="col width-50 fltrt">
@@ -38,11 +38,11 @@ $published = $this->state->get('filter.published');
 			<div class="col width-50 fltlft">
 				<select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
 					<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-					<?php echo Html::select('options', JHtml::_('menu.menuitems', array('published' => $published)));?>
+					<?php echo Html::select('options', Html::menu('menuitems', array('published' => $published)));?>
 				</select>
 			</div>
 			<div class="col width-50 fltrt">
-				<?php echo JHtml::_( 'select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+				<?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
 			</div>
 			<div class="clr"></div>
 		</div>

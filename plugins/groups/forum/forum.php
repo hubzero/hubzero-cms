@@ -764,14 +764,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function search()
 	{
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'groups',
-				'element' => $this->_name,
-				'name'    => 'categories',
-				'layout'  => 'search'
-			)
-		);
+		$this->view = $this->view('search', 'categories');
 
 		// Incoming
 		$this->view->filters = array(
@@ -1075,6 +1068,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'section'  => Request::getVar('section', ''),
 			'category' => Request::getCmd('category', ''),
 			'parent'   => Request::getInt('thread', 0),
+			'scope'    => $this->model->get('scope'),
+			'scope_id' => $this->model->get('scope_id'),
 			'state'    => 1,
 		);
 

@@ -81,7 +81,7 @@ if ($canDo->get('core.admin'))
 Toolbar::help('links');
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
+Html::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 

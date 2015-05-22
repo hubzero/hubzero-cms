@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 // Create a shortcut for params.
 $params = &$this->item->params;
 $images = json_decode($this->item->images);
-$canEdit	= $this->item->params->get('access-edit');
+$canEdit = $this->item->params->get('access-edit');
 ?>
 
 <?php if ($this->item->state == 0 || strtotime($this->item->publish_up) > strtotime(Date::of('now'))) : ?>
@@ -33,18 +33,18 @@ $canEdit	= $this->item->params->get('access-edit');
 	<ul class="actions">
 		<?php if ($params->get('show_print_icon')) : ?>
 		<li class="print-icon">
-			<?php echo JHtml::_('icon.print_popup', $this->item, $params); ?>
+			<?php echo Html::icon('print_popup', $this->item, $params); ?>
 		</li>
 		<?php endif; ?>
 		<?php if ($params->get('show_email_icon')) : ?>
 		<li class="email-icon">
-			<?php echo JHtml::_('icon.email', $this->item, $params); ?>
+			<?php echo Html::icon('email', $this->item, $params); ?>
 		</li>
 		<?php endif; ?>
 
 		<?php if ($canEdit) : ?>
 		<li class="edit-icon">
-			<?php echo JHtml::_('icon.edit', $this->item, $params); ?>
+			<?php echo Html::icon('edit', $this->item, $params); ?>
 		</li>
 		<?php endif; ?>
 	</ul>
@@ -96,7 +96,7 @@ $canEdit	= $this->item->params->get('access-edit');
 <?php endif; ?>
 <?php if ($params->get('show_publish_date')) : ?>
 		<dd class="published">
-		<?php echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', Date::of($this->item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+			<?php echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', Date::of($this->item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
 		</dd>
 <?php endif; ?>
 <?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
@@ -105,9 +105,7 @@ $canEdit	= $this->item->params->get('access-edit');
 		<?php $author = ($this->item->created_by_alias ? $this->item->created_by_alias : $author);?>
 
 			<?php if (!empty($this->item->contactid ) &&  $params->get('link_author') == true):?>
-				<?php 	echo Lang::txt('COM_CONTENT_WRITTEN_BY' ,
-				 JHtml::_('link', Route::url('index.php?option=com_contact&view=contact&id='.$this->item->contactid), $author)); ?>
-
+				<?php  echo Lang::txt('COM_CONTENT_WRITTEN_BY', '<a href="' . Route::url('index.php?option=com_contact&view=contact&id='.$this->item->contactid) . '">' . $author . '</a>'); ?>
 			<?php else :?>
 				<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
 			<?php endif; ?>
@@ -156,15 +154,16 @@ $canEdit	= $this->item->params->get('access-edit');
 					elseif ($readmore = $this->item->alternative_readmore) :
 						echo $readmore;
 						if ($params->get('show_readmore_title', 0) != 0) :
-						    echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+							echo \Hubzero\Utility\String::truncate($this->item->title, $params->get('readmore_limit'));
 						endif;
 					elseif ($params->get('show_readmore_title', 0) == 0) :
 						echo Lang::txt('COM_CONTENT_READ_MORE_TITLE');
 					else :
 						echo Lang::txt('COM_CONTENT_READ_MORE');
-						echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
-					endif; ?></a>
-		</p>
+						echo \Hubzero\Utility\String::truncate($this->item->title, $params->get('readmore_limit'));
+					endif; ?>
+				</a>
+			</p>
 <?php endif; ?>
 
 <?php if ($this->item->state == 0 || strtotime($this->item->publish_up) > strtotime(Date::of('now'))) : ?>

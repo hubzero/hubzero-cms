@@ -46,7 +46,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('job');
 
-JHTML::_('behavior.calendar');
+Html::behavior('calendar');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 // Add specific helper files for html generation
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 $userId		= User::get('id');
 $client		= $this->state->get('filter.client_id', 0) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
