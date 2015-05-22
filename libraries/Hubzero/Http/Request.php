@@ -109,6 +109,10 @@ class Request extends BaseRequest
 				$hash = 'headers';
 			break;
 
+			case 'put':
+				$hash = 'request';
+			break;
+
 			default:
 			break;
 		}
