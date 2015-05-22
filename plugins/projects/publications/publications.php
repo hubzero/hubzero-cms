@@ -1355,10 +1355,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Go to review screen
 		if ($this->_task == 'review'
-			|| ($this->_task == 'continue' && $pub->_curationModel->_progress->complete == 1)
+			|| ($this->_task == 'continue' && $pub->curation('complete') == 1)
 		)
 		{
-			$blockId	= $pub->_curationModel->_progress->lastBlock;
+			$blockId	= $pub->curation('lastBlock');
 			$block		= 'review';
 		}
 
@@ -2007,7 +2007,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Set curation
 		$pub->setCuration();
-		$complete = $pub->_curationModel->_progress->complete;
 
 		// Require DOI?
 		$requireDoi = isset($pub->_curationModel->_manifest->params->require_doi)
@@ -2031,7 +2030,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is draft complete?
-		if (!$complete && $this->_task != 'revert')
+		if (!$pub->curation('complete') && $this->_task != 'revert')
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
 		}
