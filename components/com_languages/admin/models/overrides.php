@@ -260,8 +260,7 @@ class LanguagesModelOverrides extends JModelList
 		}
 
 		// Write override.ini file with the left strings
-		$registry = new JRegistry();
-		$registry->loadObject($strings);
+		$registry = new \Hubzero\Config\Registry($strings);
 
 		$filename = constant('JPATH_'.strtoupper($this->getState('filter.client'))).DS.'language'.DS.'overrides'.DS.$this->getState('filter.language').'.override.ini';
 

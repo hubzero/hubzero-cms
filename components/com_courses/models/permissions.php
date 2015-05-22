@@ -136,7 +136,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 	/**
 	 * Get the component config
 	 *
-	 * @return  object JRegistry
+	 * @return  object Registry
 	 */
 	public function config()
 	{

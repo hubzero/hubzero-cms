@@ -34,6 +34,7 @@ use Components\Resources\Models;
 use Components\Resources\Import\Importer;
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
+use Session;
 use Request;
 use Route;
 use Lang;
@@ -104,10 +105,10 @@ class Import extends AdminController
 		$this->view->import = new Models\Import($id);
 
 		// import params
-		$this->view->params = new \JRegistry($this->view->import->get('params'));
+		$this->view->params = new \Hubzero\Config\Registry($this->view->import->get('params'));
 
 		// get all files in import filespace
-		$this->view->files = \JFolder::files($this->view->import->fileSpacePath(), '.');
+		$this->view->files = \Filesystem::files($this->view->import->fileSpacePath(), '.');
 
 		// get all imports from archive
 		$hooksArchive = Models\Import\Hook\Archive::getInstance();
@@ -143,7 +144,7 @@ class Import extends AdminController
 	public function saveTask()
 	{
 		// check token
-		\JSession::checkToken() or die('Invalid Token');
+		Session::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$import = Request::getVar('import', array());
@@ -158,7 +159,7 @@ class Import extends AdminController
 		$this->import->set('hooks', json_encode($hooks));
 
 		// load current params
-		$iparams = new \JRegistry($this->import->get('params'));
+		$iparams = new \Hubzero\Config\Registry($this->import->get('params'));
 
 		// bind incoming params
 		$iparams->bind($params);
@@ -246,7 +247,7 @@ class Import extends AdminController
 	public function removeTask()
 	{
 		// check token
-		\JSession::checkToken() or die( 'Invalid Token' );
+		Session::checkToken() or die( 'Invalid Token' );
 
 		// get request vars
 		$ids = Request::getVar('id', array());

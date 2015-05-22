@@ -579,7 +579,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Merge profile params (take precendence) with the site config
 		//  ** What is this for?
-		$rparams = new JRegistry($profile->get('params'));
+		$rparams = new \Hubzero\Config\Registry($profile->get('params'));
 		$params = $this->config;
 		$params->merge($rparams);
 

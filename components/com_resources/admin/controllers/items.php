@@ -693,7 +693,7 @@ class Items extends AdminController
 
 		// Get params definitions
 		$this->view->params  = new \JParameter($this->view->row->params, JPATH_COMPONENT . DS . 'resources.xml');
-		$this->view->attribs = new \JRegistry($this->view->row->attribs);
+		$this->view->attribs = new \Hubzero\Config\Registry($this->view->row->attribs);
 
 		// Build selects of various types
 		$rt = new Type($this->database);
@@ -852,7 +852,7 @@ class Items extends AdminController
 		$params = Request::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
-			$txt = new \JRegistry('');
+			$txt = new \Hubzero\Config\Registry('');
 			foreach ($params as $k => $v)
 			{
 				$txt->set($k, $v);
@@ -864,7 +864,7 @@ class Items extends AdminController
 		$attribs = Request::getVar('attrib', array(), 'post');
 		if (is_array($attribs))
 		{
-			$txta = new \JRegistry('');
+			$txta = new \Hubzero\Config\Registry('');
 			foreach ($attribs as $k => $v)
 			{
 				if ($k == 'timeof')

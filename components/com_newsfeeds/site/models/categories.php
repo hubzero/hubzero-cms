@@ -92,10 +92,10 @@ class NewsfeedsModelCategories extends JModelList
 			$app = JFactory::getApplication();
 			$menu = $app->getMenu();
 			$active = $menu->getActive();
-			$params = new JRegistry();
+			$params = new \Hubzero\Config\Registry();
 			if ($active)
 			{
-				$params->loadString($active->params);
+				$params->parse($active->params);
 			}
 			$options = array();
 			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);

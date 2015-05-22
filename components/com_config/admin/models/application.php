@@ -39,7 +39,7 @@ use JError;
 use JPath;
 use Lang;
 use JTable;
-use JRegistry;
+use Hubzero\Config\Registry;
 use JFile;
 use JClientHelper;
 use JFilterOutput;
@@ -158,8 +158,7 @@ class Application extends JModelForm
 		// Save the text filters
 		if (isset($data['filters']))
 		{
-			$registry = new JRegistry();
-			$registry->loadArray(array('filters' => $data['filters']));
+			$registry = new Registry(array('filters' => $data['filters']));
 
 			$extension = JTable::getInstance('extension');
 
@@ -215,8 +214,7 @@ class Application extends JModelForm
 		}
 
 		// Create the new configuration object.
-		$config = new JRegistry('config');
-		$config->loadArray($data);
+		$config = new Registry($data);
 
 		// Overwrite the old FTP credentials with the new ones.
 		$temp = \Config::getRoot();
@@ -252,8 +250,7 @@ class Application extends JModelForm
 		// Create the new configuration object, and unset the root_user property
 		unset($prev['root_user']);
 
-		$config = new JRegistry('config');
-		$config->loadArray($prev);
+		$config = new Registry($prev);
 
 		// Write the configuration file.
 		return $this->writeConfigFile($config);
@@ -262,11 +259,11 @@ class Application extends JModelForm
 	/**
 	 * Method to write the configuration to a file.
 	 *
-	 * @param   object  $config  A JRegistry object containing all global config data.
+	 * @param   object  $config  A Registry object containing all global config data.
 	 * @return  bool    True on success, false on failure.
 	 * @since   2.5.4
 	 */
-	private function writeConfigFile(JRegistry $config)
+	private function writeConfigFile(Registry $config)
 	{
 		// Set the configuration file path.
 		$file = JPATH_CONFIGURATION . '/configuration.php';

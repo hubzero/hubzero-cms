@@ -308,13 +308,11 @@ class Record extends Object
 		$this->record->resource->bind($this->raw);
 
 		// resource params
-		$params = new \JRegistry();
-		$params->bind($this->record->resource->params);
+		$params = new \Hubzero\Config\Registry($this->record->resource->params);
 		$this->record->resource->params = $params->toString();
 
 		// resource attributes
-		$attribs = new \JRegistry();
-		$attribs->bind($this->record->resource->attribs);
+		$attribs = new \Hubzero\Config\Registry($this->record->resource->attribs);
 		$this->record->resource->attribs = $attribs->toString();
 
 		// full text pieces - to add paragraph tags

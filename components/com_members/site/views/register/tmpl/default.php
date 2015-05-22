@@ -113,7 +113,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 			{
 				if ($p->name != 'hubzero')
 				{
-					$pparams = new JRegistry($p->params);
+					$pparams = new \Hubzero\Config\Registry($p->params);
 					$display = $pparams->get('display_name', ucfirst($p->name));
 					$authenticators[] = array(
 						'name'    => $p->name,

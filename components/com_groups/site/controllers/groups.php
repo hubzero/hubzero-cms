@@ -683,8 +683,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// merge incoming settings with existing params
-		$params = new JRegistry($params);
-		$gParams = new JRegistry($group->get('params'));
+		$params = new \Hubzero\Config\Registry($params);
+		$gParams = new \Hubzero\Config\Registry($group->get('params'));
 		$gParams->merge($params);
 
 		//set group vars & Save group
@@ -900,7 +900,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new JRegistry($this->view->group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)

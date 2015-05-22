@@ -68,7 +68,7 @@ $home      = $this->page->get('home', 0);
 $parent    = $this->page->get('parent', 0);
 
 // determine comments setting
-$groupParams = new JRegistry($this->group->get('params'));
+$groupParams = new \Hubzero\Config\Registry($this->group->get('params'));
 $groupCommentSetting = $groupParams->get('page_comments', $this->config->get('page_comments', 3));
 $groupCommentSettingString = ($groupCommentSetting == 1) ? 'Yes' : 'No';
 $comments  = intval($this->page->get('comments', 3));

@@ -35,8 +35,7 @@ class TemplatesTableStyle extends JTable
 	{
 		if (isset($array['params']) && is_array($array['params']))
 		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['params']);
+			$registry = new \Hubzero\Config\Registry($array['params']);
 			$array['params'] = (string)$registry;
 		}
 

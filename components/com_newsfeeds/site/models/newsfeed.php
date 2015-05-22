@@ -124,7 +124,7 @@ class NewsfeedsModelNewsfeed extends JModelItem
 
 				if (empty($data))
 				{
-					throw new JException(Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'), 404);
+					throw new Exception(Lang::txt('COM_NEWSFEEDS_ERROR_FEED_NOT_FOUND'), 404);
 				}
 
 				// Check for published state if filter set.
@@ -134,13 +134,11 @@ class NewsfeedsModelNewsfeed extends JModelItem
 				}
 
 				// Convert parameter fields to objects.
-				$registry = new JRegistry;
-				$registry->loadString($data->params);
+				$registry = new \Hubzero\Config\Registry($data->params);
 				$data->params = clone $this->getState('params');
 				$data->params->merge($registry);
 
-				$registry = new JRegistry;
-				$registry->loadString($data->metadata);
+				$registry = new \Hubzero\Config\Registry($data->metadata);
 				$data->metadata = $registry;
 
 				// Compute access permissions.

@@ -1063,7 +1063,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Get the tool's name
 		//$tv->loadFromInstance($row->appname);
 		$app->title = stripslashes($tv->title);
-		$app->params = new JRegistry($tv->params);
+		$app->params = new \Hubzero\Config\Registry($tv->params);
 
 		// Ensure we found an active session
 		if (!$row->sesstoken)

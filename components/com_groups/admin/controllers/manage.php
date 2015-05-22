@@ -326,8 +326,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// group params
-		$gparams = new JRegistry($group->get('params'));
-		$gparams->merge(new JRegistry($g['params']));
+		$gparams = new \Hubzero\Config\Registry($group->get('params'));
+		$gparams->merge(new \Hubzero\Config\Registry($g['params']));
 
 		// set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
@@ -384,8 +384,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				'pageid'     => $page->get('id'),
 				'version'    => 1,
 				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
-				'created'    => JFactory::getDate(),
-				'created_by' => JFactory::getUser()->get('id'),
+				'created'    => Date::of('now')->toSql(),
+				'created_by' => User::get('id'),
 				'approved'   => 1
 			));
 			$version->store(false);

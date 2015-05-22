@@ -335,7 +335,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		if (!is_object($this->group->params))
 		{
-			$this->group->params = new JRegistry($this->group->params);
+			$this->group->params = new \Hubzero\Config\Registry($this->group->params);
 		}
 		$this->version->set('page_trusted', $this->group->params->get('page_trusted', 0));
 

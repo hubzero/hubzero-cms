@@ -92,7 +92,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get group params
-		$gparams = new JRegistry($this->view->group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
@@ -480,7 +480,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new JRegistry($this->view->group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -640,7 +640,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new JRegistry($this->view->group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -743,7 +743,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new JRegistry($this->view->group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -860,7 +860,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new JRegistry($this->view->group->get('params'));
+		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)

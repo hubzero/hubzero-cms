@@ -55,14 +55,14 @@ class GroupsModelModuleArchive extends \Hubzero\Base\Object
 	private $_modules_count = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

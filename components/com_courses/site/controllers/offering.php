@@ -419,7 +419,7 @@ class Offering extends SiteController
 	 */
 	public function assetTask()
 	{
-		$sparams    = new \JRegistry($this->course->offering()->section()->get('params'));
+		$sparams    = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
 		$section_id = $this->course->offering()->section()->get('id');
 		$asset      = new \CoursesModelAsset(Request::getInt('asset_id', null));
 		$asset->set('section_id', $section_id);

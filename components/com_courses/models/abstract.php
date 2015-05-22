@@ -74,7 +74,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	);
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

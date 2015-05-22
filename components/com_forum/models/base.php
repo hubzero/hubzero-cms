@@ -51,7 +51,7 @@ class Base extends Model
 	protected $_creator = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

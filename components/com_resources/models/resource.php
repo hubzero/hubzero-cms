@@ -81,9 +81,9 @@ class Resource extends Object
 		$this->resource->load($oid);
 
 		$this->params = Component::params('com_resources');
-		$this->params->merge(new \JRegistry($this->resource->params));
+		$this->params->merge(new \Hubzero\Config\Registry($this->resource->params));
 
-		$this->attribs = new \JRegistry($this->resource->attribs);
+		$this->attribs = new \Hubzero\Config\Registry($this->resource->attribs);
 
 		if ($this->isTool())
 		{
@@ -146,7 +146,7 @@ class Resource extends Object
 
 		$this->type = new Tables\Type($this->_db);
 		$this->type->bind($this->types($this->resource->type));
-		$this->type->params = new \JRegistry($this->type->params);
+		$this->type->params = new \Hubzero\Config\Registry($this->type->params);
 	}
 
 	/**

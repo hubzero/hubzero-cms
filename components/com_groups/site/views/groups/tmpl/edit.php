@@ -285,7 +285,7 @@ else
 					<legend><?php echo Lang::txt('COM_GROUPS_PAGES_SETTINGS_TITLE'); ?></legend>
 					<p><?php echo Lang::txt('COM_GROUPS_PAGES_SETTINGS_DESC'); ?></p>
 					<?php
-						$params   = new JRegistry($this->group->get('params'));
+						$params   = new \Hubzero\Config\Registry($this->group->get('params'));
 						$comments = $params->get('page_comments', $this->config->get('page_comments', 0));
 						$author   = $params->get('page_author', $this->config->get('page_author', 0));
 					?>

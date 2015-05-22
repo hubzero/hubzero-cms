@@ -1081,7 +1081,7 @@ class Resources extends SiteController
 		$path = Html::build_path($resource->created, $resource->id, '');
 
 		//instantiate params object then parse resource attributes
-		$attributes  = new \JRegistry($resource->attribs);
+		$attributes  = new \Hubzero\Config\Registry($resource->attribs);
 
 		//var to hold manifest data
 		$manifest                          = new stdClass;
@@ -1782,10 +1782,10 @@ class Resources extends SiteController
 				}
 
 				// Get attributes
-				//$attribs = new \JRegistry($row->attribs);
+				//$attribs = new \Hubzero\Config\Registry($row->attribs);
 				if ($children)
 				{
-					$attribs = new \JRegistry($children[0]->attribs);
+					$attribs = new \Hubzero\Config\Registry($children[0]->attribs);
 				}
 
 				foreach ($podcasts as $podcast)

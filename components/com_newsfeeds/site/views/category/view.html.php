@@ -62,8 +62,7 @@ class NewsfeedsViewCategory extends JViewLegacy
 		{
 			$item = &$items[$i];
 			$item->slug	= $item->alias ? ($item->id.':'.$item->alias) : $item->id;
-			$temp = new JRegistry();
-			$temp->loadString($item->params);
+			$temp = new \Hubzero\Config\Registry($item->params);
 			$item->params = clone($params);
 			$item->params->merge($temp);
 		}

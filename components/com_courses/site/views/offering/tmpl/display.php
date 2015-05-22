@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //get no_html request var
 $no_html = Request::getInt('no_html', 0);
 $tmpl    = Request::getWord('tmpl', false);
-$sparams = new JRegistry($this->course->offering()->section()->get('params'));
+$sparams = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
 
 if (!$no_html && $tmpl != 'component') :
 	$this->css('offering.css')

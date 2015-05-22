@@ -95,7 +95,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	public $_siblings = null;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -123,9 +123,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
  	 */
 	public function params($key, $default=null)
 	{
-		if (!($this->_params instanceof JRegistry))
+		if (!($this->_params instanceof \Hubzero\Config\Registry))
 		{
-			$this->_params = new JRegistry($this->get('params'));
+			$this->_params = new \Hubzero\Config\Registry($this->get('params'));
 		}
 		return $this->_params->get($key, $default);
 	}

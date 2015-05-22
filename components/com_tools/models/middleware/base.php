@@ -33,8 +33,8 @@
  */
 class MiddlewareModelBase extends \Hubzero\Base\Model
 {
-		/**
-	 * JRegistry
+	/**
+	 * Registry
 	 *
 	 * @var object
 	 */

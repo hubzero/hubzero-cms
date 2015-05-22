@@ -277,8 +277,7 @@ class NewsfeedsModelNewsfeed extends JModelAdmin
 		if ($item = parent::getItem($pk))
 		{
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->metadata);
+			$registry = new \Hubzero\Config\Registry($item->metadata);
 			$item->metadata = $registry->toArray();
 		}
 

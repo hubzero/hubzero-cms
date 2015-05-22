@@ -146,8 +146,7 @@ class PluginsModelPlugin extends JModelAdmin
 			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($table->params);
+			$registry = new \Hubzero\Config\Registry($table->params);
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Get the plugin XML.

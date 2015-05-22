@@ -60,7 +60,7 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 	</div><!-- / .course-instructor-content cf -->
 
 	<?php
-	$params = new JRegistry($this->instructor->get('params'));
+	$params = new \Hubzero\Config\Registry($this->instructor->get('params'));
 	if ($params->get('access_bio') == 0 // public
 	 || ($params->get('access_bio') == 1 && !User::usGuest()) // registered members
 	) {

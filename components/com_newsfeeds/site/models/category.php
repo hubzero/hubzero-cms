@@ -85,9 +85,8 @@ class NewsfeedsModelCategory extends JModelList
 		for ($i = 0, $n = count($items); $i < $n; $i++) {
 			$item = &$items[$i];
 			if (!isset($this->_params)) {
-				$params = new JRegistry();
-				$item->params = $params;
-				$params->loadString($item->params);
+				$this->_params = $item->params;
+				$item->params = new \Hubzero\Config\Registry($item->params);
 			}
 		}
 
@@ -214,11 +213,11 @@ class NewsfeedsModelCategory extends JModelList
 			$app = JFactory::getApplication();
 			$menu = $app->getMenu();
 			$active = $menu->getActive();
-			$params = new JRegistry();
+			$params = new \Hubzero\Config\Registry();
 
 			if ($active)
 			{
-				$params->loadString($active->params);
+				$params->parse($active->params);
 			}
 
 			$options = array();

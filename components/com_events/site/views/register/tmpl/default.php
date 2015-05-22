@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$params = new JRegistry($this->event->params);
+$params = new \Hubzero\Config\Registry($this->event->params);
 
 $this->css()
      ->js();

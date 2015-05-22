@@ -55,7 +55,7 @@ class ModulesModelModule extends JModelAdmin
 		// Load the User state.
 		if (!($pk = (int) Request::getInt('id')))
 		{
-			if ($extensionId = (int) $app->getUserState('com_modules.add.module.extension_id'))
+			if ($extensionId = (int) User::getState('com_modules.add.module.extension_id'))
 			{
 				$this->setState('extension.id', $extensionId);
 			}
@@ -659,8 +659,7 @@ class ModulesModelModule extends JModelAdmin
 			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($table->params);
+			$registry = new \Hubzero\Config\Registry($table->params);
 			$this->_cache[$pk]->params = $registry->toArray();
 
 			// Determine the page assignment mode.

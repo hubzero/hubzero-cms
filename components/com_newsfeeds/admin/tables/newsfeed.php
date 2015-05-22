@@ -35,15 +35,15 @@ class NewsfeedsTableNewsfeed extends JTable
 	 */
 	public function bind($array, $ignore = '')
 	{
-		if (isset($array['params']) && is_array($array['params'])) {
-			$registry = new JRegistry();
-			$registry->loadArray($array['params']);
+		if (isset($array['params']) && is_array($array['params']))
+		{
+			$registry = new \Hubzero\Config\Registry($array['params']);
 			$array['params'] = (string) $registry;
 		}
 
-		if (isset($array['metadata']) && is_array($array['metadata'])) {
-			$registry = new JRegistry();
-			$registry->loadArray($array['metadata']);
+		if (isset($array['metadata']) && is_array($array['metadata']))
+		{
+			$registry = new \Hubzero\Config\Registry($array['metadata']);
 			$array['metadata'] = (string) $registry;
 		}
 		return parent::bind($array, $ignore);
@@ -110,25 +110,31 @@ class NewsfeedsTableNewsfeed extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= Date::of('now');
-		$user	= User::getRoot();
-		if ($this->id) {
+		$date = Date::of('now');
+		$user = User::getRoot();
+		if ($this->id)
+		{
 			// Existing item
-			$this->modified		= $date->toSql();
-			$this->modified_by	= $user->get('id');
-		} else {
+			$this->modified    = $date->toSql();
+			$this->modified_by = $user->get('id');
+		}
+		else
+		{
 			// New newsfeed. A feed created and created_by field can be set by the user,
 			// so we don't touch either of these if they are set.
-			if (!intval($this->created)) {
+			if (!intval($this->created))
+			{
 				$this->created = $date->toSql();
 			}
-			if (empty($this->created_by)) {
+			if (empty($this->created_by))
+			{
 				$this->created_by = $user->get('id');
 			}
 		}
-	// Verify that the alias is unique
+		// Verify that the alias is unique
 		$table = JTable::getInstance('Newsfeed', 'NewsfeedsTable');
-		if ($table->load(array('alias'=>$this->alias, 'catid'=>$this->catid)) && ($table->id != $this->id || $this->id==0)) {
+		if ($table->load(array('alias'=>$this->alias, 'catid'=>$this->catid)) && ($table->id != $this->id || $this->id==0))
+		{
 			$this->setError(Lang::txt('COM_NEWSFEEDS_ERROR_UNIQUE_ALIAS'));
 			return false;
 		}

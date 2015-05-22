@@ -148,7 +148,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		parent::__construct($oid);
 
-		$this->config()->merge(new JRegistry($this->get('params')));
+		$this->config()->merge(new \Hubzero\Config\Registry($this->get('params')));
 
 		if (!isset($this->_permissions))
 		{

@@ -130,7 +130,7 @@ foreach ($this->rows as $row)
 	$offerings = $row->offerings(array('count' => true));
 	$pages     = $row->pages(array('count' => true, 'active' => array(0, 1)));
 
-	$params = new JRegistry($row->get('params'));
+	$params = new \Hubzero\Config\Registry($row->get('params'));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

@@ -90,7 +90,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 		$component = new JTableExtension($this->database);
 		$component->load($component->find(array('element' => $this->_option, 'type' => 'component')));
 
-		$params = new JRegistry($component->params);
+		$params = new \Hubzero\Config\Registry($component->params);
 
 		foreach ($settings as $name => $value)
 		{
@@ -99,7 +99,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 			$params->set('registration' . trim($name), trim($r));
 		}
 
-		$component->params = $params->__toString();
+		$component->params = $params->toString();
 		$component->store();
 
 		App::redirect(

@@ -100,7 +100,7 @@ class ToolsTablePreferences extends JTable
 	{
 		if (!is_object($this->params))
 		{
-			$this->params = new \JRegistry($this->params);
+			$this->params = new \Hubzero\Config\Registry($this->params);
 		}
 
 		if ($key)

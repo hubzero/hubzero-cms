@@ -57,7 +57,7 @@ if ($this->group->get('discussion_email_autosubscribe', null) == 1
 }
 
 // get groups params
-$gparams              = new JRegistry($this->group->params);
+$gparams              = new \Hubzero\Config\Registry($this->group->params);
 $membership_control   = $gparams->get('membership_control', 1);
 $display_system_users = $gparams->get('display_system_users', 'global');
 $comments             = $gparams->get('page_comments', $params->get('page_comments', 0));

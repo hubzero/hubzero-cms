@@ -54,7 +54,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	);
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

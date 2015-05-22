@@ -58,7 +58,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	protected $_scope = 'asset';
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */

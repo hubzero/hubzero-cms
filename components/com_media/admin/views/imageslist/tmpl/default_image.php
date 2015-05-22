@@ -8,7 +8,8 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-$params = new JRegistry;
+
+$params = new \Hubzero\Config\Registry;
 
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>

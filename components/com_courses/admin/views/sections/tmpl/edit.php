@@ -366,7 +366,7 @@ jQuery(document).ready(function($){
 					?>
 				</fieldset>
 
-				<?php $params = new JRegistry($this->row->get('params')); ?>
+				<?php $params = new \Hubzero\Config\Registry($this->row->get('params')); ?>
 
 				<fieldset class="adminform sectionparams">
 					<legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMS'); ?></legend>

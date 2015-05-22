@@ -275,7 +275,7 @@ function submitbutton(pressbutton)
 			?>
 		</fieldset>
 
-		<?php $params = new JRegistry($this->row->get('params')); ?>
+		<?php $params = new \Hubzero\Config\Registry($this->row->get('params')); ?>
 
 		<fieldset class="adminform offeringparams">
 			<legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMS'); ?></legend>

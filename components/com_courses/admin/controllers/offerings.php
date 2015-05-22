@@ -204,11 +204,11 @@ class Offerings extends AdminController
 			return;
 		}
 
-		$p = new \JRegistry('');
+		$p = new \Hubzero\Config\Registry('');
 		$p->loadArray(Request::getVar('params', '', 'post'));
 
 		// Make sure the logo gets carried over
-		$op = new \JRegistry($model->get('params'));
+		$op = new \Hubzero\Config\Registry($model->get('params'));
 		$p->set('logo', $op->get('logo'));
 
 		$model->set('params', $p->toString());

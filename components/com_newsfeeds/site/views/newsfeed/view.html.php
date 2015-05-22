@@ -152,8 +152,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		// Get the newsfeed
 		$newsfeed = $item;
 
-		$temp = new JRegistry();
-		$temp->loadString($item->params);
+		$temp = new \Hubzero\Config\Registry($item->params);
 		$params->merge($temp);
 
 		//  get RSS parsed object

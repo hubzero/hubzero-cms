@@ -65,7 +65,7 @@ class LanguagesModelOverride extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_languages.edit.override.data', array());
+		$data = User::getState('com_languages.edit.override.data', array());
 
 		if (empty($data))
 		{
@@ -93,12 +93,12 @@ class LanguagesModelOverride extends JModelAdmin
 		$strings = LanguagesHelper::parseFile($filename);
 
 		$result = new stdClass();
-		$result->key			= '';
-		$result->override	= '';
+		$result->key = '';
+		$result->override = '';
 		if (isset($strings[$pk]))
 		{
-			$result->key			= $pk;
-			$result->override	= $strings[$pk];
+			$result->key = $pk;
+			$result->override = $strings[$pk];
 		}
 
 		return $result;
@@ -161,8 +161,7 @@ class LanguagesModelOverride extends JModelAdmin
 		}
 
 		// Write override.ini file with the strings
-		$registry = new JRegistry();
-		$registry->loadObject($strings);
+		$registry = new \Hubzero\Config\Registry($strings);
 
 		if (!Filesystem::write($filename, $registry->toString('INI')))
 		{
@@ -190,12 +189,10 @@ class LanguagesModelOverride extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication();
-
-		$client = $app->getUserStateFromRequest('com_languages.overrides.filter.client', 'filter_client', 0, 'int') ? 'administrator' : 'site';
+		$client = Request::getstate('com_languages.overrides.filter.client', 'filter_client', 0, 'int') ? 'administrator' : 'site';
 		$this->setState('filter.client', $client);
 
-		$language = $app->getUserStateFromRequest('com_languages.overrides.filter.language', 'filter_language', 'en-GB', 'cmd');
+		$language = Request::getState('com_languages.overrides.filter.language', 'filter_language', 'en-GB', 'cmd');
 		$this->setState('filter.language', $language);
 	}
 }

@@ -220,8 +220,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return $instances[$key];
 		}
 
-		$offeringParams = new \JRegistry($this->course->offering()->get('params'));
-		$sectionParams  = new \JRegistry($this->course->offering()->section()->get('params'));
+		$offeringParams = new \Hubzero\Config\Registry($this->course->offering()->get('params'));
+		$sectionParams  = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
 
 		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
 		$progress_calculation = ($offeringParams->get('progress_calculation', false)) ? $offeringParams->get('progress_calculation') : $progress_calculation;

@@ -688,8 +688,7 @@ class MenusModelItem extends JModelAdmin
 		$result = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 		// Convert the params field to an array.
-		$registry = new JRegistry;
-		$registry->loadString($table->params);
+		$registry = new \Hubzero\Config\Registry($table->params);
 		$result->params = $registry->toArray();
 
 		// Merge the request arguments in to the params for a component.
@@ -1077,8 +1076,7 @@ class MenusModelItem extends JModelAdmin
 
 		foreach ($items as &$item)
 		{
-			$registry = new JRegistry;
-			$registry->loadString($item->params);
+			$registry = new \Hubzero\Config\Registry($item->params);
 			$params = (string)$registry;
 
 			$db->setQuery(

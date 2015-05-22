@@ -410,7 +410,7 @@ class Html
 						? stripslashes($child->logicaltitle)
 						: stripslashes($child->title);
 
-				$params = new \Hubzero\Config\Registry( $child->params );
+				$params = new \Hubzero\Config\Registry($child->params);
 
 				$ftype 	  = self::getFileExtension($child->path);
 				//$class    = $params->get('class', $ftype);
@@ -428,8 +428,8 @@ class Html
 					 && !in_array($item, $shown))
 					{
 						$class = str_replace(' ', '', strtolower($item));
-						$childParams  = new \JRegistry($child->params);
-						$childAttribs = new \JRegistry($child->attribs);
+						$childParams  = new \Hubzero\Config\Registry($child->params);
+						$childAttribs = new \Hubzero\Config\Registry($child->attribs);
 						$linkAction = $childParams->get('link_action', 0);
 						$width      = $childAttribs->get('width', 640);
 						$height     = $childAttribs->get('height', 360);
@@ -1040,12 +1040,12 @@ class Html
 				//$lt = new \Components\Resources\Tables\Type($database);
 				//$lt->load($firstChild->logicaltype);
 				$lt = \Components\Resources\Tables\Type::getRecordInstance($firstChild->logicaltype);
-				$ltparams = new \JRegistry($lt->params);
+				$ltparams = new \Hubzero\Config\Registry($lt->params);
 
 				//$rt = new \Components\Resources\Tables\Type($database);
 				//$rt->load($firstChild->type);
 				$rt = \Components\Resources\Tables\Type::getRecordInstance($firstChild->type);
-				$tparams = new \JRegistry($rt->params);
+				$tparams = new \Hubzero\Config\Registry($rt->params);
 
 				if ($firstChild->logicaltype)
 				{
@@ -1137,7 +1137,7 @@ class Html
 				}
 				else
 				{
-					$childParams = new \JRegistry($firstChild->params);
+					$childParams = new \Hubzero\Config\Registry($firstChild->params);
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
 					$url = self::processPath($option, $firstChild, $resource->id, $linkAction);
@@ -1166,7 +1166,7 @@ class Html
 						break;
 					}
 
-					$attribs = new \JRegistry($firstChild->attribs);
+					$attribs = new \Hubzero\Config\Registry($firstChild->attribs);
 					$width  = intval($attribs->get('width', 640));
 					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0)

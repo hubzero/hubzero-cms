@@ -266,8 +266,7 @@ class MenusModelMenu extends JModelForm
 
 		foreach ($modules as &$module)
 		{
-			$params = new JRegistry;
-			$params->loadString($module->params);
+			$params = new \Hubzero\Config\Registry($module->params);
 
 			$menuType = $params->get('menutype');
 			if (!isset($result[$menuType]))

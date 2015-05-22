@@ -186,7 +186,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	private $_link = NULL;
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -236,8 +236,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * This method must be invoked as:
 	 *     $offering = CoursesModelOffering::getInstance($alias);
 	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object CoursesModelOffering
+	 * @param   mixed  $oid  ID (int) or alias (string)
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $course_id=null)
 	{
@@ -265,7 +265,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new CoursesModelOffering($oid, $course_id);
+			$instances[$key] = new self($oid, $course_id);
 		}
 
 		return $instances[$key];
@@ -280,9 +280,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function params($key='', $default=null)
 	{
-		if (!($this->_params instanceof JRegistry))
+		if (!($this->_params instanceof \Hubzero\Config\Registry))
 		{
-			$this->_params = new JRegistry($this->get('params'));
+			$this->_params = new \Hubzero\Config\Registry($this->get('params'));
 		}
 		if ($key)
 		{
