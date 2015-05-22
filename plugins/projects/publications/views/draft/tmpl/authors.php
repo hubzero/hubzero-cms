@@ -25,28 +25,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->project()->isProvisioned() ? 1 : 0;
-
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
-
-$props = $name . '-' . $this->step;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 // Build url
-$route     = $this->pub->link('editbase');
 $selectUrl = Route::url( $this->pub->link('editversionid') . '&active=team&action=select' . '&p=' . $props);
 
-$required 		= $this->manifest->params->required;
 $showSubmitter  = $this->manifest->params->submitter;
 $showGroupOwner = isset($this->manifest->params->group_owner) ? $this->manifest->params->group_owner : '';
 
 $elName = "authorList";
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
 ?>
 

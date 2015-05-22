@@ -25,32 +25,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$project = $this->pub->_project;
-
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
-// Build url
-$route = $this->pub->_project->isProvisioned()
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias='
-				. $this->pub->_project->get('alias') . '&active=publications';
-
-$url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
-
-$move = '';
-$title = $this->manifest->title;
-
 ?>
-
 <div id="pub-editor" class="pane-desc freeze">
  	<div id="c-pane" class="columns">
 		 <div class="c-inner">
-			<h4><?php echo $title; ?></h4>
+			<h4><?php echo $this->manifest->title; ?></h4>
 			<div class="block-aside">
 				<div class="block-info">
 					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LOCKED'); ?>
-					<?php if ($this->pub->state == 1) {
-						echo ' <a href="'.$url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; } ?>
+					<?php if ($this->pub->isPublished()) {
+						echo ' <a href="' . Route::url($this->pub->link('edit')) . '/?action=newversion">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')) . '</a>'; } ?>
 					</p>
 				</div>
 			</div>

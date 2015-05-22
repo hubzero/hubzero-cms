@@ -25,35 +25,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
-// Build url
-$route = $this->pub->link('editbase');
-$url   = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
+// Get block properties
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 // Are we in draft flow?
-//$move = Request::getVar( 'move', '' );
 $move = ($this->showControls) ? 'continue' : '';
 
 $title 	 = $move && $this->manifest->draftHeading ? $this->manifest->draftHeading : $this->manifest->title;
 $tagline = isset($this->manifest->draftTagline) ? $this->manifest->draftTagline : NULL;
 
-// Get block completion status
-$step 	  =  $this->step;
-$complete =  $this->pub->_curationModel->_progress->blocks->$step->status->status;
-
-// Is panel content (of any kind) required?
-$required = isset($this->pub->_curationModel->_progress->blocks->$step->manifest->params->required)
-	? $this->pub->_curationModel->_progress->blocks->$step->manifest->params->required : 0;
-
 $activeEl = isset($this->master->props['showElement'])
 			? $this->master->props['showElement'] : 0;
 $element =  Request::getInt( 'el', $activeEl );
 
-$isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
+$isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false;
+
 ?>
 <div id="pub-editor" class="pane-desc">
-	<form action="<?php echo $url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+	<form action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	 	 <fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->pub->_project->get('id'); ?>" id="projectid" />
 			<input type="hidden" name="version" id="version" value="<?php echo $this->pub->versionAlias; ?>" />
@@ -67,10 +58,10 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 			<input type="hidden" name="next" id="next" value="" />
 			<input type="hidden" name="step" id="step" value="<?php echo $this->step; ?>" />
 			<input type="hidden" name="move" id="move" value="<?php echo $move; ?>" />
-			<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
-			<input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
+			<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->get('id'); ?>" />
+			<input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->get('version_id'); ?>" />
 			<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
-			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $prov == 1 ? 1 : 0; ?>" />
+			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->pub->_project->isProvisioned() ? 1 : 0; ?>" />
 		 </fieldset>
   		<div id="c-pane" class="columns">
 			 <div class="c-inner draftflow">
@@ -78,7 +69,7 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 						<?php
 							if ($tagline && $move)
 							{ ?>
-							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
+							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$this->pub->_project->isProvisioned()) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
 						<?php }
 						?>
 						<?php echo $this->content; ?>
@@ -113,10 +104,10 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 
 <div class="hidden">
 	<div id="addnotice" class="addnotice">
-		<form id="notice-form" name="noticeForm" action="<?php echo $url; ?>" method="post">
+		<form id="notice-form" name="noticeForm" action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post">
 		 <fieldset>
-			<input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
-			<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
+			<input type="hidden" name="pid" value="<?php echo $this->pub->get('id'); ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->pub->get('version_id'); ?>" />
 			<input type="hidden" name="p" id="props" value="" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="dispute" />
@@ -135,7 +126,7 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 
 <div class="hidden">
 	<div id="skip-notice" class="addnotice">
-		<form id="skip-notice-form" name="skipForm" action="<?php echo $url; ?>" method="post">
+		<form id="skip-notice-form" name="skipForm" action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post">
 		 <fieldset>
 			<input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
 			<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />

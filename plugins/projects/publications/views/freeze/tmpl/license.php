@@ -25,28 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
-
-$props = $name . '-' . $this->step;
-
-// Build url
-$route = $prov
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->get('alias');
-$selectUrl   = $prov
-		? Route::url( $route) . '?active=publications&action=select'
-		: Route::url( $route . '&active=publications&action=select') .'/?p=' . $props . '&amp;pid='
-		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
-
-$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
-
-$required 		= $this->manifest->params->required;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 $elName = "licensePick";
 
@@ -61,7 +42,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 		<?php if ($this->license) {
 			$info = $this->license->info;
 			if ($this->license->url) {
-				 $info .= ' <a href="' . $this->license->url . '" class="popup">Read license terms &rsaquo;</a>';
+				 $info .= ' <a href="' . $this->license->url . '" class="popup">' . Lang::txt('Read license terms') . ' &rsaquo;</a>';
 			}
 			?>
 			<div class="chosenitem">

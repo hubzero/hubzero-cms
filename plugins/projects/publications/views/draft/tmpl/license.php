@@ -25,21 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$prov = $this->pub->_project->isProvisioned() ? 1 : 0;
-
 // Get block properties
-$step 	  = $this->step;
-$block	  = $this->pub->_curationModel->_progress->blocks->$step;
-$complete = $block->status->status;
-$name	  = $block->name;
-
-$props = $name . '-' . $this->step;
+$complete = $this->pub->curation('blocks', $this->step, 'complete');
+$props    = $this->pub->curation('blocks', $this->step, 'props');
+$required = $this->pub->curation('blocks', $this->step, 'required');
 
 // Build url
-$route     = $this->pub->link('editbase');
 $selectUrl = Route::url( $this->pub->link('editversionid') . '&active=publications&action=select' . '&p=' . $props);
-
-$required 		= $this->manifest->params->required;
 
 $elName = "licensePick";
 
@@ -47,10 +39,10 @@ $elName = "licensePick";
 $agreed = $this->pub->params->get('licenseagreement', 0);
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
 $defaultText = $this->license ? $this->license->text : NULL;
-$text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
+$text = $this->pub->get('license_text', $defaultText);
 
 ?>
 
