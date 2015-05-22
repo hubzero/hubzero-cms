@@ -506,8 +506,7 @@ class ContentModelArticles extends JModelList
 		// Convert the parameter fields into objects.
 		foreach ($items as &$item)
 		{
-			$articleParams = new JRegistry;
-			$articleParams->loadString($item->attribs);
+			$articleParams = new \Hubzero\Config\Registry($item->attribs);
 
 			// Unpack readmore and layout params
 			$item->alternative_readmore = $articleParams->get('alternative_readmore');
@@ -541,8 +540,7 @@ class ContentModelArticles extends JModelList
 
 				// merge the selected article params
 				if (count($articleArray) > 0) {
-					$articleParams = new JRegistry;
-					$articleParams->loadArray($articleArray);
+					$articleParams = new \Hubzero\Config\Registry($articleArray);
 					$item->params->merge($articleParams);
 				}
 			}

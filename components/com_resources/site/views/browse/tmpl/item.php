@@ -53,7 +53,7 @@ if (!Config::isGuest())
 
 // Get parameters
 $params = clone($this->config);
-$rparams = new JRegistry($this->line->params);
+$rparams = new \Hubzero\Config\Registry($this->line->params);
 $params->merge($rparams);
 
 if (!$this->line->modified || $this->line->modified == '0000-00-00 00:00:00')

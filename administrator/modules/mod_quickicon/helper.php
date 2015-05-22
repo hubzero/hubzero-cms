@@ -206,7 +206,7 @@ class Helper extends Module
 	/**
 	 * Get the alternate title for the module
 	 *
-	 * @param   object  $params  The module parameters. JRegistry
+	 * @param   object  $params  The module parameters.
 	 * @param   object  $module  The module.
 	 * @return  string  The alternate title for the module.
 	 */

@@ -104,14 +104,14 @@ class UsersViewLogin extends JViewLegacy
 		{
 			if ($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$pparams = new JRegistry($p->params);
+				$pparams = new \Hubzero\Config\Registry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
 			{
-				$pparams = new JRegistry($p->params);
+				$pparams = new \Hubzero\Config\Registry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
 				$this->site_display  = $pparams->get('display_name', Config::get('sitename'));
 			}
@@ -171,10 +171,10 @@ class UsersViewLogin extends JViewLegacy
 	 */
 	protected function prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$login		= User::isGuest() ? true : false;
-		$title 		= null;
+		$app = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$login = User::isGuest() ? true : false;
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

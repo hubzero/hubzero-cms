@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Get parameters
-$rparams = new JRegistry($this->resource->params);
+$rparams = new \Hubzero\Config\Registry($this->resource->params);
 $params = $this->config;
 $params->merge($rparams);
 

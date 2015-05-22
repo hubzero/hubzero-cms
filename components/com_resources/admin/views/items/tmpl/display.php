@@ -146,7 +146,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 
-	$rparams = new JRegistry($row->params);
+	$rparams = new \Hubzero\Config\Registry($row->params);
 	$license = $rparams->get('license');
 
 	// Build some publishing info

@@ -77,8 +77,7 @@ class ContentModelForm extends ContentModelArticle
 		$value = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
 
 		// Convert attrib field to Registry.
-		$value->params = new JRegistry;
-		$value->params->loadString($value->attribs);
+		$value->params = new \Hubzero\Config\Registry($value->attribs);
 
 		// Compute selected asset permissions.
 		$userId = User::get('id');

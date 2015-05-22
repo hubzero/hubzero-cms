@@ -238,7 +238,7 @@ class UsersControllerUser extends UsersController
 					// Get plugin params
 					$plugin      = Plugin::byType('authentication', $auth_domain_name);
 
-					$pparams = new JRegistry($plugin->params);
+					$pparams = new \Hubzero\Config\Registry($plugin->params);
 					$auto_logoff = $pparams->get('auto_logoff', false);
 
 					if ($auto_logoff)

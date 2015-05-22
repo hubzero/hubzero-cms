@@ -104,28 +104,29 @@ class ContentModelCategory extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initiliase variables.
-		$app	= JFactory::getApplication('site');
-		$pk		= Request::getInt('id');
+		$app = JFactory::getApplication('site');
+		$pk  = Request::getInt('id');
 
 		$this->setState('category.id', $pk);
 
 		// Load the parameters. Merge Global and Menu Item params into new object
 		$params = $app->getParams();
-		$menuParams = new JRegistry;
+		$menuParams = new \Hubzero\Config\Registry;
 
-		if ($menu = $app->getMenu()->getActive()) {
-			$menuParams->loadString($menu->params);
+		if ($menu = $app->getMenu()->getActive())
+		{
+			$menuParams->parse($menu->params);
 		}
 
 		$mergedParams = clone $menuParams;
 		$mergedParams->merge($params);
 
 		$this->setState('params', $mergedParams);
-		$user		= User::getRoot();
+		$user = User::getRoot();
 				// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$groups	= implode(',', $user->getAuthorisedViewLevels());
+		$db     = $this->getDbo();
+		$query  = $db->getQuery(true);
+		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		if ((!$user->authorise('core.edit.state', 'com_content')) &&  (!$user->authorise('core.edit', 'com_content'))){
 			// limit to published for people who can't edit or edit.state.

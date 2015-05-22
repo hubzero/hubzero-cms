@@ -155,8 +155,7 @@ class UsersModelNote extends JModelAdmin
 
 		// JTableCategory doesn't bind the params, so we need to do that by hand.
 		if (isset($data['params']) && is_array($data['params'])) {
-			$registry = new JRegistry();
-			$registry->loadArray($data['params']);
+			$registry = new \Hubzero\Config\Registry($data['params']);
 			$table->params = $registry->toString();
 			// This will give us INI format.
 		}

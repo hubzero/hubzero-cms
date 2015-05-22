@@ -94,10 +94,10 @@ class ContentModelCategories extends JModelList
 			$app = JFactory::getApplication();
 			$menu = $app->getMenu();
 			$active = $menu->getActive();
-			$params = new JRegistry();
+			$params = new \Hubzero\Config\Registry();
 
 			if ($active) {
-				$params->loadString($active->params);
+				$params->parse($active->params);
 			}
 
 			$options = array();

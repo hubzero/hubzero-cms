@@ -68,7 +68,7 @@ class UsersViewLink extends JViewLegacy
 		// Get the display name for the current plugin being used
 		Plugin::import('authentication', $hzad->authenticator);
 		$plugin       = Plugin::byType('authentication', $hzad->authenticator);
-		$pparams      = new JRegistry($plugin->params);
+		$pparams      = new \Hubzero\Config\Registry($plugin->params);
 		$refl         = new ReflectionClass("plgAuthentication{$plugin->name}");
 		$display_name = $pparams->get('display_name', $refl->hasMethod('onGetLinkDescription') ? $refl->getMethod('onGetLinkDescription')->invoke(NULL) : ucfirst($plugin->name));
 

@@ -115,7 +115,7 @@ class UsersModelProfile extends JModelForm
 			unset($this->data->password1);
 			unset($this->data->password2);
 
-			$registry = new JRegistry($this->data->params);
+			$registry = new \Hubzero\Config\Registry($this->data->params);
 			$this->data->params = $registry->toArray();
 
 			// Trigger the data preparation event.

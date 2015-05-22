@@ -45,7 +45,7 @@ Html::behavior('framework', true);
 
 $this->css();
 
-$params = new JRegistry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->params);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

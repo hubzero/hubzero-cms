@@ -188,14 +188,12 @@ class ContentModelArticle extends JModelItem
 				}
 
 				// Convert parameter fields to objects.
-				$registry = new JRegistry;
-				$registry->loadString($data->attribs);
+				$registry = new \Hubzero\Config\Registry($data->attribs);
 
 				$data->params = clone $this->getState('params');
 				$data->params->merge($registry);
 
-				$registry = new JRegistry;
-				$registry->loadString($data->metadata);
+				$registry = new \Hubzero\Config\Registry($data->metadata);
 				$data->metadata = $registry;
 
 				// Technically guest could edit an article, but lets not check that to improve performance a little.

@@ -147,7 +147,7 @@ class ContentHelperQuery
 	/**
 	 * Get join information for the voting query.
 	 *
-	 * @param	JRegistry	$param	An options object for the article.
+	 * @param	Registry	$param	An options object for the article.
 	 *
 	 * @return	array		A named array with "select" and "join" keys.
 	 * @since	1.5

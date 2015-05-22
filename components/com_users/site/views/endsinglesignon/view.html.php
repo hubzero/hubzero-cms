@@ -50,7 +50,7 @@ class UsersViewEndsinglesignon extends JViewLegacy
 
 		// Get the display name for the current plugin being used
 		$plugin       = Plugin::byType('authentication', $authenticator);
-		$pparams      = new JRegistry($plugin->params);
+		$pparams      = new \Hubzero\Config\Registry($plugin->params);
 		$display_name = $pparams->get('display_name', ucfirst($plugin->name));
 
 		$this->assign('authenticator', $authenticator);

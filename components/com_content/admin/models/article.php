@@ -264,23 +264,19 @@ class ContentModelArticle extends JModelAdmin
 	{
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->attribs);
+			$registry = new \Hubzero\Config\Registry($item->attribs);
 			$item->attribs = $registry->toArray();
 
 			// Convert the metadata field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->metadata);
+			$registry = new \Hubzero\Config\Registry($item->metadata);
 			$item->metadata = $registry->toArray();
 
 			// Convert the images field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->images);
+			$registry = new \Hubzero\Config\Registry($item->images);
 			$item->images = $registry->toArray();
 
 			// Convert the urls field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->urls);
+			$registry = new \Hubzero\Config\Registry($item->urls);
 			$item->urls = $registry->toArray();
 
 
@@ -396,15 +392,13 @@ class ContentModelArticle extends JModelAdmin
 	public function save($data)
 	{
 			if (isset($data['images']) && is_array($data['images'])) {
-				$registry = new JRegistry;
-				$registry->loadArray($data['images']);
+				$registry = new \Hubzero\Config\Registry($data['images']);
 				$data['images'] = (string)$registry;
 
 			}
 
 			if (isset($data['urls']) && is_array($data['urls'])) {
-				$registry = new JRegistry;
-				$registry->loadArray($data['urls']);
+				$registry = new \Hubzero\Config\Registry($data['urls']);
 				$data['urls'] = (string)$registry;
 
 			}
