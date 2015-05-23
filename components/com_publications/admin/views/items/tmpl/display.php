@@ -132,7 +132,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$info .= Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR') . ': ' . $this->escape($row->created_by) . '<br />';
 
 	// Get the published status
-	$now = JFactory::getDate()->toSql();
+	$now = Date::toSql();
 
 	// See if it's checked out or not
 	$checked = '';

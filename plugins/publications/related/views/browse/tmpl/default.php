@@ -28,7 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Add stylesheet
 $this->css('assets/css/related.css');
 
-$juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
 // Get author class
@@ -58,9 +57,9 @@ foreach ($this->related as $line)
 		$authorlist = \Components\Publications\Helpers\Html::showContributors( $authors, false, true );
 
 		// If the user is logged in, get their rating for this publication
-		if (!$juser->get('guest')) {
+		if (!User::isGuest()) {
 			$mr = new \Components\Publications\Tables\Review( $database );
-			$myrating = $mr->loadUserRating( $line->id, $juser->get('id'), $line->version );
+			$myrating = $mr->loadUserRating( $line->id, User::get('id'), $line->version );
 		} else {
 			$myrating = 0;
 		}

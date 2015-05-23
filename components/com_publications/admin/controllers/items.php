@@ -902,8 +902,8 @@ class Items extends AdminController
 						$allowArchive = $gracePeriod ? false : true;
 						if ($allowArchive && $this->model->version->accepted && $this->model->version->accepted != '0000-00-00 00:00:00')
 						{
-							$monthFrom = \JFactory::getDate($this->model->version->accepted . '+1 month')->toSql();
-							if (strtotime($monthFrom) < strtotime(\JFactory::getDate()))
+							$monthFrom = Date::of($this->model->version->accepted . '+1 month')->toSql();
+							if (strtotime($monthFrom) < Date::toUnix())
 							{
 								$allowArchive = true;
 							}

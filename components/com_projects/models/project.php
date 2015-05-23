@@ -1075,7 +1075,7 @@ class Project extends Model
 
 		if ($member && $this->isActive() && $this->isMemberConfirmed() && !$this->isProvisioned())
 		{
-			$timecheck = \JFactory::getDate(time() - (6 * 60 * 60))->toSql(); // visit in last 6 hours
+			$timecheck = Date::of(time() - (6 * 60 * 60))->toSql(); // visit in last 6 hours
 			if ($member->num_visits == 0 or $member->lastvisit < $timecheck)
 			{
 				$member->num_visits = $member->num_visits + 1; // record visit in a day
@@ -1132,7 +1132,7 @@ class Project extends Model
 				}
 
 				// If newly created - remove join activity of project creator
-				$timecheck = \JFactory::getDate(time() - (10 * 60)); // last second
+				$timecheck = Date::of(time() - (10 * 60)); // last second
 				if ($this->access('owner') && $timecheck <= $this->get('created'))
 				{
 				    $this->_tblActivity->deleteActivity($aid);

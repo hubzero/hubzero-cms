@@ -1528,7 +1528,7 @@ class Connect extends Object {
 				// If remote, make sure current version is remote
 				if ($converted == 1 && $order == 'last')
 				{
-					$timestamps[]	= strtotime(\JFactory::getDate());
+					$timestamps[]	= Date::toUnix();
 				}
 				else
 				{

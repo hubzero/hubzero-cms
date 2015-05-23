@@ -120,7 +120,7 @@ class Log extends \JTable
 	 */
 	public function logAccessFile ( $pid = NULL, $vid = NULL, $type = 'view', $ip = '', $logPath = '' )
 	{
-		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . \JFactory::getDate()->format('Y-m') . '.log';
+		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . Date::format('Y-m') . '.log';
 
 		$uid 	= User::isGuest() ? 'guest' : User::get('id');
 
@@ -217,8 +217,8 @@ class Log extends \JTable
 			$this->logAccessFile( $pid, $vid, $type, $ip, $logPath);
 		}
 
-		$thisYearNum 	= \JFactory::getDate()->format('y');
-		$thisMonthNum 	= \JFactory::getDate()->format('m');
+		$thisYearNum 	= Date::format('y');
+		$thisMonthNum 	= Date::format('m');
 
 		// Load record to update
 		if (!$this->loadMonthLog( $pid, $vid ))
@@ -266,8 +266,8 @@ class Log extends \JTable
 			return false;
 		}
 
-		$thisYearNum 	= $yearNum ? $yearNum : \JFactory::getDate()->format('y');
-		$thisMonthNum 	= $monthNum ? $monthNum : \JFactory::getDate()->format('m');
+		$thisYearNum 	= $yearNum ? $yearNum : Date::format('y');
+		$thisMonthNum 	= $monthNum ? $monthNum : Date::format('m');
 
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
 		$query .= " AND publication_version_id=" . $this->_db->Quote($vid);
@@ -301,8 +301,8 @@ class Log extends \JTable
 			return false;
 		}
 
-		$thisYearNum 	= $yearNum ? $yearNum : \JFactory::getDate()->format('y');
-		$thisMonthNum 	= $monthNum ? $monthNum : \JFactory::getDate()->format('m');
+		$thisYearNum 	= $yearNum ? $yearNum : Date::format('y');
+		$thisMonthNum 	= $monthNum ? $monthNum : Date::format('m');
 
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
 		$query .= " AND publication_version_id=" . $this->_db->Quote($vid);
@@ -330,22 +330,22 @@ class Log extends \JTable
 
 		if ($lastmonth == true)
 		{
-			$thisYearNum 	= intval(\JFactory::getDate(strtotime("-1 month"))->format('y'));
-			$pastMonthNum 	= intval(\JFactory::getDate(strtotime("-1 month"))->format('m'));
+			$thisYearNum 	= intval(Date::of(strtotime("-1 month"))->format('y'));
+			$pastMonthNum 	= intval(Date::of(strtotime("-1 month"))->format('m'));
 		}
 		else
 		{
-			$thisYearNum 	= intval(\JFactory::getDate()->format('y'));
-			$thisMonthNum 	= intval(\JFactory::getDate()->format('m'));
+			$thisYearNum 	= intval(Date::format('y'));
+			$thisMonthNum 	= intval(Date::format('m'));
 
-			$pastYearNum 	= intval(\JFactory::getDate(strtotime("-1 month"))->format('y'));
-			$pastMonthNum 	= intval(\JFactory::getDate(strtotime("-1 month"))->format('m'));
+			$pastYearNum 	= intval(Date::of(strtotime("-1 month"))->format('y'));
+			$pastMonthNum 	= intval(Date::of(strtotime("-1 month"))->format('m'));
 
-			$pastTwoYear 	= intval(\JFactory::getDate(strtotime("-2 month"))->format('y'));
-			$pastTwoMonth 	= intval(\JFactory::getDate(strtotime("-2 month"))->format('m'));
+			$pastTwoYear 	= intval(Date::of(strtotime("-2 month"))->format('y'));
+			$pastTwoMonth 	= intval(Date::of(strtotime("-2 month"))->format('m'));
 
-			$pastThreeYear 	= intval(\JFactory::getDate(strtotime("-3 month"))->format('y'));
-			$pastThreeMonth = intval(\JFactory::getDate(strtotime("-3 month"))->format('m'));
+			$pastThreeYear 	= intval(Date::of(strtotime("-3 month"))->format('y'));
+			$pastThreeMonth = intval(Date::of(strtotime("-3 month"))->format('m'));
 		}
 
 		$query  = "SELECT V.id as publication_version_id, V.publication_id, V.title, V.version_label,
@@ -441,7 +441,7 @@ class Log extends \JTable
 
 		if ($first)
 		{
-			return \JFactory::getDate(strtotime($first))->format('Y-m-01 00:00:00');
+			return Date::of(strtotime($first))->format('Y-m-01 00:00:00');
 		}
 	}
 
@@ -502,8 +502,8 @@ class Log extends \JTable
 					? "AND (L.year=$fromY AND L.month>=$fromM AND L.month<=$toM )"
 					: "AND ((L.year=$fromY AND L.month >= $fromM ) OR (L.year=$toY AND L.month <= $toM))";
 
-		$citeFrom  = \JFactory::getDate($from)->toSql();
-		$citeTo    = \JFactory::getDate($to)->toSql();
+		$citeFrom  = Date::of($from)->toSql();
+		$citeTo    = Date::of($to)->toSql();
 
 		$query  = "SELECT V.publication_id as id, V.title, A.name as author,
 					V.version_label as version, V.doi";
@@ -588,19 +588,19 @@ class Log extends \JTable
 			return false;
 		}
 
-		$thisYearNum 	= intval(\JFactory::getDate()->format('y'));
-		$thisMonthNum 	= intval(\JFactory::getDate()->format('m'));
+		$thisYearNum 	= intval(Date::format('y'));
+		$thisMonthNum 	= intval(Date::format('m'));
 
-		$pastYearNum 	= intval(\JFactory::getDate(strtotime("-1 month"))->format('y'));
-		$pastMonthNum 	= intval(\JFactory::getDate(strtotime("-1 month"))->format('m'));
+		$pastYearNum 	= intval(Date::of(strtotime("-1 month"))->format('y'));
+		$pastMonthNum 	= intval(Date::of(strtotime("-1 month"))->format('m'));
 
-		$pastTwoYear 	= intval(\JFactory::getDate(strtotime("-2 month"))->format('y'));
-		$pastTwoMonth 	= intval(\JFactory::getDate(strtotime("-2 month"))->format('m'));
+		$pastTwoYear 	= intval(Date::of(strtotime("-2 month"))->format('y'));
+		$pastTwoMonth 	= intval(Date::of(strtotime("-2 month"))->format('m'));
 
-		$pastThreeYear 	= intval(\JFactory::getDate(strtotime("-3 month"))->format('y'));
-		$pastThreeMonth = intval(\JFactory::getDate(strtotime("-3 month"))->format('m'));
+		$pastThreeYear 	= intval(Date::of(strtotime("-3 month"))->format('y'));
+		$pastThreeMonth = intval(Date::of(strtotime("-3 month"))->format('m'));
 
-		$dthis 			= \JFactory::getDate()->format('Y') . '-' . \JFactory::getDate()->format('m');
+		$dthis 			= Date::format('Y') . '-' . Date::format('m');
 
 		$query  = "SELECT V.id as publication_version_id, V.publication_id, V.title, V.version_label,
 					V.version_number, V.doi, V.published_up,
@@ -645,14 +645,6 @@ class Log extends \JTable
 		$query .= ", (SELECT VV.published_up FROM #__publication_versions as VV
 			WHERE VV.publication_id=V.publication_id and VV.published_up IS NOT NULL
 			ORDER BY VV.published_up ASC limit 1) AS first_published ";
-
-/*
-		$query .= ", (SELECT COALESCE( SUM(L.page_views) , 0 ) FROM $this->_tbl as L JOIN #__publications as J
-			ON J.id = L.publication_id WHERE J.project_id=$projectid) AS all_total_views ";
-
-		$query .= ", (SELECT COALESCE( SUM(L.primary_accesses) , 0 ) FROM $this->_tbl as L JOIN #__publications as J
-			ON J.id = L.publication_id WHERE J.project_id=$projectid) AS all_total_primary ";
-*/
 
 		$query .= " FROM #__publications as C, #__publication_categories AS t, #__publication_versions as V ";
 		$query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id AND period='14' AND datetime='" . $dthis . "-01 00:00:00' ";

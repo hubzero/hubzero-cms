@@ -761,7 +761,7 @@ class Projects extends AdminController
 
 		// Get log file
 		$repodir = Helpers\Html::getProjectRepoPath($obj->alias, 'logs');
-		$sfile 	 = $repodir . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log';
+		$sfile 	 = $repodir . DS . 'sync.' . Date::format('Y-m') . '.log';
 
 		if (file_exists($sfile))
 		{
@@ -770,8 +770,8 @@ class Projects extends AdminController
 			$server->filename($sfile);
 			$server->disposition('attachment');
 			$server->acceptranges(false);
-			$server->saveas('sync.' . \JFactory::getDate()->format('Y-m') . '.txt');
-			$result = $server->serve_attachment($sfile, 'sync.' . \JFactory::getDate()->format('Y-m') . '.txt', false);
+			$server->saveas('sync.' . Date::format('Y-m') . '.txt');
+			$result = $server->serve_attachment($sfile, 'sync.' . Date::format('Y-m') . '.txt', false);
 			exit;
 		}
 

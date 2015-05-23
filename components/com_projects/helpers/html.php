@@ -49,7 +49,7 @@ class Html extends Object
 	{
 		$parsed 		= date_parse($time);
 		$timestamp		= strtotime($time);
-		$current_time 	= $utc ? \JFactory::getDate() : date('c');
+		$current_time 	= $utc ? Date::toSql() : date('c');
 		$current  		= date_parse($current_time);
 		$lapsed 		= strtotime($current_time) - $timestamp;
 

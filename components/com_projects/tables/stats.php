@@ -176,10 +176,10 @@ class Stats extends \JTable
 		$updated = NULL;
 		$lastLog = NULL;
 
-		$pastMonth 		= \JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
-		$thisYearNum 	= \JFactory::getDate()->format('y');
-		$thisMonthNum 	= \JFactory::getDate()->format('m');
-		$thisWeekNum	= \JFactory::getDate()->format('W');
+		$pastMonth 		= Date::of(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
+		$thisYearNum 	= Date::format('y');
+		$thisMonthNum 	= Date::format('m');
+		$thisWeekNum	= Date::format('W');
 
 		// Pull recent stats
 		if ($this->loadLog($thisYearNum, $thisMonthNum, $thisWeekNum ))

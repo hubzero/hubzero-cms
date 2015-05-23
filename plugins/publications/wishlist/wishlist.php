@@ -96,7 +96,6 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$juser    = JFactory::getUser();
 
 		$option = 'com_wishlist';
 		$cat    = 'publication';
@@ -110,7 +109,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . $option . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Load component language file
-		Lang::load('com_wishlist') || Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');
+		Lang::load('com_wishlist');
 
 		// Configure controller
 		$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
@@ -155,17 +154,17 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
 
 			// Authorize admins & list owners
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
-				if ($juser->authorize($option, 'manage'))
+				if (User::authorize($option, 'manage'))
 				{
 					$admin = 1;
 				}
-				if (in_array($juser->get('id'), $owners['individuals']))
+				if (in_array(User::get('id'), $owners['individuals']))
 				{
 					$admin = 2;
 				}
-				elseif (in_array($juser->get('id'), $owners['advisory']))
+				elseif (in_array(User::get('id'), $owners['advisory']))
 				{
 					$admin = 3;
 				}
@@ -182,7 +181,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			if ($rtrn != 'metadata')
 			{
 				// Get wishes
-				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
+				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, User::getRoot());
 
 				$title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit'])

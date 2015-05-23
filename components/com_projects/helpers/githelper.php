@@ -951,7 +951,7 @@ class Git extends Object
 						// Specific local directory is synced?
 						$lFilename = $localDir ? preg_replace( "/^" . $localDir. "\//", "", $filename) : $filename;
 
-						$conn 		= $connections['paths'];
+						$conn 		= isset($connections['paths']) ? $connections['paths'] : NULL;
 						$search 	= $status == 'R' || $status == 'W' ? $rename : $filename;
 						$found 		= isset($conn[$search]) && $conn[$search]['type'] == $type ? $conn[$search] : false;
 
