@@ -254,6 +254,18 @@ class Date extends DateTime
 	}
 
 	/**
+	 * Proxy for new Date().
+	 *
+	 * @param   string  $date  String in a format accepted by strtotime(), defaults to "now".
+	 * @param   mixed   $tz    Time zone to be used for the date.
+	 * @return  object
+	 */
+	public static function of($date = 'now', $tz = null)
+	{
+		return new self($date, $tz);
+	}
+
+	/**
 	 * Gets the date as a formatted string in a local calendar.
 	 *
 	 * @param   string   $format     The date format specification string (see {@link PHP_MANUAL#date})

@@ -46,12 +46,42 @@ class Log extends Facade
 	}
 
 	/**
-	 * Translates an internal URL to a humanly readible URL.
+	 * Log an entry to the auth logger
 	 *
 	 * @param   string   $message
+	 * @return  boolean
 	 */
 	public static function auth($message)
 	{
-		return static::$app->get('log.auth')->info($message);
+		if (static::$app->has('log.auth'))
+		{
+			$logger = static::$app->get('log.auth');
+		}
+		else
+		{
+			$logger = static::getRoot();
+		}
+
+		return $logger->info($message);
+	}
+
+	/**
+	 * Log an entry to the spam logger
+	 *
+	 * @param   string   $message
+	 * @return  boolean
+	 */
+	public static function spam($message)
+	{
+		if (static::$app->has('log.spam'))
+		{
+			$logger = static::$app->get('log.spam');
+		}
+		else
+		{
+			$logger = static::getRoot();
+		}
+
+		return $logger->info($message);
 	}
 }

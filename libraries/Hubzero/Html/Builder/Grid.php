@@ -377,8 +377,8 @@ class Grid
 		}
 
 		$text = addslashes(htmlspecialchars($editorName, ENT_COMPAT, 'UTF-8'));
-		$date = addslashes(htmlspecialchars(\Date::of($time)->toLocal(Lang::txt('DATE_FORMAT_LC')), ENT_COMPAT, 'UTF-8'));
-		$time = addslashes(htmlspecialchars(\Date::of($time)->toLocal('H:i'), ENT_COMPAT, 'UTF-8'));
+		$date = addslashes(htmlspecialchars(with(new Date($time))->toLocal(Lang::txt('DATE_FORMAT_LC')), ENT_COMPAT, 'UTF-8'));
+		$time = addslashes(htmlspecialchars(with(new Date($time))->toLocal('H:i'), ENT_COMPAT, 'UTF-8'));
 
 		$active_title   = Lang::txt('JLIB_HTML_CHECKIN') . '::' . $text . '<br />' . $date . '<br />' . $time;
 		$inactive_title = Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $text . '<br />' . $date . '<br />' . $time;

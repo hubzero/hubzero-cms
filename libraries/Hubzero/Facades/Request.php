@@ -118,6 +118,15 @@ class Request extends Facade
 		{
 			if (!\Hubzero\Spam\Honeypot::isValid($honey['p'], $honey['t'], $delay))
 			{
+				if (\App::has('log.spam'))
+				{
+					$fallback = 'option=' . self::getCmd('option') . '&controller=' . self::getCmd('controller') . '&task=' . self::getCmd('task');
+					$from = self::getVar('REQUEST_URI', $fallback, 'server');
+					$from = $from ?: $fallback;
+
+					\App::get('log.spam')->info('spam honeypot ' . self::ip() . ' ' . \User::get('id') . ' ' . \User::get('username') . ' ' . $from);
+				}
+
 				return false;
 			}
 		}
