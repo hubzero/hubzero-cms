@@ -194,8 +194,15 @@ class Import extends SiteController
 		// write the citation data to files
 		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
 		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
-		$file1 = Filesystem::write($p1, serialize($citations[0]['attention']));
-		$file2 = Filesystem::write($p2, serialize($citations[0]['no_attention']));
+
+		// in the case that the tmp directory does not exist, create it otherwise this breaks.
+		if (!is_dir($this->getTmpPath()))
+		{
+			\Filesystem::makeDirectory($this->getTmpPath(), 0755);
+		}
+
+		$file1 = \Filesystem::write($p1, serialize($citations[0]['attention']));
+		$file2 = \Filesystem::write($p2, serialize($citations[0]['no_attention']));
 
 		//get group ID
 		$group = Request::getVar('group');
