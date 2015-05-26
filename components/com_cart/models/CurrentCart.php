@@ -69,14 +69,17 @@ class CartModelCurrentCart extends CartModelCart
 		$cart = $this->liftSessionCart();
 
 		// If no session cart, try to locate a cookie cart (only for not logged in users)
-		if (!$cart && $juser->get('guest')) {
+		if (!$cart && $juser->get('guest'))
+        {
 			$cart = $this->liftCookie();
 		}
 
-		if ($cart) {
+		if ($cart)
+        {
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
 			if (!$juser->get('guest')) {
-				if (empty($this->cart->linked) || !$this->cart->linked) {
+				if (empty($this->cart->linked) || !$this->cart->linked)
+                {
 					// link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
 					// if linking fails create a new cart
 					if (!$this->linkCarts()) {
@@ -84,18 +87,22 @@ class CartModelCurrentCart extends CartModelCart
 					}
 				}
 			} // Make sure cart is marked as unlinked is the user is not logged in
-			else {
+			else
+            {
 				$this->cart->linked = 0;
 			}
 		} // If no session & cookie cart found, but user is logged in
-		elseif (!$juser->get('guest')) {
+		elseif (!$juser->get('guest'))
+        {
 			// Try to get the saved cart in the DB
-			if (!$this->liftUserCart($juser->id)) {
+			if (!$this->liftUserCart($juser->id))
+            {
 				// If no session, no cookie, no DB cart -- create a brand new cart
 				$this->createCart();
 			}
 		} // No session, no cookie -- create new cart
-		else {
+		else
+        {
 			$this->createCart();
 		}
 	}
@@ -203,7 +210,8 @@ class CartModelCurrentCart extends CartModelCart
 
 		$cartItems = $this->cart->items;
 
-		foreach ($items as $item) {
+		foreach ($items as $item)
+        {
 			// Build item name
 			$itemName = false;
 			if (!empty($cartItems[$item->sId]['info']->pName))
@@ -232,9 +240,11 @@ class CartModelCurrentCart extends CartModelCart
 
 			if (!empty($item->crtiOldQty) && $item->crtiOldQty > $item->crtiQty)
 			{
-				if ($item->crtiQty) {
+				if ($item->crtiQty)
+                {
 					$changes[] = array($itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info');
-				} else {
+				} else
+                {
 					$changes[] = array($itemName . ' is no longer in stock', 'info');
 				}
 			}
@@ -249,7 +259,8 @@ class CartModelCurrentCart extends CartModelCart
 		$this->cart->hasChanges = false;
 
 		// Reset all messages
-		if (!empty($changes)) {
+		if (!empty($changes))
+        {
 			// Delete zero inventory items and unavailable SKUs
 			$sql = "DELETE FROM `#__cart_cart_items` WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
@@ -688,7 +699,8 @@ class CartModelCurrentCart extends CartModelCart
 
 		$affectedRows = $this->_db->getAffectedRows();
 
-		if(!$affectedRows) {
+		if (!$affectedRows)
+        {
 			return false;
 		}
 
@@ -836,7 +848,8 @@ class CartModelCurrentCart extends CartModelCart
 		$this->cartCoupons = $this->getCoupons();
 
 		// Check if coupon has already been applied
-		if($this->isCouponApplied($couponCode)) {
+		if ($this->isCouponApplied($couponCode))
+        {
 			throw new Exception(JText::_('COM_CART_COUPON_ALREADY_APPLIED'));
 		}
 
@@ -1255,7 +1268,7 @@ class CartModelCurrentCart extends CartModelCart
 			}
 
 			// Coupon is for shipping -- handled differently to be applied later after the shipping cost is calculated
-			elseif($couponObjectType == 'shipping')
+			elseif ($couponObjectType == 'shipping')
 			{
 				// Initialize the perk
 				unset($perk);
