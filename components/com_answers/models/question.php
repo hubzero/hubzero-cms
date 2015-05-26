@@ -858,5 +858,51 @@ class Question extends Base
 		// Attempt to delete the record
 		return parent::delete();
 	}
+
+	/**
+	 * Store changes to this database entry
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		// Validate data?
+		if ($check)
+		{
+			// Is data valid?
+			if (!$this->check())
+			{
+				return false;
+			}
+
+			if ($this->_context)
+			{
+				$txt = $this->get('subject') . ' ' . $this->get('question') . ' ' . $this->get('tags');
+				$results = $this->importPlugin('content')->trigger('onContentBeforeSave', array(
+					$this->_context,
+					&$txt,
+					$this->exists()
+				));
+				foreach ($results as $result)
+				{
+					if ($result === false)
+					{
+						$this->setError(\Lang::txt('Content failed validation.'));
+						return false;
+					}
+				}
+			}
+		}
+
+		// Attempt to store data
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
+	}
 }
 

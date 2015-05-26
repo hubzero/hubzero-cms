@@ -68,6 +68,7 @@ $this->css();
 				<input type="hidden" name="task" value="saveq" />
 
 				<?php echo Html::input('token'); ?>
+				<?php echo Html::input('honeypot'); ?>
 
 				<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->question->get('id', 0)); ?>" />
 				<input type="hidden" name="fields[funds]" value="<?php echo $this->escape($this->funds); ?>" />
@@ -111,6 +112,8 @@ $this->css();
 				<?php } else { ?>
 					<input type="hidden" name="fields[reward]" value="0" />
 				<?php } ?>
+
+				<?php echo Html::input('honeypot'); ?>
 			</fieldset>
 			<div class="clear"></div>
 

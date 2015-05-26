@@ -844,6 +844,14 @@ class Questions extends SiteController
 			$row->set('reward', 1);
 		}
 
+		// Store new content
+		if (!Request::checkHoneypot())
+		{
+			$this->addComponentMessage(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'), 'error');
+			$this->newTask($row);
+			return;
+		}
+
 		// Ensure the user added a tag
 		if (!$tags)
 		{
@@ -851,6 +859,11 @@ class Questions extends SiteController
 			$this->newTask($row);
 			return;
 		}
+
+		// We need to temporarily set this so the store() method
+		// has access to the tags string to be able to run it
+		// through spam checkers and validation.
+		$row->set('tags', $tags);
 
 		// Store new content
 		if (!$row->store(true))
