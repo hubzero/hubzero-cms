@@ -133,7 +133,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 		}
 		if ($key)
 		{
-			if ($key == 'banking' && $this->_config->set('banking', -1) == -1)
+			if ($key == 'banking' && $this->_config->get('banking', -1) == -1)
 			{
 				$this->_config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
 			}
