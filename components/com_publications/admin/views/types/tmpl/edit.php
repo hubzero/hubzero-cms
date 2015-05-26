@@ -47,7 +47,7 @@ if (Plugin::isEnabled('projects', $this->row->alias))
 	$active  = Lang::txt('COM_PUBLICATIONS_MTYPE_ON');
 }
 
-$params = new JRegistry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->params);
 
 // Available panels and default config
 $panels = array(

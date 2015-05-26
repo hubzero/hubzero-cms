@@ -84,7 +84,7 @@ class Instance extends Model
 			$this->_tbl->loadFromParent($parent, 'dev');
 		}
 
-		$this->params = new \JRegistry($this->_tbl->get('params'));
+		$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
 	}
 
 	/**

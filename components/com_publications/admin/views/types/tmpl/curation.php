@@ -39,7 +39,7 @@ if ($this->row->id)
 Toolbar::save();
 Toolbar::cancel();
 
-$params = new JRegistry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->params);
 
 // Get curator group cn
 $curatorGroup = '';

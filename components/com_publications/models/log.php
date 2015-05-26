@@ -49,7 +49,7 @@ class Log extends Model
 	protected $_tbl_name = '\\Components\\Publications\\Tables\\Log';
 
 	/**
-	 * JRegistry
+	 * Registry
 	 *
 	 * @var object
 	 */
@@ -65,11 +65,11 @@ class Log extends Model
 	/**
 	 * Parse log file
 	 *
-	 * @param      string 	$logFile
-	 * @param      string 	$type		primary or view
+	 * @param      string  $logFile
+	 * @param      string  $type     primary or view
 	 * @return     void
 	 */
-	public function parseLog ( $pubLog = NULL, $logFile = NULL, $type = 'view', $category = 'unique' )
+	public function parseLog($pubLog = NULL, $logFile = NULL, $type = 'view', $category = 'unique')
 	{
 		$ips = array();
 		$filtered = array();
@@ -96,7 +96,7 @@ class Log extends Model
 				$ip = trim($parts[1]);
 
 				// Check if bot
-				if ($pubLog->checkBotIp( $ip ))
+				if ($pubLog->checkBotIp($ip))
 				{
 					// Skip bots
 					continue;
@@ -122,7 +122,7 @@ class Log extends Model
 	 *
 	 * @return     void
 	 */
-	public function digestLogs ( $pid = NULL, $type = 'view', $numMonths = 1, $includeCurrent = false )
+	public function digestLogs($pid = NULL, $type = 'view', $numMonths = 1, $includeCurrent = false)
 	{
 		if (!$pid)
 		{
@@ -133,7 +133,7 @@ class Log extends Model
 		$types = ($type == 'all') ? array('view', 'primary') : array($type);
 
 		// Get all public versions
-		$row  = new Tables\Version( $this->_db );
+		$row  = new Tables\Version($this->_db);
 		$versions = $row->getVersions($pid, $filters = array('public' => 1));
 
 		if (!$versions)

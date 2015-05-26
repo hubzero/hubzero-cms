@@ -34,7 +34,7 @@ Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_
 Toolbar::save('saveblock');
 Toolbar::cancel();
 
-$params = new JRegistry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->params);
 $manifest  = $this->curation->_manifest;
 $curParams = $manifest->params;
 $blocks	   = $manifest->blocks;

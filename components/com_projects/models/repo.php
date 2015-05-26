@@ -59,7 +59,7 @@ class Repo extends Object
 	private $_db = NULL;
 
 	/**
-	 * \JRegistry
+	 * Registry
 	 *
 	 * @var  object
 	 */

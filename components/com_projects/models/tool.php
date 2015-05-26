@@ -288,7 +288,7 @@ class Tool extends Model
 		if (!isset($this->_status))
 		{
 			$this->_status = new Tool\Status($this->get('status'));
-			$options = new \JRegistry($this->_status->get('options'));
+			$options = new \Hubzero\Config\Registry($this->_status->get('options'));
 			$this->_status->set('options', $options);
 		}
 		if ($property)

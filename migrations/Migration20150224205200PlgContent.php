@@ -39,7 +39,7 @@ class Migration20150224205200PlgContent extends Base
 			$this->db->setQuery($query);
 			if ($plugin = $this->db->loadObject())
 			{
-				$params = new \JRegistry($plugin->params);
+				$params = new \Hubzero\Config\Registry($plugin->params);
 				$params->set('applyFormat', 1);
 				$params->set('convertFormat', 1);
 

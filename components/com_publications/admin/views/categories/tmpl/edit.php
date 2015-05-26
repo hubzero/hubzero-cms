@@ -45,7 +45,7 @@ $dcTypes = array(
 	'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text'
 );
 
-$params = new JRegistry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->params);
 
 Html::behavior('framework', true);
 
@@ -182,8 +182,8 @@ function submitbutton(pressbutton)
 						$found[] = 'plg_' . $plugin->element;
 						if (strstr($plugin->name, '_'))
 						{
-							$lang = JFactory::getLanguage();
-							$lang->load($plugin->name);
+							Lang::load($plugin->name) ||
+							Lang::load($plugin->name, PATH_CORE . DS . 'plugins' . DS . $plugin->folder . DS . $plugin->element);
 						}
 						?>
 						<tr>
@@ -228,8 +228,7 @@ function submitbutton(pressbutton)
 				</tfoot>
 				<tbody id="field-items">
 				<?php
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-					. DS . 'models' . DS . 'elements.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 				$elements = new \Components\Publications\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
 

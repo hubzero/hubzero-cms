@@ -59,7 +59,7 @@ if ($children)
 		$child->title = str_replace( '&', '&amp;', $child->title );
 		$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
 
-		$params = new \JRegistry( $child->params );
+		$params = new \Hubzero\Config\Registry($child->params);
 
 		$serveas  = $params->get('serveas');
 		$ftype 	  = $child->type == 'file' ? \Components\Projects\Helpers\Html::getFileExtension($child->path) : 'supporting';
@@ -72,7 +72,7 @@ if ($children)
 		$url   = Route::url($publication->link('serve') . '&a=' . $child->id);
 		$extra = '';
 
-		switch ( $serveas )
+		switch ($serveas)
 		{
 			case 'download':
 			default:
@@ -90,13 +90,12 @@ if ($children)
 
 		if (in_array($doctitle, $toShow))
 		{
-			$supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"'
-				. $extra . '>' . $doctitle . '</a></li>' . "\n";
+			$supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"' . $extra . '>' . $doctitle . '</a></li>' . "\n";
 		}
 	}
 }
 
-$sdocs = count( $supli ) > 2 ? 2 : count( $supli );
+$sdocs = count($supli) > 2 ? 2 : count($supli);
 $otherdocs = $docs - $sdocs;
 $otherdocs = ($sdocs + $otherdocs) == 3  ? 0 : $otherdocs;
 
@@ -122,5 +121,5 @@ if (!$sdocs && $docs > 0)
 
 $supln .= '</ul>' . "\n";
 $html .= $sdocs ? $supln : '';
+
 echo $html;
-?>

@@ -34,12 +34,12 @@ Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_
 Toolbar::save('saveelements');
 Toolbar::cancel();
 
-$params = new JRegistry($this->row->params);
+$params = new \Hubzero\Config\Registry($this->row->params);
 $manifest  = $this->curation->_manifest;
 $curParams = $manifest->params;
-$blocks	   = $manifest->blocks;
-$blockId  = $this->blockId;
-$block	   = $blocks->$blockId;
+$blocks    = $manifest->blocks;
+$blockId   = $this->blockId;
+$block     = $blocks->$blockId;
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

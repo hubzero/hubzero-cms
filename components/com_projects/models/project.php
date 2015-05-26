@@ -104,7 +104,7 @@ class Project extends Model
 			}
 		}
 
-		$this->params = new \JRegistry($this->_tbl->get('params'));
+		$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
 
 	}
 
@@ -393,7 +393,7 @@ class Project extends Model
 
 		// Load by publication ID
 		$this->_tbl->loadProvisionedProject($pid);
-		$this->params = new \JRegistry($this->_tbl->get('params'));
+		$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
 	}
 
 	/**

@@ -66,7 +66,7 @@ class Elements
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed  $data  The data to bind to the new JRegistry object.
+	 * @param   mixed  $data  The data to bind to the new Registry object.
 	 * @return  void
 	 */
 	public function __construct($data = null, $setup = null)
@@ -97,7 +97,7 @@ class Elements
 	/**
 	 * Magic function to clone the registry object.
 	 *
-	 * @return  JRegistry
+	 * @return  Registry
 	 */
 	public function __clone()
 	{
@@ -209,14 +209,14 @@ class Elements
 	}
 
 	/**
-	 * Returns a reference to a global JRegistry object, only creating it
+	 * Returns a reference to a global Elements object, only creating it
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * <pre>$registry = JRegistry::getInstance($id);</pre>
+	 * <pre>$registry = Elements::getInstance($id);</pre>
 	 *
 	 * @param   string  $id  An ID for the registry instance
-	 * @return  object  The JRegistry object.
+	 * @return  object  The Elements object.
 	 */
 	public static function getInstance($id)
 	{
@@ -356,16 +356,16 @@ class Elements
 	}
 
 	/**
-	 * Merge a JRegistry object into this one
+	 * Merge an Elements object into this one
 	 *
-	 * @param   object  &$source  Source JRegistry object to merge.
+	 * @param   object   &$source  Source object to merge.
 	 * @return  boolean  True on success
 	 */
 	public function merge(&$source)
 	{
 		if ($source instanceof Elements)
 		{
-			// Load the variables into the registry's default namespace.
+			// Load the variables into the object's default namespace.
 			foreach ($source->toArray() as $k => $v)
 			{
 				if (($v !== null) && ($v !== ''))
