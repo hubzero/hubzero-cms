@@ -83,6 +83,7 @@ class Request extends Facade
 	public static function checkToken($method = 'post')
 	{
 		$token = \Session::getFormToken();
+
 		if (!self::getVar($token, '', $method, 'alnum'))
 		{
 			$session = \App::get('session');
@@ -98,9 +99,29 @@ class Request extends Facade
 				return false;
 			}
 		}
-		else
+
+		return true;
+	}
+
+	/**
+	 * Checks for a honeypot in the request
+	 *
+	 * @param   string   $name
+	 * @param   integer  $delay
+	 * @return  boolean  True if found and valid, false otherwise.
+	 */
+	public static function checkHoneypot($name = null, $delay = 3)
+	{
+		$name = $name ?: \Hubzero\Spam\Honeypot::getName();
+
+		if ($honey = self::getVar($name, array(), 'post'))
 		{
-			return true;
+			if (!\Hubzero\Spam\Honeypot::isValid($honey['p'], $honey['t'], $delay))
+			{
+				return false;
+			}
 		}
+
+		return true;
 	}
 }

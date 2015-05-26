@@ -233,6 +233,22 @@ class Input
 	}
 
 	/**
+	 * Displays an input field that should be left empty by the
+	 * real users of the application but will most likely be
+	 * filled out by spam bots.
+	 *
+	 * Use in conjunction with Request::checkHoneypot()
+	 *
+	 * @param   string   $name
+	 * @param   integer  $delay
+	 * @return  string
+	 */
+	public static function honeypot($name = null)
+	{
+		return \Hubzero\Spam\Honeypot::generate($name);
+	}
+
+	/**
 	 * Get the ID attribute for a field name.
 	 *
 	 * @param   string  $name
