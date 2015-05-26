@@ -35,8 +35,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'models' . 
 /**
  * Current user shopping cart
  */
-class CartModelCurrentCart extends CartModelCart
-{
+class CartModelCurrentCart extends CartModelCart {
     // Session cart
     var $cart = NULL;
 
@@ -52,8 +51,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->cart = new stdClass();
@@ -69,17 +67,17 @@ class CartModelCurrentCart extends CartModelCart
         $cart = $this->liftSessionCart();
 
         // If no session cart, try to locate a cookie cart (only for not logged in users)
-        if (!$cart && $juser->get('guest')) {
+        if(!$cart && $juser->get('guest')) {
             $cart = $this->liftCookie();
         }
 
-        if ($cart) {
+        if($cart) {
             // If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-            if (!$juser->get('guest')) {
-                if (empty($this->cart->linked) || !$this->cart->linked) {
+            if(!$juser->get('guest')) {
+                if(empty($this->cart->linked) || !$this->cart->linked) {
                     // link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
                     // if linking fails create a new cart
-                    if (!$this->linkCarts()) {
+                    if(!$this->linkCarts()) {
                         $this->createCart();
                     }
                 }
@@ -88,9 +86,9 @@ class CartModelCurrentCart extends CartModelCart
                 $this->cart->linked = 0;
             }
         } // If no session & cookie cart found, but user is logged in
-        elseif (!$juser->get('guest')) {
+        elseif(!$juser->get('guest')) {
             // Try to get the saved cart in the DB
-            if (!$this->liftUserCart($juser->id)) {
+            if(!$this->liftUserCart($juser->id)) {
                 // If no session, no cookie, no DB cart -- create a brand new cart
                 $this->createCart();
             }
@@ -106,8 +104,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param bool $mode
      * @return void
      */
-    public function setSync($mode = true)
-    {
+    public function setSync($mode = true) {
         $this->sync = $mode;
     }
 
@@ -118,8 +115,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param int Quantity
      * @return void
      */
-    public function add($sId, $qty = 1)
-    {
+    public function add($sId, $qty = 1) {
         parent::add($sId, $qty);
 
         // Update session
@@ -134,8 +130,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param bool  Retain old value
      * @return void
      */
-    public function update($sId, $qty = 1, $retainOldValue = false)
-    {
+    public function update($sId, $qty = 1, $retainOldValue = false) {
         parent::update($sId, $qty, $retainOldValue);
 
         // Update session
@@ -148,8 +143,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param SKU ID
      * @return void
      */
-    public function delete($sId)
-    {
+    public function delete($sId) {
         parent::delete($sId);
 
         // Update session
@@ -162,10 +156,8 @@ class CartModelCurrentCart extends CartModelCart
      * @param bool $updateDb Flag whether the session cart should be synced with DB first
      * @return array of items in the cart
      */
-    public function getCartInfo($sync = false)
-    {
-        if ($sync)
-        {
+    public function getCartInfo($sync = false) {
+        if($sync) {
             // Enable syncing just in case, since this is an explicit call to get a synced cart
             $this->sync = true;
             $this->syncSessionCart();
@@ -180,8 +172,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return bool
      */
-    public function isEmpty()
-    {
+    public function isEmpty() {
         return (empty($this->getCartInfo()->items));
     }
 
@@ -191,8 +182,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param false
      * @return array of change messages
      */
-    private function getCartChanges()
-    {
+    private function getCartChanges() {
         // Load cart items info
         $sql = "SELECT * FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
         $this->_db->setQuery($sql);
@@ -203,25 +193,20 @@ class CartModelCurrentCart extends CartModelCart
 
         $cartItems = $this->cart->items;
 
-        foreach ($items as $item) {
+        foreach($items as $item) {
             // Build item name
             $itemName = false;
-            if (!empty($cartItems[$item->sId]['info']->pName))
-            {
+            if(!empty($cartItems[$item->sId]['info']->pName)) {
                 $itemName = $cartItems[$item->sId]['info']->pName;
             }
-            if (!empty($cartItems[$item->sId]['options']))
-            {
-                foreach ($cartItems[$item->sId]['options'] as $option)
-                {
+            if(!empty($cartItems[$item->sId]['options'])) {
+                foreach($cartItems[$item->sId]['options'] as $option) {
                     $itemName .= ', ' . $option;
                 }
             }
 
-            if ($item->crtiAvailable == 0)
-            {
-                if (!$itemName)
-                {
+            if($item->crtiAvailable == 0) {
+                if(!$itemName) {
                     $itemName = $item->crtiName;
                 }
                 $changes[] = array($itemName . ' is no longer available', 'info');
@@ -230,17 +215,15 @@ class CartModelCurrentCart extends CartModelCart
                 continue;
             }
 
-            if (!empty($item->crtiOldQty) && $item->crtiOldQty > $item->crtiQty)
-            {
-                if ($item->crtiQty) {
+            if(!empty($item->crtiOldQty) && $item->crtiOldQty > $item->crtiQty) {
+                if($item->crtiQty) {
                     $changes[] = array($itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info');
                 } else {
                     $changes[] = array($itemName . ' is no longer in stock', 'info');
                 }
             }
 
-            if (!empty($item->crtiOldPrice) && $item->crtiOldPrice != $item->crtiPrice)
-            {
+            if(!empty($item->crtiOldPrice) && $item->crtiOldPrice != $item->crtiPrice) {
                 $changes[] = array($itemName . ' price changed from ' . $item->crtiOldPrice . ' to ' . $item->crtiPrice, 'info');
             }
         }
@@ -249,7 +232,7 @@ class CartModelCurrentCart extends CartModelCart
         $this->cart->hasChanges = false;
 
         // Reset all messages
-        if (!empty($changes)) {
+        if(!empty($changes)) {
             // Delete zero inventory items and unavailable SKUs
             $sql = "DELETE FROM `#__cart_cart_items` WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` = {$this->crtId}";
             $this->_db->setQuery($sql);
@@ -273,8 +256,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param false
      * @return bool
      */
-    private function cartChanged()
-    {
+    private function cartChanged() {
         return (!empty($this->cart->hasChanges) && $this->cart->hasChanges);
     }
 
@@ -283,10 +265,9 @@ class CartModelCurrentCart extends CartModelCart
      * @param   void
      * @return  bool
      */
-    public function hasMessages()
-    {
+    public function hasMessages() {
         return ((!empty($this->cart->hasMessages) && $this->cart->hasMessages) ||
-                $this->cartChanged()
+            $this->cartChanged()
         );
     }
 
@@ -296,8 +277,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param   string  Message type, used to set the CSS class name
      * @return  void
      */
-    public function setMessage($msg, $type = 'info')
-    {
+    public function setMessage($msg, $type = 'info') {
         $this->cart->messages[] = array($msg, $type);
         $this->cart->hasMessages = true;
     }
@@ -308,17 +288,14 @@ class CartModelCurrentCart extends CartModelCart
      * @param   void
      * @return  void
      */
-    public function getMessages()
-    {
-        if (!$this->hasMessages())
-        {
+    public function getMessages() {
+        if(!$this->hasMessages()) {
             return false;
         }
 
         // Get messages
         $messages = array();
-        if ((!empty($this->cart->hasMessages) && $this->cart->hasMessages))
-        {
+        if((!empty($this->cart->hasMessages) && $this->cart->hasMessages)) {
             $messages = $this->cart->messages;
             // Reset messages flag
             $this->cart->hasMessages = false;
@@ -328,8 +305,7 @@ class CartModelCurrentCart extends CartModelCart
 
         // Get cart changes
         $changes = array();
-        if ($this->cartChanged())
-        {
+        if($this->cartChanged()) {
             $changes = $this->getCartChanges();
         }
 
@@ -345,18 +321,14 @@ class CartModelCurrentCart extends CartModelCart
      * @param string Where to redirect
      * @return void
      */
-    public function redirect($where)
-    {
-        if ($where == 'home')
-        {
-            $redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-        }
-        else
-        {
-            $redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . '/checkout/' . $where;
+    public function redirect($where) {
+        if($where == 'home') {
+            $redirect_url = JRoute::_('index.php?option=' . 'com_cart');
+        } else {
+            $redirect_url = JRoute::_('index.php?option=' . 'com_cart') . '/checkout/' . $where;
         }
 
-        $app  =  JFactory::getApplication();
+        $app = JFactory::getApplication();
         $app->redirect($redirect_url);
     }
 
@@ -368,15 +340,13 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return string method name
      */
-    public function getNextCheckoutStep()
-    {
+    public function getNextCheckoutStep() {
         // Get DB steps for this transaction
         $sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId DESC";
         $this->_db->setQuery($sql);
         $nextStep = $this->_db->loadResult();
 
-        if (!$nextStep)
-        {
+        if(!$nextStep) {
             $nextStep = 'summary';
         }
 
@@ -389,8 +359,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return string method name
      */
-    private function getCheckoutSteps()
-    {
+    private function getCheckoutSteps() {
         // Get DB steps for this transaction
         $sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId DESC";
         $this->_db->setQuery($sql);
@@ -405,14 +374,11 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return array of items in the transaction, FALSE on failed attempt
      */
-    public function getTransaction()
-    {
+    public function getTransaction() {
         // Locate the existing transaction if possible
-        if (empty($this->cart->tId))
-        {
+        if(empty($this->cart->tId)) {
             // Create a transaction if no existing transaction found
-            if (!$this->createTransaction())
-            {
+            if(!$this->createTransaction()) {
                 return false;
             }
         }
@@ -426,35 +392,29 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return array of items in the transaction or false on failed attempt
      */
-    public function liftTransaction()
-    {
+    public function liftTransaction() {
         // Get transaction info
         $tInfo = $this->getTransactionData();
 
-        if (!$tInfo || $tInfo->tAge > $this->transactionKillAge)
-        {
+        if(!$tInfo || $tInfo->tAge > $this->transactionKillAge) {
             // No transaction found
             return false;
         }
 
         // Only pending and released transactions can be lifted
-        if ($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released')
-        {
+        if($tInfo->tStatus != 'pending' && $tInfo->tStatus != 'released') {
             return false;
         }
 
         // See if transaction is expired
-        if ($tInfo->tAge > $this->transactionTTL)
-        {
+        if($tInfo->tAge > $this->transactionTTL) {
             // If transaction has not yet been processed as expired (status is still 'pending') release the transaction
-            if ($tInfo->tStatus == 'pending')
-            {
+            if($tInfo->tStatus == 'pending') {
                 $this->releaseTransaction($this->cart->tId);
             }
 
             // If expired see if it can be still processed
-            if (!$this->rebuildTransaction())
-            {
+            if(!$this->rebuildTransaction()) {
                 return false;
             }
         }
@@ -463,13 +423,11 @@ class CartModelCurrentCart extends CartModelCart
         $transaction = new stdClass();
         $transaction->items = $this->getTransactionItems($this->cart->tId);
 
-        if (!empty($transaction->items))
-        {
+        if(!empty($transaction->items)) {
             // Calculate the important numbers for the transaction
             $transactionTotalAmount = 0;
 
-            foreach ($transaction->items as $transactionItem)
-            {
+            foreach($transaction->items as $transactionItem) {
                 $transactionTotalAmount += ($transactionItem['transactionInfo']->tiPrice * $transactionItem['transactionInfo']->qty);
             }
 
@@ -488,8 +446,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void (gets info from POST)
      * @return array status and messages
      */
-    public function setTransactionShippingInfo()
-    {
+    public function setTransactionShippingInfo() {
         $errors = array();
         // success by default
         $status = 1;
@@ -497,27 +454,23 @@ class CartModelCurrentCart extends CartModelCart
         // Check required fields
         $requiredFields = array('shippingToFirst', 'shippingToLast', 'shippingAddress', 'shippingCity', 'shippingState', 'shippingZip');
 
-        foreach ($requiredFields as $field)
-        {
+        foreach($requiredFields as $field) {
             $fieldValue = JRequest::getVar($field, false, 'post');
-            if (empty($fieldValue))
-            {
+            if(empty($fieldValue)) {
                 $errors[] = JText::_('COM_CART_FILL_REQUIRED_FIELDS');
                 break;
             }
         }
 
         // Check values
-        if (empty($errors) && !Cart_Helper::validZip(JRequest::getVar('shippingZip', false, 'post', 'string')))
-        {
+        if(empty($errors) && !Cart_Helper::validZip(JRequest::getVar('shippingZip', false, 'post', 'string'))) {
             $errors[] = JText::_('COM_CART_INCORRECT_ZIP');
         }
 
         // Init return object
         $ret = new stdClass();
 
-        if (empty($errors))
-        {
+        if(empty($errors)) {
             // save shipping info
             $shippingToFirst = Cart_Helper::escapeDb(JRequest::getVar('shippingToFirst', false, 'post', 'string'));
             $shippingToLast = Cart_Helper::escapeDb(JRequest::getVar('shippingToLast', false, 'post', 'string'));
@@ -526,8 +479,7 @@ class CartModelCurrentCart extends CartModelCart
             $shippingState = Cart_Helper::escapeDb(JRequest::getVar('shippingState', false, 'post', 'string'));
             $shippingZip = Cart_Helper::escapeDb(JRequest::getVar('shippingZip', false, 'post', 'string'));
 
-            if ($this->debug)
-            {
+            if($this->debug) {
                 echo '<br>saving transaction shipping info';
             }
 
@@ -543,8 +495,7 @@ class CartModelCurrentCart extends CartModelCart
 
             $saveAddress = Cart_Helper::escapeDb(JRequest::getVar('saveAddress', false, 'post', 'string'));
             // Save the address for future use if requested
-            if ($saveAddress)
-            {
+            if($saveAddress) {
                 // Update DB prefix
                 $sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 
@@ -558,10 +509,8 @@ class CartModelCurrentCart extends CartModelCart
                 $this->_db->query();
             }
 
-        }
-        // Set errors and status
-        else
-        {
+        } // Set errors and status
+        else {
             $status = 0;
             $ret->errors = $errors;
         }
@@ -573,14 +522,12 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Saves transaction shipping cost and shipping discounts
      *
-     * @param 	double 		$shippingCost shipping cost
-     * @return 	bool		true
+     * @param    double $shippingCost shipping cost
+     * @return    bool        true
      */
-    public function setTransactionShippingCost($shippingCost)
-    {
+    public function setTransactionShippingCost($shippingCost) {
 
-        if (empty($this->tInfo))
-        {
+        if(empty($this->tInfo)) {
             throw new Exception(JText::_('No transaction info.'));
         }
 
@@ -589,23 +536,17 @@ class CartModelCurrentCart extends CartModelCart
         // Get shipping coupon (if any and apply it)
         $perks = unserialize($this->tInfo->tiPerks);
 
-        if (!empty($perks['shipping']))
-        {
+        if(!empty($perks['shipping'])) {
             $shippingPerk = $perks['shipping'];
             // Calculate the shipping discount
-            if ($shippingPerk->discountUnit == 'percentage')
-            {
-                if ($shippingPerk->discount > 100)
-                {
+            if($shippingPerk->discountUnit == 'percentage') {
+                if($shippingPerk->discount > 100) {
                     $shippingPerk->discount = 100;
                 }
 
                 $shippingDiscountAmount = $shippingCost * ($shippingPerk->discount / 100);
-            }
-            elseif ($shippingPerk->discountUnit == 'absolute')
-            {
-                if ($shippingCost < $shippingPerk->discount)
-                {
+            } elseif($shippingPerk->discountUnit == 'absolute') {
+                if($shippingCost < $shippingPerk->discount) {
                     $shippingPerk->discount = $shippingCost;
                 }
 
@@ -628,24 +569,19 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return object, false on no results
      */
-    public function getTransactionData()
-    {
+    public function getTransactionData() {
         // If session expired tId will not be saved
-        if (empty($this->cart->tId))
-        {
+        if(empty($this->cart->tId)) {
             // Try to find if there is a pending transaction for this cart in DB and use it
             $sql = "SELECT `tId` FROM `#__cart_transactions` WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = 'pending'";
             $this->_db->setQuery($sql);
             $tId = $this->_db->loadResult();
-        }
-        else
-        {
+        } else {
             $tId = $this->cart->tId;
         }
 
-        if (!$tId)
-        {
-          return false;
+        if(!$tId) {
+            return false;
         }
 
         // Get info
@@ -664,19 +600,16 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Set customer status
      *
-     * @param	string 	$status new status
-     * @param	int 	$tId transaction ID
-     * @return 	void
+     * @param    string $status new status
+     * @param    int $tId transaction ID
+     * @return    void
      */
-    public function updateTransactionCustomerStatus($status, $tId = NULL)
-    {
-        if (!$tId)
-        {
+    public function updateTransactionCustomerStatus($status, $tId = NULL) {
+        if(!$tId) {
             $tId = $this->cart->tId;
         }
 
-        if (!$tId || !is_numeric($tId))
-        {
+        if(!$tId || !is_numeric($tId)) {
             return false;
         }
 
@@ -701,11 +634,9 @@ class CartModelCurrentCart extends CartModelCart
      * @param int saved address ID
      * @return bool
      */
-    public function setSavedShippingAddress($saId)
-    {
+    public function setSavedShippingAddress($saId) {
         // check if the address correct
-        if (!Cart_Helper::isNonNegativeInt($saId))
-        {
+        if(!Cart_Helper::isNonNegativeInt($saId)) {
             throw new Exception(JText::_('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
@@ -713,8 +644,7 @@ class CartModelCurrentCart extends CartModelCart
         $this->_db->setQuery($sql);
         $this->_db->query();
 
-        if ($this->_db->getNumRows() < 1)
-        {
+        if($this->_db->getNumRows() < 1) {
             throw new Exception(JText::_('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
@@ -737,13 +667,11 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Generate unique security token to verify the place order calls
      *
-     * @param 		void
-     * @return		string	token
+     * @param        void
+     * @return        string    token
      */
-    public function getToken()
-    {
-        if (empty($this->tInfo))
-        {
+    public function getToken() {
+        if(empty($this->tInfo)) {
             throw new Exception(JText::_(COM_CART_NO_TRANSACTION_FOUND));
         }
 
@@ -753,15 +681,12 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Verify security token
      *
-     * @param 		string	token
-     * @return		bool
+     * @param        string    token
+     * @return        bool
      */
-    public function verifyToken($token, $tId = false)
-    {
-        if (empty($tId))
-        {
-            if (empty($this->tInfo))
-            {
+    public function verifyToken($token, $tId = false) {
+        if(empty($tId)) {
+            if(empty($this->tInfo)) {
                 throw new Exception(JText::_(COM_CART_NO_TRANSACTION_FOUND));
             }
             $tId = $this->tInfo->tId;
@@ -773,13 +698,11 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Finalizes transaction in the DB
      *
-     * @param 		void
-     * @return		void
+     * @param        void
+     * @return        void
      */
-    public function finalizeTransaction()
-    {
-        if (empty($this->tInfo))
-        {
+    public function finalizeTransaction() {
+        if(empty($this->tInfo)) {
             throw new Exception(JText::_(COM_CART_NO_TRANSACTION_FOUND));
         }
 
@@ -796,21 +719,19 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Mark step for current transaction as completed (default) or not-completed
      *
-     * @param 	string Step
-     * @param 	bool Completed (true) ar not completed (false)
-     * @return 	bool
+     * @param    string Step
+     * @param    bool Completed (true) ar not completed (false)
+     * @return    bool
      */
-    public function setStepStatus($step, $status = true)
-    {
+    public function setStepStatus($step, $status = true) {
         $allowedSteps = array('shipping');
 
-        if (!in_array($step, $allowedSteps))
-        {
+        if(!in_array($step, $allowedSteps)) {
             return false;
         }
 
         $sql = "UPDATE `#__cart_transaction_steps`
-				SET `tsStatus` = " .  $this->_db->quote($status) . "
+				SET `tsStatus` = " . $this->_db->quote($status) . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
         $this->_db->setQuery($sql);
         $this->_db->query();
@@ -823,11 +744,10 @@ class CartModelCurrentCart extends CartModelCart
 
     /**
      * Add coupon to cart
-     * @param 	string		$couponCode coupon code
-     * @return	bool		true on sucess
+     * @param    string $couponCode coupon code
+     * @return    bool        true on sucess
      */
-    public function addCoupon($couponCode)
-    {
+    public function addCoupon($couponCode) {
         // Check if coupon is valid and active (throws exception if invalid)
         include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
         $coupons = new StorefrontModelCoupons;
@@ -847,8 +767,7 @@ class CartModelCurrentCart extends CartModelCart
 
         // If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
         $juser = JFactory::getUser();
-        if ($juser->id)
-        {
+        if($juser->id) {
             $coupons->apply($cnId);
         }
 
@@ -864,16 +783,14 @@ class CartModelCurrentCart extends CartModelCart
 
     /**
      * Check if coupon applies to the cart and add a SKU to cart if needed and possible
-     * @param 	int			$cnId coupon ID
-     * @return	bool		true on cuccess, exception on failure
+     * @param    int $cnId coupon ID
+     * @return    bool        true on cuccess, exception on failure
      */
-    public function applyCoupon($cnId)
-    {
+    public function applyCoupon($cnId) {
         include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
         $coupon = StorefrontModelCoupons::getCouponInfo($cnId, true, true, true, true);
 
-        if (!$coupon->info->itemCoupon)
-        {
+        if(!$coupon->info->itemCoupon) {
             // All non-item coupons apply
             return true;
         }
@@ -882,13 +799,11 @@ class CartModelCurrentCart extends CartModelCart
         $cartItems = $cartInfo->items;
 
         // Go through each coupon object and try to find a match in a cart
-        foreach ($coupon->objects as $couponObject)
-        {
-            foreach ($cartItems as $sId => $cartItem)
-            {
-                if (($coupon->info->cnObject == 'sku' && $sId == $couponObject->cnoObjectId) ||
-                    ($coupon->info->cnObject == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId))
-                {
+        foreach($coupon->objects as $couponObject) {
+            foreach($cartItems as $sId => $cartItem) {
+                if(($coupon->info->cnObject == 'sku' && $sId == $couponObject->cnoObjectId) ||
+                    ($coupon->info->cnObject == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId)
+                ) {
                     // return true as soon as at least one match found
                     return true;
                 }
@@ -898,26 +813,21 @@ class CartModelCurrentCart extends CartModelCart
         // No item match, check if there is a way to map to a single SKU for this coupon and add this SKU to cart
 
         // Only one object may be defined to map to a single SKU
-        if (sizeof($coupon->objects) == 1)
-        {
+        if(sizeof($coupon->objects) == 1) {
             $couponObject = $coupon->objects[0];
 
-            if ($coupon->info->cnObject == 'sku')
-            {
+            if($coupon->info->cnObject == 'sku') {
                 // Add SKU to cart
                 $this->add($couponObject->cnoObjectId);
                 return true;
-            }
-            elseif ($coupon->info->cnObject == 'product')
-            {
+            } elseif($coupon->info->cnObject == 'product') {
                 // Check product SKUs
                 include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
                 $warehouse = new StorefrontModelWarehouse();
                 $productOptions = $warehouse->getProductOptions($couponObject->cnoObjectId);
 
                 // See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to add if there are several of them)
-                if (sizeof($productOptions->skus) == 1)
-                {
+                if(sizeof($productOptions->skus) == 1) {
                     // Get product's SKU
                     $sId = array_shift($productOptions->skus);
                     $sId = $sId['info']->sId;
@@ -935,11 +845,10 @@ class CartModelCurrentCart extends CartModelCart
 
     /**
      * Get coupons applied to the cart
-     * @param 	void
-     * @return	array		coupons
+     * @param    void
+     * @return    array        coupons
      */
-    public function getCoupons()
-    {
+    public function getCoupons() {
         $sql = "SELECT cnId FROM `#__cart_coupons` WHERE `crtId` = {$this->crtId} AND crtCnStatus = 'active' ORDER BY `crtCnAdded`";
         $this->_db->setQuery($sql);
         $cnIds = $this->_db->loadResultArray();
@@ -953,22 +862,18 @@ class CartModelCurrentCart extends CartModelCart
 
     /**
      * Checks if coupon is applied to the cart
-     * @param 	string		$couponCode coupon code
-     * @return	bool
+     * @param    string $couponCode coupon code
+     * @return    bool
      */
-    private function isCouponApplied($cnCode)
-    {
+    private function isCouponApplied($cnCode) {
         // Get coupons if needed
-        if (empty($this->cartCoupons))
-        {
+        if(empty($this->cartCoupons)) {
             $this->cartCoupons = $this->getCoupons();
         }
 
         // Iterate through coupons and return true if coupon already applied
-        foreach ($this->cartCoupons as $coupon)
-        {
-            if ($coupon->cnCode == $cnCode)
-            {
+        foreach($this->cartCoupons as $coupon) {
+            if($coupon->cnCode == $cnCode) {
                 return true;
             }
         }
@@ -979,12 +884,11 @@ class CartModelCurrentCart extends CartModelCart
      * Do the maintenance of coupons -- make sure all coupons are valid and in order, remove unnecessary coupons...
      * Return all perks available for the cart
      *
-     * @param 	object 		$cartInfo
-     * @param	object		$cartCoupons
-     * @return 	array		perks
+     * @param    object $cartInfo
+     * @param    object $cartCoupons
+     * @return    array        perks
      */
-    public function getCouponPerks()
-    {
+    public function getCouponPerks() {
         $cartInfo = $this->getCartInfo();
         $cartCoupons = $this->getCoupons();
 
@@ -1029,17 +933,14 @@ class CartModelCurrentCart extends CartModelCart
         $itemCouponDiscountMappings = array();
 
         // go through each coupon in the cart
-        foreach ($cartCoupons as $cn)
-        {
+        foreach($cartCoupons as $cn) {
             // Check if coupon expired
-            if ($cn->cnExpired)
-            {
+            if($cn->cnExpired) {
                 continue;
             }
 
             // Check if coupon applies to cart items
-            if (!$cn->itemCoupon)
-            {
+            if(!$cn->itemCoupon) {
                 $itemCoupon = false;
             }
 
@@ -1058,8 +959,7 @@ class CartModelCurrentCart extends CartModelCart
             // get object type
             $couponObjectType = $cn->cnObject;
 
-            switch ($couponObjectType)
-            {
+            switch($couponObjectType) {
                 case 'sku':
                     break;
                 case 'product':
@@ -1076,49 +976,39 @@ class CartModelCurrentCart extends CartModelCart
             // Right now there is only one action -- discount
             $couponAction = $coupon->action->cnaAction;
 
-            if ($couponAction == 'discount')
-            {
+            if($couponAction == 'discount') {
                 // find out whether it is a absolute amount or percentage
-                if (substr($coupon->action->cnaVal, -1) == '%')
-                {
+                if(substr($coupon->action->cnaVal, -1) == '%') {
                     $couponDiscountUnit = 'percentage';
                     $couponDiscount = substr($coupon->action->cnaVal, 0, strlen($coupon->action->cnaVal) - 1);
-                }
-                else
-                {
+                } else {
                     $couponDiscountUnit = 'absolute';
                     $couponDiscount = $coupon->action->cnaVal;
                 }
 
                 // make sure discount is numeric
-                if (!is_numeric($couponDiscount))
-                {
+                if(!is_numeric($couponDiscount)) {
                     throw new Exception(JText::_('Invalid coupon. Invalid discount amount ' . $couponDiscount . '.'));
                 }
 
-            }
-            else {
+            } else {
                 throw new Exception(JText::_('Invalid coupon. Invalid action type.'));
             }
 
             // Check if we need to match against the object type to make sure the coupon is applicable
-            if ($itemCoupon)
-            {
+            if($itemCoupon) {
                 // check if there are options available
-                if (empty($coupon->objects))
-                {
+                if(empty($coupon->objects)) {
                     throw new Exception(JText::_('Invalid coupon. No object found.'));
                 }
 
                 // Go through each coupon object and try to find a match in a cart
-                foreach ($coupon->objects as $couponObject)
-                {
-                    foreach ($cartItems as $sId => $cartItem)
-                    {
+                foreach($coupon->objects as $couponObject) {
+                    foreach($cartItems as $sId => $cartItem) {
                         // try to find a match
-                        if (($couponObjectType == 'sku' && $sId == $couponObject->cnoObjectId) ||
-                            ($couponObjectType == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId))
-                        {
+                        if(($couponObjectType == 'sku' && $sId == $couponObject->cnoObjectId) ||
+                            ($couponObjectType == 'product' && $cartItem['info']->pId == $couponObject->cnoObjectId)
+                        ) {
                             // Initialize the perk
                             unset($perk);
                             $perk = new stdClass();
@@ -1130,15 +1020,13 @@ class CartModelCurrentCart extends CartModelCart
                             $couponMappings[$sId] = $cn->cnId;
 
                             // figure out the perk
-                            if ($couponAction == 'discount')
-                            {
+                            if($couponAction == 'discount') {
                                 /*
                                 See if there is a limit of same products this can be applied to.
                                 */
                                 $objectsLimit = $couponObject->cnoObjectsLimit;
                                 $applyPerkToQty = $cartItem['cartInfo']->qty;
-                                if ($applyPerkToQty > $objectsLimit)
-                                {
+                                if($applyPerkToQty > $objectsLimit) {
                                     $applyPerkToQty = $objectsLimit;
                                 }
 
@@ -1147,25 +1035,20 @@ class CartModelCurrentCart extends CartModelCart
                                 */
 
                                 // Calculate discount
-                                if ($couponDiscountUnit == 'absolute')
-                                {
+                                if($couponDiscountUnit == 'absolute') {
                                     // make sure $couponDiscount is not more than the item price
-                                    if ($cartItem['info']->sPrice < $couponDiscount)
-                                    {
+                                    if($cartItem['info']->sPrice < $couponDiscount) {
                                         $couponDiscount = $cartItem['info']->sPrice;
                                     }
 
                                     $discountAmount = $couponDiscount * $applyPerkToQty;
-                                }
-                                elseif ($couponDiscountUnit == 'percentage')
-                                {
+                                } elseif($couponDiscountUnit == 'percentage') {
                                     // make sure $couponDiscount is <= 100%
-                                    if ($couponDiscount > 100)
-                                    {
+                                    if($couponDiscount > 100) {
                                         $couponDiscount = 100;
                                     }
 
-                                    $discountAmount = ($cartItem['info']->sPrice * $applyPerkToQty) *  ($couponDiscount / 100);
+                                    $discountAmount = ($cartItem['info']->sPrice * $applyPerkToQty) * ($couponDiscount / 100);
                                 }
 
                                 $perk->discount = round($discountAmount, 2, PHP_ROUND_HALF_DOWN);
@@ -1173,14 +1056,11 @@ class CartModelCurrentCart extends CartModelCart
                                 $itemCouponDiscountMappings[$sId] = $perk->discount;
 
                                 $perks['items'][$perk->forSku] = $perk;
-                            }
-                            else
-                            {
+                            } else {
                                 throw new Exception(JText::_('Invalid coupon. Only discounts are available for SKUs and products'));
                             }
 
-                            if ($couponObjectType == 'sku')
-                            {
+                            if($couponObjectType == 'sku') {
                                 break;
                             }
                             //no break for products -- keep going maybe there are several SKUs of the same product in the cart
@@ -1190,14 +1070,13 @@ class CartModelCurrentCart extends CartModelCart
                 }
 
                 // calculate total item discounts, the final correct value will be calculated on the last iteration of the parent loop
-                foreach ($itemCouponDiscountMappings as $mappedDiscount)
-                {
+                foreach($itemCouponDiscountMappings as $mappedDiscount) {
                     $itemsDiscountsTotal += $mappedDiscount;
                 }
             }
             // Coupon is generic, not item based and not shipping.
             // All item coupons have been processed by this time, save to calculate total discounts
-            elseif ($couponObjectType != 'shipping') {
+            elseif($couponObjectType != 'shipping') {
                 // Initialize the perk
                 unset($perk);
                 $perk = new stdClass();
@@ -1207,17 +1086,15 @@ class CartModelCurrentCart extends CartModelCart
                 $couponMappings[$couponObjectType] = $cn->cnId;
 
                 // figure out the perk
-                if ($couponAction == 'discount')
-                {
-                    switch ($couponObjectType)
-                    {
+                if($couponAction == 'discount') {
+                    switch($couponObjectType) {
                         case 'order':
                             $amountToDiscount = $cartInfo->totalCart - $itemsDiscountsTotal;
                             break;
                     }
 
                     // Quit if there is no amount to discount
-                    if (!$amountToDiscount) {
+                    if(!$amountToDiscount) {
                         //break;
                     }
 
@@ -1227,15 +1104,11 @@ class CartModelCurrentCart extends CartModelCart
                     */
 
                     // Calculate discount
-                    if ($couponDiscountUnit == 'absolute')
-                    {
+                    if($couponDiscountUnit == 'absolute') {
                         $discountAmount = $couponDiscount;
-                    }
-                    elseif ($couponDiscountUnit == 'percentage')
-                    {
+                    } elseif($couponDiscountUnit == 'percentage') {
                         // make sure $couponDiscount is <= 100%
-                        if ($couponDiscount > 100)
-                        {
+                        if($couponDiscount > 100) {
                             $couponDiscount = 100;
                         }
 
@@ -1248,15 +1121,11 @@ class CartModelCurrentCart extends CartModelCart
                 }
 
                 // calculate total generic discounts, the final correct value will be calculated on the last iteration of the parent loop
-                foreach ($perks['generic'] as $perkDiscount)
-                {
+                foreach($perks['generic'] as $perkDiscount) {
                     $genericDiscountsTotal += $perkDiscount->discount;
                 }
-            }
-
-            // Coupon is for shipping -- handled differently to be applied later after the shipping cost is calculated
-            elseif($couponObjectType == 'shipping')
-            {
+            } // Coupon is for shipping -- handled differently to be applied later after the shipping cost is calculated
+            elseif($couponObjectType == 'shipping') {
                 // Initialize the perk
                 unset($perk);
                 $perk = new stdClass();
@@ -1279,15 +1148,12 @@ class CartModelCurrentCart extends CartModelCart
         */
 
         // Go through each coupon again and see if it needs to be applied. If not -- release it
-        foreach ($cartCoupons as $cn)
-        {
-            if ($cn->cnExpired)
-            {
+        foreach($cartCoupons as $cn) {
+            if($cn->cnExpired) {
                 // TODO record expired coupon to display later
                 $this->removeCoupon($cn->cnId);
             }
-            if (!in_array($cn->cnId, $couponMappings))
-            {
+            if(!in_array($cn->cnId, $couponMappings)) {
                 $this->removeCoupon($cn->cnId);
             }
         }
@@ -1303,17 +1169,15 @@ class CartModelCurrentCart extends CartModelCart
 
     /**
      * Remove coupon from cart
-     * @param 	int		$cnId coupon ID
-     * @return	bool		true on sucess
+     * @param    int $cnId coupon ID
+     * @return    bool        true on sucess
      */
-    public function removeCoupon($cnId)
-    {
+    public function removeCoupon($cnId) {
         $coupons = new StorefrontModelCoupons;
 
         // If user is logged in return coupon back to the coupons pool.
         $juser = JFactory::getUser();
-        if ($juser->id)
-        {
+        if($juser->id) {
             $coupons->recycle($cnId);
         }
 
@@ -1330,12 +1194,11 @@ class CartModelCurrentCart extends CartModelCart
     /**
      * Handle memberships
      *
-     * @param 	object 		$cartInfo
-     * @param	object		$cartCoupons
-     * @return 	object		membership info
+     * @param    object $cartInfo
+     * @param    object $cartCoupons
+     * @return    object        membership info
      */
-    public function getMembershipInfo()
-    {
+    public function getMembershipInfo() {
         $cartInfo = $this->getCartInfo();
 
         $cartItems = $cartInfo->items;
@@ -1350,10 +1213,8 @@ class CartModelCurrentCart extends CartModelCart
         $membershipTypes = $ms->getMembershipTypes();
 
         // Go through each product and see if the type is membership
-        foreach ($cartItems as $sId => $item)
-        {
-            if (in_array($item['info']->ptId, $membershipTypes) && !empty($item['meta']['ttl']))
-            {
+        foreach($cartItems as $sId => $item) {
+            if(in_array($item['info']->ptId, $membershipTypes) && !empty($item['meta']['ttl'])) {
                 $itemInfo = $item['info'];
 
                 // Get product type
@@ -1376,8 +1237,7 @@ class CartModelCurrentCart extends CartModelCart
                 $membershipSIdInfo = new stdClass();
                 $membershipSIdInfo->newExpires = strtotime($newExpires);
 
-                if ($currentExpiration && $currentExpiration['crtmActive'])
-                {
+                if($currentExpiration && $currentExpiration['crtmActive']) {
                     $membershipSIdInfo->existingExpires = strtotime($currentExpiration['crtmExpires']);
                 }
 
@@ -1397,11 +1257,9 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return array of items in the cart
      */
-    private function getItems()
-    {
+    private function getItems() {
         // Just in case check if current cart exists. If not -- delete session cart and create a new one
-        if (!$this->exists())
-        {
+        if(!$this->exists()) {
             $this->clearSessionCart();
             $this->createCart();
             // call itself
@@ -1416,8 +1274,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return array of items in the cart
      */
-    private function getUpdatedItems()
-    {
+    private function getUpdatedItems() {
         // Get cart items from the database
         $items = $this->getCartItems();
         $allSkuInfo = $items->allSkuInfo;
@@ -1431,11 +1288,9 @@ class CartModelCurrentCart extends CartModelCart
         $cartItems = array();
 
         // Note that some items become unavailable/out of stock or prices may change, need to account for this
-        foreach ($allSkuInfo as $sId => $sku)
-        {
+        foreach($allSkuInfo as $sId => $sku) {
             // See if the SKU is available at all
-            if (empty($skuInfo[$sId]))
-            {
+            if(empty($skuInfo[$sId])) {
                 // SKU became unavailable, set it as such (there is a difference between unavailable and out of stock)
                 $this->markItemUnavailable($sId);
                 $this->cart->hasChanges = true;
@@ -1451,8 +1306,7 @@ class CartModelCurrentCart extends CartModelCart
             $cartInfo = new stdClass();
 
             // Check if this item has been already processed by the doItem (i.e. through cart update quantities call)
-            if (!empty($sku->crtiOldPrice) && $sku->crtiPrice != $sku->crtiOldPrice)
-            {
+            if(!empty($sku->crtiOldPrice) && $sku->crtiPrice != $sku->crtiOldPrice) {
                 // Set card changed flag
                 $this->cart->hasChanges = true;
                 // Mark as updated to prevent double updating
@@ -1460,17 +1314,13 @@ class CartModelCurrentCart extends CartModelCart
             }
 
             // Check if there is enough inventory
-            if ($inf->sTrackInventory && ($inf->sInventory < $sku->crtiQty) && !$updated)
-            {
-                if (!$inf->sInventory)
-                {
+            if($inf->sTrackInventory && ($inf->sInventory < $sku->crtiQty) && !$updated) {
+                if(!$inf->sInventory) {
                     // 'This product is not in stock anymore
                     // remove item, retain value though for changes messaging
                     $this->doItem($sId, 'set', 0, true);
                     $cartInfo->qty = 0;
-                }
-                else
-                {
+                } else {
                     // Inventory level dropped for this product, retain value for changes messaging
                     $this->doItem($sId, 'set', $inf->sInventory, true);
                     $cartInfo->qty = $inf->sInventory;
@@ -1481,15 +1331,12 @@ class CartModelCurrentCart extends CartModelCart
 
                 // Mark as updated to prevent double updating
                 $updated = true;
-            }
-            else
-            {
+            } else {
                 $cartInfo->qty = $sku->crtiQty;
             }
 
             // Check if allowMultiple policy changed
-            if (!$inf->sAllowMultiple && $sku->crtiQty > 1 && !$updated)
-            {
+            if(!$inf->sAllowMultiple && $sku->crtiQty > 1 && !$updated) {
                 $this->doItem($sId, 'set', 1, true);
                 $cartInfo->qty = 1;
 
@@ -1501,8 +1348,7 @@ class CartModelCurrentCart extends CartModelCart
             }
 
             // Check if price changed and not yet been updated (through the $this->update call)
-            if ($inf->sPrice != $sku->crtiPrice && !$updated)
-            {
+            if($inf->sPrice != $sku->crtiPrice && !$updated) {
                 // Product price changed
                 $this->doItem($sId, 'sync');
                 // Set card changed flag
@@ -1531,18 +1377,15 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return bool
      */
-    private function liftSessionCart()
-    {
-        if ($this->debug)
-        {
+    private function liftSessionCart() {
+        if($this->debug) {
             echo "<br>Lifting session cart";
         }
 
         $session = JFactory::getSession();
         $cart = $session->get('cart');
 
-        if ($cart && !empty($cart->crtId))
-        {
+        if($cart && !empty($cart->crtId)) {
             $this->cart = $cart;
             $this->crtId = $cart->crtId;
             return true;
@@ -1556,11 +1399,9 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    private function syncSessionCart()
-    {
+    private function syncSessionCart() {
         // Return if sync mode is off
-        if (!$this->sync)
-        {
+        if(!$this->sync) {
             return;
         }
 
@@ -1570,8 +1411,7 @@ class CartModelCurrentCart extends CartModelCart
         // Get data from DB
         $cartItems = $this->getItems();
 
-        if ($this->debug)
-        {
+        if($this->debug) {
             echo "<br>Updating session cart";
         }
 
@@ -1581,8 +1421,7 @@ class CartModelCurrentCart extends CartModelCart
         $this->cart->items = $cartItems;
         $this->cart->lastUpdated = time();
 
-        foreach ($cartItems as $sId => $sku)
-        {
+        foreach($cartItems as $sId => $sku) {
             $price = $sku['info']->sPrice;
             $qty = $sku['cartInfo']->qty;
 
@@ -1602,8 +1441,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    private function updateSession()
-    {
+    private function updateSession() {
         $session = JFactory::getSession();
         $session->set('cart', $this->cart);
     }
@@ -1614,8 +1452,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    private function clearSessionCart()
-    {
+    private function clearSessionCart() {
         $session = JFactory::getSession();
         $session->clear('cart');
     }
@@ -1626,18 +1463,15 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return bool
      */
-    private function liftCookie()
-    {
-        if ($this->debug)
-        {
+    private function liftCookie() {
+        if($this->debug) {
             echo "<br>Lifting cookie cart";
         }
 
         // If cookie exists, check if this is not pointing to a members' cart and load it.
         $crtId = JRequest::getVar('cartId', '', 'COOKIE');
 
-        if (!empty($crtId) && !$this->cartIsLinked($crtId))
-        {
+        if(!empty($crtId) && !$this->cartIsLinked($crtId)) {
             // Load cart
             return $this->liftCart($crtId);
         }
@@ -1649,19 +1483,15 @@ class CartModelCurrentCart extends CartModelCart
      * @param $uId User ID
      * @return bool True if cart exists and can be lifted, false if no user cart exists or cart cannot be lifted
      */
-    private function liftUserCart($uId)
-    {
-        if ($this->debug)
-        {
+    private function liftUserCart($uId) {
+        if($this->debug) {
             echo "<br>Lifting user cart";
         }
 
         $crtId = $this->getUserCartId($uId);
 
-        if ($crtId)
-        {
-            if ($this->liftCart($crtId))
-            {
+        if($crtId) {
+            if($this->liftCart($crtId)) {
                 $this->cart->linked = 1;
                 return true;
             }
@@ -1676,8 +1506,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param int $crtId Cart ID
      * @return bool
      */
-    private function liftCart($crtId)
-    {
+    private function liftCart($crtId) {
         $this->crtId = $crtId;
 
         // Update session cart
@@ -1692,10 +1521,8 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    private function createCart()
-    {
-        if ($this->debug)
-        {
+    private function createCart() {
+        if($this->debug) {
             echo "<br>Creating new cart";
         }
 
@@ -1703,12 +1530,10 @@ class CartModelCurrentCart extends CartModelCart
 
         $uId = 'NULL';
         $cart = new stdClass();
-        if (!$juser->get('guest'))
-        {
+        if(!$juser->get('guest')) {
             $uId = $juser->id;
             $cart->linked = 1;
-        }
-        else {
+        } else {
             $cart->linked = 0;
         }
 
@@ -1723,10 +1548,8 @@ class CartModelCurrentCart extends CartModelCart
         $session->set('cart', $cart);
 
         // Set cookie for non logged-in users to recover the cart
-        if ($juser->get('guest'))
-        {
-            if ($this->debug)
-            {
+        if($juser->get('guest')) {
+            if($this->debug) {
                 echo "<br>Setting a cookie";
             }
             setcookie("cartId", $crtId, time() + $this->cookieTTL); // Set cookie life time
@@ -1743,10 +1566,8 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return bool
      */
-    private function linkCarts()
-    {
-        if ($this->debug)
-        {
+    private function linkCarts() {
+        if($this->debug) {
             echo "<br>Linking carts";
         }
 
@@ -1760,10 +1581,8 @@ class CartModelCurrentCart extends CartModelCart
         $juser = JFactory::getUser();
 
         // Check if session cart is not someone else's. Otherwise load user's cart and done
-        if ($this->cartIsLinked($this->crtId))
-        {
-            if (!$this->liftUserCart($juser->id))
-            {
+        if($this->cartIsLinked($this->crtId)) {
+            if(!$this->liftUserCart($juser->id)) {
                 return false;
             }
             return true;
@@ -1776,16 +1595,13 @@ class CartModelCurrentCart extends CartModelCart
         $coupons = $this->getCoupons();
 
         // If no user cart -- make the session cart a user's cart. Easy.
-        if (!$userCartId)
-        {
+        if(!$userCartId) {
             $sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
             $this->_db->setQuery($sql);
             $this->_db->query();
             $existingCnIds = array();
-        }
-        // Merge session and user carts. Not so easy.
-        else
-        {
+        } // Merge session and user carts. Not so easy.
+        else {
             // Get a static instance of the users' cart
             require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'UserCart.php');
             $userCart = new CartModelUserCart($userCartId);
@@ -1793,25 +1609,19 @@ class CartModelCurrentCart extends CartModelCart
             $userCartItems = $userCart->getCartItems();
 
             // If both session and user carts are not empty notify the user that items are being combined
-            if (!$this->isEmpty() && !empty($userCartItems))
-            {
+            if(!$this->isEmpty() && !empty($userCartItems)) {
                 $this->cart->messages[] = array(JText::_('COM_CART_ITEMS_COMBINED'), 'info');
                 $this->cart->hasMessages = true;
             }
 
-            if (!$this->isEmpty())
-            {
+            if(!$this->isEmpty()) {
                 $sessionCartItems = $this->getUpdatedItems();
 
                 // Go through all session cart items (if any) and add them to the user's cart
-                foreach ($sessionCartItems as $item)
-                {
-                    try
-                    {
+                foreach($sessionCartItems as $item) {
+                    try {
                         $userCart->add($item['info']->sId, $item['cartInfo']->qty);
-                    }
-                    catch (Exception $e)
-                    {
+                    } catch(Exception $e) {
                         $this->cart->messages[] = array($e->getMessage(), 'warning');
                         $this->cart->hasMessages = true;
                     }
@@ -1821,8 +1631,7 @@ class CartModelCurrentCart extends CartModelCart
             // need to apply each coupon (mark as used) before merging
             $cnSql = '0';
             $allCouponsIds = array();
-            foreach ($coupons as $coupon)
-            {
+            foreach($coupons as $coupon) {
                 $cnSql .= ',' . $coupon->cnId;
                 $allCouponsIds[] = $coupon->cnId;
             }
@@ -1838,8 +1647,7 @@ class CartModelCurrentCart extends CartModelCart
             // merge coupons
             $couponsIdsToMerge = array_diff($allCouponsIds, $existingCnIds);
             $mergeSql = '0';
-            foreach ($couponsIdsToMerge as $cnId)
-            {
+            foreach($couponsIdsToMerge as $cnId) {
                 $mergeSql .= ',' . $cnId;
             }
             $sql = "INSERT INTO `#__cart_coupons` (`crtId`, `cnId`, `crtCnAdded`, `crtCnStatus`)
@@ -1860,10 +1668,8 @@ class CartModelCurrentCart extends CartModelCart
 
         // Go through each coupon and apply all that are not applied
         // (if merging, or all if making the session cart a user's cart)
-        foreach ($coupons as $coupon)
-        {
-            if (!in_array($coupon->cnId, $existingCnIds))
-            {
+        foreach($coupons as $coupon) {
+            if(!in_array($coupon->cnId, $existingCnIds)) {
                 $storefrontCoupons->apply($coupon->cnId);
             }
         }
@@ -1882,14 +1688,12 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return bool
      */
-    private function createTransaction()
-    {
+    private function createTransaction() {
         // Clean old transactions
         $this->cleanOldTransactions();
 
         // Check if there are items in the cart
-        if (empty($this->cart->items))
-        {
+        if(empty($this->cart->items)) {
             return false;
         }
 
@@ -1916,8 +1720,7 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    private function populateTransaction()
-    {
+    private function populateTransaction() {
         // Get all cart items
         $cartItems = $this->cart->items;
 
@@ -1932,10 +1735,8 @@ class CartModelCurrentCart extends CartModelCart
 
         $transactionSubtotalAmount = 0;
 
-        foreach ($cartItems as $sId => $skuInfo)
-        {
-            if ($sqlValues)
-            {
+        foreach($cartItems as $sId => $skuInfo) {
+            if($sqlValues) {
                 $sqlValues .= ', ';
             }
             $sqlValues .= "({$this->cart->tId}, {$sId}, {$skuInfo['cartInfo']->qty}, {$skuInfo['info']->sPrice})";
@@ -1943,8 +1744,7 @@ class CartModelCurrentCart extends CartModelCart
             $transactionSubtotalAmount += ($skuInfo['info']->sPrice * $skuInfo['cartInfo']->qty);
 
             // check steps
-            if ($skuInfo['info']->ptId == 1 && !in_array('shipping', $steps))
-            {
+            if($skuInfo['info']->ptId == 1 && !in_array('shipping', $steps)) {
                 $steps[] = 'shipping';
             }
 
@@ -1958,8 +1758,7 @@ class CartModelCurrentCart extends CartModelCart
         $this->_db->query();
 
         // populate steps
-        foreach ($steps as $step)
-        {
+        foreach($steps as $step) {
             $sql = "INSERT INTO `#__cart_transaction_steps` (`tId`, `tsStep`) VALUES ({$this->cart->tId}, '{$step}')";
             $this->_db->setQuery($sql);
             $this->_db->query();
@@ -1995,22 +1794,18 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return bool Success or failure
      */
-    private function rebuildTransaction()
-    {
+    private function rebuildTransaction() {
         // Go through each item in the transaction and see if it is available in quantity needed and if price has not changed
         $tItems = $this->getTransactionItems($this->cart->tId);
 
-        foreach ($tItems as $item)
-        {
+        foreach($tItems as $item) {
             // Check price
-            if ($item['info']->sPrice != $item['transactionInfo']->tiPrice)
-            {
+            if($item['info']->sPrice != $item['transactionInfo']->tiPrice) {
                 // price changed
                 return false;
             }
             // Check inventory
-            if ($item['info']->sInventory < $item['transactionInfo']->qty)
-            {
+            if($item['info']->sInventory < $item['transactionInfo']->qty) {
                 // Not enough inventory
                 return false;
             }
@@ -2020,8 +1815,7 @@ class CartModelCurrentCart extends CartModelCart
         include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
         $warehouse = new StorefrontModelWarehouse();
 
-        foreach ($tItems as $sId => $item)
-        {
+        foreach($tItems as $sId => $item) {
             $warehouse->updateInventory($sId, $item['transactionInfo']->qty, 'subtract');
         }
 
@@ -2036,10 +1830,8 @@ class CartModelCurrentCart extends CartModelCart
      * @param void
      * @return void
      */
-    private function cleanOldTransactions()
-    {
-        if (empty($this->cart->crtId))
-        {
+    private function cleanOldTransactions() {
+        if(empty($this->cart->crtId)) {
             return true;
         }
 
@@ -2048,8 +1840,7 @@ class CartModelCurrentCart extends CartModelCart
         $this->_db->setQuery($sql);
         $tIds = $this->_db->loadResultArray();
 
-        foreach ($tIds as $tId)
-        {
+        foreach($tIds as $tId) {
             $this->releaseTransaction($tId);
             parent::killTransaction($tId);
         }
