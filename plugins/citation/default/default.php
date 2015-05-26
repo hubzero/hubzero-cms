@@ -67,27 +67,27 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 		$acceptable = array('txt');
 
 		//get the file extension
-		$file_info = pathinfo($file['name']);
+		$extension = $file->getClientOriginalExtension();
 
 		//only process acceptable files
-		if (!in_array($file_info['extension'], $acceptable))
+		if (!in_array($extension, $acceptable))
 		{
 			return;
 		}
 
-		//get the file contents
-		$raw_contents = file_get_contents($file['tmp_name']);
+		//get the file contents, uses temporary file
+		$raw_contents = file_get_contents($file->getFilename());
 
 		//check to see if this is endnote content
 		if (preg_match('/%A|%0|%T/', $raw_contents))
 		{
 			//make new file to pass to dispatcher
 			$new_file = array(
-				'name'     => $file_info['filename'] . '.enw',
-				'type'     => $file['type'],
-				'tmp_name' => $file['tmp_name'],
-				'error'    => $file['error'],
-				'size'     => $file['size']
+				'name'     => $file->getClientOriginalName() . '.enw',
+				'type'     => $file->getType(),
+				'tmp_name' => $file->getName(),
+				'error'    => $file->getError(),
+				'size'     => $file->getClientSize()
 			);
 
 			$return = event::trigger('citation.onImport' , array($new_file));

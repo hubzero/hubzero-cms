@@ -67,10 +67,10 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$active = 'bib';
 
 		//get the file extension
-		$file_info = pathinfo($file['name']);
+		$extension = $file->getClientOriginalExtension();
 
 		//make sure we have a .bib file
-		if ($active != $file_info['extension'])
+		if ($active != $extension)
 		{
 			return;
 		}
@@ -82,7 +82,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$bibtex = new Structures_BibTex();
 
 		//feed bibtex lib the file
-		$bibtex->loadFile($file['tmp_name']);
+		$bibtex->loadFile($file->getFileName());
 
 		//parse file
 		$bibtex->parse();

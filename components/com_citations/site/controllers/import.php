@@ -144,7 +144,8 @@ class Import extends SiteController
 		$file = Request::getVar('citations_file', null, 'files', 'array');
 
 		// make sure we have a file
-		if (!$file['name'])
+		$filename = $file->getClientOriginalName();
+		if ($filename == "")
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
@@ -155,7 +156,7 @@ class Import extends SiteController
 		}
 
 		// make sure file is under 4MB
-		if ($file['size'] > 4000000)
+		if ($file->getSize() > 4000000)
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=import'),
@@ -166,7 +167,7 @@ class Import extends SiteController
 		}
 
 		// make sure we dont have any file errors
-		if ($file['error'] > 0)
+		if ($file->getError() > 0)
 		{
 			throw new Exception(Lang::txt('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
 		}
@@ -213,8 +214,9 @@ class Import extends SiteController
 				Route::url('index.php?option=' . $this->_option . '&task=import_review')
 			);
 		}
-
+		die;
 		return;
+
 	}
 
 	/**
