@@ -860,6 +860,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$row->set('reward', 1);
 		}
 
+		if (!JRequest::checkHoneypot())
+		{
+			$this->addComponentMessage(JText::_('JERROR_INVALID_HONEYPOT'), 'error');
+			$this->newTask($row);
+			return;
+		}
+
 		// Ensure the user added a tag
 		if (!$tags)
 		{

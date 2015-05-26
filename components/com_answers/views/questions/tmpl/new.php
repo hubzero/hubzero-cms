@@ -68,6 +68,7 @@ $this->css();
 				<input type="hidden" name="task" value="saveq" />
 
 				<?php echo JHTML::_('form.token'); ?>
+				<?php echo JHTML::_('form.honeypot'); ?>
 
 				<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->question->get('id', 0)); ?>" />
 				<input type="hidden" name="fields[funds]" value="<?php echo $this->escape($this->funds); ?>" />
