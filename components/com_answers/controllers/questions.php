@@ -875,6 +875,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// We need to temporarily set this so the store() method
+		// has access to the tags string to be able to run it
+		// through spam checkers and validation.
+		$row->set('tags', $tags);
+
 		// Store new content
 		if (!$row->store(true))
 		{
@@ -930,7 +935,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 						$toolname = preg_replace('/tool:/', '', $tag);
 						if (trim($toolname))
 						{
-							$rev = $objV->getCurrentVersionProperty ($toolname, 'revision');
+							$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
 							$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
 							if (count($authors) > 0)
 							{

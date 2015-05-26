@@ -874,7 +874,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 			if ($this->_context)
 			{
-				$txt = $this->get('subject') . ' ' . $this->get('question');
+				$txt = $this->get('subject') . ' ' . $this->get('question') . ' ' . $this->get('tags');
 				$results = $this->importPlugin('content')->trigger('onContentBeforeSave', array(
 					$this->_context,
 					&$txt,
