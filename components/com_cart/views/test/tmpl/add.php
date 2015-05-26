@@ -46,7 +46,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
         <form action="<?php echo JURI::root() . 'cart'; ?>" id="frm" method="post">
 
             <input type="hidden" name="updateCart" value="true">
-            <input type="hidden" name="skus" value="8">
+            <input type="hidden" name="skus" value="11">
             <input type="hidden" name="expressCheckout" value="true">
 
             <input type="submit" value="Pay">

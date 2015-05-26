@@ -1779,6 +1779,8 @@ class CartModelCurrentCart extends CartModelCart
         if (!$userCartId)
         {
             $sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
+            $this->_db->setQuery($sql);
+            $this->_db->query();
             $existingCnIds = array();
         }
         // Merge session and user carts. Not so easy.
