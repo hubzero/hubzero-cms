@@ -620,8 +620,13 @@ class CitationFormat
 		//do we have a link with some data to send to resolver?
 		if (count($query) > 0)
 		{
+			if (substr($link, -1, 1) != "?")
+			{
+				$link .= "?";
+			}
+
 			//add parts to url
-			$link .= "?" . implode("&", $query);
+			$link .= implode("&", $query);
 
 			//do we have an icon or just using text as the link
 			//$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
