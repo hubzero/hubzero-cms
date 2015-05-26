@@ -683,9 +683,9 @@ class MenusModelItem extends JModelAdmin
 		// We have a valid type, inject it into the state for forms to use.
 		$this->setState('item.type', $table->type);
 
-		// Convert to the JObject before adding the params.
+		// Convert to the Object before adding the params.
 		$properties = $table->getProperties(1);
-		$result = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
+		$result = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
 
 		// Convert the params field to an array.
 		$registry = new \Hubzero\Config\Registry($table->params);

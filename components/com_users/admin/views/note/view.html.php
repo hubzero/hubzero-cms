@@ -37,7 +37,7 @@ class UsersViewNote extends JViewLegacy
 	/**
 	 * The model state.
 	 *
-	 * @var    JObject
+	 * @var    Object
 	 * @since  2.5
 	 */
 	protected $state;
@@ -68,6 +68,7 @@ class UsersViewNote extends JViewLegacy
 		Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 		parent::display($tpl);
+
 		$this->addToolbar();
 	}
 
@@ -80,30 +81,28 @@ class UsersViewNote extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$input = JFactory::getApplication()->input;
-		$input->set('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		$user		= JFactory::getUser();
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
-		$canDo		= UsersHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
+		$isNew      = ($this->item->id == 0);
+		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
+		$canDo      = UsersHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
 
 		Toolbar::title(Lang::txt('COM_USERS_NOTES'), 'user');
 
 		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit') || (count($user->getAuthorisedCategories('com_users', 'core.create')))))
+		if (!$checkedOut && ($canDo->get('core.edit') || (count(User::getAuthorisedCategories('com_users', 'core.create')))))
 		{
 			Toolbar::apply('note.apply');
 			Toolbar::save('note.save');
 		}
 
-		if (!$checkedOut && (count($user->getAuthorisedCategories('com_users', 'core.create'))))
+		if (!$checkedOut && (count(User::getAuthorisedCategories('com_users', 'core.create'))))
 		{
 			Toolbar::save2new('note.save2new');
 		}
 
 		// If an existing item, can save to a copy.
-		if (!$isNew && (count($user->getAuthorisedCategories('com_users', 'core.create')) > 0))
+		if (!$isNew && (count(User::getAuthorisedCategories('com_users', 'core.create')) > 0))
 		{
 			Toolbar::save2copy('note.save2copy');
 		}

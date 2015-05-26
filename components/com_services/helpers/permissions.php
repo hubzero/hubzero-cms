@@ -50,7 +50,7 @@ class Permissions
 	 *
 	 * @param   string   $extension  The extension.
 	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   JObject
+	 * @return  object   Object
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{

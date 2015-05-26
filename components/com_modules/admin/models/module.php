@@ -654,9 +654,9 @@ class ModulesModelModule extends JModelAdmin
 				}
 			}
 
-			// Convert to the JObject before adding other data.
+			// Convert to the Object before adding other data.
 			$properties = $table->getProperties(1);
-			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
+			$this->_cache[$pk] = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
 
 			// Convert the params field to an array.
 			$registry = new \Hubzero\Config\Registry($table->params);

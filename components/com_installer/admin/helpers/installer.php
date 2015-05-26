@@ -27,37 +27,37 @@ class InstallerHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_INSTALL'),
-			'index.php?option=com_installer',
+			Route::url('index.php?option=com_installer'),
 			$vName == 'install'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_UPDATE'),
-			'index.php?option=com_installer&view=update',
+			Route::url('index.php?option=com_installer&view=update'),
 			$vName == 'update'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_MANAGE'),
-			'index.php?option=com_installer&view=manage',
+			Route::url('index.php?option=com_installer&view=manage'),
 			$vName == 'manage'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_DISCOVER'),
-			'index.php?option=com_installer&view=discover',
+			Route::url('index.php?option=com_installer&view=discover'),
 			$vName == 'discover'
 		);
 		/*Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_DATABASE'),
-			'index.php?option=com_installer&view=database',
+			Route::url('index.php?option=com_installer&view=database'),
 			$vName == 'database'
 		);*/
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_WARNINGS'),
-			'index.php?option=com_installer&view=warnings',
+			Route::url('index.php?option=com_installer&view=warnings'),
 			$vName == 'warnings'
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_LANGUAGES'),
-			'index.php?option=com_installer&view=languages',
+			Route::url('index.php?option=com_installer&view=languages'),
 			$vName == 'languages'
 		);
 	}
@@ -65,13 +65,13 @@ class InstallerHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @return	JObject
+	 * @return	Object
 	 * @since	1.6
 	 */
 	public static function getActions()
 	{
 		$user = User::getRoot();
-		$result = new JObject;
+		$result = new \Hubzero\Base\Object;
 
 		$assetName = 'com_installer';
 

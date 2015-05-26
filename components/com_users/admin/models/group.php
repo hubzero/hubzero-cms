@@ -77,7 +77,7 @@ class UsersModelGroup extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_users.edit.group.data', array());
+		$data = User::getState('com_users.edit.group.data', array());
 
 		if (empty($data))
 		{
@@ -97,7 +97,7 @@ class UsersModelGroup extends JModelAdmin
 	 */
 	protected function preprocessForm(JForm $form, $data, $groups = '')
 	{
-		$obj = is_array($data) ? \Hubzero\Utility\Arr::toObject($data, 'JObject') : $data;
+		$obj = is_array($data) ? \Hubzero\Utility\Arr::toObject($data, '\\Hubzero\\Base\\Object') : $data;
 		if (isset($obj->parent_id) && $obj->parent_id == 0 && $obj->id > 0)
 		{
 			$form->setFieldAttribute('parent_id', 'type', 'hidden');

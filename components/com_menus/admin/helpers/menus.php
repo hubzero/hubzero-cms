@@ -45,7 +45,7 @@ class MenusHelper
 	 *
 	 * @param	int		The menu ID.
 	 *
-	 * @return	JObject
+	 * @return	Object
 	 * @since	1.6
 	 */
 	public static function getActions($parentId = 0)

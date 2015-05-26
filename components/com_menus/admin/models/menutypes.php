@@ -124,7 +124,7 @@ class MenusModelMenutypes extends JModelLegacy
 		if (!empty($menu['options']) && $menu['options'] == 'none')
 		{
 			// Create the menu option for the component.
-			$o = new JObject;
+			$o = new \Hubzero\Base\Object;
 			$o->title		= (string) $menu['name'];
 			$o->description	= (string) $menu['msg'];
 			$o->request		= array('option' => $component);
@@ -152,7 +152,7 @@ class MenusModelMenutypes extends JModelLegacy
 			{
 				if ($child->getName() == 'option') {
 					// Create the menu option for the component.
-					$o = new JObject;
+					$o = new \Hubzero\Base\Object;
 					$o->title		= (string) $child['name'];
 					$o->description	= (string) $child['msg'];
 					$o->request		= array('option' => $component, (string) $optionsNode['var'] => (string) $child['value']);
@@ -161,7 +161,7 @@ class MenusModelMenutypes extends JModelLegacy
 				}
 				elseif ($child->getName() == 'default') {
 					// Create the menu option for the component.
-					$o = new JObject;
+					$o = new \Hubzero\Base\Object;
 					$o->title		= (string) $child['name'];
 					$o->description	= (string) $child['msg'];
 					$o->request		= array('option' => $component);
@@ -185,11 +185,11 @@ class MenusModelMenutypes extends JModelLegacy
 
 		if (Filesystem::exists($path))
 		{
-			$views = JFolder::folders($path);
+			$views = Filesystem::directories($path);
 		}
 		else if (Filesystem::exists($path2))
 		{
-			$views = JFolder::folders($path2);
+			$views = Filesystem::directories($path2);
 		}
 		else
 		{
@@ -228,7 +228,7 @@ class MenusModelMenutypes extends JModelLegacy
 									{
 										if ($child->getName() == 'option') {
 											// Create the menu option for the component.
-											$o = new JObject;
+											$o = new \Hubzero\Base\Object;
 											$o->title		= (string) $child['name'];
 											$o->description	= (string) $child['msg'];
 											$o->request		= array('option' => $component, 'view' => $view, (string) $optionsNode['var'] => (string) $child['value']);
@@ -237,7 +237,7 @@ class MenusModelMenutypes extends JModelLegacy
 										}
 										elseif ($child->getName() == 'default') {
 											// Create the menu option for the component.
-											$o = new JObject;
+											$o = new \Hubzero\Base\Object;
 											$o->title		= (string) $child['name'];
 											$o->description	= (string) $child['msg'];
 											$o->request		= array('option' => $component, 'view' => $view);
@@ -278,11 +278,11 @@ class MenusModelMenutypes extends JModelLegacy
 		$path2 = JPATH_SITE.'/components/'.$component.'/site/views/'.$view.'/tmpl';
 		if (Filesystem::exists($path))
 		{
-			$layouts = array_merge($layouts, JFolder::files($path, '.xml$', false, true));
+			$layouts = array_merge($layouts, Filesystem::files($path, '.xml$', false, true));
 		}
 		else if (Filesystem::exists($path2))
 		{
-			$layouts = array_merge($layouts, JFolder::files($path2, '.xml$', false, true));
+			$layouts = array_merge($layouts, Filesystem::files($path2, '.xml$', false, true));
 		}
 		else
 		{
@@ -303,7 +303,7 @@ class MenusModelMenutypes extends JModelLegacy
 
 		// get the template layouts
 		// TODO: This should only search one template -- the current template for this item (default of specified)
-		$folders = JFolder::folders(JPATH_SITE . '/templates', '', false, true);
+		$folders = Filesystem::directories(JPATH_SITE . '/templates', '', false, true);
 		// Array to hold association between template file names and templates
 		$templateName = array();
 		foreach ($folders as $folder)
@@ -314,7 +314,7 @@ class MenusModelMenutypes extends JModelLegacy
 					$lang->load('tpl_' . $template . '.sys', JPATH_SITE, null, false, true)
 				||	$lang->load('tpl_' . $template . '.sys', JPATH_SITE . '/templates/' . $template, null, false, true);
 
-				$templateLayouts = JFolder::files($folder . '/html/' . $component . '/' . $view, '.xml$', false, true);
+				$templateLayouts = Filesystem::files($folder . '/html/' . $component . '/' . $view, '.xml$', false, true);
 
 				foreach ($templateLayouts as $layout)
 				{
@@ -343,7 +343,7 @@ class MenusModelMenutypes extends JModelLegacy
 				$layout = Filesystem::name(JFile::getName($layout));
 
 				// Create the menu option for the layout.
-				$o = new JObject;
+				$o = new \Hubzero\Base\Object;
 				$o->title		= ucfirst($layout);
 				$o->description	= '';
 				$o->request		= array('option' => $component, 'view' => $view);

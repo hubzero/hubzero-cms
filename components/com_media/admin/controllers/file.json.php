@@ -83,7 +83,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$object_file = new JObject($file);
+			$object_file = new \Hubzero\Base\Object($file);
 			$object_file->filepath = $filepath;
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true))
@@ -92,7 +92,7 @@ class MediaControllerFile extends JControllerLegacy
 				$log->addEntry(array('comment' => 'Errors before save: '.$filepath.' : '.implode(', ', $object_file->getErrors())));
 				$response = array(
 					'status' => '0',
-					'error' => Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors))
+					'error'  => Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors))
 				);
 				echo json_encode($response);
 				return;

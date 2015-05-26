@@ -29,7 +29,7 @@ class MediaControllerFile extends JControllerLegacy
 	public function upload()
 	{
 		// Check for request forgeries
-		Session::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$params = Component::params('com_media');
 
@@ -110,7 +110,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$object_file = new JObject($file);
+			$object_file = new \Hubzero\Base\Object($file);
 			$result = Event::trigger('content.onContentBeforeSave', array('com_media.file', &$object_file, true));
 			if (in_array(false, $result, true))
 			{
@@ -153,12 +153,12 @@ class MediaControllerFile extends JControllerLegacy
 	{
 		$name = Filesystem::clean($name);
 		return array(
-			'name'		=> $name,
-			'type'		=> $type,
-			'tmp_name'	=> $tmp_name,
-			'error'		=> $error,
-			'size'		=> $size,
-			'filepath'	=> Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
+			'name'     => $name,
+			'type'     => $type,
+			'tmp_name' => $tmp_name,
+			'error'    => $error,
+			'size'     => $size,
+			'filepath' => Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $this->folder, $name)))
 		);
 	}
 
@@ -189,7 +189,7 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get some data from the request
 		$tmpl	= Request::getCmd('tmpl');
@@ -232,7 +232,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 
 			$fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
-			$object_file = new JObject(array('filepath' => $fullPath));
+			$object_file = new \Hubzero\Base\Object(array('filepath' => $fullPath));
 			if (is_file($fullPath))
 			{
 				// Trigger the onContentBeforeDelete event.
@@ -252,7 +252,7 @@ class MediaControllerFile extends JControllerLegacy
 			}
 			elseif (is_dir($fullPath))
 			{
-				$contents = JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
+				$contents = Filesystem::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
 				if (empty($contents))
 				{
 					// Trigger the onContentBeforeDelete event.

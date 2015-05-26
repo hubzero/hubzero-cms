@@ -70,7 +70,7 @@ class MediaControllerFolder extends JControllerLegacy
 				}
 
 				$fullPath = \Hubzero\Filesystem\Util::normalizePath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $path)));
-				$object_file = new JObject(array('filepath' => $fullPath));
+				$object_file = new \Hubzero\Base\Object(array('filepath' => $fullPath));
 				if (is_file($fullPath))
 				{
 					// Trigger the onContentBeforeDelete event.
@@ -160,7 +160,7 @@ class MediaControllerFolder extends JControllerLegacy
 			if (!is_dir($path) && !is_file($path))
 			{
 				// Trigger the onContentBeforeSave event.
-				$object_file = new JObject(array('filepath' => $path));
+				$object_file = new \Hubzero\Base\Object(array('filepath' => $path));
 
 				$result = Event::trigger('content.onContentBeforeSave', array('com_media.folder', &$object_file, true));
 				if (in_array(false, $result, true))

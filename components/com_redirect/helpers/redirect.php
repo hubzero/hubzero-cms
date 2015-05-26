@@ -49,7 +49,7 @@ class Redirect
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @return  object  JObject
+	 * @return  object  Object
 	 */
 	public static function getActions()
 	{

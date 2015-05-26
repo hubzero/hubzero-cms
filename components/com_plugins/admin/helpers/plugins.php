@@ -30,7 +30,7 @@ class PluginsHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @return	JObject
+	 * @return	Object
 	 */
 	public static function getActions()
 	{

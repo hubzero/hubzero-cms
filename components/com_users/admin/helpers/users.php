@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 class UsersHelper
 {
 	/**
-	 * @var    JObject  A cache for the available actions.
+	 * @var    Object  A cache for the available actions.
 	 * @since  1.6
 	 */
 	protected static $actions;
@@ -38,7 +38,7 @@ class UsersHelper
 	{
 		Submenu::addEntry(
 			Lang::txt('COM_USERS_SUBMENU_USERS'),
-			'index.php?option=com_users&view=users',
+			Route::url('index.php?option=com_users&view=users'),
 			$vName == 'users'
 		);
 
@@ -49,24 +49,24 @@ class UsersHelper
 		{
 			Submenu::addEntry(
 				Lang::txt('COM_USERS_SUBMENU_GROUPS'),
-				'index.php?option=com_users&view=groups',
+				Route::url('index.php?option=com_users&view=groups'),
 				$vName == 'groups'
 			);
 			Submenu::addEntry(
 				Lang::txt('COM_USERS_SUBMENU_LEVELS'),
-				'index.php?option=com_users&view=levels',
+				Route::url('index.php?option=com_users&view=levels'),
 				$vName == 'levels'
 			);
 			Submenu::addEntry(
 				Lang::txt('COM_USERS_SUBMENU_NOTES'),
-				'index.php?option=com_users&view=notes',
+				Route::url('index.php?option=com_users&view=notes'),
 				$vName == 'notes'
 			);
 
 			$extension = Request::getString('extension');
 			Submenu::addEntry(
 				Lang::txt('COM_USERS_SUBMENU_NOTE_CATEGORIES'),
-				'index.php?option=com_categories&extension=com_users',
+				Route::url('index.php?option=com_categories&extension=com_users'),
 				$vName == 'categories' || $extension == 'com_users'
 			);
 		}
@@ -75,7 +75,7 @@ class UsersHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @return  JObject
+	 * @return  Object
 	 *
 	 * @since   1.6
 	 * @todo    Refactor to work with notes
@@ -85,7 +85,7 @@ class UsersHelper
 		if (empty(self::$actions))
 		{
 			$user = JFactory::getUser();
-			self::$actions = new JObject;
+			self::$actions = new \Hubzero\Base\Object;
 
 			$actions = JAccess::getActions('com_users');
 
@@ -101,7 +101,7 @@ class UsersHelper
 	/**
 	 * Get a list of filter options for the blocked state of a user.
 	 *
-	 * @return  array  An array of JHtmlOption elements.
+	 * @return  array  An array of Option elements.
 	 *
 	 * @since   1.6
 	 */
@@ -118,7 +118,7 @@ class UsersHelper
 	/**
 	 * Get a list of filter options for the activated state of a user.
 	 *
-	 * @return  array  An array of JHtmlOption elements.
+	 * @return  array  An array of Option elements.
 	 *
 	 * @since   1.6
 	 */
@@ -135,7 +135,7 @@ class UsersHelper
 	/**
 	 * Get a list of filter options for the approved state of a user.
 	 *
-	 * @return  array  An array of JHtmlOption elements.
+	 * @return  array  An array of Option elements.
 	 *
 	 * @since   1.6
 	 */
@@ -153,7 +153,7 @@ class UsersHelper
 	/**
 	 * Get a list of the user groups for filtering.
 	 *
-	 * @return  array  An array of JHtmlOption elements.
+	 * @return  array  An array of Option elements.
 	 *
 	 * @since   1.6
 	 */

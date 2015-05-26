@@ -49,7 +49,7 @@ class NewsfeedsHelper
 	 *
 	 * @param	int		The category ID.
 	 *
-	 * @return	JObject
+	 * @return	Object
 	 */
 	public static function getActions($categoryId = 0, $newsfeedId = 0)
 	{

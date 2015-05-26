@@ -37,7 +37,7 @@ class UsersViewNotes extends JViewLegacy
 	/**
 	 * The model state.
 	 *
-	 * @var    JObject
+	 * @var    Object
 	 * @since  2.5
 	 */
 	protected $state;
@@ -77,11 +77,13 @@ class UsersViewNotes extends JViewLegacy
 		Html::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 		// turn parameters into registry objects
-		foreach ($this->items as $item) {
+		foreach ($this->items as $item)
+		{
 			$item->cparams = new \Hubzero\Config\Registry($item->category_params);
 		}
 
 		parent::display($tpl);
+
 		$this->addToolbar();
 	}
 

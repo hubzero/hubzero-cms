@@ -1221,7 +1221,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->xregistration = $xregistration;
 
 		// Find out which fields are hidden, optional, or required
-		$registration = new JObject();
+		$registration = new \Hubzero\Base\Object();
 		$registration->Username        = $this->_registrationField('registrationUsername', 'RROO', $this->_task);
 		$registration->Password        = $this->_registrationField('registrationPassword', 'RRHH', $this->_task);
 		$registration->ConfirmPassword = $this->_registrationField('registrationConfirmPassword', 'RRHH', $this->_task);

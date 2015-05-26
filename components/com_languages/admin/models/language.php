@@ -83,7 +83,7 @@ class LanguagesModelLanguage extends JModelAdmin
 		}
 
 		$properties = $table->getProperties(1);
-		$value = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
+		$value = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
 
 		return $value;
 	}

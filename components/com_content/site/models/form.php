@@ -74,7 +74,7 @@ class ContentModelForm extends ContentModelArticle
 		}
 
 		$properties = $table->getProperties(1);
-		$value = \Hubzero\Utility\Arr::toObject($properties, 'JObject');
+		$value = \Hubzero\Utility\Arr::toObject($properties, '\\Hubzero\\Base\\Object');
 
 		// Convert attrib field to Registry.
 		$value->params = new \Hubzero\Config\Registry($value->attribs);

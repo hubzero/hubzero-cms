@@ -37,11 +37,11 @@ class TemplatesHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @return	JObject
+	 * @return	Object
 	 */
 	public static function getActions()
 	{
-		$result = new JObject;
+		$result = new \Hubzero\Base\Object;
 
 		$actions = JAccess::getActions('com_templates');
 
@@ -97,7 +97,7 @@ class TemplatesHelper
 
 	public static function parseXMLTemplateFile($templateBaseDir, $templateDir)
 	{
-		$data = new JObject;
+		$data = new \Hubzero\Base\Object;
 
 		// Check of the xml file exists
 		$filePath = Filesystem::cleanPath($templateBaseDir.'/templates/'.$templateDir.'/templateDetails.xml');
