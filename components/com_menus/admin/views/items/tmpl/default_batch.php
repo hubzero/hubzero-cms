@@ -38,7 +38,7 @@ $published = $this->state->get('filter.published');
 			<div class="col width-50 fltlft">
 				<select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
 					<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-					<?php echo Html::select('options', Html::menu('menuitems', array('published' => $published)));?>
+					<?php echo Html::select('options', JHtml::_('menu.menuitems', array('published' => $published)));?>
 				</select>
 			</div>
 			<div class="col width-50 fltrt">

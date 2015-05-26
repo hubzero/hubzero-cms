@@ -340,8 +340,8 @@ class Media extends AdminController
 		sort($folders);
 
 		// Create folder <select> list
-		$this->view->dirPath = \JHTML::_(
-			'select.genericlist',
+		$this->view->dirPath = \Html::select(
+			'genericlist',
 			$folders,
 			'dirPath',
 			'onchange="goUpDir()" ',

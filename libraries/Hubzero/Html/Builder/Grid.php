@@ -31,6 +31,7 @@
 namespace Hubzero\Html\Builder;
 
 use Hubzero\Utility\Date;
+use Hubzero\Utility\Arr;
 use Lang;
 use User;
 
@@ -138,7 +139,7 @@ class Grid
 	 * @param   string   $identifier  The property name of the primary key or index of the row.
 	 * @return  string
 	 */
-	public static function checkedOut(&$row, $i, $identifier = 'id')
+	public static function checkbox(&$row, $i, $identifier = 'id') //checkedOut
 	{
 		$userid = User::get('id');
 
@@ -180,7 +181,7 @@ class Grid
 	 * @param   string   $prefix  An optional prefix for the task
 	 * @return  string
 	 */
-	public static function published($value, $i, $prefix = '')
+	/*public static function published($value, $i, $prefix = '')
 	{
 		if (is_object($value))
 		{
@@ -194,7 +195,7 @@ class Grid
 		$href = '<a href="#" class="state ' . ($value ? 'publish' : 'unpublish') . '" onclick="return listItemTask(\'cb' . $i . '\',\'' . $prefix . $task . '\')" title="' . $action . '"><span>' . $alt . '</span></a>';
 
 		return $href;
-	}
+	}*/
 
 	/**
 	 * Returns an array of standard published state filter options.
@@ -243,7 +244,7 @@ class Grid
 	 * @param   string  $trashed       The Text string for Trashed
 	 * @return  string
 	 */
-	public static function state($filter_state = '*', $published = 'Published', $unpublished = 'Unpublished', $archived = null, $trashed = null)
+	public static function states($filter_state = '*', $published = 'Published', $unpublished = 'Unpublished', $archived = null, $trashed = null)
 	{
 		$state = array(
 			''  => '- ' . Lang::txt('JLIB_HTML_SELECT_STATE') . ' -',
@@ -265,9 +266,9 @@ class Grid
 			$state,
 			'filter_state',
 			array(
-				'list.attr' => 'class="inputbox" size="1" onchange="Joomla.submitform();"',
+				'list.attr'   => 'class="inputbox" size="1" onchange="Joomla.submitform();"',
 				'list.select' => $filter_state,
-				'option.key' => null
+				'option.key'  => null
 			)
 		);
 	}
@@ -355,6 +356,171 @@ class Grid
 	}
 
 	/**
+	 * Returns a checked-out icon
+	 *
+	 * @param   integer       $i           The row index.
+	 * @param   string        $editorName  The name of the editor.
+	 * @param   string        $time        The time that the object was checked out.
+	 * @param   string|array  $prefix      An optional task prefix or an array of options
+	 * @param   boolean       $enabled     True to enable the action.
+	 * @param   string        $checkbox    An optional prefix for checkboxes.
+	 * @return  string  The required HTML.
+	 */
+	public static function checkedout($i, $editorName, $time, $prefix = '', $enabled = false, $checkbox = 'cb')
+	{
+		if (is_array($prefix))
+		{
+			$options  = $prefix;
+			$enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+			$checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
+			$prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+		}
+
+		$text = addslashes(htmlspecialchars($editorName, ENT_COMPAT, 'UTF-8'));
+		$date = addslashes(htmlspecialchars(Date::of($time)->toLocal(Lang::txt('DATE_FORMAT_LC')), ENT_COMPAT, 'UTF-8'));
+		$time = addslashes(htmlspecialchars(Date::of($time)->toLocal('H:i'), ENT_COMPAT, 'UTF-8'));
+
+		$active_title   = Lang::txt('JLIB_HTML_CHECKIN') . '::' . $text . '<br />' . $date . '<br />' . $time;
+		$inactive_title = Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $text . '<br />' . $date . '<br />' . $time;
+
+		return self::action(
+			$i, 'checkin', $prefix, Lang::txt('JLIB_HTML_CHECKED_OUT'), $active_title, $inactive_title, true, 'checkedout',
+			'checkedout', $enabled, false, $checkbox
+		);
+	}
+
+	/**
+	 * Returns a state on a grid
+	 *
+	 * @param   array         $states     array of value/state. Each state is an array of the form
+	 *                                    (task, text, title,html active class, HTML inactive class)
+	 *                                    or ('task'=>task, 'text'=>text, 'active_title'=>active title,
+	 *                                    'inactive_title'=>inactive title, 'tip'=>boolean, 'active_class'=>html active class,
+	 *                                    'inactive_class'=>html inactive class)
+	 * @param   integer       $value      The state value.
+	 * @param   integer       $i          The row index
+	 * @param   string|array  $prefix     An optional task prefix or an array of options
+	 * @param   boolean       $enabled    An optional setting for access control on the action.
+	 * @param   boolean       $translate  An optional setting for translation.
+	 * @param   string        $checkbox   An optional prefix for checkboxes.
+	 * @return  string        The Html code
+	 */
+	public static function state($states, $value, $i, $prefix = '', $enabled = true, $translate = true, $checkbox = 'cb')
+	{
+		if (is_array($prefix))
+		{
+			$options   = $prefix;
+
+			$enabled   = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
+			$translate = array_key_exists('translate', $options) ? $options['translate'] : $translate;
+			$checkbox  = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
+			$prefix    = array_key_exists('prefix', $options) ? $options['prefix'] : '';
+		}
+
+		$state = Arr::getValue($states, (int) $value, $states[0]);
+
+		$task           = array_key_exists('task', $state) ? $state['task'] : $state[0];
+		$text           = array_key_exists('text', $state) ? $state['text'] : (array_key_exists(1, $state) ? $state[1] : '');
+		$active_title   = array_key_exists('active_title', $state) ? $state['active_title'] : (array_key_exists(2, $state) ? $state[2] : '');
+		$inactive_title = array_key_exists('inactive_title', $state) ? $state['inactive_title'] : (array_key_exists(3, $state) ? $state[3] : '');
+		$tip            = array_key_exists('tip', $state) ? $state['tip'] : (array_key_exists(4, $state) ? $state[4] : false);
+		$active_class   = array_key_exists('active_class', $state) ? $state['active_class'] : (array_key_exists(5, $state) ? $state[5] : '');
+		$inactive_class = array_key_exists('inactive_class', $state) ? $state['inactive_class'] : (array_key_exists(6, $state) ? $state[6] : '');
+
+		return self::action(
+			$i, $task, $prefix, $text, $active_title, $inactive_title, $tip,
+			$active_class, $inactive_class, $enabled, $translate, $checkbox
+		);
+	}
+
+	/**
+	 * Returns a published state on a grid
+	 *
+	 * @param   integer       $value         The state value.
+	 * @param   integer       $i             The row index
+	 * @param   string|array  $prefix        An optional task prefix or an array of options
+	 * @param   boolean       $enabled       An optional setting for access control on the action.
+	 * @param   string        $checkbox      An optional prefix for checkboxes.
+	 * @param   string        $publish_up    An optional start publishing date.
+	 * @param   string        $publish_down  An optional finish publishing date.
+	 * @return  string        The Html code
+	 */
+	public static function published($value, $i, $prefix = '', $enabled = true, $checkbox = 'cb', $publish_up = null, $publish_down = null)
+	{
+		if (is_array($prefix))
+		{
+			$options  = $prefix;
+			$enabled  = array_key_exists('enabled', $options)  ? $options['enabled']  : $enabled;
+			$checkbox = array_key_exists('checkbox', $options) ? $options['checkbox'] : $checkbox;
+			$prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
+		}
+
+		$states = array(
+			1  => array('unpublish', 'JPUBLISHED',   'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED',   false, 'publish',   'publish'),
+			0  => array('publish',   'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM',   'JUNPUBLISHED', false, 'unpublish', 'unpublish'),
+			2  => array('unpublish', 'JARCHIVED',    'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED',    false, 'archive',   'archive'),
+			-2 => array('publish',   'JTRASHED',     'JLIB_HTML_PUBLISH_ITEM',   'JTRASHED',     false, 'trash',     'trash')
+		);
+
+		// Special state for dates
+		if ($publish_up || $publish_down)
+		{
+			$nullDate = \JFactory::getDBO()->getNullDate();
+			$nowDate = with(new Date)->toUnix();
+
+			$tz = new \DateTimeZone(User::getParam('timezone', \Config::get('offset')));
+
+			$publish_up   = ($publish_up != $nullDate)   ? with(new Date($publish_up, 'UTC'))->setTimeZone($tz)   : false;
+			$publish_down = ($publish_down != $nullDate) ? with(new Date($publish_down, 'UTC'))->setTimeZone($tz) : false;
+
+			// Create tip text, only we have publish up or down settings
+			$tips = array();
+			if ($publish_up)
+			{
+				$tips[] = Lang::txt('JLIB_HTML_PUBLISHED_START', $publish_up->format(Date::$format, true));
+			}
+			if ($publish_down)
+			{
+				$tips[] = Lang::txt('JLIB_HTML_PUBLISHED_FINISHED', $publish_down->format(Date::$format, true));
+			}
+			$tip = empty($tips) ? false : implode('<br/>', $tips);
+
+			// Add tips and special titles
+			foreach ($states as $key => $state)
+			{
+				// Create special titles for published items
+				if ($key == 1)
+				{
+					$states[$key][2] = $states[$key][3] = 'JLIB_HTML_PUBLISHED_ITEM';
+
+					if ($publish_up > $nullDate && $nowDate < $publish_up->toUnix())
+					{
+						$states[$key][2] = $states[$key][3] = 'JLIB_HTML_PUBLISHED_PENDING_ITEM';
+						$states[$key][5] = $states[$key][6] = 'pending';
+					}
+					if ($publish_down > $nullDate && $nowDate > $publish_down->toUnix())
+					{
+						$states[$key][2] = $states[$key][3] = 'JLIB_HTML_PUBLISHED_EXPIRED_ITEM';
+						$states[$key][5] = $states[$key][6] = 'expired';
+					}
+				}
+
+				// Add tips to titles
+				if ($tip)
+				{
+					$states[$key][1] = Lang::txt($states[$key][1]);
+					$states[$key][2] = Lang::txt($states[$key][2]) . '::' . $tip;
+					$states[$key][3] = Lang::txt($states[$key][3]) . '::' . $tip;
+					$states[$key][4] = true;
+				}
+			}
+			return self::state($states, $value, $i, array('prefix' => $prefix, 'translate' => !$tip), $enabled, true, $checkbox);
+		}
+
+		return self::state($states, $value, $i, $prefix, $enabled, true, $checkbox);
+	}
+
+	/**
 	 * Creates a order-up action icon.
 	 *
 	 * @param   integer  $i         The row index.
@@ -412,7 +578,7 @@ class Grid
 	 * @param   string|array  $prefix    An optional task prefix or an array of options
 	 * @param   boolean       $enabled   An optional setting for access control on the action.
 	 * @param   string        $checkbox  An optional prefix for checkboxes.
-	 * @return  string  The HTML code
+	 * @return  string        The HTML code
 	 */
 	public static function isdefault($value, $i, $prefix = '', $enabled = true, $checkbox = 'cb')
 	{

@@ -32,7 +32,7 @@ class JHtmlIcon
 			$text = Lang::txt('JNEW').'&#160;';
 		}
 
-		$button =  JHtml::_('link', Route::url($url), $text);
+		$button =  '<a href="' . Route::url($url) . '">' . $text . '</a>';
 
 		$output = '<span class="hasTip" title="'.Lang::txt('COM_CONTENT_CREATE_ARTICLE').'">'.$button.'</span>';
 		return $output;

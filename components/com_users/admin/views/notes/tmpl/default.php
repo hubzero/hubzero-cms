@@ -29,12 +29,12 @@ $canEdit = User::authorise('core.edit', 'com_users');
 		<div class="filter-select fltrt">
 			<select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo Html::select('options', JHtml::_('category.options', 'com_users.notes'), 'value', 'text', $this->state->get('filter.category_id'));?>
+				<?php echo Html::select('options', Html::category('options', 'com_users.notes'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 		</div>
 	</fieldset>
@@ -81,7 +81,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
+						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=com_users&task=note.edit&id='.$item->id);?>">
@@ -104,7 +104,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 					<?php echo $this->escape($item->category_title); ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'notes.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+					<?php echo Html::grid('published', $item->state, $i, 'notes.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
 				<td class="center">
 					<?php if (intval($item->review_time)) : ?>

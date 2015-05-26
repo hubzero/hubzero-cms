@@ -111,9 +111,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php if ($item->home == '0' || $item->home == '1'):?>
-						<?php echo JHtml::_('jgrid.isdefault', $item->home!='0', $i, 'styles.', $canChange && $item->home!='1');?>
+						<?php echo Html::grid('isdefault', $item->home!='0', $i, 'styles.', $canChange && $item->home!='1');?>
 					<?php elseif ($canChange):?>
-						<a href="<?php echo Route::url('index.php?option=com_templates&task=styles.unsetDefault&cid[]='.$item->id.'&'.JSession::getFormToken().'=1');?>">
+						<a href="<?php echo Route::url('index.php?option=com_templates&task=styles.unsetDefault&cid[]=' . $item->id . '&' . Session::getFormToken() . '=1');?>">
 							<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>Lang::txt('COM_TEMPLATES_GRID_UNSET_LANGUAGE', $item->language_title)), true);?>
 						</a>
 					<?php else:?>
@@ -122,11 +122,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php if ($item->assigned > 0) : ?>
-							<span class="state yes" title="<?php echo Lang::txts('COM_TEMPLATES_ASSIGNED', $item->assigned); ?>">
-								<span class="text"><?php echo Lang::txts('COM_TEMPLATES_ASSIGNED', $item->assigned); ?></span>
-							</span>
+						<span class="state yes" title="<?php echo Lang::txts('COM_TEMPLATES_ASSIGNED', $item->assigned); ?>">
+							<span class="text"><?php echo Lang::txts('COM_TEMPLATES_ASSIGNED', $item->assigned); ?></span>
+						</span>
 					<?php else : ?>
-							&#160;
+						&#160;
 					<?php endif; ?>
 				</td>
 				<td class="center">

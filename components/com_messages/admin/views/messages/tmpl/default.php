@@ -14,8 +14,8 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <form action="<?php echo Route::url('index.php?option=com_messages&view=messages'); ?>" method="post" name="adminForm" id="adminForm">
@@ -75,7 +75,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo $this->escape($item->subject); ?></a>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('messages.state', $item->state, $i, $canChange); ?>
+					<?php echo Html::messages('state', $item->state, $i, $canChange); ?>
 				</td>
 				<td>
 					<?php echo $item->user_from; ?>

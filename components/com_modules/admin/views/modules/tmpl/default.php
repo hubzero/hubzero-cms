@@ -54,7 +54,7 @@ $saveOrder = $listOrder == 'ordering';
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -63,37 +63,37 @@ $saveOrder = $listOrder == 'ordering';
 	<table class="adminlist" id="modules-mgr">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
-				<th class="title">
+				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th scope="col">
 					<?php echo Html::grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th width="15%" class="left">
+				<th scope="col" class="priority-2 left">
 					<?php echo Html::grid('sort',  'COM_MODULES_HEADING_POSITION', 'position', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th scope="col" class="priority-3">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'modules.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="10%" class="left" >
+				<th scope="col" class="priority-3 left">
 					<?php echo Html::grid('sort', 'COM_MODULES_HEADING_MODULE', 'name', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th scope="col" class="priority-4">
 					<?php echo Html::grid('sort',  'COM_MODULES_HEADING_PAGES', 'pages', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th scope="col" class="priority-4">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th scope="col" class="priority-5">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language_title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th scope="col" class="priority-6">
 					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -119,7 +119,7 @@ $saveOrder = $listOrder == 'ordering';
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'modules.', $canCheckin); ?>
+						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'modules.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=com_modules&task=module.edit&id='.(int) $item->id); ?>">
@@ -135,14 +135,14 @@ $saveOrder = $listOrder == 'ordering';
 				<td class="center">
 					<?php echo Html::modules('state', $item->published, $i, $canChange, 'cb'); ?>
 				</td>
-				<td class="left">
+				<td class="priority-2 left">
 					<?php if ($item->position) : ?>
 						<?php echo $item->position; ?>
 					<?php else : ?>
 						<?php echo ':: ' . Lang::txt('JNONE') . ' ::'; ?>
 					<?php endif; ?>
 				</td>
-				<td class="order">
+				<td class="priority-3 order">
 					<?php if ($canChange) : ?>
 						<?php if ($saveOrder) :?>
 							<?php if ($listDirn == 'asc') : ?>
@@ -159,16 +159,16 @@ $saveOrder = $listOrder == 'ordering';
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>
 				</td>
-				<td class="left">
+				<td class="priority-3 left">
 					<?php echo $item->name;?>
 				</td>
-				<td class="center">
+				<td class="priority-4 center">
 					<?php echo $item->pages; ?>
 				</td>
-				<td class="center">
+				<td class="priority-4 center">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
-				<td class="center">
+				<td class="priority-5 center">
 					<?php if ($item->language==''):?>
 						<?php echo Lang::txt('JDEFAULT'); ?>
 					<?php elseif ($item->language=='*'):?>
@@ -177,7 +177,7 @@ $saveOrder = $listOrder == 'ordering';
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
 				</td>
-				<td class="center">
+				<td class="priority-6 center">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>

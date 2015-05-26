@@ -162,6 +162,6 @@ abstract class MenusHtmlMenus
 			),
 		);
 
-		return JHtml::_('jgrid.state', $states, $value, $i, 'items.', $enabled, true, $checkbox);
+		return Html::grid('state', $states, $value, $i, 'items.', $enabled, true, $checkbox);
 	}
 }

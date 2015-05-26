@@ -80,8 +80,8 @@ function submitbutton(pressbutton)
 		$this->view('_selectcategory')
 		     ->set('categories', $this->categories)
 		     ->set('value', $this->filters['category'])
-			 ->set('name', 'category')
-			 ->set('showNone', Lang::txt('COM_PUBLICATIONS_ALL_CATEGORIES'))
+		     ->set('name', 'category')
+		     ->set('showNone', Lang::txt('COM_PUBLICATIONS_ALL_CATEGORIES'))
 		     ->display();
 		?>
 
@@ -143,7 +143,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$time = Date::of($row->checked_out_time)->toLocal('H:i');
 
 		$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->checked_out) . '<br />' . $date . '<br />' . $time . '">';
-		$checked .= JHTML::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
+		$checked .= Html::asset('image', 'admin/checked_out.png', null, null, true) . '</span>';
 
 		$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
 				? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '

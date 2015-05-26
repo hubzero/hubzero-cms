@@ -82,7 +82,7 @@ class Batch
 			'<fieldset id="batch-choose-action" class="combo">',
 			'<select name="batch[category_id]" class="inputbox" id="batch-category-id">',
 			'<option value="">' . Lang::txt('JSELECT') . '</option>',
-			Select::options(\JHtml::_('category.options', $extension)),
+			Select::options(Category::options($extension)),
 			'</select>',
 			Select::radiolist($options, 'batch[move_copy]', '', 'value', 'text', 'm'),
 			'</fieldset>'
@@ -105,7 +105,7 @@ class Batch
 			'</label>',
 			'<select name="batch[language_id]" class="inputbox" id="batch-language-id">',
 			'<option value="">' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_NOCHANGE') . '</option>',
-			Select::options(\JHtml::_('contentlanguage.existing', true, true), 'value', 'text'),
+			Select::options(ContentLanguage::existing(true, true), 'value', 'text'),
 			'</select>'
 		);
 

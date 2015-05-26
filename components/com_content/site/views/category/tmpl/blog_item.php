@@ -109,7 +109,7 @@ Html::behavior('framework');
 		<?php $author = ($this->item->created_by_alias ? $this->item->created_by_alias : $author);?>
 
 			<?php if (!empty($this->item->contactid ) &&  $params->get('link_author') == true):?>
-				<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', JHtml::_('link', Route::url('index.php?option=com_contact&view=contact&id='.$this->item->contactid), $author)); ?>
+				<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', '<a href="' . Route::url('index.php?option=com_contact&view=contact&id='.$this->item->contactid) . '">' . $author . '</a>'); ?>
 			<?php else :?>
 				<?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
 			<?php endif; ?>

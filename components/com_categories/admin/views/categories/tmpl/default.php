@@ -39,7 +39,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
@@ -49,7 +49,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -108,7 +108,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<td>
 						<?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->level-1) ?>
 						<?php if ($item->checked_out) : ?>
-							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
+							<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'categories.', $canCheckin); ?>
 						<?php endif; ?>
 						<?php if ($canEdit || $canEditOwn) : ?>
 							<a href="<?php echo Route::url('index.php?option=com_categories&task=category.edit&id='.$item->id.'&extension='.$extension);?>">
@@ -125,7 +125,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 							<?php endif; ?></p>
 					</td>
 					<td class="priority-2 center">
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'categories.', $canChange);?>
+						<?php echo Html::grid('published', $item->published, $i, 'categories.', $canChange);?>
 					</td>
 					<td class="priority-2 order">
 						<?php if ($canChange) : ?>

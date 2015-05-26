@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 		<tr>
 			<th scope="row">
 				<?php if ($item->checked_out) : ?>
-					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
+					<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time); ?>
 				<?php endif; ?>
 
 				<?php if ($item->link) : ?>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die;
 				endif; ?>
 			</th>
 			<td class="center">
-				<?php echo JHtml::_('jgrid.published', $item->state, $i, '', false); ?>
+				<?php echo Html::grid('published', $item->state, $i, '', false); ?>
 			</td>
 			<td class="center">
 				<time datetime="<?php echo $item->created; ?>"><?php echo Date::of($item->created)->toLocal('Y-m-d H:i:s'); ?></time>

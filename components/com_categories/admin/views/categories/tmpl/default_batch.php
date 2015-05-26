@@ -13,8 +13,8 @@ $options = array(
 	Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
 	Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
 );
-$published	= $this->state->get('filter.published');
-$extension	= $this->escape($this->state->get('filter.extension'));
+$published = $this->state->get('filter.published');
+$extension = $this->escape($this->state->get('filter.extension'));
 ?>
 <fieldset class="batch">
 	<legend><?php echo Lang::txt('COM_CATEGORIES_BATCH_OPTIONS');?></legend>
@@ -40,11 +40,11 @@ $extension	= $this->escape($this->state->get('filter.extension'));
 			<div class="col width-50 fltlft">
 			<select name="batch[category_id]" class="inputbox" id="batch-category-id">
 				<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-				<?php echo Html::select('options', JHtml::_('category.categories', $extension, array('filter.published' => $published)));?>
+				<?php echo Html::select('options', Html::category('categories', $extension, array('filter.published' => $published)));?>
 			</select>
 			</div>
 			<div class="col width-50 fltrt">
-			<?php echo JHtml::_( 'select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+			<?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
 			</div>
 			<div class="clr"></div>
 		</div>

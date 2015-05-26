@@ -13,7 +13,8 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $client    = $this->state->get('filter.client') == 'site' ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR');
 $language  = $this->state->get('filter.language');
 $listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction')); ?>
+$listDirn  = $this->escape($this->state->get('list.direction'));
+?>
 <form action="<?php echo Route::url('index.php?option=com_languages&view=overrides'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
@@ -35,22 +36,22 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
 				</th>
-				<th width="30%" class="left">
+				<th>
 					<?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_KEY', 'key', $listDirn, $listOrder); ?>
 				</th>
-				<th class="left">
+				<th class="priority-3">
 					<?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_TEXT', 'text', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap">
+				<th class="priority-4">
 					<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>
 				</th>
 				<th>
 					<?php echo Lang::txt('JCLIENT'); ?>
 				</th>
-				<th class="right" width="20">
+				<th class="priority-6">
 					<?php echo Lang::txt('COM_LANGUAGES_HEADING_NUM'); ?>
 				</th>
 			</tr>
@@ -67,7 +68,7 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 		$i = 0;
 		foreach ($this->items as $key => $text): ?>
 			<tr class="row<?php echo $i % 2; ?>" id="overriderrow<?php echo $i; ?>">
-				<td class="center">
+				<td>
 					<?php echo Html::grid('id', $i, $key); ?>
 				</td>
 				<td>
@@ -77,16 +78,16 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 						<?php echo $this->escape($key); ?>
 					<?php endif; ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span id="string[<?php echo $this->escape($key); ?>]"><?php echo $this->escape($text); ?></span>
 				</td>
-				<td class="center">
+				<td class="priority-4">
 					<?php echo $language; ?>
 				</td>
-				<td class="center">
+				<td>
 					<?php echo $client; ?>
 				</td>
-				<td class="right">
+				<td class="priority-6">
 					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
 			</tr>
@@ -94,11 +95,10 @@ $listDirn  = $this->escape($this->state->get('list.direction')); ?>
 		endforeach; ?>
 		</tbody>
 	</table>
-	<div>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<?php echo Html::input('token'); ?>
-	</div>
+
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<?php echo Html::input('token'); ?>
 </form>

@@ -183,7 +183,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php echo Date::of($item->created_date)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
 				</td>
 				<td class="priority-2 center">
-					<?php echo JHtml::_('redirect.published', $item->published, $i); ?>
+					<?php echo Html::redirect('published', $item->published, $i); ?>
 				</td>
 				<td class="priority-3 center">
 					<?php echo (int) $item->hits; ?>

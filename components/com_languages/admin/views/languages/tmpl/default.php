@@ -13,17 +13,16 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$userId		= User::get('id');
-$n			= count($this->items);
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= User::authorise('core.edit.state', 'com_languages');
-$saveOrder	= $listOrder == 'a.ordering';
+$userId    = User::get('id');
+$n         = count($this->items);
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$canOrder  = User::authorise('core.edit.state', 'com_languages');
+$saveOrder = $listOrder == 'a.ordering';
 ?>
 
 <form action="<?php echo Route::url('index.php?option=com_languages&view=languages'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
 			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_LANGUAGES_SEARCH_IN_TITLE'); ?>" />
@@ -35,11 +34,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<div class="filter-select fltrt">
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', JHtml::_('languages.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo Html::select('options', Html::languages('publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-			<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
+				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -47,44 +46,44 @@ $saveOrder	= $listOrder == 'a.ordering';
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="5">
+				<th class="priority-6">
 					<?php echo Lang::txt('JGRID_HEADING_ROW_NUMBER'); ?>
 				</th>
-				<th width="20">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
-				<th class="title">
-					<?php echo Html::grid('sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				<th>
+					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th class="title">
-					<?php echo Html::grid('sort',  'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'a.title_native', $listDirn, $listOrder); ?>
+				<th class="priority-4">
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_HEADING_TITLE_NATIVE', 'a.title_native', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="nowrap">
-					<?php echo Html::grid('sort',  'COM_LANGUAGES_FIELD_LANG_TAG_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
+				<th>
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_FIELD_LANG_TAG_LABEL', 'a.lang_code', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="nowrap">
-					<?php echo Html::grid('sort',  'COM_LANGUAGES_FIELD_LANG_CODE_LABEL', 'a.sef', $listDirn, $listOrder); ?>
+				<th class="priority-6">
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_FIELD_LANG_CODE_LABEL', 'a.sef', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="nowrap">
-					<?php echo Html::grid('sort',  'COM_LANGUAGES_HEADING_LANG_IMAGE', 'a.image', $listDirn, $listOrder); ?>
+				<th class="priority-6">
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_HEADING_LANG_IMAGE', 'a.image', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="nowrap">
-					<?php echo Html::grid('sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+				<th>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th>
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'languages.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="5%">
+				<th class="priority-3">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="nowrap">
-					<?php echo Html::grid('sort',  'COM_LANGUAGES_HOMEPAGE', '', $listDirn, $listOrder); ?>
+				<th class="priority-4">
+					<?php echo Html::grid('sort', 'COM_LANGUAGES_HOMEPAGE', '', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'a.lang_id', $listDirn, $listOrder); ?>
+				<th class="priority-5">
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.lang_id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -97,14 +96,15 @@ $saveOrder	= $listOrder == 'a.ordering';
 		</tfoot>
 		<tbody>
 		<?php
+		$canCreate = User::authorise('core.create',     'com_languages');
+		$canEdit   = User::authorise('core.edit',       'com_languages');
+		$canChange = User::authorise('core.edit.state', 'com_languages');
+
 		foreach ($this->items as $i => $item) :
-			$ordering	= ($listOrder == 'a.ordering');
-			$canCreate	= User::authorise('core.create',		'com_languages');
-			$canEdit	= User::authorise('core.edit',			'com_languages');
-			$canChange	= User::authorise('core.edit.state',	'com_languages');
+			$ordering = ($listOrder == 'a.ordering');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td>
+				<td class="priority-6">
 					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
 				<td>
@@ -112,28 +112,29 @@ $saveOrder	= $listOrder == 'a.ordering';
 				</td>
 				<td>
 					<span class="editlinktip hasTip" title="<?php echo Lang::txt('JGLOBAL_EDIT_ITEM');?>::<?php echo $this->escape($item->title); ?>">
-					<?php if ($canEdit) : ?>
-						<a href="<?php echo Route::url('index.php?option=com_languages&task=language.edit&lang_id='.(int) $item->lang_id); ?>">
-							<?php echo $this->escape($item->title); ?></a>
-					<?php else : ?>
+						<?php if ($canEdit) : ?>
+							<a href="<?php echo Route::url('index.php?option=com_languages&task=language.edit&lang_id='.(int) $item->lang_id); ?>">
+								<?php echo $this->escape($item->title); ?>
+							</a>
+						<?php else : ?>
 							<?php echo $this->escape($item->title); ?>
-					<?php endif; ?>
+						<?php endif; ?>
 					</span>
 				</td>
-				<td class="center">
+				<td class="priority-4">
 					<?php echo $this->escape($item->title_native); ?>
 				</td>
-				<td class="center">
+				<td>
 					<?php echo $this->escape($item->lang_code); ?>
 				</td>
-				<td class="center">
+				<td class="priority-6">
 					<?php echo $this->escape($item->sef); ?>
 				</td>
-				<td class="center">
+				<td class="priority-6">
 					<?php echo $this->escape($item->image); ?>
 				</td>
-				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'languages.', $canChange);?>
+				<td>
+					<?php echo Html::grid('published', $item->published, $i, 'languages.', $canChange);?>
 				</td>
 				<td class="order">
 					<?php if ($canChange) : ?>
@@ -152,17 +153,17 @@ $saveOrder	= $listOrder == 'a.ordering';
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="priority-3">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
-				<td class="center">
+				<td class="priority-4">
 					<?php if ($item->home == '1') : ?>
 						<?php echo Lang::txt('JYES');?>
 					<?php else:?>
 						<?php echo Lang::txt('JNO');?>
 					<?php endif;?>
 				</td>
-				<td class="center">
+				<td class="priority-5">
 					<?php echo $this->escape($item->lang_id); ?>
 				</td>
 			</tr>

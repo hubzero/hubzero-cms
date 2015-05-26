@@ -51,7 +51,7 @@ defined('_JEXEC') or die;
 		<tr>
 			<th scope="row">
 				<?php if ($item->checked_out) : ?>
-					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
+					<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time); ?>
 				<?php endif; ?>
 
 				<?php if ($item->link) :?>

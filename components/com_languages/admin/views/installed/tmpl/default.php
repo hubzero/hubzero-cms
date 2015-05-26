@@ -11,43 +11,43 @@ defined('_JEXEC') or die;
 // Add specific helper files for html generation
 Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
-$userId		= User::get('id');
-$client		= $this->state->get('filter.client_id', 0) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
-$clientId	= $this->state->get('filter.client_id', 0);
+$userId   = User::get('id');
+$client   = $this->state->get('filter.client_id', 0) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE');
+$clientId = $this->state->get('filter.client_id', 0);
 ?>
-<form action="<?php echo Route::url('index.php?option=com_languages&view=installed&client='.$clientId); ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_languages&view=installed&client=' . $clientId); ?>" method="post" id="adminForm" name="adminForm">
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="20">
+				<th scope="col" class="priority-6">
 					<?php echo Lang::txt('COM_LANGUAGES_HEADING_NUM'); ?>
 				</th>
-				<th width="20">
+				<th>
 					&#160;
 				</th>
-				<th width="25%" class="title">
+				<th scope="col" class="title">
 					<?php echo Lang::txt('COM_LANGUAGES_HEADING_LANGUAGE'); ?>
 				</th>
-				<th>
+				<th scope="col" class="priority-4">
 					<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>
 				</th>
-				<th>
+				<th scope="col" class="priority-3">
 					<?php echo Lang::txt('JCLIENT'); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo Lang::txt('COM_LANGUAGES_HEADING_DEFAULT'); ?>
 				</th>
-				<th>
+				<th scope="col" class="priority-5">
 					<?php echo Lang::txt('JVERSION'); ?>
 				</th>
-				<th>
+				<th scope="col" class="priority-6">
 					<?php echo Lang::txt('JDATE'); ?>
 				</th>
-				<th>
+				<th scope="col" class="priority-5">
 					<?php echo Lang::txt('JAUTHOR'); ?>
 				</th>
-				<th>
+				<th scope="col" class="priority-6">
 					<?php echo Lang::txt('COM_LANGUAGES_HEADING_AUTHOR_EMAIL'); ?>
 				</th>
 			</tr>
@@ -60,40 +60,42 @@ $clientId	= $this->state->get('filter.client_id', 0);
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php foreach ($this->rows as $i => $row) :
-			$canCreate	= User::authorise('core.create',		'com_languages');
-			$canEdit	= User::authorise('core.edit',			'com_languages');
-			$canChange	= User::authorise('core.edit.state',	'com_languages');
+		<?php
+		$canCreate = User::authorise('core.create',     'com_languages');
+		$canEdit   = User::authorise('core.edit',       'com_languages');
+		$canChange = User::authorise('core.edit.state', 'com_languages');
+
+		foreach ($this->rows as $i => $row) :
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td width="20">
+				<td class="priority-6">
 					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
-				<td width="20">
-					<?php echo JHtml::_('languages.id', $i, $row->language);?>
+				<td>
+					<?php echo Html::languages('id', $i, $row->language);?>
 				</td>
-				<td width="25%">
+				<td>
 					<?php echo $this->escape($row->name); ?>
 				</td>
-				<td align="center">
+				<td class="priority-4">
 					<?php echo $this->escape($row->language); ?>
 				</td>
-				<td align="center">
-					<?php echo $client;?>
+				<td class="priority-3">
+					<?php echo $client; ?>
 				</td>
-				<td align="center">
-					<?php echo JHtml::_('jgrid.isdefault', $row->published, $i, 'installed.',  !$row->published && $canChange);?>
+				<td>
+					<?php echo Html::grid('isdefault', $row->published, $i, 'installed.', !$row->published && $canChange);?>
 				</td>
-				<td align="center">
+				<td class="priority-5">
 					<?php echo $this->escape($row->version); ?>
 				</td>
-				<td align="center">
+				<td class="priority-6">
 					<?php echo $this->escape($row->creationDate); ?>
 				</td>
-				<td align="center">
+				<td class="priority-5">
 					<?php echo $this->escape($row->author); ?>
 				</td>
-				<td align="center">
+				<td class="priority-6">
 					<?php echo $this->escape($row->authorEmail); ?>
 				</td>
 			</tr>
@@ -101,9 +103,7 @@ $clientId	= $this->state->get('filter.client_id', 0);
 		</tbody>
 	</table>
 
-	<div>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo Html::input('token'); ?>
-	</div>
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="boxchecked" value="0" />
+	<?php echo Html::input('token'); ?>
 </form>

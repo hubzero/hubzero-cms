@@ -43,7 +43,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo Html::select('options', JHtml::_('jgrid.publishedOptions', array('archived' => false)), 'value', 'text', $this->state->get('filter.published'), true);?>
+				<?php echo Html::select('options', Html::grid('publishedOptions', array('archived' => false)), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
@@ -53,7 +53,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-				<?php echo Html::select('options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
+				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
 	</fieldset>
@@ -127,7 +127,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 				<td>
 					<?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->level-1) ?>
 					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'items.', $canCheckin); ?>
+						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'items.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=com_menus&task=item.edit&id='.(int) $item->id);?>">
@@ -148,7 +148,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 						<?php endif; ?></p>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('MenusHtml.Menus.state', $item->published, $i, $canChange, 'cb'); ?>
+					<?php echo Html::menus('state', $item->published, $i, $canChange, 'cb'); ?>
 				</td>
 				<td class="order">
 					<?php if ($canChange) : ?>
@@ -173,9 +173,9 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 				<td class="center">
 					<?php if ($item->type == 'component') : ?>
 						<?php if ($item->language=='*' || $item->home=='0'):?>
-							<?php echo JHtml::_('jgrid.isdefault', $item->home, $i, 'items.', ($item->language != '*' || !$item->home) && $canChange);?>
+							<?php echo Html::grid('isdefault', $item->home, $i, 'items.', ($item->language != '*' || !$item->home) && $canChange);?>
 						<?php elseif ($canChange):?>
-							<a href="<?php echo Route::url('index.php?option=com_menus&task=items.unsetDefault&cid[]='.$item->id.'&'.JSession::getFormToken().'=1');?>">
+							<a href="<?php echo Route::url('index.php?option=com_menus&task=items.unsetDefault&cid[]='.$item->id.'&'.Session::getFormToken().'=1');?>">
 								<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>Lang::txt('COM_MENUS_GRID_UNSET_LANGUAGE', $item->language_title)), true);?>
 							</a>
 						<?php else:?>
@@ -189,7 +189,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 				?>
 				<td class="center">
 					<?php if ($item->association):?>
-						<?php echo JHtml::_('MenusHtml.Menus.association', $item->id);?>
+						<?php echo Html::menus('association', $item->id);?>
 					<?php endif;?>
 				</td>
 				<?php endif;?>
