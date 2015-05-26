@@ -271,7 +271,7 @@ class Structures_BibTex
 				return true;
 			}
 		} else {
-			return PEAR::raiseError('Could not find file '.$filename);
+			return \PEAR::raiseError('Could not find file '.$filename);
 		}
 	}
 
@@ -676,7 +676,8 @@ class Structures_BibTex
 	 * @param  string  $entry The entry with the authors
 	 * @return array   the extracted authors
 	 */
-	function _extractAuthors($entry) {
+	function _extractAuthors($entry)
+	{
 		$entry       = $this->_unwrap($entry);
 		$authorarray = array();
 		$authorarray = preg_split('# and #', $entry);
@@ -811,7 +812,8 @@ class Structures_BibTex
 	 * @param  string  $word
 	 * @return int     The Case or PEAR_Error if there was a problem
 	 */
-	function _determineCase($word) {
+	function _determineCase($word)
+	{
 		$ret         = -1;
 		$trimmedword = trim ($word);
 		/*We need this variable. Without the next of would not work

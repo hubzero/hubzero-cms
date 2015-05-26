@@ -82,7 +82,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$bibtex = new Structures_BibTex();
 
 		//feed bibtex lib the file
-		$bibtex->loadFile($file->getFileName());
+		$bibtex->loadFile($file->getPathname());
 
 		//parse file
 		$bibtex->parse();
@@ -179,14 +179,14 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 			$isbn  = $r->isbn;
 
 			//direct matches on doi
-			if ($doi == $citation['doi'] && $doi != '')
+			if (isset($citation['doi']) && $doi == $citation['doi'] && $doi != '')
 			{
 				$match = $id;
 				break;
 			}
 
 			//direct matches on isbn
-			if ($isbn == $citation['isbn'] && $isbn != '')
+			if (isset($citation['isbn']) && $isbn == $citation['isbn'] && $isbn != '')
 			{
 				$match = $id;
 				break;

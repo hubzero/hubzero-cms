@@ -67,16 +67,16 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$active = 'enw';
 
 		//get the file extension
-		$file_info = pathinfo($file['name']);
+		$extension = $file->getClientOriginalExtension();
 
 		//only process more in this file if it matches endnote format
-		if ($active != $file_info['extension'])
+		if ($active != $extension)
 		{
 			return;
 		}
 
 		//get the file contents
-		$raw_citations = file($file['tmp_name']);
+		$raw_citations = file($file->getFilename());
 
 		//process the uploaded citation data
 		return $this->onImportProcessEndnote($raw_citations);
