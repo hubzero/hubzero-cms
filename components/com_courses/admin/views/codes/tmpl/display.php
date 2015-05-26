@@ -35,8 +35,7 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_COUPON_CODES'), 'courses.png');
 if ($canDo->get('core.create'))
 {
-	$bar =  JToolBar::getInstance('toolbar');
-	$bar->appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
+	Toolbar::appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
 
 	Toolbar::spacer();
 	Toolbar::custom('export', 'export', 'export', 'COM_COURSES_EXPORT_CODES', false);
@@ -105,12 +104,12 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CODE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CREATED'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_CREATED'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_EXPIRES'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_REDEEMED'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_REDEEMED_BY'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_REDEEMED_BY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -137,7 +136,7 @@ foreach ($this->rows as $i => $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
@@ -151,7 +150,7 @@ foreach ($this->rows as $i => $row)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
@@ -163,7 +162,7 @@ foreach ($this->rows as $i => $row)
 						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . Date::of($row->get('redeemed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
 					</span>
 				</td>
-				<td>
+				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
 						<?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
 					</a>

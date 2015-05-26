@@ -88,25 +88,25 @@ Toolbar::help('polls');
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>
 				<th scope="col" class="title">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo Html::grid('sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+				<th scope="col" class="priority-2">
+					<?php echo Html::grid('sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+				<th scope="col" class="priority-3">
+					<?php echo Html::grid('sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+				<th scope="col" class="priority-4">
+					<?php echo Html::grid('sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+				<th scope="col" class="priority-4">
+					<?php echo Html::grid('sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+				<th scope="col" class="priority-5">
+					<?php echo Html::grid('sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -174,7 +174,7 @@ Toolbar::help('polls');
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<a class="state <?php echo $class2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task2 . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_POLL_SET_TO', $task2); ?>">
 							<span><?php echo $alt2; ?></span>
@@ -185,16 +185,16 @@ Toolbar::help('polls');
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $row->voters; ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->numoptions; ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->lag; ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $row->id; ?>
 				</td>
 			</tr>

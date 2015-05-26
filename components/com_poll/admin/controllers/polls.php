@@ -155,7 +155,7 @@ class Polls extends AdminController
 			. ' GROUP BY m.id'
 			. $orderby
 			;
-		$db->setQuery($query, $pagination->limitstart, $pagination->limit);
+		$db->setQuery($query, $limitstart, $limit);
 		$rows = $db->loadObjectList();
 
 		if ($db->getErrorNum())
@@ -166,7 +166,7 @@ class Polls extends AdminController
 		$lists = array();
 
 		// State filter
-		$lists['state']     = \Html::grid('state', $filter_state);
+		$lists['state']     = \Html::grid('states', $filter_state);
 
 		// Table ordering
 		$lists['order_Dir'] = $filter_order_Dir;

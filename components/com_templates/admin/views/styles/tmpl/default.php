@@ -49,19 +49,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<th scope="col">
 					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_STYLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-2">
 					<?php echo Html::grid('sort', 'JCLIENT', 'a.client_id', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col">
 					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.template', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-3">
 					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_DEFAULT', 'a.home', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-4">
 					<?php echo Lang::txt('COM_TEMPLATES_HEADING_ASSIGNED'); ?>
 				</th>
-				<th scope="col">
+				<th scope="col" class="priority-5">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -83,7 +83,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<td class="center">
 					<?php echo Html::grid('id', $i, $item->id); ?>
 				</td>
-
 				<td>
 					<?php if ($this->preview && $item->client_id == '0'): ?>
 						<a target="_blank"href="<?php echo Request::root().'index.php?tp=1&templateStyle='.(int) $item->id ?>"  class="jgrid hasTip" title="<?php echo  htmlspecialchars(Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW')); ?>::<?php echo htmlspecialchars($item->title);?>" ><span class="state icon-16-preview"><span class="text"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?></span></span></a>
@@ -99,7 +98,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo $this->escape($item->title);?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-2">
 					<?php echo $item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>
 				</td>
 				<td>
@@ -109,7 +108,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						</a>
 					</label>
 				</td>
-				<td class="center">
+				<td class="center priority-3">
 					<?php if ($item->home == '0' || $item->home == '1'):?>
 						<?php echo Html::grid('isdefault', $item->home!='0', $i, 'styles.', $canChange && $item->home!='1');?>
 					<?php elseif ($canChange):?>
@@ -120,7 +119,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo Html::asset('image', 'mod_languages/'.$item->image.'.gif', $item->language_title, array('title'=>$item->language_title), true);?>
 					<?php endif;?>
 				</td>
-				<td class="center">
+				<td class="center priority-4">
 					<?php if ($item->assigned > 0) : ?>
 						<span class="state yes" title="<?php echo Lang::txts('COM_TEMPLATES_ASSIGNED', $item->assigned); ?>">
 							<span class="text"><?php echo Lang::txts('COM_TEMPLATES_ASSIGNED', $item->assigned); ?></span>
@@ -129,7 +128,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						&#160;
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="priority-5 center">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>

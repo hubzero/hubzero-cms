@@ -21,8 +21,6 @@
 	.mod_groups .stats-overview tbody tr td:first-child,
 	.mod_groups .stats-overview tbody tr td:last-child {
 		text-align: center;
-		font-size: 3em;
-		font-weight: 300;
 		padding: 0;
 		line-height: 1;
 		border: none;
@@ -39,10 +37,6 @@
 		color: orange;
 	}
 	.mod_groups .stats-overview tbody tr td a>span {
-		font-size: 0.35em;
-		font-weight: 400;
-		display: block;
-		margin: 1em 0 0 0;
 		color: #999;
 	}
 	.mod_groups .stats-overview tbody tr td a:hover,
@@ -56,3 +50,18 @@
 	.mod_groups .stats-overview tbody td.pending a:before {
 		display: none;
 	}
+
+@media (min-width: 60em) {
+	.mod_groups .stats-overview tbody tr td,
+	.mod_groups .stats-overview tbody tr td:first-child,
+	.mod_groups .stats-overview tbody tr td:last-child {
+		font-size: 3em;
+		font-weight: 300;
+	}
+	.mod_groups .stats-overview tbody tr td a>span {
+		font-size: 0.35em;
+		font-weight: 400;
+		display: block;
+		margin: 1em 0 0 0;
+	}
+}

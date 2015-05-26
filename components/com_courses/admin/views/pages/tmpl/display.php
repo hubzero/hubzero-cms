@@ -78,13 +78,13 @@ function submitbutton(pressbutton)
 
 	<table class="adminlist">
 		<thead>
-		 	<tr>
+			<tr>
 				<th colspan="5">
 				<?php if ($this->course->exists()) { ?>
-					(<a href="index.php?option=<?php echo $this->option; ?>">
+					(<a href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
-					<a href="index.php?option=<?php echo $this->option; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
 					<?php if ($this->offering->exists()) { ?>
@@ -100,9 +100,9 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ORDERING'); ?></th>
 			</tr>
 		</thead>
@@ -140,7 +140,7 @@ function submitbutton(pressbutton)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php echo $this->escape($page->get('id')); ?>
 				</td>
 				<td>
@@ -154,7 +154,7 @@ function submitbutton(pressbutton)
 					</span>
 				<?php } ?>
 				</td>
-				<td>
+				<td class="priority-2">
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($page->get('active') == 1) { ?>
 					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">

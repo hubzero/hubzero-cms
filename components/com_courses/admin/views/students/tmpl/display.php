@@ -128,13 +128,13 @@ function submitbutton(pressbutton)
 		<?php if ($this->filters['offering']) { ?>
 			<tr>
 				<th colspan="<?php echo (!$this->filters['offering']) ? '8' : '7'; ?>">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses">
+					(<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>
 				</th>
@@ -142,15 +142,15 @@ function submitbutton(pressbutton)
 		<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_NAME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_EMAIL'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_EMAIL'); ?></th>
 			<?php if (!$this->filters['offering']) { ?>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_COURSE_OFFERING'); ?></th>
 			<?php } ?>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_SECTION'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -180,7 +180,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape($row->get('user_id')); ?>
 				</td>
 				<td>
@@ -194,7 +194,7 @@ foreach ($this->rows as $row)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('email'))); ?>
@@ -213,12 +213,12 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE'); ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span class="state <?php echo ($row->get('token') ? 'publish' : 'unpublish'); ?>">
 						<span> <?php echo ($row->get('token') ? 'redeemed' : ''); ?></span>
 					</span>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
 						<time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo Date::of($row->get('enrolled'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					<?php } else { ?>

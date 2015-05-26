@@ -14,10 +14,10 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= User::authorise('core.edit.state',	'com_plugins');
-$saveOrder	= $listOrder == 'ordering';
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$canOrder  = User::authorise('core.edit.state', 'com_plugins');
+$saveOrder = $listOrder == 'ordering';
 ?>
 <form action="<?php echo Route::url('index.php?option=com_plugins&view=plugins'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -50,31 +50,31 @@ $saveOrder	= $listOrder == 'ordering';
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
-				<th class="title">
+				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'COM_PLUGINS_NAME_HEADING', 'name', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th scope="col">
 					<?php echo Html::grid('sort', 'JSTATUS', 'enabled', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th scope="col" class="priority-2">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'plugins.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th class="nowrap" width="10%">
+				<th scope="col" class="priority-3 nowrap">
 					<?php echo Html::grid('sort', 'COM_PLUGINS_FOLDER_HEADING', 'folder', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="10%">
+				<th scope="col" class="priority-3 nowrap">
 					<?php echo Html::grid('sort', 'COM_PLUGINS_ELEMENT_HEADING', 'element', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th scope="col" class="priority-4">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'access', $listDirn, $listOrder); ?>
 				</th>
-				<th class="nowrap" width="1%">
+				<th scope="col" class="priority-5 nowrap">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'extension_id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -88,10 +88,10 @@ $saveOrder	= $listOrder == 'ordering';
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$ordering	= ($listOrder == 'ordering');
-			$canEdit	= User::authorise('core.edit',			'com_plugins');
-			$canCheckin	= User::authorise('core.manage',		'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
-			$canChange	= User::authorise('core.edit.state',	'com_plugins') && $canCheckin;
+			$ordering   = ($listOrder == 'ordering');
+			$canEdit    = User::authorise('core.edit',       'com_plugins');
+			$canCheckin = User::authorise('core.manage',     'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
+			$canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -111,7 +111,7 @@ $saveOrder	= $listOrder == 'ordering';
 				<td class="center">
 					<?php echo Html::grid('published', $item->enabled, $i, 'plugins.', $canChange); ?>
 				</td>
-				<td class="order">
+				<td class="priority-2 order">
 					<?php if ($canChange) : ?>
 						<?php if ($saveOrder) :?>
 							<?php if ($listDirn == 'asc') : ?>
@@ -128,16 +128,16 @@ $saveOrder	= $listOrder == 'ordering';
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>
 				</td>
-				<td class="nowrap center">
+				<td class="priority-3 nowrap center">
 					<?php echo $this->escape($item->folder);?>
 				</td>
-				<td class="nowrap center">
+				<td class="priority-3 nowrap center">
 					<?php echo $this->escape($item->element);?>
 				</td>
-				<td class="center">
+				<td class="priority-4 center">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
-				<td class="center">
+				<td class="priority-5 center">
 					<?php echo (int) $item->extension_id;?>
 				</td>
 			</tr>
