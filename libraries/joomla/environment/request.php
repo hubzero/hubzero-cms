@@ -576,6 +576,37 @@ class JRequest
 	}
 
 	/**
+	 * Checks for a honeypot in the request
+	 *
+	 * @param   string   $name
+	 * @param   integer  $delay
+	 * @return  boolean  True if found and valid, false otherwise.
+	 */
+	public static function checkHoneypot($name = null, $delay = 3)
+	{
+		$name = $name ?: \Hubzero\Antispam\Honeypot::getName();
+
+		if ($honey = self::getVar($name, array(), 'post'))
+		{
+			if (!\Hubzero\Antispam\Honeypot::isValid($honey['p'], $honey['t'], $delay))
+			{
+				if ($logger = JFactory::getSpamLogger())
+				{
+					$fallback = 'option=' . self::getCmd('option') . '&controller=' . self::getCmd('controller') . '&task=' . self::getCmd('task');
+					$from = self::getVar('REQUEST_URI', $fallback, 'server');
+					$from = $from ?: $fallback;
+
+					JFactory::getSpamLogger()->info('spam honeypot ' . self::ip() . ' ' . JFactory::getUser()->get('id') . ' ' . JFactory::getUser()->get('username') . ' ' . $from);
+				}
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Cleans the request from script injection.
 	 *
 	 * @return  void

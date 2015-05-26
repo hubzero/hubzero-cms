@@ -32,4 +32,20 @@ abstract class JHtmlForm
 	{
 		return '<input type="hidden" name="' . JSession::getFormToken() . '" value="1" />';
 	}
+
+	/**
+	 * Displays an input field that should be left empty by the
+	 * real users of the application but will most likely be
+	 * filled out by spam bots.
+	 *
+	 * Use in conjunction with JRequest::checkHoneypot()
+	 *
+	 * @param   string   $name
+	 * @param   integer  $delay
+	 * @return  string
+	 */
+	public static function honeypot($name = null)
+	{
+		return \Hubzero\Antispam\Honeypot::generate($name);
+	}
 }
