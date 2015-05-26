@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use \Components\Members\Helpers\Permissions;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once (dirname(__DIR__) . DS . 'models' . DS . 'import.php');
+include_once (PATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'import.php');
 
 /**
  * Member importer
@@ -45,7 +47,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
-		if (!MembersHelper::getActions('component')->get('core.admin'))
+		if (!Permissions::getActions('component')->get('core.admin'))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_members', false),
@@ -384,7 +386,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 
 	/**
 	 * Actually Run Import
-	 * 
+	 *
 	 * @return  string  JSON encoded records that just got inserted or would be
 	 */
 	public function doRunTask()
@@ -441,7 +443,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 
 	/**
 	 * Get progress of import task
-	 * 
+	 *
 	 * @return  string  JSON encoded total and position
 	 */
 	public function progressTask()
@@ -567,7 +569,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Quote a CSV row
 	 *
-	 * @param   array  $vals 
+	 * @param   array  $vals
 	 * @return  string
 	 */
 	public function quoteCsvRow($vals)
