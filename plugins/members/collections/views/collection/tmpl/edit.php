@@ -56,6 +56,7 @@ $this->css();
 			<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY'); ?>
 			<select name="fields[access]" id="field-access">
 				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
+				<option value="1"<?php if ($this->entry->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></option>
 				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
 			</select>
 		</label>
