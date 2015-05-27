@@ -64,7 +64,7 @@ class Helper extends Module
 	/**
 	 * Get a list of the most popular articles
 	 *
-	 * @param   JObject  The module parameters.
+	 * @param   object  $params  The module parameters.
 	 * @return  array
 	 */
 	public static function getList($params)
@@ -134,7 +134,7 @@ class Helper extends Module
 	/**
 	 * Get the alternate title for the module
 	 *
-	 * @param   JObject The module parameters.
+	 * @param   object  $params  The module parameters.
 	 * @return  string  The alternate title for the module.
 	 */
 	public static function getTitle($params)

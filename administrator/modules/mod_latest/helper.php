@@ -64,8 +64,8 @@ class Helper extends Module
 	/**
 	 * Get a list of articles.
 	 *
-	 * @param   JObject  The module parameters.
-	 * @return  mixed    An array of articles, or false on error.
+	 * @param   object  $params  The module parameters.
+	 * @return  mixed   An array of articles, or false on error.
 	 */
 	public static function getList($params)
 	{
@@ -145,8 +145,8 @@ class Helper extends Module
 	/**
 	 * Get the alternate title for the module
 	 *
-	 * @param   JObject  The module parameters.
-	 * @return  string   The alternate title for the module.
+	 * @param   object  $params  The module parameters.
+	 * @return  string  The alternate title for the module.
 	 */
 	public static function getTitle($params)
 	{
