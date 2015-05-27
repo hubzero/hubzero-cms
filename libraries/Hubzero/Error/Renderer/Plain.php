@@ -62,7 +62,7 @@ class Plain implements RendererInterface
 				}
 				else
 				{
-					$response .= '...'
+					$response .= '...';
 				}
 
 				$response .= "\n\n";
