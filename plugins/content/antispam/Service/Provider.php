@@ -44,6 +44,13 @@ class Provider extends AbstractAdapter
 	const URL_REGEX = "!((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)!";
 
 	/**
+	 * Regex for word detection
+	 *
+	 * @var  string
+	 */
+	protected $regex;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   mixed  $properties
@@ -141,31 +148,30 @@ class Provider extends AbstractAdapter
 	 */
 	public function pottyMouth($text)
 	{
-		$badwords = explode(',', $this->get('badwords'));
-		array_map('trim', $badwords);
-
-		// Build an array of patterns to check againts
-		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
-		foreach ($badwords as $badword)
+		if (!$this->regex)
 		{
-			if (!empty($badword))
+			$blackLists = explode(',', $this->get('badwords'));
+			array_map('trim', $blackLists);
+
+			$blackLists[] = '#\[url=(.*?)\](.*?)\[\/url\]#';
+			$blackLists[] = '#\[url=(.*?)\[\/url\]#';
+
+			$this->regex = sprintf('~%s~', implode('|', array_map(function ($value)
 			{
-				$patterns[] = '/(.*?)' . trim($badword) . '(.*?)/is';
-			}
+				if (isset($value[0]) && $value[0] == '#')
+				{
+					$value = substr($value, 1, -1);
+				}
+				else
+				{
+					$value = preg_quote($value);
+				}
+
+				return '(?:' . $value . ')';
+			}, $blackLists)));
 		}
 
-		// Check the text against bad words
-		foreach ($patterns as $pattern)
-		{
-			preg_match_all($pattern, $text, $matches);
-
-			if (count($matches[0]) >= 1)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return (bool) preg_match($this->regex, $text);
 	}
 
 	/**
