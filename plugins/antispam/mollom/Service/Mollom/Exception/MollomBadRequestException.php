@@ -2,6 +2,8 @@
 
 namespace Plugins\Antispam\Mollom\Service\Mollom\Exception;
 
+include_once __DIR__ . DS . 'MollomException.php';
+
 /**
  * Mollom error due to bad client request exception.
  *
@@ -11,7 +13,7 @@ namespace Plugins\Antispam\Mollom\Service\Mollom\Exception;
  * @see Mollom::REQUEST_ERROR
  * @see Mollom::handleRequest()
  */
-class MollomBadRequestException extends MollomException 
+class MollomBadRequestException extends MollomException
 {
 }
 

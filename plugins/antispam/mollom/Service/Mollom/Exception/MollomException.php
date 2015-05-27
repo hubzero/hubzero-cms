@@ -3,7 +3,7 @@
 namespace Plugins\Antispam\Mollom\Service\Mollom\Exception;
 
 use Exception;
-use Plugins\Antispam\Mollom\Service\Mollom;
+use Plugins\Antispam\Mollom\Service\Mollom\Mollom;
 
 /**
  * A catchable Mollom exception.
@@ -41,7 +41,7 @@ use Plugins\Antispam\Mollom\Service\Mollom;
  *   - response: (mixed) The server response, either as string, or the already
  *     parsed response; i.e., an array.
  */
-class MollomException extends Exception 
+class MollomException extends Exception
 {
 	/**
 	 * @var Mollom
@@ -61,7 +61,7 @@ class MollomException extends Exception
 	/**
 	 * Overrides Exception::__construct().
 	 */
-	function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array()) 
+	public function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array()) 
 	{
 		// Fatal error on PHP <5.3 when passing more arguments to Exception.
 		if (version_compare(phpversion(), '5.3') >= 0) 

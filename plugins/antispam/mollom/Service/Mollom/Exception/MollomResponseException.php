@@ -2,6 +2,8 @@
 
 namespace Plugins\Antispam\Mollom\Service\Mollom\Exception;
 
+include_once __DIR__ . DS . 'MollomException.php';
+
 /**
  * Mollom server response exception.
  *
@@ -11,7 +13,7 @@ namespace Plugins\Antispam\Mollom\Service\Mollom\Exception;
  *
  * @see Mollom::handleRequest()
  */
-class MollomResponseException extends MollomException 
+class MollomResponseException extends MollomException
 {
 	/**
 	 * Overrides MollomException::$severity.

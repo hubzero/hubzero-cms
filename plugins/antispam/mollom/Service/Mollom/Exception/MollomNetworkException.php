@@ -2,13 +2,15 @@
 
 namespace Plugins\Antispam\Mollom\Service\Mollom\Exception;
 
+include_once __DIR__ . DS . 'MollomException.php';
+
 /**
  * Mollom network error exception.
  *
  * Thrown in case a HTTP request results in code <= 0, denoting a low-level
  * communication error.
  */
-class MollomNetworkException extends MollomException 
+class MollomNetworkException extends MollomException
 {
 	/**
 	 * Overrides MollomException::$severity.
