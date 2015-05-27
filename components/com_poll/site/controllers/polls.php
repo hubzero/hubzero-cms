@@ -39,6 +39,7 @@ use Pathway;
 use Route;
 use Date;
 use Lang;
+use Html;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'poll.php');
 
@@ -161,12 +162,12 @@ class Polls extends SiteController
 			$pList[$k]->url = Route::url('index.php?option=com_poll&id=' . $p->id . ':' . $p->alias);
 		}
 
-		array_unshift($pList, \Html::select('option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
+		array_unshift($pList, Html::select('option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
 
 		// dropdown output
 		$lists = array();
 
-		$lists['polls'] = \Html::select('genericlist', $pList, 'id',
+		$lists['polls'] = Html::select('genericlist', $pList, 'id',
 			'class="inputbox" size="1" style="width:200px" onchange="if (this.options[selectedIndex].value != \'\') {document.location.href=this.options[selectedIndex].value}"',
 			'url', 'title',
 			Route::url('index.php?option=com_poll&id=' . $poll->id . ':' . $poll->alias)
@@ -308,9 +309,7 @@ class Polls extends SiteController
 			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 404);
 		}
 
-		$app = \JFactory::getApplication();
-
-		$cookieName = \JUtility::getHash($app->getName() . 'poll' . $poll_id);
+		$cookieName = \App::hash(\App::get('client')->name . 'poll' . $poll_id);
 
 		// ToDo - may be adding those information to the session?
 		$voted = Request::getVar($cookieName, '0', 'COOKIE', 'INT');
@@ -337,6 +336,7 @@ class Polls extends SiteController
 		}
 
 		// set Itemid id for links
+		$app = \JFactory::getApplication();
 		$menu   = $app->getMenu();
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';

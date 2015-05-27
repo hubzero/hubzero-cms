@@ -102,7 +102,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					// Create a cookie
 					$cookie_domain = Config::get('cookie_domain', '');
 					$cookie_path   = Config::get('cookie_path', '/');
-					setcookie(JApplication::getHash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
+					setcookie(App::hash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
 					// set the request var
 					Request::setVar('language', $lang_code);
 				}
@@ -224,7 +224,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 		$app = JFactory::getApplication();
 
 		$array = array();
-		$lang_code = Request::getString(JApplication::getHash('language'), null , 'cookie');
+		$lang_code = Request::getString(App::hash('language'), null , 'cookie');
 		// No cookie - let's try to detect browser language or use site default
 		if (!$lang_code) {
 			if ($this->params->get('detect_browser', 1)){
@@ -391,7 +391,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					// Create a cookie
 					$cookie_domain = Config::get('cookie_domain', '');
 					$cookie_path   = Config::get('cookie_path', '/');
-					setcookie(JApplication::getHash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
+					setcookie(App::hash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
 				}
 			}
 		}
@@ -438,7 +438,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 				// Create a cookie
 				$cookie_domain = Config::get('cookie_domain', '');
 				$cookie_path   = Config::get('cookie_path', '/');
-				setcookie(JApplication::getHash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
+				setcookie(App::hash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
 
 				// Change the language code
 				Lang::setLanguage($lang_code);

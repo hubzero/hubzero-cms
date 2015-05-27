@@ -955,6 +955,11 @@ class JApplication extends JObject
 	 */
 	public static function getHash($seed)
 	{
+		if (class_exists('\\App'))
+		{
+			return \App::hash($seed);
+		}
+
 		return md5(JFactory::getConfig()->get('secret') . $seed);
 	}
 

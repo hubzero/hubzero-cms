@@ -64,7 +64,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			jimport('joomla.utilities.simplecrypt');
 			jimport('joomla.user.helper');
 
-			$hash = JUtility::getHash(JFactory::getApplication()->getName() . ':tracker');
+			$hash = App::hash(App::get('client')->name . ':tracker');
 
 			$crypt = new JSimpleCrypt();
 
@@ -76,7 +76,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 				if ($tracker === false) // old tracking cookies encrypted with UA which is too short term for a tracking cookie
 				{
 					//Create the encryption key, apply extra hardening using the user agent string
-					$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
+					$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
 					$crypt = new JSimpleCrypt($key);
 					$sstr = $crypt->decrypt($str);
 					$tracker = @unserialize($sstr);

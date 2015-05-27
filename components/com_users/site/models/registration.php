@@ -48,7 +48,8 @@ class UsersModelRegistration extends JModelForm
 		$userId = (int) $db->loadResult();
 
 		// Check for a valid user id.
-		if (!$userId) {
+		if (!$userId)
+		{
 			$this->setError(Lang::txt('COM_USERS_ACTIVATION_TOKEN_NOT_FOUND'));
 			return false;
 		}
@@ -66,7 +67,7 @@ class UsersModelRegistration extends JModelForm
 
 			// Compile the admin notification mail values.
 			$data = $user->getProperties();
-			$data['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
+			$data['activation'] = App::hash(JUserHelper::genRandomPassword());
 			$user->set('activation', $data['activation']);
 			$data['siteurl'] = Request::base();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
@@ -107,7 +108,8 @@ class UsersModelRegistration extends JModelForm
 					$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBody);
 
 					// Check for an error.
-					if ($return !== true) {
+					if ($return !== true)
+					{
 						$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 						return false;
 					}
@@ -146,7 +148,8 @@ class UsersModelRegistration extends JModelForm
 			$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
 
 			// Check for an error.
-			if ($return !== true) {
+			if ($return !== true)
+			{
 				$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 				return false;
 			}
@@ -158,7 +161,8 @@ class UsersModelRegistration extends JModelForm
 		}
 
 		// Store the user object.
-		if (!$user->save()) {
+		if (!$user->save())
+		{
 			$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_SAVE_FAILED', $user->getError()));
 			return false;
 		}
@@ -180,11 +184,10 @@ class UsersModelRegistration extends JModelForm
 		if ($this->data === null)
 		{
 			$this->data	= new stdClass();
-			$app    = JFactory::getApplication();
 			$params = Component::params('com_users');
 
 			// Override the base user data with any data in the session.
-			$temp = (array)$app->getUserState('com_users.registration.data', array());
+			$temp = (array) User::getState('com_users.registration.data', array());
 			foreach ($temp as $k => $v)
 			{
 				$this->data->$k = $v;
@@ -317,13 +320,15 @@ class UsersModelRegistration extends JModelForm
 		$sendpassword = $params->get('sendpassword', 1);
 
 		// Check if the user needs to activate their account.
-		if (($useractivation == 1) || ($useractivation == 2)) {
-			$data['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
+		if (($useractivation == 1) || ($useractivation == 2))
+		{
+			$data['activation'] = App::hash(JUserHelper::genRandomPassword());
 			$data['block'] = 1;
 		}
 
 		// Bind the data.
-		if (!$user->bind($data)) {
+		if (!$user->bind($data))
+		{
 			$this->setError(Lang::txt('COM_USERS_REGISTRATION_BIND_FAILED', $user->getError()));
 			return false;
 		}
@@ -332,7 +337,8 @@ class UsersModelRegistration extends JModelForm
 		Plugin::import('user');
 
 		// Store the data.
-		if (!$user->save()) {
+		if (!$user->save())
+		{
 			$this->setError(Lang::txt('COM_USERS_REGISTRATION_SAVE_FAILED', $user->getError()));
 			return false;
 		}
@@ -350,9 +356,9 @@ class UsersModelRegistration extends JModelForm
 			// Set the link to confirm the user email.
 			$uri = JURI::getInstance();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-			$data['activate'] = $base.Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
+			$data['activate'] = $base . Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
 
-			$emailSubject	= Lang::txt(
+			$emailSubject = Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
@@ -387,9 +393,9 @@ class UsersModelRegistration extends JModelForm
 			// Set the link to activate the user account.
 			$uri = JURI::getInstance();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-			$data['activate'] = $base.Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
+			$data['activate'] = $base . Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
 
-			$emailSubject	= Lang::txt(
+			$emailSubject = Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
@@ -440,7 +446,8 @@ class UsersModelRegistration extends JModelForm
 		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
 
 		//Send Notification mail to administrators
-		if (($params->get('useractivation') < 2) && ($params->get('mail_to_admin') == 1)) {
+		if (($params->get('useractivation') < 2) && ($params->get('mail_to_admin') == 1))
+		{
 			$emailSubject = Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
@@ -459,23 +466,25 @@ class UsersModelRegistration extends JModelForm
 					' FROM #__users' .
 					' WHERE sendEmail=1';
 
-			$db->setQuery( $query );
+			$db->setQuery($query);
 			$rows = $db->loadObjectList();
 
 			// Send mail to all superadministrators id
-			foreach ( $rows as $row )
+			foreach ($rows as $row)
 			{
 				$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $row->email, $emailSubject, $emailBodyAdmin);
 
 				// Check for an error.
-				if ($return !== true) {
+				if ($return !== true)
+				{
 					$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 					return false;
 				}
 			}
 		}
 		// Check for an error.
-		if ($return !== true) {
+		if ($return !== true)
+		{
 			$this->setError(Lang::txt('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
 
 			// Send a system message to administrators receiving system mails
@@ -486,15 +495,17 @@ class UsersModelRegistration extends JModelForm
 				AND sendEmail = 1";
 			$db->setQuery($q);
 			$sendEmail = $db->loadColumn();
-			if (count($sendEmail) > 0) {
-				$jdate = new JDate();
+			if (count($sendEmail) > 0)
+			{
+				$jdate = new \Hubzero\Utility\Date();
 				// Build the query to add the messages
 				$q = "INSERT INTO ".$db->quoteName('#__messages')." (".$db->quoteName('user_id_from').
 				", ".$db->quoteName('user_id_to').", ".$db->quoteName('date_time').
 				", ".$db->quoteName('subject').", ".$db->quoteName('message').") VALUES ";
 				$messages = array();
 
-				foreach ($sendEmail as $userid) {
+				foreach ($sendEmail as $userid)
+				{
 					$messages[] = "(".$userid.", ".$userid.", '".$jdate->toSql()."', '".Lang::txt('COM_USERS_MAIL_SEND_FAILURE_SUBJECT')."', '".Lang::txt('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username'])."')";
 				}
 				$q .= implode(',', $messages);

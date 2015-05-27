@@ -360,7 +360,7 @@ class UsersModelReset extends JModelForm
 			return false;
 		}
 		// Set the confirmation token.
-		$token = JApplication::getHash(JUserHelper::genRandomPassword());
+		$token = App::hash(JUserHelper::genRandomPassword());
 		$salt = JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token.$salt).':'.$salt;
 

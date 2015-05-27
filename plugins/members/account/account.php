@@ -326,7 +326,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Generate a new random token and hash it
-		$token       = JUtility::getHash(JUserHelper::genRandomPassword());
+		$token       = App::hash(JUserHelper::genRandomPassword());
 		$salt        = JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token.$salt).':'.$salt;
 

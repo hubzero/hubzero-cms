@@ -14,19 +14,17 @@ defined('_JEXEC') or die;
  */
 class plgSystemRemember extends \Hubzero\Plugin\Plugin
 {
-	function onAfterInitialise()
+	public function onAfterInitialise()
 	{
-		$app = JFactory::getApplication();
-
 		// No remember me for admin
-		if ($app->isAdmin())
+		if (App::isAdmin())
 		{
 			return;
 		}
 
 		if (User::isGuest())
 		{
-			$hash = JApplication::getHash('JLOGIN_REMEMBER');
+			$hash = App::hash('JLOGIN_REMEMBER');
 
 			if ($str = Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 			{
@@ -37,7 +35,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 
 				// Create the encryption key, apply extra hardening using the user agent string.
 				// Since we're decoding, no UA validity check is required.
-				$privateKey = JApplication::getHash(@$_SERVER['HTTP_USER_AGENT']);
+				$privateKey = App::hash(@$_SERVER['HTTP_USER_AGENT']);
 
 				$key = new JCryptKey('simple', $privateKey, $privateKey);
 				$crypt = new JCrypt(new JCryptCipherSimple, $key);
@@ -79,6 +77,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 						throw new Exception('Malformed password.');
 					}
 
+					$app = JFactory::getApplication();
 					$return = $app->login($credentials, array('silent' => true));
 					if (!$return)
 					{
@@ -92,7 +91,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 					$cookie_path   = Config::get('cookie_path', '/');
 					// Clear the remember me cookie
 					setcookie(
-						JApplication::getHash('JLOGIN_REMEMBER'), false, time() - 86400,
+						App::hash('JLOGIN_REMEMBER'), false, time() - 86400,
 						$cookie_path, $cookie_domain
 					);
 					JLog::add('A remember me cookie was unset for the following reason: ' . $e->getMessage(), JLog::WARNING, 'security');

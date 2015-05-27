@@ -499,7 +499,7 @@ class JApi extends JApplication
 		{
 			// well lets try to authenticate it with a session instead
 
-			$session_name = md5(JUtility::getHash('site'));
+			$session_name = md5(self::getHash('site'));
 			$session_id = null;
 
 			if (!empty($_COOKIE[$session_name]))
@@ -917,6 +917,6 @@ class JApi extends JApplication
 	 */
 	protected function _createSession($name)
 	{
-		return parent::_createSession(JUtility::getHash('site'));
+		return parent::_createSession(self::getHash('site'));
 	}
 }

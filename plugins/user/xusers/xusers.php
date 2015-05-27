@@ -163,7 +163,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		jimport('joomla.utilities.simplecrypt');
 		jimport('joomla.utilities.utility');
 
-		$hash = JUtility::getHash( JFactory::getApplication()->getName().':tracker');
+		$hash = App::hash(App::get('client')->name . ':tracker');
 
 		$crypt = new JSimpleCrypt();
 

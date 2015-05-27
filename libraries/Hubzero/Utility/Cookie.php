@@ -47,7 +47,7 @@ class Cookie
 	 **/
 	public static function bake($namespace, $lifetime, $data=array())
 	{
-		$hash   = \JUtility::getHash(\JFactory::getApplication()->getName() . ':' . $namespace);
+		$hash   = \App::hash(\App::get('client')->name . ':' . $namespace);
 		$crypt  = new \JSimpleCrypt();
 		$cookie = $crypt->encrypt(serialize($data));
 
@@ -63,10 +63,10 @@ class Cookie
 	 **/
 	public static function eat($namespace)
 	{
-		$hash  = \JUtility::getHash(\JFactory::getApplication()->getName() . ':' . $namespace);
+		$hash  = \App::hash(\App::get('client')->name . ':' . $namespace);
 		$crypt = new \JSimpleCrypt();
 
-		if ($str = \Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
+		if ($str = \App::get('request')->getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 		{
 			$sstr   = $crypt->decrypt($str);
 			$cookie = @unserialize($sstr);

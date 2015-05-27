@@ -24,7 +24,7 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$hash = JApplication::getHash('plgSystemLogout');
+		$hash = App::hash('plgSystemLogout');
 
 		if (App::isSite() and Request::getString($hash, null , 'cookie'))
 		{
@@ -50,10 +50,11 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
 		if (App::isSite())
 		{
 			// Create the cookie
-			$hash = JApplication::getHash('plgSystemLogout');
+			$hash = App::hash('plgSystemLogout');
 
 			$cookie_domain = Config::get('config.cookie_domain', '');
 			$cookie_path   = Config::get('config.cookie_path', '/');
+
 			setcookie($hash, true, time() + 86400, $cookie_path, $cookie_domain);
 		}
 		return true;

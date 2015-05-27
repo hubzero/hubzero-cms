@@ -256,7 +256,7 @@ class Manager extends Object
 	 */
 	public static function getFormToken($forceNew = false)
 	{
-		$hash = \JApplication::getHash(\User::get('id', 0) . \App::get('session')->getToken($forceNew));
+		$hash = \App::hash(\User::get('id', 0) . \App::get('session')->getToken($forceNew));
 
 		return $hash;
 	}

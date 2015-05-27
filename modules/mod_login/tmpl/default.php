@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$hash  = JUtility::getHash(JFactory::getApplication()->getName().':authenticator');
+$hash  = App::hash(App::get('client')->name . ':authenticator');
 $crypt = new JSimpleCrypt();
 
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
