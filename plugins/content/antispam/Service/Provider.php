@@ -151,7 +151,7 @@ class Provider extends AbstractAdapter
 		if (!$this->regex)
 		{
 			$blackLists = explode(',', $this->get('badwords'));
-			array_map('trim', $blackLists);
+			$blackLists = array_map('trim', $blackLists);
 
 			$blackLists[] = '#\[url=(.*?)\](.*?)\[\/url\]#';
 			$blackLists[] = '#\[url=(.*?)\[\/url\]#';
