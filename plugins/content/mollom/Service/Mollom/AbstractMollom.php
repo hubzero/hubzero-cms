@@ -25,7 +25,8 @@ require_once __DIR__ . '/Exception/MollomResponseException.php';
 /**
  * The base class for Mollom client implementations.
  */
-abstract class Mollom {
+abstract class AbstractMollom
+{
 	/**
 	 * The Mollom API version, used in HTTP requests.
 	 */

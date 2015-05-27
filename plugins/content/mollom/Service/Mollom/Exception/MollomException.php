@@ -3,7 +3,7 @@
 namespace Plugins\Content\Mollom\Service\Mollom\Exception;
 
 use Exception;
-use Plugins\Content\Mollom\Service\Mollom;
+use Plugins\Content\Mollom\Service\Mollom\Mollom;
 
 /**
  * A catchable Mollom exception.
@@ -61,7 +61,7 @@ class MollomException extends Exception
 	/**
 	 * Overrides Exception::__construct().
 	 */
-	function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array())
+	public function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array())
 	{
 		// Fatal error on PHP <5.3 when passing more arguments to Exception.
 		if (version_compare(phpversion(), '5.3') >= 0)
@@ -86,11 +86,11 @@ class MollomException extends Exception
 		// the OS/platform's native DNS name resolver. Due to that, we only use it
 		// under error conditions.
 		$message = array(
-			'severity' => $this->severity,
-			'message' => 'Error @code: %message (@server-ip)',
+			'severity'  => $this->severity,
+			'message'   => 'Error @code: %message (@server-ip)',
 			'arguments' => array(
-				'@code' => $code,
-				'%message' => $message,
+				'@code'      => $code,
+				'%message'   => $message,
 				'@server-ip' => gethostbyname($mollom->server),
 			),
 		);

@@ -171,41 +171,73 @@ class Mollom extends AbstractMollom
 	{
 		$method = strtoupper($method);
 
-		$url = $server . '/' . $path;
-		$data = array(
-			'headers' => $headers,
-			'timeout' => $this->requestTimeout
-		);
+		$ch = curl_init();
 
-		if ($method == 'GET')
+		foreach ($headers as $name => &$value)
 		{
-			$function = 'remote_get';
+			$value = $name . ': ' . $value;
+		}
+
+		// Compose the Mollom endpoint URL.
+		$url = $server . '/' . $path;
+		if (isset($query) && $method == 'GET')
+		{
 			$url .= '?' . $query;
 		}
-		else
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// Send OAuth + other request headers.
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		// Prevent API calls from taking too long.
+		// Under normal operations, API calls may time out for Mollom users without
+		// a paid subscription.
+		curl_setopt($ch, CURLOPT_TIMEOUT, $this->requestTimeout);
+		if ($method == 'POST')
 		{
-			$function = 'remote_post';
-			$data['body'] = $query;
-		}
-
-		$result = $function($url, $data);
-
-		$response = new \stdClass;
-
-		if (!$result)
-		{
-			$response->code    = $result['response']['code'];
-			$response->message = $result['response']['message'];
-			$response->headers = array();
-			$response->body    = null;
+			curl_setopt($ch, CURLOPT_POST, TRUE);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 		}
 		else
 		{
-			$response->code    = $result['response']['code'];
-			$response->message = $result['response']['message'];
-			$response->headers = $result['headers'];
-			$response->body    = $result['body'];
+			curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
 		}
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		//curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
+		curl_setopt($ch, CURLOPT_HEADER, TRUE);
+		// Execute the HTTP request.
+		if ($raw_response = curl_exec($ch))
+		{
+			// Split the response headers from the response body.
+			list($raw_response_headers, $response_body) = explode("\r\n\r\n", $raw_response, 2);
+			// Parse HTTP response headers.
+			// @see http_parse_headers()
+			$raw_response_headers = str_replace("\r", '', $raw_response_headers);
+			$raw_response_headers = explode("\n", $raw_response_headers);
+			$message = array_shift($raw_response_headers);
+			$response_headers = array();
+			foreach ($raw_response_headers as $line)
+			{
+				list($name, $value) = explode(': ', $line, 2);
+				// Mollom::handleRequest() expects response header names in lowercase.
+				$response_headers[strtolower($name)] = $value;
+			}
+			$info = curl_getinfo($ch);
+			$response = array(
+				'code'    => $info['http_code'],
+				'message' => $message,
+				'headers' => $response_headers,
+				'body'    => $response_body,
+			);
+		}
+		else
+		{
+			$response = array(
+				'code'    => curl_errno($ch),
+				'message' => curl_error($ch),
+			);
+		}
+		curl_close($ch);
+		$response = (object) $response;
 
 		return $response;
 	}

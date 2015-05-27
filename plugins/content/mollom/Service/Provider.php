@@ -31,7 +31,7 @@
 namespace Plugins\Content\Mollom\Service;
 
 use Hubzero\Antispam\Adapter\AbstractAdapter;
-use Plugins\Content\Mollom\Service\Mollom;
+use Plugins\Content\Mollom\Service\Mollom\Mollom;
 use Exception;
 
 require_once __DIR__ . '/Mollom/Mollom.php';
@@ -46,49 +46,49 @@ class Provider extends AbstractAdapter
 	 *
 	 * @var string
 	 */
-	private $referrer = '';
+	public $referrer = '';
 
 	/**
 	 * User IP
 	 *
 	 * @var string
 	 */
-	private $title = '';
+	public $title = '';
 
 	/**
 	 * User IP
 	 *
 	 * @var string
 	 */
-	private $user_ip = '';
+	public $user_ip = '';
 
 	/**
 	 * Permalink
 	 *
 	 * @var integer
 	 */
-	private $user_id = 0;
+	public $user_id = 0;
 
 	/**
 	 * Content author
 	 *
 	 * @var string
 	 */
-	private $user_name = '';
+	public $user_name = '';
 
 	/**
 	 * Content author email
 	 *
 	 * @var string
 	 */
-	private $user_email = '';
+	public $user_email = '';
 
 	/**
 	 * Content author URL
 	 *
 	 * @var string
 	 */
-	private $user_url = '';
+	public $user_url = '';
 
 	/**
 	 * Constructor
