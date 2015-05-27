@@ -522,6 +522,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'count'  => true
 		);
 
+		if (!$this->params->get('access-manage-collection'))
+		{
+			$count['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$filters['access'] = $count['access'];
+		}
+
 		$filters['count'] = true;
 		$view->total = $this->model->collections($filters);
 
@@ -1912,8 +1918,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$this->params->merge($customParams);
 
 			// Set asset to viewable
+			$isMember = in_array($this->juser->get('id'), $this->members);
+
 			$this->params->set('access-view-' . $assetType, false);
-			if (in_array($this->juser->get('id'), $this->members))
+			if ($isMember)
 			{
 				$this->params->set('access-view-' . $assetType, true);
 			}
@@ -1934,7 +1942,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 						$this->params->set('access-edit-' . $assetType, true);
 						$this->params->set('access-view-' . $assetType, true);
 					}
-					if (!$this->params->get('create_collection', 1))
+					if (!$this->params->get('create_collection', 1) && $isMember)
 					{
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
@@ -1952,7 +1960,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 						$this->params->set('access-edit-' . $assetType, true);
 						$this->params->set('access-view-' . $assetType, true);
 					}
-					if (!$this->params->get('create_post', 0))
+					if (!$this->params->get('create_post', 0) && $isMember)
 					{
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
