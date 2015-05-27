@@ -24,17 +24,18 @@ class PluginsViewPlugin extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->state	= $this->get('State');
-		$this->item		= $this->get('Item');
-		$this->form		= $this->get('Form');
+		$this->state = $this->get('State');
+		$this->item  = $this->get('Item');
+		$this->form  = $this->get('Form');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		$this->addToolbar();
+
 		parent::display($tpl);
 	}
 
@@ -47,12 +48,13 @@ class PluginsViewPlugin extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$canDo		= PluginsHelper::getActions();
+		$canDo = PluginsHelper::getActions();
 
 		Toolbar::title(Lang::txt('COM_PLUGINS_MANAGER_PLUGIN', Lang::txt($this->item->name)), 'plugin');
 
 		// If not checked out, can save the item.
-		if ($canDo->get('core.edit')) {
+		if ($canDo->get('core.edit'))
+		{
 			Toolbar::apply('plugin.apply');
 			Toolbar::save('plugin.save');
 		}
@@ -63,12 +65,14 @@ class PluginsViewPlugin extends JViewLegacy
 		$lang = Lang::getRoot();
 
 		$help = $this->get('Help');
-		if ($lang->hasKey($help->url)) {
+		if ($lang->hasKey($help->url))
+		{
 			$debug = $lang->setDebug(false);
 			$url = Lang::txt($help->url);
 			$lang->setDebug($debug);
 		}
-		else {
+		else
+		{
 			$url = null;
 		}
 		Toolbar::help('plugin');// $help->key, false, $url);

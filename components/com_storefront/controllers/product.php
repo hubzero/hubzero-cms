@@ -138,7 +138,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$data = $this->warehouse->getProductOptions($pId);
 		if ($data)
 		{
-			//JError::raiseError(404 , Lang::txt('COM_STOREFRONT_PRODUCT_ERROR'));
+			//throw new Exception(Lang::txt('COM_STOREFRONT_PRODUCT_ERROR'), 404);
 			$this->view->options = $data->options;
 		}
 		//print_r($data); die;

@@ -20,32 +20,37 @@ class MessagesControllerConfig extends JControllerLegacy
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$model		= $this->getModel('Config', 'MessagesModel');
-		$data		= Request::getVar('jform', array(), 'post', 'array');
+		$app   = JFactory::getApplication();
+		$model = $this->getModel('Config', 'MessagesModel');
+		$data  = Request::getVar('jform', array(), 'post', 'array');
 
 		// Validate the posted data.
-		$form	= $model->getForm();
-		if (!$form) {
-			JError::raiseError(500, $model->getError());
-			return false;
+		$form = $model->getForm();
+		if (!$form)
+		{
+			throw new Exception($model->getError(), 500);
 		}
 		$data = $model->validate($form, $data);
 
 		// Check for validation errors.
-		if ($data === false) {
+		if ($data === false)
+		{
 			// Get the validation messages.
 			$errors	= $model->getErrors();
 
 			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-				if ($errors[$i] instanceof Exception) {
-					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
-				} else {
-					$app->enqueueMessage($errors[$i], 'warning');
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			{
+				if ($errors[$i] instanceof Exception)
+				{
+					Notify::warning($errors[$i]->getMessage());
+				}
+				else
+				{
+					Notify::warning($errors[$i]);
 				}
 			}
 

@@ -87,7 +87,7 @@ class PdfFormRespondent
 	{
 		if (!$member_id)
 		{
-			JError::raiseError(403, 'This area requires authentication');
+			throw new \Exception('This area requires authentication', 403);
 		}
 
 		$dbh = \JFactory::getDBO();

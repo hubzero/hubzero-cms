@@ -276,7 +276,8 @@ class Jobs extends SiteController
 	public function login()
 	{
 		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
-		$this->setRedirect(
+
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 	}
@@ -324,7 +325,7 @@ class Jobs extends SiteController
 		$results = Event::trigger('members.shortlist', array($oid, $ajax=0));
 
 		// Go back to the page
-		$this->setRedirect(
+		App::redirect(
 			Request::getVar('HTTP_REFERER', NULL, 'server')  // What page they came from
 		);
 	}
@@ -1095,7 +1096,7 @@ class Jobs extends SiteController
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume')
 			);
 		}
@@ -1258,7 +1259,7 @@ class Jobs extends SiteController
 
 			if (!$ja->store())
 			{
-				JError::raiseError(500, $ja->getError());
+				throw new \Exception($ja->getError(), 500);
 				return;
 			}
 			else

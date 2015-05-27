@@ -54,8 +54,7 @@ class ComponentController extends \Hubzero\Component\SiteController
 		if ($strictProcessing && !empty($extraParameter))
 		{
 			// too many parameters in the URL
-			//throw new Exception('Too many parameters');
-			JError::raiseError(404, Lang::txt('Page Not Found'));
+			throw new Exception(Lang::txt('Page Not Found'), 404);
 		}
 
 		// Go through each var name and assign a sequential URL parameter's value to it
@@ -70,8 +69,7 @@ class ComponentController extends \Hubzero\Component\SiteController
 				if ($strictProcessing)
 				{
 					// missing parameter in the URL
-					//throw new Exception('Too few parameters');
-					JError::raiseError(404, Lang::txt('Page Not Found'));
+					throw new Exception(Lang::txt('Page Not Found'), 404);
 				}
 				break;
 			}

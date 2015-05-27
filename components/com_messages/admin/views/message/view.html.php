@@ -21,17 +21,18 @@ class MessagesViewMessage extends JViewLegacy
 
 	public function display($tpl = null)
 	{
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state	= $this->get('State');
+		$this->form  = $this->get('Form');
+		$this->item  = $this->get('Item');
+		$this->state = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		parent::display($tpl);
+
 		$this->addToolbar();
 	}
 
@@ -42,15 +43,19 @@ class MessagesViewMessage extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		if ($this->getLayout() == 'edit') {
+		if ($this->getLayout() == 'edit')
+		{
 			Toolbar::title(Lang::txt('COM_MESSAGES_WRITE_PRIVATE_MESSAGE'), 'new-privatemessage.png');
 			Toolbar::save('message.save', 'COM_MESSAGES_TOOLBAR_SEND');
 			Toolbar::cancel('message.cancel');
 			Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
-		} else {
+		}
+		else
+		{
 			Toolbar::title(Lang::txt('COM_MESSAGES_VIEW_PRIVATE_MESSAGE'), 'inbox.png');
 			$sender = JUser::getInstance($this->item->user_id_from);
-			if ($sender->authorise('core.admin') || $sender->authorise('core.manage', 'com_messages') && $sender->authorise('core.login.admin')) {
+			if ($sender->authorise('core.admin') || $sender->authorise('core.manage', 'com_messages') && $sender->authorise('core.login.admin'))
+			{
 				Toolbar::custom('message.reply', 'restore.png', 'restore_f2.png', 'COM_MESSAGES_TOOLBAR_REPLY', false);
 			}
 			Toolbar::cancel('message.cancel');
