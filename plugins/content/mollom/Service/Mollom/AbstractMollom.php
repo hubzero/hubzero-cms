@@ -189,8 +189,9 @@ abstract class AbstractMollom
 	 */
 	public $log = array();
 
-	function __construct() {
-		$this->publicKey = $this->loadConfiguration('publicKey');
+	public function __construct()
+	{
+		$this->publicKey  = $this->loadConfiguration('publicKey');
 		$this->privateKey = $this->loadConfiguration('privateKey');
 	}
 
@@ -265,7 +266,8 @@ abstract class AbstractMollom
 	 *
 	 * @see Mollom::log
 	 */
-	public function writeLog() {
+	public function writeLog()
+	{
 		// After writing log messages, empty the log.
 		$this->purgeLog();
 	}
@@ -275,7 +277,8 @@ abstract class AbstractMollom
 	 *
 	 * @see Mollom::writeLog()
 	 */
-	final public function purgeLog() {
+	final public function purgeLog()
+	{
 		$this->log = array();
 	}
 
@@ -301,7 +304,8 @@ abstract class AbstractMollom
 	 * @see Mollom::handleRequest()
 	 * @see Mollom::request()
 	 */
-	public function query($method, $path, array $data = array(), array $expected = array()) {
+	public function query($method, $path, array $data = array(), array $expected = array())
+	{
 		// Reset list response properties.
 		$this->listCount = NULL;
 		$this->listOffset = 0;
@@ -310,40 +314,49 @@ abstract class AbstractMollom
 		// Send the request to the server.
 		$server = 'http://' . $this->server;
 		$max_attempts = $this->requestMaxAttempts;
-		while ($max_attempts--) {
+		while ($max_attempts--)
+	{
 			try {
 				$result = $this->handleRequest($method, $server, $path, $data, $expected);
 			}
-			catch (MollomBadRequestException $e) {
+			catch (MollomBadRequestException $e)
+	{
 				// This is an irrecoverable error, so don't try further.
 				break;
 			}
-			catch (MollomAuthenticationException $e) {
+			catch (MollomAuthenticationException $e)
+	{
 				// This is an irrecoverable error, so don't try further.
 				break;
 			}
-			catch (MollomException $e) {
+			catch (MollomException $e)
+	{
 				// If the resource does not exist, there is no point in trying further.
-				if ($e->getCode() === 404) {
+				if ($e->getCode() === 404)
+	{
 					break;
 				}
 			}
 			// Unless we have a positive result, try again.
-			if ($this->lastResponseCode === TRUE) {
+			if ($this->lastResponseCode === TRUE)
+	{
 				break;
 			}
 		}
 
 		// Write all captured log messages.
-		if ($this->writeLog) {
+		if ($this->writeLog)
+	{
 			$this->writeLog();
 		}
 
 		// If there is a result and the last request succeeded, return the result to
 		// the caller.
-		if (isset($result) && $this->lastResponseCode === TRUE) {
+		if (isset($result) && $this->lastResponseCode === TRUE)
+	{
 			// Generically handle the special case of 'list' responses.
-			if (isset($result['list']) && is_array($result)) {
+			if (isset($result['list']) && is_array($result))
+	{
 				// Assign list meta properties to corresponding class properties.
 				$this->listCount = (int) $result['listCount'];
 				$this->listOffset = (int) $result['listOffset'];
@@ -351,7 +364,8 @@ abstract class AbstractMollom
 				// If there is only one item, parseXML() is not able to detect it as a
 				// list and will return a named key for the value. Ensure an indexed
 				// array is returned.
-				if (is_array($result['list'])) {
+				if (is_array($result['list']))
+	{
 					$result['list'] = array_values($result['list']);
 				}
 				// In XML, the 'list' element is parsed as a string when the list is
@@ -364,22 +378,26 @@ abstract class AbstractMollom
 		}
 		// If the last request succeeded but there was a unexpected response, return
 		// the error code.
-		if ($this->lastResponseCode === self::RESPONSE_ERROR) {
+		if ($this->lastResponseCode === self::RESPONSE_ERROR)
+	{
 			return $this->lastResponseCode;
 		}
 		// Return a request error, which always requires to take client-side
 		// measures to resolve the problem.
-		if ($this->lastResponseCode === self::REQUEST_ERROR) {
+		if ($this->lastResponseCode === self::REQUEST_ERROR)
+	{
 			return $this->lastResponseCode;
 		}
 		// Return an authentication error, which may require special client-side
 		// processing.
-		if ($this->lastResponseCode === self::AUTH_ERROR) {
+		if ($this->lastResponseCode === self::AUTH_ERROR)
+	{
 			return $this->lastResponseCode;
 		}
 		// Return a not found error, which always needs to be handled by the calling
 		// code.
-		if ($this->lastResponseCode === 404) {
+		if ($this->lastResponseCode === 404)
+	{
 			return $this->lastResponseCode;
 		}
 
@@ -424,11 +442,14 @@ abstract class AbstractMollom
 	 * @see Mollom::parseXML()
 	 * @see json_decode()
 	 */
-	protected function handleRequest($method, $server, $path, $data, $expected = array()) {
-		if (!empty($this->publicKey) && !empty($this->privateKey)) {
+	protected function handleRequest($method, $server, $path, $data, $expected = array())
+	{
+		if (!empty($this->publicKey) && !empty($this->privateKey))
+	{
 			// @todo Move into class property.
 			$headers['Accept'] = 'application/xml, application/json;q=0.8, */*;q=0.5';
-			if ($method == 'POST') {
+			if ($method == 'POST')
+	{
 				$headers['Content-Type'] = 'application/x-www-form-urlencoded';
 			}
 
@@ -453,11 +474,14 @@ abstract class AbstractMollom
 
 		// Parse the response body string into an array.
 		$response->data = array();
-		if (isset($response->body) && isset($response->headers['content-type'])) {
-			if (strstr($response->headers['content-type'], 'application/json')) {
+		if (isset($response->body) && isset($response->headers['content-type']))
+	{
+			if (strstr($response->headers['content-type'], 'application/json'))
+	{
 				$response->data = json_decode($response->body, TRUE);
 			}
-			elseif (strstr($response->headers['content-type'], 'application/xml')) {
+			elseif (strstr($response->headers['content-type'], 'application/xml'))
+	{
 				$response->elements = new \SimpleXmlIterator($response->body);
 				$response->data = $this->parseXML($response->elements);
 			}
@@ -465,13 +489,15 @@ abstract class AbstractMollom
 
 		// A 'code' in the response has precedence, regardless of a possibly
 		// positive HTTP status code.
-		if (isset($response->data['code']) && $response->data['code'] != 200) {
+		if (isset($response->data['code']) && $response->data['code'] != 200)
+	{
 			$response->isError = TRUE;
 			// Replace HTTP status code with 'code' from response.
 			$response->code = (int) $response->data['code'];
 			// If there is no HTTP status message, take over 'message' from response,
 			// if any.
-			if (!isset($response->message) && isset($response->data['message'])) {
+			if (!isset($response->message) && isset($response->data['message']))
+	{
 				$response->message = $response->data['message'];
 			}
 		}
@@ -481,15 +507,18 @@ abstract class AbstractMollom
 		// response would be a large overhead. Therefore, response validation is
 		// limited to checking for one expected element (in a nested array of
 		// variable depth).
-		if (!$response->isError && !empty($response->data) && !empty($expected)) {
+		if (!$response->isError && !empty($response->data) && !empty($expected))
+	{
 			$ref = &$response->data;
 			$parent = reset($expected);
-			while ($parent !== FALSE && is_array($ref) && array_key_exists($parent, $ref)) {
+			while ($parent !== FALSE && is_array($ref) && array_key_exists($parent, $ref))
+	{
 				$ref = &$ref[$parent];
 				$parent = next($expected);
 			}
 			// Only if $parent is FALSE we have reached the last expected key.
-			if ($parent !== FALSE) {
+			if ($parent !== FALSE)
+	{
 				$response->isError = TRUE;
 				$response->code = self::RESPONSE_ERROR;
 				$response->message = 'Unexpected server response.';
@@ -504,13 +533,17 @@ abstract class AbstractMollom
 			'response_message' => $response->message,
 			'response' => !empty($response->data) ? $response->data : $response->body,
 		);
-		if ($response->isError) {
-			if ($response->code <= 0) {
+		if ($response->isError)
+	{
+			if ($response->code <= 0)
+	{
 				throw new MollomNetworkException('Network error.', self::NETWORK_ERROR, NULL, $this, $request_info);
 			}
-			if ($response->code == self::AUTH_ERROR) {
+			if ($response->code == self::AUTH_ERROR)
+	{
 				// Check whether authentication failed due to a too large time offset.
-				if (isset($response->headers['date'])) {
+				if (isset($response->headers['date']))
+	{
 					// Parse the 'Date' HTTP header in the response into a UNIX timestamp;
 					// strtotime() normally performs poorly on date operations, but in
 					// this case, there is a standardized date format and timezone
@@ -518,13 +551,15 @@ abstract class AbstractMollom
 					$offset = abs(time() - strtotime($response->headers['date']));
 					// The abs() above turns a negative offset into an absolute integer
 					// value, so the difference is always positive.
-					if ($offset > self::TIME_OFFSET_MAX) {
+					if ($offset > self::TIME_OFFSET_MAX)
+	{
 						throw new MollomBadRequestException(sprintf('Invalid client system time: Too large offset from UTC: %s seconds.', $offset), self::REQUEST_ERROR, NULL, $this, $request_info);
 					}
 				}
 				throw new MollomAuthenticationException('Invalid authentication.', self::AUTH_ERROR, NULL, $this, $request_info);
 			}
-			if ($response->code == self::RESPONSE_ERROR || $response->code >= 500) {
+			if ($response->code == self::RESPONSE_ERROR || $response->code >= 500)
+	{
 				throw new MollomResponseException($response->message, $response->code, NULL, $this, $request_info);
 			}
 			throw new MollomException($response->message, $response->code, NULL, $this, $request_info);
@@ -574,7 +609,8 @@ abstract class AbstractMollom
 	 * @see http://tools.ietf.org/html/rfc5849
 	 * @see Mollom::oAuthStrategy
 	 */
-	public function addAuthentication($method, $server, $path, &$data, &$headers) {
+	public function addAuthentication($method, $server, $path, &$data, &$headers)
+	{
 		$oauth['oauth_consumer_key'] = $this->publicKey;
 		$oauth['oauth_version'] = '1.0';
 		// Random string; must be unique across all requests with the same
@@ -587,11 +623,13 @@ abstract class AbstractMollom
 		// Prepare the request query parameters to return (and pass on to request())
 		// and the query parameters to include in the OAuth signature base string.
 		// Note that Mollom::httpBuildQuery() sorts parameters already.
-		if ($this->oAuthStrategy == 'header') {
+		if ($this->oAuthStrategy == 'header')
+	{
 			$query = $this->httpBuildQuery($data);
 			$oauth_query = $this->httpBuildQuery($oauth + $data);
 		}
-		elseif ($this->oAuthStrategy == 'query') {
+		elseif ($this->oAuthStrategy == 'query')
+	{
 			$data += $oauth;
 			$oauth_query = $query = $this->httpBuildQuery($data);
 		}
@@ -623,14 +661,17 @@ abstract class AbstractMollom
 
 		// Add the OAuth protocol parameters as HTTP header, or append the signature
 		// to query parameters.
-		if ($this->oAuthStrategy == 'header') {
-			foreach ($oauth as $key => $value) {
+		if ($this->oAuthStrategy == 'header')
+	{
+			foreach ($oauth as $key => $value)
+	{
 				$oauth[$key] = $key . '="' . self::rawurlencode($value) . '"';
 			}
 			// Header parameters are joined and delimited by comma. (3.5.1)
 			$headers['Authorization'] = 'OAuth ' . implode(', ', $oauth);
 		}
-		elseif ($this->oAuthStrategy == 'query') {
+		elseif ($this->oAuthStrategy == 'query')
+	{
 			$oauth['oauth_signature'] = rawurlencode($oauth['oauth_signature']);
 			$data['oauth_signature'] = $oauth['oauth_signature'];
 			$query .= '&oauth_signature=' . $oauth['oauth_signature'];
@@ -649,7 +690,8 @@ abstract class AbstractMollom
 	 *   The rawurlencode()d URL, containing string literals for "~" (tildes) and
 	 *   " " (spaces). (RFC 5849 3.4.1.3.1 and 3.6)
 	 */
-	public static function rawurlencode($value) {
+	public static function rawurlencode($value)
+	{
 		return strtr(rawurlencode($value), array('%7E' => '~', '+' => ' '));
 	}
 
@@ -701,14 +743,17 @@ abstract class AbstractMollom
 	 * @return array
 	 *   An associative, possibly multidimensional array.
 	 */
-	public static function parseXML(\SimpleXMLIterator $sxi) {
+	public static function parseXML(\SimpleXMLIterator $sxi)
+	{
 		$a = array();
 		$remove = array();
-		for ($sxi->rewind(); $sxi->valid(); $sxi->next()) {
+		for ($sxi->rewind(); $sxi->valid(); $sxi->next())
+	{
 			$key = $sxi->key();
 
 			// Recurse into non-scalar values.
-			if ($sxi->hasChildren()) {
+			if ($sxi->hasChildren())
+	{
 				$value = self::parseXML($sxi->current());
 			}
 			// Use a simple key/value pair for scalar values.
@@ -716,7 +761,8 @@ abstract class AbstractMollom
 				$value = strval($sxi->current());
 			}
 
-			if (!isset($a[$key])) {
+			if (!isset($a[$key]))
+	{
 				$a[$key] = $value;
 			}
 			// Convert already existing keys into indexed keys, retaining other
@@ -727,7 +773,8 @@ abstract class AbstractMollom
 			else {
 				// First time we reach here, convert the existing keyed item. Do not
 				// remove $key, so we enter this path again.
-				if (!isset($remove[$key])) {
+				if (!isset($remove[$key]))
+	{
 					$a[] = $a[$key];
 					// Mark $key for removal.
 					$remove[$key] = $key;
@@ -737,7 +784,8 @@ abstract class AbstractMollom
 			}
 		}
 		// Lastly, remove named keys that have been converted to indexed keys.
-		foreach ($remove as $key) {
+		foreach ($remove as $key)
+	{
 			unset($a[$key]);
 		}
 		return $a;
@@ -767,13 +815,16 @@ abstract class AbstractMollom
 	 *
 	 * @see Mollom::httpParseQuery()
 	 */
-	public static function httpBuildQuery(array $query, $parent = '') {
+	public static function httpBuildQuery(array $query, $parent = '')
+	{
 		$params = array();
 
-		foreach ($query as $key => $value) {
+		foreach ($query as $key => $value)
+	{
 			// For indexed (unnamed) child array keys, use the same parameter name,
 			// leading to param=foo&param=bar instead of param[]=foo&param[]=bar.
-			if ($parent && is_int($key)) {
+			if ($parent && is_int($key))
+	{
 				$key = rawurlencode($parent);
 			}
 			else {
@@ -781,12 +832,14 @@ abstract class AbstractMollom
 			}
 
 			// Recurse into children.
-			if (is_array($value)) {
+			if (is_array($value))
+	{
 				$params[] = self::httpBuildQuery($value, $key);
 			}
 			// If a query parameter value is NULL, only append its key, followed by
 			// "=" (3.4.1.3.2).
-			elseif (!isset($value)) {
+			elseif (!isset($value))
+	{
 				$params[] = $key . '=';
 			}
 			else {
@@ -829,17 +882,21 @@ abstract class AbstractMollom
 	 * @see Mollom::httpBuildQuery()
 	 * @see parse_str()
 	 */
-	public static function httpParseQuery($query) {
-		if ($query === '') {
+	public static function httpParseQuery($query)
+	{
+		if ($query === '')
+	{
 			return array();
 		}
 		// Explode parameters into arrays to check for duplicate names.
 		$params = array();
 		$seen = array();
 		$duplicate = array();
-		foreach (explode('&', $query) as $chunk) {
+		foreach (explode('&', $query) as $chunk)
+	{
 			$param = explode('=', $chunk, 2);
-			if (isset($seen[$param[0]])) {
+			if (isset($seen[$param[0]]))
+	{
 				$duplicate[$param[0]] = TRUE;
 			}
 			$seen[$param[0]] = TRUE;
@@ -847,12 +904,15 @@ abstract class AbstractMollom
 		}
 		// Implode back into a string.
 		$query = '';
-		foreach ($params as $param) {
+		foreach ($params as $param)
+	{
 			$query .= $param[0];
-			if (isset($duplicate[$param[0]])) {
+			if (isset($duplicate[$param[0]]))
+	{
 				$query .= '[]';
 			}
-			if (isset($param[1])) {
+			if (isset($param[1]))
+	{
 				$query .= '=' . $param[1];
 			}
 			$query .= '&';
@@ -870,11 +930,14 @@ abstract class AbstractMollom
 	 *   post body parameters. Parameter parsing accounts for multiple request
 	 *   parameters in non-PHP format; e.g., 'foo=one&foo=bar'.
 	 */
-	public static function getServerParameters() {
-		if ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD') {
+	public static function getServerParameters()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD')
+	{
 			$data = self::httpParseQuery($_SERVER['QUERY_STRING']);
 		}
-		elseif ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'PUT') {
+		elseif ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'PUT')
+	{
 			$data = self::httpParseQuery(file_get_contents('php://input'));
 		}
 		return $data;
@@ -887,26 +950,32 @@ abstract class AbstractMollom
 	 *   An array containing all key/value pairs extracted out of the
 	 *   'Authorization' HTTP header, if any.
 	 */
-	public static function getServerAuthentication() {
+	public static function getServerAuthentication()
+	{
 		$header = array();
 		// PHP as Apache module provides a SAPI function.
 		// PHP 5.4+ enables getallheaders() also for FastCGI.
-		if (function_exists('getallheaders')) {
+		if (function_exists('getallheaders'))
+	{
 			$headers = getallheaders();
-			if (isset($headers['Authorization'])) {
+			if (isset($headers['Authorization']))
+	{
 				$input = $headers['Authorization'];
 			}
 		}
 		// PHP as CGI with server/.htaccess configuration (e.g., via mod_rewrite)
 		// may transfer/forward HTTP request data into server variables.
-		elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+		elseif (isset($_SERVER['HTTP_AUTHORIZATION']))
+	{
 			$input = $_SERVER['HTTP_AUTHORIZATION'];
 		}
 		// PHP as CGI may provide HTTP request data as environment variables.
-		elseif (isset($_ENV['HTTP_AUTHORIZATION'])) {
+		elseif (isset($_ENV['HTTP_AUTHORIZATION']))
+	{
 			$input = $_ENV['HTTP_AUTHORIZATION'];
 		}
-		if (isset($input)) {
+		if (isset($input))
+	{
 			preg_match_all('@([^, =]+)="([^"]*)"@', $input, $header);
 			$header = array_combine($header[1], $header[2]);
 		}
@@ -921,7 +990,8 @@ abstract class AbstractMollom
 	 * @return array
 	 *   An array containing site resources, as returned by Mollom::getsite().
 	 */
-	public function getSites() {
+	public function getSites()
+	{
 		$result = $this->query('GET', 'site', array(), array('list'));
 		return isset($result['list']) ? $result['list'] : $result;
 	}
@@ -951,8 +1021,10 @@ abstract class AbstractMollom
 	 *     (e.g., "6.15").
 	 *   On failure, the error response code returned by the server.
 	 */
-	public function getSite($publicKey = NULL) {
-		if (!isset($publicKey)) {
+	public function getSite($publicKey = NULL)
+	{
+		if (!isset($publicKey))
+	{
 			$publicKey = $this->publicKey;
 		}
 		$publicKey = rawurlencode($publicKey);
@@ -972,8 +1044,10 @@ abstract class AbstractMollom
 	 *   Mollom::getSite() for details. On failure, the error response code
 	 *   returned by the server. Or FALSE if 'url' or 'email' was not specified.
 	 */
-	public function createSite(array $data = array()) {
-		if (empty($data['url']) || empty($data['email'])) {
+	public function createSite(array $data = array())
+	{
+		if (empty($data['url']) || empty($data['email']))
+	{
 			return FALSE;
 		}
 		$result = $this->query('POST', 'site', $data, array('site', 'publicKey'));
@@ -999,8 +1073,10 @@ abstract class AbstractMollom
 	 *   Mollom::getSite() for details. On failure, the error response code
 	 *   returned by the server.
 	 */
-	public function updateSite(array $data = array(), $publicKey = NULL) {
-		if (!isset($publicKey)) {
+	public function updateSite(array $data = array(), $publicKey = NULL)
+	{
+		if (!isset($publicKey))
+	{
 			$publicKey = $this->publicKey;
 		}
 		$publicKey = rawurlencode($publicKey);
@@ -1021,7 +1097,8 @@ abstract class AbstractMollom
 	 *   server; either Mollom::REQUEST_ERROR, Mollom::AUTH_ERROR or
 	 *   Mollom::NETWORK_ERROR.
 	 */
-	public function verifyKeys() {
+	public function verifyKeys()
+	{
 		$data = $this->getClientInformation();
 		$result = $this->updateSite($data);
 		// lastResponseCode will either be TRUE, REQUEST_ERROR, AUTH_ERROR, or
@@ -1038,7 +1115,8 @@ abstract class AbstractMollom
 	 * @return bool
 	 *   TRUE on success, FALSE otherwise.
 	 */
-	public function deleteSite($publicKey) {
+	public function deleteSite($publicKey)
+	{
 		$publicKey = rawurlencode($publicKey);
 		$result = $this->query('POST', 'site/' . $publicKey . '/delete');
 		return $this->lastResponseCode === TRUE;
@@ -1115,13 +1193,16 @@ abstract class AbstractMollom
 	 *       'rateLimit' time-frame.
 	 *   On failure, the error response code returned by the server.
 	 */
-	public function checkContent(array $data = array()) {
+	public function checkContent(array $data = array())
+	{
 		$path = 'content';
-		if (!empty($data['id'])) {
+		if (!empty($data['id']))
+	{
 			// The ID originates from raw form input. Ensure we hit the right endpoint
 			// in case a bogus bot fills in even hidden input fields with random
 			// strings, by performing a basic syntax validation.
-			if (preg_match('@^[a-z0-9-]+$@i', $data['id'])) {
+			if (preg_match('@^[a-z0-9-]+$@i', $data['id']))
+	{
 				$path .= '/' . rawurlencode($data['id']);
 			}
 			unset($data['id']);
@@ -1129,7 +1210,8 @@ abstract class AbstractMollom
 		$result = $this->query('POST', $path, $data, array('content', 'id'));
 
 		// parseXML() can only convert multiple sub-elements into an indexed array.
-		if (isset($result['content']['languages']) && is_array($result['content']['languages'])) {
+		if (isset($result['content']['languages']) && is_array($result['content']['languages']))
+	{
 			$result['content']['languages'] = array_values($result['content']['languages']);
 		}
 
@@ -1157,8 +1239,10 @@ abstract class AbstractMollom
 	 *   On failure, the error response code returned by the server.
 	 *   Or FALSE if a unknown 'type' was specified.
 	 */
-	public function createCaptcha(array $data = array()) {
-		if (!isset($data['type']) || !in_array($data['type'], array('image', 'audio'))) {
+	public function createCaptcha(array $data = array())
+	{
+		if (!isset($data['type']) || !in_array($data['type'], array('image', 'audio')))
+	{
 			return FALSE;
 		}
 		$path = 'captcha';
@@ -1196,14 +1280,17 @@ abstract class AbstractMollom
 	 *   On failure, the error response code returned by the server.
 	 *   Or FALSE if no 'id' was specified.
 	 */
-	public function checkCaptcha(array $data = array()) {
-		if (empty($data['id'])) {
+	public function checkCaptcha(array $data = array())
+	{
+		if (empty($data['id']))
+	{
 			return FALSE;
 		}
 		// The ID originates from raw form input. Ensure we hit the right endpoint
 		// in case a bogus bot fills in even hidden input fields with random
 		// strings, by performing a basic syntax validation.
-		if (!preg_match('@^[a-z0-9-]+$@i', $data['id'])) {
+		if (!preg_match('@^[a-z0-9-]+$@i', $data['id']))
+	{
 			return FALSE;
 		}
 		$path = 'captcha/' . rawurlencode($data['id']);
@@ -1231,11 +1318,14 @@ abstract class AbstractMollom
 	 * @return bool
 	 *   TRUE if the feedback was sent successfully, FALSE otherwise.
 	 */
-	public function sendFeedback(array $data) {
-		if (empty($data['contentId']) && empty($data['captchaId'])) {
+	public function sendFeedback(array $data)
+	{
+		if (empty($data['contentId']) && empty($data['captchaId']))
+	{
 			return FALSE;
 		}
-		if (empty($data['reason'])) {
+		if (empty($data['reason']))
+	{
 			return FALSE;
 		}
 		$this->query('POST', 'feedback', $data);
@@ -1255,8 +1345,10 @@ abstract class AbstractMollom
 	 *
 	 * @todo List parameters.
 	 */
-	public function getBlacklist($publicKey = NULL) {
-		if (!isset($publicKey)) {
+	public function getBlacklist($publicKey = NULL)
+	{
+		if (!isset($publicKey))
+	{
 			$publicKey = $this->publicKey;
 		}
 		$publicKey = rawurlencode($publicKey);
@@ -1293,8 +1385,10 @@ abstract class AbstractMollom
 	 *     scenario.
 	 *   On failure, the error response code returned by the server.
 	 */
-	public function getBlacklistEntry($entryId, $publicKey = NULL) {
-		if (!isset($publicKey)) {
+	public function getBlacklistEntry($entryId, $publicKey = NULL)
+	{
+		if (!isset($publicKey))
+	{
 			$publicKey = $this->publicKey;
 		}
 		$path = 'blacklist/' . rawurlencode($publicKey) . '/' . rawurlencode($entryId);
@@ -1318,12 +1412,15 @@ abstract class AbstractMollom
 	 *   Mollom::getBlacklistEntry() for details. On failure, the error response
 	 *   code returned by the server.
 	 */
-	public function saveBlacklistEntry(array $data = array(), $publicKey = NULL) {
-		if (!isset($publicKey)) {
+	public function saveBlacklistEntry(array $data = array(), $publicKey = NULL)
+	{
+		if (!isset($publicKey))
+	{
 			$publicKey = $this->publicKey;
 		}
 		$path = 'blacklist/' . rawurlencode($publicKey);
-		if (!empty($data['id'])) {
+		if (!empty($data['id']))
+	{
 			$path .= '/' . rawurlencode($data['id']);
 			unset($data['id']);
 		}
@@ -1343,8 +1440,10 @@ abstract class AbstractMollom
 	 * @return bool
 	 *   TRUE on success, FALSE otherwise.
 	 */
-	public function deleteBlacklistEntry($entryId, $publicKey = NULL) {
-		if (!isset($publicKey)) {
+	public function deleteBlacklistEntry($entryId, $publicKey = NULL)
+	{
+		if (!isset($publicKey))
+	{
 			$publicKey = $this->publicKey;
 		}
 		$path = 'blacklist/' . rawurlencode($publicKey) . '/' . rawurlencode($entryId) . '/delete';
