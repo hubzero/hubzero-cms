@@ -6052,8 +6052,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					? 'Using exclusively timed changes ' . "\n"
 					: 'Mixing in timed changes ' . "\n";
 
-				$remotes = array_merge($timedRemotes, $remotes);
-				array_unique($remotes);
+				//$remotes = array_merge($timedRemotes, $remotes);
+				//array_unique($remotes);
+				$remotes = $timedRemotes + $remotes;
 			}
 		}
 		else

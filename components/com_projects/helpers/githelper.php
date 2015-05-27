@@ -949,7 +949,7 @@ class ProjectsGitHelper extends JObject
 				}
 
 				// Sort by time, most recent first
-				array_multisort($timestamps, SORT_DESC, $locals);
+				//array_multisort($timestamps, SORT_DESC, $locals);
 			}
 
 		}
