@@ -34,7 +34,8 @@ $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
 
-Lang::load('tpl_' . $this->template);
+Lang::load('tpl_' . $this->template) ||
+Lang::load('tpl_' . $this->template, __DIR__);
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->

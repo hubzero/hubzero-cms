@@ -32,7 +32,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->template = 'hubbasic2013';
 
-Lang::load('tpl_' . $this->template);
+Lang::load('tpl_' . $this->template) ||
+Lang::load('tpl_' . $this->template, __DIR__);
 
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(
@@ -60,7 +61,7 @@ $cls = array(
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/cms/css/debug.css" />
 		<?php } ?>
 		<?php if (Config::get('application_env', 'production') != 'production') { ?>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/modules/mod_application_env/mod_application_env.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/modules/mod_application_env/assets/css/mod_application_env.css" />
 		<?php } ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/html/mod_reportproblems/mod_reportproblems.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
@@ -69,7 +70,7 @@ $cls = array(
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.ui.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/media/system/js/jquery.fancybox.js"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/hub.js"></script>
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/mod_reportproblems.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/modules/mod_reportproblems/assets/js/mod_reportproblems.js"></script>
 
 		<!--[if lt IE 9]><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script><![endif]-->
 
