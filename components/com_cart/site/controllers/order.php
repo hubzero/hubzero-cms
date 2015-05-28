@@ -83,21 +83,26 @@ class CartControllerOrder extends ComponentController
 		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 		$verificationVar = PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
-		if ($verificationVar) {
+		if ($verificationVar)
+		{
 			// Check the GET values passed
 			$customVar = Request::getVar($verificationVar, '');
 
 			$tId = false;
-			if (strstr($customVar, '-')) {
+			if (strstr($customVar, '-'))
+			{
 				$customData = explode('-', $customVar);
 				$token = $customData[0];
 				$tId = $customData[1];
-			} else {
+			}
+			else
+			{
 				$token = $customVar;
 			}
 
 			// Verify token
-			if (!$token || !CartModelCart::verifySecurityToken($token, $tId)) {
+			if (!$token || !CartModelCart::verifySecurityToken($token, $tId))
+			{
 				die('Error processing your order. Failed to verify security token.');
 			}
 		}
@@ -107,12 +112,12 @@ class CartControllerOrder extends ComponentController
 		//print_r($tId); die;
 		//print_r($tInfo);die;
 
-		if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
+		if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed')
+		{
 			die('Error processing your order...');
-			//JError::raiseError(404, Lang::txt('Error processing transaction.'));
-			$redirect_url  = Route::url('index.php?option=' . 'com_cart');
-			$app  =  JFactory::getApplication();
-			$app->redirect($redirect_url);
+			//throw new Exception(Lang::txt('Error processing transaction.'), 404);
+			$redirect_url = Route::url('index.php?option=' . 'com_cart');
+			App::redirect($redirect_url);
 		}
 
 		// Transaction ok
@@ -139,9 +144,8 @@ class CartControllerOrder extends ComponentController
 
 		if (!$transaction)
 		{
-			$redirect_url  = Route::url('index.php?option=' . 'com_cart');
-			$app  =  JFactory::getApplication();
-			$app->redirect($redirect_url);
+			$redirect_url = Route::url('index.php?option=' . 'com_cart');
+			App::redirect($redirect_url);
 		}
 
 		// get security token (Parameter 0)
@@ -179,9 +183,8 @@ class CartControllerOrder extends ComponentController
 			// redirect to thank you page
 			$redirect_url = Route::url('index.php?option=' . 'com_cart') . '/order/complete/' .
 							'?' . $verificationVar . '=' . $token . '-' . $transaction->info->tId;
-			$app  =  JFactory::getApplication();
-			//echo 'redirect';
-			$app->redirect($redirect_url);
+
+			App::redirect($redirect_url);
 		}
 	}
 
@@ -194,7 +197,8 @@ class CartControllerOrder extends ComponentController
 	{
 		$test = false;
 		// TESTING ***********************
-		if ($test) {
+		if ($test)
+		{
 			$postBackTransactionId = 331;
 		}
 
@@ -202,14 +206,15 @@ class CartControllerOrder extends ComponentController
 
 		if (empty($_POST) && !$test)
 		{
-			JError::raiseError(404, Lang::txt('Page not found'));
+			throw new Exception(Lang::txt('Page Not Found'), 404);
 		}
 
 		// Initialize logger
 		$logger = new CartMessenger('Payment Postback');
 
 		// Get payment provider
-		if (!$test) {
+		if (!$test)
+		{
 			$paymentGatewayProivder = $params->get('paymentProvider');
 
 			include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
@@ -219,7 +224,8 @@ class CartControllerOrder extends ComponentController
 			// Extract the transaction id from postback information
 			$postBackTransactionId = $pay->setPostBack($_POST);
 
-			if (!$postBackTransactionId) {
+			if (!$postBackTransactionId)
+			{
 				// Transaction id couldn't be extracted
 				$error = 'Post back did not have the valid transaction ID ';
 
@@ -230,7 +236,8 @@ class CartControllerOrder extends ComponentController
 			}
 		}
 		// test
-		else {
+		else
+		{
 			include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 			$paymentDispatcher = new PaymentDispatcher('DUMMY AUTO PAYMENT');
 			$pay = $paymentDispatcher->getPaymentProvider();
@@ -348,5 +355,4 @@ class CartControllerOrder extends ComponentController
 		// Send emails to customer and admin
 		$logger->emailOrderComplete($tInfo->info);
 	}
-
 }

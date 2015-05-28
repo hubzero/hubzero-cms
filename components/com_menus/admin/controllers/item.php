@@ -58,7 +58,7 @@ class MenusControllerItem extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$model = $this->getModel('Item', '', array());
@@ -80,18 +80,17 @@ class MenusControllerItem extends JControllerForm
 	 */
 	public function cancel($key = null)
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app = JFactory::getApplication();
 		$context = 'com_menus.edit.item';
 		$result = parent::cancel();
 
 		if ($result)
 		{
 			// Clear the ancillary data from the session.
-			$app->setUserState($context . '.type', null);
-			$app->setUserState($context . '.link', null);
+			User::setState($context . '.type', null);
+			User::setState($context . '.link', null);
 		}
 	}
 
@@ -109,14 +108,13 @@ class MenusControllerItem extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication();
 		$result = parent::edit();
 
 		if ($result)
 		{
 			// Push the new ancillary data into the session.
-			$app->setUserState('com_menus.edit.item.type', null);
-			$app->setUserState('com_menus.edit.item.link', null);
+			User::setState('com_menus.edit.item.type', null);
+			User::setState('com_menus.edit.item.link', null);
 		}
 
 		return true;
@@ -135,7 +133,7 @@ class MenusControllerItem extends JControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app = JFactory::getApplication();
@@ -181,7 +179,7 @@ class MenusControllerItem extends JControllerForm
 
 		if (!$form)
 		{
-			JError::raiseError(500, $model->getError());
+			throw new Exception($model->getError(), 500);
 
 			return false;
 		}
@@ -348,7 +346,7 @@ class MenusControllerItem extends JControllerForm
 		{
 			if (isset($type->request))
 			{
-				$component = JComponentHelper::getComponent($type->request->option);
+				$component = Component::load($type->request->option);
 				$data['component_id'] = $component->id;
 
 				$app->setUserState('com_menus.edit.item.link', 'index.php?' . JURI::buildQuery((array) $type->request));

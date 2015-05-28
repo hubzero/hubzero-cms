@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 $unit = $this->course->offering()->unit($this->unit);
 if (!$unit)
 {
-	JError::raiseError(404, Lang::txt('uh-oh'));
+	throw new Exception(Lang::txt('uh-oh'), 404);
 }
 
 //echo $this->course->offering()->units()->key();

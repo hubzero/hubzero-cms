@@ -68,7 +68,7 @@ function task_view($db_id)
 	$dd = get_dd($db_id);
 
 	if (!$dd) {
-		JError::raiseError('404', 'Invalid DataView', 'Invalid DataView');
+		throw new Exception('Invalid DataView', 404);
 		return;
 	}
 

@@ -101,15 +101,15 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 			if ($joomla_order === false)
 			{
-				return JError::raiseError('SOME_ERROR_CODE', Lang::txt('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
+				return new Exception(Lang::txt('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'), 500);
 			}
 
 			if ($xuser_order <= $joomla_order)
 			{
-				return JError::raiseError('SOME_ERROR_CODE', Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
+				return new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
 			}
 
-			return JError::raiseWarning('SOME_ERROR_CODE', Lang::txt('E_JOOMLA_USER_PLUGIN_FAILED'));
+			return new Exception(Lang::txt('E_JOOMLA_USER_PLUGIN_FAILED'), 500);
 		}
 
 		// log login to auth log
@@ -390,7 +390,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 			if (!$result)
 			{
-				return JError::raiseError('500', 'xHUB Internal Error: Unable to create \Hubzero\User\Profile record');
+				return new Exception('Unable to create \Hubzero\User\Profile record', 500);
 			}
 		}
 		else

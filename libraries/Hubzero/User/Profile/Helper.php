@@ -53,7 +53,7 @@ class Helper
 
 		if ($result === false)
 		{
-			JError::raiseError(500, 'Error retrieving data from xprofiles table: ' . $db->getErrorMsg());
+			throw new Exception('Error retrieving data from xprofiles table: ' . $db->getErrorMsg(), 500);
 			return false;
 		}
 
@@ -147,7 +147,7 @@ class Helper
 
 						if (!is_dir($path))
 						{
-							\JFolder::create($path);
+							\App::get('filesystem')->makeDirectory($path);
 						}
 
 						if (is_dir($path))
@@ -201,12 +201,12 @@ class Helper
 					if ($config->get('gravatar'))
 					{
 						$hash = md5(strtolower(trim($member->get('email'))));
-						$protocol = \JBrowser::getInstance()->isSSLConnection() ? 'https' : 'http';
+						$protocol = \App::get('request')->isSecure() ? 'https' : 'http';
 						//$paths[] = $protocol . '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?' . (!$thumbit ? 's=300&' : '') . 'd=' . urlencode(JURI::base() . $dfthumb);
 						return $protocol
 								. '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?'
 								. (!$thumbit ? 's=300&' : '')
-								. 'd=' . urlencode(str_replace('/administrator', '', rtrim(\Request::base(), DS)) . DS . $dfthumb);
+								. 'd=' . urlencode(str_replace('/administrator', '', rtrim(\App::get('request')->base(), '/')) . '/' . $dfthumb);
 					}
 				}
 			}
@@ -233,7 +233,7 @@ class Helper
 						$pic = trim(str_replace($baseMemberPath, '', $path), DS);
 
 						// build serve link
-						if (\JFactory::getApplication()->isAdmin())
+						if (\App::isAdmin())
 						{
 							$link = \Route::url('index.php?option=com_members&controller=members&task=picture&id=' . $member->get('uidNumber') . '&image=' . $pic);
 						}
@@ -245,7 +245,7 @@ class Helper
 					}
 				}
 
-				return str_replace('/administrator', '', rtrim(\Request::base(true), DS)) . $path;
+				return str_replace('/administrator', '', rtrim(\App::get('request')->base(true), '/')) . $path;
 			}
 		}
 	}
@@ -259,10 +259,10 @@ class Helper
 	 */
 	public static function thumbit($thumb)
 	{
-		jimport('joomla.filesystem.file');
-		$ext = \JFile::getExt($thumb);
+		$dot = strrpos($thumb, '.') + 1;
+		$ext = substr($thumb, $dot);
 
-		return \JFile::stripExt($thumb) . '_thumb.' . $ext;
+		return preg_replace('#\.[^.]*$#', '', $thumb) . '_thumb.' . $ext;
 	}
 
 	/**

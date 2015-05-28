@@ -24,28 +24,28 @@ class NewsfeedsViewCategories extends JViewLegacy
 	 *
 	 * @return	mixed	False on error, null otherwise.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Initialise variables
-		$state		= $this->get('State');
-		$items		= $this->get('Items');
-		$parent		= $this->get('Parent');
+		$state  = $this->get('State');
+		$items  = $this->get('Items');
+		$parent = $this->get('Parent');
 
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		if ($items === false)
 		{
-			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
+			throw new Exception(Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		if ($parent == false)
 		{
-			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
+			throw new Exception(Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		$params = &$state->params;
@@ -56,9 +56,9 @@ class NewsfeedsViewCategories extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->maxLevelcat = $params->get('maxLevelcat', -1);
-		$this->assignRef('params',		$params);
-		$this->assignRef('parent',		$parent);
-		$this->assignRef('items',		$items);
+		$this->assignRef('params', $params);
+		$this->assignRef('parent', $parent);
+		$this->assignRef('items',  $items);
 
 		$this->_prepareDocument();
 
@@ -70,9 +70,9 @@ class NewsfeedsViewCategories extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -80,18 +80,23 @@ class NewsfeedsViewCategories extends JViewLegacy
 		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', Lang::txt('COM_NEWSFEEDS_DEFAULT_PAGE_TITLE'));
 		}
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
+		if (empty($title))
+		{
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 

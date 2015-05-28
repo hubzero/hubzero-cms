@@ -35,14 +35,14 @@ class ContentViewFeatured extends JViewLegacy
 		// Initialise variables.
 		$app = JFactory::getApplication();
 
-		$state 		= $this->get('State');
-		$items 		= $this->get('Items');
-		$pagination	= $this->get('Pagination');
+		$state      = $this->get('State');
+		$items      = $this->get('Items');
+		$pagination = $this->get('Pagination');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		$params = &$state->params;
@@ -51,8 +51,8 @@ class ContentViewFeatured extends JViewLegacy
 
 		// Get the metrics for the structural page layout.
 		$numLeading = $params->def('num_leading_articles', 1);
-		$numIntro = $params->def('num_intro_articles', 4);
-		$numLinks = $params->def('num_links', 4);
+		$numIntro   = $params->def('num_intro_articles', 4);
+		$numLinks   = $params->def('num_links', 4);
 
 		// Compute the article slugs and prepare introtext (runs content plugins).
 		foreach ($items as $i => & $item)
@@ -61,7 +61,8 @@ class ContentViewFeatured extends JViewLegacy
 			$item->catslug = ($item->category_alias) ? ($item->catid . ':' . $item->category_alias) : $item->catid;
 			$item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
 			// No link for ROOT category
-			if ($item->parent_alias == 'root') {
+			if ($item->parent_alias == 'root')
+			{
 				$item->parent_slug = null;
 			}
 
@@ -140,9 +141,9 @@ class ContentViewFeatured extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$title 		= null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -150,19 +151,24 @@ class ContentViewFeatured extends JViewLegacy
 		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
 		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
+		if (empty($title))
+		{
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 

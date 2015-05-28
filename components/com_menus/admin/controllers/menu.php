@@ -39,16 +39,16 @@ class MenusControllerMenu extends JControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$data		= Request::getVar('jform', array(), 'post', 'array');
-		$context	= 'com_menus.edit.menu';
-		$task		= $this->getTask();
-		$recordId	= Request::getInt('id');
+		$data     = Request::getVar('jform', array(), 'post', 'array');
+		$context  = 'com_menus.edit.menu';
+		$task     = $this->getTask();
+		$recordId = Request::getInt('id');
 
-		if (!$this->checkEditId($context, $recordId)) {
+		if (!$this->checkEditId($context, $recordId))
+		{
 			// Somehow the person just went to the form and saved it - we don't allow that.
 			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId));
 			$this->setMessage($this->getError(), 'error');
@@ -61,7 +61,7 @@ class MenusControllerMenu extends JControllerForm
 		if ((isset($data['client_id']) && $data['client_id'] == 1) || strtolower($data['menutype']) == 'menu'
 			|| strtolower($data['menutype']) == 'main')
 		{
-			JError::raiseNotice(0, Lang::txt('COM_MENUS_MENU_TYPE_NOT_ALLOWED'));
+			Notify::warning(Lang::txt('COM_MENUS_MENU_TYPE_NOT_ALLOWED'));
 
 			// Redirect back to the edit screen.
 			$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
@@ -73,33 +73,37 @@ class MenusControllerMenu extends JControllerForm
 		$data['id'] = $recordId;
 
 		// Get the model and attempt to validate the posted data.
-		$model	= $this->getModel('Menu');
-		$form	= $model->getForm();
-		if (!$form) {
-			JError::raiseError(500, $model->getError());
+		$model = $this->getModel('Menu');
+		$form  = $model->getForm();
+		if (!$form)
+		{
+			throw new Exception($model->getError(), 500);
 
 			return false;
 		}
 
-		$data	= $model->validate($form, $data);
+		$data = $model->validate($form, $data);
 
 		// Check for validation errors.
-		if ($data === false) {
+		if ($data === false)
+		{
 			// Get the validation messages.
 			$errors	= $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				if ($errors[$i] instanceof Exception) {
-					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+				if ($errors[$i] instanceof Exception)
+				{
+					Notify::warning($errors[$i]->getMessage());
 				}
-				else {
-					$app->enqueueMessage($errors[$i], 'warning');
+				else
+				{
+					Notify::warning($errors[$i]);
 				}
 			}
 			// Save the data in the session.
-			$app->setUserState('com_menus.edit.menu.data', $data);
+			User::setState('com_menus.edit.menu.data', $data);
 
 			// Redirect back to the edit screen.
 			$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
@@ -108,9 +112,10 @@ class MenusControllerMenu extends JControllerForm
 		}
 
 		// Attempt to save the data.
-		if (!$model->save($data)) {
+		if (!$model->save($data))
+		{
 			// Save the data in the session.
-			$app->setUserState('com_menus.edit.menu.data', $data);
+			User::setState('com_menus.edit.menu.data', $data);
 
 			// Redirect back to the edit screen.
 			$this->setMessage(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
@@ -136,7 +141,7 @@ class MenusControllerMenu extends JControllerForm
 			case 'save2new':
 				// Clear the record id and data from the session.
 				$this->releaseEditId($context, $recordId);
-				$app->setUserState($context.'.data', null);
+				User::setState($context.'.data', null);
 
 				// Redirect back to the edit screen.
 				$this->setRedirect(Route::url('index.php?option=com_menus&view=menu&layout=edit', false));
@@ -145,7 +150,7 @@ class MenusControllerMenu extends JControllerForm
 			default:
 				// Clear the record id and data from the session.
 				$this->releaseEditId($context, $recordId);
-				$app->setUserState($context.'.data', null);
+				User::setState($context.'.data', null);
 
 				// Redirect to the list screen.
 				$this->setRedirect(Route::url('index.php?option=com_menus&view=menus', false));

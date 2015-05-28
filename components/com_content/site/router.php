@@ -18,13 +18,13 @@ jimport('joomla.application.categories');
  */
 function ContentBuildRoute(&$query)
 {
-	$segments	= array();
+	$segments = array();
 
 	// get a menu item based on Itemid or currently active
-	$app		= JFactory::getApplication();
-	$menu		= $app->getMenu();
-	$params		= Component::params('com_content');
-	$advanced	= $params->get('sef_advanced_link', 0);
+	$app      = JFactory::getApplication();
+	$menu     = $app->getMenu();
+	$params   = Component::params('com_content');
+	$advanced = $params->get('sef_advanced_link', 0);
 
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid'])) {
@@ -201,9 +201,9 @@ function ContentParseRoute($segments)
 	$vars = array();
 
 	//Get the active menu item.
-	$app	= JFactory::getApplication();
-	$menu	= $app->getMenu();
-	$item	= $menu->getActive();
+	$app    = JFactory::getApplication();
+	$menu   = $app->getMenu();
+	$item   = $menu->getActive();
 	$params = Component::params('com_content');
 	$advanced = $params->get('sef_advanced_link', 0);
 	$db = JFactory::getDBO();
@@ -213,9 +213,10 @@ function ContentParseRoute($segments)
 
 	// Standard routing for articles.  If we don't pick up an Itemid then we get the view from the segments
 	// the first segment is the view and the last segment is the id of the article or category.
-	if (!isset($item)) {
-		$vars['view']	= $segments[0];
-		$vars['id']		= $segments[$count - 1];
+	if (!isset($item))
+	{
+		$vars['view'] = $segments[0];
+		$vars['id']   = $segments[$count - 1];
 
 		return $vars;
 	}
@@ -223,11 +224,13 @@ function ContentParseRoute($segments)
 	// if there is only one segment, then it points to either an article or a category
 	// we test it first to see if it is a category.  If the id and alias match a category
 	// then we assume it is a category.  If they don't we assume it is an article
-	if ($count == 1) {
+	if ($count == 1)
+	{
 		// we check to see if an alias is given.  If not, we assume it is an article
-		if (strpos($segments[0], ':') === false) {
+		if (strpos($segments[0], ':') === false)
+		{
 			$vars['view'] = 'article';
-			$vars['id'] = (int)$segments[0];
+			$vars['id']   = (int)$segments[0];
 			return $vars;
 		}
 
@@ -236,18 +239,23 @@ function ContentParseRoute($segments)
 		// first we check if it is a category
 		$category = JCategories::getInstance('Content')->get($id);
 
-		if ($category && $category->alias == $alias) {
+		if ($category && $category->alias == $alias)
+		{
 			$vars['view'] = 'category';
 			$vars['id'] = $id;
 
 			return $vars;
-		} else {
+		}
+		else
+		{
 			$query = 'SELECT alias, catid FROM #__content WHERE id = '.(int)$id;
 			$db->setQuery($query);
 			$article = $db->loadObject();
 
-			if ($article) {
-				if ($article->alias == $alias) {
+			if ($article)
+			{
+				if ($article->alias == $alias)
+				{
 					$vars['view'] = 'article';
 					$vars['catid'] = (int)$article->catid;
 					$vars['id'] = (int)$id;
@@ -261,18 +269,22 @@ function ContentParseRoute($segments)
 	// if there was more than one segment, then we can determine where the URL points to
 	// because the first segment will have the target category id prepended to it.  If the
 	// last segment has a number prepended, it is an article, otherwise, it is a category.
-	if (!$advanced) {
+	if (!$advanced)
+	{
 		$cat_id = (int)$segments[0];
 
 		$article_id = (int)$segments[$count - 1];
 
-		if ($article_id > 0) {
-			$vars['view'] = 'article';
+		if ($article_id > 0)
+		{
+			$vars['view']  = 'article';
 			$vars['catid'] = $cat_id;
-			$vars['id'] = $article_id;
-		} else {
+			$vars['id']    = $article_id;
+		}
+		else
+		{
 			$vars['view'] = 'category';
-			$vars['id'] = $cat_id;
+			$vars['id']   = $cat_id;
 		}
 
 		return $vars;
@@ -282,8 +294,9 @@ function ContentParseRoute($segments)
 	$id = $item->query['id'];
 	$category = JCategories::getInstance('Content')->get($id);
 
-	if (!$category) {
-		JError::raiseError(404, Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+	if (!$category)
+	{
+		throw new Exception(Lang::txt('COM_CONTENT_ERROR_PARENT_CATEGORY_NOT_FOUND'), 404);
 		return $vars;
 	}
 
@@ -298,7 +311,8 @@ function ContentParseRoute($segments)
 
 		foreach ($categories as $category)
 		{
-			if ($category->alias == $segment) {
+			if ($category->alias == $segment)
+			{
 				$vars['id'] = $category->id;
 				$vars['catid'] = $category->id;
 				$vars['view'] = 'category';
@@ -308,24 +322,30 @@ function ContentParseRoute($segments)
 			}
 		}
 
-		if ($found == 0) {
-			if ($advanced) {
+		if ($found == 0)
+		{
+			if ($advanced)
+			{
 				$db = JFactory::getDBO();
 				$query = 'SELECT id FROM #__content WHERE catid = '.$vars['catid'].' AND alias = '.$db->Quote($segment);
 				$db->setQuery($query);
 				$cid = $db->loadResult();
-			} else {
+			}
+			else
+			{
 				$cid = $segment;
 			}
 
 			$vars['id'] = $cid;
 
-			if ($item->query['view'] == 'archive' && $count != 1){
-				$vars['year']	= $count >= 2 ? $segments[$count-2] : null;
+			if ($item->query['view'] == 'archive' && $count != 1)
+			{
+				$vars['year']  = $count >= 2 ? $segments[$count-2] : null;
 				$vars['month'] = $segments[$count-1];
-				$vars['view']	= 'archive';
+				$vars['view']  = 'archive';
 			}
-			else {
+			else
+			{
 				$vars['view'] = 'article';
 			}
 		}

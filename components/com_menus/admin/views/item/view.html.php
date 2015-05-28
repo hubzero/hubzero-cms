@@ -25,19 +25,19 @@ class MenusViewItem extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->modules	= $this->get('Modules');
-		$this->state	= $this->get('State');
+		$this->form    = $this->get('Form');
+		$this->item    = $this->get('Item');
+		$this->modules = $this->get('Modules');
+		$this->state   = $this->get('State');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		parent::display($tpl);
+
 		$this->addToolbar();
 	}
 
@@ -50,39 +50,47 @@ class MenusViewItem extends JViewLegacy
 	{
 		Request::setVar('hidemainmenu', true);
 
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
-		$canDo		= MenusHelper::getActions($this->state->get('filter.parent_id'));
+		$isNew      = ($this->item->id == 0);
+		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
+		$canDo      = MenusHelper::getActions($this->state->get('filter.parent_id'));
 
 		Toolbar::title(Lang::txt($isNew ? 'COM_MENUS_VIEW_NEW_ITEM_TITLE' : 'COM_MENUS_VIEW_EDIT_ITEM_TITLE'), 'menu-add');
 
 		// If a new item, can save the item.  Allow users with edit permissions to apply changes to prevent returning to grid.
-		if ($isNew && $canDo->get('core.create')) {
-			if ($canDo->get('core.edit')) {
+		if ($isNew && $canDo->get('core.create'))
+		{
+			if ($canDo->get('core.edit'))
+			{
 				Toolbar::apply('item.apply');
 			}
 			Toolbar::save('item.save');
 		}
 
 		// If not checked out, can save the item.
-		if (!$isNew && !$checkedOut && $canDo->get('core.edit')) {
+		if (!$isNew && !$checkedOut && $canDo->get('core.edit'))
+		{
 			Toolbar::apply('item.apply');
 			Toolbar::save('item.save');
 		}
 
 		// If the user can create new items, allow them to see Save & New
-		if ($canDo->get('core.create')) {
+		if ($canDo->get('core.create'))
+		{
 			Toolbar::save2new('item.save2new');
 		}
 
 		// If an existing item, can save to a copy only if we have create rights.
-		if (!$isNew && $canDo->get('core.create')) {
+		if (!$isNew && $canDo->get('core.create'))
+		{
 			Toolbar::save2copy('item.save2copy');
 		}
 
-		if ($isNew)  {
+		if ($isNew)
+		{
 			Toolbar::cancel('item.cancel');
-		} else {
+		}
+		else
+		{
 			Toolbar::cancel('item.cancel', 'JTOOLBAR_CLOSE');
 		}
 
@@ -92,12 +100,14 @@ class MenusViewItem extends JViewLegacy
 		$lang = Lang::getRoot();
 
 		$help = $this->get('Help');
-		if ($lang->hasKey($help->url)) {
+		if ($lang->hasKey($help->url))
+		{
 			$debug = $lang->setDebug(false);
 			$url = Lang::txt($help->url);
 			$lang->setDebug($debug);
 		}
-		else {
+		else
+		{
 			$url = $help->url;
 		}
 		Toolbar::help('item'); //$help->key, $help->local, $url);

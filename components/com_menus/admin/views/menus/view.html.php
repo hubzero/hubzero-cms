@@ -25,15 +25,15 @@ class MenusViewMenus extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->modules		= $this->get('Modules');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->modules    = $this->get('Modules');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		parent::display($tpl);
@@ -49,23 +49,27 @@ class MenusViewMenus extends JViewLegacy
 	{
 		require_once JPATH_COMPONENT.'/helpers/menus.php';
 
-		$canDo	= MenusHelper::getActions($this->state->get('filter.parent_id'));
+		$canDo = MenusHelper::getActions($this->state->get('filter.parent_id'));
 
 		Toolbar::title(Lang::txt('COM_MENUS_VIEW_MENUS_TITLE'), 'menumgr.png');
 
-		if ($canDo->get('core.create')) {
+		if ($canDo->get('core.create'))
+		{
 			Toolbar::addNew('menu.add');
 		}
-		if ($canDo->get('core.edit')) {
+		if ($canDo->get('core.edit'))
+		{
 			Toolbar::editList('menu.edit');
 		}
-		if ($canDo->get('core.delete')) {
+		if ($canDo->get('core.delete'))
+		{
 			Toolbar::divider();
 			Toolbar::deleteList('', 'menus.delete');
 		}
 
 		Toolbar::custom('menus.rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			Toolbar::divider();
 			Toolbar::preferences('com_menus');
 		}

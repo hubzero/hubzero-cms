@@ -24,17 +24,18 @@ class LanguagesViewLanguage extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->item		= $this->get('Item');
-		$this->form		= $this->get('Form');
-		$this->state	= $this->get('State');
+		$this->item  = $this->get('Item');
+		$this->form  = $this->get('Form');
+		$this->state = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		parent::display($tpl);
+
 		$this->addToolbar();
 	}
 
@@ -45,34 +46,39 @@ class LanguagesViewLanguage extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		require_once JPATH_COMPONENT.'/helpers/languages.php';
+		require_once JPATH_COMPONENT . '/helpers/languages.php';
 
 		Request::setVar('hidemainmenu', 1);
 		$isNew = empty($this->item->lang_id);
-		$canDo	= LanguagesHelper::getActions();
+		$canDo = LanguagesHelper::getActions();
 
 		Toolbar::title(Lang::txt($isNew ? 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_NEW_TITLE' : 'COM_LANGUAGES_VIEW_LANGUAGE_EDIT_EDIT_TITLE'), 'langmanager.png');
 
 		// If a new item, can save.
-		if ($isNew && $canDo->get('core.create')) {
+		if ($isNew && $canDo->get('core.create'))
+		{
 			Toolbar::save('language.save');
 		}
 
 		//If an existing item, allow to Apply and Save.
-		if (!$isNew && $canDo->get('core.edit')) {
+		if (!$isNew && $canDo->get('core.edit'))
+		{
 			Toolbar::apply('language.apply');
 			Toolbar::save('language.save');
 		}
 
 		// If an existing item, can save to a copy only if we have create rights.
-		if ($canDo->get('core.create')) {
+		if ($canDo->get('core.create'))
+		{
 			Toolbar::save2new('language.save2new');
 		}
 
-		if ($isNew) {
+		if ($isNew)
+		{
 			Toolbar::cancel('language.cancel');
 		}
-		else {
+		else
+		{
 			Toolbar::cancel('language.cancel', 'JTOOLBAR_CLOSE');
 		}
 

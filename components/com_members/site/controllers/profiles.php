@@ -367,7 +367,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		{
 			$stats = $this->stats();
 
-			Cache::put('members.stats', $stats, intval($this->params->get('cache_time', 15)));
+			Cache::put('members.stats', $stats, intval($this->config->get('cache_time', 15)));
 		}
 
 		// Get record count of ALL members

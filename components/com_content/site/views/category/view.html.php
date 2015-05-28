@@ -33,29 +33,28 @@ class ContentViewCategory extends JViewLegacy
 		$app = JFactory::getApplication();
 
 		// Get some data from the models
-		$state		= $this->get('State');
-		$params		= $state->params;
-		$items		= $this->get('Items');
-		$category	= $this->get('Category');
-		$children	= $this->get('Children');
-		$parent		= $this->get('Parent');
+		$state      = $this->get('State');
+		$params     = $state->params;
+		$items      = $this->get('Items');
+		$category   = $this->get('Category');
+		$children   = $this->get('Children');
+		$parent     = $this->get('Parent');
 		$pagination = $this->get('Pagination');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		if ($category == false)
 		{
-			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
+			throw new Exception(Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		if ($parent == false)
 		{
-			return JError::raiseError(404, Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'));
+			throw new Exception(Lang::txt('JGLOBAL_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		// Setup the category parameters.
@@ -67,7 +66,7 @@ class ContentViewCategory extends JViewLegacy
 		$groups = User::getAuthorisedViewLevels();
 		if (!in_array($category->access, $groups))
 		{
-			return JError::raiseError(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
 		// PREPARE THE DATA
@@ -114,40 +113,47 @@ class ContentViewCategory extends JViewLegacy
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
 		$active	= $app->getMenu()->getActive();
-		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $category->id) === false))) {
+		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $category->id) === false)))
+		{
 			// Get the layout from the merged category params
-			if ($layout = $category->params->get('category_layout')) {
+			if ($layout = $category->params->get('category_layout'))
+			{
 				$this->setLayout($layout);
 			}
 		}
 		// At this point, we are in a menu item, so we don't override the layout
-		elseif (isset($active->query['layout'])) {
+		elseif (isset($active->query['layout']))
+		{
 			// We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
 			$this->setLayout($active->query['layout']);
 		}
 
 		// For blog layouts, preprocess the breakdown of leading, intro and linked articles.
 		// This makes it much easier for the designer to just interrogate the arrays.
-		if (($params->get('layout_type') == 'blog') || ($this->getLayout() == 'blog')) {
+		if (($params->get('layout_type') == 'blog') || ($this->getLayout() == 'blog'))
+		{
 			$max = count($items);
 
 			// The first group is the leading articles.
 			$limit = $numLeading;
-			for ($i = 0; $i < $limit && $i < $max; $i++) {
+			for ($i = 0; $i < $limit && $i < $max; $i++)
+			{
 				$this->lead_items[$i] = &$items[$i];
 			}
 
 			// The second group is the intro articles.
 			$limit = $numLeading + $numIntro;
 			// Order articles across, then down (or single column mode)
-			for ($i = $numLeading; $i < $limit && $i < $max; $i++) {
+			for ($i = $numLeading; $i < $limit && $i < $max; $i++)
+			{
 				$this->intro_items[$i] = &$items[$i];
 			}
 
 			$this->columns = max(1, $params->def('num_columns', 1));
 			$order = $params->def('multi_column_order', 1);
 
-			if ($order == 0 && $this->columns > 1) {
+			if ($order == 0 && $this->columns > 1)
+			{
 				// call order down helper
 				$this->intro_items = ContentHelperQuery::orderDownColumns($this->intro_items, $this->columns);
 			}
@@ -156,7 +162,7 @@ class ContentViewCategory extends JViewLegacy
 			// The remainder are the links.
 			for ($i = $numLeading + $numIntro; $i < $limit && $i < $max;$i++)
 			{
-					$this->link_items[$i] = &$items[$i];
+				$this->link_items[$i] = &$items[$i];
 			}
 		}
 
@@ -185,24 +191,27 @@ class ContentViewCategory extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$title		= null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		if ($menu) {
+		if ($menu)
+		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		}
-		else {
+		else
+		{
 			$this->params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
 		$id = (int) @$menu->query['id'];
 
-		if ($menu && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $this->category->id)) {
+		if ($menu && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $this->category->id))
+		{
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();
 
@@ -222,14 +231,17 @@ class ContentViewCategory extends JViewLegacy
 
 		$title = $this->params->get('page_title', '');
 
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
+		if (empty($title))
+		{
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 
 		$this->document->setTitle($title);
@@ -257,7 +269,8 @@ class ContentViewCategory extends JViewLegacy
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 
-		if ($app->getCfg('MetaAuthor') == '1') {
+		if (Config::get('MetaAuthor') == '1')
+		{
 			$this->document->setMetaData('author', $this->category->getMetadata()->get('author'));
 		}
 
@@ -265,13 +278,15 @@ class ContentViewCategory extends JViewLegacy
 
 		foreach ($mdata as $k => $v)
 		{
-			if ($v) {
+			if ($v)
+			{
 				$this->document->setMetadata($k, $v);
 			}
 		}
 
 		// Add feed links
-		if ($this->params->get('show_feed_link', 1)) {
+		if ($this->params->get('show_feed_link', 1))
+		{
 			$link = '&format=feed&limitstart=';
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 			$this->document->addHeadLink(Route::url($link . '&type=rss'), 'alternate', 'rel', $attribs);

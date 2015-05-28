@@ -28,34 +28,35 @@ class ContentViewArticles extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
-		$this->authors		= $this->get('Authors');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->authors    = $this->get('Authors');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		// Levels filter.
-		$options	= array();
-		$options[]	= Html::select('option', '1', Lang::txt('J1'));
-		$options[]	= Html::select('option', '2', Lang::txt('J2'));
-		$options[]	= Html::select('option', '3', Lang::txt('J3'));
-		$options[]	= Html::select('option', '4', Lang::txt('J4'));
-		$options[]	= Html::select('option', '5', Lang::txt('J5'));
-		$options[]	= Html::select('option', '6', Lang::txt('J6'));
-		$options[]	= Html::select('option', '7', Lang::txt('J7'));
-		$options[]	= Html::select('option', '8', Lang::txt('J8'));
-		$options[]	= Html::select('option', '9', Lang::txt('J9'));
-		$options[]	= Html::select('option', '10', Lang::txt('J10'));
+		$options = array();
+		$options[] = Html::select('option', '1', Lang::txt('J1'));
+		$options[] = Html::select('option', '2', Lang::txt('J2'));
+		$options[] = Html::select('option', '3', Lang::txt('J3'));
+		$options[] = Html::select('option', '4', Lang::txt('J4'));
+		$options[] = Html::select('option', '5', Lang::txt('J5'));
+		$options[] = Html::select('option', '6', Lang::txt('J6'));
+		$options[] = Html::select('option', '7', Lang::txt('J7'));
+		$options[] = Html::select('option', '8', Lang::txt('J8'));
+		$options[] = Html::select('option', '9', Lang::txt('J9'));
+		$options[] = Html::select('option', '10', Lang::txt('J10'));
 
 		$this->f_levels = $options;
 
 		// We don't need toolbar in the modal window.
-		if ($this->getLayout() !== 'modal') {
+		if ($this->getLayout() !== 'modal')
+		{
 			$this->addToolbar();
 		}
 
@@ -73,15 +74,18 @@ class ContentViewArticles extends JViewLegacy
 
 		Toolbar::title(Lang::txt('COM_CONTENT_ARTICLES_TITLE'), 'article.png');
 
-		if ($canDo->get('core.create') || (count(User::getAuthorisedCategories('com_content', 'core.create'))) > 0 ) {
+		if ($canDo->get('core.create') || (count(User::getAuthorisedCategories('com_content', 'core.create'))) > 0)
+		{
 			Toolbar::addNew('article.add');
 		}
 
-		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
+		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
+		{
 			Toolbar::editList('article.edit');
 		}
 
-		if ($canDo->get('core.edit.state')) {
+		if ($canDo->get('core.edit.state'))
+		{
 			Toolbar::divider();
 			Toolbar::publish('articles.publish', 'JTOOLBAR_PUBLISH', true);
 			Toolbar::unpublish('articles.unpublish', 'JTOOLBAR_UNPUBLISH', true);
@@ -91,16 +95,19 @@ class ContentViewArticles extends JViewLegacy
 			Toolbar::checkin('articles.checkin');
 		}
 
-		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		{
 			Toolbar::deleteList('', 'articles.delete', 'JTOOLBAR_EMPTY_TRASH');
 			Toolbar::divider();
 		}
-		elseif ($canDo->get('core.edit.state')) {
+		elseif ($canDo->get('core.edit.state'))
+		{
 			Toolbar::trash('articles.trash');
 			Toolbar::divider();
 		}
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			Toolbar::preferences('com_content');
 			Toolbar::divider();
 		}

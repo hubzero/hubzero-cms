@@ -172,7 +172,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			elseif (!$wishlist->public && $rtrn != 'metadata')
 			{
 				// not authorized
-				JError::raiseError(403, Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'));
+				throw new Exception(Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'), 403);
 				return;
 			}
 
@@ -241,8 +241,8 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		}
 
 		$arr = array(
-			'html'=>$html,
-			'metadata'=>$metadata
+			'html'     => $html,
+			'metadata' => $metadata
 		);
 
 		if ($publication->state == 1)

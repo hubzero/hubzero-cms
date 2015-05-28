@@ -40,18 +40,21 @@ class MenusControllerItems extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$this->setRedirect('index.php?option=com_menus&view=items');
 
 		// Initialise variables.
 		$model = $this->getModel();
 
-		if ($model->rebuild()) {
+		if ($model->rebuild())
+		{
 			// Reorder succeeded.
 			$this->setMessage(Lang::txt('COM_MENUS_ITEMS_REBUILD_SUCCESS'));
 			return true;
-		} else {
+		}
+		else
+		{
 			// Rebuild failed.
 			$this->setMessage(Lang::txt('COM_MENUS_ITEMS_REBUILD_FAILED'));
 			return false;
@@ -60,10 +63,10 @@ class MenusControllerItems extends JControllerAdmin
 
 	public function saveorder()
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$order = Request::getVar('order',	null,	'post',	'array');
+		$order = Request::getVar('order', null, 'post', 'array');
 		$originalOrder = explode(',', Request::getString('original_order_values'));
 
 		// Make sure something has changed
@@ -90,14 +93,17 @@ class MenusControllerItems extends JControllerAdmin
 		Session::checkToken('request') or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid	= Request::getVar('cid', array(), '', 'array');
-		$data	= array('setDefault' => 1, 'unsetDefault' => 0);
-		$task 	= $this->getTask();
-		$value	= \Hubzero\Utility\Arr::getValue($data, $task, 0, 'int');
+		$cid   = Request::getVar('cid', array(), '', 'array');
+		$data  = array('setDefault' => 1, 'unsetDefault' => 0);
+		$task  = $this->getTask();
+		$value = \Hubzero\Utility\Arr::getValue($data, $task, 0, 'int');
 
-		if (empty($cid)) {
-			JError::raiseWarning(500, Lang::txt($this->text_prefix.'_NO_ITEM_SELECTED'));
-		} else {
+		if (empty($cid))
+		{
+			throw new Exception(Lang::txt($this->text_prefix.'_NO_ITEM_SELECTED'), 500);
+		}
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
@@ -105,13 +111,18 @@ class MenusControllerItems extends JControllerAdmin
 			\Hubzero\Utility\Arr::toInteger($cid);
 
 			// Publish the items.
-			if (!$model->setHome($cid, $value)) {
-				JError::raiseWarning(500, $model->getError());
-			} else {
-				if ($value == 1) {
+			if (!$model->setHome($cid, $value))
+			{
+				throw new Exception($model->getError(), 500);
+			}
+			else
+			{
+				if ($value == 1)
+				{
 					$ntext = 'COM_MENUS_ITEMS_SET_HOME';
 				}
-				else {
+				else
+				{
 					$ntext = 'COM_MENUS_ITEMS_UNSET_HOME';
 				}
 				$this->setMessage(Lang::txts($ntext, count($cid)));

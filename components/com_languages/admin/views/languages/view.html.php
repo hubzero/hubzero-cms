@@ -22,19 +22,20 @@ class LanguagesViewLanguages extends JViewLegacy
 	/**
 	 * Display the view
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		parent::display($tpl);
+
 		$this->addToolbar();
 	}
 
@@ -45,39 +46,47 @@ class LanguagesViewLanguages extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		require_once JPATH_COMPONENT.'/helpers/languages.php';
-		$canDo	= LanguagesHelper::getActions();
+		require_once JPATH_COMPONENT . '/helpers/languages.php';
+
+		$canDo = LanguagesHelper::getActions();
 
 		Toolbar::title(Lang::txt('COM_LANGUAGES_VIEW_LANGUAGES_TITLE'), 'langmanager.png');
 
-		if ($canDo->get('core.create')) {
+		if ($canDo->get('core.create'))
+		{
 			Toolbar::addNew('language.add');
 		}
 
-		if ($canDo->get('core.edit')) {
+		if ($canDo->get('core.edit'))
+		{
 			Toolbar::editList('language.edit');
 			Toolbar::divider();
 		}
 
-		if ($canDo->get('core.edit.state')) {
-			if ($this->state->get('filter.published') != 2) {
+		if ($canDo->get('core.edit.state'))
+		{
+			if ($this->state->get('filter.published') != 2)
+			{
 				Toolbar::publishList('languages.publish');
 				Toolbar::unpublishList('languages.unpublish');
 			}
 		}
 
-		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		{
 			Toolbar::deleteList('', 'languages.delete', 'JTOOLBAR_EMPTY_TRASH');
 			Toolbar::divider();
-		} elseif ($canDo->get('core.edit.state')) {
+		}
+		elseif ($canDo->get('core.edit.state'))
+		{
 			Toolbar::trash('languages.trash');
 			Toolbar::divider();
 		}
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			// Add install languages link to the lang installer component
-			$bar = JToolBar::getInstance('toolbar');
-			$bar->appendButton('Link', 'extension', 'COM_LANGUAGES_INSTALL', 'index.php?option=com_installer&view=languages');
+			Toolbar::appendButton('Link', 'extension', 'COM_LANGUAGES_INSTALL', 'index.php?option=com_installer&view=languages');
 			Toolbar::divider();
 
 			Toolbar::preferences('com_languages');

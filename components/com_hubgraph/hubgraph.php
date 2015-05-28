@@ -14,8 +14,10 @@ if (!class_exists('NotFoundError'))
 	}
 }
 
-foreach (array('SCRIPT_URL', 'URL', 'REDIRECT_SCRIPT_URL', 'REDIRECT_URL') as $k) {
-	if (isset($_SERVER[$k])) {
+foreach (array('SCRIPT_URL', 'URL', 'REDIRECT_SCRIPT_URL', 'REDIRECT_URL') as $k)
+{
+	if (isset($_SERVER[$k]))
+	{
 		$base = $_SERVER[$k];
 		break;
 	}
@@ -73,8 +75,9 @@ function consumeNonce($form)
 		|| !($timestamp = strtotime($ma[0]))
 		|| $timestamp > $now
 		|| $timestamp < $now - 60 * 60
-		|| Db::scalarQuery('SELECT stamp FROM jos_oauthp_nonces WHERE nonce = ?', array($form['nonce']))) {
-//		JError::raiseError(405, 'Bad token');
+		|| Db::scalarQuery('SELECT stamp FROM jos_oauthp_nonces WHERE nonce = ?', array($form['nonce'])))
+	{
+		//throw new Exception('Bad token', 405);
 	}
 	Db::execute('UPDATE jos_oauthp_nonces SET stamp = 1 WHERE nonce = ?', array($form['nonce']));
 	unset($_SESSION['hg_nonce']);
@@ -86,8 +89,10 @@ $req = new HubgraphRequest($_GET);
 $conf = HubgraphConfiguration::instance();
 $perPage = 40;
 
-try {
-	switch ($task = !defined('HG_INLINE') && isset($_REQUEST['task']) ? $_REQUEST['task'] : 'index') {
+try
+{
+	switch ($task = !defined('HG_INLINE') && isset($_REQUEST['task']) ? $_REQUEST['task'] : 'index')
+	{
 		case 'complete':
 			hgView('complete', array('limit' => 20, 'threshold' => 3, 'tagLimit' => 100));
 		case 'getRelated':
@@ -103,12 +108,14 @@ try {
 			$loggedIn     = (bool) User::get('id');
 			ksort($domainMap);
 
-			if ($task == 'page') {
+			if ($task == 'page')
+			{
 				define('HG_AJAX', 1);
 				require 'views/page.html.php';
 				exit();
 			}
-			else {
+			else
+			{
 				require 'views/index-update.html.php';
 			}
 		break;
@@ -135,11 +142,13 @@ try {
 			throw new NotFoundError('no such task');
 	}
 }
-catch (Exception $ex) {
+catch (Exception $ex)
+{
 	echo $ex->getMessage();
 	exit();
 	error_log($ex->getMessage());
-	if (!defined('HG_INLINE')) {
+	if (!defined('HG_INLINE'))
+	{
 		header('Location: '.Route::url('index.php?option=com_search' . (isset($_GET['terms']) ? '&terms='.$_GET['terms'] : '')));
 		exit();
 	}

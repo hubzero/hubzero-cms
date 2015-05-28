@@ -51,14 +51,17 @@ class MenusControllerMenus extends JControllerLegacy
 	public function delete()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid	= Request::getVar('cid', array(), '', 'array');
+		$cid = Request::getVar('cid', array(), '', 'array');
 
-		if (!is_array($cid) || count($cid) < 1) {
-			JError::raiseWarning(500, Lang::txt('COM_MENUS_NO_MENUS_SELECTED'));
-		} else {
+		if (!is_array($cid) || count($cid) < 1)
+		{
+			Notify::error(Lang::txt('COM_MENUS_NO_MENUS_SELECTED'));
+		}
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
@@ -66,10 +69,13 @@ class MenusControllerMenus extends JControllerLegacy
 			\Hubzero\Utility\Arr::toInteger($cid);
 
 			// Remove the items.
-			if (!$model->delete($cid)) {
+			if (!$model->delete($cid))
+			{
 				$this->setMessage($model->getError());
-			} else {
-			$this->setMessage(Lang::txts('COM_MENUS_N_MENUS_DELETED', count($cid)));
+			}
+			else
+			{
+				$this->setMessage(Lang::txts('COM_MENUS_N_MENUS_DELETED', count($cid)));
 			}
 		}
 
@@ -83,7 +89,7 @@ class MenusControllerMenus extends JControllerLegacy
 	 */
 	public function rebuild()
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$this->setRedirect('index.php?option=com_menus&view=menus');
 
@@ -117,8 +123,9 @@ class MenusControllerMenus extends JControllerLegacy
 			' WHERE type = '.$db->quote('component')
 		)->loadAssocList('element', 'extension_id');
 
-		if ($error = $db->getErrorMsg()) {
-			return JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 		}
 
 		// Load all the component menu links
@@ -128,28 +135,35 @@ class MenusControllerMenus extends JControllerLegacy
 			' WHERE type = '.$db->quote('component')
 		)->loadObjectList();
 
-		if ($error = $db->getErrorMsg()) {
-			return JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 		}
 
-		foreach ($items as $item) {
+		foreach ($items as $item)
+		{
 			// Parse the link.
 			parse_str(parse_url($item->link, PHP_URL_QUERY), $parts);
 
 			// Tease out the option.
-			if (isset($parts['option'])) {
+			if (isset($parts['option']))
+			{
 				$option = $parts['option'];
 
 				// Lookup the component ID
-				if (isset($components[$option])) {
+				if (isset($components[$option]))
+				{
 					$componentId = $components[$option];
-				} else {
+				}
+				else
+				{
 					// Mismatch. Needs human intervention.
 					$componentId = -1;
 				}
 
 				// Check for mis-matched component id's in the menu link.
-				if ($item->component_id != $componentId) {
+				if ($item->component_id != $componentId)
+				{
 					// Update the menu table.
 					$log = "Link $item->id refers to $item->component_id, converting to $componentId ($item->link)";
 					echo "<br/>$log";
@@ -161,8 +175,9 @@ class MenusControllerMenus extends JControllerLegacy
 					)->query();
 					//echo "<br>".$db->getQuery();
 
-					if ($error = $db->getErrorMsg()) {
-						return JError::raiseWarning(500, $error);
+					if ($error = $db->getErrorMsg())
+					{
+						throw new Exception($error, 500);
 					}
 				}
 			}

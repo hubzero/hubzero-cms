@@ -60,7 +60,7 @@ class ComponentController extends \Hubzero\Component\SiteController
 		{
 			// too many parameters in the URL
 			//throw new Exception('Too many parameters');
-			JError::raiseError(404, Lang::txt('Page Not Found'));
+			throw new Exception(Lang::txt('Page Not Found'), 404);
 		}
 
 		$params = new stdClass();
@@ -73,12 +73,13 @@ class ComponentController extends \Hubzero\Component\SiteController
 			{
 				$params->$varName = $value;
 			}
-			else {
+			else
+			{
 				if ($strictProcessing)
 				{
 					// missing parameter in the URL
 					//throw new Exception('Too few parameters');
-					JError::raiseError(404, Lang::txt('Page Not Found'));
+					throw new Exception(Lang::txt('Page Not Found'), 404);
 				}
 				break;
 			}
@@ -86,6 +87,5 @@ class ComponentController extends \Hubzero\Component\SiteController
 		}
 		return $params;
 	}
-
 }
 
