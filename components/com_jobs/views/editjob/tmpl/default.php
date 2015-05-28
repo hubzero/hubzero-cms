@@ -119,7 +119,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					{
 						$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States';
 						?>
-						<option value="<?php echo $this->escape($country['name']); ?>"<?php if (strtoupper($country['name']) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+						<option value="<?php echo $this->escape($country->name); ?>"<?php if (strtoupper($country->name) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 						<?php
 					}
 					?>
