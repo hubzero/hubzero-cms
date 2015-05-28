@@ -315,7 +315,7 @@ class File extends Object
 		}
 
 		// Get size for local
-		if (!$this->get('remote') && $this->exists())
+		if ($this->exists())
 		{
 			$this->set('size', Filesystem::size($this->get('fullPath')));
 		}

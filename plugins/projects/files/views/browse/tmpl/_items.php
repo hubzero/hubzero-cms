@@ -35,7 +35,6 @@ foreach ($this->items as $item)
 	     ->set('params', $this->params)
 	     ->set('fileparams', $this->fileparams)
 	     ->set('publishing', $this->publishing)
-	     ->set('url', $this->url)
 		 ->display();
 }
 ?>

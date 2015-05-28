@@ -31,11 +31,11 @@ $this->css()
 	 ->js('diskspace')
      ->js();
 
-$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
+$subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 $sortbyDir = $this->params['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
 // Directory path breadcrumbs
-$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
+$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, Route::url($this->model->link('files')), $parent);
 
 $min = $this->model->access('content') ? 1 : 0;
 
@@ -48,10 +48,10 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 
 <div id="preview-window"></div>
 
-<form action="<?php echo $this->url; ?>" method="post" enctype="multipart/form-data" id="plg-form" class="file-browser submit-ajax">
+<form action="<?php echo Route::url($this->model->link('files')); ?>" method="post" enctype="multipart/form-data" id="plg-form" class="file-browser submit-ajax">
 	<div id="plg-header">
 		<h3 class="files">
-			<?php if ($this->subdir) { ?><a href="<?php echo $this->url; ?>"><?php } ?>
+			<?php if ($this->subdir) { ?><a href="<?php echo Route::url($this->model->link('files')); ?>"><?php } ?>
 			<?php echo $this->title; ?>
 			<?php if ($this->subdir) { ?></a><?php echo $bc; ?><?php } ?>
 		</h3>
@@ -96,17 +96,17 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 		<p>
 			<?php if ($this->model->access('content')) { ?>
 			<span id="manage_assets">
-				<a href="<?php echo $this->url . '/?action=upload' . $subdirlink; ?>" class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span></a>
-				<a href="<?php echo $this->url . '/?action=newdir' . $subdirlink; ?>" id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span></a>
-				<a href="<?php echo $this->url . '/?action=download' . $subdirlink; ?>" class="fmanage js" id="a-download" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span></a>
-				<a href="<?php echo $this->url . '/?action=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
-				<a href="<?php echo $this->url . '/?action=delete' . $subdirlink; ?>" class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
-				<a href="<?php echo $this->url . '/?action=rename' . $subdirlink; ?>" class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=upload' . $subdirlink); ?>" class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=newdir' . $subdirlink); ?>" id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=download' . $subdirlink); ?>" class="fmanage js" id="a-download" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=move' . $subdirlink); ?>" class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirlink); ?>" class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=rename' . $subdirlink); ?>" class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span></a>
 				<?php if ($sharing && $connected) { ?>
-				<a href="<?php echo $this->url . '/?action=share' . $subdirlink; ?>" id="a-share" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo Lang::txt('PLG_PROJECTS_FILES_SHARE'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=share' . $subdirlink); ?>" id="a-share" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo Lang::txt('PLG_PROJECTS_FILES_SHARE'); ?></span></a>
 				<?php } ?>
 				<?php if ($this->fileparams->get('latex')) { ?>
-				<a href="<?php echo $this->url . '/?action=compile' . $subdirlink; ?>" class="fmanage js" id="a-compile" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=compile' . $subdirlink); ?>" class="fmanage js" id="a-compile" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
 				<?php } ?>
 			</span>
 			<noscript>
@@ -118,7 +118,7 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 			</span>
 			<span id="manage_sync">
 				<span id="sync-wrap">
-				<a href="<?php echo $this->url . '/?action=sync' . $subdirlink; ?>" id="a-sync" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SYNC_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_SYNC'); ?></span></a>
+				<a href="<?php echo Route::url($this->model->link('files') . '&action=sync' . $subdirlink); ?>" id="a-sync" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SYNC_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_SYNC'); ?></span></a>
 				</span>
 			</span>
 			<?php } ?>
@@ -132,15 +132,15 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 				<th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
 				<?php } ?>
 				<th class="asset_doc <?php if ($this->params['sortby'] == 'name') { echo ' activesort'; } ?>">
-					<a href="<?php echo $this->url . '/?action=browse&amp;sortby=name&amp;sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
+					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=name&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
 					<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?></a>
 				</th>
 				<th class="centeralign"></th>
 				<th <?php if ($this->params['sortby'] == 'size') { echo 'class="activesort"'; } ?>>
-					<a href="<?php echo $this->url . '/?action=browse&amp;sortby=size&amp;sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?></a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?></a>
 				</th>
 				<th <?php if ($this->params['sortby'] == 'modified') { echo 'class="activesort"'; } ?>>
-					<a href="<?php echo $this->url . '/?action=browse&amp;sortby=modified&amp;sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?></a>
+					<a href="<?php echo Route::url($this->model->link('files') . '&action=browse' . $subdirlink . '&sortby=modified&sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?></a>
 				</th>
 				<th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
 				<th class="centeralign nojs"></th>
@@ -157,7 +157,7 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 				<tr class="updir">
 					<td></td>
 					<td colspan="<?php echo $this->publishing ? 7 - $min : 6 - $min; ?>" class="mini">
-						<a href="<?php echo $this->url . '/?action=browse&amp;subdir=' . $parent; ?>" class="uptoparent"><?php echo Lang::txt('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
+						<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&subdir=' . $parent); ?>" class="uptoparent"><?php echo Lang::txt('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
 					</td>
 				</tr>
 			<?php
@@ -174,7 +174,6 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 					     ->set('params', $this->params)
 					     ->set('publishing', $this->publishing)
 					     ->set('fileparams', $this->fileparams)
-					     ->set('url', $this->url)
 						 ->display();
 				}
 			?>
@@ -204,14 +203,14 @@ $sync      = isset($this->sync) ? $this->sync : 0;
 			     ->set('quota', $quota)
 			     ->set('dirsize', $dirsize)
 			     ->set('config', $this->model->config())
-			     ->set('url', $this->url)
+			     ->set('url', Route::url($this->model->link('files')))
 			     ->display();
 		?>
 		</span>
 		<?php } ?>
 		<?php if ($this->model->access('content')) { ?>
 		<span class="rightfloat">
-			<a href="<?php echo $this->url . '/?action=trash'; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_FILES_SHOW_TRASH'); ?></a>
+			<a href="<?php echo Route::url($this->model->link('files')) . '?action=trash'; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_FILES_SHOW_TRASH'); ?></a>
 		</span>
 		<?php } ?>
 	</p>

@@ -386,9 +386,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		return $view->loadTemplate();
 	}
 
-	//----------------------------------------
-	// Views and Processors
-	//----------------------------------------
 	/**
 	 * View of project files
 	 *
@@ -461,7 +458,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$view->publishing	= false; // do not show publishing info
 		$view->title		= $this->_area['title'];
-		$view->url 			= Route::url($this->model->link('files'));
 		$view->option 		= $this->_option;
 		$view->subdir 		= $this->subdir;
 		$view->model 		= $this->model;
