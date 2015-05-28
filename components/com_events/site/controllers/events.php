@@ -38,6 +38,7 @@ use Components\Events\Tables\Page;
 use Components\Events\Models\Tags;
 use Components\Events\Helpers\EventsDate;
 use Components\Events\Helpers\Html;
+use Components\Events\Tables\Respondent;
 use Hubzero\Component\SiteController;
 use Hubzero\Component\View;
 use DateTimezone;
