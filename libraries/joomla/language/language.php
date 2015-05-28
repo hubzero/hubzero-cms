@@ -12,7 +12,10 @@ defined('JPATH_PLATFORM') or die;
 /**
  * Allows for quoting in language .ini files.
  */
-define('_QQ_', '"');
+if (!defined('_QQ_'))
+{
+	define('_QQ_', '"');
+}
 
 // import some libraries
 jimport('joomla.filesystem.stream');
