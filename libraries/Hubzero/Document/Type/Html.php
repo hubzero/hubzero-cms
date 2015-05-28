@@ -472,17 +472,18 @@ class Html extends Base
 
 		if (!isset($children))
 		{
-			$dbo = JFactory::getDbo();
-			$app = JFactory::getApplication();
-			$menu = $app->getMenu();
+			$menu = \App::get('meu');
 			$active = $menu->getActive();
 			if ($active)
 			{
-				$query->getQuery(true);
+				$dbo = \JFactory::getDbo();
+
+				$query = $dbo->getQuery(true);
 				$query->select('COUNT(*)');
 				$query->from('#__menu');
 				$query->where('parent_id = ' . $active->id);
 				$query->where('published = 1');
+
 				$children = $dbo->loadResult();
 			}
 			else

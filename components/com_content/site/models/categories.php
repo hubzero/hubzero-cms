@@ -92,7 +92,7 @@ class ContentModelCategories extends JModelList
 	{
 		if (!count($this->_items)) {
 			$app = JFactory::getApplication();
-			$menu = $app->getMenu();
+			$menu = \App::get('menu');
 			$active = $menu->getActive();
 			$params = new \Hubzero\Config\Registry();
 

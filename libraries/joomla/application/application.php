@@ -928,6 +928,14 @@ class JApplication extends JObject
 	 */
 	public function getMenu($name = null, $options = array())
 	{
+		if (class_exists('\\App'))
+		{
+			if (\App::has('menu'))
+			{
+				return \App::get('menu');
+			}
+		}
+
 		if (!isset($name))
 		{
 			$name = $this->_name;

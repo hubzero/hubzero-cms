@@ -54,7 +54,7 @@ class ContentViewArticle extends JViewLegacy
 		// Merge article params. If this is single-article view, menu params override article params
 		// Otherwise, article params override menu item params
 		$this->params = $this->state->get('params');
-		$active = $app->getMenu()->getActive();
+		$active = \App::get('menu')->getActive();
 		$temp   = clone ($this->params);
 
 		// Check to see which parameters should take priority
@@ -160,7 +160,7 @@ class ContentViewArticle extends JViewLegacy
 	protected function _prepareDocument()
 	{
 		$app   = JFactory::getApplication();
-		$menus = $app->getMenu();
+		$menus = \App::get('menu');
 		$title = null;
 
 		// Because the application sets a default page title,

@@ -344,17 +344,17 @@ class View extends Object
 	{
 		if (empty($this->_name))
 		{
-			$this->_name = \Request::getCmd('controller');
+			$this->_name = \App::Get('request')->getCmd('controller');
 			if (!$this->_name)
 			{
 				$r = null;
 				if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r))
 				{
-					throw new \Exception(\Lang::txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
+					throw new \Exception(\App::get('language')->txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
 				}
 				if (strpos($r[3], 'view'))
 				{
-					throw new \Exception(\Lang::txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME_SUBSTRING'), 500);
+					throw new \Exception(\App::get('language')->txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME_SUBSTRING'), 500);
 				}
 				$this->_name = strtolower($r[3]);
 			}
@@ -452,7 +452,7 @@ class View extends Object
 		// Clear prior output
 		$this->_output = null;
 
-		$template = \JFactory::getApplication()->getTemplate();
+		$template = \App::get('template')->template;
 		$layout = $this->getLayout();
 		$layoutTemplate = $this->getLayoutTemplate();
 
@@ -461,14 +461,14 @@ class View extends Object
 
 		// Clean the file name
 		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
-		$tpl = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
+		$tpl  = isset($tpl) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl) : $tpl;
 
 		// Load the language file for the template
-		$lang = \Lang::getRoot();
-		$lang->load('tpl_' . $template, JPATH_BASE, null, false, false)
-			|| $lang->load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, false)
-			|| $lang->load('tpl_' . $template, JPATH_BASE, $lang->getDefault(), false, false)
-			|| $lang->load('tpl_' . $template, JPATH_THEMES . "/$template", $lang->getDefault(), false, false);
+		$lang = \App::get('language');
+		$lang->load('tpl_' . $template, JPATH_BASE, null, false, false) ||
+		$lang->load('tpl_' . $template, JPATH_THEMES . "/$template", null, false, false) ||
+		$lang->load('tpl_' . $template, JPATH_BASE, $lang->getDefault(), false, false) ||
+		$lang->load('tpl_' . $template, JPATH_THEMES . "/$template", $lang->getDefault(), false, false);
 
 		// Change the template folder if alternative layout is in different template
 		if (isset($layoutTemplate) && $layoutTemplate != '_' && $layoutTemplate != $template)
@@ -477,15 +477,14 @@ class View extends Object
 		}
 
 		// Load the template script
-		jimport('joomla.filesystem.path');
 		$filetofind = $this->_createFileName('template', array('name' => $file));
-		$this->_template = \JPath::find($this->_path['template'], $filetofind);
+		$this->_template = \App::get('filesystem')->find($this->_path['template'], $filetofind);
 
 		// If alternate layout can't be found, fall back to default layout
 		if ($this->_template == false)
 		{
 			$filetofind = $this->_createFileName('', array('name' => 'default' . (isset($tpl) ? '_' . $tpl : $tpl)));
-			$this->_template = \JPath::find($this->_path['template'], $filetofind);
+			$this->_template = \App::get('filesystem')->find($this->_path['template'], $filetofind);
 		}
 
 		if ($this->_template != false)
@@ -516,7 +515,7 @@ class View extends Object
 		}
 		else
 		{
-			throw new InvalidLayoutException(\Lang::txt('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
+			throw new InvalidLayoutException(\App::get('language')->txt('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
 		}
 	}
 
@@ -539,19 +538,14 @@ class View extends Object
 		switch (strtolower($type))
 		{
 			case 'template':
-				$app = \JFactory::getApplication();
-
 				// Set the alternative template search dir
-				if (isset($app))
-				{
-					$component = \JApplicationHelper::getComponentName();
-					$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
+				$component = strtolower(\App::get('request')->getCmd('option'));
+				$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
 
-					$this->_addPath(
-						'template',
-						JPATH_THEMES . '/' . $app->getTemplate() . '/html/' . $component . '/' . $this->getName()
-					);
-				}
+				$this->_addPath(
+					'template',
+					JPATH_THEMES . '/' . \App::get('template')->template . '/html/' . $component . '/' . $this->getName()
+				);
 			break;
 		}
 	}

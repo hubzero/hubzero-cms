@@ -28,56 +28,27 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-$menu = \App::get('menu');
+namespace Hubzero\Menu;
 
-if ($item = $menu->getActive())
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * Menu service provider
+ */
+class MenuServiceProvider extends ServiceProvider
 {
-	$menus = $menu->getMenu();
-	$home  = $menu->getDefault();
-
-	if (is_object($home) && ($item->id != $home->id))
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
 	{
-		foreach ($item->tree as $menupath)
+		$this->app['menu'] = function($app)
 		{
-			$url = '';
-			$link = $menu->getItem($menupath);
+			$manager = new Manager();
 
-			switch ($link->type)
-			{
-				case 'separator':
-					$url = null;
-					break;
-
-				case 'url':
-					if ((strpos($link->link, 'index.php?') === 0) && (strpos($link->link, 'Itemid=') === false))
-					{
-						// If this is an internal Joomla link, ensure the Itemid is set.
-						$url = $link->link . '&Itemid=' . $link->id;
-					}
-					else
-					{
-						$url = $link->link;
-					}
-					break;
-
-				case 'alias':
-					// If this is an alias use the item id stored in the parameters to make the link.
-					$url = 'index.php?Itemid=' . $link->params->get('aliasoptions');
-					break;
-
-				default:
-					/*$router = \JSite::getRouter();
-					if ($router->getMode() == JROUTER_MODE_SEF)
-					{*/
-						$url = 'index.php?Itemid=' . $link->id;
-					/*}
-					else {
-						$url .= $link->link . '&Itemid=' . $link->id;
-					}*/
-					break;
-			}
-
-			$trail->append($menus[$menupath]->title, $url);
-		}
+			return $manager->menu($app['client']->name);
+		};
 	}
 }

@@ -33,7 +33,7 @@ class UsersHelperRoute
 			require_once JPATH_SITE.'/core/bootstrap/site/application.php';
 
 			$app   = JFactory::getApplication();
-			$menu  = $app->getMenu();
+			$menu  = \App::get('menu');
 			$com   = JComponentHelper::getComponent('com_users');
 			$items = $menu->getItems('component_id', $com->id);
 

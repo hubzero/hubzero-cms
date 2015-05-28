@@ -51,7 +51,7 @@ class UsersViewProfile extends JViewLegacy
 		}
 
 		// Check for layout override
-		$active = JFactory::getApplication()->getMenu()->getActive();
+		$active = \App::get('menu')->getActive();
 		if (isset($active->query['layout']))
 		{
 			$this->setLayout($active->query['layout']);
@@ -72,7 +72,7 @@ class UsersViewProfile extends JViewLegacy
 	 */
 	protected function prepareDocument()
 	{
-		$menus = JFactory::getApplication()->getMenu();
+		$menus = \App::get('menu');
 		$login = User::isGuest() ? true : false;
 		$title = null;
 

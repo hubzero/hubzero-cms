@@ -80,7 +80,7 @@ class Helper extends Module
 		$user = User::getRoot();
 		$lang = Lang::getRoot();
 		$app  = JFactory::getApplication();
-		$menu = $app->getMenu();
+		$menu = \App::get('menu');
 
 		// Get menu home items
 		$homes = array();

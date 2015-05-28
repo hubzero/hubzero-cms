@@ -198,7 +198,7 @@ class Loader
 	public function getSiteTemplate()
 	{
 		// Get the id of the active menu item
-		$menu = \JFactory::getApplication()->getMenu();
+		$menu = \App::get('menu');
 		$item = $menu->getActive();
 		if (!$item)
 		{

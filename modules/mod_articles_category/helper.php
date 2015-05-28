@@ -301,7 +301,7 @@ class Helper extends Module
 		}
 
 		// Filter by language
-		$articles->setState('filter.language', $app->getLanguageFilter());
+		$articles->setState('filter.language', \App::get('language.filter'));
 
 		$items = $articles->getItems();
 
@@ -342,8 +342,7 @@ class Helper extends Module
 			else
 			{
 				// Angie Fixed Routing
-				$app  = JFactory::getApplication();
-				$menu = $app->getMenu();
+				$menu = \App::get('menu');
 				$menuitems = $menu->getItems('link', 'index.php?option=com_users&view=login');
 				if (isset($menuitems[0]))
 				{

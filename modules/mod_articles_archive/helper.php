@@ -31,11 +31,10 @@
 namespace Modules\ArticleArchive;
 
 use Hubzero\Module\Module;
-use JFactory;
-use JHTML;
 use stdClass;
 use Route;
 use Lang;
+use App;
 
 /**
  * Module class for displaying an article archive
@@ -69,7 +68,7 @@ class Helper extends Module
 	public static function getList(&$params)
 	{
 		// Get database
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 
 		$query = $db->getQuery(true);
 		$query->select('MONTH(created) AS created_month, created, id, title, YEAR(created) AS created_year');
@@ -78,7 +77,7 @@ class Helper extends Module
 		$query->group('created_year DESC, created_month DESC');
 
 		// Filter by language
-		if (JFactory::getApplication()->getLanguageFilter())
+		if (App::get('languag.filter'))
 		{
 			$query->where('language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
 		}
@@ -86,8 +85,7 @@ class Helper extends Module
 		$db->setQuery($query, 0, intval($params->get('count')));
 		$rows = (array) $db->loadObjectList();
 
-		$app    = JFactory::getApplication();
-		$menu   = $app->getMenu();
+		$menu   = App::get('menu');
 		$item   = $menu->getItems('link', 'index.php?option=com_content&view=archive', true);
 		$itemid = (isset($item) && !empty($item->id) ) ? '&Itemid=' . $item->id : '';
 

@@ -41,8 +41,7 @@ $cls = array(
 );
 
 // Find out if this is a front page
-$app = JFactory::getApplication();
-$menu = $app->getMenu();
+$menu = App::get('menu');
 $isFrontPage = false;
 if ($menu->getActive() == $menu->getDefault() && $this->countModules('home-intro'))
 {

@@ -41,4 +41,5 @@ return array(
 	'Hubzero\Html\EditorServiceProvider',
 	'Hubzero\Html\BuilderServiceProvider',
 	'Hubzero\Mail\MailerServiceProvider',
+	'Hubzero\Menu\MenuServiceProvider',
 );

@@ -32,6 +32,8 @@ namespace Hubzero\Debug;
 
 use Hubzero\Base\Object;
 use Hubzero\Debug\Profile\Mark;
+use Hubzero\Log\Writer;
+use Monolog\Logger as Monolog;
 
 /**
  * Utility class to assist in the process of benchmarking the execution
@@ -227,31 +229,35 @@ class Profiler extends Object
 		// This method is only called once per request so we don't need to
 		// seperate logger instance creation from its use
 
-		/*$logger = new \Hubzero\Log\Writer(
-			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
-			\JDispatcher::getInstance()
+		/*$logger = new Writer(
+			new Monolog(\App::get('config')->get('application_env')),
+			\App::get('dispatcher')
 		);
 
-		$path = \JFactory::getConfig()->getValue('config.log_path');
+		$path = \App::get('config')->get('log_path');
 
 		if (is_dir('/var/log/hubzero-cms'))
 		{
 			$path = '/var/log/hubzero-cms';
 		}
 
-		$logger->useFiles($path . '/cmsprofile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
+		$logger->useFiles($path . DS . 'cmsprofile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
 
 		$hubname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
 		$uri = JURI::getInstance()->getPath();
 		$uri = strtr($uri, array(" "=>"%20"));
 		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
 		$query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown'; 
+
 		$memory = memory_get_usage(true);
+
 		$db = \JFactory::getDBO();
 		$querycount = $db->getCount();
 		$querytime = $db->timer;
-		$client = \JApplicationHelper::getClientInfo(\JFactory::getApplication()->getClientId())->name;
-		$time = microtime(true) - $this->_start;
+
+		$client = \App::get('client')->name;
+
+		$time = microtime(true) - $this->started;
 
 		$logger->info("$hubname $ip $client $uri [$query] $memory $querycount $querytime $time");*/
 	}

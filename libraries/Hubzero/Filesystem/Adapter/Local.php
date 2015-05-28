@@ -196,7 +196,7 @@ class Local implements AdapterInterface
 	 */
 	public function find($paths, $file)
 	{
-		$paths = is_array($path) ? $path : array($path);
+		$paths = is_array($paths) ? $paths : array($paths);
 
 		foreach ($paths as $path)
 		{

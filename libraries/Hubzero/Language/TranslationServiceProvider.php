@@ -51,5 +51,7 @@ class TranslationServiceProvider extends ServiceProvider
 
 			return new Translator($locale, $debug);
 		};
+
+		$this->app['language.filter'] = false;
 	}
 }

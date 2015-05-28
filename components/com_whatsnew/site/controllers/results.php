@@ -64,7 +64,7 @@ class Results extends SiteController
 	 */
 	public function displayTask()
 	{
-		$menu = \JFactory::getApplication()->getMenu()->getActive();
+		$menu = \App::get('menu')->getActive();
 		if (!$menu)
 		{
 			$menu = new \stdClass;

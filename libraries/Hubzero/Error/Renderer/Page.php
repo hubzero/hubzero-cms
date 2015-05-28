@@ -140,6 +140,7 @@ class Page implements RendererInterface
 			$response = '';
 			if (is_array($backtrace))
 			{
+				$j = 0;
 				for ($i = count($backtrace) - 1; $i >= 0; $i--)
 				{
 					$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';

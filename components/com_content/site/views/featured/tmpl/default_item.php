@@ -138,7 +138,7 @@ $canEdit = $this->item->params->get('access-edit');
 	if ($params->get('access-view')) :
 		$link = Route::url(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
 	else :
-		$menu = JFactory::getApplication()->getMenu();
+		$menu = \App::get('menu');
 		$active = $menu->getActive();
 		$itemId = $active->id;
 		$link1 = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);

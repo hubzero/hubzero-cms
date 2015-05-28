@@ -60,7 +60,7 @@ class Router extends Base
 		if (!$items)
 		{
 			$app       = \JFactory::getApplication();
-			$menu      = $app->getMenu();
+			$menu      = \App::get('menu');
 			$component = Component::load('com_poll');
 			$items     = $menu->getItems('component_id', $component->id);
 		}
@@ -161,7 +161,7 @@ class Router extends Base
 		}
 
 		//Get the active menu item
-		$menu  = \JFactory::getApplication()->getMenu();
+		$menu  = \App::get('menu');
 		$item  = $menu->getActive();
 
 		$count = count($segments);

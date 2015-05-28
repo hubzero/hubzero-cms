@@ -99,7 +99,7 @@ $editAuthorized = User::authorise('core.manage', 'com_users');
 					</td>
 					<td>
 						<?php
-							$clientInfo = JApplicationHelper::getClientInfo($row->client_id);
+							$clientInfo = \Hubzero\Base\ClientManager::client($row->client_id);
 							echo ucfirst($clientInfo->name);
 						?>
 					</td>

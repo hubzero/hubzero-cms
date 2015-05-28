@@ -100,7 +100,7 @@ class ContentViewArchive extends JViewLegacy
 	protected function _prepareDocument()
 	{
 		$app = JFactory::getApplication();
-		$menus = $app->getMenu();
+		$menus = \App::get('menu');
 		$title = null;
 
 		// Because the application sets a default page title,

@@ -91,7 +91,7 @@ class Helper extends Module
 				if (isset($vars['Itemid']))
 				{
 					$itemid = $vars['Itemid'];
-					$menu = $app->getMenu();
+					$menu = \App::get('menu');
 					$item = $menu->getItem($itemid);
 					unset($vars['Itemid']);
 					if (isset($item) && $vars == $item->query)

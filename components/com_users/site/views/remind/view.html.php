@@ -41,7 +41,7 @@ class UsersViewRemind extends JViewLegacy
 		}
 
 		// Check for layout override
-		$active = JFactory::getApplication()->getMenu()->getActive();
+		$active = \App::get('menu')->getActive();
 		if (isset($active->query['layout'])) {
 			$this->setLayout($active->query['layout']);
 		}
@@ -62,7 +62,7 @@ class UsersViewRemind extends JViewLegacy
 	protected function prepareDocument()
 	{
 		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
+		$menus		= \App::get('menu');
 		$title 		= null;
 
 		// Because the application sets a default page title,

@@ -113,7 +113,7 @@ class ContentModelCategory extends JModelList
 		$params = $app->getParams();
 		$menuParams = new \Hubzero\Config\Registry;
 
-		if ($menu = $app->getMenu()->getActive())
+		if ($menu = \App::get('menu')->getActive())
 		{
 			$menuParams->parse($menu->params);
 		}

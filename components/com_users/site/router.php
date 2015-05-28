@@ -37,7 +37,7 @@ function UsersBuildRoute(&$query)
 	{
 		// Get all relevant menu items.
 		$app   = JFactory::getApplication();
-		$menu  = $app->getMenu();
+		$menu  = \App::get('menu');
 		$items = $menu->getItems('component', 'com_users');
 
 		// Build an array of serialized query strings to menu item id mappings.

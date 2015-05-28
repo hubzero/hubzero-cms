@@ -61,7 +61,7 @@ class UsersViewLogout extends JViewLegacy
 		// Initialize variables
 		$image    = '';
 
-		$menu = JFactory::getApplication()->getMenu();
+		$menu = \App::get('menu');
 
 		$item = $menu->getActive();
 		if ($item)

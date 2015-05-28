@@ -34,6 +34,7 @@ use Hubzero\Module\Module;
 use Cache;
 use Route;
 use User;
+use App;
 
 /**
  * Module class for displaying a menu
@@ -52,8 +53,7 @@ class Helper extends Module
 		$module = $this->module;
 
 		$list      = self::getList($params);
-		$app       = \JFactory::getApplication();
-		$menu      = $app->getMenu();
+		$menu      = App::get('menu');
 		$active    = $menu->getActive();
 		$active_id = isset($active) ? $active->id : $menu->getDefault()->id;
 		$path      = isset($active) ? $active->tree : array();
@@ -74,8 +74,7 @@ class Helper extends Module
 	 */
 	static function getList(&$params)
 	{
-		$app  = \JFactory::getApplication();
-		$menu = $app->getMenu();
+		$menu = App::get('menu');
 
 		// If no active menu, use default
 		$active = ($menu->getActive()) ? $menu->getActive() : $menu->getDefault();

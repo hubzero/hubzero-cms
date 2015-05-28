@@ -112,7 +112,7 @@ class ContentViewCategory extends JViewLegacy
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
-		$active	= $app->getMenu()->getActive();
+		$active	= \App::get('menu')->getActive();
 		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $category->id) === false)))
 		{
 			// Get the layout from the merged category params
@@ -192,7 +192,7 @@ class ContentViewCategory extends JViewLegacy
 	protected function _prepareDocument()
 	{
 		$app   = JFactory::getApplication();
-		$menus = $app->getMenu();
+		$menus = \App::get('menu');
 		$title = null;
 
 		// Because the application sets a default page title,

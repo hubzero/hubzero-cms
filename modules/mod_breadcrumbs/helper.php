@@ -70,8 +70,6 @@ class Helper extends Module
 	 */
 	public function getList()
 	{
-		$app = \JFactory::getApplication();
-
 		$items = \Pathway::items();
 
 		$count = count($items);
@@ -89,7 +87,7 @@ class Helper extends Module
 		{
 			$item = new stdClass();
 			$item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
-			$item->link = Route::url('index.php?Itemid=' . $app->getMenu()->getDefault()->id);
+			$item->link = Route::url('index.php?Itemid=' . \App::get('menu')->getDefault()->id);
 
 			array_unshift($crumbs, $item);
 		}

@@ -109,7 +109,7 @@ class Helper extends Module
 	{
 		$tabclass_arr = array('sectiontableentry2', 'sectiontableentry1');
 
-		$menu   = \JFactory::getApplication()->getMenu();
+		$menu   = \App::get('menu');
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 

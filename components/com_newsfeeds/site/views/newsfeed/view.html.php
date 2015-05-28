@@ -89,7 +89,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		// Otherwise, newsfeed params override menu item params
 		$params = $state->get('params');
 		$newsfeed_params = clone $item->params;
-		$active = $app->getMenu()->getActive();
+		$active = \App::get('menu')->getActive();
 		$temp = clone ($params);
 
 		// Check to see which parameters should take priority
@@ -146,7 +146,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		}
 
 		// Get the current menu item
-		$menus  = $app->getMenu();
+		$menus  = \App::get('menu');
 		$menu   = $menus->getActive();
 		$params = $app->getParams();
 
@@ -217,7 +217,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 	protected function _prepareDocument()
 	{
 		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
+		$menus		= \App::get('menu');
 		$title		= null;
 
 		// Because the application sets a default page title,

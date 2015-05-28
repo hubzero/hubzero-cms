@@ -85,8 +85,7 @@ class UsersViewReset extends JViewLegacy
 	 */
 	protected function prepareDocument()
 	{
-		$app   = JFactory::getApplication();
-		$menus = $app->getMenu();
+		$menus = \App::get('menu');
 		$title = null;
 
 		// Because the application sets a default page title,
@@ -104,15 +103,15 @@ class UsersViewReset extends JViewLegacy
 		$title = $this->params->get('page_title', '');
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif (Config::get('sitename_pagetitles', 0) == 1)
 		{
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
 		{
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 

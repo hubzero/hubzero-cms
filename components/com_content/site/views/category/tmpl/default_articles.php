@@ -145,7 +145,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<td>
 						<?php
 							echo $this->escape($article->title).' : ';
-							$menu		= JFactory::getApplication()->getMenu();
+							$menu		= \App::get('menu');
 							$active		= $menu->getActive();
 							$itemId		= $active->id;
 							$link = Route::url('index.php?option=com_users&view=login&Itemid='.$itemId);

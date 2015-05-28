@@ -211,7 +211,7 @@ class NewsfeedsModelCategory extends JModelList
 		if (!is_object($this->_item))
 		{
 			$app = JFactory::getApplication();
-			$menu = $app->getMenu();
+			$menu = \App::get('menu');
 			$active = $menu->getActive();
 			$params = new \Hubzero\Config\Registry();
 

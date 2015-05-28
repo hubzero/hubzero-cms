@@ -84,7 +84,7 @@ class Polls extends SiteController
 		$params = $app->getParams();
 
 		// Set page title information
-		$menus = $app->getMenu();
+		$menus = \App::get('menu');
 		$menu  = $menus->getActive();
 
 		// because the application sets a default page title, we need to get it
@@ -260,7 +260,7 @@ class Polls extends SiteController
 		$params = $app->getParams();
 
 		//Set page title information
-		$menus = $app->getMenu();
+		$menus = \App::get('menu');
 		$menu  = $menus->getActive();
 
 		// because the application sets a default page title, we need to get it
@@ -337,7 +337,7 @@ class Polls extends SiteController
 
 		// set Itemid id for links
 		$app = \JFactory::getApplication();
-		$menu   = $app->getMenu();
+		$menu   = \App::get('menu');
 		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
