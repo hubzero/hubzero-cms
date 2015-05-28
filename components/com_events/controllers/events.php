@@ -276,7 +276,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 
 	/**
 	 * Default Task
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function displayTask()
@@ -1226,8 +1226,13 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			// one for the event manager
-			$this->_sendEmail($hub, $email, $subject, $message);
+
+			// check to see if event manager email is configured
+			if ($email != "" || $email != NULL || !isset($email))
+			{
+			        // one for the event manager
+			        $this->_sendEmail($hub, $email, $subject, $message);
+			}
 
 			// one for the attendee
 			$this->_sendEmail($hub, $register['email'], $subject, $message);
