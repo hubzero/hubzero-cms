@@ -31,6 +31,7 @@
 namespace Hubzero\Document\Type;
 
 use Hubzero\Document\Base;
+use Exception;
 use Request;
 
 /**
@@ -68,7 +69,7 @@ class Error extends Base
 	 * @param   object   $error  Error object to set
 	 * @return  boolean  True on success
 	 */
-	public function setError($error)
+	public function setError($error, $key = null)
 	{
 		if ($error instanceof Exception)
 		{
@@ -95,13 +96,13 @@ class Error extends Base
 		}
 
 		// Set the status header
-		\JResponse::setHeader('status', $this->error->getCode() . ' ' . str_replace("\n", ' ', $this->error->getMessage()));
+		//\JResponse::setHeader('status', $this->error->getCode() . ' ' . str_replace("\n", ' ', $this->error->getMessage()));
 
 		$file = 'error.php';
 
 		// Check template
 		$directory = isset($params['directory']) ? $params['directory'] : 'templates';
-		$template  = isset($params['template'])  ? \JFilterInput::getInstance()->clean($params['template'], 'cmd') : 'system';
+		$template  = isset($params['template'])  ? ltrim(preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $params['template']), '.') : 'system';
 
 		if (!file_exists($directory . DS . $template . DS . $file))
 		{

@@ -31,7 +31,8 @@
 namespace Hubzero\Error\Renderer;
 
 use Hubzero\Error\RendererInterface;
-use Hubzero\Document\Base;
+use Hubzero\Http\Response;
+use Exception;
 
 /**
  * Displays the custom error page when an uncaught exception occurs.
@@ -67,9 +68,11 @@ class Page implements RendererInterface
 	 * @param   bool    $debug     Debugging turned on?
 	 * @return  void
 	 */
-	public function __construct(Base $document, $template = 'system', $debug = false)
+	public function __construct($document, $template = 'system', $debug = false)
 	{
 		$this->document = $document;
+		$this->template = $template;
+		$this->debug    = $debug;
 	}
 
 	/**
@@ -88,6 +91,8 @@ class Page implements RendererInterface
 				exit($error->getMessage());
 			}
 
+			$this->document->setType('error');
+
 			// Push the error object into the document
 			$this->document->setError($error);
 
@@ -96,7 +101,7 @@ class Page implements RendererInterface
 				ob_end_clean();
 			}
 
-			$this->document->setTitle(Lang::txt('Error') . ': ' . $error->getCode());
+			$this->document->setTitle(\Lang::txt('Error') . ': ' . $error->getCode());
 
 			$data = $this->document->render(
 				false,
@@ -110,11 +115,11 @@ class Page implements RendererInterface
 			// Failsafe to get the error displayed.
 			if (empty($data))
 			{
-				exit($error->getMessage());
+				exit($error->getMessage() . ' in ' . $error->getFile() . ':' . $error->getLine());
 			}
 			else
 			{
-				$status = $exception->getCode() ? $exception->getCode() : 500;
+				$status = $error->getCode() ? $error->getCode() : 500;
 
 				$response = new Response($data, $status);
 				$response->send();
@@ -130,7 +135,32 @@ class Page implements RendererInterface
 				header('HTTP/1.1 500 Internal Server Error');
 			}
 
-			exit('Error displaying the error page: ' . $e->getMessage() . ': ' . $error->getMessage());
+			$backtrace = $e->getTrace();
+
+			$response = '';
+			if (is_array($backtrace))
+			{
+				for ($i = count($backtrace) - 1; $i >= 0; $i--)
+				{
+					$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';
+					$response .= $backtrace[$i]['function'] . '();';
+
+					if (isset($backtrace[$i]['file']))
+					{
+						$response .= $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'];
+					}
+					else
+					{
+						$response .= '...';
+					}
+
+					$response .= "\n\n";
+
+					$j++;
+				}
+			}
+
+			exit('Error displaying the error page: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine() . "\n\n" . $response);
 		}
 	}
 }

@@ -68,12 +68,27 @@ class Handler
 	/**
 	 * Set the debug level for the handler.
 	 *
-	 * @param   bool  $debug
-	 * @return  void
+	 * @param   bool    $debug
+	 * @return  object  Chainable.
 	 */
 	public function setDebug($debug)
 	{
 		$this->debug = $debug;
+
+		return $this;
+	}
+
+	/**
+	 * Set the render,
+	 *
+	 * @param   object  $exception
+	 * @return  object  Chainable.
+	 */
+	public function setRenderer(RendererInterface $renderer)
+	{
+		$this->renderer = $renderer;
+
+		return $this;
 	}
 
 	/**
