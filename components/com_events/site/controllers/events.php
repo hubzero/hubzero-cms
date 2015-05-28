@@ -1245,8 +1245,12 @@ class Events extends SiteController
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			// one for the event manager
-			$this->_sendEmail($hub, $email, $subject, $message);
+			// check to see if event manager email is configured
+			if ($email != "" || $email != NULL || !isset($email))
+			{
+				// one for the event manager
+				$this->_sendEmail($hub, $email, $subject, $message);
+			}
 
 			// one for the attendee
 			$this->_sendEmail($hub, $register['email'], $subject, $message);
@@ -2028,6 +2032,7 @@ class Events extends SiteController
 			$headers .= "X-Priority: 3\n";
 			$headers .= "X-MSMail-Priority: High\n";
 			$headers .= 'X-Mailer: '.  Config::get('sitename') ."\n";
+
 			if (mail($email, $subject, $message, $headers, $args))
 			{
 				return(1);
