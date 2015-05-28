@@ -36,12 +36,12 @@ class MailtoController extends JControllerLegacy
 	function send()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$timeout = Session::get('com_mailto.formtime', 0);
 		if ($timeout == 0 || time() - $timeout < 20)
 		{
-			JError::raiseNotice(500, Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
+			throw new Exception(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'), 500);
 			return $this->mailto();
 		}
 
@@ -55,7 +55,7 @@ class MailtoController extends JControllerLegacy
 		if (!$link || !JURI::isInternal($link))
 		{
 			//Non-local url...
-			JError::raiseNotice(500, Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
+			throw new Exception(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'), 500);
 			return $this->mailto();
 		}
 
@@ -113,7 +113,7 @@ class MailtoController extends JControllerLegacy
 		if (! $from || ! JMailHelper::isEmailAddress($from))
 		{
 			$error = Lang::txt('COM_MAILTO_EMAIL_INVALID', $from);
-			Notify::warning(0, $error);
+			Notify::warning($error);
 		}
 
 		if ($error)
@@ -133,7 +133,7 @@ class MailtoController extends JControllerLegacy
 		// Send the email
 		if (JFactory::getMailer()->sendMail($from, $sender, $email, $subject, $body) !== true)
 		{
-			JError::raiseNotice(500, Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
+			throw new Exception(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'), 500);
 			return $this->mailto();
 		}
 

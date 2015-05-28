@@ -118,7 +118,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 					if (!$mail->Send())
 					{
 						// TODO: Probably should raise a plugin error but this event is not error checked.
-						JError::raiseWarning(500, Lang::txt('ERROR_SENDING_EMAIL'));
+						throw new Exception(Lang::txt('ERROR_SENDING_EMAIL'), 500);
 					}
 				}
 			}
@@ -151,7 +151,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		// If the user is blocked, redirect with an error
 		if ($instance->get('block') == 1)
 		{
-			JError::raiseWarning('SOME_ERROR_CODE', Lang::txt('JERROR_NOLOGIN_BLOCKED'));
+			Notify::warning(Lang::txt('JERROR_NOLOGIN_BLOCKED'));
 			return false;
 		}
 
@@ -165,7 +165,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		$result	= $instance->authorise($options['action']);
 		if (!$result)
 		{
-			JError::raiseWarning(401, Lang::txt('JERROR_LOGIN_DENIED'));
+			Notify::warning(Lang::txt('JERROR_LOGIN_DENIED'));
 			return false;
 		}
 
@@ -300,7 +300,7 @@ class plgUserJoomla extends \Hubzero\Plugin\Plugin
 		{
 			if (!$instance->save())
 			{
-				return JError::raiseWarning('SOME_ERROR_CODE', $instance->getError());
+				return new Exception($instance->getError());
 			}
 		}
 		else

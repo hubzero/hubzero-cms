@@ -41,8 +41,8 @@ class UsersControllerUsers extends JControllerAdmin
 	{
 		parent::__construct($config);
 
-		$this->registerTask('block',		'changeBlock');
-		$this->registerTask('unblock',		'changeBlock');
+		$this->registerTask('block',   'changeBlock');
+		$this->registerTask('unblock', 'changeBlock');
 	}
 
 	/**
@@ -71,17 +71,17 @@ class UsersControllerUsers extends JControllerAdmin
 	public function changeBlock()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids	= Request::getVar('cid', array(), '', 'array');
-		$values	= array('block' => 1, 'unblock' => 0);
-		$task	= $this->getTask();
-		$value	= \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
+		$ids    = Request::getVar('cid', array(), '', 'array');
+		$values = array('block' => 1, 'unblock' => 0);
+		$task   = $this->getTask();
+		$value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			throw new Exception(Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'), 500);
 		}
 		else
 		{
@@ -91,7 +91,7 @@ class UsersControllerUsers extends JControllerAdmin
 			// Change the state of the records.
 			if (!$model->block($ids, $value))
 			{
-				JError::raiseWarning(500, $model->getError());
+				throw new Exception($model->getError(), 500);
 			}
 			else
 			{
@@ -119,14 +119,14 @@ class UsersControllerUsers extends JControllerAdmin
 	public function activate()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids	= Request::getVar('cid', array(), '', 'array');
+		$ids = Request::getVar('cid', array(), '', 'array');
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			throw new Exception(Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'), 500);
 		}
 		else
 		{
@@ -136,7 +136,7 @@ class UsersControllerUsers extends JControllerAdmin
 			// Change the state of the records.
 			if (!$model->activate($ids))
 			{
-				JError::raiseWarning(500, $model->getError());
+				throw new Exception($model->getError(), 500);
 			}
 			else
 			{
@@ -155,14 +155,14 @@ class UsersControllerUsers extends JControllerAdmin
 	public function approve()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$ids = Request::getVar('cid', array(), '', 'array');
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			throw new Exception(Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'), 500);
 		}
 		else
 		{
@@ -172,7 +172,7 @@ class UsersControllerUsers extends JControllerAdmin
 			// Change the state of the records.
 			if (!$model->approve($ids))
 			{
-				JError::raiseWarning(500, $model->getError());
+				throw new Exception($model->getError(), 500);
 			}
 			else
 			{

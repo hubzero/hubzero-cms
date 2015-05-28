@@ -45,7 +45,8 @@ class JFormFieldGroupParent extends JFormFieldList
 		$query->join('LEFT', $db->quoteName('#__usergroups').' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
 
 		// Prevent parenting to children of this item.
-		if ($id = $this->form->getValue('id')) {
+		if ($id = $this->form->getValue('id'))
+		{
 			$query->join('LEFT', $db->quoteName('#__usergroups').' AS p ON p.id = '.(int) $id);
 			$query->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 		}
@@ -59,18 +60,22 @@ class JFormFieldGroupParent extends JFormFieldList
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
+		if ($db->getErrorNum())
+		{
+			throw new Exception($db->getErrorMsg(), 500);
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
-		for ($i = 0, $n = count($options); $i < $n; $i++) {
+		for ($i = 0, $n = count($options); $i < $n; $i++)
+		{
 			// Show groups only if user is super admin or group is not super admin
-			if ($user->authorise('core.admin') || (!JAccess::checkGroup($options[$i]->value, 'core.admin'))) {
+			if ($user->authorise('core.admin') || (!JAccess::checkGroup($options[$i]->value, 'core.admin')))
+			{
 				$options[$i]->text = str_repeat('- ', $options[$i]->level).$options[$i]->text;
 			}
-			else {
-			 unset ($options[$i]);
+			else
+			{
+				unset($options[$i]);
 			}
 		}
 

@@ -1684,7 +1684,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			// Save the changes
 			if (!$profile->update())
 			{
-				JError::raiseWarning('', $profile->getError());
+				Notify::warning($profile->getError());
 				return false;
 			}
 		}

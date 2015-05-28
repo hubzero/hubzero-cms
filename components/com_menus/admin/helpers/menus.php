@@ -174,8 +174,9 @@ class MenusHelper
 		$links = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 			return false;
 		}
 
@@ -196,8 +197,9 @@ class MenusHelper
 			$menuTypes = $db->loadObjectList();
 
 			// Check for a database error.
-			if ($error = $db->getErrorMsg()) {
-				JError::raiseWarning(500, $error);
+			if ($error = $db->getErrorMsg())
+			{
+				throw new Exception($error, 500);
 				return false;
 			}
 
@@ -223,6 +225,7 @@ class MenusHelper
 			return $links;
 		}
 	}
+
 	static public function getAssociations($pk)
 	{
 		$associations = array();
@@ -237,11 +240,13 @@ class MenusHelper
 		$db->setQuery($query);
 		$menuitems = $db->loadObjectList('language');
 		// Check for a database error.
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 			return false;
 		}
-		foreach ($menuitems as $tag=>$item) {
+		foreach ($menuitems as $tag=>$item)
+		{
 			$associations[$tag] = $item->id;
 		}
 		return $associations;

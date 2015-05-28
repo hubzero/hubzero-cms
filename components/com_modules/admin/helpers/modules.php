@@ -53,10 +53,10 @@ abstract class ModulesHelper
 	public static function getStateOptions()
 	{
 		// Build the filter options.
-		$options	= array();
-		$options[]	= Html::select('option',	'1',	Lang::txt('JPUBLISHED'));
-		$options[]	= Html::select('option',	'0',	Lang::txt('JUNPUBLISHED'));
-		$options[]	= Html::select('option',	'-2',	Lang::txt('JTRASHED'));
+		$options = array();
+		$options[] = Html::select('option', '1',  Lang::txt('JPUBLISHED'));
+		$options[] = Html::select('option', '0',  Lang::txt('JUNPUBLISHED'));
+		$options[] = Html::select('option', '-2', Lang::txt('JTRASHED'));
 		return $options;
 	}
 
@@ -68,16 +68,16 @@ abstract class ModulesHelper
 	public static function getClientOptions()
 	{
 		// Build the filter options.
-		$options	= array();
-		$options[]	= Html::select('option', '0', Lang::txt('JSITE'));
-		$options[]	= Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
+		$options = array();
+		$options[] = Html::select('option', '0', Lang::txt('JSITE'));
+		$options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 		return $options;
 	}
 
 	static function getPositions($clientId)
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT(position)');
 		$query->from('#__modules');
@@ -90,7 +90,7 @@ abstract class ModulesHelper
 
 		if ($error = $db->getErrorMsg())
 		{
-			JError::raiseWarning(500, $error);
+			throw new Exception($error, 500);
 			return;
 		}
 
@@ -100,12 +100,12 @@ abstract class ModulesHelper
 		{
 			if (!$position)
 			{
-				$options[]	= Html::select('option', 'none', ':: '.Lang::txt('JNONE').' ::');
+				$options[] = Html::select('option', 'none', ':: '.Lang::txt('JNONE').' ::');
 
 			}
 			else
 			{
-				$options[]	= Html::select('option', $position, $position);
+				$options[] = Html::select('option', $position, $position);
 			}
 		}
 		return $options;
@@ -115,7 +115,7 @@ abstract class ModulesHelper
 	{
 		$db = JFactory::getDbo();
 		// Get the database object and a new query object.
-		$query	= $db->getQuery(true);
+		$query = $db->getQuery(true);
 
 		// Build the query.
 		$query->select('element, name, enabled');

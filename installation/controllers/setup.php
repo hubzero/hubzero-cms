@@ -29,9 +29,9 @@ class JInstallationControllerSetup extends JControllerLegacy
 		// Check for potentially unwritable session
 		$session = JFactory::getSession();
 
-		if ($session->isNew()) {
-			JError::setErrorHandling(E_ERROR, 'message');
-			JError::raise(E_ERROR, 500, JText::_('INSTL_COOKIES_NOT_ENABLED'));
+		if ($session->isNew())
+		{
+			throw new Exception(JText::_('INSTL_COOKIES_NOT_ENABLED'));
 
 			return false;
 		}
@@ -87,7 +87,7 @@ class JInstallationControllerSetup extends JControllerLegacy
 		$app = JFactory::getApplication();
 
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or exit(JText::_('JINVALID_TOKEN'));
 
 		// Get the setup model.
 		$model = $this->getModel('Setup', 'JInstallationModel', array('dbo' => null));

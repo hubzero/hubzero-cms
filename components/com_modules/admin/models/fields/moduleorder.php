@@ -64,7 +64,7 @@ class JFormFieldModuleOrder extends JFormField
 		$orders = $db->loadObjectList();
 		if ($error = $db->getErrorMsg())
 		{
-			JError::raiseWarning(500, $error);
+			throw new Exception($error, 500);
 			return false;
 		}
 

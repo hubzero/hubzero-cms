@@ -38,15 +38,18 @@ abstract class MenusHtmlMenus
 		$items = $db->loadObjectList('id');
 
 		// Check for a database error.
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 			return false;
 		}
 
 		// Construct html
 		$text = array();
-		foreach ($associations as $tag=>$associated) {
-			if ($associated != $itemid) {
+		foreach ($associations as $tag=>$associated)
+		{
+			if ($associated != $itemid)
+			{
 				$text[] = Lang::txt('COM_MENUS_TIP_ASSOCIATED_LANGUAGE', Html::asset('image', 'mod_languages/'.$items[$associated]->image.'.gif', $items[$associated]->language_title, array('title'=>$items[$associated]->language_title), true), $items[$associated]->title, $items[$associated]->menu_title);
 			}
 		}

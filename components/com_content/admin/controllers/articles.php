@@ -32,12 +32,13 @@ class ContentControllerArticles extends JControllerAdmin
 	{
 		// Articles default form can come from the articles or featured view.
 		// Adjust the redirect view on the value of 'view' in the request.
-		if (Request::getCmd('view') == 'featured') {
+		if (Request::getCmd('view') == 'featured')
+		{
 			$this->view_list = 'featured';
 		}
 		parent::__construct($config);
 
-		$this->registerTask('unfeatured',	'featured');
+		$this->registerTask('unfeatured', 'featured');
 	}
 
 	/**
@@ -49,34 +50,38 @@ class ContentControllerArticles extends JControllerAdmin
 	function featured()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids	= Request::getVar('cid', array(), '', 'array');
-		$values	= array('featured' => 1, 'unfeatured' => 0);
-		$task	= $this->getTask();
-		$value	= \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
+		$ids    = Request::getVar('cid', array(), '', 'array');
+		$values = array('featured' => 1, 'unfeatured' => 0);
+		$task   = $this->getTask();
+		$value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
 
 		// Access checks.
 		foreach ($ids as $i => $id)
 		{
-			if (!$user->authorise('core.edit.state', 'com_content.article.'.(int) $id)) {
+			if (!$user->authorise('core.edit.state', 'com_content.article.'.(int) $id))
+			{
 				// Prune items that you can't change.
 				unset($ids[$i]);
-				JError::raiseNotice(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+				Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 			}
 		}
 
-		if (empty($ids)) {
-			JError::raiseWarning(500, Lang::txt('JERROR_NO_ITEMS_SELECTED'));
+		if (empty($ids))
+		{
+			Notify::error(Lang::txt('JERROR_NO_ITEMS_SELECTED'));
 		}
-		else {
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
 			// Publish the items.
-			if (!$model->featured($ids, $value)) {
-				JError::raiseWarning(500, $model->getError());
+			if (!$model->featured($ids, $value))
+			{
+				throw new Exception($model->getError(), 500);
 			}
 		}
 

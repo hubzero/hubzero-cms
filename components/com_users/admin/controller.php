@@ -63,7 +63,7 @@ class UsersController extends JControllerLegacy
 
 		if (!$this->canView($view))
 		{
-			JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 404);
 			return;
 		}
 

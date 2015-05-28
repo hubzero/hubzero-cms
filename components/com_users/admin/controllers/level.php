@@ -37,7 +37,7 @@ class UsersControllerLevel extends JControllerForm
 	 */
 	protected function allowSave($data, $key = 'id')
 	{
-		return (JFactory::getUser()->authorise('core.admin', $this->option) && parent::allowSave($data, $key));
+		return (User::authorise('core.admin', $this->option) && parent::allowSave($data, $key));
 	}
 
 	/**
@@ -46,30 +46,33 @@ class UsersControllerLevel extends JControllerForm
 	public function delete()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		Session::checkToken() or exit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
-		$user	= JFactory::getUser();
-		$ids	= Request::getVar('cid', array(), '', 'array');
+		$ids  = Request::getVar('cid', array(), '', 'array');
 
-		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
-			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
-			jexit();
+		if (!User::authorise('core.admin', $this->option))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 		}
-		elseif (empty($ids)) {
-			JError::raiseWarning(500, Lang::txt('COM_USERS_NO_LEVELS_SELECTED'));
+		elseif (empty($ids))
+		{
+			throw new Exception(Lang::txt('COM_USERS_NO_LEVELS_SELECTED'), 500);
 		}
-		else {
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
 			\Hubzero\Utility\Arr::toInteger($ids);
 
 			// Remove the items.
-			if (!$model->delete($ids)) {
-				JError::raiseWarning(500, $model->getError());
+			if (!$model->delete($ids))
+			{
+				throw new Exception($model->getError(), 500);
 			}
-			else {
+			else
+			{
 				$this->setMessage(Lang::txts('COM_USERS_N_LEVELS_DELETED', count($ids)));
 			}
 		}

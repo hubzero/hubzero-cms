@@ -48,7 +48,7 @@ class MediaControllerFolder extends JControllerLegacy
 		if (!User::authorise('core.delete', 'com_media'))
 		{
 			// User is not authorised to delete
-			JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 			return false;
 		}
 
@@ -65,7 +65,7 @@ class MediaControllerFolder extends JControllerLegacy
 				if ($path !== Filesystem::clean($path))
 				{
 					$dirname = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_MEDIA_BASE))));
+					Notify::warning(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_MEDIA_BASE))));
 					continue;
 				}
 
@@ -78,7 +78,7 @@ class MediaControllerFolder extends JControllerLegacy
 					if (in_array(false, $result, true))
 					{
 						// There are some errors in the plugins
-						JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+						Notify::warning(Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 						continue;
 					}
 
@@ -98,7 +98,7 @@ class MediaControllerFolder extends JControllerLegacy
 						if (in_array(false, $result, true))
 						{
 							// There are some errors in the plugins
-							JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+							Notify::warning(Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 							continue;
 						}
 
@@ -111,7 +111,7 @@ class MediaControllerFolder extends JControllerLegacy
 					else
 					{
 						//This makes no sense...
-						JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
+						Notify::warning(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
 					}
 				}
 			}
@@ -141,7 +141,7 @@ class MediaControllerFolder extends JControllerLegacy
 			if (!User::authorise('core.create', 'com_media'))
 			{
 				// User is not authorised to delete
-				JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
+				Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
 				return false;
 			}
 
@@ -166,7 +166,7 @@ class MediaControllerFolder extends JControllerLegacy
 				if (in_array(false, $result, true))
 				{
 					// There are some errors in the plugins
-					JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+					Notify::warning(Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 					return false;
 				}
 

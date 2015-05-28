@@ -9,8 +9,9 @@
 defined('_JEXEC') or die;
 
 // Access check.
-if (!User::authorise('core.manage', 'com_modules')) {
-	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!User::authorise('core.manage', 'com_modules'))
+{
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 $controller	= JControllerLegacy::getInstance('Modules');

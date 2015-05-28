@@ -55,9 +55,9 @@ class PluginsHelper
 	public static function stateOptions()
 	{
 		// Build the active state filter options.
-		$options	= array();
-		$options[]	= Html::select('option', '1', 'JENABLED');
-		$options[]	= Html::select('option', '0', 'JDISABLED');
+		$options = array();
+		$options[] = Html::select('option', '1', 'JENABLED');
+		$options[] = Html::select('option', '0', 'JDISABLED');
 
 		return $options;
 	}
@@ -69,8 +69,8 @@ class PluginsHelper
 	 */
 	public static function folderOptions()
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT(folder) AS value, folder AS text');
 		$query->from('#__extensions');
@@ -82,7 +82,7 @@ class PluginsHelper
 
 		if ($error = $db->getErrorMsg())
 		{
-			JError::raiseWarning(500, $error);
+			throw new Exception($error, 500);
 		}
 
 		return $options;

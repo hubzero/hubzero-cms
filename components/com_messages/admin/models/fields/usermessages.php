@@ -42,20 +42,23 @@ class JFormFieldUserMessages extends JFormFieldUser
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			JError::raiseNotice(500, $db->getErrorMsg());
+			throw new Exception($db->getErrorMsg(), 500);
 			return null;
 		}
 
 		foreach ($groups as $i=>$group)
 		{
-			if (JAccess::checkGroup($group, 'core.admin')) {
+			if (JAccess::checkGroup($group, 'core.admin'))
+			{
 				continue;
 			}
-			if (!JAccess::checkGroup($group, 'core.manage', 'com_messages')) {
+			if (!JAccess::checkGroup($group, 'core.manage', 'com_messages'))
+			{
 				unset($groups[$i]);
 				continue;
 			}
-			if (!JAccess::checkGroup($group, 'core.login.admin')) {
+			if (!JAccess::checkGroup($group, 'core.login.admin'))
+			{
 				unset($groups[$i]);
 				continue;
 			}

@@ -339,8 +339,7 @@ class ModulesModelModule extends JModelAdmin
 				// Access checks.
 				if (!User::authorise('core.delete', 'com_modules') || $table->published != -2)
 				{
-					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
-					//	throw new Exception(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					throw new Exception(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'), 403);
 					return;
 				}
 
@@ -351,8 +350,8 @@ class ModulesModelModule extends JModelAdmin
 				else
 				{
 					// Delete the menu assignments
-					$db		= $this->getDbo();
-					$query	= $db->getQuery(true);
+					$db = $this->getDbo();
+					$query = $db->getQuery(true);
 					$query->delete();
 					$query->from('#__modules_menu');
 					$query->where('moduleid='.(int)$pk);
@@ -455,7 +454,7 @@ class ModulesModelModule extends JModelAdmin
 
 			if (!$this->_db->query())
 			{
-				return JError::raiseWarning(500, $this->_db->getErrorMsg());
+				throw new Exception($this->_db->getErrorMsg(), 500);
 			}
 		}
 
@@ -1013,7 +1012,7 @@ class ModulesModelModule extends JModelAdmin
 
 		if ($error = $db->getErrorMsg())
 		{
-			JError::raiseWarning(500, $error);
+			throw new Exception($error, 500);
 			return;
 		}
 

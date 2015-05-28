@@ -58,11 +58,13 @@ class JFormFieldModal_Article extends JFormField
 		);
 		$title = $db->loadResult();
 
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
+		if ($error = $db->getErrorMsg())
+		{
+			throw new Exception($error, 500);
 		}
 
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = Lang::txt('COM_CONTENT_SELECT_AN_ARTICLE');
 		}
 		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');

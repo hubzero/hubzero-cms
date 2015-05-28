@@ -139,7 +139,6 @@ class UsersModelLevels extends JModelList
 	{
 		// Sanitize the id and adjustment.
 		$pk	= (!empty($pk)) ? $pk : (int) $this->getState('level.id');
-		$user = JFactory::getUser();
 
 		// Get an instance of the record's table.
 		$table = JTable::getInstance('viewlevel');
@@ -152,7 +151,7 @@ class UsersModelLevels extends JModelList
 		}
 
 		// Access checks.
-		$allow = $user->authorise('core.edit.state', 'com_users');
+		$allow = User::authorise('core.edit.state', 'com_users');
 
 		if (!$allow)
 		{
@@ -182,7 +181,7 @@ class UsersModelLevels extends JModelList
 
 		if (empty($pks))
 		{
-			return JError::raiseWarning(500, Lang::txt('COM_USERS_ERROR_LEVELS_NOLEVELS_SELECTED'));
+			return new Exception(Lang::txt('COM_USERS_ERROR_LEVELS_NOLEVELS_SELECTED'), 500);
 		}
 
 		// update ordering values
@@ -197,7 +196,7 @@ class UsersModelLevels extends JModelList
 			{
 				// Prune items that you can't change.
 				unset($pks[$i]);
-				JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+				Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 			}
 			elseif ($table->ordering != $order[$i])
 			{

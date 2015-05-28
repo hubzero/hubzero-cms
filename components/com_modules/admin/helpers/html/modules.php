@@ -170,7 +170,7 @@ abstract class JHtmlModules
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			JError::raiseWarning(500, $db->getErrorMsg());
+			throw new Exception($db->getErrorMsg(), 500);
 		}
 
 		// Pop the first item off the array if it's blank

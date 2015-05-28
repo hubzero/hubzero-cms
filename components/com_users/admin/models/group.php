@@ -55,9 +55,6 @@ class UsersModelGroup extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm('com_users.group', 'group', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form))
@@ -213,7 +210,7 @@ class UsersModelGroup extends JModelAdmin
 		{
 			if (in_array($pk, $groups))
 			{
-				JError::raiseWarning( 403, Lang::txt('COM_USERS_DELETE_ERROR_INVALID_GROUP'));
+				Notify::warning(Lang::txt('COM_USERS_DELETE_ERROR_INVALID_GROUP'));
 				return false;
 			}
 		}
@@ -247,7 +244,7 @@ class UsersModelGroup extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					Notify::warning(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 				}
 			}
 			else

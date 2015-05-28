@@ -28,7 +28,7 @@ class UsersViewDebugUser extends JViewLegacy
 		// Access check.
 		if (!User::authorise('core.manage', 'com_users') || !Config::get('debug'))
 		{
-			return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 404);
 		}
 
 		$this->actions		= $this->get('DebugActions');
@@ -42,7 +42,7 @@ class UsersViewDebugUser extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			App::abort(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 

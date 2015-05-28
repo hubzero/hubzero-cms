@@ -76,12 +76,8 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 
 		if (!isset($any[$alias]))
 		{
-			$jThrow = JError::$legacy;
-
 			try
 			{
-				JError::$legacy = FALSE; // just throw an exception like a normal person, please
-
 				$dbh = JFactory::getDBO();
 				$dbh->setQuery('SELECT 1 FROM `#__resource_stats_clusters` WHERE toolname = ' . $dbh->quote($alias) . ' LIMIT 1');
 				list($any[$alias]) = $dbh->loadColumn(0);
@@ -90,8 +86,6 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 			{
 				$any[$alias] = FALSE;
 			}
-
-			JError::$legacy = $jThrow;
 		}
 		return $any[$alias];
 	}

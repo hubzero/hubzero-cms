@@ -151,28 +151,28 @@ class InstallerModelInstall extends JModelLegacy
 		// Make sure that file uploads are enabled in php
 		if (!(bool) ini_get('file_uploads'))
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_WARNINSTALLFILE'));
+			Notify::warning( Lang::txt('COM_INSTALLER_MSG_INSTALL_WARNINSTALLFILE'));
 			return false;
 		}
 
 		// Make sure that zlib is loaded so that the package can be unpacked
 		if (!extension_loaded('zlib'))
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_WARNINSTALLZLIB'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_INSTALL_WARNINSTALLZLIB'));
 			return false;
 		}
 
 		// If there is no uploaded file, we have a problem...
 		if (!is_array($userfile))
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_NO_FILE_SELECTED'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_INSTALL_NO_FILE_SELECTED'));
 			return false;
 		}
 
 		// Check if there was a problem uploading the file.
 		if ($userfile['error'] || $userfile['size'] < 1)
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_WARNINSTALLUPLOADERROR'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_INSTALL_WARNINSTALLUPLOADERROR'));
 			return false;
 		}
 
@@ -204,7 +204,7 @@ class InstallerModelInstall extends JModelLegacy
 		// Did you give us a valid directory?
 		if (!is_dir($p_dir))
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_PLEASE_ENTER_A_PACKAGE_DIRECTORY'));
+			Notify::warning( Lang::txt('COM_INSTALLER_MSG_INSTALL_PLEASE_ENTER_A_PACKAGE_DIRECTORY'));
 			return false;
 		}
 
@@ -214,7 +214,7 @@ class InstallerModelInstall extends JModelLegacy
 		// Did you give us a valid package?
 		if (!$type)
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_PATH_DOES_NOT_HAVE_A_VALID_PACKAGE'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_INSTALL_PATH_DOES_NOT_HAVE_A_VALID_PACKAGE'));
 			return false;
 		}
 
@@ -243,7 +243,7 @@ class InstallerModelInstall extends JModelLegacy
 		// Did you give us a URL?
 		if (!$url)
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL'));
 			return false;
 		}
 
@@ -253,7 +253,7 @@ class InstallerModelInstall extends JModelLegacy
 		// Was the package downloaded?
 		if (!$p_file)
 		{
-			JError::raiseWarning('', Lang::txt('COM_INSTALLER_MSG_INSTALL_INVALID_URL'));
+			Notify::warning(Lang::txt('COM_INSTALLER_MSG_INSTALL_INVALID_URL'));
 			return false;
 		}
 

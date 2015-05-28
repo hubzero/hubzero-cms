@@ -20,10 +20,10 @@ class ContentControllerFeatured extends ContentControllerArticles
 	function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids	= Request::getVar('cid', array(), '', 'array');
+		$ids = Request::getVar('cid', array(), '', 'array');
 
 		// Access checks.
 		foreach ($ids as $i => $id)
@@ -32,20 +32,23 @@ class ContentControllerFeatured extends ContentControllerArticles
 			{
 				// Prune items that you can't delete.
 				unset($ids[$i]);
-				JError::raiseNotice(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+				Notify::warning(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 			}
 		}
 
-		if (empty($ids)) {
-			JError::raiseWarning(500, Lang::txt('JERROR_NO_ITEMS_SELECTED'));
+		if (empty($ids))
+		{
+			Notify::error(Lang::txt('JERROR_NO_ITEMS_SELECTED'));
 		}
-		else {
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
 			// Remove the items.
-			if (!$model->featured($ids, 0)) {
-				JError::raiseWarning(500, $model->getError());
+			if (!$model->featured($ids, 0))
+			{
+				throw new Exception($model->getError(), 500);
 			}
 		}
 

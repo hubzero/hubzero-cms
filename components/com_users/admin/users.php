@@ -9,9 +9,9 @@
 defined('_JEXEC') or die;
 
 // Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_users'))
+if (!User::authorise('core.manage', 'com_users'))
 {
-	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Register helper class

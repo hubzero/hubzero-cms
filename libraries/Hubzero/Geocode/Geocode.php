@@ -278,7 +278,7 @@ class Geocode
 			}
 		}
 
-		if (\JError::isError($instance) || !$instance->getConnection())
+		if (($instance instanceof Exception) || !$instance->getConnection())
 		{
 			return null;
 		}

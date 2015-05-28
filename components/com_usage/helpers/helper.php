@@ -66,14 +66,14 @@ class Helper
 			else
 			{
 				$instance = \JDatabase::getInstance($options);
-				if (\JError::isError($instance))
+				if ($instance instanceof \Exception)
 				{
 					$instance = \JFactory::getDBO();
 				}
 			}
 		}
 
-		if (\JError::isError($instance))
+		if ($instance instanceof \Exception)
 		{
 			return null;
 		}

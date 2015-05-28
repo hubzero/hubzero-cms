@@ -1207,7 +1207,7 @@ class MenusModelItem extends JModelAdmin
 			// Detecting all item menus
 			$all_language = $table->language == '*';
 			if ($all_language && !empty($associations)) {
-				JError::raiseNotice(403, Lang::txt('COM_MENUS_ERROR_ALL_LANGUAGE_ASSOCIATED'));
+				throw new Exception(Lang::txt('COM_MENUS_ERROR_ALL_LANGUAGE_ASSOCIATED'), 403);
 			}
 
 			$associations[$table->language]=$table->id;
@@ -1298,52 +1298,62 @@ class MenusModelItem extends JModelAdmin
 	function setHome(&$pks, $value = 1)
 	{
 		// Initialise variables.
-		$table		= $this->getTable();
-		$pks		= (array) $pks;
+		$table = $this->getTable();
+		$pks   = (array) $pks;
 
-		$languages	= array();
-		$onehome	= false;
+		$languages = array();
+		$onehome   = false;
 
 		// Remember that we can set a home page for different languages,
 		// so we need to loop through the primary key array.
 		foreach ($pks as $i => $pk)
 		{
-			if ($table->load($pk)) {
-				if (!array_key_exists($table->language, $languages)) {
+			if ($table->load($pk))
+			{
+				if (!array_key_exists($table->language, $languages))
+				{
 					$languages[$table->language] = true;
 
-					if ($table->home == $value) {
+					if ($table->home == $value)
+					{
 						unset($pks[$i]);
-						JError::raiseNotice(403, Lang::txt('COM_MENUS_ERROR_ALREADY_HOME'));
+						Notify::warning(Lang::txt('COM_MENUS_ERROR_ALREADY_HOME'));
 					}
-					else {
+					else
+					{
 						$table->home = $value;
-						if ($table->language == '*') {
+						if ($table->language == '*')
+						{
 							$table->published = 1;
 						}
 
-						if (!$this->canSave($table)) {
+						if (!$this->canSave($table))
+						{
 							// Prune items that you can't change.
 							unset($pks[$i]);
-							JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
+							Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
 						}
-						elseif (!$table->check()) {
+						elseif (!$table->check())
+						{
 							// Prune the items that failed pre-save checks.
 							unset($pks[$i]);
-							JError::raiseWarning(403, $table->getError());
+							Notify::warning($table->getError());
 						}
-						elseif (!$table->store()) {
+						elseif (!$table->store())
+						{
 							// Prune the items that could not be stored.
 							unset($pks[$i]);
-							JError::raiseWarning(403, $table->getError());
+							Notify::warning($table->getError());
 						}
 					}
 				}
-				else {
+				else
+				{
 					unset($pks[$i]);
-					if (!$onehome) {
+					if (!$onehome)
+					{
 						$onehome = true;
-						JError::raiseNotice(403, Lang::txt('COM_MENUS_ERROR_ONE_HOME'));
+						throw new Exception(Lang::txt('COM_MENUS_ERROR_ONE_HOME'), 403);
 					}
 				}
 			}
@@ -1367,16 +1377,18 @@ class MenusModelItem extends JModelAdmin
 	function publish(&$pks, $value = 1)
 	{
 		// Initialise variables.
-		$table		= $this->getTable();
-		$pks		= (array) $pks;
+		$table = $this->getTable();
+		$pks   = (array) $pks;
 
 		// Default menu item existence checks.
-		if ($value != 1) {
+		if ($value != 1)
+		{
 			foreach ($pks as $i => $pk)
 			{
-				if ($table->load($pk) && $table->home && $table->language == '*') {
+				if ($table->load($pk) && $table->home && $table->language == '*')
+				{
 					// Prune items that you can't change.
-					JError::raiseWarning(403, Lang::txt('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME'));
+					Notify::warning(Lang::txt('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME'));
 					unset($pks[$i]);
 					break;
 				}

@@ -56,7 +56,7 @@ class MediaControllerFile extends JControllerLegacy
 			(($_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1))
 		)
 		{
-			JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
+			Notify::warning(Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 			return false;
 		}
 		// Input is in the form of an associative array containing numerically indexed arrays
@@ -71,19 +71,19 @@ class MediaControllerFile extends JControllerLegacy
 		{
 			if ($file['error']==1)
 			{
-				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
+				Notify::warning(Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 				return false;
 			}
 			if ($file['size']>($params->get('upload_maxsize', 0) * 1024 * 1024))
 			{
-				JError::raiseNotice(100, Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
+				Notify::warning(Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 				return false;
 			}
 
 			if (Filesystem::exists($file['filepath']))
 			{
 				// A file with this name already exists
-				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_FILE_EXISTS'));
+				Notify::warning(Lang::txt('COM_MEDIA_ERROR_FILE_EXISTS'));
 				return false;
 			}
 
@@ -105,7 +105,7 @@ class MediaControllerFile extends JControllerLegacy
 			if (!MediaHelper::canUpload($file, $err))
 			{
 				// The file can't be upload
-				JError::raiseNotice(100, Lang::txt($err));
+				Notify::warning(Lang::txt($err));
 				return false;
 			}
 
@@ -115,14 +115,14 @@ class MediaControllerFile extends JControllerLegacy
 			if (in_array(false, $result, true))
 			{
 				// There are some errors in the plugins
-				JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+				Notify::warning(Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 				return false;
 			}
 
 			if (!Filesystem::upload($file['tmp_name'], $file['filepath']))
 			{
 				// Error in upload
-				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
+				Notify::warning(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
 				return false;
 			}
 			else
@@ -175,7 +175,7 @@ class MediaControllerFile extends JControllerLegacy
 		if (!User::authorise('core.' . strtolower($action), 'com_media'))
 		{
 			// User is not authorised
-			JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
+			Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
 			return false;
 		}
 
@@ -227,7 +227,7 @@ class MediaControllerFile extends JControllerLegacy
 			{
 				// filename is not safe
 				$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_MEDIA_BASE))));
+				Notify::warning(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_MEDIA_BASE))));
 				continue;
 			}
 
@@ -240,7 +240,7 @@ class MediaControllerFile extends JControllerLegacy
 				if (in_array(false, $result, true))
 				{
 					// There are some errors in the plugins
-					JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+					Notify::warning(Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 					continue;
 				}
 
@@ -260,7 +260,7 @@ class MediaControllerFile extends JControllerLegacy
 					if (in_array(false, $result, true))
 					{
 						// There are some errors in the plugins
-						JError::raiseWarning(100, Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+						Notify::warning(Lang::txts('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 						continue;
 					}
 
@@ -273,7 +273,7 @@ class MediaControllerFile extends JControllerLegacy
 				else
 				{
 					// This makes no sense...
-					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
+					Notify::warning(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
 				}
 			}
 		}

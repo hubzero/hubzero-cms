@@ -51,10 +51,12 @@ class JFormFieldMenuOrdering extends JFormFieldList
 
 		$query->where('a.published >= 0');
 		$query->where('a.parent_id =' . (int) $parent_id);
-		if ($menuType = $this->form->getValue('menutype')) {
+		if ($menuType = $this->form->getValue('menutype'))
+		{
 			$query->where('a.menutype = '.$db->quote($menuType));
 		}
-		else {
+		else
+		{
 			$query->where('a.menutype != '.$db->quote(''));
 		}
 
@@ -66,14 +68,15 @@ class JFormFieldMenuOrdering extends JFormFieldList
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
+		if ($db->getErrorNum())
+		{
+			throw new Exception($db->getErrorMsg(), 500);
 		}
 
 		$options = array_merge(
-		array(array ('value' =>'-1', 'text'=>Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
-		$options,
-		array(array( 'value' =>'-2', 'text'=>Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')))
+			array(array ('value' =>'-1', 'text'=>Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
+			$options,
+			array(array( 'value' =>'-2', 'text'=>Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')))
 		);
 
 		// Merge any additional options in the XML definition.

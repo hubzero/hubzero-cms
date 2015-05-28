@@ -66,7 +66,7 @@ class MessagesModelMessage extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, \Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+					\Notify::warning(\Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 					return false;
 				}
 			}
@@ -227,7 +227,7 @@ class MessagesModelMessage extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, \Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					\Notify::warning(\Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 					return false;
 				}
 			}

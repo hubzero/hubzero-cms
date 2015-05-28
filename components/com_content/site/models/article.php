@@ -340,7 +340,7 @@ class ContentModelArticle extends JModelItem
 			}
 			return true;
 		}
-		JError::raiseWarning( 'SOME_ERROR_CODE', Lang::txt('COM_CONTENT_INVALID_RATING', $rate), "JModelArticle::storeVote($rate)");
+		Notify::warning(Lang::txt('COM_CONTENT_INVALID_RATING', $rate) . "JModelArticle::storeVote($rate)");
 		return false;
 	}
 }

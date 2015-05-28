@@ -66,7 +66,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		// @TODO Maybe this could go into Component::raiseErrors($this->get('Errors'))
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseWarning(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 
 			return false;
 		}
@@ -81,7 +81,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 
 		if (!is_writable($cacheDir))
 		{
-			JError::raiseNotice('0', Lang::txt('COM_NEWSFEEDS_CACHE_DIRECTORY_UNWRITABLE'));
+			throw new Exception(Lang::txt('COM_NEWSFEEDS_CACHE_DIRECTORY_UNWRITABLE'));
 			return;
 		}
 
@@ -139,15 +139,16 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		// Check the access to the newsfeed
 		$levels = User::getAuthorisedViewLevels();
 
-		if (!in_array($item->access, $levels) or ((in_array($item->access, $levels) and (!in_array($item->category_access, $levels))))) {
-			JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		if (!in_array($item->access, $levels) or ((in_array($item->access, $levels) and (!in_array($item->category_access, $levels)))))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 			return;
 		}
 
 		// Get the current menu item
-		$menus	= $app->getMenu();
-		$menu	= $menus->getActive();
-		$params	= $app->getParams();
+		$menus  = $app->getMenu();
+		$menu   = $menus->getActive();
+		$params = $app->getParams();
 
 		// Get the newsfeed
 		$newsfeed = $item;
@@ -158,9 +159,10 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		//  get RSS parsed object
 		$rssDoc = JFactory::getFeedParser($newsfeed->link, $newsfeed->cache_time);
 
-		if ($rssDoc == false) {
+		if ($rssDoc == false)
+		{
 			$msg = Lang::txt('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
-			$app->redirect(NewsFeedsHelperRoute::getCategoryRoute($newsfeed->catslug), $msg);
+			App::redirect(NewsFeedsHelperRoute::getCategoryRoute($newsfeed->catslug), $msg);
 			return;
 		}
 		$lists = array();
@@ -186,7 +188,8 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 
 		// feed display order
 		$feed_display_order = $params->get('feed_display_order', 'des');
-		if ($feed_display_order == 'asc') {
+		if ($feed_display_order == 'asc')
+		{
 			$newsfeed->items = array_reverse($newsfeed->items);
 		}
 
@@ -254,13 +257,13 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 		}
 
 		if (empty($title)) {
-			$title = $app->getCfg('sitename');
+			$title = Config::get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		elseif (Config::get('sitename_pagetitles', 0) == 1) {
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2) {
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		if (empty($title)) {
 			$title = $this->item->name;
@@ -290,11 +293,11 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 
-		if ($app->getCfg('MetaTitle') == '1') {
+		if (Config::get('MetaTitle') == '1') {
 			$this->document->setMetaData('title', $this->item->name);
 		}
 
-		if ($app->getCfg('MetaAuthor') == '1') {
+		if (Config::get('MetaAuthor') == '1') {
 			$this->document->setMetaData('author', $this->item->author);
 		}
 

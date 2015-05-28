@@ -96,24 +96,27 @@ class TemplatesControllerSource extends JControllerLegacy
 	public function edit()
 	{
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$model		= $this->getModel();
-		$recordId	= Request::getVar('id');
-		$context	= 'com_templates.edit.source';
+		$app      = JFactory::getApplication();
+		$model    = $this->getModel();
+		$recordId = Request::getVar('id');
+		$context  = 'com_templates.edit.source';
 
-		if (preg_match('#\.\.#', base64_decode($recordId))) {
-			return App::abort(500, Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
+		if (preg_match('#\.\.#', base64_decode($recordId)))
+		{
+			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'), 500);
 		}
 
 		// Access check.
-		if (!$this->allowEdit()) {
-			return JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+		if (!$this->allowEdit())
+		{
+			return new Exception(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 401);
 		}
 
 		// Check-out succeeded, push the new record id into the session.
-		$app->setUserState($context.'.id',	$recordId);
+		$app->setUserState($context.'.id', $recordId);
 		$app->setUserState($context.'.data', null);
 		$this->setRedirect('index.php?option=com_templates&view=source&layout=edit');
+
 		return true;
 	}
 
@@ -125,17 +128,17 @@ class TemplatesControllerSource extends JControllerLegacy
 	public function cancel()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$model		= $this->getModel();
-		$context	= 'com_templates.edit.source';
-		$returnId	= (int) $model->getState('extension.id');
+		$app      = JFactory::getApplication();
+		$model    = $this->getModel();
+		$context  = 'com_templates.edit.source';
+		$returnId = (int) $model->getState('extension.id');
 
 		// Clean the session data and redirect.
-		$app->setUserState($context.'.id',		null);
-		$app->setUserState($context.'.data',	null);
+		$app->setUserState($context.'.id', null);
+		$app->setUserState($context.'.data', null);
 		$this->setRedirect(Route::url('index.php?option=com_templates&view=template&id='.$returnId, false));
 	}
 
@@ -145,36 +148,40 @@ class TemplatesControllerSource extends JControllerLegacy
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$data		= Request::getVar('jform', array(), 'post', 'array');
-		$context	= 'com_templates.edit.source';
-		$task		= $this->getTask();
-		$model		= $this->getModel();
+		$app     = JFactory::getApplication();
+		$data    = Request::getVar('jform', array(), 'post', 'array');
+		$context = 'com_templates.edit.source';
+		$task    = $this->getTask();
+		$model   = $this->getModel();
 
 		// Access check.
-		if (!$this->allowSave()) {
-			return JError::raiseWarning(403, Lang::txt('JERROR_SAVE_NOT_PERMITTED'));
+		if (!$this->allowSave())
+		{
+			return new Exception(Lang::txt('JERROR_SAVE_NOT_PERMITTED'), 403);
 		}
 
 		// Match the stored id's with the submitted.
-		if (empty($data['extension_id']) || empty($data['filename'])) {
-			return App::abort(500, Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
+		if (empty($data['extension_id']) || empty($data['filename']))
+		{
+			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'), 500);
 		}
-		elseif ($data['extension_id'] != $model->getState('extension.id')) {
-			return App::abort(500, Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
+		elseif ($data['extension_id'] != $model->getState('extension.id'))
+		{
+			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
 		}
-		elseif ($data['filename'] != $model->getState('filename')) {
-			return App::abort(500, Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
+		elseif ($data['filename'] != $model->getState('filename'))
+		{
+			throw new Exception(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_ID_FILENAME_MISMATCH'));
 		}
 
 		// Validate the posted data.
 		$form	= $model->getForm();
 		if (!$form)
 		{
-			App::abort(500, $model->getError());
+			throw new Exception($model->getError(), 500);
 			return false;
 		}
 		$data = $model->validate($form, $data);
@@ -188,10 +195,12 @@ class TemplatesControllerSource extends JControllerLegacy
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				if ($errors[$i] instanceof Exception) {
+				if ($errors[$i] instanceof Exception)
+				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
 				}
-				else {
+				else
+				{
 					$app->enqueueMessage($errors[$i], 'warning');
 				}
 			}

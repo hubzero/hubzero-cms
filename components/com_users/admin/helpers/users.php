@@ -84,14 +84,13 @@ class UsersHelper
 	{
 		if (empty(self::$actions))
 		{
-			$user = JFactory::getUser();
 			self::$actions = new \Hubzero\Base\Object;
 
 			$actions = JAccess::getActions('com_users');
 
 			foreach ($actions as $action)
 			{
-				self::$actions->set($action->name, $user->authorise($action->name, 'com_users'));
+				self::$actions->set($action->name, User::authorise($action->name, 'com_users'));
 			}
 		}
 
@@ -172,7 +171,7 @@ class UsersHelper
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			JError::raiseNotice(500, $db->getErrorMsg());
+			throw new Exception($db->getErrorMsg(), 500);
 			return null;
 		}
 

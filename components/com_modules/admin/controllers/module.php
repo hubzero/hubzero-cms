@@ -45,7 +45,7 @@ class ModulesControllerModule extends JControllerForm
 		if (empty($extensionId))
 		{
 			$this->setRedirect(Route::url('index.php?option='.$this->option.'&view='.$this->view_item.'&layout=edit', false));
-			return JError::raiseWarning(500, Lang::txt('COM_MODULES_ERROR_INVALID_EXTENSION'));
+			throw new Exception(Lang::txt('COM_MODULES_ERROR_INVALID_EXTENSION'), 500);
 		}
 
 		$app->setUserState('com_modules.add.module.extension_id', $extensionId);
@@ -112,10 +112,10 @@ class ModulesControllerModule extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
-		$model	= $this->getModel('Module', '', array());
+		$model = $this->getModel('Module', '', array());
 
 		// Preset the redirect
 		$this->setRedirect(Route::url('index.php?option=com_modules&view=modules'.$this->getRedirectToListAppend(), false));

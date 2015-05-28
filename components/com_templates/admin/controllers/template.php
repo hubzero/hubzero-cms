@@ -46,7 +46,7 @@ class TemplatesControllerTemplate extends JControllerLegacy
 			if (!User::authorise('core.create', 'com_templates'))
 			{
 				// User is not authorised to delete
-				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_CREATE_NOT_PERMITTED'));
+				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_CREATE_NOT_PERMITTED'));
 				return false;
 			}
 
@@ -55,14 +55,14 @@ class TemplatesControllerTemplate extends JControllerLegacy
 
 			// Check that new name is valid
 			if (($newNameRaw !== null) && ($newName !== $newNameRaw)) {
-				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_INVALID_TEMPLATE_NAME'));
+				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_INVALID_TEMPLATE_NAME'));
 				return false;
 			}
 
 			// Check that new name doesn't already exist
 			if (!$model->checkNewName())
 			{
-				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_DUPLICATE_TEMPLATE_NAME'));
+				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_DUPLICATE_TEMPLATE_NAME'));
 				return false;
 			}
 
@@ -70,14 +70,14 @@ class TemplatesControllerTemplate extends JControllerLegacy
 			$fromName = $model->getFromName();
 			if (!$fromName)
 			{
-				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_INVALID_FROM_NAME'));
+				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_INVALID_FROM_NAME'));
 				return false;
 			}
 
 			// Call model's copy method
 			if (!$model->copy())
 			{
-				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_COPY'));
+				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_COPY'));
 				return false;
 			}
 
@@ -87,7 +87,7 @@ class TemplatesControllerTemplate extends JControllerLegacy
 			Lang::load('com_installer');
 			if (!$installModel->install())
 			{
-				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_INSTALL'));
+				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_INSTALL'));
 				return false;
 			}
 

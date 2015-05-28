@@ -71,9 +71,6 @@ class UsersModelUser extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm('com_users.user', 'user', array('control' => 'jform', 'load_data' => $loadData));
 
@@ -100,7 +97,7 @@ class UsersModelUser extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_users.edit.user.data', array());
+		$data = User::getState('com_users.edit.user.data', array());
 
 		if (empty($data))
 		{
@@ -293,7 +290,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					Notify::warning(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 				}
 			}
 			else
@@ -334,7 +331,7 @@ class UsersModelUser extends JModelAdmin
 			{
 				// Cannot block yourself.
 				unset($pks[$i]);
-				JError::raiseWarning(403, Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
+				Notify::warning(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
 			}
 			elseif ($table->load($pk))
 			{
@@ -354,7 +351,7 @@ class UsersModelUser extends JModelAdmin
 					// Skip changing of same state
 					if ($table->block == $value)
 					{
-						JError::raiseNotice(405, Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_ALREADY_BLOCKED'));
+						Notify::warning(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_ALREADY_BLOCKED'));
 						unset($pks[$i]);
 						continue;
 					}
@@ -414,7 +411,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 			}
 		}
@@ -500,7 +497,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 			}
 		}
@@ -578,7 +575,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 			}
 		}

@@ -36,8 +36,8 @@ class JFormFieldNewsfeeds extends JFormFieldList
 		// Initialize variables.
 		$options = array();
 
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('id As value, name As text');
 		$query->from('#__newsfeeds AS a');
@@ -49,8 +49,9 @@ class JFormFieldNewsfeeds extends JFormFieldList
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
+		if ($db->getErrorNum())
+		{
+			throw new Exception($db->getErrorMsg(), 500);
 		}
 
 		// Merge any additional options in the XML definition.

@@ -205,7 +205,7 @@ class TemplatesModelTemplate extends JModelLegacy
 			{
 				if (!Filesystem::deleteDirectory($toPath))
 				{
-					JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_WRITE'));
+					Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_WRITE'));
 					return false;
 				}
 			}
@@ -220,7 +220,7 @@ class TemplatesModelTemplate extends JModelLegacy
 		}
 		else
 		{
-			JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_INVALID_FROM_NAME'));
+			Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_INVALID_FROM_NAME'));
 			return false;
 		}
 	}

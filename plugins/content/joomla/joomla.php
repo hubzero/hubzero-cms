@@ -135,7 +135,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 				{
 					$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) .
 					Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
-					JError::raiseWarning(403, $msg);
+					Notify::warning(403, $msg);
 					$result = false;
 				}
 				// Check for items in any child categories (if it is a leaf, there are no child categories)
@@ -149,8 +149,8 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 					elseif ($count > 0)
 					{
 						$msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) .
-						JText::plural('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
-						JError::raiseWarning(403, $msg);
+						Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
+						Notify::warning(403, $msg);
 						$result = false;
 					}
 				}
@@ -182,7 +182,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 		// Check for DB error.
 		if ($error = $db->getErrorMsg())
 		{
-			JError::raiseWarning(500, $error);
+			throw new Exception($error, 500);
 			return false;
 		}
 		else
@@ -226,7 +226,7 @@ class plgContentJoomla extends \Hubzero\Plugin\Plugin
 			// Check for DB error.
 			if ($error = $db->getErrorMsg())
 			{
-				JError::raiseWarning(500, $error);
+				throw new Exception($error, 500);
 				return false;
 			}
 			else

@@ -23,18 +23,20 @@ class ContentViewForm extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$app		= JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		// Get model data.
-		$this->state		= $this->get('State');
-		$this->item			= $this->get('Item');
-		$this->form			= $this->get('Form');
-		$this->return_page	= $this->get('ReturnPage');
+		$this->state       = $this->get('State');
+		$this->item        = $this->get('Item');
+		$this->form        = $this->get('Form');
+		$this->return_page = $this->get('ReturnPage');
 
-		if (empty($this->item->id)) {
+		if (empty($this->item->id))
+		{
 			$authorised = User::authorise('core.create', 'com_content') || (count(User::getAuthorisedCategories('com_content', 'core.create')));
 		}
-		else {
+		else
+		{
 			$authorised = $this->item->params->get('access-edit');
 		}
 
@@ -43,20 +45,21 @@ class ContentViewForm extends JViewLegacy
 			return false;
 		}
 
-		if (!empty($this->item) && isset($this->item->id)) {
+		if (!empty($this->item) && isset($this->item->id))
+		{
 			$this->item->images = json_decode($this->item->images);
-			$this->item->urls = json_decode($this->item->urls);
+			$this->item->urls   = json_decode($this->item->urls);
 
 			$tmp = new stdClass;
 			$tmp->images = $this->item->images;
 			$tmp->urls = $this->item->urls;
 			$this->form->bind($tmp);
-
 		}
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 
@@ -66,10 +69,11 @@ class ContentViewForm extends JViewLegacy
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->params	= $params;
-		$this->user		= User::getRoot();
+		$this->params = $params;
+		$this->user   = User::getRoot();
 
-		if ($params->get('enable_category') == 1) {
+		if ($params->get('enable_category') == 1)
+		{
 			$this->form->setFieldAttribute('catid', 'default',  $params->get('catid', 1));
 			$this->form->setFieldAttribute('catid', 'readonly', 'true');
 		}
@@ -82,9 +86,9 @@ class ContentViewForm extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$title 		= null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -92,16 +96,20 @@ class ContentViewForm extends JViewLegacy
 		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', Lang::txt('COM_CONTENT_FORM_EDIT_ARTICLE'));
 		}
 
 		$title = $this->params->def('page_title', Lang::txt('COM_CONTENT_FORM_EDIT_ARTICLE'));
-		if ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
+		if (Config::get('sitename_pagetitles', 0) == 1)
+		{
+			$title = Lang::txt('JPAGETITLE', Config::get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
+		elseif (Config::get('sitename_pagetitles', 0) == 2)
+		{
+			$title = Lang::txt('JPAGETITLE', $title, Config::get('sitename'));
 		}
 		$this->document->setTitle($title);
 

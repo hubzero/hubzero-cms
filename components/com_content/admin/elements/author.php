@@ -31,10 +31,11 @@ class JElementAuthor extends JElement
 
 		// Include user in groups that have access to edit their articles, other articles, or manage content.
 		$action = array('com_content.article.edit_own', 'com_content.article.edit_article', 'com_content.manage');
-		$groups	= $access->getAuthorisedUsergroups($action, true);
+		$groups = $access->getAuthorisedUsergroups($action, true);
 
 		// Check the results of the access check.
-		if (!$groups) {
+		if (!$groups)
+		{
 			return false;
 		}
 
@@ -57,8 +58,9 @@ class JElementAuthor extends JElement
 		$users = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
-			JError::raiseNotice(500, $db->getErrorMsg());
+		if ($db->getErrorNum())
+		{
+			throw new Exception($db->getErrorMsg(), 500);
 			return false;
 		}
 

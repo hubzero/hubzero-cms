@@ -112,8 +112,9 @@ class JFormFieldCategoryEdit extends JFormFieldList
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
+		if ($db->getErrorNum())
+		{
+			throw new Exception($db->getErrorMsg(), 500);
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
@@ -122,10 +123,10 @@ class JFormFieldCategoryEdit extends JFormFieldList
 			// Translate ROOT
 			if ($this->element['parent'] == true || $jinput->get('option') == 'com_categories')
 			{
-					if ($options[$i]->level == 0)
-					{
-						$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
-					}
+				if ($options[$i]->level == 0)
+				{
+					$options[$i]->text = Lang::txt('JGLOBAL_ROOT_PARENT');
+				}
 			}
 			if ($options[$i]->published == 1)
 			{

@@ -84,12 +84,10 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 			$text_direction = 'rtl';
 		}
 
-		$use_content_css	= $this->params->def('content_css', 1);
-		$content_css_custom	= $this->params->def('content_css_custom', '');
+		$use_content_css    = $this->params->def('content_css', 1);
+		$content_css_custom = $this->params->def('content_css_custom', '');
 
-		/*
-		 * Lets get the default template for the site application
-		 */
+		// Lets get the default template for the site application
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
@@ -119,8 +117,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 				// Issue warning notice if the file is not found (but pass name to $content_css anyway to avoid TinyMCE error
 				if (!file_exists($templates_path . '/' . $template . '/css/' . $content_css_custom))
 				{
-					$msg = sprintf (Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom);
-					JError::raiseNotice('SOME_ERROR_CODE', $msg);
+					$msg = sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom);
+					Notify::warning($msg);
 				}
 			}
 		}
@@ -138,7 +136,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 					// if no editor.css file in system folder, show alert
 					if (!file_exists($templates_path . '/system/css/editor.css'))
 					{
-						JError::raiseNotice('SOME_ERROR_CODE', Lang::txt('PLG_TINY_ERR_EDITORCSSFILENOTPRESENT'));
+						Notify::warning(Lang::txt('PLG_TINY_ERR_EDITORCSSFILENOTPRESENT'));
 					}
 					else
 					{
@@ -152,7 +150,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$relative_urls		= $this->params->def('relative_urls', '1');
+		$relative_urls = $this->params->def('relative_urls', '1');
 
 		if ($relative_urls)
 		{
@@ -165,7 +163,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 			$relative_urls = "false";
 		}
 
-		$newlines			= $this->params->def('newlines', 0);
+		$newlines = $this->params->def('newlines', 0);
 
 		if ($newlines)
 		{
@@ -178,16 +176,16 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 			$forcenewline = "force_br_newlines : false, force_p_newlines : true, forced_root_block : 'p',";
 		}
 
-		$invalid_elements	= $this->params->def('invalid_elements', 'script,applet,iframe');
-		$extended_elements	= $this->params->def('extended_elements', '');
+		$invalid_elements  = $this->params->def('invalid_elements', 'script,applet,iframe');
+		$extended_elements = $this->params->def('extended_elements', '');
 
 		// theme_advanced_* settings
-		$toolbar			= $this->params->def('toolbar', 'top');
-		$toolbar_align		= $this->params->def('toolbar_align', 'left');
-		$html_height		= $this->params->def('html_height', '550');
-		$html_width			= $this->params->def('html_width', '750');
-		$resizing			= $this->params->def('resizing', 'true');
-		$resize_horizontal	= $this->params->def('resize_horizontal', 'false');
+		$toolbar           = $this->params->def('toolbar', 'top');
+		$toolbar_align     = $this->params->def('toolbar_align', 'left');
+		$html_height       = $this->params->def('html_height', '550');
+		$html_width        = $this->params->def('html_width', '750');
+		$resizing          = $this->params->def('resizing', 'true');
+		$resize_horizontal = $this->params->def('resize_horizontal', 'false');
 		$element_path = '';
 
 		if ($this->params->get('element_path', 1))
@@ -229,47 +227,47 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($paste)
 		{
-			$plugins[]	= 'paste';
-			$buttons4[]	= 'pastetext';
-			$buttons4[]	= 'pasteword';
-			$buttons4[]	= 'selectall,|';
+			$plugins[]  = 'paste';
+			$buttons4[] = 'pastetext';
+			$buttons4[] = 'pasteword';
+			$buttons4[] = 'selectall,|';
 		}
 
 		// search & replace
-		$searchreplace		=  $this->params->def('searchreplace', 1);
+		$searchreplace =  $this->params->def('searchreplace', 1);
 
 		if ($searchreplace)
 		{
-			$plugins[]	= 'searchreplace';
-			$buttons2_add_before[]	= 'search,replace,|';
+			$plugins[] = 'searchreplace';
+			$buttons2_add_before[] = 'search,replace,|';
 		}
 
 		// insert date and/or time plugin
-		$insertdate			= $this->params->def('insertdate', 1);
-		$format_date		= $this->params->def('format_date', '%Y-%m-%d');
-		$inserttime			= $this->params->def('inserttime', 1);
-		$format_time		= $this->params->def('format_time', '%H:%M:%S');
+		$insertdate  = $this->params->def('insertdate', 1);
+		$format_date = $this->params->def('format_date', '%Y-%m-%d');
+		$inserttime  = $this->params->def('inserttime', 1);
+		$format_time = $this->params->def('format_time', '%H:%M:%S');
 
 		if ($insertdate or $inserttime)
 		{
-			$plugins[]	= 'insertdatetime';
+			$plugins[] = 'insertdatetime';
 			if ($insertdate)
 			{
-				$buttons2_add[]	= 'insertdate';
+				$buttons2_add[] = 'insertdate';
 			}
 
 			if ($inserttime)
 			{
-				$buttons2_add[]	= 'inserttime';
+				$buttons2_add[] = 'inserttime';
 			}
 		}
 
 		// colors
-		$colors =  $this->params->def('colors', 1);
+		$colors = $this->params->def('colors', 1);
 
 		if ($colors)
 		{
-			$buttons2_add[]	= 'forecolor,backcolor';
+			$buttons2_add[] = 'forecolor,backcolor';
 		}
 
 		// table
@@ -277,8 +275,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($table)
 		{
-			$plugins[]	= 'table';
-			$buttons3_add_before[]	= 'tablecontrols';
+			$plugins[] = 'table';
+			$buttons3_add_before[] = 'tablecontrols';
 		}
 
 		// emotions
@@ -286,8 +284,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($smilies)
 		{
-			$plugins[]	= 'emotions';
-			$buttons3_add[]	= 'emotions';
+			$plugins[] = 'emotions';
+			$buttons3_add[] = 'emotions';
 		}
 
 		//media plugin
@@ -304,7 +302,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($hr)
 		{
-			$plugins[]	= 'advhr';
+			$plugins[]  = 'advhr';
 			$elements[] = 'hr[id|title|alt|class|width|size|noshade|style]';
 			$buttons3_add[]	= 'advhr';
 		}
@@ -327,8 +325,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($fullscreen)
 		{
-			$plugins[]	= 'fullscreen';
-			$buttons2_add[]	= 'fullscreen';
+			$plugins[] = 'fullscreen';
+			$buttons2_add[] = 'fullscreen';
 		}
 
 		// layer
@@ -336,11 +334,11 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($layer)
 		{
-			$plugins[]	= 'layer';
-			$buttons4[]	= 'insertlayer';
-			$buttons4[]	= 'moveforward';
-			$buttons4[]	= 'movebackward';
-			$buttons4[]	= 'absolute';
+			$plugins[]  = 'layer';
+			$buttons4[] = 'insertlayer';
+			$buttons4[] = 'moveforward';
+			$buttons4[] = 'movebackward';
+			$buttons4[] = 'absolute';
 		}
 
 		// style
@@ -348,8 +346,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($style)
 		{
-			$plugins[]	= 'style';
-			$buttons4[]	= 'styleprops';
+			$plugins[]  = 'style';
+			$buttons4[] = 'styleprops';
 		}
 
 		// XHTMLxtras
@@ -357,8 +355,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($xhtmlxtras)
 		{
-			$plugins[]	= 'xhtmlxtras';
-			$buttons4[]	= 'cite,abbr,acronym,ins,del,attribs';
+			$plugins[]  = 'xhtmlxtras';
+			$buttons4[] = 'cite,abbr,acronym,ins,del,attribs';
 		}
 
 		// visualchars
@@ -366,8 +364,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($visualchars)
 		{
-			$plugins[]	= 'visualchars';
-			$buttons4[]	= 'visualchars';
+			$plugins[]  = 'visualchars';
+			$buttons4[] = 'visualchars';
 		}
 
 		// visualblocks
@@ -375,8 +373,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($visualblocks)
 		{
-			$plugins[]	= 'visualblocks';
-			$buttons4[]	= 'visualblocks';
+			$plugins[]  = 'visualblocks';
+			$buttons4[] = 'visualblocks';
 		}
 
 		// non-breaking
@@ -384,12 +382,12 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		if ($nonbreaking)
 		{
-			$plugins[]	= 'nonbreaking';
-			$buttons4[]	= 'nonbreaking';
+			$plugins[]  = 'nonbreaking';
+			$buttons4[] = 'nonbreaking';
 		}
 
 		// blockquote
-		$blockquote	= $this->params->def( 'blockquote', 1 );
+		$blockquote = $this->params->def( 'blockquote', 1 );
 
 		if ($blockquote)
 		{
@@ -397,7 +395,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 		}
 
 		// wordcount
-		$wordcount	= $this->params->def( 'wordcount', 1 );
+		$wordcount = $this->params->def( 'wordcount', 1 );
 
 		if ($wordcount)
 		{
