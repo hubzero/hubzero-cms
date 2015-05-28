@@ -262,7 +262,8 @@ class Sync extends \Hubzero\Base\Object
 					? 'Using exclusively timed changes ' . "\n"
 					: 'Mixing in timed changes ' . "\n";
 
-				$remotes = array_merge($timedRemotes, $remotes);
+				//$remotes = array_merge($timedRemotes, $remotes);
+				$remotes = $timedRemotes + $remotes;
 			}
 		}
 		else

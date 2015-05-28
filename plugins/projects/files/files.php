@@ -815,18 +815,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Create
 		$success = $this->repo->makeDirectory($params);
-		if ($success)
+
+		if ($this->repo->getError())
 		{
-			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY'), 'type' => 'success');
+			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
+		}
+		else
+		{
+			$this->_msg = Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY');
+
 			// Force sync
 			if ($this->repo->isLocal())
 			{
 				$this->model->saveParam('google_sync_queue', 1);
 			}
-		}
-		elseif ($this->repo->getError())
-		{
-			$this->_message = array('message' => $this->repo->getError(), 'type' => 'error');
 		}
 
 		// Redirect to file list
@@ -834,6 +836,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$url .= $this->repo->isLocal() ? '' : '&repo=' . $this->repo->get('name');
 		$url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 		$this->_referer = Route::url($url);
+
+		// Set success message
+		if (isset($this->_msg) && $this->_msg)
+		{
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+		}
 		return;
 	}
 

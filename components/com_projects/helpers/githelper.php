@@ -998,7 +998,7 @@ class Git extends Object
 				}
 
 				// Sort by time, most recent first
-				array_multisort($timestamps, SORT_DESC, $locals);
+				//array_multisort($timestamps, SORT_DESC, $locals, SORT_STRING);
 			}
 
 		}
