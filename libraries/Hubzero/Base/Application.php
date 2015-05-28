@@ -413,11 +413,11 @@ class Application extends Container
 	 */
 	public function run()
 	{
+		$app = \JFactory::getApplication($this['client']->name);
+
 		$this->boot();
 
 		$profiler = $this['profiler'];
-
-		$app = \JFactory::getApplication($this['client']->name);
 
 		// Mark afterLoad in the profiler.
 		$profiler ? $profiler->mark('afterLoad') : null;

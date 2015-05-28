@@ -29,6 +29,7 @@
  */
 
 return array(
+	'Hubzero\Error\ErrorServiceProvider',
 	'Hubzero\Session\SessionServiceProvider',
 	'Hubzero\Auth\AuthServiceProvider',
 	'Hubzero\Document\DocumentServiceProvider',

@@ -19,11 +19,11 @@ defined('_JEXEC') or die;
 //
 // Installation check, and check on removal of the install directory.
 //
-if (!file_exists(JPATH_CONFIGURATION . DS . 'configuration.php'))
+/*if (!file_exists(JPATH_CONFIGURATION . DS . 'configuration.php'))
 {
 	echo 'No configuration file found. Exiting...';
 	exit();
-}
+}*/
 
 //
 // Joomla system startup.
@@ -34,10 +34,10 @@ if (!file_exists(JPATH_CONFIGURATION . DS . 'configuration.php'))
 require_once JPATH_ROOT.'/core/bootstrap/autoload.php';
 
 // Force library to be in JError legacy mode
-JError::$legacy = true;
+/*JError::$legacy = true;
 JError::setErrorHandling(E_NOTICE, 'message');
 JError::setErrorHandling(E_WARNING, 'message');
-JError::setErrorHandling(E_ERROR, 'callback', array('JError', 'customErrorPage'));
+JError::setErrorHandling(E_ERROR, 'callback', array('JError', 'customErrorPage'));*/
 
 // Botstrap the CMS libraries.
 require_once JPATH_LIBRARIES.'/cms.php';

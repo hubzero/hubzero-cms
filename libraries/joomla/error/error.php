@@ -172,6 +172,10 @@ abstract class JError
 		jimport('joomla.error.exception');
 
 		// Build error object
+		if (class_exists('\\App'))
+		{
+			throw new JException($msg, $code, $level, $info, $backtrace);
+		}
 		$exception = new JException($msg, $code, $level, $info, $backtrace);
 		return JError::throwError($exception);
 	}
