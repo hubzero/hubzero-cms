@@ -57,7 +57,29 @@ class Repository extends \JRegistry implements ArrayAccess
 	{
 		$this->client = $client;
 
+		// Installation check, and check on removal of the install directory.
+		if (!file_exists(PATH_APP . DS . 'configuration.php')
+		 || (filesize(PATH_APP . DS . 'configuration.php') < 10))
+		{
+			if (file_exists(JPATH_INSTALLATION . DS . 'index.php'))
+			{
+				header('Location: ' . substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'index.php')) . 'installation/index.php');
+				exit;
+			}
+			else
+			{
+				echo 'No configuration file found and no installation code available. Exiting...';
+				exit;
+			}
+		}
+
 		require_once PATH_APP . DS . 'configuration.php';
+
+		if (!class_exists('\\JConfig'))
+		{
+			echo 'Invalid configuration file. Exiting...';
+			exit();
+		}
 
 		parent::__construct(new \JConfig);
 	}
