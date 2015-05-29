@@ -262,7 +262,7 @@ class Comment extends \JTable
 			return false;
 		}
 
-		if ($this->attachmentNames && count($this->attachmentNames) > 0)
+		if (isset($this->attachmentNames) && count($this->attachmentNames) > 0)
 		{
 			// save the attachments
 			foreach ($this->attachmentNames as $nm)
