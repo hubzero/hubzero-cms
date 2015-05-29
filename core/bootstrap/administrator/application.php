@@ -128,8 +128,8 @@ class JAdministrator extends JApplication
 	 */
 	public function dispatch($component = null)
 	{
-		try
-		{
+		/*try
+		{*/
 			if ($component === null) {
 				$component = JAdministratorHelper::findOption();
 			}
@@ -156,13 +156,13 @@ class JAdministrator extends JApplication
 			// Trigger the onAfterDispatch event.
 			JPluginHelper::importPlugin('system');
 			$this->triggerEvent('onAfterDispatch');
-		}
+		/*}
 		// Mop up any uncaught exceptions.
 		catch (Exception $e)
 		{
 			$code = $e->getCode();
 			JError::raiseError($code ? $code : 500, $e->getMessage());
-		}
+		}*/
 	}
 
 	/**
@@ -176,6 +176,10 @@ class JAdministrator extends JApplication
 		$component	= JRequest::getCmd('option', 'com_login');
 		$template	= $this->getTemplate(true);
 		$file		= JRequest::getCmd('tmpl', 'index');
+
+		if ($component == 'com_login') {
+			$file = 'login';
+		}
 
 		// Safety check for when configuration.php root_user is in use.
 		$config		= JFactory::getConfig();
