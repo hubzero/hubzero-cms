@@ -128,19 +128,19 @@ $useBlocks  = $config->get('curation', 0);
 					<div class="col span4">
 						<label for="volume">
 							<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_VOLUME'); ?>:
-							<input type="text" name="volume" id="volume" size="11" maxlength="11" value="<?php echo $this->row->volume; ?>" />
+							<input type="text" name="cite[volume]" id="volume" size="11" maxlength="11" value="<?php echo $this->row->volume; ?>" />
 						</label>
 					</div>
 					<div class="col span4">
 						<label for="number">
 							<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_ISSUE'); ?>:
-							<input type="text" name="number" id="number" size="11" maxlength="50" value="<?php echo $this->row->number; ?>" />
+							<input type="text" name="cite[number]" id="number" size="11" maxlength="50" value="<?php echo $this->row->number; ?>" />
 						</label>
 					</div>
 					<div class="col span4 omega">
 						<label for="pages">
 							<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_PAGES'); ?>:
-							<input type="text" name="pages" id="pages" size="11" maxlength="250" value="<?php echo $this->row->pages; ?>" />
+							<input type="text" name="cite[pages]" id="pages" size="11" maxlength="250" value="<?php echo $this->row->pages; ?>" />
 						</label>
 					</div>
 				</div>
