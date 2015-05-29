@@ -746,6 +746,12 @@ class Questions extends SiteController
 			return;
 		}
 
+		if (!User::authorise('core.create', $this->option)
+		 && !User::authorise('core.manage', $this->option))
+		{
+			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+		}
+
 		// Instantiate a new view
 		$this->view->config = $this->config;
 		$this->view->task   = $this->_task;
@@ -800,6 +806,13 @@ class Questions extends SiteController
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
+		}
+
+		if (!User::authorise('core.edit', $this->option)
+		 && !User::authorise('core.create', $this->option)
+		 && !User::authorise('core.manage', $this->option))
+		{
+			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// Incoming
@@ -1009,6 +1022,12 @@ class Questions extends SiteController
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
 			return;
+		}
+
+		if (!User::authorise('core.delete', $this->option)
+		 && !User::authorise('core.manage', $this->option))
+		{
+			throw new Exception(Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// Incoming

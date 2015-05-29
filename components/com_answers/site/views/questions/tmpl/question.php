@@ -131,7 +131,7 @@ if (!$this->question->get('anonymous'))
 							<?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?>
 						</a>
 					</span>
-				<?php if ($this->question->get('created_by') == User::get('id') && $this->question->isOpen()) { ?>
+				<?php if (($this->question->get('created_by') == User::get('id') && User::authorise('core.delete', $this->option)) || User::authorise('core.manage', $this->option)) { //$this->question->isOpen() ?>
 					<span>
 						<a class="icon-delete delete" href="<?php echo Route::url($this->question->link('delete')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>">
 							<?php echo Lang::txt('COM_ANSWERS_DELETE'); ?>

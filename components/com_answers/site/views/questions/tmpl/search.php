@@ -48,6 +48,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
+	<?php if (User::authorise('core.create', $this->option)) { ?>
 	<div id="content-header-extra">
 		<p>
 			<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
@@ -55,6 +56,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 			</a>
 		</p>
 	</div><!-- / #content-header-extra -->
+	<?php } ?>
 </header>
 
 <section class="main section">
