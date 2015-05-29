@@ -124,22 +124,20 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<table class="adminlist">
-		<thead>
 		<?php if ($this->filters['offering']) { ?>
-			<tr>
-				<th colspan="<?php echo (!$this->filters['offering']) ? '8' : '7'; ?>">
-					(<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
-						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
-					</a>)
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
-						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-					</a>:
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
-					</a>
-				</th>
-			</tr>
+			<caption>
+				(<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
+					<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
+				</a>)
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
+					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+				</a>:
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+					<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
+				</a>
+			</caption>
 		<?php } ?>
+		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>

@@ -88,13 +88,11 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<table class="adminlist">
+		<caption>
+			(<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>)
+			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+		</caption>
 		<thead>
-			<tr>
-				<th colspan="10">
-					(<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>)
-					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-				</th>
-			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
