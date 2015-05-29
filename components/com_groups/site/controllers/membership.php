@@ -96,7 +96,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -430,7 +430,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$this->setNotification($error_message, 'error');
 
 		// Redirect back to view group
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
 	}
 
 
@@ -486,7 +486,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -502,7 +502,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		//are we already a member
 		if (in_array(User::get('id'), $members))
 		{
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get("cn")));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get("cn")));
 			return;
 		}
 
@@ -602,11 +602,11 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse')
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option));
+			App::redirect(Route::url('index.php?option=' . $this->_option));
 		}
 		else
 		{
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn='. $this->view->group->get('cn')));
 		}
 	}
 
@@ -646,7 +646,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -705,7 +705,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Action Complete. Redirect to appropriate page
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=groups'),
 			Lang::txt('COM_GROUPS_INVITE_CANCEL_SUCCESS'),
 			'passed'
@@ -749,7 +749,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -761,7 +761,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		//check if already member, or applicant
 		if (in_array(User::get('id'), $members))
 		{
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
 			return;
 		}
 
@@ -769,7 +769,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if (in_array(User::get('id'), $applicants))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_INVITE_ALREADY_APPLIED'), 'info');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
 			return;
 		}
 
@@ -777,7 +777,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($this->view->group->get('join_policy') == 3 || $this->view->group->get('join_policy') == 2)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_INVITE_UNABLE_TO_JOIN'), 'warning');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
 			return;
 		}
 
@@ -803,7 +803,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				'comments'  => array(User::get('id'))
 			));
 
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn='.$this->view->group->get('cn')));
 			return;
 		}
 	}
@@ -866,7 +866,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -954,7 +954,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$this->setNotification(Lang::txt('COM_GROUPS_INVITE_REQUEST_FORWARDED'), 'passed');
 
 		// Push through to the groups listing
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')));
 	}
 
 

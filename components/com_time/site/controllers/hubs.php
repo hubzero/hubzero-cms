@@ -144,7 +144,7 @@ class Hubs extends Base
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($hub)),
 			Lang::txt('COM_TIME_HUBS_SAVE_SUCCESSFUL'),
 			'passed'
@@ -164,7 +164,7 @@ class Hubs extends Base
 		// If there are active tasks, don't allow deletion
 		if ($hub->tasks->count() > 0)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base . '&task=readonly&id=' . $hub->get('id')),
 				Lang::txt('COM_TIME_HUBS_DELETE_HAS_ASSOCIATED_TASKS'),
 				'warning'
@@ -175,7 +175,7 @@ class Hubs extends Base
 		// Delete the contacts first
 		if (!$hub->contacts->destroyAll())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base . '&task=readonly&id=' . $hub->get('id')),
 				Lang::txt('COM_TIME_HUBS_DELETE_CONTACTS_FAILED'),
 				'warning'
@@ -186,7 +186,7 @@ class Hubs extends Base
 		// Now delete the actual hub
 		if (!$hub->destroy())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base . '&task=readonly&id=' . $hub->get('id')),
 				Lang::txt('COM_TIME_HUBS_DELETE_FAILED'),
 				'warning'
@@ -195,7 +195,7 @@ class Hubs extends Base
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($hub)),
 			Lang::txt('COM_TIME_HUBS_DELETE_SUCCESSFUL'),
 			'passed'
@@ -218,7 +218,7 @@ class Hubs extends Base
 		$contact->destroy();
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . '&task=edit&id=' . $hid),
 			Lang::txt('COM_TIME_HUBS_CONTACT_DELETE_SUCCESSFUL'),
 			'passed'

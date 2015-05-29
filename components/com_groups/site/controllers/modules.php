@@ -284,10 +284,10 @@ class GroupsControllerModules extends GroupsControllerAbstract
 
 		// Push success message and redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules'));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules'));
 		if ($return = Request::getVar('return', '','post'))
 		{
-			$this->setRedirect(base64_decode($return));
+			App::redirect(base64_decode($return));
 		}
 	}
 

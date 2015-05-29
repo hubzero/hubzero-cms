@@ -692,7 +692,7 @@ class Events extends SiteController
 			{
 				//redirect to group calendar
 				$redirect = Route::url( 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $row->id, false);
-				$this->setRedirect($redirect);
+				App::redirect($redirect);
 				return;
 			}
 			else

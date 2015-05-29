@@ -153,7 +153,7 @@ class GroupsHelperPages
 		else
 		{
 			// Try to find a menu item
-			$item = \JFactory::getApplication()->getMenu(true)->getActive();
+			$item = App::get('menu')->getActive();
 			// Strip the menu route from the URI
 			$up = ltrim(Request::path(), '/');
 			$path = trim(substr($up, strlen($item->route)), '/');

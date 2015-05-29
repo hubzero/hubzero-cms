@@ -857,7 +857,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Redirect back to the group page
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn')));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn')));
 		return;
 	}
 
@@ -906,7 +906,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
-			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
+			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -1099,7 +1099,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Redirect back to the groups page
 		$this->setNotification(Lang::txt('COM_GROUPS_DELETE_SUCCESS', $deletedgroup->get('description')), 'passed');
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option));
+		App::redirect(Route::url('index.php?option=' . $this->_option));
 		return;
 	}
 

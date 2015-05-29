@@ -54,7 +54,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		if (User::isGuest())
 		{
 			// Redirect to home page
-			$this->setRedirect(
+			App::redirect(
 				$this->config->get('contribtool_redirect', '/home')
 			);
 			return;

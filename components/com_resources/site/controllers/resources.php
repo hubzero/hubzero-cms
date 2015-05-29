@@ -694,7 +694,7 @@ class Resources extends SiteController
 		$helper->getFirstChild();
 		$resid = $helper->firstChild->id;
 
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
 		);
 		return;
@@ -1170,7 +1170,7 @@ class Resources extends SiteController
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
 			return;

@@ -92,7 +92,7 @@ class Abuse extends SiteController
 		if (User::isGuest())
 		{
 			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;

@@ -32,6 +32,10 @@ namespace Components\Time\Site\Controllers;
 
 use Components\Time\Helpers\Filters;
 use Components\Time\Models\Task;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Tasks controller for time component
@@ -137,7 +141,7 @@ class Tasks extends Base
 		}
 
 		// Success, we made it, set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($task)),
 			Lang::txt('COM_TIME_TASKS_SAVE_SUCCESSFUL'),
 			'passed'
@@ -156,7 +160,7 @@ class Tasks extends Base
 		// If there are active records, don't allow deletion
 		if ($task->records->count())
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base . '&task=edit&id=' . Request::getInt('id')),
 				Lang::txt('COM_TIME_TASK_DELETE_HAS_ASSOCIATED_RECORDS'),
 				'warning'
@@ -168,7 +172,7 @@ class Tasks extends Base
 		$task->destroy();
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($task)),
 			Lang::txt('COM_TIME_TASKS_DELETE_SUCCESSFUL'),
 			'passed'
@@ -193,7 +197,7 @@ class Tasks extends Base
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($task)),
 			Lang::txt('COM_TIME_TASKS_ACTIVE_STATUS_CHANGED'),
 			'passed'

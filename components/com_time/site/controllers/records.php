@@ -37,6 +37,7 @@ use Config;
 use Route;
 use Date;
 use Lang;
+use App;
 
 /**
  * Records controller for time component
@@ -107,7 +108,7 @@ class Records extends Base
 		if (!$record->isNew() && !$record->isMine() && !$record->iCanProxy())
 		{
 			// Set the redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base),
 				Lang::txt('COM_TIME_RECORDS_WARNING_CANT_EDIT_OTHER'),
 				'warning'
@@ -157,7 +158,7 @@ class Records extends Base
 		if (!$record->isMine() && !$record->iCanProxy())
 		{
 			// Set the redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base),
 				Lang::txt('COM_TIME_RECORDS_WARNING_CANT_EDIT_OTHER'),
 				'warning'
@@ -180,7 +181,7 @@ class Records extends Base
 		}
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($record)),
 			Lang::txt('COM_TIME_RECORDS_SAVE_SUCCESSFUL'),
 			'passed'
@@ -200,7 +201,7 @@ class Records extends Base
 		if (!$record->isMine())
 		{
 			// Set the redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url($this->base),
 				Lang::txt('COM_TIME_RECORDS_WARNING_CANT_DELETE_OTHER'),
 				'warning'
@@ -212,7 +213,7 @@ class Records extends Base
 		$record->destroy();
 
 		// Set the redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url($this->base . $this->start($record)),
 			Lang::txt('COM_TIME_RECORDS_DELETE_SUCCESSFUL'),
 			'passed'

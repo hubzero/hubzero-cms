@@ -413,7 +413,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		if ($return = Request::getVar('return', '','post'))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task), 'passed');
-			$this->setRedirect(base64_decode($return));
+			App::redirect(base64_decode($return));
 			return;
 		}
 
@@ -431,7 +431,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// Push success message and redirect
 		$this->setNotification($notification, 'passed');
-		$this->setRedirect($redirect);
+		App::redirect($redirect);
 	}
 
 	/**
@@ -589,10 +589,10 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		//inform user & redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status), 'passed');
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
 		if ($return = Request::getVar('return', '','get'))
 		{
-			$this->setRedirect(base64_decode($return));
+			App::redirect(base64_decode($return));
 		}
 	}
 
@@ -656,7 +656,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		if ($version === null)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_ERROR', $page->get('title')), 'error');
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
 			return;
 		}
 
@@ -685,10 +685,10 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_SET', $page->get('title')), 'passed');
 
 		// redirect
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
 		if ($return = Request::getVar('return', '','get'))
 		{
-			$this->setRedirect(base64_decode($return));
+			App::redirect(base64_decode($return));
 		}
 	}
 
@@ -800,7 +800,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		}
 
 		// redirect
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
 			Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, Date::of($pageVersion->get('created'))->format('M d, Y @ g:ia')),
 			'passed'

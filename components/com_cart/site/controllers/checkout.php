@@ -327,7 +327,7 @@ class CartControllerCheckout extends ComponentController
 	private function login($message = '')
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return),
 			$message,
 			'warning'

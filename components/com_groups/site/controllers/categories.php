@@ -87,7 +87,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 	 */
 	public function displayTask()
 	{
-		$this->setRedirect(Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#categories'));
+		App::redirect(Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#categories'));
 	}
 
 	/**
@@ -170,7 +170,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 
 		//inform user & redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_SAVED'), 'passed');
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
 	}
 
 	/**
@@ -190,7 +190,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_ERROR'), 'error');
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
 			return;
 		}
 
@@ -198,12 +198,12 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		if (!$category->delete())
 		{
 			$this->setNotification($category->getError(), 'error');
-			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+			App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
 			return;
 		}
 
 		//inform user & redirect
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETED'), 'passed');
-		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
 	}
 }

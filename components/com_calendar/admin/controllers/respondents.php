@@ -83,8 +83,8 @@ class Respondents extends AdminController
 
 		if (!$id)
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false)
 			);
 			return;
 		}
@@ -109,14 +109,12 @@ class Respondents extends AdminController
 	 */
 	private function getRespondents()
 	{
-		$app = \JFactory::getApplication();
-
 		$sorting = Request::getVar('sortby', 'registered DESC');
 		$filters = array(
 			'search' => urldecode(Request::getString('search')),
 			'id'     => Request::getVar('id', array()),
 			'sortby' => $sorting == 'registerby DESC' ? 'registered DESC' : $sorting,
-			'limit'  => $app->getUserStateFromRequest($this->_option . '.limit', 'limit', Config::get('list_limit'), 'int'),
+			'limit'  => Request::getState($this->_option . '.limit', 'limit', Config::get('list_limit'), 'int'),
 			'offset' => Request::getInt('limitstart', 0)
 		);
 		if (!$filters['limit'])

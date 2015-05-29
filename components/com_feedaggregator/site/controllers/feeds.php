@@ -61,7 +61,7 @@ class Feeds extends SiteController
 		}
 		else if (User::get('id'))
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_feedaggregator'),
 				Lang::txt('COM_FEEDAGGREGATOR_NOT_AUTH'),
 				'warning'
@@ -70,7 +70,7 @@ class Feeds extends SiteController
 		else if (User::isguest()) // have person login
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
 				'warning'
@@ -122,7 +122,7 @@ class Feeds extends SiteController
 		{
 			$model->updateActive($id, 1);
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 				Lang::txt('COM_FEEDAGGREGATOR_FEED_ENABLED')
 			);
@@ -132,14 +132,14 @@ class Feeds extends SiteController
 			$model->updateActive($id, 0);
 
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 				Lang::txt('COM_FEEDAGGREGATOR_FEED_DISABLED')
 			);
 		}
 		else
 		{
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 				Lang::txt('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
 				'error'
@@ -170,7 +170,7 @@ class Feeds extends SiteController
 			$this->feed = $feed;
 
 			//redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
 				Lang::txt('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
 				'warning'
@@ -181,14 +181,14 @@ class Feeds extends SiteController
 			if ($feed->store())
 			{
 				// Output messsage and redirect
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 					Lang::txt('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
 				);
 			}
 			else
 			{
-				$this->setRedirect(
+				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 					Lang::txt('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
 					'warning'

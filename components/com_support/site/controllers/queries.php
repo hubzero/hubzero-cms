@@ -58,8 +58,8 @@ class Queries extends SiteController
 	 */
 	public function displayTask()
 	{
-		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display')
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false)
 		);
 	}
 
@@ -137,7 +137,7 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editTask($row);
 			}
 			else
@@ -152,7 +152,7 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editTask($row);
 			}
 			else
@@ -167,7 +167,7 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editTask($row);
 			}
 			else
@@ -180,8 +180,8 @@ class Queries extends SiteController
 		if (!$no_html && $tmpl != 'component')
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->id)
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->id, false)
 			);
 		}
 		else
@@ -207,8 +207,8 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->setRedirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display'),
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false),
 					Lang::txt('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
 					'error'
 				);
@@ -223,8 +223,8 @@ class Queries extends SiteController
 		if (!$no_html && $tmpl != 'component')
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display')
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false)
 			);
 		}
 		else
@@ -296,7 +296,7 @@ class Queries extends SiteController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect(
+		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false)
 		);
 	}
@@ -364,7 +364,7 @@ class Queries extends SiteController
 	public function savefolderTask($redirect=true)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields  = Request::getVar('fields', array());
@@ -380,7 +380,7 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editfolderTask($row);
 			}
 			else
@@ -397,7 +397,7 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editfolderTask($row);
 			}
 			else
@@ -414,7 +414,7 @@ class Queries extends SiteController
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				$this->editfolderTask($row);
 			}
 			else
@@ -431,8 +431,8 @@ class Queries extends SiteController
 			if (!$no_html && $tmpl != 'component')
 			{
 				// Output messsage and redirect
-				$this->setRedirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
 				);
 				return;
@@ -453,7 +453,7 @@ class Queries extends SiteController
 	public function removefolderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -473,8 +473,8 @@ class Queries extends SiteController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);
 			return;
@@ -491,7 +491,7 @@ class Queries extends SiteController
 	public function saveorderingTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$folders = Request::getVar('folder', array());
@@ -539,7 +539,7 @@ class Queries extends SiteController
 		if (!$no_html)
 		{
 			// Output messsage and redirect
-			$this->setRedirect(
+			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
 				Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);
