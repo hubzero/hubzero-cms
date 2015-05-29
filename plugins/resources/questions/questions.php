@@ -149,13 +149,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'metadata'
-				)
-			);
+			$view = $this->view('default', 'metadata');
 			$view->resource = $this->model->resource;
 			$view->count    = $this->count;
 
@@ -174,13 +168,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	private function _browse()
 	{
 		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		// Are we banking?
 		$upconfig = Component::params('com_members');
@@ -231,14 +219,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		Lang::load('com_answers', PATH_ROOT) ||
 		Lang::load('com_answers', PATH_CORE . DS . 'com_answers' . DS . 'site');
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'question',
-				'layout'  => 'new'
-			)
-		);
+		$view = $this->view('new', 'question');
 		$view->option   = $this->option;
 		$view->resource = $this->model->resource;
 		if (is_object($row))
@@ -285,7 +266,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		Lang::load('com_answers');
 

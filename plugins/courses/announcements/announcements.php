@@ -230,7 +230,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$no_html = Request::getInt('no_html', 0);
 

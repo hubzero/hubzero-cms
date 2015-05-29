@@ -1841,7 +1841,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	public function savecategory()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		if (!$this->course->access('manage', 'offering'))
 		{
@@ -2233,7 +2233,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	public function savethread()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Must be logged in
 		if (User::isGuest())

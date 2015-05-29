@@ -211,13 +211,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'metadata'
-				)
-			);
+			$view = $this->view('default', 'metadata');
 
 			$url  = 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name;
 
@@ -289,19 +283,6 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 {
 	/**
-	 * Redirect page
-	 *
-	 * @return     void
-	 */
-	public function redirect()
-	{
-		if ($this->_redirect != NULL)
-		{
-			App::redirect($this->_redirect, $this->_message, $this->_messageType);
-		}
-	}
-
-	/**
 	 * Execute an action
 	 *
 	 * @return     void
@@ -344,7 +325,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 	private function savereply()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Is the user logged in?
 		if (User::isGuest())
@@ -437,8 +418,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		$reply->setState($replyid, 2);
 
-		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
-		$this->redirect();
+		App::Redirect(
+			Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews', false)
+		);
 	}
 
 	/**
@@ -518,7 +500,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			exit();
 		}
 
-		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews');
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews', false)
+		);
 	}
 
 	/**
@@ -733,8 +717,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource->calculateRating();
 		$resource->updateRating();
 
-		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
-		$this->redirect();
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews', false)
+		);
 	}
 }
 

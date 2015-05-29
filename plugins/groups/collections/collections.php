@@ -935,7 +935,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Login check
 		if (User::isGuest())
@@ -1092,7 +1092,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$collection_id = Request::getInt('collection_id', 0);
 		if (!$collection_id)
@@ -1241,7 +1241,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _delete()
 	{
 		// Check for request forgeries
-		//Request::checkToken() or jexit('Invalid Token');
+		//Request::checkToken() or exit('Invalid Token');
 
 		// Login check
 		if (User::isGuest())
@@ -1334,7 +1334,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _savecomment()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Ensure the user is logged in
 		if (User::isGuest())
@@ -1526,7 +1526,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	private function _savecollection()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		if (User::isGuest())
 		{

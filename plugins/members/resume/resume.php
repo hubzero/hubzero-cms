@@ -56,17 +56,19 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		Lang::load('com_jobs');
 
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'admin.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'application.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'category.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'employer.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'prefs.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'resume.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'seeker.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'shortlist.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
+		$path = Component::path('com_jobs');
+
+		include_once($path . DS . 'tables' . DS . 'admin.php');
+		include_once($path . DS . 'tables' . DS . 'application.php');
+		include_once($path . DS . 'tables' . DS . 'category.php');
+		include_once($path . DS . 'tables' . DS . 'employer.php');
+		include_once($path . DS . 'tables' . DS . 'job.php');
+		include_once($path . DS . 'tables' . DS . 'prefs.php');
+		include_once($path . DS . 'tables' . DS . 'resume.php');
+		include_once($path . DS . 'tables' . DS . 'seeker.php');
+		include_once($path . DS . 'tables' . DS . 'shortlist.php');
+		include_once($path . DS . 'tables' . DS . 'stats.php');
+		include_once($path . DS . 'tables' . DS . 'type.php');
 
 		$this->config = Component::params('com_jobs');
 	}
@@ -452,8 +454,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if (!is_dir(PATH_APP . $listdir))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(PATH_APP . $listdir))
+			if (!Filesystem::makeDirectory(PATH_APP . $listdir))
 			{
 				return false;
 			}
@@ -483,7 +484,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming file
 		$file = Request::getVar('uploadres', '', 'files', 'array');
@@ -505,11 +506,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$file['name'] .= $file_ext;
 
 		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		$ext = strtolower(JFile::getExt($file['name']));
+		$ext = strtolower(Filesystem::extension($file['name']));
 		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt'))))
 		{
 			$this->setError(Lang::txt('Disallowed file type.'));
@@ -527,7 +527,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 		else if (file_exists($path . DS . $row->filename)) // remove prev file first
 		{
-			JFile::delete($path . DS . $row->filename);
+			Filesystem::delete($path . DS . $row->filename);
 
 			// Remove stats for prev resume
 			$jobstats = new \Components\Jobs\Tables\JobStats($database);
@@ -535,7 +535,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('ERROR_UPLOADING'));
 		}
@@ -543,9 +543,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			$fpath = $path . DS . $file['name'];
 
-			if (!JFile::isSafe($fpath))
+			if (!Filesystem::isSafe($fpath))
 			{
-				JFile::delete($fpath);
+				Filesystem::delete($fpath);
 
 				$this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
 				return $this->_view($database, $option, $member, $emp);
@@ -599,8 +599,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFile::delete(PATH_APP . $path . DS . $file))
+			if (!Filesystem::delete(PATH_APP . $path . DS . $file))
 			{
 				$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 			}
@@ -610,7 +609,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 				// Remove stats for prev resume
 				$jobstats = new \Components\Jobs\Tables\JobStats($database);
-				$jobstats->deleteStats ($member->get('uidNumber'), 'seeker');
+				$jobstats->deleteStats($member->get('uidNumber'), 'seeker');
 
 				// Do not include profile in search without a resume
 				$js = new \Components\Jobs\Tables\JobSeeker($database);

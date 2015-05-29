@@ -323,7 +323,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Object
 	private function savereply()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Is the user logged in?
 		if (User::isGuest())

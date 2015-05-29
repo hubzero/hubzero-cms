@@ -181,28 +181,29 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$this->view->task = $this->_task;
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = Request::getState(
-			$this->_option . '.plugins.sponsors.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$this->view->filters['start']    = Request::getState(
-			$this->_option . '.plugins.sponsors.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = Request::getState(
-			$this->_option . '.plugins.sponsors.sort',
-			'filter_order',
-			'title'
-		);
-		$this->view->filters['sort_Dir'] = Request::getState(
-			$this->_option . '.plugins.sponsors.sortdir',
-			'filter_order_Dir',
-			'ASC'
+		$this->view->filters = array(
+			'limit'    => Request::getState(
+				$this->_option . '.plugins.sponsors.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start'    => Request::getState(
+				$this->_option . '.plugins.sponsors.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort'     => Request::getState(
+				$this->_option . '.plugins.sponsors.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.plugins.sponsors.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
 
 		$model = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
@@ -238,7 +239,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	 */
 	public function editTask($row=null)
 	{
-		$this->view = new \Hubzero\Plugin\View('edit', 'admin');
+		$this->view = $this->view('edit', 'admin');
 		$this->view->option = $this->_option;
 		$this->view->controller = $this->_controller;
 		$this->view->task = $this->_task;
@@ -275,7 +276,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Initiate extended database class
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -332,7 +333,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());
@@ -393,7 +394,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
