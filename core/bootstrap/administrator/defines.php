@@ -17,7 +17,7 @@
 |
 */
 
-if (!defined('PATH_ROOT')) 
+if (!defined('PATH_ROOT'))
 {
 	define('PATH_ROOT', dirname(JPATH_BASE));
 }

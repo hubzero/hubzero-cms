@@ -18,7 +18,7 @@
 |
 */
 
-if (!defined('PATH_APP')) 
+if (!defined('PATH_APP'))
 {
 	define('PATH_APP', PATH_ROOT);  //  . '/app'
 }
