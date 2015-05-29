@@ -111,7 +111,7 @@ class Dumper
 		{
 			$cName = $this->scrub($renderer);
 
-			$invokable = __NAMESPACE__ . '\\Debug\\' . ucfirst($cName);
+			$invokable = __NAMESPACE__ . '\\Dumper\\' . ucfirst($cName);
 
 			if (!class_exists($invokable))
 			{
@@ -129,7 +129,7 @@ class Dumper
 			throw new InvalidArgumentException(sprintf(
 				'%s was unable to fetch renderer or renderer was not an instance of %s',
 				get_class($this) . '::' . __FUNCTION__,
-				__NAMESPACE__ . '\Renderable'
+				__NAMESPACE__ . '\\Dumper\\Renderable'
 			));
 		}
 
