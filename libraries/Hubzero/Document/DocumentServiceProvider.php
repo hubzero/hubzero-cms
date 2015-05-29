@@ -58,7 +58,7 @@ class DocumentServiceProvider extends Middleware
 				'direction' => $app['language']->isRTL() ? 'rtl' : 'ltr'
 			);
 
-			$manager = new Manager($app);
+			$manager = new Manager();
 			$manager->setType($type)
 					->setLanguage($options['language'])
 					->setCharset($options['charset'])
@@ -156,7 +156,6 @@ class DocumentServiceProvider extends Middleware
 		{
 			$caching = true;
 		}*/
-
 		$this->app['dispatcher']->trigger('system.onBeforeRender');
 
 		$response->setContent($document->render($caching, $params));

@@ -39,13 +39,6 @@ use InvalidArgumentException;
 class Manager
 {
 	/**
-	 * The application instance.
-	 *
-	 * @var  object
-	 */
-	protected $app;
-
-	/**
 	 * The array of created "types".
 	 *
 	 * @var  array
@@ -62,12 +55,11 @@ class Manager
 	/**
 	 * Create a new manager instance.
 	 *
-	 * @param   object  $app
 	 * @return  void
 	 */
-	public function __construct($app)
+	public function __construct()
 	{
-		$this->app = $app;
+		$this->types = array();
 	}
 
 	/**
@@ -110,7 +102,6 @@ class Manager
 
 		if (!class_exists($class))
 		{
-			echo $class; die();
 			throw new InvalidArgumentException("Type [$type] not supported.");
 		}
 
