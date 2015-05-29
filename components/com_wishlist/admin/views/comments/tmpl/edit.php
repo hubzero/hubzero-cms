@@ -55,12 +55,12 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo $this->editor()->save('text'); ?>
+
 	// do field validation
-	if (document.getElementById('field-content').value == ''){
+	if ($('#field-content').val() == ''){
 		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }
