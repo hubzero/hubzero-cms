@@ -129,7 +129,7 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('Category');
@@ -152,7 +152,7 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
-		$append = parent::getRedirectToItemAppend($recordId);
+		$append  = parent::getRedirectToItemAppend($recordId);
 		$append .= '&extension=' . $this->extension;
 
 		return $append;
@@ -167,7 +167,7 @@ class CategoriesControllerCategory extends JControllerForm
 	 */
 	protected function getRedirectToListAppend()
 	{
-		$append = parent::getRedirectToListAppend();
+		$append  = parent::getRedirectToListAppend();
 		$append .= '&extension=' . $this->extension;
 
 		return $append;

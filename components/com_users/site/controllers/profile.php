@@ -27,32 +27,35 @@ class UsersControllerProfile extends UsersController
 	public function edit()
 	{
 		$app         = JFactory::getApplication();
-		$user        = JFactory::getUser();
+		$user        = User::getRoot();
 		$loginUserId = (int) $user->get('id');
 
 		// Get the previous user id (if any) and the current user id.
-		$previousId = (int) $app->getUserState('com_users.edit.profile.id');
+		$previousId = (int) User::setState('com_users.edit.profile.id');
 		$userId	= (int) Request::getInt('user_id', null, '', 'array');
 
 		// Check if the user is trying to edit another users profile.
-		if ($userId != $loginUserId) {
+		if ($userId != $loginUserId)
+		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return false;
 		}
 
 		// Set the user id for the user to edit in the session.
-		$app->setUserState('com_users.edit.profile.id', $userId);
+		User::setState('com_users.edit.profile.id', $userId);
 
 		// Get the model.
 		$model = $this->getModel('Profile', 'UsersModel');
 
 		// Check out the user.
-		if ($userId) {
+		if ($userId)
+		{
 			$model->checkout($userId);
 		}
 
 		// Check in the previous user.
-		if ($previousId) {
+		if ($previousId)
+		{
 			$model->checkin($previousId);
 		}
 
@@ -69,12 +72,12 @@ class UsersControllerProfile extends UsersController
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$model  = $this->getModel('Profile', 'UsersModel');
-		$user   = JFactory::getUser();
+		$user   = User::getRoot();
 		$userId = (int) $user->get('id');
 
 		// Get the user data.
@@ -85,7 +88,8 @@ class UsersControllerProfile extends UsersController
 
 		// Validate the posted data.
 		$form = $model->getForm();
-		if (!$form) {
+		if (!$form)
+		{
 			App::abort(500, $model->getError());
 			return false;
 		}
@@ -94,16 +98,21 @@ class UsersControllerProfile extends UsersController
 		$data = $model->validate($form, $data);
 
 		// Check for errors.
-		if ($data === false) {
+		if ($data === false)
+		{
 			// Get the validation messages.
 			$errors	= $model->getErrors();
 
 			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-				if ($errors[$i] instanceof Exception) {
-					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
-				} else {
-					$app->enqueueMessage($errors[$i], 'warning');
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			{
+				if ($errors[$i] instanceof Exception)
+				{
+					Notify::warning($errors[$i]->getMessage());
+				}
+				else
+				{
+					Notify::warning($errors[$i]);
 				}
 			}
 
@@ -111,7 +120,7 @@ class UsersControllerProfile extends UsersController
 			$app->setUserState('com_users.edit.profile.data', $data);
 
 			// Redirect back to the edit screen.
-			$userId = (int) $app->getUserState('com_users.edit.profile.id');
+			$userId = (int) User::setState('com_users.edit.profile.id');
 			$this->setRedirect(Route::url('index.php?option=com_users&view=profile&layout=edit&user_id='.$userId, false));
 			return false;
 		}
@@ -122,44 +131,46 @@ class UsersControllerProfile extends UsersController
 		// Check for errors.
 		if ($return === false) {
 			// Save the data in the session.
-			$app->setUserState('com_users.edit.profile.data', $data);
+			User::setState('com_users.edit.profile.data', $data);
 
 			// Redirect back to the edit screen.
-			$userId = (int)$app->getUserState('com_users.edit.profile.id');
+			$userId = (int)User::getState('com_users.edit.profile.id');
 			$this->setMessage(Lang::txt('COM_USERS_PROFILE_SAVE_FAILED', $model->getError()), 'warning');
 			$this->setRedirect(Route::url('index.php?option=com_users&view=profile&layout=edit&user_id='.$userId, false));
 			return false;
 		}
 
 		// Redirect the user and adjust session state based on the chosen task.
-		switch ($this->getTask()) {
+		switch ($this->getTask())
+		{
 			case 'apply':
 				// Check out the profile.
-				$app->setUserState('com_users.edit.profile.id', $return);
+				User::setState('com_users.edit.profile.id', $return);
 				$model->checkout($return);
 
 				// Redirect back to the edit screen.
 				$this->setMessage(Lang::txt('COM_USERS_PROFILE_SAVE_SUCCESS'));
-				$this->setRedirect(Route::url(($redirect = $app->getUserState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&layout=edit&hidemainmenu=1', false));
+				$this->setRedirect(Route::url(($redirect = User::getState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&layout=edit&hidemainmenu=1', false));
 				break;
 
 			default:
 				// Check in the profile.
-				$userId = (int)$app->getUserState('com_users.edit.profile.id');
-				if ($userId) {
+				$userId = (int)User::getState('com_users.edit.profile.id');
+				if ($userId)
+				{
 					$model->checkin($userId);
 				}
 
 				// Clear the profile id from the session.
-				$app->setUserState('com_users.edit.profile.id', null);
+				User::setState('com_users.edit.profile.id', null);
 
 				// Redirect to the list screen.
 				$this->setMessage(Lang::txt('COM_USERS_PROFILE_SAVE_SUCCESS'));
-				$this->setRedirect(Route::url(($redirect = $app->getUserState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&user_id='.$return, false));
+				$this->setRedirect(Route::url(($redirect = User::getState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&user_id='.$return, false));
 				break;
 		}
 
 		// Flush the data from the session.
-		$app->setUserState('com_users.edit.profile.data', null);
+		User::setState('com_users.edit.profile.data', null);
 	}
 }

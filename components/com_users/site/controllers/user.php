@@ -78,7 +78,7 @@ class UsersControllerUser extends UsersController
 		if (!isset($myplugin))
 		{
 			// Check for request forgeries
-			Request::checkToken('request') or jexit( 'Invalid Token' );
+			Request::checkToken('request') or exit( 'Invalid Token' );
 
 			if ($return = Request::getVar('return', '', 'method', 'base64'))
 			{
@@ -136,14 +136,14 @@ class UsersControllerUser extends UsersController
 			}
 			else
 			{
-				$app->redirect(Route::url($app->getUserState('users.login.form.return'), false));
+				App::redirect(Route::url($app->getUserState('users.login.form.return'), false));
 			}
 		}
 		else
 		{
 			// Login failed !
 			$data['remember'] = (int)$options['remember'];
-			$app->setUserState('users.login.form.data', $data);
+			User::setState('users.login.form.data', $data);
 
 			// Facilitate third party login forms
 			if (!$return) {
@@ -164,7 +164,7 @@ class UsersControllerUser extends UsersController
 			else
 			{
 				// Redirect to a login form
-				$app->redirect(Route::url($return, false));
+				App::redirect(Route::url($return, false));
 			}
 		}
 	}
@@ -263,11 +263,11 @@ class UsersControllerUser extends UsersController
 			}
 
 			// Redirect the user.
-			$app->redirect(Route::url($return, false));
+			App::redirect(Route::url($return, false));
 		}
 		else
 		{
-			$app->redirect(Route::url('index.php?option=com_users&view=login', false));
+			App::redirect(Route::url('index.php?option=com_users&view=login', false));
 		}
 	}
 
@@ -278,32 +278,37 @@ class UsersControllerUser extends UsersController
 	 */
 	public function register()
 	{
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the form data.
-		$data	= Request::getVar('user', array(), 'post', 'array');
+		$data   = Request::getVar('user', array(), 'post', 'array');
 
 		// Get the model and validate the data.
-		$model	= $this->getModel('Registration', 'UsersModel');
-		$return	= $model->validate($data);
+		$model  = $this->getModel('Registration', 'UsersModel');
+		$return = $model->validate($data);
 
 		// Check for errors.
-		if ($return === false) {
+		if ($return === false)
+		{
 			// Get the validation messages.
-			$app	=  JFactory::getApplication();
-			$errors	= $model->getErrors();
+			$app    =  JFactory::getApplication();
+			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-				if ($errors[$i] instanceof Exception) {
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
+			{
+				if ($errors[$i] instanceof Exception)
+				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
-				} else {
+				}
+				else
+				{
 					$app->enqueueMessage($errors[$i], 'notice');
 				}
 			}
 
 			// Save the data in the session.
-			$app->setUserState('users.registration.form.data', $data);
+			User::setState('users.registration.form.data', $data);
 
 			// Redirect back to the registration form.
 			$this->setRedirect('index.php?option=com_users&view=registration');
@@ -314,9 +319,10 @@ class UsersControllerUser extends UsersController
 		$return	= $model->register($data);
 
 		// Check for errors.
-		if ($return === false) {
+		if ($return === false)
+		{
 			// Save the data in the session.
-			$app->setUserState('users.registration.form.data', $data);
+			User::setState('users.registration.form.data', $data);
 
 			// Redirect back to the registration form.
 			$message = Lang::txt('COM_USERS_REGISTRATION_SAVE_FAILED', $model->getError());
@@ -325,7 +331,7 @@ class UsersControllerUser extends UsersController
 		}
 
 		// Flush the data from the session.
-		$app->setUserState('users.registration.form.data', null);
+		User::setState('users.registration.form.data', null);
 
 		exit;
 	}
@@ -338,44 +344,52 @@ class UsersControllerUser extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
-		$app	= JFactory::getApplication();
-		$model	= $this->getModel('User', 'UsersModel');
-		$data	= Request::getVar('jform', array(), 'post', 'array');
+		$app   = JFactory::getApplication();
+		$model = $this->getModel('User', 'UsersModel');
+		$data  = Request::getVar('jform', array(), 'post', 'array');
 
 		// Submit the username remind request.
-		$return	= $model->processRemindRequest($data);
+		$return = $model->processRemindRequest($data);
 
 		// Check for a hard error.
-		if ($return instanceof Exception) {
+		if ($return instanceof Exception)
+		{
 			// Get the error message to display.
-			if ($app->getCfg('error_reporting')) {
+			if (Config::get('error_reporting'))
+			{
 				$message = $return->getMessage();
-			} else {
+			}
+			else
+			{
 				$message = Lang::txt('COM_USERS_REMIND_REQUEST_ERROR');
 			}
 
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getRemindRoute();
 			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$route	= 'index.php?option=com_users&view=remind'.$itemid;
+			$route  = 'index.php?option=com_users&view=remind' . $itemid;
 
 			// Go back to the complete form.
 			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
-		} elseif ($return === false) {
+		}
+		elseif ($return === false)
+		{
 			// Complete failed.
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getRemindRoute();
 			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$route	= 'index.php?option=com_users&view=remind'.$itemid;
+			$route  = 'index.php?option=com_users&view=remind'.$itemid;
 
 			// Go back to the complete form.
 			$message = Lang::txt('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
 			$this->setRedirect(Route::url($route, false), $message, 'notice');
 			return false;
-		} else {
+		}
+		else
+		{
 			// Complete succeeded.
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getLoginRoute();
@@ -397,7 +411,7 @@ class UsersControllerUser extends UsersController
 	public function resend()
 	{
 		// Check for request forgeries
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 	}
 
 	public function link()
@@ -449,7 +463,7 @@ class UsersControllerUser extends UsersController
 				else
 				{
 					// No Link method is availble
-					$app->redirect(
+					App::redirect(
 						Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
 						'Linked accounts are not currently available for this provider.',
 						'error'
@@ -465,7 +479,7 @@ class UsersControllerUser extends UsersController
 		}
 
 		// Success!  Redict with message
-		$app->redirect(
+		App::redirect(
 			Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
 			'Your account has been successfully linked!'
 		);

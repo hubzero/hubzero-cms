@@ -54,10 +54,10 @@ class Batchcreate extends AdminController
 
 		// Get filters
 		$filters = array();
-		$filters['sortby']  	= 'title';
-		$filters['sortdir'] 	= 'DESC';
-		$filters['authorized'] 	= true;
-		$this->view->projects   = $project->getRecords( $filters, true, 0, 1 );
+		$filters['sortby']     = 'title';
+		$filters['sortdir']    = 'DESC';
+		$filters['authorized'] = true;
+		$this->view->projects  = $project->getRecords($filters, true, 0, 1);
 
 		// Set any errors
 		if ($this->getError())
@@ -133,7 +133,7 @@ class Batchcreate extends AdminController
 			$output = '<pre>';
 			foreach ($errors as $error)
 			{
-			     $output .=  $this->displayXmlError($error, $this->data);
+				$output .=  $this->displayXmlError($error, $this->data);
 			}
 			$output .= '</pre>';
 			$this->reader->close();
@@ -150,10 +150,10 @@ class Batchcreate extends AdminController
 	public function processTask( $dryRun = 0 )
 	{
 		// check token
-		\JSession::checkToken() or die( 'Invalid Token' );
+		\Session::checkToken() or die( 'Invalid Token' );
 
 		// Incoming
-		$id 	= Request::getInt('projectid', 0);
+		$id     = Request::getInt('projectid', 0);
 		$file   = Request::getVar('file', array(), 'FILES');
 		$dryRun = Request::getInt('dryrun', 1);
 
@@ -246,7 +246,7 @@ class Batchcreate extends AdminController
 	 * @access public
 	 * @return string
 	 */
-	public function parse( $dryRun = 1, $output = NULL )
+	public function parse($dryRun = 1, $output = NULL)
 	{
 		// Set common props
 		$this->_uid = User::get('id');
@@ -289,9 +289,9 @@ class Batchcreate extends AdminController
 		$this->curationModel = $curationModel;
 
 		// Get element IDs
-		$elementPrimeId 	= 1;
-		$elementGalleryId 	= 2;
-		$elementSupportId 	= 3;
+		$elementPrimeId   = 1;
+		$elementGalleryId = 2;
+		$elementSupportId = 3;
 
 		if ($this->curationModel)
 		{
@@ -299,9 +299,9 @@ class Batchcreate extends AdminController
 			$elements2 = $this->curationModel->getElements(2);
 			$elements3 = $this->curationModel->getElements(3);
 
-			$elementPrimeId 	= !empty($elements1) ? $elements1[0]->id : $elementPrimeId;
-			$elementGalleryId 	= !empty($elements3) ? $elements3[0]->id : $elementGalleryId;
-			$elementSupportId 	= !empty($elements2) ? $elements2[0]->id : $elementSupportId;
+			$elementPrimeId   = !empty($elements1) ? $elements1[0]->id : $elementPrimeId;
+			$elementGalleryId = !empty($elements3) ? $elements3[0]->id : $elementGalleryId;
+			$elementSupportId = !empty($elements2) ? $elements2[0]->id : $elementSupportId;
 		}
 
 		// Get project repo path
@@ -319,20 +319,20 @@ class Batchcreate extends AdminController
 				$category = isset($node->cat) ? $node->cat : 'dataset';
 				$catId = $objCat->getCatId($category);
 
-				$item['category'] 	= $category;
-				$item['type']	  	= $mastertype;
-				$item['errors']   	= array();
-				$item['tags']   	= array();
-				$item['authors']   	= array();
+				$item['category'] = $category;
+				$item['type']     = $mastertype;
+				$item['errors']   = array();
+				$item['tags']     = array();
+				$item['authors']  = array();
 
 				// Publication properties
 				$item['publication'] = new \Components\Publications\Tables\Publication( $this->database );
-				$item['publication']->master_type 		= $mType->id;
-				$item['publication']->category 			= $catId ? $catId : $cat;
-				$item['publication']->project_id 		= $this->project->get('id');
-				$item['publication']->created_by 		= $this->_uid;
-				$item['publication']->created 			= Date::toSql();
-				$item['publication']->access 			= 0;
+				$item['publication']->master_type = $mType->id;
+				$item['publication']->category    = $catId ? $catId : $cat;
+				$item['publication']->project_id  = $this->project->get('id');
+				$item['publication']->created_by  = $this->_uid;
+				$item['publication']->created     = Date::toSql();
+				$item['publication']->access      = 0;
 
 				// Version properties
 				$item['version'] 		= new \Components\Publications\Tables\Version( $this->database );
@@ -782,22 +782,22 @@ class Batchcreate extends AdminController
 	 */
 	public function displayXmlError($error, $xml)
 	{
-	    $return  = "\n";
+		$return  = "\n";
 
-	    switch ($error->level)
+		switch ($error->level)
 		{
 			case LIBXML_ERR_WARNING:
-	            $return .= "Warning $error->code: ";
-	            break;
+				$return .= "Warning $error->code: ";
+				break;
 			case LIBXML_ERR_ERROR:
-	            $return .= "Error $error->code: ";
-	            break;
+				$return .= "Error $error->code: ";
+				break;
 			case LIBXML_ERR_FATAL:
-	            $return .= "Fatal Error $error->code: ";
-	            break;
-	    }
+				$return .= "Fatal Error $error->code: ";
+				break;
+		}
 
-	    $return .= trim($error->message);
+		$return .= trim($error->message);
 		if ($error->line || $error->column)
 		{
 			$return .= "\n  Line: $error->line" .

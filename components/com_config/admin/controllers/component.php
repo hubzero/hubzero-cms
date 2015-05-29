@@ -110,7 +110,7 @@ class Component extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		\Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set FTP credentials, if given.
 		\JClientHelper::setCredentialsFromRequest('ftp');

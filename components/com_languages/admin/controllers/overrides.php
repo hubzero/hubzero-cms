@@ -38,10 +38,10 @@ class LanguagesControllerOverrides extends JControllerAdmin
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to dlete from the request
-		$cid	= Request::getVar('cid', array(), '', 'array');
+		$cid = Request::getVar('cid', array(), '', 'array');
 
 		if (!is_array($cid) || count($cid) < 1)
 		{

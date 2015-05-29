@@ -57,7 +57,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	public function remindingTask()
 	{
 		// Check the request token
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the email address
 		if (!$email = trim(Request::getVar('email', false)))
@@ -163,7 +163,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	public function resettingTask()
 	{
 		// Check the request token
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Grab the incoming username
 		if (!$username = trim(Request::getVar('username', false)))
@@ -321,7 +321,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	public function verifyingTask()
 	{
 		// Check the request token
-		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Grab the token (not to be confused with the CSRF token above!)
 		if (!$token = trim(Request::getVar('token', false)))
@@ -418,7 +418,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	public function settingpasswordTask()
 	{
 		// Check for request forgeries
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the token and user id from the verification process
 		$token   = User::getState('com_users.reset.token', null);

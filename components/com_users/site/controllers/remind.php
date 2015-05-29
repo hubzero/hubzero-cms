@@ -27,7 +27,7 @@ class UsersControllerRemind extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('Remind', 'UsersModel');
@@ -37,7 +37,8 @@ class UsersControllerRemind extends UsersController
 		$return	= $model->processRemindRequest($data);
 
 		// Check for a hard error.
-		if ($return == false) {
+		if ($return == false)
+		{
 			// The request failed.
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getRemindRoute();
@@ -48,12 +49,14 @@ class UsersControllerRemind extends UsersController
 			$message = Lang::txt('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
 			$this->setRedirect(Route::url($route, false), $message, 'warning');
 			return false;
-		} else {
+		}
+		else
+		{
 			// The request succeeded.
 			// Get the route to the next page.
 			$itemid = UsersHelperRoute::getRemindRoute();
 			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$route	= 'index.php?option=com_users&view=login'.$itemid;
+			$route  = 'index.php?option=com_users&view=login'.$itemid;
 
 			// Proceed to step two.
 			$message = Lang::txt('COM_USERS_REMIND_REQUEST_SUCCESS');

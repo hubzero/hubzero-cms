@@ -27,14 +27,16 @@ class TemplatesControllerTemplate extends JControllerLegacy
 	public function copy()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$app = JFactory::getApplication();
 		Request::setVar('installtype', 'folder');
 		$newName = Request::getCmd('new_name');
 		$newNameRaw = Request::getVar('new_name', null, '', 'string');
 		$templateID = Request::getInt('id', 0);
+
 		$this->setRedirect('index.php?option=com_templates&view=template&id=' . $templateID);
+
 		$model = $this->getModel('Template', 'TemplatesModel');
 		$model->setState('new_name', $newName);
 		$model->setState('tmp_prefix', uniqid('template_copy_'));
@@ -54,7 +56,8 @@ class TemplatesControllerTemplate extends JControllerLegacy
 			JClientHelper::setCredentialsFromRequest('ftp');
 
 			// Check that new name is valid
-			if (($newNameRaw !== null) && ($newName !== $newNameRaw)) {
+			if (($newNameRaw !== null) && ($newName !== $newNameRaw))
+			{
 				Notify::warning(Lang::txt('COM_TEMPLATES_ERROR_INVALID_TEMPLATE_NAME'));
 				return false;
 			}

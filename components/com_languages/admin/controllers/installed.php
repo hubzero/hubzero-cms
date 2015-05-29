@@ -22,8 +22,10 @@ class LanguagesControllerInstalled extends JControllerLegacy
 	function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		Session::checkToken() or exit(Lang::txt('JInvalid_Token'));
+
 		$cid = Request::getCmd('cid', '');
+
 		$model = $this->getModel('installed');
 		if ($model->publish($cid))
 		{
@@ -37,6 +39,7 @@ class LanguagesControllerInstalled extends JControllerLegacy
 		}
 		$client = $model->getClient();
 		$clientId = $model->getState('filter.client_id');
+
 		$this->setredirect('index.php?option=com_languages&view=installed&client='.$clientId, $msg, $type);
 	}
 }

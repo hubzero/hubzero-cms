@@ -113,7 +113,7 @@ class ImportHooks extends AdminController
 	public function saveTask()
 	{
 		// check token
-		\JSession::checkToken() or die('Invalid Token');
+		\Session::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$hook = Request::getVar('hook', array());
@@ -214,7 +214,7 @@ class ImportHooks extends AdminController
 	public function removeTask()
 	{
 		// check token
-		\JSession::checkToken() or die('Invalid Token');
+		\Session::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$ids = Request::getVar('id', array());

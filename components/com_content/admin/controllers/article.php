@@ -26,7 +26,7 @@ class ContentControllerArticle extends JControllerForm
 	 *
 	 * @since	1.6
 	 */
-	function __construct($config = array())
+	public function __construct($config = array())
 	{
 		// An article edit form can come from the articles or featured view.
 		// Adjust the redirect view on the value of 'return' in the request.
@@ -135,7 +135,7 @@ class ContentControllerArticle extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('Article', '', array());

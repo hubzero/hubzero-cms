@@ -329,7 +329,7 @@ class Import extends AdminController
 	public function doRunTask()
 	{
 		// check token
-		\JSession::checkToken() or die('Invalid Token');
+		\Session::checkToken() or die('Invalid Token');
 
 		// start of import
 		$start = microtime(true);

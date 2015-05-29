@@ -33,7 +33,8 @@ class ContentControllerArticle extends JControllerForm
 	 */
 	public function add()
 	{
-		if (!parent::add()) {
+		if (!parent::add())
+		{
 			// Redirect to the return page.
 			$this->setRedirect($this->getReturnPage());
 		}
@@ -50,19 +51,22 @@ class ContentControllerArticle extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$categoryId	= \Hubzero\Utility\Arr::getValue($data, 'catid', Request::getInt('catid'), 'int');
-		$allow		= null;
+		$categoryId = \Hubzero\Utility\Arr::getValue($data, 'catid', Request::getInt('catid'), 'int');
+		$allow      = null;
 
-		if ($categoryId) {
+		if ($categoryId)
+		{
 			// If the category has been passed in the data or URL check it.
 			$allow = User::authorise('core.create', 'com_content.category.'.$categoryId);
 		}
 
-		if ($allow === null) {
+		if ($allow === null)
+		{
 			// In the absense of better information, revert to the component permissions.
 			return parent::allowAdd();
 		}
-		else {
+		else
+		{
 			return $allow;
 		}
 	}
@@ -79,21 +83,24 @@ class ContentControllerArticle extends JControllerForm
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Initialise variables.
-		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
-		$userId		= User::get('id');
-		$asset		= 'com_content.article.'.$recordId;
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+		$userId   = User::get('id');
+		$asset    = 'com_content.article.'.$recordId;
 
 		// Check general edit permission first.
-		if (User::authorise('core.edit', $asset)) {
+		if (User::authorise('core.edit', $asset))
+		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if (User::authorise('core.edit.own', $asset)) {
+		if (User::authorise('core.edit.own', $asset))
+		{
 			// Now test the owner is the user.
-			$ownerId	= (int) isset($data['created_by']) ? $data['created_by'] : 0;
-			if (empty($ownerId) && $recordId) {
+			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
+			if (empty($ownerId) && $recordId)
+			{
 				// Need to do a lookup from the model.
 				$record = $this->getModel()->getItem($recordId);
 
@@ -105,7 +112,8 @@ class ContentControllerArticle extends JControllerForm
 			}
 
 			// If the owner matches 'me' then do the test.
-			if ($ownerId == $userId) {
+			if ($ownerId == $userId)
+			{
 				return true;
 			}
 		}
@@ -176,12 +184,13 @@ class ContentControllerArticle extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'a_id')
 	{
 		// Need to override the parent method completely.
-		$tmpl		= Request::getCmd('tmpl');
-		$layout		= Request::getCmd('layout', 'edit');
-		$append		= '';
+		$tmpl   = Request::getCmd('tmpl');
+		$layout = Request::getCmd('layout', 'edit');
+		$append = '';
 
 		// Setup redirect info.
-		if ($tmpl) {
+		if ($tmpl)
+		{
 			$append .= '&tmpl='.$tmpl;
 		}
 
@@ -191,23 +200,27 @@ class ContentControllerArticle extends JControllerForm
 //		}
 		$append .= '&layout=edit';
 
-		if ($recordId) {
+		if ($recordId)
+		{
 			$append .= '&'.$urlVar.'='.$recordId;
 		}
 
 		$itemId	= Request::getInt('Itemid');
-		$return	= $this->getReturnPage();
-		$catId = Request::getInt('catid', null, 'get');
+		$return = $this->getReturnPage();
+		$catId  = Request::getInt('catid', null, 'get');
 
-		if ($itemId) {
+		if ($itemId)
+		{
 			$append .= '&Itemid='.$itemId;
 		}
 
-		if ($catId) {
+		if ($catId)
+		{
 			$append .= '&catid='.$catId;
 		}
 
-		if ($return) {
+		if ($return)
+		{
 			$append .= '&return='.base64_encode(urlencode($return));
 		}
 
@@ -226,10 +239,12 @@ class ContentControllerArticle extends JControllerForm
 	{
 		$return = Request::getVar('return', null, 'default', 'base64');
 
-		if (empty($return) || !JUri::isInternal(urldecode(base64_decode($return)))) {
+		if (empty($return) || !JUri::isInternal(urldecode(base64_decode($return))))
+		{
 			return Request::base();
 		}
-		else {
+		else
+		{
 			return urldecode(base64_decode($return));
 		}
 	}
@@ -247,7 +262,8 @@ class ContentControllerArticle extends JControllerForm
 	{
 		$task = $this->getTask();
 
-		if ($task == 'save') {
+		if ($task == 'save')
+		{
 			$this->setRedirect(Route::url('index.php?option=com_content&view=category&id='.$validData['catid'], false));
 		}
 	}
@@ -269,7 +285,8 @@ class ContentControllerArticle extends JControllerForm
 		$result = parent::save($key, $urlVar);
 
 		// If ok, redirect to the return page.
-		if ($result) {
+		if ($result)
+		{
 			$this->setRedirect($this->getReturnPage());
 		}
 
@@ -285,19 +302,23 @@ class ContentControllerArticle extends JControllerForm
 	function vote()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$user_rating = Request::getInt('user_rating', -1);
 
-		if ( $user_rating > -1 ) {
+		if ($user_rating > -1)
+		{
 			$url = Request::getString('url', '');
-			$id = Request::getInt('id', 0);
+			$id  = Request::getInt('id', 0);
 			$viewName = Request::getString('view', $this->default_view);
 			$model = $this->getModel($viewName);
 
-			if ($model->storeVote($id, $user_rating)) {
+			if ($model->storeVote($id, $user_rating))
+			{
 				$this->setRedirect($url, Lang::txt('COM_CONTENT_ARTICLE_VOTE_SUCCESS'));
-			} else {
+			}
+			else
+			{
 				$this->setRedirect($url, Lang::txt('COM_CONTENT_ARTICLE_VOTE_FAILURE'));
 			}
 		}

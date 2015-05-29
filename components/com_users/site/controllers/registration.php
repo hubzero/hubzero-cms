@@ -100,7 +100,7 @@ class UsersControllerRegistration extends UsersController
 		return false;
 
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// If registration is disabled - Redirect to login page.
 		if (Component::params('com_users')->get('allowUserRegistration') == 0) {

@@ -45,7 +45,7 @@ class UsersControllerUser extends JControllerForm
 		if (JAccess::check($data[$key], 'core.admin'))
 		{
 			// If I'm not a Super Admin, then disallow the edit.
-			if (!JFactory::getUser()->authorise('core.admin'))
+			if (!User::authorise('core.admin'))
 			{
 				return false;
 			}
@@ -65,7 +65,7 @@ class UsersControllerUser extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('User', '', array());

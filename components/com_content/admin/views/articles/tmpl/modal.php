@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 if (App::isSite())
 {
-	JSession::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
+	Session::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
 }
 
 require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
@@ -89,7 +89,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) : ?>
-			<?php if ($item->language && JLanguageMultilang::isEnabled()) {
+			<?php if ($item->language && Lang::isMultilang()) {
 				$tag = strlen($item->language);
 				if ($tag == 5) {
 					$lang = substr($item->language, 0, 2);
@@ -101,7 +101,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					$lang = "";
 				}
 			}
-			elseif (!JLanguageMultilang::isEnabled()) {
+			elseif (!Lang::isMultilang()) {
 				$lang = "";
 			}
 			?>
