@@ -3612,7 +3612,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if ($section == 'review' or $inreview)
 		{
-			$url .= '?action=review';
+			$url .= '?action=publish&version=' . $version;
 		}
 		else
 		{

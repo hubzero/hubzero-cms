@@ -97,7 +97,7 @@ $canedit = (
 		 <div class="c-inner">
 			<span class="c-submit">
 				<?php if ($canedit) { ?>
-						<span class="c-submit"><input type="submit" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+						<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 				<?php } ?>
 				<?php if ($this->pub->state != 1 && !$this->move && $this->publication_allowed && $canedit) { echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; } ?>
 			</span>
