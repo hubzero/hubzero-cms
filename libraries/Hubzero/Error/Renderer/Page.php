@@ -120,6 +120,7 @@ class Page implements RendererInterface
 			else
 			{
 				$status = $error->getCode() ? $error->getCode() : 500;
+				$status = ($status < 100 || $status >= 600) ? 500 : $status;
 
 				$response = new Response($data, $status);
 				$response->send();
