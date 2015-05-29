@@ -12,14 +12,14 @@ defined('_JEXEC') or die;
 //
 // Joomla system checks.
 //
-
+/*
 @ini_set('magic_quotes_runtime', 0);
-@ini_set('zend.ze1_compatibility_mode', '0');
+@ini_set('zend.ze1_compatibility_mode', 0);
 
 //
 // Installation check, and check on removal of the install directory.
 //
-/*if (!file_exists(JPATH_CONFIGURATION . DS . 'configuration.php'))
+if (!file_exists(JPATH_CONFIGURATION . DS . 'configuration.php'))
 {
 	echo 'No configuration file found. Exiting...';
 	exit();
@@ -41,7 +41,7 @@ JError::setErrorHandling(E_ERROR, 'callback', array('JError', 'customErrorPage')
 
 // Botstrap the CMS libraries.
 require_once JPATH_LIBRARIES.'/cms.php';
-
+/*
 // Pre-Load configuration.
 ob_start();
 require_once JPATH_CONFIGURATION.'/configuration.php';
@@ -56,7 +56,7 @@ if (!class_exists('JConfig'))
 // System configuration.
 $config = new JConfig();
 
-/* if configuration just has an install key and no other properties then redirect into the installer */
+// if configuration just has an install key and no other properties then redirect into the installer 
 
 if (count(get_object_vars($config)) <= 1)
 {
@@ -114,7 +114,7 @@ define('JDEBUG', $config->debug);
 define('JPROFILE', $config->debug || $config->profile);
 
 unset($config);
-
+*/
 //
 // Joomla framework loading.
 //

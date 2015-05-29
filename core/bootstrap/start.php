@@ -9,6 +9,32 @@
 
 /*
 |--------------------------------------------------------------------------
+| Set PHP INI values
+|--------------------------------------------------------------------------
+|
+| Here we will set some of PHP's INI values to make things run a little
+| smoother.
+|
+*/
+
+@ini_set('magic_quotes_runtime', 0);
+@ini_set('zend.ze1_compatibility_mode', 0);
+
+/*
+|--------------------------------------------------------------------------
+| Set PHP Error Reporting Options
+|--------------------------------------------------------------------------
+|
+| Here we will set the strictest error reporting options, and also turn
+| off PHP's error reporting, since all errors will be handled by the
+| framework and we don't want any output leaking back to the user.
+|
+*/
+
+error_reporting(-1);
+
+/*
+|--------------------------------------------------------------------------
 | Create The Application
 |--------------------------------------------------------------------------
 |

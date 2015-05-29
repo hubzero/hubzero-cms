@@ -30,9 +30,9 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-
+/*
 error_reporting(-1);
-ini_set('error_reporting', E_ALL);
+ini_set('error_reporting', E_ALL);*/
 header("HTTP/1.1 404 Not Found");
 
 if (function_exists('xdebug_disable'))
@@ -40,10 +40,10 @@ if (function_exists('xdebug_disable'))
 	xdebug_disable();
 }
 
-ini_set('magic_quotes_runtime','0');
-ini_set('zend.ze1_compatibility_mode', '0');
+//ini_set('magic_quotes_runtime','0');
+//ini_set('zend.ze1_compatibility_mode', '0');
 ini_set('zlib.output_compression','0');
-ini_set('output_hander','');
+ini_set('output_handler','');
 ini_set('implicit_flush','0');
 
 //
@@ -66,8 +66,8 @@ JLoader::import('joomla.factory');
 JLoader::import('joomla.base.object');
 
 // Force library to be in JError legacy mode
-JError::$legacy = true;
+/*JError::$legacy = true;
 JError::setErrorHandling(E_ERROR, 'ignore');
 JError::setErrorHandling(E_WARNING, 'ignore');
-JError::setErrorHandling(E_NOTICE, 'ignore');
+JError::setErrorHandling(E_NOTICE, 'ignore');*/
 
