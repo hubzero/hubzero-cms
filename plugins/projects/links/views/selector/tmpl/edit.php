@@ -56,6 +56,7 @@ $useBlocks  = $config->get('curation', 0);
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
+				<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 				<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
 				<?php if ($useBlocks) { ?>
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
