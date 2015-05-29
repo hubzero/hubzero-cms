@@ -189,7 +189,7 @@ class Pages extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$page = Request::getVar('page', array(), 'post');
@@ -290,7 +290,7 @@ class Pages extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or exit('Invalid Token');
 
 				// Check if they confirmed
 				$confirmed = Request::getInt('confirm', 0);
@@ -335,7 +335,7 @@ class Pages extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -386,7 +386,7 @@ class Pages extends AdminController
 	public function resethitsTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -430,7 +430,7 @@ class Pages extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming
 		$id = Request::getInt('id', 0);

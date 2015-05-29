@@ -138,7 +138,7 @@ class Template extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		//get request vars
 		$template = Request::getVar('template', array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);

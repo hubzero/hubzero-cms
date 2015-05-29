@@ -153,7 +153,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Load the tag object and bind the incoming data to it
 		$model = new MembersTableOrganizationType($this->database);
@@ -200,7 +200,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());

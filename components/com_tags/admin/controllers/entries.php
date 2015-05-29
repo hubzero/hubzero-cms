@@ -171,7 +171,7 @@ class Entries extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$fields = Request::getVar('fields', array(), 'post');
 
@@ -216,7 +216,7 @@ class Entries extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -330,7 +330,7 @@ class Entries extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or exit('Invalid Token');
 
 				// Get the string of tag IDs we plan to merge
 				$ind = Request::getVar('ids', '', 'post');
@@ -457,7 +457,7 @@ class Entries extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or exit('Invalid Token');
 
 				// Get the string of tag IDs we plan to merge
 				$ind = Request::getVar('ids', '', 'post');

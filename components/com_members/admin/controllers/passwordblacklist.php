@@ -158,7 +158,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming password blacklist edits
 		$fields = Request::getVar('fields', array(), 'post');
@@ -200,7 +200,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());

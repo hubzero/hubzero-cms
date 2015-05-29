@@ -44,7 +44,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$id      = Request::getInt('id', 0);
@@ -170,7 +170,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

@@ -138,7 +138,7 @@ class Resolutions extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Trim and addslashes all posted items
 		$res = Request::getVar('res', array(), 'post');
@@ -184,7 +184,7 @@ class Resolutions extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());

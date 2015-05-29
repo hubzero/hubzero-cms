@@ -366,7 +366,7 @@ class Categories extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);

@@ -265,7 +265,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$id = Request::getInt('id', 0);
 
@@ -381,7 +381,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 	public function saveconfigTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$points = Request::getVar('points', array());
 		$descriptions = Request::getVar('description', array());
@@ -434,7 +434,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 	public function process_batchTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$duplicate = 0;
 

@@ -147,7 +147,7 @@ class Respondents extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$workshop = Request::getInt('workshop', 0);

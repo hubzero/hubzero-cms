@@ -411,7 +411,7 @@ class UsersControllerUser extends UsersController
 	public function resend()
 	{
 		// Check for request forgeries
-		Session::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 	}
 
 	public function link()

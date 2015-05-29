@@ -402,7 +402,7 @@ class Orders extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$statusmsg = '';
 		$email = 1; // turn emailing on/off

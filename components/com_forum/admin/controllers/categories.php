@@ -244,7 +244,7 @@ class Categories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
@@ -295,7 +295,7 @@ class Categories extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$section = Request::getInt('section_id', 0);
@@ -365,7 +365,7 @@ class Categories extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$section = Request::getInt('section_id', 0);
@@ -422,7 +422,7 @@ class Categories extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$section = Request::getInt('section_id', 0);

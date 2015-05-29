@@ -24,7 +24,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function duplicate()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'post', 'array');
@@ -69,7 +69,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function setDefault()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'post', 'array');
@@ -105,7 +105,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function unsetDefault()
 	{
 		// Check for request forgeries
-		Session::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$pks = Request::getVar('cid', array(), 'get', 'array');

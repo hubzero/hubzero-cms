@@ -122,7 +122,7 @@ class Application extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Check if the user is authorized to do this.
 		if (!User::authorise('core.admin'))

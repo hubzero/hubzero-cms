@@ -37,7 +37,7 @@ class InstallerControllerManage extends JControllerLegacy
 	public function publish()
 	{
 		// Check for request forgeries.
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$ids    = Request::getVar('cid', array(), '', 'array');
@@ -85,7 +85,7 @@ class InstallerControllerManage extends JControllerLegacy
 	public function remove()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$eid   = Request::getVar('cid', array(), '', 'array');
 		$model = $this->getModel('manage');
@@ -105,7 +105,7 @@ class InstallerControllerManage extends JControllerLegacy
 	public function refresh()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$uid   = Request::getVar('cid', array(), '', 'array');
 		$model = $this->getModel('manage');

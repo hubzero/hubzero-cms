@@ -160,7 +160,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming instance ID
 		$fields = Request::getVar('fields', array(), 'post');
@@ -317,7 +317,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	public function saveZoneTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields = Request::getVar('fields', [], 'post');
@@ -352,7 +352,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	public function removeZoneTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		$row = Zone::oneOrFail(Request::getInt('id', false));
 

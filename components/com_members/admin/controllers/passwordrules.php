@@ -171,7 +171,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming password rule edits
 		$fields = Request::getVar('fields', array(), 'post');
@@ -208,7 +208,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function orderupTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$this->orderTask(1);
 
@@ -227,7 +227,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function orderdownTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$this->orderTask(0);
 
@@ -265,7 +265,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Get the id's
 		$cid = Request::getVar('id', array(0), 'post', 'array');
@@ -366,7 +366,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());

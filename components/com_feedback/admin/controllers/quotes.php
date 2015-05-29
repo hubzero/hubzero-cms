@@ -68,7 +68,7 @@ class Quotes extends AdminController
 		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			Request::checkToken() or jexit('Invalid Token');
+			Request::checkToken() or exit('Invalid Token');
 		}
 
 		// Incoming
@@ -134,7 +134,7 @@ class Quotes extends AdminController
 		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			Request::checkToken() or jexit('Invalid Token');
+			Request::checkToken() or exit('Invalid Token');
 		}
 
 		if (!is_object($row))
@@ -198,7 +198,7 @@ class Quotes extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Initiate class and bind posted items to database fields
 		$row = new Quote($this->database);
@@ -283,7 +283,7 @@ class Quotes extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());

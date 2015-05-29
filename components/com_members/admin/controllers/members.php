@@ -148,7 +148,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	public function newTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming profile edits
 		$p = Request::getVar('profile', array(), 'post', 'none', 2);
@@ -324,7 +324,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming user ID
 		$id = Request::getInt('id', 0, 'post');
@@ -576,7 +576,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('ids', array());
@@ -647,7 +647,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	public function stateTask($state=1)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming user ID
 		$ids = Request::getVar('id', array());

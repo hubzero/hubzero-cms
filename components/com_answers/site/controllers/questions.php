@@ -154,7 +154,7 @@ class Questions extends SiteController
 	public function savereplyTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Is the user logged in?
 		if (User::isGuest())
@@ -798,7 +798,7 @@ class Questions extends SiteController
 	public function saveqTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Login required
 		if (User::isGuest())
@@ -1143,7 +1143,7 @@ class Questions extends SiteController
 	public function saveaTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Login required
 		if (User::isGuest())

@@ -121,7 +121,7 @@ class BillBoards extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming, make sure to allow HTML to pass through
 		$data = Request::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
@@ -209,7 +209,7 @@ class BillBoards extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Initialize variables
 		$cid   = Request::getVar('cid', array(), 'post', 'array');
@@ -255,7 +255,7 @@ class BillBoards extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('cid', array());
@@ -340,7 +340,7 @@ class BillBoards extends AdminController
 	protected function toggle($publish=1)
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming (we're expecting an array)
 		$ids = Request::getVar('cid', array());

@@ -176,7 +176,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
@@ -239,7 +239,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -279,7 +279,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -356,7 +356,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function ajaxUploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -516,7 +516,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$id = Request::getInt('id', 0);
@@ -606,7 +606,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	public function ajaxRemoveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Ensure we have an ID to work with
 		$id = Request::getInt('id', 0);
@@ -675,7 +675,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

@@ -88,7 +88,7 @@ class Checkin extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		Request::checkToken() or exit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
 		$ids = Request::getVar('cid', array(), '', 'array');

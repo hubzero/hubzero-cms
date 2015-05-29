@@ -48,7 +48,7 @@ class Media extends AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = Request::getVar('listdir', '', 'post');
@@ -184,7 +184,7 @@ class Media extends AdminController
 	public function deletefolderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = Request::getVar('listdir', '');
@@ -247,7 +247,7 @@ class Media extends AdminController
 	public function deletefileTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or exit('Invalid Token');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = Request::getVar('listdir', '');

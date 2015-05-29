@@ -154,7 +154,7 @@ class Assets extends AdminController
 	public function linkTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$asset_id  = Request::getInt('asset', 0);
@@ -192,7 +192,7 @@ class Assets extends AdminController
 	public function unlinkTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$asset_id  = Request::getInt('asset', 0);
@@ -285,7 +285,7 @@ class Assets extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// load the request vars
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
@@ -448,7 +448,7 @@ class Assets extends AdminController
 	public function reorderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$move = $this->_task == 'orderup' ? -1 : 1;
 

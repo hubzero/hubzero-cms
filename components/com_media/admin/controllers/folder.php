@@ -24,7 +24,7 @@ class MediaControllerFolder extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		Session::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken('request') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get some data from the request
 		$tmpl   = Request::getCmd('tmpl');
@@ -128,7 +128,7 @@ class MediaControllerFolder extends JControllerLegacy
 	public function create()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$folder      = Request::getCmd('foldername', '');
 		$folderCheck = Request::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);

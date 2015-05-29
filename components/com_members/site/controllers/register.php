@@ -631,7 +631,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			Request::checkToken() or jexit('Invalid Token');
+			Request::checkToken() or exit('Invalid Token');
 
 			// Load POSTed data
 			$xregistration->loadPost();

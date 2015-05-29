@@ -66,7 +66,7 @@ class LanguagesControllerOverride extends JControllerForm
 	public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialize variables
 		$model   = $this->getModel();
@@ -187,7 +187,7 @@ class LanguagesControllerOverride extends JControllerForm
 	 */
 	public function cancel($key = null, $test = null)
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialize variables
 		$context = "$this->option.edit.$this->context";

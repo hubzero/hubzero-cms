@@ -104,7 +104,7 @@ class Cleanser extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		Request::checkToken() or exit(Lang::txt('JInvalid_Token'));
 
 		$cid = Request::getVar('cid', array(), 'post', 'array');
 
@@ -130,7 +130,7 @@ class Cleanser extends AdminController
 	public function purgeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		Request::checkToken() or exit(Lang::txt('JInvalid_Token'));
 
 		$ret = $this->model->purge();
 

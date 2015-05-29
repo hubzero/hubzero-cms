@@ -173,7 +173,7 @@ class Answers extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$answer = Request::getVar('answer', array(), 'post', 'none', 2);
@@ -218,7 +218,7 @@ class Answers extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -252,7 +252,7 @@ class Answers extends AdminController
 	public function acceptTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$qid = Request::getInt('qid', 0);
@@ -351,7 +351,7 @@ class Answers extends AdminController
 	public function resetTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$answer = Request::getVar('answer', array());

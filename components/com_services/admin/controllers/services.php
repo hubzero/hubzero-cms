@@ -221,7 +221,7 @@ class Services extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');

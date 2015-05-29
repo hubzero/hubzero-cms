@@ -189,7 +189,7 @@ class Units extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
@@ -297,7 +297,7 @@ class Units extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -411,7 +411,7 @@ class Units extends AdminController
 	public function orderTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$id = Request::getVar('id', array(0), 'post', 'array');
 		\Hubzero\Utility\Arr::toInteger($id, array(0));

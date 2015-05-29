@@ -175,7 +175,7 @@ class Categories extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$prop = Request::getVar('prop', array(), 'post');
 
@@ -292,7 +292,7 @@ class Categories extends AdminController
 	public function changestatusTask($dir = 0)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array(0), '', 'array');

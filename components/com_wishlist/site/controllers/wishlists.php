@@ -569,7 +569,7 @@ class Wishlists extends SiteController
 		}
 
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		if (!$wishlist->bind(Request::getVar('fields', array(), 'post')))
 		{
@@ -1662,7 +1662,7 @@ class Wishlists extends SiteController
 	 */
 	public function savevoteTask()
 	{
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$refid    = Request::getInt('rid', 0);
 		$category = Request::getVar('category', '');
@@ -1779,7 +1779,7 @@ class Wishlists extends SiteController
 	 */
 	public function savereplyTask()
 	{
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$id       = Request::getInt('referenceid', 0);

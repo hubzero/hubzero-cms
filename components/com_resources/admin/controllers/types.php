@@ -161,7 +161,7 @@ class Types extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Initiate extended database class
 		$row = new Type($this->database);
@@ -285,7 +285,7 @@ class Types extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming (expecting an array)
 		$ids = Request::getVar('id', array());

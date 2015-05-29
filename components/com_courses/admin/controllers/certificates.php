@@ -100,7 +100,7 @@ class Certificates extends AdminController
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$fields = Request::getVar('fields', array(), 'post');
@@ -222,7 +222,7 @@ class Certificates extends AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$cert_id   = Request::getInt('certificate', 0, 'post');
 		$course_id = Request::getInt('course', 0, 'post');
@@ -294,7 +294,7 @@ class Certificates extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$cert_id   = Request::getInt('certificate', 0, 'post');
 		$course_id = Request::getInt('course', 0, 'post');

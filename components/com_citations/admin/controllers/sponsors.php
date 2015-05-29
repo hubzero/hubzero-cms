@@ -112,7 +112,7 @@ class Sponsors extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$s = Request::getVar('sponsor', array(), 'post');
 

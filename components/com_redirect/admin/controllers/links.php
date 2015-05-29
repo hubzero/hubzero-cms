@@ -219,7 +219,7 @@ class Links extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$data    = Request::getVar('fields', array(), 'post', 'array');
@@ -334,7 +334,7 @@ class Links extends AdminController
 	public function activateTask()
 	{
 		// Check for request forgeries.
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$ids     = Request::getVar('cid', array(), '', 'array');

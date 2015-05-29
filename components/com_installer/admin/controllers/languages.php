@@ -22,7 +22,7 @@ class InstallerControllerLanguages extends JControllerLegacy
 	public function find()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the caching duration
 		$cache_timeout = Component::params('com_installer')->get('cachetimeout', 6, 'int');
@@ -44,7 +44,7 @@ class InstallerControllerLanguages extends JControllerLegacy
 	public function purge()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Purge updates
 		$model = $this->getModel('update');

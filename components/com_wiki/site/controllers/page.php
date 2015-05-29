@@ -535,7 +535,7 @@ class Page extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Check if they are logged in
 		if (User::isGuest())
@@ -777,7 +777,7 @@ class Page extends SiteController
 		{
 			case 1:
 				// Check for request forgeries
-				Request::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or exit('Invalid Token');
 
 				$this->page->set('state', 2);
 				if (!$this->page->store(false, 'page_removed'))
@@ -914,7 +914,7 @@ class Page extends SiteController
 	public function saverenameTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Check if they are logged in
 		if (User::isGuest())

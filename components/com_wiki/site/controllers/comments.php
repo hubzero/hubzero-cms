@@ -241,7 +241,7 @@ class Comments extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$fields = Request::getVar('comment', array(), 'post');
 

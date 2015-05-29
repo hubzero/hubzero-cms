@@ -308,7 +308,7 @@ class Projects extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit( 'Invalid Token' );
+		Request::checkToken() or exit( 'Invalid Token' );
 
 		// Config
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;

@@ -229,7 +229,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$g = Request::getVar('group', array(), 'post', 'none', 2);
@@ -660,7 +660,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -797,7 +797,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	public function doUpdateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -890,7 +890,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1000,7 +1000,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken() or jexit('Invalid Token');
+		//Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
@@ -1055,7 +1055,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	public function unpublishTask()
 	{
 		// Check for request forgeries
-		//Request::checkToken() or jexit('Invalid Token');
+		//Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());

@@ -22,7 +22,7 @@ class InstallerControllerUpdate extends JControllerLegacy
 	public function update()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$model = $this->getModel('update');
 		$uid   = Request::getVar('cid', array(), '', 'array');
@@ -58,7 +58,7 @@ class InstallerControllerUpdate extends JControllerLegacy
 	public function find()
 	{
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the caching duration
 		jimport('joomla.application.component.helper');
@@ -84,7 +84,7 @@ class InstallerControllerUpdate extends JControllerLegacy
 	{
 		// Purge updates
 		// Check for request forgeries
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$model = $this->getModel('update');
 		$model->purge();

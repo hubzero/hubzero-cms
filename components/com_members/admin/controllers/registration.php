@@ -71,7 +71,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		$settings = Request::getVar('settings', array(), 'post');
 

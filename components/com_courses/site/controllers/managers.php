@@ -59,7 +59,7 @@ class Managers extends SiteController
 	public function addTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);
@@ -135,7 +135,7 @@ class Managers extends SiteController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);
@@ -199,7 +199,7 @@ class Managers extends SiteController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming member ID
 		$id = Request::getInt('id', 0);

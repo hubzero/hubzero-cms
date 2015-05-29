@@ -40,7 +40,7 @@ class CategoriesControllerCategories extends JControllerAdmin
 	 */
 	public function rebuild()
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		$extension = Request::getCmd('extension');
 		$this->setRedirect(Route::url('index.php?option=com_categories&view=categories&extension='.$extension, false));
@@ -70,7 +70,7 @@ class CategoriesControllerCategories extends JControllerAdmin
 	 */
 	public function saveorder()
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
 		$order = Request::getVar('order', null, 'post', 'array');
@@ -96,7 +96,7 @@ class CategoriesControllerCategories extends JControllerAdmin
  	 */
 	public function delete()
 	{
-		Session::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Session::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
 		$cid = Request::getVar('cid', array(), '', 'array');
