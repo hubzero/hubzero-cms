@@ -31,6 +31,7 @@
 namespace Hubzero\Error;
 
 use Hubzero\Error\Renderer\Page;
+use Hubzero\Error\Renderer\Plain;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -52,6 +53,11 @@ class ErrorServiceProvider extends ServiceProvider
 				$app['config']->get('debug')
 			);
 
+			if ($handler->runningInConsole())
+			{
+				$handler->setRenderer(new Plain());
+			}
+
 			return $handler;
 		};
 	}
@@ -64,7 +70,7 @@ class ErrorServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		// Set the error_reporting
-		/*switch ($this->app['config']->get('error_reporting'))
+		switch ($this->app['config']->get('error_reporting'))
 		{
 			case 'default':
 			case '-1':
@@ -94,7 +100,10 @@ class ErrorServiceProvider extends ServiceProvider
 				error_reporting($config->error_reporting);
 				ini_set('display_errors', 1);
 				break;
-		}*/
+		}
+
+		define('JDEBUG',   $this->app['config']->get('debug'));
+		define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
 
 		$this->app['error']->register($this->app['client']->name);
 	}
