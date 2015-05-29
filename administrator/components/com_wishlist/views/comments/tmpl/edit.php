@@ -55,12 +55,12 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo JFactory::getEditor()->save('text'); ?>
+
 	// do field validation
-	if (document.getElementById('field-content').value == ''){
+	if ($('#field-content').val() == ''){
 		alert('<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }
