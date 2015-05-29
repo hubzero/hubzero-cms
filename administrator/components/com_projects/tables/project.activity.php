@@ -310,9 +310,12 @@ class ProjectActivity extends JTable
 		// Collapse some repeated activities by the same actor
 		if ($referenceid || $class == 'project')
 		{
-			$this->_db->setQuery( "UPDATE $this->_tbl SET state = 2 WHERE class='$class'
-					AND activity='$activity' AND userid=$by AND projectid=$projectid
-					AND referenceid='$referenceid'");
+			$this->_db->setQuery( "UPDATE $this->_tbl SET state = 2 WHERE class="
+				. $this->_db->Quote($class) . " AND activity="
+				. $this->_db->Quote($activity) . " AND userid="
+				. $this->_db->Quote($by) . " AND projectid="
+				. $this->_db->Quote($projectid) . " AND referenceid="
+				. $this->_db->Quote($referenceid));
 			$this->_db->query();
 		}
 
