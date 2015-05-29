@@ -220,7 +220,7 @@ class ProjectActivity extends JTable
 		$id 			= isset($filters['id']) ? $filters['id'] : 0;
 
 		$query   =  "SELECT ";
-		if($count)
+		if ($count)
 		{
 			$query  .=  " COUNT(*) ";
 		}
@@ -229,11 +229,11 @@ class ProjectActivity extends JTable
 			$query .= " DISTINCT a.*, x.name, x.username ";
 		}
 		$query  .= " FROM $this->_tbl AS a ";
-		if(!$count)
+		if (!$count)
 		{
 			$query  .= "JOIN #__xprofiles as x ON x.uidNumber=a.userid";
 		}
-		if($projectid)
+		if ($projectid)
 		{
 		$query  .= " WHERE a.projectid=$projectid ";
 		}
@@ -248,19 +248,19 @@ class ProjectActivity extends JTable
 			$tquery = substr($tquery,0,strlen($tquery) - 1);
 			$query .= $tquery.") ";
 		}
-		if($class)
+		if ($class)
 		{
 			$query  .= " AND a.class='" . $class . "' ";
 		}
-		if($managers && $role == 1)
+		if ($managers && $role == 1)
 		{
 			$query  .= " AND a.managers_only=1 ";
 		}
-		if($role == 0)
+		if ($role == 0)
 		{
 			$query  .= " AND a.managers_only=0 ";
 		}
-		if($id)
+		if ($id)
 		{
 			$query  .= " AND a.id='" . $id . "' ";
 		}
@@ -271,7 +271,7 @@ class ProjectActivity extends JTable
 		$query  .=  $sortby == 'recorded' ? " a.recorded $sortdir " : "";
 		$query  .=  $sortby == 'class' ? " a.class $sortdir " : "";
 
-		if(!$count)
+		if (!$count)
 		{
 			if (isset ($limit) && $limit!=0)
 			{
@@ -324,7 +324,7 @@ class ProjectActivity extends JTable
 		$this->managers_only = $managers_only;
 
 		// Collapse checked/posted to-do item activities
-		if($class == 'todo' && $activity == JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'))
+		if ($class == 'todo' && $activity == JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'))
 		{
 			$this->loadActivityByRef($projectid, $referenceid, $class,
 				JText::_('COM_PROJECTS_ACTIVITY_TODO_ADDED'));
@@ -339,7 +339,7 @@ class ProjectActivity extends JTable
 		$this->url 			= $url;
 		$this->class 		= $class;
 
-		if(!$this->store())
+		if (!$this->store())
 		{
 			return false;
 		}
