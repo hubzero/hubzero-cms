@@ -1625,12 +1625,15 @@ class JForm
 			// Get any fields elements with the correct group name.
 			$elements = $this->xml->xpath('//fields[@name="' . (string) $group[0] . '"]');
 
-			// Check to make sure that there are no parent groups for each element.
-			foreach ($elements as $element)
+			if ($elements)
 			{
-				if (!$element->xpath('ancestor::fields[@name]'))
+				// Check to make sure that there are no parent groups for each element.
+				foreach ($elements as $element)
 				{
-					$tmp[] = $element;
+					if (!$element->xpath('ancestor::fields[@name]'))
+					{
+						$tmp[] = $element;
+					}
 				}
 			}
 
