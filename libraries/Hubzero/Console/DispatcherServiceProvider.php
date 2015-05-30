@@ -23,20 +23,20 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Routing;
+namespace Hubzero\Console;
 
 use Hubzero\Base\Middleware;
 use Hubzero\Http\Request;
 
 /**
- * Router service provider
+ * Console dispatcher service provider
  */
-class RouterServiceProvider extends Middleware
+class DispatcherServiceProvider extends Middleware
 {
 	/**
 	 * Register the service provider.
@@ -45,10 +45,6 @@ class RouterServiceProvider extends Middleware
 	 */
 	public function register()
 	{
-		$this->app['router'] = function($app)
-		{
-			return new Manager($app);
-		};
 	}
 
 	/**
@@ -59,23 +55,23 @@ class RouterServiceProvider extends Middleware
 	 */
 	public function handle(Request $request)
 	{
-		if (!$this->app->runningInConsole())
-		{
-			$this->app['dispatcher']->trigger('system.onBeforeRoute');
+		$response = $this->next($request);
 
-			foreach ($this->app['router']->parse($request->getUri()) as $key => $val)
-			{
-				$request->setVar($key, $val);
-			}
+		$class = $this->app->get('arguments')->get('class');
+		$task  = $this->app->get('arguments')->get('task');
 
-			$this->app['dispatcher']->trigger('system.onAfterRoute');
+		$command   = new $class($this->app->get('output'), $this->app->get('arguments'));
+		$shortName = strtolower(with(new \ReflectionClass($command))->getShortName());
 
-			if ($this->app->has('profiler'))
-			{
-				$this->app['profiler']->mark('afterRoute');
-			}
-		}
+		// Fire default before event
+		Event::fire($shortName . '.' . 'before' . ucfirst($task));
 
-		return $this->next($request);
+		$command->{$task}();
+
+		// Fire default after event
+		Event::fire($shortName . '.' . 'after' . ucfirst($task));
+
+		$this->app->get('output')->render();
+		exit();
 	}
 }

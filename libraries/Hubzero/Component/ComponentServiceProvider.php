@@ -59,7 +59,9 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 	 */
 	public function handle(Request $request)
 	{
-		/*try
+		$response = $this->next($request);
+
+		if (!$this->app->runningInConsole())
 		{
 			$component = $request->getCmd('option');
 			if (!$component)
@@ -68,7 +70,8 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 			}
 
 			$contents = $this->app['component']->render($component);
-			$this->app['response']->setContent($contents);
+
+			$response->setContent($contents);
 
 			$this->app['dispatcher']->trigger('system.onAfterDispatch');
 
@@ -76,30 +79,6 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 			{
 				$this->app['profiler']->mark('afterDispatch');
 			}
-		}
-		catch (Exception $e)
-		{
-			return Response::error($e->getMessage(), 404);
-		}
-
-		return $this->next($request);*/
-		$response = $this->next($request);
-
-		$component = $request->getCmd('option');
-		if (!$component)
-		{
-			$this->app->abort(404);
-		}
-
-		$contents = $this->app['component']->render($component);
-
-		$response->setContent($contents);
-
-		$this->app['dispatcher']->trigger('system.onAfterDispatch');
-
-		if ($this->app->has('profiler'))
-		{
-			$this->app['profiler']->mark('afterDispatch');
 		}
 
 		return $response;

@@ -111,8 +111,7 @@ class Site extends Base
 			// Filter by language if not set
 			if (($key = array_search('language', $attributes)) === false)
 			{
-				$app = \JApplication::getInstance('site');
-				if ($app->getLanguageFilter())
+				if (\App::get('language.filter'))
 				{
 					$attributes[] = 'language';
 					$values[]     = array(\App::get('language')->getTag(), '*');

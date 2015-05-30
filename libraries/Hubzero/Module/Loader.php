@@ -423,7 +423,7 @@ class Loader
 			$query->where('(mm.menuid = ' . (int) $Itemid . ' OR mm.menuid <= 0)');
 
 			// Filter by language
-			if ($this->app->isSite() && \JFactory::getApplication()->getLanguageFilter())
+			if ($this->app->isSite() && $this->app->get('language.filter'))
 			{
 				$query->where('m.language IN (' . $db->Quote($lang) . ',' . $db->Quote('*') . ')');
 			}

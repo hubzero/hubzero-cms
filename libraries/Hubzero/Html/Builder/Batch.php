@@ -30,6 +30,8 @@
 
 namespace Hubzero\Html\Builder;
 
+use Lang;
+
 /**
  * Extended Utility class for batch processing widgets.
  */

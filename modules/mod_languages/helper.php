@@ -38,6 +38,7 @@ use JLoader;
 use Route;
 use JString;
 use MenusHelper;
+use Config;
 use User;
 use Lang;
 
@@ -127,12 +128,12 @@ class Helper extends Module
 			else
 			{
 				$language->active = $language->lang_code == $lang->getTag();
-				if ($app->getLanguageFilter())
+				if (\App::get('language.filter'))
 				{
 					if (isset($associations[$language->lang_code]) && $menu->getItem($associations[$language->lang_code]))
 					{
 						$itemid = $associations[$language->lang_code];
-						if ($app->getCfg('sef')=='1')
+						if (Config::get('sef')=='1')
 						{
 							$language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
 						}
@@ -143,7 +144,7 @@ class Helper extends Module
 					}
 					else
 					{
-						if ($app->getCfg('sef')=='1')
+						if (Config::get('sef') == '1')
 						{
 							$itemid = isset($homes[$language->lang_code]) ? $homes[$language->lang_code]->id : $homes['*']->id;
 							$language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);

@@ -174,7 +174,7 @@ class Helper extends Module
 					$query->where('(a.publish_down = ' . $db->Quote($nullDate).' OR a.publish_down >= ' . $db->Quote($now) . ')');
 
 					// Filter by language
-					if ($app->getLanguageFilter())
+					if (\App::get('language.filter'))
 					{
 						$query->where('a.language in (' . $db->Quote(Lang::getTag()) . ',' . $db->Quote('*') . ')');
 					}

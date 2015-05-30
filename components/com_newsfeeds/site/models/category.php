@@ -101,12 +101,12 @@ class NewsfeedsModelCategory extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$user	= User::getRoot();
-		$groups	= implode(',', $user->getAuthorisedViewLevels());
+		$user   = User::getRoot();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select required fields from the categories.
 		$query->select($this->getState('list.select', 'a.*'));
@@ -192,7 +192,7 @@ class NewsfeedsModelCategory extends JModelList
 			$this->setState('filter.publish_date', true);
 		}
 
-		$this->setState('filter.language', JFactory::getApplication()->getLanguageFilter());
+		$this->setState('filter.language', \App::get('language.filter'));
 
 		// Load the parameters.
 		$this->setState('params', $params);

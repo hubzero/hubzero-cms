@@ -37,6 +37,7 @@ use JModelLegacy;
 use JFactory;
 use JAccess;
 use Route;
+use Event;
 use Lang;
 use Html;
 use User;
@@ -103,7 +104,7 @@ class Helper extends Module
 		$model->setState('filter.category_id', $params->get('catid', array()));
 
 		// Filter by language
-		$model->setState('filter.language', $app->getLanguageFilter());
+		$model->setState('filter.language', \App::get('language.filter'));
 
 		// Get ordering &  direction params
 		$ordering  = $params->get('ordering', 'a.publish_up');
@@ -141,10 +142,10 @@ class Helper extends Module
 				$item->introtext = preg_replace('/<img[^>]*>/', '', $item->introtext);
 			}
 
-			$results = $app->triggerEvent('onContentAfterDisplay', array('com_content.article', &$item, &$params, 1));
+			$results = Event::trigger('onContentAfterDisplay', array('com_content.article', &$item, &$params, 1));
 			$item->afterDisplayTitle = trim(implode("\n", $results));
 
-			$results = $app->triggerEvent('onContentBeforeDisplay', array('com_content.article', &$item, &$params, 1));
+			$results = Event::trigger('onContentBeforeDisplay', array('com_content.article', &$item, &$params, 1));
 			$item->beforeDisplayContent = trim(implode("\n", $results));
 		}
 

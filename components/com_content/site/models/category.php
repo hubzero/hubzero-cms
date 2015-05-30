@@ -156,14 +156,16 @@ class ContentModelCategory extends JModelList
 		// filter.order
 		$itemid = Request::getInt('id', 0) . ':' . Request::getInt('Itemid', 0);
 		$orderCol = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
-		if (!in_array($orderCol, $this->filter_fields)) {
+		if (!in_array($orderCol, $this->filter_fields))
+		{
 			$orderCol = 'a.ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.filter_order_Dir',
 			'filter_order_Dir', '', 'cmd');
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
@@ -171,11 +173,13 @@ class ContentModelCategory extends JModelList
 		$this->setState('list.start', Request::getUInt('limitstart', 0));
 
 		// set limit for query. If list, use parameter. If blog, add blog parameters for limit.
-		if ((Request::getCmd('layout') == 'blog') || $params->get('layout_type') == 'blog') {
+		if ((Request::getCmd('layout') == 'blog') || $params->get('layout_type') == 'blog')
+		{
 			$limit = $params->get('num_leading_articles') + $params->get('num_intro_articles') + $params->get('num_links');
 			$this->setState('list.links', $params->get('num_links'));
 		}
-		else {
+		else
+		{
 			$limit = $app->getUserStateFromRequest('com_content.category.list.' . $itemid . '.limit', 'limit', $params->get('display_num'), 'uint');
 		}
 
@@ -184,14 +188,13 @@ class ContentModelCategory extends JModelList
 		// set the depth of the category query based on parameter
 		$showSubcategories = $params->get('show_subcategory_content', '0');
 
-		if ($showSubcategories) {
+		if ($showSubcategories)
+		{
 			$this->setState('filter.max_category_levels', $params->get('show_subcategory_content', '1'));
 			$this->setState('filter.subcategories', true);
 		}
 
-
-
-		$this->setState('filter.language', $app->getLanguageFilter());
+		$this->setState('filter.language', App::get('language.filter'));
 
 		$this->setState('layout', Request::getCmd('layout'));
 

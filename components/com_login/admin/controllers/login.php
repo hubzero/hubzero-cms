@@ -150,13 +150,33 @@ class Login extends AdminController
 			}
 		}
 
-		$app    = \JFactory::getApplication();
-		$result = $app->login($credentials, array(
+		$options = array(
 			'action'        => 'core.login.admin',
-			'authenticator' => $authenticator
-		));
+			'authenticator' => $authenticator,
+			// The minimum group
+			'group'         => 'Public Backend',
+			// Make sure users are not autoregistered
+			'autoregister'  => false,
+			// Set the access control action to check.
+			'action'        => 'core.login.admin'
+		);
 
-		$app->redirect($return);
+		// Set the application login entry point
+		if (!array_key_exists('entry_url', $options))
+		{
+			$options['entry_url'] = Request::base() . 'index.php?option=com_users&task=login';
+		}
+
+		$result = App::get('auth')->login($credentials, $options);
+
+		if (!($result instanceof Exception))
+		{
+			$lang = preg_replace('/[^A-Z-]/i', '', Request::getCmd('lang'));
+
+			User::setState('application.lang', $lang);
+		}
+
+		App::redirect($return);
 	}
 
 	/**
@@ -178,11 +198,9 @@ class Login extends AdminController
 	 */
 	public function logoutTask()
 	{
-		$app = \JFactory::getApplication();
-
 		$userid = Request::getInt('uid', null);
 
-		$result = $app->logout($userid, array(
+		$result = App::get('auth')->logout($userid, array(
 			'clientid' => ($userid ? 0 : 1)
 		));
 

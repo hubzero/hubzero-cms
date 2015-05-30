@@ -30,6 +30,7 @@
 
 namespace Hubzero\Html\Builder;
 
+use Lang;
 use App;
 
 /**

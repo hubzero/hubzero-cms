@@ -94,7 +94,7 @@ class Helper extends Module
 		$model->setState('filter.category_id', $params->get('catid', array()));
 
 		// Filter by language
-		$model->setState('filter.language', $app->getLanguageFilter());
+		$model->setState('filter.language', \App::get('language.filter'));
 
 		// Ordering
 		$model->setState('list.ordering', 'a.hits');

@@ -68,7 +68,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 
 			$crypt = new JSimpleCrypt();
 
-			if ($str = Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
+			if ($str = Request::getString($hash, '', 'cookie', 1 | 2))
 			{
 				$sstr = $crypt->decrypt($str);
 				$tracker = @unserialize($sstr);
@@ -138,9 +138,9 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 			// log tracking cookie detection to auth log
 
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
-			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
+			$user_id  = (empty($tracker['user_id']))  ? 0   : $tracker['user_id'];
 
-			App::get('log.auth')->info($username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+			App::get('log.auth')->info($username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' detect');
 
 			// set new tracking cookie with current data
 			$tracker = array();
@@ -181,7 +181,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLoginFailure($response)
 	{
-		App::get('log.auth')->info($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+		App::get('log.auth')->info($_POST['username'] . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
 		apache_note('auth','invalid');
 

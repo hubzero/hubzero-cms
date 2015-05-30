@@ -37,6 +37,7 @@ use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Facades\Facade;
 use Hubzero\Http\RedirectResponse;
 use Hubzero\Http\Request;
+use Hubzero\Http\Response;
 
 /**
  * Application class
@@ -63,15 +64,15 @@ class Application extends Container
 	 * @var  array
 	 */
 	private static $baseServices = array(
-		'Hubzero\Language\TranslationServiceProvider',
 		'Hubzero\Events\EventServiceProvider',
+		'Hubzero\Language\TranslationServiceProvider',
+		'Hubzero\Database\DatabaseServiceProvider',
 		'Hubzero\Plugin\PluginServiceProvider',
 		'Hubzero\Debug\ProfilerServiceProvider',
-		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
-		'Hubzero\Filesystem\FilesystemServiceProvider',
+		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Component\ComponentServiceProvider',
-		'Hubzero\Database\DatabaseServiceProvider',
+		'Hubzero\Filesystem\FilesystemServiceProvider',
 	);
 
 	/**
@@ -83,6 +84,7 @@ class Application extends Container
 		'App'        => 'Hubzero\Facades\App',
 		'Config'     => 'Hubzero\Facades\Config',
 		'Request'    => 'Hubzero\Facades\Request',
+		'Response'   => 'Hubzero\Facades\Response',
 		'Event'      => 'Hubzero\Facades\Event',
 		'Route'      => 'Hubzero\Facades\Route',
 		'User'       => 'Hubzero\Facades\User',
@@ -110,7 +112,8 @@ class Application extends Container
 	{
 		parent::__construct();
 
-		$this['request'] = ($request ?: Request::createFromGlobals());
+		$this['request']  = ($request ?: Request::createFromGlobals());
+		$this['response'] = new Response();
 
 		$this->registerBaseServiceProviders();
 	}
@@ -306,6 +309,16 @@ class Application extends Container
 	}
 
 	/**
+	 * Determine if we are running in the console.
+	 *
+	 * @return  bool
+	 */
+	public function runningInConsole()
+	{
+		return php_sapi_name() == 'cli';
+	}
+
+	/**
 	 * Abort
 	 *
 	 * @param   integer  $code
@@ -340,7 +353,6 @@ class Application extends Container
 	 */
 	public function redirect($url, $message = null, $type = 'success')
 	{
-		//\JFactory::getApplication()->redirect($url, $message, $type);
 		$redirect = new RedirectResponse($url); //, $status, $headers);
 		$redirect->setRequest($this['request']);
 
@@ -407,6 +419,31 @@ class Application extends Container
 	}
 
 	/**
+	 * Get only runnable services
+	 * 
+	 * @param   array  $layers  Unfiltered services
+	 * @return  array  Filtered runnable services
+	 */
+	protected function middleware($services)
+	{
+		return array_filter($services, function($service)
+		{
+			return $service instanceof Middleware;
+		});
+	}
+
+	/**
+	 * Application layer is responsible for dispatching request
+	 * 
+	 * @param   object  $request  Request object
+	 * @return  object  Response object
+	 */
+	public function handle(Request $request)
+	{
+		return $this['response']->compress($this['config']->get('gzip', false));
+	}
+
+	/**
 	 * Run the application and send the response.
 	 *
 	 * @return  void
@@ -417,44 +454,26 @@ class Application extends Container
 
 		$this->boot();
 
-		$profiler = $this['profiler'];
-
-		// Mark afterLoad in the profiler.
-		$profiler ? $profiler->mark('afterLoad') : null;
-
-		// Initialise the application.
-		$app->initialise(
-			$app->isAdmin() ? array('language' => $app->getUserState('application.lang')) : array()
-		);
-
-		// Mark afterIntialise in the profiler.
-		$profiler ? $profiler->mark('afterInitialise') : null;
-
-		// Route the application.
-		$app->route();
-
-		// Mark afterRoute in the profiler.
-		$profiler ? $profiler->mark('afterRoute') : null;
-
-		// Authenticate
-		if (method_exists($app, 'authenticate'))
+		if (!$this->runningInConsole())
 		{
-			$app->authenticate();
+			$this['dispatcher']->trigger('system.onAfterInitialise');
+
+			if ($this->app->has('profiler') && $this->app->get('profiler'))
+			{
+				$this->app['profiler']->mark('afterInitialise');
+			}
 		}
 
-		// Dispatch the application.
-		$app->dispatch();
+		// Create a new stack and bind to application then
+		$this['stack'] = new Stack($this);
 
-		// Mark afterDispatch in the profiler.
-		$profiler ? $profiler->mark('afterDispatch') : null;
-
-		// Render the application.
-		$app->render();
-
-		// Mark afterRender in the profiler.
-		$profiler ? $profiler->mark('afterRender') : null;
-
-		// Return the response.
-		echo $app;
+		// Send request throught stack and finally send response
+		$this['stack']
+			->send($this['request'])
+			->through($this->middleware($this->serviceProviders))
+			->then(function($response)
+			{
+				$response->send();
+			});
 	}
 }

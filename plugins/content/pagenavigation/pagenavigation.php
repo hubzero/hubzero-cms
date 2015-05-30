@@ -20,14 +20,16 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 	 */
 	public function onContentBeforeDisplay($context, &$row, &$params, $page=0)
 	{
-		$view = Request::getCmd('view');
+		$view  = Request::getCmd('view');
 		$print = Request::getBool('print');
 
-		if ($print) {
+		if ($print)
+		{
 			return false;
 		}
 
-		if ($params->get('show_item_navigation') && ($context == 'com_content.article') && ($view == 'article')) {
+		if ($params->get('show_item_navigation') && ($context == 'com_content.article') && ($view == 'article'))
+		{
 			$html = '';
 			$db		= JFactory::getDbo();
 			$app	= JFactory::getApplication();
@@ -117,10 +119,10 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 			$query->select('a.id, a.language,'.$case_when.','.$case_when1);
 			$query->from('#__content AS a');
 			$query->leftJoin('#__categories AS cc ON cc.id = a.catid');
-			$query->where('a.catid = '. (int)$row->catid .' AND a.state = '. (int)$row->state
-						. ($canPublish ? '' : ' AND a.access = ' .(int)$row->access) . $xwhere);
+			$query->where('a.catid = '. (int)$row->catid .' AND a.state = '. (int)$row->state . ($canPublish ? '' : ' AND a.access = ' .(int)$row->access) . $xwhere);
 			$query->order($orderby);
-			if ($app->isSite() && $app->getLanguageFilter()) {
+			if (\App::isSite() && \App::get('language.filter'))
+			{
 				$query->where('a.language in ('.$db->quote($lang->getTag()).','.$db->quote('*').')');
 			}
 
@@ -128,7 +130,8 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 			$list = $db->loadObjectList('id');
 
 			// This check needed if incorrect Itemid is given resulting in an incorrect result.
-			if (!is_array($list)) {
+			if (!is_array($list))
+			{
 				$list = array();
 			}
 
@@ -142,18 +145,21 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 			$row->prev = null;
 			$row->next = null;
 
-			if ($location -1 >= 0)	{
+			if ($location -1 >= 0)
+			{
 				// The previous content item cannot be in the array position -1.
 				$row->prev = $rows[$location -1];
 			}
 
-			if (($location +1) < count($rows)) {
+			if (($location +1) < count($rows))
+			{
 				// The next content item cannot be in an array position greater than the number of array postions.
 				$row->next = $rows[$location +1];
 			}
 
 			$pnSpace = "";
-			if (Lang::txt('JGLOBAL_LT') || Lang::txt('JGLOBAL_GT')) {
+			if (Lang::txt('JGLOBAL_LT') || Lang::txt('JGLOBAL_GT'))
+			{
 				$pnSpace = " ";
 			}
 

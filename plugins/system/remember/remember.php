@@ -26,7 +26,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 		{
 			$hash = App::hash('JLOGIN_REMEMBER');
 
-			if ($str = Request::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
+			if ($str = Request::getString($hash, '', 'cookie', 1 | 2))
 			{
 				jimport('joomla.utilities.simplecrypt');
 				$credentials = array();

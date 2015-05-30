@@ -118,7 +118,7 @@ class Helper extends Module
 		}
 
 		// Filter by language
-		$model->setState('filter.language', $app->getLanguageFilter());
+		$model->setState('filter.language', \App::get('language.filter'));
 
 		//  Featured switch
 		switch ($params->get('show_featured'))

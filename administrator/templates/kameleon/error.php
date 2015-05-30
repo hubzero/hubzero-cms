@@ -71,7 +71,7 @@ $browser = new \Hubzero\Browser\Detector();
 					//Display an harcoded logout
 					$task = Request::getCmd('task');
 
-					$logoutLink = Route::url('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+					$logoutLink = Route::url('index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1');
 					if ($task == 'edit' || $task == 'editA' || Request::getInt('hidemainmenu')) :
 						$logoutLink = '';
 					endif;

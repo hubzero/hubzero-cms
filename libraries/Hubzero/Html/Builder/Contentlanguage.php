@@ -32,6 +32,7 @@ namespace Hubzero\Html\Builder;
 
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Base\Object;
+use Lang;
 
 /**
  * Utility class working with content language select lists

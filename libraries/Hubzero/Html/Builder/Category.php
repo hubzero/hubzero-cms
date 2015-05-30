@@ -31,6 +31,7 @@
 namespace Hubzero\Html\Builder;
 
 use Hubzero\Utility\Arr;
+use Lang;
 
 /**
  * Utility class for categories
@@ -155,7 +156,7 @@ class Category
 				self::$items[$hash][] = Select::option($item->id, $item->title);
 			}
 			// Special "Add to root" option:
-			self::$items[$hash][] = Select::option('1', \Lang::txt('JLIB_HTML_ADD_TO_ROOT'));
+			self::$items[$hash][] = Select::option('1', Lang::txt('JLIB_HTML_ADD_TO_ROOT'));
 		}
 
 		return self::$items[$hash];

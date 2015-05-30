@@ -79,7 +79,7 @@ class ContentModelArticles extends JModelList
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  Request::getCmd('filter_order_Dir', 'ASC');
+		$listOrder =  Request::getCmd('filter_order_Dir', 'ASC');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
 			$listOrder = 'ASC';
@@ -95,7 +95,7 @@ class ContentModelArticles extends JModelList
 			$this->setState('filter.published', 1);
 		}
 
-		$this->setState('filter.language', $app->getLanguageFilter());
+		$this->setState('filter.language', App::get('language.filter'));
 
 		// process show_noauth parameter
 		if (!$params->get('show_noauth'))
