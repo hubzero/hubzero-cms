@@ -100,8 +100,8 @@ class Hubgraph extends SiteController
 
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option . ($terms ? '&terms=' . $terms : ''), false),
-					(JDEBUG ? $ex->getMessage() : null),
-					(JDEBUG ? 'error' : null)
+					(App::get('config')->get('debug') ? $ex->getMessage() : null),
+					(App::get('config')->get('debug') ? 'error' : null)
 				);
 				return;
 			}

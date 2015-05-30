@@ -95,7 +95,7 @@ class History extends SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? App::get('profiler')->mark('afterWikiSetup') : null;
+			App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();

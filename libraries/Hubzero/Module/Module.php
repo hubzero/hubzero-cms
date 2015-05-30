@@ -106,7 +106,7 @@ class Module extends Object
 			return $content;
 		}
 
-		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
+		$debug = App::get('config')->get('debug');
 		$key   = 'modules.' . $this->module->id;
 		$ttl   = intval($this->params->get('cache', 0));
 

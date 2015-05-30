@@ -106,7 +106,7 @@ class Page extends SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? App::get('profiler')->mark('afterWikiSetup') : null;
+			App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -305,7 +305,7 @@ class Page extends SiteController
 			$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
 		}
 
-		JPROFILE ? App::get('profiler')->mark('afterWikiParse') : null;
+		App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiParse') : null;
 
 		// Handle display events
 		$this->page->event = new \stdClass();

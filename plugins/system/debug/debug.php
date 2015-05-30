@@ -76,9 +76,9 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		}
 
 		// Only if debugging or language debug is enabled
-		if (JDEBUG || \Config::get('debug_lang'))
+		if (Config::get('debug') || Config::get('debug_lang'))
 		{
-			\Config::set('gzip', 0);
+			Config::set('gzip', 0);
 			ob_start();
 			ob_implicit_flush(false);
 		}
@@ -97,13 +97,13 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$base = str_replace('/administrator', '', rtrim(\Request::base(true), '/'));
 
 		// Only if debugging or language debug is enabled
-		if (JDEBUG || \Config::get('debug_lang'))
+		if (Config::get('debug') || Config::get('debug_lang'))
 		{
 			Document::addStyleSheet($base . '/media/cms/css/debug.css?v=' . filemtime(PATH_CORE . '/media/cms/css/debug.css'));
 		}
 
 		// [!] HUBZERO - Add CSS diagnostics
-		if (JDEBUG && $this->params->get('css', 0) && is_file(JPATH_SITE . '/media/system/css/diagnostics.css'))
+		if (Config::get('debug') && $this->params->get('css', 0) && is_file(JPATH_SITE . '/media/system/css/diagnostics.css'))
 		{
 			Document::addStyleSheet($base . '/media/system/css/diagnostics.css?v=' . filemtime(PATH_CORE . '/media/system/css/diagnostics.css'));
 		}
@@ -115,7 +115,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	public function __destruct()
 	{
 		// Do not render if debugging or language debug is not enabled
-		if (!JDEBUG && !\Config::get('debug_lang'))
+		if (!Config::get('debug') && !Config::get('debug_lang'))
 		{
 			return;
 		}
@@ -159,7 +159,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		if (!empty($filterGroups))
 		{
-			$userGroups = \User::get('groups');
+			$userGroups = User::get('groups');
 
 			if (!array_intersect($filterGroups, $userGroups))
 			{
@@ -167,9 +167,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
-		/* [!] HUBZERO - Add ability to show deubg output to specified users
-		 * zooley (2012-08-29)
-		 */
+		// [!] HUBZERO - Add ability to show deubg output to specified users
+		// zooley (2012-08-29)
 		else
 		{
 			$filterUsers = $this->params->get('filter_users', null);
@@ -190,8 +189,6 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		// Load language file
 		$this->loadLanguage('plg_system_debug');
 
-		//$last = end(\JProfiler::getInstance('Application')->getBuffer());
-
 		$html = '';
 
 		// Some "mousewheel protecting" JS
@@ -201,7 +198,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$html .= '<h1>' . Lang::txt('PLG_DEBUG_TITLE') . '</h1>';
 		$html .= '<a class="debug-close-btn" href="javascript:" onclick="Debugger.close();"><span class="icon-remove">' . Lang::txt('PLG_DEBUG_CLOSE') . '</span></a>';
 
-		if (JDEBUG)
+		if (Config::get('debug'))
 		{
 			if ($this->params->get('memory', 1))
 			{
@@ -231,7 +228,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 				$html .= '<a href="javascript:" class="debug-tab debug-tab-database" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . \JFactory::getDbo()->getCount() . '</span></a>';
 			}
 		}
-		if (\Config::get('debug_lang'))
+
+		if (Config::get('debug_lang'))
 		{
 			if ($this->params->get('language_errorfiles', 1))
 			{
@@ -262,13 +260,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$html .= '</div>';
 		$html .= '<div class="debug-body" id="debug-body">';
 
-		if (JDEBUG)
+		if (Config::get('debug'))
 		{
-			if (\JError::getErrors())
-			{
-				$html .= $this->display('errors');
-			}
-
 			if ($dumper->hasMessages())
 			{
 				$html .= $this->display('debug');
@@ -293,11 +286,11 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (\Config::get('debug_lang'))
+		if (Config::get('debug_lang'))
 		{
 			if ($this->params->get('language_errorfiles', 1))
 			{
-				$languageErrors = \Lang::getErrorFiles();
+				$languageErrors = Lang::getErrorFiles();
 				$html .= $this->display('language_files_in_error', $languageErrors);
 			}
 
@@ -555,7 +548,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 */
 	protected function display($item, array $errors = array())
 	{
-		$title = \Lang::txt('PLG_DEBUG_' . strtoupper($item));
+		$title = Lang::txt('PLG_DEBUG_' . strtoupper($item));
 
 		$status = '';
 
@@ -746,6 +739,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 * Display errors.
 	 *
 	 * @return  string
+	 * @deprecated
 	 */
 	protected function displayErrors()
 	{

@@ -154,7 +154,7 @@ class Assets
 
 		if (defined('JPATH_GROUPCOMPONENT'))
 		{
-			$base = substr(JPATH_GROUPCOMPONENT, strlen(JPATH_ROOT));
+			$base = substr(JPATH_GROUPCOMPONENT, strlen(PATH_ROOT));
 
 			$asset->setPath('source', $base . DS . 'assets' . DS . 'css' . DS . $asset->file());
 			$asset->setPath('override', $base . DS . 'assets' . DS . 'css' . DS . $asset->file());
@@ -185,7 +185,7 @@ class Assets
 
 		if (defined('JPATH_GROUPCOMPONENT'))
 		{
-			$base = substr(JPATH_GROUPCOMPONENT, strlen(JPATH_ROOT));
+			$base = substr(JPATH_GROUPCOMPONENT, strlen(PATH_ROOT));
 
 			$asset->setPath('source', $base . DS . 'assets' . DS . ($dir ? DS . $dir : '') . DS . $asset->file());
 			$asset->setPath('override', $base . DS . 'assets' . DS . ($dir ? DS . $dir : '') . DS . $asset->file());
@@ -518,7 +518,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists(JPATH_ROOT . $path))
+			if (file_exists(PATH_ROOT . $path))
 			{
 				// Push script to the document
 				return str_replace('/administrator', '', rtrim(Request::base(true), DS)) . $path;
@@ -539,11 +539,12 @@ class Assets
 		// Path to system cache
 		$cachedir = PATH_APP . DS . 'cache';
 		// Path to system CSS
-		$thispath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
+		$thispath = PATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
 
 		$env = self::app('config')->get('application_env', 'production');
 
-		try {
+		try
+		{
 			// Primary build file
 			$primary   = 'site';
 
@@ -551,14 +552,13 @@ class Assets
 			$output    = $cachedir . DS . $primary . '.css';
 
 			// If debugging is turned off and a cache file exist
-			//if (!JDEBUG && file_exists($output))
 			if ($env == 'production' && file_exists($output))
 			{
 				$output =  DS . 'cache' . DS . $primary. '.css?v=' . filemtime($output);
 			}
 			else
 			{
-				$lesspath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'less';
+				$lesspath = PATH_ROOT . DS . 'media' . DS . 'system' . DS . 'less';
 
 				if (!class_exists('lessc'))
 				{
@@ -573,7 +573,7 @@ class Assets
 				}
 
 				// Are there any template overrides?
-				$template  = JPATH_ROOT . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
+				$template  = PATH_ROOT . DS . 'templates' . DS . self::app('template')->template . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
 				if (file_exists($template . DS . $primary . '.less'))

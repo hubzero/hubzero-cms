@@ -62,7 +62,7 @@ class Job extends Model
 	private $_expression = NULL;
 
 	/**
-	 * JProfiler
+	 * Profiler
 	 *
 	 * @var  object
 	 */
@@ -278,7 +278,7 @@ class Job extends Model
 	 * Get all profiler marks.
 	 *
 	 * Returns an array of all marks created since the Profiler object
-	 * was instantiated.  Marks are strings as per {@link JProfiler::mark()}.
+	 * was instantiated.
 	 *
 	 * @return  array  Array of profiler marks
 	 */

@@ -16,9 +16,9 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
-$user		= JFactory::getUser();
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$user      = User::getRoot();
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 
 JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 ?>
@@ -81,13 +81,14 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_users');
-			$canEdit	= $user->authorise('core.edit',			'com_users');
+			$canCreate = $user->authorise('core.create', 'com_users');
+			$canEdit   = $user->authorise('core.edit',   'com_users');
 			// If this group is super admin and this user is not super admin, $canEdit is false
-			if (!$user->authorise('core.admin') && (JAccess::checkGroup($item->id, 'core.admin'))) {
+			if (!$user->authorise('core.admin') && (JAccess::checkGroup($item->id, 'core.admin')))
+			{
 				$canEdit = false;
 			}
-			$canChange	= $user->authorise('core.edit.state',	'com_users');
+			$canChange = $user->authorise('core.edit.state', 'com_users');
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -103,7 +104,7 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 					<?php else : ?>
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
-					<?php if (JDEBUG) : ?>
+					<?php if (Config::get('debug')) : ?>
 						<a class="button fltrt" href="<?php echo Route::url('index.php?option=com_users&view=debuggroup&group_id='.(int) $item->id);?>">
 							<?php echo Lang::txt('COM_USERS_DEBUG_GROUP');?>
 						</a>

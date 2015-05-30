@@ -102,9 +102,6 @@ class ErrorServiceProvider extends ServiceProvider
 				break;
 		}
 
-		define('JDEBUG',   $this->app['config']->get('debug'));
-		define('JPROFILE', $this->app['config']->get('debug') || $this->app['config']->get('profile'));
-
 		$this->app['error']->register($this->app['client']->name);
 	}
 }

@@ -38,49 +38,49 @@ abstract class Model extends Object
 	/**
 	 * Unpublished state
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const APP_STATE_UNPUBLISHED = 0;
 
 	/**
 	 * Published state
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const APP_STATE_PUBLISHED   = 1;
 
 	/**
 	 * Deleted state
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const APP_STATE_DELETED     = 2;
 
 	/**
 	 * Flagged state
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	const APP_STATE_FLAGGED     = 3;
 
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = null;
 
 	/**
-	 * JTable
+	 * Table
 	 *
 	 * @var object
 	 */
 	protected $_tbl = NULL;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_db = NULL;
 
@@ -88,15 +88,15 @@ abstract class Model extends Object
 	 * Model context.
 	 * option.model(.content)
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_context = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
@@ -134,9 +134,9 @@ abstract class Model extends Object
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed  The value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $default   The default value
+	 * @return  mixed   The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -154,9 +154,9 @@ abstract class Model extends Object
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	object This current model
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $value     The value of the property to set
+	 * @return  object  This current model
 	 */
 	public function set($property, $value = null)
 	{
@@ -175,7 +175,7 @@ abstract class Model extends Object
 	 * component, it will return the super group DB connection
 	 * instead of the site connection.
 	 *
-	 * @return  object  JDatabase
+	 * @return  object  Database
 	 */
 	public function initDbo()
 	{
@@ -193,7 +193,7 @@ abstract class Model extends Object
 	/**
 	 * Method to get the Database connector object.
 	 *
-	 * @return  object The internal database connector object.
+	 * @return  object  The internal database connector object.
 	 */
 	public function getDbo()
 	{
@@ -203,7 +203,7 @@ abstract class Model extends Object
 	/**
 	 * Method to set the database connector object.
 	 *
-	 * @param   object  &$db  A database connector object to be used by the table object.
+	 * @param   object   &$db  A database connector object to be used by the table object.
 	 * @return  boolean  True on success.
 	 */
 	public function setDbo(&$db)
@@ -223,7 +223,7 @@ abstract class Model extends Object
 	/**
 	 * Check if the entry exists (i.e., has a database record)
 	 *
-	 * @return     boolean True if record exists, False if not
+	 * @return  boolean  True if record exists, False if not
 	 */
 	public function exists()
 	{
@@ -241,7 +241,7 @@ abstract class Model extends Object
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isPublished()
 	{
@@ -259,7 +259,7 @@ abstract class Model extends Object
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isUnpublished()
 	{
@@ -277,7 +277,7 @@ abstract class Model extends Object
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isDeleted()
 	{
@@ -295,8 +295,8 @@ abstract class Model extends Object
 	/**
 	 * Bind data to the model
 	 *
-	 * @param      mixed $data Object or array
-	 * @return     boolean True on success, False on error
+	 * @param   mixed    $data  Object or array
+	 * @return  boolean  True on success, False on error
 	 */
 	public function bind($data=null)
 	{
@@ -346,8 +346,8 @@ abstract class Model extends Object
 	/**
 	 * Log an error message
 	 *
-	 * @param     string $message Message to log
-	 * @return    void
+	 * @param   string  $message  Message to log
+	 * @return  void
 	 */
 	protected function _logError($message)
 	{
@@ -357,8 +357,8 @@ abstract class Model extends Object
 	/**
 	 * Log an error message
 	 *
-	 * @param     string $message Message to log
-	 * @return    void
+	 * @param   string  $message  Message to log
+	 * @return  void
 	 */
 	protected function _logDebug($message)
 	{
@@ -368,9 +368,9 @@ abstract class Model extends Object
 	/**
 	 * Log an error message
 	 *
-	 * @param     string $message Message type to log
-	 * @param     string $message Message to log
-	 * @return    void
+	 * @param   string  $message  Message type to log
+	 * @param   string  $message  Message to log
+	 * @return  void
 	 */
 	protected function _log($type='error', $message)
 	{
@@ -379,11 +379,9 @@ abstract class Model extends Object
 			return;
 		}
 
-		//$trace = false;
-		if (JDEBUG)
+		if (\App::get('config')->get('debug'))
 		{
-			$message = '[' . \Request::getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
-			//$trace = true;
+			$message = '[' . \App::get('request')->getVar('REQUEST_URI', '', 'server') . '] [' . $message . ']';
 		}
 
 		$type = strtolower($type);
@@ -399,7 +397,7 @@ abstract class Model extends Object
 	/**
 	 * Perform data validation
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function check()
 	{
@@ -415,8 +413,8 @@ abstract class Model extends Object
 	/**
 	 * Store changes to this database entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean  $check  Perform data validation check?
+	 * @return  boolean  False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -440,7 +438,7 @@ abstract class Model extends Object
 				{
 					if ($result === false)
 					{
-						$this->setError(\Lang::txt('Content failed validation.'));
+						$this->setError(\App::get('language')->txt('Content failed validation.'));
 						return false;
 					}
 				}
@@ -460,7 +458,7 @@ abstract class Model extends Object
 	/**
 	 * Delete a record
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean  True on success, false on error
 	 */
 	public function delete()
 	{
@@ -484,7 +482,7 @@ abstract class Model extends Object
 	/**
 	 * Import a set of plugins
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function importPlugin($type='')
 	{
@@ -496,7 +494,7 @@ abstract class Model extends Object
 	/**
 	 * Import a set of plugins
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function trigger($event='', $params=array())
 	{
@@ -506,7 +504,7 @@ abstract class Model extends Object
 	/**
 	 * Turn the object into a string
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function __toString()
 	{
@@ -516,7 +514,7 @@ abstract class Model extends Object
 	/**
 	 * Turn the object into a string
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function toString($ignore=array('_db'))
 	{
@@ -527,11 +525,11 @@ abstract class Model extends Object
 	/**
 	 * Special print_r to strip out any vars passed in $ignore
 	 *
-	 * @param  object  $subject  Object to print_r
-	 * @param  array   $ignore   Property names to ignore
-	 * @param  integer $depth    Recursion depth
-	 * @param  array   $refChain Reference chain
-	 * @return string
+	 * @param   object   $subject   Object to print_r
+	 * @param   array    $ignore    Property names to ignore
+	 * @param   integer  $depth     Recursion depth
+	 * @param   array    $refChain  Reference chain
+	 * @return  string
 	 */
 	private function _print_r($subject, $ignore = array(), $depth = 1, $refChain = array())
 	{
@@ -607,13 +605,13 @@ abstract class Model extends Object
 	/**
 	 * Dynamically handle error additions.
 	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
+	 * @param   string  $method
+	 * @param   array   $parameters
+	 * @return  mixed
 	 */
 	public function __call($method, $parameters)
 	{
-		throw new \BadMethodCallException(__CLASS__ . '; ' . \Lang::txt('Method [%s] does not exist.', $method));
+		throw new \BadMethodCallException(sprintf(__CLASS__ . '; Method [%s] does not exist.', $method));
 	}
 }
 

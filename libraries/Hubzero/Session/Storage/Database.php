@@ -97,11 +97,12 @@ class Database extends Store
 	 */
 	public function write($session_id, $session_data)
 	{
-		//global $_PROFILER;
-
-		//if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
-		if (php_sapi_name() == 'cli')
+		if (\App::get('client')->id == 4 || php_sapi_name() == 'cli')
 		{
+			if (php_sapi_name() != 'cli' && \App::get('profiler'))
+			{
+				\App::get('profiler')->log();
+			}
 			return true; // skip session write on api and command line calls
 		}
 
@@ -122,7 +123,10 @@ class Database extends Store
 
 				if ($this->connection->execute())
 				{
-					//JPROFILE ? $_PROFILER->log() : null;
+					if ($profiler = \App::get('profiler'))
+					{
+						$profiler->log();
+					}
 					return true;
 				}
 
@@ -136,7 +140,10 @@ class Database extends Store
 			}
 		}
 
-		//JPROFILE ? $_PROFILER->log() : null;
+		if ($profiler = \App::get('profiler'))
+		{
+			$profiler->log();
+		}
 		return false;
 	}
 

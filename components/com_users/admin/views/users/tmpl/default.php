@@ -106,7 +106,7 @@ $loggeduser = User::getRoot();
 			// If this group is super admin and this user is not super admin, $canEdit is false
 			if ((!$loggeduser->authorise('core.admin')) && JAccess::check($item->id, 'core.admin'))
 			{
-				$canEdit  = false;
+				$canEdit   = false;
 				$canChange = false;
 			}
 		?>
@@ -129,7 +129,7 @@ $loggeduser = User::getRoot();
 					<?php else : ?>
 						<?php echo $this->escape($item->name); ?>
 					<?php endif; ?>
-					<?php if (JDEBUG) : ?>
+					<?php if (Config::get('debug')) : ?>
 						<a class="permissions button" href="<?php echo Route::url('index.php?option=com_users&view=debuguser&user_id='.(int) $item->id);?>">
 							<?php echo Lang::txt('COM_USERS_DEBUG_USER');?>
 						</a>
@@ -185,7 +185,7 @@ $loggeduser = User::getRoot();
 	</table>
 
 	<?php //Load the batch processing form. ?>
-	<?php if ($user->authorize('core.create', 'com_users') && $user->authorize('core.edit', 'com_users') && $user->authorize('core.edit.state', 'com_users')) : ?>
+	<?php if ($user->authorise('core.create', 'com_users') && $user->authorise('core.edit', 'com_users') && $user->authorise('core.edit.state', 'com_users')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 
