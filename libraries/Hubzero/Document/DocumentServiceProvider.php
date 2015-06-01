@@ -79,6 +79,7 @@ class DocumentServiceProvider extends Middleware
 	public function handle(Request $request)
 	{
 		$response = $this->next($request);
+
 		$document = $this->app['document'];
 
 		$params = array();
@@ -147,7 +148,10 @@ class DocumentServiceProvider extends Middleware
 			$generator .= ' (' . $this->app->version() . ')';
 		}
 		$document->setGenerator($generator);
-		$document->setBase(htmlspecialchars($request->base()));
+		if ($this->app->isSite())
+		{
+			$document->setBase(htmlspecialchars($request->base()));
+		}
 		$document->setBuffer($response->getContent(), 'component');
 		$document->parse($params);
 
