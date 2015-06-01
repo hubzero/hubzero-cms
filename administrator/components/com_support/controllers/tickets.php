@@ -537,6 +537,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$row->set('resolved', JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'));
 		}
 
+		$row->set('open', $row->status('open'));
+
 		// If an existing ticket AND closed AND previously open
 		if ($id && !$row->get('open') && $row->get('open') != $old->get('open'))
 		{
