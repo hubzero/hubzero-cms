@@ -106,21 +106,25 @@ class Owner extends \JTable
 		$status   = isset($filters['status']) ? $filters['status'] : 'active';
 		$native   = isset($filters['native']) ? $filters['native'] : '-';
 
-		$query   =  "SELECT COUNT(*) FROM $this->_tbl as o ";
-		$query  .=  " WHERE o.projectid=" . $this->_db->Quote($projectid);
+		$query   = "SELECT COUNT(*) ";
+		$query  .= " FROM (SELECT DISTINCT projectid, userid, invited_name, invited_email
+		      FROM $this->_tbl";
+
+		$query  .=  " WHERE projectid=" . $this->_db->Quote($projectid);
 		if (is_numeric($status))
 		{
-			$query .= " AND o.status=" . $this->_db->Quote($status);
+			$query .= " AND status=" . $this->_db->Quote($status);
 		}
 		elseif ($status == 'active')
 		{
-			$query .= " AND o.status!=2 ";
+			$query .= " AND status!=2 ";
 		}
 		if ($native != '-')
 		{
-			$query .= " AND o.native=" . $this->_db->Quote($native);
+			$query .= " AND native=" . $this->_db->Quote($native);
 		}
-		$query .= " AND (o.userid > 0 OR o.invited_email IS NOT NULL) ";	// email is required!
+		$query .= " AND (userid > 0 OR invited_email IS NOT NULL OR invited_name IS NOT NULL) ";
+		$query .= ") AS internalQuery";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -154,7 +158,7 @@ class Owner extends \JTable
 			$i = 1;
 			foreach ($ids as $id)
 			{
-				$query	.= "'".$id."'";
+				$query	.= "'" . $id . "'";
 				$query  .= $i < count($ids) ? ',' : '';
 				$i++;
 			}
@@ -330,17 +334,18 @@ class Owner extends \JTable
 		$query  .= " JOIN #__projects AS p ON p.id=o.projectid";
 		if (is_numeric($projectid))
 		{
-			$query .= " WHERE o.projectid=$projectid ";
+			$query .= " WHERE o.projectid=" . $this->_db->Quote($projectid);
 		}
-		else {
-			$query .= " WHERE p.alias='$projectid' ";
+		else
+		{
+			$query .= " WHERE p.alias=" . $this->_db->Quote($projectid);
 		}
 		$query .= " AND (o.userid > 0 OR o.invited_email IS NOT NULL OR o.invited_name IS NOT NULL) ";
 
 		$query .= " AND o.status!=2 ";
 		if ($role != 'all')
 		{
-			$query .= " AND o.role=".$role;
+			$query .= " AND o.role=" . $this->_db->Quote($role);
 		}
 		if ($withUsername)
 		{
@@ -362,11 +367,11 @@ class Owner extends \JTable
 				$names .= $name;
 				if ($show_uid)
 				{
-					$names .= ' ('.$entry->userid.')';
+					$names .= ' (' . $entry->userid . ')';
 				}
 				elseif ($withUsername)
 				{
-					$names .= ' (<a href="/members/' . $entry->userid . '">'.$entry->username.'</a>)';
+					$names .= ' (<a href="/members/' . $entry->userid . '">' . $entry->username . '</a>)';
 				}
 
 				if ($limit && $i == $limit && $i != count($result))
@@ -1018,10 +1023,10 @@ class Owner extends \JTable
 			$this->_db->setQuery( $query );
 			$found = $this->_db->loadResult();
 
-			if (!$found)
+			if ($found === NULL)
 			{
 				// User not in project
-				$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role`, `invited_email` ) VALUES ($projectid, $userid, $groupid , '$now', $status, $native, $role, '$invited_email')";
+				$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email` ) SELECT $projectid, $userid, $groupid , '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
 				$this->_db->setQuery( $query );
 				if ($this->_db->query()) {
 					$added[] = $userid;
@@ -1047,9 +1052,10 @@ class Owner extends \JTable
 
 			if ($gidNumber)
 			{
-				$members = $group->get('members');
+				$members  = $group->get('members');
 				$managers = $group->get('managers');
-				$owners = array_merge($members, $managers);
+				$owners   = $members + $managers;
+				$owners   = array_unique($owners);
 				if (!in_array($actor, $owners))
 				{
 					$this->setError( Lang::txt('COM_PROJECTS_TEAM_ERROR_NEED_TO_BELONG_TO_GROUP'));
@@ -1068,10 +1074,10 @@ class Owner extends \JTable
 						$role =  in_array($owner, $managers) ? 1 : 0;
 					}
 
-					if (!$found)
+					if ($found === NULL)
 					{
 						// User not in project
-						$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role` ) VALUES ($projectid, $owner , $gidNumber, '$now', $status, $native, $role )";
+						$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email` ) SELECT $projectid, $owner, $gidNumber, '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
 						$this->_db->setQuery( $query );
 						if ($this->_db->query())
 						{
