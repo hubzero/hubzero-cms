@@ -49,5 +49,5 @@ if (!$this->no_html) {
 	ob_clean();
 	header('Content-type: application/json');
 	echo json_encode($this->output);
-	jexit();
+	exit();
 }

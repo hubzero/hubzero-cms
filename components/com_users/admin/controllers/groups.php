@@ -43,9 +43,10 @@ class UsersControllerGroups extends JControllerAdmin
 	 */
 	function delete()
 	{
-		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
+		if (!User::authorise('core.admin', $this->option))
+		{
 			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
-			jexit();
+			exit();
 		}
 
 		return parent::delete();
@@ -60,9 +61,10 @@ class UsersControllerGroups extends JControllerAdmin
 	 */
 	function publish()
 	{
-		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
+		if (!User::authorise('core.admin', $this->option))
+		{
 			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
-			jexit();
+			exit();
 		}
 
 		return parent::publish();
@@ -77,9 +79,10 @@ class UsersControllerGroups extends JControllerAdmin
 	 */
 	public function reorder()
 	{
-		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
+		if (!User::authorise('core.admin', $this->option))
+		{
 			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
-			jexit();
+			exit();
 		}
 
 		return parent::reorder();
@@ -94,9 +97,10 @@ class UsersControllerGroups extends JControllerAdmin
 	 */
 	public function saveorder()
 	{
-		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
+		if (!User::authorise('core.admin', $this->option))
+		{
 			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
-			jexit();
+			exit();
 		}
 
 		return parent::saveorder();
@@ -111,9 +115,10 @@ class UsersControllerGroups extends JControllerAdmin
 	 */
 	public function checkin()
 	{
-		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
+		if (!User::authorise('core.admin', $this->option))
+		{
 			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
-			jexit();
+			exit();
 		}
 
 		return parent::checkin();

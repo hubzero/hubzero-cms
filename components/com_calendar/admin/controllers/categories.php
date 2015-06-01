@@ -34,6 +34,10 @@ use Components\Events\Tables\Category;
 use Components\Events\Tables\Configs;
 use Hubzero\Component\AdminController;
 use Exception;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Events controller for categories
@@ -390,7 +394,7 @@ class Categories extends AdminController
 	public function unpublishTask()
 	{
 		// Check for request forgeries
-		Request::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or exit('Invalid Token');
 
 		// Incoming
 		$ids = Request::getVar('id', array());
