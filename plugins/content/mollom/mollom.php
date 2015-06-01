@@ -48,6 +48,12 @@ class plgContentMollom extends JPlugin
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
+		if (JFactory::getApplication()->isAdmin()
+		 || JFactory::getUser()->authorise('core.manage', JRequest::getCmd('option')))
+		{
+			return;
+		}
+
 		if ($article instanceof \Hubzero\Base\Object)
 		{
 			$key = $this->_key($context);
@@ -65,32 +71,32 @@ class plgContentMollom extends JPlugin
 
 		if (!$content) return;
 
-		$user = JFactory::getUser();
+		if (!$this->params->get('apiPublicKey')) return $data;
 
-		include_once(__DIR__ . '/Service/Provider.php');
-
-		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Mollom\Service\Provider);
-
-		$service->set('apiPublicKey', $this->params->get('apiPublicKey'))
-		        ->set('apiPrivateKey', $this->params->get('apiPrivateKey'))
-		        ->set('user_email', $user->get('email'))
-		        ->set('user_id', $user->get('id'))
-		        ->set('user_name', $user->get('name'));
-
-		$ip = JRequest::ip();
-		$uid = JFactory::getUser()->get('id');
+		$ip       = JRequest::ip();
+		$uid      = JFactory::getUser()->get('id');
 		$username = JFactory::getUser()->get('username');
 		$fallback = 'option=' . JRequest::getCmd('option') . '&controller=' . JRequest::getCmd('controller') . '&task=' . JRequest::getCmd('task');
-		$from = JRequest::getVar('REQUEST_URI', $fallback, 'server');
-		$from = $from ?: $fallback;
+		$from     = JRequest::getVar('REQUEST_URI', $fallback, 'server');
+		$from     = $from ?: $fallback;
+		$hash     = md5($content);
 
-		if ($service->isSpam($content))
+		$data = $this->onContentDetectSpam($content);
+
+		if ($data['is_spam'])
 		{
-			JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+			JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $hash . ' ' . $from);
+			if (!JFactory::getSession()->get('spam' . $hash))
+			{
+				$obj = new stdClass;
+				$obj->failed = $content;
+				JFactory::getSpamLogger()->info(json_encode($obj));
+				JFactory::getSession()->set('spam' . $hash, 1);
+			}
 			return false;
 		}
 
-		JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+		JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $hash . ' ' . $from);
 	}
 
 	/**
@@ -109,5 +115,39 @@ class plgContentMollom extends JPlugin
 			$key = $parts[2];
 		}
 		return $key;
+	}
+
+	/**
+	 * Event for checking content
+	 *
+	 * @param   string   $content  The context of the content passed to the plugin (added in 1.6)
+	 * @return  array
+	 */
+	public function onContentDetectSpam($content)
+	{
+		$data = array(
+			'service' => $this->_name,
+			'is_spam' => false
+		);
+
+		if (!$this->params->get('apiPublicKey')) return $data;
+
+		$user = JFactory::getUser();
+
+		include_once(__DIR__ . '/Service/Provider.php');
+
+		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Mollom\Service\Provider);
+		$service->set('apiPublicKey', $this->params->get('apiPublicKey'))
+		        ->set('apiPrivateKey', $this->params->get('apiPrivateKey'))
+		        ->set('user_email', $user->get('email'))
+		        ->set('user_id', $user->get('id'))
+		        ->set('user_name', $user->get('name'));
+
+		if ($service->isSpam($content))
+		{
+			$data['is_spam']  = true;
+		}
+
+		return $data;
 	}
 }

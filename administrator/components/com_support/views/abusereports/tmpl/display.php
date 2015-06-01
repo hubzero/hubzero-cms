@@ -33,7 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 
 JHTML::_('behavior.framework');
+
+$this->view('_submenu')->display();
 ?>
+
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
@@ -47,7 +50,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter-state"><?php echo JText::_('COM_SUPPORT_SHOW'); ?>:</label>
 		<select name="state" id="filter-state" onchange="document.adminForm.submit( );">

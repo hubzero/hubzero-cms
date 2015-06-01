@@ -432,4 +432,34 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
+
+	/**
+	 * Displays a list of records
+	 *
+	 * @return  void
+	 */
+	public function checkTask()
+	{
+		$this->view->results = null;
+		$this->view->sample  = '';
+
+		if ($sample = JRequest::getVar('sample', '', 'post', 'none', 2))
+		{
+			JPluginHelper::importPlugin('content');
+			$dispatcher = JDispatcher::getInstance();
+
+			$this->view->sample  = $sample;
+
+			$this->view->results = $dispatcher->trigger('onContentDetectSpam', array($sample));
+		}
+
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
 }

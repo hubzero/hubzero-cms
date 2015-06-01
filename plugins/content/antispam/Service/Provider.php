@@ -96,12 +96,14 @@ class Provider extends AbstractAdapter
 		// Check the user's IP against the blacklist
 		if ($ips = $this->get('blacklist'))
 		{
+			$this->set('scope', 'ip_blacklist');
 			$spam = $this->blacklistedIp($ips);
 		}
 
 		// Bad words
 		if (!$spam && $this->get('badwords'))
 		{
+			$this->set('scope', 'word_blacklist');
 			$spam = $this->pottyMouth($this->getValue());
 		}
 
@@ -194,6 +196,7 @@ class Provider extends AbstractAdapter
 
 		if ($linkCount >= $this->get('linkFrequency'))
 		{
+			$this->set('scope', 'link_frequency');
 			// If the link count is more than the maximum allowed
 			// the string is automatically considered spam..
 			return true;
@@ -201,6 +204,8 @@ class Provider extends AbstractAdapter
 
 		if ($this->get('linkValidation'))
 		{
+			$this->set('scope', 'link_blacklist');
+
 			foreach ($matches[0] as $match)
 			{
 				if ($this->isBlacklistedLink($match))
@@ -209,6 +214,8 @@ class Provider extends AbstractAdapter
 				}
 			}
 		}
+
+		$this->set('scope', 'link_ratio');
 
 		// Get the ratio of words to link
 		$ratio = floor(($linkCount / $wordCount) * 100);

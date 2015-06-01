@@ -48,6 +48,12 @@ class plgContentAntispam extends JPlugin
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
+		if (JFactory::getApplication()->isAdmin()
+		 || JFactory::getUser()->authorise('core.manage', JRequest::getCmd('option')))
+		{
+			return;
+		}
+
 		if ($article instanceof \Hubzero\Base\Object)
 		{
 			$key = $this->_key($context);
@@ -65,39 +71,35 @@ class plgContentAntispam extends JPlugin
 
 		if (!$content) return;
 
-		include_once(__DIR__ . '/Service/Provider.php');
-
-		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Antispam\Service\Provider);
-
-		$service->set('linkFrequency', $this->params->get('linkFrequency', 5))
-		        ->set('linkRatio', $this->params->get('linkRatio', 40))
-		        ->set('linkValidation', $this->params->get('linkValidation', 0))
-		        ->set('blacklist', $this->params->get('blacklist'))
-		        ->set('badwords', $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
-				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
-				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
-				. 'orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
-				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
-				. 'texas holdem, fisting'));
-
-		$ip = JRequest::ip();
-		$uid = JFactory::getUser()->get('id');
+		$ip       = JRequest::ip();
+		$uid      = JFactory::getUser()->get('id');
 		$username = JFactory::getUser()->get('username');
 		$fallback = 'option=' . JRequest::getCmd('option') . '&controller=' . JRequest::getCmd('controller') . '&task=' . JRequest::getCmd('task');
-		$from = JRequest::getVar('REQUEST_URI', $fallback, 'server');
-		$from = $from ?: $fallback;
+		$from     = JRequest::getVar('REQUEST_URI', $fallback, 'server');
+		$from     = $from ?: $fallback;
+		$hash     = md5($content);
 
-		if ($service->isSpam($content))
+		$data = $this->onContentDetectSpam($content);
+
+		if ($data['is_spam'])
 		{
-			JFactory::getSpamLogger()->info('spam ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+			JFactory::getSpamLogger()->info('spam ' . $data['service'] . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $hash . ' ' . $from);
+			if (!JFactory::getSession()->get('spam' . $hash))
+			{
+				$obj = new stdClass;
+				$obj->failed = $content;
+				JFactory::getSpamLogger()->info(json_encode($obj));
+				JFactory::getSession()->set('spam' . $hash, 1);
+			}
+
 			if ($message = $this->params->get('message'))
 			{
-				\JFactory::getApplication()->enqueueMessage($message, 'error');
+				JFactory::getApplication()->enqueueMessage($message, 'error');
 			}
 			return false;
 		}
 
-		JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $from);
+		JFactory::getSpamLogger()->info('ham ' . $this->_name . ' ' . $ip . ' ' . $uid . ' ' . $username . ' ' . $hash . ' ' . $from);
 	}
 
 	/**
@@ -116,5 +118,42 @@ class plgContentAntispam extends JPlugin
 			$key = $parts[2];
 		}
 		return $key;
+	}
+
+	/**
+	 * Event for checking content
+	 *
+	 * @param   string   $content  The context of the content passed to the plugin (added in 1.6)
+	 * @return  array
+	 */
+	public function onContentDetectSpam($content)
+	{
+		include_once(__DIR__ . '/Service/Provider.php');
+
+		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Antispam\Service\Provider);
+
+		$service->set('linkFrequency', $this->params->get('linkFrequency', 5))
+		        ->set('linkRatio', $this->params->get('linkRatio', 40))
+		        ->set('linkValidation', $this->params->get('linkValidation', 0))
+		        ->set('blacklist', $this->params->get('blacklist'))
+		        ->set('badwords', $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
+				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
+				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
+				. 'orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
+				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
+				. 'texas holdem, fisting'));
+
+		$data = array(
+			'service' => $this->_name,
+			'is_spam' => false
+		);
+
+		if ($service->isSpam($content))
+		{
+			$data['service'] .= ':' . $service->get('scope');
+			$data['is_spam']  = true;
+		}
+
+		return $data;
 	}
 }
