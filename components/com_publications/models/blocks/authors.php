@@ -375,11 +375,16 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$owner = NULL;
 		if ($uid)
 		{
-			$owner = $objO->getOwnerId( $pub->_project->id, $uid );
+			$owner = $objO->getOwnerId( $pub->_project->id, $uid, trim($name));
 		}
 		elseif ($email)
 		{
 			$owner = $objO->checkInvited( $pub->_project->id, $email );
+		}
+		elseif (trim($name))
+		{
+			// Check by invite name
+			$owner = $objO->checkInvitedByName( $pub->_project->id, trim($name));
 		}
 
 		if ($owner && $objO->load($owner))

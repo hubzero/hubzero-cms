@@ -223,22 +223,26 @@ class ProjectOwner extends JTable
 		$status   = isset($filters['status']) ? $filters['status'] : 'active';
 		$native   = isset($filters['native']) ? $filters['native'] : '-';
 
-		$query   =  "SELECT COUNT(*) FROM $this->_tbl as o ";
-		$query  .=  " WHERE o.projectid=$projectid ";
+		$query   = "SELECT COUNT(*) ";
+		$query  .= " FROM (SELECT DISTINCT projectid, userid, invited_name, invited_email
+		      FROM $this->_tbl";
+
+		$query  .=  " WHERE projectid=" . $this->_db->Quote($projectid);
 		if (is_numeric($status))
 		{
-			$query .= " AND o.status=$status ";
+			$query .= " AND status=" . $this->_db->Quote($status);
 		}
 		elseif ($status == 'active')
 		{
-			$query .= " AND o.status!=2 ";
+			$query .= " AND status!=2 ";
 		}
 		if ($native != '-')
 		{
-			$query .= " AND o.native=$native ";
+			$query .= " AND native=" . $this->_db->Quote($native);
 		}
-		$query .= " AND (o.userid > 0 OR o.invited_email IS NOT NULL) ";	// email is required!
+		$query .= " AND (userid > 0 OR invited_email IS NOT NULL OR invited_name IS NOT NULL) ";
 
+		$query .= ") AS internalQuery";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 
@@ -271,7 +275,7 @@ class ProjectOwner extends JTable
 			$i = 1;
 			foreach ($ids as $id)
 			{
-				$query	.= "'".$id."'";
+				$query	.= "'" . $id . "'";
 				$query  .= $i < count($ids) ? ',' : '';
 				$i++;
 			}
@@ -316,7 +320,7 @@ class ProjectOwner extends JTable
 		$ids = array();
 		if (is_numeric($projectid))
 		{
-			$query =  "SELECT " . $get . " FROM $this->_tbl WHERE projectid=$projectid ";
+			$query =  "SELECT DISTINCT " . $get . " FROM $this->_tbl WHERE projectid=$projectid ";
 			if ($role != 'all')
 			{
 				$query .= " AND role=$role ";
@@ -326,7 +330,7 @@ class ProjectOwner extends JTable
 		}
 		else
 		{
-			$query  =  "SELECT o." . $get . " FROM $this->_tbl as o ";
+			$query  =  "SELECT DISTINCT o." . $get . " FROM $this->_tbl as o ";
 			$query .= " JOIN #__projects AS p ON p.id=o.projectid";
 			$query .= " WHERE p.alias='$projectid' ";
 			$query .=  $active == 1 ? " AND o.status=1 " : " AND o.status!=2 ";
@@ -364,11 +368,11 @@ class ProjectOwner extends JTable
 
 		if ($name && intval($uid) == 0)
 		{
-			$query = "SELECT id FROM $this->_tbl WHERE projectid=$projectid AND invited_name=" . $this->_db->Quote($name);
+			$query = "SELECT id FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid) . " AND invited_name=" . $this->_db->Quote($name);
 		}
 		elseif (intval($uid))
 		{
-			$query = "SELECT id FROM $this->_tbl WHERE projectid=$projectid AND userid=$uid ";
+			$query = "SELECT id FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid) . " AND userid=" . $this->_db->Quote($uid);
 		}
 		else
 		{
@@ -394,8 +398,8 @@ class ProjectOwner extends JTable
 
 		$query   =  "SELECT x.email ";
 		$query  .=  " FROM #__xprofiles as x ";
-		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=$projectid ";
-		$query  .= " WHERE x.name = '" . $name . "' ";
+		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=" . $this->_db->Quote($projectid);
+		$query  .= " WHERE x.name =" . $this->_db->Quote($name);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -417,8 +421,8 @@ class ProjectOwner extends JTable
 
 		$query   =  "SELECT x.uidNumber ";
 		$query  .=  " FROM #__xprofiles as x ";
-		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=$projectid ";
-		$query  .= " WHERE x.email = '" . $email . "' ";
+		$query  .=  " JOIN $this->_tbl AS o ON x.uidNumber=o.userid AND o.projectid=" . $this->_db->Quote($projectid);
+		$query  .= " WHERE x.email =" . $this->_db->Quote($email);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -447,17 +451,18 @@ class ProjectOwner extends JTable
 		$query  .= " JOIN #__projects AS p ON p.id=o.projectid";
 		if (is_numeric($projectid))
 		{
-			$query .= " WHERE o.projectid=$projectid ";
+			$query .= " WHERE o.projectid=" . $this->_db->Quote($projectid);
 		}
-		else {
-			$query .= " WHERE p.alias='$projectid' ";
+		else
+		{
+			$query .= " WHERE p.alias=" . $this->_db->Quote($projectid);
 		}
 		$query .= " AND (o.userid > 0 OR o.invited_email IS NOT NULL OR o.invited_name IS NOT NULL) ";
 
 		$query .= " AND o.status!=2 ";
 		if ($role != 'all')
 		{
-			$query .= " AND o.role=".$role;
+			$query .= " AND o.role=" . $this->_db->Quote($role);
 		}
 		if ($withUsername)
 		{
@@ -479,11 +484,11 @@ class ProjectOwner extends JTable
 				$names .= $name;
 				if ($show_uid)
 				{
-					$names .= ' ('.$entry->userid.')';
+					$names .= ' (' . $entry->userid . ')';
 				}
 				elseif ($withUsername)
 				{
-					$names .= ' (<a href="/members/' . $entry->userid . '">'.$entry->username.'</a>)';
+					$names .= ' (<a href="/members/' . $entry->userid . '">' . $entry->username . '</a>)';
 				}
 
 				if ($limit && $i == $limit && $i != count($result))
@@ -522,7 +527,7 @@ class ProjectOwner extends JTable
 		$query  .= " FROM $this->_tbl AS o ";
 		$query  .= " JOIN #__projects as p ON o.projectid=p.id ";
 		$query  .= " AND o.userid=p.created_by_user ";
-		$query  .= " WHERE p.id=" . $projectid;
+		$query  .= " WHERE p.id=" . $this->_db->Quote($projectid);
 		$query  .= " LIMIT 1";
 		$this->_db->setQuery( $query );
 		$results =  $this->_db->loadObjectList();
@@ -548,7 +553,7 @@ class ProjectOwner extends JTable
 		$query   = "SELECT o.* FROM $this->_tbl AS o ";
 		$query  .= " JOIN #__projects as p ON o.projectid=p.id";
 		$query  .= " WHERE o.userid > 0";
-		$query  .= " AND p.id=" . $projectid;
+		$query  .= " AND p.id=" . $this->_db->Quote($projectid);
 		$query  .= " AND o.params LIKE '%google_token=%' AND o.params NOT LIKE '%google_token=\n%'";
 		if (!empty($exclude))
 		{
@@ -633,11 +638,11 @@ class ProjectOwner extends JTable
 
 		if (is_numeric($projectid))
 		{
-			$query .= " WHERE o.projectid=$projectid ";
+			$query .= " WHERE o.projectid=" . $this->_db->Quote($projectid);
 		}
 		else
 		{
-			$query .= " WHERE p.alias='$projectid' ";
+			$query .= " WHERE p.alias=" . $this->_db->Quote($projectid);
 		}
 		$query .= " AND (o.userid > 0 OR o.invited_email IS NOT NULL OR o.invited_name IS NOT NULL) ";
 
@@ -651,11 +656,11 @@ class ProjectOwner extends JTable
 		}
 		if ($native != '-')
 		{
-			$query .= " AND o.native=$native ";
+			$query .= " AND o.native=" . $this->_db->Quote($native);
 		}
 		if (isset($filters['role']))
 		{
-			$query .= " AND o.role=".intval($filters['role']);
+			$query .= " AND o.role=" . intval($filters['role']);
 		}
 		if ($connected)
 		{
@@ -719,7 +724,7 @@ class ProjectOwner extends JTable
 		{
 			$query .=  " JOIN #__xgroups as g ON g.gidNumber=o.groupid ";
 		}
-		$query .= " WHERE o.groupid IS NOT NULL AND o.groupid!= 0 AND o.projectid=$projectid ";
+		$query .= " WHERE o.groupid IS NOT NULL AND o.groupid!= 0 AND o.projectid=" . $this->_db->Quote($projectid);
 		if ($native)
 		{
 			$query .= " AND o.native=1 ";
@@ -985,9 +990,10 @@ class ProjectOwner extends JTable
 		}
 
 		// Delete all owners?
-		if ($all) {
+		if ($all)
+		{
 			$query  = ($remove) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET status = 2 ";
-			$query .= " WHERE projectid=".$projectid;
+			$query .= " WHERE projectid=" . $this->_db->Quote($projectid);
 			$this->_db->setQuery( $query );
 			if (!$this->_db->query())
 			{
@@ -1021,8 +1027,8 @@ class ProjectOwner extends JTable
 		{
 			 foreach ($users as $user)
 			 {
-				$query  = "UPDATE $this->_tbl SET role='".$role."'  WHERE projectid = '".$projectid."' ";
-				$query .= !$byownerid ? "AND userid = '$user'" : "AND id = '$user'";
+				$query  = "UPDATE $this->_tbl SET role=" . $this->_db->Quote($role) . "  WHERE projectid = " . $this->_db->Quote($projectid);
+				$query .= !$byownerid ? " AND userid =" . $this->_db->Quote($user) : " AND id = " . $this->_db->Quote($user);
 				$this->_db->setQuery( $query );
 				if (!$this->_db->query())
 				{
@@ -1054,7 +1060,7 @@ class ProjectOwner extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT id FROM $this->_tbl WHERE invited_email='$email' AND projectid='$projectid' LIMIT 1";
+		$query  = "SELECT id FROM $this->_tbl WHERE invited_email=" . $this->_db->Quote($email) . " AND projectid=" . $this->_db->Quote($projectid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -1076,7 +1082,7 @@ class ProjectOwner extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT id FROM $this->_tbl WHERE invited_name='$name' AND projectid='$projectid' LIMIT 1";
+		$query  = "SELECT id FROM $this->_tbl WHERE invited_name=" . $this->_db->Quote($name) . " AND projectid=" . $this->_db->Quote($projectid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -1129,7 +1135,7 @@ class ProjectOwner extends JTable
 		}
 
 		$query = "UPDATE $this->_tbl SET groupid = '0'
-				  WHERE projectid = '".$projectid."' AND groupid = '$groupid'";
+				  WHERE projectid = " . $this->_db->Quote($projectid) . " AND groupid = " . $this->_db->Quote($groupid);
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{
@@ -1168,14 +1174,14 @@ class ProjectOwner extends JTable
 		// Individual user added
 		if ($userid && is_numeric($userid))
 		{
-			$query  = "SELECT status FROM $this->_tbl WHERE userid='$userid' AND projectid='$projectid' LIMIT 1";
+			$query  = "SELECT status FROM $this->_tbl WHERE userid=" . $this->_db->Quote($userid) . " AND projectid=" . $this->_db->Quote($projectid) . " LIMIT 1";
 			$this->_db->setQuery( $query );
 			$found = $this->_db->loadResult();
 
-			if (!$found)
+			if ($found === NULL)
 			{
 				// User not in project
-				$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role`, `invited_email` ) VALUES ($projectid, $userid ,$groupid ,'$now' ,$status ,$native, $role, '$invited_email' )";
+				$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email` ) SELECT $projectid, $userid, $groupid , '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
 				$this->_db->setQuery( $query );
 				if ($this->_db->query()) {
 					$added[] = $userid;
@@ -1184,7 +1190,7 @@ class ProjectOwner extends JTable
 			elseif ($found != 1)
 			{
 				// Inactive/deleted - activate
-				$query = "UPDATE $this->_tbl SET added = '".$now."', status = 1, role = '".$role."', groupid = '".$groupid."'  WHERE projectid = '".$projectid."' AND userid = '$userid'";
+				$query = "UPDATE $this->_tbl SET added = '$now', status = 1, role = " . $this->_db->Quote($role) . ", groupid = " . $this->_db->Quote($groupid) . "  WHERE projectid = " . $this->_db->Quote($projectid) . " AND userid = " . $this->_db->Quote($userid);
 				$this->_db->setQuery( $query );
 				if ($this->_db->query())
 				{
@@ -1201,9 +1207,10 @@ class ProjectOwner extends JTable
 
 			if ($gidNumber)
 			{
-				$members = $group->get('members');
+				$members  = $group->get('members');
 				$managers = $group->get('managers');
-				$owners = array_merge($members, $managers);
+				$owners   = $members + $managers;
+				$owners   = array_unique($owners);
 				if (!in_array($actor, $owners))
 				{
 					$this->setError( JText::_('COM_PROJECTS_TEAM_ERROR_NEED_TO_BELONG_TO_GROUP'));
@@ -1212,7 +1219,7 @@ class ProjectOwner extends JTable
 
 				foreach ($owners as $owner)
 				{
-					$query  = "SELECT status FROM $this->_tbl WHERE userid='$owner' AND projectid='$projectid' LIMIT 1";
+					$query  = "SELECT status FROM $this->_tbl WHERE userid=" . $this->_db->Quote($owner) . " AND projectid=" . $this->_db->Quote($projectid) . " LIMIT 1";
 					$this->_db->setQuery( $query );
 					$found = $this->_db->loadResult();
 
@@ -1222,10 +1229,10 @@ class ProjectOwner extends JTable
 						$role =  in_array($owner, $managers) ? 1 : 0;
 					}
 
-					if (!$found)
+					if ($found === NULL)
 					{
 						// User not in project
-						$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role` ) VALUES ($projectid, $owner ,$gidNumber ,'$now' ,$status ,$native, $role )";
+						$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email` ) SELECT $projectid, $owner, $gidNumber, '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
 						$this->_db->setQuery( $query );
 						if ($this->_db->query())
 						{
@@ -1235,7 +1242,7 @@ class ProjectOwner extends JTable
 					elseif ($found != 1)
 					{
 						// Inactive/deleted - activate
-						$query = "UPDATE $this->_tbl SET added = '".$now."', status = 1, groupid = '".$gidNumber."', role = '".$role."'  WHERE projectid = '".$projectid."' AND userid = '$owner'";
+						$query = "UPDATE $this->_tbl SET added = " . $this->_db->Quote($now) . ", status = 1, groupid = " . $this->_db->Quote($gidNumber) . ", role = " . $this->_db->Quote($role) . "  WHERE projectid = " . $this->_db->Quote($projectid) . " AND userid = " . $this->_db->Quote($owner);
 						$this->_db->setQuery( $query );
 						if ($this->_db->query())
 						{
