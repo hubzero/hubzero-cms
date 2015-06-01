@@ -154,7 +154,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Set vars
-			$this->_task 		= $action ? $action : Request::getVar('action','');
+			$this->_task 		= $action ? $action : Request::getVar('action', '');
 			$this->_database 	= JFactory::getDBO();
 			$this->_uid 		= User::get('id');
 			$this->_config      = $model->config();
@@ -684,8 +684,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function delete()
 	{
 		// Incoming
-		$checked = Request::getVar( 'owner', '', 'request', 'array' );
-		$groups  = Request::getVar( 'group', '', 'request', 'array' );
+		$checked = Request::getVar( 'owner', array() );
+		$groups  = Request::getVar( 'group', array() );
 
 		// Are we setting up project?
 		$setup = $this->model->inSetup() ? 1 : 0;
@@ -872,8 +872,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function _changeRole()
 	{
 		// Incoming
-		$checked 	= Request::getVar( 'owner', '', 'request', 'array' );
-		$groups 	= Request::getVar( 'group', '', 'request', 'array' );
+		$checked 	= Request::getVar( 'owner', array());
+		$groups 	= Request::getVar( 'group', array());
 		$owner 		= Request::getVar( 'owner', '');
 		$role 		= Request::getInt ( 'role', 0 );
 

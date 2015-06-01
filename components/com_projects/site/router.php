@@ -463,13 +463,9 @@ class Router extends Base
 				// Team
 				if (!empty($segments[2]) && $vars['active'] == 'team')
 				{
-					if (!empty($segments[2]) && is_numeric($segments[2]))
+					if (!empty($segments[2]))
 					{
-						$vars['pid'] = $segments[2];
-					}
-					if (!empty($segments[3]))
-					{
-						$vars['action'] = $segments[3];
+						$vars['action'] = $segments[2];
 					}
 				}
 
