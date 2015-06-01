@@ -110,13 +110,13 @@ class JApi extends JApplication
 
 		$config['clientId'] = 4;
 
-		$this->unregister_long_arrays();
+		/*$this->unregister_long_arrays();
 		$this->unregister_globals();
 		$this->fix_http_headers();
 
 		$this->request = new \Hubzero\Api\Request();
 		$this->response = new \Hubzero\Api\Response();
-		$this->output = '';
+		$this->output = '';*/
 
 		parent::__construct($config);
 	}

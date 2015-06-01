@@ -94,7 +94,12 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterDispatch()
 	{
-		$base = str_replace('/administrator', '', rtrim(\Request::base(true), '/'));
+		if (!App::isAdmin() && !App::isSite())
+		{
+			return;
+		}
+
+		$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 		// Only if debugging or language debug is enabled
 		if (Config::get('debug') || Config::get('debug_lang'))
@@ -114,6 +119,11 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 */
 	public function __destruct()
 	{
+		if (!App::isAdmin() && !App::isSite())
+		{
+			return;
+		}
+
 		// Do not render if debugging or language debug is not enabled
 		if (!Config::get('debug') && !Config::get('debug_lang'))
 		{

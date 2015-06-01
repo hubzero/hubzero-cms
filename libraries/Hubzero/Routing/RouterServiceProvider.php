@@ -72,7 +72,7 @@ class RouterServiceProvider extends Middleware
 
 			if ($this->app->has('profiler'))
 			{
-				$this->app['profiler']->mark('afterRoute');
+				$this->app['profiler'] ? $this->app['profiler']->mark('afterRoute') : null;
 			}
 		}
 

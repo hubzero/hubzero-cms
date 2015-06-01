@@ -28,15 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Component;
+namespace Hubzero\Api;
 
 use Hubzero\Base\Middleware;
 use Hubzero\Http\Request;
 
 /**
- * Component loader service provider
+ * Authentication service provider
  */
-class ComponentServiceProvider extends Middleware //ServiceProvider
+class AuthServiceProvider extends Middleware
 {
 	/**
 	 * Register the service provider.
@@ -45,9 +45,9 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app['component'] = function($app)
+		$this->app['auth'] = function($app)
 		{
-			return new Loader($app);
+			return new Guard($app);
 		};
 	}
 
@@ -61,25 +61,54 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 	{
 		$response = $this->next($request);
 
-		if (!$this->app->runningInConsole())
+		// If CLI then we have to gather all query, post and header values
+		// into params for Oauth_Provider's constructor.
+		$params = array();
+
+		if ($this->app->runningInConsole())
 		{
-			$component = $request->getCmd('option');
-			if (!$component)
+			$queryvars = $this->app['request']->get('queryvars');
+			$postvars  = $this->app['request']->get('postdata');
+
+			if (!empty($queryvars))
 			{
-				$this->app->abort(404);
+				foreach ($queryvars as $key => $value)
+				{
+					if (isset($queryvars[$key]))
+					{
+						$params[$key] = $queryvars[$key];
+					}
+					else if (isset($postvars[$key]))
+					{
+						$params[$key] = $postvars[$key];
+					}
+				}
 			}
 
-			$contents = $this->app['component']->render($component);
-
-			$response->setContent($contents);
-
-			$this->app['dispatcher']->trigger('system.onAfterDispatch');
-
-			if ($this->app->has('profiler'))
+			if (!empty($postvars))
 			{
-				$this->app['profiler'] ? $this->app['profiler']->mark('afterDispatch') : null;
+				foreach ($postvars as $key => $value)
+				{
+					if (isset($queryvars[$key]))
+					{
+						$params[$key] = $queryvars[$key];
+					}
+					else if (isset($postvars[$key]))
+					{
+						$params[$key] = $postvars[$key];
+					}
+				}
+			}
+
+			if (empty($params))
+			{
+				return false;
 			}
 		}
+
+		$this->app['authn'] = $this->app['auth']->authenticate($params);
+
+		$this->app['request']->setVar('validApiKey', !empty($this->app['authn']['consumer_key']));
 
 		return $response;
 	}

@@ -23,14 +23,12 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return [
-	'Hubzero\Session\SessionServiceProvider',
-	'Hubzero\Api\ResponseServiceProvider',
-	'Hubzero\Api\AuthServiceProvider',
-	'Hubzero\Api\ComponentServiceProvider',
-];
+// Create aliaes for runtime
+return array(
+	'Component'  => 'Hubzero\Facades\Component',
+);

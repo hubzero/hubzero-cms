@@ -30,8 +30,8 @@
 
 namespace Hubzero\Component;
 
-use Hubzero\Api\Request;
-use Hubzero\Api\Response;
+use Hubzero\Http\Request;
+use Hubzero\Http\Response;
 
 /**
  * Base API controller for components to extend.
@@ -186,12 +186,28 @@ class ApiController implements ControllerInterface
 
 	function setMessage($message = null, $status = null, $reason = null)
 	{
-		$this->_response->setMessage($message, $status, $reason);
+		//$this->_response->setMessage($message, $status, $reason);
+		//$this->_response->setContent($this->finalizeContent($message));
+		$this->_response->setContent($message);
+		$this->_response->setStatusCode($status ? $status : 200);
 	}
 
 	function setMessageType($format)
 	{
-		$this->_response->setResponseProvides($format);
+		//$this->_response->setResponseProvides($format);
+		static $types = array(
+			'xml' => 'application/xml',
+			'html' => 'text/html',
+			'xhtml' => 'application/xhtml+xml',
+			'json' => 'application/json',
+			'text' => 'text/plain',
+			'txt' => 'text/plain',
+			'plain' => 'text/plain',
+			'php_serialized' => 'application/vnd.php.serialized',
+			'php' => 'application/php',
+		);
+
+		$this->_response->headers->set('Content-Type', $types[$format]);
 	}
 }
 

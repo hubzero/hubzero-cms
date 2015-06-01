@@ -32,7 +32,7 @@ class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
 	public function onAfterDispatch()
 	{
 		// Check that we are in the site application.
-		if (App::isAdmin())
+		if (!App::isSite())
 		{
 			return true;
 		}

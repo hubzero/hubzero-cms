@@ -71,7 +71,7 @@ class Application extends Container
 		'Hubzero\Debug\ProfilerServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
-		'Hubzero\Component\ComponentServiceProvider',
+
 		'Hubzero\Filesystem\FilesystemServiceProvider',
 	);
 
@@ -91,7 +91,7 @@ class Application extends Container
 		'Lang'       => 'Hubzero\Facades\Lang',
 		'Log'        => 'Hubzero\Facades\Log',
 		'Date'       => 'Hubzero\Facades\Date',
-		'Component'  => 'Hubzero\Facades\Component',
+
 		'Plugin'     => 'Hubzero\Facades\Plugin',
 		'Filesystem' => 'Hubzero\Facades\Filesystem',
 	);
@@ -108,12 +108,12 @@ class Application extends Container
 	 *
 	 * @return  void
 	 */
-	public function __construct(Request $request = null)
+	public function __construct(Request $request = null, Response $response = null)
 	{
 		parent::__construct();
 
-		$this['request']  = ($request ?: Request::createFromGlobals());
-		$this['response'] = new Response();
+		$this['request']  = ($request  ?: Request::createFromGlobals());
+		$this['response'] = ($response ?: new Response());
 
 		$this->registerBaseServiceProviders();
 	}

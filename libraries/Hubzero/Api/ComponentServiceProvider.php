@@ -28,15 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Component;
+namespace Hubzero\Api;
 
+use Hubzero\Api\Component\Loader;
 use Hubzero\Base\Middleware;
 use Hubzero\Http\Request;
 
 /**
  * Component loader service provider
  */
-class ComponentServiceProvider extends Middleware //ServiceProvider
+class ComponentServiceProvider extends Middleware
 {
 	/**
 	 * Register the service provider.
@@ -45,6 +46,11 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 	 */
 	public function register()
 	{
+		if ($this->app->has('component'))
+		{
+			$this->app->forget('component');
+		}
+
 		$this->app['component'] = function($app)
 		{
 			return new Loader($app);
@@ -64,6 +70,7 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 		if (!$this->app->runningInConsole())
 		{
 			$component = $request->getCmd('option');
+
 			if (!$component)
 			{
 				$this->app->abort(404);
@@ -71,7 +78,7 @@ class ComponentServiceProvider extends Middleware //ServiceProvider
 
 			$contents = $this->app['component']->render($component);
 
-			$response->setContent($contents);
+			//$response->setContent($content);
 
 			$this->app['dispatcher']->trigger('system.onAfterDispatch');
 

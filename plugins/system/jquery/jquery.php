@@ -43,6 +43,11 @@ class plgSystemJquery extends \Hubzero\Plugin\Plugin
 	 */
 	public function onAfterRoute()
 	{
+		if (!App::isAdmin() && !App::isSite())
+		{
+			return;
+		}
+
 		$client = 'Site';
 		if (App::isAdmin())
 		{

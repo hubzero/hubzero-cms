@@ -23,14 +23,43 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return [
-	'Hubzero\Session\SessionServiceProvider',
-	'Hubzero\Api\ResponseServiceProvider',
-	'Hubzero\Api\AuthServiceProvider',
-	'Hubzero\Api\ComponentServiceProvider',
-];
+namespace Hubzero\Api;
+
+use Hubzero\Base\ServiceProvider;
+
+/**
+ * API response service provider
+ */
+class ResponseServiceProvider extends ServiceProvider
+{
+	/**
+	 * Register the service provider.
+	 *
+	 * @return  void
+	 */
+	public function register()
+	{
+		$this->app->forget('response');
+
+		$this->app['response'] = function($app)
+		{
+			return new Response();
+		};
+	}
+
+	/**
+	 * Force debugging off.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		$this->app['config']->set('debug', 0);
+		$this->app['config']->set('debug_lang', 0);
+	}
+}
