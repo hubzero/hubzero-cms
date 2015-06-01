@@ -37,7 +37,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 
 ?>
 <?php if (!$this->setup) { ?>
-	<h5><?php echo Lang::txt('COM_PROJECTS_ADD_NEW_MEMBERS').' '.Lang::txt('COM_PROJECTS_AS').':'; ?></h5>
+	<h5><?php echo Lang::txt('COM_PROJECTS_ADD_NEW_MEMBERS') . ' ' . Lang::txt('COM_PROJECTS_AS') . ':'; ?></h5>
 <?php } ?>
 
 <div class="combine_options">
@@ -102,7 +102,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=name&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo Lang::txt('COM_PROJECTS_NAME'); ?></a></th>
 				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=role&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo Lang::txt('COM_PROJECTS_ROLE'); ?></a></th>
 				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=status&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo Lang::txt('COM_PROJECTS_JOINED'); ?></a></th>
-				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=group&t_sortdir='.$sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo Lang::txt('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
+				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=group&t_sortdir=' . $sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo Lang::txt('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
 			</tr>
 		</thead>
 		<tbody>

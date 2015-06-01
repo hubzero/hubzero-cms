@@ -25,6 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 
@@ -35,7 +37,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 <?php if ($this->model->access('manager')) { ?>
 <ul id="page_options" class="pluginOptions">
 	<li>
-		<a class="icon-edit btn"  href="<?php echo Route::url($this->model->link('team')); ?>">
+		<a class="icon-edit btn"  href="<?php echo Route::url($this->model->link() . '&task=edit&active=team'); ?>">
 			<?php echo Lang::txt('COM_PROJECTS_EDIT_TEAM'); ?>
 		</a>
 	</li>
@@ -129,7 +131,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } ?>" id="tr_<?php echo $owner->id; ?>">
 				<td class="imagebox"><a href="/members/<?php echo $owner->userid; ?>" <?php if ($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php } ?>><img src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
-				<td class="mini"><?php echo $role; ?></td>
+				<td class="mini"><?php echo $creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : ''; echo $role; ?></td>
 				<td class="mini"><?php echo $owner->status == 1 ? Date::of($owner->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_INVITED').'</span>';  ?></td>
 				<?php if ($this->count_groups) { ?>
 				<td><?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
