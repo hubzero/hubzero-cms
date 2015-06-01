@@ -1663,6 +1663,8 @@ class Tickets extends SiteController
 			$row->set('resolved', Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'));
 		}
 
+		$row->set('open', $row->status('open'));
+
 		// Check content
 		if (!$row->check())
 		{
