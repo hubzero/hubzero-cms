@@ -423,4 +423,42 @@ class Abusereports extends AdminController
 			Lang::txt('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN')
 		);
 	}
+
+	/**
+	 * Displays a list of records
+	 *
+	 * @return  void
+	 */
+	public function checkTask()
+	{
+		$this->view->results = null;
+		$this->view->sample  = '';
+
+		if ($sample = Request::getVar('sample', '', 'post', 'none', 2))
+		{
+			$service = new \Hubzero\Spam\Checker();
+			$service->setLogging(false);
+
+			foreach (Event::trigger('antispam.onAntispamDetector') as $detector)
+			{
+				if (!$detector) continue;
+
+				$service->registerDetector($detector);
+			}
+
+			$service->check($sample);
+
+			$this->view->sample  = $sample;
+			$this->view->results = $service->getReport();
+		}
+
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
 }

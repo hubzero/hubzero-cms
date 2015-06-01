@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 
 Html::behavior('framework');
+
+$this->view('_submenu')->display();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

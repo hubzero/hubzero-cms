@@ -78,7 +78,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'statuses'
 );
 \Submenu::addEntry(
-	\Lang::txt('COM_SUPPORT_ABUSE_REPORTS'),
+	\Lang::txt('COM_SUPPORT_ABUSE'),
 	\Route::url('index.php?option=com_support&controller=abusereports'),
 	$controllerName == 'abusereports'
 );

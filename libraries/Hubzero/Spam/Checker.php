@@ -47,11 +47,25 @@ class Checker
 	protected $detectors = array();
 
 	/**
+	 * Holds list of detectors and what they reported
+	 *
+	 * @var  array
+	 */
+	protected $report = array();
+
+	/**
 	 * StringProcessorInterface
 	 *
 	 * @var  object
 	 */
 	protected $stringProcessor;
+
+	/**
+	 * Log data?
+	 *
+	 * @var  boolean
+	 */
+	protected $logging = true;
 
 	/**
 	 * Set string processor
@@ -62,6 +76,17 @@ class Checker
 	public function setStringProcessor(StringProcessorInterface $stringProcessor)
 	{
 		$this->stringProcessor = $stringProcessor;
+	}
+
+	/**
+	 * Set logging
+	 *
+	 * @param   bool  $log
+	 * @return  void
+	 */
+	public function setLogging($log)
+	{
+		$this->logging = (bool) $log;
 	}
 
 	/**
@@ -80,17 +105,26 @@ class Checker
 
 		$data = $this->prepareData($data);
 
-		foreach ($this->detectors as $detector)
+		foreach ($this->detectors as $id => $detector)
 		{
+			$spam = false;
+
 			if ($detector->detect($data))
 			{
+				$spam = true;
+
 				$failure++;
 			}
+
+			$this->mark($id, $spam);
 		}
 
 		$result = new Result($failure > 0);
 
-		$this->log($result->isSpam());
+		if ($this->logging)
+		{
+			$this->log($result->isSpam(), md5($data['text']));
+		}
 
 		return $result;
 	}
@@ -142,6 +176,16 @@ class Checker
 	public function getDetectors()
 	{
 		return $this->detectors;
+	}
+
+	/**
+	 * Get IP address
+	 *
+	 * @return  string
+	 */
+	public function getReport()
+	{
+		return $this->report;
 	}
 
 	/**
@@ -204,12 +248,27 @@ class Checker
 	}
 
 	/**
+	 * Gets the name of a class (w. Namespaces removed)
+	 *
+	 * @param   mixed   $class  String (class name) or object
+	 * @return  string
+	 */
+	protected function mark($name, $value)
+	{
+		$this->report[] = array(
+			'service' => $name,
+			'is_spam' => $value,
+		);
+	}
+
+	/**
 	 * Log results of the check
 	 *
 	 * @param   string  $isSpam  Spam detection result
+	 * @param   string  $hash    MD5 hash of content
 	 * @return  void
 	 */
-	protected function log($isSpam)
+	protected function log($isSpam, $hash)
 	{
 		if (!\App::has('log.spam'))
 		{
@@ -230,6 +289,7 @@ class Checker
 			$this->getIp(),
 			\User::get('id'),
 			\User::get('username'),
+			$hash,
 			$from
 		);
 
