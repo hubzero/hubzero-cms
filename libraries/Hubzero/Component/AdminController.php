@@ -43,7 +43,7 @@ class AdminController extends SiteController
 	public function cancelTask()
 	{
 		// Set the redirect
-		$this->setRedirect(
+		\App::redirect(
 			\Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : ''), false)
 		);
 	}
