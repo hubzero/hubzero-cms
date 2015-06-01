@@ -90,10 +90,10 @@ $i = 0;
 
 		$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 		$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'
-					? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('COM_PROJECTS_AGO')
-					: Lang::txt('COM_PROJECTS_NEVER');
+					? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AGO')
+					: Lang::txt('PLG_PROJECTS_TEAM_NEVER');
 		$lastvisit = $owner->userid == User::get('id') || (!empty($owner->online) && $owner->lastvisit > $timecheck)
-					? '<span class="online">' . Lang::txt('COM_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
+					? '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_TEAM_ONLINE_NOW') . '</span>'
 					: $lastvisit;
 		$i++;
 	?>

@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 <div class="public-list-header">
-	<h3><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></h3>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM'); ?></h3>
 </div>
 <div id="team-horiz" class="public-list-wrap">
 	<?php
@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li class="clear">&nbsp;</li>
 		</ul>
 	<?php } else { ?>
-		<div class="noresults"><?php echo Lang::txt('COM_PROJECTS_EXTERNAL_NO_TEAM'); ?></div>
+		<div class="noresults"><?php echo Lang::txt('PLG_PROJECTS_TEAM_EXTERNAL_NO_TEAM'); ?></div>
 	<?php } ?>
 	<div class="clear"></div>
 </div>

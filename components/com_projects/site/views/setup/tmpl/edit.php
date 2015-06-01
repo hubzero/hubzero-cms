@@ -108,7 +108,7 @@ else
 				<div class="tips">
 					<h3><?php echo Lang::txt('COM_PROJECTS_TIPS'); ?></h3>
 				<?php if ($this->section == 'team') { ?>
-						<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_TIPS'); ?></h4>
+						<h4><?php echo Lang::txt('PLG_PROJECTS_TEAM_HOWTO_ROLES_TIPS'); ?></h4>
 						<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS')); ?> </span><?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
 						<ul>
 							<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_ONE'); ?></li>

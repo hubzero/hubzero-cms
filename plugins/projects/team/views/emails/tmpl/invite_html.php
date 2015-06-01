@@ -46,38 +46,38 @@ $link       = rtrim($base, DS) . DS . trim($sef, DS);
 $thumb      = rtrim($base, DS) . DS . 'projects/' . $this->model->get('alias') . '/media';
 
 // Page title
-$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
+$title = $hubShortName . ' ' . Lang::txt('PLG_PROJECTS_TEAM_PROJECTS');
 
 // Main message
 $subtitle  = User::get('name') . ' ';
 if ($this->model->isProvisioned())
 {
 	$subtitle .= User::get('id')
-			? Lang::txt('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
-			: Lang::txt('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
+			? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ADDED_AS_PUB_AUTHOR')
+			: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_INVITED_AS_PUB_AUTHOR');
 	$subtitle .= ' "' . $this->pub->title.'"';
 }
 else
 {
-	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$subtitle .= ' "' . $this->model->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
+	$subtitle .= $this->uid ? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ADDED_YOU') : Lang::txt('PLG_PROJECTS_TEAM_EMAIL_INVITED_YOU');
+	$subtitle .= ' "' . $this->model->get('title') . '" ' . Lang::txt('PLG_PROJECTS_TEAM_EMAIL_IN_THE_ROLE') . ' ';
 	if ($this->role == 1)
 	{
-		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_OWNER');
+		$subtitle .= Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER');
 	}
 	elseif ($this->role == 5)
 	{
-		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_REVIEWER');
+		$subtitle .= Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWER');
 	}
 	else
 	{
-		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+		$subtitle .= Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
 	}
 }
 
 // Project owner
 $owner   = $this->model->groupOwner()
-		 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+		 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_GROUP')
 		 : $this->model->owner('name');
 
 // Get the actual message
@@ -85,18 +85,18 @@ $comment = '';
 if ($this->uid)
 {
 	$comment .= $this->model->isProvisioned()
-			? Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT') . "\n"
-			: Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT') . "\n";
+			? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCESS_PUB_PROJECT') . "\n"
+			: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCESS_PROJECT') . "\n";
 }
 else
 {
-	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
-	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
+	$comment .= Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
+	$comment .= Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCEPT') . "\n";
 }
 $comment .= $link ."\n\n";
 
 // Extras
-$footnote = Lang::txt('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' '
+$footnote = Lang::txt('PLG_PROJECTS_TEAM_EMAIL_USER_IF_QUESTIONS') . ' '
 	. User::get('name') . '  - ' . User::get('email') . "\n";
 
 $showThumb = $config->get('showthumbemail', 0);

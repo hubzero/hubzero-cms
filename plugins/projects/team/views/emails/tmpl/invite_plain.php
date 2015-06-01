@@ -41,27 +41,27 @@ $message  = User::get('name') . ' ';
 if ($this->model->isProvisioned())
 {
 	$message .= $this->uid
-			? Lang::txt('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
-			: Lang::txt('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
+			? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ADDED_AS_PUB_AUTHOR')
+			: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_INVITED_AS_PUB_AUTHOR');
 	$message .= ' "' . $this->model->get('title') . '"';
 	$message .= "\n";
 	$message .= '-------------------------------' . "\n";
 }
 else
 {
-	$message .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$message .= ' "' . $this->model->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
-	$message .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+	$message .= $this->uid ? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ADDED_YOU') : Lang::txt('PLG_PROJECTS_TEAM_EMAIL_INVITED_YOU');
+	$message .= ' "' . $this->model->get('title') . '" ' . Lang::txt('PLG_PROJECTS_TEAM_EMAIL_IN_THE_ROLE') . ' ';
+	$message .= $this->role == 1 ? Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER') : Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
 	$message .= "\n";
 	$message .= '-------------------------------' . "\n";
-	$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->model->get('title') . ' (' . $this->model->get('alias') . ')' . "\n";
-	$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
-			 .Date::of($this->model->get('created'))->toLocal('M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
+	$message .= Lang::txt('PLG_PROJECTS_TEAM_PROJECT') . ': ' . $this->model->get('title') . ' (' . $this->model->get('alias') . ')' . "\n";
+	$message .= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_CREATED')) . ' '
+			 .Date::of($this->model->get('created'))->toLocal('M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_BY') . ' ';
 	$message .= $this->model->groupOwner()
-			 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+			 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_GROUP')
 			 : $this->model->owner('name');
 	$message .= "\n";
-	$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n\n";
+	$message .= Lang::txt('PLG_PROJECTS_TEAM_EMAIL_URL') . ': ' . $link . "\n\n";
 }
 
 $sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
@@ -70,17 +70,17 @@ $link = rtrim($base, DS) . DS . trim($sef, DS);
 if (User::get('id'))
 {
 	$message .= $this->model->isProvisioned()
-			? Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT') . "\n"
-			: Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT') . "\n";
+			? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCESS_PUB_PROJECT') . "\n"
+			: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCESS_PROJECT') . "\n";
 }
 else
 {
-	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName . ' ';
-	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
+	$message .= Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName . ' ';
+	$message .= Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ACCEPT') . "\n";
 }
 $message .= $link . "\n\n";
 
-$message .= Lang::txt('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' ' . User::get('name') . '  - ' . User::get('email') . "\n";
+$message .= Lang::txt('PLG_PROJECTS_TEAM_EMAIL_USER_IF_QUESTIONS') . ' ' . User::get('name') . '  - ' . User::get('email') . "\n";
 
 $message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);

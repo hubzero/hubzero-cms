@@ -384,7 +384,7 @@ class Authors extends Base
 		elseif (trim($name))
 		{
 			// Check by invite name
-			$owner = $objO->checkInvitedByName( $pub->_project->id, trim($name));
+			$owner = $objO->checkInvitedByName( $pub->_project->get('id'), trim($name));
 		}
 
 		if ($owner && $objO->load($owner))

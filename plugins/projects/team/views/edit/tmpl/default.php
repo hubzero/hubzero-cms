@@ -29,36 +29,36 @@ $this->css()
 	 ->js();
 
 // List sorting
-$sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
-$whatsleft = $this->total - $this->filters['start'] - $this->filters['limit'];
+$sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
+$whatsleft  = $this->total - $this->filters['start'] - $this->filters['limit'];
 $prev_start = $this->filters['start'] - $this->filters['limit'];
 $prev_start = $prev_start < 0 ? 0 : $prev_start;
 $next_start = $this->filters['start'] + $this->filters['limit'];
 
 ?>
 <?php if (!$this->setup) { ?>
-	<h5><?php echo Lang::txt('COM_PROJECTS_ADD_NEW_MEMBERS') . ' ' . Lang::txt('COM_PROJECTS_AS') . ':'; ?></h5>
+	<h5><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':'; ?></h5>
 <?php } ?>
 
 <div class="combine_options">
 	 <label>
 		<?php if ($this->setup) { ?>
-			<?php echo Lang::txt('COM_PROJECTS_AS'); ?>:
+			<?php echo Lang::txt('PLG_PROJECTS_TEAM_AS'); ?>:
 		<?php } ?>
 		 <input class="option" name="role" id="role_owner" type="radio" value="1"  />
-		<?php echo Lang::txt('COM_PROJECTS_LABEL_OWNERS'); ?>
+		<?php echo Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNERS'); ?>
 	 </label>
 	 <label>
-		<span class="and_or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></span>
+		<span class="and_or"><?php echo Lang::txt('PLG_PROJECTS_TEAM_OR'); ?></span>
 		<input class="option" name="role" id="role_collaborator" type="radio" value="0" checked="checked" />
-		<?php echo Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS'); ?>
+		<?php echo Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATORS'); ?>
 	</label>
 </div>
-<p class="hint"><?php echo Lang::txt('COM_PROJECTS_ADD_TEAM_HINT'); ?></p>
+<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_TEAM_HINT'); ?></p>
 
 <div class="add-team">
 	<label id="add-users">
-		 <span class="instr i_user"><?php echo Lang::txt('COM_PROJECTS_ADD_IND_USER'); ?>:</span>
+		 <span class="instr i_user"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_IND_USER'); ?>:</span>
 		<?php
 			$mc = Event::trigger( 'hubzero.onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
 			if (count($mc) > 0) {
@@ -67,9 +67,9 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 				<input type="text" name="newmember" id="newmember" value="" size="35" />
 			<?php } ?>
 	</label>
-	<span class="or_separator"><?php echo strtoupper(Lang::txt('COM_PROJECTS_OR')); ?></span>
+	<span class="or_separator"><?php echo strtoupper(Lang::txt('PLG_PROJECTS_TEAM_OR')); ?></span>
 	<label id="add-groups">
-		 <span class="instr i_group"><?php echo Lang::txt('COM_PROJECTS_ADD_GROUP_OF_USERS'); ?>:</span>
+		 <span class="instr i_group"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_GROUP_OF_USERS'); ?>:</span>
 		<?php
 			$mc = Event::trigger( 'hubzero.onGetMultiEntry', array(array('groups', 'newgroup', 'newgroup')) );
 			if (count($mc) > 0) {
@@ -78,18 +78,18 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 				<input type="text" name="newgroup" id="newgroup" value="" size="35" maxlength="200" />
 			<?php } ?>
 	</label>
-	 <input type="submit" id="team-save" value="<?php echo Lang::txt('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" />
+	 <input type="submit" id="team-save" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD'); ?>" class="btn yesbtn" />
 </div>
 <div id="team-spacer">
 	<?php if ($this->model->groupOwner()) { ?>
-	<p class="notice"><?php echo Lang::txt('COM_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
+	<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_GROUP_PROJECT_EDITING'); ?></p>
 	<?php } ?>
 	<div class="list-editing">
 	 <p>
-		<span><?php echo ucfirst(Lang::txt('COM_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
+		<span><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
 	 	<span id="team-manage" class="manage-options hidden">
-		<span class="faded"><?php echo Lang::txt('COM_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo Lang::txt('COM_PROJECTS_DELETE'); ?></a>
+		<span class="faded"><?php echo Lang::txt('PLG_PROJECTS_TEAM_TEAM_EDIT_ROLE'); ?></span>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?></a>
 		</span>
 	</p>
 	</div>
@@ -99,10 +99,10 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 			<tr>
 				<th class="checkbox"></th>
 				<th class="th_image"></th>
-				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=name&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo Lang::txt('COM_PROJECTS_NAME'); ?></a></th>
-				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=role&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo Lang::txt('COM_PROJECTS_ROLE'); ?></a></th>
-				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=status&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo Lang::txt('COM_PROJECTS_JOINED'); ?></a></th>
-				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team').'/?t_sortby=group&t_sortdir=' . $sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo Lang::txt('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
+				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=name&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=role&sortdir=' . $sortbyDir) . '#teamlist'; ?>" class="re_sort"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=status&sortdir=' . $sortbyDir . '#teamlist'); ?>" class="re_sort"><?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?></a></th>
+				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=group&sortdir=' . $sortbyDir . '#teamlist'); ?>" class="re_sort" ><?php } ?><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -124,14 +124,14 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 					switch ($owner->role)
 					{
 						case '1':
-							$role = Lang::txt('COM_PROJECTS_LABEL_OWNER');
+							$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_OWNER');
 							break;
 						case '2':
 						default:
-							$role = Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+							$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_COLLABORATOR');
 							break;
 						case '5':
-							$role = Lang::txt('COM_PROJECTS_LABEL_REVIEWER');
+							$role = Lang::txt('PLG_PROJECTS_TEAM_LABEL_REVIEWER');
 							break;
 					}
 ?>
@@ -140,7 +140,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 				<td <?php echo $usr_class; ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini nobsp"><?php if (!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if (!$creator) { ?></span><?php } ?></td>
-				<td class="mini"><?php echo $owner->status == 1 ? Date::of($owner->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_INVITED') . '</span>';  ?></td>
+				<td class="mini"><?php echo $owner->status == 1 ? Date::of($owner->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('PLG_PROJECTS_TEAM_INVITED') . '</span>';  ?></td>
 				<td><?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 			</tr>
 <?php } ?>
@@ -149,14 +149,14 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 	<div class="nav_pager"><p>
 		<?php
 		if ($this->filters['start'] == 0) {	?>
-			<span>&laquo; <?php echo Lang::txt('COM_PROJECTS_PREVIOUS'); ?></span>
+			<span>&laquo; <?php echo Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS'); ?></span>
 		<?php	} else {  ?>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&t_sortby=' . $this->filters['sortby'] . '&t_limitstart=' . $prev_start . '&t_sortdir=' . $this->filters['sortdir']); ?>">&laquo; <?php echo Lang::txt('COM_PROJECTS_PREVIOUS'); ?></a>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&sortby=' . $this->filters['sortby'] . '&start=' . $prev_start . '&sortdir=' . $this->filters['sortdir']); ?>">&laquo; <?php echo Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS'); ?></a>
 		<?php } ?><span>&nbsp; | &nbsp;</span>
 		<?php
 		if ( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
-			<span><?php echo Lang::txt('COM_PROJECTS_NEXT'); ?> &raquo;</span>
+			<span><?php echo Lang::txt('PLG_PROJECTS_TEAM_NEXT'); ?> &raquo;</span>
 		<?php	} else { ?>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&t_sortby=' . $this->filters['sortby'] . '&t_limitstart=' . $next_start . '&t_sortdir='.$this->filters['sortdir']); ?>"><?php echo Lang::txt('COM_PROJECTS_NEXT'); ?> &raquo;</a>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&sortby=' . $this->filters['sortby'] . '&start=' . $next_start . '&sortdir=' . $this->filters['sortdir']); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_NEXT'); ?> &raquo;</a>
 		<?php } ?></p>
 	</div>
