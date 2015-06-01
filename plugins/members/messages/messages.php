@@ -901,7 +901,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				$xseen = new \Hubzero\Message\Seen($database);
 				$xseen->mid = $mid;
 				$xseen->uid = $member->get('uidNumber');
-				$xseen->loadRecord();
+				//$xseen->loadRecord();
 				if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
 				{
 					$xseen->whenseen = JFactory::getDate()->toSql();
