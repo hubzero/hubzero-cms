@@ -95,9 +95,17 @@ $router->rules('parse')->append('component', function ($uri)
 {
 	$option = $uri->getVar('option');
 
-	if (User::isGuest() || !User::authorise('core.login.admin'))
+	if (\User::isGuest() || !\User::authorise('core.login.admin'))
 	{
 		$option = 'com_login';
+	}
+
+	if (empty($option))
+	{
+		if (strtoupper(\App::get('request')->method()) == 'POST')
+		{
+			$option = \App::get('request')->getCmd('option', '', 'post');
+		}
 	}
 
 	if (empty($option))
@@ -109,4 +117,3 @@ $router->rules('parse')->append('component', function ($uri)
 
 	return true;
 });
-
