@@ -1377,24 +1377,22 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Determine post save message
 		// Also, get subject of post for outgoing email, either the title of parent post (for replies), or title of current post (for new threads)
-		if (!$fields['id'])
+		if (!$fields['parent'])
 		{
-			if (!$fields['parent'])
-			{
-				$message = JText::_('PLG_GROUPS_FORUM_THREAD_STARTED');
-				$posttitle = $model->title;
-			}
-			else
-			{
-				$message = JText::_('PLG_GROUPS_FORUM_POST_ADDED');
-
-				/* @var $parentForumTablePost ForumTablePost */
-				$parentForumTablePost = new ForumTablePost($this->database);
-				$parentForumTablePost->load(intval($fields['parent']));
-				$posttitle = $parentForumTablePost->title;
-			}
+			$message = JText::_('PLG_GROUPS_FORUM_THREAD_STARTED');
+			$posttitle = $model->title;
 		}
 		else
+		{
+			$message = JText::_('PLG_GROUPS_FORUM_POST_ADDED');
+
+			/* @var $parentForumTablePost ForumTablePost */
+			$parentForumTablePost = new ForumTablePost($this->database);
+			$parentForumTablePost->load(intval($fields['parent']));
+			$posttitle = $parentForumTablePost->title;
+		}
+
+		if ($fields['id'])
 		{
 			$message = ($model->modified_by) ? JText::_('PLG_GROUPS_FORUM_POST_EDITED') : JText::_('PLG_GROUPS_FORUM_POST_ADDED');
 		}
