@@ -238,17 +238,18 @@
 		    -ms-transition: 0.3s ease;
 		        transition: 0.3s ease;
 		content: attr(data-title);
+		white-space: pre;
 		background: #383838;
 		color: #fff;
 		padding: 0.5em 0.8em;
 		font-size: 1em;
-		line-height: 1;
-		white-space: nowrap;
+		line-height: 1.2;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		left: 100%;
 		bottom: 50%;
 		margin-bottom: -1.05em;
 		visibility: hidden\9;
+		text-align: left;
 	}
 	#page_menu li a:after {
 		margin-left: 8px;
