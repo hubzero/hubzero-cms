@@ -246,8 +246,8 @@
 		line-height: 1.2;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		left: 100%;
-		bottom: 50%;
-		margin-bottom: -1.05em;
+		top: 50%;
+		margin-top: -1.05em;
 		visibility: hidden\9;
 		text-align: left;
 	}
@@ -257,8 +257,8 @@
 	#page_menu li:after {
 		content: "";
 		padding: 0;
-		margin-left: -4px;
-		margin-bottom: -6px;
+		margin-left: -3px;
+		margin-top: -6px;
 		background: transparent;
 		border: 6px solid transparent;
 		border-color: transparent #383838 transparent transparent;
