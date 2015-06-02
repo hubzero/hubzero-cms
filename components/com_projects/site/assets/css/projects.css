@@ -657,8 +657,9 @@
 		border: none;
 	}
 	#project-wrap #content-header h2 {
-		padding: 0;
+		padding: 0.2em 0.5em;
 		margin: 0;
+		border-bottom: 5px solid #e2e2e2;
 	}
 	#project-wrap #content-header .ptitle h2, .ptitle h3 {
 		padding-left: 70px;
@@ -721,6 +722,13 @@
 		-moz-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 		box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 	}
+	.groupowner {
+		background: #f8f6f2;
+		color: #999;
+		font-size: 85%;
+		margin: 0;
+		padding: 0.2em 0.5em;
+	}
 
 /* Project image
 --------------------------------------------- */
@@ -749,7 +757,7 @@
 --------------------------------------------- */
 	.com_projects #member_options {
 		float: right;
-		margin: -5em 0 0 0;
+		margin: -3em 0 0 0;
 		list-style: none;
 	}
 	.com_projects #member_options li {
@@ -782,7 +790,7 @@
 		position: absolute;
 		width: 200px;
 		margin-left: -110px;
-		margin-top: 4em;
+		margin-top: 5em;
 		padding: 6px 0 0 0;
 		z-index: 99999;
 		color: #666;

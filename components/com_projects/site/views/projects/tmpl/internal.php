@@ -120,16 +120,12 @@ $sideContent 	= $sideContent && !empty($sideContent)
 		     ->set('model', $this->model)
 		     ->set('showPic', 0)
 		     ->set('showPrivacy', 2)
+		     ->set('showOptions', 1)
 		     ->set('goBack', 0)
 		     ->set('showUnderline', 1)
 		     ->set('option', $this->option)
 		     ->display();
 
-		// Member options
-		$this->view('_options', 'projects')
-		     ->set('model', $this->model)
-		     ->set('option', $this->option)
-		     ->display();
 	} ?>
 			<?php
 				// Display status message

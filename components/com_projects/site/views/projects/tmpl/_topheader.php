@@ -25,17 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!$this->model->isPublic())
-{
-	$privacy = '<span class="private">' . ucfirst(Lang::txt('COM_PROJECTS_PRIVATE')) . '</span>';
-}
-else
-{
-	$privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1') .'" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
-}
-
-$start = ($this->publicView == false && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
-
 ?>
 <div id="project-header" class="project-header">
 	<div class="grid">
@@ -51,10 +40,24 @@ $start = ($this->publicView == false && $this->model->access('member')) ? '<span
 			</div>
 			<div class="ptitle-container">
 				<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($this->model->get('title')), 50); ?> <span>(<?php echo $this->model->get('alias'); ?>)</span></a></h2>
-				<p>
-				<?php echo $start .' ' . Lang::txt('COM_PROJECTS_BY').' ';
+
+				<?php 
 				if ($this->model->groupOwner())
-				{
+				{ ?>
+				<p>
+				<?php
+					if (!$this->model->isPublic())
+					{
+						$privacy = '<span class="private">' . ucfirst(Lang::txt('COM_PROJECTS_PRIVATE')) . '</span>';
+					}
+					else
+					{
+						$privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1') .'" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
+					}
+
+					$start = ($this->publicView == false && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
+
+					echo $start . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
 					if ($cn = $this->model->groupOwner('cn'))
 					{
 						echo ' ' . Lang::txt('COM_PROJECTS_GROUP')
@@ -64,13 +67,9 @@ $start = ($this->publicView == false && $this->model->access('member')) ? '<span
 					{
 						echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
 					}
-				}
-				else
-				{
-					echo '<a href="/members/' . $this->model->owner('id') . '">' . $this->model->owner('name') . '</a>';
-				}
 				?>
 				</p>
+				<?php }  ?>
 			</div>
 		</div>
 		<div class="col span2 omega">

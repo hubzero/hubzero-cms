@@ -25,6 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$pubconfig = Component::params( 'com_publications' );
+
 ?>
 <div class="grid contribute">
 	<div class="col span4">
@@ -51,7 +53,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			     ->set('project', $this->project)
 			     ->set('pub', $this->pub)
 			     ->display();
-		} else
+		}
+		else
 		{
 			$filters = array();
 
@@ -90,7 +93,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$filters['start'],
 				$filters['limit']
 			);
-
 			echo $pageNav->render();
 			?>
 			</form>

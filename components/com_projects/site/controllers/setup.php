@@ -591,7 +591,7 @@ class Setup extends Base
 		$setup = ($new || $this->model->inSetup()) ? true : false;
 
 		// Incoming
-		$private = Request::getInt( 'private', 1, 'post' );
+		$private = Request::getInt( 'private', 1);
 
 		// Save section
 		switch ($this->section)

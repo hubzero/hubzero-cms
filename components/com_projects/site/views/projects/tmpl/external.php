@@ -75,7 +75,7 @@ $this->css('theme' . $theme . '.css');
 
 	<div class="project-inner-wrap">
 		<section class="main section">
-				<?php if ($this->model->get('about')) { ?>
+				<?php if ($this->model->about('parsed')) { ?>
 				<div class="public-list-header">
 					<h3><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></h3>
 				</div>
@@ -85,7 +85,7 @@ $this->css('theme' . $theme . '.css');
 				<?php } ?>
 				<?php
 				// Side blocks from plugins?
-				$sections = Event::trigger( 'projects.onProjectPublicList', array( $this->model));
+				$sections = Event::trigger( 'projects.onProjectPublicList', array($this->model));
 
 				if (!empty($sections))
 				{

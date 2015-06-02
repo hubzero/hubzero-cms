@@ -70,7 +70,11 @@ $config = $this->model->config();
 				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?></td>
 				<td><?php echo $this->model->created('date'); ?></td>
 			</tr>
-			<?php if ($this->model->get('about')) { ?>
+			<tr>
+				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></td>
+				<td><?php echo $this->model->groupOwner() ? $this->model->groupOwner('description') : $this->model->owner('name'); ?></td>
+			</tr>
+			<?php if ($this->model->about('parsed')) { ?>
 			<tr>
 				<td class="htd"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></td>
 				<td><?php echo $this->model->about('parsed'); ?></td>

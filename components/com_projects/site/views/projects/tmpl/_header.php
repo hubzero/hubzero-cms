@@ -39,41 +39,40 @@ else
 }
 
 $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
-
 ?>
 <div id="content-header" <?php if (!$this->showPic) { echo 'class="nopic"'; } ?>>
-<?php if ($this->showPic) { ?>
-	<div class="pthumb"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" /></a></div>
-<?php } ?>
+	<?php if ($this->showPic) { ?>
+		<div class="pthumb"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" /></a></div>
+	<?php } ?>
 	<div class="ptitle">
-		<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($this->model->get('title')), 50); ?> <span>(<?php echo $this->model->get('alias'); ?>)</span></a></h2>
-		<?php if ($this->goBack)  { ?>
-		<h3 class="returnln"><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PAGE'); ?></a></h3>
-		<?php } else { ?>
-		<h3 <?php if ($this->showUnderline) { echo 'class="returnln"'; } ?>>
-		<?php echo $start .' ' . Lang::txt('COM_PROJECTS_BY').' ';
-			if ($this->model->groupOwner())
-			{
-				if ($cn = $this->model->groupOwner('cn'))
-				{
-					echo ' ' . Lang::txt('COM_PROJECTS_GROUP')
-						. ' <a href="/groups/' . $cn . '">' . $cn . '</a>';
-				}
-				else
-				{
-					echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
-				}
-			}
-			else
-			{
-				echo '<a href="/members/' . $this->model->owner('id') . '">' . $this->model->owner('name') . '</a>';
-			}
-		?>
-		<?php if ($this->showPrivacy == 1) { ?>
-			<span class="privacy <?php if (!$this->model->isPublic()) { echo 'private'; } ?>"><?php if ($this->model->isPublic()) {  ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1'); ?>"><?php } ?><?php echo $privacyTxt; ?><?php if ($this->model->isPublic()) {  ?></a><?php } ?> <?php echo strtolower(Lang::txt('COM_PROJECTS_PROJECT')); ?>
-			</span>
-		<?php } ?>
-		</h3>
-		<?php } ?>
+	<h2>
+		<a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($this->model->get('title')), 50); ?></a>
+	</h2>
+	<?php // Member options
+	if (!empty($this->showOptions))
+	{
+		$this->view('_options', 'projects')
+		     ->set('model', $this->model)
+		     ->set('option', $this->option)
+		     ->display();
+	}
+	?>
+	<?php if ($this->model->groupOwner())
+	{
+		echo '<p class="groupowner">';
+		echo ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
+		echo ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
+		if ($cn = $this->model->groupOwner('cn'))
+		{
+			echo ' ' . Lang::txt('COM_PROJECTS_GROUP')
+				. ' <a href="/groups/' . $cn . '">' . $cn . '</a>';
+		}
+		else
+		{
+			echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
+		}
+		echo '</p>';
+	
+	 } ?>
 	</div>
-</div><!-- / #content-header -->
+</div>
