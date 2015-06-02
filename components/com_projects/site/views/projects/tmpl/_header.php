@@ -72,7 +72,7 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
 			echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
 		}
 		echo '</p>';
-	
+
 	 } ?>
 	</div>
 </div>
