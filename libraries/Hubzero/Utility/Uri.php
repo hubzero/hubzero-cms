@@ -111,6 +111,13 @@ class Uri extends Object
 	protected $vars = array();
 
 	/**
+	 * An array of JURI instances.
+	 *
+	 * @var  array
+	 */
+	protected static $instances = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * You can pass a URI string to the constructor to initialise a specific URI.
@@ -134,6 +141,100 @@ class Uri extends Object
 	public function __toString()
 	{
 		return $this->toString();
+	}
+
+	/**
+	 * Returns the global URI object, only creating it
+	 * if it doesn't already exist.
+	 *
+	 * @param   string  $uri  The URI to parse.  [optional: if null uses script URI]
+	 * @return  object  The URI object.
+	 */
+	public static function getInstance($uri = 'SERVER')
+	{
+		if (empty(self::$instances[$uri]))
+		{
+			// Are we obtaining the URI from the server?
+			if ($uri == 'SERVER')
+			{
+				// Determine if the request was over SSL (HTTPS).
+				if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) != 'off'))
+				{
+					$https = 's://';
+				}
+				else
+				{
+					$https = '://';
+				}
+
+				// Since we are assigning the URI from the server variables, we first need
+				// to determine if we are running on apache or IIS.  If PHP_SELF and REQUEST_URI
+				// are present, we will assume we are running on apache.
+
+				if (!empty($_SERVER['PHP_SELF']) && !empty($_SERVER['REQUEST_URI']))
+				{
+					// To build the entire URI we need to prepend the protocol, and the http host
+					// to the URI string.
+					$theURI = 'http' . $https . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+				}
+				else
+				{
+					// Since we do not have REQUEST_URI to work with, we will assume we are
+					// running on IIS and will therefore need to work some magic with the SCRIPT_NAME and
+					// QUERY_STRING environment variables.
+
+					// IIS uses the SCRIPT_NAME variable instead of a REQUEST_URI variable... thanks, MS
+					$theURI = 'http' . $https . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+
+					// If the query string exists append it to the URI string
+					if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']))
+					{
+						$theURI .= '?' . $_SERVER['QUERY_STRING'];
+					}
+				}
+
+				// Extra cleanup to remove invalid chars in the URL to prevent injections through the Host header
+				$_SERVER['REQUEST_URI'] = str_replace(
+					array("'", '"', '<', '>'),
+					array('%27','%22','%3C','%3E'),
+					$_SERVER['REQUEST_URI']
+				);
+				$theURI = str_replace(
+					array("'", '"', '<', '>'),
+					array('%27','%22','%3C','%3E'),
+					$theURI
+				);
+			}
+			else
+			{
+				// We were given a URI
+				$theURI = $uri;
+			}
+
+			// Create the new URI instance
+			self::$instances[$uri] = new self($theURI);
+		}
+
+		return self::$instances[$uri];
+	}
+
+	/**
+	 * Returns the root URI
+	 *
+	 * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
+	 * @param   string   $path      The path
+	 * @return  string   The root URI string.
+	 */
+	public function root($pathonly = false, $path = null)
+	{
+		$prefix = $this->toString(array('scheme', 'host', 'port'));
+
+		if (!isset($path))
+		{
+			$path = rtrim($this->toString(array('path')), '/\\');
+		}
+
+		return $pathonly === false ? $prefix . $path . '/' : $path;
 	}
 
 	/**
