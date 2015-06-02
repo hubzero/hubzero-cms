@@ -513,15 +513,22 @@ class Project extends Model
 		// Allowed to create a project
 		if (!$this->exists())
 		{
-			if ($this->config()->get('creatorgroup'))
+			$cg = $this->config()->get('creatorgroup');
+			$cg = explode(',', $cg);
+			$cg = array_map('trim', $cg);
+
+			if (!empty($cg))
 			{
-				$group = \Hubzero\User\Group::getInstance($this->config()->get('creatorgroup'));
-				if ($group)
+				foreach ($cg as $c)
 				{
-					if ($group->is_member_of('members', User::get('id')) ||
-						$group->is_member_of('managers', User::get('id')))
+					$group = \Hubzero\User\Group::getInstance($c);
+					if ($group)
 					{
-						$this->params->set('access-create-project', true);
+						if ($group->is_member_of('members', User::get('id')) ||
+							$group->is_member_of('managers', User::get('id')))
+						{
+							$this->params->set('access-create-project', true);
+						}
 					}
 				}
 			}
