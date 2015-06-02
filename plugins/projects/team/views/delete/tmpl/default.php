@@ -32,14 +32,14 @@ $i = 1;
 <?php
 // Display error or success message
 if ($this->getError()) {
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo ('<p class="witherror">' . $this->getError() . '</p>');
 }
 $self = in_array($this->aid, $this->checked) ? 1 : 0;
 ?>
 <?php
 if (!$this->getError()) {
 ?>
-<form id="hubForm-ajax" method="post" action="<?php echo $this->model->link(); ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->model->link()); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="action" value="removeowner" />
