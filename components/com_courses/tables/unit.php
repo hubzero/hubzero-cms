@@ -30,6 +30,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Course Units table class
  */
@@ -113,7 +117,7 @@ class Unit extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 
 			$this->state = ($this->state) ? $this->state : 1;

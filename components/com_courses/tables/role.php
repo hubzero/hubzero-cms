@@ -30,6 +30,8 @@
 
 namespace Components\Courses\Tables;
 
+use Lang;
+
 /**
  * Table class for course membership reason
  */

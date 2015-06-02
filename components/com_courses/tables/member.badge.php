@@ -38,8 +38,8 @@ class MemberBadge extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,8 +49,8 @@ class MemberBadge extends \JTable
 	/**
 	 * Load by member id
 	 *
-	 * @param      int $id - member id
-	 * @return     void
+	 * @param   integer  $id  member id
+	 * @return  boolean
 	 */
 	public function loadByMemberId($id)
 	{
@@ -64,10 +64,8 @@ class MemberBadge extends \JTable
 		{
 			return $this->bind($result);
 		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+
+		$this->setError($this->_db->getErrorMsg());
+		return false;
 	}
 }

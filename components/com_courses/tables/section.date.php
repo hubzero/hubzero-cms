@@ -30,6 +30,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Course section table class
  */
@@ -107,7 +111,7 @@ class SectionDate extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created = \Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 
 			// Make sure the record doesn't already exist

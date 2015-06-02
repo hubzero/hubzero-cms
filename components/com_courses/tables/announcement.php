@@ -30,6 +30,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Course announcement table class
  */
@@ -111,7 +115,7 @@ class Announcement extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 		}
 

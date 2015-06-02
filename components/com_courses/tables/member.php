@@ -30,6 +30,9 @@
 
 namespace Components\Courses\Tables;
 
+use Date;
+use Lang;
+
 /**
  * Course asset groups table class
  */
@@ -210,7 +213,7 @@ class Member extends \JTable
 
 		if (!$this->id)
 		{
-			$this->enrolled = \Date::toSql();
+			$this->enrolled = Date::toSql();
 		}
 
 		return true;

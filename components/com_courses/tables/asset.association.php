@@ -30,6 +30,8 @@
 
 namespace Components\Courses\Tables;
 
+use Lang;
+
 /**
  * Course asset associations table class
  */

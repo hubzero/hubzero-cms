@@ -30,6 +30,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Courses table class for section coupon codes
  */
@@ -71,7 +75,7 @@ class SectionCode extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created    = \Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 		}
 

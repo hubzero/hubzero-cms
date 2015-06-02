@@ -29,6 +29,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Table class for course page
  */
@@ -37,8 +41,8 @@ Class PageHit extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -48,7 +52,7 @@ Class PageHit extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -70,7 +74,7 @@ Class PageHit extends \JTable
 
 		if (!$this->id)
 		{
-			$this->timestamp = \Date::toSql();
+			$this->timestamp = Date::toSql();
 			if (!$this->ip)
 			{
 				$this->ip = Request::ip();
@@ -94,8 +98,10 @@ Class PageHit extends \JTable
 	/**
 	 * Record a page hit
 	 *
-	 * @param      integer $pid Page ID
-	 * @return     void
+	 * @param   integer  $offering_id
+	 * @param   integer  $page_id
+	 * @param   integer  $user_id
+	 * @return  boolean
 	 */
 	public function hit($offering_id, $page_id, $user_id=0)
 	{

@@ -30,6 +30,10 @@
 
 namespace Components\Courses\Tables;
 
+use User;
+use Date;
+use Lang;
+
 /**
  * Course asset groups table class
  */
@@ -81,7 +85,7 @@ class AssetGroup extends \JTable
 
 			$this->state = ($this->state) ? $this->state : 1;
 
-			$this->created = \Date::toSql();
+			$this->created    = Date::toSql();
 			$this->created_by = User::get('id');
 		}
 
