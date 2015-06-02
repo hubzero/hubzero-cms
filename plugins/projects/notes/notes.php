@@ -235,6 +235,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				case 'deletefolder':
 				case 'deletefile':
 				case 'media':
+				case 'list':
 					$this->_controllerName = 'media';
 				break;
 
@@ -578,6 +579,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function fixupPathway()
 	{
+		Pathway::clear();
+
 		// Add group
 		if ($this->model->groupOwner())
 		{

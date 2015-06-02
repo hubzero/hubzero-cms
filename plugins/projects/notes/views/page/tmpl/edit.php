@@ -99,7 +99,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	</div>
 <?php } ?>
 
-<form action="<?php echo Route::url($this->page->link()); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+<form action="<?php echo $this->page->link('save'); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
 <?php if (!$this->sub) { ?>
 	<div class="explaination">
 	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
@@ -226,7 +226,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {
-					echo '<input type="text" name="tags" value="'. $tags .'" size="38" />';
+					echo '<input type="text" name="tags" value="' . $tags . '" size="38" />';
 				}
 				?>
 				<span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?></span>

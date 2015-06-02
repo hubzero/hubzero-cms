@@ -256,7 +256,9 @@
 		display: none;
 	}
 /* Misc */
-
+	#file-uploader-list #content-header-extra {
+		display: none;
+	}
 /* Search */
 	.page-search {
 		position: relative;
