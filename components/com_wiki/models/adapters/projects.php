@@ -87,6 +87,7 @@ class Projects extends Base
 			case 'comments':
 			case 'deleterevision':
 			case 'addcomment':
+			case 'save':
 				$segments['task'] = $type;
 			break;
 

@@ -99,6 +99,7 @@ class Router extends Base
 			case 'deletefolder':
 			case 'deletefile':
 			case 'media':
+			case 'list':
 				$vars['controller'] = 'media';
 			break;
 
