@@ -32,13 +32,13 @@ $privacyTxt = $this->row->isPublic()
 ?>
 <tr class="mline" id="tr_<?php echo $this->row->get('id'); ?>">
 	<td class="th_image">
-		<a href="<?php echo Route::url($row->link()); ?>">
-			<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" title="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+		<a href="<?php echo Route::url($this->row->link()); ?>">
+			<img src="<?php echo Route::url($this->row->link('thumb')); ?>" alt="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" title="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 		</a>
 	</td>
 	<td class="th_privacy"><span class="privacy-icon<?php echo !$this->row->isPublic() ? ' private' : ''; ?>" title="<?php echo ucfirst($privacyTxt) . ' ' . Lang::txt('COM_PROJECTS_PROJECT'); ?>"></span></td>
 	<td class="th_title">
-		<a href="<?php echo Route::url($row->link()); ?>">
+		<a href="<?php echo Route::url($this->row->link()); ?>">
 		<?php echo $this->escape(stripslashes($this->row->get('title')));  ?>
 		</a>
 	</td>
@@ -94,7 +94,7 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 		echo '<span class="active green">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
 	}
 	else if ($this->row->inSetup()) {
-		echo '<span class="setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> '.Lang::txt('COM_PROJECTS_IN_PROGRESS');
+		echo '<span class="setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ' . Lang::txt('COM_PROJECTS_IN_PROGRESS');
 	}
 	else if ($this->row->isInactive()) {
 		echo '<span class="faded italic">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
