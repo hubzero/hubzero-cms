@@ -33,8 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <p class="wishlist">
-	<a href="<?php echo Route::url('index.php?option=com_publications&id='. $this->publication->id.'&active=wishlist'); ?>">
-		<?php echo Lang::txt('NUM_WISHES',$this->items); ?>
+	<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&active=wishlist'); ?>">
+		<?php echo Lang::txt('NUM_WISHES', $this->items); ?>
 	</a>
-	(<a href="<?php echo Route::url('index.php?option=com_wishlist&id='.$this->wishlistid.'&task=add'); ?>"><?php echo Lang::txt('COM_WISHLIST_ADD_NEW_WISH'); ?></a>)
+	(<a href="<?php echo Route::url('index.php?option=com_wishlist&id=' . $this->wishlistid . '&task=add'); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_WISHLIST_ADD_NEW_WISH'); ?></a>)
 </p>
