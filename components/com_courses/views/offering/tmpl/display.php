@@ -144,7 +144,7 @@ if (!$no_html && $tmpl != 'component') :
 							$link = JRoute::_($this->course->offering()->link() . '&active=' . $plugin->get('name'));
 							?>
 							<li class="<?php echo ($active == $plugin->get('name') ? 'active' : ''); ?> course-<?php echo $plugin->get('name'); ?>-tab">
-								<a class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>" data-title="<?php echo $this->escape($plugin->get('title')); ?>" href="<?php echo $link; ?>">
+								<a class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>" data-title="<?php echo $this->escape($plugin->get('title')) . '&#xa;' . $this->escape($plugin->get('description')); ?>" href="<?php echo $link; ?>">
 									<?php echo $this->escape($plugin->get('title')); ?>
 								</a>
 								<?php if ($meta_count = $plugin->get('meta_count')) { ?>

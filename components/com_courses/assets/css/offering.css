@@ -461,24 +461,25 @@
 		-ms-transition: 0.3s ease;
 		transition: 0.3s ease;
 		content: attr(data-title);
+		white-space: pre;
 		background: #383838;
 		color: #fff;
 		text-shadow: 0 -1px 0px black;
 		padding: 8px 10px;
 		font-size: 12px;
-		line-height: 12px;
-		white-space: nowrap;
+		line-height: 1.2em;
 		box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 		left: 100%;
-		bottom: 50%;
-		margin-bottom: -14px;
+		top: 50%;
+		margin-top: -14px;
 		visibility: hidden\9;
+		text-align: left;
 	}
 	#page_menu li:after {
 		content: "";
 		padding: 0;
 		margin-left: -4px;
-		margin-bottom: -6px;
+		margin-top: -6px;
 		background: transparent;
 		border: 6px solid transparent;
 		border-color: transparent #383838 transparent transparent;
