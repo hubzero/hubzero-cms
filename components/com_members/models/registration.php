@@ -390,7 +390,7 @@ class MembersModelRegistration
 		}
 
 		$this->_registration['countryresident'] = $cresident;
-		$this->_registration['countryorigin']	= $corigin;
+		$this->_registration['countryorigin'] = $corigin;
 		$this->_registration['nativetribe'] = $racenativetribe;
 		//$this->_registration['role'] = $role;
 		//$this->_registration['edulevel'] = $edulevel;
@@ -412,6 +412,10 @@ class MembersModelRegistration
 		}
 		$this->_registration['reason'] = JRequest::getVar('reason', null, 'post');
 		$this->_registration['reasontxt'] = JRequest::getVar('reasontxt', null, 'post');
+		if (!$this->_registration['reason'])
+		{
+			$this->_registration['reason'] = $this->_registration['reasontxt'];
+		}
 		$this->_registration['password'] = JRequest::getVar('password', null, 'post');
 		$this->_registration['confirmPassword'] = JRequest::getVar('password2', null, 'post');
 		$this->_registration['usageAgreement'] = JRequest::getVar('usageAgreement', null, 'post');

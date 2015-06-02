@@ -469,7 +469,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 								<option value="" selected="selected"><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
 							<?php } ?>
 							<?php foreach ($types as $orgtype) { ?>
-								<option value="<?php echo $this->escape($orgtype->type); ?>"<?php if ($this->registration['orgtype'] == $orgtype->type) { echo ' selected="selected"'; } ?>><?php echo $this->escape($orgtype->type); ?></option>
+								<option value="<?php echo $this->escape($orgtype->type); ?>"<?php if ($this->registration['orgtype'] == $orgtype->type) { echo ' selected="selected"'; } ?>><?php echo $this->escape($orgtype->title); ?></option>
 							<?php } ?>
 						</select>
 						<?php echo ($message) ? "\t\t\t\t" . $message . "\n" : ''; ?>
@@ -532,7 +532,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 							<option value="" selected="selected"><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
 						<?php } ?>
 						<?php foreach ($reasons as $reason) { ?>
-							<option value="<?php echo $reason; ?>"<?php if ($this->registration['reason'] == $reason) { echo ' selected="selected"'; } ?>><?php echo JText::_($reason); ?></option>
+							<option value="<?php echo JText::_($reason); ?>"<?php if ($this->registration['reason'] == JText::_($reason)) { echo ' selected="selected"'; } ?>><?php echo JText::_($reason); ?></option>
 						<?php } ?>
 						</select>
 					</label>
