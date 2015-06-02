@@ -412,6 +412,10 @@ class MembersModelRegistration
 		}
 		$this->_registration['reason'] = Request::getVar('reason', null, 'post');
 		$this->_registration['reasontxt'] = Request::getVar('reasontxt', null, 'post');
+		if (!$this->_registration['reason'])
+		{
+			$this->_registration['reason'] = $this->_registration['reasontxt'];
+		}
 		$this->_registration['password'] = Request::getVar('password', null, 'post');
 		$this->_registration['confirmPassword'] = Request::getVar('password2', null, 'post');
 		$this->_registration['usageAgreement'] = Request::getVar('usageAgreement', null, 'post');

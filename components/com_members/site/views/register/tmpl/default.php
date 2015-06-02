@@ -456,7 +456,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 								<option value="" selected="selected"><?php echo Lang::txt('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
 							<?php } ?>
 							<?php foreach ($types as $orgtype) { ?>
-								<option value="<?php echo $this->escape($orgtype->type); ?>"<?php if ($this->registration['orgtype'] == $orgtype->type) { echo ' selected="selected"'; } ?>><?php echo $this->escape($orgtype->type); ?></option>
+								<option value="<?php echo $this->escape($orgtype->type); ?>"<?php if ($this->registration['orgtype'] == $orgtype->type) { echo ' selected="selected"'; } ?>><?php echo $this->escape($orgtype->title); ?></option>
 							<?php } ?>
 						</select>
 						<?php echo ($message) ? "\t\t\t\t" . $message . "\n" : ''; ?>
@@ -519,7 +519,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							<option value="" selected="selected"><?php echo Lang::txt('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
 						<?php } ?>
 						<?php foreach ($reasons as $reason) { ?>
-							<option value="<?php echo $reason; ?>"<?php if ($this->registration['reason'] == $reason) { echo ' selected="selected"'; } ?>><?php echo Lang::txt($reason); ?></option>
+							<option value="<?php echo Lang::txt($reason); ?>"<?php if ($this->registration['reason'] == Lang::txt($reason)) { echo ' selected="selected"'; } ?>><?php echo Lang::txt($reason); ?></option>
 						<?php } ?>
 						</select>
 					</label>
