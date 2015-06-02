@@ -2,6 +2,8 @@
 
 namespace Plugins\Content\Mollom\Service\Mollom\Exception;
 
+include_once __DIR__ . DS . 'MollomException.php';
+
 /**
  * Mollom error due to bad client request exception.
  *

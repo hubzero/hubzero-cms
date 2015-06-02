@@ -622,6 +622,36 @@ abstract class JFactory
 	}
 
 	/**
+	 * [!] HUBZERO
+	 *
+	 * Get the spam logger, creating it if it doesn't exist
+	 *
+	 * @return     object
+	 */
+	public static function &getSpamLogger()
+	{
+		static $instance;
+
+		if (!($instance instanceof \Hubzero\Log\Writer))
+		{
+			$instance = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(self::getConfig()->getValue('config.application_env')),
+				\JDispatcher::getInstance()
+			);
+
+			$path = self::getConfig()->getValue('config.log_path');
+			if (is_dir('/var/log/hubzero'))
+			{
+				$path = '/var/log/hubzero';
+			}
+
+			$instance->useFiles($path . '/cmsspam.log', 'debug', '', 'Y-m-d H:i:s', 0640);
+		}
+
+		return $instance;
+	}
+
+	/**
 	 * Create a configuration object
 	 *
 	 * @param   string  $file       The path to the configuration file.

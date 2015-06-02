@@ -30,22 +30,26 @@
 
 namespace Hubzero\Antispam;
 
-use Hubzero\Antispam\Adapter;
-use Hubzero\Antispam\Exception;
+use Hubzero\Antispam\Adapter\AdapterInterface;
+use Hubzero\Antispam\Exception\AdapterNotFoundException;
+use InvalidArgumentException;
 
+/**
+ * Antispam service class
+ */
 class Service
 {
 	/**
 	 * Antispam adapter
 	 *
-	 * @var Adapter\AdapterInterface
+	 * @var  object
 	 */
 	protected $_adapter = null;
 
 	/**
 	 * Map of characters to be replaced through strtr
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_canonicalNamesReplacements = array(
 		'-'  => '',
@@ -58,19 +62,15 @@ class Service
 	/**
 	 * Default set of adapters
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	protected $_invokableClasses = array(
-		'simple'       => 'Hubzero\Antispam\Adapter\Simple'
-		//'akismet'      => 'Hubzero\Antispam\Adapter\Akismet',
-		//'mollom'       => 'Hubzero\Antispam\Adapter\Mollom',
-		//'spamassassin' => 'Hubzero\Antispam\Adapter\SpamAssassin'
-	);
+	protected $_invokableClasses = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param    Adapter\AdapterInterface $adapter
+	 * @param   mixed  $adapter
+	 * @return  void
 	 */
 	public function __construct($adapter = null)
 	{
@@ -85,7 +85,7 @@ class Service
 	 *
 	 * The adapter does not have a default if the storage adapter has not been set.
 	 *
-	 * @return    Adapter\AdapterInterface|null
+	 * @return  object
 	 */
 	public function getAdapter()
 	{
@@ -95,8 +95,8 @@ class Service
 	/**
 	 * Sets the authentication adapter
 	 *
-	 * @param     mixed $adapter string or Adapter\AdapterInterface
-	 * @return    Service
+	 * @param   mixed   $adapter  String or AdapterInterface
+	 * @return  object
 	 */
 	public function setAdapter($adapter)
 	{
@@ -110,7 +110,7 @@ class Service
 
 				if (!class_exists($invokable))
 				{
-					throw new Exception\AdapterNotFoundException(sprintf(
+					throw new AdapterNotFoundException(sprintf(
 						'%s: failed retrieving adapter via invokable class "%s"; class does not exist',
 						get_class($this) . '::' . __FUNCTION__,
 						$invokable
@@ -120,9 +120,9 @@ class Service
 			}
 		}
 
-		if (!($adapter instanceof Adapter\AdapterInterface))
+		if (!($adapter instanceof AdapterInterface))
 		{
-			throw new \InvalidArgumentException(sprintf(
+			throw new InvalidArgumentException(sprintf(
 				'%s was unable to fetch adapter or adapter was not an instance of %s',
 				get_class($this) . '::' . __FUNCTION__,
 				__NAMESPACE__ . '\AdapterInterface'
@@ -130,15 +130,16 @@ class Service
 		}
 
 		$this->_adapter = $adapter;
+
 		return $this;
 	}
 
 	/**
 	 * Set a property
 	 *
-	 * @param    string $key
-	 * @param    mixed  $value
-	 * @return   object
+	 * @param   string  $key
+	 * @param   mixed   $value
+	 * @return  object
 	 */
 	public function set($key, $value)
 	{
@@ -149,8 +150,8 @@ class Service
 	/**
 	 * Get a property
 	 *
-	 * @param    string $key
-	 * @return   mixed
+	 * @param   string  $key
+	 * @return  mixed
 	 */
 	public function get($key)
 	{
@@ -160,8 +161,8 @@ class Service
 	/**
 	 * Set properties
 	 *
-	 * @param    mixed $data Array or object
-	 * @return   object
+	 * @param   mixed   $data  Array or object
+	 * @return  object
 	 */
 	public function setProperties($data)
 	{
@@ -172,7 +173,7 @@ class Service
 	/**
 	 * Get properties
 	 *
-	 * @return   array
+	 * @return  array
 	 */
 	public function getProperties()
 	{
@@ -182,15 +183,15 @@ class Service
 	/**
 	 * Validate against the supplied adapter
 	 *
-	 * @param    mixed $value
-	 * @return   boolean
-	 * @throws   \RuntimeException
+	 * @param   string   $value
+	 * @return  boolean
+	 * @throws  AdapterNotFoundException
 	 */
 	public function isSpam($value)
 	{
 		if (!$adapter = $this->getAdapter())
 		{
-			throw new Exception\AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
+			throw new AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
 		}
 
 		$adapter->setValue($value);
@@ -199,10 +200,50 @@ class Service
 	}
 
 	/**
+	 * Train the service
+	 *
+	 * @param   string   $value
+	 * @param   boolean  $isSpam
+	 * @return  boolean
+	 * @throws  AdapterNotFoundException
+	 */
+	public function learn($value, $isSpam)
+	{
+		if (!$adapter = $this->getAdapter())
+		{
+			throw new AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
+		}
+
+		$adapter->setValue($value);
+
+		return $adapter->learn($value, $isSpam);
+	}
+
+	/**
+	 * Forget a trained value
+	 *
+	 * @param   string   $value
+	 * @param   boolean  $isSpam
+	 * @return  boolean
+	 * @throws  AdapterNotFoundException
+	 */
+	public function forget($value, $isSpam)
+	{
+		if (!$adapter = $this->getAdapter())
+		{
+			throw new AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
+		}
+
+		$adapter->setValue($value);
+
+		return $adapter->forget($value, $isSpam);
+	}
+
+	/**
 	 * Canonicalize name
 	 *
-	 * @param  string $name
-	 * @return string
+	 * @param   string  $name
+	 * @return  string
 	 */
 	protected function canonicalizeName($name)
 	{
