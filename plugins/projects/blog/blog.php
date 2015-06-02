@@ -214,13 +214,14 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$html = '';
-
 		// No suggestions for read-only users
 		if (!$model->access('content'))
 		{
 			return false;
 		}
+
+		// Allow to place custom modules on project pages
+		$html = \Hubzero\Module\Helper::renderModules('projectpage');
 
 		// Side blocks from other plugins?
 		$sections = Event::trigger( 'projects.onProjectMiniList', array( $this->model));
