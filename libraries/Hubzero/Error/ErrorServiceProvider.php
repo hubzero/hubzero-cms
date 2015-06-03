@@ -49,14 +49,14 @@ class ErrorServiceProvider extends ServiceProvider
 		$this->app['error'] = function($app)
 		{
 			$handler = new Handler(
-				new Page($app['document'], $app['template']->template, $app['config']->get('debug')),
+				new Plain($app['config']->get('debug')), //new Page($app['document'], $app['template']->template, $app['config']->get('debug')),
 				$app['config']->get('debug')
 			);
 
-			if ($handler->runningInConsole())
+			/*if ($handler->runningInConsole())
 			{
-				$handler->setRenderer(new Plain());
-			}
+				$handler->setRenderer(new Plain($app['config']->get('debug')));
+			}*/
 
 			return $handler;
 		};
@@ -67,7 +67,7 @@ class ErrorServiceProvider extends ServiceProvider
 	 *
 	 * @return  void
 	 */
-	public function boot()
+	public function startHandling()
 	{
 		// Set the error_reporting
 		switch ($this->app['config']->get('error_reporting'))
@@ -103,5 +103,18 @@ class ErrorServiceProvider extends ServiceProvider
 		}
 
 		$this->app['error']->register($this->app['client']->name);
+	}
+
+	/**
+	 * Register the exception handler.
+	 *
+	 * @return  void
+	 */
+	public function boot()
+	{
+		if (!$this->app->runningInConsole() && $this->app->has('document'))
+		{
+			$this->app['error']->setRenderer(new Page($this->app['document'], $this->app['template']->template, $this->app['config']->get('debug')));
+		}
 	}
 }

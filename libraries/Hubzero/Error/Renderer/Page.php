@@ -136,29 +136,33 @@ class Page implements RendererInterface
 				header('HTTP/1.1 500 Internal Server Error');
 			}
 
-			$backtrace = $e->getTrace();
-
 			$response = '';
-			if (is_array($backtrace))
+
+			if ($this->debug)
 			{
-				$j = 0;
-				for ($i = count($backtrace) - 1; $i >= 0; $i--)
+				$backtrace = $e->getTrace();
+
+				if (is_array($backtrace))
 				{
-					$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';
-					$response .= $backtrace[$i]['function'] . '();';
-
-					if (isset($backtrace[$i]['file']))
+					$j = 0;
+					for ($i = count($backtrace) - 1; $i >= 0; $i--)
 					{
-						$response .= $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'];
-					}
-					else
-					{
-						$response .= '...';
-					}
+						$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';
+						$response .= $backtrace[$i]['function'] . '();';
 
-					$response .= "\n\n";
+						if (isset($backtrace[$i]['file']))
+						{
+							$response .= $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'];
+						}
+						else
+						{
+							$response .= '...';
+						}
 
-					$j++;
+						$response .= "\n\n";
+
+						$j++;
+					}
 				}
 			}
 

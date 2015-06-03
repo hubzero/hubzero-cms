@@ -39,6 +39,26 @@ use Exception;
 class Plain implements RendererInterface
 {
 	/**
+	 * Debugging turned on?
+	 *
+	 * @var  bool
+	 */
+	protected $debug;
+
+	/**
+	 * Create a new exception renderer.
+	 *
+	 * @param   object  $document  Document instance
+	 * @param   string  $template  Template name
+	 * @param   bool    $debug     Debugging turned on?
+	 * @return  void
+	 */
+	public function __construct($debug = false)
+	{
+		$this->debug = $debug;
+	}
+
+	/**
 	 * Display the given exception to the user.
 	 *
 	 * @param   object  $exception
@@ -46,29 +66,39 @@ class Plain implements RendererInterface
 	 */
 	public function render(Exception $error)
 	{
+		if (!headers_sent())
+		{
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
 		$response = $error->getCode() . ' - ' . $error->getMessage() . "\n\n";
 
-		$backtrace = $error->getTrace();
-
-		if (is_array($backtrace))
+		if ($this->debug)
 		{
-			for ($i = count($backtrace) - 1; $i >= 0; $i--)
+			$backtrace = $error->getTrace();
+
+			if (is_array($backtrace))
 			{
-				$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';
-				$response .= $backtrace[$i]['function'] . '();';
+				$j = 0;
 
-				if (isset($backtrace[$i]['file']))
+				for ($i = count($backtrace) - 1; $i >= 0; $i--)
 				{
-					$response .= $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'];
-				}
-				else
-				{
-					$response .= '...';
-				}
+					$response .= '[' . $j . '] ' . $backtrace[$i]['class'] . $backtrace[$i]['type'] . $backtrace[$i]['function'] . '();';
+					$response .= $backtrace[$i]['function'] . '();';
 
-				$response .= "\n\n";
+					if (isset($backtrace[$i]['file']))
+					{
+						$response .= $backtrace[$i]['file'] . ':' . $backtrace[$i]['line'];
+					}
+					else
+					{
+						$response .= '...';
+					}
 
-				$j++;
+					$response .= "\n\n";
+
+					$j++;
+				}
 			}
 		}
 

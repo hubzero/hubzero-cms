@@ -450,6 +450,17 @@ class Application extends Container
 	 */
 	public function run()
 	{
+		if ($this->has('error'))
+		{
+			array_walk($this->serviceProviders, function($p)
+			{
+				if (method_exists($p, 'startHandling'))
+				{
+					return $p->startHandling();
+				}
+			});
+		}
+
 		$app = \JFactory::getApplication($this['client']->name);
 
 		$this->boot();
