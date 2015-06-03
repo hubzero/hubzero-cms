@@ -30,9 +30,10 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Models\Course;
+use Components\Courses\Models\PdfForm;
+use Components\Courses\Models\PdfFormDeployment;
 use Hubzero\Component\SiteController;
-use PdfFormDeployment;
-use PdfForm;
 use Request;
 use Pathway;
 use Route;
@@ -676,7 +677,7 @@ class Form extends SiteController
 		$offering = Request::getVar('offering');
 		$section  = Request::getVar('section');
 
-		$this->course = new \CoursesModelCourse($gid);
+		$this->course = new Course($gid);
 		$this->course->offering($offering);
 		$this->course->offering()->section($section);
 	}
@@ -746,11 +747,11 @@ class FormHelper
 
 		if (($int %100) >= 11 && ($int%100) <= 13)
 		{
-			$abbreviation = $int. 'th';
+			$abbreviation = $int . 'th';
 		}
 		else
 		{
-			$abbreviation = $int. $ends[$int % 10];
+			$abbreviation = $int . $ends[$int % 10];
 		}
 
 		return $abbreviation;

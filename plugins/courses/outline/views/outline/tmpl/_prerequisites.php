@@ -65,7 +65,7 @@ foreach ($existing as $value)
 					<li class="requisite-list-item" data-id="<?php echo $v->requisite_id; ?>">
 						<div class="requisite-item clearfix">
 							<div class="remove-requisite" data-delete-id="<?php echo $v->id; ?>">x</div>
-							<?php $class = 'CoursesModel'.ucfirst($v->requisite_scope); ?>
+							<?php $class = '\\Components\\Courses\\Models\\'.ucfirst($v->requisite_scope); ?>
 							<?php $item  = new $class($v->requisite_id); ?>
 							<div class="requisite-item-title">
 								<?php echo $item->get('title'); ?>

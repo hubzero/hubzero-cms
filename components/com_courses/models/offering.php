@@ -28,14 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
+use Hubzero\Config\Registry;
 use Components\Courses\Tables;
+use Filesystem;
+use Lang;
+use User;
 
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'role.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'offering.php');
-require_once(__DIR__ . DS . 'abstract.php');
-
+require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'iterator.php');
 require_once(__DIR__ . DS . 'section.php');
 require_once(__DIR__ . DS . 'unit.php');
@@ -45,12 +48,10 @@ require_once(__DIR__ . DS . 'announcement.php');
 require_once(__DIR__ . DS . 'page.php');
 require_once(__DIR__ . DS . 'gradebook.php');
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'role.php');
-
 /**
  * Courses model class for a course
  */
-class CoursesModelOffering extends CoursesModelAbstract
+class Offering extends Base
 {
 	/**
 	 * JTable class name
@@ -67,14 +68,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 	protected $_scope = 'offering';
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_units = NULL;
 
 	/**
-	 * CoursesModelUnit
+	 * \Components\Courses\Models\Unit
 	 *
 	 * @var object
 	 */
@@ -109,70 +110,70 @@ class CoursesModelOffering extends CoursesModelAbstract
 	private $_roles = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_members = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_member = NULL;
 
 	/**
-	 * CoursesModelMember
+	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
 	private $_manager = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_managers = NULL;
 
 	/**
-	 * CoursesModelMember
+	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
 	private $_student = NULL;
 
 	/**
-	 * CoursesModelGradebook
+	 * \Components\Courses\Models\Gradebook
 	 *
 	 * @var object
 	 */
 	private $_gradebook = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_sections = NULL;
 
 	/**
-	 * CoursesModelSection
+	 * \Components\Courses\Models\Section
 	 *
 	 * @var object
 	 */
 	private $_section = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 **/
 	private $_assets = NULL;
 
 	/**
-	 * CoursesModelPermissions
+	 * \Components\Courses\Models\Permissions
 	 *
 	 * @var object
 	 */
@@ -234,7 +235,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * Returns a reference to a course offering model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = CoursesModelOffering::getInstance($alias);
+	 *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
 	 *
 	 * @param   mixed  $oid  ID (int) or alias (string)
 	 * @return  object
@@ -280,9 +281,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function params($key='', $default=null)
 	{
-		if (!($this->_params instanceof \Hubzero\Config\Registry))
+		if (!($this->_params instanceof Registry))
 		{
-			$this->_params = new \Hubzero\Config\Registry($this->get('params'));
+			$this->_params = new Registry($this->get('params'));
 		}
 		if ($key)
 		{
@@ -295,11 +296,11 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * Method to get/set the current unit
 	 *
 	 * @param     mixed $id ID or alias of specific unit
-	 * @return    object CoursesModelUnit
+	 * @return    object \Components\Courses\Models\Unit
 	 */
 	public function section($id=null)
 	{
-		if ($id instanceof CoursesModelSection)
+		if ($id instanceof Section)
 		{
 			$this->_link = null;
 			$this->_section = $id;
@@ -334,7 +335,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 			if (!$this->_section)
 			{
-				$this->_section = CoursesModelSection::getInstance($id, $this->get('id'));
+				$this->_section = Section::getInstance($id, $this->get('id'));
 			}
 		}
 		return $this->_section;
@@ -355,7 +356,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$filters['offering_id'] = (int) $this->get('id');
 		}
-		if (!isset($filters['available']) && !\JFactory::getApplication()->isAdmin())
+		if (!isset($filters['available']) && !\App::isAdmin())
 		{
 			$filters['available'] = true;
 		}
@@ -367,7 +368,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!($this->_sections instanceof CoursesModelIterator) || $clear)
+		if (!($this->_sections instanceof Iterator) || $clear)
 		{
 			$tbl = new Tables\Section($this->_db);
 
@@ -375,7 +376,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelSection($result);
+					$results[$key] = new Section($result);
 				}
 			}
 			else
@@ -383,7 +384,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_sections = new CoursesModelIterator($results);
+			$this->_sections = new Iterator($results);
 		}
 
 		return $this->_sections;
@@ -393,7 +394,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * Method to get/set the current unit
 	 *
 	 * @param     mixed $id ID or alias of specific unit
-	 * @return    object CoursesModelUnit
+	 * @return    object \Components\Courses\Models\Unit
 	 */
 	public function unit($id=null)
 	{
@@ -418,7 +419,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 			if (is_null($this->_unit))
 			{
-				$this->_unit = CoursesModelUnit::getInstance($id, $this->get('id'));
+				$this->_unit = Unit::getInstance($id, $this->get('id'));
 			}
 		}
 		return $this->_unit;
@@ -451,7 +452,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!($this->_units instanceof CoursesModelIterator) || $clear)
+		if (!($this->_units instanceof Iterator) || $clear)
 		{
 			$tbl = new Tables\Unit($this->_db);
 
@@ -463,7 +464,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 					{
 						$result->section_id = (int) $this->section()->get('id');
 					}
-					$results[$key] = new CoursesModelUnit($result);
+					$results[$key] = new Unit($result);
 				}
 			}
 			else
@@ -471,7 +472,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_units = new CoursesModelIterator($results);
+			$this->_units = new Iterator($results);
 		}
 
 		return $this->_units;
@@ -506,7 +507,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			}
 			else
 			{
-				$this->_manager = CoursesModelManager::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+				$this->_manager = Manager::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
 			}
 		}
 
@@ -558,25 +559,25 @@ class CoursesModelOffering extends CoursesModelAbstract
 				{
 					if (!isset($results[$result->user_id]))
 					{
-						$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+						$results[$result->user_id] = new Manager($result, $this->get('id'));
 					}
 					else
 					{
 						// Course manager takes precedence over offering manager
 						if ($result->course_id && !$result->offering_id && !$result->section_id)
 						{
-							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+							$results[$result->user_id] = new Manager($result, $this->get('id'));
 						}
 						// Course offering takes precedence over section manager
 						else if ($result->course_id && $result->offering_id && !$result->section_id)
 						{
-							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+							$results[$result->user_id] = new Manager($result, $this->get('id'));
 						}
 					}
 				}
 			}
 
-			$this->_managers = $results; //new CoursesModelIterator($results);
+			$this->_managers = $results;
 		}
 
 		return $this->_managers;
@@ -628,7 +629,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (!$this->_student)
 		{
-			$this->_student = CoursesModelStudent::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+			$this->_student = Student::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
 		}
 
 		return $this->_student;
@@ -643,10 +644,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		if (!isset($this->_gradebook))
 		{
-			$course = new CoursesModelCourse($this->get('course_id'));
+			$course = new Course($this->get('course_id'));
 			$course->offering($this->get('id'));
 			$course->offering()->section($this->section()->get('id'));
-			$this->_gradebook = new CoursesModelGradeBook($oid, $course);
+			$this->_gradebook = new GradeBook($oid, $course);
 		}
 
 		return $this->_gradebook;
@@ -658,11 +659,11 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * Accepts an array of filters to apply to the list of assets
 	 *
 	 * @param      array $filters Filters to apply
-	 * @return     object CoursesModelIterator
+	 * @return     object \Components\Courses\Models\Iterator
 	 */
 	public function assets($filters=array())
 	{
-		if (!($this->_assets instanceof CoursesModelIterator))
+		if (!($this->_assets instanceof Iterator))
 		{
 			if (!isset($filters['asset_scope_id']))
 			{
@@ -679,7 +680,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelAsset($result);
+					$results[$key] = new Asset($result);
 				}
 			}
 			else
@@ -687,7 +688,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_assets = new CoursesModelIterator($results);
+			$this->_assets = new Iterator($results);
 		}
 
 		return $this->_assets;
@@ -732,7 +733,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (!$this->_member)
 		{
-			$this->_member = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+			$this->_member = Member::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
 		}
 
 		return $this->_member;
@@ -786,14 +787,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 			if (($data = $tbl->find($filters)))
 			{
-				$mdl = 'CoursesModelMember';
+				$mdl = '\\Components\\Courses\\Models\\Member';
 				if (isset($filters['student']) && $filters['student'])
 				{
-					$mdl = 'CoursesModelStudent';
+					$mdl = '\\Components\\Courses\\Models\\Student';
 				}
 				else if (isset($filters['student']) && !$filters['student'])
 				{
-					$mdl = 'CoursesModelManager';
+					$mdl = '\\Components\\Courses\\Models\\Manager';
 				}
 
 				foreach ($data as $key => $result)
@@ -805,7 +806,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				}
 			}
 
-			$this->_members = $results; //new CoursesModelIterator($results);
+			$this->_members = $results;
 		}
 
 		return $this->_members;
@@ -853,20 +854,20 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$mdl = 'CoursesModelMember';
+					$mdl = '\\Components\\Courses\\Models\\Member';
 					if ($result->student)
 					{
-						$mdl = 'CoursesModelStudent';
+						$mdl = '\\Components\\Courses\\Models\\Student';
 					}
 					else
 					{
-						$mdl = 'CoursesModelManager';
+						$mdl = '\\Components\\Courses\\Models\\Manager';
 					}
 					$results[$key] = new $mdl($result);
 				}
 			}
 
-			$this->_membership[$user_id] = $results; //new CoursesModelIterator($results);
+			$this->_membership[$user_id] = $results;
 		}
 
 		return $this->_membership[$user_id];
@@ -904,7 +905,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_roles = $results; //new CoursesModelIterator($results);
+			$this->_roles = $results;
 		}
 
 		return $this->_roles;
@@ -934,7 +935,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			//}
 			if (!$this->_page)
 			{
-				$this->_page = new CoursesModelPage(0);
+				$this->_page = new Page(0);
 			}
 		}
 
@@ -982,7 +983,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[] = new CoursesModelPage($result);
+					$results[] = new Page($result);
 				}
 			}
 
@@ -1031,11 +1032,11 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[] = new CoursesModelAnnouncement($result);
+					$results[] = new Announcement($result);
 				}
 			}
 
-			$this->_announcements = new CoursesModelIterator($results);
+			$this->_announcements = new Iterator($results);
 		}
 
 		return $this->_announcements;
@@ -1053,7 +1054,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$this->importPlugin('courses');
 
-			$course = CoursesModelCourse::getInstance($this->get('course_id'));
+			$course = Course::getInstance($this->get('course_id'));
 			$this->_plugins = $this->trigger('onCourse', array($course, $this, true));
 		}
 
@@ -1081,7 +1082,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		if (!isset($this->_permissions))
 		{
-			$this->_permissions = CoursesModelPermissions::getInstance();
+			$this->_permissions = Permissions::getInstance();
 			$this->_permissions->set('course_id', $this->get('course_id'));
 			$this->_permissions->set('offering_id', $this->get('id'));
 			$this->_permissions->set('section_id', $this->section()->get('id'));
@@ -1113,7 +1114,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$user_id = (int) $this->_userId($result);
 
-			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+			$model = Member::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
 			$model->set('user_id', $user_id);
 			$model->set('course_id', $this->get('course_id'));
 			$model->set('offering_id', $this->get('id'));
@@ -1194,7 +1195,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 */
 	public function makeSection($alias='__default', $is_default=1)
 	{
-		$section = new CoursesModelSection();
+		$section = new Section();
 		$section->set('offering_id', $this->get('id'));
 		$section->set('alias', $alias);
 		$section->set('title', Lang::txt('Default'));
@@ -1447,7 +1448,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			if (!$this->get('course_alias'))
 			{
-				$course = CoursesModelCourse::getInstance($this->get('course_id'));
+				$course = Course::getInstance($this->get('course_id'));
 				$this->set('course_alias', $course->get('alias'));
 			}
 			$this->_link  = 'index.php?option=com_courses&controller=offering&gid=' . $this->get('course_alias') . '&offering=' . $this->alias();
@@ -1467,7 +1468,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			case 'enroll':
 				$this->importPlugin('courses');
 
-				$course = CoursesModelCourse::getInstance($this->get('course_id'));
+				$course = Course::getInstance($this->get('course_id'));
 
 				$data = $this->trigger('onCourseEnrollLink', array(
 					$course, $this, $this->section()

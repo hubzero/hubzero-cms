@@ -28,19 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models;
+
 use Components\Courses\Tables;
+use Hubzero\Base\Object;
+use Component;
+use Request;
+use User;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'manager.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'student.php');
+require_once(__DIR__ . DS . 'course.php');
+require_once(__DIR__ . DS . 'manager.php');
+require_once(__DIR__ . DS . 'student.php');
 
 /**
  * Courses model class for course permissions
  */
-class CoursesModelPermissions extends \Hubzero\Base\Object
+class Permissions extends Object
 {
 	/**
 	 * Config
@@ -50,49 +53,49 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 	private $_config = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_managers = NULL;
 
 	/**
-	 * CoursesModelMember
+	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
 	private $_manager = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_students = NULL;
 
 	/**
-	 * CoursesModelMember
+	 * \Components\Courses\Models\Member
 	 *
 	 * @var object
 	 */
 	private $_student = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_course_id = NULL;
 
 	/**
-	 * CoursesModelSection
+	 * \Components\Courses\Models\Section
 	 *
 	 * @var object
 	 */
 	private $_offering_id = NULL;
 
 	/**
-	 * CoursesModelSection
+	 * \Components\Courses\Models\Section
 	 *
 	 * @var object
 	 */
@@ -119,7 +122,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 	 * @param   integer $course_id   Course ID or alias
 	 * @param   integer $offering_id Course offering ID or alias
 	 * @param   integer $section_id  Course section ID or alias
-	 * @return  object CoursesModelPermissions
+	 * @return  object \Components\Courses\Models\Permissions
 	 */
 	static function &getInstance($course_id=null, $offering_id=null, $section_id=null)
 	{
@@ -127,7 +130,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 
 		if (!is_object($instance))
 		{
-			$instance = new CoursesModelPermissions($course_id, $offering_id, $section_id);
+			$instance = new Permissions($course_id, $offering_id, $section_id);
 		}
 
 		return $instance;
@@ -208,7 +211,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 
 			if (!$this->_manager)
 			{
-				$this->_manager = CoursesModelManager::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('section_id'));
+				$this->_manager = Manager::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('section_id'));
 			}
 		}
 
@@ -257,25 +260,25 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 				{
 					if (!isset($results[$result->user_id]))
 					{
-						$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+						$results[$result->user_id] = new Manager($result, $this->get('id'));
 					}
 					else
 					{
 						// Course manager takes precedence over offering manager
 						if ($result->course_id && !$result->offering_id && !$result->section_id)
 						{
-							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+							$results[$result->user_id] = new Manager($result, $this->get('id'));
 						}
 						// Course offering takes precedence over section manager
 						else if ($result->course_id && $result->offering_id && !$result->section_id)
 						{
-							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+							$results[$result->user_id] = new Manager($result, $this->get('id'));
 						}
 					}
 				}
 			}
 
-			$this->_managers = $results; //new CoursesModelIterator($results);
+			$this->_managers = $results;
 		}
 
 		return $this->_managers;
@@ -318,7 +321,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 
 		if (!$this->_student)
 		{
-			$this->_student = CoursesModelStudent::getInstance($user_id, $this->get('course_id'), null, $this->get('section_id'));
+			$this->_student = \Components\Courses\Models\Student::getInstance($user_id, $this->get('course_id'), null, $this->get('section_id'));
 		}
 
 		return $this->_student;
@@ -364,11 +367,11 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[$result->user_id] = new CoursesModelStudent($result, $this->get('id'));
+					$results[$result->user_id] = new \Components\Courses\Models\Student($result, $this->get('id'));
 				}
 			}
 
-			$this->_students = $results; //new CoursesModelIterator($results);
+			$this->_students = $results; //new \Components\Courses\Models\Iterator($results);
 		}
 
 		return $this->_students;
@@ -402,7 +405,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 		if (!$this->get('course_id'))
 		{
 			// Try to get the course from request
-			$course = CoursesModelCourse::getInstance(Request::getVar('gid', ''));
+			$course = Course::getInstance(Request::getVar('gid', ''));
 			if ($course->exists())
 			{
 				$this->set('course_id', $course->get('id'));
@@ -418,7 +421,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 		// Get the course
 		if (!isset($course))
 		{
-			$course = CoursesModelCourse::getInstance($this->get('course_id'));
+			$course = Course::getInstance($this->get('course_id'));
 		}
 
 		// Make sure the course exists
@@ -486,7 +489,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 		{
 			$oid = Request::getVar('offering', '');
 
-			//$course = CoursesModelCourse::getInstance($this->get('course_id'));
+			//$course = \Components\Courses\Models\Course::getInstance($this->get('course_id'));
 			$offering = $course->offering($oid);
 			if ($offering->exists())
 			{
@@ -503,7 +506,7 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 
 		if (!isset($offering))
 		{
-			$course = CoursesModelCourse::getInstance($this->get('course_id'));
+			$course = Course::getInstance($this->get('course_id'));
 			$offering = $course->offering($this->get('offering_id'));
 		}
 

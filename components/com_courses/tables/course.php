@@ -267,7 +267,7 @@ class Course extends \JTable
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
 			include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
-			$tagging = new CoursesModelTags();
+			$tagging = new \Components\Courses\Models\Tags();
 			$tags = $tagging->parseTags($filters['tag']);
 
 			$where[] = "t.tag IN ('" . implode("','", $tags) . "')";

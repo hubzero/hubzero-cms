@@ -29,8 +29,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
+
+use Date;
+use App;
 
 class PdfFormDeployment
 {
@@ -146,7 +148,7 @@ class PdfFormDeployment
 
 		foreach ($dbh->loadAssocList() as $depData)
 		{
-			$dep = new PdfFormDeployment;
+			$dep = new self;
 			foreach ($depData as $k=>$v)
 			{
 				$dep->$k = $v;
@@ -322,7 +324,7 @@ class PdfFormDeployment
 	 **/
 	private static function find($where, $section_id=null)
 	{
-		$dep = new PdfFormDeployment;
+		$dep = new self;
 		$dbh = self::getDbh();
 		$dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed, allowed_attempts AS allowedAttempts FROM #__courses_form_deployments WHERE '.$where);
 
@@ -597,7 +599,7 @@ class PdfFormDeployment
 	 **/
 	public static function fromFormData($fid, $data)
 	{
-		$dep = new PdfFormDeployment;
+		$dep = new self;
 		$dep->formId = $fid;
 		foreach (array('resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts') as $key)
 		{
@@ -704,7 +706,7 @@ class PdfFormDeployment
 		{
 			// Get our asset object
 			require_once(__DIR__ . DS . 'asset.php');
-			$asset = new CoursesModelAsset($result);
+			$asset = new Asset($result);
 			$asset->set('url', $this->crumb);
 			$asset->store();
 		}

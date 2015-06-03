@@ -84,7 +84,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php';
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
-		$coursesObj = new CoursesModelCourses();
+		$coursesObj = new \Components\Courses\Models\Courses();
 		$courses    = $coursesObj->courses();
 
 		if (isset($courses) && count($courses) > 0)
@@ -135,7 +135,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 
 								if (isset($match[1]))
 								{
-									$badge = CoursesModelMemberBadge::loadByToken($match[1]);
+									$badge = \Components\Courses\Models\MemberBadge::loadByToken($match[1]);
 
 									if ($badge && !$badge->get('action'))
 									{
@@ -186,7 +186,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
 			$course_id = $params->get('course');
 		}
 
-		$coursesObj = new CoursesModelCourses();
+		$coursesObj = new \Components\Courses\Models\Courses();
 
 		if ($course_id)
 		{

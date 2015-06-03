@@ -28,20 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models;
+
 use Components\Courses\Tables;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'gradebook.php');
+require_once(__DIR__ . DS . 'asset.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'prerequisite.php');
 
 /**
  * Courses model class for prerequisites
  */
-class CoursesModelPrerequisite extends CoursesModelAbstract
+class Prerequisite extends Base
 {
 	/**
 	 * JTable class name
@@ -190,7 +189,7 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 				{
 					foreach ($this->prerequisites[$key] as $prerequisite)
 					{
-						$asset = new CoursesModelAsset($prerequisite['scope_id']);
+						$asset = new Asset($prerequisite['scope_id']);
 
 						switch ($asset->get('type'))
 						{

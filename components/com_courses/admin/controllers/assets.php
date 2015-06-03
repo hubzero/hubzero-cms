@@ -211,7 +211,7 @@ class Assets extends AdminController
 			$this->setError($tbl->getError());
 		}
 
-		$model = new \CoursesModelAsset($asset_id);
+		$model = new \Components\Courses\Models\Asset($asset_id);
 		// Is this asset linked anywhere else?
 		if ($model->parents(array('count' => true)) <= 0)
 		{

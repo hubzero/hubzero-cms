@@ -179,21 +179,21 @@ class Logo extends AdminController
 		{
 			case 'section':
 				// Instantiate a model, change some info and save
-				$model = \CoursesModelSection::getInstance($id);
+				$model = \Components\Courses\Models\Section::getInstance($id);
 				$model->params()->set('logo', $filename . '.' . $ext);
 				$model->set('params', $model->params()->toString());
 			break;
 
 			case 'offering':
 				// Instantiate a model, change some info and save
-				$model = \CoursesModelOffering::getInstance($id);
+				$model = \Components\Courses\Models\Offering::getInstance($id);
 				$model->params()->set('logo', $filename . '.' . $ext);
 				$model->set('params', $model->params()->toString());
 			break;
 
 			case 'course':
 				// Instantiate a model, change some info and save
-				$model = \CoursesModelCourse::getInstance($id);
+				$model = \Components\Courses\Models\Course::getInstance($id);
 				$model->set('logo', $filename . '.' . $ext);
 			break;
 
@@ -307,19 +307,19 @@ class Logo extends AdminController
 			switch ($type)
 			{
 				case 'section':
-					$model = \CoursesModelSection::getInstance($id);
+					$model = \Components\Courses\Models\Section::getInstance($id);
 					$model->params()->set('logo', $file['name']);
 					$model->set('params', $model->params()->toString());
 				break;
 
 				case 'offering':
-					$model = \CoursesModelOffering::getInstance($id);
+					$model = \Components\Courses\Models\Offering::getInstance($id);
 					$model->params()->set('logo', $file['name']);
 					$model->set('params', $model->params()->toString());
 				break;
 
 				case 'course':
-					$model = \CoursesModelCourse::getInstance($id);
+					$model = \Components\Courses\Models\Course::getInstance($id);
 					$model->set('logo', $file['name']);
 				break;
 
@@ -373,21 +373,21 @@ class Logo extends AdminController
 		switch ($type)
 		{
 			case 'section':
-				$model = \CoursesModelSection::getInstance($id);
+				$model = \Components\Courses\Models\Section::getInstance($id);
 				$file = $model->params('logo');
 				$model->params()->set('logo', '');
 				$model->set('params', $model->params()->toString());
 			break;
 
 			case 'offering':
-				$model = \CoursesModelOffering::getInstance($id);
+				$model = \Components\Courses\Models\Offering::getInstance($id);
 				$file = $model->params('logo');
 				$model->params()->set('logo', '');
 				$model->set('params', $model->params()->toString());
 			break;
 
 			case 'course':
-				$model = \CoursesModelCourse::getInstance($id);
+				$model = \Components\Courses\Models\Course::getInstance($id);
 				$file = $model->get('logo');
 				$model->set('logo', '');
 			break;
@@ -484,19 +484,19 @@ class Logo extends AdminController
 			switch ($type)
 			{
 				case 'section':
-					$model = \CoursesModelSection::getInstance($id);
+					$model = \Components\Courses\Models\Section::getInstance($id);
 					$model->params()->set('logo', '');
 					$model->set('params', $model->params()->toString());
 				break;
 
 				case 'offering':
-					$model = \CoursesModelOffering::getInstance($id);
+					$model = \Components\Courses\Models\Offering::getInstance($id);
 					$model->params()->set('logo', '');
 					$model->set('params', $model->params()->toString());
 				break;
 
 				case 'course':
-					$model = \CoursesModelCourse::getInstance($id);
+					$model = \Components\Courses\Models\Course::getInstance($id);
 					$model->set('logo', '');
 				break;
 
@@ -531,18 +531,18 @@ class Logo extends AdminController
 		switch ($type)
 		{
 			case 'section':
-				$model = \CoursesModelSection::getInstance($id);
-				$offering = \CoursesModelOffering::getInstance($model->get('offering_id'));
+				$model = \Components\Courses\Models\Section::getInstance($id);
+				$offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));
 				$path .= $offering->get('course_id') . DS . 'sections' . DS . $id;
 			break;
 
 			case 'offering':
-				$model = \CoursesModelOffering::getInstance($id);
+				$model = \Components\Courses\Models\Offering::getInstance($id);
 				$path .= $model->get('course_id') . DS . 'offerings' . DS . $id;
 			break;
 
 			case 'course':
-				$model = \CoursesModelCourse::getInstance($id);
+				$model = \Components\Courses\Models\Course::getInstance($id);
 				$path .= $id;
 			break;
 
@@ -585,17 +585,17 @@ class Logo extends AdminController
 		switch ($this->view->type)
 		{
 			case 'section':
-				$model = \CoursesModelSection::getInstance($id);
+				$model = \Components\Courses\Models\Section::getInstance($id);
 				$this->view->file = $model->params('logo');
 			break;
 
 			case 'offering':
-				$model = \CoursesModelOffering::getInstance($id);
+				$model = \Components\Courses\Models\Offering::getInstance($id);
 				$this->view->file = $model->params('logo');
 			break;
 
 			case 'course':
-				$model = \CoursesModelCourse::getInstance($id);
+				$model = \Components\Courses\Models\Course::getInstance($id);
 				$this->view->file = $model->get('logo');
 			break;
 

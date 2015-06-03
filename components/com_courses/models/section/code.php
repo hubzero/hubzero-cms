@@ -28,18 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models\Section;
+
+use Components\Courses\Models\Base;
 use Components\Courses\Tables;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.code.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php');
+require_once(dirname(__DIR__) . DS . 'base.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelSectionCode extends CoursesModelAbstract
+class Code extends Base
 {
 	/**
 	 * JTable class name
@@ -92,10 +92,10 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	 * Returns a reference to a course offering model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = CoursesModelOffering::getInstance($alias);
+	 *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
 	 *
 	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object CoursesModelOffering
+	 * @return     object \Components\Courses\Models\Offering
 	 */
 	static function &getInstance($oid=null, $section_id=null)
 	{
@@ -140,9 +140,9 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	 */
 	public function redeemer($property=null)
 	{
-		if (!($this->_redeemer instanceof JUser))
+		if (!($this->_redeemer instanceof \JUser))
 		{
-			$this->_redeemer = User::getInstance($this->get('redeemed_by'));
+			$this->_redeemer = \User::getInstance($this->get('redeemed_by'));
 		}
 		if ($property)
 		{
@@ -211,7 +211,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 		}
 		if (!$redeemed_by)
 		{
-			$redeemed_by = User::get('id');
+			$redeemed_by = \User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
 		$this->set('redeemed', \Date::toSql());

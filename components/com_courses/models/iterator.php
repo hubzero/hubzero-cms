@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
 /**
  * Courses model class for a course
  */
-class CoursesModelIterator implements Countable, Iterator
+class Iterator implements \Countable, \Iterator
 {
 	/**
 	 * Container for properties

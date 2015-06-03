@@ -28,15 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php';
+use Hubzero\Base\Model;
+use User;
+
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
 
 /**
  * Courses model class for form reporting/data
  */
-class CoursesModelFormReport extends \Hubzero\Base\Model
+class FormReport extends Model
 {
 	/**
 	 * Generate letter responses array for a given asset id

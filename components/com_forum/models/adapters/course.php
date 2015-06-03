@@ -61,8 +61,8 @@ class Course extends Base
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 
-		$offering = \CoursesModelOffering::getInstance($this->get('scope_id'));
-		$course = \CoursesModelCourse::getInstance($offering->get('course_id'));
+		$offering = \Components\Courses\Models\Offering::getInstance($this->get('scope_id'));
+		$course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
 		$this->_segments['gid']      = $course->get('alias');
 		$this->_segments['offering'] = $offering->alias();

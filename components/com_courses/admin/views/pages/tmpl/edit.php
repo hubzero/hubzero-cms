@@ -69,10 +69,6 @@ Joomla.submitbutton = function(pressbutton) {
 }
 </script>
 
-<?php foreach ($this->notifications as $notification) { ?>
-<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
-<?php } ?>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">

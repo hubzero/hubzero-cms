@@ -28,23 +28,23 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models;
+
 use Components\Courses\Tables;
+use Date;
+use User;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'unit.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'iterator.php');
+require_once(__DIR__ . DS . 'asset.php');
+require_once(__DIR__ . DS . 'assetgroup.php');
+require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 
 /**
  * Courses model class for a unit
  */
-class CoursesModelUnit extends CoursesModelAbstract
+class Unit extends Base
 {
 	/**
 	 * JTable class name
@@ -61,35 +61,35 @@ class CoursesModelUnit extends CoursesModelAbstract
 	protected $_scope = 'unit';
 
 	/**
-	 * CoursesModelAssetgroup
+	 * \Components\Courses\Models\Assetgroup
 	 *
 	 * @var object
 	 */
 	public $group = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	public $assetgroups = NULL;
 
 	/**
-	 * CoursesModelAsset
+	 * \Components\Courses\Models\Asset
 	 *
 	 * @var object
 	 */
 	private $_asset = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_assets = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
@@ -130,7 +130,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @param   mixed   $oid         Integer, string, array, or object
 	 * @param   integer $offering_id Offering the unit is linked to
-	 * @return  object  CoursesModelUnit
+	 * @return  object  \Components\Courses\Models\Unit
 	 */
 	static function &getInstance($oid=null, $offering_id=null)
 	{
@@ -259,7 +259,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 			$filters['section_id'] = (int) $this->get('section_id');
 		}
 
-		if (!isset($this->assetgroups) || !($this->assetgroups instanceof CoursesModelIterator))
+		if (!isset($this->assetgroups) || !($this->assetgroups instanceof Iterator))
 		{
 			$tbl = new Tables\AssetGroup($this->_db);
 			if (($results = $tbl->find(array('w' => $filters))))
@@ -271,7 +271,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				{
 					if ($v->parent == 0)
 					{
-						$list[$v->id] = new CoursesModelAssetgroup($v);
+						$list[$v->id] = new Assetgroup($v);
 
 						if ($this->get('section_id'))
 						{
@@ -283,7 +283,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				{
 					if (isset($list[$c->parent]))
 					{
-						$ag = new CoursesModelAssetgroup($c);
+						$ag = new Assetgroup($c);
 
 						if ($this->get('section_id'))
 						{
@@ -300,7 +300,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 			{
 				$res = array();
 			}
-			$this->assetgroups = new CoursesModelIterator($res);
+			$this->assetgroups = new Iterator($res);
 		}
 
 		if ($idx !== null)
@@ -346,13 +346,13 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	public function siblings(&$siblings)
 	{
-		if ($siblings instanceof CoursesModelIterator)
+		if ($siblings instanceof Iterator)
 		{
 			$this->_siblings = $siblings;
 		}
 		else
 		{
-			$this->_siblings = new CoursesModelIterator($siblings);
+			$this->_siblings = new Iterator($siblings);
 		}
 	}
 
@@ -421,7 +421,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 * Get a specific asset
 	 *
 	 * @param   integer $id Asset ID
-	 * @return  object  CoursesModelAsset
+	 * @return  object  \Components\Courses\Models\Asset
 	 */
 	public function asset($id=null)
 	{
@@ -447,11 +447,11 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *   Accepts an array of filters to apply to the list of assets
 	 *
 	 * @param   array $filters Filters to apply
-	 * @return  object CoursesModelIterator
+	 * @return  object \Components\Courses\Models\Iterator
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->_assets) || !($this->_assets instanceof CoursesModelIterator))
+		if (!isset($this->_assets) || !($this->_assets instanceof Iterator))
 		{
 			if (!isset($filters['asset_scope_id']))
 			{
@@ -472,7 +472,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelAsset($result);
+					$results[$key] = new Asset($result);
 				}
 			}
 			else
@@ -480,7 +480,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_assets = new CoursesModelIterator($results);
+			$this->_assets = new Iterator($results);
 		}
 
 		return $this->_assets;
@@ -509,7 +509,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$dt->set('section_id', $this->get('section_id'));
 				$dt->set('scope', $this->_scope);
 				$dt->set('scope_id', $this->get('id'));
-				$dt->set('created', \Date::toSql());
+				$dt->set('created', Date::toSql());
 				$dt->set('created_by', User::get('id'));
 			}
 

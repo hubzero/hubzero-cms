@@ -177,7 +177,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
-		$this->view->details = CoursesModelFormReport::getLetterResponseCountsForAssetId($this->db, $asset_id, $this->course->offering()->section()->get('id'));
+		$this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId($this->db, $asset_id, $this->course->offering()->section()->get('id'));
 
 		$this->css('assessmentdetails.css');
 		$this->js('assessmentdetails');
@@ -271,7 +271,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the grading policy
-		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+		$gradePolicy = new \Components\Courses\Models\GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 		$policy = new stdClass();
 		$policy->description     = $gradePolicy->get('description');
 		$policy->exam_weight     = $gradePolicy->get('exam_weight') * 100;
@@ -620,7 +620,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 				continue;
 			}
 
-			if ($details = CoursesModelFormReport::getLetterResponsesForAssetId($this->db, $asset_id, true, $this->course->offering()->section()->get('id')))
+			if ($details = \Components\Courses\Models\FormReport::getLetterResponsesForAssetId($this->db, $asset_id, true, $this->course->offering()->section()->get('id')))
 			{
 				$output = implode(',', $details['headers']) . "\n";
 				if (isset($details['responses']) && count($details['responses']) > 0)
@@ -958,12 +958,12 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		// If the section is using a policy other than the default, just update it
 		if ($gpId != 1)
 		{
-			$gp = new CoursesModelGradePolicies($gpId);
+			$gp = new \Components\Courses\Models\GradePolicies($gpId);
 		}
 		else
 		{
 			// Create new and save
-			$gp = new CoursesModelGradePolicies(null);
+			$gp = new \Components\Courses\Models\GradePolicies(null);
 			$saveSection = true;
 		}
 
@@ -1059,7 +1059,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		if (Request::getInt('no_html', false))
 		{
-			$gp = new CoursesModelGradePolicies(1);
+			$gp = new \Components\Courses\Models\GradePolicies(1);
 			$policy->description     = $gp->get('description');
 			$policy->exam_weight     = $gp->get('exam_weight') * 100;
 			$policy->quiz_weight     = $gp->get('quiz_weight') * 100;

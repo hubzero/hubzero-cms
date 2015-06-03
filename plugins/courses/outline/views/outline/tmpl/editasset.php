@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 
 // Get our asset model
-$asset = new CoursesModelAsset(Request::getInt('asset_id', null));
+$asset = new \Components\Courses\Models\Asset(Request::getInt('asset_id', null));
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
 
 // Get the asset groups

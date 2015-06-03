@@ -30,6 +30,8 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Models\Course;
+use Components\Courses\Models\Member;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
 use Exception;
@@ -52,7 +54,7 @@ class Certificate extends SiteController
 	 */
 	public function displayTask()
 	{
-		$course   = \CoursesModelCourse::getInstance(Request::getVar('course', ''));
+		$course   = Course::getInstance(Request::getVar('course', ''));
 		$offering = $course->offering(Request::getVar('offering', ''));
 
 		// Ensure the course exists
@@ -68,7 +70,7 @@ class Certificate extends SiteController
 
 		// Ensure specified user is enrolled in the course
 		//$student = $offering->member(User::get('id'));
-		$student = \CoursesModelMember::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null, 1);
+		$student = Member::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null, 1);
 		if (!$student->exists())
 		{
 			App::redirect(

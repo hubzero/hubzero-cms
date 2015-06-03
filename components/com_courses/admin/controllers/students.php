@@ -82,7 +82,7 @@ class Students extends AdminController
 			)
 		);
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		/*if (!$this->view->offering->exists())
 		{
@@ -91,7 +91,7 @@ class Students extends AdminController
 			);
 			return;
 		}*/
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 		//$this->view->filters['role'] = 'student';
@@ -127,7 +127,7 @@ class Students extends AdminController
 		{
 			foreach ($this->view->rows as $key => $row)
 			{
-				$this->view->rows[$key] = new \CoursesModelStudent($row);
+				$this->view->rows[$key] = new \Components\Courses\Models\Student($row);
 			}
 		}
 
@@ -151,13 +151,13 @@ class Students extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$offering = Request::getInt('offering', 0);
-		$this->view->offering = \CoursesModelOffering::getInstance($offering);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($offering);
 
 		$id = 0;
 
-		$this->view->row = \CoursesModelMember::getInstance($id, $offering);
+		$this->view->row = \Components\Courses\Models\Member::getInstance($id, $offering);
 
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -179,7 +179,7 @@ class Students extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$offering = Request::getInt('offering', 0);
-		$this->view->offering = \CoursesModelOffering::getInstance($offering);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($offering);
 
 		if (!is_object($model))
 		{
@@ -195,12 +195,12 @@ class Students extends AdminController
 			$course_id  = $this->view->offering->get('course_id');
 			$section_id = $this->view->offering->section()->get('id');
 
-			$model = \CoursesModelStudent::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
+			$model = \Components\Courses\Models\Student::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
 		}
 
 		$this->view->row = $model;
 
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -252,7 +252,7 @@ class Students extends AdminController
 		{
 			$offering = $fields['offering_id'];
 		}
-		$offeringObj = \CoursesModelOffering::getInstance($offering);
+		$offeringObj = \Components\Courses\Models\Offering::getInstance($offering);
 
 		$c = 0;
 		foreach ($user_ids as $user_id)
@@ -276,8 +276,8 @@ class Students extends AdminController
 			$fields['course_id'] = $offeringObj->get('course_id');
 			//$section_id = $offeringObj->section()->get('id');
 
-			//$model = CoursesModelMember::getInstance($fields['user_id'], $fields['course_id'], $offering, $section_id);
-			$model = \CoursesModelMember::getInstance($fields['user_id'], $fields['course_id'], null, null);
+			//$model = \Components\Courses\Models\Member::getInstance($fields['user_id'], $fields['course_id'], $offering, $section_id);
+			$model = \Components\Courses\Models\Member::getInstance($fields['user_id'], $fields['course_id'], null, null);
 
 			// Is there an existing record and are they a student?
 			if ($model->exists() && !$model->get('student'))
@@ -362,7 +362,7 @@ class Students extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the student record
-				$model = \CoursesModelStudent::getInstance($id, null, null, null); //, $offering->get('course_id'), $offering_id, $section_id);
+				$model = \Components\Courses\Models\Student::getInstance($id, null, null, null); //, $offering->get('course_id'), $offering_id, $section_id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -426,9 +426,9 @@ class Students extends AdminController
 			)
 		);
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		if (!$this->view->filters['offering_id'])
 		{
@@ -447,7 +447,7 @@ class Students extends AdminController
 		{
 			foreach ($this->view->rows as $key => $row)
 			{
-				$this->view->rows[$key] = new \CoursesModelStudent($row);
+				$this->view->rows[$key] = new \Components\Courses\Models\Student($row);
 			}
 		}
 

@@ -38,7 +38,7 @@ if ($offerings)
 }
 else
 {
-	$offering = new CoursesModelOffering(0, $this->course->get('id'));
+	$offering = new \Components\Courses\Models\Offering(0, $this->course->get('id'));
 }
 
 if ($offering->exists())

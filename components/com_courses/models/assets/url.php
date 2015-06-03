@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Assets;
+
+use Request;
 
 /**
-* Url Asset handler class
-*/
-class UrlAssetHandler extends ContentAssetHandler
+ * Url Asset handler class
+ */
+class Url extends Content
 {
 	/**
 	 * Class info

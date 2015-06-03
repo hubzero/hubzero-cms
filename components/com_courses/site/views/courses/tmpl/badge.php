@@ -42,7 +42,7 @@ switch ($this->action)
 
 		if (is_dir($img_location))
 		{
-			$file = JFolder::files($img_location, 'badge');
+			$file = Filesystem::files($img_location, 'badge');
 
 			if (isset($file[0]))
 			{

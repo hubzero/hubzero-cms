@@ -104,7 +104,7 @@ class Pages extends AdminController
 			)
 		);
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
 		if ($this->view->offering->exists())
 		{
 			$this->view->filters['course']    = Request::getState(
@@ -123,7 +123,7 @@ class Pages extends AdminController
 			);
 		}
 
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->filters['course']);
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->filters['course']);
 
 		if ($this->view->offering->exists())
 		{
@@ -169,7 +169,7 @@ class Pages extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = new \CoursesModelPage($id);
+			$model = new \Components\Courses\Models\Page($id);
 		}
 
 		$this->view->row = $model;
@@ -187,8 +187,8 @@ class Pages extends AdminController
 			$this->view->row->set('active', 1);
 		}
 
-		$this->view->course   = \CoursesModelCourse::getInstance($this->view->row->get('course_id'));
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
+		$this->view->course   = \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id'));
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -216,7 +216,7 @@ class Pages extends AdminController
 		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// instatiate course page object for saving
-		$row = new \CoursesModelPage($fields['id']);
+		$row = new \Components\Courses\Models\Page($fields['id']);
 
 		if (!$row->bind($fields))
 		{
@@ -851,7 +851,7 @@ class Pages extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = new \CoursesModelPage($id);
+				$model = new \Components\Courses\Models\Page($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())

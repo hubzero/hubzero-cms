@@ -242,7 +242,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 		if (!$this->view->model)
 		{
-			$this->view->model =  new CoursesModelPage($page);
+			$this->view->model =  new \Components\Courses\Models\Page($page);
 		}
 		$this->view->notifications = $this->getPluginMessage();
 
@@ -302,7 +302,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		$page = Request::getVar('fields', array(), 'post', 'none', 2);
 
-		$model = new CoursesModelPage($page['id']);
+		$model = new \Components\Courses\Models\Page($page['id']);
 
 		if (!$model->bind($page))
 		{
@@ -701,7 +701,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			$this->view->setError($error);
 		}
 
-		$this->view->page = new CoursesModelPage(Request::getInt('page', 0));
+		$this->view->page = new \Components\Courses\Models\Page(Request::getInt('page', 0));
 	}
 
 	/**
@@ -711,7 +711,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _fileList()
 	{
-		$page = new CoursesModelPage(Request::getInt('page', 0));
+		$page = new \Components\Courses\Models\Page(Request::getInt('page', 0));
 		if (!$page->exists())
 		{
 			$page->set('offering_id', $this->view->offering->get('id'));

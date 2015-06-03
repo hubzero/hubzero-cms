@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$asset = new CoursesModelAsset($this->asset->id);
+$asset = new \Components\Courses\Models\Asset($this->asset->id);
 
 $config = array(
 	'option'   => 'com_courses',

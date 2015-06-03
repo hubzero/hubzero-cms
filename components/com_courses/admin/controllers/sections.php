@@ -114,7 +114,7 @@ class Sections extends AdminController
 			)
 		);
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
 		if (!$this->view->offering->exists())
 		{
 			App::redirect(
@@ -122,7 +122,7 @@ class Sections extends AdminController
 			);
 			return;
 		}
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -165,7 +165,7 @@ class Sections extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = \CoursesModelSection::getInstance($id);
+			$model = \Components\Courses\Models\Section::getInstance($id);
 		}
 
 		$this->view->row = $model;
@@ -175,9 +175,9 @@ class Sections extends AdminController
 			$this->view->row->set('offering_id', Request::getInt('offering', 0));
 		}
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
-		$this->view->course   = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
-		$this->view->badge    = \CoursesModelSectionBadge::loadBySectionId($this->view->row->get('id'));
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
+		$this->view->course   = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+		$this->view->badge    = \Components\Courses\Models\Section\Badge::loadBySectionId($this->view->row->get('id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -224,7 +224,7 @@ class Sections extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = \CoursesModelSection::getInstance($fields['id']);
+		$model = \Components\Courses\Models\Section::getInstance($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -267,7 +267,7 @@ class Sections extends AdminController
 			$dt['section_id'] = $model->get('id');
 			$dt = $this->_datesToUTC($dt);
 
-			$dtmodel = new \CoursesModelSectionDate($dt['id']);
+			$dtmodel = new \Components\Courses\Models\Section\Date($dt['id']);
 			if (!$dtmodel->bind($dt))
 			{
 				$this->setError($dtmodel->getError());
@@ -296,7 +296,7 @@ class Sections extends AdminController
 
 					$ag['section_id'] = $model->get('id');
 
-					$dtmodel = new \CoursesModelSectionDate($ag['id']);
+					$dtmodel = new \Components\Courses\Models\Section\Date($ag['id']);
 					if (!$dtmodel->bind($ag))
 					{
 						$this->setError($dtmodel->getError());
@@ -326,7 +326,7 @@ class Sections extends AdminController
 
 							$agt['section_id'] = $model->get('id');
 
-							$dtmodel = new \CoursesModelSectionDate($agt['id']);
+							$dtmodel = new \Components\Courses\Models\Section\Date($agt['id']);
 							if (!$dtmodel->bind($agt))
 							{
 								$this->setError($dtmodel->getError());
@@ -356,7 +356,7 @@ class Sections extends AdminController
 
 									$a['section_id'] = $model->get('id');
 
-									$dtmodel = new \CoursesModelSectionDate($a['id']);
+									$dtmodel = new \Components\Courses\Models\Section\Date($a['id']);
 									if (!$dtmodel->bind($a))
 									{
 										$this->setError($dtmodel->getError());
@@ -391,7 +391,7 @@ class Sections extends AdminController
 
 							$a['section_id'] = $model->get('id');
 
-							$dtmodel = new \CoursesModelSectionDate($a['id']);
+							$dtmodel = new \Components\Courses\Models\Section\Date($a['id']);
 							if (!$dtmodel->bind($a))
 							{
 								$this->setError($dtmodel->getError());
@@ -424,7 +424,7 @@ class Sections extends AdminController
 
 					$a['section_id'] = $model->get('id');
 
-					$dtmodel = new \CoursesModelSectionDate($a['id']);
+					$dtmodel = new \Components\Courses\Models\Section\Date($a['id']);
 					if (!$dtmodel->bind($a))
 					{
 						$this->setError($dtmodel->getError());
@@ -450,7 +450,7 @@ class Sections extends AdminController
 
 			// Save the basic badge content
 			$badge['section_id'] = $model->get('id');
-			$badgeObj = new \CoursesModelSectionBadge($badge['id']);
+			$badgeObj = new \Components\Courses\Models\Section\Badge($badge['id']);
 			$badgeObj->bind($badge);
 			$badgeObj->store();
 
@@ -535,8 +535,8 @@ class Sections extends AdminController
 					$credentials->issuerId        = $cconfig->get($badgeObj->get('provider_name').'_issuer_id');;
 					$badgesProvider->setCredentials($credentials);
 
-					$offering = \CoursesModelOffering::getInstance($model->get('offering_id'));
-					$course   = \CoursesModelCourse::getInstance($offering->get('course_id'));
+					$offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));
+					$course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
 					$data = array();
 					$data['Name']          = $course->get('title');
@@ -576,7 +576,7 @@ class Sections extends AdminController
 		}
 		elseif ($badge['id']) // badge exists and is being unpublished
 		{
-			$badgeObj = new \CoursesModelSectionBadge($badge['id']);
+			$badgeObj = new \Components\Courses\Models\Section\Badge($badge['id']);
 			$badgeObj->bind(array('published' => 0));
 			$badgeObj->store();
 		}
@@ -625,7 +625,7 @@ class Sections extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = \CoursesModelSection::getInstance($id);
+				$model = \Components\Courses\Models\Section::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -651,7 +651,7 @@ class Sections extends AdminController
 					'offering_id' => $offering_id,
 					'is_default'  => 1
 				);
-				$offering = \CoursesModelOffering::getInstance($filters['offering_id']);
+				$offering = \Components\Courses\Models\Offering::getInstance($filters['offering_id']);
 
 				if (!$offering->sections($filters))
 				{
@@ -693,7 +693,7 @@ class Sections extends AdminController
 			$id = (!empty($id)) ? $id[0] : 0;
 		}
 
-		$row = \CoursesModelSection::getInstance($id);
+		$row = \Components\Courses\Models\Section::getInstance($id);
 		$row->makeDefault();
 
 		// Redirect back to the courses page
@@ -726,7 +726,7 @@ class Sections extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$section = \CoursesModelSection::getInstance($id);
+				$section = \Components\Courses\Models\Section::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$section->exists())

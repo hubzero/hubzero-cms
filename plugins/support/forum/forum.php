@@ -82,8 +82,8 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 					case 'course':
 						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
-						$offering = CoursesModelOffering::getInstance($row->scope_id);
-						$course   = CoursesModelCourse::getInstance($offering->get('course_id'));
+						$offering = \Components\Courses\Models\Offering::getInstance($row->scope_id);
+						$course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
 						$url = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&controller=offering&offering=' . $offering->get('alias') . '&active=discussions&thread=' . $row->thread;
 					break;

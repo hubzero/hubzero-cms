@@ -107,7 +107,7 @@ class Courses extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$model = \CoursesModelCourses::getInstance();
+		$model = \Components\Courses\Models\Courses::getInstance();
 
 		$this->view->filters['count'] = true;
 
@@ -146,7 +146,7 @@ class Courses extends AdminController
 				$id = $id[0];
 			}
 
-			$row = \CoursesModelCourse::getInstance($id);
+			$row = \Components\Courses\Models\Course::getInstance($id);
 		}
 
 		$this->view->row = $row;
@@ -185,7 +185,7 @@ class Courses extends AdminController
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new \CoursesModelCourse(0);
+		$row = new \Components\Courses\Models\Course(0);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -242,7 +242,7 @@ class Courses extends AdminController
 			return;
 		}
 
-		$course = \CoursesModelCourse::getInstance($id);
+		$course = \Components\Courses\Models\Course::getInstance($id);
 		if (!$course->copy())
 		{
 			// Redirect back to the courses page
@@ -283,7 +283,7 @@ class Courses extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$course = \CoursesModelCourse::getInstance($id);
+				$course = \Components\Courses\Models\Course::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$course->exists())
@@ -345,7 +345,7 @@ class Courses extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$course = \CoursesModelCourse::getInstance($id);
+				$course = \Components\Courses\Models\Course::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$course->exists())

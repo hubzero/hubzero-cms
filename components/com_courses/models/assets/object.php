@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Assets;
+
+use Request;
 
 /**
 * Object Asset handler class
 */
-class ObjectAssetHandler extends ContentAssetHandler
+class Object extends Content
 {
 	/**
 	 * Class info
@@ -45,9 +46,9 @@ class ObjectAssetHandler extends ContentAssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'As a HTML embed object',
-			'responds_to'    => array('object')
-		);
+		'action_message' => 'As a HTML embed object',
+		'responds_to'    => array('object')
+	);
 
 	/**
 	 * Create method for this handler

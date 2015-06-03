@@ -30,8 +30,10 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Models;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;
+use Hubzero\Config\Registry;
 use Exception;
 use Pathway;
 use Request;
@@ -64,7 +66,7 @@ class Offering extends SiteController
 		}
 
 		// Load the course page
-		$this->course = \CoursesModelCourse::getInstance($this->gid);
+		$this->course = Models\Course::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$this->course->exists() || $this->course->isDeleted() || $this->course->isUnpublished())
@@ -305,13 +307,13 @@ class Offering extends SiteController
 					// Is this a coupon for a different section?
 					if ($offering->section()->get('id') != $coupon->get('section_id'))
 					{
-						$section = \CoursesModelSection::getInstance($coupon->get('section_id'));
+						$section = \Components\Courses\Models\Section::getInstance($coupon->get('section_id'));
 						if ($section->exists() && $section->get('offering_id') != $offering->get('id'))
 						{
-							$offering = \CoursesModelOffering::getInstance($section->get('offering_id'));
+							$offering = \Components\Courses\Models\Offering::getInstance($section->get('offering_id'));
 							if ($offering->exists() && $offering->get('course_id') != $this->course->get('id'))
 							{
-								$this->course = \CoursesModelCourse::getInstance($offering->get('course_id'));
+								$this->course = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 							}
 						}
 						App::redirect(
@@ -329,7 +331,7 @@ class Offering extends SiteController
 			if (!$this->getError())
 			{
 				// Add the user to the course
-				$model = new \CoursesModelMember(0); //::getInstance(User::get('id'), $offering->get('id'));
+				$model = new \Components\Courses\Models\Member(0); //::getInstance(User::get('id'), $offering->get('id'));
 				$model->set('user_id', User::get('id'));
 				$model->set('course_id', $this->course->get('id'));
 				$model->set('offering_id', $offering->get('id'));
@@ -419,9 +421,9 @@ class Offering extends SiteController
 	 */
 	public function assetTask()
 	{
-		$sparams    = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
+		$sparams    = new Registry($this->course->offering()->section()->get('params'));
 		$section_id = $this->course->offering()->section()->get('id');
-		$asset      = new \CoursesModelAsset(Request::getInt('asset_id', null));
+		$asset      = new Models\Asset(Request::getInt('asset_id', null));
 		$asset->set('section_id', $section_id);
 
 		// First, check if current user has access to course
@@ -516,7 +518,7 @@ class Offering extends SiteController
 			$requirements = array();
 			foreach ($prereqs as $pre)
 			{
-				$reqAsset = new \CoursesModelAsset($pre['scope_id']);
+				$reqAsset = new Models\Asset($pre['scope_id']);
 				$requirements[] = $reqAsset->get('title');
 			}
 

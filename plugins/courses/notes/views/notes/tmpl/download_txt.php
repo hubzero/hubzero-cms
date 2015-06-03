@@ -52,8 +52,8 @@ if ($results)
 {
 	foreach ($results as $id => $notes)
 	{
-		$lecture = new CoursesModelAssetgroup($id);
-		$unit = CoursesModelUnit::getInstance($lecture->get('unit_id'));
+		$lecture = new \Components\Courses\Models\Assetgroup($id);
+		$unit = \Components\Courses\Models\Unit::getInstance($lecture->get('unit_id'));
 
 		echo $this->escape(stripslashes($lecture->get('title'))) . "\n";
 		echo '--------------------------------------------------' . "\n";

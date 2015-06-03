@@ -107,7 +107,7 @@ class Courses extends Macro
 		}
 
 		// instantiate courses model
-		$model = \CoursesModelCourses::getInstance();
+		$model = \Components\Courses\Models\Courses::getInstance();
 
 		// get a list of courses
 		// make sure to clear in case we have more then one
@@ -165,7 +165,7 @@ class Courses extends Macro
 					if ($offeringParam)
 					{
 						//get the offering based on offering alias
-						$offering = new \CoursesModelOffering($offeringParam, $course->get('id'));
+						$offering = new \Components\Courses\Models\Offering($offeringParam, $course->get('id'));
 					}
 					else
 					{

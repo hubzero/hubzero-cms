@@ -17,7 +17,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage	com_banners
  * @since		1.6
  */
-class CoursesModelCourse extends JModelAdmin
+class \Components\Courses\Models\Course extends JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.

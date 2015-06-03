@@ -85,7 +85,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update any category associated with the assetgroup
 	 *
-	 * @param   object  $model  CoursesModelAssetgroup
+	 * @param   object  $model  \Components\Courses\Models\Assetgroup
 	 * @return  mixed
 	 */
 	public function onAssetgroupSave($assetgroup)
@@ -103,7 +103,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
 		// Load the parent unit
-		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
+		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 		$db = JFactory::getDBO();
 
 		// Attempt to load the category
@@ -179,7 +179,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an assetgroup
 	 *
-	 * @param   object  $model  CoursesModelAssetgroup
+	 * @param   object  $model  \Components\Courses\Models\Assetgroup
 	 * @return  void
 	 */
 	public function onAssetgroupDelete($assetgroup)
@@ -192,7 +192,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
 		$db   = JFactory::getDBO();
-		$unit = CoursesModelUnit::getInstance($assetgroup->get('unit_id'));
+		$unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 
 		// Attempt to load an associated category
 		$category = new \Components\Forum\Tables\Category($db);
@@ -226,7 +226,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update any section associated with the unit
 	 *
-	 * @param   object  $model  CoursesModelUnit
+	 * @param   object  $model  \Components\Courses\Models\Unit
 	 * @return  mixed
 	 */
 	public function onUnitSave($unit)
@@ -256,7 +256,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting a unit
 	 *
-	 * @param   object  $model  CoursesModelUnit
+	 * @param   object  $model  \Components\Courses\Models\Unit
 	 * @return  void
 	 */
 	public function onUnitDelete($unit)
@@ -1369,8 +1369,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display content for dashboard
 	 *
-	 * @param   object  $course    CoursesModelCourse
-	 * @param   object  $offering  CoursesModelOffering
+	 * @param   object  $course    \Components\Courses\Models\Course
+	 * @param   object  $offering  \Components\Courses\Models\Offering
 	 * @return  string
 	 */
 	public function onCourseDashboard($course, $offering)
@@ -2363,7 +2363,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				$unit = $this->course->offering()->unit($category->alias);
 
-				$lecture = new CoursesModelAssetgroup($model->object_id);
+				$lecture = new \Components\Courses\Models\Assetgroup($model->object_id);
 				return $this->onCourseAfterLecture($this->course, $unit, $lecture);
 			}
 			else

@@ -30,12 +30,12 @@
 
 namespace Plugins\Courses\Notes\Models;
 
-use CoursesModelAbstract as Base;
-use CoursesModelIterator;
+use Components\Courses\Models\Base;
+use Components\Courses\Models\Iterator;
 use User;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'note.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'base.php');
 
 /**
  * Courses model class for a course note
@@ -57,7 +57,7 @@ class Note extends Base
 	protected $_scope = 'note';
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
@@ -115,7 +115,7 @@ class Note extends Base
 			return $this->_tbl->count($filters);
 		}
 
-		if (!isset($this->_notes) || !($this->_notes instanceof CoursesModelIterator) || (!empty($filters) && serialize($filters) != $this->_filters))
+		if (!isset($this->_notes) || !($this->_notes instanceof Iterator) || (!empty($filters) && serialize($filters) != $this->_filters))
 		{
 			$this->_filters = serialize($filters);
 
@@ -131,7 +131,7 @@ class Note extends Base
 				$results = array();
 			}
 
-			$this->_notes = new CoursesModelIterator($results);
+			$this->_notes = new Iterator($results);
 		}
 
 		return $this->_notes;

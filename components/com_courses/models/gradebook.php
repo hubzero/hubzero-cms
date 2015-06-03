@@ -28,26 +28,28 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'progress.factors.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS .'badge.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php');
+use Components\Courses\Tables;
+use Hubzero\Config\Registry;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'member.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'progress.factors.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'gradepolicies.php');
+require_once(__DIR__ . DS . 'memberBadge.php');
+require_once(__DIR__ . DS . 'section' . DS .'badge.php');
+require_once(__DIR__ . DS . 'form.php');
+require_once(__DIR__ . DS . 'formRespondent.php');
+require_once(__DIR__ . DS . 'formDeployment.php');
 
 /**
  * Courses model class for grade book
  */
-class CoursesModelGradeBook extends CoursesModelAbstract
+class GradeBook extends Base
 {
 	/**
 	 * JTable class name
@@ -220,8 +222,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return $instances[$key];
 		}
 
-		$offeringParams = new \Hubzero\Config\Registry($this->course->offering()->get('params'));
-		$sectionParams  = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
+		$offeringParams = new Registry($this->course->offering()->get('params'));
+		$sectionParams  = new Registry($this->course->offering()->section()->get('params'));
 
 		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
 		$progress_calculation = ($offeringParams->get('progress_calculation', false)) ? $offeringParams->get('progress_calculation') : $progress_calculation;
@@ -402,7 +404,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			$course_id = $asset->course_id;
 
 			// Get our course model as well (to retrieve grade policy)
-			$course = new CoursesModelCourse($course_id);
+			$course = new Course($course_id);
 		}
 		else
 		{
@@ -440,7 +442,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Get a grade policy object
-		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
+		$gradePolicy = new GradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
 
 		// Calculate course grades, start by getting all grades
 		$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'graded'=>true);
@@ -683,7 +685,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$filters = array('scope'=>'course', 'scope_id'=>$this->course->get('id'));
 
 		// Get a grade policy object
-		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+		$gradePolicy = new GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
 		// If section only, add appropriate joins to limit by section
 		if ($section)
@@ -781,7 +783,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		static $grades = null;
 
 		// Get a grade policy object
-		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+		$gradePolicy = new GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
 		if (!isset($assets))
 		{
@@ -914,8 +916,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				foreach ($members as $m)
 				{
 					// Mark student as having earned badge
-					$badge = CoursesModelMemberBadge::loadByMemberId($m);
-					$sb    = CoursesModelSectionBadge::loadBySectionId($this->course->offering()->section()->get('id'));
+					$badge = MemberBadge::loadByMemberId($m);
+					$sb    = SectionBadge::loadBySectionId($this->course->offering()->section()->get('id'));
 					if (is_object($badge) && !$badge->hasEarned())
 					{
 						$badge->set('member_id', $m);
@@ -926,14 +928,14 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badge->store();
 
 						// Get courses config
-						$cconfig = Component::params('com_courses');
+						$cconfig = \Component::params('com_courses');
 
 						// Tell the badge provider that they've earned the badge
 						$request_type   = $cconfig->get('badges_request_type', 'oauth');
 						$badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($sb->get('provider_name')), $request_type);
 						$badgesProvider = $badgesHandler->getProvider();
 
-						$credentials = new stdClass();
+						$credentials = new \stdClass();
 						$credentials->consumer_key    = $this->config()->get($sb->get('provider_name').'_consumer_key');
 						$credentials->consumer_secret = $this->config()->get($sb->get('provider_name').'_consumer_secret');
 						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
@@ -946,9 +948,9 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 						$data               = new stdClass();
 						$data->id           = $sb->get('provider_badge_id');
-						$data->evidenceUrl  = rtrim(Request::root(), '/') . '/courses/badge/' . $sb->get('id') . '/validation/' . $badge->get('validation_token');
+						$data->evidenceUrl  = rtrim(\Request::root(), '/') . '/courses/badge/' . $sb->get('id') . '/validation/' . $badge->get('validation_token');
 						$users              = array();
-						$users[]            = User::getInstance($user_id)->get('email');
+						$users[]            = \User::getInstance($user_id)->get('email');
 
 						// Publish assertion
 						$badgesProvider->grantBadge($data, $users);

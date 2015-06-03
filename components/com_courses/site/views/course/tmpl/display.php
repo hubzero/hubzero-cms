@@ -211,7 +211,7 @@ $this->css('course.css')
 
 						if ($this->active != 'overview')
 						{
-							Document::setTitle($document->getTitle() . ': ' . $plugin->get('title'));
+							Document::setTitle(Document::getTitle() . ': ' . $plugin->get('title'));
 						}
 					}
 					?>

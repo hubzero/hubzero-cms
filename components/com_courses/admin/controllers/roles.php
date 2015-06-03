@@ -140,7 +140,7 @@ class Roles extends AdminController
 		}
 
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php');
-		$model = \CoursesModelCourses::getInstance();
+		$model = \Components\Courses\Models\Courses::getInstance();
 		$this->view->courses = $model->courses();
 
 		// Set any errors

@@ -38,7 +38,7 @@ $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 // Get the manifest
 if (is_dir(PATH_APP . $path))
 {
-	$manifests = JFolder::files(PATH_APP . $path, '.json', true, true);
+	$manifests = Filesystem::files(PATH_APP . $path, '.json', true, true);
 	$manifest  = (count($manifests) > 0) ? $manifests[0] : '';
 }
 
@@ -76,7 +76,7 @@ if ($type == 'hubpresenter')
 	if (is_dir($media_dir))
 	{
 		// Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-		$media = JFolder::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
+		$media = Filesystem::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
 		$ext = array();
 		foreach ($media as $m)
 		{
@@ -92,7 +92,7 @@ if ($type == 'hubpresenter')
 
 		// Make sure if any slides are video we have three formats of video and backup image for mobile
 		$slide_path = $media_dir . DS . 'slides';
-		$slides = JFolder::files($slide_path, '', false, false);
+		$slides = Filesystem::files($slide_path, '', false, false);
 
 		// Array to hold slides with video clips
 		$slide_video = array();
@@ -154,7 +154,7 @@ if ($type == 'hubpresenter')
 	$local_subs = array();
 	if (is_dir($content_folder))
 	{
-		$local_subs = JFolder::files(PATH_APP . DS . $content_folder, '.srt|.SRT', true, false);
+		$local_subs = Filesystem::files(PATH_APP . DS . $content_folder, '.srt|.SRT', true, false);
 	}
 
 	// add local subtitles too
@@ -222,7 +222,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	$hasTime = (Request::getVar('time', '') != '') ? true : false;
 
 	// Do we want to redirect user with time added to url
-	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
+	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration && !Request::getInt('no_html', 0))
 	{
 		$redirect = Request::current();
 

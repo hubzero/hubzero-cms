@@ -105,7 +105,7 @@ class Units extends AdminController
 			)
 		);
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
 		if (!$this->view->offering->exists())
 		{
 			App::redirect(
@@ -113,7 +113,7 @@ class Units extends AdminController
 			);
 			return;
 		}
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -156,7 +156,7 @@ class Units extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = \CoursesModelUnit::getInstance($id);
+			$model = \Components\Courses\Models\Unit::getInstance($id);
 		}
 
 		$this->view->row = $model;
@@ -166,7 +166,7 @@ class Units extends AdminController
 			$this->view->row->set('offering_id', Request::getInt('offering', 0));
 		}
 
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -195,7 +195,7 @@ class Units extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = \CoursesModelUnit::getInstance($fields['id']);
+		$model = \Components\Courses\Models\Unit::getInstance($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -219,7 +219,7 @@ class Units extends AdminController
 			foreach ($asset_groups as $key)
 			{
 				// Get our asset group object
-				$assetGroup = new \CoursesModelAssetgroup(null);
+				$assetGroup = new \Components\Courses\Models\Assetgroup(null);
 				$assetGroup->set('title', $key);
 				$assetGroup->set('unit_id', $model->get('id'));
 				$assetGroup->set('parent', 0);
@@ -270,7 +270,7 @@ class Units extends AdminController
 			return;
 		}
 
-		$unit = \CoursesModelUnit::getInstance($id);
+		$unit = \Components\Courses\Models\Unit::getInstance($id);
 		if (!$unit->copy())
 		{
 			// Redirect back to the courses page
@@ -311,7 +311,7 @@ class Units extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = \CoursesModelUnit::getInstance($id);
+				$model = \Components\Courses\Models\Unit::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -377,7 +377,7 @@ class Units extends AdminController
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new \CoursesModelUnit($id);
+			$row = new \Components\Courses\Models\Unit($id);
 			$row->set('state', $state);
 			$row->store();
 		}
@@ -423,7 +423,7 @@ class Units extends AdminController
 		$row->load($uid);
 		$row->move($inc, 'offering_id=' . $this->database->Quote($row->offering_id));
 
-		$offering = \CoursesModelOffering::getInstance(Request::getInt('offering', 0));
+		$offering = \Components\Courses\Models\Offering::getInstance(Request::getInt('offering', 0));
 		foreach ($offering->units() as $unit)
 		{
 			$unit->store();

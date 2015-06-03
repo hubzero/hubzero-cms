@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Assets;
+
+use Component;
+use Request;
 
 /**
 * Wiki page asset handler class
 */
-class WikiAssetHandler extends ContentAssetHandler
+class Wiki extends Content
 {
 	/**
 	 * Class info
@@ -120,13 +122,13 @@ class WikiAssetHandler extends ContentAssetHandler
 
 				// Build the upload path if it doesn't exist
 				require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
-				$asset = new CoursesModelAsset($this->assoc['asset_id']);
+				$asset = new \Components\Courses\Models\Asset($this->assoc['asset_id']);
 				$uploadDirectory = PATH_APP . DS . $asset->path($this->asset['course_id']);
 
 				// Make sure upload directory exists and is writable
 				if (!is_dir($uploadDirectory))
 				{
-					if (!Filesystem::makeDirectory($uploadDirectory))
+					if (!\Filesystem::makeDirectory($uploadDirectory))
 					{
 						return array('error' => 'Server error. Unable to create upload directory');
 					}

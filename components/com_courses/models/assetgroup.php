@@ -28,25 +28,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models;
+
 use Components\Courses\Tables;
+use Hubzero\Config\Registry;
+use Lang;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.group.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'asset.php');
+require_once(__DIR__ . DS . 'iterator.php');
+require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 
 /**
  * Courses model class for an asset group
  */
-class CoursesModelAssetgroup extends CoursesModelAbstract
+class Assetgroup extends Base
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
@@ -60,28 +61,28 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	protected $_scope = 'asset_group';
 
 	/**
-	 * CoursesModelIterator
+	 * Curent asset
 	 *
 	 * @var array
 	 */
 	private $_asset = null;
 
 	/**
-	 * CoursesModelAsset
+	 * \Components\Courses\Models\Asset
 	 *
 	 * @var array
 	 */
 	private $_assets = null;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var array
 	 */
 	public $children = null;
 
 	/**
-	 * CoursesModelAssetGroup
+	 * \Components\Courses\Models\AssetGroup
 	 *
 	 * @var object
 	 */
@@ -111,7 +112,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	{
 		parent::__construct($oid);
 
-		$this->children = new CoursesModelIterator(array());
+		$this->children = new Iterator(array());
 	}
 
 	/**
@@ -123,9 +124,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
  	 */
 	public function params($key, $default=null)
 	{
-		if (!($this->_params instanceof \Hubzero\Config\Registry))
+		if (!($this->_params instanceof Registry))
 		{
-			$this->_params = new \Hubzero\Config\Registry($this->get('params'));
+			$this->_params = new Registry($this->get('params'));
 		}
 		return $this->_params->get($key, $default);
 	}
@@ -189,7 +190,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			{
 				foreach ($results as $c)
 				{
-					$this->children->add(new CoursesModelAssetgroup($c));
+					$this->children->add(new Assetgroup($c));
 				}
 			}
 		}
@@ -214,7 +215,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 				$res = array();
 				foreach ($this->children as $child)
 				{
-					$obj = new stdClass;
+					$obj = new \stdClass;
 					foreach ($idx as $property)
 					{
 						$property = strtolower(trim($property));
@@ -253,7 +254,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 * Get a specific asset
 	 *
 	 * @param   integer $id Asset ID
-	 * @return  object  CoursesModelAsset
+	 * @return  object  \Components\Courses\Models\Asset
 	 */
 	public function asset($id=null)
 	{
@@ -279,11 +280,11 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 *   Accepts an array of filters to apply to the list of assets
 	 *
 	 * @param   array  $filters Filters to apply
-	 * @return  object CoursesModelIterator
+	 * @return  object \Components\Courses\Models\Iterator
 	 */
 	public function assets($filters=array())
 	{
-		if (!($this->_assets instanceof CoursesModelIterator))
+		if (!($this->_assets instanceof Iterator))
 		{
 			if (!isset($filters['asset_scope_id']))
 			{
@@ -304,7 +305,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelAsset($result);
+					$results[$key] = new Asset($result);
 
 					if ($this->get('section_id'))
 					{
@@ -317,7 +318,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_assets = new CoursesModelIterator($results);
+			$this->_assets = new Iterator($results);
 		}
 
 		return $this->_assets;
@@ -331,9 +332,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 */
 	public function siblings(&$siblings)
 	{
-		if (!($siblings instanceof CoursesModelIterator))
+		if (!($siblings instanceof Iterator))
 		{
-			$siblings = new CoursesModelIterator($siblings);
+			$siblings = new Iterator($siblings);
 		}
 		$this->_siblings = $siblings;
 	}
@@ -553,7 +554,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 					{
 						continue;
 					}
-					$assetgroup = new CoursesModelAssetgroup($c);
+					$assetgroup = new Assetgroup($c);
 					$assetgroup->set('parent', $this->get('id'));
 
 					$found[] = $c->id;

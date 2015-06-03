@@ -60,7 +60,7 @@ class Managers extends AdminController
 		}
 
 		// Load the profile
-		$course = \CoursesModelCourse::getInstance($id);
+		$course = \Components\Courses\Models\Course::getInstance($id);
 
 		$managers = $course->managers(); //get('managers');
 
@@ -137,7 +137,7 @@ class Managers extends AdminController
 			return;
 		}
 
-		$course = \CoursesModelCourse::getInstance($id);
+		$course = \Components\Courses\Models\Course::getInstance($id);
 
 		$managers = $course->managers();
 
@@ -203,7 +203,7 @@ class Managers extends AdminController
 			return;
 		}
 
-		$model = \CoursesModelCourse::getInstance($id);
+		$model = \Components\Courses\Models\Course::getInstance($id);
 
 		$entries = Request::getVar('entries', array(0), 'post');
 
@@ -242,7 +242,7 @@ class Managers extends AdminController
 		{
 			$id = Request::getInt('id', 0, 'get');
 
-			$course = \CoursesModelCourse::getInstance($id);
+			$course = \Components\Courses\Models\Course::getInstance($id);
 		}
 
 		$this->view->course = $course;

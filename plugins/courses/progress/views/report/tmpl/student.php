@@ -41,7 +41,7 @@ $passing  = (isset($passing[$this->member->get('id')])) ? $passing[$this->member
 $this->course->offering()->gradebook()->hasEarnedBadge($this->member->get('id'));
 $student = $this->member;
 
-$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+$gradePolicy = new \Components\Courses\Models\GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
 $details = array();
 $details['quizzes_total']       = 0;

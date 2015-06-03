@@ -96,7 +96,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		$this->member = $member;
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
-		$model = CoursesModelOffering::getInstance();
+		$model = \Components\Courses\Models\Offering::getInstance();
 		$roles = $model->roles();
 
 		$hasRoles = 0;

@@ -29,10 +29,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models;
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+use Components\Courses\Tables;
 
 class PdfFormRespondent
 {
@@ -157,7 +156,7 @@ class PdfFormRespondent
 	 **/
 	public function saveToGradebook()
 	{
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
+		require_once dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php';
 
 		$database  = \JFactory::getDBO();
 

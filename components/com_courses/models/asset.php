@@ -28,20 +28,25 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Components\Courses\Tables;
+use Component;
+use Request;
+use Date;
+use User;
+use Lang;
+use App;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.association.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
-require_once(__DIR__ . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 
 /**
  * Asset model class for a course
  */
-class CoursesModelAsset extends CoursesModelAbstract
+class Asset extends Base
 {
 	/**
 	 * JTable class name
@@ -288,7 +293,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Track asset views
 	 *
-	 * @param   object $course CoursesModelCourse
+	 * @param   object $course \Components\Courses\Models\Course
 	 * @return  mixed
 	 */
 	public function logView($course=null)
@@ -301,16 +306,16 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$offering = Request::getVar('offering');
 			$section  = Request::getVar('section');
 
-			$course = new CoursesModelCourse($gid);
+			$course = new Course($gid);
 			$course->offering($offering);
 			$course->offering()->section($section);
 		}
 
-		$member = $course->offering()->section()->member(\User::get('id'));
+		$member = $course->offering()->section()->member(User::get('id'));
 
 		if (!$member->get('id'))
 		{
-			$member = $course->offering()->member(\User::get('id'));
+			$member = $course->offering()->member(User::get('id'));
 		}
 
 		if (!$member || !is_object($member) || !$member->get('id'))
@@ -321,13 +326,13 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view = new Tables\AssetViews($this->_db);
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
-		$view->viewed            = \Date::toSql();
+		$view->viewed            = Date::toSql();
 		$view->viewed_by         = $member->get('id');
 		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 		$view->referrer          = (isset($_SERVER['HTTP_REFERRER']) ? $_SERVER['HTTP_REFERRER'] : '');
 		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
-		$view->session_id        = \App::get('session')->getId();
+		$view->session_id        = App::get('session')->getId();
 		if (!$view->store())
 		{
 			$this->setError($view->getError());
@@ -337,7 +342,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Render an asset
 	 *
-	 * @param   object $course CoursesModelCourse
+	 * @param   object $course \Components\Courses\Models\Course
 	 * @param   string $option Component name
 	 * @return  string
 	 */
@@ -375,7 +380,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Download a wiki file
 	 *
-	 * @param   object $course CoursesModelCourse
+	 * @param   object $course \Components\Courses\Models\Course
 	 * @return  void
 	 */
 	public function download($course)
@@ -498,7 +503,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 				{
 					if (!isset($this->units[$asset->unit_id]))
 					{
-						$this->units[$asset->unit_id] = new CoursesModelUnit($asset->unit_id);
+						$this->units[$asset->unit_id] = new Unit($asset->unit_id);
 					}
 				}
 			}

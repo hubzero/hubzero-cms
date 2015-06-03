@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 				<?php
 				$offerings = array();
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-				$model = CoursesModelCourses::getInstance();
+				$model = \Components\Courses\Models\Courses::getInstance();
 				if ($model->courses()->total() > 0)
 				{
 					foreach ($model->courses() as $course)
@@ -172,7 +172,7 @@ $k = 0;
 $n = count($this->rows);
 foreach ($this->rows as $row)
 {
-	$section = CoursesModelSection::getInstance($row->get('section_id'));
+	$section = \Components\Courses\Models\Section::getInstance($row->get('section_id'));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

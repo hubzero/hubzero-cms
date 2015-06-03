@@ -127,8 +127,8 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Administrative dashboard info
 	 *
-	 * @param   object  $course    CoursesModelCourse
-	 * @param   object  $offering  CoursesModelOffering
+	 * @param   object  $course    \Components\Courses\Models\Course
+	 * @param   object  $offering  \Components\Courses\Models\Offering
 	 * @return  string
 	 */
 	public function onCourseDashboard($course, $offering)
@@ -201,9 +201,9 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			->set('option', $this->option)
 			->set('params', $this->params);
 
-		if (!($model instanceof CoursesModelAnnouncement))
+		if (!($model instanceof \Components\Courses\Models\Announcement))
 		{
-			$model = CoursesModelAnnouncement::getInstance(Request::getInt('entry', 0));
+			$model = \Components\Courses\Models\Announcement::getInstance(Request::getInt('entry', 0));
 		}
 
 		$view->set('model', $model);
@@ -243,7 +243,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		$fields = array_map('trim', $fields);
 
 		// Get the model and bind the data
-		$model = new CoursesModelAnnouncement(0);
+		$model = new \Components\Courses\Models\Announcement(0);
 		if (!$model->bind($fields))
 		{
 			$this->setError($model->getError());
@@ -312,7 +312,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		$id = Request::getInt('entry', 0);
 
 		// Get the model and set the state to "deleted"
-		$model = CoursesModelAnnouncement::getInstance($id);
+		$model = \Components\Courses\Models\Announcement::getInstance($id);
 		$model->set('state', 2);
 
 		// Store content

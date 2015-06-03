@@ -63,7 +63,7 @@ class ContentAssetHandler extends AssetHandler
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 
 		// Create our asset table object
-		$asset = new CoursesModelAsset();
+		$asset = new \Components\Courses\Models\Asset();
 
 		// Grab the incoming content
 		$content = Request::getVar('content', '', 'default', 'none', 2);
@@ -118,7 +118,7 @@ class ContentAssetHandler extends AssetHandler
 		// Get the url to return to the page
 		$course_id      = Request::getInt('course_id', 0);
 		$offering_alias = Request::getCmd('offering', '');
-		$course         = new CoursesModelCourse($course_id);
+		$course         = new \Components\Courses\Models\Course($course_id);
 		$course->offering($offering_alias);
 
 		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
@@ -162,7 +162,7 @@ class ContentAssetHandler extends AssetHandler
 
 		// Create our asset object
 		$id    = Request::getInt('id', null);
-		$asset = new CoursesModelAsset($id);
+		$asset = new \Components\Courses\Models\Asset($id);
 
 		// Grab the incoming content
 		$content = Request::getVar('content', '', 'default', 'none', 2);
@@ -237,7 +237,7 @@ class ContentAssetHandler extends AssetHandler
 		// Get the url to return to the page
 		$course_id      = Request::getInt('course_id', 0);
 		$offering_alias = Request::getCmd('offering', '');
-		$course         = new CoursesModelCourse($course_id);
+		$course         = new \Components\Courses\Models\Course($course_id);
 		$course->offering($offering_alias);
 
 		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));

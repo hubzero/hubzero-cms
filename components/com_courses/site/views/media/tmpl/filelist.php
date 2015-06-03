@@ -35,7 +35,7 @@ $this->css('media.css');
 
 $base = rtrim(Request::base(true), '/');
 
-$course = CoursesModelCourse::getInstance($this->listdir);
+$course = \Components\Courses\Models\Course::getInstance($this->listdir);
 ?>
 <script type="text/javascript">
 	function updateDir()

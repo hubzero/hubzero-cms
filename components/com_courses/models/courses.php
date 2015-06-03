@@ -28,19 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models;
+
 use Components\Courses\Tables;
+use Hubzero\Base\Object;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
+require_once(__DIR__ . DS . 'course.php');
+require_once(__DIR__ . DS . 'iterator.php');
+require_once(__DIR__ . DS . 'tags.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelCourses extends \Hubzero\Base\Object
+class Courses extends Object
 {
 	/**
 	 * Tables\Course
@@ -57,14 +57,14 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	private $_db = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_courses = null;
 
 	/**
-	 * CoursesModelCourse
+	 * \Components\Courses\Models\Course
 	 *
 	 * @var object
 	 */
@@ -87,10 +87,10 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 * Returns a reference to a course model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = CoursesModelCourse::getInstance($alias);
+	 *     $offering = \Components\Courses\Models\Course::getInstance($alias);
 	 *
 	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object CoursesModelCourse
+	 * @return     object \Components\Courses\Models\Course
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -113,7 +113,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 * Method to get/set the current unit
 	 *
 	 * @param     mixed $id ID or alias of specific unit
-	 * @return    object CoursesModelUnit
+	 * @return    object \Components\Courses\Models\Unit
 	 */
 	public function course($id=null)
 	{
@@ -135,7 +135,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 			}
 			else
 			{
-				$this->_course = CoursesModelCourse::getInstance($id);
+				$this->_course = Course::getInstance($id);
 			}
 		}
 		return $this->_course;
@@ -156,13 +156,13 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 			return $this->_tbl->getCount($filters);
 		}
 
-		if (!($this->_courses instanceof CoursesModelIterator) || $clear)
+		if (!($this->_courses instanceof Iterator) || $clear)
 		{
 			if (($results = $this->_tbl->getRecords($filters)))
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelCourse($result);
+					$results[$key] = new Course($result);
 				}
 			}
 			else
@@ -170,7 +170,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 				$results = array();
 			}
 
-			$this->_courses = new CoursesModelIterator($results);
+			$this->_courses = new Iterator($results);
 		}
 
 		return $this->_courses;
@@ -189,7 +189,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 		{
 			foreach ($results as $key => $result)
 			{
-				$results[$key] = new CoursesModelCourse($result);
+				$results[$key] = new Course($result);
 			}
 		}
 		else
@@ -197,7 +197,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 			$results = array();
 		}
 
-		$courses = new CoursesModelIterator($results);
+		$courses = new Iterator($results);
 
 		return $courses;
 	}
@@ -211,7 +211,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 */
 	public function tags($what='cloud', $filters=array(), $clear=false)
 	{
-		$ct = new CoursesModelTags();
+		$ct = new Tags();
 
 		return $ct->render($what, $filters, $clear);
 	}
@@ -224,7 +224,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 */
 	public function parseTags($tag, $remove='')
 	{
-		$ct = new CoursesModelTags();
+		$ct = new Tags();
 		return $ct->parseTags($tag, $remove);
 	}
 }

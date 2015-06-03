@@ -101,7 +101,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 		$this->database = JFactory::getDBO();
 
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-		$model = CoursesModelCourses::getInstance();
+		$model = \Components\Courses\Models\Courses::getInstance();
 
 		$filters = array(
 			'group'    => $group->get('cn'),

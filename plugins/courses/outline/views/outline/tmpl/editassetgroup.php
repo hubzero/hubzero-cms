@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$ag = new CoursesModelAssetgroup($this->scope_id);
+$ag = new \Components\Courses\Models\Assetgroup($this->scope_id);
 
 ?>
 

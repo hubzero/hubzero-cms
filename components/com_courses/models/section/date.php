@@ -28,16 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Section;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.date.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+use Components\Courses\Models\Base;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.date.php');
+require_once(dirname(__DIR__) . DS . 'base.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelSectionDate extends CoursesModelAbstract
+class Date extends Base
 {
 	/**
 	 * JTable class name

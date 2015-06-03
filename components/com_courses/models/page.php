@@ -28,18 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Utility\String;
+use Components\Courses\Tables;
+use Filesystem;
+use Request;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
-require_once(__DIR__ . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelPage extends CoursesModelAbstract
+class Page extends Base
 {
 	/**
 	 * JTable class name
@@ -90,7 +93,7 @@ class CoursesModelPage extends CoursesModelAbstract
 					);
 					if ($this->get('offering_id'))
 					{
-						$config['scope'] = CoursesModelCourse::getInstance($this->get('course_id'))->get('alias') . DS . CoursesModelOffering::getInstance($this->get('offering_id'))->get('alias') . DS . 'pages';
+						$config['scope'] = Course::getInstance($this->get('course_id'))->get('alias') . DS . Offering::getInstance($this->get('offering_id'))->get('alias') . DS . 'pages';
 					}
 					if ($this->get('section_id'))
 					{
@@ -126,7 +129,7 @@ class CoursesModelPage extends CoursesModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

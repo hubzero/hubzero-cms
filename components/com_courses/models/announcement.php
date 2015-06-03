@@ -28,16 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+use Hubzero\Base\Model;
+use Hubzero\Utility\String;
+use Components\Courses\Tables;
+use Date;
+use Lang;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'announcement.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Announcement model class for a course
  */
-class CoursesModelAnnouncement extends CoursesModelAbstract
+class Announcement extends Base
 {
 	/**
 	 * JTable class name
@@ -64,7 +69,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	 * Returns a reference to this model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = CoursesModelAnnouncement::getInstance($alias);
+	 *     $offering = \Components\Courses\Models\Announcement::getInstance($alias);
 	 *
 	 * @param   integer $oid ID (int)
 	 * @return  object
@@ -169,7 +174,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

@@ -80,7 +80,7 @@ class Codes extends AdminController
 			)
 		);
 
-		$this->view->section = \CoursesModelSection::getInstance($this->view->filters['section']);
+		$this->view->section = \Components\Courses\Models\Section::getInstance($this->view->filters['section']);
 		if (!$this->view->section->exists())
 		{
 			App::redirect(
@@ -88,8 +88,8 @@ class Codes extends AdminController
 			);
 			return;
 		}
-		$this->view->offering = \CoursesModelOffering::getInstance($this->view->section->get('offering_id'));
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->section->get('offering_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -142,7 +142,7 @@ class Codes extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = new \CoursesModelSectionCode($id);
+			$model = new \Components\Courses\Models\Section\Code($id);
 		}
 
 		$this->view->row = $model;
@@ -152,7 +152,7 @@ class Codes extends AdminController
 			$this->view->row->set('offering_id', Request::getInt('offering', 0));
 		}
 
-		$this->view->section = \CoursesModelSection::getInstance($this->view->row->get('section_id'));
+		$this->view->section = \Components\Courses\Models\Section::getInstance($this->view->row->get('section_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -180,7 +180,7 @@ class Codes extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = new \CoursesModelSectionCode($fields['id']);
+		$model = new \Components\Courses\Models\Section\Code($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -230,7 +230,7 @@ class Codes extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the code
-				$model = new \CoursesModelSectionCode($id);
+				$model = new \Components\Courses\Models\Section\Code($id);
 
 				// Ensure we found a record
 				if (!$model->exists())
@@ -276,7 +276,7 @@ class Codes extends AdminController
 			$codes = array();
 			for ($i = 0; $i < $num; $i++)
 			{
-				$model = new \CoursesModelSectionCode(0);
+				$model = new \Components\Courses\Models\Section\Code(0);
 				$model->set('code', $this->_generateCode());
 				$model->set('section_id', $section);
 				$model->set('expires', $expires);
@@ -336,7 +336,7 @@ class Codes extends AdminController
 	{
 		$section = Request::getInt('section', 0);
 
-		$this->view->section = \CoursesModelSection::getInstance($section);
+		$this->view->section = \Components\Courses\Models\Section::getInstance($section);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -460,7 +460,7 @@ class Codes extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load the code
-			$model = new \CoursesModelSectionCode($id);
+			$model = new \Components\Courses\Models\Section\Code($id);
 
 			// Ensure we found a record
 			if (!$model->exists())

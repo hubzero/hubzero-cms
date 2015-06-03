@@ -59,7 +59,7 @@ class Enrollment extends AdminController
 		}
 
 		// Load the profile
-		$course = \CoursesModelCourse::getInstance($id);
+		$course = \Components\Courses\Models\Course::getInstance($id);
 
 		$managers = $course->get('managers');
 
@@ -125,7 +125,7 @@ class Enrollment extends AdminController
 			return;
 		}
 
-		$course = \CoursesModelCourse::getInstance($id);
+		$course = \Components\Courses\Models\Course::getInstance($id);
 
 		$managers = $course->get('managers');
 
@@ -186,7 +186,7 @@ class Enrollment extends AdminController
 		{
 			$id = Request::getInt('id', 0, 'get');
 
-			$course = \CoursesModelCourse::getInstance($id);
+			$course = \Components\Courses\Models\Course::getInstance($id);
 		}
 
 		$this->view->course = $course;

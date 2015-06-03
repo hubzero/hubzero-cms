@@ -28,19 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models\Section;
+
+use Components\Courses\Models\Base;
 use Components\Courses\Tables;
+use stdClass;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php');
+require_once(dirname(__DIR__) . DS . 'base.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.badge.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.badge.criteria.php');
 
 /**
  * Courses model class for badges
  */
-class CoursesModelSectionBadge extends CoursesModelAbstract
+class Badge extends Base
 {
 	/**
 	 * JTable class name
@@ -192,7 +193,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 	 */
 	private function getUrl($type='Claim')
 	{
-		$cconfig        = Component::params('com_courses');
+		$cconfig        = \Component::params('com_courses');
 		$request_type   = $cconfig->get('badges_request_type', 'oauth');
 		$badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($this->get('provider_name')), $request_type);
 		$badgesProvider = $badgesHandler->getProvider();

@@ -86,7 +86,7 @@ if ($this->threads && is_array($this->threads))
 
 	if (count($subs) > 0)
 	{
-		$offering = CoursesModelOffering::getInstance(Request::getVar('offering', ''));
+		$offering = \Components\Courses\Models\Offering::getInstance(Request::getVar('offering', ''));
 		if ($offering->exists())
 		{
 			$database = JFactory::getDBO();

@@ -48,7 +48,7 @@ $this->css('form.css')
 		</ul>
 	<?php endif; ?>
 
-	<form action="index.php" method="post" enctype="multipart/form-data">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data">
 		<input type="file" name="pdf" accept="application/pdf" required autofocus />
 		<input type="hidden" name="task" value="upload" />
 		<button type="submit"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?></button>
@@ -64,7 +64,7 @@ $this->css('form.css')
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach (PdfForm::getActiveList() as $form): ?>
+		<?php foreach (\Components\Courses\Models\PdfForm::getActiveList() as $form): ?>
 			<tr>
 				<td>
 					<span class="title"><?php echo $form['title'] ?></span>
@@ -79,7 +79,7 @@ $this->css('form.css')
 						<button type="submit"><?php echo Lang::txt('COM_COURSES_EDIT'); ?></button>
 					</form>
 					<br />
-					<?php if (($deps = PdfFormDeployment::forForm($form['id']))): ?>
+					<?php if ($deps = \Components\Courses\Models\PdfFormDeployment::forForm($form['id'])): ?>
 					<table class="tablesorter nested">
 						<thead>
 							<tr>

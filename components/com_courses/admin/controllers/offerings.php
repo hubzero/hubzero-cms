@@ -106,7 +106,7 @@ class Offerings extends AdminController
 			)
 		);
 
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->filters['course']);
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->filters['course']);
 		if (!$this->view->course->exists())
 		{
 			App::redirect(
@@ -156,7 +156,7 @@ class Offerings extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = \CoursesModelOffering::getInstance($id);
+			$model = \Components\Courses\Models\Offering::getInstance($id);
 		}
 
 		$this->view->row = $model;
@@ -166,7 +166,7 @@ class Offerings extends AdminController
 			$this->view->row->set('course_id', Request::getInt('course', 0));
 		}
 
-		$this->view->course = \CoursesModelCourse::getInstance($this->view->row->get('course_id'));
+		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->row->get('course_id'));
 		$this->view->config = $this->config;
 
 		// Set any errors
@@ -195,7 +195,7 @@ class Offerings extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = \CoursesModelOffering::getInstance($fields['id']);
+		$model = \Components\Courses\Models\Offering::getInstance($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -258,7 +258,7 @@ class Offerings extends AdminController
 			return;
 		}
 
-		$offering = \CoursesModelOffering::getInstance($id);
+		$offering = \Components\Courses\Models\Offering::getInstance($id);
 		if (!$offering->copy())
 		{
 			// Redirect back to the courses page
@@ -299,7 +299,7 @@ class Offerings extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = \CoursesModelOffering::getInstance($id);
+				$model = \Components\Courses\Models\Offering::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -348,7 +348,7 @@ class Offerings extends AdminController
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = \CoursesModelOffering::getInstance($id);
+				$model = \Components\Courses\Models\Offering::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())

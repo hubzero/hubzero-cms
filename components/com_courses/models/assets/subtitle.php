@@ -28,15 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models\Assets;
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+use Components\Courses\Tables;
+use Request;
+use Filesystem;
+use Component;
+use User;
+use Date;
+use stdClass;
 
 /**
-* Video Asset handler class
-*/
-class SubtitleAssetHandler extends AssetHandler
+ * Subtitle Asset handler class
+ */
+class Subtitle extends AssetHandler
 {
 	/**
 	 * Class info
@@ -105,7 +110,7 @@ class SubtitleAssetHandler extends AssetHandler
 		$scope_id       = Request::getInt('scope_id', 0);
 
 		// get all assets in group
-		$assetGroup = new CoursesModelAssetgroup($scope_id);
+		$assetGroup = new \Components\Courses\Models\Assetgroup($scope_id);
 		$assets = $assetGroup->assets();
 
 		// check to see if any of our assets are html5?
@@ -272,7 +277,7 @@ class SubtitleAssetHandler extends AssetHandler
 		// Get the url to return to the page
 		$course_id      = Request::getInt('course_id', 0);
 		$offering_alias = Request::getCmd('offering', '');
-		$course         = new CoursesModelCourse($course_id);
+		$course         = new \Components\Courses\Models\Course($course_id);
 
 		$url = Route::url('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
 

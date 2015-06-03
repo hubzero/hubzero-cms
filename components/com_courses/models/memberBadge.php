@@ -28,16 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'member.badge.php');
 
 /**
  * Courses model class for badges
  */
-class CoursesModelMemberBadge extends CoursesModelAbstract
+class MemberBadge extends Base
 {
 	/**
 	 * JTable class name
@@ -84,7 +83,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	{
 		if (is_numeric($id))
 		{
-			$obj = new CoursesModelMemberBadge();
+			$obj = new MemberBadge();
 			$obj->_tbl->loadByMemberId($id);
 			return $obj;
 		}
@@ -104,7 +103,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 */
 	public static function loadByToken($token)
 	{
-		$obj = new CoursesModelMemberBadge();
+		$obj = new MemberBadge();
 		$obj->_tbl->load(array('validation_token' => $token));
 
 		if (isset($obj->_tbl->id))

@@ -27,7 +27,8 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		// Set the error handler for E_ERROR to be the class handleError method.
-		JError::setErrorHandling(E_ERROR, 'callback', array('plgSystemRedirect', 'handleError'));
+		//JError::setErrorHandling(E_ERROR, 'callback', array('plgSystemRedirect', 'handleError'));
+		set_exception_handler(array('plgSystemRedirect', 'handleError'));
 	}
 
 	/**
@@ -38,14 +39,18 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 	 */
 	public static function handleError(&$error)
 	{
-		// Get the application object.
-		$app = JFactory::getApplication();
+		$renderer = new Page(
+			App::get('document'),
+			App::get('template')->template,
+			App::get('config')->get('debug')
+		);
 
 		// Make sure the error is a 404 and we are not in the administrator.
-		if (!$app->isAdmin() and ($error->getCode() == 404))
+		if (!App::isAdmin() and ($error->getCode() == 404))
 		{
 			// Render the error page.
-			JError::customErrorPage($error);
+			//JError::customErrorPage($error);
+			$renderer->render($error);
 		}
 
 		// Get the full current URI.
@@ -56,7 +61,8 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		if ((strpos($current, 'mosConfig_') !== false) || (strpos($current, '=http://') !== false))
 		{
 			// Render the error page.
-			JError::customErrorPage($error);
+			//JError::customErrorPage($error);
+			$renderer->render($error);
 		}
 
 		// See if the current url exists in the database as a redirect.
@@ -85,7 +91,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		// If a redirect exists and is published, permanently redirect.
 		if ($link and ($link->published == 1))
 		{
-			$app->redirect($link->new_url, null, null, true, false);
+			App::redirect($link->new_url, null, null, true, false);
 		}
 		else
 		{
@@ -116,7 +122,6 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 
 				$db->setQuery($query);
 				$db->query();
-
 			}
 			else
 			{
@@ -128,8 +133,10 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 				$db->setQuery((string)$query);
 				$db->query();
 			}
+
 			// Render the error page.
-			JError::customErrorPage($error);
+			//JError::customErrorPage($error);
+			$renderer->render($error);
 		}
 	}
 }

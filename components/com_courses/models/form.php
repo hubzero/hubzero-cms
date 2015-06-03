@@ -29,8 +29,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
+
+use ImagickException;
+use Component;
+use imagick;
 
 class PdfForm
 {

@@ -28,13 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
+
+use Hubzero\User\Profile;
+use Hubzero\Base\Model;
+use Hubzero\Base\ItemList;
+use Date;
+use Lang;
 
 /**
  * Courses model for a comment
  */
-class CoursesModelComment extends \Hubzero\Base\Model
+class Comment extends Model
 {
 	/**
 	 * Table class name
@@ -137,12 +142,12 @@ class CoursesModelComment extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -231,7 +236,7 @@ class CoursesModelComment extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
 					if ($this->get('replies', null) !== null)
 					{
@@ -253,7 +258,7 @@ class CoursesModelComment extends \Hubzero\Base\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -335,7 +340,7 @@ class CoursesModelComment extends \Hubzero\Base\Model
 		{
 			if (!$this->get('course'))
 			{
-				$course = CoursesModelCourse::getInstance($this->get('item_id'));
+				$course = \Components\Courses\Models\Course::getInstance($this->get('item_id'));
 				$this->set('course', $course->get('alias'));
 			}
 			$this->_base = 'index.php?option=com_courses&gid=' . $this->get('course') . '&active=reviews';

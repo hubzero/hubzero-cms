@@ -154,7 +154,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$id = Request::getInt('id', null);
 
 		// Create our unit model
-		$unit =& CoursesModelUnit::getInstance($id);
+		$unit =& \Components\Courses\Models\Unit::getInstance($id);
 
 		// Check to make sure we have a unit object
 		if (!is_object($unit))
@@ -221,7 +221,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			foreach ($asset_groups as $key)
 			{
 				// Get our asset group object
-				$assetGroup = new CoursesModelAssetgroup(null);
+				$assetGroup = new \Components\Courses\Models\Assetgroup(null);
 
 				$assetGroup->set('title', $key);
 				$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
@@ -314,7 +314,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$id = Request::getInt('id', null);
 
 		// Create an asset group instance
-		$assetGroup = new CoursesModelAssetgroup($id);
+		$assetGroup = new \Components\Courses\Models\Assetgroup($id);
 
 		// Check to make sure we have an asset group object
 		if (!is_object($assetGroup))
@@ -429,7 +429,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		foreach ($groups as $id)
 		{
-			if (!$assetGroup = new CoursesModelAssetgroup($id))
+			if (!$assetGroup = new \Components\Courses\Models\Assetgroup($id))
 			{
 				$this->setMessage("Loading asset group {$id} failed", 500, 'Internal server error');
 				return;
@@ -669,7 +669,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$id = Request::getInt('id', null);
 
 		// Create our object
-		$asset = new CoursesModelAsset($id);
+		$asset = new \Components\Courses\Models\Asset($id);
 
 		// Check to make sure we have an asset group object
 		if (!is_object($asset))
@@ -822,7 +822,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$config     = Component::params('com_courses');
 			$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
 			$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
-			$file       = \JFolder::files(PATH_APP . $asset_path);
+			$file       = Filesystem::files(PATH_APP . $asset_path);
 			$param_path = $tool_path . $asset->get('id') . DS . $file[0];
 
 			// Delete the file (it still exists in the site directory)
@@ -1013,7 +1013,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// If the path exists, delete it!
 		if (\Filesystem::exists($path))
 		{
-			$deleted = \JFolder::listFolderTree($path);
+			$deleted = \Filesystem::listFolderTree($path);
 			\Filesystem::deleteDirectory($path);
 		}
 
@@ -1062,7 +1062,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$filename = Request::getVar('filename', null);
 
 		// Create our object
-		$asset = new CoursesModelAsset($id);
+		$asset = new \Components\Courses\Models\Asset($id);
 
 		if ($asset->get('course_id') != $this->course->get('id'))
 		{
@@ -1159,10 +1159,10 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Get our asset object
 		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
-		$asset = new CoursesModelAsset($id);
+		$asset = new \Components\Courses\Models\Asset($id);
 
 		// Make sure we have an asset model
-		if (!is_object($asset) || !$asset instanceof CoursesModelAsset)
+		if (!is_object($asset) || !$asset instanceof \Components\Courses\Models\Asset)
 		{
 			$this->setMessage("Loading asset {$id} failed", 500, 'Internal server error');
 			return;
@@ -1404,7 +1404,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'memberBadge.php';
 
 		// Get section from provider badge id
-		$section_badge = CoursesModelSectionBadge::loadByProviderBadgeId($badge_id);
+		$section_badge = \Components\Courses\Models\Section\Badge::loadByProviderBadgeId($badge_id);
 
 		// Check if there is a match
 		if (!$section_id = $section_badge->get('section_id'))
@@ -1414,7 +1414,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get member id via user id and section id
-		$member = CoursesModelMember::getInstance($user_id, 0, 0, $section_id);
+		$member = \Components\Courses\Models\Member::getInstance($user_id, 0, 0, $section_id);
 
 		// Check if there is a match
 		if (!$member->get('id'))
@@ -1424,7 +1424,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Now actually load the badge
-		$member_badge = CoursesModelMemberBadge::loadByMemberId($member->get('id'));
+		$member_badge = \Components\Courses\Models\MemberBadge::loadByMemberId($member->get('id'));
 
 		// Check if there is a match
 		if (!$member_badge->get('id'))
@@ -1535,12 +1535,12 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
-		$course = CoursesModelCourse::getInstance($course_alias);
+		$course = \Components\Courses\Models\Course::getInstance($course_alias);
 		$course->offering($offering_alias);
 		$course->offering()->section($section_alias);
 		$section_id = $course->offering()->section()->get('id');
 
-		$member = CoursesModelMember::getInstance($user_id, 0, 0, $section_id);
+		$member = \Components\Courses\Models\Member::getInstance($user_id, 0, 0, $section_id);
 
 		if (!$member_id = $member->get('id'))
 		{
@@ -1756,7 +1756,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Load the course page
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-		$course = CoursesModelCourse::getInstance($this->course_id);
+		$course = \Components\Courses\Models\Course::getInstance($this->course_id);
 		$offering = $course->offering($this->offering_alias);
 		$course->offering()->section($this->section_id);
 		$this->course = $course;

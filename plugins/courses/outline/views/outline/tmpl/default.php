@@ -329,7 +329,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																$items = array();
 																foreach ($prerequisites->get('asset', $a->get('id')) as $prereq)
 																{
-																	$reqAsset = new CoursesModelAsset($prereq['scope_id']);
+																	$reqAsset = new \Components\Courses\Models\Asset($prereq['scope_id']);
 																	$items[] = $reqAsset->get('title');
 																}
 																$info .= implode(", ", $items);

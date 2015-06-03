@@ -38,7 +38,7 @@ header("Expires: 0");
 foreach ($this->rows as $row)
 {
 
-	$section = CoursesModelSection::getInstance($row->get('section_id'));
+	$section = \Components\Courses\Models\Section::getInstance($row->get('section_id'));
 
 	echo encodeCSVField($row->get('user_id'));
 	echo ',';

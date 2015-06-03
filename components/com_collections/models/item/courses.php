@@ -105,7 +105,7 @@ class Courses extends GenericItem
 
 		if (!$id)
 		{
-			$course = \CoursesModelCourse::getInstance(Request::getVar('gid', ''));
+			$course = \Components\Courses\Models\Course::getInstance(Request::getVar('gid', ''));
 
 			$id = $course->get('id');
 		}
@@ -119,7 +119,7 @@ class Courses extends GenericItem
 
 		if (!$course)
 		{
-			$course = new \CoursesModelCourse($id);
+			$course = new \Components\Courses\Models\Course($id);
 		}
 
 		if (!$course->exists())

@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Models;
 use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Base\Object;
@@ -58,7 +59,7 @@ class Course extends SiteController
 	public function execute()
 	{
 		// Load the course page
-		$this->course = \CoursesModelCourse::getInstance(Request::getVar('gid', ''));
+		$this->course = Models\Course::getInstance(Request::getVar('gid', ''));
 
 		$this->registerTask('edit', 'display');
 
@@ -297,7 +298,7 @@ class Course extends SiteController
 		// Incoming
 		$data = Request::getVar('course', array(), 'post', 'none', 2);
 
-		$course = \CoursesModelCourse::getInstance($data['id']);
+		$course = Models\Course::getInstance($data['id']);
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -415,13 +416,13 @@ class Course extends SiteController
 
 		$this->view->no_html = Request::getInt('no_html', 0);
 
-		if ($offering instanceof CoursesModelOffering)
+		if ($offering instanceof Models\Offering)
 		{
 			$this->view->offering = $offering;
 		}
 		else
 		{
-			$this->view->offering = new CoursesModelOffering(0);
+			$this->view->offering = new Models\Offering(0);
 		}
 
 		$this->view->course = $this->course;
@@ -452,8 +453,8 @@ class Course extends SiteController
 		$data    = Request::getVar('offering', array(), 'post', 'none', 2);
 		$no_html = Request::getInt('no_html', 0);
 
-		$course   = \CoursesModelCourse::getInstance($data['course_id']);
-		$offering = \CoursesModelOffering::getInstance($data['id']);
+		$course   = Models\Course::getInstance($data['course_id']);
+		$offering = Models\Offering::getInstance($data['id']);
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -676,7 +677,7 @@ class Course extends SiteController
 		// Incoming
 		$page = Request::getVar('page', array(), 'post', 'none', 2);
 
-		$course = \CoursesModelCourse::getInstance($page['course_id']);
+		$course = Models\Course::getInstance($page['course_id']);
 		if (!$course->exists())
 		{
 			App::redirect(
@@ -684,7 +685,7 @@ class Course extends SiteController
 			);
 		}
 
-		$model = new \CoursesModelPage($page['id']);
+		$model = new Models\Page($page['id']);
 
 		if (!$model->bind($page))
 		{
@@ -827,7 +828,7 @@ class Course extends SiteController
 		}
 
 		// Ensure the data passed is valid
-		$c = \CoursesModelCourse::getInstance($course);
+		$c = Models\Course::getInstance($course);
 		if (($course == 'new' || $course == 'browse') || !$this->_validCn($course) || $c->exists())
 		{
 			$availability = false;

@@ -122,7 +122,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 						$requirements = array();
 						foreach ($prereqs as $pre)
 						{
-							$reqAsset = new CoursesModelAsset($pre['scope_id']);
+							$reqAsset = new \Components\Courses\Models\Asset($pre['scope_id']);
 							$requirements[] = $reqAsset->get('title');
 						}
 

@@ -80,8 +80,8 @@ $base = $this->offering->link();
 	<?php
 	foreach ($results as $id => $notes)
 	{
-		$lecture = new CoursesModelAssetgroup($id);
-		$unit = CoursesModelUnit::getInstance($lecture->get('unit_id'));
+		$lecture = new \Components\Courses\Models\Assetgroup($id);
+		$unit = \Components\Courses\Models\Unit::getInstance($lecture->get('unit_id'));
 	?>
 	<div class="section">
 		<h3><?php echo $this->escape(stripslashes($lecture->get('title'))); ?></h3>

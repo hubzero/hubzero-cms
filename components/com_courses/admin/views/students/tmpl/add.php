@@ -126,7 +126,7 @@ function submitbutton(pressbutton)
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 			<?php
 				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-				$model = CoursesModelCourses::getInstance();
+				$model = \Components\Courses\Models\Courses::getInstance();
 				if ($model->courses()->total() > 0)
 				{
 					$j = 0;

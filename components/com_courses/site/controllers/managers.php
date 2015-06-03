@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Models\Course;
 use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
 
@@ -46,7 +47,7 @@ class Managers extends SiteController
 	public function execute()
 	{
 		// Load the course page
-		$this->course = \CoursesModelCourse::getInstance(Request::getVar('gid', ''));
+		$this->course = Course::getInstance(Request::getVar('gid', ''));
 
 		parent::execute();
 	}
@@ -210,7 +211,7 @@ class Managers extends SiteController
 			return;
 		}
 
-		$model = \CoursesModelCourse::getInstance($id);
+		$model = Course::getInstance($id);
 
 		$entries = Request::getVar('entries', array(0), 'post');
 

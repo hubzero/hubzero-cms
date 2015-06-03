@@ -28,15 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+use Components\Courses\Models\Member;
+
+require_once(__DIR__ . DS . 'member.php');
 
 /**
  * Courses model class for a student
  */
-class CoursesModelStudent extends CoursesModelMember
+class Student extends Member
 {
 	/**
 	 * Object scope
@@ -92,7 +93,7 @@ class CoursesModelStudent extends CoursesModelMember
 	 * @param   string $cid Course ID
 	 * @param   string $oid Offering ID
 	 * @param   string $sid Section ID
-	 * @return  object CoursesModelMember
+	 * @return  object \Components\Courses\Models\Member
 	 */
 	static function &getInstance($uid=null, $cid=0, $oid=0, $sid=0)
 	{

@@ -28,14 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Config\Registry;
+use Components\Courses\Tables;
+use Lang;
+use Date;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
-require_once(__DIR__ . DS . 'abstract.php');
-
+require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'section' . DS . 'code.php');
 require_once(__DIR__ . DS . 'section' . DS . 'date.php');
 require_once(__DIR__ . DS . 'section' . DS . 'badge.php');
@@ -44,7 +45,7 @@ require_once(__DIR__ . DS . 'member.php');
 /**
  * Courses model class for a course
  */
-class CoursesModelSection extends CoursesModelAbstract
+class Section extends Base
 {
 	/**
 	 * Table class name
@@ -89,35 +90,35 @@ class CoursesModelSection extends CoursesModelAbstract
 	private $_member = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_codes = NULL;
 
 	/**
-	 * CoursesModelSectionCode
+	 * \Components\Courses\Models\Section\Code
 	 *
 	 * @var object
 	 */
 	private $_code = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_dates = NULL;
 
 	/**
-	 * CoursesModelSectionDate
+	 * \Components\Courses\Models\Section\Date
 	 *
 	 * @var object
 	 */
 	private $_date = NULL;
 
 	/**
-	 * CoursesModelSectionBadge
+	 * \Components\Courses\Models\Section\Badge
 	 *
 	 * @var object
 	 */
@@ -165,10 +166,10 @@ class CoursesModelSection extends CoursesModelAbstract
 	 * Returns a reference to a course offering model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = CoursesModelOffering::getInstance($alias);
+	 *     $offering = \Components\Courses\Models\Offering::getInstance($alias);
 	 *
 	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object CoursesModelOffering
+	 * @return     object \Components\Courses\Models\Offering
 	 */
 	static function &getInstance($oid=null, $offering_id=null)
 	{
@@ -214,7 +215,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return false;
 		}
 
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		if ($this->get('start_date')
 		 && $this->get('start_date') != $this->_db->getNullDate()
@@ -238,7 +239,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		if ($this->get('end_date')
 		 && $this->get('end_date') != $this->_db->getNullDate()
@@ -263,7 +264,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = \Date::toSql();
+		$now = Date::toSql();
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != $this->_db->getNullDate()
@@ -331,7 +332,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		if (!isset($this->_permissions))
 		{
-			$this->_permissions = CoursesModelPermissions::getInstance();
+			$this->_permissions = Permissions::getInstance();
 			$this->_permissions->set('offering_id', $this->get('id'));
 			$this->_permissions->set('section_id', $this->get('id'));
 		}
@@ -358,7 +359,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (!$this->_member)
 		{
-			$this->_member = CoursesModelMember::getInstance($user_id, null, null, $this->get('id'));
+			$this->_member = Member::getInstance($user_id, null, null, $this->get('id'));
 		}
 
 		return $this->_member;
@@ -398,11 +399,11 @@ class CoursesModelSection extends CoursesModelAbstract
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[$result->user_id] = new CoursesModelMember($result, $this->get('id'));
+					$results[$result->user_id] = new Member($result, $this->get('id'));
 				}
 			}
 
-			$this->_members = $results; //new CoursesModelIterator($results);
+			$this->_members = $results;
 		}
 
 		return $this->_members;
@@ -418,7 +419,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		if (!isset($this->_date)
 		 || ((int) $this->_date->get('scope_id') != (int) $scope_id || (string) $this->_date->get('scope') != (string) $scope))
 		{
-			$this->_date = new CoursesModelSectionDate(null);
+			$this->_date = new Section\Date(null);
 
 			foreach ($this->dates() as $dt)
 			{
@@ -456,7 +457,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!($this->_dates instanceof CoursesModelIterator) || $clear)
+		if (!($this->_dates instanceof Iterator) || $clear)
 		{
 			$tbl = new Tables\SectionDate($this->_db);
 
@@ -464,7 +465,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelSectionDate($result);
+					$results[$key] = new Section\Date($result);
 				}
 			}
 			else
@@ -472,7 +473,7 @@ class CoursesModelSection extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_dates = new CoursesModelIterator($results);
+			$this->_dates = new Iterator($results);
 		}
 
 		return $this->_dates;
@@ -499,7 +500,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		if (!$this->get('course_id'))
 		{
 			require_once(__DIR__ . DS . 'offering.php');
-			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
 		foreach ($data as $result)
@@ -507,7 +508,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			$user_id = (int) $this->_userId($result);
 
 			// Create the entry
-			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
+			$model = Member::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
 			$model->set('user_id', $user_id);
 			$model->set('course_id', $this->get('course_id'));
 			$model->set('offering_id', $this->get('offering_id'));
@@ -546,14 +547,14 @@ class CoursesModelSection extends CoursesModelAbstract
 		if (!$this->get('course_id'))
 		{
 			require_once(__DIR__ . DS . 'offering.php');
-			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
 
-			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
+			$model = Member::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
 			if (!$model->exists())
 			{
 				$this->setError(Lang::txt('Entry for user #%s, course #%s, offering #%s, section #%s not found.', $user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id')));
@@ -676,7 +677,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (!$this->_code)
 		{
-			$this->_code = new CoursesModelSectionCode($code, $this->get('id'));
+			$this->_code = new SectionCode($code, $this->get('id'));
 		}
 
 		return $this->_code;
@@ -706,7 +707,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!($this->_codes instanceof CoursesModelIterator) || $clear)
+		if (!($this->_codes instanceof Iterator) || $clear)
 		{
 			$tbl = new Tables\SectionCode($this->_db);
 
@@ -714,7 +715,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelSectionCode($result);
+					$results[$key] = new SectionCode($result);
 				}
 			}
 			else
@@ -722,7 +723,7 @@ class CoursesModelSection extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_codes = new CoursesModelIterator($results);
+			$this->_codes = new Iterator($results);
 		}
 
 		return $this->_codes;
@@ -769,7 +770,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		if (!isset($this->_badge))
 		{
-			$this->_badge = CoursesModelSectionBadge::loadBySectionId($this->get('id'));
+			$this->_badge = SectionBadge::loadBySectionId($this->get('id'));
 		}
 
 		return $this->_badge;
@@ -790,7 +791,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		$sections = $this->_tbl->find(array('offering_id' => $this->get('offering_id')));
 		foreach ($sections as $section)
 		{
-			$section = new CoursesModelSection($section);
+			$section = new Section($section);
 			$section->set('is_default', 0);
 			$section->store(false);
 		}
@@ -809,9 +810,9 @@ class CoursesModelSection extends CoursesModelAbstract
 	 */
 	public function params($key='', $default=null)
 	{
-		if (!($this->_params instanceof \Hubzero\Config\Registry))
+		if (!($this->_params instanceof Registry))
 		{
-			$this->_params = new \Hubzero\Config\Registry($this->get('params'));
+			$this->_params = new Registry($this->get('params'));
 		}
 		if ($key)
 		{
@@ -839,7 +840,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		// We need the course ID
 		if (!$this->get('course_id'))
 		{
-			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
 
@@ -864,7 +865,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 			if ($rtrn == 'url')
 			{
-				$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+				$offering = Offering::getInstance($this->get('offering_id'));
 				return $offering->link() . '&active=logo';
 			}
 

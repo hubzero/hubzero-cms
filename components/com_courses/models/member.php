@@ -28,21 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+namespace Components\Courses\Models;
+
 use Components\Courses\Tables;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php');
-require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'prerequisite.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'member.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'role.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'memberBadge.php');
+require_once(__DIR__ . DS . 'prerequisite.php');
 
 /**
  * Member model class for a course
  */
-class CoursesModelMember extends CoursesModelAbstract
+class Member extends Base
 {
 	/**
 	 * JTable class name
@@ -59,14 +58,14 @@ class CoursesModelMember extends CoursesModelAbstract
 	protected $_scope = 'manager';
 
 	/**
-	 * CoursesModelMemberBadge
+	 * \Components\Courses\Models\MemberBadge
 	 *
 	 * @var object
 	 */
 	private $_badge = NULL;
 
 	/**
-	 * CoursesModelPrerequisites
+	 * \Components\Courses\Models\Prerequisites
 	 *
 	 * @var object
 	 **/
@@ -116,7 +115,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	 * @param   string $cid Course ID
 	 * @param   string $oid Offering ID
 	 * @param   string $sid Section ID
-	 * @return  object CoursesModelMember
+	 * @return  object \Components\Courses\Models\Member
 	 */
 	static function &getInstance($uid=null, $cid=0, $oid=0, $sid=0)
 	{
@@ -138,13 +137,13 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Get member badge
 	 *
-	 * @return  object CoursesModelMemberBadge
+	 * @return  object \Components\Courses\Models\MemberBadge
 	 */
 	public function badge()
 	{
 		if (!isset($this->_badge))
 		{
-			$this->_badge = CoursesModelMemberBadge::loadByMemberId($this->get('id'));
+			$this->_badge = MemberBadge::loadByMemberId($this->get('id'));
 		}
 
 		return $this->_badge;
@@ -154,13 +153,13 @@ class CoursesModelMember extends CoursesModelAbstract
 	 * Get courses prerequisites per member
 	 *
 	 * @param   object $gradebook
-	 * @return  object CoursesModelPrerequisite
+	 * @return  object \Components\Courses\Models\Prerequisite
 	 */
 	public function prerequisites($gradebook)
 	{
 		if (!isset($this->_prerequisites))
 		{
-			$this->_prerequisites = new CoursesModelPrerequisite($this->get('section_id'), $gradebook, $this->get('id'));
+			$this->_prerequisites = new Prerequisite($this->get('section_id'), $gradebook, $this->get('id'));
 		}
 
 		return $this->_prerequisites;

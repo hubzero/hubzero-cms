@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Models\Certificate;
 use Hubzero\Component\AdminController;
 use Filesystem;
 use Exception;
@@ -56,7 +57,7 @@ class Certificates extends AdminController
 		$this->view->cert_id   = Request::getInt('certificate', 0);
 		$this->view->course_id = Request::getInt('course', 0);
 
-		$this->view->certificate = \CoursesModelCertificate::getInstance($this->view->cert_id, $this->view->course_id);
+		$this->view->certificate = Certificate::getInstance($this->view->cert_id, $this->view->course_id);
 
 		if (!$this->view->certificate->exists())
 		{
@@ -106,7 +107,7 @@ class Certificates extends AdminController
 		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = \CoursesModelCertificate::getInstance($fields['id'], $fields['course_id']);
+		$model = Certificate::getInstance($fields['id'], $fields['course_id']);
 
 		if (!$model->bind($fields))
 		{
@@ -143,7 +144,7 @@ class Certificates extends AdminController
 	public function previewTask()
 	{
 		// Load certificate record
-		$certificate = \CoursesModelCertificate::getInstance(Request::getInt('certificate', 0));
+		$certificate = Certificate::getInstance(Request::getInt('certificate', 0));
 		if (!$certificate->exists())
 		{
 			App::redirect(
@@ -187,7 +188,7 @@ class Certificates extends AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = new \CoursesModelCertificate($id);
+			$model = new Certificate($id);
 		}
 
 		$this->view->row = $model;
@@ -233,7 +234,7 @@ class Certificates extends AdminController
 			return;
 		}
 
-		$model = \CoursesModelCertificate::getInstance($cert_id, $course_id);
+		$model = Certificate::getInstance($cert_id, $course_id);
 		$model->set('name', 'certificate.pdf');
 		if (!$model->exists())
 		{
@@ -305,7 +306,7 @@ class Certificates extends AdminController
 			return;
 		}
 
-		$model = \CoursesModelCertificate::getInstance($cert_id, $course_id);
+		$model = Certificate::getInstance($cert_id, $course_id);
 		if ($model->exists())
 		{
 			$model->set('properties', '');

@@ -35,7 +35,7 @@ class Migration20141113222151ComCourses extends Base
 
 		if ($assetIds && count($assetIds) > 0)
 		{
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
+			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 
 			foreach ($assetIds as $aa)
 			{
@@ -46,7 +46,7 @@ class Migration20141113222151ComCourses extends Base
 				foreach ($toChange as $a)
 				{
 					$oldAssetId = $a->asset_id;
-					$asset = new CoursesModelAsset($oldAssetId);
+					$asset = new \Components\Courses\Models\Asset($oldAssetId);
 
 					if ($asset->get('id'))
 					{

@@ -28,8 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
+
+use Component;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.policies.php');
 require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
@@ -38,7 +39,7 @@ require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' 
 /**
  * Courses model class for grade book
  */
-class CoursesModelGradePolicies extends CoursesModelAbstract
+class GradePolicies extends Base
 {
 	/**
 	 * JTable class name
@@ -72,7 +73,7 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 			// Check if this is the default section
 			if (!is_null($sid))
 			{
-				$section = new CoursesModelSection($sid);
+				$section = new Section($sid);
 
 				if (!$section->get('is_default'))
 				{
@@ -82,7 +83,7 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 					if (!$canEdit)
 					{
 						// We need to find the default section and use that grade policy
-						$offering = new CoursesModelOffering($section->get('offering_id'));
+						$offering = new Offering($section->get('offering_id'));
 						$default  = $offering->section('!!default!!');
 						$oid      = $default->get('grade_policy_id');
 					}

@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Models;
 use Hubzero\Component\SiteController;
 use Exception;
 use Pathway;
@@ -52,10 +53,10 @@ class Courses extends SiteController
 	{
 		if ($section_id = Request::getInt('section', 0, 'get'))
 		{
-			$section = \CoursesModelSection::getInstance($section_id);
+			$section = Models\Section::getInstance($section_id);
 			if ($section->exists())
 			{
-				$offering = \CoursesModelOffering::getInstance($section->get('offering_id'));
+				$offering = Models\Offering::getInstance($section->get('offering_id'));
 				$offering->section($section->get('alias'));
 
 				App::redirect(
@@ -128,7 +129,7 @@ class Courses extends SiteController
 		$this->_buildPathway();
 
 		// Push some needed scripts to the template
-		$model = \CoursesModelCourses::getInstance();
+		$model = Models\Courses::getInstance();
 
 		$this->view->popularcourses = $model->courses(array(
 			'limit' => 12,
@@ -196,7 +197,7 @@ class Courses extends SiteController
 		}
 		$this->view->filters['tag'] = Request::getVar('tag', '');
 
-		$model = \CoursesModelCourses::getInstance();
+		$model = Models\Courses::getInstance();
 
 		// Get a record count
 		$this->view->filters['count'] = true;
@@ -229,7 +230,7 @@ class Courses extends SiteController
 	{
 		if ($badge_id = Request::getInt('badge_id', false))
 		{
-			$badge = new \CoursesModelSectionBadge($badge_id);
+			$badge = new Models\Section\Badge($badge_id);
 
 			if (!$badge->get('id'))
 			{

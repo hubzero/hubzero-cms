@@ -28,24 +28,25 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use Components\Courses\Tables;
+namespace Components\Courses\Models;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Components\Courses\Tables;
+use Hubzero\Config\Registry;
+use Filesystem;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'course.php');
-require_once(__DIR__ . DS . 'abstract.php');
-
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
+require_once(__DIR__ . DS . 'base.php');
 require_once(__DIR__ . DS . 'permissions.php');
 require_once(__DIR__ . DS . 'offering.php');
 require_once(__DIR__ . DS . 'iterator.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
 require_once(__DIR__ . DS . 'tags.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelCourse extends CoursesModelAbstract
+class Course extends Base
 {
 	/**
 	 * JTable class name
@@ -62,28 +63,28 @@ class CoursesModelCourse extends CoursesModelAbstract
 	protected $_scope = 'course';
 
 	/**
-	 * CoursesModelOffering
+	 * \Components\Courses\Models\Offering
 	 *
 	 * @var object
 	 */
 	private $_offering = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
 	private $_offerings = NULL;
 
 	/**
-	 * CoursesModelPermissions
+	 * \Components\Courses\Models\Permissions
 	 *
 	 * @var object
 	 */
 	private $_permissions = NULL;
 
 	/**
-	 * CoursesModelOffering
+	 * \Components\Courses\Models\Offering
 	 *
 	 * @var object
 	 */
@@ -104,14 +105,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 	private $_students = NULL;
 
 	/**
-	 * CoursesModelOffering
+	 * \Components\Courses\Models\Offering
 	 *
 	 * @var object
 	 */
 	private $_page = NULL;
 
 	/**
-	 * CoursesModelIterator
+	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
@@ -148,11 +149,11 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		parent::__construct($oid);
 
-		$this->config()->merge(new \Hubzero\Config\Registry($this->get('params')));
+		$this->config()->merge(new Registry($this->get('params')));
 
 		if (!isset($this->_permissions))
 		{
-			$this->_permissions = CoursesModelPermissions::getInstance();
+			$this->_permissions = Permissions::getInstance();
 			$this->_permissions->set('course_id', $this->get('id'));
 		}
 	}
@@ -161,10 +162,10 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * Returns a reference to a course model
 	 *
 	 * This method must be invoked as:
-	 *     $offering = CoursesModelCourse::getInstance($alias);
+	 *     $offering = \Components\Courses\Models\Course::getInstance($alias);
 	 *
 	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object CoursesModelCourse
+	 * @return     object \Components\Courses\Models\Course
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -246,7 +247,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			if (is_null($this->_offering))
 			{
 				// Get current offering
-				$this->_offering = CoursesModelOffering::getInstance($id, $this->get('id'));
+				$this->_offering = Offering::getInstance($id, $this->get('id'));
 			}
 		}
 		// Return current offering
@@ -276,7 +277,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		// Is the data is not set OR is it not the right type?
-		if (!($this->_offerings instanceof CoursesModelIterator) || $clear)
+		if (!($this->_offerings instanceof Iterator) || $clear)
 		{
 			$tbl = new Tables\Offering($this->_db);
 
@@ -286,7 +287,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 				// Loop through each result and turn into a model object
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CoursesModelOffering($result);
+					$results[$key] = new Offering($result);
 				}
 			}
 			else
@@ -297,7 +298,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			}
 
 			// Set the results
-			$this->_offerings = new CoursesModelIterator($results);
+			$this->_offerings = new Iterator($results);
 		}
 
 		// Return results
@@ -334,7 +335,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 			if (!$this->_manager)
 			{
-				$this->_manager = CoursesModelManager::getInstance($user_id, $this->get('course_id'), 0, 0);
+				$this->_manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('course_id'), 0, 0);
 			}
 		}
 
@@ -386,25 +387,25 @@ class CoursesModelCourse extends CoursesModelAbstract
 				{
 					if (!isset($results[$result->user_id]))
 					{
-						$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+						$results[$result->user_id] = new Manager($result, $this->get('id'));
 					}
 					else
 					{
 						// Course manager takes precedence over offering manager
 						if ($result->course_id && !$result->offering_id && !$result->section_id)
 						{
-							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+							$results[$result->user_id] = new Manager($result, $this->get('id'));
 						}
 						// Course offering takes precedence over section manager
 						else if ($result->course_id && $result->offering_id && !$result->section_id)
 						{
-							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+							$results[$result->user_id] = new Manager($result, $this->get('id'));
 						}
 					}
 				}
 			}
 
-			$this->_managers = $results; //new CoursesModelIterator($results);
+			$this->_managers = $results;
 		}
 
 		return $this->_managers;
@@ -442,11 +443,11 @@ class CoursesModelCourse extends CoursesModelAbstract
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[$key] = new CoursesModelStudent($result, $this->get('id'));
+					$results[$key] = new Student($result, $this->get('id'));
 				}
 			}
 
-			$this->_students = $results; //new CoursesModelIterator($results);
+			$this->_students = $results;
 		}
 
 		return $this->_students;
@@ -487,14 +488,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 			if (($data = $tbl->find($filters)))
 			{
-				$this->_managers[$user_id] = new CoursesModelManager(array_shift($data), $this->get('id'));
+				$this->_managers[$user_id] = new Manager(array_shift($data), $this->get('id'));
 
 				if (count($data) > 0)
 				{
 					foreach ($data as $key => $result)
 					{
 						$tbl->delete($result->id);
-						//$data[$key] = new CoursesModelManager($result, $this->get('id'));
+						//$data[$key] = new Manager($result, $this->get('id'));
 						//$data[$key]->delete();
 					}
 				}
@@ -502,7 +503,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 			if (!isset($this->_managers[$user_id]))
 			{
-				$this->_managers[$user_id] = new CoursesModelManager($user_id, $this->get('id'));
+				$this->_managers[$user_id] = new Manager($user_id, $this->get('id'));
 			}
 			$this->_managers[$user_id]->set('user_id', $user_id);
 			$this->_managers[$user_id]->set('course_id', $this->get('id'));
@@ -680,7 +681,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 			if (!$this->_page)
 			{
-				$this->_page = new CoursesModelPage(0);
+				$this->_page = new Page(0);
 			}
 		}
 
@@ -725,7 +726,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			{
 				foreach ($data as $key => $result)
 				{
-					$results[$result->url] = new CoursesModelPage($result);
+					$results[$result->url] = new Page($result);
 				}
 			}
 
@@ -759,7 +760,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			}
 		}
 
-		$cloud = new CoursesModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->render($as, array('admin' => $admin));
 	}
@@ -771,7 +772,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new CoursesModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -1001,7 +1002,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			}
 
 			// Copy tags
-			$tagger = new CoursesModelTags($c_id);
+			$tagger = new Tags($c_id);
 			$this->tag($tagger->render('string', array('admin' => 1)), \User::get('id'), 1);
 		}
 
@@ -1019,7 +1020,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		{
 			include_once(__DIR__ . DS . 'certificate.php');
 
-			$this->_certificate = CoursesModelCertificate::getInstance(0, $this->get('id'));
+			$this->_certificate = Certificate::getInstance(0, $this->get('id'));
 		}
 
 		return $this->_certificate;

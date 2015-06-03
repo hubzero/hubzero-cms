@@ -28,8 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Assets;
+
+use Components\Courses\Models\Base;
+use Components\Courses\Models\Asset;
 
 /**
 * Courses asset handler
@@ -56,17 +58,17 @@ class AssetHandler
 	 * @var array
 	 **/
 	protected $asset = array(
-			'title'        => '',
-			'url'          => '',
-			'type'         => '',
-			'subtype'      => '',
-			'created'      => '',
-			'created_by'   => '',
-			'state'        => 0, // upublished
-			'course_id'    => '',
-			'graded'       => 0,
-			'grade_weight' => ''
-		);
+		'title'        => '',
+		'url'          => '',
+		'type'         => '',
+		'subtype'      => '',
+		'created'      => '',
+		'created_by'   => '',
+		'state'        => 0, // upublished
+		'course_id'    => '',
+		'graded'       => 0,
+		'grade_weight' => ''
+	);
 
 	/**
 	 * Array to hold the asset association
@@ -74,10 +76,10 @@ class AssetHandler
 	 * @var array
 	 **/
 	protected $assoc = array(
-			'asset_id' => '',
-			'scope'    => '',
-			'scope_id' => '',
-		);
+		'asset_id' => '',
+		'scope'    => '',
+		'scope_id' => '',
+	);
 
 	/**
 	 * Constructor - sets the database object and initializes the file types
@@ -259,19 +261,20 @@ class AssetHandler
 	public function doEdit($id)
 	{
 		// Look up asset type from id
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-		$asset = new CoursesModelAsset($id);
+		require_once(dirname(__DIR__) . DS . 'asset.php');
+		$asset = new Asset($id);
 
 		// Classname
-		$class    = ucfirst($asset->get('type')) . 'AssetHandler';
-		$classAlt = ucfirst($asset->get('subtype')) . 'AssetHandler';
+		$space = __NAMESPACE__ . '\\';
+		$class    = $space . ucfirst($asset->get('type'));
+		$classAlt = $space . ucfirst($asset->get('subtype'));
 
-		if ($classAlt != 'AssetHandler' && class_exists($classAlt) && method_exists($classAlt, 'edit'))
+		if ($classAlt != $space && class_exists($classAlt) && method_exists($classAlt, 'edit'))
 		{
 			$object = $classAlt::newWithoutHandlers($this->db);
 			return $object->edit($asset);
 		}
-		else if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'edit'))
+		else if ($class != $space && class_exists($class) && method_exists($class, 'edit'))
 		{
 			$object = $class::newWithoutHandlers($this->db);
 			return $object->edit($asset);
@@ -291,13 +294,13 @@ class AssetHandler
 	public function preview($id)
 	{
 		// Look up asset type from id
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-		$asset = new CoursesModelAsset($id);
+		require_once(dirname(__DIR__) . DS . 'asset.php');
+		$asset = new Asset($id);
 
 		// Classname
-		$class = ucfirst($asset->get('type')) . 'AssetHandler';
+		$class = __NAMESPACE__ . '\\' . ucfirst($asset->get('type'));
 
-		if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'preview'))
+		if ($class != __NAMESPACE__ . '\\' && class_exists($class) && method_exists($class, 'preview'))
 		{
 			$object = $class::newWithoutHandlers($this->db);
 			return $object->preview($asset);

@@ -232,7 +232,7 @@ class Router extends Base
 				default:
 					$pagefound = false;
 					require_once(dirname(__DIR__) . DS . 'models' . DS . 'course.php');
-					$course = \CoursesModelCourse::getInstance($vars['gid']);
+					$course = \Components\Courses\Models\Course::getInstance($vars['gid']);
 					if ($course->exists())
 					{
 						$pages = $course->pages(array('active' => 1));

@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Assets;
 
 /**
-* Video Asset handler class
-*/
-class SwfAssetHandler extends FileAssetHandler
+ * Video Asset handler class
+ */
+class Swf extends File
 {
 	/**
 	 * Class info
@@ -45,9 +44,9 @@ class SwfAssetHandler extends FileAssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'As an Adobe Shockwave Flash file',
-			'responds_to'    => array('swf'),
-		);
+		'action_message' => 'As an Adobe Shockwave Flash file',
+		'responds_to'    => array('swf'),
+	);
 
 	/**
 	 * Create method for this handler

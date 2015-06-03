@@ -43,7 +43,7 @@ $this->css()
 	$cls = '';
 	foreach ($this->courses as $course)
 	{
-		$course = new CoursesModelCourse($course);
+		$course = new \Components\Courses\Models\Course($course);
 		$i++;
 		if ($i == 3)
 		{

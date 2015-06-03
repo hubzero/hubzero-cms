@@ -21,11 +21,11 @@ class Migration20140408121756ComCourses extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
-			$path = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'certificates';
+			$path = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
 
 			if (is_dir($path))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 				// Loop through all files and separate them into arrays of images, folders, and other
 				$dirIterator = new DirectoryIterator($path);
@@ -60,7 +60,7 @@ class Migration20140408121756ComCourses extends Base
 						$offering = $bits[2];
 						$user = strstr($bits[3], '.', true);
 
-						$member = CoursesModelMember::getInstance($user, $course, $offering, null);
+						$member = \Components\Courses\Models\Member::getInstance($user, $course, $offering, null);
 						$member->token();
 					}
 				}

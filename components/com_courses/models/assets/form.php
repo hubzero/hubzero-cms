@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models\Assets;
+
+use Request;
+use PdfForm;
 
 /**
 * Form (exam) Asset handler class
 */
-class FormAssetHandler extends ContentAssetHandler
+class Form extends Content
 {
 	/**
 	 * Class info
@@ -57,7 +59,7 @@ class FormAssetHandler extends ContentAssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
+		require_once(dirname(__DIR__) . DS . 'form.php');
 
 		// Check to make sure a file was provided
 		if (isset($_FILES['files']))
@@ -203,7 +205,7 @@ class FormAssetHandler extends ContentAssetHandler
 	public function preview($asset)
 	{
 		// Get form object
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
+		require_once(dirname(__DIR__) . DS . 'form.php');
 		$form = PdfForm::loadByAssetId($asset->get('id'));
 
 		// Make sure we got a proper object

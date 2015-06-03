@@ -28,16 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Models;
+
+use ImagickException;
+use Imagick;
+use Lang;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php');
-require_once(__DIR__ . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Courses model class for a certificate
  */
-class CoursesModelCertificate extends CoursesModelAbstract
+class Certificate extends Base
 {
 	/**
 	 * JTable class name
@@ -114,7 +117,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	 * Returns a reference to a certificate model
 	 *
 	 * @param   mixed  $oid ID (int) or alias (string)
-	 * @return  object CoursesModelCertificate
+	 * @return  object \Components\Courses\Models\Certificate
 	 */
 	static function &getInstance($oid=0, $course_id=0)
 	{
@@ -295,7 +298,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			$this->_properties = json_decode($this->get('properties', '{width:900,height:694,elements:[]}'));
 			if (!$this->_properties)
 			{
-				$this->_properties = new stdClass;
+				$this->_properties = new \stdClass;
 				$this->_properties->width    = 900;
 				$this->_properties->height   = 694;
 				$this->_properties->elements = array();
@@ -318,17 +321,17 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			$user = \User::getRoot();
 		}
 
-		if (!class_exists('CoursesModelCourse'))
+		if (!class_exists('\Components\Courses\Models\Course'))
 		{
 			require_once(__DIR__ . DS . 'course.php');
 		}
-		$course = CoursesModelCourse::getInstance($this->get('course_id'));
+		$course = Course::getInstance($this->get('course_id'));
 
 		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdf16' . DS . 'fpdf.php');
 		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdi' . DS . 'fpdi.php');
 
 		// Get the pdf and draw on top of it
-		$pdf = new FPDI();
+		$pdf = new \FPDI();
 
 		$pageCount = $pdf->setSourceFile($this->path('system') . DS . 'certificate.pdf');
 		$tplIdx = $pdf->importPage(1);
@@ -372,7 +375,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 				break;
 
 				case 'date':
-					$val = Date::of('now')->format(Lang::txt('d M Y'));
+					$val = \Date::of('now')->format(Lang::txt('d M Y'));
 				break;
 			}
 

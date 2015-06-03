@@ -31,6 +31,7 @@
 namespace Components\Courses\Site\Controllers;
 
 use Hubzero\Component\SiteController;
+use Components\Courses\Models\Course;
 use Components\Resources\Tables\MediaTrackingDetailed;
 use Components\Resources\Tables\MediaTracking;
 use stdClass;
@@ -498,7 +499,7 @@ class Media extends SiteController
 			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
 		}
 
-		$course = \CoursesModelCourse::getInstance($listdir);
+		$course = Course::getInstance($listdir);
 
 		// Output HTML
 		$this->view->config = $this->config;
@@ -595,7 +596,7 @@ class Media extends SiteController
 	public function downloadTask($filename)
 	{
 		//get the course
-		$course = \CoursesModelCourse::getInstance($this->gid);
+		$course = Course::getInstance($this->gid);
 
 		//authorize
 		$authorized = $this->_authorize();

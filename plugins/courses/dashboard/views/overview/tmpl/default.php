@@ -104,16 +104,16 @@ $base = $this->offering->link();
 						switch ($row->scope)
 						{
 							case 'unit':
-								$obj = CoursesModelUnit::getInstance($row->scope_id);
+								$obj = \Components\Courses\Models\Unit::getInstance($row->scope_id);
 								$url = $base . '&active=outline';
 							break;
 							case 'asset_group':
-								$obj = new CoursesModelAssetGroup($row->scope_id);
-								$unit = CoursesModelUnit::getInstance($obj->get('unit_id'));
+								$obj = new \Components\Courses\Models\AssetGroup($row->scope_id);
+								$unit = \Components\Courses\Models\Unit::getInstance($obj->get('unit_id'));
 								$url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
 							break;
 							case 'asset':
-								$obj = new CoursesModelAsset($row->scope_id);
+								$obj = new \Components\Courses\Models\Asset($row->scope_id);
 								$url = $base . '&active=outline&unit=&b=&c=';
 							break;
 						}

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$course = CoursesModelCourse::getInstance($this->model->get('course_id'));
+$course = \Components\Courses\Models\Course::getInstance($this->model->get('course_id'));
 $roles = $course->offering(0)->roles(array('alias' => '!student'));
 $offerings = $course->offerings();
 ?>

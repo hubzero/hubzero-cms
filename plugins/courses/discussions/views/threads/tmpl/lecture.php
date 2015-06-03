@@ -122,6 +122,7 @@ $base = $this->course->offering()->link();
 				<div class="comments-frame">
 
 					<form action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
+
 						<p class="comment-member-photo">
 							<a class="comment-anchor" name="commentform"></a>
 							<?php
@@ -144,9 +145,9 @@ $base = $this->course->offering()->link();
 								</strong>
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+									<span class="time"><time datetime="<?php echo Date::of('now')->toSql(); ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 									<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+									<span class="date"><time datetime="<?php echo Date::of('now')->toSql(); ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
 

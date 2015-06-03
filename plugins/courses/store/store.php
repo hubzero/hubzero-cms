@@ -132,7 +132,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after saving a course
 	 *
-	 * @param      object  $model CoursesModelCourse
+	 * @param      object  $model \Components\Courses\Models\Course
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
@@ -147,7 +147,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 		if ($params->get('store_product', 0))
 		{
-			$course = CoursesModelCourse::getInstance($model->get('course_id'));
+			$course = \Components\Courses\Models\Course::getInstance($model->get('course_id'));
 
 			$title       = $course->get('title') . ' (' . $model->get('title') . ')';
 			$description = $course->get('blurb');
@@ -223,7 +223,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting a course
 	 *
-	 * @param      object  $model CoursesModelCourse
+	 * @param      object  $model \Components\Courses\Models\Course
 	 * @return     void
 	 */
 	public function onOfferingDelete($model)
@@ -246,7 +246,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after saving an offering
 	 *
-	 * @param      object  $model CoursesModelOffering
+	 * @param      object  $model \Components\Courses\Models\Offering
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
@@ -261,7 +261,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an offering
 	 *
-	 * @param      object  $model CoursesModelOffering
+	 * @param      object  $model \Components\Courses\Models\Offering
 	 * @return     void
 	 */
 	public function onCourseDelete($model)
@@ -275,7 +275,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after saving an offering
 	 *
-	 * @param      object  $model CoursesModelSection
+	 * @param      object  $model \Components\Courses\Models\Section
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
@@ -290,7 +290,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an offering
 	 *
-	 * @param      object  $model CoursesModelSection
+	 * @param      object  $model \Components\Courses\Models\Section
 	 * @return     void
 	 */
 	public function onSectionDelete($model)
@@ -304,7 +304,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an offering
 	 *
-	 * @param      object  $model CoursesModelSection
+	 * @param      object  $model \Components\Courses\Models\Section
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */
@@ -357,7 +357,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an offering
 	 *
-	 * @param      object  $model CoursesModelSection
+	 * @param      object  $model \Components\Courses\Models\Section
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
 	 */

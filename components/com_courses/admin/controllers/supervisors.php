@@ -63,7 +63,7 @@ class Supervisors extends AdminController
 		$role_id = Request::getInt('role', 0);
 
 		// Load the profile
-		$model = \CoursesModelOffering::getInstance($id);
+		$model = \Components\Courses\Models\Offering::getInstance($id);
 		if ($section)
 		{
 			$model->section($section);
@@ -136,7 +136,7 @@ class Supervisors extends AdminController
 		}
 		$section = Request::getInt('section', 0);
 
-		$model = \CoursesModelOffering::getInstance($id);
+		$model = \Components\Courses\Models\Offering::getInstance($id);
 		if ($section)
 		{
 			$model->section($section);
@@ -151,7 +151,7 @@ class Supervisors extends AdminController
 				continue;
 			}
 
-			$member = \CoursesModelMember::getInstance($mbr['select'], null, null, null);
+			$member = \Components\Courses\Models\Member::getInstance($mbr['select'], null, null, null);
 			if (!$member->delete())
 			{
 				$this->setError($member->getError());
@@ -182,7 +182,7 @@ class Supervisors extends AdminController
 		}
 		$section = Request::getInt('section', 0);
 
-		$model = \CoursesModelOffering::getInstance($id);
+		$model = \Components\Courses\Models\Offering::getInstance($id);
 		if ($section)
 		{
 			$model->section($section);
@@ -193,7 +193,7 @@ class Supervisors extends AdminController
 		foreach ($entries as $key => $data)
 		{
 			// Retrieve user's account info
-			$member = \CoursesModelMember::getInstance($data['id'], null, null, null);
+			$member = \Components\Courses\Models\Member::getInstance($data['id'], null, null, null);
 			if ($member->get('role_id') == $data['role_id'])
 			{
 				continue;
@@ -212,15 +212,15 @@ class Supervisors extends AdminController
 	/**
 	 * Display a list of 'manager' for a specific section
 	 *
-	 * @param   object  $model  CoursesModelOffering
+	 * @param   object  $model  \Components\Courses\Models\Offering
 	 * @return  void
 	 */
 	public function displayTask($model=null)
 	{
 		// Incoming
-		if (!($model instanceof \CoursesModelOffering))
+		if (!($model instanceof \Components\Courses\Models\Offering))
 		{
-			$model = \CoursesModelOffering::getInstance(Request::getInt('offering', 0, 'get'));
+			$model = \Components\Courses\Models\Offering::getInstance(Request::getInt('offering', 0, 'get'));
 			if (($section = Request::getInt('section', 0)))
 			{
 				$model->section($section);

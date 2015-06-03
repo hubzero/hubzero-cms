@@ -359,7 +359,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($comments as $k => $comment)
 			{
-				$comments[$k] = new CoursesModelComment($comment);
+				$comments[$k] = new \Components\Courses\Models\Comment($comment);
 			}
 		}
 		$this->view->comments = new \Hubzero\Base\ItemList($comments);
