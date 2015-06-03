@@ -34,7 +34,7 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
 			setcookie($hash, false, time() - 86400, $cookie_path, $cookie_domain);
 
 			// Set the error handler for E_ALL to be the class handleError method.
-			set_exception_handler(array('plgSystemRedirect', 'handleError'));
+			set_exception_handler(array('plgSystemLogout', 'handleError'));
 		}
 	}
 
