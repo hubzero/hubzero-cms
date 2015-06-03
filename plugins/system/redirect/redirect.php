@@ -39,7 +39,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 	 */
 	public static function handleError(&$error)
 	{
-		$renderer = new Page(
+		$renderer = new \Hubzero\Error\Renderer\Page(
 			App::get('document'),
 			App::get('template')->template,
 			App::get('config')->get('debug')
