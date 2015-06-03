@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\PAthway;
+namespace Hubzero\Pathway;
 
 /**
  * Pathway item
