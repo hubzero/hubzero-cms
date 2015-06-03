@@ -24,7 +24,7 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
 		if (App::isSite())
 		{
 			// Get the response body
-			$body = JResponse::getBody();
+			$body = App::get('response')->getContent();
 
 			// Get the current language code
 			$code = Document::getLanguage();
@@ -72,7 +72,8 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
 					$replace[] = '${1}' . $new_code . '${3}';
 				}
 			}
-			JResponse::setBody(preg_replace($patterns, $replace, $body));
+
+			App::get('response')->setContent(preg_replace($patterns, $replace, $body));
 		}
 	}
 

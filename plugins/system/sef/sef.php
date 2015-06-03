@@ -27,7 +27,7 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 
 		//Replace src links
 		$base   = Request::base(true) . '/';
-		$buffer = JResponse::getBody();
+		$buffer = App::get('response')->getContent();
 
 		$regex  = '#href="index.php\?([^"]*)#m';
 		$buffer = preg_replace_callback($regex, array('plgSystemSef', 'route'), $buffer);
@@ -66,7 +66,7 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 		$buffer = preg_replace($regex, '$1data="' . $base . '$2"$3', $buffer);
 		$this->checkBuffer($buffer);
 
-		JResponse::setBody($buffer);
+		App::get('response')->setContent($buffer);
 		return true;
 	}
 

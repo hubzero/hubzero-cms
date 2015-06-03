@@ -34,7 +34,7 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
 			setcookie($hash, false, time() - 86400, $cookie_path, $cookie_domain);
 
 			// Set the error handler for E_ALL to be the class handleError method.
-			JError::setErrorHandling(E_ALL, 'callback', array('plgSystemLogout', 'handleError'));
+			set_exception_handler(array('plgSystemRedirect', 'handleError'));
 		}
 	}
 
@@ -77,7 +77,12 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Render the error page.
-			JError::customErrorPage($error);
+			$renderer = new \Hubzero\Error\Renderer\Page(
+				App::get('document'),
+				App::get('template')->template,
+				App::get('config')->get('debug')
+			);
+			$renderer->render($error);
 		}
 	}
 }

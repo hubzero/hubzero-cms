@@ -15,17 +15,19 @@ defined('_JEXEC') or die;
  */
 class plgSystemP3p extends \Hubzero\Plugin\Plugin
 {
-	function onAfterInitialise()
+	public function onAfterInitialise()
 	{
 		// Get the header
 		$header = $this->params->get('header', 'NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM');
 		$header = trim($header);
+
 		// Bail out on empty header (why would anyone do that?!)
-		if ( empty($header) )
+		if (empty($header))
 		{
 			return;
 		}
+
 		// Replace any existing P3P headers in the response
-		JResponse::setHeader('P3P', 'CP="'.$header.'"', true);
+		App::get('response')->headers->set('P3P', 'CP="' . $header . '"', true);
 	}
 }

@@ -80,8 +80,8 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 				if (function_exists($parseRouteFunction))
 				{
 					// get current route and remove prefix
-					$currentRoute = rtrim(JURI::getInstance()->getPath(), DS);
-					$currentRoute = trim(str_replace('groups' . DS . $group->get('cn') . DS . $active, '', $currentRoute), DS);
+					$currentRoute = rtrim(Request::path(), '/');
+					$currentRoute = trim(str_replace('groups/' . $group->get('cn') . '/' . $active, '', $currentRoute), '/');
 
 					// split route into segements
 					$segments = explode('/', $currentRoute);

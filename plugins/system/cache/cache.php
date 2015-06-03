@@ -40,27 +40,20 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 	 *
 	 * @var  object
 	 */
-	private $_cache = null;
+	private $id = null;
 
 	/**
-	 * Constructor
+	 * Converting the site URL to fit to the HTTP request
 	 *
-	 * @param   object  $subject  The object to observe
-	 * @param   array   $config   An array that holds the plugin configuration
 	 * @return  void
 	 */
-	public function __construct(& $subject, $config)
+	public function getId()
 	{
-		parent::__construct($subject, $config);
-
-		// Set the language in the class
-		$options = array(
-			'defaultgroup' => 'page',
-			'browsercache' => $this->params->get('browsercache', false),
-			'caching'      => false,
-		);
-
-		$this->_cache = \JCache::getInstance('page', $options);
+		if (!$this->id)
+		{
+			$this->id = 'page.' . md5($_SERVER['REQUEST_URI']);
+		}
+		return $this->id;
 	}
 
 	/**
@@ -82,24 +75,31 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 
 		if (User::isGuest() && Request::method() == 'GET')
 		{
-			$this->_cache->setCaching(true);
-		}
+			$id = $this->getId();
 
-		$data  = $this->_cache->get();
-
-		if ($data !== false)
-		{
-			\JResponse::setBody($data);
-
-			echo \JResponse::toString(App::get('config')->get('gzip'));
-
-			if ($profiler = App::get('profiler'))
+			if ($data = App::get('cache')->get($id))
 			{
-				$profiler->mark('afterCache');
-				echo implode('', $profiler->marks());
-			}
+				App::get('response')->setContent($data);
 
-			App::close();
+				App::get('response')->compress(App::get('config')->get('gzip', false));
+
+				if ($this->params->get('browsercache', false))
+				{
+					App::get('response')->headers->set('HTTP/1.x 304 Not Modified', true);
+				}
+
+				App::get('response')->headers->set('ETag', $id);
+
+				App::get('response')->send();
+
+				if ($profiler = App::get('profiler'))
+				{
+					$profiler->mark('afterCache');
+					echo implode('', $profiler->marks());
+				}
+
+				App::close();
+			}
 		}
 	}
 
@@ -124,7 +124,11 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 		{
 			// We need to check again here, because auto-login plugins
 			// have not been fired before the first aid check
-			$this->_cache->store();
+			App::get('cache')->put(
+				$this->getId(),
+				App::get('response')->getContent(),
+				App::get('config')->get('lifetime', 45)
+			);
 		}
 	}
 }

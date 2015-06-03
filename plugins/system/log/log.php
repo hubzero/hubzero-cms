@@ -15,38 +15,39 @@ defined('_JEXEC') or die;
  */
 class  plgSystemLog extends \Hubzero\Plugin\Plugin
 {
-	function onUserLoginFailure($response)
+	public function onUserLoginFailure($response)
 	{
-		$log = JLog::getInstance();
 		$errorlog = array();
 
 		switch ($response['status'])
 		{
-			case JAuthentication::STATUS_SUCCESS :
-			{
+			case \Hubzero\Auth\Status::SUCCESS:
 				$errorlog['status']  = $response['type'] . " CANCELED: ";
 				$errorlog['comment'] = $response['error_message'];
-				$log->addEntry($errorlog);
-			} break;
 
-			case JAuthentication::STATUS_FAILURE :
-			{
+				App::get('log.auth')->info(implode('', $errorlog));
+			break;
+
+			case \Hubzero\Auth\Status::FAILURE:
 				$errorlog['status']  = $response['type'] . " FAILURE: ";
-				if ($this->params->get('log_username', 0)) {
+				if ($this->params->get('log_username', 0))
+				{
 					$errorlog['comment'] = $response['error_message'] . ' ("' . $response['username'] . '")';
 				}
-				else {
+				else
+				{
 					$errorlog['comment'] = $response['error_message'];
 				}
-				$log->addEntry($errorlog);
-			}	break;
 
-			default :
-			{
+				App::get('log.auth')->info(implode('', $errorlog));
+			break;
+
+			default:
 				$errorlog['status']  = $response['type'] . " UNKNOWN ERROR: ";
 				$errorlog['comment'] = $response['error_message'];
-				$log->addEntry($errorlog);
-			}	break;
+
+				App::get('log.auth')->info(implode('', $errorlog));
+			break;
 		}
 	}
 }

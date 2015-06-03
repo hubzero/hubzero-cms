@@ -27,7 +27,6 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		// Set the error handler for E_ERROR to be the class handleError method.
-		//JError::setErrorHandling(E_ERROR, 'callback', array('plgSystemRedirect', 'handleError'));
 		set_exception_handler(array('plgSystemRedirect', 'handleError'));
 	}
 
@@ -49,7 +48,6 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		if (!App::isAdmin() and ($error->getCode() == 404))
 		{
 			// Render the error page.
-			//JError::customErrorPage($error);
 			$renderer->render($error);
 		}
 
@@ -61,7 +59,6 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 		if ((strpos($current, 'mosConfig_') !== false) || (strpos($current, '=http://') !== false))
 		{
 			// Render the error page.
-			//JError::customErrorPage($error);
 			$renderer->render($error);
 		}
 
@@ -135,7 +132,6 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 			}
 
 			// Render the error page.
-			//JError::customErrorPage($error);
 			$renderer->render($error);
 		}
 	}
