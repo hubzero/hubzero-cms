@@ -1102,7 +1102,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$hztv->toolaccess    = $tool['exec'];
 			$hztv->codeaccess    = $tool['code'];
 			$hztv->wikiaccess    = $tool['wiki'];
-			$hztv->vnc_command   = $invokedir . DS . $tool['toolname'] . DS . 'dev' . DS . 'middleware' . DS . 'invoke -T dev';
+			$hztv->vnc_command   = $invokedir . DS . $tool['toolname'] . DS . 'dev' . DS . 'middleware' . DS . 'invoke';
 			$hztv->vnc_geometry  = $tool['vncGeometry'];
 			$hztv->exportControl = $exportmap[$tool['exec']];
 			$hztv->state         = 3;
