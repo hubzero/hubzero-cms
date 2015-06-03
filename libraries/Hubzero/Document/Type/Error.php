@@ -176,6 +176,11 @@ class Error extends Base
 			$html[] = '		</tr>';
 			$html[] = '	</thead>';
 			$html[] = '	<tbody>';
+			$html[] = '		<tr>';
+			$html[] = '			<th scope="row">0</th>';
+			$html[] = '			<td><span class="msg">!! ' . $this->error->getMessage() . ' !!</span></td>';
+			$html[] = '			<td><span class="fl">' . $this->error->getFile() . '</span>:<span class="ln">' . $this->error->getLine() . '</span></td>';
+			$html[] = '		</tr>';
 			for ($i = count($backtrace) - 1; $i >= 0; $i--)
 			{
 				$html[] = '		<tr>';
