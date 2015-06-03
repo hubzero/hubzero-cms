@@ -165,20 +165,28 @@ class Loader
 	public function getAdministratorTemplate()
 	{
 		// Load the template name from the database
-		$db = \JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('s.id, s.home, s.template, s.params');
-		$query->from('#__template_styles as s');
-		$query->leftJoin('#__extensions as e ON e.type='.$db->quote('template').' AND e.element=s.template AND e.client_id=s.client_id');
-		if ($style = \User::getParam('admin_style'))
+		try
 		{
-			$query->where('s.client_id = 1 AND id = ' . (int) $style . ' AND e.enabled = 1', 'OR');
-		}
-		$query->where('s.client_id = 1 AND home = 1', 'OR');
-		$query->order('home');
-		$db->setQuery($query);
+			$db = \JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('s.id, s.home, s.template, s.params');
+			$query->from('#__template_styles as s');
+			$query->leftJoin('#__extensions as e ON e.type='.$db->quote('template').' AND e.element=s.template AND e.client_id=s.client_id');
+			if ($style = \User::getParam('admin_style'))
+			{
+				$query->where('s.client_id = 1 AND id = ' . (int) $style . ' AND e.enabled = 1', 'OR');
+			}
+			$query->where('s.client_id = 1 AND home = 1', 'OR');
+			$query->order('home');
+			$db->setQuery($query);
 
-		$template = $db->loadObject();
+			$template = $db->loadObject();
+		}
+		catch (Exception $e)
+		{
+			return $this->getSystemTemplate();
+		}
+
 		$template->template = $this->canonical($template->template);
 		$template->params   = new Registry($template->params);
 
@@ -233,29 +241,36 @@ class Loader
 		if (!$templates = $cache->get('com_templates.templates0' . $tag))
 		{
 			// Load styles
-			$db = \JFactory::getDbo();
-			$query = $db->getQuery(true);
-			$query->select('s.id, s.home, s.template, s.params');
-			$query->from('#__template_styles as s');
-			$query->where('s.client_id = 0');
-			$query->where('e.enabled = 1');
-			$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id');
-
-			$db->setQuery($query);
-			$templates = $db->loadObjectList('id');
-			foreach ($templates as &$template)
+			try
 			{
-				$registry = new Registry($template->params);
+				$db = \JFactory::getDbo();
+				$query = $db->getQuery(true);
+				$query->select('s.id, s.home, s.template, s.params');
+				$query->from('#__template_styles as s');
+				$query->where('s.client_id = 0');
+				$query->where('e.enabled = 1');
+				$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id');
 
-				$template->params = $registry;
-
-				// Create home element
-				if ($template->home == 1 && !isset($templates[0])) // || $this->_language_filter && $template->home == $tag)
+				$db->setQuery($query);
+				$templates = $db->loadObjectList('id');
+				foreach ($templates as &$template)
 				{
-					$templates[0] = clone $template;
+					$registry = new Registry($template->params);
+
+					$template->params = $registry;
+
+					// Create home element
+					if ($template->home == 1 && !isset($templates[0])) // || $this->_language_filter && $template->home == $tag)
+					{
+						$templates[0] = clone $template;
+					}
 				}
+				$cache->put('com_templates.templates0' . $tag, $templates, $this->app['config']->get('cachetime', 15));
 			}
-			$cache->put('com_templates.templates0' . $tag, $templates, $this->app['config']->get('cachetime', 15));
+			catch (Exception $e)
+			{
+				return $this->getSystemTemplate();
+			}
 		}
 
 		if (isset($templates[$id]))
