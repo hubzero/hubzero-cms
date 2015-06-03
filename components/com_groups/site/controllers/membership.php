@@ -79,6 +79,14 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Load the group page
 		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
 
+		//check if group is approved
+		if ($this->view->group->get('approved') == 0)
+		{
+			$this->setNotification(Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'error');
+			$this->setRedirect( Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
+			return;
+		}
+
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
 		{
