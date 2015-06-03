@@ -17,7 +17,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage	com_banners
  * @since		1.6
  */
-class \Components\Courses\Models\Course extends JModelAdmin
+class CoursesModelCourse extends JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -28,7 +28,6 @@ class \Components\Courses\Models\Course extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
@@ -38,7 +37,7 @@ class \Components\Courses\Models\Course extends JModelAdmin
 		{
 			$pk = intval($pk[0]);
 		}
-		$this->setState($this->getName().'.id', $pk);
+		$this->setState($this->getName() . '.id', $pk);
 
 		// Load the parameters.
 		$value = Component::params($this->option);
@@ -76,7 +75,7 @@ class \Components\Courses\Models\Course extends JModelAdmin
 		 */
 	public function getTable($type = 'Course', $prefix = 'Courses', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return \JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -88,7 +87,7 @@ class \Components\Courses\Models\Course extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = \JFactory::getApplication()->getUserState('com_courses.edit.course.data', array());
+		$data = User::getState('com_courses.edit.course.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();
