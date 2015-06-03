@@ -36,6 +36,23 @@ namespace Components\Newsletter\Helpers;
 class Helper
 {
 	/**
+	 * Get the encrypter utility
+	 *
+	 * @return  void
+	 */
+	protected static function getEncrypter()
+	{
+		$key = \App::hash(@$_SERVER['HTTP_USER_AGENT']);
+
+		$crypt = new \Hubzero\Encryption\Encrypter(
+			new \Hubzero\Encryption\Cipher\Simple,
+			new \Hubzero\Encryption\Key('simple', $key, $key)
+		);
+
+		return $crypt;
+	}
+
+	/**
 	 * Generate Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
 	 *
 	 * @param 	$mailingRecipientObject		Mailing Recipient Object
@@ -49,11 +66,8 @@ class Helper
 			return false;
 		}
 
-		//include joomla simple crypt
-		jimport('joomla.utilities.simplecrypt');
-
 		//instantiate simple crypt object
-		$crypt = new \JSimpleCrypt();
+		$crypt = self::getEncrypter();
 
 		//encrypt campaign id and current timestamp
 		$token = $crypt->encrypt($mailingRecipientObject->mailingid . ':' . $mailingRecipientObject->email);
@@ -77,11 +91,8 @@ class Helper
 			return false;
 		}
 
-		//include joomla simple crypt
-		jimport('joomla.utilities.simplecrypt');
-
 		//instantiate simple crypt object
-		$crypt = new \JSimpleCrypt();
+		$crypt = self::getEncrypter();
 
 		//encrypt campaign id and current timestamp
 		$token = $crypt->encrypt($mailinglistObject->id . ':' . $emailAddress);
@@ -104,11 +115,8 @@ class Helper
 			return false;
 		}
 
-		//include joomla simple crypt
-		jimport('joomla.utilities.simplecrypt');
-
 		//instantiate simple crypt object
-		$crypt = new \JSimpleCrypt();
+		$crypt = self::getEncrypter();
 
 		//url decode token
 		$mailingToken = urldecode($mailingToken);
@@ -162,11 +170,8 @@ class Helper
 			return false;
 		}
 
-		//include joomla simple crypt
-		jimport('joomla.utilities.simplecrypt');
-
 		//instantiate simple crypt object
-		$crypt = new \JSimpleCrypt();
+		$crypt = self::getEncrypter();
 
 		//url decode token
 		$confirmationToken = urldecode($confirmationToken);

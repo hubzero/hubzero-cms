@@ -48,7 +48,12 @@ class Cookie
 	public static function bake($namespace, $lifetime, $data=array())
 	{
 		$hash   = \App::hash(\App::get('client')->name . ':' . $namespace);
-		$crypt  = new \JSimpleCrypt();
+
+		$key = \App::hash('');
+		$crypt = new \Hubzero\Encryption\Encrypter(
+			new \Hubzero\Encryption\Cipher\Simple,
+			new \Hubzero\Encryption\Key('simple', $key, $key)
+		);
 		$cookie = $crypt->encrypt(serialize($data));
 
 		// Set the actual cookie
@@ -64,7 +69,12 @@ class Cookie
 	public static function eat($namespace)
 	{
 		$hash  = \App::hash(\App::get('client')->name . ':' . $namespace);
-		$crypt = new \JSimpleCrypt();
+
+		$key = \App::hash('');
+		$crypt = new \Hubzero\Encryption\Encrypter(
+			new \Hubzero\Encryption\Cipher\Simple,
+			new \Hubzero\Encryption\Key('simple', $key, $key)
+		);
 
 		if ($str = \App::get('request')->getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 		{
@@ -73,9 +83,7 @@ class Cookie
 
 			return (object)$cookie;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 }

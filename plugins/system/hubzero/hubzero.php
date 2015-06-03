@@ -61,12 +61,15 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 
 			// Transfer tracking cookie data to session
 			jimport('joomla.utilities.utility');
-			jimport('joomla.utilities.simplecrypt');
 			jimport('joomla.user.helper');
 
 			$hash = App::hash(App::get('client')->name . ':tracker');
 
-			$crypt = new JSimpleCrypt();
+			$key = App::hash('');
+			$crypt = new \Hubzero\Encryption\Encrypter(
+				new \Hubzero\Encryption\Cipher\Simple,
+				new \Hubzero\Encryption\Key('simple', $key, $key)
+			);
 
 			if ($str = Request::getString($hash, '', 'cookie', 1 | 2))
 			{
@@ -77,7 +80,10 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 				{
 					//Create the encryption key, apply extra hardening using the user agent string
 					$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
-					$crypt = new JSimpleCrypt($key);
+					$crypt = new \Hubzero\Encryption\Encrypter(
+						new \Hubzero\Encryption\Cipher\Simple,
+						new \Hubzero\Encryption\Key('simple', $key, $key)
+					);
 					$sstr = $crypt->decrypt($str);
 					$tracker = @unserialize($sstr);
 				}

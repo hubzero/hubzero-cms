@@ -31,6 +31,9 @@
 namespace Hubzero\Spam;
 
 use Hubzero\Html\Builder\Input;
+use Hubzero\Encryption\Encrypter;
+use Hubzero\Encryption\Cipher\Simple;
+use Hubzero\Encryption\Key;
 
 /**
  * This technique is based on creating an input field that should be left
@@ -120,9 +123,9 @@ class Honeypot
 		{
 			$key = \App::get('session')->getFormToken();
 
-			$crypt = new \JCrypt(
-				new \JCryptCipherSimple,
-				new \JCryptKey('simple', $key, $key)
+			$crypt = new Encrypter(
+				new Simple,
+				new Key('simple', $key, $key)
 			);
 		}
 

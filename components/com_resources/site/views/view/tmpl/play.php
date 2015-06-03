@@ -154,8 +154,11 @@ $html = '';
 
 				$session_id = $session->getId();
 
-				jimport('joomla.utilities.simplecrypt');
-				$crypter = new JSimpleCrypt();
+				$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
+				$crypter = new \Hubzero\Encryption\Encrypter(
+					new \Hubzero\Encryption\Cipher\Simple,
+					new \Hubzero\Encryption\Key('simple', $key, $key)
+				);
 				$token = base64_encode($crypter->encrypt($session_id));
 			}
 

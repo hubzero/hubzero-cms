@@ -160,12 +160,15 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		}
 
 		// update tracking data with changes related to login
-		jimport('joomla.utilities.simplecrypt');
 		jimport('joomla.utilities.utility');
 
 		$hash = App::hash(App::get('client')->name . ':tracker');
 
-		$crypt = new JSimpleCrypt();
+		$key = \App::hash('');
+		$crypt = new \Hubzero\Encryption\Encrypter(
+			new \Hubzero\Encryption\Cipher\Simple,
+			new \Hubzero\Encryption\Key('simple', $key, $key)
+		);
 
 		$tracker = array();
 		$tracker['user_id'] = $session->get('tracker.user_id');

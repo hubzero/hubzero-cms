@@ -32,7 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $hash  = App::hash(App::get('client')->name . ':authenticator');
-$crypt = new JSimpleCrypt();
 
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
 {

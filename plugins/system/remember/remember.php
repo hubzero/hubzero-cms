@@ -28,7 +28,6 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 
 			if ($str = Request::getString($hash, '', 'cookie', 1 | 2))
 			{
-				jimport('joomla.utilities.simplecrypt');
 				$credentials = array();
 				$goodCookie = true;
 				$filter = JFilterInput::getInstance();
@@ -37,8 +36,10 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 				// Since we're decoding, no UA validity check is required.
 				$privateKey = App::hash(@$_SERVER['HTTP_USER_AGENT']);
 
-				$key = new JCryptKey('simple', $privateKey, $privateKey);
-				$crypt = new JCrypt(new JCryptCipherSimple, $key);
+				$crypt = new \Hubzero\Encryption\Encrypter(
+					new \Hubzero\Encryption\Cipher\Simple,
+					new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey)
+				);
 
 				try
 				{
@@ -77,8 +78,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 						throw new Exception('Malformed password.');
 					}
 
-					$app = JFactory::getApplication();
-					$return = $app->login($credentials, array('silent' => true));
+					$return = App::get('auth')->login($credentials, array('silent' => true));
 					if (!$return)
 					{
 						throw new Exception('Log-in failed.');
@@ -94,7 +94,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 						App::hash('JLOGIN_REMEMBER'), false, time() - 86400,
 						$cookie_path, $cookie_domain
 					);
-					JLog::add('A remember me cookie was unset for the following reason: ' . $e->getMessage(), JLog::WARNING, 'security');
+					Log::warning('A remember me cookie was unset for the following reason: ' . $e->getMessage());
 				}
 			}
 		}

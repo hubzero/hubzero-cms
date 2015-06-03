@@ -132,9 +132,10 @@ class Manager
 				{
 					// Create the encryption key, apply extra hardening using the user agent string.
 					$privateKey = $this->app->hash(@$_SERVER['HTTP_USER_AGENT']);
-
-					$key   = new \JCryptKey('simple', $privateKey, $privateKey);
-					$crypt = new \JCrypt(new \JCryptCipherSimple, $key);
+					$crypt = new \Hubzero\Encryption\Encrypter(
+						new \Hubzero\Encryption\Cipher\Simple,
+						new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey)
+					);
 					$rcookie = $crypt->encrypt(json_encode($credentials));
 					$lifetime = time() + 365 * 24 * 60 * 60;
 
