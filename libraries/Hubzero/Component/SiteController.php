@@ -247,7 +247,7 @@ class SiteController extends Object implements ControllerInterface
 		$this->config   = \Component::params($this->_option);
 
 		// Clear component messages - for cross component messages
-		$this->getComponentMessage();
+		//$this->getComponentMessage();
 	}
 
 	/**
@@ -537,7 +537,7 @@ class SiteController extends Object implements ControllerInterface
 	 */
 	public function addComponentMessage($message, $type='message')
 	{
-		if (!count($this->componentMessageQueue))
+		/*if (!count($this->componentMessageQueue))
 		{
 			$session = \App::get('session');
 			$componentMessage = $session->get('component.message.queue');
@@ -556,7 +556,27 @@ class SiteController extends Object implements ControllerInterface
 				'type'    => strtolower($type),
 				'option'  => $this->_option
 			);
+		}*/
+
+		$session = \App::get('session');
+		$componentMessage = $session->get('component.message.queue', array());
+		foreach ($componentMessage as $m)
+		{
+			if ($m['option'] != $this->_option) continue;
+
+			if ($m['message'] == $message && $m['type'] == $type)
+			{
+				// Message already exists
+				return $this;
+			}
 		}
+
+		$componentMessage[] = array(
+			'message' => $message,
+			'type'    => strtolower($type),
+			'option'  => $this->_option
+		);
+		$session->set('component.message.queue', $componentMessage);
 
 		return $this;
 	}
@@ -568,7 +588,7 @@ class SiteController extends Object implements ControllerInterface
 	 */
 	public function getComponentMessage()
 	{
-		if (!count($this->componentMessageQueue))
+		/*if (!count($this->componentMessageQueue))
 		{
 			$session = \App::get('session');
 			$componentMessage = $session->get('component.message.queue');
@@ -587,7 +607,20 @@ class SiteController extends Object implements ControllerInterface
 			}
 		}
 
-		return $this->componentMessageQueue;
+		return $this->componentMessageQueue;*/
+		$session = \App::get('session');
+		$componentMessage = $session->get('component.message.queue', array());
+		$session->set('component.message.queue', null);
+
+		foreach ($componentMessage as $k => $cmq)
+		{
+			if ($cmq['option'] != $this->_option)
+			{
+				$componentMessage[$k] = array();
+			}
+		}
+
+		return $componentMessage;
 	}
 
 	/**
@@ -597,7 +630,8 @@ class SiteController extends Object implements ControllerInterface
 	 */
 	public function clearComponentMessage()
 	{
-		$this->componentMessageQueue = array();
+		//$this->componentMessageQueue = array();
+		\App::get('session')->set('component.message.queue', null);
 
 		return $this;
 	}
