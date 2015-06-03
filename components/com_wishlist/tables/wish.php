@@ -147,7 +147,7 @@ class Wish extends \JTable
 									break;
 				case 'open':    	$sql .= ' AND ws.status=0';
 									break;
-				case 'accepted':    $sql .= ' AND ws.accepted=1 AND ws.status=0';
+				case 'accepted':    $sql .= ' AND ws.accepted=1 AND (ws.status=0 OR ws.status=6)';
 									break;
 				case 'pending':     $sql .= ' AND ws.accepted=0 AND ws.status=0';
 									break;
