@@ -937,7 +937,8 @@ abstract class JError
 				case 404: $msg = 'Not Found'; break;
 				case 403: $msg = 'Forbidden'; break;
 				case 301: $msg = 'Moved Permanently'; break;
-				case 500: $msg = 'Internal Server Error'; break;
+				case 500:
+				default: $msg = 'Internal Server Error'; break;
 			}
 			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $code . ' ' . $msg, true, $code);
 		}
