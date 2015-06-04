@@ -18,7 +18,8 @@ class MediaViewImagesList extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Do not allow cache
-		JResponse::allowCache(false);
+		App::get('response')->headers->set('Cache-Control', 'no-cache', false);
+		App::get('response')->headers->set('Pragma', 'no-cache');
 
 		Html::asset('stylesheet', 'media/popup-imagelist.css', array(), true);
 		if (Lang::isRTL()) :

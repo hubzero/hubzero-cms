@@ -18,7 +18,8 @@ class MediaViewMediaList extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Do not allow cache
-		JResponse::allowCache(false);
+		App::get('response')->headers->set('Cache-Control', 'no-cache', false);
+		App::get('response')->headers->set('Pragma', 'no-cache');
 
 		$style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
