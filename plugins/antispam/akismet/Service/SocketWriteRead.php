@@ -123,7 +123,7 @@ class SocketWriteRead
 	{
 		$this->response = '';
 
-		$fs = fsockopen($this->host, $this->port, $this->errorNumber, $this->errorString, 3);
+		$fs = @fsockopen($this->host, $this->port, $this->errorNumber, $this->errorString, 3);
 
 		if ($this->errorNumber != 0)
 		{
