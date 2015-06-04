@@ -28,16 +28,45 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Hubzero\User\Group;
+use GroupsModelLog;
+use GroupsReason;
+use GroupsGroup;
+use Request;
+use Config;
+use Route;
+use Lang;
+use User;
+use App;
 
 require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php');
 
 /**
  * Groups controller class for managing membership and group info
  */
-class GroupsControllerMembership extends \Hubzero\Component\AdminController
+class Membership extends AdminController
 {
+	/**
+	 * Determine task and execute it
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		if (!User::authorize('core.manage', $this->_option))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option, false)
+			);
+			return;
+		}
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of groups
 	 *
@@ -58,7 +87,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		if (!$this->view->filters['gid'])
 		{
 			App::redirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_GROUPS_MISSING_ID'),
 				'error'
 			);
@@ -66,13 +95,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		}
 
 		// Load the group page
-		$group = new \Hubzero\User\Group();
+		$group = new Group();
 		$group->read($this->view->filters['gid']);
-
-		if (!$this->_authorize($group))
-		{
-			return;
-		}
 
 		$this->view->filters['gidNumber'] = $group->get('gidNumber');
 
@@ -123,13 +147,13 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		if ($this->view->filters['status'] == '' || $this->view->filters['status'] == 'invitee')
 		{
 			//get group invite emails
-			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail( $this->database );
+			$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($this->database);
 			$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
 
 			//add invite emails to list
 			foreach ($inviteemails as $inviteemail)
 			{
-				$this->view->rows[$inviteemail['email']]            = new stdClass;
+				$this->view->rows[$inviteemail['email']]            = new \stdClass;
 				$this->view->rows[$inviteemail['email']]->name      = $inviteemail['email'];
 				$this->view->rows[$inviteemail['email']]->username  = null;
 				$this->view->rows[$inviteemail['email']]->email     = $inviteemail['email'];
@@ -160,7 +184,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->view->group = new \Hubzero\User\Group();
+		$this->view->group = new Group();
 		$this->view->group->read($gid);
 
 		// Set any errors
@@ -186,7 +210,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		// Set a flag for emailing any changes made
@@ -216,7 +240,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		{
 			// Retrieve user's account info
 			$mbr = trim($mbr);
-			$uid = JUserHelper::getUserId($mbr);
+			$uid = \JUserHelper::getUserId($mbr);
 
 			// Ensure we found an account
 			if ($uid)
@@ -284,7 +308,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		// Set a flag for emailing any changes made
@@ -365,7 +389,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		$users = array();
@@ -438,7 +462,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		// Get all managers of this group
@@ -527,7 +551,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		// Get all the group's managers
@@ -585,17 +609,12 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 			'comments'  => $users_mem
 		));
 
-		if ($this->getError())
-		{
-			echo $this->getError();
-			return;
-		}
-
 		if (!Request::getInt('no_html', 0))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->group->get('cn'), false),
-				Lang::txt('COM_GROUPS_MEMBER_REMOVED')
+				($this->getError() ? $this->getError() : Lang::txt('COM_GROUPS_MEMBER_REMOVED')),
+				($this->getError() ? 'error' : null)
 			);
 		}
 	}
@@ -613,7 +632,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		$authorized = $this->authorized;
@@ -698,7 +717,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$gid = Request::getVar('gid', '');
 
 		// Load the group page
-		$this->group = new \Hubzero\User\Group();
+		$this->group = new Group();
 		$this->group->read($gid);
 
 		// An array for the users we're going to deny

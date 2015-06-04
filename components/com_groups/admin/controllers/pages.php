@@ -28,13 +28,30 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Hubzero\User\Group;
+use GroupsModelPageCategoryArchive;
+use GroupsModelPageArchive;
+use GroupsModelPage;
+use GroupsModelPageVersion;
+use GroupsModelLog;
+use GroupsHelperPages;
+use GroupsHelperView;
+use GroupsHelperDocument;
+use Request;
+use Notify;
+use Route;
+use Lang;
+use Date;
+use User;
+use App;
 
 /**
  * Groups controller class for managing group pages
  */
-class GroupsControllerPages extends \Hubzero\Component\AdminController
+class Pages extends AdminController
 {
 	/**
 	 * Overload exec method to load group object
@@ -58,7 +75,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// load group object
-		$this->group = \Hubzero\User\Group::getInstance($this->gid);
+		$this->group = Group::getInstance($this->gid);
 
 		// run parent execute
 		parent::execute();
@@ -126,9 +143,6 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
-		// force layout
-		$this->view->setLayout('edit');
-
 		// get request vars
 		$ids = Request::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
@@ -166,7 +180,9 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -184,7 +200,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$task = ($page['id']) ? 'update' : 'create';
 
 		// load page and version objects
-		$this->page    = new GroupsModelPage( $page['id'] );
+		$this->page    = new GroupsModelPage($page['id']);
 		$this->version = new GroupsModelPageVersion();
 
 		// bind new page properties
@@ -749,7 +765,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$version = Request::getInt('version', null, 'get');
 
 		// page object
-		$page = new GroupsModelPage( $pageid );
+		$page = new GroupsModelPage($pageid);
 
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))

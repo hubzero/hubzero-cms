@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site;
 
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'reason.php';
@@ -47,16 +46,16 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'document.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'template.php';
 
 //include abstract controller
-require_once __DIR__ . DS . 'controllers' . DS . 'abstract.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'base.php';
 
 //build controller path and name
-$controllerName = Request::getCmd('controller', Request::getCmd('view', 'groups'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'groups'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'groups';
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'GroupsController' . ucfirst(strtolower($controllerName));
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();

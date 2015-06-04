@@ -28,13 +28,25 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site\Controllers;
+
+use Hubzero\User\Group;
+use Hubzero\Config\Registry;
+use GroupsModelLog;
+use GroupsReason;
+use Request;
+use Config;
+use Event;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerMembership extends GroupsControllerAbstract
+class Membership extends Base
 {
 	/**
 	 * Override Execute Method
@@ -77,13 +89,13 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		//check if group is approved
 		if ($this->view->group->get('approved') == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'error');
-			$this->setRedirect( Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
+			$this->setRedirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
 			return;
 		}
 
@@ -100,7 +112,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get group params
-		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+		$gparams = new Registry($this->view->group->get('params'));
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
@@ -112,8 +124,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		//set some vars for view
-		$this->view->title = Lang::txt('Invite Members: ' . $this->view->group->get('description'));
-		$this->view->msg = trim(Request::getVar('msg',''));
+		$this->view->title  = Lang::txt('Invite Members: ' . $this->view->group->get('description'));
+		$this->view->msg    = trim(Request::getVar('msg',''));
 		$this->view->return = trim(Request::getVar('return',''));
 
 		//display view
@@ -142,7 +154,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -158,7 +170,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		//get request vars
 		$logins = trim(Request::getVar('logins',''));
-		$msg = trim(Request::getVar('msg',''));
+		$msg    = trim(Request::getVar('msg',''));
 
 		if (!$logins)
 		{
@@ -194,7 +206,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			if (!is_numeric($l) && strpos($l, '@') === false)
 			{
 				// load by username
-				$profile = Hubzero\User\Profile::getInstance($l);
+				$profile = \Hubzero\User\Profile::getInstance($l);
 				if ($profile && $profile->get('uidNumber'))
 				{
 					unset($la[$k]);
@@ -499,7 +511,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//get current members and invitees
-		$members = $this->view->group->get("members");
+		$members  = $this->view->group->get('members');
 		$invitees = $this->view->group->get('invitees');
 
 		// Get invite emails
@@ -565,10 +577,10 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		// Build the e-mail message
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'accepted'));
-		$eview->option = $this->_option;
+		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
-		$eview->group = $this->view->group;
+		$eview->user     = User::getRoot();
+		$eview->group    = $this->view->group;
 		$body = $eview->loadTemplate();
 		$body = str_replace("\n", "\r\n", $body);
 
@@ -639,7 +651,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -648,7 +660,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+		$gparams = new Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -673,7 +685,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		// delete member roles
 		require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
-		GroupsMembersRole::deleteRolesForUserWithId(User::get('id'));
+		\GroupsMembersRole::deleteRolesForUserWithId(User::get('id'));
 
 		// Log the membership cancellation
 		GroupsModelLog::log(array(
@@ -691,10 +703,10 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		// Build the e-mail message
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'cancelled'));
-		$eview->option = $this->_option;
+		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user = User::getRoot();
-		$eview->group = $this->view->group;
+		$eview->user     = User::getRoot();
+		$eview->group    = $this->view->group;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
@@ -742,7 +754,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -751,7 +763,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+		$gparams = new Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -762,9 +774,9 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//get groups managers, members, applicants, and invtees
-		$members = $this->view->group->get('members');
+		$members    = $this->view->group->get('members');
 		$applicants = $this->view->group->get('applicants');
-		$invitees = $this->view->group->get('invitees');
+		$invitees   = $this->view->group->get('invitees');
 
 		//check if already member, or applicant
 		if (in_array(User::get('id'), $members))
@@ -859,7 +871,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -868,7 +880,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+		$gparams = new Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)

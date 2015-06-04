@@ -28,13 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site\Controllers;
+
+use Hubzero\User\Group;
+use Filesystem;
+use Component;
+use Request;
+use Route;
+use User;
+use Lang;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerMedia extends GroupsControllerAbstract
+class Media extends Base
 {
 	/**
 	 * Override Execute Method
@@ -45,11 +53,6 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	{
 		// disable default task
 		$this->disableDefaultTask();
-
-		// import needed joomla libraires
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.archive');
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -68,7 +71,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->group || !$this->group->get('gidNumber'))
@@ -123,7 +126,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->_createGroupFolder($this->path);
 
 		// get list of folders
-		$folders = JFolder::listFolderTree($this->path, '.', 10);
+		$folders = Filesystem::directoryTree($this->path, '.', 10);
 
 		// build recursive folder trees
 		$folderTree             = $this->_buildFolderTree($folders);
@@ -199,7 +202,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _buildFolderTreeHtml($tree)
 	{
 		//load group object
-		$hubzeroGroup = \Hubzero\User\Group::getInstance($this->cn);
+		$hubzeroGroup = Group::getInstance($this->cn);
 
 		$html = '<ul>';
 		foreach ($tree as $treeLevel)
@@ -232,7 +235,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _buildFolderTreeSelect($tree)
 	{
 		// load group object
-		$hubzeroGroup = \Hubzero\User\Group::getInstance($this->cn);
+		$hubzeroGroup = Group::getInstance($this->cn);
 
 		$html  = '<select class="" name="folder">';
 		if ($hubzeroGroup->get('type') == 3)
@@ -253,7 +256,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	private function _buildFolderTreeSelectOptionList($tree)
 	{
 		// load group object
-		$hubzeroGroup = \Hubzero\User\Group::getInstance($this->cn);
+		$hubzeroGroup = Group::getInstance($this->cn);
 
 		$options = '';
 		foreach ($tree as $treeLevel)
@@ -441,7 +444,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 	public function doUpload()
 	{
 		// var to hold potential error
-		$returnObj          = new stdClass;
+		$returnObj          = new \stdClass;
 		$returnObj->error   = false;
 		$returnObj->message = '';
 		$returnObj->file    = null;
@@ -746,7 +749,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 
 		// get list of folders
-		$folders    = JFolder::listFolderTree($this->path, '.', 10);
+		$folders    = Filesystem::directoryTree($this->path, '.', 10);
 		$folderTree = $this->_buildFolderTree($folders);
 		$folderList = $this->_buildFolderTreeSelect($folderTree);
 
@@ -883,7 +886,8 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// if file exists extract
 		if (file_exists($file))
 		{
-			JArchive::extract($file, $fileInfo['dirname']);
+			jimport('joomla.filesystem.archive');
+			\JArchive::extract($file, $fileInfo['dirname']);
 		}
 
 		// delete garbage folders
@@ -946,7 +950,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->view->setLayout('newfolder');
 
 		// get list of folders
-		$folders    = JFolder::listFolderTree($this->path, '.', 10);
+		$folders    = Filesystem::directoryTree($this->path, '.', 10);
 		$folderTree = $this->_buildFolderTree($folders);
 		$folderList = $this->_buildFolderTreeSelect($folderTree);
 
@@ -1101,7 +1105,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//}
 
 		// get list of folders
-		$folders    = JFolder::listFolderTree($this->path, '.', 10);
+		$folders    = Filesystem::directoryTree($this->path, '.', 10);
 		$folderTree = $this->_buildFolderTree($folders);
 		$folderList = $this->_buildFolderTreeSelect($folderTree);
 

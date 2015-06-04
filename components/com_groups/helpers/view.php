@@ -513,7 +513,13 @@ class GroupsHelperView
 
 		// load html through dom document object
 		$domDocument = new DOMDocument();
+		// Since HTML 5 doctype has no DTD to check, the DOM will attempt to
+		// use HTML4 TRansitional which will throw errors on valid HTML5
+		// entities (e.g., header, footer, section). So, we temporarily
+		// suppress errors.
+		libxml_use_internal_errors(true);
 		$domDocument->loadHTML($html);
+		libxml_use_internal_errors(false);
 
 		// parse reseults as xml and use xpath to get list of stylesheets
 		$domDocumentXml = simplexml_import_dom($domDocument);
@@ -578,7 +584,7 @@ class GroupsHelperView
 		}
 
 		// attach custom error handler
-		JError::setErrorHandling(E_ERROR, 'callback', array('GroupsHelperView', 'handleCustomError'));
+		set_exception_handler(array('GroupsHelperView', 'handleCustomError'));
 	}
 
 
@@ -613,13 +619,15 @@ class GroupsHelperView
 		$fullTemplate = $document->render(false, array('template' => 'hubbasic2013', 'file'=>'group.php'));
 
 		// echo to screen
-		$app = JFactory::getApplication();
-		JResponse::allowCache(false);
-		JResponse::setHeader('Content-Type', 'text/html');
-		JResponse::setHeader('status', $error->getCode() . ' ' . str_replace("\n", ' ', $error->getMessage()));
-		JResponse::setBody($fullTemplate);
-		echo JResponse::toString();
-		$app->close(0);
+		$response = App::get('response');
+		$response->headers->set('Cache-Control', 'no-cache', false);
+		$response->headers->set('Pragma', 'no-cache');
+		$response->headers->set('Content-Type', 'text/html');
+		$response->headers->set('status', $error->getCode() . ' ' . str_replace("\n", ' ', $error->getMessage()));
+		$response->setContent($fullTemplate);
+		$response->send();
+
+		App::close();
 	}
 
 	/**

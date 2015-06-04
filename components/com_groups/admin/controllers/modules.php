@@ -28,13 +28,29 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Hubzero\User\Group;
+use GroupsModelModuleArchive;
+use GroupsModelPageArchive;
+use GroupsModelLog;
+use GroupsModelModule;
+use GroupsHelperPages;
+use GroupsHelperView;
+use GroupsHelperDocument;
+use Request;
+use Notify;
+use Route;
+use Lang;
+use Date;
+use User;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerModules extends \Hubzero\Component\AdminController
+class Modules extends AdminController
 {
 	/**
 	 * Override Execute Method
@@ -57,7 +73,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->group = \Hubzero\User\Group::getInstance($this->gid);
+		$this->group = Group::getInstance($this->gid);
 
 		parent::execute();
 	}
@@ -136,6 +152,8 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
+		Request::setVar('hidemainmenu', 1);
+
 		// get request vars
 		$ids = Request::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
@@ -148,7 +166,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1,2),
-			'orderby'   => 'ordering'
+			'orderby'   => 'lft'
 		));
 
 		// get a list of all pages for creating module menu
@@ -358,7 +376,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$moduleid  = Request::getInt('moduleid', 0, 'get');
 
 		// page object
-		$module = new GroupsModelModule( $moduleid );
+		$module = new GroupsModelModule($moduleid);
 
 		// make sure module belongs to this group
 		if (!$module->belongsToGroup($this->group))
@@ -476,7 +494,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		}
 
 		// get group css
-		$pageCss = GroupsHelperView::GetPageCss($this->group);
+		$pageCss = GroupsHelperView::getPageCss($this->group);
 
 		$css = '';
 		foreach ($pageCss as $p)
@@ -523,7 +541,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$module = new GroupsModelModule( $id );
+		$module = new GroupsModelModule($id);
 
 		// make sure version is unapproved
 		if ($module->get('approved') == 1)
@@ -635,7 +653,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$module = new GroupsModelModule( $id );
+		$module = new GroupsModelModule($id);
 
 		// make sure version is unapproved
 		if ($module->get('approved') == 1)
@@ -656,7 +674,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$content = explode("\n", $module->get('content'));
 
 		// get any issues
-		$issues        = new stdClass;
+		$issues        = new \stdClass;
 		$issues->count = 0;
 		foreach ($flags as $lang => $flag)
 		{
@@ -666,7 +684,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$minor    = implode('|', $flag['minor']);
 
 			// do case insensitive search for any flags
-			$issues->$lang           = new stdClass;
+			$issues->$lang           = new \stdClass;
 			$issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
 			$issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
 			$issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();
@@ -799,7 +817,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$module = new GroupsModelModule( $id );
+		$module = new GroupsModelModule($id);
 
 		// make sure version is unapproved
 		if ($module->get('approved') == 1)

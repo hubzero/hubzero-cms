@@ -28,13 +28,30 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Hubzero\Config\Registry;
+use Hubzero\User\Group;
+use GroupsModelPageVersion;
+use GroupsModelPage;
+use GroupsModelLog;
+use GroupsHelperGitlab;
+use Filesystem;
+use Request;
+use Config;
+use Nofity;
+use Event;
+use Route;
+use Lang;
+use User;
+use Date;
+use App;
 
 /**
  * Groups controller class for managing membership and group info
  */
-class GroupsControllerManage extends \Hubzero\Component\AdminController
+class Manage extends AdminController
 {
 	/**
 	 * Displays a list of groups
@@ -43,44 +60,47 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['type']    = array(trim(Request::getState(
-			$this->_option . '.browse.type',
-			'type',
-			'all'
-		)));
-		$this->view->filters['search']  = urldecode(trim(Request::getState(
-			$this->_option . '.browse.search',
-			'search',
-			''
-		)));
-		$this->view->filters['discoverability'] = trim(Request::getState(
-			$this->_option . '.browse.discoverability',
-			'discoverability',
-			''
-		));
-		$this->view->filters['policy']  = trim(Request::getState(
-			$this->_option . '.browse.policy',
-			'policy',
-			''
-		));
-		$this->view->filters['sort']     = trim(Request::getState(
-			$this->_option . '.browse.sort',
-			'filter_order',
-			'cn'
-		));
-		$this->view->filters['sort_Dir'] = trim(Request::getState(
-			$this->_option . '.browse.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
+		$this->view->filters = array(
+			// Filters for getting a result count
+			'limit'      => 'all',
+			'fields'     => array('COUNT(*)'),
+			'authorized' => 'admin',
+			// Incoming
+			'type'       => array(Request::getState(
+				$this->_option . '.browse.type',
+				'type',
+				'all'
+			)),
+			'search'     => urldecode(Request::getState(
+				$this->_option . '.browse.search',
+				'search',
+				''
+			)),
+			'discoverability' => Request::getState(
+				$this->_option . '.browse.discoverability',
+				'discoverability',
+				''
+			),
+			'policy'     => Request::getState(
+				$this->_option . '.browse.policy',
+				'policy',
+				''
+			),
+			'sort'       => Request::getState(
+				$this->_option . '.browse.sort',
+				'filter_order',
+				'cn'
+			),
+			'sort_Dir'   => Request::getState(
+				$this->_option . '.browse.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'approved'   => Request::getVar('approved'),
+			//'published'  => Request::getVar('published', 1),
+			'created'    => Request::getVar('created', '')
+		);
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
-
-		// Filters for getting a result count
-		$this->view->filters['limit'] = 'all';
-		$this->view->filters['fields'] = array('COUNT(*)');
-		$this->view->filters['authorized'] = 'admin';
 
 		$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 		if (!$canDo->get('core.admin'))
@@ -101,17 +121,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			}
 		}
 
-		//approved filter
-		$this->view->filters['approved'] = Request::getVar('approved');
-
-		//published filter
-		//$this->view->filters['published'] = Request::getVar('published', 1);
-
-		//created filter
-		$this->view->filters['created'] = Request::getVar('created', '');
-
 		// Get a record count
-		$this->view->total = \Hubzero\User\Group::find($this->view->filters);
+		$this->view->total = Group::find($this->view->filters);
 
 		// Filters for returning results
 		$this->view->filters['limit']  = Request::getState(
@@ -127,14 +138,14 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+		$this->view->filters['start']  = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 		$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
 
 		// Get a list of all groups
 		$this->view->rows = null;
 		if ($this->view->total > 0)
 		{
-			$this->view->rows = \Hubzero\User\Group::find($this->view->filters);
+			$this->view->rows = Group::find($this->view->filters);
 		}
 
 		// Set any errors
@@ -183,7 +194,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// determine task
 		$task = ($id == '') ? 'create' : 'edit';
 
-		$this->view->group = new \Hubzero\User\Group();
+		$this->view->group = new Group();
 		$this->view->group->read($id);
 
 		// make sure we are organized
@@ -235,8 +246,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$g = Request::getVar('group', array(), 'post', 'none', 2);
 		$g = $this->_multiArrayMap('trim', $g);
 
-		// Instantiate an \Hubzero\User\Group object
-		$group = new \Hubzero\User\Group();
+		// Instantiate a Group object
+		$group = new Group();
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -247,7 +258,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// Set the task - if anything fails and we re-enter edit mode
 			// we need to know if we were creating new or editing existing
 			$this->_task = 'new';
-			$before = new \Hubzero\User\Group();
+			$before = new Group();
 		}
 		else
 		{
@@ -302,7 +313,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		//only check if cn exists if we are creating or have changed the cn
 		if ($this->_task == 'new' || $group->get('cn') != $g['cn'])
 		{
-			if (\Hubzero\User\Group::exists($g['cn'], true))
+			if (Group::exists($g['cn'], true))
 			{
 				$this->setError(Lang::txt('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 			}
@@ -326,8 +337,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// group params
-		$gparams = new \Hubzero\Config\Registry($group->get('params'));
-		$gparams->merge(new \Hubzero\Config\Registry($g['params']));
+		$gparams = new Registry($group->get('params'));
+		$gparams->merge(new Registry($g['params']));
 
 		// set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
@@ -647,7 +658,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// protect master branch
 		// allows only admins to accept Merge Requests
 		$protected = $client->protectBranch(array(
-			'id' => $gitLabProject['id'],
+			'id'     => $gitLabProject['id'],
 			'branch' => 'master'
 		));
 	}
@@ -688,7 +699,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the group page
-			$group = \Hubzero\User\Group::getInstance($id);
+			$group = Group::getInstance($id);
 
 			// Ensure we found the group info
 			if (!$group)
@@ -825,7 +836,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the group page
-			$group = \Hubzero\User\Group::getInstance($id);
+			$group = Group::getInstance($id);
 
 			// Ensure we found the group info
 			if (!$group)
@@ -907,7 +918,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = \Hubzero\User\Group::getInstance($id);
+				$group = Group::getInstance($id);
 
 				// Ensure we found the group info
 				if (!$group)
@@ -1018,7 +1029,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new \Hubzero\User\Group();
+				$group = new Group();
 				$group->read($id);
 
 				// Ensure we found the group info
@@ -1073,7 +1084,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new \Hubzero\User\Group();
+				$group = new Group();
 				$group->read($id);
 
 				// Ensure we found the group info
@@ -1125,7 +1136,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new \Hubzero\User\Group();
+				$group = new Group();
 				$group->read($id);
 
 				// Ensure we found the group info
@@ -1161,7 +1172,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 * @param 		boolean		$allowDashes 	Allow dashes in cn
 	 * @return 		boolean		True if valid, false if not
 	 */
-	private function _validCn( $cn, $allowDashes = false )
+	private function _validCn($cn, $allowDashes = false)
 	{
 		$regex = '/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i';
 		if ($allowDashes)
@@ -1185,10 +1196,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				return true;
 			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**

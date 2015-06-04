@@ -28,13 +28,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site\Controllers;
+
+use Hubzero\User\Group;
+use GroupsModelLog;
+use GroupsModelPageArchive;
+use GroupsModelModuleArchive;
+use GroupsModelModule;
+use GroupsHelperView;
+use GroupsHelperPages;
+use Request;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerModules extends GroupsControllerAbstract
+class Modules extends Base
 {
 	/**
 	 * Override Execute Method
@@ -62,7 +75,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->group || !$this->group->get('gidNumber'))

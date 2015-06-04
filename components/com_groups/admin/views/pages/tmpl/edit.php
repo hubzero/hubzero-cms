@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // define base links
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn;
+$base = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn);
 
 // define title
 $text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') : Lang::txt('COM_GROUPS_PAGES_NEW_PAGE'));
@@ -69,6 +69,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_SETTINGS'); ?></span></legend>
+
 			<div class="input-wrap">
 				<label for="field-category"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY'); ?>:</label><br />
 				<select name="page[category]" id="field-category">
@@ -138,9 +139,9 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 					$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
 					switch ($access)
 					{
-						case 'anyone':		$name = "Any HUB Visitor";		break;
-						case 'registered':	$name = "Registered HUB Users";	break;
-						case 'members':		$name = "Group Members Only";	break;
+						case 'anyone':     $name = 'Any HUB Visitor';      break;
+						case 'registered': $name = 'Registered HUB Users'; break;
+						case 'members':    $name = 'Group Members Only';   break;
 					}
 				?>
 				<select name="page[privacy]" id="page[privacy]">

@@ -28,13 +28,30 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site\Controllers;
+
+use Registry;
+use Hubzero\User\Group;
+use GroupsModelPageArchive;
+use GroupsModelPageVersion;
+use GroupsHelperPages;
+use GroupsHelperView;
+use GroupsHelperTemplate;
+use GroupsModelTags;
+use GroupsModelLog;
+use Request;
+use Config;
+use Event;
+use Route;
+use User;
+use Date;
+use Lang;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerGroups extends GroupsControllerAbstract
+class Groups extends Base
 {
 	/**
 	 * Override Execute Method
@@ -76,7 +93,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	/**
 	 * Intro Page
 	 *
-	 * @return     array
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -107,7 +124,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			//get users tags
 			include_once(PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-			$mt = new MembersModelTags($profile->get("uidNumber"));
+			$mt = new \MembersModelTags($profile->get("uidNumber"));
 			$mytags = $mt->render('string');
 
 			//get users groups
@@ -117,17 +134,17 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->view->mygroups = array_filter($this->view->mygroups);
 
 			//get groups user may be interested in
-			$this->view->interestinggroups = \Hubzero\User\Group\Helper::getGroupsMatchingTagString(
+			$this->view->interestinggroups = Group\Helper::getGroupsMatchingTagString(
 				$mytags,
 				\Hubzero\User\Helper::getGroups($profile->get("uidNumber"))
 			);
 		}
 
 		//get the popular groups
-		$this->view->populargroups = \Hubzero\User\Group\Helper::getPopularGroups(3);
+		$this->view->populargroups  = Group\Helper::getPopularGroups(3);
 
 		//get featured groups
-		$this->view->featuredgroups = \Hubzero\User\Group\Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
+		$this->view->featuredgroups = Group\Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
 
 		//set some vars for view
 		$this->view->config = $this->config;
@@ -140,11 +157,10 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->display();
 	}
 
-
 	/**
 	 * Browse Groups
 	 *
-	 * @return     array
+	 * @return  void
 	 */
 	public function browseTask()
 	{
@@ -181,7 +197,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Get a record count
-		$this->view->total = \Hubzero\User\Group::find($this->view->filters);
+		$this->view->total = Group::find($this->view->filters);
 
 		// Filters for returning results
 		$this->view->filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
@@ -190,7 +206,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type', 'public_desc', 'join_policy');
 
 		// Get a list of all groups
-		$this->view->groups = \Hubzero\User\Group::find($this->view->filters);
+		$this->view->groups = Group::find($this->view->filters);
 		$this->view->authorized = $this->_authorize();
 
 		//set some vars for view
@@ -221,7 +237,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Load the group object
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// check to make sure we were able to load group
 		if (!is_object($this->view->group)|| !$this->view->group->get('gidNumber') || !$this->view->group->get('cn'))
@@ -270,7 +286,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$this->view->gparams = new JParameter($this->view->group->get('params'));
+		$this->view->gparams = new \JParameter($this->view->group->get('params'));
 
 		// Check authorization
 		$this->view->authorized = GroupsHelperView::authorize($this->view->group);
@@ -414,8 +430,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//are we creating a new group?
 		if ($this->_task == 'new')
 		{
-			// Instantiate an \Hubzero\User\Group object
-			$this->view->group = new \Hubzero\User\Group();
+			// Instantiate an Group object
+			$this->view->group = new Group();
 
 			// set some group vars for view
 			$this->view->group->set('cn', Request::getVar('suggested_cn', ''));
@@ -437,7 +453,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			// Load the group page
-			$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+			$this->view->group = Group::getInstance($this->cn);
 
 			// Ensure we found the group info
 			if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -499,7 +515,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		));
 
 		// Get plugin access
-		$this->view->group_plugin_access = \Hubzero\User\Group\Helper::getPluginAccess($this->view->group);
+		$this->view->group_plugin_access = Group\Helper::getPluginAccess($this->view->group);
 
 		// build the title
 		$this->_buildTitle();
@@ -568,15 +584,15 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//are we editing or creating
 		if ($g_gidNumber)
 		{
-			$group = \Hubzero\User\Group::getInstance($g_gidNumber);
+			$group = Group::getInstance($g_gidNumber);
 			$this->_task = 'edit';
-			$before = \Hubzero\User\Group::getInstance($g_gidNumber);
+			$before = Group::getInstance($g_gidNumber);
 		}
 		else
 		{
 			$this->_task = 'new';
-			$group  = new \Hubzero\User\Group();
-			$before = new \Hubzero\User\Group();
+			$group  = new Group();
+			$before = new Group();
 		}
 
 		// Check for any missing info
@@ -598,7 +614,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
 		}
-		if ($this->_task == 'new' && \Hubzero\User\Group::exists($g_cn, true))
+		if ($this->_task == 'new' && Group::exists($g_cn, true))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_ID_TAKEN'), 'error');
 		}
@@ -683,8 +699,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// merge incoming settings with existing params
-		$params = new \Hubzero\Config\Registry($params);
-		$gParams = new \Hubzero\Config\Registry($group->get('params'));
+		$params  = new Registry($params);
+		$gParams = new Registry($group->get('params'));
 		$gParams->merge($params);
 
 		//set group vars & Save group
@@ -885,7 +901,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -900,7 +916,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Get the group params
-		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+		$gparams = new Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -959,7 +975,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Load the group page
-		$this->view->group = \Hubzero\User\Group::getInstance($this->cn);
+		$this->view->group = Group::getInstance($this->cn);
 
 		// Ensure we found the group info
 		if (!$this->view->group || !$this->view->group->get('gidNumber'))
@@ -1029,7 +1045,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if (is_dir($path))
 		{
 			// Attempt to delete the file
-			if (!Filesystem::deleteDirectory($path))
+			if (!\Filesystem::deleteDirectory($path))
 			{
 				$this->setNotification(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			}
@@ -1058,7 +1074,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$eview = new \Hubzero\Component\View(array('name' => 'emails','layout' => 'deleted'));
 		$eview->option   = $this->_option;
 		$eview->sitename = Config::get('sitename');
-		$eview->user    = User::getRoot();
+		$eview->user     = User::getRoot();
 		$eview->gcn      = $deletedgroup->get('cn');
 		$eview->msg      = $message;
 		$eview->group    = $deletedgroup;
@@ -1246,7 +1262,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	/**
 	 * Get a group's availability
 	 *
-	 * @param      object $group \Hubzero\User\Group
+	 * @param      object $group Group
 	 * @return     string
 	 */
 	public function groupavailabilityTask($group = NULL)
@@ -1261,7 +1277,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// Ensure the data passed is valid
-		if (($group == 'new' || $group == 'browse') || (!$this->_validCn($group)) || (\Hubzero\User\Group::exists($group, true)))
+		if (($group == 'new' || $group == 'browse') || (!$this->_validCn($group)) || (Group::exists($group, true)))
 		{
 			$availability = false;
 		}
@@ -1291,7 +1307,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	public function downloadTask($filename = "")
 	{
 		//get the group
-		$group = \Hubzero\User\Group::getInstance($this->cn);
+		$group = Group::getInstance($this->cn);
 
 		// make sure we have a group
 		if (!is_object($group))
@@ -1327,7 +1343,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if ($this->active == 'wiki')
 		{
 			//get access level for wiki
-			$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'wiki');
+			$access = Group\Helper::getPluginAccess($group, 'wiki');
 
 			//check to make sure user has access to wiki section
 			if (($access == 'members' && !in_array(User::get('id'), $group->get('members')))
@@ -1365,13 +1381,13 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			//get the config and build base path
-			$wiki_config = Component::params('com_wiki');
+			$wiki_config = \Component::params('com_wiki');
 			$base_path = $wiki_config->get('filepath') . DS . $page->get('id');
 		}
 		elseif ($this->active == 'blog')
 		{
 			//get access setting of group blog
-			$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'blog');
+			$access = Group\Helper::getPluginAccess($group, 'blog');
 
 			//make sure user has access to blog
 			if (($access == 'members' && !in_array(User::get('id'), $group->get('members')))
@@ -1381,7 +1397,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			//make sure we have a group id of the proper length
-			$groupID = \Hubzero\User\Group\Helper::niceidformat($group->get('gidNumber'));
+			$groupID = Group\Helper::niceidformat($group->get('gidNumber'));
 
 			//buld path to blog folder
 			$base_path = $this->config->get('uploadpath') . DS . $groupID . DS . 'blog';
@@ -1393,7 +1409,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		else
 		{
 			//get access level for overview or other group pages
-			$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
+			$access = Group\Helper::getPluginAccess($group, 'overview');
 
 			//check to make sure we can access it
 			if (($access == 'members' && !in_array(User::get('id'), $group->get('members')))
@@ -1507,9 +1523,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 				return true;
 			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 }

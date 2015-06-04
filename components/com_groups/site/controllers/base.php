@@ -28,13 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Hubzero\User\Group;
+use GroupsHelperView;
+use Pathway;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerAbstract extends \Hubzero\Component\SiteController
+class Base extends SiteController
 {
 	/**
 	 * Set a notification
@@ -134,7 +142,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		if ($this->cn)
 		{
 			//load group
-			$group = \Hubzero\User\Group::getInstance($this->cn);
+			$group = Group::getInstance($this->cn);
 			if ($group)
 			{
 				Pathway::append(
@@ -227,7 +235,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 
 		if ($this->cn)
 		{
-			$group = \Hubzero\User\Group::getInstance($this->cn);
+			$group = Group::getInstance($this->cn);
 			if (is_object($group))
 			{
 				$this->_title = Lang::txt('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
@@ -255,7 +263,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		}
 
 		//set title of browser window
-		Document::setTitle($this->_title);
+		\Document::setTitle($this->_title);
 	}
 
 
@@ -272,15 +280,16 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 
 		if ($no_html)
 		{
-			$error = array('error' => array('code' => $errorCode, 'message' => $errorMessage));
+			$error = array('error' => array(
+				'code'   => $errorCode,
+				'message' => $errorMessage
+			));
 			echo json_encode($error);
 			exit();
 		}
-		else
-		{
-			App::abort($errorCode, $errorMessage);
-			return;
-		}
+
+		App::abort($errorCode, $errorMessage);
+		return;
 	}
 
 
@@ -293,7 +302,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	protected function _authorize($checkOnlyMembership = true)
 	{
 		//load the group
-		$group = \Hubzero\User\Group::getInstance($this->cn);
+		$group = Group::getInstance($this->cn);
 		if (!is_object($group))
 		{
 			return false;
@@ -311,7 +320,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	public function _authorizedForTask($task)
 	{
 		//load the group
-		$group = \Hubzero\User\Group::getInstance($this->cn);
+		$group = Group::getInstance($this->cn);
 		if (!is_object($group))
 		{
 			return false;

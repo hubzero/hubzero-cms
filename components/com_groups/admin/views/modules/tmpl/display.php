@@ -72,10 +72,10 @@ function submitbutton(pressbutton)
 	<table class="adminlist attention">
 		<thead>
 		 	<tr>
-				<th>(<?php echo $this->needsAttention->count(); ?>) <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION'); ?></th>
-				<th><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW'); ?></th>
-				<th><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECKS'); ?></th>
-				<th><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></th>
+				<th scope="col">(<?php echo $this->needsAttention->count(); ?>) <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECKS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -144,21 +144,23 @@ function submitbutton(pressbutton)
 	<br />
 <?php endif; ?>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="adminForm" method="post">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th width="30px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->modules->count();?>);" /></th>
-				<th><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
-				<th><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
-				<th><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->modules->count();?>);" /></th>
+				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 <?php if ($this->modules->count() > 0) : ?>
 	<?php foreach ($this->modules as $k => $module) : ?>
 			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" onclick="isChecked(this.checked);" /></td>
+				<td>
+					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" onclick="isChecked(this.checked);" />
+				</td>
 				<td>
 					<?php echo $this->escape($module->get('title')); ?><br />
 					<span class="hint">

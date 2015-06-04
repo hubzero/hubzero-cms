@@ -28,13 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use GroupsModelPageCategoryArchive;
+use GroupsModelPageCategory;
+use GroupsModelLog;
+use Request;
+use Route;
+use Lang;
+use App;
 
 /**
  * Groups controller class
  */
-class GroupsControllerCategories extends \Hubzero\Component\AdminController
+class Categories extends AdminController
 {
 	/**
 	 * Override Execute Method
@@ -125,7 +133,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($error);
+			\Notify::error($error);
 		}
 
 		// Output the HTML
@@ -148,19 +156,19 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		$category['gidNumber'] = $this->group->get('gidNumber');
 
 		// load category object
-		$this->category = new GroupsModelPageCategory( $category['id'] );
+		$this->category = new GroupsModelPageCategory($category['id']);
 
 		// bind to our new results
 		if (!$this->category->bind($category))
 		{
-			Notify::error($this->category->getError());
+			$this->setError($this->category->getError());
 			return $this->editTask();
 		}
 
 		// Store new content
 		if (!$this->category->store(true))
 		{
-			Notify::error($this->category->getError());
+			$this->setError($this->category->getError());
 			return $this->editTask();
 		}
 
@@ -198,7 +206,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		foreach ($ids as $categoryid)
 		{
 			// load category object
-			$category = new GroupsModelPageCategory( $categoryid );
+			$category = new GroupsModelPageCategory($categoryid);
 
 			// make sure this is our groups cat
 			if ($category->get('gidNumber') != $this->group->get('gidNumber'))

@@ -50,53 +50,46 @@ function submitbutton(pressbutton)
 
 <?php require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="adminForm" method="post">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_GROUPS_MODULES_DETAILS'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="type"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?>:</label></td>
-						<td><input type="text" name="module[title]" id="title" value="<?php echo $this->escape($this->module->get('title')); ?>" size="50" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="type"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?>:</label></td>
-						<td><input type="text" name="module[position]" id="title" value="<?php echo $this->escape($this->module->get('position')); ?>" size="50" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="type"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?>:</label></td>
-						<td>
-							<select name="module[state]">
-								<?php
-								$states = array(
-									1 => Lang::txt('COM_GROUPS_MODULES_STATUS_PUBLISHED'),
-									0 => Lang::txt('COM_GROUPS_MODULES_STATUS_UNPUBLISHED'),
-									2 => Lang::txt('COM_GROUPS_MODULES_STATUS_DELETED')
-								);
 
-								foreach ($states as $k => $v)
-								{
-									$sel = ($this->module->get('state') == $k) ? 'selected="selected"' : '';
-									echo '<option '.$sel.' value="'.$k.'">'.$v.'</option>';
-								}
-								?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="type"><?php echo Lang::txt('COM_GROUPS_MODULES_ORDERING'); ?>:</label></td>
-						<td>
-							<select name="module[ordering]">
-								<?php foreach ($this->order as $k => $order) : ?>
-									<?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
-									<option <?php echo $sel ;?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?>:</label>
+				<input type="text" name="module[title]" id="field-title" value="<?php echo $this->escape($this->module->get('title')); ?>" size="50" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-position"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?>:</label>
+				<input type="text" name="module[position]" id="field-position" value="<?php echo $this->escape($this->module->get('position')); ?>" size="50" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-type"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?>:</label>
+				<select name="module[state]" id="field-type">
+					<?php
+					$states = array(
+						1 => Lang::txt('COM_GROUPS_MODULES_STATUS_PUBLISHED'),
+						0 => Lang::txt('COM_GROUPS_MODULES_STATUS_UNPUBLISHED'),
+						2 => Lang::txt('COM_GROUPS_MODULES_STATUS_DELETED')
+					);
+
+					foreach ($states as $k => $v)
+					{
+						$sel = ($this->module->get('state') == $k) ? 'selected="selected"' : '';
+						echo '<option '.$sel.' value="'.$k.'">'.$v.'</option>';
+					}
+					?>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-ordering"><?php echo Lang::txt('COM_GROUPS_MODULES_ORDERING'); ?>:</label>
+				<select name="module[ordering]" id="field-ordering">
+					<?php foreach ($this->order as $k => $order) : ?>
+						<?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
+						<option <?php echo $sel ;?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
 		</fieldset>
 		<?php
 			// get module menus
@@ -109,39 +102,32 @@ function submitbutton(pressbutton)
 		?>
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_GROUPS_MODULES_MENU_ASSIGNMENT'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT'); ?>:</label>
-							<select name="menu[assignment]" id="field-assignment">
-								<option value="0"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_ALL'); ?></option>
-								<option <?php if (!in_array(0, $activeMenu)) { echo 'selected="selected"'; } ?> value=""><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<fieldset class="adminform">
-								<legend><?php echo Lang::txt('COM_GROUPS_MODULES_MENU_SELECTION'); ?></legend>
 
-								<?php foreach ($this->pages as $page) : ?>
-									<label>
-										<?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
-										<input type="checkbox" class="option" <?php echo $ckd; ?> name="menu[assigned][]" value="<?php echo $page->get('id'); ?>" /> <?php echo $page->get('title'); ?> <br />
-									</label>
-								<?php endforeach; ?>
-								<br />
-							</fieldset>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-assignment"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT'); ?>:</label>
+				<select name="menu[assignment]" id="field-assignment">
+					<option value="0"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_ALL'); ?></option>
+					<option <?php if (!in_array(0, $activeMenu)) { echo 'selected="selected"'; } ?> value=""><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
+				</select>
+			</div>
+
+			<fieldset class="adminform">
+				<legend><?php echo Lang::txt('COM_GROUPS_MODULES_MENU_SELECTION'); ?></legend>
+
+				<?php foreach ($this->pages as $i => $page) : ?>
+					<div class="input-wrap">
+						<label for="assigned<?php echo $i; ?>">
+							<?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
+							<input type="checkbox" class="option" <?php echo $ckd; ?> name="menu[assigned][]" id="assigned<?php echo $i; ?>" value="<?php echo $page->get('id'); ?>" /> <?php echo $page->get('title'); ?>
+						</label>
+					</div>
+				<?php endforeach; ?>
+			</fieldset>
 		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
 		<?php if ($this->module->get('id')) : ?>
-			<table class="meta" summary="Metadata">
+			<table class="meta">
 				<tbody>
 					<tr>
 						<th><?php echo Lang::txt('COM_GROUPS_MODULES_OWNER'); ?></th>
@@ -197,18 +183,14 @@ function submitbutton(pressbutton)
 
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_CONTENT'); ?></span></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td>
-							<label for="type"><?php echo Lang::txt('COM_GROUPS_MODULES_CONTENT'); ?>:</label>
-							<textarea name="module[content]" rows="20"><?php echo $this->module->get('content'); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-content"><?php echo Lang::txt('COM_GROUPS_MODULES_CONTENT'); ?>:</label>
+				<textarea name="module[content]" id="field-content" rows="20"><?php echo $this->module->get('content'); ?></textarea>
+			</div>
 		</fieldset>
 	</div>
+
 	<input type="hidden" name="module[id]" value="<?php echo $this->module->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
