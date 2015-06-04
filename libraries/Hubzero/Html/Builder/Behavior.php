@@ -365,7 +365,7 @@ class Behavior
 
 		$options = Behavior::getJSObject($opt);*/
 
-		\App::get('document')->addScriptDeclaration(
+		App::get('document')->addScriptDeclaration(
 			"jQuery(document).ready(function($){
 				$('" . $selector . "').tooltip({
 					track: true,
@@ -449,7 +449,7 @@ class Behavior
 		$opt['onHide']			= (isset($params['onHide'])) ? $params['onHide'] : null;
 		);*/
 
-		if (!empty($params) || \App::isAdmin())
+		if (!empty($params) || App::isAdmin())
 		{
 			$opt = array('arrows' => false);
 			$opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
@@ -756,17 +756,13 @@ class Behavior
 	 */
 	public static function noframes($location = 'top.location.href')
 	{
-		// Only load once
 		if (isset(self::$loaded[__METHOD__]))
 		{
 			return;
 		}
 
-		// Include MooTools framework
 		self::framework();
 
-		//$js = "window.addEvent('domready', function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
-		//	" else {top.location = self.location; }});";
 		$js = "jQuery(document).ready(function($){
 			if (top == self) {
 				document.documentElement.style.display = 'block';
@@ -778,7 +774,7 @@ class Behavior
 		$document->addStyleDeclaration('html { display:none }');
 		$document->addScriptDeclaration($js);
 
-		\JResponse::setHeader('X-Frame-Options', 'SAMEORIGIN');
+		App::get('response')->headers->set('X-Frame-Options', 'SAMEORIGIN');
 
 		self::$loaded[__METHOD__] = true;
 	}

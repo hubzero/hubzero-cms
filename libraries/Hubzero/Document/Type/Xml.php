@@ -72,7 +72,7 @@ class Xml extends Base
 	{
 		parent::render();
 
-		\JResponse::setHeader('Content-disposition', 'inline; filename="' . $this->getName() . '.xml"', true);
+		\App::get('response')->headers->set('Content-disposition', 'inline; filename="' . $this->getName() . '.xml"', true);
 
 		return $this->getBuffer();
 	}

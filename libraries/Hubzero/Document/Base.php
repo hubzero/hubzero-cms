@@ -776,9 +776,9 @@ class Base extends Object
 	{
 		if ($mdate = $this->getModifiedDate())
 		{
-			\JResponse::setHeader('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) . ' GMT' */);
+			\App::get('response')->headers->set('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) . ' GMT' */);
 		}
 
-		\JResponse::setHeader('Content-Type', $this->_mime . ($this->_charset ? '; charset=' . $this->_charset : ''));
+		\App::get('response')->headers->set('Content-Type', $this->_mime . ($this->_charset ? '; charset=' . $this->_charset : ''));
 	}
 }

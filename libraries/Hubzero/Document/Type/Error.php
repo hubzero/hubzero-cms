@@ -96,7 +96,7 @@ class Error extends Base
 		}
 
 		// Set the status header
-		//\JResponse::setHeader('status', $this->error->getCode() . ' ' . str_replace("\n", ' ', $this->error->getMessage()));
+		//\App::get('response')->headers->set('status', $this->error->getCode() . ' ' . str_replace("\n", ' ', $this->error->getMessage()));
 
 		$file = 'error.php';
 

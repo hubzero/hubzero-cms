@@ -70,8 +70,9 @@ class Json extends Base
 	 */
 	public function render($cache = false, $params = array())
 	{
-		\JResponse::allowCache(false);
-		\JResponse::setHeader('Content-disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
+		\App::get('response')->headers->set('Cache-Control', 'no-cache', false);
+		\App::get('response')->headers->set('Pragma', 'no-cache');
+		\App::get('response')->headers->set('Content-disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
 
 		parent::render();
 
