@@ -52,6 +52,6 @@ $message .= '----------------------------' . "\n\n";
 $message .= strtoupper(JText::_('COM_RESOURCES_TITLE')) . ': ' . $this->resource->title . "\n\n";
 $message .= $this->resource->introtext . "\n\n";
 $message .= 'To view the submission and take actions, go to: ' . "\n";
-$message .= $this->link . "\n";
+$message .= $link . "\n";
 
 echo $message;
