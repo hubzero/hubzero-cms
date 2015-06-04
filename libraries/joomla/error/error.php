@@ -539,6 +539,8 @@ abstract class JError
 		// Deprecation warning.
 		JLog::add('JError::handleEcho() is deprecated.', JLog::WARNING, 'deprecated');
 
+		self::setHeader($error);
+
 		$level_human = JError::translateErrorLevel($error->get('level'));
 
 		// If system debug is set, then output some more information.
@@ -613,6 +615,8 @@ abstract class JError
 		// Deprecation warning.
 		JLog::add('JError::handleVerbose() is deprecated.', JLog::WARNING, 'deprecated');
 
+		self::setHeader($error);
+
 		$level_human = JError::translateErrorLevel($error->get('level'));
 		$info = $error->get('info');
 
@@ -659,6 +663,8 @@ abstract class JError
 	{
 		// Deprecation warning.
 		JLog::add('JError::handleDie() is deprecated.', JLog::WARNING, 'deprecated');
+
+		self::setHeader($error);
 
 		$level_human = JError::translateErrorLevel($error->get('level'));
 
@@ -912,5 +918,28 @@ abstract class JError
 		}
 
 		return $contents;
+	}
+
+	/**
+	 * Set proper response header
+	 *
+	 * @param   object  $error  The error
+	 * @return  void
+	 */
+	protected static function setHeader($error)
+	{
+		if (!headers_sent())
+		{
+			$code = ($error->getCode() ? $error->getCode() : 500);
+			switch ($code)
+			{
+				case 200: $msg = 'OK'; break;
+				case 404: $msg = 'Not Found'; break;
+				case 403: $msg = 'Forbidden'; break;
+				case 301: $msg = 'Moved Permanently'; break;
+				case 500: $msg = 'Internal Server Error'; break;
+			}
+			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $code . ' ' . $msg, true, $code);
+		}
 	}
 }
