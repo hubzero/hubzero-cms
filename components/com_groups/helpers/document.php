@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers;
 
-class GroupsHelperDocument extends \Hubzero\Base\Object
+use Hubzero\Base\Object;
+use App;
+
+class Document extends Object
 {
 	public $document     = null;
 	public $group        = null;
@@ -40,7 +42,6 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 	public $tab          = null;
 	public $allowed_tags = array('module','modules','stylesheet','script');
 	private $_tags       = array();
-
 
 	/**
 	 * Parse Document Content
@@ -52,7 +53,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 		// check to make sure we have content
 		if (!$this->get('document'))
 		{
-			App::abort(406, 'GroupsHelperDocument: Requires document to parse');
+			App::abort(406, '\Components\Groups\Helpers\Document: Requires document to parse');
 		}
 
 		// parse content
@@ -68,7 +69,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 			//loop through each match
 			for ($i = 0; $i < $count; $i++)
 			{
-				$attribs = JUtility::parseAttributes($matches[1][$i]);
+				$attribs = \JUtility::parseAttributes($matches[1][$i]);
 
 				$type   = (isset($attribs['type'])) ? strtolower(trim($attribs['type'])) : null;
 				$name   = (isset($attribs['name'])) ? $attribs['name'] : $type;
@@ -148,7 +149,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 		}
 
 		// class name for renderer
-		$renderClass = 'GroupsHelperDocumentRenderer' . ucfirst($type);
+		$renderClass = '\Components\Groups\Helpers\DocumentRenderer' . ucfirst($type);
 
 		// if we dont already have the class instantiated
 		if (!class_exists($renderClass))

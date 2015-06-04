@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
 
 /**
  * Table class for group membership reason
  */
-class GroupsReason extends JTable
+class Reason extends \JTable
 {
 	/**
 	 * Constructor
@@ -50,9 +49,9 @@ class GroupsReason extends JTable
 	/**
 	 * Load a record based on group ID and user ID and bind to $this
 	 *
-	 * @param      integer $uid User ID
-	 * @param      integer $gid Group ID
-	 * @return     boolean True on success
+	 * @param   integer $uid User ID
+	 * @param   integer $gid Group ID
+	 * @return  boolean True on success
 	 */
 	public function loadReason($uid, $gid)
 	{
@@ -75,9 +74,9 @@ class GroupsReason extends JTable
 	/**
 	 * Delete an entry based on group ID and user ID
 	 *
-	 * @param      integer $uid User ID
-	 * @param      integer $gid Group ID
-	 * @return     boolean True on success
+	 * @param   integer  $uid  User ID
+	 * @param   integer  $gid  Group ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteReason($uid, $gid)
 	{
@@ -96,7 +95,7 @@ class GroupsReason extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{

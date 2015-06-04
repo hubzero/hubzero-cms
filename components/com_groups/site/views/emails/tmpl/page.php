@@ -32,12 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 // build urls
-$base      = rtrim(str_replace('administrator', '', Request::base()), DS);
+$base      = rtrim(str_replace('administrator', '', Request::base()), '/');
 $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->group->get('cn') . '&controller=pages';
 
 // get page object
-$page = new GroupsModelPage( $this->object->get('id') );
+$page = new \Components\Groups\Models\Page( $this->object->get('id') );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

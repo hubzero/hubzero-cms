@@ -32,7 +32,7 @@ namespace Components\Groups\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Hubzero\User\Group;
-use GroupsHelperView;
+use Components\Groups\Helpers\View;
 use Pathway;
 use Request;
 use Route;
@@ -308,7 +308,7 @@ class Base extends SiteController
 			return false;
 		}
 
-		return GroupsHelperView::authorize($group, $checkOnlyMembership);
+		return View::authorize($group, $checkOnlyMembership);
 	}
 
 	/**

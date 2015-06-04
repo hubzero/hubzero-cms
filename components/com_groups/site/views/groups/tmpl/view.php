@@ -39,7 +39,7 @@ $no_html = Request::getInt( 'no_html', 0 );
 ?>
 
 <?php if (!$no_html) : ?>
-	<?php echo GroupsHelperView::displayBeforeSectionsContent($this->group); ?>
+	<?php echo \Components\Groups\Helpers\View::displayBeforeSectionsContent($this->group); ?>
 
 	<div class="innerwrap">
 		<div id="page_container">
@@ -56,10 +56,10 @@ $no_html = Request::getInt( 'no_html', 0 );
 
 				<?php
 					// output group options
-					echo GroupsHelperView::displayToolbar($this->group);
+					echo \Components\Groups\Helpers\View::displayToolbar($this->group);
 
 					// output group menu
-					echo GroupsHelperView::displaySections($this->group);
+					echo \Components\Groups\Helpers\View::displaySections($this->group);
 				?>
 
 				<div id="page_info">
@@ -111,12 +111,12 @@ $no_html = Request::getInt( 'no_html', 0 );
 					<h2><a href="<?php echo $link; ?>"><?php echo $this->group->get('description'); ?></a></h2>
 					<span class="divider">&#9658;</span>
 					<h3>
-						<?php echo GroupsHelperView::displayTab( $this->group ); ?>
+						<?php echo \Components\Groups\Helpers\View::displayTab( $this->group ); ?>
 					</h3>
 
 					<?php
 						if ($this->tab == 'overview') :
-							$gt = new GroupsModelTags($this->group->get('gidNumber'));
+							$gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
 							echo $gt->render();
 						endif;
 					?>

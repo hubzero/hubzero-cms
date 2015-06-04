@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
 
 /**
  * Table class for logging group actions
  */
-class GroupsTableLog extends JTable
+class Log extends \JTable
 {
 	/**
 	 * Constructor
@@ -56,7 +55,7 @@ class GroupsTableLog extends JTable
 	{
 		if (trim($this->gidNumber) == '')
 		{
-			$this->setError(Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
+			$this->setError(\Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
 

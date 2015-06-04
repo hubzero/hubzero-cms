@@ -30,10 +30,10 @@
 
 namespace Components\Groups\Admin\Controllers;
 
+use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
-use GroupsModelPageCategoryArchive;
-use GroupsModelPageCategory;
-use GroupsModelLog;
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Log;
 use Request;
 use Route;
 use Lang;
@@ -65,7 +65,7 @@ class Categories extends AdminController
 			return;
 		}
 
-		$this->group = \Hubzero\User\Group::getInstance($this->gid);
+		$this->group = Group::getInstance($this->gid);
 
 		parent::execute();
 	}
@@ -78,7 +78,7 @@ class Categories extends AdminController
 	public function displayTask()
 	{
 		// get page categories
-		$categoryArchive = new GroupsModelPageCategoryArchive();
+		$categoryArchive = new Page\Category\Archive();
 		$this->view->categories = $categoryArchive->categories('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'orderby'   => 'title'
@@ -119,7 +119,7 @@ class Categories extends AdminController
 		$id  = (isset($ids[0])) ? $ids[0] : null;
 
 		// get the category object
-		$this->view->category = new GroupsModelPageCategory($id);
+		$this->view->category = new Page\Category($id);
 
 		// are we passing a category object
 		if ($this->category)
@@ -156,7 +156,7 @@ class Categories extends AdminController
 		$category['gidNumber'] = $this->group->get('gidNumber');
 
 		// load category object
-		$this->category = new GroupsModelPageCategory($category['id']);
+		$this->category = new Page\Category($category['id']);
 
 		// bind to our new results
 		if (!$this->category->bind($category))
@@ -173,7 +173,7 @@ class Categories extends AdminController
 		}
 
 		// log change
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => (isset($category['id']) && $category['id'] != '') ? 'group_pagecategory_updated' : 'group_pagecategory_created',
 			'comments'  => array(
@@ -206,7 +206,7 @@ class Categories extends AdminController
 		foreach ($ids as $categoryid)
 		{
 			// load category object
-			$category = new GroupsModelPageCategory($categoryid);
+			$category = new Page\Category($categoryid);
 
 			// make sure this is our groups cat
 			if ($category->get('gidNumber') != $this->group->get('gidNumber'))
@@ -233,7 +233,7 @@ class Categories extends AdminController
 		}
 
 		// log change
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_pagecategory_deleted',
 			'comments'  => $deleted

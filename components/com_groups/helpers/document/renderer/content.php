@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers\Document\Renderer;
 
-class GroupsHelperDocumentRendererContent extends GroupsHelperDocumentRenderer
+use Components\Groups\Helpers\Document\Renderer;
+use Components\Groups\Helpers\View;
+
+class Content extends Renderer
 {
 	/**
 	 * Render content to group template
@@ -47,7 +49,7 @@ class GroupsHelperDocumentRendererContent extends GroupsHelperDocumentRenderer
 		switch ($scope)
 		{
 			case 'before':
-				return GroupsHelperView::displayBeforeSectionsContent($this->group);
+				return View::displayBeforeSectionsContent($this->group);
 			break;
 			default:
 				return $this->content;

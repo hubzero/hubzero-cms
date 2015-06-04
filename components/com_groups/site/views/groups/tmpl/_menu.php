@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access');
 				// append pages html
 				// only pass in the children of the root node
 				// basically skip the overview page here
-				$item .= GroupsHelperView::buildRecursivePageMenu($this->group, $this->pages[0]->get('children'));
+				$item .= \Components\Groups\Helpers\View::buildRecursivePageMenu($this->group, $this->pages[0]->get('children'));
 			}
 			else
 			{

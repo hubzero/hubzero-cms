@@ -31,14 +31,9 @@
 namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
-use GroupsModelPageArchive;
-use GroupsModelPage;
-use GroupsModelPageVersion;
-use GroupsModelPageCategoryArchive;
-use GroupsModelModuleArchive;
-use GroupsModelModule;
-use GroupsHelperPages;
-use GroupsHelperView;
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Module;
+use Components\Groups\Helpers;
 use Request;
 use Route;
 use User;
@@ -104,10 +99,10 @@ class Pages extends Base
 	public function displayTask()
 	{
 		// check in for user
-		GroupsHelperPages::checkinForUser();
+		Helpers\Pages::checkinForUser();
 
 		// get group pages
-		$pageArchive = new GroupsModelPageArchive();
+		$pageArchive = new Page\Archive();
 		$this->view->pages = $pageArchive->pages('tree', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
@@ -115,14 +110,14 @@ class Pages extends Base
 		));
 
 		// get page categories
-		$categoryArchive = new GroupsModelPageCategoryArchive();
+		$categoryArchive = new Page\Category\Archive();
 		$this->view->categories = $categoryArchive->categories('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'orderby'   => 'title'
 		));
 
 		// get modules archive
-		$moduleArchive = new GroupsModelModuleArchive();
+		$moduleArchive = new Module\Archive();
 		$this->view->modules = $moduleArchive->modules('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
@@ -178,7 +173,7 @@ class Pages extends Base
 		$pageid = Request::getInt('pageid', 0,'get');
 
 		// load page object
-		$this->view->page    = new GroupsModelPage($pageid);
+		$this->view->page    = new Page($pageid);
 		$this->view->version = $this->view->page->version();
 
 		//are we adding or editing
@@ -207,10 +202,10 @@ class Pages extends Base
 		}
 
 		// checkout page
-		GroupsHelperPages::checkout($this->view->page->get('id'));
+		Helpers\Pages::checkout($this->view->page->get('id'));
 
 		// get a list of all pages for page ordering
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
@@ -218,17 +213,17 @@ class Pages extends Base
 		));
 
 		// get page categories
-		$categoryArchive = new GroupsModelPageCategoryArchive();
+		$categoryArchive = new Page\Category\Archive();
 		$this->view->categories = $categoryArchive->categories('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'orderby'   => 'title'
 		));
 
 		// get stylesheets for editor
-		$this->view->stylesheets = GroupsHelperView::getPageCss($this->group);
+		$this->view->stylesheets = Helpers\View::getPageCss($this->group);
 
 		// get page templates
-		$this->view->pageTemplates = GroupsHelperView::getPageTemplates($this->group);
+		$this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
 
 		// build the title
 		$this->_buildTitle();
@@ -271,8 +266,8 @@ class Pages extends Base
 		$task = ($page['id']) ? 'update' : 'create';
 
 		// load page and version objects
-		$this->page    = new GroupsModelPage($page['id']);
-		$this->version = new GroupsModelPageVersion();
+		$this->page    = new Page($page['id']);
+		$this->version = new Page\Version();
 
 		// bind new page properties
 		if (!$this->page->bind($page))
@@ -364,7 +359,7 @@ class Pages extends Base
 
 		if (!$this->version->get('page_trusted', 0))
 		{
-			$newContent = GroupsModelPageVersion::purify($newContent, $this->group->isSuperGroup());
+			$newContent = Page\Version::purify($newContent, $this->group->isSuperGroup());
 		}
 
 		// is the new and old content different?
@@ -417,12 +412,12 @@ class Pages extends Base
 			// send to approvers
 			if ($this->version->get('approved', 0) == 0)
 			{
-				GroupsHelperPages::sendApproveNotification('page', $this->page);
+				Helpers\Pages::sendApproveNotification('page', $this->page);
 			}
 		}
 
 		// check page back in
-		GroupsHelperPages::checkin($this->page->get('id'));
+		Helpers\Pages::checkin($this->page->get('id'));
 
 		// redirect to return url
 		if ($return = Request::getVar('return', '','post'))
@@ -465,7 +460,7 @@ class Pages extends Base
 		$pageid = Request::getInt('pageid', 0,'get');
 
 		// load page object
-		$this->view->page = new GroupsModelPage($pageid);
+		$this->view->page = new Page($pageid);
 
 		// make sure page exists
 		if (!$this->view->page->exists())
@@ -537,7 +532,7 @@ class Pages extends Base
 		$pageid = Request::getInt('pageid', 0, 'get');
 
 		// load page model
-		$page = new GroupsModelPage($pageid);
+		$page = new \Components\Groups\Models\Page($pageid);
 
 		// make sure its out page
 		if (!$page->belongsToGroup($this->group))
@@ -633,7 +628,7 @@ class Pages extends Base
 			}
 
 			// update the pages parent, depth, left, right, and alias
-			$page = new GroupsModelPage($pageOrder['item_id']);
+			$page = new Page($pageOrder['item_id']);
 			$page->set('parent', $pageOrder['parent_id']);
 			$page->set('depth', ($pageOrder['depth'] - 1));
 			$page->set('lft', $pageOrder['left']);
@@ -658,7 +653,7 @@ class Pages extends Base
 		$pageid = Request::getInt('pageid', 0, 'get');
 
 		// load page model
-		$page = new GroupsModelPage($pageid);
+		$page = new Page($pageid);
 
 		// make sure its out page
 		if (!$page->belongsToGroup($this->group))
@@ -676,7 +671,7 @@ class Pages extends Base
 		}
 
 		// remove any current home page
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Page\Archive::getInstance();
 		$pageArchive->reset('home', 0, array(
 			'gidNumber' => $this->group->get('gidNumber')
 		));
@@ -719,10 +714,10 @@ class Pages extends Base
 		$version = Request::getInt('version', 0, 'get');
 
 		// page object
-		$page = new GroupsModelPage($pageid);
+		$page = new Page($pageid);
 
 		// render preview
-		echo GroupsHelperPages::generatePreview($page, $version);
+		echo Helpers\Pages::generatePreview($page, $version);
 		exit();
 	}
 
@@ -740,7 +735,7 @@ class Pages extends Base
 		$version = Request::getInt('version', 1, 'get');
 
 		// page object
-		$page = new GroupsModelPage($pageid);
+		$page = new Page($pageid);
 
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))
@@ -781,7 +776,7 @@ class Pages extends Base
 		$version = Request::getInt('version', null, 'get');
 
 		// page object
-		$page = new GroupsModelPage($pageid);
+		$page = new Page($pageid);
 
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))

@@ -30,15 +30,13 @@
 
 namespace Components\Groups\Site\Controllers;
 
-use Registry;
+use Hubzero\Config\Registry;
 use Hubzero\User\Group;
-use GroupsModelPageArchive;
-use GroupsModelPageVersion;
-use GroupsHelperPages;
-use GroupsHelperView;
-use GroupsHelperTemplate;
-use GroupsModelTags;
-use GroupsModelLog;
+use Components\Groups\Models\Page;
+use Components\Groups\Helpers;
+use Components\Groups\Models\Tags;
+use Components\Groups\Models\Log;
+use Filesystem;
 use Request;
 use Config;
 use Event;
@@ -83,7 +81,7 @@ class Groups extends Base
 		}
 
 		// check in for user
-		GroupsHelperPages::checkinForUser();
+		Helpers\Pages::checkinForUser();
 
 		//continue with parent execute method
 		parent::execute();
@@ -289,14 +287,14 @@ class Groups extends Base
 		$this->view->gparams = new \JParameter($this->view->group->get('params'));
 
 		// Check authorization
-		$this->view->authorized = GroupsHelperView::authorize($this->view->group);
+		$this->view->authorized = Helpers\View::authorize($this->view->group);
 
 		// get active tab
-		$this->view->tab     = GroupsHelperView::getTab($this->view->group);
+		$this->view->tab     = Helpers\View::getTab($this->view->group);
 		$this->view->trueTab = strtolower(Request::getVar('active', 'overview'));
 
 		// get group pages if any
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Page\Archive::getInstance();
 		$pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->view->group->get('gidNumber'),
 			'state'     => array(0,1),
@@ -304,7 +302,7 @@ class Groups extends Base
 		));
 
 		// custom error handling for super groups
-		GroupsHelperView::attachCustomErrorHandler($this->view->group);
+		Helpers\View::attachCustomErrorHandler($this->view->group);
 
 		// add the overview content
 		$overviewContent = '';
@@ -312,34 +310,34 @@ class Groups extends Base
 		if ($this->view->tab == 'overview')
 		{
 			// add home page to pages list
-			$pages = GroupsHelperPages::addHomePage($this->view->group, $pages);
+			$pages = Helpers\Pages::addHomePage($this->view->group, $pages);
 
 			// fetch the active page
-			$activePage = GroupsHelperPages::getActivePage($this->view->group, $pages);
+			$activePage = Helpers\Pages::getActivePage($this->view->group, $pages);
 
 			// are we on the login
 			if ($this->view->trueTab == 'login')
 			{
-				$overviewContent = GroupsHelperView::superGroupLogin($this->view->group);
+				$overviewContent = Helpers\View::superGroupLogin($this->view->group);
 			}
 
 			// check to see if we have super group component or php page
 			if ($overviewContent == null
 				&& $this->config->get('super_components', 0))
 			{
-				$overviewContent = GroupsHelperView::superGroupComponents($this->view->group, $this->view->trueTab);
+				$overviewContent = Helpers\View::superGroupComponents($this->view->group, $this->view->trueTab);
 			}
 
 			// do we have group php pages
 			if ($overviewContent == null)
 			{
-				$overviewContent = GroupsHelperView::superGroupPhpPages($this->view->group);
+				$overviewContent = Helpers\View::superGroupPhpPages($this->view->group);
 			}
 
 			//set overview content
 			if ($overviewContent == null)
 			{
-				$overviewContent = GroupsHelperPages::displayPage($this->view->group, $activePage);
+				$overviewContent = Helpers\Pages::displayPage($this->view->group, $activePage);
 			}
 		}
 
@@ -351,7 +349,7 @@ class Groups extends Base
 
 		//set some vars for view
 		$this->view->title         = $this->_title;
-		$this->view->content       = GroupsHelperView::displaySectionsContent($this->view->group, $overviewContent);
+		$this->view->content       = Helpers\View::displaySectionsContent($this->view->group, $overviewContent);
 		$this->view->activePage    = $activePage;
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
@@ -366,7 +364,7 @@ class Groups extends Base
 
 			// load super group template
 			// parse & render
-			$superGroupTemplate = new GroupsHelperTemplate();
+			$superGroupTemplate = new Helpers\Template();
 			$superGroupTemplate->set('group', $this->view->group)
 				               ->set('tab', $this->view->trueTab)
 				               ->set('content', $this->view->content)
@@ -468,7 +466,7 @@ class Groups extends Base
 			}
 
 			// Get the group's interests (tags)
-			$gt = new GroupsModelTags($this->view->group->get('gidNumber'));
+			$gt = new Tags($this->view->group->get('gidNumber'));
 			$this->view->tags = $gt->render('string');
 
 			//set title
@@ -501,7 +499,7 @@ class Groups extends Base
 		if (is_dir($asset_path))
 		{
 			// Get all images that are in group asset folder and could be a possible group logo
-			$this->view->logos = JFolder::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
+			$this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.PNG|.JPG|.JPEG|.GIF', false, true);
 		}
 
 		// Trigger the functions that return the areas we'll be using
@@ -717,7 +715,7 @@ class Groups extends Base
 		$group->update();
 
 		// Process tags
-		$gt = new GroupsModelTags($group->get('gidNumber'));
+		$gt = new Tags($group->get('gidNumber'));
 		$gt->setTags($tags, User::get('id'));
 
 		// Rename the temporary upload directory if it exist
@@ -753,7 +751,7 @@ class Groups extends Base
 		}
 
 		// log invites
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $group->get('gidNumber'),
 			'action'    => $log_action,
 			'comments'  => $log_comments
@@ -763,7 +761,7 @@ class Groups extends Base
 		// Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
 		$eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'saved'));
 		$eview->option = $this->_option;
-		$eview->user  = User::getRoot();
+		$eview->user   = User::getRoot();
 		$eview->group  = $group;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
@@ -836,7 +834,7 @@ class Groups extends Base
 		if ($this->_task == 'new')
 		{
 			// create page
-			$page = new GroupsModelPage(array(
+			$page = new Page(array(
 				'gidNumber' => $group->get('gidNumber'),
 				'parent'    => 0,
 				'lft'       => 1,
@@ -851,7 +849,7 @@ class Groups extends Base
 			$page->store(false);
 
 			// create page version
-			$version = new GroupsModelPageVersion(array(
+			$version = new Page\Version(array(
 				'pageid'     => $page->get('id'),
 				'version'    => 1,
 				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
@@ -1045,7 +1043,7 @@ class Groups extends Base
 		if (is_dir($path))
 		{
 			// Attempt to delete the file
-			if (!\Filesystem::deleteDirectory($path))
+			if (!Filesystem::deleteDirectory($path))
 			{
 				$this->setNotification(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			}
@@ -1107,7 +1105,7 @@ class Groups extends Base
 				->send();
 
 		// log deleted group
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $deletedgroup->get('gidNumber'),
 			'action'    => 'group_deleted',
 			'comments'  => $log

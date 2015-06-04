@@ -17,7 +17,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage	com_banners
  * @since		1.6
  */
-class GroupsModelGroup extends JModelAdmin
+class GroupsModelGroup extends \JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -28,7 +28,6 @@ class GroupsModelGroup extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
@@ -41,7 +40,7 @@ class GroupsModelGroup extends JModelAdmin
 		$this->setState($this->getName().'.id', $pk);
 
 		// Load the parameters.
-		$value = Component::params($this->option);
+		$value = \Component::params($this->option);
 		$this->setState('params', $value);
 	}
 
@@ -76,7 +75,7 @@ class GroupsModelGroup extends JModelAdmin
 		 */
 	public function getTable($type = 'Group', $prefix = 'Groups', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return \JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -88,7 +87,7 @@ class GroupsModelGroup extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_groups.edit.group.data', array());
+		$data = \User::getState('com_groups.edit.group.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

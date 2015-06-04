@@ -32,14 +32,9 @@ namespace Components\Groups\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
-use GroupsModelPageCategoryArchive;
-use GroupsModelPageArchive;
-use GroupsModelPage;
-use GroupsModelPageVersion;
-use GroupsModelLog;
-use GroupsHelperPages;
-use GroupsHelperView;
-use GroupsHelperDocument;
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Log;
+use Components\Groups\Helpers;
 use Request;
 use Notify;
 use Route;
@@ -89,7 +84,7 @@ class Pages extends AdminController
 	public function displayTask()
 	{
 		// get group pages
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1,2),
@@ -105,7 +100,7 @@ class Pages extends AdminController
 		if (in_array(User::get('username'), $approvers))
 		{
 			// get group pages
-			$pageArchive = GroupsModelPageArchive::getInstance();
+			$pageArchive = Page\Archive::getInstance();
 			$this->view->needsAttention = $pageArchive->pages('unapproved', array(
 				'gidNumber' => $this->group->get('gidNumber'),
 				'state'     => array(0,1),
@@ -148,12 +143,12 @@ class Pages extends AdminController
 		$id  = (isset($ids[0])) ? $ids[0] : null;
 
 		// get the page & version objects
-		$this->view->page = new GroupsModelPage($id);
+		$this->view->page = new Page($id);
 		$this->view->version = $this->view->page->version();
 		$this->view->firstversion = $this->view->page->version(1);
 
 		// get a list of all pages for creating module menu
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
@@ -161,7 +156,7 @@ class Pages extends AdminController
 		));
 
 		// get page categories
-		$categoryArchive = new GroupsModelPageCategoryArchive();
+		$categoryArchive = new Page\Category\Archive();
 		$this->view->categories = $categoryArchive->categories('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'orderby'   => 'title'
@@ -171,7 +166,7 @@ class Pages extends AdminController
 		$this->view->group = $this->group;
 
 		// get page templates
-		$this->view->pageTemplates = GroupsHelperView::getPageTemplates($this->group);
+		$this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -200,8 +195,8 @@ class Pages extends AdminController
 		$task = ($page['id']) ? 'update' : 'create';
 
 		// load page and version objects
-		$this->page    = new GroupsModelPage($page['id']);
-		$this->version = new GroupsModelPageVersion();
+		$this->page    = new Page($page['id']);
+		$this->version = new Page\Version();
 
 		// bind new page properties
 		if (!$this->page->bind($page))
@@ -296,7 +291,7 @@ class Pages extends AdminController
 		}
 
 		// log edit
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_page_saved',
 			'comments'  => array('page' => $page, 'version' => $version)
@@ -323,7 +318,7 @@ class Pages extends AdminController
 		foreach ($ids as $pageid)
 		{
 			// load modules
-			$page = new GroupsModelPage($pageid);
+			$page = new Page($pageid);
 
 			// cant delete home
 			if ($page->get('home') == 1)
@@ -355,7 +350,7 @@ class Pages extends AdminController
 		}
 
 		// log change
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_page_deleted',
 			'comments'  => $ids
@@ -377,7 +372,7 @@ class Pages extends AdminController
 	public function scanTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -391,7 +386,7 @@ class Pages extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$page = new GroupsModelPage($id);
+		$page = new Page($id);
 
 		// load current version
 		$currentVersion = $page->version();
@@ -409,7 +404,7 @@ class Pages extends AdminController
 		}
 
 		// get flags
-		$flags = GroupsHelperPages::getCodeFlags();
+		$flags = Helpers\Pages::getCodeFlags();
 
 		// get current versions content by lines
 		$content = explode("\n", $currentVersion->get('content'));
@@ -472,7 +467,7 @@ class Pages extends AdminController
 	public function errorsTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -486,7 +481,7 @@ class Pages extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$page = new GroupsModelPage($id);
+		$page = new Page($id);
 
 		// load current version
 		$currentVersion = $page->version();
@@ -555,7 +550,7 @@ class Pages extends AdminController
 	public function markScannedTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -569,7 +564,7 @@ class Pages extends AdminController
 		$page = Request::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
 
 		// load page
-		$groupPage = new GroupsModelPage($page['id']);
+		$groupPage = new Page($page['id']);
 
 		// load current version
 		$currentVersion = $groupPage->version();
@@ -597,7 +592,7 @@ class Pages extends AdminController
 	public function scanAgainTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -611,7 +606,7 @@ class Pages extends AdminController
 		$page = Request::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
 
 		// load page
-		$groupPage = new GroupsModelPage($page['id']);
+		$groupPage = new Page($page['id']);
 
 		// load current version
 		$currentVersion = $groupPage->version();
@@ -637,7 +632,7 @@ class Pages extends AdminController
 	public function errorsCheckAgainTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -651,7 +646,7 @@ class Pages extends AdminController
 		$page = Request::getVar('page', array(), 'post', 'none', JREQUEST_ALLOWRAW);
 
 		// load page
-		$groupPage = new GroupsModelPage( $page['id'] );
+		$groupPage = new Page( $page['id'] );
 
 		// load current version
 		$currentVersion = $groupPage->version();
@@ -676,7 +671,7 @@ class Pages extends AdminController
 	public function approveTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -690,7 +685,7 @@ class Pages extends AdminController
 		$id = Request::getInt('id', 0);
 
 		// load page
-		$page = new GroupsModelPage($id);
+		$page = new Page($id);
 
 		// load current version
 		$currentVersion = $page->version();
@@ -724,10 +719,10 @@ class Pages extends AdminController
 		}
 
 		// send approved notifcation
-		GroupsHelperPages::sendApprovedNotification('page', $page);
+		Helpers\Pages::sendApprovedNotification('page', $page);
 
 		// log approval
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_page_approved',
 			'comments'  => array($page->get('id'))
@@ -750,7 +745,7 @@ class Pages extends AdminController
 	public function rawTask( $escape = true )
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -765,7 +760,7 @@ class Pages extends AdminController
 		$version = Request::getInt('version', null, 'get');
 
 		// page object
-		$page = new GroupsModelPage($pageid);
+		$page = new Page($pageid);
 
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))
@@ -803,7 +798,7 @@ class Pages extends AdminController
 	public function previewTask()
 	{
 		// make sure we are approvers
-		if (!GroupsHelperPages::isPageApprover())
+		if (!Helpers\Pages::isPageApprover())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -818,7 +813,7 @@ class Pages extends AdminController
 		$version = Request::getInt('version', 0, 'get');
 
 		// page object
-		$page = new GroupsModelPage( $pageid );
+		$page = new Page( $pageid );
 
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))
@@ -827,7 +822,7 @@ class Pages extends AdminController
 		}
 
 		// get preview
-		echo GroupsHelperPages::generatePreview($page, $version);
+		echo Helpers\Pages::generatePreview($page, $version);
 		exit();
 	}
 

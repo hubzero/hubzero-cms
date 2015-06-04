@@ -28,16 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Page\Version;
+
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Page\Version;
+use Components\Groups\Tables;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
+use Request;
 
 // include needed modelss
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'version.php';
+require_once dirname(__DIR__) . DS . 'version.php';
 
 /**
  * Group page version archive model class
  */
-class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
+class Archive extends Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
@@ -61,7 +67,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 	public function __construct()
 	{
 		// create database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
@@ -74,7 +80,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 	 */
 	public function versions($rtrn = 'list', $filters = array(), $clear = false)
 	{
-		$tbl = new GroupsTablePageVersion($this->_db);
+		$tbl = new Tables\PageVersion($this->_db);
 
 		switch (strtolower($rtrn))
 		{
@@ -87,7 +93,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_versions instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_versions instanceof ItemList) || $clear)
 				{
 					// make sure we have page id
 					if (!isset($filters['pageid']))
@@ -105,10 +111,10 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new GroupsModelPageVersion($result);
+							$results[$key] = new Version($result);
 						}
 					}
-					$this->_versions = new \Hubzero\Base\Model\ItemList($results);
+					$this->_versions = new ItemList($results);
 				}
 				return $this->_versions;
 			break;

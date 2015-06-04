@@ -80,7 +80,7 @@ class DefaultHomePage extends GroupMacro
 		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'helpers' . DS . 'pages.php';
 
 		// get default home page 
-		$html = \GroupsHelperPages::getDefaultHomePage($this->group);
+		$html = \Components\Groups\Helpers\Pages::getDefaultHomePage($this->group);
 
 		//return rendered events
 		return $html;

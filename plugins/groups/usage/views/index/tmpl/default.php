@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // get group logger to get created log entry
-$logger     = GroupsModelLogArchive::getInstance();
+$logger     = \Components\Groups\Models\Log\Archive::getInstance();
 
 //parse the logs
 $group_edits          = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'group_edited'), true)->count();

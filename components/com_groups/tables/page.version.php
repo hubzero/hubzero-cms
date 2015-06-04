@@ -27,19 +27,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
 
 /**
  * Table class for group page
  */
-Class GroupsTablePageVersion extends JTable
+Class PageVersion extends \JTable
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -57,14 +56,14 @@ Class GroupsTablePageVersion extends JTable
 		// need page ID
 		if ($this->get('pageid') == null || $this->get('pageid') == 0)
 		{
-			$this->setError(Lang::txt('Page version must have a page ID.'));
+			$this->setError(\Lang::txt('Page version must have a page ID.'));
 			return false;
 		}
 
 		// need page version number
 		if ($this->get('version') == null)
 		{
-			$this->setError(Lang::txt('Page version must have a version number.'));
+			$this->setError(\Lang::txt('Page version must have a version number.'));
 			return false;
 		}
 		*/
@@ -72,7 +71,7 @@ Class GroupsTablePageVersion extends JTable
 		// need page content
 		if ($this->get('content') == null || $this->get('content') == '')
 		{
-			$this->setError(Lang::txt('Page version must contain content.'));
+			$this->setError(\Lang::txt('Page version must contain content.'));
 			return false;
 		}
 
@@ -80,7 +79,10 @@ Class GroupsTablePageVersion extends JTable
 	}
 
 	/**
+	 * Get a list of records
 	 *
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters = array())
 	{
@@ -92,7 +94,10 @@ Class GroupsTablePageVersion extends JTable
 	}
 
 	/**
+	 * Get a count of records
 	 *
+	 * @param   array  $filters
+	 * @return  integer
 	 */
 	public function count($filters = array())
 	{
@@ -104,7 +109,10 @@ Class GroupsTablePageVersion extends JTable
 	}
 
 	/**
+	 * Build search query
 	 *
+	 * @param   array  $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters = array())
 	{

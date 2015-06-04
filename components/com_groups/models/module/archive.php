@@ -28,17 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Module;
+
+use Components\Groups\Tables;
+use Components\Groups\Models\Module;
+use Hubzero\Base\Object;
+use Hubzero\Base\Model\ItemList;
 
 // include needed models
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'menu.php';
+require_once dirname(__DIR__) . DS . 'module.php';
+require_once __DIR__ . DS . 'menu.php';
 
 /**
  * Group module archive model class
  */
-class GroupsModelModuleArchive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
 	 * \Hubzero\Base\Model
@@ -75,14 +79,14 @@ class GroupsModelModuleArchive extends \Hubzero\Base\Object
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
 	 * Get Instance of Module Archive
 	 *
 	 * @param   string $key Instance Key
-	 * @return  object GroupsModelModuleArchive
+	 * @return  object \Components\Groups\Models\Module\Archive
 	 */
 	static function &getInstance($key=null)
 	{
@@ -126,19 +130,19 @@ class GroupsModelModuleArchive extends \Hubzero\Base\Object
 						}
 					}
 				}
-				return new \Hubzero\Base\Model\ItemList($unapproved);
+				return new ItemList($unapproved);
 			break;
 			case 'list':
 			default:
-				$tbl = new GroupsTableModule($this->_db);
+				$tbl = new Tables\Module($this->_db);
 				if ($results = $tbl->find( $filters ))
 				{
 					foreach ($results as $key => $result)
 					{
-						$results[$key] = new GroupsModelModule($result);
+						$results[$key] = new Module($result);
 					}
 				}
-				$this->_modules = new \Hubzero\Base\Model\ItemList($results);
+				$this->_modules = new ItemList($results);
 				return $this->_modules;
 			break;
 		}

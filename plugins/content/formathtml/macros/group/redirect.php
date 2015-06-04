@@ -91,7 +91,7 @@ class Redirect extends GroupMacro
 		// No delay time? Redirect now.
 		if (!$delay)
 		{
-			return \JFactory::getApplication()->redirect($url);
+			return \App::redirect($url);
 		}
 
 		// Delayed redirect

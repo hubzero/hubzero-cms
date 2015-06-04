@@ -28,8 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Page;
+
+use Components\Groups\Models\Page;
+use Components\Groups\Tables;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
+use Request;
 
 // include needed jtables
 require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
@@ -37,10 +42,10 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' .
 /**
  * Group page version model class
  */
-class GroupsModelPageVersion extends \Hubzero\Base\Model
+class Version extends Model
 {
 	/**
-	 * GroupsTablePageCategory
+	 * Table object
 	 *
 	 * @var object
 	 */
@@ -51,7 +56,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'GroupsTablePageVersion';
+	protected $_tbl_name = '\\Components\\Groups\\Tables\\PageVersion';
 
 	/**
 	 * Model context
@@ -69,7 +74,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	public function __construct($oid = null)
 	{
 		// create database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// create page cateogry jtable object
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -149,7 +154,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 					$group = \Hubzero\User\Group::getInstance(Request::getVar('cn', Request::getVar('gid', '')));
 
 					// get base path
-					$basePath = Component::params( 'com_groups' )->get('uploadpath');
+					$basePath = \Component::params( 'com_groups' )->get('uploadpath');
 
 					// build config
 					$config = array(
@@ -210,7 +215,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 
 		//create array of custom filters
 		$filters = array(
-			new HTMLPurifier_Filter_GroupInclude()
+			new \HTMLPurifier_Filter_GroupInclude()
 		);
 
 		// is this trusted content
@@ -219,8 +224,8 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 			$options['CSS.Trusted'] = true;
 			$options['HTML.Trusted'] = true;
 
-			$filters[] = new HTMLPurifier_Filter_ExternalScripts();
-			$filters[] = new HTMLPurifier_Filter_Php();
+			$filters[] = new \HTMLPurifier_Filter_ExternalScripts();
+			$filters[] = new \HTMLPurifier_Filter_Php();
 		}
 
 		// add our custom filters
@@ -240,7 +245,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	 */
 	public function url($to = 'raw')
 	{
-		$page  = new GroupsModelPage($this->get('pageid'));
+		$page  = new Page($this->get('pageid'));
 		$group = \Hubzero\User\Group::getInstance($page->get('gidNumber'));
 
 		$url = 'index.php?option=com_groups&cn=' . $group->get('cn');
@@ -254,6 +259,6 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 				$url .= '&controller=pages&task=raw&pageid=' . $page->get('id') . '&version=' . $this->get('version');
 		}
 
-		return Route::url($url);
+		return \Route::url($url);
 	}
 }

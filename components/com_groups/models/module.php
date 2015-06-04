@@ -28,8 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models;
+
+use Components\Groups\Tables;
+use Hubzero\Base\Model;
+use Hubzero\Base\Model\ItemList;
+use Request;
 
 // include needed tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'module.php';
@@ -38,14 +42,14 @@ require_once dirname(__DIR__) . DS . 'tables' . DS . 'module.menu.php';
 /**
  * Group module model class
  */
-class GroupsModelModule extends \Hubzero\Base\Model
+class Module extends Model
 {
 	/**
 	 * Table name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'GroupsTableModule';
+	protected $_tbl_name = '\\Components\\Groups\\Tables\\Module';
 
 	/**
 	 * Model context
@@ -69,9 +73,9 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new GroupsTableModule($this->_db);
+		$this->_tbl = new Tables\Module($this->_db);
 
 		if (is_numeric($oid))
 		{
@@ -93,7 +97,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	 */
 	public function menu($rtrn = 'list', $filters = array(), $clear = false)
 	{
-		$tbl = new GroupsTableModuleMenu($this->_db);
+		$tbl = new Tables\ModuleMenu($this->_db);
 
 		// make sure we have a moduleId
 		if (!isset($filters['moduleid']))
@@ -106,20 +110,20 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_menu_items instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_menu_items instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->getMenu($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new GroupsModelModuleMenu($result);
+							$results[$key] = new ModuleMenu($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_menu_items = new \Hubzero\Base\Model\ItemList($results);
+					$this->_menu_items = new ItemList($results);
 				}
 				return $this->_menu_items;
 			break;
@@ -135,7 +139,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	public function buildMenu($modulesMenu = array())
 	{
 		// create module menu object
-		$tbl = new GroupsTableModuleMenu($this->_db);
+		$tbl = new Tables\ModuleMenu($this->_db);
 
 		// delete any previous menu items
 		if (!$tbl->deleteMenus($this->get('id')))
@@ -353,7 +357,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 
 		//create array of custom filters
 		$filters = array(
-			new HTMLPurifier_Filter_GroupInclude()
+			new \HTMLPurifier_Filter_GroupInclude()
 		);
 
 		// is this trusted content
@@ -362,8 +366,8 @@ class GroupsModelModule extends \Hubzero\Base\Model
 			$options['CSS.Trusted'] = true;
 			$options['HTML.Trusted'] = true;
 
-			$filters[] = new HTMLPurifier_Filter_ExternalScripts();
-			$filters[] = new HTMLPurifier_Filter_Php();
+			$filters[] = new \HTMLPurifier_Filter_ExternalScripts();
+			$filters[] = new \HTMLPurifier_Filter_Php();
 		}
 
 		// add our custom filters

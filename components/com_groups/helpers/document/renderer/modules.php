@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers\Document\Renderer;
 
-class GroupsHelperDocumentRendererModules extends GroupsHelperDocumentRenderer
+use Components\Groups\Helpers\Document\Renderer;
+use Components\Groups\Models\Module\Archive;
+
+class Modules extends Renderer
 {
 	/**
 	 * Render Modules to group template or page
@@ -44,7 +46,7 @@ class GroupsHelperDocumentRendererModules extends GroupsHelperDocumentRenderer
 		$pageid = ($this->page) ? $this->page->get('id') : 0;
 
 		// get the list of modules
-		$groupModuleArchive = GroupsModelModuleArchive::getInstance();
+		$groupModuleArchive = Archive::getInstance();
 		$modules = $groupModuleArchive->modules('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(1),

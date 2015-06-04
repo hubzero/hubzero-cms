@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id');
 
 // add page stylesheets
-$stylesheets = GroupsHelperView::getPageCss($this->group);
+$stylesheets = \Components\Groups\Helpers\View::getPageCss($this->group);
 
 foreach ($stylesheets as $stylesheet)
 {
@@ -160,7 +160,7 @@ $this->css()
 							</div>
 						</div>
 						<div class="version-content">
-							<?php echo GroupsHelperPages::generatePreview($this->page, $pageVersion->get('version'), true); ?>
+							<?php echo \Components\Groups\Helpers\Pages::generatePreview($this->page, $pageVersion->get('version'), true); ?>
 						</div>
 						<div class="version-code">
 							<?php

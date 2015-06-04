@@ -28,8 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Log;
+
+use Components\Groups\Tables;
+use Components\Groups\Models\Log;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
 
 // include needed models
 require_once dirname(__DIR__) . DS . 'log.php';
@@ -37,7 +41,7 @@ require_once dirname(__DIR__) . DS . 'log.php';
 /**
  * Group log archive model class
  */
-class GroupsModelLogArchive extends \Hubzero\Base\Model
+class Archive extends Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
@@ -54,14 +58,14 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 	public function __construct()
 	{
 		// create database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
-	 * Get Instance of Page Archive
+	 * Get Instance of Log Archive
 	 *
-	 * @param   string $key Instance Key
-	 * @return  object GroupsModelLogArchive
+	 * @param   string  $key  Instance Key
+	 * @return  object
 	 */
 	static function &getInstance($key=null)
 	{
@@ -91,17 +95,17 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_logs instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_logs instanceof ItemList) || $clear)
 				{
-					$tbl = new GroupsTableLog($this->_db);
+					$tbl = new Tables\Log($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new GroupsModelLog($result);
+							$results[$key] = new Log($result);
 						}
 					}
-					$this->_logs = new \Hubzero\Base\Model\ItemList($results);
+					$this->_logs = new ItemList($results);
 				}
 				return $this->_logs;
 			break;

@@ -57,7 +57,7 @@ if ($this->level == 0)
 				}
 
 				//get file check outs
-				$checkout = GroupsHelperPages::getCheckout($page->get('id'));
+				$checkout = \Components\Groups\Helpers\Pages::getCheckout($page->get('id'));
 			?>
 			<li id="<?php echo $page->get('id'); ?>" class="<?php echo $cls; ?>">
 				<?php

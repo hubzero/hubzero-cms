@@ -28,8 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models;
+
+use Components\Groups\Tables;
+use Hubzero\Base\Model;
+use Hubzero\Base\Model\ItemList;
+use Lang;
 
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
@@ -42,10 +46,10 @@ require_once dirname(__DIR__) . DS . 'models' . DS . 'page' . DS . 'version' . D
 /**
  * Group page model class
  */
-class GroupsModelPage extends \Hubzero\Base\Model
+class Page extends Model
 {
 	/**
-	 * JTable
+	 * Table
 	 *
 	 * @var object
 	 */
@@ -56,7 +60,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'GroupsTablePage';
+	protected $_tbl_name = '\\Components\\Groups\\Tables\\Page';
 
 	/**
 	 * \Hubzero\Base\ItemList
@@ -81,7 +85,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -97,7 +101,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		}
 
 		// load versions
-		$pageVersionArchive = new GroupsModelPageVersionArchive();
+		$pageVersionArchive = new Page\Version\Archive();
 		$this->_versions = $pageVersionArchive->versions('list', array(
 			'pageid'  => $this->get('id', -1),
 			'orderby' => 'version DESC',
@@ -119,12 +123,12 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	 * Load Page Version
 	 *
 	 * @param   mixed  $vid Version Id
-	 * @return  object GroupsModelPageVersion
+	 * @return  object \Components\Groups\Models\Page\Version
 	 */
 	public function version( $vid = null )
 	{
 		// var to hold version
-		$version = new GroupsModelPageVersion();
+		$version = new Page\Version();
 
 		// make sure we have versions to return
 		if ($this->_versions->count() > 0)
@@ -147,12 +151,12 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	/**
 	 * Load Page Category
 	 *
-	 * @return  object GroupsModelPageCategory
+	 * @return  object \Components\Groups\Models\Page\Category
 	 */
 	public function category()
 	{
 		// var to hold category
-		$category = new GroupsModelPageCategory($this->get('category'));
+		$category = new Page\Category($this->get('category'));
 
 		// return category
 		return $category;
@@ -161,7 +165,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	/**
 	 * Load Approved Page version
 	 *
-	 * @return  object GroupsModelPageVersion
+	 * @return  object \Components\Groups\Models\Page\Version
 	 */
 	public function approvedVersion()
 	{
@@ -204,8 +208,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$alias = preg_replace("/[^-_a-z0-9]+/", '', $alias);
 
 		// make sure alias isnt a reserved term
-		$group   = \Hubzero\User\Group::getInstance( $this->get('gidNumber') );
-		$plugins = \Hubzero\User\Group\Helper::getPluginAccess( $group );
+		$group   = \Hubzero\User\Group::getInstance($this->get('gidNumber'));
+		$plugins = \Hubzero\User\Group\Helper::getPluginAccess($group);
 		$reserved = array_keys($plugins);
 
 		// make sure dont use a reserved alias on the first level
@@ -217,7 +221,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		}
 
 		// get current page as it exists in db
-		$page = new GroupsModelPage( $this->get('id') );
+		$page = new Page( $this->get('id') );
 		$currentAlias = $page->get('alias');
 
 		// only against our pages if alias has changed
@@ -225,7 +229,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		{
 			// make sure we dont already have a page with the same alias
 			// get group pages
-			$pageArchive = GroupsModelPageArchive::getInstance();
+			$pageArchive = Page\Archive::getInstance();
 			$aliases = $pageArchive->pages('alias', array(
 				'gidNumber' => $group->get('gidNumber'),
 				'state'     => array(0,1),
@@ -297,7 +301,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$pageLink = '';
 		if ($includeBase)
 		{
-			$pageLink = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
+			$pageLink = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
 		}
 
 		// get our parents
@@ -334,11 +338,11 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	/**
 	 * Get Parent Parent
 	 *
-	 * @return object  GroupsModelPage Object
+	 * @return object  \Components\Groups\Models\Page Object
 	 */
 	public function getParent()
 	{
-		return new GroupsModelPage($this->get('parent'));
+		return new Page($this->get('parent'));
 	}
 
 	/**
@@ -349,7 +353,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	public function getChildren()
 	{
 		// load pages that are decendents of this page
-		$archive  = new GroupsModelPageArchive();
+		$archive  = new Page\Archive();
 		$children = $archive->pages('list', array(
 			'gidNumber' => $this->get('gidNumber'),
 			'left'      => $this->get('lft'),
@@ -371,13 +375,13 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		// new item list object to store parents
 		// this way we have access to all page vars
-		$parents = new \Hubzero\Base\Model\ItemList();
+		$parents = new ItemList();
 
 		// starting at current page loop through in
 		// reverse order until our parent page doesnt have a parent
 		while ($page->get('parent') != 0)
 		{
-			$page = new GroupsModelPage($page->get('parent'));
+			$page = new Page($page->get('parent'));
 			$parents->add($page);
 		}
 

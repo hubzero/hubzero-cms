@@ -31,7 +31,7 @@
 namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
-use GroupsModelPageCategory;
+use Components\Groups\Models\Page;
 use Request;
 use Route;
 use User;
@@ -121,7 +121,7 @@ class Categories extends Base
 		$categoryid = Request::getInt('categoryid', 0);
 
 		// get the category object
-		$this->view->category = new GroupsModelPageCategory($categoryid);
+		$this->view->category = new Page\Category($categoryid);
 
 		// are we passing a category object
 		if ($this->category)
@@ -157,7 +157,7 @@ class Categories extends Base
 		$category['gidNumber'] = $this->group->get('gidNumber');
 
 		// load category object
-		$this->category = new GroupsModelPageCategory($category['id']);
+		$this->category = new Page\Category($category['id']);
 
 		// bind to our new results
 		if (!$this->category->bind($category))
@@ -191,7 +191,7 @@ class Categories extends Base
 		$categoryid = Request::getInt('categoryid', 0);
 
 		// load category object
-		$category = new GroupsModelPageCategory($categoryid);
+		$category = new Page\Category($categoryid);
 
 		// make sure this is our groups cat
 		if ($category->get('gidNumber') != $this->group->get('gidNumber'))

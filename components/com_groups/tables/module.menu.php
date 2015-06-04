@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
 
 /**
  * Groups Module table
  */
-class GroupsTableModuleMenu extends JTable
+class ModuleMenu extends \JTable
 {
 	/**
 	 * Constructor
@@ -42,7 +41,6 @@ class GroupsTableModuleMenu extends JTable
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-
 	public function __construct(&$db)
 	{
 		parent::__construct('#__xgroups_modules_menu', 'id', $db);
@@ -53,15 +51,15 @@ class GroupsTableModuleMenu extends JTable
 	 *
 	 * @return     array
 	 */
-	public function getMenu( $filters = array() )
+	public function getMenu($filters = array())
 	{
 		if (!isset($filters['moduleid']))
 		{
 			return;
 		}
 
-		$sql = "SELECT * FROM {$this->_tbl} as m WHERE m.`moduleid`=" . $this->_db->quote( $filters['moduleid'] );
-		$this->_db->setQuery( $sql );
+		$sql = "SELECT * FROM {$this->_tbl} as m WHERE m.`moduleid`=" . $this->_db->quote($filters['moduleid']);
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
@@ -72,7 +70,7 @@ class GroupsTableModuleMenu extends JTable
 	 * @param      $menus    Array of menus
 	 * @return     BOOL
 	 */
-	public function createMenus( $moduleid, $pages = array() )
+	public function createMenus($moduleid, $pages = array())
 	{
 		// create array of values to insert
 		$values = array();
@@ -107,7 +105,7 @@ class GroupsTableModuleMenu extends JTable
 	 * @param      $moduleid    Module ID
 	 * @return     BOOL
 	 */
-	public function deleteMenus( $moduleid )
+	public function deleteMenus($moduleid)
 	{
 		// make sure we have a module id
 		if (!$moduleid)
@@ -117,8 +115,8 @@ class GroupsTableModuleMenu extends JTable
 		}
 
 		// delete any menu items matching module id
-		$sql = "DELETE FROM {$this->_tbl} WHERE `moduleid`=" . $this->_db->quote( $moduleid );
-		$this->_db->setQuery( $sql );
+		$sql = "DELETE FROM {$this->_tbl} WHERE `moduleid`=" . $this->_db->quote($moduleid);
+		$this->_db->setQuery($sql);
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getError());

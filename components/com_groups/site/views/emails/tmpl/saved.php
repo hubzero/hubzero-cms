@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // build urls
-$base      = rtrim(str_replace('administrator', '', Request::base()), DS);
-$groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
+$base      = rtrim(str_replace('administrator', '', Request::base()), '/');
+$groupLink = $base . '/groups/' . $this->group->get('cn');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -284,7 +284,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																<tr>
 																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
-																			$gt = new GroupsModelTags($this->group->get('gidNumber'));
+																			$gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
 																			$tags = $gt->render('string');
 																		?>
 																		<?php if ($tags) : ?>

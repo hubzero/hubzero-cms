@@ -28,10 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Helpers;
 
-class GroupsHelperGitlab
+class Gitlab
 {
 	/**
 	 * URL to GitLab
@@ -62,7 +61,7 @@ class GroupsHelperGitlab
 	{
 		$this->url    = rtrim($url, DS);
 		$this->token  = $token;
-		$this->client = new Guzzle\Http\Client();
+		$this->client = new \Guzzle\Http\Client();
 		$this->client->setSslVerification(false, false);
 	}
 

@@ -464,7 +464,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		if ($action)
 		{
 			// log invites
-			GroupsModelLog::log(array(
+			\Components\Groups\Models\Log::log(array(
 				'gidNumber' => $this->group->get('gidNumber'),
 				'action'    => $action,
 				'comments'  => array(User::get('id'))

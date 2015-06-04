@@ -28,10 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers\Document\Renderer;
 
-class GroupsHelperDocumentRendererScript extends GroupsHelperDocumentRenderer
+use Components\Groups\Helpers\Document\Renderer;
+
+class Script extends Renderer
 {
 	/**
 	 * Render content to group template
@@ -61,7 +62,7 @@ class GroupsHelperDocumentRendererScript extends GroupsHelperDocumentRenderer
 		if ($path = $this->group->downloadLinkForPath($base, $source))
 		{
 			// add stylsheet to document
-			Document::addScript($path);
+			\Document::addScript($path);
 		}
 	}
 }

@@ -32,9 +32,8 @@ namespace Components\Groups\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Hubzero\User\Group;
-use GroupsModelLog;
-use GroupsReason;
-use GroupsGroup;
+use Components\Groups\Models\Log;
+use Components\Groups\Tables;
 use Request;
 use Config;
 use Route;
@@ -137,7 +136,7 @@ class Membership extends AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$tbl = new GroupsGroup($this->database);
+		$tbl = new Tables\Group($this->database);
 
 		$this->view->total = $tbl->countMembers($this->view->filters);
 
@@ -280,7 +279,7 @@ class Membership extends AdminController
 		$this->group->update();
 
 		// log
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_added',
 			'comments'  => $users
@@ -339,7 +338,7 @@ class Membership extends AdminController
 				}
 
 				// Remove record of reason wanting to join group
-				$reason = new GroupsReason($this->database);
+				$reason = new Tables\Reason($this->database);
 				$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
 
 				// They user is not already a member, so we can go ahead and add them
@@ -361,7 +360,7 @@ class Membership extends AdminController
 		$this->group->update();
 
 		// log
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_approved',
 			'comments'  => $users
@@ -433,7 +432,7 @@ class Membership extends AdminController
 		// Save changes
 		$this->group->update();
 
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_promoted',
 			'comments'  => $users
@@ -522,7 +521,7 @@ class Membership extends AdminController
 		$this->group->update();
 
 		// log
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_demoted',
 			'comments'  => $users
@@ -603,7 +602,7 @@ class Membership extends AdminController
 		$this->group->update();
 
 		// log
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_deleted',
 			'comments'  => $users_mem
@@ -689,7 +688,7 @@ class Membership extends AdminController
 		$this->group->update();
 
 		// log
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_uninvited',
 			'comments'  => array_merge($users, $useremails)
@@ -736,7 +735,7 @@ class Membership extends AdminController
 			if (is_object($targetuser))
 			{
 				// Remove record of reason wanting to join group
-				$reason = new GroupsReason($this->database);
+				$reason = new Tables\Reason($this->database);
 				$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
 
 				// Add them to the array of users to deny
@@ -755,7 +754,7 @@ class Membership extends AdminController
 		$this->group->update();
 
 		// log
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_members_denied',
 			'comments'  => $users

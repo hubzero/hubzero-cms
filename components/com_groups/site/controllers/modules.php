@@ -31,12 +31,9 @@
 namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
-use GroupsModelLog;
-use GroupsModelPageArchive;
-use GroupsModelModuleArchive;
-use GroupsModelModule;
-use GroupsHelperView;
-use GroupsHelperPages;
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Module;
+use Components\Groups\Helpers;
 use Request;
 use Route;
 use User;
@@ -127,7 +124,7 @@ class Modules extends Base
 		$moduleid = Request::getInt('moduleid', 0);
 
 		// get the category object
-		$this->view->module = new GroupsModelModule($moduleid);
+		$this->view->module = new Module($moduleid);
 
 		// are we passing a module object
 		if ($this->module)
@@ -136,7 +133,7 @@ class Modules extends Base
 		}
 
 		// get a list of all pages for creating module menu
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Page\Archive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
@@ -144,7 +141,7 @@ class Modules extends Base
 		));
 
 		// get a list of all pages for creating module menu
-		$moduleArchive = GroupsModelModuleArchive::getInstance();
+		$moduleArchive = Module\Archive::getInstance();
 		$this->view->order = $moduleArchive->modules('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'position'  => $this->view->module->get('position'),
@@ -153,7 +150,7 @@ class Modules extends Base
 		));
 
 		// get stylesheets for editor
-		$this->view->stylesheets = GroupsHelperView::getPageCss($this->group);
+		$this->view->stylesheets = Helpers\View::getPageCss($this->group);
 
 		// build the title
 		$this->_buildTitle();
@@ -188,7 +185,7 @@ class Modules extends Base
 		$module['position'] = preg_replace("/[^-_a-zA-Z0-9]+/", "", $module['position']);
 
 		// get the category object
-		$this->module = new GroupsModelModule($module['id']);
+		$this->module = new Module($module['id']);
 
 		// ordering change
 		$ordering = null;
@@ -211,7 +208,7 @@ class Modules extends Base
 		$contentChanged = false;
 		$oldContent = trim($this->module->get('content'));
 		$newContent = (isset($module['content'])) ? trim($module['content']) : '';
-		$newContent = GroupsModelModule::purify($newContent, $this->group->isSuperGroup());
+		$newContent = Module::purify($newContent, $this->group->isSuperGroup());
 
 		// is the new and old content different?
 		if ($oldContent != $newContent)
@@ -292,7 +289,7 @@ class Modules extends Base
 		// send to approvers if unapproved
 		if ($this->module->get('approved', 0) == 0)
 		{
-			GroupsHelperPages::sendApproveNotification('module', $this->module);
+			Helpers\Pages::sendApproveNotification('module', $this->module);
 		}
 
 		// Push success message and redirect
@@ -348,7 +345,7 @@ class Modules extends Base
 		$moduleid = Request::getInt('moduleid', 0, 'get');
 
 		// load page model
-		$module = new GroupsModelModule($moduleid);
+		$module = new Module($moduleid);
 
 		// make sure its out page
 		if (!$module->belongsToGroup($this->group))

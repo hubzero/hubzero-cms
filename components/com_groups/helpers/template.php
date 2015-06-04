@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers;
 
-class GroupsHelperTemplate extends GroupsHelperDocument
+use Component;
+use App;
+
+class Template extends Document
 {
 	public $error = null;
 

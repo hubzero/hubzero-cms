@@ -28,17 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Page;
+
+use Components\Groups\Models\Page;
+use Components\Groups\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Base\Model\ItemList;
 
 // include needed models
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category' . DS . 'archive.php';
+require_once dirname(__DIR__) . DS . 'page.php';
+require_once __DIR__ . DS . 'category' . DS . 'archive.php';
 
 /**
  * Group page archive model class
  */
-class GroupsModelPageArchive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
 	 * \Hubzero\Base\Model
@@ -75,15 +79,15 @@ class GroupsModelPageArchive extends \Hubzero\Base\Object
 	 */
 	public function __construct()
 	{
-		$this->_db    = JFactory::getDBO();
-		$this->_group = \Hubzero\User\Group::getInstance(Request::getVar('cn', ''));
+		$this->_db    = \JFactory::getDBO();
+		$this->_group = \Hubzero\User\Group::getInstance(\Request::getVar('cn', ''));
 	}
 
 	/**
 	 * Get Instance of Page Archive
 	 *
 	 * @param   string $key Instance Key
-	 * @return  object GroupsModelPageArchive
+	 * @return  object \Components\Groups\Models\PageArchive
 	 */
 	static function &getInstance($key=null)
 	{
@@ -146,7 +150,7 @@ class GroupsModelPageArchive extends \Hubzero\Base\Object
 						}
 					}
 				}
-				return new \Hubzero\Base\Model\ItemList($unapproved);
+				return new ItemList($unapproved);
 			break;
 			case 'tree':
 				$tree = array();
@@ -157,17 +161,17 @@ class GroupsModelPageArchive extends \Hubzero\Base\Object
 				return $tree;
 			case 'list':
 			default:
-				if (!($this->_pages instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_pages instanceof ItemList) || $clear)
 				{
-					$tbl = new GroupsTablePage($this->_db);
+					$tbl = new Tables\Page($this->_db);
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new GroupsModelPage($result);
+							$results[$key] = new Page($result);
 						}
 					}
-					$this->_pages = new \Hubzero\Base\Model\ItemList($results);
+					$this->_pages = new ItemList($results);
 				}
 				return $this->_pages;
 			break;

@@ -28,16 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Page\Category;
+
+use Components\Groups\Models\Page;
+use Components\Groups\Tables;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
 
 // include needed modelss
-require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category.php';
+require_once dirname(__DIR__) . DS . 'category.php';
 
 /**
  * Group page category archive model class
  */
-class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
+class Archive extends Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
@@ -54,7 +58,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 	public function __construct()
 	{
 		// create database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
@@ -74,17 +78,17 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_categories instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_categories instanceof ItemList) || $clear)
 				{
-					$tbl = new GroupsTablePageCategory($this->_db);
+					$tbl = new Tables\PageCategory($this->_db);
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new GroupsModelPageCategory($result);
+							$results[$key] = new Category($result);
 						}
 					}
-					$this->_categories = new \Hubzero\Base\Model\ItemList($results);
+					$this->_categories = new ItemList($results);
 				}
 				return $this->_categories;
 			break;

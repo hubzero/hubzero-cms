@@ -537,7 +537,7 @@ class Import extends SiteController
 		if (isset($group) && $group != '')
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
-			$gob = new \GroupsGroup($this->database);
+			$gob = new \Components\Groups\Tables\Group($this->database);
 			$cn = $gob->getName($group);
 
 			App::redirect(

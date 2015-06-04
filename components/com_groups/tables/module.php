@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
+
+use Lang;
 
 /**
  * Groups Module table
  */
-class GroupsTableModule extends JTable
+class Module extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,21 +58,21 @@ class GroupsTableModule extends JTable
 		// need group id
 		if ($this->get('gidNumber') == null)
 		{
-			$this->setError( Lang::txt('Must provide group id.') );
+			$this->setError(Lang::txt('Must provide group id.'));
 			return false;
 		}
 
 		// need module title
 		if ($this->get('title') == null)
 		{
-			$this->setError( Lang::txt('Must provide module title.') );
+			$this->setError(Lang::txt('Must provide module title.'));
 			return false;
 		}
 
 		// need module content
 		if ($this->get('content') == null)
 		{
-			$this->setError( Lang::txt('Must provide module content.') );
+			$this->setError(Lang::txt('Must provide module content.'));
 			return false;
 		}
 
@@ -84,10 +85,10 @@ class GroupsTableModule extends JTable
 	 * @param      array   $filters
 	 * @return     array
 	 */
-	public function find( $filters = array() )
+	public function find($filters = array())
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -100,7 +101,7 @@ class GroupsTableModule extends JTable
 	 * @param      array   $filters
 	 * @return     int
 	 */
-	public function count( $filters = array() )
+	public function count($filters = array())
 	{
 		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
@@ -116,7 +117,7 @@ class GroupsTableModule extends JTable
 	 * @param      array   $filters
 	 * @return     string
 	 */
-	private function _buildQuery( $filters = array() )
+	private function _buildQuery($filters = array())
 	{
 		// var to hold conditions
 		$where = array();

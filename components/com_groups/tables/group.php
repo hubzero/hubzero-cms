@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
 
 /**
  * Groups table
  */
-class GroupsGroup extends JTable
+class Group extends \JTable
 {
 	/**
 	 * Constructor
@@ -126,7 +125,7 @@ class GroupsGroup extends JTable
 	{
 		if (trim($this->cn) == '')
 		{
-			$this->setError(Lang::txt('COM_GROUPS_ERROR_EMPTY_TITLE'));
+			$this->setError(\Lang::txt('COM_GROUPS_ERROR_EMPTY_TITLE'));
 			return false;
 		}
 		return true;
@@ -319,16 +318,15 @@ class GroupsGroup extends JTable
 	/**
 	 * Get a cn
 	 *
-	 * @param  string gid
-	 * @return object Return cn
+	 * @param   string  $id  gid
+	 * @return  object  Return cn
 	 */
 	public function getName($id)
 	{
-		$query = "SELECT cn from #__xgroups WHERE gidNumber = " . $id . ";";
+		$query = "SELECT cn FROM `#__xgroups` WHERE gidNumber = " . $id . ";";
 		$this->_db->setQuery($query);
-		$cn = $this->_db->loadResult();
 
-		return $cn;
+		return $this->_db->loadResult();
 	}
 }
 

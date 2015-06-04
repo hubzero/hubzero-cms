@@ -448,7 +448,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group->update();
 
 		// log invites
-		GroupsModelLog::log(array(
+		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_approved',
 			'comments'  => $users
@@ -519,7 +519,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group->update();
 
 		// log invites
-		GroupsModelLog::log(array(
+		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_promoted',
 			'comments'  => $users
@@ -605,7 +605,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group->update();
 
 		// log invites
-		GroupsModelLog::log(array(
+		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_demoted',
 			'comments'  => $users
@@ -748,7 +748,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group->update();
 
 		// log invites
-		GroupsModelLog::log(array(
+		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_removed',
 			'comments'  => $users_mem
@@ -872,7 +872,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$this->group->update();
 
 		// log invites
-		GroupsModelLog::log(array(
+		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_denied',
 			'comments'  => $users
@@ -991,7 +991,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		// log invites
-		GroupsModelLog::log(array(
+		\Components\Groups\Models\Log::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'membership_invite_cancelled',
 			'comments'  => array_merge($users, $user_emails)

@@ -33,10 +33,10 @@ namespace Components\Groups\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use Hubzero\User\Group;
-use GroupsModelPageVersion;
-use GroupsModelPage;
-use GroupsModelLog;
-use GroupsHelperGitlab;
+use Components\Groups\Helpers\Permissions;
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Log;
+use Components\Groups\Helpers\Gitlab;
 use Filesystem;
 use Request;
 use Config;
@@ -376,7 +376,7 @@ class Manage extends AdminController
 		if ($isNew)
 		{
 			// create page
-			$page = new GroupsModelPage(array(
+			$page = new Page(array(
 				'gidNumber' => $group->get('gidNumber'),
 				'parent'    => 0,
 				'lft'       => 1,
@@ -391,7 +391,7 @@ class Manage extends AdminController
 			$page->store(false);
 
 			// create page version
-			$version = new GroupsModelPageVersion(array(
+			$version = new Page\Version(array(
 				'pageid'     => $page->get('id'),
 				'version'    => 1,
 				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
@@ -407,7 +407,7 @@ class Manage extends AdminController
 		Event::trigger('groups.onGroupAfterSave', array($before, $group));
 
 		// log edit
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $group->get('gidNumber'),
 			'action'    => 'group_edited',
 			'comments'  => 'edited by administrator'
@@ -528,7 +528,7 @@ class Manage extends AdminController
 		}
 
 		// log super group change
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $group->get('gidNumber'),
 			'action'    => 'super_group_created',
 			'comments'  => ''
@@ -574,7 +574,7 @@ class Manage extends AdminController
 		$projectName = $group->get('cn');
 
 		// instantiate new gitlab client
-		$client = new GroupsHelperGitlab($gitlabUrl, $gitlabKey);
+		$client = new Gitlab($gitlabUrl, $gitlabKey);
 
 		// get list of groups
 		$groups = $client->groups();
@@ -749,7 +749,7 @@ class Manage extends AdminController
 				$gitlabKey = $this->config->get('super_gitlab_key', '');
 
 				// instantiate new gitlab client
-				$client        = new GroupsHelperGitlab($gitlabUrl, $gitlabKey);
+				$client        = new Gitlab($gitlabUrl, $gitlabKey);
 				$gitlabGroup   = $client->group($groupName);
 				$gitlabProject = $client->project($projectName);
 
@@ -976,7 +976,7 @@ class Manage extends AdminController
 				}
 
 				// log publishing
-				GroupsModelLog::log(array(
+				Log::log(array(
 					'gidNumber' => $group->get('gidNumber'),
 					'action'    => 'group_deleted',
 					'comments'  => $log
@@ -1043,7 +1043,7 @@ class Manage extends AdminController
 				$group->update();
 
 				// log publishing
-				GroupsModelLog::log(array(
+				Log::log(array(
 					'gidNumber' => $group->get('gidNumber'),
 					'action'    => 'group_published',
 					'comments'  => 'published by administrator'
@@ -1098,7 +1098,7 @@ class Manage extends AdminController
 				$group->update();
 
 				// log unpublishing
-				GroupsModelLog::log(array(
+				Log::log(array(
 					'gidNumber' => $group->get('gidNumber'),
 					'action'    => 'group_unpublished',
 					'comments'  => 'unpublished by administrator'
@@ -1150,7 +1150,7 @@ class Manage extends AdminController
 				$group->update();
 
 				// log publishing
-				GroupsModelLog::log(array(
+				Log::log(array(
 					'gidNumber' => $group->get('gidNumber'),
 					'action'    => 'group_approved',
 					'comments'  => 'approved by administrator'
@@ -1210,7 +1210,7 @@ class Manage extends AdminController
 	protected function authorize($task, $group=null)
 	{
 		// get users actions
-		$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
+		$canDo = Permissions::getActions('group');
 
 		// build task name
 		$taskName = 'core.' . $task;

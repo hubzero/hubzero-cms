@@ -28,20 +28,23 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Module;
+
+use Components\Groups\Tables;
+use Hubzero\Base\Model;
+use Lang;
 
 /**
  * Group module menu model class
  */
-class GroupsModelModuleMenu extends \Hubzero\Base\Model
+class Menu extends Model
 {
 	/**
 	 * Table name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'GroupsTableModuleMenu';
+	protected $_tbl_name = '\\Components\\Groups\\Tables\\ModuleMenu';
 
 	/**
 	 * Constructor
@@ -51,9 +54,9 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new GroupsTableModuleMenu($this->_db);
+		$this->_tbl = new Tables\ModuleMenu($this->_db);
 
 		if (is_numeric($oid))
 		{
@@ -83,7 +86,7 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 		}
 
 		// new group page
-		$tbl = new GroupsTablePage($this->_db);
+		$tbl = new Tables\Page($this->_db);
 
 		// load page
 		$tbl->load($this->get('pageid'));

@@ -28,8 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models;
+
+use Hubzero\Base\Model;
+use Date;
+use User;
 
 // include needed jtables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
@@ -37,10 +40,10 @@ require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
 /**
  * Group log model class
  */
-class GroupsModelLog extends \Hubzero\Base\Model
+class Log extends Model
 {
 	/**
-	 * GroupsTablePageCategory
+	 * Table object
 	 *
 	 * @var object
 	 */
@@ -51,7 +54,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'GroupsTableLog';
+	protected $_tbl_name = '\\Components\\Groups\\Tables\\Log';
 
 	/**
 	 * Constructor
@@ -62,7 +65,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	public function __construct($oid = null)
 	{
 		// create database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// create page cateogry jtable object
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -70,11 +73,11 @@ class GroupsModelLog extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
@@ -139,7 +142,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	public static function __callStatic($method, $args)
 	{
 		// resolve instance
-		$instance = new GroupsModelLog();
+		$instance = new self();
 
 		// run method on instance
 		switch (count($args))

@@ -28,8 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models\Page;
+
+use Components\Groups\Models\Page;
+use Components\Groups\Tables;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
 
 // include needed jtables
 require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.category.php';
@@ -37,10 +41,10 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'tables' .
 /**
  * Group page category model class
  */
-class GroupsModelPageCategory extends \Hubzero\Base\Model
+class Category extends Model
 {
 	/**
-	 * GroupsTablePageCategory
+	 * Table object
 	 *
 	 * @var object
 	 */
@@ -51,7 +55,7 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'GroupsTablePageCategory';
+	protected $_tbl_name = '\\Components\\Groups\\Tables\\PageCategory';
 
 	/**
 	 * \Hubzero\Base\ItemList
@@ -76,7 +80,7 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 	public function __construct($oid = null)
 	{
 		// create database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// create page cateogry jtable object
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -102,7 +106,7 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 	public function getPages($rtrn = 'list', $clear = false)
 	{
 		// create page jtable
-		$tbl = new GroupsTablePage($this->_db);
+		$tbl = new Tables\Page($this->_db);
 
 		// build array of filters
 		$filters = array(
@@ -122,16 +126,16 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 			break;
 			case 'list':
 			default:
-				if (!($this->_pages instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_pages instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new GroupsModelPage($result);
+							$results[$key] = new Page($result);
 						}
 					}
-					$this->_pages = new \Hubzero\Base\Model\ItemList($results);
+					$this->_pages = new ItemList($results);
 				}
 				return $this->_pages;
 			break;

@@ -28,10 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Helpers;
 
-class GroupsHelperView
+use Components\Groups\Models\Page\Archive;
+use Exception;
+use Filesystem;
+use Request;
+use Event;
+use Route;
+use Lang;
+use User;
+use App;
+
+class View
 {
 	private static $_tab              = null;
 	private static $_sections         = null;
@@ -212,7 +221,7 @@ class GroupsHelperView
 
 		// get group pages if any
 		// only get published items that arent set as the home page
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = Archive::getInstance();
 		$pages = $pageArchive->pages('tree', array(
 			'gidNumber' => $group->get('gidNumber'),
 			'state'     => array(1),
@@ -260,7 +269,7 @@ class GroupsHelperView
 				$pageAccess = ($page->get('privacy') == 'default') ? $access : $page->get('privacy');
 
 				// is this the active page?
-				$cls  = (GroupsHelperPages::isPageActive($page)) ? 'active' : '';
+				$cls  = (Pages::isPageActive($page)) ? 'active' : '';
 
 				//page menu item
 				if (($pageAccess == 'registered' && User::isGuest()) ||
@@ -512,7 +521,7 @@ class GroupsHelperView
 		}
 
 		// load html through dom document object
-		$domDocument = new DOMDocument();
+		$domDocument = new \DOMDocument();
 		// Since HTML 5 doctype has no DTD to check, the DOM will attempt to
 		// use HTML4 TRansitional which will throw errors on valid HTML5
 		// entities (e.g., header, footer, section). So, we temporarily
@@ -578,13 +587,13 @@ class GroupsHelperView
 	{
 		// are we a super group?
 		// and do we have an error template?
-		if (!$group->isSuperGroup() || !GroupsHelperTemplate::hasTemplate($group, 'error'))
+		if (!$group->isSuperGroup() || !Template::hasTemplate($group, 'error'))
 		{
 			return;
 		}
 
 		// attach custom error handler
-		set_exception_handler(array('GroupsHelperView', 'handleCustomError'));
+		set_exception_handler(array('\Components\Groups\Helpers\View', 'handleCustomError'));
 	}
 
 
@@ -593,13 +602,13 @@ class GroupsHelperView
 	 *
 	 * @return     array
 	 */
-	public static function handleCustomError(JException $error)
+	public static function handleCustomError(Exception $error)
 	{
 		// get error template
 		// must wrap in output buffer to capture contents since returning content through output method returns to the
 		// method that called handleSuperGroupError with call_user_func
 		ob_start();
-		$template = new GroupsHelperTemplate();
+		$template = new Template();
 		$template->set('group', \Hubzero\User\Group::getInstance(Request::getVar('cn', '')))
 			     ->set('tab', Request::getVar('active','overview'))
 			     ->set('error', $error)
@@ -768,7 +777,7 @@ class GroupsHelperView
 		ob_end_clean();
 
 		//create new group document helper
-		$groupDocument = new GroupsHelperDocument();
+		$groupDocument = new Document();
 
 		// set group doc needed props
 		// parse and render content

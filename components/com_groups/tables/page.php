@@ -27,13 +27,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Tables;
+
+use Lang;
 
 /**
  * Table class for group page
  */
-Class GroupsTablePage extends JTable
+Class Page extends \JTable
 {
 	/**
 	 * Constructor

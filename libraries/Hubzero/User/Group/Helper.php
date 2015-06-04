@@ -161,7 +161,7 @@ class Helper
 		foreach ($groups as $k => $group)
 		{
 			//get the groups tags
-			$gt = new \GroupsModelTags($group->gidNumber);
+			$gt = new \Components\Groups\Models\Tags($group->gidNumber);
 
 			$group->tags = $gt->render('string');
 			$group->tags = array_map('trim', explode(',', $group->tags));
@@ -215,7 +215,7 @@ class Helper
 			//get the Hubzero Group Object
 			$hg = Group::getInstance($group->gidNumber);
 
-			$gt = new \GroupsModelTags();
+			$gt = new \Components\Groups\Models\Tags();
 
 			//var to hold group description
 			$description = "";

@@ -28,10 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Helpers;
 
-class GroupsHelperPages
+use Components\Groups\Models\Page;
+use Components\Groups\Tables\PageHit;
+use Component;
+use Request;
+use Config;
+use Route;
+use User;
+use Lang;
+use App;
+use stdClass;
+
+class Pages
 {
 	/**
 	 * Build default home page object,
@@ -52,7 +62,7 @@ class GroupsHelperPages
 		}
 
 		// create page object
-		$home = new GroupsModelPage(0);
+		$home = new Page(0);
 		$home->set('id', 0)
 			 ->set('gidNumber', $group->get('gidNumber'))
 			 ->set('title', 'Home')
@@ -64,7 +74,7 @@ class GroupsHelperPages
 			 ->set('parent', 0);
 
 		// create page version object
-		$homeVersion = new GroupsModelPageVersion(0);
+		$homeVersion = new Page\Version(0);
 		$homeVersion->set('pageid', 0)
 					->set('version', 1)
 					->set('approved', 1)
@@ -133,7 +143,7 @@ class GroupsHelperPages
 	{
 		// get group
 		$cn = Request::getVar('cn','');
-		$group = Hubzero\User\Group::getInstance($cn);
+		$group = \Hubzero\User\Group::getInstance($cn);
 
 		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
 		$base = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
@@ -497,7 +507,7 @@ class GroupsHelperPages
 	public static function getCheckout($pageid)
 	{
 		// get joomla objects
-		$db   = JFactory::getDBO();
+		$db   = \JFactory::getDBO();
 
 		// get person who has page checkedout
 		$sql = "SELECT * FROM `#__xgroups_pages_checkout`
@@ -515,7 +525,7 @@ class GroupsHelperPages
 	public static function checkout($pageid)
 	{
 		// get needed joomla objects
-		$db   = JFactory::getDBO();
+		$db   = \JFactory::getDBO();
 
 		// check in other pages
 		self::checkinForUser();
@@ -536,7 +546,7 @@ class GroupsHelperPages
 	public static function checkin($pageid)
 	{
 		// get joomla objects
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		// check in page
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote($pageid);
@@ -552,7 +562,7 @@ class GroupsHelperPages
 	public static function checkinForUser()
 	{
 		// get joomla objects
-		$db   = JFactory::getDBO();
+		$db   = \JFactory::getDBO();
 
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote(User::get('id'));
@@ -569,7 +579,7 @@ class GroupsHelperPages
 	public static function checkinAbandoned()
 	{
 		// get joomla objects
-		$db   = JFactory::getDBO();
+		$db   = \JFactory::getDBO();
 
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `when` < NOW() - INTERVAL 12 HOUR";
@@ -581,7 +591,7 @@ class GroupsHelperPages
 	 * Display Group Page
 	 *
 	 * @param    Object    $group    \Hubzero\User\Group Object
-	 * @param    Object    $page     GroupsModelPage Object
+	 * @param    Object    $page     \Components\Groups\Models\Page Object
 	 * @return   String
 	 */
 	public static function displayPage($group, $page, $markHit = true)
@@ -601,8 +611,8 @@ class GroupsHelperPages
 		}
 
 		// get needed vars
-		$database    = JFactory::getDBO();
-		$authorized  = GroupsHelperView::authorize($group);
+		$database    = \JFactory::getDBO();
+		$authorized  = \Components\Groups\Helpers\View::authorize($group);
 		$version     = ($page) ? $page->approvedVersion() : null;
 
 		// stops from displaying pages that dont exist
@@ -639,7 +649,7 @@ class GroupsHelperPages
 		// mark page hit
 		if ($markHit)
 		{
-			$groupsTablePageHit = new GroupsTablePageHit($database);
+			$groupsTablePageHit = new PageHit($database);
 			$pageHit            = new stdClass;
 			$pageHit->gidNumber = $group->get('gidNumber');
 			$pageHit->pageid    = $page->get('id');
@@ -754,7 +764,7 @@ class GroupsHelperPages
 	private static function parse($group, $page, $document)
 	{
 		// create new group document helper
-		$groupDocument = new GroupsHelperDocument();
+		$groupDocument = new Document();
 
 		// strip out scripts & php tags if not super group
 		if (!$group->isSuperGroup())
@@ -831,7 +841,7 @@ class GroupsHelperPages
 		$content = $page->version($version)->content('parsed');
 
 		// create new group document helper
-		$groupDocument = new GroupsHelperDocument();
+		$groupDocument = new Document();
 
 		// strip out scripts & php tags if not super group
 		if (!$group->isSuperGroup())
@@ -879,12 +889,12 @@ class GroupsHelperPages
 		}
 
 		// get group css
-		$pageCss = GroupsHelperView::GetPageCss($group);
+		$pageCss = \Components\Groups\Helpers\View::GetPageCss($group);
 
 		$css = '';
 		foreach ($pageCss as $p)
 		{
-			$p = rtrim(JURI::root(), DS) . DS . ltrim($p, DS);
+			$p = rtrim(Request::root(), DS) . DS . ltrim($p, DS);
 			$css .= '<link rel="stylesheet" href="'.$p.'" />';
 		}
 

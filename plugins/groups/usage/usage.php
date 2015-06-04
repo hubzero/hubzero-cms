@@ -332,7 +332,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		// get group pages if any
-		$pageArchive = GroupsModelPageArchive::getInstance();
+		$pageArchive = \Components\Groups\Models\Page\Archive::getInstance();
 		$pages = $pageArchive->pages('list', array(
 			'gidNumber' => $gid,
 			'state'     => array(0,1),

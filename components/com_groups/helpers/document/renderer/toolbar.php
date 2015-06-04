@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers\Document\Renderer;
 
-class GroupsHelperDocumentRendererToolbar extends GroupsHelperDocumentRenderer
+use Components\Groups\Helpers\Document\Renderer;
+use Components\Groups\Helpers\View;
+
+class Toolbar extends Renderer
 {
 	/**
 	 * Render toolbar to group template
@@ -40,6 +42,6 @@ class GroupsHelperDocumentRendererToolbar extends GroupsHelperDocumentRenderer
 	 */
 	public function render()
 	{
-		return GroupsHelperView::displayToolbar( $this->group, 'id="group_options"', true );
+		return View::displayToolbar($this->group, 'id="group_options"', true);
 	}
 }

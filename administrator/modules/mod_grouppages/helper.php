@@ -31,8 +31,8 @@
 namespace Modules\GroupPages;
 
 use Hubzero\Module\Module;
-use GroupsModelPageArchive;
-use GroupsModelModuleArchive;
+use Components\Groups\Models\Page;
+use Components\Groups\Models\Module;
 
 /**
  * Module class for showing group pages
@@ -53,13 +53,13 @@ class Helper extends Module
 		require_once PATH_CORE . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'archive.php';
 
 		// get unapproved pages
-		$groupModelPageArchive = new GroupsModelPageArchive();
+		$groupModelPageArchive = new Page\Archive();
 		$this->unapprovedPages = $groupModelPageArchive->pages('unapproved', array(
 			'state' => array(0, 1)
 		), true);
 
 		// get unapproved modules
-		$groupModelModuleArchive = new GroupsModelModuleArchive();
+		$groupModelModuleArchive = new Module\Archive();
 		$this->unapprovedModules = $groupModelModuleArchive->modules('unapproved', array(
 			'state' => array(0, 1)
 		), true);

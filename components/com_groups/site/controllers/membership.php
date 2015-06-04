@@ -32,8 +32,8 @@ namespace Components\Groups\Site\Controllers;
 
 use Hubzero\User\Group;
 use Hubzero\Config\Registry;
-use GroupsModelLog;
-use GroupsReason;
+use Components\Groups\Models\Log;
+use Components\Groups\Tables\Reason;
 use Request;
 use Config;
 use Event;
@@ -318,7 +318,7 @@ class Membership extends Base
 		}
 
 		// log invites
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->view->group->get('gidNumber'),
 			'action'    => 'membership_invites_sent',
 			'comments'  => array_merge($invitees, $inviteemails)
@@ -500,7 +500,7 @@ class Membership extends Base
 		}
 
 		// Get the group params
-		$gparams = new \Hubzero\Config\Registry($this->view->group->get('params'));
+		$gparams = new Registry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -566,7 +566,7 @@ class Membership extends Base
 		}
 
 		// log invites
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->view->group->get('gidNumber'),
 			'action'    => 'membership_invite_accepted',
 			'comments'  => array(User::get('id'))
@@ -688,14 +688,14 @@ class Membership extends Base
 		\GroupsMembersRole::deleteRolesForUserWithId(User::get('id'));
 
 		// Log the membership cancellation
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->view->group->get('gidNumber'),
 			'action'    => 'membership_cancelled',
 			'comments'  => array(User::get('id'))
 		));
 
 		// Remove record of reason wanting to join group
-		$reason = new GroupsReason($this->database);
+		$reason = new Reason($this->database);
 		$reason->deleteReason(User::get('id'), $this->view->group->get('gidNumber'));
 
 		// Email subject
@@ -817,7 +817,7 @@ class Membership extends Base
 			$this->view->group->update();
 
 			// Log the membership approval
-			GroupsModelLog::log(array(
+			Log::log(array(
 				'gidNumber' => $this->view->group->get('gidNumber'),
 				'action'    => 'membership_approved',
 				'comments'  => array(User::get('id'))
@@ -901,7 +901,7 @@ class Membership extends Base
 		$this->view->group->update();
 
 		// Instantiate the reason object and bind the incoming data
-		$row = new GroupsReason($this->database);
+		$row = new Reason($this->database);
 		$row->uidNumber = User::get('id');
 		$row->gidNumber = $this->view->group->get('gidNumber');
 		$row->reason    = Request::getVar('reason', Lang::txt('GROUPS_NO_REASON_GIVEN'), 'post');
@@ -919,7 +919,7 @@ class Membership extends Base
 		}
 
 		// Log the membership request
-		GroupsModelLog::log(array(
+		Log::log(array(
 			'gidNumber' => $this->view->group->get('gidNumber'),
 			'action'    => 'membership_requested',
 			'comments'  => array(User::get('id'))
@@ -981,16 +981,16 @@ class Membership extends Base
 	/**
 	 *  Creates Random Token String
 	 *
-	 * @param 	int	$strLength		Length of string desired
-	 * @return 	String				Random string
+	 * @param   int     $strLength  Length of string desired
+	 * @return  String  Random string
 	 */
 	private function _randomString($strLength = 25)
 	{
 		$str = '';
 		for ($i=0; $i<$strLength; $i++)
 		{
-		    $d = rand(1,30)%2;
-		    $str .= $d ? chr(rand(65,90)) : chr(rand(48,57));
+			$d = rand(1,30)%2;
+			$str .= $d ? chr(rand(65,90)) : chr(rand(48,57));
 		}
 		return strtoupper($str);
 	}

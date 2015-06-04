@@ -28,15 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Models;
+
+use Components\Tags\Models\Cloud;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Groups Tagging class
  */
-class GroupsModelTags extends \Components\Tags\Models\Cloud
+class Tags extends Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags

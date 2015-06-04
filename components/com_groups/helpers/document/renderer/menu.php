@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Groups\Helpers\Document\Renderer;
 
-class GroupsHelperDocumentRendererMenu extends GroupsHelperDocumentRenderer
+use Components\Groups\Helpers\Document\Renderer;
+use Components\Groups\Helpers\View;
+
+class Menu extends Renderer
 {
 	/**
 	 * Render menu to group template
@@ -40,6 +42,6 @@ class GroupsHelperDocumentRendererMenu extends GroupsHelperDocumentRenderer
 	 */
 	public function render()
 	{
-		return GroupsHelperView::displaySections($this->group, 'class="cf"');
+		return View::displaySections($this->group, 'class="cf"');
 	}
 }

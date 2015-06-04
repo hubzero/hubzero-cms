@@ -34,9 +34,7 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
-$bar =  JToolBar::getInstance('toolbar');
-// Add an upload button
-$bar->appendButton( 'Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170 );
+Toolbar::appendButton( 'Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170 );
 
 Toolbar::spacer();
 switch ($this->filters['status'])
@@ -147,7 +145,7 @@ foreach ($this->rows as $row)
 {
 	if (isset($row->username))
 	{
-		$reason = new GroupsReason($database);
+		$reason = new \Components\Groups\Tables\Reason($database);
 		$reason->loadReason($row->username, $this->filters['gidNumber']);
 		$reasonforjoin = '';
 		if ($reason)
