@@ -66,7 +66,6 @@ endforeach;
 		<div class="auth">
 			<div class="person">
 				<?php if (isset($user_img) && file_exists($user_img)) : ?>
-					<?php var_dump("Here"); die; ?>
 					<img src="<?php echo $user_img; ?>" alt="<?php echo JText::_('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
 				<?php endif; ?>
 			</div>
@@ -79,7 +78,7 @@ endforeach;
 	<div class="auth">
 		<div class="person">
 			<?php if (isset($user_img) && is_object($user) && file_exists($user_img)) : ?>
-				<?php $image = Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false, false); ?>
+				<?php $image = Hubzero\User\Profile\Helper::getMemberPicture($user, 0, false, false); ?>
 				<?php $img_properties = getimagesize(JPATH_ROOT . DS . $image); ?>
 				<?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
 				<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo JText::_('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
