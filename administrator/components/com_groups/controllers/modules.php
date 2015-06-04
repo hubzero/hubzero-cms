@@ -154,7 +154,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1,2),
-			'orderby'   => 'ordering'
+			'orderby'   => 'lft'
 		));
 
 		// get a list of all pages for creating module menu
