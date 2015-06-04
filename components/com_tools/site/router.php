@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tools\Site;
+
+use Hubzero\Component\Router\Base;
 
 /**
  * Routing class for the component
  */
-class ToolsRouter extends \Hubzero\Component\Router\Base
+class Router extends Base
 {
 	/**
 	 * Build the route for the component.
@@ -261,7 +262,7 @@ class ToolsRouter extends \Hubzero\Component\Router\Base
 
 				// Tools controller
 				case 'report':
-					\JFactory::getApplication()->redirect(\Route::url('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),'','message',true);
+					\App::redirect(\Route::url('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),'','message',true);
 					exit();
 				break;
 

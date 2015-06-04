@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Groups\Site;
+
+use Hubzero\Component\Router\Base;
 
 /**
  * Routing class for the component
  */
-class GroupsRouter extends \Hubzero\Component\Router\Base
+class Router extends Base
 {
 	/**
 	 * Build the route for the component.
@@ -60,7 +61,7 @@ class GroupsRouter extends \Hubzero\Component\Router\Base
 		if (!empty($query['gid']))
 		{
 			//log regardless
-			JFactory::getLogger()->debug("Group JRoute Build Path sending gid instead of cn: " . $_SERVER['REQUEST_URI'] );
+			\Log::debug('Group Route Build Path sending gid instead of cn: ' . $_SERVER['REQUEST_URI']);
 
 			$segments[] = $query['gid'];
 			unset($query['gid']);
@@ -266,7 +267,7 @@ class GroupsRouter extends \Hubzero\Component\Router\Base
 				$vars['option'] = 'com_groups';
 
 				// build url to redirect to based on vars
-				App::redirect(Route::url('index.php?' . http_build_query($vars)), null, null, true);
+				\App::redirect(\Route::url('index.php?' . http_build_query($vars)), null, null, true);
 				exit();
 			}
 		}
@@ -298,7 +299,7 @@ class GroupsRouter extends \Hubzero\Component\Router\Base
 			}
 
 			// build upload path
-			$groupsConfig = Component::params('com_groups');
+			$groupsConfig = \Component::params('com_groups');
 			$uploadPath = trim($groupsConfig->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 			// build path to component
@@ -311,11 +312,11 @@ class GroupsRouter extends \Hubzero\Component\Router\Base
 			}
 
 			// rewrite all query string params to have "g_" prefix
-			foreach (Request::get('get') as $k => $v)
+			foreach (\Request::get('get') as $k => $v)
 			{
 				$old = (isset($vars[$k])) ? $vars[$k] : null;
-				Request::setVar('sg_' . $k, $v);
-				Request::setVar($k, $old);
+				\Request::setVar('sg_' . $k, $v);
+				\Request::setVar($k, $old);
 			}
 		}
 	}
