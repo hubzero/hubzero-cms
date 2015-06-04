@@ -30,14 +30,14 @@
 
 namespace Hubzero\Encryption\Cipher;
 
-use Hubzero\Encryption\CipherInterface;
+use Hubzero\Encryption\Cipher;
 use Hubzero\Encryption\Key;
 use InvalidArgumentException;
 
 /**
  * Cipher for Simple encryption, decryption and key generation.
  */
-class Simple implements CipherInterface
+class Simple implements Cipher
 {
 	/**
 	 * Method to decrypt a data string.

@@ -57,7 +57,7 @@ class Encrypter
 	 * @param   object  $key     The encryption key[/pair)].
 	 * @return  void
 	 */
-	public function __construct(CipherInterface $cipher = null, Key $key = null)
+	public function __construct(Cipher $cipher = null, Key $key = null)
 	{
 		// Set the encryption key[/pair)].
 		$this->key = $key;

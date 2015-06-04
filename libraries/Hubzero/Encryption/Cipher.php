@@ -33,7 +33,7 @@ namespace Hubzero\Encryption;
 /**
  * Cipher interface.
  */
-interface CipherInterface
+interface Cipher
 {
 	/**
 	 * Method to decrypt a data string.
