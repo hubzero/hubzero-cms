@@ -228,6 +228,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			}
 		}
 
+		// formats names in the autocompleter
+		if (!\Hubzero\Utility\Validate::email($originalQuery) && str_word_count($originalQuery) >= 2)
+		{
+		        $originalQuery = ucwords($originalQuery);
+		}
+
+
 		//original query
 		$obj = array();
 		$obj['name'] = $originalQuery;
