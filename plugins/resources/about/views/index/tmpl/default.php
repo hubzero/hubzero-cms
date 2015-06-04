@@ -142,26 +142,29 @@ $maintext = $this->model->description('parsed');
 
 			<?php
 			$citations = '';
-			if (!isset($schema->fields) || !is_array($schema->fields))
+			if (is_object($schema))
 			{
-				$schema->fields = array();
-			}
-			foreach ($schema->fields as $field)
-			{
-				if (isset($data[$field->name]))
+				if (!isset($schema->fields) || !is_array($schema->fields))
 				{
-					if ($field->name == 'citations')
+					$schema->fields = array();
+				}
+				foreach ($schema->fields as $field)
+				{
+					if (isset($data[$field->name]))
 					{
-						$citations = $data[$field->name];
-					}
-					else if ($value = $elements->display($field->type, $data[$field->name]))
-					{
-						?>
-						<h4><?php echo $field->label; ?></h4>
-						<div class="resource-content">
-							<?php echo $value; ?>
-						</div>
-						<?php
+						if ($field->name == 'citations')
+						{
+							$citations = $data[$field->name];
+						}
+						else if ($value = $elements->display($field->type, $data[$field->name]))
+						{
+							?>
+							<h4><?php echo $field->label; ?></h4>
+							<div class="resource-content">
+								<?php echo $value; ?>
+							</div>
+							<?php
+						}
 					}
 				}
 			}
