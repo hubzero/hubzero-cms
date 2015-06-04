@@ -532,7 +532,13 @@ class GroupsHelperView
 
 		// load html through dom document object
 		$domDocument = new DOMDocument();
+		// Since HTML 5 doctype has no DTD to check, the DOM will attempt to
+		// use HTML4 TRansitional which will throw errors on valid HTML5
+		// entities (e.g., header, footer, section). So, we temporarily
+		// suppress errors.
+		libxml_use_internal_errors(true);
 		$domDocument->loadHTML($html);
+		libxml_use_internal_errors(false);
 
 		// parse reseults as xml and use xpath to get list of stylesheets
 		$domDocumentXml = simplexml_import_dom($domDocument);
